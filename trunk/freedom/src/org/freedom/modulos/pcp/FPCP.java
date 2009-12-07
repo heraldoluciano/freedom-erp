@@ -32,6 +32,14 @@ import java.sql.ResultSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.RowSorter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
@@ -51,6 +59,7 @@ import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modulos.std.FOrcamento;
 import org.freedom.modulos.std.FVenda;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -100,9 +109,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 
 //	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-//	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-//	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JButtonPad btBuscar = new JButtonPad( "Buscar vendas", Icone.novo( "btExecuta.gif" ) );
 	
@@ -132,7 +141,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	// *** Listacampos
 
-//	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
+	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
 	
 	private ListaCampos lcProd = new ListaCampos( this );
 	
@@ -174,6 +183,14 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
+		
+		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setNomeCampo( "CodCli" );
+		txtCodCli.setFK( true );
+		lcCliente.setReadOnly( true );
+		lcCliente.montaSql( false, "CLIENTE", "VD" );	
 
 	}
 	
@@ -184,6 +201,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		btSelectNecessarios.addActionListener( this );
 		btLimparGrid.addActionListener( this );
 		lcProd.addCarregaListener( this );
+		lcCliente.addCarregaListener( this );
 		btBuscar.addActionListener( this );
 		tabOrcamentos.addTabelaSelListener( this );	
 		tabOrcamentos.addMouseListener( this );	
@@ -203,6 +221,12 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelMaster.adic( txtCodProd, 7, 20, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 0, 340, 20 );
 		panelMaster.adic( txtDescProd, 70, 20, 340, 20 );
+		
+		panelMaster.adic( new JLabelPad( "Cód.Cli." ), 7, 40, 60, 20 );
+		panelMaster.adic( txtCodCli, 7, 60, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 340, 20 );
+		panelMaster.adic( txtRazCli, 70, 60, 340, 20 );
+
 		panelMaster.adic( btBuscar, 685, 10, 150, 30 );
 				
 //		***** Detalhamento (abas)
@@ -220,19 +244,63 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 //		panelTabVendasItens.setBorder( BorderFactory.createTitledBorder( "Vendas" ) );
 		
-		panelTabVendas.adic( new JLabelPad( "Qtd.Vendida" ), 10, 5, 100, 20 );
-		panelTabVendas.adic( txtQuantidadeVendida, 10, 25, 100, 20 );
-		panelTabVendas.adic( new JLabelPad( "Qtd.Estoque" ), 113, 5, 120, 20 );
-		panelTabVendas.adic( txtQuantidadeEstoque, 113, 25, 120, 20 );
-		panelTabVendas.adic( new JLabelPad( "Qtd.Em Produção" ), 236, 5, 120, 20 );
-		panelTabVendas.adic( txtQuantidadeProducao, 236, 25, 120, 20 );
-		panelTabVendas.adic( new JLabelPad( "Qtd. Produzir" ), 359, 5, 120, 20 );
-		panelTabVendas.adic( txtQuantidadeProduzir, 359, 25, 120, 20 );
+		panelTabVendas.adic( new JLabelPad( "Qtd.Vendida" ), 10, 5, 80, 20 );
+		panelTabVendas.adic( txtQuantidadeVendida, 10, 25, 80, 20 );
+		panelTabVendas.adic( new JLabelPad( "Qtd.Estoque" ), 93, 5, 80, 20 );
+		panelTabVendas.adic( txtQuantidadeEstoque, 93, 25, 80, 20 );
+		panelTabVendas.adic( new JLabelPad( "Qtd.Produção" ), 176, 5, 80, 20 );
+		panelTabVendas.adic( txtQuantidadeProducao, 176, 25, 80, 20 );
+		panelTabVendas.adic( new JLabelPad( "Qtd.Produzir" ), 259, 5, 80, 20 );
+		panelTabVendas.adic( txtQuantidadeProduzir, 259, 25, 80, 20 );
+		
+		JLabelPad separacao = new JLabelPad();
+		separacao.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabVendas.adic( separacao, 350, 4, 2, 47 );
+
 		
 		panelTabVendas.adic( btSelectAll, 707, 15, 30, 30 );
 		panelTabVendas.adic( btDeselectAll, 738, 15, 30, 30 );
 		panelTabVendas.adic( btSelectNecessarios, 769, 15, 30, 30 );
 		panelTabVendas.adic( btLimparGrid, 800, 15, 30, 30 );
+		
+		criaTabela();
+		
+		panelTabVendasItens.add( new JScrollPane( tabOrcamentos ) );
+				
+		Color statusColor = new Color( 111, 106, 177 );
+		Font statusFont = SwingParams.getFontpadmin(); 
+		
+		JLabelPad canceladas = new JLabelPad( "Pendentes" );
+		canceladas.setForeground( statusColor );
+		canceladas.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgPendente ), 0, 5, 20, 15 );
+		panelLegenda.adic( canceladas, 20, 5, 100, 15 );
+		
+		JLabelPad pedidos = new JLabelPad( "Em Produção" );
+		pedidos.setForeground( statusColor );
+		pedidos.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgProducao ), 60, 5, 20, 15 );
+		panelLegenda.adic( pedidos, 80, 5, 100, 15 );
+		
+		JLabelPad faturadas = new JLabelPad( "Produzidos" );
+		faturadas.setForeground( statusColor );
+		faturadas.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgProduzido ), 130, 5, 20, 15 );		
+		panelLegenda.adic( faturadas, 150, 5, 100, 15 );
+		
+		panelLegenda.setBorder( null );
+		
+		
+		panelGeral.add( panelSouth, BorderLayout.SOUTH );
+		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
+		panelSouth.add( adicBotaoSair());
+		pnRod.add( panelLegenda, BorderLayout.CENTER );
+				
+	}
+	
+	private void criaTabela() {
+		
+		tabOrcamentos = new Tabela();
 		
 		tabOrcamentos.adicColuna( "" );
 		tabOrcamentos.adicColuna( "" );
@@ -263,39 +331,12 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDESTOQUE.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDEMPROD.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDAPROD.ordinal() );
-		
-		panelTabVendasItens.add( new JScrollPane( tabOrcamentos ) );
-		
-		
-		Color statusColor = new Color( 111, 106, 177 );
-		Font statusFont = SwingParams.getFontpadmin(); 
-		
 
-		JLabelPad canceladas = new JLabelPad( "Pendentes" );
-		canceladas.setForeground( statusColor );
-		canceladas.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgPendente ), 0, 5, 20, 15 );
-		panelLegenda.adic( canceladas, 20, 5, 100, 15 );
 		
-		JLabelPad pedidos = new JLabelPad( "Em Produção" );
-		pedidos.setForeground( statusColor );
-		pedidos.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgProducao ), 60, 5, 20, 15 );
-		panelLegenda.adic( pedidos, 80, 5, 100, 15 );
-		
-		JLabelPad faturadas = new JLabelPad( "Produzidos" );
-		faturadas.setForeground( statusColor );
-		faturadas.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgProduzido ), 130, 5, 20, 15 );		
-		panelLegenda.adic( faturadas, 150, 5, 100, 15 );
-		
-		panelLegenda.setBorder( null );
+		 
 		
 		
-		panelGeral.add( panelSouth, BorderLayout.SOUTH );
-		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
-		panelSouth.add( adicBotaoSair());
-		pnRod.add( panelLegenda, BorderLayout.CENTER );
+		
 	}
 	
 	private void buscaVendas() {
@@ -336,6 +377,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			if(txtCodProd.getVlrInteger()>0) {
 				sql.append( " and io.codemppd=? and io.codfilialpd=? and io.codprod=? " );				
 			}
+			if(txtCodCli.getVlrInteger()>0) {
+				sql.append( " and oc.codempcl=? and oc.codfilialcl=? and oc.codcli=? " );				
+			}
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
@@ -350,13 +394,21 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				ps.setInt( iparam++, lcProd.getCodEmp() );
 				ps.setInt( iparam++, lcProd.getCodFilial() );
 				ps.setInt( iparam++, txtCodProd.getVlrInteger() );								
-			}			
+			}
+			if(txtCodCli.getVlrInteger()>0) {
+				ps.setInt( iparam++, lcCliente.getCodEmp() );
+				ps.setInt( iparam++, lcCliente.getCodFilial() );
+				ps.setInt( iparam++, txtCodCli.getVlrInteger() );								
+			}	
 			
 			ResultSet rs = ps.executeQuery();		
 			
+//			tabOrcamentos = new Tabela();
 			tabOrcamentos.limpa();
+//			criaTabela();
 						
 			int row = 0;
+			
 			while ( rs.next() ) {
 				
 				tabOrcamentos.adicLinha();
@@ -371,11 +423,10 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				tabOrcamentos.setValor( rs.getInt( VENDAS.CODPROD.toString() ), row, VENDAS.CODPROD.ordinal() );
 				tabOrcamentos.setValor( rs.getString( VENDAS.DESCPROD.toString().trim() ), row, VENDAS.DESCPROD.ordinal() );
 
-				BigDecimal qtdaprov = rs.getBigDecimal( VENDAS.QTDAPROV.toString() );
-				BigDecimal qtdestoque = rs.getBigDecimal( VENDAS.QTDESTOQUE.toString() );
-				BigDecimal qtdemprod = rs.getBigDecimal( VENDAS.QTDEMPROD.toString() );
-				BigDecimal qtdaprod = qtdaprov.subtract( qtdestoque ).subtract( qtdemprod );
-				
+				BigDecimal qtdaprov = rs.getBigDecimal( VENDAS.QTDAPROV.toString() ).setScale( Aplicativo.casasDec );
+				BigDecimal qtdestoque = rs.getBigDecimal( VENDAS.QTDESTOQUE.toString() ).setScale( Aplicativo.casasDec );
+				BigDecimal qtdemprod = rs.getBigDecimal( VENDAS.QTDEMPROD.toString() ).setScale( Aplicativo.casasDec );
+				BigDecimal qtdaprod = qtdaprov.subtract( qtdestoque ).subtract( qtdemprod ).setScale( Aplicativo.casasDec );				
 				
 				if ( "PE".equals( rs.getString( "sitproditorc" ) ) ) {
 					imgColuna = imgPendente;
@@ -388,16 +439,43 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				}
 											
 				tabOrcamentos.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
-				
+				/*
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdaprov, Aplicativo.casasDec ), row, VENDAS.QTDAPROV.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdestoque, Aplicativo.casasDec ), row, VENDAS.QTDESTOQUE.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdemprod, Aplicativo.casasDec ), row, VENDAS.QTDEMPROD.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdaprod.floatValue() < 0 ? new BigDecimal(0) : qtdaprod , Aplicativo.casasDec), row, VENDAS.QTDAPROD.ordinal() );
-						
+				*/
+				tabOrcamentos.setValor( qtdaprov, row, VENDAS.QTDAPROV.ordinal() );
+				tabOrcamentos.setValor( qtdestoque, row, VENDAS.QTDESTOQUE.ordinal() );
+				tabOrcamentos.setValor( qtdemprod, row, VENDAS.QTDEMPROD.ordinal() );
+				tabOrcamentos.setValor( qtdaprod.floatValue() < 0 ? new BigDecimal(0) : qtdaprod , row, VENDAS.QTDAPROD.ordinal() );
+								
 				row++;
 				
 			}
+			// Permitindo reordenação
+			if(row>0) {
+				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabOrcamentos.getModel());    
+			
+					/*	
+				  sorter.addRowSorterListener(new RowSorterListener() {  
+	                    public void sorterChanged(RowSorterEvent e) {  
+	                    	 if(e.getType() == RowSorterEvent.Type.SORTED) {  
+	                    		 System.out.println("teste");  
+	                    	 }
+	                    }  
+	                });
+	                
+	                */
 
+				   tabOrcamentos.setRowSorter(sorter);				   
+				   
+				
+			}
+			else {
+				tabOrcamentos.setRowSorter( null );
+			}
+			
 		} 
 		catch ( Exception e ) {
 			e.printStackTrace();
@@ -437,15 +515,16 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		if ( mevt.getClickCount() == 2 ) {
 			if ( mevt.getSource() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 ) {
-				FVenda venda = null;    
+				FOrcamento orc = null;    
 	    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-	    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+	    			orc = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
 	    		}
 	    		else {
-	    			venda = new FVenda();
-	    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
+	    			orc = new FOrcamento();
+	    			Aplicativo.telaPrincipal.criatela( "Orçamento", orc, con );
 	    		}    
-//				venda.exec( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ) );
+	    		 
+				orc.exec( (Integer) tabEv.getValor( tabEv.getLinhaSel(), VENDAS.CODORC.ordinal() ) );
 			}
 		}
 		if ( tabEv == tabOrcamentos && tabEv.getLinhaSel() > -1 ) {
@@ -483,12 +562,15 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		if ( lcProd == e.getListaCampos() ) {
 			buscaVendas();
 		}
+		else if ( lcCliente == e.getListaCampos() ) {
+			buscaVendas();
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-//		lcCliente.setConexao( con );
+		lcCliente.setConexao( con );
 		lcProd.setConexao( con );
 		
 	}
@@ -524,7 +606,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private void selectNecessarios() {
 		BigDecimal vlrprod = null;
 		for ( int i = 0; i < tabOrcamentos.getNumLinhas(); i++ ) {
-			vlrprod = Funcoes.strToBd( (StringDireita) tabOrcamentos.getValor( i, VENDAS.QTDAPROD.ordinal() ) );
+			vlrprod = (BigDecimal) tabOrcamentos.getValor( i, VENDAS.QTDAPROD.ordinal() );
 			if(vlrprod.floatValue()>0) {
 				tabOrcamentos.setValor( new Boolean( true ), i, 0 );
 			}
