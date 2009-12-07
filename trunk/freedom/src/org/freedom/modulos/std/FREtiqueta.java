@@ -712,7 +712,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 				}
 
 				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + "," + objEtiq.getPK() + " FROM " + 
-				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY 1";
+				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY 2";
 				System.out.println("***" + sSQL);
 			} catch ( Exception e ) {
 				e.printStackTrace();
