@@ -109,8 +109,6 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		
 		this.setFont( SwingParams.getFontpadmed() );	
 		this.getTableHeader().setFont(SwingParams.getFontboldmed());
-		
-		
 
 	}
 
@@ -233,7 +231,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		if ( ind < ContaLinhas && ind >= 0 ) {
 			boolean bSel = false;
-			bSel = ( getLinhaSel() == ind );
+			bSel = ( getSelectedRow() == ind );
 			modelo.removeRow( ind );
 			if ( bSel && ind < ( getNumLinhas() - 1 ) )
 				setLinhaSel( ind );
@@ -269,9 +267,8 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		return ret;
 	}
 
-	public int getLinhaSel() {
-
-		return getSelectedRow();
+	public int getLinhaSel() {		
+		return convertRowIndexToModel( getSelectedRow());
 	}
 
 	public int getColunaEditada() {
@@ -304,7 +301,6 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 	}
 
 	public void limpa() {
-
 		modelo.limpa();
 		ContaLinhas = 0;
 	}
@@ -439,7 +435,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		}
 
 		public Modelo( Vector<Object> columnNames, int numRows ) {
-
+		    		    
 			setColumnIdentifiers( columnNames );
 			dataVector = new Vector<Vector<Object>>();
 			setNumRows( numRows );
@@ -638,7 +634,12 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			dataVector.removeAllElements();
 			vcoresb = new Vector<Color>();
 			vcoresf = new Vector<Color>();
-			fireTableRowsDeleted( 0, dataVector.size() );
+			try {
+				fireTableRowsDeleted( 0, dataVector.size() );
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		public int getRowCount() {
@@ -728,9 +729,10 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		public void fireTableChanged( TableModelEvent tevt ) {
 
-			if ( tabEdLis != null )
+			if ( tabEdLis != null ) 
 				tabEdLis.fireValorEditAlterado();
 			super.fireTableChanged( tevt );
+			
 		}
 	}
 }
