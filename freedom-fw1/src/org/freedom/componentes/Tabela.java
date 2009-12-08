@@ -195,6 +195,13 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		this.getTableHeader().getColumnModel().getColumn(icol).setMinWidth(0);
 	}
 	
+	public void setColunaVisivel(int tam, int icol ) {
+		this.getColumnModel().getColumn(icol).setMaxWidth(tam);
+		this.getColumnModel().getColumn(icol).setMinWidth(tam);
+		this.getTableHeader().getColumnModel().getColumn(icol).setMaxWidth(tam);
+		this.getTableHeader().getColumnModel().getColumn(icol).setMinWidth(tam);
+	}
+	
 	public int pesqLinha( int iCol, String sTexto ) {
 
 		int iRetorno = -1;
@@ -228,11 +235,20 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 	}
 
 	public void tiraLinha( int ind ) {
-
+		
+		int indmodel = convertRowIndexToModel(ind);
+		
 		if ( ind < ContaLinhas && ind >= 0 ) {
 			boolean bSel = false;
-			bSel = ( getSelectedRow() == ind );
+			if(getSelectedRow()>-1) {
+				bSel = ( convertRowIndexToModel( getSelectedRow() ) == ind );
+			}
+			else {
+				bSel = false;
+			}
+				
 			modelo.removeRow( ind );
+			
 			if ( bSel && ind < ( getNumLinhas() - 1 ) )
 				setLinhaSel( ind );
 		}
@@ -268,7 +284,12 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 	}
 
 	public int getLinhaSel() {		
-		return convertRowIndexToModel( getSelectedRow());
+		if(getSelectedRow()>-1) {
+			return convertRowIndexToModel( getSelectedRow());
+		}
+		else {
+			return -1;
+		}
 	}
 
 	public int getColunaEditada() {
@@ -620,7 +641,6 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		}
 
 		public void removeRow( int row ) {
-
 			dataVector.removeElementAt( row );
 			fireTableRowsDeleted( row, row );
 		}
