@@ -51,6 +51,7 @@ import org.freedom.funcoes.exporta.Contabil;
 import org.freedom.funcoes.exporta.EbsContabil;
 import org.freedom.funcoes.exporta.FreedomContabil;
 import org.freedom.funcoes.exporta.SafeContabil;
+import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -283,7 +284,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 				erros = getLayoutSafe();
 
-				if ( erros == null || erros.size() > 0 ) {
+				if ( erros == null || erros.size() == 0 ) {
 					erros = null;
 				}
 			}
@@ -312,14 +313,14 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		}
 	}
 
-	private List<Contabil> getLayoutSafe() {
+	private List<SafeContabilVO> getLayoutSafe() {
 		
-		List<Contabil> erros = null;
+		List<SafeContabilVO> erros = null;
 
 		try {
 
 			layoutContabil = new SafeContabil();
-			((SafeContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+			erros = ((SafeContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Safe Contábil!" );
