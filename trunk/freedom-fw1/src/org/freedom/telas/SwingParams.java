@@ -49,8 +49,8 @@ public class SwingParams {
 		return new Font(FONT_PAD, FONT_STYLE_ITALIC, FONT_SIZE_MED);
 	}
 	
-	public static Border getPanelLabel() {
-		Border border = BorderFactory.createTitledBorder( null,"Critérios de agrupamento", 2, 0, SwingParams.getFontbold(), Color.BLUE ); 
+	public static Border getPanelLabel(String label) {
+		Border border = BorderFactory.createTitledBorder( null, label, 2, 0, SwingParams.getFontbold(), Color.BLUE ); 
 		return border;
 	}
 
