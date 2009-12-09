@@ -691,7 +691,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodFabProd, 7, 140, 140, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtPrecoBaseProd, 150, 140, 75, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
-		adicCampo( txtCustoInfoProd, 228, 140, 75, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, true );
+		adicCampo( txtCustoInfoProd, 228, 140, 75, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtComisProd, 306, 140, 67, 20, "ComisProd", "%Comis.", ListaCampos.DB_SI, true );
 		adicCampo( txtQtdMinProd, 376, 140, 67, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
