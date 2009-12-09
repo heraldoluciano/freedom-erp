@@ -370,9 +370,11 @@ public class FManutPreco extends FFilho implements ActionListener,
 							+ ListaCampos.getMasterFilial("VDCLASCLI")
 							+ " AND CODCLASCLI=" + iCodClasCli;
 				}
+				
 				sSqlConsultaPreco = "SELECT CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB,"
 						+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD "
 						+ "FROM VDPRECOPROD " + sWhereConsultaPreco;
+				
 				sSqlInclusao = "INSERT INTO VDPRECOPROD "
 						+ "(CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB,"
 						+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD) "
@@ -380,8 +382,9 @@ public class FManutPreco extends FFilho implements ActionListener,
 						+ " COALESCE( (SELECT MAX(CODPRECOPROD)+1 FROM VDPRECOPROD WHERE CODEMP=? AND "
 						+ "CODFILIAL=? AND CODPROD=?) , 1)"
 						+ "),?,?,?,?,?,?,?,?,?,?)";
-				sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=? "
-						+ sWhereConsultaPreco + " AND CODPRECOPROD=?";
+				
+				sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=? " + sWhereConsultaPreco + " AND CODPRECOPROD=? AND PRECOPROD!=? ";
+				
 			} else {
 				Funcoes.mensagemInforma(this,
 						"Origem de preço inválida para a operação!");
@@ -424,12 +427,14 @@ public class FManutPreco extends FFilho implements ActionListener,
 							psAtualizar.setInt(2, rsProd.getInt("CODEMP"));
 							psAtualizar.setInt(3, rsProd.getInt("CODFILIAL"));
 							psAtualizar.setInt(4, rsProd.getInt("CODPROD"));
-							psAtualizar.setInt(5, rsPreco
-									.getInt("CODPRECOPROD"));
-							psAtualizar.execute();
+							psAtualizar.setInt(5, rsPreco.getInt("CODPRECOPROD"));
+							psAtualizar.setDouble( 6, dePrecoProd );
+							
+							iRegsAtu = iRegsAtu + psAtualizar.executeUpdate();
 							psAtualizar.close();
-							iRegsAtu++;
-						} else {
+
+						} 
+						else {
 							psInclusao = con.prepareStatement(sSqlInclusao);
 							psInclusao.setInt(1, rsProd.getInt("CODEMP"));
 							psInclusao.setInt(2, rsProd.getInt("CODFILIAL"));
@@ -438,22 +443,22 @@ public class FManutPreco extends FFilho implements ActionListener,
 							psInclusao.setInt(5, rsProd.getInt("CODFILIAL"));
 							psInclusao.setInt(6, rsProd.getInt("CODPROD"));
 							psInclusao.setInt(7, Aplicativo.iCodEmp);
-							psInclusao.setInt(8, ListaCampos
-									.getMasterFilial("VDTABPRECO"));
+							psInclusao.setInt(8, ListaCampos.getMasterFilial("VDTABPRECO"));
 							psInclusao.setInt(9, iCodTab);
+							
 							if (iCodClasCli == 0) {
 								psInclusao.setNull(10, Types.INTEGER);
 								psInclusao.setNull(11, Types.INTEGER);
 								psInclusao.setNull(12, Types.INTEGER);
-							} else {
+							} 
+							else {
 								psInclusao.setInt(10, Aplicativo.iCodEmp);
-								psInclusao.setInt(11, ListaCampos
-										.getMasterFilial("VDCLASCLI"));
+								psInclusao.setInt(11, ListaCampos.getMasterFilial("VDCLASCLI"));
 								psInclusao.setInt(12, iCodClasCli);
 							}
+							
 							psInclusao.setInt(13, Aplicativo.iCodEmp);
-							psInclusao.setInt(14, ListaCampos
-									.getMasterFilial("FNPLANOPAG"));
+							psInclusao.setInt(14, ListaCampos.getMasterFilial("FNPLANOPAG"));
 							psInclusao.setInt(15, iCodPlanoPag);
 							psInclusao.setDouble(16, dePrecoProd);
 							psInclusao.execute();
