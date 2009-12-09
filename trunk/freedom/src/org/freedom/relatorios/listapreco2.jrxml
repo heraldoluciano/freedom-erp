@@ -63,15 +63,17 @@
 	<parameter name="IMPQTDEMB" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DESTAQUE" isForPrompting="false" class="java.lang.Boolean">
+		<defaultValueExpression ><![CDATA[new Boolean(true)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODFABPROD, P.CODUNID, PP.PRECOPROD, P.SLDPROD,P.QTDEMBALAGEM, P.CODBARPROD,
-(select aliqipifisc from LFBUSCAFISCALSP(P.CODFILIAL,P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI
+(select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI,
+(case when (cast('today' as date) - (PP.DTALT))<7 then 'S' else 'N' end) as alterado,P.SLDPROD
 FROM SGPREFERE1 P1, EQPRODUTO P, VDPRECOPROD PP
 WHERE P.CODEMP=PP.CODEMP AND P.CODFILIAL=PP.CODFILIAL AND P.CODPROD=PP.CODPROD
 AND PP.CODEMP=49 AND PP.CODFILIAL=1 AND PP.CODPLANOPAG=1
 AND P1.CODEMP=PP.CODEMP AND P1.CODFILIAL=PP.CODFILIAL
-ORDER BY PP.CODPROD
-
-]]></queryString>
+ORDER BY PP.CODPROD]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -82,7 +84,8 @@ ORDER BY PP.CODPROD
 	<field name="SLDPROD" class="java.math.BigDecimal"/>
 	<field name="QTDEMBALAGEM" class="java.math.BigDecimal"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
-	<field name="ALIQIPI" class="java.math.BigDecimal"/>
+	<field name="ALIQIPI" class="java.lang.Integer"/>
+	<field name="ALTERADO" class="java.lang.String"/>
 
 	<variable name="QTDTOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{SLDPROD}]]></variableExpression>
@@ -667,7 +670,9 @@ ORDER BY PP.CODPROD
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-20"/>
+						key="textField-20">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -805,6 +810,24 @@ ORDER BY PP.CODPROD
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="464"
+						y="3"
+						width="68"
+						height="11"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-30">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOPROD}!=null?$F{PRECOPROD}:new BigDecimal(0)]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
