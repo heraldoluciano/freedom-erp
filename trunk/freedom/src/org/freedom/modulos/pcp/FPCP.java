@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
@@ -142,12 +143,15 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JButtonPad btSelectNecessariosDet = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
 	private JButtonPad btLimparGridDet = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoDet = new JButtonPad( Icone.novo( "btVassoura.png" ) );
+	private JButtonPad btIniProdDet = new JButtonPad( Icone.novo( "btIniProd.png" ) );
 	
 	private JButtonPad btSelectAllAgrup = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	private JButtonPad btDeselectAllAgrup = new JButtonPad( Icone.novo( "btNada.gif" ) );
 	private JButtonPad btSelectNecessariosAgrup = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
 	private JButtonPad btLimparGridAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
+	
+	
 
 	// Enums
 	
@@ -188,7 +192,8 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProd );
+		lcProd.setWhereAdic( "TIPOPROD='F'" );
+		txtCodProd.setTabelaExterna( lcProd );		
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
@@ -210,6 +215,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		btDeselectAllDet.addActionListener( this );
 		btSelectNecessariosDet.addActionListener( this );
 		btLimparGridDet.addActionListener( this );
+		btIniProdDet.addActionListener( this );
 		
 		btSelectAllAgrup.addActionListener( this );
 		btDeselectAllAgrup.addActionListener( this );
@@ -276,10 +282,14 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelTabDet.adic( btSelectNecessariosDet, 774, 12, 30, 30 );
 		panelTabDet.adic( btLimparGridDet, 805, 12, 30, 30 );
 		
-		JLabelPad separacao = new JLabelPad();
-		separacao.setBorder( BorderFactory.createEtchedBorder() );
-		panelTabDet.adic( separacao, 350, 4, 2, 47 );
+		JLabelPad separador = new JLabelPad();
+		separador.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabDet.adic( separador, 350, 4, 2, 48 );
 
+		panelTabDet.adic( btIniProdDet, 360, 4, 48, 48 );
+		
+		
+		
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
 
 		
@@ -289,7 +299,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelAgrup.add( panelGridAgrup, BorderLayout.CENTER );		
 		panelGridAgrup.add( panelTabAgrupItens );		
 		
-		pnCritAgrup.setBorder( SwingParams.getPanelLabel() );
+		pnCritAgrup.setBorder( SwingParams.getPanelLabel("Critérios de agrupamento") );
 		
 		pnCritAgrup.adic( cbAgrupProd, 4, 0, 90, 20 );
 		pnCritAgrup.adic( cbAgrupDataEntrega, 94, 0, 90, 20 );
@@ -440,7 +450,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "left outer join eqsaldoprod sp on ");
 			sql.append( "sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod ");
 			
-			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' ");
+			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
 			
 			if(txtCodProd.getVlrInteger()>0) {
 				sql.append( " and io.codemppd=? and io.codfilialpd=? and io.codprod=? " );				
@@ -626,7 +636,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "left outer join ppop op on op.codemppd=pd.codemp and op.codfilial=pd.codfilial and op.codprod=pd.codprod and op.sitop in ('PE','BL') ");
 			sql.append( "left outer join eqsaldoprod sp on sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod ");
 
-			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' ");
+			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
 
 			if(txtCodProd.getVlrInteger()>0) {
 				sql.append( " and io.codemppd=? and io.codfilialpd=? and io.codprod=? " );				
@@ -800,6 +810,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		else if ( e.getSource() == btLimparGridAgrup ) {
 			limpaNaoSelecionados( tabAgrup );
 		}
+		else if ( e.getSource() == btIniProdDet ) {
+			processaOPS(true);
+		}
 		
 	}
 
@@ -915,8 +928,31 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	}
 
 	private void deselectAll(Tabela tab) {
-		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) { 
 			tab.setValor( new Boolean( false ), i, 0 );
+		}
+	}
+	
+	private void processaOPS(boolean det) {	
+		
+		if(Funcoes.mensagemConfirma( this, "Deseja revisar o processo antes da execução?\nPodendo alterar as quantidades e a data de fabricação?" )==JOptionPane.YES_OPTION) {
+			
+		}
+		else {
+			if(det) {
+				processaOPSDiretoDet();
+			}
+		}
+	}
+	
+	private void processaOPSDiretoDet() {
+		
+		
+		for(int i=0; i<tabDet.getNumLinhas(); i++) {
+		
+			
+			
+			
 		}
 	}
 	
