@@ -234,10 +234,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		ContaLinhas++;
 	}
 
-	public void tiraLinha( int ind ) {
-		
-		int indmodel = convertRowIndexToModel(ind);
-		
+	public void tiraLinha( int ind ) {		
 		if ( ind < ContaLinhas && ind >= 0 ) {
 			boolean bSel = false;
 			if(getSelectedRow()>-1) {
