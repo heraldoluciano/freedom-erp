@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.awt.GridLayout;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,19 +40,22 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
+import org.freedom.telas.SwingParams;
 
 public class FRListaPreco extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinTipo = new JPanelPad(600,60);
 	private JPanelPad pinOpt = new JPanelPad(600,100);
+	private JPanelPad pinOpt2 = new JPanelPad(600,100);
 	private JPanelPad pinPlan = new JPanelPad(600,450);
 	private JPanelPad pnTipo = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-	private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+//	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+//	private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
@@ -85,6 +87,8 @@ public class FRListaPreco extends FRelatorio {
     private JCheckBoxPad cbImpSaldo = new JCheckBoxPad("Imp.saldo","S","N");
     private JCheckBoxPad cbImpQtdEmb = new JCheckBoxPad("Imp.qtd.emb.","S","N");
     private JCheckBoxPad cbPrecoFracionado = new JCheckBoxPad("Preço fracionado","S","N");
+    private JCheckBoxPad cbSinalizarAlterados = new JCheckBoxPad("Sinalizar alterados","S","N");
+	private JTextFieldPad txtNroDiasAlt = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
 	private JRadioGroup<?, ?> rgTipo = null;
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private Vector<String> vLabs = new Vector<String>(2);
@@ -105,8 +109,9 @@ public class FRListaPreco extends FRelatorio {
 	private ListaCampos lcPlanoPag7 = new ListaCampos(this);
         
 	public FRListaPreco() {
+		
 		setTitulo("Lista de Preços");
-		setAtribos(50,50,630,530);
+		setAtribos(50,50,650,615);
 		
 		vLabs.addElement("Código");
 		vLabs.addElement("Descrição");
@@ -126,6 +131,8 @@ public class FRListaPreco extends FRelatorio {
 		cbInativos.setVlrString( "S" );
 		cbComSaldo.setVlrString( "S" );
 		cbPrecoFracionado.setVlrString( "S" );
+		cbSinalizarAlterados.setVlrString( "S" );
+		txtNroDiasAlt.setVlrInteger( new Integer(7) );
 		txtCodTabPreco.setVlrInteger( 1 );
 		txtCodPlanoPag1.setVlrInteger( 1 );
 		
@@ -232,8 +239,6 @@ public class FRListaPreco extends FRelatorio {
 		txtCodPlanoPag7.setFK(true);
 		txtCodPlanoPag7.setNomeCampo("CodPlanoPag");
 		
-//		pnTipo.add(new JLabelPad("     Tipo do relatorio"));
-//		adic(pnTipo,10,5,150,20);
 		adic(pinTipo,5,15,600,65);
 
 		pinTipo.adic(new JLabelPad("Tipo"),20,5,100,15);
@@ -241,75 +246,82 @@ public class FRListaPreco extends FRelatorio {
 		pinTipo.adic(new JLabelPad("Ordem"),300,5,100,15);
 		pinTipo.adic(rgOrdem,300,22,270,30);
 
-		pnOpt.add(new JLabelPad("    Opções de filtros"));
-		adic(pnOpt,10,85,150,20);
+		pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
 		adic(pinOpt,5,95,600,150);
 
-		pinOpt.adic(new JLabelPad("Cód.grupo"),7,10,80,20);
-		pinOpt.adic(txtCodGrup,7,30,80,20);
-		pinOpt.adic(new JLabelPad("Descrição do grupo"),90,10,200,20);
-		pinOpt.adic(txtDescGrup,90,30,200,20);		
+		pinOpt.adic(new JLabelPad("Cód.grupo"),7,0,80,20);
+		pinOpt.adic(txtCodGrup,7,20,80,20);
+		pinOpt.adic(new JLabelPad("Descrição do grupo"),90,0,200,20);
+		pinOpt.adic(txtDescGrup,90,20,200,20);		
 		
-		pinOpt.adic(new JLabelPad("Cód.marca"),7,50,80,20);
-		pinOpt.adic(txtCodMarca,7,70,80,20);
-		pinOpt.adic(new JLabelPad("Descrição da marca"),90,50,200,20);
-		pinOpt.adic(txtDescMarca,90,70,200,20);		
+		pinOpt.adic(new JLabelPad("Cód.marca"),7,40,80,20);
+		pinOpt.adic(txtCodMarca,7,60,80,20);
+		pinOpt.adic(new JLabelPad("Descrição da marca"),90,40,200,20);
+		pinOpt.adic(txtDescMarca,90,60,200,20);		
 		
-		pinOpt.adic(new JLabelPad( "Cód.c.cli."),300,10,80,20);
-		pinOpt.adic(txtCodClasCli,300,30,80,20);
-		pinOpt.adic(new JLabelPad( "Descrição da classf. do cliente"),383,10,200,20);
-		pinOpt.adic(txtDescClasCli,383,30,200,20);	
+		pinOpt.adic(new JLabelPad( "Cód.c.cli."),300,0,80,20);
+		pinOpt.adic(txtCodClasCli,300,20,80,20);
+		pinOpt.adic(new JLabelPad( "Descrição da classf. do cliente"),383,0,200,20);
+		pinOpt.adic(txtDescClasCli,383,20,200,20);	
 		
-		pinOpt.adic(new JLabelPad("Cód.tab.pc."),300,50,80,20);
-		pinOpt.adic(txtCodTabPreco,300,70,80,20);
-		pinOpt.adic(new JLabelPad("Descrição da tabela de preço"),383,50,200,20);
-		pinOpt.adic(txtDescTabPreco,383,70,200,20);		
+		pinOpt.adic(new JLabelPad("Cód.tab.pc."),300,40,80,20);
+		pinOpt.adic(txtCodTabPreco,300,60,80,20);
+		pinOpt.adic(new JLabelPad("Descrição da tabela de preço"),383,40,200,20);
+		pinOpt.adic(txtDescTabPreco,383,60,200,20);		
 
-		pinOpt.adic(new JLabelPad("Cód.for."),7,90,80,20);
-		pinOpt.adic(txtCodFor,7,110,80,20);
-		pinOpt.adic(new JLabelPad("Nome do fornecedor"),90,90,200,20);
-		pinOpt.adic(txtNomeFor,90,110,200,20);		
+		pinOpt.adic(new JLabelPad("Cód.for."),7,80,80,20);
+		pinOpt.adic(txtCodFor,7,100,80,20);
+		pinOpt.adic(new JLabelPad("Nome do fornecedor"),90,80,200,20);
+		pinOpt.adic(txtNomeFor,90,100,200,20);		
 				
-		pinOpt.adic(cbAgrupar,295,100,105,20); 
-		pinOpt.adic(cbImpSaldo,405,100,90,20);
-		pinOpt.adic(cbImpQtdEmb,499,100,110,20);
-		pinOpt.adic(cbComSaldo,380,120,90,20);
-		pinOpt.adic(cbInativos,295,120,80,20);		
 
-		pinOpt.adic(cbPrecoFracionado,473,120,145,20);
-        
-		pnPlan.add(new JLabelPad("   Planos de pagamento"));
-		adic(pnPlan,10,250,150,20);
-		adic(pinPlan,5,260,600,190);
+		pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
+		adic(pinOpt2,5,250,600,80);
 		
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,10,250,20);
-		pinPlan.adic(txtCodPlanoPag1,7,30,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (1)"),90,10,250,20);
-		pinPlan.adic(txtDescPlanoPag1,90,30,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,10,250,20);
-		pinPlan.adic(txtCodPlanoPag2,300,30,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (2)"),380,10,250,20);
-		pinPlan.adic(txtDescPlanoPag2,383,30,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,50,250,20);
-		pinPlan.adic(txtCodPlanoPag3,7,70,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (3)"),90,50,250,20);
-		pinPlan.adic(txtDescPlanoPag3,90,70,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,50,250,20);
-		pinPlan.adic(txtCodPlanoPag4,300,70,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (4)"),380,50,250,20);
-		pinPlan.adic(txtDescPlanoPag4,383,70,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,90,250,20);
-		pinPlan.adic(txtCodPlanoPag5,7,110,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (5)"),90,90,250,20);
-		pinPlan.adic(txtDescPlanoPag5,90,110,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,90,250,20);
-		pinPlan.adic(txtCodPlanoPag6,300,110,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (6)"),380,90,250,20);
-		pinPlan.adic(txtDescPlanoPag6,383,110,200,20);
-		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,130,250,20);
-		pinPlan.adic(txtCodPlanoPag7,7,150,80,20);
-		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (7)"),90,130,250,20);
-		pinPlan.adic(txtDescPlanoPag7,90,150,200,20);        
+		pinOpt2.adic(cbAgrupar,10,5,105,20); 
+		pinOpt2.adic(cbImpSaldo,10,25,90,20);
+		
+		pinOpt2.adic(cbImpQtdEmb,130,5,110,20);
+		pinOpt2.adic(cbComSaldo,130,25,90,20);
+		
+		pinOpt2.adic(cbInativos,240,5,80,20);		
+		pinOpt2.adic(cbPrecoFracionado,240,25,140,20);
+		pinOpt2.adic(cbSinalizarAlterados,380,0,145,20);
+		pinOpt2.adic(new JLabelPad("Dias de alteração"), 383, 25, 100, 20);
+		pinOpt2.adic(txtNroDiasAlt, 490,25,30,20);
+		
+		pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
+		adic(pinPlan,5,340,600,190);
+		
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,0,250,20);
+		pinPlan.adic(txtCodPlanoPag1,7,20,80,20);
+		
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (1)"),90,0,250,20);
+		pinPlan.adic(txtDescPlanoPag1,90,20,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,0,250,20);
+		pinPlan.adic(txtCodPlanoPag2,300,20,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (2)"),380,0,250,20);
+		pinPlan.adic(txtDescPlanoPag2,383,20,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,40,250,20);
+		pinPlan.adic(txtCodPlanoPag3,7,60,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (3)"),90,40,250,20);
+		pinPlan.adic(txtDescPlanoPag3,90,60,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,40,250,20);
+		pinPlan.adic(txtCodPlanoPag4,300,60,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (4)"),380,40,250,20);
+		pinPlan.adic(txtDescPlanoPag4,383,60,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,80,250,20);
+		pinPlan.adic(txtCodPlanoPag5,7,100,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (5)"),90,80,250,20);
+		pinPlan.adic(txtDescPlanoPag5,90,100,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,80,250,20);
+		pinPlan.adic(txtCodPlanoPag6,300,100,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (6)"),380,80,250,20);
+		pinPlan.adic(txtDescPlanoPag6,383,100,200,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,120,250,20);
+		pinPlan.adic(txtCodPlanoPag7,7,140,80,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (7)"),90,120,250,20);
+		pinPlan.adic(txtDescPlanoPag7,90,140,200,20);        
         
 	}	
 
@@ -408,7 +420,7 @@ public class FRListaPreco extends FRelatorio {
 		try {
 			
 			sSQL  = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD, P.REFPROD,P.DESCPROD,P.CODUNID,"+
-					"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD "+
+					"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD,PP.DTALT "+
 					"FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G "+ 
 					"WHERE P.CODPROD=PP.CODPROD " +
 					"AND P.CODEMP=PP.CODEMP " +
@@ -595,6 +607,7 @@ public class FRListaPreco extends FRelatorio {
         	hParam.put("DESCTABPRECO",txtDescTabPreco.getVlrString().trim());
         	hParam.put("IMPSALDO",cbImpSaldo.getVlrString().trim());
         	hParam.put("IMPQTDEMB",cbImpQtdEmb.getVlrString().trim());
+        	hParam.put("DESTAQUE",new Boolean("S".equals( cbSinalizarAlterados.getVlrString().trim())));
         	
         	if (comRef()) 
             	sCodRel = "REFPROD";
@@ -632,16 +645,17 @@ public class FRListaPreco extends FRelatorio {
     			sWhere += " AND P.SLDPROD>0 ";
     		}
     		
-    		sql.append( "SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.CODUNID,P.QTDEMBALAGEM, " );
+    		sql.append( "SELECT PP.CODPROD, P.SLDPROD, P.DESCPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.CODUNID,P.QTDEMBALAGEM, " );
     		sql.append( "(select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI ");
     	
     		if("S".equals( cbPrecoFracionado.getVlrString())){
-    			sql.append( " ,PP.PRECOPROD/coalesce(P.QTDEMBALAGEM,1) AS PRECOPROD " );
+    			sql.append( " ,PP.PRECOPROD/coalesce(P.QTDEMBALAGEM,1) AS PRECOPROD, " );
     		}
     		else {
-    			sql.append( " ,PP.PRECOPROD," );
+    			sql.append( " ,PP.PRECOPROD, " );
     		}
-    		sql.append( " ,P.SLDPROD FROM SGPREFERE1 P1, EQPRODUTO P, VDPRECOPROD PP " );
+    		sql.append( " (case when (cast('today' as date) - (PP.DTALT))<? then 'S' else 'N' end) as alterado" );
+			sql.append( " FROM SGPREFERE1 P1, EQPRODUTO P, VDPRECOPROD PP " );
     		
     		sql.append( " WHERE P.CODEMP=PP.CODEMP AND P.CODFILIAL=PP.CODFILIAL AND P.CODPROD=PP.CODPROD " );
     		sql.append( " AND P1.CODEMP=PP.CODEMP AND P1.CODFILIAL=PP.CODFILIAL ");
@@ -651,9 +665,16 @@ public class FRListaPreco extends FRelatorio {
 			System.out.println("SQL:" + sql.toString());
 			
     		ps = con.prepareStatement(sql.toString());
-    		ps.setInt(1, Aplicativo.iCodEmp);
-    		ps.setInt(2, ListaCampos.getMasterFilial("VDPRECOPROD"));
+    		
+    		ps.setInt( 1, txtNroDiasAlt.getVlrInteger() );
+    		ps.setInt(2, Aplicativo.iCodEmp);
+    		ps.setInt(3, ListaCampos.getMasterFilial("VDPRECOPROD"));
     		rs = ps.executeQuery();
+    		
+    		
+    		if(new Boolean(true) && new Boolean(true)) {
+    			
+    		}
     		
     		String srel = "";
     		
