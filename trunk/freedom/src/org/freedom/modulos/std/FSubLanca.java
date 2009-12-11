@@ -186,6 +186,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private Vector<String> vLabsitContr = new Vector<String>();
 
 	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	private boolean bfoco = true;
 
 	
 	public FSubLanca( String sCodL, String sCodP, Date dini, Date dfim ) {
@@ -294,7 +296,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano-base", ListaCampos.DB_FK, txtDescCC, false );
 		adicDescFK( txtDescCC, 423, 20, 202, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampo( txtVlrLanca, 7, 60, 100, 20, "VlrSubLanca", " Valor", ListaCampos.DB_SI, true );
-		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do Lancamento", ListaCampos.DB_SI, false );
+		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do lançamento", ListaCampos.DB_SI, false );
 
 		
 		txtCodCli.setRequerido( true );
@@ -513,8 +515,16 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void focusGained( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtCodPlanSub ) {
-			if ( ( ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) || ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) ) && ( testaData() ) )
-				lcCampos.post();
+			if ( ( ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) || ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) ) 
+				&& ( testaData() ) ) {
+				if( bfoco ) { // Flag para evitar loop infinito no focusgained. (devido a abertura de dialog de consistencia de campos)
+					bfoco = false;
+					lcCampos.post();	
+				}
+				else {
+					bfoco = true;
+				}
+			}
 			if ( cbTransf.getVlrString() == "S" ) {
 				lcPlan.setWhereAdic( "NIVELPLAN=6 AND TIPOPLAN IN ('C','B')" );
 				txtAnoCC.setVlrString( "" );
@@ -613,6 +623,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 				System.out.println("codcontr:" + txtCodContr.getVlrInteger());
 				System.out.println("coditcontr:" + txtCodItContr.getVlrInteger());
 			}
+/*			if (  (lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( testaData() ) ) {
+				lcCampos.post();				
+				lcDet.cancelInsert();
+			}*/
 		}
 	}
 
