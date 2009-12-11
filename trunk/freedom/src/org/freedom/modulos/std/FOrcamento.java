@@ -47,12 +47,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -384,7 +387,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG,
-		CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA;
+		CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
 
 	public FOrcamento() {
@@ -778,6 +781,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tabPedidos.adicColuna( "Quantidade" );
 		tabPedidos.adicColuna( "Preço" );
 		tabPedidos.adicColuna( "Vlr. líquido" );
+		tabPedidos.adicColuna( "Tipo Venda" );
 
 		tabPedidos.setTamColuna( 80, OrcVenda.CODVENDA.ordinal() );
 		tabPedidos.setTamColuna( 80, OrcVenda.DOCVENDA.ordinal() );
@@ -792,6 +796,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tabPedidos.setTamColuna( 80, OrcVenda.QTDITVENDA.ordinal() );
 		tabPedidos.setTamColuna( 80, OrcVenda.PRECOITVENDA.ordinal() );
 		tabPedidos.setTamColuna( 80, OrcVenda.VLRLIQITVENDA.ordinal() );
+		tabPedidos.setColunaInvisivel( OrcVenda.TIPOVENDA.ordinal() );
 		
 		tabPedidos.addMouseListener( new MouseAdapter() {
 			@Override
@@ -1260,7 +1265,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append( "select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag," );
-			sql.append( "it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda " );
+			sql.append( "it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda " );
 			sql.append( "from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it " );
 			sql.append( "where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and " );
 			sql.append( "it.codemp=vo.codemp and it.codfilial=vo.codfilial and " );
@@ -1293,6 +1298,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				tabPedidos.setValor( rs.getBigDecimal( "qtditvenda" ), row, OrcVenda.QTDITVENDA.ordinal() );
 				tabPedidos.setValor( rs.getBigDecimal( "precoitvenda" ), row, OrcVenda.PRECOITVENDA.ordinal() );
 				tabPedidos.setValor( rs.getBigDecimal( "vlrliqitvenda" ), row, OrcVenda.VLRLIQITVENDA.ordinal() );
+				tabPedidos.setValor( rs.getString( "tipovenda" ), row, OrcVenda.TIPOVENDA.ordinal() );
 			}
 			
 			rs.close();
@@ -1317,7 +1323,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
     			Aplicativo.telaPrincipal.criatela( "Venda", tela, con );
     		}    		
     		tela.exec( (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.CODVENDA.ordinal() ),
-    				   (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.CODITVENDA.ordinal() ) );    			
+    				   (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.CODITVENDA.ordinal() ),
+    				   (String) tabPedidos.getValor( tabPedidos.getLinhaSel(), OrcVenda.TIPOVENDA.ordinal()) );    			
 		}
 	}	
 
