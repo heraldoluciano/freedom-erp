@@ -337,7 +337,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         tabVendas.adicColuna("Vlr.liq.");
         tabVendas.adicColuna("Vlr.Icms");
         tabVendas.adicColuna("Vlr.IPI.");
-        
+        tabVendas.adicColuna("TipoVenda");
+                
         tabVendas.setTamColuna(50,0);
         tabVendas.setTamColuna(50,1);
         tabVendas.setTamColuna(50,2);
@@ -351,6 +352,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         tabVendas.setTamColuna(75,10);
         tabVendas.setTamColuna(75,11);
         tabVendas.setTamColuna(75,12);
+        tabVendas.setColunaInvisivel( 13 );
         
         
 		tpn.addChangeListener(this);
@@ -436,11 +438,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
       if (validaPeriodoVenda()) {
 		String sSQL2 = "SELECT IT.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA,IT.PRECOITVENDA,IT.VLRICMSITVENDA,"+
 					  "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.CODCLI,C.RAZCLI,V.DOCVENDA," +
-					  "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA " +
+					  "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA, IT.TIPOVENDA " +
 					  "FROM VDVENDA V,VDITVENDA IT,VDCLIENTE C "+
 					  "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND V.DTEMITVENDA BETWEEN ? AND ? AND "+
-					  "V.CODVENDA=IT.CODVENDA AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
+					  "V.CODVENDA=IT.CODVENDA AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.TIPOVENDA=IT.TIPOVENDA AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
 					  "ORDER BY V.DTEMITVENDA DESC";
+		
 		System.out.println(sSQL2);
 		try {
 			tabVendas.limpa();
@@ -455,11 +458,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 			for (int i=0;rs.next();i++) {
 				tabVendas.adicLinha();
 
-				tabVendas.setValor(new Integer(rs.getString("CODVENDA")),i,0);
+				tabVendas.setValor(new Integer(rs.getInt("CODVENDA")),i,0);
 				tabVendas.setValor(rs.getString("DOCVENDA"),i,1);
 				tabVendas.setValor(rs.getString("CODCLI"),i,2);
 				tabVendas.setValor(rs.getString("RAZCLI"),i,3);
-				tabVendas.setValor(rs.getString("CODITVENDA"),i,4);
+				tabVendas.setValor(new Integer(rs.getInt( "CODITVENDA")),i,4);
+				
 				tabVendas.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")),i,5);				
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITVENDA")),i,6);
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITVENDA")),i,7);
@@ -468,6 +472,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRLIQITVENDA")),i,10);
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRICMSITVENDA")),i,11);				
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRIPIITVENDA")),i,12);
+				tabVendas.setValor(rs.getString( "TIPOVENDA" ),i,13);
 				
 			}
 			rs.close();
@@ -935,11 +940,13 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	}
 	
 	private void abreVenda() {
-		int iCodVenda = ((Integer)tabVendas.getValor(tabVendas.getLinhaSel(),0)).intValue();
+		int codvenda = ((Integer)tabVendas.getValor(tabVendas.getLinhaSel(),0)).intValue();
+		int coditvenda = ((Integer)tabVendas.getValor(tabVendas.getLinhaSel(),4)).intValue();
+		String tipovenda = ((String)tabVendas.getValor(tabVendas.getLinhaSel(),13));
 		if (fPrim.temTela("Venda")==false) {
 			FVenda tela = new FVenda();
 			fPrim.criatela("Venda",tela,con);
-			tela.exec(iCodVenda);
+			tela.exec(codvenda,coditvenda,tipovenda);
 		} 
 	}
 	
