@@ -290,7 +290,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private ListaCampos lcContaitrec = new ListaCampos( this );
+	private ListaCampos lcContaitrec = new ListaCampos( this, "CA" );
 	
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
 	
