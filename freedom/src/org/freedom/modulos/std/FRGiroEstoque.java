@@ -26,13 +26,10 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
-import javax.swing.SwingConstants;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -43,6 +40,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
+import org.freedom.telas.SwingParams;
 
 public class FRGiroEstoque extends FRelatorio {
 	private static final long serialVersionUID = 1L;
@@ -52,6 +50,7 @@ public class FRGiroEstoque extends FRelatorio {
 	private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
 	private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
+    private JCheckBoxPad cbSemEstoq = new JCheckBoxPad("Imprimir produtos sem estoque?","S","N");
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private Vector<String> vLabs = new Vector<String>(2);
 	private Vector<String> vVals = new Vector<String>(2);
@@ -61,7 +60,8 @@ public class FRGiroEstoque extends FRelatorio {
 		
 		setTitulo("Relatório de Giro de estoque");
 		
-		setAtribos(140,40,340,250);
+		setAtribos(140,40,340,290);
+		
 		vLabs.addElement("Código");
 		vLabs.addElement("Descrição");
 		vLabs.addElement("+ Vendido");   
@@ -72,7 +72,7 @@ public class FRGiroEstoque extends FRelatorio {
 		rgOrdem.setVlrString("D");
         
 		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createTitledBorder( "Posição do dia:") );
+		lbLinha.setBorder( SwingParams.getPanelLabel( "Posição do dia:" ) );
 		
 		adic( lbLinha, 7, 0, 300, 65 );
 		adic( txtDataini, 17, 25, 75, 20 );
@@ -92,7 +92,11 @@ public class FRGiroEstoque extends FRelatorio {
 		adic(lbDescGrup,90,75,250,20);
 		adic(txtDescGrup,90,95,216,20);
 		adic(rgOrdem,7,130,300,30);   
-	
+		
+		cbSemEstoq.setVlrString( "S" );
+		
+		adic(cbSemEstoq, 7,165,300,30);
+			
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -106,6 +110,10 @@ public class FRGiroEstoque extends FRelatorio {
 			sql.append( "select codprod,refprod,codfabprod,codbarprod,descprod," );
 			sql.append( "dtultcp,doccompra,identcontainer,qtdultcp,qtdvendida,saldoatu,saldoant " );
 			sql.append( "from eqrelgiroprod(?,?,?) " );
+			
+			if( "N".equals( cbSemEstoq.getVlrString()) ) {
+				sql.append( " where saldoatu>0 " );
+			}
 			
 			if(txtCodGrup.getVlrInteger()>0) {
 				sql.append( " where codempgp=? and codfilialgp=? and codgrup=? " );
