@@ -153,11 +153,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	
 	private enum VENDAS {
-		STATUS, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, VALOR_FRETE, VALOR_LIQUIDO;
+		STATUS, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, VALOR_FRETE, VALOR_LIQUIDO, TIPOVENDA;
 	}
 	
 	private enum ITEMVENDAS {
-		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL;
+		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL, TIPOVENDA;
 	}
 	
 
@@ -321,6 +321,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.adicColuna( "V.Adic." );
 		tabVendas.adicColuna( "V.Frete" );
 		tabVendas.adicColuna( "V.Líquido" );
+		tabVendas.adicColuna( "Tipo Venda" );
 
 		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
@@ -333,7 +334,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_ADICIONAL.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_FRETE.ordinal() );
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_LIQUIDO.ordinal() );
-				
+		tabVendas.setColunaInvisivel( VENDAS.TIPOVENDA.ordinal() );
+						
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
 
 		tabItensVendas.adicColuna( "Item" );
@@ -345,6 +347,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVendas.adicColuna( "V.Desc." );
 		tabItensVendas.adicColuna( "V.Frete" );
 		tabItensVendas.adicColuna( "V.líq." );
+		tabItensVendas.adicColuna( "TipoVenda" );
 
 		tabItensVendas.setTamColuna( 30, ITEMVENDAS.ITEM.ordinal() );
 		tabItensVendas.setTamColuna( 50, ITEMVENDAS.CODPROD.ordinal() );
@@ -355,6 +358,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVendas.setTamColuna( 80, ITEMVENDAS.DESCONTO.ordinal() );
 		tabItensVendas.setTamColuna( 80, ITEMVENDAS.FRETE.ordinal() );
 		tabItensVendas.setTamColuna( 90, ITEMVENDAS.TOTAL.ordinal() );
+		tabItensVendas.setColunaInvisivel( ITEMVENDAS.TIPOVENDA.ordinal() );
 				
 		panelTabItensVendas.add( new JScrollPane( tabItensVendas ) );
 		
@@ -378,7 +382,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.STATUSVENDA, V.CODPLANOPAG," );
 			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, V.VLRPRODVENDA, V.VLRDESCVENDA," );
-			sql.append( "V.VLRADICVENDA, V.VLRFRETEVENDA, V.VLRLIQVENDA " );
+			sql.append( "V.VLRADICVENDA, V.VLRFRETEVENDA, V.VLRLIQVENDA, V.TIPOVENDA " );
 			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
 			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
@@ -451,6 +455,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRADICVENDA" ) ), row, VENDAS.VALOR_ADICIONAL.ordinal() );
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEVENDA" ) ), row, VENDAS.VALOR_FRETE.ordinal() );
 				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQVENDA" ) ), row, VENDAS.VALOR_LIQUIDO.ordinal() );
+				tabVendas.setValor( rs.getString( "TIPOVENDA" ) , row, VENDAS.TIPOVENDA.ordinal() );
 				
 				row++;
 			}
@@ -569,6 +574,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITVENDA" ) ), row, ITEMVENDAS.DESCONTO.ordinal() );
 				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEITVENDA" ) ), row, ITEMVENDAS.FRETE.ordinal() );
 				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ), row, ITEMVENDAS.TOTAL.ordinal() );
+				tabItensVendas.setValor( tipovenda, row, ITEMVENDAS.TIPOVENDA.ordinal());
 				
 				row++;
 			}
@@ -591,7 +597,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	public void valorAlterado( TabelaSelEvent e ) {
 		
 		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !carregandoVendas ) {
-			buscaItensVenda( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
+			buscaItensVenda( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal()) );
 		}
 	}
 
@@ -607,19 +613,21 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	    			venda = new FVenda();
 	    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 	    		}    
-				venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ) );
+				venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), 
+						    (String)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ));
 			}
 			else if ( e.getSource() == tabItensVendas && tabItensVendas.getLinhaSel() > -1 ) {
 				FVenda venda = null;    
 	    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
 	    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-	    		}
+	    		} 
 	    		else {
 	    			venda = new FVenda();
 	    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 	    		}    		
 				venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ),
-							(Integer)tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.ITEM.ordinal() ) );
+							(Integer)tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.ITEM.ordinal() ),
+							(String)tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.TIPOVENDA.ordinal() ));
 			}
 		}
 	}
