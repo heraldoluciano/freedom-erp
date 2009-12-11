@@ -2968,13 +2968,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		return retorno;
 	}
 
-	public void exec( int codvenda ) {
-		exec( codvenda, -1 );
+	public void exec( int codvenda) {
+		exec( codvenda, -1, "V" );
+	}
+	
+	public void exec( int codvenda, String tipovenda ) {
+		exec( codvenda, -1, tipovenda );
 	}
 
-	public void exec( int codvenda, int coditvenda ) {
+	public void exec( int codvenda, int coditvenda, String tipovenda ) {
 	
 		txtCodVenda.setVlrInteger( codvenda );
+		txtTipoVenda.setVlrString( tipovenda );
 		lcCampos.carregaDados();
 		
 		if ( coditvenda > 0 ) {
