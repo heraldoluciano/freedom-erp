@@ -29,6 +29,8 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -151,16 +153,20 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JButtonPad btLimparGridAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	
-	
-
 	// Enums
 	
 	private enum DETALHAMENTO {
-		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODORC, CODITORC, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD ;
+		MARCACAO,STATUS, DATAAPROV, DTFABROP, DATAENTREGA, CODEMPOC, CODFILIALOC, CODORC, CODITORC, TIPOORC, CODCLI, RAZCLI, 
+		CODEMPPD, CODFILIALPD, CODPROD, SEQEST, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD 
 	}
 	
 	private enum AGRUPAMENTO {
-		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD ;
+		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD 
+	}
+	
+	private enum PROCEDUREOP {
+		  CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
+		  QTDSUGPRODOP, DTFABROP, SEQEST 
 	}
 	
 	public FPCP() {
@@ -288,8 +294,6 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 
 		panelTabDet.adic( btIniProdDet, 360, 4, 48, 48 );
 		
-		
-		
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
 
 		
@@ -314,7 +318,6 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelTabAgrup.adic( btLimparGridAgrup, 805, 12, 30, 30 );
 
 		panelTabAgrupItens.add( new JScrollPane( tabAgrup ) );
-
 		
 		// ***** Rodapé
 		
@@ -357,12 +360,27 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Dt.Aprov." );
+		tabDet.adicColuna( "Dt.Prod." );
 		tabDet.adicColuna( "Dt.Entrega" );
+		// Invisível
+		tabDet.adicColuna( "codempoc" );
+		tabDet.adicColuna( "codfilialoc" );
+		//		
 		tabDet.adicColuna( "Orc." );
 		tabDet.adicColuna( "Item" );
+		// Invisível
+		tabDet.adicColuna( "tipoorc" );
+		//		
 		tabDet.adicColuna( "Cli." );
 		tabDet.adicColuna( "Razão social do cliente" );
+		// Invisível
+		tabDet.adicColuna( "codemppd" );
+		tabDet.adicColuna( "codfilialpd" );
+		//
 		tabDet.adicColuna( "Prod." );
+		
+		tabDet.adicColuna( "Estr." );
+		
 		tabDet.adicColuna( "Descrição do produto" );
 		tabDet.adicColuna( "Aprov." );
 		tabDet.adicColuna( "Estoque" );
@@ -372,12 +390,26 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabDet.setTamColuna( 15, DETALHAMENTO.MARCACAO.ordinal() );
 		tabDet.setTamColuna( 10, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATAAPROV.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.DTFABROP.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATAENTREGA.ordinal() );
+
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODEMPOC.ordinal() );
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODFILIALOC.ordinal() );
+		
 		tabDet.setTamColuna( 30, DETALHAMENTO.CODORC.ordinal() );
 		tabDet.setTamColuna( 30, DETALHAMENTO.CODITORC.ordinal() );
+		
+		tabDet.setColunaInvisivel( DETALHAMENTO.TIPOORC.ordinal() );
+		
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODCLI.ordinal() );
 		tabDet.setTamColuna( 145, DETALHAMENTO.RAZCLI.ordinal() );
+		
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODEMPPD.ordinal() );
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODFILIALPD.ordinal() );
+		
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODPROD.ordinal() );
+		tabDet.setTamColuna( 20, DETALHAMENTO.SEQEST.ordinal() );
+		
 		tabDet.setTamColuna( 145, DETALHAMENTO.DESCPROD.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDAPROV.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.QTDESTOQUE.ordinal() );
@@ -426,8 +458,10 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "select ");
 			
 			sql.append( "oc.statusorc status, io.sitproditorc, io.dtaprovitorc dataaprov, ");
-			sql.append( "io.dtaprovitorc + coalesce(oc.prazoentorc,0) dataentrega, oc.codorc, io.coditorc, cl.codcli, ");
-			sql.append( "cl.razcli, pd.codprod, pd.descprod, coalesce(io.qtdaprovitorc,0) qtdaprov, ");
+			sql.append( "io.dtaprovitorc + (coalesce(oc.prazoentorc,1)/2) dtfabrop, ");
+			sql.append( "io.dtaprovitorc + coalesce(oc.prazoentorc,0) dataentrega, oc.codemp codempoc, oc.codfilial codfilialoc, oc.codorc, "); 
+			sql.append( "io.coditorc, io.tipoorc ,cl.codcli, ");
+			sql.append( "cl.razcli, io.codemppd, io.codfilialpd, pd.codprod, pe.seqest, pd.descprod, coalesce(io.qtdaprovitorc,0) qtdaprov, ");
 
 			sql.append( "sum(coalesce(sp.sldliqprod,0)) qtdestoque , ");
 			
@@ -450,6 +484,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "left outer join eqsaldoprod sp on ");
 			sql.append( "sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod ");
 			
+			sql.append( "left outer join ppestrutura pe on ");
+			sql.append( "pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod ");
+			
 			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
 			
 			if(txtCodProd.getVlrInteger()>0) {
@@ -459,7 +496,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				sql.append( " and oc.codempcl=? and oc.codfilialcl=? and oc.codcli=? " );				
 			}
 			
-			sql.append(" group by 1,2,3,4,5,6,7,8,9,10,11 ");
+			sql.append(" group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 ");
 			
 			System.out.println("SQL:" + sql.toString());
 			
@@ -498,12 +535,19 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				
 				tabDet.setValor( new Boolean(true), row, DETALHAMENTO.MARCACAO.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATAAPROV.toString() ) ), row, DETALHAMENTO.DATAAPROV.ordinal() );
+				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DTFABROP.toString() ) ), row, DETALHAMENTO.DTFABROP.ordinal() );				
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATAENTREGA.toString() ) ), row, DETALHAMENTO.DATAENTREGA.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODEMPOC.toString() ), row, DETALHAMENTO.CODEMPOC.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFILIALOC.toString() ), row, DETALHAMENTO.CODFILIALOC.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODORC.toString() ), row, DETALHAMENTO.CODORC.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODITORC.toString() ), row, DETALHAMENTO.CODITORC.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.TIPOORC.toString() ), row, DETALHAMENTO.TIPOORC.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCLI.toString() ), row, DETALHAMENTO.CODCLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.RAZCLI.toString().trim() ), row, DETALHAMENTO.RAZCLI.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODEMPPD.toString() ), row, DETALHAMENTO.CODEMPPD.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFILIALPD.toString() ), row, DETALHAMENTO.CODFILIALPD.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODPROD.toString() ), row, DETALHAMENTO.CODPROD.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.SEQEST.toString() ), row, DETALHAMENTO.SEQEST.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.DESCPROD.toString().trim() ), row, DETALHAMENTO.DESCPROD.ordinal() );
 
 				BigDecimal qtdaprov = rs.getBigDecimal( DETALHAMENTO.QTDAPROV.toString() ).setScale( Aplicativo.casasDec );
@@ -945,15 +989,60 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 	
-	private void processaOPSDiretoDet() {
-		
-		
+	private void processaOPSDiretoDet() {		
+		StringBuffer sql = new StringBuffer();
+		sql.append( "select codopret,seqopret " );
+		sql.append( "from ppgeraop(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " );
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
 		for(int i=0; i<tabDet.getNumLinhas(); i++) {
+
+			// Caso o item do grid esteja selecionado... 
+			if( (Boolean)(tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )) ) {
+				try {
+					 ps = con.prepareStatement( sql.toString() );
 		
-			
-			
-			
+					 /*
+						SEQEST 
+					*/
+					
+					ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
+					ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
+					ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
+					ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
+					
+					ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
+					ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD .ordinal()) );					
+					ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()) );
+					
+					ps.setInt( PROCEDUREOP.CODEMPOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal()) );
+					ps.setInt( PROCEDUREOP.CODFILIALOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal()) );
+					ps.setInt( PROCEDUREOP.CODORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal()) );
+					ps.setInt( PROCEDUREOP.CODITORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal()) );
+					ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );
+					
+					ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );
+					
+					ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );
+					
+					ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal()) );
+					
+					rs = ps.executeQuery();
+					
+					if(rs.next()) {
+						System.out.println( rs.getString( 1 ) );
+					}
+					
+					
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+	
 		}
+
 	}
 	
 }
