@@ -30,7 +30,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -86,7 +85,8 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
 	private JPanelPad panelSouth = new JPanelPad(30, 30 );	
 	private JPanelPad panelLegenda = new JPanelPad(30, 30 );	
-
+	private JPanelPad panelFiltros = new JPanelPad();
+	
 	// *** Paineis Detalhamento
 	
 	private JPanelPad panelDet = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );		
@@ -125,6 +125,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JCheckBoxPad cbAgrupDataAprov =  new JCheckBoxPad( "Dt.Aprovação", "S", "N" );
 	private JCheckBoxPad cbAgrupDataEntrega =  new JCheckBoxPad( "Dt.Entrega", "S", "N" );
 	private JCheckBoxPad cbAgrupCli =  new JCheckBoxPad( "Cliente", "S", "N" );
+	private JCheckBoxPad cbPend =  new JCheckBoxPad( "Pendentes", "S", "N" );
+	private JCheckBoxPad cbEmProd =  new JCheckBoxPad( "Em produção", "S", "N" );
+	private JCheckBoxPad cbProd =  new JCheckBoxPad( "Produzidos", "S", "N" );
 	
 	// ** Legenda
 	
@@ -192,6 +195,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private void carregaValoresPadrao() {
 		cbAgrupProd.setVlrString( "S" );
 		cbAgrupProd.setEnabled( false );
+		cbPend.setVlrString( "S" );
 	}
 	
 	private void montaListaCampos() {
@@ -256,6 +260,13 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelMaster.adic( txtCodCli, 7, 60, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 340, 20 );
 		panelMaster.adic( txtRazCli, 70, 60, 340, 20 );
+		
+		panelFiltros.setBorder( SwingParams.getPanelLabel( "Filtros" ) );
+		panelFiltros.adic( cbPend, 4, 0, 100, 20 );
+		panelFiltros.adic( cbEmProd, 4, 30, 100, 20 );
+		panelFiltros.adic( cbProd, 114, 0, 100, 20 );
+		
+		panelMaster.adic( panelFiltros, 416, 0, 220, 82 );
 
 		panelMaster.adic( btBuscar, 712, 10, 123, 30 );
 		
@@ -487,8 +498,36 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "left outer join ppestrutura pe on ");
 			sql.append( "pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod ");
 			
-			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
+			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and pd.tipoprod='F' ");
 			
+//			String status = cbPend.getVlrString() + cbEmprod.getVlrString() + cbProd.getVlrString
+			StringBuffer status = new StringBuffer("");
+			
+			if("S".equals(cbPend.getVlrString())) {
+				status.append( " 'PE' ");
+			}
+			if("S".equals(cbEmProd.getVlrString())) {
+				if ( status.length() > 0 ) {
+					status.append( "," );
+				}
+				status.append( "'EP'" );
+			}
+			if("S".equals(cbProd.getVlrString())) {
+				if ( status.length() > 0 ) {
+					status.append( "," );
+				}
+				status.append( "'PD'" );
+			}
+
+			if ( status.length() > 0 ) {
+				sql.append( " and io.sitproditorc in (" );
+				sql.append( status );
+				sql.append( ") ");
+			}
+			else {
+				sql.append( " and io.sitproditorc not in('PE','EP','PD') " );
+			}
+					 
 			if(txtCodProd.getVlrInteger()>0) {
 				sql.append( " and io.codemppd=? and io.codfilialpd=? and io.codprod=? " );				
 			}
