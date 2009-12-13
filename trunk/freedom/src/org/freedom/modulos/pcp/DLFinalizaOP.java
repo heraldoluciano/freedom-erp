@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 
 import javax.swing.JScrollPane;
 
@@ -42,12 +43,12 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	private JTextAreaPad txaJustifcQtdProd = new JTextAreaPad();
 	private JLabelPad lJustifcQtdProd = new JLabelPad("Justificativa");
     boolean bJust = false;
-	public DLFinalizaOP(Component cOrig,String sQtdPrevOp) {
+	public DLFinalizaOP(Component cOrig, BigDecimal qtdprevop) {
 		
 		super(cOrig);
 		
-        txtQtdPrevOP.setVlrString(sQtdPrevOp);
-        txtQtdFinalOP.setVlrString(sQtdPrevOp);
+        txtQtdPrevOP.setVlrBigDecimal( qtdprevop );
+        txtQtdFinalOP.setVlrBigDecimal( qtdprevop );
         
 		setTitulo("Finalização da OP.");
 		setAtribos(250,140);
@@ -88,8 +89,8 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	
 	public void focusGained(FocusEvent fevt){ }
 
-	public double getValor() {
-		return txtQtdFinalOP.getVlrDouble().doubleValue();
+	public BigDecimal getValor() {
+		return txtQtdFinalOP.getVlrBigDecimal();
 	}
 	
     public String getObs() {
@@ -101,7 +102,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
     }
     
     public void ok(){
-    	if ((txtQtdPrevOP.getVlrDouble().doubleValue() != getValor()) && (txaJustifcQtdProd.getVlrString().equals(""))){
+    	if ((txtQtdPrevOP.getVlrDouble().doubleValue() != getValor().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))){
 	        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
     	    return;
     	}
