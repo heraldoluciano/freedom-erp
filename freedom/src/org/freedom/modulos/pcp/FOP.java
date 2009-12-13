@@ -1146,7 +1146,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			int seqop = txtSeqOP.getVlrInteger().intValue();
 			int seqest = txtSeqEst.getVlrInteger().intValue();
 
-			FOPFase tela = new FOPFase( codop, seqop, seqest );
+			FOPFase tela = new FOPFase( codop, seqop, seqest, this );
 			fPrim.criatela( "Fases da OP", tela, con );
 			tela.setConexao( con );
 		}
@@ -2736,5 +2736,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		Color color = new Color( r, g, b );
 		return color;
+	}
+	
+	public void recarrega() {
+		lcCampos.carregaDados();
 	}
 }
