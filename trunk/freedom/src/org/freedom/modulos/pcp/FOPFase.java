@@ -93,8 +93,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private int iCodOP;
 	private int iSeqOP;
 	private int iSeqEst;
+	private FOP telaant = null;
 	
-	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst) { //,boolean bExecuta
+	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst, FOP telaOP) { //,boolean bExecuta
 		
 		setTitulo("Fases da OP");
 		setName( "Fases da OP" );
@@ -106,7 +107,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		this.iCodOP = iCodOP;
 		this.iSeqOP = iSeqOP;
 		this.iSeqEst = iSeqEst;
-		
+		this.telaant = telaOP;
 		txtCodOP.setAtivo(false);
 		txtCodProd.setAtivo(false);
 		txtDtEmit.setAtivo(false);
@@ -248,7 +249,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			sql.append( "WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=? " );
 			
 			ps = con.prepareStatement(sql.toString());
-			ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
+			ps.setBigDecimal( 1, txtQtdFinalOP.getVlrBigDecimal() );
 			ps.setString(2,txtJustificqtdprod.getVlrString());
 			ps.setInt(3,txtCodOP.getVlrInteger().intValue());
 			ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
@@ -396,13 +397,12 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			}
 			
 			if(getFinalizaProcesso() && (txtSitFS.getVlrString().equals("PE"))){
-				DLFinalizaOP dl = new DLFinalizaOP(this,txtQtdPrevOP.getVlrString());
+				DLFinalizaOP dl = new DLFinalizaOP(this,txtQtdPrevOP.getVlrBigDecimal());
 				dl.setVisible(true);
 				if (!dl.OK)
 					pevt.cancela(); 
 				else {
-					txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
-
+					txtQtdFinalOP.setVlrBigDecimal( dl.getValor() );
 					txtJustificqtdprod.setVlrString(dl.getObs());
 					atualizaOP();
 				}
@@ -427,12 +427,22 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		}
 	}
 	
-	public void afterPost(PostEvent pevt) { }
+	public void afterPost(PostEvent pevt) {
+		if (pevt.getListaCampos()==lcDet) {
+			lcCampos.carregaDados();
+		}
+		
+	}
 	    
 	public void beforeCancel(CancelEvent cevt) { }
 
 	public void afterCancel(CancelEvent cevt) { }
-	  
+	
+    public void dispose() {
+    	telaant.recarrega();
+        super.dispose();
+    }
+  
 	public void setConexao(DbConnection cn) {		
 		super.setConexao(cn);
 		lcProd.setConexao(cn);
