@@ -64,6 +64,8 @@ public class FPrefereProd extends FTabDados {
 
 	private JComboBoxPad cbSitRMAOP = null;
 	
+	private JComboBoxPad cbSitOP = null;
+	
 	private final JCheckBoxPad cbBaixaRmaAprov = new JCheckBoxPad( "Baixar o estoque de RMA aprovada ?", "S", "N" );
 	
 	private final JCheckBoxPad cbAuto = new JCheckBoxPad( "Automatizar rateio de itens/lote?", "S", "N" );
@@ -79,7 +81,7 @@ public class FPrefereProd extends FTabDados {
 
 		super();
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 550, 390 );
+		setAtribos( 50, 50, 550, 400 );
 		
 		montaListaCampos();
 		montaTela();
@@ -101,6 +103,19 @@ public class FPrefereProd extends FTabDados {
 
 		cbSitRMAOP = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
 
+
+		Vector<String> vLabsSitOP = new Vector<String>();
+		Vector<String> vValsSitOP = new Vector<String>();
+
+		vLabsSitOP.addElement( "Pendente" );
+		vLabsSitOP.addElement( "Bloqueada" );
+		vLabsSitOP.addElement( "Finalizada" );
+		
+		vValsSitOP.addElement( "PE" );
+		vValsSitOP.addElement( "BL" );
+		vValsSitOP.addElement( "FN" );
+
+		cbSitOP = new JComboBoxPad( vLabsSitOP, vValsSitOP, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		Vector<String> vNomeRelLab = new Vector<String>();
 		Vector<String> vNomeRelVal = new Vector<String>();
@@ -134,18 +149,23 @@ public class FPrefereProd extends FTabDados {
 		adicDescFK( txtDescTipoMov, 60, 70, 175, 20, "DESCTIPOMOV", "Descrição do tipo de mov." );
 		adicDB( cbSitRMAOP, 7, 110, 230, 20, "SITRMAOP", "Situação padrão para RMA", false );
 		
+		adicDB( cbSitOP, 7, 150, 230, 20, "SITPADOP", "Situação padrão para OP", false );
+		
 		setPainel( pinGeral );
 			
 		adic( lbRespon, 12, 10, 200, 20 );
 		adic( pinRespon, 7, 20, 250, 150 );
 		adic( lbOP, 272, 10, 200, 20 );
-		adic( pinOp, 267, 20, 250, 150 );		
+		adic( pinOp, 267, 20, 250, 185 );		
+		
 		adic( new JLabelPad( "N° meses p/ descarte C.P" ), 10, 175, 150, 20 );
 		adicCampo( txtNDiaMes, 10, 195, 180, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 		adicDB( cbBaixaRmaAprov, 10, 220, 250, 20, "BAIXARMAAPROV", "", false );
 		adicDB( cbAuto, 10, 240, 250, 20, "RATAUTO", "", false );
 		adicDB( cbExcluiRma, 10, 260, 250, 20, "APAGARMAOP", "", false );
-		adicDB( rgNomeRelAnal, 267, 195, 250, 60, "NomeRelAnal", "Nome no relatório de Análises", false );
+				
+		
+		adicDB( rgNomeRelAnal, 267, 230, 250, 60, "NomeRelAnal", "Nome no relatório de Análises", false );
 		
 		setPainel( pinAss );
 		adicTab( "Assinatura", pinAss );
