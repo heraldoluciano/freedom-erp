@@ -90,7 +90,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Simulação de OP","Simulação de OP", 'S', 200200000, 1, true, FSimulaOP.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Acompanhamento da produção","Acompanhamento da produção", 'o', 200300000, 1, true, FAcompanhaProd.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Planejamento da produção","Planejamento da produção", 'P', 200400000, 1, true, FPCP.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Planejamento mestre da produção","Planejamento mestre da produção", 'P', 200400000, 1, true, FPMP.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Contra Prova","Contra prova", 'P', 200400000, 1, true, FContraProva.class);
 			addSeparador(200000000);
@@ -129,7 +129,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addBotao("btRma.gif","Requisição de material", "Requisição de material", 200200000,FRma.class);
 		addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);
 		addBotao("btAcompanhaProd.png","Acompanhamento da produção","Acompanhamento da produção", 200300000, FAcompanhaProd.class);
-		addBotao("btPCP.png","Planejamento da produção","Planejamento da produção", 200400000, FPCP.class);
+		addBotao("btPCP.png","Planejamento mestre da produção","Planejamento da produção", 200400000, FPMP.class);
 		
 		ajustaMenu(); 
 		
