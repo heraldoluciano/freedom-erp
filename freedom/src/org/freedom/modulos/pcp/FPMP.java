@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -152,7 +153,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	private JButtonPad btSelectAllAgrup = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	private JButtonPad btDeselectAllAgrup = new JButtonPad( Icone.novo( "btNada.gif" ) );
-	private JButtonPad btSelectNecessariosAgrup = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
+//	private JButtonPad btSelectNecessariosAgrup = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
 	private JButtonPad btLimparGridAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	
@@ -164,7 +165,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	}
 	
 	private enum AGRUPAMENTO {
-		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD 
+		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDRESERVADO, QTDEMPROD, QTDAPROD 
 	}
 	
 	private enum PROCEDUREOP {
@@ -229,7 +230,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		btSelectAllAgrup.addActionListener( this );
 		btDeselectAllAgrup.addActionListener( this );
-		btSelectNecessariosAgrup.addActionListener( this );
+//		btSelectNecessariosAgrup.addActionListener( this );
 		btLimparGridAgrup.addActionListener( this );
 	
 		btBuscar.addActionListener( this );
@@ -325,7 +326,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		panelTabAgrup.adic( btSelectAllAgrup, 712, 12, 30, 30 );
 		panelTabAgrup.adic( btDeselectAllAgrup, 743, 12, 30, 30 );
-		panelTabAgrup.adic( btSelectNecessariosAgrup, 774, 12, 30, 30 );
+//		panelTabAgrup.adic( btSelectNecessariosAgrup, 774, 12, 30, 30 );
 		panelTabAgrup.adic( btLimparGridAgrup, 805, 12, 30, 30 );
 
 		panelTabAgrupItens.add( new JScrollPane( tabAgrup ) );
@@ -396,9 +397,9 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabDet.adicColuna( "Estr." );
 		
 		tabDet.adicColuna( "Descrição do produto" );
-		tabDet.adicColuna( "Aprov." );
-		tabDet.adicColuna( "Reservado" );
+		tabDet.adicColuna( "Aprov." );		
 		tabDet.adicColuna( "Estoque" );
+		tabDet.adicColuna( "Reservado" );
 		tabDet.adicColuna( "Produção" );
 		tabDet.adicColuna( "Sugestao" );
 		
@@ -454,6 +455,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabAgrup.adicColuna( "Descrição do produto" );
 		tabAgrup.adicColuna( "Aprov." );
 		tabAgrup.adicColuna( "Estoque" );
+		tabAgrup.adicColuna( "Reservado" );
 		tabAgrup.adicColuna( "Produção" );
 		tabAgrup.adicColuna( "Produzir" );
 		
@@ -462,6 +464,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabAgrup.setTamColuna( 40, AGRUPAMENTO.CODPROD.ordinal() );
 		tabAgrup.setTamColuna( 145, AGRUPAMENTO.DESCPROD.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDAPROV.ordinal() );
+		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDRESERVADO.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDESTOQUE.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDEMPROD.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDAPROD.ordinal() );
@@ -487,7 +490,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "oc.codfilial codfilialoc, oc.codorc, "); 
 			sql.append( "io.coditorc, io.tipoorc ,cl.codcli, ");
 			sql.append( "cl.razcli, io.codemppd, io.codfilialpd, pd.codprod, pe.seqest, ") ;
-			sql.append( "pd.descprod, coalesce(io.qtdaprovitorc,0) qtdaprov, op.codop, op.seqop, ");
+			sql.append( "pd.descprod, coalesce(io.qtdaprovitorc,0) qtdaprov, pi.codop, pi.seqop, ");
 			
 			sql.append( "sum(coalesce(sp.sldliqprod,0)) qtdestoque , ");
 			
@@ -512,6 +515,9 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			
 			sql.append( "left outer join ppestrutura pe on ");
 			sql.append( "pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod ");
+			
+			sql.append( "left outer join ppopitorc pi on ");
+			sql.append( "pi.codempoc=io.codemp and pi.codfilialoc=io.codfilial and pi.codorc=io.codorc and pi.coditorc=io.coditorc and pi.tipoorc=io.tipoorc ");
 			
 			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and pd.tipoprod='F' ");
 			
@@ -642,8 +648,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODOP.toString().trim() ), row, DETALHAMENTO.CODOP.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.SEQOP.toString().trim() ), row, DETALHAMENTO.SEQOP.ordinal() );
 
-				
-				
 				BigDecimal qtdaprov = rs.getBigDecimal( DETALHAMENTO.QTDAPROV.toString() ).setScale( Aplicativo.casasDec );
 				BigDecimal qtdestoque = rs.getBigDecimal( DETALHAMENTO.QTDESTOQUE.toString() ).setScale( Aplicativo.casasDec );
 				BigDecimal qtdemprod = rs.getBigDecimal( DETALHAMENTO.QTDEMPROD.toString() ).setScale( Aplicativo.casasDec );
@@ -845,9 +849,38 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			BigDecimal totqtdemprod = new BigDecimal(0);
 			BigDecimal totqtdaprod = new BigDecimal(0);			
 			
+			
+			sql = new StringBuilder();
+			sql.append( "select coalesce(sum(io2.qtdaprovitorc),0) qtdreservado from ppopitorc oo, vditorcamento io2 where ");
+			sql.append( "oo.codempoc=io2.codemp and oo.codfilialoc=io2.codfilial ");
+			sql.append( "and oo.codorc=io2.codorc and oo.coditorc=io2.coditorc and oo.tipoorc=io2.tipoorc " );
+			sql.append( "and io2.codemp=? and io2.codfilial=? " );
+			sql.append( "and io2.codemppd=? and io2.codfilialpd=? and io2.codprod=? "); 
+			sql.append( "and io2.sitproditorc='PD' and coalesce(io2.statusitorc,'PE')!='OV' " );
+			
+			ResultSet rs2 = null;		
+
+			PreparedStatement ps2 = null;
+			
 			while ( rs.next() ) {
 				
 				tabAgrup.adicLinha();
+				
+				ps2 = con.prepareStatement( sql.toString() );
+				
+				ps2.setInt( 1, Aplicativo.iCodEmp );
+				ps2.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+				ps2.setInt( 3, Aplicativo.iCodEmp );
+				ps2.setInt( 4, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps2.setInt( 5, rs.getInt( AGRUPAMENTO.CODPROD.toString() ) );
+
+				rs2 = ps2.executeQuery();		
+				
+				BigDecimal qtdreservado = new BigDecimal(0);
+				
+				if(rs2.next()) {
+					qtdreservado = rs2.getBigDecimal( AGRUPAMENTO.QTDRESERVADO.toString() ).setScale( Aplicativo.casasDec );						
+				}
 				
 				tabAgrup.setValor( new Boolean(true), row, AGRUPAMENTO.MARCACAO.ordinal() );
 				tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODPROD.toString() ), row, AGRUPAMENTO.CODPROD.ordinal() );
@@ -881,7 +914,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 				}
 
 				BigDecimal qtdaprov = rs.getBigDecimal( AGRUPAMENTO.QTDAPROV.toString() ).setScale( Aplicativo.casasDec );
-				BigDecimal qtdestoque = rs.getBigDecimal( AGRUPAMENTO.QTDESTOQUE.toString() ).setScale( Aplicativo.casasDec );
+				BigDecimal qtdestoque = rs.getBigDecimal( AGRUPAMENTO.QTDESTOQUE.toString() ).setScale( Aplicativo.casasDec );				
 				BigDecimal qtdemprod = rs.getBigDecimal( AGRUPAMENTO.QTDEMPROD.toString() ).setScale( Aplicativo.casasDec );
 				BigDecimal qtdaprod = qtdaprov.subtract( qtdestoque ).subtract( qtdemprod ).setScale( Aplicativo.casasDec );
 				
@@ -897,6 +930,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 							
 				tabAgrup.setValor( qtdaprov, row, AGRUPAMENTO.QTDAPROV.ordinal() );				
 				tabAgrup.setValor( qtdestoque, row, AGRUPAMENTO.QTDESTOQUE.ordinal() );
+				tabAgrup.setValor( qtdreservado, row, AGRUPAMENTO.QTDRESERVADO.ordinal() );
 				tabAgrup.setValor( qtdemprod, row, AGRUPAMENTO.QTDEMPROD.ordinal() );
 				tabAgrup.setValor( qtdaprod , row, AGRUPAMENTO.QTDAPROD.ordinal() );
 				
@@ -946,13 +980,10 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			limpaNaoSelecionados( tabDet );
 		}		
 		else if ( e.getSource() == btSelectAllAgrup ) {
-			selectAll(tabAgrup);
+			selectNecessarios( tabAgrup );
 		}
 		else if ( e.getSource() == btDeselectAllAgrup ) {
 			deselectAll(tabAgrup);
-		}
-		else if ( e.getSource() == btSelectNecessariosAgrup ) {
-			selectNecessarios(tabAgrup);
 		}
 		else if ( e.getSource() == btLimparGridAgrup ) {
 			limpaNaoSelecionados( tabAgrup );
@@ -1007,12 +1038,13 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			}
 			else if (tabEv == tabAgrup){
 				qtdaprod = (BigDecimal) tabEv.getValor( tabEv.getLinhaSel(), AGRUPAMENTO.QTDAPROD.ordinal() );				
+				imgclicada = (ImageIcon) tabEv.getValor( tabEv.getLinhaSel(), AGRUPAMENTO.STATUS.ordinal() );
 			}
 			if(qtdaprod.floatValue()>0 && imgclicada.equals( imgPendente )) {
 				tabEv.setValor( ! ( selecionado ).booleanValue(), tabEv.getLinhaSel(), 0 );
 			}
 			else if(! ( selecionado ).booleanValue()){
-				Funcoes.mensagemInforma( this, "Quantidade a produzir inválida\nOu item já processado!" );
+				//Funcoes.mensagemInforma( this, "Quantidade a produzir inválida\nOu item já processado!" );
 			}
 			
 		}
@@ -1121,6 +1153,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		sql.append( "from ppgeraop(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		Vector<Integer> ops = new Vector<Integer>();
 		
 		BigDecimal qtdsugerida = null;
 		DLLoading loading = new DLLoading();
@@ -1163,10 +1196,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 						rs = ps.executeQuery();
 						
 						if(rs.next()) {
-							System.out.println( rs.getString( 1 ) );
+							ops.addElement( rs.getInt( 1 ) );
 						}
-						
-						
 					}
 					catch (Exception e) {
 						e.printStackTrace();
@@ -1181,6 +1212,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 		finally {
 			loading.stop();
+			Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
 		}
 	}
 	
