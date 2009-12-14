@@ -1209,11 +1209,38 @@ public class FSintegra extends FFilho implements ActionListener {
 		String sCampo = "";
 		float fValor = 0;
 		int cont = 0;
+		int codvenda = 0;
 
 		if ( "S".equals( cbSaida.getVlrString() ) ) {
 
 			try {
 				// REGISTRO 60 INFORMAÇÕES DOS ITENS DAS NOTAS FISCAIS DE SAÍDA POR ECF
+				
+				sSql.delete( 0, sSql.length() );
+
+				sSql.append( "SELECT FIRST 1 V.CODVENDA " );
+				sSql.append( "FROM VDITVENDA I, VDVENDA V " );
+				sSql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.TIPOVENDA='E' " );
+				sSql.append( "AND V.CODEMP=I.CODEMP AND V.CODFILIAL=I.CODFILIAL " );
+				sSql.append( "AND V.CODVENDA=I.CODVENDA AND V.TIPOVENDA=I.TIPOVENDA " );
+				sSql.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+				ps = con.prepareStatement( sSql.toString() );
+				ps.setInt( 1, iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+				ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					codvenda = rs.getInt( "CODVENDA" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+                if (codvenda==0) {
+                	return codvenda;
+                }
+
+                sSql.delete( 0, sSql.length() );
 				sSql.append( "SELECT L.DTLX, L.CODCAIXA, L.PRIMCUPOMLX, L.ULTCUPOMLX, L.NUMREDLX, L.TGTOTAL,L.VLRCONTABILLX," );
 				sSql.append( "( SELECT I.NSERIEIMP FROM PVCAIXA C, SGESTACAOIMP EI, SGIMPRESSORA I " );
 				sSql.append( "        WHERE C.CODEMP=L.CODEMP AND C.CODFILIAL=L.CODFILIAL AND C.CODCAIXA=L.CODCAIXA " );
