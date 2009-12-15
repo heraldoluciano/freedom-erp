@@ -101,7 +101,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	// *** Labels
 	
-	private JLabelPad separador = new JLabelPad();
+	private JLabelPad sepdet = new JLabelPad();
+	private JLabelPad sepagrup = new JLabelPad();
 	
 	// *** Paineis Agrupamento
 	
@@ -132,8 +133,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	// ** Checkbox
 	
 	private JCheckBoxPad cbAgrupProd =  new JCheckBoxPad( "Produto", "S", "N" );
-	private JCheckBoxPad cbAgrupDataAprov =  new JCheckBoxPad( "Dt.Aprovação", "S", "N" );
-	private JCheckBoxPad cbAgrupDataEntrega =  new JCheckBoxPad( "Dt.Entrega", "S", "N" );
+	private JCheckBoxPad cbAgrupDataAprov =  new JCheckBoxPad( "Data de aprovação", "S", "N" );
+	private JCheckBoxPad cbAgrupDataProd =  new JCheckBoxPad( "Data de produção", "S", "N" );
 	private JCheckBoxPad cbAgrupCli =  new JCheckBoxPad( "Cliente", "S", "N" );
 	private JCheckBoxPad cbPend =  new JCheckBoxPad( "Pendentes", "S", "N" );
 	private JCheckBoxPad cbEmProd =  new JCheckBoxPad( "Em produção", "S", "N" );
@@ -155,16 +156,15 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	private JButtonPad btSelectAllDet = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	private JButtonPad btDeselectAllDet = new JButtonPad( Icone.novo( "btNada.gif" ) );
-//	private JButtonPad btSelectNecessariosDet = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
 	private JButtonPad btLimparGridDet = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoDet = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btIniProdDet = new JButtonPad( Icone.novo( "btIniProd.png" ) );
 	
 	private JButtonPad btSelectAllAgrup = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	private JButtonPad btDeselectAllAgrup = new JButtonPad( Icone.novo( "btNada.gif" ) );
-//	private JButtonPad btSelectNecessariosAgrup = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
 	private JButtonPad btLimparGridAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
+	private JButtonPad btIniProdAgrup = new JButtonPad( Icone.novo( "btIniProd.png" ) );
 	
 	// Enums
 	
@@ -174,16 +174,16 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	}
 	
 	private enum AGRUPAMENTO {
-		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDRESERVADO, QTDEMPROD, QTDAPROD 
+		MARCACAO,STATUS, DATAAPROV, DTFABROP, CODEMPCL, CODFILIALCL, CODCLI, RAZCLI, CODEMPPD, CODFILIALPD, CODPROD, SEQEST , DESCPROD, QTDESTOQUE, QTDRESERVADO, QTDEMPROD, QTDAPROD 
 	}
 	
 	private enum PROCEDUREOP {
-		  CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
-		  QTDSUGPRODOP, DTFABROP, SEQEST 
+		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
+		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV 
 	}
 	
 	public FPMP() {
-
+		
 		super( false );
 		
 		setTitulo( "Planejamento mestre da produção", this.getClass().getName() );
@@ -233,21 +233,19 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		btSelectAllDet.addActionListener( this );
 		btDeselectAllDet.addActionListener( this );
-//		btSelectNecessariosDet.addActionListener( this );
 		btLimparGridDet.addActionListener( this );
 		btIniProdDet.addActionListener( this );
 		
 		btSelectAllAgrup.addActionListener( this );
 		btDeselectAllAgrup.addActionListener( this );
-//		btSelectNecessariosAgrup.addActionListener( this );
 		btLimparGridAgrup.addActionListener( this );
+		btIniProdAgrup.addActionListener( this );
 	
 		btBuscar.addActionListener( this );
 	
 		lcProd.addCarregaListener( this );
 		lcCliente.addCarregaListener( this );
 		
-//		tabDet.addTabelaEditListener( this );
 		tabDet.addTabelaSelListener( this );	
 		tabDet.addMouseListener( this );	
 		tabAgrup.addMouseListener( this );
@@ -309,9 +307,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelTabDet.adic( new JLabelPad( "Produzir" ), 342, 5, 80, 20 );
 		panelTabDet.adic( txtQtdProduzir, 342, 25, 80, 20 );
 		
-		separador.setBorder( BorderFactory.createEtchedBorder() );
-		panelTabDet.adic( separador, 433, 4, 2, 48 );
-		
+		sepdet.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabDet.adic( sepdet, 433, 4, 2, 48 );		
 		panelTabDet.adic( btIniProdDet, 443, 4, 48, 48 );
 		
 		panelTabDet.adic( btSelectAllDet, 743, 12, 30, 30 );
@@ -319,7 +316,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelTabDet.adic( btLimparGridDet, 805, 12, 30, 30 );
 		
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
-
 		
 		// ***** Agrupamento
 		
@@ -329,12 +325,16 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		pnCritAgrup.setBorder( SwingParams.getPanelLabel("Critérios de agrupamento") );
 		
-		pnCritAgrup.adic( cbAgrupProd, 4, 0, 90, 20 );
-		pnCritAgrup.adic( cbAgrupDataEntrega, 94, 0, 90, 20 );
-		pnCritAgrup.adic( cbAgrupDataAprov, 184, 0, 110, 20 );
-		pnCritAgrup.adic( cbAgrupCli, 294, 0, 90, 20 );		
+		pnCritAgrup.adic( cbAgrupProd, 4, 0, 70, 20 );
+		pnCritAgrup.adic( cbAgrupDataProd, 80, 0, 125, 20 );
+		pnCritAgrup.adic( cbAgrupDataAprov, 206, 0, 135, 20 );
+		pnCritAgrup.adic( cbAgrupCli, 339, 0, 90, 20 );		
 		
-		panelTabAgrup.adic(pnCritAgrup, 4, 0, 375, 53);
+		panelTabAgrup.adic(pnCritAgrup, 4, 0, 420, 53);
+
+		sepagrup.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabAgrup.adic( sepagrup, 433, 4, 2, 48 );		
+		panelTabAgrup.adic( btIniProdAgrup, 443, 4, 48, 48 );
 		
 		panelTabAgrup.adic( btSelectAllAgrup, 743, 12, 30, 30 );
 		panelTabAgrup.adic( btDeselectAllAgrup, 774, 12, 30, 30 );
@@ -439,34 +439,48 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		tabAgrup = new Tabela();
 		
-		tabAgrup.adicColuna( "" );
-		tabAgrup.adicColuna( "" );
-		tabAgrup.adicColuna( "Dt.Aprov." );
-		tabAgrup.adicColuna( "Dt.Entrega" );
-		tabAgrup.adicColuna( "Cli." );
-		tabAgrup.adicColuna( "Razão social do cliente" );
-		tabAgrup.adicColuna( "Prod." );
-		tabAgrup.adicColuna( "Descrição do produto" );
-		tabAgrup.adicColuna( "Aprov." );
-		tabAgrup.adicColuna( "Estoque" );
-		tabAgrup.adicColuna( "Reservado" );
-		tabAgrup.adicColuna( "Produção" );
-		tabAgrup.adicColuna( "Produzir" );
+				
+		tabAgrup.adicColuna( "" ); //MARCACAO
+		tabAgrup.adicColuna( "" ); //STATUS
+		tabAgrup.adicColuna( "Dt.Aprov." );//DATAAPROV
+		tabAgrup.adicColuna( "Dt.Prod." );//DTFABROP
+		tabAgrup.adicColuna( "codempcl" );//CODEMPCL
+		tabAgrup.adicColuna( "codfilialcl" );//CODFILIALCL
+		tabAgrup.adicColuna( "Cli." );//CODCLI
+		tabAgrup.adicColuna( "Razão social do cliente" );//RAZCLI
+		tabAgrup.adicColuna( "codemppd" );//CODEMPPD
+		tabAgrup.adicColuna( "codfilialpd" );//CODFILIALPD
+		tabAgrup.adicColuna( "Prod." );//CODPROD
+		tabAgrup.adicColuna( "seqest" );//SEQEST
+		tabAgrup.adicColuna( "Descrição do produto" );//DESCPROD
+		tabAgrup.adicColuna( "Estoque" );//QTDESTOQUE
+		tabAgrup.adicColuna( "Reservado" );//QTDRESERVADO
+		tabAgrup.adicColuna( "Produção" );//QTDEMPROD
+		tabAgrup.adicColuna( "Produzir" );//QTDAPROD
 		
 		tabAgrup.setTamColuna( 15, AGRUPAMENTO.MARCACAO.ordinal() );
 		tabAgrup.setTamColuna( 10, AGRUPAMENTO.STATUS.ordinal() );
+		tabAgrup.setTamColuna( 60, AGRUPAMENTO.DTFABROP.ordinal() );
 		tabAgrup.setTamColuna( 40, AGRUPAMENTO.CODPROD.ordinal() );
 		tabAgrup.setTamColuna( 145, AGRUPAMENTO.DESCPROD.ordinal() );
-		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDAPROV.ordinal() );
+//		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDAPROV.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDRESERVADO.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDESTOQUE.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDEMPROD.ordinal() );
 		tabAgrup.setTamColuna( 60, AGRUPAMENTO.QTDAPROD.ordinal() );
 		
-		tabAgrup.setColunaInvisivel( AGRUPAMENTO.DATAAPROV.ordinal() );
-		tabAgrup.setColunaInvisivel( AGRUPAMENTO.DATAENTREGA.ordinal() );
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.DATAAPROV.ordinal() );	
 		tabAgrup.setColunaInvisivel( AGRUPAMENTO.CODCLI.ordinal() );
-		tabAgrup.setColunaInvisivel( AGRUPAMENTO.RAZCLI.ordinal() );				
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.RAZCLI.ordinal() );	
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.CODEMPPD.ordinal() );
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.CODFILIALPD.ordinal() );
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.SEQEST.ordinal() );
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.CODEMPCL.ordinal() );
+		tabAgrup.setColunaInvisivel( AGRUPAMENTO.CODFILIALCL.ordinal() );
+
+		tabAgrup.setColunaEditavel( AGRUPAMENTO.DTFABROP.ordinal(), true );
+		tabAgrup.setColunaEditavel( AGRUPAMENTO.QTDAPROD.ordinal(), true );		
+
 		
 	}
 	
@@ -730,7 +744,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			if( "N".equals( cbAgrupProd.getVlrString() ) &&  
 				 	"N".equals( cbAgrupCli.getVlrString() ) &&
 				 	"N".equals( cbAgrupDataAprov.getVlrString() ) &&
-				 	"N".equals( cbAgrupDataEntrega.getVlrString() ) ) {		
+				 	"N".equals( cbAgrupDataProd.getVlrString() ) ) {		
 			
 				Funcoes.mensagemInforma( this, "Deve haver ao menos um critério de agrupamento!" );
 				return;
@@ -740,23 +754,26 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 
 			sql.append( "select ");
 			 
-			sql.append( "pd.codprod, pd.descprod, coalesce(sp.sldliqprod,0) qtdestoque, sum(coalesce(io.qtdaprovitorc,0)) qtdaprov, sum(coalesce(op.qtdprevprodop,0)) qtdemprod ");
-			
-	
-			int igroup = 5; // Numero padrão de campos
+			sql.append( "pd.codemp codemppd, pd.codfilial codfilialpd, pd.codprod, pd.descprod, coalesce(sp.sldliqprod,0) qtdestoque, ");
+			sql.append( "sum(coalesce(po.qtdaprod,0)) qtdaprod, sum(coalesce(op.qtdprevprodop,0)) qtdemprod, ");
+			sql.append( "(select first 1 pe.seqest from ppestrutura pe where pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod) seqest " );
+				
+			int igroup = 8; // Numero padrão de campos
 			
 			if( "S".equals( cbAgrupDataAprov.getVlrString() ) ) {
 				sql.append( ",io.dtaprovitorc dataaprov ");
 				igroup++; // Indica que foi adicionado um novo campo que deve fazer parte do groupby
 			}
 			
-			if( "S".equals( cbAgrupDataEntrega.getVlrString() ) ) {
-				sql.append( ",io.dtaprovitorc + coalesce(oc.prazoentorc,0) dataentrega ");
+			if( "S".equals( cbAgrupDataProd.getVlrString() ) ) {
+				sql.append( ",po.dtfabrop "); 
 				igroup++;// Indica que foi adicionado um novo campo que deve fazer parte do groupby
 			}
 
 			if( "S".equals( cbAgrupCli.getVlrString() ) ) {
-				sql.append( ",cl.codcli, cl.razcli ");
+				sql.append( ",cl.codemp codempcl, cl.codfilial codfilialcl, cl.codcli, cl.razcli ");
+				igroup++;// Indica que foi adicionado um novo campo que deve fazer parte do group by
+				igroup++;// Indica que foi adicionado um novo campo que deve fazer parte do group by
 				igroup++;// Indica que foi adicionado um novo campo que deve fazer parte do group by
 				igroup++;// Indica que foi adicionado um novo campo que deve fazer parte do group by
 			}
@@ -767,6 +784,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			sql.append( "left outer join eqproduto pd on pd.codemp=io.codemppd and pd.codfilial=io.codfilialpd and pd.codprod=io.codprod ");
 			sql.append( "left outer join ppop op on op.codemppd=pd.codemp and op.codfilial=pd.codfilial and op.codprod=pd.codprod and op.sitop in ('PE','BL') ");
 			sql.append( "left outer join eqsaldoprod sp on sp.codemp=pd.codemp and sp.codfilial=pd.codfilial and sp.codprod=pd.codprod ");
+			sql.append( "inner join ppprocessaoptmp po on ");
+			sql.append( "po.codemp=io.codemp and po.codfilial=io.codfilial and po.codorc=io.codorc and po.tipoorc=io.tipoorc and po.coditorc=io.coditorc ");			
 
 			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
 			
@@ -785,16 +804,16 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			if( "S".equals( cbAgrupProd.getVlrString() ) ||  
 			 	"S".equals( cbAgrupCli.getVlrString() ) ||
 			 	"S".equals( cbAgrupDataAprov.getVlrString() ) ||
-			 	"S".equals( cbAgrupDataEntrega.getVlrString() ) ) {			
+			 	"S".equals( cbAgrupDataProd.getVlrString() ) ) {			
 			
 				sql.append( "group by ");	
 			
 				if( "S".equals( cbAgrupProd.getVlrString() ) ) {
-					sql.append( "1, 2, 3 ");				
+					sql.append( "1, 2, 3, 4, 5 ");				
 				}
 			
-				if( igroup>5 )  {				
-					for(int i=5; i<igroup; i++) {
+				if( igroup>8 )  {				
+					for(int i=8; i<igroup; i++) {
 						sql.append( "," + (i+1) );
 					}
 				}
@@ -827,7 +846,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 						
 			int row = 0;
 			
-			BigDecimal totqtdaprov = new BigDecimal(0);
+//			BigDecimal totqtdaprov = new BigDecimal(0);
 			BigDecimal totqtdestoq = new BigDecimal(0);
 			BigDecimal totqtdemprod = new BigDecimal(0);
 			BigDecimal totqtdaprod = new BigDecimal(0);			
@@ -849,6 +868,9 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 				
 				tabAgrup.adicLinha();
 				
+				tabAgrup.setColColor( -1, AGRUPAMENTO.DTFABROP.ordinal(), Color.WHITE, Color.RED );
+				tabAgrup.setColColor( -1, AGRUPAMENTO.QTDAPROD.ordinal(), Color.WHITE, Color.RED );
+				
 				ps2 = con.prepareStatement( sql.toString() );
 				
 				ps2.setInt( 1, Aplicativo.iCodEmp );
@@ -866,7 +888,10 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 				}
 				
 				tabAgrup.setValor( new Boolean(true), row, AGRUPAMENTO.MARCACAO.ordinal() );
+				tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODEMPPD.toString() ), row, AGRUPAMENTO.CODEMPPD.ordinal() );
+				tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODFILIALPD.toString() ), row, AGRUPAMENTO.CODFILIALPD.ordinal() );
 				tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODPROD.toString() ), row, AGRUPAMENTO.CODPROD.ordinal() );
+				tabAgrup.setValor( rs.getInt( AGRUPAMENTO.SEQEST.toString() ), row, AGRUPAMENTO.SEQEST.ordinal() );
 				tabAgrup.setValor( rs.getString( AGRUPAMENTO.DESCPROD.toString().trim() ), row, AGRUPAMENTO.DESCPROD.ordinal() );
 				
 				if("S".equals( cbAgrupDataAprov.getVlrString() )){
@@ -877,17 +902,18 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 					tabAgrup.setColunaInvisivel( AGRUPAMENTO.DATAAPROV.ordinal() );
 				}
 				
-				if("S".equals( cbAgrupDataEntrega.getVlrString() )){
-					tabAgrup.setColunaVisivel( 60, AGRUPAMENTO.DATAENTREGA.ordinal() );					
-					tabAgrup.setValor( Funcoes.dateToStrDate( rs.getDate( AGRUPAMENTO.DATAENTREGA.toString() ) ), row, AGRUPAMENTO.DATAENTREGA.ordinal() );
+				if("S".equals( cbAgrupDataProd.getVlrString() )){										
+					tabAgrup.setValor( Funcoes.dateToStrDate( rs.getDate( AGRUPAMENTO.DTFABROP.toString() ) ), row, AGRUPAMENTO.DTFABROP.ordinal() );
 				}
 				else {
-					tabAgrup.setColunaInvisivel( AGRUPAMENTO.DATAENTREGA.ordinal() );
+					tabAgrup.setValor( Funcoes.dateToStrDate( new Date() ), row, AGRUPAMENTO.DTFABROP.ordinal() );
 				}
 				
 				if("S".equals( cbAgrupCli.getVlrString() )){
 					tabAgrup.setColunaVisivel( 40, AGRUPAMENTO.CODCLI.ordinal() );
 					tabAgrup.setColunaVisivel( 145,AGRUPAMENTO.RAZCLI.ordinal() );
+					tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODEMPCL.toString() ), row, AGRUPAMENTO.CODEMPCL.ordinal() );
+					tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODFILIALCL.toString() ), row, AGRUPAMENTO.CODFILIALCL.ordinal() );
 					tabAgrup.setValor( rs.getInt( AGRUPAMENTO.CODCLI.toString() ), row, AGRUPAMENTO.CODCLI.ordinal() );
 					tabAgrup.setValor( rs.getString( AGRUPAMENTO.RAZCLI.toString().trim() ), row, AGRUPAMENTO.RAZCLI.ordinal() );					
 				}				
@@ -896,42 +922,21 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 					tabAgrup.setColunaInvisivel( AGRUPAMENTO.RAZCLI.ordinal() );					
 				}
 
-				BigDecimal qtdaprov = rs.getBigDecimal( AGRUPAMENTO.QTDAPROV.toString() ).setScale( Aplicativo.casasDec );
+
 				BigDecimal qtdestoque = rs.getBigDecimal( AGRUPAMENTO.QTDESTOQUE.toString() ).setScale( Aplicativo.casasDec );				
 				BigDecimal qtdemprod = rs.getBigDecimal( AGRUPAMENTO.QTDEMPROD.toString() ).setScale( Aplicativo.casasDec );
-				BigDecimal qtdaprod = qtdaprov.subtract( qtdestoque ).subtract( qtdemprod ).setScale( Aplicativo.casasDec );
-				qtdaprod = qtdaprod.add(qtdreservado);
-				
-				
-				if(qtdaprod.floatValue() < 0) {
-					qtdaprod = new BigDecimal(0);
-				}
-				
-				totqtdaprov = totqtdaprov.add( qtdaprov );
-				totqtdestoq = qtdestoque; // Não deve ser somado, pois varia no produto
-				totqtdemprod = qtdemprod; // Não deve ser somado, pois vaira no produto				
-				 
+
 				tabAgrup.setValor( imgColuna, row, AGRUPAMENTO.STATUS.ordinal() );
-							
-				tabAgrup.setValor( qtdaprov, row, AGRUPAMENTO.QTDAPROV.ordinal() );				
+											
 				tabAgrup.setValor( qtdestoque, row, AGRUPAMENTO.QTDESTOQUE.ordinal() );
 				tabAgrup.setValor( qtdreservado, row, AGRUPAMENTO.QTDRESERVADO.ordinal() );
 				tabAgrup.setValor( qtdemprod, row, AGRUPAMENTO.QTDEMPROD.ordinal() );
-				tabAgrup.setValor( qtdaprod , row, AGRUPAMENTO.QTDAPROD.ordinal() );
+				tabAgrup.setValor( rs.getBigDecimal( AGRUPAMENTO.QTDAPROD.toString() ).setScale( Aplicativo.casasDec ) , row, AGRUPAMENTO.QTDAPROD.ordinal() );
 				
 				row++;
 				
 			}
 			
-			totqtdaprod = (totqtdestoq.subtract( totqtdaprov ));
-			
-			if(totqtdaprod.floatValue()>0) {
-				totqtdaprod = new BigDecimal( 0 );
-			}
-			else {
-				totqtdaprod = totqtdaprod.abs();
-			}
-						
 			// Permitindo reordenação
 		
 			if(row>0) {
@@ -979,8 +984,12 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			limpaNaoSelecionados( tabAgrup );
 		}
 		else if ( e.getSource() == btIniProdDet ) {
-			processaOPS(true);
+			processaOPS( true );
 		}
+		else if ( e.getSource() == btIniProdAgrup ) {
+			processaOPS( false );
+		}
+
 		
 	}
 
@@ -1116,15 +1125,18 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		if(Funcoes.mensagemConfirma( this, "Confirma o processamento dos itens selecionados?" )==JOptionPane.YES_OPTION) {
 			if(det) {
-				processaOPSDiretoDet();
+				geraOPSDet();
+			}
+			else {
+				geraOPSAgrup();
 			}
 		}
 	}
 	
-	private void processaOPSDiretoDet() {		
+	private void geraOPSDet() {		
 		StringBuffer sql = new StringBuffer();
 		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " );
+		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
@@ -1140,32 +1152,34 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 				// Caso o item do grid esteja selecionado... 
 				if( (Boolean)(tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )) && qtdsugerida.floatValue()>0 ) {
 					try {
-						 ps = con.prepareStatement( sql.toString() );
+						ps = con.prepareStatement( sql.toString() );
 			
-						 /*
-							SEQEST 
-						*/
-						
+						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "D" );						 
 						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
 						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
 						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
-						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
-						
+						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );						
 						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
 						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD .ordinal()) );					
-						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()) );
-						
+						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()) );						
 						ps.setInt( PROCEDUREOP.CODEMPOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal()) );
 						ps.setInt( PROCEDUREOP.CODFILIALOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal()) );
 						ps.setInt( PROCEDUREOP.CODORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal()) );
 						ps.setInt( PROCEDUREOP.CODITORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal()) );
-						ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );
-						
-						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );
-						
-						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );
-						
+						ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );						
+						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );						
+						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );						
 						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal()) );
+						ps.setNull( PROCEDUREOP.CODEMPET.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALET.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODEST.ordinal() + 1, Types.INTEGER );						
+						ps.setNull( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, Types.CHAR );
+						ps.setNull( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, Types.CHAR );
+						ps.setNull( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, Types.CHAR );
+						ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
 						
 						rs = ps.executeQuery();
 						
@@ -1189,6 +1203,104 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
 		}
 	}
+
+	private void geraOPSAgrup() {		
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append( "select codopret,seqopret " );
+		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
+		 
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Vector<Integer> ops = new Vector<Integer>();
+		
+		BigDecimal qtdsugerida = null;
+		DLLoading loading = new DLLoading();
+		
+		try {
+			for(int i=0; i<tabAgrup.getNumLinhas(); i++) {
+				loading.start();
+				qtdsugerida = (BigDecimal)(tabAgrup.getValor( i, AGRUPAMENTO.QTDAPROD.ordinal() ));
+				
+				// Caso o item do grid esteja selecionado... 
+				if( (Boolean)(tabAgrup.getValor( i, AGRUPAMENTO.MARCACAO.ordinal() )) && qtdsugerida.floatValue()>0 ) {
+					try {
+						ps = con.prepareStatement( sql.toString() );
+			
+						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "A" );
+						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
+						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
+						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
+						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPPD.ordinal() ) );
+						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALPD .ordinal()) );					
+						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODPROD.ordinal()) );																		 						
+						ps.setNull( PROCEDUREOP.CODEMPOC.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALOC.ordinal() + 1, Types.INTEGER ); 
+						ps.setNull( PROCEDUREOP.CODORC.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.TIPOORC.ordinal() + 1, Types.CHAR );
+						ps.setNull( PROCEDUREOP.CODITORC.ordinal() + 1, Types.INTEGER );						
+						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabAgrup.getValor( i, AGRUPAMENTO.QTDAPROD.ordinal()) );						
+						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DTFABROP.ordinal()) ) );						
+						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.SEQEST.ordinal()) );						
+						ps.setInt( PROCEDUREOP.CODEMPET.ordinal() + 1, Aplicativo.iCodEmp );						
+						ps.setInt( PROCEDUREOP.CODFILIALET.ordinal() + 1, Aplicativo.iCodFilial );						
+						ps.setInt( PROCEDUREOP.CODEST.ordinal() + 1, Aplicativo.iNumEst );	
+
+						if("S".equals( cbAgrupDataAprov )){
+							ps.setString( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, "S" );
+							ps.setDate( PROCEDUREOP.DATAAPROV.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabAgrup.getValor( i, AGRUPAMENTO.DATAAPROV.ordinal()) ) );
+						}
+						else {
+							ps.setString( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, "N" );	
+							ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
+						}
+								 				
+						if("S".equals( cbAgrupDataProd )){
+							ps.setString( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, "S" );							
+						}
+						else {
+							ps.setString( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, "N" );
+						}
+						if("S".equals( cbAgrupCli )){
+							ps.setString( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, "S" );
+							ps.setInt( PROCEDUREOP.CODEMPCL.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODEMPCL.ordinal() ) );
+							ps.setInt( PROCEDUREOP.CODFILIALCL.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODFILIALCL .ordinal()) );					
+							ps.setInt( PROCEDUREOP.CODCLI.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.CODCLI.ordinal()) );																		 						
+						}
+						else {
+							ps.setString( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, "N" );
+							ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
+							ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
+							ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );							
+						}
+						
+						rs = ps.executeQuery();
+						
+						if(rs.next()) {
+							ops.addElement( rs.getInt( 1 ) );
+						}
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+		
+			}
+			montaGridDet();
+			montaGridAgrup();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			deletaTabTemp();
+			loading.stop();
+			Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
+		}
+	}
+
 	
 	private StringBuilder getOrcamentos(){
 		
@@ -1243,27 +1355,43 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 	
+	private void deletaTabTemp() {
+		
+		StringBuilder sql = new StringBuilder("");
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "delete from ppprocessaoptmp pt where pt.codempet=? and pt.codfilialet=? and pt.codest=?" );
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, Aplicativo.iNumEst );
+			
+			ps.execute();
+			ps.close();
+		   	
+			con.commit();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	private void geraTabTemp() {
 		StringBuilder sql = new StringBuilder("");
 		PreparedStatement ps = null;
 		try {
 			
-			sql.append( "delete from ppprocessaoptmp" );
+			deletaTabTemp();
 			
-			ps = con.prepareStatement(sql.toString());
-			ps.execute();
-			ps.close();
-		   	
-			con.commit();
+			sql.append( "insert into ppprocessaoptmp (codemp, codfilial, codorc, coditorc, tipoorc, dtfabrop, qtdaprod, codempet, codfilialet, codest) " );
+			sql.append( "values( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
 			
-			sql = new StringBuilder();
-
-			
-			
-			sql.append( "insert into ppprocessaoptmp (codemp, codfilial, codorc, coditorc, tipoorc, dtfabrop, qtdaprod) " );
-			sql.append( "values(?, ?, ?, ?, ?, ?, ?)" );
-			
-			for( int i=0; i< tabDet.getNumLinhas(); i++ ){
+			for( int i=0; i< tabDet.getNumLinhas(); i++ ) {
 				
 				if( ((Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )).booleanValue() ) { 
 
@@ -1276,6 +1404,9 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 					ps.setString( 5, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );
 					ps.setDate( 6, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );
 					ps.setBigDecimal( 7, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );
+					ps.setInt( 8, Aplicativo.iCodEmp );
+					ps.setInt( 9, Aplicativo.iCodFilial );
+					ps.setInt( 10, Aplicativo.iNumEst );
 					
 					ps.execute();
 				
