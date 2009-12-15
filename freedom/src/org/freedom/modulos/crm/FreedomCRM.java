@@ -84,6 +84,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(100100000, TP_OPCAO_MENU, "Contato", "", 'C', 1001010000, 2,false, null);
 		addOpcao(1001010000, TP_OPCAO_ITEM, "Atividade", "Atividade", 'A',	100101010, 3, true, FAtividade.class);
 		addOpcao(1001010000, TP_OPCAO_ITEM, "Contato", "Contatos", 'C',	100101020, 3, true, FContato.class);
+		addOpcao(1001010000, TP_OPCAO_ITEM, "Tipo de contato", "Tipo de contato", 'o',	100101030, 3, true, FTipoCont.class);
 
 		addOpcao(100100000, TP_OPCAO_MENU, "Atendente", "", 'A', 100102000, 2,	false, null);
 		addOpcao(100102000, TP_OPCAO_ITEM, "Tipo de Atendente","Tipo de atendente", 'T', 100102010, 3, true, FTipoAtend.class);
