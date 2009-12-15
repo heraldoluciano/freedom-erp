@@ -158,12 +158,16 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtCodTipoCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtCodOrigCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescOrigCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtDescTipoCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -192,6 +196,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private ListaCampos lcOrigCont = new ListaCampos( this, "OC" );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
+	
+	private ListaCampos lcTipoCont = new ListaCampos( this, "TO" );
 
 	private ListaCampos lcUF = new ListaCampos( this );
 
@@ -210,7 +216,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 		super();
 		setTitulo( "Cadastro de Contatos" );
-		setAtribos( 50, 10, 530, 600 );
+		setAtribos( 50, 10, 530, 640 );
 
 		lcAtiv.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcAtiv );
@@ -285,7 +291,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		txtCodGrup.setTabelaExterna( lcGrupFK );
 
 		/** TIPO CLI */
-		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
@@ -328,6 +334,15 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais );
+		
+		/** TIPO CONT */
+		lcTipoCont.add( new GuardaCampo( txtCodTipoCont, "CodTipoCont", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
+		lcTipoCont.add( new GuardaCampo( txtDescTipoCont, "DescTipoCont", "Descrição do tipo de contato", ListaCampos.DB_SI, false ) );
+		lcTipoCont.montaSql( false, "TIPOCONT", "TK" );
+		lcTipoCont.setQueryCommit( false );
+		lcTipoCont.setReadOnly( true );
+		txtCodTipoCont.setTabelaExterna( lcTipoCont );
+		
 	}
 	
 	private void montaTela() {
@@ -359,16 +374,21 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtFaxCont, 356, 270, 73, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtNumEmp, 433, 270, 67, 20, "numempcto", "Nº Func.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodTipoCli, 7, 310, 100, 20, "CodTipoCli", "Cód.Tipo Cli.", ListaCampos.DB_FK, txtDescTipoCli, false );
-		adicDescFK( txtDescTipoCli, 110, 310, 390, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+		adicCampo( txtCodTipoCont, 7, 310, 100, 20, "CodTipoCont", "Cód.Tipo Cont.", ListaCampos.DB_FK, txtDescTipoCont, true );
+		adicDescFK( txtDescTipoCont, 110, 310, 390, 20, "DescTipoCont", "Descrição do tipo de contato" );
+
 		adicCampo( txtCodOrigCont, 7, 350, 100, 20, "CodOrigCont", "Cod.orig.", ListaCampos.DB_FK, txtDescOrigCont, true );
 		adicDescFK( txtDescOrigCont, 110, 350, 390, 20, "DescOrigCont", "Descrição da origem" );		
-		adicCampo( txtCodPais, 7, 390, 100, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
-		adicDescFK( txtDescPais, 110, 390, 390, 20, "NomePais", "Nome do país" );
-		adicCampo( txtSiglaUF, 7, 430, 100, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
-		adicDescFK( txtNomeUF, 110, 430, 390, 20, "NomeUF", "Nome UF" );
-		adicCampo( txtCodMun, 7, 470, 100, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
-		adicDescFK( txtDescMun, 110, 470, 390, 20, "NomeMunic", "Nome do municipio" );
+
+		adicCampo( txtCodTipoCli, 7, 390, 100, 20, "CodTipoCli", "Cód.Tipo Cli.", ListaCampos.DB_FK, txtDescTipoCli, false );
+		adicDescFK( txtDescTipoCli, 110, 390, 390, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+		
+		adicCampo( txtCodPais, 7, 430, 100, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
+		adicDescFK( txtDescPais, 110, 430, 390, 20, "NomePais", "Nome do país" );
+		adicCampo( txtSiglaUF, 7, 470, 100, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
+		adicDescFK( txtNomeUF, 110, 470, 390, 20, "NomeUF", "Nome UF" );
+		adicCampo( txtCodMun, 7, 510, 100, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
+		adicDescFK( txtDescMun, 110, 510, 390, 20, "NomeMunic", "Nome do municipio" );
 		
 		adicTab( "Informações complementares", pnCompl );
 		
@@ -922,5 +942,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcTipoCli.setConexao( cn );
 		lcOrigCont.setConexao( cn );
 		lcGrupo.setConexao( cn );
+		lcTipoCont.setConexao( cn );
+		
 	}
 }
