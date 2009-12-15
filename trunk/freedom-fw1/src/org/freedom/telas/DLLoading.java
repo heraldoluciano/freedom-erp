@@ -52,9 +52,12 @@ public class DLLoading extends JWindow implements ActionListener {
 	
 	private final Color azul = new Color( 0.5f, 0.62f, 0.95f );
 	
+	
 	private final JLabel aguarde = new JLabel( "Aguarde ...", SwingConstants.CENTER );
 	
 	private final JLabel loading = new JLabel( "", SwingConstants.CENTER );
+	
+	private final JPanel mensagens = new JPanel();
 	
 	private final JPanel panel = new JPanel();
 	
@@ -72,7 +75,10 @@ public class DLLoading extends JWindow implements ActionListener {
 		
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
-		c.setBackground( azul_claro );		
+		c.setBackground( azul_claro );	
+		
+		mensagens.setLayout( new BorderLayout() );
+		mensagens.setBackground( azul_claro );
 
 		loadImages();
 		
@@ -87,7 +93,9 @@ public class DLLoading extends JWindow implements ActionListener {
 		aguarde.setFont( new Font( "Heveltica", Font.BOLD, 18 ) );
 		aguarde.setForeground( azul );
 		aguarde.setPreferredSize( new Dimension( 200, 30 ) );
-		panel.add( aguarde, BorderLayout.SOUTH );
+		
+		mensagens.add(aguarde, BorderLayout.CENTER);
+		panel.add( mensagens, BorderLayout.SOUTH );
 	}
 	
 	private void loadImages() {
