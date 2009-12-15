@@ -521,11 +521,11 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.alinhaDir( sCampo, 15 ) );
+					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.copy( sCampo, 15 ) );
 				if ( ( sCampo = rs.getString( "ReciboItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[RECIBO]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "NParcItRec" ) ) != null ) {
-					sTxa = sTxa.replaceAll( "\\[P]", Funcoes.copy( sCampo, 0, 3 ) );
+					sTxa = sTxa.replaceAll( "\\[P]", Funcoes.alinhaDir( sCampo, 2 ) );
 					if ( rs.getInt( 1 ) > 1 )
 						sTxa = sTxa.replaceAll( "\\[A]", "" + ( (char) ( rs.getInt( "NParcItRec" ) + 64 ) ) );
 				}
