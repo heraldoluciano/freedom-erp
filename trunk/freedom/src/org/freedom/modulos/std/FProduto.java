@@ -29,20 +29,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -58,6 +54,7 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -72,6 +69,7 @@ import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EANFactory;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
@@ -299,6 +297,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private Vector<String> vLabsTipoPP = new Vector<String>();
 
 	private Vector<String> vValsTipoPP = new Vector<String>();
+	
+	private Vector<String> vValsTipoConv = new Vector<String>();
+	
+	private Vector<String> vLabsTipoConv = new Vector<String>();
 
 	private Vector<String> vLabsPA = new Vector<String>();
 
@@ -324,7 +326,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JCheckBoxPad cbVerif = null;
 
-	private JCheckBoxPad cbCpFatConv = null;
+	private JRadioGroup<?, ?> rgTipoConv = null;
 
 	private JCheckBoxPad cbRMA = null;
 
@@ -362,7 +364,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JScrollPane spnPreco = new JScrollPane( tabPreco );
 
-	private JPanelPad pinRodFatConv = new JPanelPad( 650, 80 );
+	private JPanelPad pinRodFatConv = new JPanelPad( 650, 120 );
 
 	private JPanelPad pinRodProdPlan = new JPanelPad( 650, 120 );
 
@@ -400,7 +402,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcPrazoEnt = new ListaCampos( this, "PE" );
 
-	private ListaCampos lcFatConv = new ListaCampos( this );
+	private ListaCampos lcFatConv = new ListaCampos( this, "" );
 
 	private ListaCampos lcProdPlan = new ListaCampos( this );
 
@@ -410,7 +412,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcProdAcesso = new ListaCampos( this );
 
-	private ListaCampos lcUnidFat = new ListaCampos( this );
+	private ListaCampos lcUnidFat = new ListaCampos( this, "" );
 
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
@@ -458,8 +460,31 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private String[] sPrefs = null;
 	
+	private JCheckBoxPad cbCpFatConv = new JCheckBoxPad( "", "S", "N" );
+	
 	private enum eprefs {	CODMOEDA ,PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP };
+	
+	private JLabelPad lbUnidFat = null;
 
+	private JLabelPad lbDescUnidFat = null;
+	
+	private JLabelPad lbFatConv = null;
+	
+	private JLabelPad lbCpFatConv = null;
+	
+	private JLabelPad lbCodProdEst = null;
+	
+	private JLabelPad lbDescProdEst = null;
+	
+	private JLabelPad lbSeqEst = null;
+	
+	private JTextFieldPad txtCodProdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescProdEst = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSeqEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private ListaCampos lcProdEstCod = new ListaCampos( this, "ET" );
 
 	public FProduto() {
 
@@ -503,7 +528,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcFoto.addEditListener( this );
 		lcFoto.addInsertListener( this );
 		lcProdAcesso.addInsertListener( this );
-		lcProdAcesso.addCarregaListener( this );
+		lcProdAcesso.addCarregaListener( this );		
 
 		setPainel( pinGeral );
 		adicTab( "Geral", pinGeral );
@@ -559,6 +584,18 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPrazoEnt.setReadOnly( true );
 		lcPrazoEnt.setQueryCommit( false );
 		txtPrazoEnt.setTabelaExterna( lcPrazoEnt );
+		
+		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProdEst, false ) );
+		lcProdEstCod.add( new GuardaCampo( txtSeqEst, "SeqEst", "Seq.Est.", ListaCampos.DB_PK, txtDescProdEst, false ) );
+		lcProdEstCod.add( new GuardaCampo( txtDescProdEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
+ 		
+		lcProdEstCod.setWhereAdic( "ATIVOEST='S'" );
+		lcProdEstCod.montaSql( false, "ESTRUTURA", "PP" );
+		lcProdEstCod.setQueryCommit( false );
+		lcProdEstCod.setReadOnly( true );
+		txtCodProdEst.setTabelaExterna( lcProdEstCod );
+		txtSeqEst.setTabelaExterna( lcProdEstCod );
+		txtCodProdEst.setNomeCampo( "codprodet" );		
 
 		vValsTipo.addElement( "P" );
 		vValsTipo.addElement( "S" );
@@ -602,6 +639,16 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		rgTipoPP = new JRadioGroup<String, String>( 1, 2, vLabsTipoPP, vValsTipoPP );
 		rgTipoPP.setVlrString( "R" );
 
+		vValsTipoConv.addElement( "U" );
+		vValsTipoConv.addElement( "P" );
+		vLabsTipoConv.addElement( "Unidade" );
+		vLabsTipoConv.addElement( "Produto" );
+		rgTipoConv = new JRadioGroup<String, String>( 2, 1, vLabsTipoConv, vValsTipoConv );
+		
+		rgTipoConv.addRadioGroupListener( this );
+		
+		cbCpFatConv.setVlrString( "N" );
+		
 		vValsPA.addElement( "RMA" );
 		vValsPA.addElement( "PDV" );
 		vLabsPA.addElement( "RMA" );
@@ -654,6 +701,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tpn.addChangeListener( this );
 		
 		lcCampos.addPostListener( this );
+		lcFatConv.addPostListener( this );
 		
 		setImprimir( true );
 		
@@ -837,21 +885,22 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabPreco.setTamColuna( 110, 6 );
 		tabPreco.setTamColuna( 75, 7 );
 
-		// FatConv
-
-		cbCpFatConv = new JCheckBoxPad( "", "S", "N" );
-		cbCpFatConv.setVlrString( "N" );
-
+		/* Fatores de conversão */
+		
 		setPainel( pinRodFatConv, pnFatConv );
 		adicTab( "Fatores de conversão", pnFatConv );
 		setListaCampos( lcFatConv );
+		
 		setNavegador( navFatConv );
 		pnFatConv.add( pinRodFatConv, BorderLayout.SOUTH );
 		pnFatConv.add( spnFatConv, BorderLayout.CENTER );
-
-		pinRodFatConv.adic( navFatConv, 0, 50, 270, 25 );
-
-		lcUnidFat.setUsaME( false );
+				
+		JPanelPad pnnav = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+		pnnav.add( navFatConv, BorderLayout.WEST );
+		pnnav.setBorder( BorderFactory.createEtchedBorder() );
+		
+		pinRodFatConv.adic( pnnav, 0, 86, 688, 30 );
+		
 		lcUnidFat.add( new GuardaCampo( txtUnidFat, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
 		lcUnidFat.add( new GuardaCampo( txtDescUnidFat, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
 		lcUnidFat.montaSql( false, "UNIDADE", "EQ" );
@@ -860,18 +909,36 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtDescUnidFat.setListaCampos( lcUnidFat );
 		txtUnidFat.setTabelaExterna( lcUnidFat );
 
-		adicCampo( txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.unid.", ListaCampos.DB_PF, txtDescUnidFat, true );
-		adicDescFK( txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "Descrição da unidade" );
-		adicCampo( txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.", ListaCampos.DB_SI, true );
-		adicDB( cbCpFatConv, 336, 20, 100, 20, "CpFatConv", "Pref.p/cp.", true );
+		JLabelPad sepconv = new JLabelPad();
+		sepconv.setBorder( BorderFactory.createEtchedBorder() );
+		adic( sepconv, 128, 4, 2, 80 );		
+		
+		lbUnidFat = adicCampo( txtUnidFat, 140, 20, 80, 20, "CodUnid", "Cód.unidade", ListaCampos.DB_PF, txtDescUnidFat, true );
+		lbDescUnidFat = adicDescFK( txtDescUnidFat, 223, 20, 250, 20, "DescUnid", "Descrição da unidade" );
+		lbFatConv = adicCampo( txtFatConv, 140, 60, 80, 20, "FatConv", "Fator", ListaCampos.DB_SI, false );
+		lbCpFatConv = adicDB( cbCpFatConv, 476, 20, 120, 20, "CpFatConv", "Padrão p/compra", true );
 
+		adicDB( rgTipoConv, 7, 20, 110, 60, "tipoconv", "Tipo de conversão", true );
+		
+		lbCodProdEst = adicCampo( txtCodProdEst, 140, 60, 80, 20, "CodProdEt", "Cód.Prod.", ListaCampos.DB_FK, txtDescProdEst, false );
+		lbSeqEst = adicCampo( txtSeqEst, 223, 60, 80, 20, "SeqEst", "Seq.Est.", ListaCampos.DB_FK, txtDescProdEst, false );		
+		lbDescProdEst = adicDescFK( txtDescProdEst, 306, 60, 270, 20, "DescEst", "Descrição da estrutura" );
+				
+		rgTipoConv.setVlrString( "U" );
+		
 		setListaCampos( false, "FATCONV", "EQ" );
-		lcFatConv.setOrdem( "CodUnid" );
+
 		lcFatConv.montaTab();
 		lcFatConv.setQueryInsert( false );
 		lcFatConv.setQueryCommit( false );
-		tabFatConv.setTamColuna( 120, 1 );
+		
+		tabFatConv.setTamColuna( 60, 1 );
+		tabFatConv.setTamColuna( 50, 5 );
+		tabFatConv.setTamColuna( 240, 6 );
 
+		//*****************************************************************************/
+		
+		
 		// Planejamento
 		// lcPlan.setUsaME(false);
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, true ) );
@@ -1632,22 +1699,63 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	}
 
 	public void valorAlterado( RadioGroupEvent rgevt ) {
-	
-		if ( rgPA.getVlrString().equals( "RMA" ) ) {
-			txtAnoCCPA.setAtivo( true );
-			txtCodCCPA.setAtivo( true );
+		if(rgevt.getSource() == rgPA ) {
+			if ( rgPA.getVlrString().equals( "RMA" ) ) {
+				txtAnoCCPA.setAtivo( true );
+				txtCodCCPA.setAtivo( true );
+			}
+			else {
+				txtAnoCCPA.setAtivo( false );
+				txtCodCCPA.setAtivo( false );
+			}
+		
+			if ( rgPA.getVlrString().equals( "PDV" ) ) {
+				txtCodCaixa.setAtivo( true );
+			}
+			else {
+				txtCodCaixa.setAtivo( false );
+			}
+		}		
+		else if(rgevt.getSource() == rgTipoConv ) { 
+			
+			if("P".equals( rgTipoConv.getVlrString())) {
+											
+				lbFatConv.setVisible( false );
+				txtFatConv.setVisible( false );
+								
+				lbCodProdEst.setVisible( true );
+				txtCodProdEst.setVisible( true );
+				lbSeqEst.setVisible( true );
+				txtSeqEst.setVisible( true );		
+				lbDescProdEst.setVisible( true );
+				txtDescProdEst.setVisible( true );
+				
+				txtFatConv.setVlrBigDecimal( new BigDecimal( 1 ) );
+				
+				txtFatConv.setRequerido( false );
+				txtCodProdEst.setRequerido( true );
+				txtSeqEst.setRequerido( true );	
+				
+			}
+			else if("U".equals( rgTipoConv.getVlrString())) {
+											
+				lbFatConv.setVisible( true );
+				txtFatConv.setVisible( true );
+				
+				lbCodProdEst.setVisible( false );
+				txtCodProdEst.setVisible( false );
+				lbSeqEst.setVisible( false );
+				txtSeqEst.setVisible( false );		
+				lbDescProdEst.setVisible( false );
+				txtDescProdEst.setVisible( false );
+				
+				txtFatConv.setRequerido( true );
+				txtCodProdEst.setRequerido( false );
+				txtSeqEst.setRequerido( false );	
+								
+			}
 		}
-		else {
-			txtAnoCCPA.setAtivo( false );
-			txtCodCCPA.setAtivo( false );
-		}
-	
-		if ( rgPA.getVlrString().equals( "PDV" ) ) {
-			txtCodCaixa.setAtivo( true );
-		}
-		else {
-			txtCodCaixa.setAtivo( false );
-		}	
+		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) { }
@@ -1730,6 +1838,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPlanoPagPreco.setConexao( cn );
 		lcCodAltProd.setConexao( cn );
 		lcProdAcesso.setConexao( cn );
+		lcProdEstCod.setConexao( cn );
 	}
 	
 	public void beforePost( PostEvent pevt ) {
@@ -1739,5 +1848,46 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				txtQtdEmbalagem.setVlrInteger( 1 );
 			}
 		}
+		if(pevt.getListaCampos()==lcFatConv) {
+			if( "P".equals( rgTipoConv.getVlrString() )) {
+				
+			}
+		}
 	}
+	
+	private boolean validaEstrutura() {
+		boolean ret = false;
+		StringBuilder sql = new StringBuilder();
+		
+		try {
+			
+			sql.append( "select count(*) from ppitestrutura ie " );
+			sql.append( "where ie.codemp=? and ie.codfilial=? and ie.codprod=? and ie.seqest=? " );
+			sql.append( "and ie.codemppd=? and ie.codfilialpd=? and ie.codprodpd=? " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcProdEstCod.getCodEmp() );
+			ps.setInt( 2, lcProdEstCod.getCodFilial() );
+			ps.setInt( 3, txtCodProdEst.getVlrInteger() );
+			ps.setInt( 4, txtSeqEst.getVlrInteger() );
+			ps.setInt( 5, lcCampos.getCodEmp() );
+			ps.setInt( 6, lcCampos.getCodFilial() );
+			ps.setInt( 7, txtCodProd.getVlrInteger() );
+			
+			ResultSet rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				ret = ( rs.getInt( 1 )>0 );
+			}			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
 }
