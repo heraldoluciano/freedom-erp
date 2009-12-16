@@ -48,10 +48,11 @@ public class DLLoading extends JWindow implements ActionListener {
 
 	private static final long serialVersionUID = 1;
 	
+	private static final int NUM_TRANSICOES = 29;
+	
 	private final Color azul_claro = new Color( 0.9f, 0.93f, 1f );
 	
 	private final Color azul = new Color( 0.5f, 0.62f, 0.95f );
-	
 	
 	private final JLabel aguarde = new JLabel( "Aguarde ...", SwingConstants.CENTER );
 	
@@ -61,9 +62,9 @@ public class DLLoading extends JWindow implements ActionListener {
 	
 	private final JPanel panel = new JPanel();
 	
-	private ImageIcon[] img = new ImageIcon[ 8 ];
+	private ImageIcon[] img = new ImageIcon[ NUM_TRANSICOES ];
 	
-	private Timer timer = new Timer( 100, this );
+	private Timer timer = new Timer( 50, this );
 	
 	private int index = 0;
 	
@@ -101,7 +102,7 @@ public class DLLoading extends JWindow implements ActionListener {
 	private void loadImages() {
 		
 		for ( int i=0; i < img.length; i++ ) {
-			img[ i ] = Icone.novo( "load_" + i + ".gif" );
+			img[ i ] = Icone.novo( "loading_" + i + ".png" );
 		}
 	}
 	
@@ -123,7 +124,7 @@ public class DLLoading extends JWindow implements ActionListener {
 	
 	public void actionPerformed( ActionEvent e ) {
 
-		if ( index == 8 ) {
+		if ( index == NUM_TRANSICOES ) {
 			index = 0;
 		}
 		
