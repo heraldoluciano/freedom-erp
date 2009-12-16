@@ -42,7 +42,6 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -398,13 +397,17 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					atualizaMenus();
 				}
 			}
-			else if ( oTemp instanceof JMenuItemPad ) {
+			else if ( oTemp instanceof JMenuItemPad && !( ( (JMenuItem) oTemp ).getText().equals( "Sair" ) )
+					&& !( ( (JMenuItem) oTemp ).getText().equals( "Sobre" ) )
+					&& !( ( (JMenuItem) oTemp ).getText().equals( "Atalhos" ) )
+					&& !( ( (JMenuItem) oTemp ).getText().equals( "Suporte" ) )
+			) {
 				iCodMenu = ( (JMenuItemPad) oTemp ).getCodItem();
 			}
-			else if ( oTemp instanceof JMenuPad ) {
+			else if ( oTemp instanceof JMenuPad && !( ( (JMenuItem) oTemp ).getText().equals( "Sobre" ) )) {
 				iCodMenu = ( (JMenuPad) oTemp ).getCodMenu();
 			}
-			else if ( oTemp instanceof JMenuItem ) {
+			else if ( oTemp instanceof JMenuItemPad ) {
 				if ( ( (JMenuItem) oTemp ).getText().equals( "Sair" ) ) {
 					telaPrincipal.fecharJanela();
 				}
@@ -631,32 +634,27 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		JMenuItem miSair = null;
 		if ( oMenu != null ) {
 			if ( oMenu instanceof JMenuPad ) {
-				miSair = new JMenuItem( "Sair", 'r' );
+				miSair = new JMenuItemPad( "Sair", 'r' );
 				miSair.addActionListener( this );
 				( (JMenuPad) oMenu ).addSeparator();
 				( (JMenuPad) oMenu ).add( miSair );
 			}
 		}
 		JMenuPad mAjuda = new JMenuPad( "Ajuda" );
-		JMenuItem miSobre = new JMenuItem( "Sobre" );
-		
-		mAjuda.setFont( SwingParams.getFontbold() );	
+		JMenuItem miSobre = new JMenuItemPad( "Sobre" );
 		
 		miSobre.addActionListener( this );
-		miSobre.setFont( SwingParams.getFontbold() );
-		
+
 		mAjuda.add( miSobre );
-		JMenuItem miAtalhos = new JMenuItem( "Atalhos" );
-		miAtalhos.setFont( SwingParams.getFontbold() );
+		JMenuItem miAtalhos = new JMenuItemPad( "Atalhos" );
 		miAtalhos.addActionListener( this );
 		mAjuda.add( miAtalhos );
 
 		if ( bSuporte ) {
 			mAjuda.addSeparator();
-			JMenuItem miSuporte = new JMenuItem( "Suporte" );
+			JMenuItem miSuporte = new JMenuItemPad( "Suporte" );
 			miSuporte.addActionListener( this );
 			mAjuda.add( miSuporte );
-			miSuporte.setFont( SwingParams.getFontbold() );
 		}
 
 		telaPrincipal.bar.add( mAjuda );
