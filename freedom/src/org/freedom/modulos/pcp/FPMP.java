@@ -1296,50 +1296,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 
-	/*
-	private StringBuilder getOrcamentos(){
-		
-		StringBuilder ret = new StringBuilder( "'" );
-		
-		try {
-			
-			StringBuilder item = null;
-			
-			for( int i=0; i< tabDet.getNumLinhas(); i++ ){
-		
-				if( ((Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )).booleanValue() ) { 
-				
-					item = new StringBuilder( "" );
-					
-					item.append( tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal() ).toString() );
-					item.append( "-" );
-					
-					item.append( tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal() ).toString() );
-					item.append( "-" );
-					
-					item.append( tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal() ).toString() );
-					
-					if(i>0) {
-						ret.append( "','" );
-					}
-					
-					ret.append( item );
-				
-				}
-				
-			}
-			
-			ret.append( "'" );
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-		
-	}
-	*/
 	public void stateChanged( ChangeEvent cevt ) {
 
 		if ( cevt.getSource() == tabbedAbas ) {
