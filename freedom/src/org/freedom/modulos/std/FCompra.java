@@ -67,6 +67,7 @@ import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.DLLoading;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
@@ -74,8 +75,9 @@ import org.freedom.telas.FPrinterJob;
 /**
  * Tela para cadastro de notas fiscais de compra.
  * 
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva(14/07/2003)
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva (14/07/2003)
  * @version 31/08/2009 - Alex Rodrigues
+ * @version 16/12/2009 - Anderson Sanchez 
  */
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
@@ -357,6 +359,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JScrollPane spnObs04 = new JScrollPane( txaObs04 );
 	
 	private JLabelPad lbChaveNfe = null;
+	
+	private enum PROCEDUREOP {
+		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
+		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV 
+	}
+
 
 	public FCompra() {
 		setTitulo( "Compra" );
@@ -2178,6 +2186,88 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		return sRet != null ? sRet : "";
 	}
+	
+	
+	
+	
+	private void geraOpConversao() {
+				
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Vector<Integer> ops = new Vector<Integer>();
+		
+		Integer codempet = null;
+		Integer codfilialet = null;
+		Integer codprodet = null;
+		Integer seqest = null;
+		
+		BigDecimal qtdsugerida = null;
+		DLLoading loading = new DLLoading();
+		
+			try {
+				
+				sql.append( "select first 1 codempet, codfilialet, codprodet, seqest from eqfatconv " );
+				sql.append( "where codemp=? and codfilial=? and codprod=? and cpfatconv='S'");
+								
+				ps = con.prepareStatement( sql.toString() );
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					
+					
+					
+				}
+				
+				sql.append( "select codopret,seqopret " );
+				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
+
+				ps = con.prepareStatement( sql.toString() );
+	
+				ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "D" );						 
+				ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
+				ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
+				ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );	
+				/*
+				ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
+				ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD .ordinal()) );					
+				ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()) );						
+				ps.setInt( PROCEDUREOP.CODEMPOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal()) );
+				ps.setInt( PROCEDUREOP.CODFILIALOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal()) );
+				ps.setInt( PROCEDUREOP.CODORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal()) );
+				ps.setInt( PROCEDUREOP.CODITORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal()) );
+				ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );						
+				ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );						
+				ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );						
+				ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal()) );
+				*/
+				ps.setNull( PROCEDUREOP.CODEMPET.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODFILIALET.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODEST.ordinal() + 1, Types.INTEGER );						
+				ps.setNull( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, Types.CHAR );
+				ps.setNull( PROCEDUREOP.AGRUPDTFABROP.ordinal() + 1, Types.CHAR );
+				ps.setNull( PROCEDUREOP.AGRUPCODCLI.ordinal() + 1, Types.CHAR );
+				ps.setNull( PROCEDUREOP.CODEMPCL.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					ops.addElement( rs.getInt( 1 ) );
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		finally {		
+		//	Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
+		}
+	}
+	
 	
 	
 }
