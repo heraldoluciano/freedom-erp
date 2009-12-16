@@ -1850,7 +1850,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		if(pevt.getListaCampos()==lcFatConv) {
 			if( "P".equals( rgTipoConv.getVlrString() )) {
-				
+				if(!validaEstrutura()) {
+					Funcoes.mensagemInforma( this, "A estrutura selecionada não contem esse produto!\nSelecione outra estrutura para conversão." );
+				}
 			}
 		}
 	}
