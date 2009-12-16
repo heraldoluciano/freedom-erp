@@ -60,6 +60,11 @@ public class JMenuItemPad extends JMenuItem {
 	public JMenuItemPad () {
 		this(0,0,0,0, null, "");
 	}
+	
+	public JMenuItemPad(String s, char c) {
+		super(s,c);
+		this.setFont( SwingParams.getFontbold() );
+	}
 
 	/**
 	*  Construtor da classe JMenuItem(). <BR>
