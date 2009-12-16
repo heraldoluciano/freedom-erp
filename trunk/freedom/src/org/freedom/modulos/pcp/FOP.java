@@ -103,10 +103,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodProdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtDescEst = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
 	private JTextFieldFK txtQtdEst = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -175,6 +171,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtNroDiasValid = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
+	private JTextFieldPad txtCodProdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescEst = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextFieldPad txtSeqEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtQtdDigRat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
