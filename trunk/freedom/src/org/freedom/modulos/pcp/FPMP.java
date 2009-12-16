@@ -789,11 +789,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 
 			sql.append( "where oc.codemp=? and oc.codfilial=? and io.aprovitorc='S' and io.sitproditorc='PE' and pd.tipoprod='F' ");
 			
-			sql.append( " and io.codorc||'-'||io.coditorc||'-'||io.tipoorc in (" );
-			sql.append( getOrcamentos() );
-			sql.append( ") " );
-			
-			
 			if(txtCodProd.getVlrInteger()>0) {
 				sql.append( " and io.codemppd=? and io.codfilialpd=? and io.codprod=? " );				
 			}
@@ -1301,7 +1296,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 
-	
+	/*
 	private StringBuilder getOrcamentos(){
 		
 		StringBuilder ret = new StringBuilder( "'" );
@@ -1344,7 +1339,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		return ret;
 		
 	}
-	
+	*/
 	public void stateChanged( ChangeEvent cevt ) {
 
 		if ( cevt.getSource() == tabbedAbas ) {
@@ -1393,7 +1388,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			
 			for( int i=0; i< tabDet.getNumLinhas(); i++ ) {
 				
-				if( ((Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )).booleanValue() ) { 
+				if ( (( (Boolean) tabDet.getValor( i, DETALHAMENTO.MARCACAO.ordinal() )).booleanValue()) && 
+					  ( (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal())).floatValue() > 0 ) { 
 
 					ps = con.prepareStatement( sql.toString() );
 					
