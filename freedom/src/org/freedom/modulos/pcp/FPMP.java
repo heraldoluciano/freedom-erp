@@ -179,7 +179,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	private enum PROCEDUREOP {
 		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
-		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV 
+		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV,
+		  CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA
 	}
 	
 	public FPMP() {
@@ -1131,7 +1132,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	private void geraOPSDet() {		
 		StringBuffer sql = new StringBuffer();
 		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
+		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
@@ -1175,6 +1176,10 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 						ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
 						ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
 						ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
+						ps.setNull( PROCEDUREOP.CODEMPCP.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALCP.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODCOMPRA.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, Types.INTEGER );						
 						
 						rs = ps.executeQuery();
 						
@@ -1204,7 +1209,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append( "select codopret,seqopret " );
-		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
+		sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
 		 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1241,7 +1246,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabAgrup.getValor( i, AGRUPAMENTO.SEQEST.ordinal()) );						
 						ps.setInt( PROCEDUREOP.CODEMPET.ordinal() + 1, Aplicativo.iCodEmp );						
 						ps.setInt( PROCEDUREOP.CODFILIALET.ordinal() + 1, Aplicativo.iCodFilial );						
-						ps.setInt( PROCEDUREOP.CODEST.ordinal() + 1, Aplicativo.iNumEst );	
+						ps.setInt( PROCEDUREOP.CODEST.ordinal() + 1, Aplicativo.iNumEst );							
 
 						if("S".equals( cbAgrupDataAprov )){
 							ps.setString( PROCEDUREOP.AGRUPDATAAPROV.ordinal() + 1, "S" );
@@ -1270,6 +1275,11 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 							ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
 							ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );							
 						}
+						
+						ps.setNull( PROCEDUREOP.CODEMPCP.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALCP.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODCOMPRA.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, Types.INTEGER );						
 						
 						rs = ps.executeQuery();
 						

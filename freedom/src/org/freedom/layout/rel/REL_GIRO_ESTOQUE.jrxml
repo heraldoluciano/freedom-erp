@@ -377,7 +377,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 						mode="Transparent"
 						x="466"
 						y="2"
-						width="39"
+						width="41"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -568,13 +568,13 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="466"
+						x="475"
 						y="1"
-						width="39"
+						width="32"
 						height="11"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTCONTAINER}]]></textFieldExpression>
