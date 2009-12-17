@@ -125,7 +125,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		pnLbAtend.add(new JLabelPad("   Atendimento"));
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-			
+
 		btMedida.addActionListener(this);
 		cbTipo.addComboBoxListener(this);
 			
