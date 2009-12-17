@@ -28,7 +28,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -53,6 +51,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -63,11 +62,11 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLLoading;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
@@ -323,6 +322,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean podeBloq = false;
 
 	private boolean buscaVlrUltCompra = false;
+	
+	private boolean habconvcp = false;
 
 	private boolean habilitaCusto = false;
 	
@@ -516,10 +517,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.rod.", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "CodFisc", ListaCampos.DB_FK, false ) );
-		lcProd2.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.Fisc.", ListaCampos.DB_FK, false ) );
+		lcProd2.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barras", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
@@ -1229,9 +1230,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		StringBuffer sql = new StringBuffer();
 		try {
 
-			sql.append( "SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, "); 
-			sql.append( "TABTRANSPCP, TABSOLCP,TABIMPORTCP, CLASSCP, LABELOBS01CP, LABELOBS02CP, LABELOBS03CP, LABELOBS04CP " ); 
-			sql.append(	"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, "); 
+			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, ");
+			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP " ); 
+			sql.append(	"FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON ");
+			sql.append(	"P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL ");
+			sql.append(	"WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );			
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1240,6 +1244,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ResultSet rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
+				
 				comref = rs.getString( "USAREFPROD" ).trim().equals( "S" );
 				podeBloq = rs.getString( "BLOQCOMPRA" ).trim().equals( "S" );
 				buscaVlrUltCompra = rs.getString( "BUSCAVLRULTCOMPRA" ).trim().equals( "S" );
@@ -1253,6 +1258,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				labelobs02cp = rs.getString( "LABELOBS02CP" );
 				labelobs03cp = rs.getString( "LABELOBS03CP" );
 				labelobs04cp = rs.getString( "LABELOBS04CP" );
+				habconvcp = rs.getString( "HABCONVCP" ).trim().equals( "S" );
 								
 			}
 			con.commit();
@@ -2002,6 +2008,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 	}
 
+	public void afterPost( PostEvent pevt ) {
+		String s = txtCodCompra.getText();
+		lcCompra2.carregaDados(); // Carrega os Totais
+		txtCodCompra.setVlrString( s );
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
 		boolean tem = false;
@@ -2028,18 +2040,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					pevt.cancela();
 				}
 			}	
+			if(habconvcp && pevt.getEstado() == ListaCampos.LCS_INSERT) {
+				geraOpConversao();
+			}
+			
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
 			//txtStatusCompra.setVlrString( "*" );
 		}
-	}
-
-	public void afterPost( PostEvent pevt ) {
-
-		String s = txtCodCompra.getText();
-		lcCompra2.carregaDados(); // Carrega os Totais
-		txtCodCompra.setVlrString( s );
 	}
 		
 	private boolean getGuiaTraf() {
@@ -2179,7 +2188,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			con.commit();
 
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar descrição completa!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
@@ -2187,12 +2197,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		return sRet != null ? sRet : "";
 	}
 	
-	
-	
-	
 	private void geraOpConversao() {
 				
-		StringBuffer sql = new StringBuffer();
+		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Integer> ops = new Vector<Integer>();
@@ -2202,47 +2209,81 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		Integer codprodet = null;
 		Integer seqest = null;
 		
+		BigDecimal qtdest = null;
+		BigDecimal qtditcompra = null;
+		BigDecimal qtdformula = null;
 		BigDecimal qtdsugerida = null;
-		DLLoading loading = new DLLoading();
+		Integer codprod = null;
 		
-			try {
-				
-				sql.append( "select first 1 codempet, codfilialet, codprodet, seqest from eqfatconv " );
-				sql.append( "where codemp=? and codfilial=? and codprod=? and cpfatconv='S'");
-								
-				ps = con.prepareStatement( sql.toString() );
-				
-				rs = ps.executeQuery();
-				
-				if(rs.next()) {
+		try {
+			
+			codprod = txtCodProd.getVlrInteger();
+			qtditcompra = txtQtdItCompra.getVlrBigDecimal();
+			
+			//Query para busca de informçõs da estrutura para conversão e informações sobre o item de estrutura vinculado ao produto da compra.
+			  
+			sql.append( "select first 1 fc.codempet, fc.codfilialet, fc.codprodet, fc.seqest, et.qtdest, ie.qtditest  ");
+			sql.append( "from eqfatconv fc, ppestrutura et, ppitestrutura ie " );
+			sql.append( "where fc.codemp=? and fc.codfilial=? and fc.codprod=? and fc.cpfatconv='S' ");
+			sql.append( "and et.codemp=fc.codempet and et.codfilial=fc.codfilialet and et.codprod=fc.codprodet and et.seqest=fc.seqest ");
+			sql.append( "and ie.codemp=et.codemp and ie.codfilial=et.codfilial and ie.codprod=et.codprod and ie.seqest=et.seqest ");
+			sql.append( "and ie.codemppd=fc.codemp and ie.codfilialpd=fc.codfilial and ie.codprodpd=fc.codprod and ie.qtdvariavel='S'" );
+			sql.append( "and et.ativoest='S'");
+							
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcProd.getCodEmp() );
+			ps.setInt( 2, lcProd.getCodFilial() );
+			ps.setInt( 3, codprod );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+
+				codempet = rs.getInt( "codempet" );
+				codfilialet = rs.getInt( "codfilialet" );
+				codprodet = rs.getInt( "codprodet" );
+				seqest = rs.getInt( "seqest" );
+				qtdest = rs.getBigDecimal( "qtdest" );				
+				qtdformula = rs.getBigDecimal( "qtditest" );
 					
-					
-					
+				if ( qtdformula!=null && qtdformula.floatValue()>0 ) {
+				
+					qtdsugerida = (qtditcompra.divide( qtdformula ));
+						
 				}
+				
+			}
+
+			rs.close();
+			con.commit();
+			
+			if( qtdsugerida!=null && qtdsugerida.floatValue()>0 ) {
+				
+				sql = new StringBuilder();
 				
 				sql.append( "select codopret,seqopret " );
 				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
-
+				
 				ps = con.prepareStatement( sql.toString() );
-	
-				ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "D" );						 
+				
+				ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "C" );						 
 				ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
 				ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
 				ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
-				ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );	
-				/*
-				ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
-				ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD .ordinal()) );					
-				ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal()) );						
-				ps.setInt( PROCEDUREOP.CODEMPOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPOC.ordinal()) );
-				ps.setInt( PROCEDUREOP.CODFILIALOC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALOC.ordinal()) );
-				ps.setInt( PROCEDUREOP.CODORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODORC.ordinal()) );
-				ps.setInt( PROCEDUREOP.CODITORC.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODITORC.ordinal()) );
-				ps.setString( PROCEDUREOP.TIPOORC.ordinal() + 1, (String) tabDet.getValor( i, DETALHAMENTO.TIPOORC.ordinal()) );						
-				ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()) );						
-				ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal()) ) );						
-				ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal()) );
-				*/
+				ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
+				ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, codempet );
+				ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, codfilialet );					
+				ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, codprodet );						
+				ps.setNull( PROCEDUREOP.CODEMPOC.ordinal() + 1, Types.INTEGER );				
+				ps.setNull( PROCEDUREOP.CODFILIALOC.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODORC.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.CODITORC.ordinal() + 1, Types.INTEGER );
+				ps.setNull( PROCEDUREOP.TIPOORC.ordinal() + 1, Types.CHAR );						
+				ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, qtdsugerida );						
+				ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.dateToSQLDate( txtDtEntCompra.getVlrDate() ) );						
+				ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, seqest );
+
 				ps.setNull( PROCEDUREOP.CODEMPET.ordinal() + 1, Types.INTEGER );
 				ps.setNull( PROCEDUREOP.CODFILIALET.ordinal() + 1, Types.INTEGER );
 				ps.setNull( PROCEDUREOP.CODEST.ordinal() + 1, Types.INTEGER );						
@@ -2258,13 +2299,27 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				
 				if(rs.next()) {
 					ops.addElement( rs.getInt( 1 ) );
+					
+					Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
 				}
+					
+			}			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				rs.close();
+				con.commit();
+				rs = null;
+				ps = null;
+				ops = null;				
 			}
-			catch (Exception e) {
-				e.printStackTrace();
+			catch (Exception e2) {
+				e2.printStackTrace();
 			}
-		finally {		
-		//	Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
+			
 		}
 	}
 	

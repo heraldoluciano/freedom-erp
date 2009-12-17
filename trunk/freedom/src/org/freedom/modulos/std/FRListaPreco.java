@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,15 +45,14 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
-import org.freedom.telas.SwingParams;
 
 public class FRListaPreco extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinTipo = new JPanelPad(600,60);
-	private JPanelPad pinOpt = new JPanelPad(600,100);
-	private JPanelPad pinOpt2 = new JPanelPad(600,100);
-	private JPanelPad pinPlan = new JPanelPad(600,450);
+	private JPanelPad pinOpt = new JPanelPad("Opções de filtros", Color.BLUE);
+	private JPanelPad pinOpt2 = new JPanelPad("Opções complementares", Color.BLUE);
+	private JPanelPad pinPlan = new JPanelPad("Planos de pagamento", Color.BLUE);
 	private JPanelPad pnTipo = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 //	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 //	private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
@@ -246,7 +246,7 @@ public class FRListaPreco extends FRelatorio {
 		pinTipo.adic(new JLabelPad("Ordem"),300,5,100,15);
 		pinTipo.adic(rgOrdem,300,22,270,30);
 
-		pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
+//		pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
 		adic(pinOpt,5,95,600,150);
 
 		pinOpt.adic(new JLabelPad("Cód.grupo"),7,0,80,20);
@@ -275,7 +275,7 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic(txtNomeFor,90,100,200,20);		
 				
 
-		pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
+//		pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
 		adic(pinOpt2,5,250,600,80);
 		
 		pinOpt2.adic(cbAgrupar,10,5,105,20); 
@@ -290,7 +290,7 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt2.adic(new JLabelPad("Dias de alteração"), 383, 25, 100, 20);
 		pinOpt2.adic(txtNroDiasAlt, 490,25,30,20);
 		
-		pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
+//		pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
 		adic(pinPlan,5,340,600,190);
 		
 		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,0,250,20);

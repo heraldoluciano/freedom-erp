@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -32,6 +33,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -41,7 +43,6 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
-import org.freedom.telas.SwingParams;
 
 public class FRGiroEstoque extends FRelatorio {
 	private static final long serialVersionUID = 1L;
@@ -72,11 +73,10 @@ public class FRGiroEstoque extends FRelatorio {
 		rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 		rgOrdem.setVlrString("D");
         
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( SwingParams.getPanelLabel( "Posição do dia:" ) );
+		JPanelPad pnLinha = new JPanelPad("Posição do dia:", Color.BLUE);
 		
-		adic( lbLinha, 7, 0, 300, 65 );
-		adic( txtDataini, 17, 25, 75, 20 );
+		adic( pnLinha, 7, 0, 300, 65 );
+		pnLinha.adic( txtDataini, 7, 7, 75, 20 );
 
 		txtDataini.setVlrDate( new Date() );
 
