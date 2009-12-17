@@ -89,7 +89,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
 	private JPanelPad panelSouth = new JPanelPad(30, 30 );	
 	private JPanelPad panelLegenda = new JPanelPad(30, 30 );	
-	private JPanelPad panelFiltros = new JPanelPad();
+	private JPanelPad panelFiltros = new JPanelPad("Filtros", Color.BLUE);
 	
 	// *** Paineis Detalhamento
 	
@@ -110,7 +110,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JPanelPad panelTabAgrup = new JPanelPad( 700, 60 );
 	private JPanelPad panelGridAgrup = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JPanelPad panelTabAgrupItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	private JPanelPad pnCritAgrup = new JPanelPad();
+	private JPanelPad pnCritAgrup = new JPanelPad("Critérios de agrupamento", Color.BLUE);
 	private Tabela tabAgrup = null;
 		
 	// *** Geral
@@ -269,7 +269,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 340, 20 );
 		panelMaster.adic( txtRazCli, 70, 60, 340, 20 );
 		
-		panelFiltros.setBorder( SwingParams.getPanelLabel( "Filtros" ) );
+//		panelFiltros.setBorder( SwingParams.getPanelLabel( "Filtros" ) );
 		panelFiltros.adic( cbPend, 4, 0, 100, 20 );
 		panelFiltros.adic( cbEmProd, 4, 30, 100, 20 );
 		panelFiltros.adic( cbProd, 114, 0, 100, 20 );
@@ -323,7 +323,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelAgrup.add( panelGridAgrup, BorderLayout.CENTER );		
 		panelGridAgrup.add( panelTabAgrupItens );		
 		
-		pnCritAgrup.setBorder( SwingParams.getPanelLabel("Critérios de agrupamento") );
+//		pnCritAgrup.setBorder( SwingParams.getPanelLabel("Critérios de agrupamento") );
 		
 		pnCritAgrup.adic( cbAgrupProd, 4, 0, 70, 20 );
 		pnCritAgrup.adic( cbAgrupDataProd, 80, 0, 125, 20 );
