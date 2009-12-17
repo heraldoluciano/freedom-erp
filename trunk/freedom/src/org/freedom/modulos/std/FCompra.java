@@ -361,9 +361,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JLabelPad lbChaveNfe = null;
 	
+	private boolean novo = false;
+	
 	private enum PROCEDUREOP {
 		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
-		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV 
+		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV,
+		  CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA
 	}
 
 
@@ -691,13 +694,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtAnoCC.setNaoEditavel( true );
 		}
 		
-
-
-		
-
-		// lcCampos.setWhereAdic("FLAG IN "+
-		// projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp)); */
-
 		btFechaCompra.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );		
@@ -2012,6 +2008,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		String s = txtCodCompra.getText();
 		lcCompra2.carregaDados(); // Carrega os Totais
 		txtCodCompra.setVlrString( s );
+		
+		if(pevt.getListaCampos()==lcDet && novo) {
+			if(habconvcp) {
+				geraOpConversao();
+			}
+		}
+		novo = false;
 	}
 	
 	public void beforePost( PostEvent pevt ) {
@@ -2040,15 +2043,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					pevt.cancela();
 				}
 			}	
-			if(habconvcp && pevt.getEstado() == ListaCampos.LCS_INSERT) {
-				geraOpConversao();
-			}
-			
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
 			//txtStatusCompra.setVlrString( "*" );
 		}
+		
+		if(pevt.getEstado() == ListaCampos.LCS_INSERT) {
+			novo = true;
+		}
+		
 	}
 		
 	private boolean getGuiaTraf() {
@@ -2263,7 +2267,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				sql = new StringBuilder();
 				
 				sql.append( "select codopret,seqopret " );
-				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
+				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
 				
 				ps = con.prepareStatement( sql.toString() );
 				
@@ -2294,6 +2298,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps.setNull( PROCEDUREOP.CODFILIALCL.ordinal() + 1, Types.INTEGER );
 				ps.setNull( PROCEDUREOP.CODCLI.ordinal() + 1, Types.INTEGER );
 				ps.setNull( PROCEDUREOP.DATAAPROV.ordinal() + 1, Types.DATE );
+				
+				ps.setInt( PROCEDUREOP.CODEMPCP.ordinal() + 1, lcDet.getCodEmp() );
+				ps.setInt( PROCEDUREOP.CODFILIALCP.ordinal() + 1, lcDet.getCodFilial() );					
+				ps.setInt( PROCEDUREOP.CODCOMPRA.ordinal() + 1, txtCodCompra.getVlrInteger() );						
+				ps.setInt( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, txtCodItCompra.getVlrInteger() );
 				
 				rs = ps.executeQuery();
 				
