@@ -21,10 +21,8 @@
  */ 
 
 package org.freedom.modulos.pcp;
-import org.freedom.infra.model.jdbc.DbConnection;
+import java.awt.Color;
 import java.util.Vector;
-
-import javax.swing.SwingConstants;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -36,9 +34,20 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.PainelImagem;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereProd extends FTabDados {
+
+	private JPanelPad pinOp = new JPanelPad("Ordem de produção", Color.RED);
+	
+	private JPanelPad pinRespon = new JPanelPad("Reponsável técnico da Produção", Color.BLUE );
+	
+	private JPanelPad pinRma = new JPanelPad("Requisição de material", Color.BLUE);
+	
+	private JPanelPad pinCQ = new JPanelPad("Controle de qualidade", Color.BLUE);
+	
+	private JPanelPad pinConv = new JPanelPad("Conversão de produtos", Color.BLUE);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -64,6 +73,8 @@ public class FPrefereProd extends FTabDados {
 
 	private JComboBoxPad cbSitRMAOP = null;
 	
+	private JComboBoxPad cbSitOPConv = null;
+	
 	private JComboBoxPad cbSitOP = null;
 	
 	private final JCheckBoxPad cbBaixaRmaAprov = new JCheckBoxPad( "Baixar o estoque de RMA aprovada ?", "S", "N" );
@@ -71,6 +82,8 @@ public class FPrefereProd extends FTabDados {
 	private final JCheckBoxPad cbAuto = new JCheckBoxPad( "Automatizar rateio de itens/lote?", "S", "N" );
 	
 	private final JCheckBoxPad cbExcluiRma = new JCheckBoxPad( "Permite excluir RMA de outro usuário?", "S", "N" );
+	
+	private final JCheckBoxPad cbHabConvCp = new JCheckBoxPad( "Permite a conversão de produtos na compra?", "S", "N" );
 	
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -81,7 +94,7 @@ public class FPrefereProd extends FTabDados {
 
 		super();
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 550, 400 );
+		setAtribos( 50, 50, 754, 445 );
 		
 		montaListaCampos();
 		montaTela();
@@ -103,7 +116,18 @@ public class FPrefereProd extends FTabDados {
 
 		cbSitRMAOP = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
 
+		Vector<String> vLabsConv = new Vector<String>();
+		Vector<String> vValsConv = new Vector<String>();
 
+		vLabsConv.addElement( "Pendente" );
+		vLabsConv.addElement( "Finalizada" );
+		
+		vValsConv.addElement( "PE" );
+		vValsConv.addElement( "FN" );
+
+		cbSitOPConv = new JComboBoxPad( vLabsConv, vValsConv, JComboBoxPad.TP_STRING, 2, 0 );
+		
+		
 		Vector<String> vLabsSitOP = new Vector<String>();
 		Vector<String> vValsSitOP = new Vector<String>();
 
@@ -120,60 +144,81 @@ public class FPrefereProd extends FTabDados {
 		Vector<String> vNomeRelLab = new Vector<String>();
 		Vector<String> vNomeRelVal = new Vector<String>();
 		
-		vNomeRelLab.addElement( "Responsáve técnico da Produção." );
-		vNomeRelLab.addElement( "Usuário que lançou a análise." );
+		vNomeRelLab.addElement( "Responsável técnico da produção" );
+		vNomeRelLab.addElement( "Usuário que lançou a análise" );
 		vNomeRelVal.addElement( "R" );
 		vNomeRelVal.addElement( "U" );
+		
 		rgNomeRelAnal = new JRadioGroup<String, String>( 2, 1, vNomeRelLab, vNomeRelVal );
-
+		
+		/******* Aba Geral ***************/
+		
 		adicTab( "Geral", pinGeral );
 
-		JPanelPad pinRespon = new JPanelPad();
-		JLabelPad lbRespon = new JLabelPad( "Reponsável técnico da Produção", SwingConstants.CENTER );
-		lbRespon.setOpaque( true );
+		/***************Parametros da ordem de produção***************/
+		
+		setPainel( pinOp ); // 
+
+		adicCampo( txtClass, 7, 20, 333, 20, "CLASSOP", "Classe padrão para O.P.", ListaCampos.DB_SI, false );
+		adicCampo( txtCodTipoMov, 7, 60, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 90, 60, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );						
+		adicDB( cbSitOP, 7, 100, 333, 30, "SITPADOP", "Status padrão para OP", true );
+		
+		pinGeral.adic( pinOp, 7, 5, 358, 165 );		
+
+		/***************Parametros RMA *******************************/
+		
+		setPainel( pinRma ); 
+
+		adicDB( cbSitRMAOP, 7, 20, 333, 30, "SITRMAOP", "Status padrão para RMA", true );
+		adicDB( cbBaixaRmaAprov, 2, 55, 250, 20, "BAIXARMAAPROV", "", false );
+		adicDB( cbAuto, 2, 80, 250, 20, "RATAUTO", "", false );
+		adicDB( cbExcluiRma, 2, 105, 250, 20, "APAGARMAOP", "", false );
+		
+		pinGeral.adic( pinRma, 368, 5, 358, 165 );
+		
+		/***************Parametros CQ *******************************/
+		
+		setPainel( pinCQ );
+				
+		adicDB( rgNomeRelAnal, 7, 20, 335, 60, "NomeRelAnal", "Nome no relatório de Análises", false );
+		adic( new JLabelPad( "Meses para descarte de contra prova" ), 7, 90, 300, 20 );
+		adicCampo( txtNDiaMes, 7, 110, 100, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );										
+		
+		pinGeral.adic( pinCQ, 7, 175, 358, 165 );
+
+		/***************Conversão de produtos *******************************/
+		
+		setPainel( pinConv );
+		
+		adicDB( cbHabConvCp, 2, 0, 333, 20, "HabConvCp", "", true );
+		adicDB( cbSitOPConv, 7, 45, 333, 30, "SITPADOPCONV", "Status padrão para OP de conversão", true );
+		
+		
+		pinGeral.adic( pinConv, 368, 175, 358, 165 );
+
+		/**************** Aba Responsável ****************************/
+		
+		adicTab( "Responsável", pinAss );
+					
+		setPainel( pinAss );
+		
+		adicDB( imgAssOrc, 9, 185, 358, 85, "ImgAssResp", "Assinatura do responsável técnico ( 340 pixel X 85 pixel )", true );		
+		adic( pinRespon, 7, 5, 358, 155 );
 		
 		setPainel( pinRespon );
 		
-		adicCampo( txtNomeResp, 7, 30, 230, 20, "NOMERESP", "Nome do reponsável", ListaCampos.DB_SI, false );
-		adicCampo( txtIdentProfResp, 7, 70, 230, 20, "IDENTPROFRESP", "Indent.prof.", ListaCampos.DB_SI, false );
-		adicCampo( txtCargoResp, 7, 110, 230, 20, "CARGORESP", "Cargo", ListaCampos.DB_SI, false );
-
-		JPanelPad pinOp = new JPanelPad();
-		JLabelPad lbOP = new JLabelPad( "Informações padrão para OP.", SwingConstants.CENTER );
-		lbOP.setOpaque( true );
+		adicCampo( txtNomeResp, 7, 20, 333, 20, "NOMERESP", "Nome do reponsável", ListaCampos.DB_SI, false );
+		adicCampo( txtIdentProfResp, 7, 60, 333, 20, "IDENTPROFRESP", "Indentificação do profissional", ListaCampos.DB_SI, false );
+		adicCampo( txtCargoResp, 7, 100, 333, 20, "CARGORESP", "Cargo", ListaCampos.DB_SI, false );
 		
-		setPainel( pinOp );
-
-		adicCampo( txtClass, 7, 30, 230, 20, "CLASSOP", "Classe padrão para O.P.", ListaCampos.DB_SI, false );
-		adicCampo( txtCodTipoMov, 7, 70, 50, 20, "CODTIPOMOV", "Cd.TM.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 60, 70, 175, 20, "DESCTIPOMOV", "Descrição do tipo de mov." );
-		adicDB( cbSitRMAOP, 7, 110, 230, 20, "SITRMAOP", "Situação padrão para RMA", false );
+		/**************************************************************/
 		
-		adicDB( cbSitOP, 7, 150, 230, 20, "SITPADOP", "Situação padrão para OP", false );
-		
-		setPainel( pinGeral );
-			
-		adic( lbRespon, 12, 10, 200, 20 );
-		adic( pinRespon, 7, 20, 250, 150 );
-		adic( lbOP, 272, 10, 200, 20 );
-		adic( pinOp, 267, 20, 250, 185 );		
-		
-		adic( new JLabelPad( "N° meses p/ descarte C.P" ), 10, 175, 150, 20 );
-		adicCampo( txtNDiaMes, 10, 195, 180, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
-		adicDB( cbBaixaRmaAprov, 10, 220, 250, 20, "BAIXARMAAPROV", "", false );
-		adicDB( cbAuto, 10, 240, 250, 20, "RATAUTO", "", false );
-		adicDB( cbExcluiRma, 10, 260, 250, 20, "APAGARMAOP", "", false );
-				
-		
-		adicDB( rgNomeRelAnal, 267, 230, 250, 60, "NomeRelAnal", "Nome no relatório de Análises", false );
-		
-		setPainel( pinAss );
-		adicTab( "Assinatura", pinAss );
-		adicDB( imgAssOrc, 15, 30, 340, 85, "ImgAssResp", "Assinatura do responsável técnico ( 340 pixel X 85 pixel )", true );
 		setListaCampos( false, "PREFERE5", "SG" );
 		
 		nav.setAtivo( 0, false );
 		nav.setAtivo( 1, false );		
+		
 	}
 	
 	private void montaListaCampos(){
