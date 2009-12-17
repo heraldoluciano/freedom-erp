@@ -46,7 +46,6 @@ import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -390,11 +389,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		int iCodMenu = -1;
 		if ( oTemp != null ) {
 			if ( oTemp instanceof JButtonPad ) {
-				iCodMenu = ( (JButtonPad) oTemp ).getCodItem();
-			}
-			else if ( oTemp instanceof JButtonPad ) {
-				if ( ( (JButton) oTemp ) == btAtualMenu ) {
+				if ( ( (JButtonPad) oTemp ) == btAtualMenu ) {
 					atualizaMenus();
+				}
+				else {
+					iCodMenu = ( (JButtonPad) oTemp ).getCodItem();
 				}
 			}
 			else if ( oTemp instanceof JMenuItemPad && !( ( (JMenuItem) oTemp ).getText().equals( "Sair" ) )
