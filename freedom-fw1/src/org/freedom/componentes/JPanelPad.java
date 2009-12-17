@@ -19,14 +19,16 @@
  */
 
 package org.freedom.componentes;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
-//import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import org.freedom.telas.SwingParams;
 //import javax.swing.text.JTextComponent;
 public class JPanelPad extends JPanel  {
 
@@ -35,11 +37,19 @@ public class JPanelPad extends JPanel  {
   private JLayeredPane lpn = new JLayeredPane();
   private boolean initFirstFocus = true;
   private Component firstFocus = null;
+  
   public JPanelPad () { 
 	setLayout(new GridLayout(1,1));
 	setBorder(javax.swing.BorderFactory.createEtchedBorder());
 	add(lpn);
   }
+  
+  public JPanelPad (String titulo, Color cortitulo) {
+	  setLayout(new GridLayout(1,1));
+	  setBorder(SwingParams.getPanelLabel( titulo , cortitulo));
+	  add(lpn);	  
+  }
+  
   public JPanelPad (Dimension dm) {
     setLayout(new GridLayout(1,1));
     setPreferredSize(dm);
