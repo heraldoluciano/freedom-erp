@@ -248,8 +248,7 @@ public class FRAtendimentos extends FRelatorio {
 				ps.setInt( iparam++, lcAtend.getCodFilial() );
 				ps.setInt( iparam++, txtCodAtend.getVlrInteger() );								
 			}
-						
-			
+									
 			rs = ps.executeQuery();
 			
 		} 
