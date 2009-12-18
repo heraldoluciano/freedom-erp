@@ -23,12 +23,24 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="DTINI" isForPrompting="true" class="java.util.Date"/>
-	<parameter name="DTFIM" isForPrompting="true" class="java.util.Date"/>
-	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="CODCLI" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="CODCONTR" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DTINI" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DTFIM" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCLI" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCONTR" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT CT.codcontr,IC.qtditcontr,sum(((atd.horaatendofin-ATD.horaatendo)/3600)) qtdhoras,
  IC.vlritcontr VALOR,
 IC.vlritcontrexced VALOREXCEDENTE
@@ -38,10 +50,10 @@ FROM VDITCONTRATO IC, VDCONTRATO CT, atatendimento ATD
  AND CT.codempcl=ATD.codempcl AND CT.codfilialcl=ATD.codfilialcl AND CT.codcli=ATD.CODCLI
  AND CT.codemp=ATD.codempct AND CT.CODFILIAL=ATD.CODFILIALCT AND CT.codcontr=ATD.codcontr
  AND IC.coditcontr=ATD.coditcontr
- and atd.dataatendo between $P{DTINI} and $P{DTFIM}
+ and atd.dataatendo between $P{DTINI} and $P{DTFIM} and ATD.STATUSATENDO='AA'
  group by 1,2,4,5]]></queryString>
 
-	<field name="CODCONTR" class="java.lang.Long"/>
+	<field name="CODCONTR" class="java.lang.Integer"/>
 	<field name="QTDITCONTR" class="java.math.BigDecimal"/>
 	<field name="QTDHORAS" class="java.math.BigDecimal"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
