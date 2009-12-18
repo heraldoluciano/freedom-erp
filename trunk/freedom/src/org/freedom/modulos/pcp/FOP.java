@@ -2399,7 +2399,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					dl.cancel();
 				}
 			}
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao realizar a conversão de produtos!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
