@@ -66,6 +66,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
+import org.freedom.modulos.pcp.DLFinalizaOP;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
@@ -366,9 +367,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private enum PROCEDUREOP {
 		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
 		  QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV,
-		  CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA
+		  CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
-
 
 	public FCompra() {
 		setTitulo( "Compra" );
@@ -2218,12 +2218,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		BigDecimal qtdformula = null;
 		BigDecimal qtdsugerida = null;
 		Integer codprod = null;
+		String justificativa = "";
+		
+		DLFinalizaOP dl = null;
 		
 		try {
 			
 			codprod = txtCodProd.getVlrInteger();
 			qtditcompra = txtQtdItCompra.getVlrBigDecimal();
-			
+						
 			//Query para busca de informçõs da estrutura para conversão e informações sobre o item de estrutura vinculado ao produto da compra.
 			  
 			sql.append( "select first 1 fc.codempet, fc.codfilialet, fc.codprodet, fc.seqest, et.qtdest, ie.qtditest  ");
@@ -2262,12 +2265,26 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			rs.close();
 			con.commit();
 			
+			
 			if( qtdsugerida!=null && qtdsugerida.floatValue()>0 ) {
 				
+				// Dialog de confirmação
+
+				dl = new DLFinalizaOP(this,qtdsugerida);
+				
+				dl.setVisible(true);
+				
+				if (dl.OK) {					
+					qtdsugerida = dl.getValor();
+					justificativa = dl.getObs();					
+				}
+				
+				dl.dispose();
+
 				sql = new StringBuilder();
 				
 				sql.append( "select codopret,seqopret " );
-				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
+				sql.append( "from ppgeraop(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) " );
 				
 				ps = con.prepareStatement( sql.toString() );
 				
@@ -2303,6 +2320,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps.setInt( PROCEDUREOP.CODFILIALCP.ordinal() + 1, lcDet.getCodFilial() );					
 				ps.setInt( PROCEDUREOP.CODCOMPRA.ordinal() + 1, txtCodCompra.getVlrInteger() );						
 				ps.setInt( PROCEDUREOP.CODITCOMPRA.ordinal() + 1, txtCodItCompra.getVlrInteger() );
+																
+				ps.setString( PROCEDUREOP.JUSTFICQTDPROD.ordinal() + 1, justificativa );
+				
+				ps.setInt( PROCEDUREOP.CODEMPPDENTRADA.ordinal() + 1, lcProd.getCodEmp() );
+				ps.setInt( PROCEDUREOP.CODFILIALPDENTRADA.ordinal() + 1, lcProd.getCodEmp() );
+				ps.setInt( PROCEDUREOP.CODPRODENTRADA.ordinal() + 1, codprod );
+				ps.setBigDecimal( PROCEDUREOP.QTDENTRADA.ordinal() + 1, qtditcompra );
 				
 				rs = ps.executeQuery();
 				
