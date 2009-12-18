@@ -2206,7 +2206,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Vector<Integer> ops = new Vector<Integer>();
+		Vector<Integer> codops = new Vector<Integer>();
+		Vector<Integer> seqops = new Vector<Integer>();
 		
 		Integer codempet = null;
 		Integer codfilialet = null;
@@ -2331,10 +2332,61 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				rs = ps.executeQuery();
 				
 				if(rs.next()) {
-					ops.addElement( rs.getInt( 1 ) );
-					
-					Funcoes.mensagemInforma( this, "As seguintes ordens de produção foram geradas:\n" + ops.toString() );
+					codops.addElement( rs.getInt( 1 ) );
+					seqops.addElement( rs.getInt( 2 ) );
 				}
+				
+				con.commit();
+
+				if(codops.size()>0) {
+
+					sql = new StringBuilder();
+					sql.append( "update ppitop io set io.qtditop=? ");
+					sql.append( "where io.codemp=? and io.codfilial=? and io.codop=? and io.seqop=?");
+					sql.append( "and io.codemppd=? and io.codfilialpd=? and io.codprod=?");
+					
+					ps = con.prepareStatement( sql.toString() );
+					
+					ps.setBigDecimal( 1, qtditcompra );
+					
+					ps.setInt( 2, Aplicativo.iCodEmp );
+					ps.setInt( 3, Aplicativo.iCodFilial );
+					ps.setInt( 4, (Integer) codops.elementAt( 0 ) );
+					ps.setInt( 5, (Integer) seqops.elementAt( 0 ) );
+					ps.setInt( 6, lcProd.getCodEmp() );
+					ps.setInt( 7, lcProd.getCodFilial() );
+					ps.setInt( 8, codprod );
+					
+					ps.executeUpdate();
+					
+					con.commit();
+					
+					Funcoes.mensagemInforma( this, "A seguinte ordem de produção foi gerada:\n" + codops.toString() );
+										
+				}
+				
+				
+				/*
+	                
+
+	                -- Buscando RMA Gerada para o produto de entrada
+	                select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma
+	                from eqrma rm, eqitrma ir
+	                where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
+	                and ir.codemppd=:codemppdentrada and ir.codfilial=:codfilialpdentrada and ir.codprod=:codprodentrada
+	                and rm.codop=:codop and rm.seqop=:seqop
+	                into codemprma, codfilialrma, codrma, coditrma;
+
+	                -- Atualizando item de rma
+	                update eqitrma ir set ir.qtditrma=:qtdentrada,ir.qtdaprovitrma=:qtdentrada,ir.qtdexpitrma=:qtdentrada
+	                where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
+	                and ir.coditrma=:coditrma;
+
+	--              exception cpcompraex03 'qtd:' || cast(qtdentrada as char(17)) || 'rm:' || cast(codrma as char(5))|| ' it:' || cast(coditrma as char(5)) ;
+
+	            end
+*/
+				
 					
 			}			
 		}
@@ -2344,10 +2396,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		finally {
 			try {
 				rs.close();
-				con.commit();
+				
 				rs = null;
 				ps = null;
-				ops = null;				
+				codops = null;
+				seqops = null;
 			}
 			catch (Exception e2) {
 				e2.printStackTrace();
