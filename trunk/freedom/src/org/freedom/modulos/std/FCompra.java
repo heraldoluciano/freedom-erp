@@ -2365,29 +2365,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 										
 				}
 				
-				
-				/*
-	                
-
-	                -- Buscando RMA Gerada para o produto de entrada
-	                select first 1 ir.codemp, ir.codfilial, ir.codrma, ir.coditrma
-	                from eqrma rm, eqitrma ir
-	                where rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.codrma=ir.codrma
-	                and ir.codemppd=:codemppdentrada and ir.codfilial=:codfilialpdentrada and ir.codprod=:codprodentrada
-	                and rm.codop=:codop and rm.seqop=:seqop
-	                into codemprma, codfilialrma, codrma, coditrma;
-
-	                -- Atualizando item de rma
-	                update eqitrma ir set ir.qtditrma=:qtdentrada,ir.qtdaprovitrma=:qtdentrada,ir.qtdexpitrma=:qtdentrada
-	                where ir.codemp=:codemprma and ir.codfilial=:codfilialrma and ir.codrma=:codrma
-	                and ir.coditrma=:coditrma;
-
-	--              exception cpcompraex03 'qtd:' || cast(qtdentrada as char(17)) || 'rm:' || cast(codrma as char(5))|| ' it:' || cast(coditrma as char(5)) ;
-
-	            end
-*/
-				
-					
 			}			
 		}
 		catch (Exception e) {
