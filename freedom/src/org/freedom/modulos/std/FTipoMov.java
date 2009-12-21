@@ -2,42 +2,47 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda. Robson Sanchez e Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FTipoMov.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                   Comentários sobre a classe...
  * 
  */
 
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
@@ -53,18 +58,23 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxListener, InsertListener {
+public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxListener, InsertListener, CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCamposGeral = new JPanelPad( 430, 460 );
+	private JPanelPad pnGeral = new JPanelPad( 430, 460 );
 
-	private JPanelPad pinCamposRestricoes = new JPanelPad( 430, 460 );
+	private JPanelPad pinRestricoes = new JPanelPad( 430, 460 );
 
-	private JPanelPad pinInfoPadImp = new JPanelPad( 300, 150 );
+	private JPanelPad pnRegrasVenda = new JPanelPad( "Regras para fechamento de venda", Color.BLUE );
+
+	private JPanelPad pnRegrasGeral = new JPanelPad( "Regras para o tipo de movimento", Color.BLUE );
+
+	private JPanelPad pnRegrasOutras = new JPanelPad( "Outras regras", Color.BLUE );
 
 	private JPanelPad pinNavRestricoes = new JPanelPad( 680, 30 );
 
@@ -107,12 +117,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JTextFieldPad txtCodRegraComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescRegraComis = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JLabelPad lbInfoPadImp = new JLabelPad( "   Padrões para fechamento de venda" );
 
 	private JRadioGroup<?, ?> rgESTipoMov = null;
 
@@ -120,30 +128,32 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JComboBoxPad cbTipoMov = null;
 
-	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad( "Permitir todos os usuários?", "S", "N" );
+	private JCheckBoxPad cbRestritoTipoMov = new JCheckBoxPad( "Permitir todos os usuários?", "S", "N" );
 
-	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbFiscalTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbEstoqTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbSomaTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad chImpPedTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbImpNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbImpBolTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbImpRecTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbImpRecTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbReImpNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbSeqNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbVlrMFinTipoMov = new JCheckBoxPad( "Permitir valor das parcelas menor que o total?", "S", "N" );
+	private JCheckBoxPad cbVlrMFinTipoMov = new JCheckBoxPad( "Permitir valor das parcelas menor que o total?", "S", "N" );
 
-	private JCheckBoxPad chbMComisTipoMov = new JCheckBoxPad( "Múltiplos comissionados ?", "S", "N" );
-	
+	private JCheckBoxPad cbMComisTipoMov = new JCheckBoxPad( "Múltiplos comissionados ?", "S", "N" );
+
+	private JCheckBoxPad cbEmitNFCPMov = new JCheckBoxPad( "Emite nota de compra ?", "S", "N" );
+
 	private Navegador navRestricoes = new Navegador( true );
 
 	private ListaCampos lcRestricoes = new ListaCampos( this, "" );
@@ -159,7 +169,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
-	
+
 	private ListaCampos lcRegraComis = new ListaCampos( this, "RC" );
 
 	private Vector<String> vVals = new Vector<String>();
@@ -168,11 +178,13 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private boolean[] bPrefs = null;
 
+	private JLabelPad separador1 = new JLabelPad();
+
 	public FTipoMov() {
 
 		super();
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 450 );
+		setAtribos( 50, 40, 720, 490 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -223,7 +235,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		txtCodRegraComis.setFK( true );
 		txtCodRegraComis.setNomeCampo( "IDUsu" );
 		txtCodRegraComis.setTabelaExterna( lcRegraComis );
-		
+
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Descrição da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.montaSql( false, "TRANSP", "VD" );
@@ -232,7 +244,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		txtCodTran.setTabelaExterna( lcTran );
 
 		cbTipoMov = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
-		
+		cbTipoMov.addComboBoxListener( this );
+
 		Vector<String> vValsES = new Vector<String>();
 		Vector<String> vLabsES = new Vector<String>();
 
@@ -259,55 +272,76 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		txtCodTipoMov2.setNomeCampo( "CodTipoMov" );
 
 		pinGeral.setPreferredSize( new Dimension( 430, 560 ) );
-		pinGeral.add( pinCamposGeral, BorderLayout.CENTER );
+		pinGeral.add( pnGeral, BorderLayout.CENTER );
 
-		setPainel( pinCamposGeral );
+		setPainel( pnGeral );
 
-		adicTab( "Geral", pinCamposGeral );
+		adicTab( "Geral", pnGeral );
 
 		adicCampo( txtCodTipoMov, 7, 20, 80, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoMov, 90, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, true );
-		adicCampo( txtCodModNota, 343, 20, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescModNota, 426, 20, 250, 20, "DescModNota", "Descrição do modelo de nota" );
-		adicCampo( txtCodSerie, 7, 60, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
-		adicDescFK( txtDescSerie, 90, 60, 250, 20, "DocSerie", "Documento atual" );
-		adicCampo( txtCodTab, 343, 60, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
-		adicDescFK( txtDescTab, 426, 60, 250, 20, "DescTab", "Descrição da tab. de preços" );
-		adicCampo( txtCodTipoMov2, 7, 100, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
-		adicDescFK( txtDescTipoMov2, 90, 100, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
-		adicDB( rgESTipoMov, 343, 100, 333, 30, "ESTipoMov", "Fluxo", true );
-		adicDB( rgTipoFrete, 7, 140, 90, 50, "CTipoFrete", "Tipo frete", false );
-		adicDB( chbFiscalTipoMov, 107, 160, 60, 20, "FiscalTipoMov", "Fiscal", true );
-		adicDB( chbEstoqTipoMov, 178, 160, 60, 20, "EstoqTipoMov", "Estoque", true );
-		adicDB( chbSomaTipoMov, 268, 160, 70, 20, "SomaVdTipoMov", "Financeiro", true );
-		adicDB( cbTipoMov, 343, 155, 250, 30, "TipoMov", "Tipo de movimento", true );
-		adicCampo( txtEspecieTipomov, 596, 160, 80, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
-		adicDB( chbImpPedTipoMov, 16, 230, 55, 20, "ImpPedTipoMov", "Imp.ped.", true );
-		adicDB( chbImpNfTipoMov, 74, 230, 55, 20, "ImpNfTipoMov", "Imp.NF", true );
-		adicDB( chbImpBolTipoMov, 132, 230, 55, 20, "ImpBolTipoMov", "Imp.bol.", true );
-		adicDB( chbImpRecTipoMov, 190, 230, 55, 20, "ImpRecTipoMov", "Imp.rec.", true );
-		adicDB( chbReImpNfTipoMov, 248, 230, 55, 20, "ReImpNfTipoMov", "Reimp.NF", true );
-		adicDB( chbSeqNfTipoMov, 306, 230, 70, 20, "SeqNfTipoMov", "Aloca Nº.NF", true );
-		adicDB( chbVlrMFinTipoMov, 390, 200, 300, 20, "VlrMFinTipoMov", "", true );
-		adicDB( chbRestritoTipoMov, 390, 220, 240, 20, "TUSUTIPOMOV", "", true );
-		adicDB( chbMComisTipoMov, 390, 240, 240, 20, "MComisTipoMov", "", true );
+
+		adicCampo( txtCodSerie, 7, 100, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
+		adicDescFK( txtDescSerie, 90, 100, 250, 20, "DocSerie", "Documento atual" );
+		adicCampo( txtCodModNota, 7, 140, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescModNota, 90, 140, 250, 20, "DescModNota", "Descrição do modelo de nota" );
+		adicCampo( txtCodTipoMov2, 7, 180, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
+		adicDescFK( txtDescTipoMov2, 90, 180, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
+		adicCampo( txtCodTab, 7, 220, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
+		adicDescFK( txtDescTab, 90, 220, 250, 20, "DescTab", "Descrição da tab. de preços" );
+		adicCampo( txtCodRegraComis, 7, 260, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescRegraComis, 90, 260, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
+		adicCampo( txtCodTran, 7, 300, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescTran, 90, 300, 250, 20, "DescTran", "Descrição da transportadora" ); 
+
+		separador1.setBorder( BorderFactory.createEtchedBorder() );
+		adic( separador1, 350, 4, 2, 380 );
+
+		adicDB( rgESTipoMov, 360, 20, 330, 30, "ESTipoMov", "Fluxo", true );
+
+		adicCampo( txtEspecieTipomov, 7, 60, 80, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
+		adicDB( cbTipoMov, 90, 60, 250, 24, "TipoMov", "Tipo de movimento", true );
 		
-		adicCampo( txtCodRegraComis, 7, 280, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescRegraComis, 90, 280, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
-		
-		adicCampo( txtCodTran, 7, 320, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescTran, 90, 320, 250, 20, "DescTran", "Descrição da transportadora" );
-		
+		adic( pnRegrasGeral, 360, 64, 250, 70 );
+
+		setPainel( pnRegrasGeral );
+
+		adicDB( cbFiscalTipoMov, 5, 20, 60, 20, "FiscalTipoMov", "Fiscal", true );
+		adicDB( cbEstoqTipoMov, 85, 20, 60, 20, "EstoqTipoMov", "Estoque", true );
+		adicDB( cbSomaTipoMov, 165, 20, 70, 20, "SomaVdTipoMov", "Financeiro", true );
+
+		setPainel( pnGeral );
+
+		adicDB( rgTipoFrete, 613, 72, 76, 61, "CTipoFrete", "Tipo de frete", false );
+
+		adic( pnRegrasVenda, 360, 145, 330, 115 );
+
+		setPainel( pnRegrasVenda );
+
+		adicDB( chImpPedTipoMov, 5, 20, 105, 20, "ImpPedTipoMov", "Imprimir pedido", true );
+		adicDB( cbImpNfTipoMov, 125, 20, 85, 20, "ImpNfTipoMov", "Imprimir NF", true );
+		adicDB( cbImpBolTipoMov, 220, 20, 105, 20, "ImpBolTipoMov", "Imprimir boleto", true );
+
+		adicDB( cbImpRecTipoMov, 5, 65, 105, 20, "ImpRecTipoMov", "Imprimir recibo", true );
+		adicDB( cbReImpNfTipoMov, 125, 65, 85, 20, "ReImpNfTipoMov", "Reimprimir NF", true );
+		adicDB( cbSeqNfTipoMov, 220, 65, 105, 20, "SeqNfTipoMov", "Aloca Nro. NF", true );
+
 		txtCodRegraComis.setAtivo( false );
 
-		lbInfoPadImp.setOpaque( true );
-		adic( lbInfoPadImp, 15, 193, 230, 15 );
-		adic( pinInfoPadImp, 7, 200, 380, 60 );
-		chbRestritoTipoMov.addCheckBoxListener( this );
-		chbMComisTipoMov.addCheckBoxListener( this );
+		cbEmitNFCPMov.setEnabled( false );
 
-		// pinLbPadImp.adic(lbInfoPadImp, 0, 0, 220, 15);
-		// pinLbPadImp.tiraBorda();
+		setPainel( pnGeral );
+
+		adic( pnRegrasOutras, 360, 268, 330, 110 );
+		setPainel( pnRegrasOutras );
+
+		adicDB( cbVlrMFinTipoMov, 5, 0, 300, 20, "VlrMFinTipoMov", "", true );
+		adicDB( cbRestritoTipoMov, 5, 20, 240, 20, "TUSUTIPOMOV", "", true );
+		adicDB( cbMComisTipoMov, 5, 40, 240, 20, "MComisTipoMov", "", true );
+		adicDB( cbEmitNFCPMov, 5, 60, 240, 20, "EmitNfCpMov", "", true );
+
+		cbRestritoTipoMov.addCheckBoxListener( this );
+		cbMComisTipoMov.addCheckBoxListener( this );
 
 		setListaCampos( true, "TIPOMOV", "EQ" );
 		lcCampos.setQueryInsert( false );
@@ -316,7 +350,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		pinDetRestricoes.setPreferredSize( new Dimension( 430, 80 ) );
 		pinDetRestricoes.add( pinNavRestricoes, BorderLayout.SOUTH );
-		pinDetRestricoes.add( pinCamposRestricoes, BorderLayout.CENTER );
+		pinDetRestricoes.add( pinRestricoes, BorderLayout.CENTER );
 
 		setListaCampos( lcRestricoes );
 		setNavegador( navRestricoes );
@@ -325,7 +359,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		pnRestricoes.add( spnRestricoes, BorderLayout.CENTER );
 		pinNavRestricoes.adic( navRestricoes, 0, 0, 270, 25 );
 
-		setPainel( pinCamposRestricoes );
+		setPainel( pinRestricoes );
 
 		adicCampo( txtIDUsu, 7, 20, 80, 20, "IdUsu", "Id", ListaCampos.DB_PF, txtNomeUsu, true );
 		adicDescFK( txtNomeUsu, 90, 20, 250, 20, "NomeUsu", " e nome do usuário" );
@@ -350,24 +384,25 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	public void afterInsert( InsertEvent ievt ) {
 
 		if ( !bPrefs[ 0 ] ) {
-			chbEstoqTipoMov.setVlrString( "N" );
+			cbEstoqTipoMov.setVlrString( "N" );
 		}
 		if ( bPrefs[ 1 ] ) {
-			chbMComisTipoMov.setVlrString( "S" );
-		} else {
-			chbMComisTipoMov.setVlrString( "N" );
+			cbMComisTipoMov.setVlrString( "S" );
+		}
+		else {
+			cbMComisTipoMov.setVlrString( "N" );
 		}
 
 	}
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( txtCodRegraComis.getAtivo() && txtCodRegraComis.getVlrInteger()==0 ) {
+		if ( txtCodRegraComis.getAtivo() && txtCodRegraComis.getVlrInteger() == 0 ) {
 			Funcoes.mensagemErro( this, "Campo Cód.rg.comis. é requerido!" );
 			pevt.cancela();
 		}
-		
-		super.beforePost(pevt);
+
+		super.beforePost( pevt );
 	}
 
 	private void montaCbTipoMov( String ES ) {
@@ -389,9 +424,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vLabs.addElement( "Ordem de produção" );
 			vVals.addElement( "OP" );
 			vLabs.addElement( "Devolução" );
-			vVals.addElement( "DV" );	
+			vVals.addElement( "DV" );
 			vLabs.addElement( "Devolução de Remessa" );
-			vVals.addElement( "DR" );			
+			vVals.addElement( "DR" );
 			vLabs.addElement( "Conhecimento de frete" );
 			vVals.addElement( "CF" );
 			vLabs.addElement( "NF Complementar" );
@@ -451,21 +486,40 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcRegraComis.setConexao( cn );
 		lcTran.setConexao( cn );
 		bPrefs = prefs();
-		chbEstoqTipoMov.setEnabled( bPrefs[ 0 ] ); // Habilita controle de estoque de acordo com o preferências
+		cbEstoqTipoMov.setEnabled( bPrefs[ 0 ] ); // Habilita controle de estoque de acordo com o preferências
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
 
-		if ( rgESTipoMov.getVlrString().equals( "S" ) )
+		if ( rgESTipoMov.getVlrString().equals( "S" ) ) {
 			rgTipoFrete.setAtivo( true );
-		else
+		}
+		else {
 			rgTipoFrete.setAtivo( false );
+		}
+		
 		montaCbTipoMov( rgESTipoMov.getVlrString() );
+
 	}
+	
+	public void valorAlterado( JComboBoxEvent evt ) {
+		
+		if ( evt.getComboBoxPad() == cbTipoMov ) {
+			if("CP".equals(cbTipoMov.getVlrString()) || "PC".equals(cbTipoMov.getVlrString())) {
+				cbEmitNFCPMov.setEnabled( true );
+			}
+			else {
+				cbEmitNFCPMov.setVlrString( "N" );
+				cbEmitNFCPMov.setEnabled( false );				
+			}			
+		}
+		
+	}
+
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
-		if ( evt.getCheckBox() == chbRestritoTipoMov ) {
+		if ( evt.getCheckBox() == cbRestritoTipoMov ) {
 			if ( evt.getCheckBox().isSelected() ) {
 				removeTab( "Restrições de Usuário", pnRestricoes );
 			}
@@ -473,22 +527,22 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 				adicTab( "Restrições de Usuário", pnRestricoes );
 			}
 		}
-		else if ( evt.getCheckBox() == chbMComisTipoMov ) {
-			
-			if ( bPrefs[1] ) {
-				chbMComisTipoMov.setEnabled( true );
+		else if ( evt.getCheckBox() == cbMComisTipoMov ) {
+
+			if ( bPrefs[ 1 ] ) {
+				cbMComisTipoMov.setEnabled( true );
 				txtCodRegraComis.setRequerido( evt.getCheckBox().isSelected() );
 				txtCodRegraComis.setAtivo( evt.getCheckBox().isSelected() );
-				if ( ! evt.getCheckBox().isSelected()  ) {
+				if ( !evt.getCheckBox().isSelected() ) {
 					txtCodRegraComis.setVlrInteger( 0 );
 					lcRegraComis.carregaDados();
 				}
 			}
 			else {
-				chbMComisTipoMov.setSelected( false );
-				chbMComisTipoMov.setEnabled( false );
+				cbMComisTipoMov.setSelected( false );
+				cbMComisTipoMov.setEnabled( false );
 			}
-		}
+		}		
 
 	}
 
@@ -507,27 +561,53 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			bRetorno[ 0 ] = true;
 			if ( rs.next() ) {
 				bRetorno[ 0 ] = true;
-				if ( "S".equals(rs.getString( "CONTESTOQ" )) ) {
+				if ( "S".equals( rs.getString( "CONTESTOQ" ) ) ) {
 					bRetorno[ 0 ] = true;
-				} else {
+				}
+				else {
 					bRetorno[ 0 ] = false;
 				}
-				if ( "S".equals(rs.getString( "MULTICOMIS" )) ) {
+				if ( "S".equals( rs.getString( "MULTICOMIS" ) ) ) {
 					bRetorno[ 1 ] = true;
-				} else {
+				}
+				else {
 					bRetorno[ 1 ] = false;
 				}
 			}
 			rs.close();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			rs = null;
 			ps = null;
 		}
 		return bRetorno;
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if(cevt.getListaCampos()==lcCampos) {
+					
+	  		if("CP".equals(cbTipoMov.getVlrString()) || "PC".equals(cbTipoMov.getVlrString())) {
+				cbEmitNFCPMov.setEnabled( true );
+			}
+			else {
+				cbEmitNFCPMov.setVlrString( "N" );
+				cbEmitNFCPMov.setEnabled( false );				
+			}
+			
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+
 	}
 
 }
