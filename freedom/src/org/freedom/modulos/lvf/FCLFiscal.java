@@ -103,7 +103,11 @@ public class FCLFiscal extends FDetalhe
 	private JPanelPad panelCOFINS = new JPanelPad( new GridLayout( 1, 1 ) );
 	
 	private JPanelPad panelCOFINSCampos = new JPanelPad( 500, 80 );
+
+	private JPanelPad panelFUNRURAL = new JPanelPad( new GridLayout( 1, 1 ) );
 	
+	private JPanelPad panelFUNRURALCampos = new JPanelPad( 500, 80 );
+
 	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
 	
 	private JPanelPad panelISSCampos = new JPanelPad( 500, 80 );
@@ -213,6 +217,8 @@ public class FCLFiscal extends FDetalhe
 	private JTextFieldFK txtDescSitTribCOF = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 	
 	private JTextFieldPad txtAliqCofinsFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
+	private JTextFieldPad txtAliqFunRuralFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
 	private JTextFieldPad txtVlrCofUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
@@ -794,8 +800,15 @@ public class FCLFiscal extends FDetalhe
 	
 		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
 		adicCampo( txtVlrCofUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
+
+		// **********  ABA FUNRURAL  **/
+
+		tpnGeral.addTab( "FUNRURAL", panelFUNRURAL );
+		setPainel( panelFUNRURALCampos );
 		
+		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, false );	
 		
+		 
 //		// **********  ABA ISS  **/
 //				
 //		tpnGeral.addTab( "ISS", panelISS );
@@ -811,6 +824,7 @@ public class FCLFiscal extends FDetalhe
 //		
 //		// **********  ABA IR  **/
 //				
+
 //		tpnGeral.addTab( "IR", panelIR );
 //		setPainel( panelIRCampos );
 //		
@@ -875,6 +889,7 @@ public class FCLFiscal extends FDetalhe
 		panelIR.add( panelIRCampos );	
 		panelCSocial.add( panelCSocialCampos );	
 		panelII.add( panelIICampos );		
+		panelFUNRURAL.add( panelFUNRURALCampos );
 	}
 	
 	private void copiarVariante() {
