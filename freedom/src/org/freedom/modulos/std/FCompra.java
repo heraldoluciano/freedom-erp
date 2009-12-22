@@ -151,6 +151,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtPercComItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
+	private JTextFieldPad txtCalcTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtCodNat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtVlrBaseICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
@@ -254,6 +256,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
 	
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtEmitCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextFieldPad txtTipoModNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -432,6 +436,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ));
+		lcTipoMov.add( new GuardaCampo( txtEmitCompra, "EmitNFCpMov", "Emite NF", ListaCampos.DB_SI, false ));
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true ) );
 		lcTipoMov.setWhereAdic( 
@@ -616,7 +621,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-//		setAltCab( 195 );
 		setAltCab( 160 );
 		setPainel( pinCabCompra );
 		
@@ -643,11 +647,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if( abaTransp.equals( "S" ) ){
 			setListaCampos( lcCampos );
 			setPainel( pinCabTransp );
-			//adicCampo( new JLabelPad("Cód.Trasp"), 7, 5, 60, 20 );
 			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
-			//pinCabTransp.adic( new JLabelPad("Razão social da transportadora"), 80, 5, 205, 20 );
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
-			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
 		
 		if ( "S".equals( abaImport ) ) {
@@ -669,7 +670,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		}
 		
-		
+		adicCampoInvisivel( txtCalcTrib, "CalcTrib", "Calculo de tributos", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
 		setListaCampos( true, "COMPRA", "CP" );
@@ -1254,7 +1255,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				labelobs02cp = rs.getString( "LABELOBS02CP" );
 				labelobs03cp = rs.getString( "LABELOBS03CP" );
 				labelobs04cp = rs.getString( "LABELOBS04CP" );
-				habconvcp = rs.getString( "HABCONVCP" ).trim().equals( "S" );
+				habconvcp = rs.getString( "HABCONVCP" )==null? false : rs.getString( "HABCONVCP" ).equals( "S" );
 								
 			}
 			con.commit();
@@ -1946,6 +1947,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
+			txtCalcTrib.setVlrString( txtDtEmitCompra.getVlrString());
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				txtDocCompra.setAtivo( false );
 			}
