@@ -281,18 +281,18 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicCampo( txtCodTipoMov, 7, 20, 80, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoMov, 90, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodSerie, 7, 100, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
-		adicDescFK( txtDescSerie, 90, 100, 250, 20, "DocSerie", "Documento atual" );
-		adicCampo( txtCodModNota, 7, 140, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescModNota, 90, 140, 250, 20, "DescModNota", "Descrição do modelo de nota" );
-		adicCampo( txtCodTipoMov2, 7, 180, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
-		adicDescFK( txtDescTipoMov2, 90, 180, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
-		adicCampo( txtCodTab, 7, 220, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
-		adicDescFK( txtDescTab, 90, 220, 250, 20, "DescTab", "Descrição da tab. de preços" );
-		adicCampo( txtCodRegraComis, 7, 260, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescRegraComis, 90, 260, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
-		adicCampo( txtCodTran, 7, 300, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescTran, 90, 300, 250, 20, "DescTran", "Descrição da transportadora" ); 
+		adicCampo( txtCodSerie, 7, 105, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
+		adicDescFK( txtDescSerie, 90, 105, 250, 20, "DocSerie", "Documento atual" );
+		adicCampo( txtCodModNota, 7, 145, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescModNota, 90, 145, 250, 20, "DescModNota", "Descrição do modelo de nota" );
+		adicCampo( txtCodTipoMov2, 7, 185, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
+		adicDescFK( txtDescTipoMov2, 90, 185, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
+		adicCampo( txtCodTab, 7, 225, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
+		adicDescFK( txtDescTab, 90, 225, 250, 20, "DescTab", "Descrição da tab. de preços" );
+		adicCampo( txtCodRegraComis, 7, 265, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescRegraComis, 90, 265, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
+		adicCampo( txtCodTran, 7, 305, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescTran, 90, 305, 250, 20, "DescTran", "Descrição da transportadora" ); 
 
 		separador1.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separador1, 350, 4, 2, 380 );
