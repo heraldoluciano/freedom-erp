@@ -28,21 +28,14 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
-import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
-
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -51,12 +44,14 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -65,6 +60,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
@@ -226,24 +222,28 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private Map<String, Object> bPref = null;
 	
+	private JTextFieldPad txtCodFiscFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescFiscFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	
+	private ListaCampos lcTipoFiscFor = new ListaCampos( this, "FF" );
 
 	public FFornecedor() {
 
 		super();
 		setTitulo( "Cadastro de Fornecedores" );
-		setAtribos( 50, 20, 530, 670 );
+		setAtribos( 50, 20, 505, 670 );
 		setImprimir( true );
 		lcForCli.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcForCli );
 		lcForCli.setTabela( tabCliFor );
-		
-		
+				
 	}
 
 	private void montaTela() {
 
+		btFirefox.setToolTipText( "Acessar Site" );
+		
 		lcCampos.addPostListener( this );
 		lcCampos.addInsertListener( this );
 		lcMunic.addCarregaListener( this );
@@ -287,6 +287,18 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF );
+
+		/***********************
+		 *      Tipo Fiscal    *
+		 **********************/		
+		
+		lcTipoFiscFor.add( new GuardaCampo( txtCodFiscFor, "CodFiscFor", "Cód.tp.fisc.", ListaCampos.DB_PK, false ) );
+		lcTipoFiscFor.add( new GuardaCampo( txtDescFiscFor, "DescFiscCli", "Descrição do tipo fiscal", ListaCampos.DB_SI, false ) );
+		lcTipoFiscFor.montaSql( false, "TIPOFISCCLI", "LF" );
+		lcTipoFiscFor.setQueryCommit( false );
+		lcTipoFiscFor.setReadOnly( true );
+		txtCodFiscFor.setTabelaExterna( lcTipoFiscFor );
+		
 		
 		/***************
 		 *  MUNICIPIO  *
@@ -314,55 +326,66 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicTab( "Fornecedor", panelDados );
 		adicCampo( txtCodFor, 7, 20, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazFor, 80, 20, 267, 20, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, true );
-		adicDB( rgPessoa, 350, 20, 100, 60, "PessoaFor", "Pessoa", true );
+		adicDB( rgPessoa, 350, 20, 120, 60, "PessoaFor", "Pessoa", true );
 		adicDB( cbAtivo, 7, 60, 70, 20, "AtivoFor", "Ativo", true );
 		adicCampo( txtNomeFor, 80, 60, 267, 20, "NomeFor", "Nome fantasia", ListaCampos.DB_SI, true );
-		adicCampo( txtCodTipoFor, 7, 100, 70, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, true );
-		adicDescFK( txtDescTipoFor, 80, 100, 207, 20, "DescTipoFor", "Descrição do tipo de Fornecedor" );
-		adicCampo( txtCpfFor, 290, 100, 160, 20, "CpfFor", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtRgFor, 7, 140, 150, 20, "RgFor", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtCnpjFor, 160, 140, 147, 20, "CnpjFor", "Cnpj", ListaCampos.DB_SI, false );
-		adicCampo( txtInscFor, 310, 140, 140, 20, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtCepFor, 7, 180, 70, 20, "CepFor", "Cep", ListaCampos.DB_SI, false );
-		adic( btBuscaEnd, 80, 180, 20, 20 );
-		adicCampo( txtEndFor, 103, 180, 220, 20, "EndFor", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumFor, 326, 180, 65, 20, "NumFor", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplFor, 394, 180, 58, 20, "ComplFor", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairFor, 7, 220, 190, 20, "BairFor", "Bairro", ListaCampos.DB_SI, false );		
-		adicCampo( txtDDDFoneFor, 7, 260, 47, 20, "DDDFoneFor", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneFor, 57, 260, 90, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDFaxFor, 150, 260, 47, 20, "DDDFaxFor", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxFor, 200, 260, 90, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtCelFor, 343, 260, 107, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteFor, 235, 300, 190, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
-		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.for.contábil", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do histórico padrão" );
-		adic(btFirefox, 430, 300, 20, 20 );
-		btFirefox.setToolTipText( "Acessar Site" );
 		
-		 if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
+		adicCampo( txtRgFor, 7, 100, 100, 20, "RgFor", "RG", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfFor, 110, 100, 100, 20, "CpfFor", "CPF", ListaCampos.DB_SI, false );		
+		adicCampo( txtCnpjFor, 213, 100, 134, 20, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtInscFor, 350, 100, 120, 20, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCepFor, 7, 140, 78, 20, "CepFor", "Cep", ListaCampos.DB_SI, false );
+		adic( btBuscaEnd, 87, 140, 20, 20 );
+		adicCampo( txtEndFor, 110, 140, 190, 20, "EndFor", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumFor, 303, 140, 44, 20, "NumFor", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplFor, 350, 140, 120, 20, "ComplFor", "Complemento", ListaCampos.DB_SI, false );
 
-			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, true );
-			adicDescFK( txtDescPais, 80, 460, 217, 20, "DescPais", "Nome do país" );
-			adicCampo( txtSiglaUF, 7, 500, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
-			adicDescFK( txtNomeUF, 80, 500, 217, 20, "NomeUF", "Nome UF" );
-			adicCampo( txtCodMun, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
-			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );			
-								
-		 }
-		 else{
-			 
-			 adicCampo( txtCidFor, 200, 220, 190, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false );
-			 adicCampo( txtUFFor, 393, 220, 60, 20, "UFFor", "UF", ListaCampos.DB_SI, false );
-		 }
-			 
+		adicCampo( txtBairFor, 7, 180, 293, 20, "BairFor", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtDDDFoneFor, 303, 180, 44, 20, "DDDFoneFor", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneFor, 350, 180, 120, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtDDDFaxFor, 7, 220, 43, 20, "DDDFaxFor", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxFor, 53, 220, 90, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDCelFor, 146, 220, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtCelFor, 196, 220, 105, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailFor, 304, 220, 166, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtSiteFor, 7, 260, 164, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
+		adic( btFirefox, 173, 259, 19, 20 );
+		adicCampo( txtContFor, 196, 260, 274, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodForContab, 7, 300, 145, 20, "CodForContab", "Código for. contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 155, 300, 156, 20, "CodContDeb", "Código da conta de débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 313, 300, 157, 20, "CodContCred", "Código da conta de crédito", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodHistPad, 7, 340, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
+		adicDescFK( txtDescHistPad, 90, 340, 379, 20, "DescHist", "Descrição do histórico padrão" );
+
+		
+		adicCampo( txtCodTipoFor, 7, 380, 80, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, true );
+		adicDescFK( txtDescTipoFor, 90, 380, 379, 20, "DescTipoFor", "Descrição do tipo de Fornecedor" );
+						
+		adicCampo( txtCodFiscFor, 7, 420, 80, 20, "CodFiscFor", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscFor, false );
+		adicDescFK( txtDescFiscFor, 90, 420, 379, 20, "DescFiscCli", "Descrição do tipo fiscal de fornecedor" );
+
+		if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
 			
+			adicCampo( txtCodPais, 7, 460, 80, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, true );
+			adicDescFK( txtDescPais, 90, 460, 379, 20, "DescPais", "Nome do país" );
+			adicCampo( txtSiglaUF, 7, 500, 80, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
+			adicDescFK( txtNomeUF, 90, 500, 379, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtCodMun, 7, 540, 80, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+			adicDescFK( txtDescMun, 90, 540, 379, 20, "NomeMunic", "Nome do municipio" );			
+								
+		}
+		else{
+			 
+			adicCampo( txtCidFor, 7, 460, 190, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false );
+			adicCampo( txtUFFor, 200, 460, 60, 20, "UFFor", "UF", ListaCampos.DB_SI, false );
+		 
+		}
+
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
 		panelObservacao.add( spnObs );
@@ -426,20 +449,27 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcForCli.setQueryInsert( false );
 		lcForCli.setQueryCommit( false );
 		
-		adic( new JLabelPad("Nome"), 313, 0, 200, 20 );
-		adic( txtNomeForCli, 313, 20, 180, 20 );
+		adic( new JLabelPad("Nome"), 313, 0, 170, 20 );
+		adic( txtNomeForCli, 313, 20, 160, 20 );
+		
 		adic( new JLabelPad("Endereço"), 7, 40, 200, 20 );
 		adic( txtEndForCli , 7, 60, 305, 20 );
+		
 		adic( new JLabelPad("Bairro"), 315, 40, 120, 20 );
-		adic( txtBairForCli , 315, 60, 131, 20 );
-		adic( new JLabelPad("Nº"), 450, 40, 200, 20 );
-		adic( txtNumForCli , 450, 60, 45, 20 );
+		adic( txtBairForCli , 315, 60, 111, 20 );
+		
+		adic( new JLabelPad("Nº"), 429, 40, 44, 20 );
+		adic( txtNumForCli , 429, 60, 44, 20 );
+		
 		adic( new JLabelPad("CNPJ"), 7, 80, 160, 20 );
 		adic( txtCnpjForCli, 7, 100, 160, 20 );
+		
 		adic( new JLabelPad("Inscrição Estadual"), 170, 80, 200, 20 );
 		adic( txtinscForCli, 170, 100, 142, 20 );
-		adic( new JLabelPad("CPF"), 315, 80, 200, 20 );
-		adic( txtcpfForCli, 315, 100, 180, 20 );
+		
+		adic( new JLabelPad("CPF"), 315, 80, 158, 20 );
+		adic( txtcpfForCli, 315, 100, 158, 20 );
+		
 		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
 		txtCnpjForCli.setMascara(  JTextFieldPad.MC_CNPJ );
 	
@@ -1010,8 +1040,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcMunic.setConexao( cn );
 		lcUF.setConexao( cn );
 		lcPais.setConexao( cn );
+		lcTipoFiscFor.setConexao( cn );
+		
 		prefs = getPrefs();
-		//prefs = getPrefere();
+				
 		montaTela();
 	}
 	
