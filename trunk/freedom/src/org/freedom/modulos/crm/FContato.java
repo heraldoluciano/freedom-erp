@@ -117,9 +117,13 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtCepCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JTextFieldPad txtFoneCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	private JTextFieldPad txtDDDCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0);
+	
+	private JTextFieldPad txtFoneCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtFaxCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtCelCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtEmailCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -210,7 +214,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private Navegador navAtiv = new Navegador( true );
 
 	private Navegador navGrupos = new Navegador( true );
-	
+
 
 	public FContato() {
 
@@ -243,8 +247,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		txtCpfCont.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjCont.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCont.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneCont.setMascara( JTextFieldPad.MC_FONEDDD );
-		txtFaxCont.setMascara( JTextFieldPad.MC_FONE );		
+		txtFoneCont.setMascara( JTextFieldPad.MC_FONE );
+		txtFaxCont.setMascara( JTextFieldPad.MC_FONE );	
+		txtCelCont.setMascara( JTextFieldPad.MC_FONE );		
 		
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 
@@ -366,12 +371,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtEmailCont, 253, 190, 246, 20, "EmailCto", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtCepCont, 7, 230, 95, 20, "CepCto", "Cep", ListaCampos.DB_SI, false );
 		adic( btBuscaEnd, 105, 229, 20, 20 );
-		adicCampo( txtEndCont, 130, 230, 300, 20, "EndCto", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumCont, 433, 230, 67, 20, "NumCto", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCont, 7, 270, 120, 20, "ComplCto", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCont, 130, 270, 120, 20, "BairCto", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCont, 253, 270, 100, 20, "FoneCto", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCont, 356, 270, 73, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtEndCont, 130, 230, 215, 20, "EndCto", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumCont, 348, 230, 67, 20, "NumCto", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplCont, 418, 230, 80, 20, "ComplCto", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairCont, 7, 270, 141, 20, "BairCto", "Bairro", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDCont, 151, 270, 30, 20, "DDDCto", "DDD", ListaCampos.DB_SI, false  );
+		adicCampo( txtFoneCont, 184, 270, 80, 20, "FoneCto", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxCont, 267, 270, 80, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtCelCont, 350, 270, 80, 20, "CelCto", "Celular", ListaCampos.DB_SI, false ); 
 		adicCampo( txtNumEmp, 433, 270, 67, 20, "numempcto", "Nº Func.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodTipoCont, 7, 310, 100, 20, "CodTipoCont", "Cód.Tipo Cont.", ListaCampos.DB_FK, txtDescTipoCont, true );
