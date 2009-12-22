@@ -1327,16 +1327,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			sql.append( "select origfisc,codtrattrib,redfisc,tipofisc,codmens,aliqfisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr," );
 			sql.append( "codempif,codfilialif,codfisc,coditfisc " );
-			sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?)" );				
-			
-	/*		String sSQL = "SELECT ORIGFISC,CODTRATTRIB, REDFISC,TIPOFISC, " 
-						+ "CODMENS,ALIQFISC,ALIQIPIFISC, TPREDICMSFISC, TIPOST, MARGEMVLAGR " 
-						+ "FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?,?,?,?)";*/
-	
+			sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?)" );				
+				
 			try {
 	
 				ps = con.prepareStatement( sql.toString() );
-	//			ps.setInt( 1, Aplicativo.iCodFilial );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, lcProd.getCodFilial() );
 				ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
@@ -1346,6 +1341,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				ps.setInt( 7, Aplicativo.iCodEmp );
 				ps.setInt( 8, Aplicativo.iCodFilial );
 				ps.setInt( 9, txtCodTipoMov.getVlrInteger() );
+				ps.setString( 10, "VD" );
+				
 				rs = ps.executeQuery();
 	
 				if ( rs.next() ) {
