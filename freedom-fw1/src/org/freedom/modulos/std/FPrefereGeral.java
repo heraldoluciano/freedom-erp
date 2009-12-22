@@ -104,8 +104,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JPanelPad pinEmail = new JPanelPad();
 
-//	private JPanelPad pinSmtp = new JPanelPad();
-
 	private JPanelPad pinProd = new JPanelPad();
 
 	private JPanelPad pinOpcoesVenda = new JPanelPad();
@@ -610,7 +608,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsFormatoDANFE.addElement( RETRATO_DANFE );
 		vValsFormatoDANFE.addElement( PAISAGEM_DANFE );
 		rgFormatoDANFE = new JRadioGroup<String, String>( 1, 2, vLabsFormatoDANFE, vValsFormatoDANFE );
-//		rgFormatoDANFE.setVlrInteger( new Integer(1) );
 		
 		Vector<String> vLabsAmbienteNFE = new Vector<String>();
 		Vector<String> vValsAmbienteNFE = new Vector<String>();
@@ -980,12 +977,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbConsIECliFisica, 7, 200, 400, 20, "ConsisteIEPF", "", true );
 		adicDB( cbCredIcmsSimples, 7, 220, 400, 20, "CredIcmsSimples", "", true );
 		adicDB( cbGeraCodUnif, 7, 240, 500, 20, "GeraCodUnif", "", true);
-
 		
 		adicCampo( txtCodMensGeral, 7, 280, 90, 20, "CodMensIcmsSimples", "Cód.mens", ListaCampos.DB_FK, txtDescMensGeral, false );
 		adicDescFK( txtDescMensGeral, 100, 280, 350, 20, "mens", " Mensagem para destaque de crédito de ICMS (Simples)" );
-		
-		
 		
 		// Venda
 
@@ -1006,8 +1000,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false );
 		adicDB( rgTipoClass, 7, 370, 250, 30, "TipoClassPed", "Tipo de query", false );
 		
-//		lbVendOpcoes.setOpaque( true );
-//		adic( lbVendOpcoes, 357, 5, 70, 20 );
 		adic( pinOpcoesVenda, 348, 5, 520, 420 );
 		pinOpcoesVenda.setBorder( BorderFactory.createTitledBorder( opcoes ) );
 		setPainel( pinOpcoesVenda );
@@ -1097,8 +1089,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtDescOrc, 403, 65, 250, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtTitOrcTxt01, 403, 105, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-//		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, false );
-//		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Descrição da mensagem padrão para orçamento" );
 		
 		adicDB( rgTipoCustoLuc, 7, 185, 390, 60, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true );
 		
@@ -1169,13 +1159,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbComissManut, 510, 315, 350, 20, "VDManutComObrig", "", false );
 		adicDB( cbGeraPagEmis, 510, 335, 350, 20, "GeraPagEmis", "", true );
 		adicDB( cbGeraRecEmis, 510, 355, 350, 20, "GeraRecEmis", "", true );
-		
-		
+			
 		lbFinPagar.setBorder( BorderFactory.createTitledBorder( "Contratos/Projetos" ));		
 		adic( lbFinPagar, 10, 215, 485, 80);
 		
 		adicDB( cbLancaFinContr, 17, 235, 350, 20, "LancaFinContr", "", false );
-
 		
 		lbFinLibCred.setBorder( BorderFactory.createTitledBorder( "Liberação de crédito" ) );			
 		adic( lbFinLibCred, 7, 300, 485, 90 );
@@ -1249,9 +1237,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbUsaRefProd, 17, 195, 160, 20, "UsaRefProd", "", true );
 		adicDB( cbTamDescProd, 17, 250, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
 		adic( new JLabelPad("Tipo de código de barras"), 17, 280, 200, 20 );
-		adicDB( rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false );
-		
-		
+		adicDB( rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false );				
 
 		// Estoque
 		setPainel( pinEstoq );
@@ -1432,8 +1418,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic( email, 27, 10, 180, 20 );
 		adic( linha2, 7, 20, 403, 190 );
 		
-		//setPainel( pinSmtp );
-		
 		adicCampo( txtServidorSMTP, 17, 60, 230, 20, "SMTPMAIL", "Servidor de SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtPortaSMTP, 250, 60, 50, 20, "PORTAMAIL", "Porta", ListaCampos.DB_SI, false );
 		adicDB( cbAutenticaSMTP, 307, 60, 100, 20, "SMTPAUTMAIL", "", false );
@@ -1443,7 +1427,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtSenhaSMTP, 17, 180, 283, 20, "PASSMAIL", "Senha do usuario", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PREFERE3", "SG" );
 
-		// fim da adicï¿½o de abas
+		// fim da adicão de abas
 
 		lcCampos.addCarregaListener( this );
 		lcPDV.addInsertListener( this );
