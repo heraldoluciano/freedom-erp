@@ -104,7 +104,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	public void setaInfoTela() {
 
 		telaPrincipal.setIdent( sDescSis.trim() + " - " + sDescModu.trim() );
-		telaPrincipal.setConexao( con ); // Variavel de conexão da Classe
+		telaPrincipal.setConexao( con ); // Variável de conexão da Classe
 
 		telaPrincipal.statusBar.setUsuario( strUsuario );// Variavel de usuario da
 		telaPrincipal.statusBar.setCodFilial( iCodFilial );
@@ -118,7 +118,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		btAtualMenu.addActionListener( this );
 		bModoDemo = getModoDemo();
 
-		validaPrefere();
+//		validaPrefere();
 
 	}
 
