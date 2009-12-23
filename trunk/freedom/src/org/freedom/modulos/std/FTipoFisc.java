@@ -41,7 +41,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 
-public class FTipoFiscCli extends FDados implements ActionListener {
+public class FTipoFisc extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,10 +77,10 @@ public class FTipoFiscCli extends FDados implements ActionListener {
 	
 	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N");
 
-	public FTipoFiscCli() {
+	public FTipoFisc() {
 
 		super();
-		setTitulo( "Cadastro de tipos fiscal de clientes" );
+		setTitulo( "Tipos Fiscais" );
 		setAtribos( 50, 50, 350, 330 );
 		
 		adicCampo( txtCod, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_PK, true );
