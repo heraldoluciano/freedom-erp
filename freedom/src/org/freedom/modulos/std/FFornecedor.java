@@ -290,14 +290,15 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		/***********************
 		 *      Tipo Fiscal    *
-		 **********************/		
-		
-		lcTipoFiscFor.add( new GuardaCampo( txtCodFiscFor, "CodFiscFor", "Cód.tp.fisc.", ListaCampos.DB_PK, false ) );
+		 ***********************/		
+
+		lcTipoFiscFor.add( new GuardaCampo( txtCodFiscFor, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscFor.add( new GuardaCampo( txtDescFiscFor, "DescFiscCli", "Descrição do tipo fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscFor.montaSql( false, "TIPOFISCCLI", "LF" );
 		lcTipoFiscFor.setQueryCommit( false );
 		lcTipoFiscFor.setReadOnly( true );
 		txtCodFiscFor.setTabelaExterna( lcTipoFiscFor );
+
 		
 		
 		/***************
@@ -366,8 +367,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtCodTipoFor, 7, 380, 80, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, true );
 		adicDescFK( txtDescTipoFor, 90, 380, 379, 20, "DescTipoFor", "Descrição do tipo de Fornecedor" );
 						
+		
 		adicCampo( txtCodFiscFor, 7, 420, 80, 20, "CodFiscFor", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscFor, false );
 		adicDescFK( txtDescFiscFor, 90, 420, 379, 20, "DescFiscCli", "Descrição do tipo fiscal de fornecedor" );
+
 
 		if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
 			
@@ -391,6 +394,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		panelObservacao.add( spnObs );
 		
 		setListaCampos( true, "FORNECED", "CP" );
+		txtCodFiscFor.setNomeCampo( "CodFiscCli" );		
+		
 		lcCampos.setQueryInsert( false );
 		
 		if ( (Boolean) prefs.get( "BUSCACEP" ) ) {
@@ -399,7 +404,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		else {
 			btBuscaEnd.setEnabled( false );
 		}
-
+		
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		
@@ -482,7 +487,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneFor.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
-
+		
 	}
 	
 	private void setValores(){
@@ -497,6 +502,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		txtBairForCli.setVlrString( txtBairFor.getVlrString() );
 		
 	}
+	
 	private void fazBusca(){ 
 		
 		String sCodCli = txtCodFor.getVlrString();
@@ -598,10 +604,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			ps.executeUpdate();
 			
 			con.commit();
-		} catch ( SQLException  e ) {
+		} 
+		catch ( SQLException  e ) {
 			
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao inserir Cliente" + e.getMessage() );
+			
 		}
 		
 		return codcli;
