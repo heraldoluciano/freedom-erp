@@ -67,7 +67,7 @@ public class NFEntrada extends NF {
 			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, C.OBSERVACAO, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
-			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA, TM.TIPOMOV "  );
+			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA, TM.TIPOMOV, C.VLRFUNRURALCOMPRA "  );
 			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG, EQTIPOMOV TM " );
 			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
@@ -81,7 +81,10 @@ public class NFEntrada extends NF {
 			ResultSet rs = ps.executeQuery();
 			
 			cont++;
-			cab = new TabVector( TAM_CAB );
+			cab = new TabVector( TAM_CAB );			
+			
+			frete = new TabVector( 26 );
+			frete.addRow();
 			
 			while ( rs.next() ) {
 				cab.addRow();
@@ -150,6 +153,49 @@ public class NFEntrada extends NF {
 				cab.setBigDecimal( C_QTDFRETE, qtdfrete );
 				cab.setString( C_HALT, rs.getString( "HALT" ) );
 				cab.setString( C_TIPOMOV, rs.getString( "TIPOMOV" ) );
+				cab.setBigDecimal( C_VLRFUNRURALCOMPRA, rs.getBigDecimal( "VLRFUNRURALCOMPRA" ) );
+								
+				//XXX
+				
+				frete.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" )  );
+				
+				frete.setString( C_DDDTRANSP, "" );
+				frete.setString( C_FONETRANSP, "" );
+				frete.setInt( C_CODTRAN, 0 );
+				frete.setString( C_RAZTRANSP, "" );
+				frete.setString( C_NOMETRANSP, "" );
+				frete.setString( C_INSCTRANSP, "" );
+				frete.setString( C_CNPJTRANSP, "" );
+				frete.setString( C_TIPOTRANSP, "" );
+				frete.setString( C_ENDTRANSP, "" );
+				frete.setInt( C_NUMTRANSP, 0 );
+				frete.setString( C_CIDTRANSP, "" );
+				frete.setString( C_UFTRANSP, "" );
+				frete.setString( C_TIPOFRETE, "" );
+				frete.setString( C_PLACAFRETE, "" );
+				frete.setString( C_UFFRETE, "" );
+				
+				
+				if(qtdfrete!=null) {			
+					frete.setBigDecimal( C_QTDFRETE, qtdfrete );
+				}
+				else {
+					frete.setBigDecimal( C_QTDFRETE, new BigDecimal(0) );
+				}
+				
+				frete.setString( C_ESPFRETE, "" );
+				frete.setString( C_MARCAFRETE, "" );
+
+				frete.setBigDecimal( C_PESOBRUTO, new BigDecimal( "0.00" ) );
+				frete.setBigDecimal( C_PESOLIQ, new BigDecimal( "0.00" ) );
+					
+				
+				frete.setString( C_CONHECFRETEPED, "" );
+				frete.setString( C_CPFTRANSP, "" );
+				frete.setString( C_ADICFRETEBASEICM, "" );
+				
+				frete.setBigDecimal( C_ALIQICMSFRETEVD, new BigDecimal( "0.00" ) );
+				frete.setBigDecimal( C_VLRICMSFRETEVD, new BigDecimal( "0.00" ) );
 				
 			}
 			
@@ -176,7 +222,7 @@ public class NFEntrada extends NF {
 			sql.append(	"AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC AND CL.GERALFISC='S'");
 			sql.append(	") MENS,");
 			
-			sql.append( "P.CODBARPROD, P.CODFABPROD, P.QTDEMBALAGEM " );
+			sql.append( "P.CODBARPROD, P.CODFABPROD, P.QTDEMBALAGEM, I.ALIQFUNRURALITCOMPRA " );
 			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N " ); 
 			sql.append( "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " );
 			sql.append( "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL " );
@@ -193,6 +239,7 @@ public class NFEntrada extends NF {
 			itens = new TabVector( TAM_ITENS );
 			
 			while ( rs.next() ) {
+				
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITCOMPRA" ) );
 				itens.setInt( C_CODPROD, rs.getInt( "CODPROD" ) );
@@ -224,6 +271,7 @@ public class NFEntrada extends NF {
 				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
 				itens.setString( C_CODFABPROD, rs.getString( "CODFABPROD" ) );				
 				itens.setBigDecimal( C_QTDEMBALAGEM, rs.getBigDecimal( "QTDEMBALAGEM" ));
+				itens.setBigDecimal( C_ALIQFUNRURALITCOMPRA, rs.getBigDecimal( "ALIQFUNRURALITCOMPRA" ) );
 				
 			}
 			
@@ -232,71 +280,13 @@ public class NFEntrada extends NF {
 			con.commit();
 			
 			itens.setRow( -1 );
-
-			adic = new TabVector( 5 );
-			/*
-			 * adic.addRow(); 
-			 * adic.setInt(C_CODAUXV, 0); 
-			 * adic.setInt(C_CPFEMITAUX, 0); 
-			 * adic.setString(C_NOMEEMITAUX, ""); 
-			 * adic.setString(C_CIDEMITAUX, ""); 
-			 * adic.setString(C_UFEMITAUX, ""); 
-			 * adic.setRow(-1);
-			 */
-
-			parc = new TabVector( 3 );
-			/*
-			 * parc.addRow(); 
-			 * parc.setDate(C_DTVENCTO, null); 
-			 * parc.setFloat(C_VLRPARC, 0); 
-			 * parc.setInt(C_NPARCITREC, 0); 
-			 * parc.setRow(-1);
-			 */
-
-			frete = new TabVector( 26 );
-			frete.addRow();
-			
-			frete.setInt( C_CODTRAN, 0 );
-			frete.setString( C_RAZTRANSP, "" );
-			frete.setString( C_NOMETRANSP, "" );
-			frete.setString( C_INSCTRANSP, "" );
-			frete.setString( C_CNPJTRANSP, "" );
-			frete.setString( C_TIPOTRANSP, "" );
-			frete.setString( C_ENDTRANSP, "" );
-			frete.setInt( C_NUMTRANSP, 0 );
-			frete.setString( C_CIDTRANSP, "" );
-			frete.setString( C_UFTRANSP, "" );
-			frete.setString( C_TIPOFRETE, "" );
-			frete.setString( C_PLACAFRETE, "" );
-			frete.setString( C_UFFRETE, "" );
-
-			if(qtdfrete!=null) {			
-				frete.setBigDecimal( C_QTDFRETE, qtdfrete );
-			}
-			else {
-				frete.setBigDecimal( C_QTDFRETE, new BigDecimal(0) );
-			}
-			
-			frete.setString( C_ESPFRETE, "" );
-			frete.setString( C_MARCAFRETE, "" );
-
-			frete.setBigDecimal( C_PESOBRUTO, new BigDecimal( "0.00" ) );
-			frete.setBigDecimal( C_PESOLIQ, new BigDecimal( "0.00" ) );
-			frete.setBigDecimal( C_VLRFRETEPED, new BigDecimal( "0.00" ) );				
-			
-			frete.setString( C_CONHECFRETEPED, "" );
-			frete.setString( C_CPFTRANSP, "" );
-			frete.setString( C_ADICFRETEBASEICM, "" );
-			
-			frete.setBigDecimal( C_ALIQICMSFRETEVD, new BigDecimal( "0.00" ) );
-			frete.setBigDecimal( C_VLRICMSFRETEVD, new BigDecimal( "0.00" ) );
-			
-			frete.setString( C_DDDTRANSP, "" );
-			frete.setString( C_FONETRANSP, "" );
-			
 			frete.setRow( -1 );
 
-		} catch ( SQLException e ) {
+			adic = new TabVector( 5 );
+			parc = new TabVector( 3 );
+
+		} 
+		catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro na NFEntrada\n" + cont + "\n" + e.getMessage() );
 			e.printStackTrace();
 			retorno = false;
