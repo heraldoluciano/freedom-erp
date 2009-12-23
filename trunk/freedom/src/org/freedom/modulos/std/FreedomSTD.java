@@ -63,7 +63,6 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente", "TipoCli", 'T', 100101010, 3, true, FTipoCli.class );
 				addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente", "Classifição de Clientes", 'f', 100101020, 3, true, FClasCli.class );
 				addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente", "Clientes", 'C', 100101030, 3, true, FCliente.class );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo fiscal de cliente", "Tipo Fiscal de Cliente", 'p', 100101040, 3, true, FTipoFiscCli.class );
 				addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101050, 3, true, FCredCli.class );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Comissionado", "", 'C', 100102000, 2, false, null );
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Setor", "Setor", 'S', 100102010, 3, true, FSetor.class );
@@ -296,7 +295,8 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Serviço", "Serviço", 'ç', 800150000, 1, true, FServico.class );			
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NCM", "Tabela NCM", 'N', 800700000, 2, true, FNCM.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NBM", "Tabela NBM", 'B', 800800000, 2, true, FNBM.class );
-			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );			
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Tipos fiscais", "Tipos Fiscais", 'p', 800130000, 3, true, FTipoFisc.class );
 						
 			addSeparador( 800000000 );
 
