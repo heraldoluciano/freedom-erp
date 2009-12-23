@@ -93,11 +93,17 @@ public class FRPagar extends FRelatorio {
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
 
 	private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.gif" ) );
+	
+	private ListaCampos lcBanco = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 440 );
+		setAtribos( 80, 80, 410, 450 );
 		
 		montaListaCampos();
 		montaCheckBox();
@@ -107,6 +113,7 @@ public class FRPagar extends FRelatorio {
 		txtDatafim.setVlrDate( cal.getTime() );
 		cal.set( Calendar.DAY_OF_MONTH, 1 );
 		txtDataini.setVlrDate( cal.getTime() );
+		
 	}
 
 	private void montaTela() {
@@ -132,12 +139,19 @@ public class FRPagar extends FRelatorio {
 		adic( txtCodFor, 7, 200, 80, 20 );
 		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 180, 300, 20 );
 		adic( txtRazFor, 90, 200, 277, 20 );
+		
 		adic( new JLabelPad( "Cód.pl.pag." ), 7, 223, 80, 20 );
-		adic( txtCodPlanoPag, 7, 245, 80, 20 );
+		adic( txtCodPlanoPag, 7, 245, 80, 20 );		
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 223, 300, 20 );
 		adic( txtDescPlanoPag, 90, 245, 277, 20 );
-		adic( cbObs, 7, 270, 385, 20 );
-		adic( cbParPar, 7, 295, 360, 20 );
+
+		adic( new JLabelPad( "Cód.Banco" ), 7, 263, 80, 20 );
+		adic( txtCodBanco, 7, 285, 80, 20 );						
+		adic( new JLabelPad( "Nome do banco" ), 90, 263, 300, 20 );
+		adic( txtDescBanco, 90, 285, 277, 20 );
+		
+		adic( cbObs, 7, 320, 385, 20 );
+		adic( cbParPar, 7, 340, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
@@ -165,6 +179,15 @@ public class FRPagar extends FRelatorio {
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
+		
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco.", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setFK( true );
+		txtCodBanco.setNomeCampo( "CodBanco" );
+		
 	}
 	
 	public void montaCheckBox() {
@@ -280,34 +303,51 @@ public class FRPagar extends FRelatorio {
 		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA "  );
-		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
+		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F, FNCONTA CT " );
 		sql.append( "WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND "  );
+		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL "  );
+		sql.append( " AND CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA AND "  );
+		
 		if ("P".equals( cbOrdem.getVlrString() )) {
 			sql.append( "IT.DTPAGOITPAG" );
-		} else if ("V".equals( cbOrdem.getVlrString() )) {
-			sql.append( "IT.DTVENCITPAG" );
-		} else {
-			sql.append( "IT.DTITPAG" );
+		} 
+		else if ("V".equals( cbOrdem.getVlrString() )) {
+			sql.append( " IT.DTVENCITPAG " );
+		} 
+		else {
+			sql.append( " IT.DTITPAG " );
 		}
+		
 		sql.append( " BETWEEN ? AND ? AND IT.STATUSITPAG IN (?,?) AND P.CODPAG=IT.CODPAG AND " );
 		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR "  );
 		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
 		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
 		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
+		
+		if(txtCodBanco.getVlrInteger()>0) {
+			sql.append(  " AND COALESCE(CT.CODEMPBO,P.CODEMPBO)=? AND COALESCE(CT.CODFILIALBO,P.CODFILIALBO)=? AND COALESCE(CT.CODBANCO,P.CODBANCO)=? " );
+		}
+
 		sql.append( "ORDER BY " );
+		
 		if ("P".equals( cbOrdem.getVlrString() )) {
 			sql.append( "IT.DTPAGOITPAG" );
-		} else if ("V".equals( cbOrdem.getVlrString() )) {
+		} 
+		else if ("V".equals( cbOrdem.getVlrString() )) {
 			sql.append( "IT.DTVENCITPAG" );
-		} else {
+		} 
+		else {
 			sql.append( "IT.DTITPAG" );
 		}
+		
 		sql.append( ", F.RAZFOR" );
 		
 		try {
 
+			System.out.println( sql.toString() );
+			
 			ps = con.prepareStatement( sql.toString() );
+			
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			if ( sFiltroPag.equals( "N" ) ) {
@@ -324,6 +364,16 @@ public class FRPagar extends FRelatorio {
 			}
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			
+			
+			if(txtCodBanco.getVlrInteger()>0) {
+				ps.setInt( 7, lcBanco.getCodEmp() );
+				ps.setInt( 8, lcBanco.getCodFilial() );
+				ps.setInt( 9, txtCodBanco.getVlrInteger() );
+
+			}
+
+			
 
 			rs = ps.executeQuery();
 
@@ -581,6 +631,8 @@ public class FRPagar extends FRelatorio {
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+		lcBanco.setConexao( cn );
+		
 	}
 
 }
