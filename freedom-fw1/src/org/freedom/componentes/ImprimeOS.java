@@ -617,6 +617,10 @@ public class ImprimeOS implements ActionListener {
 		for ( int i = 0; i < x; i++ )
 			say( pRow() + 1, 0, sTexto );
 	}
+	
+	public void pulaLinha( int x ) {
+		pulaLinha( x, "" );
+	}
 
 	public void setPrc( int iR, int iC ) {
 
