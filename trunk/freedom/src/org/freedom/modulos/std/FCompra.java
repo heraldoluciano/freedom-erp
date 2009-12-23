@@ -1947,7 +1947,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
-			txtCalcTrib.setVlrString( txtDtEmitCompra.getVlrString());
+			txtCalcTrib.setVlrString( txtEmitCompra.getVlrString());
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				txtDocCompra.setAtivo( false );
 			}
