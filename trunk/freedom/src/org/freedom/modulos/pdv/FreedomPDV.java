@@ -44,7 +44,7 @@ import org.freedom.modulos.std.FRListaPreco;
 import org.freedom.modulos.std.FSimilar;
 import org.freedom.modulos.std.FTabPreco;
 import org.freedom.modulos.std.FTipoCli;
-import org.freedom.modulos.std.FTipoFiscCli;
+import org.freedom.modulos.std.FTipoFisc;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
 import org.freedom.telas.AplicativoPDV;
@@ -63,7 +63,7 @@ public class FreedomPDV extends AplicativoPDV {
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente...", "TipoCli", 'T', 100101010, 3, true, FTipoCli.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente...", "Classifição de Clientes", 'f', 100101020, 3, true, FClasCli.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente...", "Clientes", 'C', 100101030, 3, true, FCliente.class );
-					addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo fiscal de cliente...", "Tipo Fiscal de Cliente", 'p', 100101040, 3, true, FTipoFiscCli.class );
+					addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo fiscal de cliente...", "Tipo Fiscal de Cliente", 'p', 100101040, 3, true, FTipoFisc.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente...", "Crédito por cliente", 'r', 100101050, 3, true, FCredCli.class );		
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100102000, 2, true, FMoeda.class );
