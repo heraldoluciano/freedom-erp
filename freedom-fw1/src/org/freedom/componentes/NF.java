@@ -141,7 +141,8 @@ public class NF {
 	public static final int C_WWWFILIAL= 93;
 	public static final int C_EMAILFILIAL= 94;
 	public static final int C_CEPENTEMIT = 95;
-	public static final int TAM_CAB = 96;
+	public static final int C_VLRFUNRURALCOMPRA = 96;	
+	public static final int TAM_CAB = 97;
 	
 	//itens
 	public static final int C_CODITPED = 0;
@@ -176,8 +177,9 @@ public class NF {
 	public static final int C_PERCDESCITVENDA = 29;
 	public static final int C_CODFABPROD = 30;
 	public static final int C_QTDEMBALAGEM = 31;
+	public static final int C_ALIQFUNRURALITCOMPRA = 32;
 	
-	public static final int TAM_ITENS = 32;
+	public static final int TAM_ITENS = 33;
 	
 	
 	
