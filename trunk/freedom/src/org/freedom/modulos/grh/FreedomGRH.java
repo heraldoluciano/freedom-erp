@@ -38,23 +38,31 @@ public class FreedomGRH extends AplicativoPD {
 		super( "icongrh.png", "splashGRH.png", 1, "Freedom", 9, "Gestão de Recursos Humanos", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
+		
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Candidatos", "Candidatos", 'C', 100100100, 2, true, FCandidato.class );
+			
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Candidatos", "Candidatos", 'C', 100100100, 2, true, FCandidato.class );
+			
 			addSeparador( 100100000 );
+			
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Turnos", "Turnos", 'T', 100100200, 2, true, FTurnos.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Funções", "Funções", 'F', 100100300, 2, true, FFuncao.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Departamentos", "Departamentos", 'D', 100100400, 2, true, FDepto.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Empregados", "Empregados", 'E', 100100500, 2, true, FEmpregado.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Empregadores", "Empregadores", 'p', 100100600, 2, true, FEmpregadores.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Benefícios", "Cadastro de Benefícios", 'b', 100100700, 2, true, FBeneficio.class );
+			
 			addSeparador( 100100000 );
+			
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Areas", "Areas", 'A', 100100700, 2, true, FArea.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Níveis/Cursos", "Níveis/Cursos", 'N', 100100800, 2, true, FNivelCurso.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Cursos", "Cursos", 'u', 100100900, 2, true, FCurso.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Características", "Características", 's', 100101000, 2, true, FCaracteristica.class );
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100101100, 2, true, FEstadoCivil.class );
-			
+			addSeparador( 100100000 );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Códigos GPS/INSS", "Códigos GPS/INSS", 'g', 100101200, 2, true, FCodGPS.class );
+						
 		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );	
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de vagas", "Cadastro de vagas", 'V', 200100000, 1, true, FVaga.class );
 			addSeparador( 200000000 );
