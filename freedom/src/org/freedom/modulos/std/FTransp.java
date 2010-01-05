@@ -24,19 +24,14 @@
 package org.freedom.modulos.std;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -48,17 +43,20 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
+import org.freedom.telas.FTabDados;
 import org.freedom.webservices.WSCep;
 
-public class FTransp extends FDados implements PostListener, RadioGroupListener, InsertListener, CarregaListener {
+public class FTransp extends FTabDados implements PostListener, RadioGroupListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,6 +83,8 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 	private JTextFieldPad txtComplTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCidTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtConjugeTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCepTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -115,6 +115,10 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 	private ListaCampos lcUF = new ListaCampos( this );
 
 	private ListaCampos lcMunic = new ListaCampos( this );
+	
+	private ListaCampos lcGPS = new ListaCampos( this );
+	
+	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
 	private ListaCampos lcPais = new ListaCampos( this );
 
@@ -129,20 +133,44 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-
+	
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
+	private JTextFieldPad txtCodGPS = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
+	private JTextFieldFK txtDescGPS = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtRgTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
+	private JTextFieldPad txtSSPTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private final JPanelPad panelGeral = new JPanelPad();
+	
+	private final JPanelPad panelAutonomo = new JPanelPad();
+	
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtAgenciaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtNumContaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtPlacaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	
+	private JTextFieldPad txtNroDependTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
+		
 	public FTransp() {
 
 		super();
 		setTitulo( "Cadastro de Tranportadoras" );
-		setAtribos( 50, 50, 440, 570 );
+		setAtribos( 50, 50, 580, 580 );
 
 		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
@@ -150,10 +178,14 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		vTipoTransp.addElement( "Transportadora" );
 		vTipoTransp.addElement( "Cliente" );
 		vTipoTransp.addElement( "Fornecedor" );
+		vTipoTransp.addElement( "Autônomo" );
+		
 		vTipoTranspVal.addElement( "T" );
 		vTipoTranspVal.addElement( "C" );
 		vTipoTranspVal.addElement( "F" );
-		rgTipoTransp = new JRadioGroup<String, String>( 3, 1, vTipoTransp, vTipoTranspVal );
+		vTipoTranspVal.addElement( "A" );
+		
+		rgTipoTransp = new JRadioGroup<String, String>( 4, 1, vTipoTransp, vTipoTranspVal );
 		rgTipoTransp.setVlrString( "T" );
 
 		montaListaCampos();
@@ -168,56 +200,119 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 
 	private void montaTela() {
 
-		adicCampo( txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.tran.", ListaCampos.DB_PK, true );
-		adicCampo( txtRazTran, 80, 20, 205, 20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true );
-		adicDB( rgTipoTransp, 290, 20, 129, 100, "TipoTran", "Tipo", true );
-		adicCampo( txtNomeTran, 7, 60, 278, 20, "NomeTran", "Nome fantasia", ListaCampos.DB_SI, true );
+		adicTab( "Geral", panelGeral );
+		setPainel( panelGeral );
+
+		adicCampo( txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, true );
+		
+		adicCampo( txtRazTran, 80, 20, 322, 20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true );
+		
+		adicDB( rgTipoTransp, 407, 20, 144, 100, "TipoTran", "Tipo", true );
+		
+		adicCampo( txtNomeTran, 7, 60, 395, 20, "NomeTran", "Nome fantasia", ListaCampos.DB_SI, true );
+ 
 		adicCampo( txtCnpjTran, 7, 100, 125, 20, "CnpjTran", "Cnpj", ListaCampos.DB_SI, false );
-		adicCampo( txtInscTran, 135, 100, 150, 20, "InscTran", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtCpfTran, 7, 140, 160, 20, "CpfTran", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtCepTran, 7, 180, 75, 20, "CepTran", "Cep", ListaCampos.DB_SI, false );
-		adic( btBuscaEnd, 85, 180, 20, 20 );
-		adicCampo( txtEndTran, 108, 180, 250, 20, "EndTran", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumTran, 361, 180, 58, 20, "NumTran", "Número", ListaCampos.DB_SI, false );
-		adicCampo( txtComplTran, 163, 220, 120, 20, "ComplTran", "Complemento", ListaCampos.DB_SI, false );
-		adicCampo( txtBairTran, 286, 220, 130, 20, "BairTran", "Bairro", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtInscTran, 135, 100, 125, 20, "InscTran", "Inscrição Estadual", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCepTran, 7, 140, 75, 20, "CepTran", "Cep", ListaCampos.DB_SI, false );
+		
+		adic( btBuscaEnd, 85, 140, 20, 20 );
 
-		adicCampo( txtDDDFoneTran, 7, 260, 80, 20, "DDDFoneTran", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneTran, 90, 260, 110, 20, "FoneTran", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDFaxTran, 203, 260, 80, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxTran, 286, 260, 134, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtContTran, 7, 300, 240, 20, "Conttran", "Contato", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDCelTran, 250, 300, 50, 20, "DDDCelTran", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtCelTran, 303, 300, 117, 20, "Celtran", "Celular", ListaCampos.DB_SI, false );
+		adicCampo( txtEndTran, 108, 140, 250, 20, "EndTran", "Endereço", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNumTran, 361, 140, 58, 20, "NumTran", "Número", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtComplTran, 422, 140, 128, 20, "ComplTran", "Complemento", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtBairTran, 7, 180, 253, 20, "BairTran", "Bairro", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtContTran, 263, 180, 287, 20, "Conttran", "Contato", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodFor, 7, 340, 70, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, false );
-		adicDescFK( txtRazFor, 80, 340, 337, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtDDDFoneTran, 7, 220, 50, 20, "DDDFoneTran", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneTran, 60, 220, 110, 20, "FoneTran", "Telefone", ListaCampos.DB_SI, false );
 
-		if ( (Boolean) prefs.get( "BUSCACEP" ) ) {
-			btBuscaEnd.setEnabled( true );
+		adicCampo( txtDDDFaxTran, 173, 220, 50, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxTran, 226, 220, 132, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false );
+
+		adicCampo( txtDDDCelTran, 361, 220, 58, 20, "DDDCelTran", "DDD", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCelTran, 422, 220, 128, 20, "Celtran", "Celular", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodFor, 7, 260, 75, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, false );		
+		adicDescFK( txtRazFor, 85, 260, 464, 20, "RazFor", "Razão social do fornecedor" );
+
+		adicCampo( txtCodBanco, 7, 300, 75, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
+		adicDescFK( txtNomeBanco, 85, 300, 272, 20, "NomeBanco", "Nome do banco" );
+		
+		adicCampo( txtAgenciaTran, 361, 300, 58, 20, "Agenciatran", "Agencia", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNumContaTran, 422, 300, 128, 20, "NumContaTran", "Nro. da conta", ListaCampos.DB_SI, false );
+		
+		
+		if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
+			
+			adicCampo( txtCodPais, 7, 340, 75, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, true );
+			adicDescFK( txtDescPais, 85, 340, 464, 20, "DescPais", "Nome do país" );
+			adicCampo( txtSiglaUF, 7, 380, 75, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
+			adicDescFK( txtNomeUF, 85, 380, 464, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtCodMun, 7, 420, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+			adicDescFK( txtDescMun, 85, 420, 464, 20, "NomeMunic", "Nome do municipio" );
 
 		}
 		else {
+			adicCampo( txtUFTran, 7, 340, 75, 20, "UFTran", "UF", ListaCampos.DB_SI, false );
+			adicCampo( txtCidTran, 85, 340, 250, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false );
+		}
+
+		/****************************************************************
+		 * 
+		 *  Informações exclusivas para transportadores autônomos
+		 * 
+		 ****************************************************************/
+		
+		adicTab( "Autônomo", panelAutonomo );
+		setPainel( panelAutonomo );
+		
+		adicCampo( txtCpfTran, 7, 20, 125, 20, "CpfTran", "CPF", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtRgTran, 135, 20, 125, 20, "RgTransp", "RG", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtSSPTran, 263, 20, 60, 20, "SSPTran", "Org.exp.", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtConjugeTran, 326, 20, 222, 20, "ConjugeTran", "Conjuge", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtPlacaTran, 7, 60, 125, 20, "PlacaTran", "Placa do veículo", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNroDependTran, 135, 60, 125, 20, "NroDependTran", "Nro. de dependentes", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodGPS, 7, 100, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );		
+		adicDescFK( txtDescGPS, 85, 100, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
+
+		/******************************************************************* 
+		 * 
+		 * Fim das informações expecíficas para transportadores autônomos
+		 * 
+		 *******************************************************************/
+
+		
+		setListaCampos( true, "TRANSP", "VD" );
+		
+		lcCampos.setQueryInsert( false );
+		
+		if ( (Boolean) prefs.get( "BUSCACEP" ) ) {
+			
+			btBuscaEnd.setEnabled( true );
+			
+		}
+		else {
+			
 			btBuscaEnd.setEnabled( false );
+			
 		}
 
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
-
-		if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
-
-			adicCampo( txtCodPais, 7, 380, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, true );
-			adicDescFK( txtDescPais, 80, 380, 337, 20, "DescPais", "Nome do país" );
-			adicCampo( txtSiglaUF, 7, 420, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
-			adicDescFK( txtNomeUF, 80, 420, 337, 20, "NomeUF", "Nome UF" );
-			adicCampo( txtCodMun, 7, 460, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
-			adicDescFK( txtDescMun, 80, 460, 337, 20, "NomeMunic", "Nome do municipio" );
-
-		}
-		else {
-			adicCampo( txtCidTran, 7, 220, 100, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFTran, 110, 220, 50, 20, "UFTran", "UF", ListaCampos.DB_SI, false );
-		}
 
 		txtCnpjTran.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCpfTran.setMascara( JTextFieldPad.MC_CPF );
@@ -225,8 +320,7 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		txtFoneTran.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxTran.setMascara( JTextFieldPad.MC_FONE );
 		txtCelTran.setMascara( JTextFieldPad.MC_FONE );
-		setListaCampos( true, "TRANSP", "VD" );
-		lcCampos.setQueryInsert( false );
+		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
 
 	}
 
@@ -282,12 +376,35 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		lcForneced.setQueryCommit( false );
 		lcForneced.setReadOnly( true );
 		txtCodFor.setTabelaExterna( lcForneced );
+		
+		/***************
+		 * GPS *
+		 **************/
+
+		lcGPS.setUsaME( false );
+	    lcGPS.add( new GuardaCampo( txtCodGPS, "CodGPS", "Cód.GPS", ListaCampos.DB_PK, false ) );
+	    lcGPS.add( new GuardaCampo( txtDescGPS, "DescGPS", "Descrição do código de pagamento GPS/INSS", ListaCampos.DB_SI, false ) );	
+	    lcGPS.montaSql( false, "CODGPS", "RH" );
+	    lcGPS.setQueryCommit( false );
+	    lcGPS.setReadOnly( true );
+		txtCodGPS.setTabelaExterna( lcGPS );
+
+		/***************
+		 * BANCO *
+		 **************/
+
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setTabelaExterna( lcBanco );
 
 	}
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( ( "".equals( txtCnpjTran.getVlrString().trim() ) ) && ( "".equals( txtCpfTran.getVlrString().trim() ) ) ) {
+		if ( ( "".equals( txtCnpjTran.getVlrString().trim() ) ) && ! "A".equals(rgTipoTransp.getVlrString())) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 			txtCnpjTran.requestFocus();
@@ -333,14 +450,24 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		lcPais.setConexao( cn );
 		lcUF.setConexao( cn );
 		lcForneced.setConexao( cn );
+		lcGPS.setConexao( cn );
+		lcBanco.setConexao( cn );
+		
 		prefs = getPrefs();
+		
 		montaTela();
 	}
 
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
-		if ( rgTipoTransp.getVlrString().equals( "C" ) )
+		if ( rgTipoTransp.getVlrString().equals( "C" ) ) {
 			carregaCnpj();
+		}
+		else if(rgTipoTransp.getVlrString().equals( "A" )) {
+			
+			
+			
+		}
 	}
 
 	public void carregaCnpj() {
@@ -349,10 +476,12 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				txtCnpjTran.setVlrString( rs.getString( 1 ) );
 				txtInscTran.setVlrString( rs.getString( 2 ) );
@@ -368,7 +497,9 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 				txtFaxTran.setVlrString( "" );
 
 			}
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar tabela SGFILIAL!\n" + err.getMessage(), true, con, err );
 			return;
 		}
