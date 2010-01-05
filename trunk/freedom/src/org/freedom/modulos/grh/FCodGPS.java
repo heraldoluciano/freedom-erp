@@ -42,7 +42,7 @@ public class FCodGPS extends FDados implements ActionListener {
 
 	private JTextFieldPad txtCodGPS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtDescGPS = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtDescGPS = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	public FCodGPS() {
 
