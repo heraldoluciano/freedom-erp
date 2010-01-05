@@ -323,9 +323,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelAgrup.add( panelTabAgrup, BorderLayout.NORTH );
 		panelAgrup.add( panelGridAgrup, BorderLayout.CENTER );		
 		panelGridAgrup.add( panelTabAgrupItens );		
-		
-//		pnCritAgrup.setBorder( SwingParams.getPanelLabel("Critérios de agrupamento") );
-		
+			
 		pnCritAgrup.adic( cbAgrupProd, 4, 0, 70, 20 );
 		pnCritAgrup.adic( cbAgrupDataProd, 80, 0, 125, 20 );
 		pnCritAgrup.adic( cbAgrupDataAprov, 206, 0, 135, 20 );
