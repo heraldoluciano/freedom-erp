@@ -52,8 +52,8 @@ public class FCodGPS extends FDados implements ActionListener {
 
 		lcCampos.setUsaME( false );
 
-		adicCampo( txtCodGPS, 7, 20, 70, 20, "CodPais", "Cód.pais", ListaCampos.DB_PK, true );
-		adicCampo( txtDescGPS, 80, 20, 177, 20, "NomePais", "Nome do pais", ListaCampos.DB_SI, true );
+		adicCampo( txtCodGPS, 7, 20, 70, 20, "CodGPS", "Cód.GPS", ListaCampos.DB_PK, true );
+		adicCampo( txtDescGPS, 80, 20, 280, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS", ListaCampos.DB_SI, true );
 				
 		setListaCampos( true, "CODGPS", "RH" );
 		
