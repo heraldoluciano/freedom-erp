@@ -63,6 +63,7 @@ public class GuardaCampo extends Component {
 		bRequerido = req;
 		bPK = (key == ListaCampos.DB_PK) || (key == ListaCampos.DB_PF);
 		bFK = (key == ListaCampos.DB_FK) || (key == ListaCampos.DB_PF);
+		
 		if (comp instanceof JTextFieldPad) {
 			txtCampo = (JTextFieldPad) comp;
 			iTipo = txtCampo.getTipo();
@@ -77,7 +78,7 @@ public class GuardaCampo extends Component {
 		else if (comp instanceof JComboBoxPad) {
 			iTipo = ( (JComboBoxPad) comp ).getTipo();
 		}
-		else if (comp instanceof JRadioGroup) {
+		else if (comp instanceof JRadioGroup<?, ?>) {
 			iTipo = ( (JRadioGroup<?, ?>) comp ).getTipo();
 		}
 		else if (comp instanceof PainelImagem) {
@@ -111,7 +112,7 @@ public class GuardaCampo extends Component {
 		else if (comp instanceof JComboBoxPad) {
 			iTipo = ( (JComboBoxPad) comp ).getTipo();
 		}
-		else if (comp instanceof JRadioGroup) {
+		else if (comp instanceof JRadioGroup<?, ?>) {
 			iTipo = ( (JRadioGroup<?, ?>) comp ).getTipo();
 		}
 		else if (comp instanceof PainelImagem) {
@@ -220,7 +221,7 @@ public class GuardaCampo extends Component {
 				);
 				((JTextFieldPad) comp).setRequerido(bReq);
 			}
-			else if (comp instanceof JRadioGroup)
+			else if (comp instanceof JRadioGroup<?, ?>)
 				((JRadioGroup<?, ?>) comp).setBorder(
 						BorderFactory.createCompoundBorder(
 								BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red),
@@ -286,7 +287,7 @@ public class GuardaCampo extends Component {
 			((JCheckBoxPad)comp).setSelected(false);
 		else if (comp instanceof JComboBoxPad)
 			((JComboBoxPad)comp).limpa();
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			((JRadioGroup<?, ?>)comp).novo();
 		else if (comp instanceof JPasswordFieldPad)
 			((JPasswordFieldPad)comp).setVlrString("");
@@ -305,7 +306,7 @@ public class GuardaCampo extends Component {
 			sRetorno = ((JTextAreaPad)comp).getText();
 		else if (comp instanceof JCheckBoxPad)
 			sRetorno = ((JCheckBoxPad)comp).getVlrString();
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			sRetorno =  ((JRadioGroup<?, ?>)comp).getVlrString();
 		else if (comp instanceof JComboBoxPad)
 			sRetorno =  ((JComboBoxPad)comp).getVlrString();
@@ -321,7 +322,7 @@ public class GuardaCampo extends Component {
 			sRetorno = ((JTextAreaPad)comp).getVlrString();
 		else if (comp instanceof JCheckBoxPad)
 			sRetorno = ((JCheckBoxPad)comp).getVlrString();
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			sRetorno =  ((JRadioGroup<?, ?>)comp).getVlrString();
 		else if (comp instanceof JComboBoxPad)
 			sRetorno =  ((JComboBoxPad)comp).getVlrString();
@@ -337,7 +338,7 @@ public class GuardaCampo extends Component {
 			iRetorno = ((JCheckBoxPad)comp).getVlrInteger();
 		else if (comp instanceof JComboBoxPad)
 			iRetorno = ((JComboBoxPad)comp).getVlrInteger();
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			iRetorno = ((JRadioGroup<?, ?>)comp).getVlrInteger();
 		return iRetorno;
 	}
@@ -384,7 +385,7 @@ public class GuardaCampo extends Component {
 			((JCheckBoxPad)comp).setVlrString(val);
 		else if (comp instanceof JComboBoxPad)
 			((JComboBoxPad)comp).setVlrString(val);
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			((JRadioGroup<?, ?>)comp).setVlrString(val);
 		else if (comp instanceof JPasswordFieldPad)
 			((JPasswordFieldPad)comp).setVlrString(val);
@@ -396,7 +397,7 @@ public class GuardaCampo extends Component {
 			((JCheckBoxPad)comp).setVlrInteger(val);
 		else if (comp instanceof JComboBoxPad)
 			((JComboBoxPad)comp).setVlrInteger(val);
-		else if (comp instanceof JRadioGroup)
+		else if (comp instanceof JRadioGroup<?, ?>)
 			((JRadioGroup<?, ?>)comp).setVlrInteger(val);
 	}
 	public void setVlrBigDecimal(BigDecimal val) {

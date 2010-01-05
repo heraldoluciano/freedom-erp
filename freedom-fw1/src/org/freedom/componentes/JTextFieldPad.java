@@ -68,6 +68,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int MC_RG = 115;
 	public static final int MC_TIME_MINUTO = 116;
 	public static final int MC_TIME_SEGUNDO = 117;
+	public static final int MC_PLACA = 118;
 	
 	public static final String PR_TEXTO = "texto"; 
 	private EditListener editLis = this;
@@ -269,7 +270,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		} else if (iMascara == MC_TIME_SEGUNDO) {
 			sMasc = "##:##:##";
 			iTamanho = 8;
+		} else if (iMascara == MC_PLACA) {
+			sMasc = "###-####";
+			iTamanho = 8;
 		}
+		
 
 
 	}
@@ -903,7 +908,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		} else if (iMascara == MC_CEP) {
 			if (!Character.isDigit(cVal)) 
 				return false;
-		} else if (iMascara == MC_CPF) {
+		} else if (iMascara == MC_CPF) { 
 			if (!Character.isDigit(cVal)) 
 			return false;
 		} else if (iMascara == MC_RG) {
@@ -913,12 +918,16 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		
 		if (sMasc.length() == 0)
 			return false;
+		
 		char[] ca = sMasc.toCharArray(); 
+		
 		int pos = getCaretPosition();
+		
 		if (pos != iTamanho) {
 			if (ca[pos] != '#')
 			super.setText(getText()+ca[pos]);
 		}
+		
 		return true;
 	}
 	
