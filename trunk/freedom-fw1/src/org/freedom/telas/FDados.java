@@ -30,15 +30,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-//import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -47,8 +43,11 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
@@ -57,386 +56,461 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
 	private static final long serialVersionUID = 1L;
 
-   public PreparedStatement atualiza = null;
-   public PreparedStatement insere = null;
-   public PreparedStatement deleta = null;
-   public ListaCampos lcCampos = new ListaCampos(this); 
-   public ListaCampos lcSeq = null;
-   private GridLayout glImp = new GridLayout( 1, 2); 
-   private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
-   public Navegador nav = new Navegador(false); 
-   public Navegador navSeq = new Navegador(false); 
-   public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
-   public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
-   public JPanelPad pinDados = new JPanelPad();
-   public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-   public JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
-   public JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
-   public JComponent primeiroCompo = null;
-   boolean Shift = false;
-   boolean Ctrl = false;
-   boolean setArea = true;
-   boolean bMostrar = false;
-   public FDados() {
-   	 this(true);
-   }
-   public FDados(boolean comScroll) {
-   	 super(comScroll);
-   	 btImp.setVisible(false);
-   	 btPrevimp.setVisible(false);
-     //setTitulo("Formulário de dados", this.getClass().getName());
+	public PreparedStatement atualiza = null;
+	public PreparedStatement insere = null;
+	public PreparedStatement deleta = null;
+	public ListaCampos lcCampos = new ListaCampos(this); 
+	public ListaCampos lcSeq = null;
+	private GridLayout glImp = new GridLayout( 1, 3); 
+	private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
+	public Navegador nav = new Navegador(false); 
+	public Navegador navSeq = new Navegador(false); 
+	public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
+	public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
+	public JPanelPad pinDados = new JPanelPad();
+	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	public JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
+	public JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
+	public JButtonPad btInfo = new JButtonPad( Icone.novo("btInfo.png"));
+	public JComponent primeiroCompo = null;
+	boolean Shift = false;
+	boolean Ctrl = false;
+	boolean setArea = true;
+	boolean bMostrar = false;	
+	private DLInfo dlinfo = null;
+	
+	private JTextFieldPad txtDtins = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-     lcSeq = lcCampos;
-     navSeq = nav;
+	private JTextFieldPad txtHins = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	
+	private JTextFieldPad txtUsuIns = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtDtAlt = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtHAlt = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	
+	private JTextFieldPad txtUsuAlt = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-     btSair.setToolTipText("Fecha a Tela (Shift + F4)");
-     btImp.setToolTipText("Imprimir (Ctrl+P)");
-     btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
-
-     pnImp.setLayout(flImp);
-     pnGImp.setLayout(glImp);
-     pnGImp.setPreferredSize(new Dimension( 80, 26));
-     pnGImp.add(btImp);
-     pnGImp.add(btPrevimp);
-     pnImp.add(pnGImp);
-
-     btSair.addActionListener(this);
-
-     btSair.addKeyListener(this);
-     btImp.addKeyListener(this);
-     btPrevimp.addKeyListener(this);
-
-     addKeyListener(this);
-     addInternalFrameListener(this);
-     
-     lcCampos.addPostListener(this);
-
-     pnRodape.add( btSair, BorderLayout.EAST);      
-     pnRodape.add( nav, BorderLayout.WEST);
-     pnRodape.add( pnImp, BorderLayout.CENTER);
-     c.add(pnBordRod, BorderLayout.SOUTH);
-     
-  }  
-
-  public void setImprimir(boolean bImp){
-  	btImp.setVisible(bImp);
-  	btPrevimp.setVisible(bImp);
-  }
-  
-  public void setPKFoco() {
-    for (int i=0; i<lcCampos.getComponentCount(); i++) {
-      if (((GuardaCampo)lcCampos.getComponent(i)).ehPK())
-        ((GuardaCampo)lcCampos.getComponent(i)).getComponente().requestFocus();
-    }
-  }
-
-  public void execConsultaPrep() {
-/*     try {
-        resultado = consultaPrep.executeQuery();
-     }
-     catch (SQLException e) {
-        Funcoes.mensagemErro(null,e.getMessage());
-     }*/
-  }
-
-  public void actionPerformed(ActionEvent evt) {
-    if (evt.getActionCommand() == "Sair") 
-      dispose();
-  }
-  public void keyPressed(KeyEvent kevt) {
-    if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) Shift = true;
-    if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;
-    if(Shift) {
-      if(kevt.getKeyCode() == KeyEvent.VK_F4) btSair.doClick();
-    }
-    if(Ctrl) {
-      if (kevt.getKeyCode() == KeyEvent.VK_R) btPrevimp.doClick();
-        else if (kevt.getKeyCode() == KeyEvent.VK_P) btImp.doClick();
-    }
-  }
-  public void keyReleased(KeyEvent kevt) {
-//    Funcoes.mensagemErro( null, "keyRelease");
-    if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) Shift = false;
-    else if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = false;
-  }
-  public void keyTyped(KeyEvent kevt) {  }
-
-  public void setPainel(JPanelPad pin, Container pn) {
-    pinDados = pin;
-    pn.add(pinDados);
-    setArea = false;
-  }
-  public void setPainel(JPanelPad pin) {
-    pinDados = pin;
-    setArea = false;
-  }
-  public Dimension getAreaComp() {
-    int iLarg = (int)getSize().getWidth();
-    int iAlt = (int)getSize().getHeight();
-    iLarg -= 10;
-    iAlt -= 35;
-    Dimension dm = new Dimension(iLarg,iAlt);
-    return dm;
-  }
-  public void setAreaComp() {
-    pinDados = new JPanelPad((int)getSize().getWidth()-10,
-      (int)getSize().getHeight()-65);  
-    pnCliente.add(pinDados, BorderLayout.CENTER);
-    setArea = false;
-  }
-  public void adic(Component comp, int X, int Y, int Larg, int Alt) {
-    if (setArea)
-      setAreaComp();
-    comp.addKeyListener(this);
-    if (navSeq!=null) {
-       comp.addKeyListener(navSeq);
-    }
-    try {
-      JTextFieldPad txt = (JTextFieldPad) comp; 
-      txt.addFocusListener(txt);
-      comp = txt;
-    }
-    catch (Exception e) { }
-    pinDados.adic(comp,X,Y,Larg,Alt); 
-  }
-
-  public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-      String label, byte key, JTextFieldFK txtDescFK, boolean req) {
-      comp.setName("txt"+nome);
-      comp.setNomeCampo(nome);
-      comp.setListaCampos(lcSeq);
-      comp.setChave(key);
-      if (txtDescFK == null)
-        lcSeq.add(new GuardaCampo( comp, nome, label, key, req));
-      else 	
-     	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
-      if ( navSeq!=null ) {
-         navSeq.setListaCampos(lcSeq);
-         lcSeq.setNavegador(navSeq);
-      }
-      lcSeq.setState(ListaCampos.LCS_NONE);
-      JLabelPad lbTmp = new JLabelPad(label);
-      adic(lbTmp, X, Y-20, Larg, 20);
-      adic(comp, X, Y, Larg, Alt);
-      return lbTmp;
-  }
-  public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-      String label, byte key, boolean req) {
-    return adicCampo(comp, X, Y, Larg, Alt, nome, label, key, null, req);
-  }
-  
-  public void adicCampo(JPasswordFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-      String label, byte key, boolean req) {
-	comp.setName("txp"+nome);
-	comp.setListaCampos(lcSeq);
-	lcSeq.add(new GuardaCampo( comp, nome, label, key, req),"txt"+nome);
-	if (navSeq!=null) {
-	   navSeq.setListaCampos(lcSeq);
-	   lcSeq.setNavegador(navSeq);
+	
+	public FDados() {
+		this(true);
 	}
-	lcSeq.setState(ListaCampos.LCS_NONE);
-	adic(new JLabelPad(label), X, Y-20, Larg, 20);
-	adic(comp, X, Y, Larg, Alt);
-  }
+	public FDados(boolean comScroll) {
+		super(comScroll);
+		btImp.setVisible(false);
+		btPrevimp.setVisible(false);
+		//setTitulo("Formulário de dados", this.getClass().getName());
 
-  public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
-	byte key, JTextFieldFK txtDescFK, boolean req) {
-	comp.addKeyListener(this);
-	if (navSeq!=null) {
-	   comp.addKeyListener(navSeq);
-	}
-	comp.setName("txt"+nome);
-	comp.setNomeCampo(nome);
-	comp.setListaCampos(lcSeq);
-	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req,false));
-	if (navSeq!=null) {
-	    navSeq.setListaCampos(lcSeq);
-	    lcSeq.setNavegador(navSeq);
-	}
-	lcSeq.setState(ListaCampos.LCS_NONE);
-  }   
- 
-  public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
-   		byte key,  boolean req) {
-  	 adicCampoInvisivel(comp, nome, label, key, null, req);
-  }
-  public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
-    comp.setNomeCampo(nome);
-    comp.addKeyListener(this);
-    if (navSeq!=null) {
-       comp.addKeyListener(navSeq);
-    }
-    comp.setLabel(label);
-    JLabelPad lbTmp = new JLabelPad(label);
-    adic(lbTmp, X, Y-20, Larg, 20);
-    adic(comp, X, Y, Larg, Alt);
-    return lbTmp;
-  }
-  public JLabelPad adicDescFKInvisivel(JTextFieldFK comp, String nome, String label) {
-    comp.setNomeCampo(nome);
-    comp.addKeyListener(this);
-    if (navSeq!=null) {
-	comp.addKeyListener(navSeq);
-    }
-    comp.setLabel(label);
-    JLabelPad lbTmp = new JLabelPad(label);
-    return lbTmp;
-  }
+		lcSeq = lcCampos;
+		navSeq = nav;
 
-  public void adicDBLiv( Component comp, String nome, String label, boolean req) { 
-    comp.setName(nome);
-    comp.addKeyListener(this);
-    if (navSeq!=null) {
-	comp.addKeyListener(navSeq);
-    }
-    if (comp instanceof JRadioGroup)
-      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
-    else if (comp instanceof JCheckBoxPad)
-      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
-    else if (comp instanceof JTextAreaPad)
-      ((JTextAreaPad) comp).setListaCampos(lcSeq);
-    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
-    
-  }
-  public void adicDBLiv(Component comp,int X,int Y,int Larg,int Alt, String nome, String label, boolean req) { 
-    comp.setName(nome);
-    comp.addKeyListener(this);
-    if (navSeq!=null) {
-       comp.addKeyListener(navSeq);
-    }
-    if (comp instanceof JRadioGroup)
-      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
-    else if (comp instanceof JCheckBoxPad)
-      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
-    else if (comp instanceof JTextAreaPad) {
-      ((JTextAreaPad) comp).setListaCampos(lcSeq);
-      comp.setName("txp"+nome);
-      adic(new JLabelPad(label), X, Y-20, Larg, 20);
-      adic(new JScrollPane(comp), X, Y, Larg, Alt);
-    }
-    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
-    
-        
-  }
+		btSair.setToolTipText("Fecha a Tela (Shift + F4)");
+		btImp.setToolTipText("Imprimir (Ctrl+P)");
+		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
+		btInfo.setToolTipText("Informações sobre o registro");
 
-  public JLabelPad adicDB( Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
-  	boolean bScroll = false;
-  	JLabelPad lbTmp = null;
-    comp.setName(nome);
-    if (comp instanceof JRadioGroup)
-      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
-    else if (comp instanceof JCheckBoxPad)
-      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
-	else if (comp instanceof JComboBoxPad)
-	  ((JComboBoxPad) comp).setListaCampos(lcSeq);
-    else if (comp instanceof PainelImagem)
-      ((PainelImagem) comp).setListaCampos(lcSeq);
-	else if (comp instanceof JTextAreaPad) {
-	  ((JTextAreaPad) comp).setListaCampos(lcSeq);
-	  bScroll = true;
-	}
-    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
-    lbTmp = new JLabelPad(label);
-    adic(lbTmp, X, Y-20, Larg, 20);
-    if (bScroll)
-  	  adic(new JScrollPane(comp),X, Y, Larg, Alt);
-    else 
-	  adic(comp, X, Y, Larg, Alt);
-    
-    return lbTmp;
-  }
-  
-  public JLabelPad adic( Component comp, int X, int Y, int Larg, int Alt, String label) {
-	  	boolean bScroll = false;
-	  	JLabelPad lbTmp = null;
-	    
-	      	    
-	  	bScroll = true;
+		pnImp.setLayout(flImp);
+		pnGImp.setLayout(glImp);
+		pnGImp.setPreferredSize(new Dimension( 80, 26));
+		pnGImp.add(btImp);
+		pnGImp.add(btPrevimp);
+		pnGImp.add(btInfo);
+		pnImp.add(pnGImp);
 
+		btSair.addActionListener(this);
+		btInfo.addActionListener(this);		
+		
+		btSair.addKeyListener(this);
+		btImp.addKeyListener(this);
+		btPrevimp.addKeyListener(this);
 
-	    lbTmp = new JLabelPad(label);
-	    adic(lbTmp, X, Y-20, Larg, 20);
-	    if (bScroll)
-	  	  adic(new JScrollPane(comp),X, Y, Larg, Alt);
-	    else 
-		  adic(comp, X, Y, Larg, Alt);
-	    
-	    return lbTmp;
-  }
-  
-  public JLabelPad adicDBInvisivel( Component comp, String nome, String label, boolean req) {
-	  	boolean bScroll = false;
-	  	JLabelPad lbTmp = null;
-	    comp.setName(nome);
-	    if (comp instanceof JRadioGroup)
-	      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
-	    else if (comp instanceof JCheckBoxPad)
-	      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
-		else if (comp instanceof JComboBoxPad)
-		  ((JComboBoxPad) comp).setListaCampos(lcSeq);
-	    else if (comp instanceof PainelImagem)
-	      ((PainelImagem) comp).setListaCampos(lcSeq);
-		else if (comp instanceof JTextAreaPad) {
-		  ((JTextAreaPad) comp).setListaCampos(lcSeq);
-		  bScroll = true;
+		addKeyListener(this);
+		addInternalFrameListener(this);
+
+		lcCampos.addPostListener(this);
+
+		pnRodape.add( btSair, BorderLayout.EAST);      
+		pnRodape.add( nav, BorderLayout.WEST);
+		pnRodape.add( pnImp, BorderLayout.CENTER);
+		c.add(pnBordRod, BorderLayout.SOUTH);
+
+	}  
+
+	private void adicCamposInfo() {
+		try {
+			adicCampoInvisivel(txtDtins, "dtins", "Dt.ins.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel(txtDtAlt, "dtalt", "Dt.alt.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel(txtHins, "hins", "Hr.ins.", ListaCampos.DB_SI, false );
+		
+			adicCampoInvisivel(txtHAlt, "halt", "hr.alt.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel(txtUsuIns, "idusuins", "id.ins.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel(txtUsuAlt, "idusualt", "id.alt.", ListaCampos.DB_SI, false );
 		}
-	    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
-	    lbTmp = new JLabelPad(label);	    
-	    return lbTmp;
-  }
-  
-  public void setNavegador(Navegador nv) {
-    navSeq = nv;
-  }
-  public void setListaCampos(ListaCampos lc) {
-    lcSeq = lc;
-  }
-  public void setListaCampos(boolean bAuto, String sTab, String sSigla) {
-      lcSeq.montaSql(bAuto, sTab, sSigla);
-  }           
-  public void setBordaReq(JComponent comp) {
-    comp.setBorder( 
-      BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red),
-        BorderFactory.createEtchedBorder()
-      )
-    );
-  }
-  public void setBordaPad(JComponent comp) {
-    comp.setBorder( BorderFactory.createEtchedBorder());
-  }
-  public synchronized void setConexao(DbConnection cn) {
-  	super.setConexao(cn);
-    lcCampos.setConexao(con);
-    lcSeq.setConexao(con);
-    setPKFoco();
-  }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	 
+	public void setImprimir(boolean bImp){
+		btImp.setVisible(bImp);
+		btPrevimp.setVisible(bImp);
+	}
 
-  public void beforePost(PostEvent pevt) {
-    setPKFoco();
-  }
-  public void afterPost(PostEvent pevt) { }
-  public void internalFrameDeactivated(InternalFrameEvent ifevt) { 
-    super.internalFrameDeactivated(ifevt);
-  }
-  public void internalFrameDeiconified(InternalFrameEvent ifevt) { 
-    super.internalFrameDeiconified(ifevt);
-  }
-  public void internalFrameIconified(InternalFrameEvent ifevt) { 
-    super.internalFrameIconified(ifevt);
-  }
-  public void internalFrameOpened(InternalFrameEvent ifevt) { 
-    super.internalFrameOpened(ifevt);
-  }
+	public void setPKFoco() {
+		for (int i=0; i<lcCampos.getComponentCount(); i++) {
+			if (((GuardaCampo)lcCampos.getComponent(i)).ehPK())
+				((GuardaCampo)lcCampos.getComponent(i)).getComponente().requestFocus();
+		}
+	}
+
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getActionCommand() == "Sair") { 
+			dispose();
+		}
+		else if (evt.getSource() == btInfo) {
+			getInfo();			
+		}
+	} 
+	
+	private void getInfo() {
+		
+		if(lcCampos.getStatus()==ListaCampos.LCS_NONE) {
+			Funcoes.mensagemInforma(this, "Selecione um registro!");
+		}
+		else {
+			dlinfo = new DLInfo( this, getDtins(), getDtAlt(), getHins(), getHAlt(), getUsuIns(), getUsuAlt());
+			dlinfo.setVisible( true );			
+		}
+		
+	}
+
+	public Date getDtins() {
+		return txtDtins.getVlrDate();
+	}
+	
+	public Date getHins() {
+		return txtHins.getVlrTime();
+	}
+	
+	public String getUsuIns() {
+		return txtUsuIns.getVlrString();
+	}
+	
+	public Date getDtAlt() {
+		return txtDtAlt.getVlrDate();
+	}
+	
+	public Date getHAlt() {
+		return txtHAlt.getVlrTime();
+	}
+	
+	public String getUsuAlt() {
+		return txtUsuAlt.getVlrString();
+	}
+
+	public void keyPressed(KeyEvent kevt) {
+		if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) Shift = true;
+		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;
+		if(Shift) {
+			if(kevt.getKeyCode() == KeyEvent.VK_F4) btSair.doClick();
+		}
+		if(Ctrl) {
+			if (kevt.getKeyCode() == KeyEvent.VK_R) btPrevimp.doClick();
+			else if (kevt.getKeyCode() == KeyEvent.VK_P) btImp.doClick();
+		}
+	}
+	public void keyReleased(KeyEvent kevt) {
+		//    Funcoes.mensagemErro( null, "keyRelease");
+		if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) Shift = false;
+		else if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = false;
+	}
+	public void keyTyped(KeyEvent kevt) {  }
+
+	public void setPainel(JPanelPad pin, Container pn) {
+		pinDados = pin;
+		pn.add(pinDados);
+		setArea = false;
+	}
+	public void setPainel(JPanelPad pin) {
+		pinDados = pin;
+		setArea = false;
+	}
+	public Dimension getAreaComp() {
+		int iLarg = (int)getSize().getWidth();
+		int iAlt = (int)getSize().getHeight();
+		iLarg -= 10;
+		iAlt -= 35;
+		Dimension dm = new Dimension(iLarg,iAlt);
+		return dm;
+	}
+	public void setAreaComp() {
+		pinDados = new JPanelPad((int)getSize().getWidth()-10,
+				(int)getSize().getHeight()-65);  
+		pnCliente.add(pinDados, BorderLayout.CENTER);
+		setArea = false;
+	}
+	public void adic(Component comp, int X, int Y, int Larg, int Alt) {
+		if (setArea)
+			setAreaComp();
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		try {
+			JTextFieldPad txt = (JTextFieldPad) comp; 
+			txt.addFocusListener(txt);
+			comp = txt;
+		}
+		catch (Exception e) { }
+		pinDados.adic(comp,X,Y,Larg,Alt); 
+	}
+
+	public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
+			String label, byte key, JTextFieldFK txtDescFK, boolean req) {
+		comp.setName("txt"+nome);
+		comp.setNomeCampo(nome);
+		comp.setListaCampos(lcSeq);
+		comp.setChave(key);
+		if (txtDescFK == null)
+			lcSeq.add(new GuardaCampo( comp, nome, label, key, req));
+		else 	
+			lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+		if ( navSeq!=null ) {
+			navSeq.setListaCampos(lcSeq);
+			lcSeq.setNavegador(navSeq);
+		}
+		lcSeq.setState(ListaCampos.LCS_NONE);
+		JLabelPad lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y-20, Larg, 20);
+		adic(comp, X, Y, Larg, Alt);
+		return lbTmp;
+	}
+	public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
+			String label, byte key, boolean req) {
+		return adicCampo(comp, X, Y, Larg, Alt, nome, label, key, null, req);
+	}
+
+	public void adicCampo(JPasswordFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
+			String label, byte key, boolean req) {
+		comp.setName("txp"+nome);
+		comp.setListaCampos(lcSeq);
+		lcSeq.add(new GuardaCampo( comp, nome, label, key, req),"txt"+nome);
+		if (navSeq!=null) {
+			navSeq.setListaCampos(lcSeq);
+			lcSeq.setNavegador(navSeq);
+		}
+		lcSeq.setState(ListaCampos.LCS_NONE);
+		adic(new JLabelPad(label), X, Y-20, Larg, 20);
+		adic(comp, X, Y, Larg, Alt);
+	}
+
+	public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
+			byte key, JTextFieldFK txtDescFK, boolean req) {
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		comp.setName("txt"+nome);
+		comp.setNomeCampo(nome);
+		comp.setListaCampos(lcSeq);
+		lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req,false));
+		if (navSeq!=null) {
+			navSeq.setListaCampos(lcSeq);
+			lcSeq.setNavegador(navSeq);
+		}
+		lcSeq.setState(ListaCampos.LCS_NONE);
+	}   
+
+	public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
+			byte key,  boolean req) {
+		adicCampoInvisivel(comp, nome, label, key, null, req);
+	}
+	public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
+		comp.setNomeCampo(nome);
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		comp.setLabel(label);
+		JLabelPad lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y-20, Larg, 20);
+		adic(comp, X, Y, Larg, Alt);
+		return lbTmp;
+	}
+	public JLabelPad adicDescFKInvisivel(JTextFieldFK comp, String nome, String label) {
+		comp.setNomeCampo(nome);
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		comp.setLabel(label);
+		JLabelPad lbTmp = new JLabelPad(label);
+		return lbTmp;
+	}
+
+	public void adicDBLiv( Component comp, String nome, String label, boolean req) { 
+		comp.setName(nome);
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		if (comp instanceof JRadioGroup<?, ?>)
+			((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JCheckBoxPad)
+			((JCheckBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JTextAreaPad)
+			((JTextAreaPad) comp).setListaCampos(lcSeq);
+		lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+
+	}
+	public void adicDBLiv(Component comp,int X,int Y,int Larg,int Alt, String nome, String label, boolean req) { 
+		comp.setName(nome);
+		comp.addKeyListener(this);
+		if (navSeq!=null) {
+			comp.addKeyListener(navSeq);
+		}
+		if (comp instanceof JRadioGroup<?, ?>)
+			((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JCheckBoxPad)
+			((JCheckBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JTextAreaPad) {
+			((JTextAreaPad) comp).setListaCampos(lcSeq);
+			comp.setName("txp"+nome);
+			adic(new JLabelPad(label), X, Y-20, Larg, 20);
+			adic(new JScrollPane(comp), X, Y, Larg, Alt);
+		}
+		lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+
+
+	}
+
+	public JLabelPad adicDB( Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
+		boolean bScroll = false;
+		JLabelPad lbTmp = null;
+		comp.setName(nome);
+		if (comp instanceof JRadioGroup<?, ?>)
+			((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JCheckBoxPad)
+			((JCheckBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JComboBoxPad)
+			((JComboBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof PainelImagem)
+			((PainelImagem) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JTextAreaPad) {
+			((JTextAreaPad) comp).setListaCampos(lcSeq);
+			bScroll = true;
+		}
+		lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+		lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y-20, Larg, 20);
+		if (bScroll)
+			adic(new JScrollPane(comp),X, Y, Larg, Alt);
+		else 
+			adic(comp, X, Y, Larg, Alt);
+
+		return lbTmp;
+	}
+
+	public JLabelPad adic( Component comp, int X, int Y, int Larg, int Alt, String label) {
+		boolean bScroll = false;
+		JLabelPad lbTmp = null;
+
+
+		bScroll = true;
+
+
+		lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y-20, Larg, 20);
+		if (bScroll)
+			adic(new JScrollPane(comp),X, Y, Larg, Alt);
+		else 
+			adic(comp, X, Y, Larg, Alt);
+
+		return lbTmp;
+	}
+
+	public JLabelPad adicDBInvisivel( Component comp, String nome, String label, boolean req) {
+
+		JLabelPad lbTmp = null;
+		comp.setName(nome);
+		if (comp instanceof JRadioGroup<?, ?>)
+			((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JCheckBoxPad)
+			((JCheckBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JComboBoxPad)
+			((JComboBoxPad) comp).setListaCampos(lcSeq);
+		else if (comp instanceof PainelImagem)
+			((PainelImagem) comp).setListaCampos(lcSeq);
+		else if (comp instanceof JTextAreaPad) {
+			((JTextAreaPad) comp).setListaCampos(lcSeq);
+		}
+
+		lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+		lbTmp = new JLabelPad(label);	    
+		return lbTmp;
+
+	}
+
+	public void setNavegador(Navegador nv) {
+		navSeq = nv;
+	}
+	public void setListaCampos(ListaCampos lc) {
+		lcSeq = lc;
+	}
+	
+	public void setListaCampos(boolean bAuto, String sTab, String sSigla) {
+		if(lcCampos==lcSeq) {
+			adicCamposInfo();
+		}	
+		lcSeq.montaSql(bAuto, sTab, sSigla);
+	}   
+	
+	public void setBordaReq(JComponent comp) {
+		comp.setBorder( 
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red),
+						BorderFactory.createEtchedBorder()
+				)
+		);
+	}
+	public void setBordaPad(JComponent comp) {
+		comp.setBorder( BorderFactory.createEtchedBorder());
+	}
+	public synchronized void setConexao(DbConnection cn) {
+		super.setConexao(cn);
+		lcCampos.setConexao(con);
+		lcSeq.setConexao(con);
+		setPKFoco();
+	}
+
+	public void beforePost(PostEvent pevt) {
+		setPKFoco();
+	}
+	public void afterPost(PostEvent pevt) { }
+	public void internalFrameDeactivated(InternalFrameEvent ifevt) { 
+		super.internalFrameDeactivated(ifevt);
+	}
+	public void internalFrameDeiconified(InternalFrameEvent ifevt) { 
+		super.internalFrameDeiconified(ifevt);
+	}
+	public void internalFrameIconified(InternalFrameEvent ifevt) { 
+		super.internalFrameIconified(ifevt);
+	}
+	public void internalFrameOpened(InternalFrameEvent ifevt) { 
+		super.internalFrameOpened(ifevt);
+	}
 }        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
 
