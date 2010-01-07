@@ -85,11 +85,11 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	boolean bMostrar = false;	
 	private DLInfo dlinfo = null;
 	
-	private JTextFieldPad txtDtins = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldFK txtDtins = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtHins = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	private JTextFieldFK txtHins = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
 	
-	private JTextFieldPad txtUsuIns = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JTextFieldFK txtUsuIns = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JTextFieldPad txtDtAlt = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
@@ -139,18 +139,27 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		pnRodape.add( nav, BorderLayout.WEST);
 		pnRodape.add( pnImp, BorderLayout.CENTER);
 		c.add(pnBordRod, BorderLayout.SOUTH);
-
+		
+		txtDtins.setSoLeitura(true);
+		txtHins.setSoLeitura(true);
+		txtUsuIns.setSoLeitura(true);
+		txtDtAlt.setSoLeitura(true);
+		txtHAlt.setSoLeitura(true);
+		txtUsuAlt.setSoLeitura(true);
+		
 	}  
 
 	private void adicCamposInfo() {
 		try {
+
 			adicCampoInvisivel(txtDtins, "dtins", "Dt.ins.", ListaCampos.DB_SI, false );
-			adicCampoInvisivel(txtDtAlt, "dtalt", "Dt.alt.", ListaCampos.DB_SI, false );
 			adicCampoInvisivel(txtHins, "hins", "Hr.ins.", ListaCampos.DB_SI, false );
-		
-			adicCampoInvisivel(txtHAlt, "halt", "hr.alt.", ListaCampos.DB_SI, false );
 			adicCampoInvisivel(txtUsuIns, "idusuins", "id.ins.", ListaCampos.DB_SI, false );
+			
+			adicCampoInvisivel(txtDtAlt, "dtalt", "Dt.alt.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel(txtHAlt, "halt", "hr.alt.", ListaCampos.DB_SI, false );
 			adicCampoInvisivel(txtUsuAlt, "idusualt", "id.alt.", ListaCampos.DB_SI, false );
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -490,7 +499,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		setPKFoco();
 	}
 
-	public void beforePost(PostEvent pevt) {
+	public void beforePost(PostEvent pevt) {		
 		setPKFoco();
 	}
 	public void afterPost(PostEvent pevt) { }
