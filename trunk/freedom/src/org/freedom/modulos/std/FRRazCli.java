@@ -56,6 +56,8 @@ public class FRRazCli extends FRelatorio {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
@@ -97,6 +99,8 @@ public class FRRazCli extends FRelatorio {
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód. Cliente", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtDescCli, "RazCli", "Razão social  do Cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
+		
 		txtCodCli.setTabelaExterna( lcCli );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );

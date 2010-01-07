@@ -127,8 +127,12 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
 	private JTextFieldPad txtCodForManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtCNPJForManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
 	private JTextFieldPad txtPrimCompr = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtUltCompr = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -157,6 +161,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JTextFieldPad txtCodForBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtCNPJForBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
 	private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
@@ -336,6 +342,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
@@ -428,6 +436,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 		lcForBaixa.add( new GuardaCampo( txtCodForBaixa, "CodFor", "Cód.for", ListaCampos.DB_PK, false ) );
 		lcForBaixa.add( new GuardaCampo( txtRazForBaixa, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForBaixa.add( new GuardaCampo( txtCNPJForBaixa, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcForBaixa.montaSql( false, "FORNECED", "CP" );
 		lcForBaixa.setQueryCommit( false );
 		lcForBaixa.setReadOnly( true );
@@ -613,6 +622,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 		lcForManut.add( new GuardaCampo( txtCodForManut, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcForManut.add( new GuardaCampo( txtRazForManut, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForManut.add( new GuardaCampo( txtCNPJForManut, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		
 		lcForManut.montaSql( false, "FORNECED", "CP" );
 		lcForManut.setQueryCommit( false );
 		lcForManut.setReadOnly( true );

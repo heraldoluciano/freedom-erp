@@ -58,6 +58,8 @@ public class FRRazFor extends FRelatorio {
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcFor = new ListaCampos( this );
+	
+	private JTextFieldPad txtCnpjFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	public FRRazFor() {
 
@@ -98,6 +100,8 @@ public class FRRazFor extends FRelatorio {
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCnpjFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		
 		txtCodFor.setTabelaExterna( lcFor );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
