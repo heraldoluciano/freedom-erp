@@ -243,6 +243,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		lcTxt = lc;      
 	}
 
+	public int getTamanho() {
+		return iTamanho;
+	}
+	
 	public void setMascara(int iMasc) {
 		iMascara = iMasc;
 		bMasc = true;

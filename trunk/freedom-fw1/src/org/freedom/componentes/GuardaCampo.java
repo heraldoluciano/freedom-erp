@@ -154,6 +154,7 @@ public class GuardaCampo extends Component {
 			txtTmp.setText(((JComboBoxPad)comp).getText());
 			return txtTmp;
 		}
+		
 		return txtCampo;
 	}
 
