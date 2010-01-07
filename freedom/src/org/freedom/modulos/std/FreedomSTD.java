@@ -27,8 +27,11 @@ package org.freedom.modulos.std;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
+import org.freedom.modulos.cfg.FBairro;
 import org.freedom.modulos.cfg.FFeriados;
+import org.freedom.modulos.cfg.FMunicipio;
 import org.freedom.modulos.cfg.FPais;
+import org.freedom.modulos.cfg.FUF;
 import org.freedom.modulos.crm.FConsultaCli;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FBordero;
@@ -85,9 +88,11 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "Tipo de fornecedor", 'e', 100118000, 2, true, FTipoFor.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'r', 100119000, 2, true, FFornecedor.class );
 			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "País", "País", 'z', 100120010, 2, true, FPais.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "UF", "UF", 'z', 100120020, 2, true, FUF.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Municipio", "Municipio", 'z', 100120030, 2, true, FMunicipio.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "País", "País", 'í', 100120010, 2, true, FPais.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Estado", "Estado", 's', 100120020, 2, true, FUF.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Municipio", "Municipio", 'o', 100120030, 2, true, FMunicipio.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Bairro", "Bairro", 'o', 100120040, 2, true, FBairro.class );
+			
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Produto", "", 'u', 100130000, 2, false, null );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Almoxarifado", "Almoxarifado", 'x', 100130030, 3, true, FAlmox.class );
