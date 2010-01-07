@@ -33,24 +33,23 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener, ActionListener {
 
@@ -108,7 +107,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 			setVisible( false );
 		}
 		setTitulo( "Pesquisa (" + lc.getNomeTabela().trim() + ")" );
-		setAtribos( 500, 300 );
+		setAtribos( 650, 400 );
 		setResizable( true );
 		lcF2 = lc;
 
@@ -148,6 +147,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		String tit = "";
 		String sComma = ",";
 		int tam = 0;
+		int nchar = 0;
+		JTextFieldPad campo = null;
 		sSqlF2 = "SELECT ";
 		for ( int i = 0; i < lcF2.getComponentCount(); i++ ) {
 			tit = ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getTituloCampo();
@@ -157,9 +158,25 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 			sSqlF2 += ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getNomeCampo() + sComma;
 		}
 		for ( int i = 0; i < lcF2.getComponentCount(); i++ ) {
+			
 			tam = ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getTamanhoCampo();
-			if ( tam == 0 )
-				tam = 80;
+						
+			if ( tam == 0 ) {
+				
+				try {			
+					campo = ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getCampo();
+					nchar = campo.getTamanho();				
+				}
+				catch (Exception e) {
+					System.out.println("Erro ao contar caracteres do campo");
+				}
+				
+				int tamanhofonte = SwingParams.FONT_SIZE_MED;
+				Float fator = ( (new Float(tamanhofonte)).floatValue() / (new Float(1.5)).floatValue() );
+				
+				tam = nchar * fator.intValue();
+
+			}
 			tab.setTamColuna( tam, i );
 		}
 		sSqlF2 += " FROM " + lcF2.getNomeTabela();
