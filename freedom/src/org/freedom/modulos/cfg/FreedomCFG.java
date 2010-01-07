@@ -45,10 +45,11 @@ public class FreedomCFG extends AplicativoPD {
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Usuarios", "Usuarios", 'U', 100101020, 3, true, FUsuario.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Acesso", "Acesso Menu", 'A', 100101030, 3, true, FAcesso.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Menu", "Menu X Objeto", 'M', 100101040, 3, true, FMenuObj.class );
-				addOpcao( 100100000, TP_OPCAO_MENU, "Clientes/Conveniados", "", 'C', 100102000, 2, false, null );
-					addOpcao( 100102000, TP_OPCAO_ITEM, "Grau de instrução", "Grau de Instrução", 'G', 100102010, 3, true, FGrauInst.class );
+				addOpcao( 100100000, TP_OPCAO_MENU, "Tabela Geográficas", "", 'C', 100102000, 2, false, null );					
 					addOpcao( 100102000, TP_OPCAO_ITEM, "Paises", "Paises", 'P', 100102020, 3, true, FPais.class );
-					addOpcao( 100102000, TP_OPCAO_ITEM, "Cidades", "Cidades", 'd', 100102030, 3, true, FCidade.class );
+					addOpcao( 100102000, TP_OPCAO_ITEM, "Cidades", "Cidades", 'd', 100102030, 3, true, FMunicipio.class );
+					addOpcao( 100102000, TP_OPCAO_ITEM, "Estados", "Estados", 'E', 100102040, 3, true, FUF.class );
+					addOpcao( 100102000, TP_OPCAO_ITEM, "Bairros", "Bairros", 'B', 100102050, 3, true, FBairro.class );
 				addOpcao( 100100000, TP_OPCAO_MENU, "Objetos", "", 'O', 100103000, 2, false, null );
 					addOpcao( 100103000, TP_OPCAO_ITEM, "Tabela", "Tabelas auxiliares", 'T', 100103010, 3, true, FTabela.class );
 					addOpcao( 100103000, TP_OPCAO_ITEM, "Objetos aux.", "Vinculo entre tabelas físicas e auxiliares", 'O', 100103020, 3, true, FObjetoTb.class );
@@ -56,10 +57,11 @@ public class FreedomCFG extends AplicativoPD {
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Processos", "Processos", 'P', 100104100, 3, true, FProcesso.class );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Fluxos", "Cadastro de fluxos", 'F', 100104110, 3, true, FFluxo.class );
 				
-				addOpcao( 100100000, TP_OPCAO_MENU, "Outras tabelas genéricas", "", 's', 100105000, 2, false, null );
+				addOpcao( 100100000, TP_OPCAO_MENU, "Outras tabelas genéricas", "", 's', 100105000, 2, false, null );			
 					addOpcao( 100105000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 'i', 100105100, 3, true, FEstadoCivil.class );
 					addOpcao( 100105000, TP_OPCAO_ITEM, "Cadastro de Feriado", "Cadastro de Feriado", 'i', 100105200, 3, true, FFeriados.class );
 					addOpcao( 100105000, TP_OPCAO_ITEM, "Configuração de email", "Configuração de email", 'e', 100105300, 3, true, FConfEmail.class );
+					addOpcao( 100105000, TP_OPCAO_ITEM, "Grau de instrução", "Grau de Instrução", 'G', 100105410, 3, true, FGrauInst.class );
 					
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'e', 100200000, 1, false, null );
 			addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste de Sequencia", "Ajusta sequencia", 'A', 100201000, 2, true, FAjustaSeq.class );
