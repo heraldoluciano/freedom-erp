@@ -35,8 +35,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 
 public class FTabDados extends FDados implements KeyListener {
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 
 	public static boolean comScroll = false;
 
@@ -47,25 +47,33 @@ public class FTabDados extends FDados implements KeyListener {
 	boolean ind = true;
 
 	public FTabDados() {
+		
 		this(true);
+		
 		setInitFirstFocus(false);
 		setTitulo("Formulário de tabulação", this.getClass().getName());
 		setAtribos(50, 50, 350, 300);
+		
 		pnCliente.remove(pinDados);
 		tpn.addKeyListener(this);
 		addKeyListener(this);
+		
 	}
 
 	public FTabDados(boolean comScroll) {
+		
 		super(comScroll);
+		
 	}
 	
 	public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
 		tpn.add(tit, pn);
+		
 		tpn.setFont(SwingParams.getFontbold());
 		pn.addKeyListener(this);
 		pnCliente.add(tpn, BorderLayout.CENTER);
 		return tpn;
+		
 	}
 
 	public void removeTab(String tit, JPanelPad pn) {
