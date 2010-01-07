@@ -2443,7 +2443,7 @@ public class ListaCampos extends Container implements PostListener,
 				limpaCampos(bNovaPK);
 				setState(LCS_INSERT);
 				if ((CampoPK != null) && (bNovaPK)) {
-					CampoPK.setText(getNovoCodigo());
+						CampoPK.setVlrString(getNovoCodigo());
 				}
 			}
 		}
