@@ -705,12 +705,11 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		}
 		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();
-
-			super.actionPerformed( evt );
+			
 		}
-		else if ( evt.getSource() == btSair ) {
-			dispose();
-		}
+		
+		super.actionPerformed( evt );
+		
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
