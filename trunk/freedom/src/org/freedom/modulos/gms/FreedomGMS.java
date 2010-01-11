@@ -227,7 +227,8 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FPainelRecepcao.class);		
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovaOrc.class);
-
+				addSeparador(500000000);
+				addOpcao(500000000, TP_OPCAO_ITEM, "Tipos de Recepção", "Cadastro de tipos de recepção de mercadorias", 'T', 500300000,1, true, FTipoRecMerc.class);
 				
 		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 500000000, 0, false,null);
 				
