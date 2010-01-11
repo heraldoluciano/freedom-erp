@@ -34,6 +34,7 @@ import org.freedom.modulos.std.FAprovaOrc;
 import org.freedom.modulos.std.FCancVenda;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FCompra;
+import org.freedom.modulos.std.FConhecFrete;
 import org.freedom.modulos.std.FConsPreco;
 import org.freedom.modulos.std.FConsulta;
 import org.freedom.modulos.std.FDevolucao;
@@ -165,6 +166,8 @@ public class FreedomGMS extends AplicativoPD {
 			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação de Preços",	"Cotação de Preços", 'T', 200400000, 1, true,FCotacaoPrecos.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Compra", "Compra", 'C', 200600000, 1,true, FCompra.class);
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'F', 200800000, 1, true, FConhecFrete.class );			
+						
 			addOpcao(200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200700000, 1,false, null);
 				addOpcao(200700000, TP_OPCAO_ITEM, "Compras por fornecedor","Compras por Fornecedor", 'F', 200701000, 2, true,FRComprasFor.class);
 				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200702000, 2, true, FRCompras.class );
@@ -177,7 +180,7 @@ public class FreedomGMS extends AplicativoPD {
 			addOpcao(300000000, TP_OPCAO_ITEM, "Devolução de vendas","Devolução de vendas", 'D', 300300000, 1, true,FDevolucao.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Lançamento de Frete","Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class);
 			addSeparador(300000000);
-			addOpcao(300000000, TP_OPCAO_ITEM, "Aprova orçamento","Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class);
+			addOpcao(300000000, TP_OPCAO_ITEM, "Aprova orçamento","Aprova Orçamento", 'A', 300500000, 1, true, FAprovaOrc.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O',300600000, 1, true, FOrcamento.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento","Pesquisa Orçamento", 'P', 300700000, 1, true, FPesquisaOrc.class);	
 			addSeparador(300000000);
@@ -220,18 +223,34 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(400700000, TP_OPCAO_ITEM, "Conferência","Conferência de Estoque", 'C', 400706000, 2, true,FRConfEstoq.class);
 				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
 
+		addOpcao(-1, TP_OPCAO_MENU, "Recepção", "", 'R', 500000000, 0, false,null);	
+				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FPainelRecepcao.class);		
+				addSeparador(500000000);
+				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovaOrc.class);
+
+				
+		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 500000000, 0, false,null);
+				
+				
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
 				addBotao("btForneced.gif","Fornecedor","Fornecedor",100102020,FFornecedor.class);
 				addBotao("btRma.gif","Requisição de material", "Requisição de material", 300900000,FRma.class);
 				addBotao("btsoliccp.gif","Solicitação de Compra","Solicitação de Compra",200100000, FSolicitacaoCompra.class);	
 				
 				addBotao("btEntrada.png","Compra","Compras", 200600000, FCompra.class);
+				
+				addBotao( "btTransp.png", "Transportadora", "Transportadora", 100117000, FTransp.class );
+				addBotao( "btConFrete.png", "Conhecimento de Frete", "Conhecimento de Frete", 200300000, FConhecFrete.class  );
+				
 				addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);   
 				addBotao("btProduto.gif","Cadastro de produtos","Produtos", 100103090, FProduto.class);
 				addBotao("btSimilar.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
-				addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
+				addBotao("btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
-				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovaOrc.class);				
+				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovaOrc.class);
+				
+				addBotao("btRecMatPrim.png", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FPainelRecepcao.class);
+
 		
 		ajustaMenu();
 		
