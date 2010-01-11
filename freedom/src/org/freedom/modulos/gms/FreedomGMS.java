@@ -250,7 +250,7 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
 				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovaOrc.class);
 				
-				addBotao("btRecMatPrim.png", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FPainelRecepcao.class);
+				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FPainelRecepcao.class);
 
 		
 		ajustaMenu();
