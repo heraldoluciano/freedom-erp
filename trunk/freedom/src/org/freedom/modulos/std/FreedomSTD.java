@@ -321,7 +321,7 @@ public class FreedomSTD extends AplicativoPD {
 			
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );						
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
-		addBotao( "btOrcamento2.gif", "Orçamento", "Orçamento", 300600000, FOrcamento.class );
+		addBotao( "btOrcamento.png", "Orçamento", "Orçamento", 300600000, FOrcamento.class );
 		addBotao( "btSaida.png", "Venda", "Venda", 300100000, FVenda.class );		
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100119000, FFornecedor.class );
 		addBotao( "btEntrada.png", "Compra", "Compras", 200100000, FCompra.class );
