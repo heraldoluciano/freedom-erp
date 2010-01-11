@@ -196,7 +196,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         Container c = getContentPane();
         JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
         pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-        pnRod.setPreferredSize(new Dimension(200, 30));
+        pnRod.setPreferredSize(new Dimension(110, 30));
         btSair.setPreferredSize(new Dimension(110, 30));
         pnRod.add(btSair, BorderLayout.EAST);
         c.add(pnRod, BorderLayout.SOUTH);
