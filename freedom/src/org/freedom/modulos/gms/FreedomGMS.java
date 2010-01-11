@@ -151,9 +151,10 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(100300000, TP_OPCAO_ITEM, "Estação", "FEstacao", 'E',100303000, 2, true, FEstacao.class);// lom
 				addSeparador(100300000);
 				addOpcao(100300000, TP_OPCAO_MENU, "Preferências", "", 'P', 100304000,2, false, null);
-					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências gerais","Pref. Gerais", 'g', 100304010, 3, true, FPrefereGeral.class);
-					addOpcao(100304000, TP_OPCAO_ITEM, "Série de NFs", "", 'N', 100304020,3, true, FSerie.class);
-					addOpcao(100304000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo NF", 'M',100304030, 3, true, FModNota.class);
+   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências gerais","Pref. Gerais", 'g', 100304010, 3, true, FPrefereGeral.class);
+   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências GMS","Pref. GMS", 'S', 100304020, 3, true, FPreferegms.class);
+   					addOpcao(100304000, TP_OPCAO_ITEM, "Série de NFs", "", 'N', 100304030,3, true, FSerie.class);
+					addOpcao(100304000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo NF", 'M',100304040, 3, true, FModNota.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Solicitação de Compra",	"Solicitação de Compra", 'S', 200100000, 1, true,FSolicitacaoCompra.class);
