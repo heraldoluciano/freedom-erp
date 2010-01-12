@@ -38,8 +38,6 @@ import org.freedom.modulos.std.FFornecedor;
 import org.freedom.modulos.std.FImpressora;
 import org.freedom.modulos.std.FLanca;
 import org.freedom.modulos.std.FLiberaCredito;
-import org.freedom.modulos.std.FManutPag;
-import org.freedom.modulos.std.FManutRec;
 import org.freedom.modulos.std.FModBoleto;
 import org.freedom.modulos.std.FMoeda;
 import org.freedom.modulos.std.FRPontoEqui;
