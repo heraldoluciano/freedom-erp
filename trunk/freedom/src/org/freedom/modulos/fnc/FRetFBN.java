@@ -60,7 +60,6 @@ import org.freedom.modulos.fnc.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.FbnUtil.EParcela;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffParcela;
-import org.freedom.modulos.std.DLBaixaRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
