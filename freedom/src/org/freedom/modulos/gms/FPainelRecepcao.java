@@ -17,6 +17,7 @@ package org.freedom.modulos.gms;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -180,8 +181,10 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 	
 	private void montaListeners() {
 		
-	
 		btRecarregar.addActionListener( this );
+		btNovo.addActionListener( this );
+		btExcluir.addActionListener( this );
+		btEditar.addActionListener( this );
 	
 //		lcProd.addCarregaListener( this );
 //		lcCliente.addCarregaListener( this );
@@ -295,17 +298,14 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select ");
-			
-			sql.append( "rc.statusorc status, io.sitproditorc, io.dtaprovitorc dataaprov, ");
-			sql.append( "cast('today' as date) dtfabrop, ");
-			sql.append( "io.dtaprovitorc + coalesce(oc.prazoentorc,0) dataentrega, oc.codemp codempoc, ");
-			sql.append( "oc.codfilial codfilialoc, oc.codorc, "); 
-			sql.append( "io.coditorc, io.tipoorc ,cl.codcli, ");
-			sql.append( "cl.razcli, io.codemppd, io.codfilialpd, pd.codprod, pe.seqest, ") ;
-			sql.append( "pd.descprod, coalesce(io.qtdaprovitorc,0) qtdaprov, pi.codop, pi.seqop, ");
+			sql.append( "rm.ticket, rm.dtins data, rm.hins hora, rm.placaveiculo, rm.codtran, tr.nometran ");			
+			sql.append( "from eqrecmerc rm, vdtransp tr ");
+			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran ");
+			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			
 			StringBuffer status = new StringBuffer("");
-			
+
+/*			
 			if("S".equals(cbEtapa1.getVlrString())) {
 				status.append( " 'PE' ");
 			}
@@ -313,13 +313,13 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 				if ( status.length() > 0 ) {
 					status.append( "," );
 				}
-				status.append( "'EP'" );
+				status.append( " 'EP' " );
 			}
 			if("S".equals(cbEtapa3.getVlrString())) {
 				if ( status.length() > 0 ) {
 					status.append( "," );
 				}
-				status.append( "'PD'" );
+				status.append( " 'PD' " );
 			}
 
 			if ( status.length() > 0 ) {
@@ -331,7 +331,8 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 				sql.append( " and io.sitproditorc not in('PE','EP','PD') " );
 			}
 					 
-			
+	*/		
+		
 			System.out.println("SQL:" + sql.toString());
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -339,8 +340,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 			int iparam = 1;
 			
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			
 			ResultSet rs = ps.executeQuery();		
 			
@@ -352,6 +352,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 				
 				tabDet.adicLinha();
 				
+				
 				if ( "PE".equals( rs.getString( "sitproditorc" ) ) ) {
 					imgColuna = imgPesagem1;
 				}
@@ -362,6 +363,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 					imgColuna = imgPesagem2;
 				}
 											
+				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
@@ -395,8 +397,24 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		if ( e.getSource() == btRecarregar ) {
 			montaGrid();
 		}
+		else if ( e.getSource() == btNovo ) {
+			novoRecebimento();
+		}
 	}
 
+	private void novoRecebimento() {
+		
+		FRecMerc recebimento = new FRecMerc();
+		
+		try {
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void valorAlterado( TabelaSelEvent e ) {
 		/*		
 		if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) {
