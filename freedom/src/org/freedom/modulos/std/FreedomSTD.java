@@ -37,6 +37,8 @@ import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FBordero;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
+import org.freedom.modulos.fnc.FManutPag;
+import org.freedom.modulos.fnc.FManutRec;
 import org.freedom.modulos.fnc.FRBordero;
 import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.fnc.FRFluxoCaixaRes;

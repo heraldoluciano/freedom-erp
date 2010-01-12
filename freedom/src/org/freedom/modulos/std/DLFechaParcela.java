@@ -188,6 +188,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		oRetorno[ DLFechaParcela.EFields.BANCO.ordinal() ] = txtCodBanco.getVlrString();
 		oRetorno[ DLFechaParcela.EFields.CARTCOB.ordinal() ] = txtCodCartCob.getVlrString();
 		oRetorno[ DLFechaParcela.EFields.DESCPONT.ordinal() ] = cbDescPont.getVlrString();
+//		oRetorno[ DLFechaParcela.EFields.CODCONTA.ordinal() ] = txt.getVlrString();
 
 		return oRetorno;
 	}
@@ -261,6 +262,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		TIPOCOB,
 		BANCO,
 		CARTCOB,
-		DESCPONT
+		DESCPONT,
+		CODCONTA
 	}
 }
