@@ -57,7 +57,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.std.DLBaixaRec;
+import org.freedom.modulos.fnc.DLBaixaRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
