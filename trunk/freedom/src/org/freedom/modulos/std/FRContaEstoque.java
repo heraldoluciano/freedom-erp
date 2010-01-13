@@ -51,21 +51,41 @@ public class FRContaEstoque extends FRelatorio {
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
+	private JTextFieldPad txtCodTabPreco = new JTextFieldPad (JTextFieldPad.TP_INTEGER,6,0);
+	private JTextFieldPad txtDescTabPreco = new JTextFieldFK (JTextFieldPad.TP_STRING,40,0);
+		
 	private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
 	private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
+	
+	private JLabelPad lbCodTabPreco = new JLabelPad("Cód.Tab.");
+	private JLabelPad lbDescTabPreco = new JLabelPad("Descrição da tabela de preços");
+	
+	private JLabelPad lbCodPlanoPag1 = new JLabelPad("Cód.Pag.");
+	private JLabelPad lbDescPlanoPag1 = new JLabelPad("Descrição do Plano de pagamento");
+	
+	private JTextFieldPad txtCodPlanoPag1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private Vector<String> vLabs = new Vector<String>(2);
 	private Vector<String> vVals = new Vector<String>(2);
+	
 	private ListaCampos lcGrup = new ListaCampos(this);
+	private ListaCampos lcTabPreco = new ListaCampos(this);
+	private ListaCampos lcPlanoPag1 = new ListaCampos(this);
 	
 	private JCheckBoxPad cbSemEstoq = new JCheckBoxPad("Imprimir produtos sem saldo?","S","N");
-	private JCheckBoxPad cbComSaldo = new JCheckBoxPad("Imprimir saldo dos produtos?","S","N");
+	private JCheckBoxPad cbComSaldo = new JCheckBoxPad("Imprimir saldo dos produtos?","S","N");	
+	
+    private JCheckBoxPad cbPrecoFracionado = new JCheckBoxPad("Preço fracionado","S","N");
+	
 	
 	public FRContaEstoque() {
 		
 		setTitulo("Relatório de Giro de estoque");
 		
-		setAtribos(140,40,340,290);
+		setAtribos( 140, 40, 350, 390 );
 		vLabs.addElement("Código");
 		vLabs.addElement("Descrição"); 
 
@@ -90,20 +110,55 @@ public class FRContaEstoque extends FRelatorio {
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
-    
-		adic(lbCodGrup,7,75,250,20);
-		adic(txtCodGrup,7,95,80,20);		
-		adic(lbDescGrup,90,75,250,20);
-		adic(txtDescGrup,90,95,216,20);
-		adic(rgOrdem,7,130,300,30);   
 		
-	    adic(cbSemEstoq,7,170,250,20);
-	    adic(cbComSaldo,7,190,250,20);
-	    
-	    cbSemEstoq.setVlrString("S");
-	    cbComSaldo.setVlrString("N");
+		lcTabPreco.add(new GuardaCampo( txtCodTabPreco, "CodTab", "Cód.tab.pc.", ListaCampos.DB_PK, false));
+		lcTabPreco.add(new GuardaCampo( txtDescTabPreco, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
+		txtCodTabPreco.setTabelaExterna(lcTabPreco);
+		txtCodTabPreco.setNomeCampo("CodTab");
+		txtCodTabPreco.setFK(true);
+		lcTabPreco.setReadOnly(true);
+		lcTabPreco.montaSql(false, "TABPRECO", "VD");
+		
+		lcPlanoPag1.add(new GuardaCampo( txtCodPlanoPag1, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag1.add(new GuardaCampo( txtDescPlanoPag1, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag1.montaSql(false, "PLANOPAG", "FN");
+		lcPlanoPag1.setReadOnly(true);
+		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1);
+		txtCodPlanoPag1.setFK(true);
+		txtCodPlanoPag1.setNomeCampo("CodPlanoPag");
 
-	
+    
+		adic(lbCodGrup,7,70,250,20);
+		adic(txtCodGrup,7,90,80,20);	
+		
+		adic(lbDescGrup,90,70,250,20);
+		adic(txtDescGrup,90,90,216,20);
+		
+		adic(lbCodTabPreco,7,110,250,20);
+		adic(txtCodTabPreco,7,130,80,20);	
+		
+		adic(lbDescTabPreco,90,110,250,20);
+		adic(txtDescTabPreco,90,130,216,20);
+		
+		adic(lbCodPlanoPag1,7,150,250,20);
+		adic(txtCodPlanoPag1,7,170,80,20);	
+		
+		adic(lbDescPlanoPag1,90,150,250,20);
+		adic(txtDescPlanoPag1,90,170,216,20);
+
+		adic(rgOrdem,7,210,300,30);   
+		
+	    adic(cbSemEstoq,7,250,250,20);
+	    adic(cbComSaldo,7,270,250,20);
+	    adic(cbPrecoFracionado,7,290,250,20);
+	    
+	    cbSemEstoq.setVlrString("N");
+	    cbComSaldo.setVlrString("S");
+	    cbPrecoFracionado.setVlrString("S");
+	    
+		txtCodTabPreco.setVlrInteger( 1 );
+		txtCodPlanoPag1.setVlrInteger( 1 );
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -114,22 +169,51 @@ public class FRContaEstoque extends FRelatorio {
 		
 		try {
 
-			sql.append( "select codprod, refprod, codbarprod, descprod, sldprod ");
-			sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null)");
-			sql.append( "where ativoprod='S'");
+			
+			
+			sql.append( "select cu.codprod, cu.codfabprod, cu.refprod, cu.codbarprod, cu.descprod, cu.sldprod ");
+			
+			if(txtCodTabPreco.getVlrInteger()>0) {
+				
+				if("S".equals( cbPrecoFracionado.getVlrString())){
+	    			sql.append( " ,PP.PRECOPROD/coalesce(P.QTDEMBALAGEM,1) AS PRECOPROD " );
+	    		}
+	    		else {
+	    			sql.append( " ,PP.PRECOPROD " );
+	    		}
+				
+				sql.append( ", 'S' imppreco ");
+				
+				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null) cu, vdprecoprod pp, eqproduto p ");
+				sql.append( "where cu.ativoprod='S' and pp.codemp=? and pp.codfilial=? and pp.codprod=cu.codprod and " );
+				
+				sql.append( "pp.codemptb=? and pp.codfilialtb=? and pp.codtab=? and ");
+				
+				if(txtCodPlanoPag1.getVlrInteger()>0) {
+					sql.append( "pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? and ");
+				}
+				
+				sql.append( "p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod ");
+
+			}
+			else {
+				sql.append( ",0 as precoprod, 'N' imppreco ");
+				sql.append( "from eqrelpepssp(?,?,?,null,null,null,?,?,?,null,null,null,null) cu ");
+				sql.append( "where cu.ativoprod='S' ");
+			}
+			
 			
 			if("N".equals( cbSemEstoq.getVlrString() )) {
-				sql.append(" and sldprod>0" );
+				sql.append(" and cu.sldprod>0" );
 			}
 						
 			if("C".equals(rgOrdem.getVlrString())) {
-				sql.append("order by codprod ");
+				sql.append("order by cu.codprod ");
 			}
 			
 			if("D".equals(rgOrdem.getVlrString())) {
-				sql.append("order by descprod ");
+				sql.append("order by cu.descprod ");
 			}
-
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
@@ -149,6 +233,23 @@ public class FRContaEstoque extends FRelatorio {
 	  			ps.setNull(iparam++,Types.SMALLINT);
 	  			ps.setNull(iparam++,Types.CHAR);				
 			}
+			
+			if(txtCodTabPreco.getVlrInteger()>0) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, Aplicativo.iCodFilial );
+				
+				ps.setInt( iparam++, lcTabPreco.getCodEmp() );
+				ps.setInt( iparam++, lcTabPreco.getCodFilial() );
+				ps.setInt( iparam++, txtCodTabPreco.getVlrInteger() );
+				
+				if(txtCodPlanoPag1.getVlrInteger()>0) {
+					ps.setInt( iparam++, lcPlanoPag1.getCodEmp() );
+					ps.setInt( iparam++, lcPlanoPag1.getCodFilial() );
+					ps.setInt( iparam++, txtCodPlanoPag1.getVlrInteger() );
+				}
+			}
+			
 
 			ResultSet rs = ps.executeQuery();
 
@@ -175,8 +276,16 @@ public class FRContaEstoque extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {		
+		
+		super.setConexao( cn );
+		
 		lcGrup.setConexao( cn );
-		super.setConexao( cn );		
+		lcTabPreco.setConexao( cn );
+		lcPlanoPag1.setConexao( cn );
+		
+		lcPlanoPag1.carregaDados();
+		lcTabPreco.carregaDados();
+
 		
 	}
 	
