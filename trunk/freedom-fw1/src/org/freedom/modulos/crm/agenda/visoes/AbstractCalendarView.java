@@ -21,16 +21,16 @@
  *******************************************************************************/
 package org.freedom.modulos.crm.agenda.visoes;
 
-import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-
 
 import lu.tudor.santec.bizcal.listeners.DateListener;
 import lu.tudor.santec.bizcal.listeners.NamedCalendarListener;
 
 public abstract class AbstractCalendarView extends JPanel implements  DateListener, NamedCalendarListener{
+
+
+	private static final long serialVersionUID = 1L;
 
 	public AbstractCalendarView() {
 		setOpaque(false);
@@ -40,7 +40,7 @@ public abstract class AbstractCalendarView extends JPanel implements  DateListen
 
 	public abstract String getViewName();
 
-	public abstract List getEvents();
+//	public abstract List getEvents();
 
 	public abstract void print(boolean showPrinterDialog);
 

@@ -82,9 +82,9 @@ public class DayView extends CalendarView {
 	
 	private Map<Integer, Date> minuteMapping = Collections.synchronizedMap(new HashMap<Integer, Date>());
 
-	private Map hourLabels = new HashMap();
+	private Map<?,?> hourLabels = new HashMap<Object,Object>();
 
-	private Map minuteLabels = new HashMap();
+	private Map<?,?> minuteLabels = new HashMap<Object,Object>();
 
 	private List<JLabel> vLines = new ArrayList<JLabel>();
 
@@ -442,7 +442,7 @@ public class DayView extends CalendarView {
 			/* ------------------------------------------------------- */
 			int iEvent = 0;
 			if (events == null)
-				events = new ArrayList();
+				events = new ArrayList<Event>();
 			
 			for (Event event : events) {
 				/* ------------------------------------------------------- */
@@ -794,7 +794,7 @@ public class DayView extends CalendarView {
 			return new Dimension(50, 100);
 		}
 
-		@SuppressWarnings("unchecked")
+//		@SuppressWarnings("unchecked")
 		public void layoutContainer(Container parent0) {
 			/* ================================================== */
 			try {
@@ -1147,22 +1147,22 @@ public class DayView extends CalendarView {
 
 	
 	
-	private void layoutNew(List<Event> eventList, List<FrameArea> areaList) {
+//	private void layoutNew(List<Event> eventList, List<FrameArea> areaList) {
 		/* ================================================== */
 		//		currCol
 		//		colsInRow
 		//		currWidth=width/colsInRow
 		/* ------------------------------------------------------- */
 		// Map to store the column position for each event
-		HashMap<Event, Integer> colPositionMap = new HashMap<Event, Integer>();
+//		HashMap<Event, Integer> colPositionMap = new HashMap<Event, Integer>();
 		// Map to store the amount of events, that are painted in a row
 		// neccessary to get the right width of each event
-		HashMap<Event, Integer> colsInRowMap   = new HashMap<Event, Integer>();
+//		HashMap<Event, Integer> colsInRowMap   = new HashMap<Event, Integer>();
 		/* ------------------------------------------------------- */
 		
 		
 		/* ================================================== */	
-	}
+//	}
 	
 	
 	

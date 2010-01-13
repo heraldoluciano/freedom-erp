@@ -3,14 +3,8 @@ package org.freedom.funcoes.exporta;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import org.freedom.funcoes.Funcoes;
 
 public abstract class Contabil {
 

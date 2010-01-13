@@ -61,7 +61,7 @@ public class ListModel extends AbstractTableModel {
 		"Assunto"
 	};
 	
-	private static Class[] columnClasses = {
+	private static Class<?>[] columnClasses = {
 		String.class,
 		ImageIcon.class,
 		String.class,

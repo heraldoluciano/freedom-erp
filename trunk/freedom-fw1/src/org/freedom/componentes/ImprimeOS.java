@@ -30,7 +30,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +41,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.DLVisualiza;
@@ -54,8 +54,6 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 
 public class ImprimeOS implements ActionListener {
 
@@ -1177,10 +1175,10 @@ public class ImprimeOS implements ActionListener {
 		Rectangle pageSize = new Rectangle(PageSize.A4);
 		Document document = new Document(pageSize);
 		try {
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fArq));
+//		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fArq));
 		document.addTitle( sTitulo );
 		document.open();
-		PdfContentByte cb = writer.getDirectContent();  
+//		PdfContentByte cb = writer.getDirectContent();  
 		
 		Font font = FontFactory.getFont(FontFactory.COURIER, 6, Font.NORMAL, Color.black);		
 		
@@ -1198,7 +1196,7 @@ public class ImprimeOS implements ActionListener {
 		catch(DocumentException de) {
 		System.err.println(de.getMessage());
 		}
-		catch(IOException ioe) {
+		catch(Exception ioe) {
 		System.err.println(ioe.getMessage());
 		}
 		document.close();

@@ -151,7 +151,7 @@ public abstract class CalendarView {
 
 	private Map<String, FrameArea> _frameAreaMap = new HashMap<String, FrameArea>();
 
-	private Map _eventMap = new HashMap();
+	private Map<Object, List<Event>> _eventMap = new HashMap<Object, List<Event>>();
 
 	private List<Event> _selectedEvents = new ArrayList<Event>();
 
@@ -514,7 +514,7 @@ public abstract class CalendarView {
 
 		private FrameArea baseArea;
 
-		private Integer lastCreatedKey;
+//		private Integer lastCreatedKey;
 
 		public FrameAreaMouseListener(FrameArea frameArea, Object calId, Event event) {
 			/* ================================================== */
@@ -1357,7 +1357,7 @@ public abstract class CalendarView {
 //										System.out.println("MAX -> new");
 									}
 									this.lastCreatedFrameArea = fa;
-									this.lastCreatedKey = i;
+//									this.lastCreatedKey = i;
 									currentPoint = convertPoint(currentPoint, currentArea, fa);
 									currentArea = fa;
 									/* ------------------------------------------------------- */
@@ -2562,13 +2562,13 @@ public abstract class CalendarView {
 		getComponent().setCursor(cursor);
 	}
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	protected void register(Object calId, Event event, FrameArea area) {
 		_frameAreaMap.put("" + calId + event.getId()
 				+ event.getStart().getTime(), area);
-		List list = (List) _eventMap.get(calId);
+		List<Event> list = _eventMap.get(calId);
 		if (list == null) {
-			list = new ArrayList();
+			list = new ArrayList<Event>();
 			_eventMap.put(calId, list);
 		}
 		list.add(event);
@@ -2621,14 +2621,14 @@ public abstract class CalendarView {
 	public void deselect() throws Exception {
 		/* ================================================== */
 		_selectedEvents.clear();
-		Iterator iCal = broker.getSelectedCalendars().iterator();
+		Iterator<?> iCal = broker.getSelectedCalendars().iterator();
 		while (iCal.hasNext()) {
 			bizcal.common.Calendar cal = (bizcal.common.Calendar) iCal.next();
 			Object calId = cal.getId();
-			List events = (List) _eventMap.get(calId);
+			List<?> events = _eventMap.get(calId);
 			if (events == null)
 				return;
-			Iterator i = events.iterator();
+			Iterator<?> i = events.iterator();
 			while (i.hasNext()) {
 				Event event = (Event) i.next();
 //				FrameArea area = getFrameArea(calId, event);
@@ -2704,9 +2704,9 @@ public abstract class CalendarView {
 		} else
 			_selectedEvents.addAll(getEditibleEvents(id, new DateInterval(
 					date1, date2)));
-		Iterator i = _selectedEvents.iterator();
+		Iterator<Event> i = _selectedEvents.iterator();
 		while (i.hasNext()) {
-			Event event = (Event) i.next();
+			Event event = i.next();
 			FrameArea area = getFrameArea(id, event);
 			area.setSelected(true);
 			if (listener != null)
@@ -2727,12 +2727,12 @@ public abstract class CalendarView {
 										throws Exception {
 		/* ================================================== */
 		List<Event> result = new ArrayList<Event>();
-		List events 	   = (List) _eventMap.get(calId);
+		List<Event> events 	   = _eventMap.get(calId);
 		/* ------------------------------------------------------- */
 		if (events == null || events.size() < 1)
 			return result;
 		/* ------------------------------------------------------- */
-		Iterator i = events.iterator();
+		Iterator<?> i = events.iterator();
 		while (i.hasNext()) {
 			/* ------------------------------------------------------- */
 			Event event = (Event) i.next();
@@ -2752,9 +2752,9 @@ public abstract class CalendarView {
 	private boolean isSelected(Event event) {
 		if (event == null)
 			return false;
-		Iterator i = _selectedEvents.iterator();
+		Iterator<Event> i = _selectedEvents.iterator();
 		while (i.hasNext()) {
-			Event tmpEvent = (Event) i.next();
+			Event tmpEvent = i.next();
 			if (tmpEvent.getId().equals(event.getId()))
 				return true;
 
@@ -2934,7 +2934,7 @@ public abstract class CalendarView {
 //		/* ================================================== */
 //	}
 
-	protected List getSelectedCalendars() throws Exception {
+	protected List<?> getSelectedCalendars() throws Exception {
 		return broker.getSelectedCalendars();
 	}
 

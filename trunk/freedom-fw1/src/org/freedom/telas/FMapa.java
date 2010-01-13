@@ -21,7 +21,6 @@
 package org.freedom.telas;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -33,13 +32,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 
-import org.freedom.componentes.JButtonPad;
-
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Mapa;
 import org.jdesktop.swingx.JXMapViewer;
-
 
 public final class FMapa extends FFilho implements ActionListener, KeyListener {
 	
@@ -70,7 +67,7 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 		c.add(pnMapa);
 		mapa.setZoom( 2 );
 		
-		JXMapViewer pm = new JXMapViewer();
+//		JXMapViewer pm = new JXMapViewer();
 		pnMapa.add( mapa, BorderLayout.CENTER);	
 		img = mapa.createImage( 500, 500 );
 		
@@ -114,7 +111,7 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 			System.gc();			
 		}
 	}
-	
+	/*
 	private void close() throws Throwable {
 		try {
 			finalize();
@@ -124,7 +121,7 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 		}
 
 	}
-	
+	*/
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getActionCommand() == "Sair") 
 			dispose();
@@ -143,12 +140,12 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 //			Testes para verificar modo de imprimir mapa.
 			
 			JXMapViewer mp2 = mapa.getMainMap();
-			Container cnt = mp2.getParent();
+//			Container cnt = mp2.getParent();
 			
 			Graphics gr = mp2.getGraphics();
 			gr.drawRect( 10, 10, 100, 100 );
 			
-			HashMap hParam = new HashMap();
+			HashMap<Object, Object> hParam = new HashMap<Object, Object>();
 			hParam.put("MAPA", img);
 				
 /*			FPrinterJob dlGr = new FPrinterJob( "relatorios/Mapa.jasper", "Mapa", null, this, hParam, con );

@@ -75,9 +75,9 @@ public class MonthView extends CalendarView
 {
 	
 	private ColumnHeaderPanel columnHeader;
-	private List<List> cells = new ArrayList<List>();
-	private List hLines = new ArrayList();
-	private List vLines = new ArrayList();
+	private List<List<JComponent>> cells = new ArrayList<List<JComponent>>();
+	private List<JLabel> hLines = new ArrayList<JLabel>();
+	private List<JLabel> vLines = new ArrayList<JLabel>();
 	private JScrollPane scrollPane;
 	private JPanel calPanel;
 	private FAgenda tela = null;
@@ -314,7 +314,7 @@ public class MonthView extends CalendarView
 
 		private Event event;
 
-		private Object calId;
+//		private Object calId;
 
 		/**
 		 * @param event
@@ -322,7 +322,7 @@ public class MonthView extends CalendarView
 		 */
 		public EventMouseListener(Event event, Object calId) {
 			/* ================================================== */
-			this.calId = calId;
+	//		this.calId = calId;
 			this.event = event;
 			/* ================================================== */
 		}
@@ -485,7 +485,7 @@ public class MonthView extends CalendarView
 				height = height / cells.size();
 				for (int row=0; row < cells.size(); row++) {
 					/* ------------------------------------------------------- */
-					List rowList = cells.get(row);
+					List<?> rowList = cells.get(row);
 					for (int col=0; col < rowList.size(); col++) {
 						/* ------------------------------------------------------- */
 						JComponent cell = (JComponent) rowList.get(col);
@@ -503,7 +503,7 @@ public class MonthView extends CalendarView
 		        	/* ------------------------------------------------------- */
 		        	try {
 		        		/* ------------------------------------------------------- */
-						JLabel line = (JLabel) vLines.get(i);
+						JLabel line = vLines.get(i);
 						line.setBounds((int) ((i+1)*width),
 								0,
 								1,
@@ -518,7 +518,7 @@ public class MonthView extends CalendarView
 		        for (int i=0; i < rowCount; i++) {
 		        	/* ------------------------------------------------------- */
 		        	try {
-					JLabel line = (JLabel) hLines.get(i);
+					JLabel line = hLines.get(i);
 					line.setBounds(0,
 							(int) ((i+1)*height),
 							parent.getWidth(),

@@ -104,7 +104,7 @@ public class TabVector {
 	}
 
 	//Método em desuso pois pode ocasionar problemas de arredondamento.
-	@Deprecated
+//	@Deprecated
 	public float getFloat(int pos) {
 		float value = 0;
 		Object o = getObject(pos);

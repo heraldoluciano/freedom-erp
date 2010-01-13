@@ -50,9 +50,9 @@ import javax.swing.border.Border;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
 
-public class FDialogo extends JDialog implements ActionListener, KeyListener,
-		WindowListener, IFilho {
-	private FPrincipal fPrim;
+public class FDialogo extends JDialog implements ActionListener, KeyListener, WindowListener, IFilho {
+
+//	private FPrincipal fPrim;
 
 	public JPanelPad adicBotaoSair() {
         Container c = getContentPane();
@@ -85,7 +85,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener,
     }
 
 	public void setTelaPrim( FPrincipal fP ) {
-        fPrim = fP;
+//        fPrim = fP;
     }
 
 	private static final long serialVersionUID = 1L;
