@@ -139,7 +139,7 @@ public class FreedomPDV extends AplicativoPDV {
 			AplicativoPDV.setLookAndFeel( "freedom.ini" );
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.setECF();
-			freedom.loadEcflayout();
+			FreedomPDV.loadEcflayout();
 			freedom.show();
 			freedom.btVenda.doClick();
 		} catch ( Throwable e ) {

@@ -78,7 +78,7 @@ class SiaccUtil extends FbnUtil {
 			parseLine( line );
 		}
 
-		@SuppressWarnings("unchecked")
+//		@SuppressWarnings("unchecked")
 		RegA( final char codrem, final Map<Enum<EPrefs>, Object> prefs, final int numReg ) {
 
 			super( CODREG );

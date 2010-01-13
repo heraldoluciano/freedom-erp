@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 

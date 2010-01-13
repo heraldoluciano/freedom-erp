@@ -23,10 +23,12 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeLayout;
-@Deprecated
+//@Deprecated
 public abstract class LeiauteGR extends ImprimeLayout {
-  public LeiauteGR() {} 
-  public abstract void setParam(Vector<?> vParam);  
-  public abstract void setConexao(DbConnection cn);
+
+	private static final long serialVersionUID = 1L;
+	public LeiauteGR() {} 
+	public abstract void setParam(Vector<?> vParam);  
+	public abstract void setConexao(DbConnection cn);
 
 }
