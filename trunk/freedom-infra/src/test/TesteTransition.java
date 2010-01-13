@@ -2,7 +2,6 @@
 package test;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;

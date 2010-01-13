@@ -1,6 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
-import org.freedom.infra.model.jpa.Key;
+
 import org.freedom.infra.model.jpa.KeyField;
 
 
@@ -11,7 +11,7 @@ public class TesteJPA {
 	 */
 	
 	@KeyField(name="teste")
-	private  String teste="Teste1";
+//	private  String teste="Teste1";
 	
 	public static void main(String[] args) {
 		Map<String, Object> m1 = new HashMap<String, Object>();
@@ -23,7 +23,7 @@ public class TesteJPA {
 		m2.put("1",1);
 		m2.put("2",2);
 		
-		Object[][] i = {{"Teste","1"},{"Teste2","2"}};
+//		Object[][] i = {{"Teste","1"},{"Teste2","2"}};
 		
 		//TesteJPA.TesteKey key1 = new TesteJPA().new TesteKey( i ); 
 		//TesteJPA.TesteKey key2 = new TesteJPA().new TesteKey( i );

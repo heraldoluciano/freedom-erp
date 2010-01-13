@@ -133,7 +133,7 @@ public class ManagerIni {
 	 */
 	private ManagerIni( File initFile ) throws IOException {
 		
-		if ( initFile != null || initFile.exists() ) {		
+		if ( initFile != null && initFile.exists() ) {
     		file = initFile;		
     		readFile();
 		}

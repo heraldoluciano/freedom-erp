@@ -12,8 +12,8 @@ import java.util.Map;
 
 public abstract class AbstractJpaProperties {
 
-	public static Map setUser( final int key, String user ) {
-
-		return new HashMap();
+	public static Map<Object,Object> setUser( final int key, String user ) {
+		return new HashMap<Object, Object>(); 		
+		
 	}
 }

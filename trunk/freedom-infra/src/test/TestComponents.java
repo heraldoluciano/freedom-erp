@@ -10,7 +10,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,7 +23,6 @@ import org.freedom.infra.x.UIMaker.effect.Effect;
 import org.freedom.infra.x.UIMaker.effect.Fade;
 import org.freedom.infra.x.UIMaker.effect.FadeTransition;
 import org.freedom.infra.x.UIMaker.effect.SetEffect;
-import org.freedom.infra.x.UIMaker.effect.ShineInBorder;
 
 public class TestComponents extends JFrame {
 
@@ -34,11 +32,11 @@ public class TestComponents extends JFrame {
 
 	private Button botao01 = null;
 
-	private Label label01 = null;
+//	private Label label01 = null;
 
 	private Panel panel01 = null;
 
-	private Panel panel02 = null;
+//	private Panel panel02 = null;
 
 	private TextField textField01 = null;
 
@@ -125,8 +123,7 @@ public class TestComponents extends JFrame {
 			botao01.setBorderPainted( true );
 			botao01.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					Effect effect1 = new ShineInBorder( 
-							panel01, ShineInBorder.SPEED_FAST );
+//					Effect effect1 = new ShineInBorder( panel01, ShineInBorder.SPEED_FAST );
 					Effect effect2 = new Fade( panel01 );
 					((Fade)effect2).setMaxAlfa( 0.8f );
 					((Fade)effect2).setColor( Color.ORANGE );
@@ -145,7 +142,7 @@ public class TestComponents extends JFrame {
 		}
 		return botao01;
 	}
-
+    /*
 	private Label getLabel01() {
 	
 		if ( label01 == null ) {
@@ -159,7 +156,7 @@ public class TestComponents extends JFrame {
 		}
 		return label01;
 	}
-
+     */
 	/**
 	 * This method initializes panel01	
 	 * 	
@@ -182,7 +179,7 @@ public class TestComponents extends JFrame {
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
-	private Panel getPanel02() {
+	/*private Panel getPanel02() {
 	
 		if ( panel02 == null ) {
 			panel02 = new Panel( );
@@ -195,7 +192,7 @@ public class TestComponents extends JFrame {
 			panel02.setOpaque( true );
 		}
 		return panel02;
-	}
+	}*/
 
 	/**
 	 * This method initializes textField01	
