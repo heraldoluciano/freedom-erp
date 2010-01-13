@@ -167,25 +167,25 @@ ORDER BY PP.CODPROD]]></queryString>
 					<reportElement
 						x="1"
 						y="96"
-						width="46"
+						width="40"
 						height="19"
 						key="rectangle-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
-						x="47"
+						x="41"
 						y="96"
-						width="60"
+						width="57"
 						height="19"
 						key="rectangle-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
-						x="107"
+						x="98"
 						y="96"
-						width="320"
+						width="329"
 						height="19"
 						key="rectangle-9"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -195,7 +195,7 @@ ORDER BY PP.CODPROD]]></queryString>
 						mode="Transparent"
 						x="3"
 						y="99"
-						width="43"
+						width="36"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -210,9 +210,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="48"
+						x="43"
 						y="99"
-						width="57"
+						width="54"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -227,9 +227,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="172"
+						x="182"
 						y="99"
-						width="179"
+						width="169"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -569,9 +569,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="110"
+						x="100"
 						y="99"
-						width="57"
+						width="68"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -585,7 +585,7 @@ ORDER BY PP.CODPROD]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="169"
+						x="181"
 						y="97"
 						width="0"
 						height="18"
@@ -604,16 +604,16 @@ ORDER BY PP.CODPROD]]></queryString>
 					<reportElement
 						x="1"
 						y="0"
-						width="46"
+						width="40"
 						height="17"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
-						x="47"
+						x="41"
 						y="0"
-						width="60"
+						width="57"
 						height="17"
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -623,7 +623,7 @@ ORDER BY PP.CODPROD]]></queryString>
 						mode="Transparent"
 						x="3"
 						y="2"
-						width="43"
+						width="36"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -636,9 +636,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				</textField>
 				<rectangle>
 					<reportElement
-						x="107"
+						x="98"
 						y="0"
-						width="320"
+						width="329"
 						height="17"
 						key="rectangle-3"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -698,9 +698,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="48"
+						x="43"
 						y="2"
-						width="57"
+						width="54"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -714,9 +714,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="171"
+						x="183"
 						y="2"
-						width="180"
+						width="167"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -788,9 +788,9 @@ ORDER BY PP.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="109"
+						x="100"
 						y="2"
-						width="59"
+						width="79"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -803,7 +803,7 @@ ORDER BY PP.CODPROD]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="169"
+						x="181"
 						y="0"
 						width="0"
 						height="17"
