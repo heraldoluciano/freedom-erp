@@ -78,6 +78,8 @@ import org.freedom.telas.SwingParams;
 
 public class FPMP extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
+	// *** Variáveis estáticas
+	
 	private static final long serialVersionUID = 1L;	
 	private static final Color GREEN = new Color( 45, 190, 60 );
 
@@ -1349,8 +1351,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 			e.printStackTrace();
 		}
 	}
-	
-	
+		
 	private void geraTabTemp() {
 		StringBuilder sql = new StringBuilder("");
 		PreparedStatement ps = null;
