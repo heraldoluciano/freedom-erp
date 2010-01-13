@@ -29,6 +29,10 @@
 package org.freedom.modulos.gms;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.cfg.FBairro;
+import org.freedom.modulos.cfg.FMunicipio;
+import org.freedom.modulos.cfg.FPais;
+import org.freedom.modulos.cfg.FUF;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FAprovaOrc;
 import org.freedom.modulos.std.FCancVenda;
@@ -132,10 +136,16 @@ public class FreedomGMS extends AplicativoPD {
 					addSeparador(100104000);
 					addOpcao(100104000, TP_OPCAO_ITEM, "Natureza de operação", "Naturezas",'z', 100104040, 3, true, FNatoPer.class);
 					addSeparador(100104000);
-				addOpcao(100100000, TP_OPCAO_MENU, "Atribuições", "", 't', 100105000,3, false, null);
-					addOpcao(100105000, TP_OPCAO_ITEM, "Atribuições", "Atribuição", 'r',100105010, 4, true, FAtribuicao.class);
+				addOpcao(100100000, TP_OPCAO_MENU, "Atribuições", "", 't', 100105000, 3, false, null);
+					addOpcao(100105000, TP_OPCAO_ITEM, "Atribuições", "Atribuição", 'r', 100105010, 4, true, FAtribuicao.class);
 					addOpcao(100105000, TP_OPCAO_ITEM, "Atribuições por usuário","Atribuição por usuário", 'u', 100105020, 4, true,FAtribUsu.class);
-	
+
+				addOpcao( 100100000, TP_OPCAO_MENU, "Tabela Geográficas", "", 'C', 100106000, 2, false, null );					
+					addOpcao( 100106000, TP_OPCAO_ITEM, "Paises", "Paises", 'P', 100106010, 3, true, FPais.class );
+					addOpcao( 100106000, TP_OPCAO_ITEM, "Cidades", "Cidades", 'd', 100106020, 3, true, FMunicipio.class );
+					addOpcao( 100106000, TP_OPCAO_ITEM, "Estados", "Estados", 'E', 100106030, 3, true, FUF.class );
+					addOpcao( 100106000, TP_OPCAO_ITEM, "Bairros", "Bairros", 'B', 100106040, 3, true, FBairro.class );
+					
 			addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000,1, false, null);
 				addOpcao(100200000, TP_OPCAO_MENU, "Etiquetas", "", 't', 100201000, 2,false, null);
 					addOpcao(100201000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas",'M', 100201010, 3, true, FModEtiqueta.class);
