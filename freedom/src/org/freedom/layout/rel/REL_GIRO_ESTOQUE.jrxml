@@ -58,6 +58,9 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 	<field name="SALDOATU" class="java.math.BigDecimal"/>
 	<field name="SALDOANT" class="java.math.BigDecimal"/>
 
+	<variable name="QTDTOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDOATU}]]></variableExpression>
+	</variable>
 
 		<group  name="linha" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -186,14 +189,14 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Cód.]]></text>
+				<text><![CDATA[Código]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="172"
+						x="194"
 						y="2"
-						width="55"
+						width="73"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -262,24 +265,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="39"
-						y="2"
-						width="41"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-6"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Ref.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="83"
+						x="105"
 						y="2"
 						width="48"
 						height="11"
@@ -304,7 +290,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="82"
+						x="102"
 						y="1"
 						width="0"
 						height="13"
@@ -313,7 +299,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="170"
+						x="192"
 						y="1"
 						width="0"
 						height="13"
@@ -323,9 +309,9 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="351"
+						x="350"
 						y="2"
-						width="57"
+						width="60"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -335,28 +321,28 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Dt.Ult.Compra]]></text>
+				<text><![CDATA[Dt.Ult.Comp.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="412"
 						y="2"
-						width="50"
+						width="39"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-10"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Doc.Compra]]></text>
+				<text><![CDATA[Compra]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="464"
+						x="454"
 						y="1"
 						width="0"
 						height="13"
@@ -375,16 +361,16 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="466"
+						x="456"
 						y="2"
-						width="41"
+						width="51"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-11"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Container]]></text>
@@ -484,13 +470,30 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					</textElement>
 				<text><![CDATA[Saldo anterior]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="42"
+						y="2"
+						width="54"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-16"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Cód.Fabr.]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
 			<band height="13"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="9"
+						x="4"
 						y="1"
 						width="27"
 						height="11"
@@ -503,20 +506,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="39"
-						y="1"
-						width="41"
-						height="11"
-						key="textField-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="84"
+						x="106"
 						y="1"
 						width="84"
 						height="11"
@@ -529,9 +519,9 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="172"
+						x="194"
 						y="1"
-						width="175"
+						width="153"
 						height="11"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -557,7 +547,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					<reportElement
 						x="413"
 						y="1"
-						width="47"
+						width="38"
 						height="11"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -568,13 +558,13 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="475"
+						x="456"
 						y="1"
-						width="32"
+						width="51"
 						height="11"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTCONTAINER}]]></textFieldExpression>
@@ -653,7 +643,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="82"
+						x="102"
 						y="0"
 						width="0"
 						height="13"
@@ -663,7 +653,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="170"
+						x="192"
 						y="0"
 						width="0"
 						height="13"
@@ -693,7 +683,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="464"
+						x="454"
 						y="0"
 						width="0"
 						height="13"
@@ -760,10 +750,97 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 						key="line-42"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="42"
+						y="1"
+						width="54"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODFABPROD} != null ? $F{CODFABPROD} : new String("")]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="3"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="686"
+						y="2"
+						width="50"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOTAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="638"
+						y="2"
+						width="38"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-17"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Total:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="751"
+						height="0"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="15"
+						width="751"
+						height="0"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="750"
+						y="1"
+						width="0"
+						height="14"
+						key="line-46"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="0"
+						height="14"
+						key="line-47"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
 			</band>
 		</columnFooter>
 		<pageFooter>
