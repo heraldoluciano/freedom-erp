@@ -409,6 +409,11 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		
 		try {
 			
+			
+//			FOP op = new FOP((Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.CODOP.ordinal() ), (Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.SEQOP.ordinal() ));
+			Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", recebimento, con );   
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

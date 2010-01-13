@@ -9,6 +9,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -20,30 +21,40 @@ public class FRecMerc extends FDetalhe  {
 	
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	// *** Campos
+	
+	private JTextFieldPad txtTicket = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 
-	private JTextFieldPad txtDescTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);	
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	
+	private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);	
+	private JTextFieldFK txtNomeTran = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	
+	private JTextFieldPad txtBairCarga = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtNomeBairro = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtDescProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	//
+	
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
 	
-	private JComboBoxPad cbTipoProcRecMerc = null;
-	
-	private Vector<String> vValsTipo = new Vector<String>();
-
-	private Vector<String> vLabsTipo = new Vector<String>();
+	private ListaCampos lcFor = new ListaCampos( this );
 
 
 	public FRecMerc () {
 		
 		super();
 
-		setTitulo("Cadastro de tipos de recepção de mercadorias");
+		setTitulo("Recepção de mercadorias");
 		setAtribos( 50, 50, 470, 350);
 
 		setAltCab(90);
@@ -53,18 +64,18 @@ public class FRecMerc extends FDetalhe  {
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
 
-		vLabsTipo.addElement( "Pesagem inicial" );
+/*		vLabsTipo.addElement( "Pesagem inicial" );
 		vLabsTipo.addElement( "Tiragem de renda" );
 		vLabsTipo.addElement( "Pesagem final" );
 		
 		vValsTipo.addElement( "PI" );
 		vValsTipo.addElement( "TR" );
-		vValsTipo.addElement( "PF" );
+		vValsTipo.addElement( "PF" );*/
 		
-		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
+//		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
 		
-		adicCampo(txtCodTipoRecMerc, 7, 20, 70, 20,"CodTipoRecMerc","Cód.Tp.Rec.",ListaCampos.DB_PK,true);
-		adicCampo(txtDescTipoRecMerc, 80, 20, 355, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
+		adicCampo(txtTicket, 7, 20, 70, 20,"CodTipoRecMerc","Cód.Tp.Rec.",ListaCampos.DB_PK,true);
+//		adicCampo(txtDescTipoRecMerc, 80, 20, 355, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
 		
 		setListaCampos( true, "TIPORECMERC", "EQ");
 
@@ -73,9 +84,9 @@ public class FRecMerc extends FDetalhe  {
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
-		adicCampo(txtCodProcRecMerc, 7, 20, 40, 20, "CodProcRecMerc","Cód.Et.",ListaCampos.DB_PK, true);
-		adicCampo(txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true);
-		adicDB( cbTipoProcRecMerc, 293, 20, 140, 24, "TipoProcRecMerc","Tipo de processo",true);		
+//***		adicCampo(txtCodProcRecMerc, 7, 20, 40, 20, "CodProcRecMerc","Cód.Et.",ListaCampos.DB_PK, true);
+//		adicCampo(txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true);
+//		adicDB( cbTipoProcRecMerc, 293, 20, 140, 24, "TipoProcRecMerc","Tipo de processo",true);		
 		
 		setListaCampos( true, "PROCRECMERC", "EQ");
 
