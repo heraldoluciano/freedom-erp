@@ -7,9 +7,7 @@ import java.util.Date;
  * Classe implementa metodos de acesso a comandos de impressão <BR>
  * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
- * Classe:
- * 
- * @(#)ECFBematech.java <BR>
+ * Classe: @(#)ECFBematech.java <BR>
  *                      <BR>
  *                      Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                      versão 2.1, Fevereiro de 1999 <BR>

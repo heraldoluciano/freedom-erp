@@ -1,7 +1,3 @@
-/*
- * Classe base para impressoras fiscais Autor: Robson Sanchez Data: 05/04/2006
- 
- */
 
 package org.freedom.ecf.driver;
 
@@ -11,26 +7,25 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import javax.comm.ParallelPortEvent;
 import javax.comm.ParallelPortEventListener;
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
-
 import org.freedom.ecf.com.AbstractPort;
 import org.freedom.ecf.com.CtrlPort;
 import org.freedom.ecf.com.SerialParams;
 import org.freedom.ecf.layout.AbstractLayout;
 
 /**
- * Classe base para impressoras fiscais <BR>
- * Projeto: freedom-ecf <BR>
- * Pacote: org.freedom.ecf.driver <BR>
- * Classe:
+ * @version 05/04/2006 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez<BR>
  * 
- * @(#)AbstractECFDriver.java <BR>
- *                            <BR>
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe: @(#)AbstractECFDriver.java <BR>
+ * 
  *                            Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                            versão 2.1, Fevereiro de 1999 <BR>
  *                            A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>

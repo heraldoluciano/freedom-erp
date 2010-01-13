@@ -10,9 +10,7 @@ import org.freedom.ecf.app.PrinterMemory;
  * Classe base de layouts para impressoras não fiscais <BR>
  * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.layout <BR>
- * Classe:
- * 
- * @(#)AbstractLayout.java <BR>
+ * Classe: @(#)AbstractLayout.java <BR>
  *                            <BR>
  *                            Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                            versão 2.1, Fevereiro de 1999 <BR>
