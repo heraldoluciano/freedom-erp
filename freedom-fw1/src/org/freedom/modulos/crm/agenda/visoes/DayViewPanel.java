@@ -318,7 +318,7 @@ public class DayViewPanel extends AbstractCalendarView {
 
 	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
 
-	@Override
+//	@Override
 	public List<?> getEvents() {
 		/* ================================================== */
 		try {

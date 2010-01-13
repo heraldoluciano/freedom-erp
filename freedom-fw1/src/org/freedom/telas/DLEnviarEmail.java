@@ -194,7 +194,7 @@ public class DLEnviarEmail extends FFDialogo {
 			preparado = true;
 		}
 	}
-
+	/*
 	private EmailBean getEmailBean( EmailBean mail ) {
 
 		DLEmailBean dlemail = new DLEmailBean( mail );
@@ -208,7 +208,7 @@ public class DLEnviarEmail extends FFDialogo {
 
 		return mail;
 	}
-
+*/
 	private boolean validaEmailBean( EmailBean mail ) {
 
 		boolean ok = false;
@@ -219,7 +219,7 @@ public class DLEnviarEmail extends FFDialogo {
 			String from = mail.getDe();
 			String autentica = mail.getAutentica();
 			String ssl = mail.getSsl();
-			String assinatura = mail.getAssinatura();
+//			String assinatura = mail.getAssinatura();
 			int porta = mail.getPorta();
 
 			if ( ( host != null && host.trim().length() > 0 ) && ( from != null && from.trim().length() > 0 ) && ( autentica != null && autentica.trim().length() > 0 )

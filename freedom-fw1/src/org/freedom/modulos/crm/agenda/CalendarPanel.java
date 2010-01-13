@@ -69,7 +69,9 @@ import lu.tudor.santec.bizcal.widgets.ButtonPanel;
 import lu.tudor.santec.bizcal.widgets.CheckBoxPanel;
 import lu.tudor.santec.bizcal.widgets.NaviBar;
 import lu.tudor.santec.i18n.Translatrix;
+
 import org.freedom.componentes.JButtonPad;
+
 import bizcal.common.Event;
 import bizcal.swing.DayView;
 import bizcal.swing.PopupMenuCallback;
@@ -240,7 +242,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 				if ("calendar".equals(evt.getPropertyName())
 						|| "date".equals(evt.getPropertyName())) {
 					date = dayChooser.getDate();
-					for (Iterator iter = dateListeners.iterator(); iter
+					for (Iterator<?> iter = dateListeners.iterator(); iter
 							.hasNext();) {
 						DateListener listener = (DateListener) iter.next();
 						listener.dateChanged(date);
@@ -319,7 +321,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 	public void showView(String panelName) {
 		if (panelName == null)
 			return;
-		for (Iterator iter = calendarViews.values().iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = calendarViews.values().iterator(); iter.hasNext();) {
 			AbstractCalendarView panel = (AbstractCalendarView) iter.next();
 			if (panelName.equals(panel.getButton().getActionCommand())) {
 				panel.getButton().doClick();
@@ -494,7 +496,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 						namedCalendar.setActive(calendarToggler.isActiv());
 						/* ------------------------------------------------------- */
 						// inform the listeners
-						for (Iterator iter = calendarListeners.iterator(); iter.hasNext();) {
+						for (Iterator<?> iter = calendarListeners.iterator(); iter.hasNext();) {
 							NamedCalendarListener listener = (NamedCalendarListener) iter.next();
 							listener.activeCalendarsChanged(namedCalendars.keySet());
 						}
@@ -529,7 +531,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 						// =========================================================
 						// send the current selected calendar to the listeners
 						// =========================================================
-						for (Iterator iter = calendarListeners.iterator(); iter
+						for (Iterator<?> iter = calendarListeners.iterator(); iter
 								.hasNext();) {
 							NamedCalendarListener listener = (NamedCalendarListener) iter
 									.next();
@@ -562,7 +564,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 	 */
 	public void triggerUpdate() {
 		/* ================================================== */
-		for (Iterator iter = calendarListeners.iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = calendarListeners.iterator(); iter.hasNext();) {
 			/* ------------------------------------------------------- */
 			NamedCalendarListener listener = (NamedCalendarListener) iter
 					.next();
@@ -628,7 +630,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 					step));
 			this.date = dayChooser.getDate();
 
-			for (Iterator iter = dateListeners.iterator(); iter.hasNext();) {
+			for (Iterator<?> iter = dateListeners.iterator(); iter.hasNext();) {
 				DateListener listener = (DateListener) iter.next();
 				listener.dateChanged(date);
 			}
@@ -898,7 +900,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 	private void informListeners() {
 		/* ================================================== */
 //		System.out.println("called update");
-		for (Iterator iter = calendarListeners.iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = calendarListeners.iterator(); iter.hasNext();) {
 			NamedCalendarListener listener = (NamedCalendarListener) iter
 					.next();
 			listener.activeCalendarsChanged(namedCalendars.keySet());

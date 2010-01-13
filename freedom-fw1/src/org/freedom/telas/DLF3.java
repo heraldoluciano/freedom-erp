@@ -30,78 +30,82 @@ import javax.swing.JScrollPane;
 import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
-  public Tabela tab = new Tabela();
-  private JScrollPane spnCentro = new JScrollPane(tab); 
-  public Object oRetVal = null;
-  /**
-   * 
-   *  Classe mãe para dialogos auxiliares.
-   *  Construtor da classe...criado grid com <BR>
-   *  2 colunas "origem e código aux", <BR>
-   *  origem: origem da chave, ex: tabela de preços. <BR>
-   *  código aux.: código auxilial para busca. <BR>
-   * 
-   * @param cOrig - Janela mãe do dialogo.
-   */
-  public DLF3() {
-//  	super(cOrig);
-    setTitulo("Pesquisa auxiliar");
-    setAtribos( 550, 260);
-    setResizable(true);
-    
-    c.add( spnCentro, BorderLayout.CENTER);    
-    
-    addWindowFocusListener(
-       new WindowAdapter() {
-		 public void windowGainedFocus(WindowEvent e) {
-            if (tab.getNumLinhas() > 0) {
-              tab.requestFocus();
-//              tab.setLinhaSel(0); 
-            }
-            else
-              btCancel.requestFocus();
-		 }
-       }
-    );
-  }
-  public abstract boolean setValor(Object oVal,String sTipo);
-  public Object getValor() {
-    return oRetVal;
-  }
-  public Object getValorGrid() {
-  	Object oRet = null;
-  	if (tab.getNumLinhas() > 0 && tab.getLinhaSel() >= 0)
-  		oRet = tab.getValor(tab.getLinhaSel(),1);
-  	return oRet;  	 	
-  }
-  public void keyPressed(KeyEvent kevt) {
-    if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
-      if (tab.getNumLinhas() > 0) {
-      	
-//Esquematicos para acertar a linha selecionada...
-//Quando o form fechar a linha ira pular uma vez uma vez para baixo...
-//então eu volto uma linha aqui:
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public Tabela tab = new Tabela();
+	private JScrollPane spnCentro = new JScrollPane(tab); 
+	public Object oRetVal = null;
+	/**
+	 * 
+	 *  Classe mãe para dialogos auxiliares.
+	 *  Construtor da classe...criado grid com <BR>
+	 *  2 colunas "origem e código aux", <BR>
+	 *  origem: origem da chave, ex: tabela de preços. <BR>
+	 *  código aux.: código auxilial para busca. <BR>
+	 * 
+	 * @param cOrig - Janela mãe do dialogo.
+	 */
+	public DLF3() {
+		//  	super(cOrig);
+		setTitulo("Pesquisa auxiliar");
+		setAtribos( 550, 260);
+		setResizable(true);
 
-        if (tab.getLinhaSel()==tab.getNumLinhas()-1){
-            tab.setLinhaSel(tab.getNumLinhas()-1);
-            btOK.doClick();            
-        }
-        else {
-            if (tab.getLinhaSel() > 0)
-                tab.setLinhaSel(tab.getLinhaSel()-1);
-            else
-                tab.setLinhaSel(tab.getNumLinhas()-1);      	
-            btOK.doClick();
-        }
-      }
-    }
-    else
-      super.keyPressed(kevt);
-         
-  }
-    
-  public void keyReleased(KeyEvent kevt) { }
-  public void keyTyped(KeyEvent kevt) { }
+		c.add( spnCentro, BorderLayout.CENTER);    
+
+		addWindowFocusListener(
+				new WindowAdapter() {
+					public void windowGainedFocus(WindowEvent e) {
+						if (tab.getNumLinhas() > 0) {
+							tab.requestFocus();
+							//              tab.setLinhaSel(0); 
+						}
+						else
+							btCancel.requestFocus();
+					}
+				}
+		);
+	}
+	public abstract boolean setValor(Object oVal,String sTipo);
+	public Object getValor() {
+		return oRetVal;
+	}
+	public Object getValorGrid() {
+		Object oRet = null;
+		if (tab.getNumLinhas() > 0 && tab.getLinhaSel() >= 0)
+			oRet = tab.getValor(tab.getLinhaSel(),1);
+		return oRet;  	 	
+	}
+	public void keyPressed(KeyEvent kevt) {
+		if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
+			if (tab.getNumLinhas() > 0) {
+
+				//Esquematicos para acertar a linha selecionada...
+				//Quando o form fechar a linha ira pular uma vez uma vez para baixo...
+				//então eu volto uma linha aqui:
+
+				if (tab.getLinhaSel()==tab.getNumLinhas()-1){
+					tab.setLinhaSel(tab.getNumLinhas()-1);
+					btOK.doClick();            
+				}
+				else {
+					if (tab.getLinhaSel() > 0)
+						tab.setLinhaSel(tab.getLinhaSel()-1);
+					else
+						tab.setLinhaSel(tab.getNumLinhas()-1);      	
+					btOK.doClick();
+				}
+			}
+		}
+		else
+			super.keyPressed(kevt);
+
+	}
+
+	public void keyReleased(KeyEvent kevt) { }
+	public void keyTyped(KeyEvent kevt) { }
 
 }
 

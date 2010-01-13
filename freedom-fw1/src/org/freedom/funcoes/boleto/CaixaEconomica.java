@@ -8,21 +8,21 @@ import javax.swing.text.NumberFormatter;
 
 public class CaixaEconomica extends Banco {
 
-	private final String CD_COBRANCA_SIMPLES = "11"; // Cobrança Simples
+//	private final String CD_COBRANCA_SIMPLES = "11"; // Cobrança Simples
 
-	private final String CD_COBRANCA_RAPIDA = "12"; // Cobrança rápida
+//	private final String CD_COBRANCA_RAPIDA = "12"; // Cobrança rápida
 
 	private final String CD_COBRANCA_SR = "14"; // Cobrança sem registro
 
-	private final String CD_COBRANCA_DESCONTADA = "41"; // Cobrança descontada
+//	private final String CD_COBRANCA_DESCONTADA = "41"; // Cobrança descontada
 
-	private final String SG_COBRANCA_SIMPLES = "CS"; // Sigla Cobrança Simples
+//	private final String SG_COBRANCA_SIMPLES = "CS"; // Sigla Cobrança Simples
 
-	private final String SG_COBRANCA_RAPIDA = "CR"; // Sigla Cobrança rápida
+//	private final String SG_COBRANCA_RAPIDA = "CR"; // Sigla Cobrança rápida
 
 	private final String SG_COBRANCA_SR = "SR"; // Cobrança sem registro
 
-	private final String SG_COBRANCA_DESCONTADA = "DE"; // Cobrança descontada
+//	private final String SG_COBRANCA_DESCONTADA = "DE"; // Cobrança descontada
 
 	private final String BC_COBRANCA_SR = "80"; // Cobrança sem registro
 

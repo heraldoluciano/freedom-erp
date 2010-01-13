@@ -2699,9 +2699,11 @@ public class EbsContabil extends Contabil {
 			return calculaBases;
 		}
 		
+		/*  
 		public void setCalculaBases( int calculaBases ) {		
 			this.calculaBases = calculaBases;
 		}
+		*/
 		
 		public int getSequencial() {
 			return sequencial;

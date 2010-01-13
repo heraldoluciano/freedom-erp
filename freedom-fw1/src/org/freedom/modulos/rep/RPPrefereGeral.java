@@ -26,7 +26,6 @@
 package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -61,13 +61,13 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JCheckBoxPad cbEnviaCopia = new JCheckBoxPad( "Enviar cópia de pedido para empresa?", "S", "N" );
 	
-	private final JCheckBoxPad cbIpiComis = new JCheckBoxPad( "Incluir IPI no calculo da comissão?", "S", "N" );
+//	private final JCheckBoxPad cbIpiComis = new JCheckBoxPad( "Incluir IPI no calculo da comissão?", "S", "N" );
 	
-	private final JCheckBoxPad cbIPIPed = new JCheckBoxPad( "Imprimir IPI no pedido?", "S", "N" );
+//	private final JCheckBoxPad cbIPIPed = new JCheckBoxPad( "Imprimir IPI no pedido?", "S", "N" );
 	
-	private final JCheckBoxPad cbCodBarProd = new JCheckBoxPad( "Usar código de barras no pedido?", "S", "N" );
+//	private final JCheckBoxPad cbCodBarProd = new JCheckBoxPad( "Usar código de barras no pedido?", "S", "N" );
 	
-	private final JCheckBoxPad cbEndCliPed = new JCheckBoxPad( "Incluir endereço dos clientes no pedido?", "S", "N" );
+//	private final JCheckBoxPad cbEndCliPed = new JCheckBoxPad( "Incluir endereço dos clientes no pedido?", "S", "N" );
 
 	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 

@@ -27,7 +27,6 @@ package org.freedom.telas;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.EmailBean;
@@ -37,7 +36,7 @@ public class DLEmailBean extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad panelRodape = null;
+//	private JPanelPad panelRodape = null;
 
 	private final JTextFieldPad txtHost = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 

@@ -39,6 +39,8 @@ import org.freedom.componentes.JPanelPad;
 
 public abstract class FRelatorio extends FFilho implements ActionListener, KeyListener {
 
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCli = new JPanelPad( 350, 170 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );

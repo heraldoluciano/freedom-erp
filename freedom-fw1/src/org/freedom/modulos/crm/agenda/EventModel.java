@@ -150,7 +150,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	public static final int TYPE_MONTH = 3;
 
 //	private DateFormat weekNumberFormat = new SimpleDateFormat("W. '" + Translatrix.getTranslationString("calendar.week")  + "'", Translatrix.getLocale());
-	private DateFormat weekNumberFormat = new SimpleDateFormat("'"+Translatrix.getTranslationString("calendar.week")  + "'", Translatrix.getLocale());
+//	private DateFormat weekNumberFormat = new SimpleDateFormat("'"+Translatrix.getTranslationString("calendar.week")  + "'", Translatrix.getLocale());
 	private DateFormat monthFormatter = new SimpleDateFormat("MMMMMM yyyy", Translatrix.getLocale());
 
 	private ObservableEventList events = null;
@@ -186,7 +186,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 		/* ================================================== */
 	}
 
-	public EventModel(List eventList, int type) {
+	public EventModel(List<Event> eventList, int type) {
 		/* ================================================== */
 		this(eventList, type, null);
 		/* ================================================== */
@@ -198,7 +198,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	 * @param type type of view
 	 * @param hourInterval subset of hours to display
 	 */
-	public EventModel(List eventList, int type, Tuple hourInterval)  {
+	public EventModel(List<Event> eventList, int type, Tuple hourInterval)  {
 		/* ================================================== */
 //		this.days 	= days;
 		this.type = type;
@@ -232,7 +232,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 		return events;
 	}
 
-	public List getSelectedCalendars() throws Exception {
+	public List<?> getSelectedCalendars() throws Exception {
 		return Collections.nCopies(1, cal);
 	}
 

@@ -35,7 +35,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileOutputStream;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,7 +57,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import lu.tudor.santec.bizcal.listeners.DateListener;
 import lu.tudor.santec.bizcal.util.ObservableEventList;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.DateTime;
@@ -96,6 +94,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.crm.agenda.visoes.DayViewPanel;
 import org.freedom.modulos.crm.agenda.visoes.MonthViewPanel;
 import org.freedom.telas.Aplicativo;
@@ -169,7 +168,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	private ListaCampos lcUsu = new ListaCampos( this );
 
-	private Vector<String> vUsu = new Vector<String>();
+//	private Vector<String> vUsu = new Vector<String>();
 
 	private int iCodAge = 0;
 
@@ -185,7 +184,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	private ObservableEventList eventDataList = new ObservableEventList();
 
-	private Vector<DateListener> dateListeners = new Vector<DateListener>();
+//	private Vector<DateListener> dateListeners = new Vector<DateListener>();
 
 	private boolean listener_rgperiodo = true;
 
@@ -250,7 +249,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		tpnAgd.add( "", pnAgd );
 		tpnVisoes.add( "   Lista de eventos  ", tabAgd );
 
-		Component cpn = tabAgd.getParent();
+//		Component cpn = tabAgd.getParent();
 
 		pnAgd.add( pinCabAgd, BorderLayout.NORTH );
 
@@ -1463,7 +1462,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	private static ResultSet consultaAgenda( final Vector<Vector<?>> agentes, final Object[] datas, final Tabela tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
 			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta ) {
 		ResultSet rs = null;
-		List<Event> eventos = new ArrayList<Event>();
+//		List<Event> eventos = new ArrayList<Event>();
 
 		Vector<?> vcodage = agentes.elementAt( 0 );
 		Vector<?> vtipoage = agentes.elementAt( 1 );

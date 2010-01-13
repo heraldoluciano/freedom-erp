@@ -29,12 +29,13 @@ import java.util.List;
 
 import javax.swing.JToggleButton;
 
-import org.freedom.modulos.crm.agenda.EventModel;
-import org.freedom.modulos.crm.agenda.FAgenda;
-
 import lu.tudor.santec.bizcal.CalendarIcons;
 import lu.tudor.santec.bizcal.NamedCalendar;
 import lu.tudor.santec.bizcal.print.PrintUtilities;
+
+import org.freedom.modulos.crm.agenda.EventModel;
+import org.freedom.modulos.crm.agenda.FAgenda;
+
 import bizcal.common.CalendarViewConfig;
 import bizcal.common.Event;
 import bizcal.swing.CalendarListener;
@@ -97,8 +98,8 @@ public class MonthViewPanel extends AbstractCalendarView{
 
 	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
 
-	@Override
-	public List getEvents() {
+//	@Override
+	public List<Event> getEvents() {
 		try {
 			Interval interval = this.monthModel.getInterval();
 			/* ------------------------------------------------------- */
