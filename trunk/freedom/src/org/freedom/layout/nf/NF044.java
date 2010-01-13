@@ -23,7 +23,6 @@
 package org.freedom.layout.nf;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;

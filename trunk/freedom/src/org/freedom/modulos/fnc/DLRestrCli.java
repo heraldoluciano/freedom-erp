@@ -3,7 +3,6 @@ package org.freedom.modulos.fnc;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +16,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -28,7 +28,7 @@ public class DLRestrCli extends FFDialogo {
 	 */
 	private static final long serialVersionUID = -1042635082152391826L;
 	private static boolean OK = true;
-	private static List listrestr = null;
+	private static List<?> listrestr = null;
 	private Tabela tab = new Tabela();
 	private final JPanelPad pnTab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	private JScrollPane spn = new JScrollPane(tab);
@@ -63,7 +63,7 @@ public class DLRestrCli extends FFDialogo {
 		return OK;
 	}
 	
-	private static List carregaRestricao( final DbConnection cn, final int codcli ) {
+	private static List<?> carregaRestricao( final DbConnection cn, final int codcli ) {
 		List<String[]> list = new ArrayList<String[]>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;

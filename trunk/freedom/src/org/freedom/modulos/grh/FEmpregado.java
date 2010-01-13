@@ -25,11 +25,9 @@
 package org.freedom.modulos.grh;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -52,6 +50,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
@@ -450,7 +449,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		super.keyPressed( kevt );
 
 		if ( kevt.getSource() == txtDataNasc ) {
-			if ( kevt.getKeyCode() == kevt.VK_ENTER ) {
+			if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
 				txtIdade.setVlrInteger( calcIdade() );
 			}
 		}
