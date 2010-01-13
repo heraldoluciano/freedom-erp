@@ -17,7 +17,7 @@ import org.freedom.tef.driver.text.TextTefProperties;
 
 public class TestControllerTef extends TestCase implements ControllerTefListener {
 	
-	private int countRowPrint = 0;
+//	private int countRowPrint = 0;
 
 	public TestControllerTef( String name ) {
 

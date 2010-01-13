@@ -2,8 +2,6 @@ package org.freedom.tef.test.driver.text;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -127,10 +125,10 @@ public class TestVisaTextTef extends TestCase {
 		boolean ok = false;
 
 		try {
-			final SimpleDateFormat dtf = new SimpleDateFormat( "ddMMyyyy" );	
+//			final SimpleDateFormat dtf = new SimpleDateFormat( "ddMMyyyy" );	
 			
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
-			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), "VISA" );
+//			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), "VISA" );
 			
 			/*ok = textTef.requestCancel( 
 					"RedeShop", "220014", dtf.format( new Date() ), "144118",  new BigDecimal( "9.99" ) );

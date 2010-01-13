@@ -1,9 +1,6 @@
 
 package org.freedom.ecf.test;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import junit.framework.TestCase;
 
 import org.freedom.ecf.driver.ECFElginX5;

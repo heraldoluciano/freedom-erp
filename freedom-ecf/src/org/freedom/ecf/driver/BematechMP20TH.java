@@ -9,9 +9,7 @@ import org.freedom.ecf.layout.AbstractLayout;
  * Classe implementa metodos de acesso a comandos de impressão <BR>
  * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
- * Classe:
- * 
- * @(#)BematechMP20TH.java <BR>
+ * Classe: @(#)BematechMP20TH.java <BR>
  *                      <BR>
  *                      Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                      versão 2.1, Fevereiro de 1999 <BR>

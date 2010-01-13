@@ -98,7 +98,7 @@ public class BematechMP20THTest extends TestCase {
 	
 	public void testComandosDeOperacoesNaoFiscais() {
 
-		BematechMP20TH ecf = new BematechMP20TH( "COM1", layout );
+//		BematechMP20TH ecf = new BematechMP20TH( "COM1", layout );
 		
 //		System.out.println( "relatorioGerencial > " ); 
 //		assertTrue( trataresultFuncao( ecf.relatorioGerencial( "Abrindo Relatorio Gerencial" ) ) );	
