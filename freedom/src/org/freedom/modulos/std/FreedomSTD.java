@@ -40,8 +40,12 @@ import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.fnc.FManutPag;
 import org.freedom.modulos.fnc.FManutRec;
 import org.freedom.modulos.fnc.FRBordero;
+import org.freedom.modulos.fnc.FRCobranca;
 import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.fnc.FRFluxoCaixaRes;
+import org.freedom.modulos.fnc.FRReceber;
+import org.freedom.modulos.fnc.FRReceberMes;
+import org.freedom.modulos.fnc.FRReceberSetor;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FNBM;
@@ -219,6 +223,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 500304000, 2, true, FRReceberSetor.class );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 500305000, 2, true, FRRazCli.class );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Recebimentos por Mês", "Recebimentos por Mês", 'M', 500306000, 2, true, FRReceberMes.class );
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Relatório de cobrança", "Relatório de cobrança", 'o', 500307000, 2, true, FRCobranca.class );
 				
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 600000000, 0, false, null );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'B', 600100000, 1, false, null );
