@@ -24,29 +24,36 @@ public class SwingParams {
 	
 	public static String FONT_PAD = "Arial";
 	
+	public static int TAMANHO_FONTE = 0;
+	
 	public static Font getFontpad() {
-		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_PAD);
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_PAD + TAMANHO_FONTE);
 	}
-
+	
 	public static Font getFontpadmed() {
-		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED);
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
 	
 	public static Font getFontpadmin() {
-		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MIN);
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MIN + TAMANHO_FONTE);
 	}
 	
 	public static Font getFontbold() {
-		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_PAD);
+		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_PAD + TAMANHO_FONTE);
 	}
 	
+	public static Font getFontboldmax() {
+		return new Font( FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MAX + TAMANHO_FONTE);
+	}
+
+	
 	public static Font getFontboldmed() {
-		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MED);
+		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
 
 	
 	public static Font getFontitalicmed() {
-		return new Font(FONT_PAD, FONT_STYLE_ITALIC, FONT_SIZE_MED);
+		return new Font(FONT_PAD, FONT_STYLE_ITALIC, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
 	
 	public static Border getPanelLabel(String label, Color cortitulo) {
