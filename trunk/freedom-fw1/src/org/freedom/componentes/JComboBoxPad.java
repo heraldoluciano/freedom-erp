@@ -22,15 +22,14 @@
 
 package org.freedom.componentes;
 
+import java.awt.Cursor;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Vector;
-
 import javax.swing.JComboBox;
-
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
-import org.freedom.telas.SwingParams;
+
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {
 public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
@@ -79,7 +78,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		this.tam = tam;
 		this.dec = dec;
 		criando = false;
-		this.setFont( SwingParams.getFontpad() );
+    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 	}
 
 	public void setItens( Vector<?> label, Vector<?> val ) {

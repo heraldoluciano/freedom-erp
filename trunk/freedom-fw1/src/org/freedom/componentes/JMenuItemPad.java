@@ -19,10 +19,11 @@
  */
 
 package org.freedom.componentes;
+import java.awt.Cursor;
+
 import javax.swing.JMenuItem;
 
 import org.freedom.telas.IFilho;
-import org.freedom.telas.SwingParams;
 
 public class JMenuItemPad extends JMenuItem {
 
@@ -59,11 +60,12 @@ public class JMenuItemPad extends JMenuItem {
   
 	public JMenuItemPad () {
 		this(0,0,0,0, null, "");
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 	
 	public JMenuItemPad(String s, char c) {
 		super(s,c);
-		this.setFont( SwingParams.getFontbold() );
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	/**
@@ -73,7 +75,7 @@ public class JMenuItemPad extends JMenuItem {
   
 	public JMenuItemPad (String menu) {
 		super(menu);
-		this.setFont( SwingParams.getFontbold() );
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 	
 	/**
@@ -91,7 +93,7 @@ public class JMenuItemPad extends JMenuItem {
 		iCodNiv = iCodNivel;
 		this.tela = tela;
 		this.titulo = titulo;
-		this.setFont( SwingParams.getFontbold() );	
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 	
 

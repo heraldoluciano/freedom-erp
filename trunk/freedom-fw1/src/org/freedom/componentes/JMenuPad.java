@@ -20,10 +20,9 @@
 
 package org.freedom.componentes;
 
+import java.awt.Cursor;
+
 import javax.swing.JMenu;
-
-import org.freedom.telas.SwingParams;
-
 
 public class JMenuPad extends JMenu {
 
@@ -49,8 +48,8 @@ public class JMenuPad extends JMenu {
 	*/
   
 	public JMenuPad (String menu) {
-		super(menu);
-		this.setFont( SwingParams.getFontbold() );		
+		super(menu);		
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	/**
@@ -64,8 +63,8 @@ public class JMenuPad extends JMenu {
 		iCodMod = iCodModulo;
 		iCodMen = iCodMenu;
 		iCodNiv = iCodNivel;
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
-		this.setFont( SwingParams.getFontbold() );	
 	}
 	
 	/**
