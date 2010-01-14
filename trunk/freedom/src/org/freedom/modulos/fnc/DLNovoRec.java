@@ -485,7 +485,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 				txtVlrDescItRec.getVlrBigDecimal(), 
 				txtCodTipoCobItRec.getVlrInteger(), 
 				txtCodBancoItRec.getVlrString(), 
-				txtCodCartCobItRec.getVlrString()
+				txtCodCartCobItRec.getVlrString(),
+				"N"
 		};
 		
 		try {
