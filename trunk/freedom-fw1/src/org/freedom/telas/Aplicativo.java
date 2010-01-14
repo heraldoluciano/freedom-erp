@@ -26,6 +26,7 @@
 
 package org.freedom.telas;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.PopupMenu;
@@ -97,6 +98,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strSplash = "";
 
 	public static String strLookAndFeel = "";
+	
+	public static String strTamanhoFonte = "";
 
 	public static int iCodEmp = 0;
 
@@ -222,11 +225,45 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		try {
 			strLookAndFeel = getParameter( "lookandfeel" );
-			if ( !strLookAndFeel.equals( "" ) )
+			strTamanhoFonte = getParameter( "tamanhofonte" );
+			
+			if ( !strLookAndFeel.equals( "" ) ) {
 				UIManager.setLookAndFeel( strLookAndFeel );
-		} catch ( Exception err ) {
+			}
+			else {
+				
+				if(!"".equals(strTamanhoFonte)) {
+					SwingParams.TAMANHO_FONTE = Integer.parseInt(strTamanhoFonte);
+				}				
+				
+				UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
+		        UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
+		        UIManager.put("Label.font", SwingParams.getFontbold());
+		        UIManager.put("Button.font", SwingParams.getFontbold());
+		        UIManager.put("TextField.font", SwingParams.getFontpad());
+		        UIManager.put("Spinner.font", SwingParams.getFontpad());
+		        UIManager.put("CheckBox.font", SwingParams.getFontbold());
+		        UIManager.put("Menu.font", SwingParams.getFontbold());		        
+		        UIManager.put("TitledBorder.font", SwingParams.getFontbold());
+		        UIManager.put("ComboBox.font", SwingParams.getFontpad());		        
+		        UIManager.put("TabbedPane.font", SwingParams.getFontbold());
+		        UIManager.put("MenuItem.font", SwingParams.getFontbold());		        
+		        UIManager.put("PasswordField.font", SwingParams.getFontboldmax());		        
+		        UIManager.put("PasswordField.foreground", Color.RED );		        
+		        UIManager.put("RadioButton.font", SwingParams.getFontbold());		        
+		        UIManager.put("TextArea.font", SwingParams.getFontpad());		        
+		        UIManager.put("TableHeader.font", SwingParams.getFontboldmed());		        
+		        UIManager.put("Table.font", SwingParams.getFontpadmed());
+
+			}
+	        
+		} 
+		catch ( Exception err ) {
 			err.printStackTrace();
 		}
+		
+		
+		
 	}
 
 	public abstract void setaSysdba();
@@ -348,10 +385,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		telaPrincipal.setVisible( true );
 
-		UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
-        UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
-        UIManager.put("Label.font", SwingParams.getFontbold());
-        
 //        System.out.println(UIManager.getDefaults().size()+ " propriedades definidas !");  
 //        Enumeration keys = UIManager.getDefaults().keys();  
 //        Enumeration elements = UIManager.getDefaults().elements();

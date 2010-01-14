@@ -29,9 +29,7 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import org.freedom.componentes.JPanelPad;
-
 import org.freedom.componentes.JTabbedPanePad;
 
 public class FTabDados extends FDados implements KeyListener {
@@ -67,9 +65,7 @@ public class FTabDados extends FDados implements KeyListener {
 	}
 	
 	public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
-		tpn.add(tit, pn);
-		
-		tpn.setFont(SwingParams.getFontbold());
+		tpn.add(tit, pn);		
 		pn.addKeyListener(this);
 		pnCliente.add(tpn, BorderLayout.CENTER);
 		return tpn;
