@@ -906,8 +906,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		try {
 			dl = new DLEditaRec( this, false );
 			sVals = getTabManutValores();
-			dl.setValores( sVals );
 			dl.setConexao( con );
+			dl.setValores( sVals );			
 			dl.setVisible( true );
 			dl.dispose();
 		} catch ( Exception e ) {
