@@ -22,26 +22,25 @@
 
 package org.freedom.componentes;
 
-import java.awt.GridLayout;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.BorderFactory;
 
 import org.freedom.acao.DefaultRadioGroupListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.telas.SwingParams;
-
-import java.util.Enumeration;
-import java.util.Vector;
 
 
 public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyListener {
@@ -89,8 +88,8 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 			pnCenter.add( rg );
 			add( pnCenter );
 			bg.add( rg );
-			rg.addKeyListener( this );
-			rg.setFont( SwingParams.getFontbold() );
+			rg.addKeyListener( this );	
+			rg.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
 		
 		JRadioButton radio = ( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) ); 		

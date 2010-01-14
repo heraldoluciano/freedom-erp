@@ -15,16 +15,14 @@
 
 package org.freedom.componentes;
 
+import java.awt.Cursor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
-
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
-import org.freedom.telas.SwingParams;
-
 
 /**
  * Customisa JCheckBox.
@@ -58,6 +56,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 
 	public JCheckBoxPad( String lab, Object vals, Object valn ) {
 		this( lab, vals, valn, false );
+    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 	}
 
@@ -73,8 +72,8 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		addActionListener( this );
 		addKeyListener( this );
 
-		setTipo();
-		this.setFont( SwingParams.getFontbold() );	
+		setTipo();		
+    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	private void setTipo() {

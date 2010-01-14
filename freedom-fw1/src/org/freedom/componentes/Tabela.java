@@ -46,7 +46,6 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
-import org.freedom.telas.SwingParams;
 
 public class Tabela extends JTable implements TabelaEditListener, TabelaSelListener {
 
@@ -107,9 +106,6 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		setDefaultEditor( Date.class, new DateEditor() );
 		
-		this.setFont( SwingParams.getFontpadmed() );	
-		this.getTableHeader().setFont(SwingParams.getFontboldmed());
-
 	}
 
 	public void adicColuna( Object obj ) {

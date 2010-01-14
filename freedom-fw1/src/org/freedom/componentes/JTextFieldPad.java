@@ -42,7 +42,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
-import org.freedom.telas.SwingParams;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
 
@@ -113,8 +112,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		iTamanho = tam;
 		iDecimal = dec;
 		tipoCampo = tipo;
-		
-		this.setFont( SwingParams.getFontpad() );
 		
 	}
 	
