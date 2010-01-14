@@ -567,7 +567,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTCONTAINER}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTCONTAINER}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
