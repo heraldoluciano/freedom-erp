@@ -4130,318 +4130,203 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrOutrosCred;
 		
 		private BigDecimal vlrOcorrSac;
-
+		
+		private int identEmitBol = 2;
 		
 		public String getCpfCnpjCli() {
 		
 			return cpfCnpjCli;
 		}
-
-
-		
-		
-		
 		
 		public String getIdentTitEmp() {
 		
 			return identTitEmp;
 		}
 
-
-
-
-
-		
 		public void setIdentTitEmp( String identTitEmp ) {
 		
 			this.identTitEmp = identTitEmp;
 		}
-
-
-
-
 
 		public BigDecimal getVlrJurosMulta() {
 		
 			return vlrJurosMulta;
 		}
 
-
-
-
-		
 		public void setVlrJurosMulta( BigDecimal vlrJurosMulta ) {
 		
 			this.vlrJurosMulta = vlrJurosMulta;
 		}
 
-
-
-
-		
 		public BigDecimal getVrlAbatCancel() {
 		
 			return vrlAbatCancel;
 		}
 
-
-
-
-		
 		public void setVrlAbatCancel( BigDecimal vrlAbatCancel ) {
 		
 			this.vrlAbatCancel = vrlAbatCancel;
 		}
 
-
-
-
-		
 		public BigDecimal getVlrPago() {
 		
 			return vlrPago;
 		}
 
-
-
-
-		
 		public void setVlrPago( BigDecimal vlrPago ) {
 		
 			this.vlrPago = vlrPago;
 		}
 
-
-
-
-		
 		public BigDecimal getVlrLiqCred() {
 		
 			return vlrLiqCred;
 		}
 
-
-
-
-		
 		public void setVlrLiqCred( BigDecimal vlrLiqCred ) {
 		
 			this.vlrLiqCred = vlrLiqCred;
 		}
 
-
-
-
-		
 		public BigDecimal getVlrOutrasDesp() {
 		
 			return vlrOutrasDesp;
 		}
 
-
-
-
-		
 		public void setVlrOutrasDesp( BigDecimal vlrOutrasDesp ) {
 		
 			this.vlrOutrasDesp = vlrOutrasDesp;
 		}
 
-
-
-
-		
 		public BigDecimal getVlrOutrosCred() {
 		
 			return vlrOutrosCred;
 		}
 
-
-
-
-		
 		public void setVlrOutrosCred( BigDecimal vlrOutrosCred ) {
 		
 			this.vlrOutrosCred = vlrOutrosCred;
 		}
 
-
-
-
-		
 		public BigDecimal getVlrOcorrSac() {
 		
 			return vlrOcorrSac;
 		}
 
-
-
-
-		
 		public void setVlrOcorrSac( BigDecimal vlrOcorrSac ) {
 		
 			this.vlrOcorrSac = vlrOcorrSac;
 		}
 
-
-
-
 		public String getCodRejeicoes() {
 		
 			return codRejeicoes;
 		}
-
-
-
 		
 		public void setCodRejeicoes( String codRejeicoes ) {
 		
 			this.codRejeicoes = codRejeicoes;
 		}
 
-
-
 		public void setCpfCnpjCli( String cpfCnpjCli ) {
 		
 			this.cpfCnpjCli = cpfCnpjCli;
 		}
-
-
-		
 		
 		public int getSeqregistro() {
 		
 			return seqregistro;
 		}
-
-
-
 		
 		public void setSeqregistro( int seqregistro ) {
 		
 			this.seqregistro = seqregistro;
 		}
 
-
-
 		public String getRazCli() {
 		
 			return razCli;
 		}
-
-
 		
 		public void setRazCli( String razCli ) {
 		
 			this.razCli = razCli;
 		}
-
-
 		
 		public String getEndCli() {
 		
 			return endCli;
 		}
-
-
 		
 		public void setEndCli( String endCli ) {
 		
 			this.endCli = endCli;
 		}
-
-
 		
 		public String getBairCli() {
 		
 			return bairCli;
 		}
-
-
 		
 		public void setBairCli( String bairCli ) {
 		
 			this.bairCli = bairCli;
 		}
-
-
 		
 		public String getCepCli() {
 		
 			return cepCli;
 		}
-
-
 		
 		public void setCepCli( String cepCli ) {
 		
 			this.cepCli = cepCli;
 		}
-
-
 		
 		public String getCidCli() {
 		
 			return cidCli;
 		}
-
-
 		
 		public void setCidCli( String cidCli ) {
 		
 			this.cidCli = cidCli;
 		}
-
-
 		
 		public String getUfCli() {
 		
 			return ufCli;
 		}
-
-
 		
 		public void setUfCli( String ufCli ) {
 		
 			this.ufCli = ufCli;
 		}
-
-
 		
 		public int getTipoInscAva() {
 		
 			return tipoInscAva;
 		}
-
-
 		
 		public void setTipoInscAva( int tipoInscAva ) {
 		
 			this.tipoInscAva = tipoInscAva;
 		}
-
-
 		
 		public String getCpfCnpjAva() {
 		
 			return cpfCnpjAva;
 		}
-
-
 		
 		public void setCpfCnpjAva( String cpfCnpjAva ) {
 		
 			this.cpfCnpjAva = cpfCnpjAva;
 		}
-
-
 		
 		public String getRazAva() {
 		
 			return razAva;
 		}
-
-
 		
 		public void setRazAva( String razAva ) {
 		
@@ -4458,19 +4343,15 @@ public class CnabUtil extends FbnUtil {
 
 		private String razAva;
 
-		
-		
 		public BigDecimal getVlrJurosTaxa() {
 		
 			return vlrJurosTaxa;
 		}
 		
-		
 		public int getTipoInscCli() {
 		
 			return tipoInscCli;
 		}
-
 		
 		public void setTipoInscCli( int tipoInscCli ) {
 		
@@ -4508,14 +4389,11 @@ public class CnabUtil extends FbnUtil {
 		
 			return dtDesc;
 		}
-
-		
 		
 		public BigDecimal getVlrDesc() {
 		
 			return vlrDesc;
 		}
-
 		
 		public void setVlrDesc( BigDecimal vlrDesc ) {
 		
@@ -4575,52 +4453,36 @@ public class CnabUtil extends FbnUtil {
 			this.vlrTitulo = vlrTitulo;
 		}
 	
-	
-	
 		public void setCodMovimento( int codMovimento ) {
 		
 			this.codMovimento = codMovimento;
 		}
 	
-	
-		
-		
 		public Date getDtVencTitulo() {
 		
 			return dtVencTitulo;
 		}
 	
-	
-	
-		
 		public void setDtVencTitulo( Date dtVencTitulo ) {
 		
 			this.dtVencTitulo = dtVencTitulo;
 		}
-	
-	
 	
 		public String getDocCobranca() {
 		
 			return docCobranca;
 		}
 	
-	
-	
-		
 		public void setDocCobranca( String docCobranca ) {
 		
 			this.docCobranca = docCobranca;
 		}
 	
-	
-	
 		public String getDigNossoNumero() {
 		
 			return digNossoNumero;
 		}
-	
-		
+			
 		public void setDigNossoNumero( String digNossoNumero ) {
 		
 			this.digNossoNumero = digNossoNumero;
@@ -4950,6 +4812,27 @@ public class CnabUtil extends FbnUtil {
 	
 			this.versaoLayout = versaoLayout;
 		}
+		
+		public int getIdentEmitBol() {
+
+			return identEmitBol;
+		}
+
+		/**
+		 * Identificação da emissão de bloqueto.<br>
+		 * 1 - Banco emite.<br>
+		 * 2 - Cliente emite.<br>
+		 * 3 - Banco pré-emite e o cliente completa.<br>
+		 * 4 - Banco reemite.<br>
+		 * 5 - Banco não reemite.<br>
+		 * 6 - Cobrança sem papel.<br>
+		 * Obs.: Os campos 4 e 5 só serão aceitos para código de movimento para remessa 31.
+		 */
+		public void setIdentEmitBol( final int identEmitBol ) {
+
+			this.identEmitBol = identEmitBol;
+		}
+
 	
 		@ Override
 		public String getLine(String padraocnab) throws ExceptionCnab {
@@ -4988,10 +4871,13 @@ public class CnabUtil extends FbnUtil {
 				
 				line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 82 a 82 - Digito verificador do nosso numero
 
-				//Implementar futuramente
-				line.append( format( 0, ETipo.$9, 11, 2 ) ); // Posição 83 a 93 - Desconto bonif./dia
+				//Implementar futuramente 
+				line.append( format( 0, ETipo.$9, 10, 2 ) ); // Posição 83 a 92 - Valor do Desconto bonif./dia
+				
+				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) ); // Posição 93 a 93 - Condição para Emissão da papeleta de cobrança - 1-Banco emite e processa, 2- Cliente emite e o Banco Processa.
 				
 				line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
+				
 				line.append( Funcoes.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
 				
 				line.append( " "  ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não

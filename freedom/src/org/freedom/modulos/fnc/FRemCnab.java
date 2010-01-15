@@ -268,6 +268,8 @@ public class FRemCnab extends FRemFBN {
 		
 		reg.setCodMovimento( codMovimento );			
 		
+		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
+		
 		reg.setDocCobranca( banco.getNumCli( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
