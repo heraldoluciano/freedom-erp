@@ -272,7 +272,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 40, 340, 20 );
 		panelMaster.adic( txtRazCli, 70, 60, 340, 20 );
 		
-//		panelFiltros.setBorder( SwingParams.getPanelLabel( "Filtros" ) );
 		panelFiltros.adic( cbPend, 4, 0, 100, 20 );
 		panelFiltros.adic( cbEmProd, 4, 30, 100, 20 );
 		panelFiltros.adic( cbProd, 114, 0, 100, 20 );
