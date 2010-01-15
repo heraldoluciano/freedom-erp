@@ -24,7 +24,6 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom-ecf/src&lt;org.freedom.ecf.app"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
@@ -36,11 +35,9 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FConfEmail.java"/>
         <javaElement handleIdentifier="=freedom-ecf/src&lt;org.freedom.ecf.com"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv{FLeFiscal.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
     </selectedElements>
-    <fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
 </jardesc>
