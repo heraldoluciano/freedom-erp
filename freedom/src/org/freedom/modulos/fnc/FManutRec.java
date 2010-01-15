@@ -74,7 +74,6 @@ import org.freedom.modulos.crm.FAtendimento;
 import org.freedom.modulos.fnc.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.DLEditaRec.EColRet;
 import org.freedom.modulos.std.DLCancItem;
-import org.freedom.modulos.std.DLConsultaBaixa;
 import org.freedom.modulos.std.DLConsultaVenda;
 import org.freedom.modulos.std.DLImpBoletoRec;
 import org.freedom.telas.Aplicativo;
@@ -2522,7 +2521,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		}
 		else if ( evt.getSource() == btCarregaBaixasMan ) {
-			consBaixa( Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 6 ).toString() ), Funcoes.strToBd( tabManut
+			consBaixa( Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ).toString() ), Funcoes.strToBd( tabManut
 					.getValor( tabManut.getLinhaSel(), EColTabManut.VLRPARC.ordinal() ) ), Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRPAGO.ordinal() ) ), Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRDESC.ordinal() ) ), Funcoes
 					.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRJUROS.ordinal() ) ), Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRAPAG.ordinal() ) ) );
 		}
