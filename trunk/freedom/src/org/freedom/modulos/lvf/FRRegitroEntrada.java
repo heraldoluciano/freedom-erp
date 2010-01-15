@@ -133,7 +133,7 @@ public class FRRegitroEntrada extends FRelatorio {
 			hParam.put( "CNPJ", empresa[ 0 ] );
 			hParam.put( "INSC", empresa[ 1 ] );
 			hParam.put( "PERIODO", txtDtIni.getVlrString() + " até " + txtDtFim.getVlrString() );
-			hParam.put( "REPORT_CONNECTION", con );
+			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroEntrada.jasper", "REGISTRO DE ENTRADAS", null, rs, hParam, this );
 
