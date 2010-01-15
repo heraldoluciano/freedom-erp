@@ -137,7 +137,7 @@ public class FreedomSTD2 extends AplicativoPD {
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Devolução de vendas", "Devolução de vendas", 'D', 300300000, 1, true, FDevolucao.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Lançamento de Frete", "Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class );
 			addSeparador( 300000000 );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orcamento", 'A', 300500000, 1, true, FAprovCancOrc.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 300600000, 1, true, FOrcamento.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 300700000, 1, true, FPesquisaOrc.class );
 			addSeparador( 300000000 );
