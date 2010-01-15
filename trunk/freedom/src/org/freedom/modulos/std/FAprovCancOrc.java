@@ -65,7 +65,7 @@ import org.freedom.telas.DLJustCanc;
 import org.freedom.telas.FFilho;
 
 
-public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener, CarregaListener {
+public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,7 +86,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	private Tabela tab = new Tabela();
 
 	private JButtonPad btRecarregar = new JButtonPad(Icone.novo("btExecuta.gif"));
-	private JButtonPad btAprovar = new JButtonPad(Icone.novo("btOk.gif"));
+	private JButtonPad btConfirmar = new JButtonPad(Icone.novo("btOk.gif"));
 	private JButtonPad btCancelar = new JButtonPad(Icone.novo("btCancelar.gif"));
 	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
 
@@ -107,18 +107,18 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 
 	boolean bRecalcula = true;	
 
-	public FAprovaOrc() {
+	public FAprovCancOrc() {
 		
 		super(false);
 		
-		setTitulo("Aprova Orçamento");
+		setTitulo("Aprovação ou cancelamento de orçamentos");
 		setAtribos(15,30,796,380);
 
 		btRecarregar.setToolTipText("Recarregar ítens");
-		btAprovar.setToolTipText("Confirmar aprovação");
+		btConfirmar.setToolTipText("Confirmar aprovação ou cancelamento dos ítens selecionados?");
 
 		btRecarregar.addActionListener(this);
-		btAprovar.addActionListener(this);
+		btConfirmar.addActionListener(this);
 		btCancelar.addActionListener(this);
 		btSair.addActionListener(this);
 		
@@ -180,7 +180,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		pinCab.adic(cbEmit,210,45,200,20);		
 		
 		pinRod.adic(btRecarregar,10,10,57,30);
-		pinRod.adic(btAprovar,70,10,57,30);
+		pinRod.adic(btConfirmar,70,10,57,30);
 		pinRod.adic(btCancelar,130,10,57,30);
 		pinRod.adic(btSair,660,10,100,30);
 
@@ -650,7 +650,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		else if (evt.getSource() == btSair) {
 			dispose();
 		}
-		else if (evt.getSource() == btAprovar) {
+		else if (evt.getSource() == btConfirmar) {
 			if (Funcoes.mensagemConfirma(this, "Confirma os status para os ítens do orçamento?")==0 ) { 
 				confirmar();   
 			}
