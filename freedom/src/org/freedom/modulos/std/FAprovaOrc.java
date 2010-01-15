@@ -22,10 +22,10 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -39,8 +39,12 @@ import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
@@ -57,10 +61,11 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.DLJustCanc;
 import org.freedom.telas.FFilho;
 
 
-public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener {
+public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,38 +79,68 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	private JTextFieldPad txtVlrAceito = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JTextFieldPad txtVlrAprovado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JTextFieldPad txtTotal = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
+	private JTextFieldPad txtTipoOrc = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+	private JTextFieldFK txtStatusOrc = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldFK txtVlrLiqOrc = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
+
 	private Tabela tab = new Tabela();
-	private JButtonPad btCalc = new JButtonPad(Icone.novo("btExecuta.gif"));
-	private JButtonPad btOk = new JButtonPad(Icone.novo("btOk.gif"));
+
+	private JButtonPad btRecarregar = new JButtonPad(Icone.novo("btExecuta.gif"));
+	private JButtonPad btAprovar = new JButtonPad(Icone.novo("btOk.gif"));
+	private JButtonPad btCancelar = new JButtonPad(Icone.novo("btCancelar.gif"));
 	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
+
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
 	private JScrollPane spnTab = new JScrollPane(tab);
-	private ListaCampos lcOrc = new ListaCampos(this);
+
+	private ListaCampos lcOrc = new ListaCampos(this);	
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
-	private JCheckBoxPad cbTodos = new JCheckBoxPad("Aprovar todos os ítens.","S","N");
+
+	private JCheckBoxPad cbTodos = new JCheckBoxPad("Todos os ítens.","S","N");
 	private JCheckBoxPad cbEmit = new JCheckBoxPad("Buscar ítens emitidos.","S","N");
-	BigDecimal bVlrAceito = new BigDecimal("0");
-	BigDecimal bVlrAprovado = new BigDecimal("0");
-	BigDecimal bVlrTotal = new BigDecimal("0");
+
+	private BigDecimal bVlrAceito = new BigDecimal("0");
+	private BigDecimal bVlrAprovado = new BigDecimal("0");
+	private BigDecimal bVlrTotal = new BigDecimal("0");
+	
+	private JLabelPad lbStatus = new JLabelPad();
+
 	boolean bRecalcula = true;	
+
 	public FAprovaOrc() {
+		
 		super(false);
+		
 		setTitulo("Aprova Orçamento");
 		setAtribos(15,30,796,380);
 
-		btCalc.setToolTipText("Recarregar ítens");
-		btOk.setToolTipText("Confirmar aprovação");
-		
-		btCalc.addActionListener(this);
-		btOk.addActionListener(this);
-		btSair.addActionListener(this);
+		btRecarregar.setToolTipText("Recarregar ítens");
+		btAprovar.setToolTipText("Confirmar aprovação");
 
+		btRecarregar.addActionListener(this);
+		btAprovar.addActionListener(this);
+		btCancelar.addActionListener(this);
+		btSair.addActionListener(this);
+		
+		lcOrc.addCarregaListener( this );
+
+		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setBackground( Color.GRAY );
+		lbStatus.setOpaque( true );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setVisible( false );
+
+		
 		JPanelPad pinRod = new JPanelPad(685,50);
-			
+
 		lcOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "N. orçamento",ListaCampos.DB_PK , null, false));		
 		lcOrc.add(new GuardaCampo( txtCodCli, "CodCli","Cód.cli.",ListaCampos.DB_FK, null, false));
 		lcOrc.add(new GuardaCampo( txtDtOrc, "DtOrc","Data",ListaCampos.DB_SI, null, false));
 		lcOrc.add(new GuardaCampo( txtDtVal, "DtVencOrc","Validade", ListaCampos.DB_SI , null, false));
+		lcOrc.add(new GuardaCampo( txtTipoOrc, "TipoOrc", "Tp.Orc.", ListaCampos.DB_SI, false));
+		lcOrc.add(new GuardaCampo( txtVlrLiqOrc, "VlrLiqOrc", "V.Liq.", ListaCampos.DB_SI, null, false));
+		lcOrc.add(new GuardaCampo( txtStatusOrc, "StatusOrc", "Status", ListaCampos.DB_SI, null, false));
 
 		lcOrc.montaSql(false,"ORCAMENTO","VD");
 		lcOrc.setQueryCommit(false);
@@ -114,11 +149,11 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		txtCodOrc.setNomeCampo("CodOrc");
 		txtCodOrc.setPK(true);
 		txtCodOrc.setListaCampos(lcOrc);
-		
-	    txtVlrAceito.setAtivo(false);
-	    txtVlrAprovado.setAtivo(false);
-	    txtTotal.setAtivo(false);	
-		
+
+		txtVlrAceito.setAtivo(false);
+		txtVlrAprovado.setAtivo(false);
+		txtTotal.setAtivo(false);	
+
 		//FK Cliente
 		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Código", ListaCampos.DB_PK, null, false));
 		lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Nome", ListaCampos.DB_SI, null, false));
@@ -137,23 +172,26 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		pinCab.adic(txtDtOrc,354,20,83,20);
 		pinCab.adic(new JLabelPad("Validade"),440,0,75,20);
 		pinCab.adic(txtDtVal,440,20,83,20);
+
+		pinCab.adic( lbStatus, 660, 20, 110, 20 );
 		
 		cbTodos.setVlrString("N");
 		pinCab.adic(cbTodos,7,45,200,20);
-		pinCab.adic(cbEmit,210,45,200,20);
+		pinCab.adic(cbEmit,210,45,200,20);		
 		
-		pinRod.adic(btCalc,10,10,57,30);
-		pinRod.adic(btOk,70,10,57,30);
+		pinRod.adic(btRecarregar,10,10,57,30);
+		pinRod.adic(btAprovar,70,10,57,30);
+		pinRod.adic(btCancelar,130,10,57,30);
 		pinRod.adic(btSair,660,10,100,30);
+
+		pinRod.adic(txtVlrAceito,230,20,97,20);
+		pinRod.adic(txtVlrAprovado,330,20,97,20);
+		pinRod.adic(txtTotal,430,20,100,20);
 		
-		pinRod.adic(txtVlrAceito,140,20,97,20);
-		pinRod.adic(txtVlrAprovado,240,20,97,20);
-		pinRod.adic(txtTotal,340,20,100,20);
-		
-		pinRod.adic(new JLabelPad("Vlr. aceito"),140,0,97,20);
-		pinRod.adic(new JLabelPad("Vlr. aprov."),240,0,97,20);
-		pinRod.adic(new JLabelPad("Vlr. total"),340,0,100,20);
-    
+		pinRod.adic(new JLabelPad("Vlr. aceito"),230,0,97,20);
+		pinRod.adic(new JLabelPad("Vlr. aprov."),330,0,97,20);
+		pinRod.adic(new JLabelPad("Vlr. total"),430,0,100,20);
+
 		getTela().add(pnCli,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);
 		pnCli.add(pinRod,BorderLayout.SOUTH);
@@ -161,229 +199,399 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 
 		tab.adicColuna("Aceite");
 		tab.adicColuna("Aprov.");
+		tab.adicColuna("Canc.");
+		
 		tab.adicColuna("Ítem");
 		tab.adicColuna("Cód.prod.");
-        tab.adicColuna("Descrição do produto");
+		tab.adicColuna("Descrição do produto");
 		tab.adicColuna("Qtd.");
 		tab.adicColuna("V.Unit.");
 		tab.adicColuna("V.Tot.");
 		tab.adicColuna("");
 		tab.adicColuna("Autoriz.");
 		tab.adicColuna("Validade");
-			
+
 		tab.setTamColuna(35,0);
 		tab.setTamColuna(35,1);
 		tab.setTamColuna(35,2);
-		tab.setTamColuna(50,3);
-		tab.setTamColuna(220,4);
-		tab.setTamColuna(60,5);
-		tab.setTamColuna(70,6);
+		tab.setTamColuna(35,3);
+		tab.setTamColuna(50,4);
+		tab.setTamColuna(220,5);
+		tab.setTamColuna(60,6);
 		tab.setTamColuna(70,7);
-		tab.setTamColuna(20,8);
-		tab.setTamColuna(70,9);
-		tab.setTamColuna(100,10);
-		
+		tab.setTamColuna(60,8);
+		tab.setTamColuna(20,9);
+		tab.setTamColuna(65,10);
+		tab.setTamColuna(75,11);
+
 		tab.setColunaEditavel(0,true);
 		tab.setColunaEditavel(1,true);
+		tab.setColunaEditavel(2,true);
 		tab.setColunaEditavel(9,true);
 		tab.setColunaEditavel(10,true);
-		
+
 		tab.setDefaultEditor(String.class,new DefaultCellEditor(new JTextFieldPad(JTextFieldPad.TP_STRING,15,0)));
-		
+
+		btCancelar.setToolTipText("Cancela Orçamento");
+
 		cbTodos.addMouseListener(
-		  new MouseAdapter() {
-			public void mouseClicked(MouseEvent mevt) {
-				if (mevt.getSource()==cbTodos && mevt.getClickCount()==1)
-				  aprovarTudo();
-			}
-		  }
+				new MouseAdapter() {
+					public void mouseClicked(MouseEvent mevt) {
+						if (mevt.getSource()==cbTodos && mevt.getClickCount()==1)
+							aprovarTudo();
+					}
+				}
 		);		
+
 		
-		txtCodOrc.addKeyListener(
-		  new KeyAdapter() {
-		    public void keyPressed(KeyEvent kevt) {
-		    	if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-		    		montaTab();
-		    	}
-		    }
-		  }
-		);	
 	}
-    
-	public void aprovar() {
+
+	private void carregaStatus() {
+		
+		if ( "*".equals( txtStatusOrc.getVlrString() ) || "OA".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "ABERTO/PENDENTE" );
+			lbStatus.setBackground( Color.ORANGE );
+			lbStatus.setVisible( true );
+		}
+		else if ( "OC".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "COMPLETO/IMPRESSO" );
+			lbStatus.setBackground( Color.BLUE );
+			lbStatus.setVisible( true );
+		}
+		else if ( "OL".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "LIBERADO/APROVADO" );
+			lbStatus.setBackground( new Color( 45, 190, 60 ) );
+			lbStatus.setVisible( true );
+		}
+		else if ( "OV".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "FATURADO" );
+			lbStatus.setBackground( Color.RED );
+			lbStatus.setVisible( true );
+		}
+		else if ( "FP".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "FAT. PARCIAL" );
+			lbStatus.setBackground( Color.RED );
+			lbStatus.setVisible( true );
+		}
+		else if ( "OP".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "PRODUZIDO" );
+			lbStatus.setBackground( Color.MAGENTA );
+			lbStatus.setVisible( true );
+		}
+		else if ( "CA".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "CANCELADO" );
+			lbStatus.setBackground( Color.RED );
+			lbStatus.setVisible( true );
+		}
+		
+		else {
+			lbStatus.setForeground( Color.WHITE );
+			lbStatus.setBackground( Color.GRAY );
+			lbStatus.setText( "" );
+			lbStatus.setVisible( false );
+		}	
+		
+	}
+
+	
+	private boolean cancelar() {
+
+		boolean bRet = false;
+		DLJustCanc dl = null;
+		String justificativa = null;	
+
+		if (txtCodOrc.getVlrInteger() == 0) {
+			Funcoes.mensagemInforma(null,"Nenhum orçamento foi selecionado!");
+			txtCodOrc.requestFocus();
+		}
+		else if (txtStatusOrc.getVlrString().trim().equals("CA")) {
+			Funcoes.mensagemInforma(null,"Orcamento ja foi cancelado!!");
+		}
+
+
+		else if ( "* OA OC OL".indexOf( txtStatusOrc.getVlrString().trim()) !=-1 ) {
+
+			if (Funcoes.mensagemConfirma(null, "Deseja realmente cancelar este orçamento?") == JOptionPane.YES_OPTION ) {
+
+				dl = new DLJustCanc();
+				dl.setVisible( true );
+
+				if ( dl.OK ) {
+
+					try {
+
+						justificativa = dl.getValor();
+
+						PreparedStatement ps = null;
+						String sSQL = "UPDATE VDORCAMENTO SET STATUSORC = 'CA', JUSTIFICCANCORC=? " +
+						"WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND TIPOORC=? ";
+
+						ps = con.prepareStatement(sSQL);
+
+						ps.setString( 1,justificativa );
+						ps.setInt( 2, lcOrc.getCodEmp() );
+						ps.setInt( 3, lcOrc.getCodFilial() );
+						ps.setInt( 4, txtCodOrc.getVlrInteger() );
+						ps.setString( 5, txtTipoOrc.getVlrString() );
+
+						ps.executeUpdate();
+
+						ps.close();
+
+						con.commit();
+
+						bRet = true;
+						
+						lcOrc.carregaDados();
+
+					} 
+					catch(SQLException err) {
+						Funcoes.mensagemErro(null,"Erro ao cancelar o orçamento!\n"+err.getMessage(),true,con,err);
+					} 
+				}
+
+			}
+
+		}
+		else {
+			Funcoes.mensagemInforma( this, "Orcamento não pode ser cancelado, status atual:" + txtStatusOrc.getVlrString() );
+		}
+
+		return bRet;
+
+	}
+
+	public void confirmar() {
+		
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
 		String sSQL = null;
-		String sStatusAt = null;
+		String novostatusorc = null;
 		boolean bAtStOrc = false;
+		boolean cancorc = false;
+		DLJustCanc dl = null;
 		try {
 
 			if (tab.getRowCount() <= 0) {
-				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
+				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser confirmado");
 				return;
 			}
 
-			/* TIRADO O UPDATE EM EMITITORC PARA NÃO PERMITIR A EMISÃO DO MESMO ITEM MAIS DE UMA VEZ
-			 * 
-			 * sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, 
-			 * VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
-			 * "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";*/
-			
-			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=? "+
-			  	   "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
-			
+			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=?, CANCITORC=? "+
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+
 			bAtStOrc = false;
-			sStatusAt = "OC";
+			
+			novostatusorc = "OL";
+			
 			try {
-				ps = con.prepareStatement(sSQL);			
-				for (int iLin=0;iLin<tab.getRowCount();iLin++) {
+				ps = con.prepareStatement(sSQL);	
 				
+				for (int iLin=0;iLin<tab.getRowCount();iLin++) {
+
 					if (tab.getValor(iLin,0).equals(new Boolean("true"))){ 
-				  	  ps.setString(1,"S");	  	
+						ps.setString(1,"S");	  	
 					}
 					else {
-				  	  ps.setString(1,"N");
-					}    
-					if (tab.getValor(iLin,1).equals(new Boolean("true"))) 
-					  ps.setString(2,"S");		  	
-					else
-					  ps.setString(2,"N");
-				
-					if (tab.getValor(iLin,0).equals(new Boolean("true")) &&
-					   tab.getValor(iLin,1).equals(new Boolean("true"))) {
-					   bAtStOrc = true;
-					   sStatusAt = "OL";	
+						ps.setString(1,"N");
+					} 
+					
+					if (tab.getValor(iLin,1).equals(new Boolean("true"))) { 
+						ps.setString(2,"S");		  	
 					}
-					else if (!sStatusAt.equals("OL")) {
-					   bAtStOrc = true;
+					else {
+						ps.setString(2,"N");
 					}
-					ps.setString(3,tab.getValor(iLin,9).toString().trim());  
-					ps.setDate(4,Funcoes.dateToSQLDate((Date)tab.getValor(iLin,10)));
-					ps.setInt(5,Aplicativo.iCodEmp);
-					ps.setInt(6,Aplicativo.iCodFilial);
-					ps.setInt(7,Integer.parseInt(tab.getValor(iLin,2).toString()));
-			    	ps.setInt(8,txtCodOrc.getVlrInteger().intValue()); 
-			    
-			    	ps.execute(); 
+					
+					if (tab.getValor(iLin,2).equals(new Boolean("true"))) { 
+						ps.setString(5,"S");						
+						novostatusorc = "CA";
+						cancorc = true;
+					}
+					else {
+						ps.setString(5,"N");
+						cancorc = false;
+						novostatusorc = "OL";
+					}
+
+					if (tab.getValor(iLin,0).equals(new Boolean("true")) && tab.getValor(iLin,1).equals(new Boolean("true"))) {
+						bAtStOrc = true;
+						novostatusorc = "OL";	
+					}
+					else if (!novostatusorc.equals("OL")) {
+						bAtStOrc = true;
+					}
+					
+					ps.setString(3,tab.getValor(iLin,10).toString().trim());  
+					ps.setDate(4,Funcoes.dateToSQLDate((Date)tab.getValor(iLin,11)));
+					ps.setInt(6,Aplicativo.iCodEmp);
+					ps.setInt(7,Aplicativo.iCodFilial);
+					ps.setInt(8,Integer.parseInt(tab.getValor(iLin,3).toString()));
+					ps.setInt(9,txtCodOrc.getVlrInteger().intValue()); 
+
+					ps.execute(); 
 				}
-				con.commit();
-			
+				
 			}
 			catch (SQLException err) {
 				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
 			}
-			
+
 			try {
-				sSQL = "UPDATE VDORCAMENTO SET STATUSORC=? WHERE "+
-				 	   "CODEMP=? AND CODFILIAL=? AND CODORC=?";
-					
+				sSQL = "UPDATE VDORCAMENTO SET STATUSORC=?, JUSTIFICCANCORC=? WHERE "+
+				"CODEMP=? AND CODFILIAL=? AND CODORC=?";
+
 				ps2 = con.prepareStatement(sSQL);
-								
-				ps2.setString(1,sStatusAt);
-				ps2.setInt(2,Aplicativo.iCodEmp);
-				ps2.setInt(3,Aplicativo.iCodFilial);
-				ps2.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
-				if (bAtStOrc) { 
-				  ps2.execute();
- 			  	  con.commit();
-				  Funcoes.mensagemInforma( this, "Orçamento Aprovado com Sucesso");
+
+				String justificativa = "";
+				
+				if(cancorc) {
+									
+					novostatusorc = "CA";
+					
+					dl = new DLJustCanc();
+					dl.setVisible( true );
+
+					if ( dl.OK ) {
+						justificativa = dl.getValor();
+					}
+					else {
+						con.rollback();
+						return;
+					}
+					
 				}
+				
+				ps2.setString(1,novostatusorc);
+				ps2.setString(2,justificativa);
+				ps2.setInt(3,Aplicativo.iCodEmp);
+				ps2.setInt(4,Aplicativo.iCodFilial);
+				ps2.setInt(5,txtCodOrc.getVlrInteger());
+				
+				
+				if (bAtStOrc) { 
+					ps2.execute();
+					con.commit();
+					if("CA".equals( novostatusorc )) {
+						Funcoes.mensagemInforma( this, "Orçamento Cancelado com Sucesso");
+					}
+					else {
+						Funcoes.mensagemInforma( this, "Orçamento Aprovado com Sucesso");
+					}
+				}
+				
 			}
 			catch (SQLException err) {
 				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
 			}
-			
+
 			tab.addTabelaEditListener(this);
 			bRecalcula = true;	
-		} catch(Exception e) {
+			
+			lcOrc.carregaDados();
+			
+		} 
+		catch(Exception e) {
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			ps = null;
 			ps2 = null;
 			sSQL = null;	
-			sStatusAt = null;
+			novostatusorc = null;
 			bAtStOrc = false;		
 		}
 	}	
-	
+
 	public void montaTab(){ 
+		
 		bRecalcula = false;
-		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,(IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC,"+
-					  "IT.VLRLIQITORC,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC " +
-		              "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  "+
-		              "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD "+
-		              "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND " +
-		              "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
+		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC) VLRACEITE,"+
+		"IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC " +
+		"FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  "+
+		"P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD "+
+		"AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND " +
+		"O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
 		bVlrAceito = new BigDecimal("0.0");
 		bVlrAprovado = new BigDecimal("0.0");
 		bVlrTotal = new BigDecimal("0.0");
-		
+
 		StringDireita strdQtd = null;
 		StringDireita strdVlrAceite = null;
 		StringDireita strdVlrAprovado = null;
-	
+
 		tab.limpa();
-		
+
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,Aplicativo.iCodFilial);
 			ps.setInt(3,txtCodOrc.getVlrInteger().intValue());
 			ps.setString(4,cbEmit.getVlrString());
-			
+
 			ResultSet rs = ps.executeQuery();
 			tab.limpa();
-			
+
 			while (rs.next()) {
-			    Vector<Object> vVals = new Vector<Object>();
-				
-				if (rs.getString(7).trim().equals("S")) {
+				Vector<Object> vVals = new Vector<Object>();
+
+				if (rs.getString("ACEITEITORC").trim().equals("S")) {
 					vVals.addElement(new Boolean(true));	
 					bVlrAceito = bVlrAceito.add(new BigDecimal(rs.getString(4)));
 				}				    
-				else 
+				else { 
 					vVals.addElement(new Boolean(false));
-					
-				if (rs.getString(8).trim().equals("S")) {
+				}
+
+				if (rs.getString("APROVITORC").trim().equals("S")) {
 					vVals.addElement(new Boolean(true));	
 					bVlrAprovado = bVlrAprovado.add(new BigDecimal(rs.getString(4)));
 				}
-				else
+				else {
 					vVals.addElement(new Boolean(false));
+				}
 				
-				vVals.addElement(rs.getString(9));
-				vVals.addElement(rs.getString(1));
-				vVals.addElement(rs.getString(2));
+				if( "S".equals(rs.getString("CANCITORC").trim()) ) {
+					vVals.addElement(new Boolean(true));
+				}
+				else {
+					vVals.addElement(new Boolean(false));
+				}
 				
-				strdQtd 	    = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(3)));
-				strdVlrAceite   = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(4)));
-				strdVlrAprovado = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(5)));
 				
+				vVals.addElement(rs.getString("CODITORC"));
+				vVals.addElement(rs.getString("CODPROD"));
+				vVals.addElement(rs.getString("DESCPROD"));
+
+				strdQtd 	    = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString("QTDITORC")));
+				strdVlrAceite   = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString("VLRACEITE")));
+				strdVlrAprovado = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString("VLRAPROVADO")));
+
 				vVals.addElement(strdQtd);
 				vVals.addElement(strdVlrAceite);
 				vVals.addElement(strdVlrAprovado);
-				
+
 				vVals.addElement(imgEditaCampo);
 				vVals.addElement(rs.getString(6) != null ? (rs.getString(6).trim()) : "");
-				
-				
+
+
 				if (rs.getDate("VENCAUTORIZORC") == null) {
-				  GregorianCalendar cPadrao = new GregorianCalendar();
-				  cPadrao.set(Calendar.DATE,cPadrao.get(Calendar.DATE)+60);
-				  vVals.addElement(cPadrao.getTime());
+					GregorianCalendar cPadrao = new GregorianCalendar();
+					cPadrao.set(Calendar.DATE,cPadrao.get(Calendar.DATE)+60);
+					vVals.addElement(cPadrao.getTime());
 				}
 				else
-				  vVals.addElement(Funcoes.sqlDateToDate(rs.getDate("VENCAUTORIZORC")));
-				
-				
-				bVlrTotal = bVlrTotal.add(new BigDecimal(rs.getString(4)));
+					vVals.addElement(Funcoes.sqlDateToDate(rs.getDate("VENCAUTORIZORC")));
+
+
+				bVlrTotal = bVlrTotal.add(new BigDecimal(rs.getString("VLRACEITE")));
 
 				txtVlrAceito.setVlrBigDecimal(bVlrAceito);
 				txtVlrAprovado.setVlrBigDecimal(bVlrAprovado);
 				txtTotal.setVlrBigDecimal(bVlrTotal);
-				
+
 				tab.adicLinha(vVals);
-				
+
 			}
 			con.commit();
 		}
@@ -393,19 +601,19 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		tab.addTabelaEditListener(this);
 		bRecalcula = true;	
 	}
-	
+
 	public void aprovarTudo(){ 
-	    int iLin = 0;
-        if (cbTodos.getVlrString()=="S") {
-          while (iLin<tab.getRowCount()) {
-		    bRecalcula = false;
-		    tab.setValor(new Boolean(true),iLin,0);
-		    tab.setValor(new Boolean(true),iLin,1);
-		    if (tab.getValor(iLin,9).toString().trim().equals("")) 
-		      tab.setValor("000000",iLin,9);
-		    iLin++;
-          }
-		  bRecalcula = true;
+		int iLin = 0;
+		if (cbTodos.getVlrString()=="S") {
+			while (iLin<tab.getRowCount()) {
+				bRecalcula = false;
+				tab.setValor(new Boolean(true),iLin,0);
+				tab.setValor(new Boolean(true),iLin,1);
+				if (tab.getValor(iLin,10).toString().trim().equals("")) 
+					tab.setValor("000000",iLin,10);
+				iLin++;
+			}
+			bRecalcula = true;
 		}
 	}
 
@@ -414,15 +622,15 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		bVlrAceito = new BigDecimal("0.0");
 		bVlrAprovado = new BigDecimal("0.0");
 		bVlrTotal = new BigDecimal("0.0");
-		
+
 		while (iLin<tab.getRowCount()) {
-		  if (tab.getValor(iLin,0).equals(new Boolean("true"))) {
-		  	bVlrAceito = bVlrAceito.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,6).toString()));		  	
-		  }
-		  if (tab.getValor(iLin,1).equals(new Boolean("true"))) {
-			bVlrAprovado = bVlrAprovado.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,7).toString()));		  	
-		  } 
-		  iLin++;	
+			if (tab.getValor(iLin,0).equals(new Boolean("true"))) {
+				bVlrAceito = bVlrAceito.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,7).toString()));		  	
+			}
+			if (tab.getValor(iLin,1).equals(new Boolean("true"))) {
+				bVlrAprovado = bVlrAprovado.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,8).toString()));		  	
+			} 
+			iLin++;	
 		}
 		txtVlrAceito.setVlrBigDecimal(bVlrAceito);
 		txtVlrAprovado.setVlrBigDecimal(bVlrAprovado);
@@ -436,27 +644,50 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-	  if (evt.getSource() == btCalc) 
-	  	montaTab();
-	  else if (evt.getSource() == btSair)
-	    dispose();
-	  else if (evt.getSource() == btOk)
-	    if (Funcoes.mensagemConfirma(this, "Confirma os status para os ítens do orçamento?")==0 ) 
-	      aprovar();   
+		if (evt.getSource() == btRecarregar) {
+			montaTab();
+		}
+		else if (evt.getSource() == btSair) {
+			dispose();
+		}
+		else if (evt.getSource() == btAprovar) {
+			if (Funcoes.mensagemConfirma(this, "Confirma os status para os ítens do orçamento?")==0 ) { 
+				confirmar();   
+			}
+		}
+		else if (evt.getSource() == btCancelar) {
+			cancelar();
+		}
+
 	}
 
 	public void valorAlterado(TabelaEditEvent evt) {
-        if (bRecalcula) {
-          if ((tab.getColunaEditada()<2)) {
-			  recalcula();		
-          }
-        }
 		if (bRecalcula) {
-		  if (tab.getValor(tab.getLinhaEditada(),0).equals(new Boolean("false")) &&
-		 	  tab.getValor(tab.getLinhaEditada(),1).equals(new Boolean("false")) &&
-			 (tab.getValor(tab.getLinhaEditada(),9).toString().trim()!="")) 
-			  tab.setValor("",tab.getLinhaEditada(),9);		  
+			if ((tab.getColunaEditada()<2)) {
+				recalcula();		
+			}
 		}
+		if (bRecalcula) {
+			if (tab.getValor(tab.getLinhaEditada(),0).equals(new Boolean("false")) &&
+					tab.getValor(tab.getLinhaEditada(),1).equals(new Boolean("false")) &&
+					(tab.getValor(tab.getLinhaEditada(),10).toString().trim()!="")) 
+				tab.setValor("",tab.getLinhaEditada(),10);		  
+		}
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if(cevt.getListaCampos() == lcOrc) {
+			carregaStatus();
+			montaTab();
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 

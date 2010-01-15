@@ -1218,10 +1218,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				    txtPercComisItOrc.setVlrBigDecimal( perccomisitem.multiply( cem ) );
 				    txtVlrComisItOrc.setVlrBigDecimal( vlrcomisitem );
 				    
-					
-					
-				}
-		
+				}		
 		}
 	}
 	
@@ -1252,9 +1249,24 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
+		else if ( "OP".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "PRODUZIDO" );
+			lbStatus.setBackground( Color.MAGENTA );
+			lbStatus.setVisible( true );
+		}
+		else if ( "CA".equals( txtStatusOrc.getVlrString() ) ) {
+			lbStatus.setText( "CANCELADO" );
+			lbStatus.setBackground( Color.RED );
+			lbStatus.setVisible( true );
+		}
+		
 		else {
+			lbStatus.setForeground( Color.WHITE );
+			lbStatus.setBackground( Color.GRAY );
+			lbStatus.setText( "" );
 			lbStatus.setVisible( false );
 		}	
+		
 	}
 	
 	private void carregaPedidos() {
