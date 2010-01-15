@@ -34,7 +34,7 @@ import org.freedom.modulos.cfg.FMunicipio;
 import org.freedom.modulos.cfg.FPais;
 import org.freedom.modulos.cfg.FUF;
 import org.freedom.modulos.std.FAlmox;
-import org.freedom.modulos.std.FAprovaOrc;
+import org.freedom.modulos.std.FAprovCancOrc;
 import org.freedom.modulos.std.FCancVenda;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FCompra;
@@ -191,7 +191,7 @@ public class FreedomGMS extends AplicativoPD {
 			addOpcao(300000000, TP_OPCAO_ITEM, "Devolução de vendas","Devolução de vendas", 'D', 300300000, 1, true,FDevolucao.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Lançamento de Frete","Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class);
 			addSeparador(300000000);
-			addOpcao(300000000, TP_OPCAO_ITEM, "Aprova orçamento","Aprova Orçamento", 'A', 300500000, 1, true, FAprovaOrc.class);
+			addOpcao(300000000, TP_OPCAO_ITEM, "Aprova orçamento","Aprova Orçamento", 'A', 300500000, 1, true, FAprovCancOrc.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O',300600000, 1, true, FOrcamento.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento","Pesquisa Orçamento", 'P', 300700000, 1, true, FPesquisaOrc.class);	
 			addSeparador(300000000);
@@ -237,7 +237,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao(-1, TP_OPCAO_MENU, "Recepção", "", 'R', 500000000, 0, false,null);	
 				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FPainelRecepcao.class);		
 				addSeparador(500000000);
-				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovaOrc.class);
+				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovCancOrc.class);
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_ITEM, "Tipos de Recepção", "Cadastro de tipos de recepção de mercadorias", 'T', 500300000,1, true, FTipoRecMerc.class);
 				
@@ -259,7 +259,7 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btSimilar.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
 				addBotao("btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
-				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovaOrc.class);
+				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class);
 				
 				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FPainelRecepcao.class);
 
