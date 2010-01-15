@@ -42,52 +42,33 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[SELECT 
-  IT.DTITREC,IT.DTVENCITREC,IT.NPARCITREC,
-  R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI,
-  (CASE 
-      WHEN 
-        L.CODLANCA IS NOT NULL AND 
-        L.CODLANCA=(SELECT MIN(L2.CODLANCA) 
-                    FROM FNLANCA L2 
-                    WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC) 
-       THEN IT.VLRPARCITREC ELSE 0 
-  END) VLRPARCITREC, 
-  COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, 
-  (CASE 
-      WHEN L.CODLANCA IS NOT NULL AND 
-        L.CODLANCA=(SELECT MIN(L2.CODLANCA) 
-                    FROM FNLANCA L2 
-                    WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC) 
-      THEN IT.VLRAPAGITREC ELSE 0 
-  END) VLRAPAGITREC, 
-  COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, 
-  R.DOCREC, IT.OBSITREC, 
-  (SELECT V.STATUSVENDA 
-   FROM VDVENDA V 
-   WHERE V.FLAG IN ('S','N') AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA)
-FROM 
-  FNRECEBER R, VDCLIENTE C, FNITRECEBER IT 
-LEFT OUTER JOIN FNLANCA L ON 
-  L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC 
-WHERE 
-  R.CODEMP=4 AND R.CODFILIAL=1 AND IT.DTVENCITREC BETWEEN '2007-01-01' AND '2007-12-31' AND R.FLAG IN ('S','N') AND  
-  IT.CODREC=R.CODREC AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL AND IT.STATUSITREC IN ('R1','RL','RP') AND 
-  C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI 
-ORDER BY 
-  IT.DTVENCITREC, C.RAZCLI]]></queryString>
+	<queryString><![CDATA[SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, 
+C.NOMECLI, C.DDDCLI, C.FONECLI, IT.VLRPARCITREC, IT.VLRPAGOITREC, 
+IT.VLRAPAGITREC, IT.DTPAGOITREC, 
+R.DOCREC, IT.OBSITREC, (SELECT V.STATUSVENDA FROM VDVENDA V 
+WHERE V.FLAG IN ('S','N') AND V.CODEMP=R.CODEMPVA AND 
+V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND 
+V.TIPOVENDA=R.TIPOVENDA) FROM FNRECEBER R,VDCLIENTE C  ,FNITRECEBER IT 
+WHERE R.FLAG IN ('S','N')AND R.CODEMP=4 AND R.CODFILIAL=1 AND 
+IT.DTVENCITREC BETWEEN '01.01.2010' AND '31.01.2010' AND 
+IT.STATUSITREC IN ('R1') AND R.CODREC = IT.CODREC AND IT.CODEMP=R.CODEMP AND 
+IT.CODFILIAL=R.CODFILIAL AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND 
+C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 
-	<field name="DTITREC" class="java.util.Date"/>
-	<field name="DTVENCITREC" class="java.util.Date"/>
+	<field name="DTITREC" class="java.sql.Date"/>
+	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Integer"/>
-	<field name="CODVENDA" class="java.lang.Long"/>
-	<field name="CODCLI" class="java.lang.Long"/>
+	<field name="CODVENDA" class="java.lang.Integer"/>
+	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="NOMECLI" class="java.lang.String"/>
+	<field name="DDDCLI" class="java.lang.String"/>
+	<field name="FONECLI" class="java.lang.String"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPAGOITREC" class="java.math.BigDecimal"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
-	<field name="DTPAGOITREC" class="java.util.Date"/>
-	<field name="DOCREC" class="java.lang.String"/>
+	<field name="DTPAGOITREC" class="java.sql.Date"/>
+	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="OBSITREC" class="java.lang.String"/>
 
 	<variable name="VLR_TOT_PARC" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" calculation="Sum">
@@ -154,9 +135,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="55"
+						x="18"
 						y="16"
-						width="431"
+						width="345"
 						height="11"
 						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -165,6 +146,58 @@ ORDER BY
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECLI}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="415"
+						y="16"
+						width="33"
+						height="11"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCLI}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="370"
+						y="16"
+						width="42"
+						height="11"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Telefone:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="459"
+						y="16"
+						width="74"
+						height="11"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECLI}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="451"
+						y="16"
+						width="4"
+						height="11"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[-]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -797,7 +830,7 @@ ORDER BY
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{DOCREC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

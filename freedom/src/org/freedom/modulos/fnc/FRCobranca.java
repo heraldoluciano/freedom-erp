@@ -403,7 +403,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		}
 
 
-		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI, " );
+		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI, C.DDDCLI, C.FONECLI, " );
 
 		if ( "S".equals( cbParPar.getVlrString() ) ) {
 			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
