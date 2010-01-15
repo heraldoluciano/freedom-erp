@@ -495,7 +495,6 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 
 	public void valorAlterado( TabelaEditEvent evt ) {
 
-		// TODO Auto-generated method stub
 		
 	}
 	
