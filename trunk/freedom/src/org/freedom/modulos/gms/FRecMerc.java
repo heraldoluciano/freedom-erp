@@ -13,6 +13,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FRecMerc extends FDetalhe  {
@@ -83,6 +84,39 @@ public class FRecMerc extends FDetalhe  {
 
 	}
 
+	private void buscaTransp(String placa) {
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			sql.append( "select first 1 tp.codtran from vdtransp tp ");
+			sql.append( "where tp.codemp=? and tp.codfilial=? and tp.placatran=?");
+								
+			ps = con.prepareStatement(sql.toString());
+			rs = ps.executeQuery();
+			
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+
+			if ( rs.next() ) {
+				
+			}
+		
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		
+		
+	}
+	
 	private void montaTela() {
 		
 		// *** Cabeçalho *** //
@@ -231,13 +265,18 @@ public class FRecMerc extends FDetalhe  {
 		imp.montaCab();
 		imp.setTitulo("Relatório de tipo de recebimento de mercadorias");
 
-		String sSQL = "SELECT CODTIPORECMERC,DESCTIPORECMERC FROM EQTIPORECMERC ORDER BY 1";
-		
+		String sSQL = "SELECT CODTIPORECMERC,DESCTIPORECMERC FROM EQTIPORECMERC "
+					+ "WHERE CODEMP=? AND CODFILIAL=? ORDER BY 1 ";
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			ps = con.prepareStatement(sSQL);
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQTIPORECMERC" ) );
+			
 			rs = ps.executeQuery();
 			imp.limpaPags();
 			while ( rs.next() ) {
