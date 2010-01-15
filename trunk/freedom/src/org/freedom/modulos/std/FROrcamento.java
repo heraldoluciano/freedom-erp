@@ -55,13 +55,17 @@ public class FROrcamento extends FRelatorio {
 
 	private JCheckBoxPad cbAberto = new JCheckBoxPad( "Aberto", "S", "N" );
 
-	private JCheckBoxPad cbCompleto = new JCheckBoxPad( "Completo", "S", "N" );
+	private JCheckBoxPad cbImpresso = new JCheckBoxPad( "Impresso", "S", "N" );
 
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad( "Liberado", "S", "N" );
 
 	private JCheckBoxPad cbFaturadoParcial = new JCheckBoxPad( "Faturado parcial", "S", "N" );
 
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad( "Faturado", "S", "N" );
+	
+	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
+	
+	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
 
 	public FROrcamento() {
 
@@ -85,13 +89,19 @@ public class FROrcamento extends FRelatorio {
 		JLabel borda2 = new JLabel();
 		borda2.setBorder( BorderFactory.createEtchedBorder() );
 		adic( status, 15, 75, 50, 18 );
-		adic( borda2, 7, 85, 300, 70 );
-		adic( cbAberto, 25, 90, 120, 20 );
-		adic( cbCompleto, 25, 110, 120, 20 );
-		adic( cbLiberado, 25, 130, 120, 20 );
-		adic( cbFaturadoParcial, 160, 90, 120, 20 );
-		adic( cbFaturado, 160, 110, 120, 20 );
-
+		adic( borda2, 7, 85, 300, 80 );
+		
+		
+		adic( cbAberto, 25, 90, 80, 20 );
+		adic( cbFaturadoParcial, 140, 90, 120, 20 );
+		
+		adic( cbImpresso, 25, 107, 80, 20 );
+		adic( cbFaturado, 140, 107, 80, 20 );
+		
+		adic( cbLiberado, 25, 124, 80, 20 );		
+		adic( cbProduzido, 140, 124, 110, 20 );
+		
+		adic( cbCancelado, 25, 141, 110, 20 );
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -110,7 +120,7 @@ public class FROrcamento extends FRelatorio {
 				status.append( "'*','OA'" );
 				filtros.append( " em aberto" );
 			}
-			if ( "S".equals( cbCompleto.getVlrString() ) ) {
+			if ( "S".equals( cbImpresso.getVlrString() ) ) {
 				if ( status.length() > 0 ) {
 					status.append( "," );
 					filtros.append( "," );
@@ -142,6 +152,19 @@ public class FROrcamento extends FRelatorio {
 				status.append( "'OV'" );
 				filtros.append( " faturados" );
 			}
+			if ( "S".equals( cbProduzido.getVlrString() ) ) {
+				if ( status.length() > 0 ) {
+					status.append( "," );
+				}
+				status.append( "'OP'" );
+			}
+			if ( "S".equals( cbCancelado.getVlrString() ) ) {
+				if ( status.length() > 0 ) {
+					status.append( "," );
+				}
+				status.append( "'CA'" );
+			}
+			
 
 			sql.append( "select o.codorc, o.dtorc, o.dtvencorc," );
 			sql.append( "o.codcli, cl.razcli, o.vlrliqorc " );

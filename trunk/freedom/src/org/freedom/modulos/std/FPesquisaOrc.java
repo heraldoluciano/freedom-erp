@@ -100,13 +100,17 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	
 	private JCheckBoxPad cbAgrupar = new JCheckBoxPad( "Agrupar ítens", "S", "N" );
 
-	private JCheckBoxPad cbCompleto = new JCheckBoxPad( "Impresso", "S", "N" );
+	private JCheckBoxPad cbImpresso = new JCheckBoxPad( "Impresso", "S", "N" );
 
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad( "Liberado", "S", "N" );
 
 	private JCheckBoxPad cbFaturadoParcial = new JCheckBoxPad( "Faturado parcial", "S", "N" );
 
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad( "Faturado", "S", "N" );
+	
+	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
+	
+	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
 
 	private JRadioGroup<String, String> gbVenc;
 
@@ -209,13 +213,21 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		status.setOpaque( true );
 		JLabel borda2 = new JLabel();
 		borda2.setBorder( BorderFactory.createEtchedBorder() );
+		
 		pinCab.adic( status, 15, 165, 50, 18 );
-		pinCab.adic( borda2, 7, 175, 266, 70 );
+		pinCab.adic( borda2, 7, 175, 266, 78 );
+		
 		pinCab.adic( cbAberto, 25, 180, 80, 20 );
-		pinCab.adic( cbCompleto, 25, 200, 80, 20 );
-		pinCab.adic( cbLiberado, 25, 220, 80, 20 );
 		pinCab.adic( cbFaturadoParcial, 140, 180, 120, 20 );
-		pinCab.adic( cbFaturado, 140, 200, 80, 20 );
+		
+		pinCab.adic( cbImpresso, 25, 197, 80, 20 );
+		pinCab.adic( cbFaturado, 140, 197, 80, 20 );
+		
+		pinCab.adic( cbLiberado, 25, 214, 80, 20 );		
+		pinCab.adic( cbProduzido, 140, 214, 110, 20 );
+		
+		pinCab.adic( cbCancelado, 25, 231, 110, 20 );
+				
 
 		pinCab.adic( new JLabel( "Cód.cli." ), 280, 10, 77, 20 );
 		pinCab.adic( txtCodCli, 280, 30, 77, 20 );
@@ -316,7 +328,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		if ( "S".equals( cbAberto.getVlrString() ) ) {
 			status.append( "'*','OA'" );
 		}
-		if ( "S".equals( cbCompleto.getVlrString() ) ) {
+		if ( "S".equals( cbImpresso.getVlrString() ) ) {
 			if ( status.length() > 0 ) {
 				status.append( "," );
 			}
@@ -340,6 +352,21 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			}
 			status.append( "'OV'" );
 		}
+		if ( "S".equals( cbProduzido.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OP'" );
+		}
+		if ( "S".equals( cbCancelado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'CA'" );
+		}
+
+
+		
 		
 		if ( status.length() > 0 ) {
 			where.append( " AND O.STATUSORC IN(" + status.toString() + ") " );
