@@ -37,7 +37,7 @@ import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
-import org.freedom.modulos.std.FAprovaOrc;
+import org.freedom.modulos.std.FAprovCancOrc;
 import org.freedom.modulos.std.FClasCli;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FConsPreco;
@@ -135,7 +135,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(300300000, TP_OPCAO_ITEM, "Atendimentos", "Atendimentos", 'T',	300100000, 2, true, FRAtendimentos.class);
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 400000000, 0, false, null );
-		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovaOrc.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 400100000, 1, true, FAprovCancOrc.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 400200000, 1, true, FOrcamento.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 400300000, 1, true, FPesquisaOrc.class );
 		addSeparador(400000000 );
