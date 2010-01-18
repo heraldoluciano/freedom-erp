@@ -277,7 +277,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			baixaRecBean.setDataEmissao( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTREC.ordinal() ) ) );
 			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTVENC.ordinal() ) ) );
 			baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTPAG.ordinal() ) ) );
-			baixaRecBean.setValorParcela( Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) ) );//???
+			baixaRecBean.setValorParcela( Funcoes.strToBd( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );//xxx???
 			baixaRecBean.setValorAPagar( Funcoes.strToBd( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );
 			baixaRecBean.setValorDesconto( Funcoes.strToBd( tab.getValor( row, EColTab.VLRDESC.ordinal() ) ) );
 			baixaRecBean.setValorJuros( Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) ) );
