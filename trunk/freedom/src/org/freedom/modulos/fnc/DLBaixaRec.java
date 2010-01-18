@@ -242,7 +242,22 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private void atualizaAberto() {
 
-		txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
+
+		BigDecimal aberto = txtVlrParc.getVlrBigDecimal();
+		BigDecimal descontos = txtVlrDesc.getVlrBigDecimal();
+		BigDecimal juros = txtVlrJuros.getVlrBigDecimal();
+		BigDecimal pago = txtVlrPago.getVlrBigDecimal();
+		
+		aberto = aberto.subtract( descontos );
+		aberto = aberto.add( juros );
+//		aberto = aberto.subtract( pago );
+		
+		txtVlrAberto.setVlrBigDecimal( aberto );
+		
+//		txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
+		
+		
+		
 	}
 
 	private void aplicaJuros() {
@@ -436,7 +451,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		
 		txtVlrPago.setVlrBigDecimal( baixa.getValorPago() );
 				
-		txtVlr.setVlrBigDecimal( baixa.getValorAPagar() );
+		txtVlr.setVlrBigDecimal( baixa.getValorPago() );
 		
 		txtObs.setVlrString( baixa.getObservacao() );
 		
