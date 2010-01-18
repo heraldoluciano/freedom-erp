@@ -81,8 +81,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 					addOpcao(100102000, TP_OPCAO_ITEM, "Modelos de Lote", "Modelo de lote",'E', 100102050, 2, true, FModLote.class);
 					addOpcao(100102000, TP_OPCAO_ITEM, "Tipo de Analise", "Tipo de Analise",'A', 100102060, 2, true, FTipoAnalise.class);
 					addOpcao(100102000, TP_OPCAO_ITEM, "Método Analitico", "Método Analitico",'A', 100102070, 2, true, FMetodoAnalitico.class);
-					
-					
+										
 		    addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'F', 110100000,1, false, null);
 				addOpcao(110100000, TP_OPCAO_ITEM, "Preferências de Produção","Preferências de Produção", 'u', 110105000, 2, true,FPrefereProd.class);
 			
@@ -103,6 +102,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 				addOpcao(200900000, TP_OPCAO_ITEM, "Certificação de análise","Certificação de análise", 'C', 200900100, 1, true,FRCertAnalise.class);
 				addOpcao(200900000, TP_OPCAO_ITEM, "Análises","Análises", 'C', 200900200, 1, true, FRAnalise.class);
 				addOpcao(200900000, TP_OPCAO_ITEM, "Contra-Provas","Contra-Provas", 'C', 200900300, 1, true, FRContraProva.class);
+				addOpcao(200900000, TP_OPCAO_ITEM, "Produção","Produção", 'P', 200900400, 1, true, FRProducao.class);
 			
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
