@@ -640,8 +640,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do p.pagto." );
 		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );		
 				
-		adic( lbStatus, 638, 60, 95, 20 );
-		
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp==null?"Observações":labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp==null?"Observações":labelobs01cp, false );
 		adicDBLiv( txaObs03, "Obs03", labelobs01cp==null?"Observações":labelobs01cp, false );
@@ -749,6 +747,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
+		
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 150, 30 ) );
+		navEast.adic( lbStatus, 26, 3, 110, 20 );
+		navEast.tiraBorda();	
+		pnNavCab.add( navEast, BorderLayout.EAST );
 
 		setImprimir( true );
 		
@@ -758,10 +762,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		setAltDet( 100 );
 		pinDet = new JPanelPad( 740, 100 );
+		
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
+		
 		adicCampo( txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item", ListaCampos.DB_PK, true );
+		
 		if ( comref ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
@@ -1994,8 +2001,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			lbStatus.setVisible( true );
 		}
 		else {
-			lbStatus.setText( "" );
-			lbStatus.setVisible( false );
+			lbStatus.setText( "terste" );
+//			lbStatus.setVisible( false );
 		}
 
 	}
