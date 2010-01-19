@@ -455,7 +455,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		sSQL.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
 		sSQL.append( "AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
 		sSQL.append( sWhere.toString() );
-		sSQL.append( " ORDER BY " + sCampoOrdem + " ," + sCampoOrdem2 );
+		sSQL.append( " ORDER BY C.CODCLI, " + sCampoOrdem + " ," + sCampoOrdem2 );
 
 		try {
 			iParans = 1;
