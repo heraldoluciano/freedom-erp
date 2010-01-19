@@ -161,6 +161,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDtEmis.setAtivo( false );
 		txtDtVenc.setAtivo( false );
 		txtVlrAberto.setAtivo( false );
+		txtVlrParc.setAtivo( false );
 
 		adic( new JLabelPad( "Cód.cli." ), 7, 0, 80, 20 );
 		adic( txtCodCli, 7, 20, 80, 20 );
@@ -184,20 +185,30 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		adic( txtDtEmis, 120, 180, 107, 20 );
 		adic( new JLabelPad( "Vencimento" ), 230, 160, 110, 20 );
 		adic( txtDtVenc, 230, 180, 110, 20 );
-		adic( new JLabelPad( "% Desc." ), 7, 200, 60, 20 );
-		adic( txtPercDesc, 7, 220, 60, 20 );
-		adic( new JLabelPad( "Vlr. Desc." ), 70, 200, 107, 20 );
-		adic( txtVlrDesc, 70, 220, 107, 20 );
-		// A label vai no setValores...
-		adic( txtPercJuros, 180, 220, 57, 20 );
-		adic( new JLabelPad( "Vlr. Juros." ), 240, 200, 100, 20 );
-		adic( txtVlrJuros, 240, 220, 100, 20 );
-		adic( new JLabelPad( "Vlr. Aberto." ), 7, 240, 110, 20 );
-		adic( txtVlrAberto, 7, 260, 110, 20 );
-		adic( new JLabelPad( "Dt. Pagto." ), 120, 240, 107, 20 );
-		adic( txtDtPagto, 120, 260, 107, 20 );
-		adic( new JLabelPad( "Vlr. Pago" ), 230, 240, 110, 20 );
-		adic( txtVlr, 230, 260, 110, 20 );
+		
+		adic( new JLabelPad( "% Desc." ), 7, 200, 80, 20 );
+		adic( txtPercDesc, 7, 220, 80, 20 );
+		
+		adic( new JLabelPad( "Vlr.Desconto" ), 90, 200, 80, 20 );
+		adic( txtVlrDesc, 90, 220, 80, 20 );
+		
+		adic( txtPercJuros, 173, 220, 75, 20 );
+		
+		adic( new JLabelPad( "Vlr. Juros" ), 251, 200, 88, 20 );
+		adic( txtVlrJuros, 251, 220, 88, 20 );
+		
+		adic( new JLabelPad( "Vlr.Original" ), 7, 240, 80, 20 );
+		adic( txtVlrParc, 7, 260, 80, 20 );
+		
+		adic( new JLabelPad( "Vlr.Aberto" ), 90, 240, 80, 20 );
+		adic( txtVlrAberto, 90, 260, 80, 20 );
+		
+		adic( new JLabelPad( "Dt.Pagto." ), 173, 240, 75, 20 );
+		adic( txtDtPagto, 173, 260, 75, 20 );
+		
+		adic( new JLabelPad( "Vlr.Pago" ), 251, 240, 88, 20 );
+		adic( txtVlr, 251, 260, 88, 20 );
+		
 		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
 		adic( txtObs, 7, 300, 333, 20 );
 
@@ -227,15 +238,16 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			if ( txtPercJuros.getVlrDouble().doubleValue() != 0 )
 				txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
 		}
-		else
+		else								
 			txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( Funcoes.getNumDiasAbs( txtDtVenc.getVlrDate(), new Date() ) ) ) );
 		atualizaAberto();
 	}
 
 	private void atualizaPagto() {
 
-		if ( txtVlr.getVlrBigDecimal().compareTo( txtVlrAberto.getVlrBigDecimal() ) > 0 ) {
-			txtVlrJuros.setVlrBigDecimal( txtVlrJuros.getVlrBigDecimal().add( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) ) );
+			if ( txtVlr.getVlrBigDecimal().compareTo( txtVlrAberto.getVlrBigDecimal() ) > 0 ) {
+			txtVlrJuros.setVlrBigDecimal( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ));
+//			txtVlrJuros.setVlrBigDecimal( txtVlrJuros.getVlrBigDecimal().add( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) ) );
 			atualizaAberto();
 		}
 	}
@@ -250,9 +262,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		
 		aberto = aberto.subtract( descontos );
 		aberto = aberto.add( juros );
-//		aberto = aberto.subtract( pago );
+		aberto = aberto.subtract( pago );
 		
-		txtVlrAberto.setVlrBigDecimal( aberto );
+//		txtVlrAberto.setVlrBigDecimal( aberto );
 		
 //		txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
 		
@@ -448,10 +460,17 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrJuros.setVlrBigDecimal( baixa.getValorJuros() );				
 		txtVlrAberto.setVlrBigDecimal( baixa.getValorAPagar() );
 		
-		
-		txtVlrPago.setVlrBigDecimal( baixa.getValorPago() );
+
+		if(baixa.getValorPago()!=null && baixa.getValorPago().floatValue()>0) {
+			txtVlrPago.setVlrBigDecimal( baixa.getValorPago() );
+			txtVlr.setVlrBigDecimal( baixa.getValorPago() );
+		}
+		else {
+			txtVlrPago.setVlrBigDecimal( baixa.getValorAPagar() );
+			txtVlr.setVlrBigDecimal( baixa.getValorAPagar() );
+		}
 				
-		txtVlr.setVlrBigDecimal( baixa.getValorPago() );
+
 		
 		txtObs.setVlrString( baixa.getObservacao() );
 		
