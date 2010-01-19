@@ -54,6 +54,7 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfWriter;
 
 public class ImprimeOS implements ActionListener {
 
@@ -1073,21 +1074,17 @@ public class ImprimeOS implements ActionListener {
 	public void exportaPDF( DLVisualiza pai ) {
 
 		File fArq = Funcoes.buscaArq( pai, "pdf" );
-		if ( fArq == null )
+		
+		if ( fArq == null ) {
 			return;
+		}
+		
 		try {
-/*			PrintStream ps = new PrintStream( new FileOutputStream( fArq ) );
-			for ( int i = 1; i <= getNumPags(); ++i ) {
-				ps.print( lePagina( i ) );
-				if ( bImpEject )
-					ps.print( getEject() );
-			}
-			ps.flush();
-			ps.close();
-*/			
+			
 			gravaPdf( fArq );
 			
-		} catch ( Exception err ) {
+		} 
+		catch ( Exception err ) {
 			Funcoes.mensagemErro( pai, "Erro ao gravar o arquivo!\n" + err.getMessage() );
 			err.printStackTrace();
 		}
@@ -1172,26 +1169,27 @@ public class ImprimeOS implements ActionListener {
 	}
 
 	public boolean gravaPdf( File fArq) {
+		
 		Rectangle pageSize = new Rectangle(PageSize.A4);
 		Document document = new Document(pageSize);
+	
 		try {
-//		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fArq));
-		document.addTitle( sTitulo );
-		document.open();
-//		PdfContentByte cb = writer.getDirectContent();  
+
+			PdfWriter.getInstance(document, new FileOutputStream(fArq));
+			document.addTitle( sTitulo );
+			document.open();
+  		
+			Font font = FontFactory.getFont(FontFactory.COURIER, 6, Font.NORMAL, Color.black);		
 		
-		Font font = FontFactory.getFont(FontFactory.COURIER, 6, Font.NORMAL, Color.black);		
-		
-		for ( int i = 1; i <= getNumPags(); ++i ) {
+			for ( int i = 1; i <= getNumPags(); ++i ) {
 			
-			Paragraph paragrafo = new Paragraph(lePagina( i ), font );
-			document.add(paragrafo);
+				Paragraph paragrafo = new Paragraph(lePagina( i ), font );
+				document.add(paragrafo);
 			
-			if ( bImpEject ) {
-				document.newPage();
-			}
-		}
-		
+				if ( bImpEject ) {
+					document.newPage();
+				}
+			}		
 		}
 		catch(DocumentException de) {
 		System.err.println(de.getMessage());
