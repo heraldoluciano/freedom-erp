@@ -401,7 +401,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="2"
 						width="51"
 						height="11"
-						key="staticText-12"/>
+						key="staticText-12">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
@@ -414,7 +417,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="0"
 						width="0"
 						height="16"
-						key="line-37"/>
+						key="line-37">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -423,7 +429,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="0"
 						width="0"
 						height="16"
-						key="line-39"/>
+						key="line-39">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -432,7 +441,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="0"
 						width="0"
 						height="16"
-						key="line-40"/>
+						key="line-40">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -441,7 +453,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="0"
 						width="0"
 						height="16"
-						key="line-41"/>
+						key="line-41">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -450,7 +465,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="0"
 						width="0"
 						height="16"
-						key="line-42"/>
+						key="line-42">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -459,7 +477,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="15"
 						width="318"
 						height="0"
-						key="line-44"/>
+						key="line-44">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -468,7 +489,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="1"
 						width="60"
 						height="12"
-						key="textField-11"/>
+						key="textField-11">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
@@ -481,7 +505,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="1"
 						width="60"
 						height="12"
-						key="textField-12"/>
+						key="textField-12">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
@@ -494,7 +521,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 						y="1"
 						width="57"
 						height="12"
-						key="textField-13"/>
+						key="textField-13">
+							<printWhenExpression><![CDATA[new Boolean(false)
+/* Implementar condição futuramente.*/]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
