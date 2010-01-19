@@ -21,13 +21,14 @@
 package org.freedom.telas;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class LoginPD extends Login implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
@@ -179,12 +180,107 @@ protected boolean montaCombo(String sUsu) {
 
 }
 
+
+private void atualizalogins(DbConnection con) {
+	
+	String desativa_triggers_orig = "ALTER TRIGGER #TRIGGER# INACTIVE";
+	
+	String ativa_triggers_orig = "ALTER TRIGGER #TRIGGER# ACTIVE";
+	
+	String select_trigger_orig = "select rdb$trigger_name from rdb$triggers where rdb$relation_name = '#TABELA#' and rdb$trigger_name not like 'CHECK%'";
+	
+	StringBuilder select_tabelas = new StringBuilder( "select rdb$relation_name from rdb$relations where rdb$flags is not null and rdb$relation_name not like '%VW%'" );
+	
+	String update_tabelas_orig = "update #TABELA# set hins=cast('now' as time), dtins=cast('today' as date), idusuins=user" 
+	  	              + " where hins is null or dtins is null or idusuins is null" ;
+	
+    String update_table = null;    
+    String select_trigger = null;
+    String desativa_trigger = null;
+    String ativa_trigger = null;
+    
+	ResultSet rs = null;
+	PreparedStatement ps = null;
+	
+	Vector<String> tabelas = new Vector<String>();
+	Vector<String> triggers = null;
+	
+	try {
+		ps = con.prepareStatement(select_tabelas.toString());
+
+		rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			tabelas.addElement(rs.getString("rdb$relation_name").trim());
+		}
+		con.commit();
+		
+		for (int i=0; tabelas.size()>i; i++) {
+			
+			select_trigger = select_trigger_orig.replaceAll("#TABELA#", tabelas.elementAt(i));
+			
+			ps = con.prepareStatement(select_trigger);
+			rs = ps.executeQuery();
+			
+			triggers = new Vector<String>();
+			
+			while (rs.next()) {
+				triggers.addElement(rs.getString("rdb$trigger_name"));
+			}
+
+			for(int i2=0; triggers.size()> i2; i2++ ) {
+				System.out.println("DESATIVANDO TRIGGER:" + triggers.elementAt(i2) );
+				desativa_trigger = desativa_triggers_orig.replaceAll("#TRIGGER#", triggers.elementAt(i2).trim());
+				ps = con.prepareStatement(desativa_trigger);
+				ps.execute();				
+			}
+			
+			con.commit();
+			
+			System.out.println("ATUALIZANDO TABELA: " + tabelas.elementAt(i));						
+			
+			update_table = update_tabelas_orig.replaceAll("#TABELA#", tabelas.elementAt(i));
+			
+			ps = con.prepareStatement( update_table );
+			
+			ps.execute();
+
+			for(int i2=0; triggers.size()> i2; i2++ ) {
+				System.out.println("REATIVANDO TRIGGER:" + triggers.elementAt(i2) );
+				ativa_trigger = ativa_triggers_orig.replaceAll("#TRIGGER#", triggers.elementAt(i2));
+				ps = con.prepareStatement(ativa_trigger);
+				ps.execute();				
+			}
+			
+			con.commit();
+			
+		}
+		
+		con.commit();
+		
+		System.out.println("FINALIZOU ATUALIZAÇÕES!!!");
+		
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	
+}
+
+
 protected boolean adicConFilial(DbConnection conX) {		
 	boolean bRet = false;
 	String sSQL = null;
 	ResultSet rs = null;
 	PreparedStatement ps = null;
+	
 	try {
+		
+		if ("S".equalsIgnoreCase( Aplicativo.getParameter( "gera_log_ins" ) )) {
+			atualizalogins(conX);
+		}
+		
 		sSQL = "SELECT SRET FROM SGINICONSP(?,?,?,?)";  		
 		ps = conX.prepareStatement(sSQL);
 		ps.setInt(1,Aplicativo.iCodEmp);
