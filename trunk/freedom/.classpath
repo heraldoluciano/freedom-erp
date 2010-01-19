@@ -32,5 +32,6 @@
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/bizcal.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/nachocalendar.jar"/>
+	<classpathentry kind="lib" path="lib/poi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
