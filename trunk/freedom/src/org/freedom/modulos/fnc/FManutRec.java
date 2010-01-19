@@ -2167,11 +2167,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				
 				if ( "".equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
 					baixaRecBean.setDataPagamento( new Date() );
-					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
+					baixaRecBean.setValorPago( new BigDecimal(0) );
+//					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}
 				else {
 					baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) );
-					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
+					baixaRecBean.setValorPago( new BigDecimal(0) );
+//					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}
 				if ( "".equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
 					historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() ) );
