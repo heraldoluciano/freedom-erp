@@ -259,12 +259,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		Dimension dm = new Dimension(iLarg,iAlt);
 		return dm;
 	}
+	
 	public void setAreaComp() {
 		pinDados = new JPanelPad((int)getSize().getWidth()-10,
 				(int)getSize().getHeight()-65);  
 		pnCliente.add(pinDados, BorderLayout.CENTER);
 		setArea = false;
 	}
+	
 	public void adic(Component comp, int X, int Y, int Larg, int Alt) {
 		if (setArea)
 			setAreaComp();
@@ -337,9 +339,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		lcSeq.setState(ListaCampos.LCS_NONE);
 	}   
 
-	public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
-			byte key,  boolean req) {
+	public JLabelPad adicCampoInvisivel(JTextFieldPad comp, String nome, String label, byte key,  boolean req) {
 		adicCampoInvisivel(comp, nome, label, key, null, req);
+		return new JLabelPad(label);
 	}
 	public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
 		comp.setNomeCampo(nome);
