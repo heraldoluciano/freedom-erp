@@ -36,6 +36,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JScrollPane;
 
@@ -48,6 +50,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -126,6 +129,13 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	private final ListaCampos lcTipoCobItPag = new ListaCampos( this, "TC" );
 	
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
+	
+	private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";	
+	
+	private Map<String, Integer> prefere = null;
+	
+	private ObjetoHistorico historico = null;
+
 	
 	public DLNovoPag( Component cOrig ) {
 
@@ -328,6 +338,30 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	public void beforePost( PostEvent e ) {
 		if ( e.getListaCampos().equals( lcPagar ) && lcPagar.getStatus() == ListaCampos.LCS_INSERT ) {			
 			testaCodPag();
+			
+			
+			// Gerando histórico dinâmico
+
+			Integer codhistpag = null;
+
+			codhistpag = (Integer) prefere.get( "codhistpag" );
+
+			if ( codhistpag != 0 ) {
+				historico = new ObjetoHistorico( codhistpag, con );
+			}
+			else {
+				historico = new ObjetoHistorico();
+				historico.setHistoricocodificado( HISTORICO_PADRAO );
+			}
+			
+			historico.setData( txtDtEmisPag.getVlrDate() );
+			historico.setDocumento( txtDocPag.getVlrString() );
+			historico.setPortador( txtDescFor.getVlrString() );
+			historico.setValor( txtVlrParcPag.getVlrBigDecimal() );
+			historico.setHistoricoant( txtObs.getVlrString() ) ;
+			
+			txtObs.setVlrString( historico.getHistoricodecodificado() );
+			
 		}
 	}
 
@@ -366,7 +400,51 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcBanco.setConexao( cn );
 		lcPagar.insert( true );
 		
+		prefere = getPrefere();
+		
+		
 	}
+	
+	private Map<String, Integer> getPrefere() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer anocc = null;
+		Integer codhistpag = null;
+
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
+
+		try {
+
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistpag = rs.getInt( "CODHISTPAG" );
+			}
+
+			retorno.put( "codhistpag", codhistpag );
+			retorno.put( "anocc", anocc );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}
+
 	
 	private class HandlerMouseListenerPagamento extends MouseAdapter {
 		

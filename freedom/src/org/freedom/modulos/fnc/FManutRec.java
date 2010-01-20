@@ -65,7 +65,6 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
@@ -83,7 +82,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
+//	private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
 
 	private enum EColTabManut {
 		IMGSTATUS, STATUS, DTVENC, DTEMIT, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRDEVOLUCAO, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBS, DESCPONT
@@ -1543,12 +1542,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		Object[] sRet = new Object[ EColEdit.values().length ];
 		Integer iCodRec;
 		Integer iNParcItRec;
-		ObjetoHistorico historico = null;
+//		ObjetoHistorico historico = null;
 		Integer codhistrec = null;
 
 		try {
 
-			codhistrec = (Integer) prefere.get( "codhistrec" );
+/*			codhistrec = (Integer) prefere.get( "codhistrec" );
 
 			if ( codhistrec != 0 ) {
 				historico = new ObjetoHistorico( codhistrec, con );
@@ -1557,7 +1556,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				historico = new ObjetoHistorico();
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
-
+*/
 			int iLin = tabManut.getLinhaSel();
 
 			sRet[ EColEdit.CODCLI.ordinal() ] = (Integer) tabManut.getValor( iLin, EColTabManut.CODCLI.ordinal() );
@@ -1579,7 +1578,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sRet[ EColEdit.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
 			sRet[ EColEdit.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
 
-			if ( "".equals( String.valueOf( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ).trim() ) ) {
+/*			if ( "".equals( String.valueOf( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ).trim() ) ) {
 				historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() ) );
 				historico.setDocumento( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ).toString().trim() );
 				historico.setPortador( tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() ).toString().trim() );
@@ -1589,7 +1588,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			else {
 				sRet[ EColEdit.OBS.ordinal() ] = tabManut.getValor( iLin, EColTabManut.OBS.ordinal() );
 			}
-
+*/
+			
+			sRet[ EColEdit.OBS.ordinal() ] = tabManut.getValor( iLin, EColTabManut.OBS.ordinal() );
+			
 			sRet[ EColEdit.CODBANCO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.CODBANCO.ordinal() );
 			sRet[ EColEdit.CODTPCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.CODTIPOCOB.ordinal() ) );
 			sRet[ EColEdit.DESCTPCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCTIPOCOB.ordinal() ) );
@@ -2076,21 +2078,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
-		ObjetoHistorico historico = null;
+//		ObjetoHistorico historico = null;
 		Integer codhistrec = null;
 
 		try {
 
 			codhistrec = (Integer) prefere.get( "codhistrec" );
 
-			if ( codhistrec != 0 ) {
+/*			if ( codhistrec != 0 ) {
 				historico = new ObjetoHistorico( codhistrec, con );
 			}
 			else {
 				historico = new ObjetoHistorico();
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
-
+*/
 			if ( 'M' == cOrig && tabManut.getLinhaSel() > -1 ) {
 
 				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
@@ -2175,17 +2177,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					baixaRecBean.setValorPago( new BigDecimal(0) );
 //					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}
-				if ( "".equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
+/*				if ( "".equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
 					historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() ) );
 					historico.setDocumento( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ).toString().trim() );
 					historico.setPortador( tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() ).toString().trim() );
 					historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ).toString() ) );
+					historico.setHistoricoant( (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ))  ;
 					baixaRecBean.setObservacao( historico.getHistoricodecodificado() );
 				}
 				else {
 					baixaRecBean.setObservacao( (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) );
-				}
+				}*/
 
+				baixaRecBean.setObservacao( (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) );
+				
 				baixaRecBean.setEmBordero( "RB".equals( tabManut.getValor( iLin, EColTabManut.STATUS.ordinal() ) ) );
 
 				dl.setConexao( con );
@@ -2286,7 +2291,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
 					baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 				}
-				if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
+/*				if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
 					historico.setData( txtDtEmisBaixa.getVlrDate() );
 					historico.setDocumento( txtCodVendaBaixa.getVlrString() );
 					historico.setPortador( txtRazCliBaixa.getVlrString().trim() );
@@ -2296,7 +2301,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				else {
 					baixaRecBean.setObservacao( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
 				}
-
+*/
+				
+				baixaRecBean.setObservacao( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
 				dl.setConexao( con );
 				dl.setValores( baixaRecBean );
 				dl.setVisible( true );
