@@ -146,12 +146,11 @@ public class NF060 extends Layout {
 
 					imp.pulaLinha( 3, imp.normal() + imp.comprimido() );
 					imp.say( 30, cab.getString( NF.C_ENDFILIAL ).trim() + "," + cab.getString( NF.C_NUMFILIAL ) + " - " + 
-							cab.getString( NF.C_BAIRFILIAL ).trim() + " - " + cab.getString( NF.C_CIDFILIAL ).trim() + " - " + cab.getString( NF.C_CEPFILIAL ) );
+							cab.getString( NF.C_BAIRFILIAL ).trim() + " - " + cab.getString( NF.C_CIDFILIAL ).trim() + " / " + cab.getString( NF.C_UFFILIAL ) + " - " +  Funcoes.setMascara( cab.getString( NF.C_CEPFILIAL ), "#####-###" ) );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 30, cab.getString( NF.C_WWWFILIAL ).trim() + " - Fone:" + Funcoes.setMascara( cab.getString( NF.C_FONEFILIAL ), "(####)####-####" ) );
 					imp.pulaLinha( 1, imp.comprimido() );
 										
-
 					imp.pulaLinha( 2, imp.normal() + imp.comprimido() );
 					imp.say( 4, sNat[ 0 ] );
 					imp.say( 54, sNat[ 1 ] );
@@ -494,7 +493,7 @@ public class NF060 extends Layout {
 				}
 			}
 
-			imp.eject();
+//			imp.eject();
 			imp.fechaGravacao();
 			retorno = true;
 
