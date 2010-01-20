@@ -35,6 +35,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -47,6 +50,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -154,6 +158,11 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	
 	private Component owner = null; 
 	
+	private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";	
+	
+	private Map<String, Integer> prefere = null;
+	
+	private ObjetoHistorico historico = null;
 
 	public DLNovoRec( Component cOrig ) {
 
@@ -611,8 +620,33 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	public void beforePost( PostEvent evt ) {
 
 		if ( ( evt.getListaCampos().equals( lcReceber ) ) & ( lcReceber.getStatus() == ListaCampos.LCS_INSERT ) ) {
+			
 			testaCodRec();
 			txtStatus.setVlrString( "R1" );
+
+			
+			// Gerando histórico dinâmico
+
+			Integer codhistrec = null;
+
+			codhistrec = (Integer) prefere.get( "codhistrec" );
+
+			if ( codhistrec != 0 ) {
+				historico = new ObjetoHistorico( codhistrec, con );
+			}
+			else {
+				historico = new ObjetoHistorico();
+				historico.setHistoricocodificado( HISTORICO_PADRAO );
+			}
+			
+			historico.setData( txtDtEmisRec.getVlrDate() );
+			historico.setDocumento( txtDocRec.getVlrString() );
+			historico.setPortador( txtDescCli.getVlrString() );
+			historico.setValor( txtVlrParcRec.getVlrBigDecimal() );
+			historico.setHistoricoant( txtObs.getVlrString() ) ;
+			
+			txtObs.setVlrString( historico.getHistoricodecodificado() );
+
 		}
 	}
 
@@ -640,6 +674,45 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		}
 	}
 
+	private Map<String, Integer> getPrefere() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer anocc = null;
+		Integer codhistrec = null;
+
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
+
+		try {
+
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistrec = rs.getInt( "CODHISTREC" );
+			}
+
+			retorno.put( "codhistrec", codhistrec );
+			retorno.put( "anocc", anocc );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}
+
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -655,5 +728,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcCartCobItRec.setConexao( cn );
 		lcConta.setConexao( cn );
 		lcReceber.insert( true );
+		
+		prefere = getPrefere();
 	}
 }

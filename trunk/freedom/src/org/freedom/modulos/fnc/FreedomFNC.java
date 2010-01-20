@@ -146,7 +146,7 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 400300000, 1, true, FPlanejamento.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 400400000, 1, true, FCentroCusto.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Contas", "Contas", 't', 400500000, 1, true, FConta.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Historico", "Historico", 't', 400600000, 1, true, FHistPad.class );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Histórico", "Histórico", 't', 400600000, 1, true, FHistPad.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Lançamentos", "Lançamentos", 'L', 400700000, 1, true, FLanca.class );
 			addSeparador( 400000000 );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'T', 400800000, 1, true, FTipoCred.class );

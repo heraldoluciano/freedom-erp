@@ -62,7 +62,7 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ObjetoHistorico;
+//import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -74,7 +74,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 	
 	private static final long serialVersionUID = 1L;
 
-	private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
+//	private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
 
 	private ImageIcon imgVencido = Icone.novo( "clVencido.gif" );
 	private ImageIcon imgPago = Icone.novo( "clPago.gif" );
@@ -1293,13 +1293,13 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		String[] sRets = null;
 		DLBaixaPag dl = null;
 		ImageIcon imgStatusAt = null;
-		ObjetoHistorico historico = null;
+//		ObjetoHistorico historico = null;
 		Integer codhistpag = null;
 		
 		
 		try {
 			
-			codhistpag = (Integer) prefere.get( "codhistpag" );
+	/*		codhistpag = (Integer) prefere.get( "codhistpag" );
 			
 			if(codhistpag != 0) {
 				historico = new ObjetoHistorico(codhistpag,con);
@@ -1308,7 +1308,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				historico = new ObjetoHistorico();
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
-			
+		*/	
 			
 			if ( ( cOrig == 'M' ) & ( tabManut.getLinhaSel() > -1 ) ) { // Quando a função eh chamada da tab MANUTENÇÂO
 
@@ -1345,8 +1345,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
 				sVals[ 11 ] = (String) tabManut.getValor( iLin, 21 );
 
-				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
-					if ( "".equals( ( (String) tabManut.getValor( iLin, 23 ) ).trim() ) ) {
+//				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
+				/*	if ( "".equals( ( (String) tabManut.getValor( iLin, 23 ) ).trim() ) ) {
 						historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
 						historico.setDocumento( tabManut.getValor( iLin, 8 ).toString().trim() );					
 						historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() );
@@ -1354,16 +1354,18 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						
 						
 						sVals[ 12 ] = historico.getHistoricodecodificado(); 										
-					}				
+					}			
 					else {					
 						sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
-					}
+					}	
+					sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
 				}
 				else {					
 					sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
 				}
-
-//				sVals[ 12 ] = (String) tabManut.getValor( iLin, 16 );
+				 */
+					
+				sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
 				
 				dl.setValores( sVals );
 				dl.setConexao( con );
@@ -1466,7 +1468,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, 6 ) ).trim() ) ) {
 					
-					if ( "".equals( ( (String) tabBaixa.getValor( iLin, 15 ) ).trim() ) ) {
+/*					if ( "".equals( ( (String) tabBaixa.getValor( iLin, 15 ) ).trim() ) ) {
 						historico.setData( txtDtEmisBaixa.getVlrDate() );
 						historico.setDocumento( sVals[ 4 ] );					
 						historico.setPortador( sVals[ 1 ] );
@@ -1475,7 +1477,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					}				
 					else {					
 						sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 15 );
-					}
+					}*/
 					
 					sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 5 );
 				}
@@ -1483,7 +1485,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 11 ] = (String) tabBaixa.getValor( iLin, 14 );
 					sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 7 );
 				}
-//				sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 17 );xx
+				sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 15 );
 
 				dl.setValores( sVals );
 				dl.setConexao( con );
@@ -1567,7 +1569,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		DLEditaPag dl = null;
 		ImageIcon imgStatusAt = null;
 		int iLin;
-		ObjetoHistorico historico = null;
+//		ObjetoHistorico historico = null;
 		Integer codhistpag = null;
 		
 		try {
@@ -1576,14 +1578,14 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			
 				codhistpag = (Integer) prefere.get( "codhistpag" );
 				
-				if(codhistpag != 0) {
+	/*			if(codhistpag != 0) {
 					historico = new ObjetoHistorico(codhistpag,con);
 				}
 				else {
 					historico = new ObjetoHistorico();
 					historico.setHistoricocodificado( HISTORICO_PADRAO );
 				}				
-				
+		*/		
 				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
 				
 				if ( imgStatusAt != imgPago ) {
@@ -1609,7 +1611,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 9 ] = (String) tabManut.getValor( iLin, 13 );
 					sVals[ 10 ] = (String) tabManut.getValor( iLin, 12 );
 					sVals[ 11 ] = (String) tabManut.getValor( iLin, 15 );
-					
+	/*				
 					if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {						
 						if ( "".equals( ( (String) tabManut.getValor( iLin, 23 ) ).trim() ) ) {
 							historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
@@ -1623,9 +1625,10 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						}
 					}
 					else {						
-						sVals[ 12 ] = (String) tabManut.getValor( iLin, 20 );
+						sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
 					}
-					
+		*/			
+					sVals[ 12 ] = (String) tabManut.getValor( iLin, 23 );
 					sVals[ 13 ] = (String) tabManut.getValor( iLin, 21 );
 					sVals[ 14 ] = (String) tabManut.getValor( iLin, 14 );
 					
