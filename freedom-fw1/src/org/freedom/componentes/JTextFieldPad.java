@@ -98,6 +98,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private ListaCampos lcTabExt = null;
 	private DLF3 dlBuscaAdic = null; 
 	private DLCodProd dlCodProd = null;
+	private boolean uppercase = false;
 	
 	public JTextFieldPad (int tipo, int tam, int dec) {
 		addFocusListener(this);
@@ -856,8 +857,17 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				cRet = pontoDecMask;
 			}
 		}
+		if(uppercase) {
+			cRet = String.valueOf(cRet).toUpperCase().charAt(0);
+		}
+		
 		return cRet;
 	}      
+	
+	public void setUpperCase(boolean ucase) {
+		uppercase = ucase;
+	}
+
 	
 	public boolean mostraDLF2FK() {
 		boolean bRet = false;
