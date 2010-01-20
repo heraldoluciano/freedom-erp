@@ -1,31 +1,56 @@
 package org.freedom.modulos.gms;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Vector;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modulos.cfg.FBairro;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
-public class FRecMerc extends FDetalhe  {
+public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 	
-	// *** Variáveis estáticas
+	// *** Constantes
 	
 	private static final long serialVersionUID = 1L;
+
+	// *** Variaveis
+	
+	private HashMap<String, Object> prefere = null;
+	private boolean novo = true;	
+
+	private Vector<Integer> vValsBairro = new Vector<Integer>();
+	private Vector<String> vLabsBairro = new Vector<String>();
 
 	// *** Campos (Cabeçalho)
 	
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	private JTextFieldPad txtPlacaVeiculo = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtPlacaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private JTextFieldFK txtDescTipoRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -41,12 +66,17 @@ public class FRecMerc extends FDetalhe  {
 	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtBairro = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodBairro = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtNomeBairro = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 	
 	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-	private JTextFieldFK txtCodMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );	
+	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	
+	private JComboBoxPad cbBairro = new JComboBoxPad( vLabsBairro, vValsBairro, JComboBoxPad.TP_INTEGER, 8, 0 );
 		
 	// *** Campos (Detalhe)
 	
@@ -67,11 +97,23 @@ public class FRecMerc extends FDetalhe  {
 	private ListaCampos lcProdCab = new ListaCampos( this, "PD" );
 	private ListaCampos lcProdDet = new ListaCampos( this, "PD" );
 	private ListaCampos lcTipoRecMerc = new ListaCampos( this, "TR" );
-
-	public FRecMerc () {
+	private ListaCampos lcBairro = new ListaCampos( this );
+	private ListaCampos lcMunic = new ListaCampos( this );
+	
+	// *** Labels
+	
+	private JLabelPad lbBairro = new JLabelPad("Bairro");
+	
+	// *** Botões
+	
+	private JButtonPad btNovoBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	
+	public FRecMerc (boolean novo) {
 		
 		super();
-
+		
+		this.novo = novo;
+		
 		setTitulo( "Recepção de mercadorias" );
 		setAtribos( 50, 50, 700, 480);
 
@@ -79,12 +121,28 @@ public class FRecMerc extends FDetalhe  {
 		montaTela();
 		montaTab();
 		ajustaTabela();
+		adicListeners();
+		configuraCampos();
+			
+		setImprimir(true);
 		
-		setImprimir(true);		
-
+	}
+	
+	private void configuraCampos() {
+		txtPlacaTran.setUpperCase( true );
+		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
+		
+		txtCodMun.setAtivo( false );
+	}
+	
+	private void carregaTipoRec() {
+		
+		txtCodTipoRecMerc.setVlrInteger( (Integer) prefere.get( "codtiporecmerc" ) );
+		lcTipoRecMerc.carregaDados();
+		
 	}
 
-	private void buscaTransp(String placa) {
+	private void buscaPrefere() {
 		StringBuilder sql = new StringBuilder();
 		
 		PreparedStatement ps = null;
@@ -92,17 +150,55 @@ public class FRecMerc extends FDetalhe  {
 
 		try {
 			
-			sql.append( "select first 1 tp.codtran from vdtransp tp ");
+			prefere = new HashMap<String, Object>();
+			
+			sql.append( "select coalesce(pf8.codtiporecmerc,0) codtiporecmerc " );
+			sql.append( "from sgprefere8 pf8 ");
+			sql.append( "where pf8.codemp=? and pf8.codfilial=? ");
+								
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
+						
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );				
+			}
+		
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	private void buscaTransp(String placa) {
+
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			sql.append( "select tp.codtran from vdtransp tp ");
 			sql.append( "where tp.codemp=? and tp.codfilial=? and tp.placatran=?");
 								
 			ps = con.prepareStatement(sql.toString());
-			rs = ps.executeQuery();
-			
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setString( 3, placa );
+			
+			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
+			
+				txtCodTran.setVlrInteger( rs.getInt( "codtran" ) );
+				lcTran.carregaDados();
 				
 			}
 		
@@ -112,8 +208,6 @@ public class FRecMerc extends FDetalhe  {
 		catch (Exception e) {
 			e.printStackTrace();
 		}	
-		
-		
 		
 	}
 	
@@ -127,7 +221,7 @@ public class FRecMerc extends FDetalhe  {
 		setPainel( pinCab, pnCliCab);
 		 
 		adicCampo( txtTicket, 7, 20, 70, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true);
-		adicCampo( txtPlacaVeiculo, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true);
+		adicCampo( txtPlacaTran, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true);
 
 		adicCampo( txtCodTipoRecMerc, 153, 20, 70, 20, "CodTipoRecMerc", "Cod.Tp.Rec.", ListaCampos.DB_FK, txtDescProdCab, true );
 		adicDescFK( txtDescTipoRecMerc, 226, 20, 370, 20, "DescTipoRecMerc", "Descrição do tipo de recebimento" ) ;
@@ -143,7 +237,15 @@ public class FRecMerc extends FDetalhe  {
 		
 		adicCampo( txtCodPais, 253, 140, 30, 20, "CodPais", "País", ListaCampos.DB_SI, false );
 		adicCampo( txtSiglaUF, 286, 140, 25, 20, "SiglaUF", "UF", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMun, 314, 140, 60, 20, "CodMunic", "Município", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMun, 314, 140, 60, 20, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Nome do município" );
+		
+		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
+		
+		pinCab.adic( lbBairro, 500, 120, 100, 20 );
+		pinCab.adic( cbBairro, 500, 140, 100, 20 );
+		
+		adic( btNovoBairro, 603, 100, 20, 20 );
 		
 		setListaCampos( true, "RECMERC", "EQ");
 		lcCampos.setQueryInsert( true );
@@ -177,7 +279,17 @@ public class FRecMerc extends FDetalhe  {
 	private void adicListeners() {
 		
 		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this);  
+		btPrevimp.addActionListener(this); 
+		
+		txtPlacaTran.addFocusListener( this );
+		
+		cbBairro.addComboBoxListener( this );
+		
+		lcCampos.addInsertListener( this );
+		lcBairro.addCarregaListener( this );
+		lcMunic.addCarregaListener( this );
+		
+		btNovoBairro.addActionListener( this );
 		
 	}	
 	
@@ -247,6 +359,42 @@ public class FRecMerc extends FDetalhe  {
 		
 		lcProdDet.setReadOnly( true );
 		lcProdDet.montaSql( false, "PRODUTO", "EQ" );
+		
+		/***************
+		 * MUNICIPIO *
+		 **************/
+
+		lcMunic.setUsaME( false );
+		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
+		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
+	
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
+		lcMunic.setQueryCommit( false );
+		lcMunic.setReadOnly( true );
+		txtCodMun.setTabelaExterna( lcMunic );
+		
+		
+		/***************
+		 * BAIRRO      *
+		 ***************/
+
+		lcBairro.setUsaME( false );
+		lcBairro.add( new GuardaCampo( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true ) );
+		lcBairro.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Munic", ListaCampos.DB_PK, false ) );
+		lcBairro.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "Sigla.UF", ListaCampos.DB_PK, false ) );
+		lcBairro.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_PK, false ) );
+		lcBairro.add( new GuardaCampo( txtNomeBairro, "NomeBairro", "Nome do Bairro", ListaCampos.DB_SI, false ) ); 
+		
+		lcBairro.setDinWhereAdic( "CODPAIS = #N", txtCodPais );		
+		lcBairro.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcBairro.setDinWhereAdic( "CODMUNIC = #S", txtCodMun );
+		
+		
+		lcBairro.montaSql( false, "BAIRRO", "SG" );
+		lcBairro.setQueryCommit( false );
+		lcBairro.setReadOnly( true );
+		txtCodBairro.setTabelaExterna( lcBairro );
 
 	}
 	
@@ -254,8 +402,32 @@ public class FRecMerc extends FDetalhe  {
 		if (evt.getSource() == btPrevimp) {
 			imprimir(true);
 		}
-		else if (evt.getSource() == btImp) 
+		else if (evt.getSource() == btImp) {
 			imprimir(false);
+		}
+		else if ( evt.getSource() == btNovoBairro ) {
+			
+			
+			FBairro bairro = new FBairro( true );
+			
+			try {
+
+				bairro.setConexao( con );
+				
+				bairro.setCodPais( txtCodPais.getVlrInteger() );
+				bairro.setSiglaUF( txtSiglaUF.getVlrString() );
+				bairro.setCodMunic( txtCodMun.getVlrString() );
+				
+				Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", bairro, con );
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+
+			
+		}
 		super.actionPerformed(evt);
 	}
 
@@ -329,9 +501,127 @@ public class FRecMerc extends FDetalhe  {
 		lcProdDet.setConexao( cn );
 		lcTran.setConexao( cn );
 		lcFor.setConexao( cn );
-		lcTipoRecMerc.setConexao( cn );	
+		lcTipoRecMerc.setConexao( cn );
+		lcMunic.setConexao( cn );
+		lcBairro.setConexao( cn );
+		
+		buscaPrefere();	
+		
+		if(novo) {
+			lcCampos.insert( true );
+		}
 
 	}
 
+	public void focusGained( FocusEvent e ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void focusLost( FocusEvent e ) {
+
+		if ( e.getSource() == txtPlacaTran ) {
+			
+			if( txtCodTran.getVlrInteger() == 0 ) {
+				buscaTransp( txtPlacaTran.getVlrString() );
+			}
+			
+		}
+		
+	}
+	
+	private void montaComboBairro() {
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select codbairro, nomebairro " );
+			sql.append( "from sgbairro " );
+			sql.append( "where codpais=? and siglauf=? and codmunic=? " );
+			sql.append( "order by nomebairro" );
+			sql.append( "" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, txtCodPais.getVlrInteger() );
+			ps.setString( 2, txtSiglaUF.getVlrString() );
+			ps.setString( 3, txtCodMun.getVlrString() );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			vValsBairro.clear();
+			vLabsBairro.clear();
+			
+//			vValsBairro.addElement( -1 );
+//			vLabsBairro.addElement( "<Selecione>" );
+			
+			while ( rs.next() ) {
+				vValsBairro.addElement( rs.getInt( "CodBairro" ) );
+				vLabsBairro.addElement( rs.getString( "NomeBairro" ) );
+			}
+			
+			cbBairro.setItens( vLabsBairro, vValsBairro );
+			
+			rs.close();
+			ps.close();
+			
+			con.commit();
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar os bairros!\n" + e.getMessage(), true, con, e );
+		} 
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if ( evt.getComboBoxPad() == cbBairro ) {
+			if(txtCodBairro.getVlrInteger()!=cbBairro.getVlrInteger()) {
+				txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
+			//	lcBairro.carregaDados();
+			}
+		}
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if( cevt.getListaCampos() == lcBairro ) {
+			if(txtCodBairro.getVlrInteger()!=cbBairro.getVlrInteger()) {
+				cbBairro.setVlrInteger( txtCodBairro.getVlrInteger() );
+				lcCampos.edit();
+			}
+		}
+		else if (cevt.getListaCampos() == lcMunic) {
+			montaComboBairro();
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void beforePost( PostEvent pevt ) {
+		super.beforePost( pevt );
+		
+		if ( pevt.getListaCampos() == lcCampos ) {
+			carregaTipoRec();	
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		if(ievt.getListaCampos() == lcCampos) {
+			carregaTipoRec();			
+		}
+	}
+
+	
 	
 }
