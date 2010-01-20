@@ -67,8 +67,11 @@ public class FBairro extends FDados implements ActionListener {
 	
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-
 	public FBairro() {
+		this(false);
+	}
+	
+	public FBairro(boolean novo) {
 
 		super();
 		
@@ -91,7 +94,7 @@ public class FBairro extends FDados implements ActionListener {
 		adicCampo( txtCodMun, 7, 100, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_PF, true );
 		adicDescFK( txtDescMun, 85, 100, 300, 20, "NomeMunic", "Nome do municipio" );		
 
-		setListaCampos( false, "BAIRRO", "SG" );
+		setListaCampos( true, "BAIRRO", "SG" );
 		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -99,6 +102,25 @@ public class FBairro extends FDados implements ActionListener {
 		
 		setImprimir( true );
 		
+		if(novo) {
+			lcCampos.insert( true );
+		}
+		
+	}
+	
+	public void setCodPais(Integer codpais) {
+		txtCodPais.setVlrInteger( codpais );
+		lcPais.carregaDados();
+	}
+
+	public void setSiglaUF(String siglauf) {
+		txtSiglaUF.setVlrString( siglauf );
+		lcUF.carregaDados();
+	}
+
+	public void setCodMunic(String codmunic) {
+		txtCodMun.setVlrString( codmunic );
+		lcMunic.carregaDados();
 	}
 	
 	private void montaListaCampos() {
