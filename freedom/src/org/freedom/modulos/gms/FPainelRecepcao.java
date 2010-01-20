@@ -405,14 +405,11 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 
 	private void novoRecebimento() {
 		
-		FRecMerc recebimento = new FRecMerc();
+		FRecMerc recebimento = new FRecMerc( true );
 		
 		try {
-			
-			
-//			FOP op = new FOP((Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.CODOP.ordinal() ), (Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.SEQOP.ordinal() ));
+
 			Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", recebimento, con );   
-			
 			
 		}
 		catch (Exception e) {
