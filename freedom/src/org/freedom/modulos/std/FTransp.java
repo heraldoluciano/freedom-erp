@@ -314,6 +314,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 
+		txtPlacaTran.setUpperCase( true );
+		
 		txtCnpjTran.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCpfTran.setMascara( JTextFieldPad.MC_CPF );
 		txtCepTran.setMascara( JTextFieldPad.MC_CEP );
