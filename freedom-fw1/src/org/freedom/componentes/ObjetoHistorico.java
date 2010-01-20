@@ -14,6 +14,7 @@ public class ObjetoHistorico {
 	private String historicocodificado;
 	private String documento;
 	private String portador;
+	private String historicoant;
 	private BigDecimal valor;
 //	private String serie;
 	private Date data;
@@ -22,6 +23,14 @@ public class ObjetoHistorico {
 	
 	public ObjetoHistorico() {
 		super();
+	}
+
+	public String getHistoricoant() {
+		return historicoant;
+	}
+
+	public void setHistoricoant(String historicoant) {
+		this.historicoant = historicoant;
 	}
 
 	public ObjetoHistorico(final Integer codhist, DbConnection con) {
@@ -67,11 +76,11 @@ public class ObjetoHistorico {
 					vlr = Funcoes.bdToStr( getValor() ).toString();
 				}
 				
+				tmp = tmp.replaceAll( "<HISTORICO>", getHistoricoant() != null ? getHistoricoant() : "" );
 				tmp = tmp.replaceAll( "<DOCUMENTO>", getDocumento() != null ? getDocumento() : "" );				
 				tmp = tmp.replaceAll( "<VALOR>", vlr ) ;								
-//				tmp = tmp.replaceAll( "<SERIE>", getSerie() != null ? getSerie() : "" );
 				tmp = tmp.replaceAll( "<DATA>", getData() !=null ? Funcoes.dateToStrDate( getData() ) : "");
-				tmp = tmp.replaceAll( "<PORTADOR>", getPortador() != null ? getPortador() : "" );
+				tmp = tmp.replaceAll( "<PORTADOR>", getPortador() != null ? getPortador() : "" );				
 				
 				decoded = tmp;
 				isDecoded = true;
