@@ -37,6 +37,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.Border;
 
 import org.freedom.acao.DefaultRadioGroupListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -66,28 +67,60 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 	private ListaCampos lcRadio = null;
 
 	public int Tipo = -1;
+	
+	private Border borda = null;
 
 	public JRadioGroup( int Lin, int Col, Vector<S> labs, Vector<T> vals ) {
 
 		this( Lin, Col, labs.toArray(), vals.toArray() );
 	}
+	
+	public JRadioGroup( int Lin, int Col, Vector<S> labs, Vector<T> vals, int margin_top ) {
+		this( Lin, Col, labs.toArray(), vals.toArray(), margin_top );
+	}
 
-	public JRadioGroup( int Lin, int Col, Object oLabs[], Object oVals[] ) {
+	public Border getBorda() {
+		return borda;
+	}
+	
+	public void setBorda(Border borda) {
+		this.borda = borda;
+		mudaBorda();
+	}
+	
+	public void mudaBorda() {
+		setBorder(borda);
+	}
+	
+	public JRadioGroup( int Lin, int Col, Object oLabs[], Object oVals[]) {
+		this( Lin, Col, oLabs, oVals, 0); 		
+	}
+	
+	public JRadioGroup( int Lin, int Col, Object oLabs[], Object oVals[], int margin_top) {
 
 		setLayout( new GridLayout( Lin, Col ) );
-		setBorder( BorderFactory.createEtchedBorder() );
+
+		borda = BorderFactory.createEtchedBorder();
+		setBorder( borda );
+
 		this.oVals = oVals;
 		this.oLabs = oLabs;
+		
 		addKeyListener( this );
+		
 		for ( int i = 0; i < oVals.length; i++ ) {
 			JRadioButton rg = new JRadioButton( (String) oLabs[ i ] );
 			rg.setMnemonic( i );
 			rg.addActionListener( this );
 			rg.addKeyListener( this );
-			JPanel pnCenter = new JPanel( new FlowLayout( FlowLayout.LEFT, 10, 0 ) );
+			
+			JPanel pnCenter = new JPanel( new FlowLayout( FlowLayout.LEFT, 10, margin_top ) );
+			
 			pnCenter.add( rg );
 			add( pnCenter );
+			
 			bg.add( rg );
+			
 			rg.addKeyListener( this );	
 			rg.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
