@@ -102,7 +102,6 @@ public class FHistPad extends FTabDados implements ActionListener, JComboBoxList
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "<--Selecione-->" );
 		vLabs.addElement( "Portador" );
-		vLabs.addElement( "Série" );		
 		vLabs.addElement( "Valor" );
 		vLabs.addElement( "Número do documento" );
 		vLabs.addElement( "Data" );
