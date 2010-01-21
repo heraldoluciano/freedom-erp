@@ -55,7 +55,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.SwingParams;
@@ -126,13 +125,13 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 	// *** Botões
 	private JButtonPad btRecarregar = new JButtonPad( "Recarregar", Icone.novo( "btExecuta.gif" ) );
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
-	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
+//	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 		
 	// Enums
 	
 	private enum DETALHAMENTO {
-		STATUS, TICKET, DATA, HORA, PLACA, CODTRANSP, RAZTRANSP; 
+		STATUS, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN; 
 	}
 	
 	public FPainelRecepcao() {
@@ -184,7 +183,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		
 		btRecarregar.addActionListener( this );
 		btNovo.addActionListener( this );
-		btExcluir.addActionListener( this );
+//		btExcluir.addActionListener( this );
 		btEditar.addActionListener( this );
 	
 //		lcProd.addCarregaListener( this );
@@ -258,7 +257,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 
 		panelNavegador.add( btNovo );
-		panelNavegador.add( btExcluir );
+//		panelNavegador.add( btExcluir );
 		panelNavegador.add( btEditar );
 		
 		panelSouth.add( panelNavegador, BorderLayout.WEST);
@@ -272,41 +271,48 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		// Tabela de detalhamento
 		
 		tabDet = new Tabela();
+		tabDet.setRowHeight( 21 );
 
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Ticket" );
+		tabDet.adicColuna( "Cód.Tipo.Rec.Merc." );
+		
 		tabDet.adicColuna( "Data" );
 		tabDet.adicColuna( "Hora" );
 		tabDet.adicColuna( "Placa" );
 		tabDet.adicColuna( "Cod.T." );
 		tabDet.adicColuna( "Transportador" );
 				
-		tabDet.setTamColuna( 10, DETALHAMENTO.STATUS.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.TICKET.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.DATA.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.HORA.ordinal() );
-		tabDet.setTamColuna( 70, DETALHAMENTO.PLACA.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.CODTRANSP.ordinal() );		
-		tabDet.setTamColuna( 350, DETALHAMENTO.RAZTRANSP.ordinal() );
+		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );
+		// Coluna invisível
+		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
+		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );		
+		tabDet.setTamColuna( 400, DETALHAMENTO.NOMETRAN.ordinal() );
+		
+		tabDet.setColunaInvisivel( 2 );
+		
 
 		
 	}
 	
-	private void montaGrid() {
+	public void montaGrid() {
 			
 		try {
 
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select ");
-			sql.append( "rm.ticket, rm.dtins data, rm.hins hora, rm.placaveiculo, rm.codtran, tr.nometran ");			
+			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.placaveiculo placa, rm.codtran, tr.nometran ");			
 			sql.append( "from eqrecmerc rm, vdtransp tr ");
 			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			
 			StringBuffer status = new StringBuffer("");
 
-/*			
+			
 			if("S".equals(cbEtapa1.getVlrString())) {
 				status.append( " 'PE' ");
 			}
@@ -324,15 +330,10 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 			}
 
 			if ( status.length() > 0 ) {
-				sql.append( " and io.sitproditorc in (" );
+				sql.append( " and rm.status in (" );
 				sql.append( status );
 				sql.append( ") ");
 			}
-			else {
-				sql.append( " and io.sitproditorc not in('PE','EP','PD') " );
-			}
-					 
-	*/		
 		
 			System.out.println("SQL:" + sql.toString());
 			
@@ -353,24 +354,25 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 				
 				tabDet.adicLinha();
 				
-				
-				if ( "PE".equals( rs.getString( "sitproditorc" ) ) ) {
+
+				if ( "PE".equals( rs.getString( "status" ) ) ) {
 					imgColuna = imgPesagem1;
 				}
-				else if ( "EP".equals( rs.getString( "sitproditorc" ) ) ) {
+				else if ( "EP".equals( rs.getString( "status" ) ) ) {
 					imgColuna = imgDescarregamento;
 				}
-				else if ( "PD".equals( rs.getString( "sitproditorc" ) ) ) {
+				else if ( "FN".equals( rs.getString( "status" ) ) ) {
 					imgColuna = imgPesagem2;
-				}
-											
+				}				
 				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString().trim() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );				
-				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.CODTRANSP.toString() ) ), row, DETALHAMENTO.CODTRANSP.ordinal() );
-				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.RAZTRANSP.toString() ) ), row, DETALHAMENTO.RAZTRANSP.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
 				
 				row++;
 				
@@ -401,6 +403,10 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		else if ( e.getSource() == btNovo ) {
 			novoRecebimento();
 		}
+		else if ( e.getSource() == btEditar ) {
+			abreRecMerc();
+		}
+
 	}
 
 	private void novoRecebimento() {
@@ -409,7 +415,8 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		
 		try {
 
-			Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", recebimento, con );   
+			Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", recebimento, con );
+			recebimento.setTelaMae( this );
 			
 		}
 		catch (Exception e) {
@@ -426,31 +433,48 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		*/
 	}
 
+	private void abreRecMerc() {
+		
+		FRecMerc recmerc = null;
+	    
+		try {
+			
+			if(tabDet.getLinhaSel()>-1) {
+				
+				if ( Aplicativo.telaPrincipal.temTela( FRecMerc.class.getName() ) ) {
+					recmerc = (FRecMerc) Aplicativo.telaPrincipal.getTela( FRecMerc.class.getName() );
+				}
+				else {
+					recmerc = new FRecMerc(false);
+					Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", recmerc, con );
+				}    	
+				
+				int ticket =  (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() ) ;
+				int codtiporecmerc = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTIPORECMERC.ordinal() ) ;
+		
+				recmerc.exec(ticket, codtiporecmerc, this);
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Não há nenhum registro selecionado para edição!" );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void mouseClicked( MouseEvent mevt ) {
 		Tabela tabEv = (Tabela) mevt.getSource();
 		
 		if ( mevt.getClickCount() == 2 ) {					
 			if( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
-				ImageIcon imgclicada = (ImageIcon) tabEv.getValor( tabEv.getLinhaSel(), DETALHAMENTO.STATUS.ordinal() );
 				
-				if(imgclicada.equals( imgPesagem1 )) {
-					FOrcamento orc = null;    
-					if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
-						orc = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
-					}
-					else {
-						orc = new FOrcamento();
-						Aplicativo.telaPrincipal.criatela( "Orçamento", orc, con );
-					}    	    		 
-//					orc.exec( (Integer) tabEv.getValor( tabEv.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() ) );
-				}
-				else {
-//					FOP op = new FOP((Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.CODOP.ordinal() ), (Integer) tabDet.getValor( tabEv.getLinhaSel(), DETALHAMENTO.SEQOP.ordinal() ));
-	//				Aplicativo.telaPrincipal.criatela( "Ordens de produção", op, con );    	    		 
-				}
+				abreRecMerc();
+				
 			}
-		}
-				
+		}				
 	}
 
 	public void mouseEntered( MouseEvent e ) { }
