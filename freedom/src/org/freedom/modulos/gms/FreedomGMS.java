@@ -235,7 +235,7 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Recepção", "", 'R', 500000000, 0, false,null);	
-				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FPainelRecepcao.class);		
+				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FControleRecMerc.class);		
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovCancOrc.class);
 				addSeparador(500000000);
@@ -261,7 +261,7 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
 				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class);
 				
-				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FPainelRecepcao.class);
+				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FControleRecMerc.class);
 
 		
 		ajustaMenu();
