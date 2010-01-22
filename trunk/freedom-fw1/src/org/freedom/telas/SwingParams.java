@@ -45,7 +45,13 @@ public class SwingParams {
 	public static Font getFontboldmax() {
 		return new Font( FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MAX + TAMANHO_FONTE);
 	}
+	
+	public static Font getFontboldextra(int adic) {
+		return new Font( FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MAX + adic + TAMANHO_FONTE);
+	}
+	
 
+	
 	
 	public static Font getFontboldmed() {
 		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MED + TAMANHO_FONTE);
