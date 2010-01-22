@@ -2,15 +2,20 @@ package org.freedom.modulos.gms;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -30,6 +35,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.cfg.FBairro;
@@ -90,6 +96,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JComboBoxPad cbBairro = new JComboBoxPad( vLabsBairro, vValsBairro, JComboBoxPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtPeso = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );	
+	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+
+	
 	private JRadioGroup<String, String> rgFrete = null;
 		
 	// *** Campos (Detalhe)
@@ -99,11 +110,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private JTextFieldFK txtDescProdDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	
 	// *** Paineis
 	
 	private JPanelPad pinCab = new JPanelPad();
-	private JPanelPad pinDet = new JPanelPad();
-
+	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
+//	private JPanelPad pinDetCampos = new JPanelPad(60,0);
+	private JPanelPad pinDetGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ));	
+	
 	// *** Lista Campos	
 	
 	private ListaCampos lcTran = new ListaCampos( this, "TN" );
@@ -122,11 +136,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	// *** Botões
 	
-	private JButtonPad btNovoBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
-	private JButtonPad btAmostragem = new JButtonPad( Icone.novo( "btBalanca.png" ) );
+	private JButtonPad btAdicBairro = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	private JButtonPad btPesagem = new JButtonPad( Icone.novo( "btBalanca.png" ) );
 	
 	// *** Tela do Painel de controle
-	private FPainelRecepcao tela_mae = null;
+	private FControleRecMerc tela_mae = null;
+	
+	// *** Tabelas
+	
+	private Tabela tabPesagem = null;
 	
 	
 	public FRecMerc (boolean novo) {
@@ -139,7 +157,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setAtribos( 50, 50, 653, 480);
 
 		configuraCampos();
-		
+
+		criaTabelas();
 		montaListaCampos();
 		montaTela();
 		montaTab();
@@ -174,10 +193,80 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 	}
 	
+	private void criaTabelas() {
+		
+		// Tabela de pesagens
+		
+		tabPesagem = new Tabela();
+//		tabPesagem.setRowHeight( 21 );
+
+		tabPesagem.adicColuna( "Data" );
+		tabPesagem.adicColuna( "Hora" );
+		tabPesagem.adicColuna( "Peso" );
+				
+		tabPesagem.setTamColuna( 70, 1 );
+		tabPesagem.setTamColuna( 70, 2 );
+		tabPesagem.setTamColuna( 120, 3 );
+		
+	}
+
+	
 	private void montaTela() {
+
+		pinDetGrid.add( new JScrollPane( tabPesagem ) );
 		
 		montaCabecalho();		
 		montaDetalhe();
+		
+		
+	}
+	
+	public void montaTabPesagem() {
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "select ");
+			sql.append( "pesoamost, dataamost, horaamost ");			
+			sql.append( "from eqrecamostragem ");
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? ");
+			
+			StringBuffer status = new StringBuffer("");
+
+			System.out.println("SQL:" + sql.toString());
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			int iparam = 1;
+			
+			ps.setInt( iparam++, lcDet.getCodEmp() );
+			ps.setInt( iparam++, lcDet.getCodFilial() );
+			ps.setInt( iparam++, txtTicket.getVlrInteger() );
+			ps.setInt( iparam++, txtCodItRecMerc.getVlrInteger() );
+			
+			ResultSet rs = ps.executeQuery();		
+			
+			tabPesagem.limpa();
+						
+			int row = 0;
+			
+			while ( rs.next() ) {
+				
+				tabPesagem.adicLinha();
+				
+				tabPesagem.setValor(  rs.getDate( "dataamost" ), row, 0 );
+				tabPesagem.setValor( rs.getString( "horaamost" ), row, 1 );
+				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ),2), row, 2 );
+								
+				row++;
+				
+			}
+
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -216,7 +305,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		pinCab.adic( lbBairro, 500, 120, 100, 20 );
 		pinCab.adic( cbBairro, 500, 140, 100, 20 );
 		
-		adic( btNovoBairro, 603, 140, 20, 20 );
+		adic( btAdicBairro, 603, 140, 20, 20 );
 		
 		adic( lbStatus, 500, 20 , 123 , 60  );
 		
@@ -228,12 +317,18 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private void montaDetalhe() {
 		
-		setAltDet(80);
+		setAltDet(120);
 		
 		setPainel( pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
+//		setPainel( pinDetCampos );
+		
+		
+
+		
+		
 		adicCampo(txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc","Seq.",ListaCampos.DB_PK, true);
 		adicCampo( txtCodProdDet, 50, 20, 70, 20,"CodProd","Cod.Prod.",ListaCampos.DB_FK, txtDescProdDet, true );
 		adicDescFK( txtDescProdDet, 123, 20, 200, 20, "DescProd", "Descrição do Produto" );		
@@ -245,7 +340,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setListaCampos( true, "ITRECMERC", "EQ");		
 		lcDet.setQueryInsert( true );
 		
-		adic(btAmostragem, 326, 20, 50, 50);
+		adic(btPesagem, 575, 5, 50, 50);
+		pinDetGrid.setBackground( Color.RED );
+		adic(pinDetGrid, 0, 60, 700, 50);
+		
 		
 	}
 
@@ -340,7 +438,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 	}
 	
-	public void exec( int ticket, int tiporecmerc, FPainelRecepcao tela_mae ) {
+	public void exec( int ticket, int tiporecmerc, FControleRecMerc tela_mae ) {
 		
 		try {
 			lcCampos.edit();
@@ -359,23 +457,37 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private void adicListeners() {
 		
-		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this); 
-		
 		txtPlacaTran.addFocusListener( this );
 		
 		cbBairro.addComboBoxListener( this );
 		
-		lcCampos.addInsertListener( this );
-		
+		lcCampos.addInsertListener( this );				
 		lcCampos.addCarregaListener( this );
+		lcDet.addPostListener( this );
 		lcBairro.addCarregaListener( this );
 		lcMunic.addCarregaListener( this );
 		lcFor.addCarregaListener( this );
+		lcDet.addCarregaListener( this );
 		
-		btNovoBairro.addActionListener( this );
+		btAdicBairro.addActionListener( this );
+		btPesagem.addActionListener( this );
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this); 
+
 		
 	}	
+	
+	private boolean validaSequenciaProcesso() {
+		boolean ret = false;
+		
+		try {
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 	
 	private void montaListaCampos() {
 
@@ -504,8 +616,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		else if (evt.getSource() == btImp) {
 			imprimir(false);
 		}
-		else if ( evt.getSource() == btNovoBairro ) {
-			
+		else if ( evt.getSource() == btAdicBairro ) {
 			
 			FBairro bairro = new FBairro( true );
 			
@@ -524,6 +635,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				e.printStackTrace();
 			}
 		}
+		else if ( evt.getSource() == btPesagem ) {
+			capturaAmostra();
+		}
+		
 		super.actionPerformed(evt);
 	}
 	
@@ -534,11 +649,16 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			lbStatus.setBackground( Color.ORANGE );
 			lbStatus.setVisible( true );
 		}
-		else if ( "EA".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "EM ANDAMENTO" );
+		else if ( "E1".equals( txtStatus.getVlrString() ) ) {
+			lbStatus.setText( "PESAGEM 1" );
 			lbStatus.setBackground( Color.BLUE );
 			lbStatus.setVisible( true );
 		}
+		else if ( "E1".equals( txtStatus.getVlrString() ) ) {
+			lbStatus.setText( "PESAGEM 2" );
+			lbStatus.setBackground( Color.BLUE );
+			lbStatus.setVisible( true );
+		}		
 		else if ( "FN".equals( txtStatus.getVlrString() ) ) {
 			lbStatus.setText( "FINALIZADO" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
@@ -642,6 +762,92 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	}
 
+	private void capturaAmostra() {
+		DLPesagem dl = null;
+				
+		try {
+
+			dl = new DLPesagem( this );
+
+			dl.setConexao( con );
+			dl.setVisible( true );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if ( dl.OK ) {
+			txtPeso.setVlrBigDecimal( dl.getPeso() );
+			txtDataPesagem.setVlrDate( dl.getData() );
+			txtHoraPesagem.setVlrString( dl.getHora() );	
+			lcDet.edit();
+			
+		}
+		
+		dl.dispose();
+	}
+	
+	private void limpaAmostra() {
+		txtPeso.setVlrBigDecimal( new BigDecimal( 0 ) );
+		txtDataPesagem.setVlrDate( null );
+		txtHoraPesagem.setVlrString( null );	
+	}
+	
+	private void salvaAmostra() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		Integer codamostragem = 0;
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select coalesce( max(codamostragem), 0 ) " );
+			sql.append( "from eqrecamostragem " );
+			sql.append( "where " );
+			sql.append( "codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcDet.getCodEmp());	  	
+			ps.setInt( 2, lcDet.getCodFilial());
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				codamostragem = rs.getInt( 1 );
+			}
+			
+			codamostragem++;
+			
+			sql = new StringBuilder();
+			
+			sql.append( "insert into eqrecamostragem ");
+			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,dataamost,horaamost)" );
+			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?)" );
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, lcDet.getCodEmp());	  	
+			ps.setInt( 2, lcDet.getCodFilial());
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+			ps.setInt( 5, codamostragem );
+			ps.setBigDecimal( 6, txtPeso.getVlrBigDecimal() );
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate()) );
+			ps.setTime( 8, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString()) );
+			
+			ps.execute();			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void focusGained( FocusEvent e ) {
 
 		// TODO Auto-generated method stub
@@ -725,6 +931,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		else if( cevt.getListaCampos() == lcCampos ) {
 			carregaStatus();
 		}
+		else if( cevt.getListaCampos() == lcDet ) {
+			limpaAmostra();
+			montaTabPesagem();
+		}
+
 		
 	}
 
@@ -743,6 +954,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				txtStatus.setVlrString( "PE" );
 			}
 		}
+		else if ( pevt.getListaCampos() == lcDet ) {
+			if(txtPeso.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
+				salvaAmostra();
+			}
+		}
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -753,11 +969,12 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	public void afterInsert( InsertEvent ievt ) {
 		if(ievt.getListaCampos() == lcCampos) {
-			carregaTipoRec();			
+			carregaTipoRec();
 		}
+		
 	}
 	
-	public void setTelaMae(FPainelRecepcao tela_mae) {
+	public void setTelaMae(FControleRecMerc tela_mae) {
 		this.tela_mae = tela_mae;
 	}
 	

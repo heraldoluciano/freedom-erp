@@ -67,7 +67,7 @@ import org.freedom.telas.SwingParams;
  * @version 08/01/2010
  */
 
-public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
+public class FControleRecMerc extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;	
 	private static final Color GREEN = new Color( 45, 190, 64 );
@@ -106,8 +106,9 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 	
 	// ** Checkbox
 	
+	private JCheckBoxPad cbEtapa0 =  new JCheckBoxPad( "Pendentes", "S", "N" );
 	private JCheckBoxPad cbEtapa1 =  new JCheckBoxPad( "Pesagem 1", "S", "N" );
-	private JCheckBoxPad cbEtapa2 =  new JCheckBoxPad( "Descarregamento/Renda", "S", "N" );
+	private JCheckBoxPad cbEtapa2 =  new JCheckBoxPad( "Descarregamento", "S", "N" );
 	private JCheckBoxPad cbEtapa3 =  new JCheckBoxPad( "Pesagem 2", "S", "N" );
 	
 	// ** Legenda
@@ -134,7 +135,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		STATUS, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN; 
 	}
 	
-	public FPainelRecepcao() {
+	public FControleRecMerc() {
 		
 		super( false );
 		
@@ -151,11 +152,14 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		montaTela();				
 		montaListeners();
 		carregaValoresPadrao();
+		
 	
 	}
 
 	private void carregaValoresPadrao() {
+		cbEtapa0.setVlrString( "S" );
 		cbEtapa1.setVlrString( "S" );
+		cbEtapa2.setVlrString( "S" );
 	}
 	
 	private void montaListaCampos() {
@@ -201,9 +205,10 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 		
 		// ***** Cabeçalho
 		
-		panelFiltros.adic( cbEtapa1, 2, 0, 90, 20 );
-		panelFiltros.adic( cbEtapa2, 105, 0, 180, 20 );
-		panelFiltros.adic( cbEtapa3, 285, 0, 90, 20 );
+		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
+		panelFiltros.adic( cbEtapa1, 105, 0, 180, 20 );
+		panelFiltros.adic( cbEtapa2, 285, 0, 90, 20 );
+		panelFiltros.adic( cbEtapa3, 370, 0, 90, 20 );
 		
 		panelMaster.adic( panelFiltros, 4, 0, 390, 52 );
 
@@ -313,20 +318,26 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 			StringBuffer status = new StringBuffer("");
 
 			
-			if("S".equals(cbEtapa1.getVlrString())) {
+			if("S".equals(cbEtapa0.getVlrString())) {
 				status.append( " 'PE' ");
+			}
+			if("S".equals(cbEtapa1.getVlrString())) {
+				if ( status.length() > 0 ) {
+					status.append( "," );
+				}
+				status.append( " 'E1' " );
 			}
 			if("S".equals(cbEtapa2.getVlrString())) {
 				if ( status.length() > 0 ) {
 					status.append( "," );
 				}
-				status.append( " 'EP' " );
+				status.append( " 'E2' " );
 			}
 			if("S".equals(cbEtapa3.getVlrString())) {
 				if ( status.length() > 0 ) {
 					status.append( "," );
 				}
-				status.append( " 'PD' " );
+				status.append( " 'FN' " );
 			}
 
 			if ( status.length() > 0 ) {
@@ -509,6 +520,7 @@ public class FPainelRecepcao extends FFilho implements ActionListener, TabelaSel
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		montaGrid();
 //		lcCliente.setConexao( con );
 //		lcProd.setConexao( con );
 		
