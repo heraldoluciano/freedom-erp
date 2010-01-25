@@ -206,11 +206,11 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		// ***** Cabeçalho
 		
 		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
-		panelFiltros.adic( cbEtapa1, 105, 0, 180, 20 );
-		panelFiltros.adic( cbEtapa2, 285, 0, 90, 20 );
-		panelFiltros.adic( cbEtapa3, 370, 0, 90, 20 );
+		panelFiltros.adic( cbEtapa1, 95, 0, 100, 20 );
+		panelFiltros.adic( cbEtapa2, 193, 0, 140, 20 );
+		panelFiltros.adic( cbEtapa3, 335, 0, 100, 20 );
 		
-		panelMaster.adic( panelFiltros, 4, 0, 390, 52 );
+		panelMaster.adic( panelFiltros, 4, 0, 450, 52 );
 
 		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
 		
