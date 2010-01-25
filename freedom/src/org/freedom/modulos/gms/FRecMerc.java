@@ -1,5 +1,6 @@
 package org.freedom.modulos.gms;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -116,7 +118,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
 //	private JPanelPad pinDetCampos = new JPanelPad(60,0);
-	private JPanelPad pinDetGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ));	
+	private JPanelPad pinDetGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ));	
 	
 	// *** Lista Campos	
 	
@@ -133,6 +135,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private JLabelPad lbBairro = new JLabelPad("Bairro");
 	private JLabelPad lbStatus = new JLabelPad();
+	
+	// *** Separador label
+	
+	private JLabelPad sepdet = new JLabelPad();
 	
 	// *** Botões
 	
@@ -204,17 +210,23 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		tabPesagem.adicColuna( "Hora" );
 		tabPesagem.adicColuna( "Peso" );
 				
-		tabPesagem.setTamColuna( 70, 1 );
-		tabPesagem.setTamColuna( 70, 2 );
-		tabPesagem.setTamColuna( 120, 3 );
+		tabPesagem.setTamColuna( 60, 0 );
+		tabPesagem.setTamColuna( 50, 1 );
+		tabPesagem.setTamColuna( 150, 2 );
 		
 	}
 
 	
 	private void montaTela() {
 
-		pinDetGrid.add( new JScrollPane( tabPesagem ) );
+//		pinDetGrid.add( new JScrollPane( tabPesagem ) );
+		pnMaster.remove( spTab );
+//		spTab.add( tabPesagem );
+		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
 		
+		pinDetGrid.add( spTab );
+		pinDetGrid.add( new JScrollPane( tabPesagem ) );
+				
 		montaCabecalho();		
 		montaDetalhe();
 		
@@ -317,7 +329,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private void montaDetalhe() {
 		
-		setAltDet(120);
+		setAltDet(70);
 		
 		setPainel( pinDet, pnDet);
 		setListaCampos(lcDet);
@@ -330,8 +342,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		
 		adicCampo(txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc","Seq.",ListaCampos.DB_PK, true);
-		adicCampo( txtCodProdDet, 50, 20, 70, 20,"CodProd","Cod.Prod.",ListaCampos.DB_FK, txtDescProdDet, true );
-		adicDescFK( txtDescProdDet, 123, 20, 200, 20, "DescProd", "Descrição do Produto" );		
+		adicCampo( txtCodProdDet, 50, 20, 50, 20,"CodProd","Cód.Pd.",ListaCampos.DB_FK, txtDescProdDet, true );
+		adicDescFK( txtDescProdDet, 103, 20, 203, 20, "DescProd", "Descrição do Produto" );		
 		
 		adicCampoInvisivel( txtCodProcRecMerc, "CodProcRecMerc","Cod.Proc.",ListaCampos.DB_FK, txtDescProcRecMerc, true );		
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
@@ -340,9 +352,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setListaCampos( true, "ITRECMERC", "EQ");		
 		lcDet.setQueryInsert( true );
 		
+		sepdet.setBorder( BorderFactory.createEtchedBorder() );
+		adic( sepdet, 315, 4, 2, 52 );		
+
+		
+		
 		adic(btPesagem, 575, 5, 50, 50);
 		pinDetGrid.setBackground( Color.RED );
-		adic(pinDetGrid, 0, 60, 700, 50);
+//		adic(pinDetGrid, 0, 60, 700, 50);
 		
 		
 	}
@@ -432,7 +449,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		tab.setTamColuna(40,0); 		
 		tab.setColunaInvisivel(1);
 		tab.setColunaInvisivel(2);
-		tab.setTamColuna(250,4);
+		tab.setTamColuna(270,4);
 		tab.setColunaInvisivel(3);
 		tab.setColunaInvisivel(5);
 		
