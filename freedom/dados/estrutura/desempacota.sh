@@ -1,65 +1,70 @@
 #!/bin/sh
-# Script de descompactaÁ„o e instalaÁ„o do banco de dados de desenvolvimento
-# Autor: Robson Sanchez/Setpoint Inform·tica
+#set -x
+# Script de descompacta√ß√£o e instala√ß√£o do banco de dados de desenvolvimento
+# Autor: Robson Sanchez/Setpoint Inform√°tica
 # Data: 09/12/2009
 
 ISC_USER="SYSDBA"
 ISC_PASSWORD="masterkey"
 CMD_GBAK="/opt/firebird/bin/gbak"
 RESULT=0
+OPCAO=$1
 
 fn_senha_firebird()
 {
+  # Modo autom√°tico, somente para usar em outro script
+  if [ "$OPCAO" != "--auto" ]; then
    SENHA_FIREBIRD_TMP=""
-   while [ -z $SENHA_FIREBIRD_TMP ]; do 
-      echo "Senha do firebird? (Deixe em branco para padr„o)"
-      echo "Padr„o: $ISC_PASSWORD" 
+   while [ -z $SENHA_FIREBIRD_TMP ]; do
+      echo "Senha do firebird? (Deixe em branco para padr√£o)"
+      echo "Padr√£o: $ISC_PASSWORD"
       read SENHA_FIREBIRD_TMP
-      if [ -z $SENHA_FIREBIRD_TMP ]; then 
+      if [ -z $SENHA_FIREBIRD_TMP ]; then
         SENHA_FIREBIRD_TMP=$ISC_PASSWORD
       fi
       echo "Senha: $SENHA_FIREBIRD_TMP"
-      echo "Senha est· correta? (S/N)"
+      echo "Senha est√° correta? (S/N)"
       read OPCAO
-      if [ $OPCAO = "N" -o $OPCAO = "n" ]; then 
+      if [ $OPCAO = "N" -o $OPCAO = "n" ]; then
          SENHA_FIREBIRD_TMP=""
       fi
    done
    ISC_PASSWORD=$SENHA_FIREBIRD_TMP
-   export ISC_USER
-   export ISC_PASSWORD
+  fi
+  export ISC_USER
+  export ISC_PASSWORD
 }
 
-fn_fim_script() 
+fn_fim_script()
 {
   echo $LINHA_COMENTARIO
   if [ $RESULT -gt 0 ]; then
      echo "Script foi finalizado com erro(s)!"
   else
-     echo "Script concluÌdo com sucesso!"
+     echo "Script conclu√≠do com sucesso!"
   fi
   echo $LINHA_COMENTARIO
   exit 0
 }
 
-fn_executa() 
+fn_executa()
 {
   fn_senha_firebird
   if [ "$ISC_PASSWORD" = "0" ]; then
     fn_fim_script
   fi
 
-  export $ISC_USER
-  export $ISC_PASSWORD
+  export ISC_USER
+  export ISC_PASSWORD
 
-  rm /tmp/freedom.fbk 
-  
-  unzip ./freedom.zip -d /
+#   rm /tmp/freedom.fbk
 
-  mkdir /opt/firebird/dados/desenv/
+  unzip -o ./freedom.zip -d /
+
+  mkdir --parents /opt/firebird/dados/desenv/
 
   $CMD_GBAK -C -R -P 4096 /tmp/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb
-   
+
 }
 
 fn_executa
