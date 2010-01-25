@@ -3,16 +3,19 @@
 
 = Instalação Windows Compilado =
 
+
+= Programas necessários: =
+
+    * [http://www.google.com/url?q=http%3A%2F%2Fsourceforge.net%2Fprojects%2Ffirebird%2Ffiles%2Ffirebird-win32%2F1.5.6-Release%2FFirebird-1.5.6.5026-0-Win32.exe%2Fdownload&sa=D&sntz=1&usg=AFrqEzdxuxRjoGvsBmRjoDPDvRy8r-LaNA Firebird-1.5.6.5026-0-Win32.exe]  
+
+    * [http://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/VerifyItem-Start/jre-1_5_0_16-windows-i586-p.exe?BundledLineItemUUID=r6xIBe.osYQAAAEmqc8TP2ah&OrderID=hI9IBe.oKP0AAAEmlM8TP2ah&ProductID=iYZIBe.pumoAAAEaHvwkfJxw&FileName=/jre-1_5_0_16-windows-i586-p.exe Java 1.6.x]
+    * [http://code.google.com/p/freedom-erp/downloads/list Freedom 1.1.9]
+
+
+
 Vídeo tutorial:
 
 <wiki:video url="http://www.youtube.com/watch?v=zmK82qR02NI"/>
-
-= Programas necessários =
-
-Teste 1:
-   * Firebird-1.5.6.5026-0-Win32.exe
-    * Java 1.6.x
-    * Freedom 1.1.9
 
 
 
