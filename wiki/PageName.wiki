@@ -1,14 +1,21 @@
 #summary One-sentence summary of this page.
-#labels teste1,teste2,teste3
+#labels video,install,tutorial
 
-= Introduction =
+= Instalação Windows Compilado =
 
-Freedom-ERP Wiki Page, testes de funcinamento.
+Vídeo tutorial:
 
+<wiki:video url="http://www.youtube.com/watch?v=zmK82qR02NI"/>
 
-= Details =
+= Programas necessários =
 
 Teste 1:
-  * Linha 1 
-  * Linha 2
-  * Linha 3
+   * Firebird-1.5.6.5026-0-Win32.exe
+    * Java 1.6.x
+    * Freedom 1.1.9
+
+
+
+
+
+  
