@@ -12,5 +12,3 @@ Teste 1:
   * Linha 1 
   * Linha 2
   * Linha 3
-
-[http://sites.google.com/site/freedomimgs/home/desenv.png http://sites.google.com/site/freedomimgs/home/desenv.png]
