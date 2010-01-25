@@ -11,8 +11,7 @@
     * [http://code.google.com/p/freedom-erp/downloads/list Freedom 1.1.9]
 
 
-
-Vídeo tutorial:
+==Vídeo tutorial:==
 
 <wiki:video url="http://www.youtube.com/watch?v=zmK82qR02NI"/>
 
