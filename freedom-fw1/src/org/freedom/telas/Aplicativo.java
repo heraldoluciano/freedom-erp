@@ -57,11 +57,11 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JMenuItemPad;
 import org.freedom.componentes.JMenuPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ObjetoEmpresa;
-import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.objetos.ObjetoEmpresa;
+import org.freedom.objetos.ObjetoTab;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 
@@ -125,7 +125,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static String tefFlags = "";
 
-	public static TabObjeto tbObjetos = null;
+	public static ObjetoTab tbObjetos = null;
 
 	public static ImageIcon imgIcone = null;
 
