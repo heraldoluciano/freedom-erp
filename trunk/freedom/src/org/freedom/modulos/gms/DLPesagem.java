@@ -45,31 +45,48 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtPeso = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtPeso2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private JTextFieldPad txtHora = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	
+	private JLabelPad lbpeso1 = new JLabelPad(( "Peso 1" ));
+	
+	private JLabelPad lbpeso2 = new JLabelPad(( "Peso 2" ));	
 
-	public DLPesagem( Component cOrig ) {
+	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
 		super( cOrig );
+		int irow = 0; // Variavel para salto na posição do campo de data e hora
 		
 		setTitulo( "Pesagem" );
-		setAtribos( 350, 250 );
-
+		
 		ajustaCampos();
 		carregaPadroes();
-		txtPeso.setVlrBigDecimal( new BigDecimal( 0 ) );
+		txtPeso1.setVlrBigDecimal( new BigDecimal( 0 ) );
 		
-		adic( new JLabelPad( "Peso" ), 7, 0, 322, 20 );
-		adic( txtPeso, 7, 20, 322, 50 );
+		adic( lbpeso1 , 7, 0, 252, 20 );
+		adic( txtPeso1, 7, 20, 252, 50 );
+
+		if( FTipoRecMerc.DESCARREGAMENTO.equals( tipoprocrecmerc ) ) {
+			
+			adic( lbpeso2 , 7, 80, 252, 20 );
+			adic( txtPeso2, 7, 100, 252, 50 );
+			
+			irow = 80;
+		}
+
 		
-		adic( new JLabelPad( "Data" ), 7, 80, 140, 20 );
-		adic( txtData, 7, 100, 140, 50 );
+		setAtribos( 280, 250 + irow );		
 		
-		adic( new JLabelPad( "Hora" ), 150, 80, 120, 20 );
-		adic( txtHora, 150, 100, 120, 50 );
+		adic( new JLabelPad( "Data" ), 7, 80 + irow, 135, 20 );
+		adic( txtData, 7, 100 + irow, 135, 50 );
+		
+		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
+		adic( txtHora, 147, 100 + irow, 110, 50 );
 		
 	}
 	
@@ -78,7 +95,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		txtData.setAtivo( false );
 		txtHora.setAtivo( false );
 		
-		txtPeso.setFont( SwingParams.getFontboldextra(20) );
+		txtPeso1.setFont( SwingParams.getFontboldextra(20) );
 		txtData.setFont( SwingParams.getFontboldextra(10) );
 		txtHora.setFont( SwingParams.getFontboldextra(10) );
 		
@@ -92,8 +109,12 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 
-	public BigDecimal getPeso() {
-		return txtPeso.getVlrBigDecimal();
+	public BigDecimal getPeso1() {
+		return txtPeso1.getVlrBigDecimal();
+	}
+
+	public BigDecimal getPeso2() {
+		return txtPeso2.getVlrBigDecimal();
 	}
 	
 	public Date getData() {

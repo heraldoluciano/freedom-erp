@@ -40,7 +40,13 @@ import org.freedom.telas.FDetalhe;
 public class FTipoRecMerc extends FDetalhe implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	public static String PESAGEM_INICIAL = "PI";
+	
+	public static String DESCARREGAMENTO = "TR";
+	
+	public static String PESAGEM_FINAL = "TR";
+	
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 
 	private JTextFieldPad txtDescTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
@@ -75,12 +81,12 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		setPainel( pinCab, pnCliCab);
 
 		vLabsTipo.addElement( "Pesagem inicial" );
-		vLabsTipo.addElement( "Tiragem de renda" );
+		vLabsTipo.addElement( "Descarregamento" );
 		vLabsTipo.addElement( "Pesagem final" );
 		
-		vValsTipo.addElement( "PI" );
-		vValsTipo.addElement( "TR" );
-		vValsTipo.addElement( "PF" );
+		vValsTipo.addElement( PESAGEM_INICIAL );
+		vValsTipo.addElement( DESCARREGAMENTO );
+		vValsTipo.addElement( PESAGEM_FINAL );
 		
 		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
 		
