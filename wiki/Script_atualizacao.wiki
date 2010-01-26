@@ -1,0 +1,81 @@
+#summary One-sentence summary of this page.
+#labels script,atualização
+
+= Introdução =
+
+Script de atualização do sistema
+
+= Detalhes =
+{{{
+
+#!/bin/bash
+echo '#--------------------------------------------------------#'
+echo '#     Este procedimento atualizara o freedom   !!!!!!!!! #'
+echo '#--------------------------------------------------------#'
+echo ''
+echo '#--------------------------------------------------------#'
+read -p "Pressione qual quer tecla para continuar… "
+echo ''
+
+echo '#--------------------------------------------------------#'
+echo '#     Efetuando backup dos arquivos antigos              #'
+echo '#--------------------------------------------------------#'
+mkdir -p /opt/freedom/lib/bak
+mkdir -p /opt/freedom/bin/bak
+cp /opt/freedom/lib/*.jar /opt/freedom/lib/bak
+cp /opt/freedom/bin/*.sh /opt/freedom/bin/bak
+read -p "Pressione qual quer tecla para continuar… "
+echo ''
+
+
+echo '#--------------------------------------------------------#'
+echo '#     Este procedimento realizara o backup das bases     #'
+echo '#     de dados (Freedom.FDB, nfe.fdb, security.fdb       #'
+echo '#--------------------------------------------------------#'
+echo 'Entre com a senha sysdba p/ confirmar: '
+stty -echo
+read pass
+stty echo
+/opt/firebird/bin/gbak -B localhost:/opt/firebird/1.5/dados/freedom.fdb /bkp/FreedomFDB/freedom-`date +%Y-%m-%d-%H.%M`.fbk -user sysdba -pass $pass
+/opt/firebird/bin/gbak -B localhost:/opt/firebird/1.5/dados/stpnfe.fdb /bkp/FreedomFDB/stpnfe-`date +%Y-%m-%d-%H.%M`.fbk -user sysdba -pass $pass
+/opt/firebird/bin/gbak -B localhost:/opt/firebird/1.5/security.fdb /bkp/FreedomFDB/security-`date +%Y-%m-%d-%H.%M`.fbk -user sysdba -pass $pass
+
+echo '#--------------------------------------------------------#'
+echo '#     Copiando novos arquivos para /opt/freedom...       #'
+echo '#--------------------------------------------------------#'
+cp /opt/eclipse/workspace/freedom/lib/*.jar /opt/freedom/lib
+cp /opt/eclipse/workspace/freedom-fw1/lib/*.jar /opt/freedom/lib
+cp /opt/eclipse/workspace/freedom/lib/exec/*.sh /opt/freedom/bin
+mkdir -p /opt/firebird/dados/desenv
+7z e -y -tzip -o/opt/firebird/dados/desenv /opt/workspace/freedom/dados/estrutura/freedom.zip
+read -p "Pressione qual quer tecla para continuar… "
+echo ''
+
+echo '#-----------------------------------------------------------------------------#'
+echo '#     Copiando novos arquivos para maquinas windows em /opt/windows/...       #'
+echo '#-----------------------------------------------------------------------------#'
+mkdir -p /opt/windows
+mkdir -p /opt/windows/lib
+mkdir -p /opt/windows/bin
+
+cp /opt/eclipse/workspace/freedom/lib/*.jar /opt/windows/lib
+cp /opt/eclipse/workspace/freedom-fw1/lib/*.jar /opt/windows/lib
+cp /opt/eclipse/workspace/freedom/lib/exec/*.bat /opt/windows/bin
+read -p "Pressione qual quer tecla para continuar… "
+echo ''
+
+
+
+wine /opt/ibdbcomp/IbDbComp.exe
+
+wine ~/.wine/drive_c/Arquivos\ de\ programas/HK-Software/IBExpert/ibexpert.exe
+
+echo '#ATUALIZAÇÃO CONCLUIDA----------------------------------------------#'
+echo '#----------ATUALIZAÇÃO CONCLUIDA------------------------------------#'
+echo '#--------------------ATUALIZAÇÃO CONCLUIDA--------------------------#'
+echo '#------------------------------ATUALIZAÇÃO CONCLUIDA----------------#'
+echo '#----------------------------------------ATUALIZAÇÃO CONCLUIDA------#'
+	
+exit
+
+}}}
