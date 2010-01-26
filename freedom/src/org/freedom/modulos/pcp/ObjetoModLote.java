@@ -5,7 +5,7 @@
  */
 package org.freedom.modulos.pcp;
 
-import org.freedom.componentes.ObjetoModeloLote;
+import org.freedom.objetos.ObjetoModeloLote;
 
 /**
  * @author anderson
