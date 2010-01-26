@@ -7,7 +7,6 @@ Script de atualização do sistema
 
 = Detalhes =
 {{{
-
 #!/bin/bash
 echo '#--------------------------------------------------------#'
 echo '#     Este procedimento atualizara o freedom   !!!!!!!!! #'
@@ -48,6 +47,10 @@ cp /opt/eclipse/workspace/freedom-fw1/lib/*.jar /opt/freedom/lib
 cp /opt/eclipse/workspace/freedom/lib/exec/*.sh /opt/freedom/bin
 mkdir -p /opt/firebird/dados/desenv
 7z e -y -tzip -o/opt/firebird/dados/desenv /opt/workspace/freedom/dados/estrutura/freedom.zip
+echo '#--------------------------------------------------------#'
+echo '#    .bkp to .fdb   no banco do desenvolvimento          #'
+echo '#--------------------------------------------------------#'
+/opt/firebird/bin/gbak -C -R -P 3050 /opt/firebird/dados/desenv/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb -user sysdba -pass $pass 
 read -p "Pressione qual quer tecla para continuar… "
 echo ''
 
@@ -77,5 +80,4 @@ echo '#------------------------------ATUALIZAÇÃO CONCLUIDA----------------#'
 echo '#----------------------------------------ATUALIZAÇÃO CONCLUIDA------#'
 	
 exit
-
 }}}
