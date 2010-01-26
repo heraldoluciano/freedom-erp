@@ -1,5 +1,5 @@
-#summary One-sentence summary of this page.
-#labels script,atualização
+#summary Script de atualização do sistema.
+#labels script,atualização,shell
 
 = Introdução =
 
