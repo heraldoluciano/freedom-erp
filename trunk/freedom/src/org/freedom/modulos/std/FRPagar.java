@@ -307,19 +307,20 @@ public class FRPagar extends FRelatorio {
 		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA "  );
-		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F, FNCONTA CT " );
-		sql.append( "WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sql.append( "FROM FNPAGAR P,CPFORNECED F, FNITPAGAR IT LEFT OUTER JOIN FNCONTA CT ON " );
+		sql.append( " CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA "  );
+		sql.append( " WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL "  );
-		sql.append( " AND CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA AND "  );
+
 		
 		if ("P".equals( cbOrdem.getVlrString() )) {
-			sql.append( "IT.DTPAGOITPAG" );
+			sql.append( " AND IT.DTPAGOITPAG" );
 		} 
 		else if ("V".equals( cbOrdem.getVlrString() )) {
-			sql.append( " IT.DTVENCITPAG " );
+			sql.append( " AND IT.DTVENCITPAG " );
 		} 
 		else {
-			sql.append( " IT.DTITPAG " );
+			sql.append( " AND IT.DTITPAG " );
 		}
 		
 		sql.append( " BETWEEN ? AND ? AND IT.STATUSITPAG IN (?,?) AND P.CODPAG=IT.CODPAG AND " );
