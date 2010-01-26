@@ -1174,6 +1174,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					double bdVlrAPagar = 0.0;
 					double bdVlrPago = 0.0;
 
+					System.out.println(sSQL.toString());
+					
 					for ( int i = 0; rs.next(); i++ ) {
 						
 						tabManut.adicLinha();
