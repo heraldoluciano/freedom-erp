@@ -20,7 +20,7 @@
  */
 package org.freedom.modulos.std;
 
-import org.freedom.componentes.ObjetoEtiqueta;
+import org.freedom.objetos.ObjetoEtiqueta;
 
 public class ObjetoEtiquetaComis extends ObjetoEtiqueta {
 
