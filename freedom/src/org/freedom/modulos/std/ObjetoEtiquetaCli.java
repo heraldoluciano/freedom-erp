@@ -24,7 +24,7 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.componentes.ObjetoEtiqueta;
+import org.freedom.objetos.ObjetoEtiqueta;
 
 public class ObjetoEtiquetaCli extends ObjetoEtiqueta {
 
