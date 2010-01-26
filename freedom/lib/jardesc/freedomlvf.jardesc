@@ -60,8 +60,8 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <file path="/freedom/.project"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRFornecedor.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMensagem.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.exporta"/>
         <file path="/freedom/keystore"/>
@@ -79,6 +79,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoFor.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRPisCofins.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FVendedor.java"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
