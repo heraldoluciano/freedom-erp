@@ -43,12 +43,12 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ObjetoEmpresa;
-import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FPrefereGeral;
+import org.freedom.objetos.ObjetoEmpresa;
+import org.freedom.objetos.ObjetoTab;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {
 
@@ -182,7 +182,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Funcoes.mensagemErro( null, err.getMessage() );
 		}
 
-		tbObjetos = new TabObjeto();
+		tbObjetos = new ObjetoTab();
 		tbObjetos.montaLista( con, iCodEmp, "SGOBJETO", "TB" );
 
 		empresa = new ObjetoEmpresa( con );
