@@ -98,7 +98,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JComboBoxPad cbBairro = new JComboBoxPad( vLabsBairro, vValsBairro, JComboBoxPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldPad txtPeso = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	private JTextFieldPad txtPeso1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	private JTextFieldPad txtPeso2 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	
 	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );	
 	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
@@ -112,12 +114,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private JTextFieldFK txtDescProdDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	
 	// *** Paineis
 	
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
-//	private JPanelPad pinDetCampos = new JPanelPad(60,0);
 	private JPanelPad pinDetGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ));	
 	
 	// *** Lista Campos	
@@ -196,7 +196,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
-		
+				
 	}
 	
 	private void criaTabelas() {
@@ -204,24 +204,24 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		// Tabela de pesagens
 		
 		tabPesagem = new Tabela();
-//		tabPesagem.setRowHeight( 21 );
+		tabPesagem.setRowHeight( 21 );
 
 		tabPesagem.adicColuna( "Data" );
 		tabPesagem.adicColuna( "Hora" );
-		tabPesagem.adicColuna( "Peso" );
+		tabPesagem.adicColuna( "Peso 1" );
+		tabPesagem.adicColuna( "Peso 2" );
 				
 		tabPesagem.setTamColuna( 60, 0 );
 		tabPesagem.setTamColuna( 50, 1 );
-		tabPesagem.setTamColuna( 150, 2 );
+		tabPesagem.setTamColuna( 100, 2 );		
+		tabPesagem.setTamColuna( 100, 3 );
 		
 	}
 
 	
 	private void montaTela() {
 
-//		pinDetGrid.add( new JScrollPane( tabPesagem ) );
 		pnMaster.remove( spTab );
-//		spTab.add( tabPesagem );
 		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
 		
 		pinDetGrid.add( spTab );
@@ -229,58 +229,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				
 		montaCabecalho();		
 		montaDetalhe();
-		
-		
+				
 	}
 	
-	public void montaTabPesagem() {
-		
-		try {
-
-			StringBuilder sql = new StringBuilder();
-
-			sql.append( "select ");
-			sql.append( "pesoamost, dataamost, horaamost ");			
-			sql.append( "from eqrecamostragem ");
-			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? ");
-			
-			StringBuffer status = new StringBuffer("");
-
-			System.out.println("SQL:" + sql.toString());
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			
-			int iparam = 1;
-			
-			ps.setInt( iparam++, lcDet.getCodEmp() );
-			ps.setInt( iparam++, lcDet.getCodFilial() );
-			ps.setInt( iparam++, txtTicket.getVlrInteger() );
-			ps.setInt( iparam++, txtCodItRecMerc.getVlrInteger() );
-			
-			ResultSet rs = ps.executeQuery();		
-			
-			tabPesagem.limpa();
-						
-			int row = 0;
-			
-			while ( rs.next() ) {
-				
-				tabPesagem.adicLinha();
-				
-				tabPesagem.setValor(  rs.getDate( "dataamost" ), row, 0 );
-				tabPesagem.setValor( rs.getString( "horaamost" ), row, 1 );
-				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ),2), row, 2 );
-								
-				row++;
-				
-			}
-
-		} 
-		catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		
-	}
 	
 	private void montaCabecalho() {
 
@@ -334,12 +285,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setPainel( pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-
-//		setPainel( pinDetCampos );
-		
-		
-
-		
 		
 		adicCampo(txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc","Seq.",ListaCampos.DB_PK, true);
 		adicCampo( txtCodProdDet, 50, 20, 50, 20,"CodProd","Cód.Pd.",ListaCampos.DB_FK, txtDescProdDet, true );
@@ -355,13 +300,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
 		adic( sepdet, 315, 4, 2, 52 );		
 
-		
-		
 		adic(btPesagem, 575, 5, 50, 50);
 		pinDetGrid.setBackground( Color.RED );
-//		adic(pinDetGrid, 0, 60, 700, 50);
-		
-		
+
 	}
 
 	
@@ -613,9 +554,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		 ***************/
 		
 		lcProc.add( new GuardaCampo( txtCodProcRecMerc, "CodProcRecMerc", "Cód.Proc.", ListaCampos.DB_PK, false ) );
-		lcProc.add( new GuardaCampo( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo", ListaCampos.DB_SI, false ) );
-		
+		lcProc.add( new GuardaCampo( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo", ListaCampos.DB_SI, false ) );		
 		lcProc.add( new GuardaCampo( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc.", ListaCampos.DB_SI, false ) );
+		lcProc.add( new GuardaCampo( txtTipoProcRecMerc, "TipoProcRecMerc", "Tp.Proc.Rec.Merc.", ListaCampos.DB_SI, false ) );
 
 		txtCodProcRecMerc.setTabelaExterna( lcProc );
 		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc" );
@@ -784,7 +725,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				
 		try {
 
-			dl = new DLPesagem( this );
+			dl = new DLPesagem( this, txtTipoProcRecMerc.getVlrString() );
 
 			dl.setConexao( con );
 			dl.setVisible( true );
@@ -795,18 +736,26 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		
 		if ( dl.OK ) {
-			txtPeso.setVlrBigDecimal( dl.getPeso() );
+			txtPeso1.setVlrBigDecimal( dl.getPeso1() );
+			txtPeso2.setVlrBigDecimal( dl.getPeso2() );
+			
 			txtDataPesagem.setVlrDate( dl.getData() );
 			txtHoraPesagem.setVlrString( dl.getHora() );	
-			lcDet.edit();
 			
+			if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
+				salvaAmostra();
+			}
+			
+			limpaAmostra();
+			montaTabPesagem();
+
 		}
 		
 		dl.dispose();
 	}
 	
 	private void limpaAmostra() {
-		txtPeso.setVlrBigDecimal( new BigDecimal( 0 ) );
+		txtPeso1.setVlrBigDecimal( new BigDecimal( 0 ) );
 		txtDataPesagem.setVlrDate( null );
 		txtHoraPesagem.setVlrString( null );	
 	}
@@ -842,7 +791,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			sql = new StringBuilder();
 			
 			sql.append( "insert into eqrecamostragem ");
-			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,dataamost,horaamost)" );
+			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,pesoamost2,dataamost,horaamost)" );
 			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?)" );
 			
 			ps = con.prepareStatement(sql.toString());
@@ -852,9 +801,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			ps.setInt( 3, txtTicket.getVlrInteger() );
 			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
 			ps.setInt( 5, codamostragem );
-			ps.setBigDecimal( 6, txtPeso.getVlrBigDecimal() );
-			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate()) );
-			ps.setTime( 8, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString()) );
+			ps.setBigDecimal( 6, txtPeso1.getVlrBigDecimal() );
+			ps.setBigDecimal( 7, txtPeso1.getVlrBigDecimal() );
+			ps.setDate( 8, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate()) );
+			ps.setTime( 9, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString()) );
 			
 			ps.execute();			
 			con.commit();
@@ -882,7 +832,57 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		
 	}
-	
+
+	private void montaTabPesagem() {
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "select ");
+			sql.append( "pesoamost,pesoamost2, dataamost, horaamost ");			
+			sql.append( "from eqrecamostragem ");
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? ");
+			
+			StringBuffer status = new StringBuffer("");
+
+			System.out.println("SQL:" + sql.toString());
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			int iparam = 1;
+			
+			ps.setInt( iparam++, lcDet.getCodEmp() );
+			ps.setInt( iparam++, lcDet.getCodFilial() );
+			ps.setInt( iparam++, txtTicket.getVlrInteger() );
+			ps.setInt( iparam++, txtCodItRecMerc.getVlrInteger() );
+			
+			ResultSet rs = ps.executeQuery();		
+			
+			tabPesagem.limpa();
+						
+			int row = 0;
+			
+			while ( rs.next() ) {
+				
+				tabPesagem.adicLinha();
+				
+				tabPesagem.setValor(  rs.getDate( "dataamost" ), row, 0 );
+				tabPesagem.setValor( rs.getString( "horaamost" ), row, 1 );
+				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ),2), row, 2 );
+				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost2" ),2), row, 3 );
+								
+				row++;
+				
+			}
+
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	private void montaComboBairro() {
 
 		try {
@@ -971,11 +971,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				txtStatus.setVlrString( "PE" );
 			}
 		}
-		else if ( pevt.getListaCampos() == lcDet ) {
-			if(txtPeso.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
-				salvaAmostra();
-			}
-		}
+//		else if ( pevt.getListaCampos() == lcDet ) {
+//			if(txtPeso.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
+//				salvaAmostra();
+//			}
+//		}
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -999,7 +999,24 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
         super.dispose();
         tela_mae.montaGrid();
     }
+    
+    private void carregaPlugin() {
 
-	
+    	Integer renda = null;
+    	String plugin = null;
+    	StringBuilder messagesError = new StringBuilder();
+    	
+    	try {
+    		
+    		plugin = Aplicativo.getParameter("plugin_calc_renda");
+    		
+
+    		
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+		}
+    	
+    }
 	
 }
