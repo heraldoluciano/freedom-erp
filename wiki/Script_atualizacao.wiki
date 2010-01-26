@@ -45,6 +45,7 @@ echo '#--------------------------------------------------------#'
 cp /opt/eclipse/workspace/freedom/lib/*.jar /opt/freedom/lib
 cp /opt/eclipse/workspace/freedom-fw1/lib/*.jar /opt/freedom/lib
 cp /opt/eclipse/workspace/freedom/lib/exec/*.sh /opt/freedom/bin
+rm -f /opt/firebird/dados/desenv/freedom.fbk
 mkdir -p /opt/firebird/dados/desenv
 7z e -y -tzip -o/opt/firebird/dados/desenv /opt/workspace/freedom/dados/estrutura/freedom.zip
 echo '#--------------------------------------------------------#'
