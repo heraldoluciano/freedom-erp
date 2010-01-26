@@ -29,6 +29,7 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>

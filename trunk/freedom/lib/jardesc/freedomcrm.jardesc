@@ -41,6 +41,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
         <file path="/freedom/src/org/freedom/relatorios/atendimentos_cli.jasper"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <file path="/freedom/src/org/freedom/relatorios/atendimentos_cli.jrxml"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
