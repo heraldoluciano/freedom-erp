@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLFechaPag;
+import org.freedom.objetos.ObjetoHistorico;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +51,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;

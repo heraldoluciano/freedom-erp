@@ -50,11 +50,11 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLFechaParcela;
+import org.freedom.objetos.ObjetoHistorico;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
