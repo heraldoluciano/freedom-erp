@@ -422,6 +422,50 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="318"
+						y="4"
+						width="83"
+						height="10"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data de aprovação:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="318"
+						y="40"
+						width="77"
+						height="1"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="411"
+						y="4"
+						width="115"
+						height="10"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Assinatura do cliente:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="411"
+						y="40"
+						width="112"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</summary>
 </jasperReport>
