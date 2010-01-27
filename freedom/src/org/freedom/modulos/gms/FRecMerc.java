@@ -40,6 +40,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.modulos.cfg.FBairro;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -101,9 +102,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtPeso1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
 	private JTextFieldPad txtPeso2 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
 	
+	private JTextFieldPad txtMediaAmostragem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	private JTextFieldPad txtRendaAmostragem = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
 	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );	
 	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
-
 	
 	private JRadioGroup<String, String> rgFrete = null;
 		
@@ -152,7 +155,12 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private Tabela tabPesagem = null;
 	
+	// *** Plugin
 	
+	private AbstractCalcRenda classplugin = null;
+	
+	private AbstractCalcRenda objectplugin = null;
+
 	public FRecMerc (boolean novo) {
 		
 		super();
@@ -163,7 +171,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setAtribos( 50, 50, 653, 480);
 
 		configuraCampos();
-
+		carregaPlugin();
 		criaTabelas();
 		montaListaCampos();
 		montaTela();
@@ -232,7 +240,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				
 	}
 	
-	
 	private void montaCabecalho() {
 
 		setAltCab( 210 );
@@ -274,7 +281,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		setListaCampos( true, "RECMERC", "EQ");
 		lcCampos.setQueryInsert( true );		
-	
 		
 	}
 	
@@ -740,7 +746,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			txtPeso2.setVlrBigDecimal( dl.getPeso2() );
 			
 			txtDataPesagem.setVlrDate( dl.getData() );
-			txtHoraPesagem.setVlrString( dl.getHora() );	
+			txtHoraPesagem.setVlrString( dl.getHora() );
+			
+			if( objectplugin != null ) {
+				
+				calcRenda();
+				
+			}
 			
 			if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
 				salvaAmostra();
@@ -752,6 +764,53 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		
 		dl.dispose();
+	}
+	
+	private void calcRenda() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		HashMap<String, BigDecimal[]> pesos = null;
+		
+		try {
+			
+			pesos = new HashMap<String, BigDecimal[]>();
+			
+			sql.append( "select coalesce(pesoamost,0) peso1, coalesce(pesoamost2,0) peso2 from eqrecamostragem ");
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
+			sql.append( "order by codamostragem " );
+								
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, lcCampos.getCodEmp() ) ;
+			ps.setInt( 2, lcCampos.getCodFilial() ) ;
+			ps.setInt( 3, txtTicket.getVlrInteger() ) ;
+			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() ) ;
+			
+			rs = ps.executeQuery();
+			
+			int i = 1;
+			
+			while(rs.next()) {
+				
+				BigDecimal[] peso = { rs.getBigDecimal( "peso1" ), rs.getBigDecimal( "peso2" ) };
+				
+				pesos.put( "P" + i + "A1" , peso  );
+				
+				i++;				
+					
+			}
+				
+		
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
 	}
 	
 	private void limpaAmostra() {
@@ -881,6 +940,24 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			e.printStackTrace();
 		}
 		
+		if(objectplugin!=null) {
+			mostraRenda();
+		}
+		
+	}
+	
+	private void mostraRenda() {
+		
+		try {
+		
+			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void montaComboBairro() {
@@ -1002,20 +1079,54 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
     
     private void carregaPlugin() {
 
-    	Integer renda = null;
-    	String plugin = null;
+    	String strplugin = null;
     	StringBuilder messagesError = new StringBuilder();
+    	String msgerror = "Classe de integração para cálculo de renda \"";
     	
     	try {
     		
-    		plugin = Aplicativo.getParameter("plugin_calc_renda");
+    		strplugin = Aplicativo.getParameter("plugin_calc_renda");
     		
-
-    		
+    		if(strplugin == null || "".equals( strplugin )) {
+    			return;
+    		}
+    		else {
+    			
+    			Class<AbstractCalcRenda> classplugin = ( (Class<AbstractCalcRenda>) Class.forName( strplugin ) );    		
+    			AbstractCalcRenda objplugin = classplugin.newInstance();    		   		
+    			
+    		}
+    	} 
+    	catch ( ClassNotFoundException error ) {
+    		messagesError.append( msgerror );
+    		messagesError.append( strplugin );
+    		messagesError.append( "\" não encontrada.\nVerifique a variável CLASSPATH !\n" );
+    	} 
+    	catch ( ClassCastException error ) {
+    		messagesError.append( msgerror );
+    		messagesError.append( strplugin );
+    		messagesError.append( "\" não é derivada do tipo esperado\n\"org.freedom.infra.util.AbstractCalcRenda\"!" );
+    	} 
+    	catch ( InstantiationException error ) {
+    		messagesError.append( msgerror );
+    		messagesError.append( strplugin );
+    		messagesError.append( "\" não foi carregada!\n" );
+    		messagesError.append( error.getMessage() );
+    	} 
+    	catch ( IllegalAccessException error ) {
+    		messagesError.append( msgerror );
+    		messagesError.append( strplugin );
+    		messagesError.append( "\" não foi carregada!\n" );
+    		messagesError.append( error.getMessage() );
     	}
-    	catch (Exception e) {
-    		e.printStackTrace();
+    	catch (Exception error) {
+    		messagesError.append( msgerror );
+    		messagesError.append( strplugin );
+    		messagesError.append( "\" não foi carregada!\n" );
+    		messagesError.append( error.getMessage() );
 		}
+
+    	Funcoes.mensagemErro( this, msgerror );
     	
     }
 	
