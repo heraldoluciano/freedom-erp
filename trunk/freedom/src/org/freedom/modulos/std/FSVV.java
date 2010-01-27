@@ -516,12 +516,7 @@ public class FSVV extends FFilho implements ActionListener {
 
 					}
 
-
-
-
 				}
-
-
 
 				tab.setValor(contcli != null ? contcli.trim() : "" ,i,29);
 				tab.setValor(rs.getString("FoneCli") != null ? rs.getString("FoneCli").trim() : "" ,i,30);
