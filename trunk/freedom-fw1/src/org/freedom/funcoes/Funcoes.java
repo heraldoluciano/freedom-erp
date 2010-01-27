@@ -1277,6 +1277,49 @@ public class Funcoes {
 		return sResult + sDec;
 	}
 
+	public static Integer getMaior(Integer[] numeros) {
+		
+		Integer maior = null;
+		
+		try {
+			for ( int i =0; i<numeros.length; i++ ) {
+				if (maior == null || maior < numeros[i]) {
+					maior = numeros[i];
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return maior;
+		
+	}
+	
+	
+	
+	public static Integer getMenor(Integer[] numeros, Integer valorminimo) {
+		
+		Integer menor = null;
+		
+		try {
+			for ( int i =0; i<numeros.length; i++ ) {
+				if ( menor == null || menor > numeros[i]  ) {
+					if(numeros[i] > valorminimo) {
+						menor = numeros[i];
+					}					
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return menor;
+		
+	}
+
+	
 	public static void setImpAtrib(PrintRequestAttributeSet p) {
 		HashPrintRequestAttributeSet pra = (HashPrintRequestAttributeSet) p;
 		File fArq = new File("impres.cfg");
