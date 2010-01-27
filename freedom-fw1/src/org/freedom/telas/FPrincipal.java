@@ -365,6 +365,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 		con = conGeral;
 	}
+	
+	public DbConnection getConexao(){
+		return con; 
+	}
 
 	public void adicFilha( Container filha ) {
 
