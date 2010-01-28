@@ -1,2 +1,2 @@
-*[StandardCliente Clientes]
- *[PageName teste]
+*[Standard Modulo Standard]
+ *[Standard Clientes]
