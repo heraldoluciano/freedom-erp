@@ -311,7 +311,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lbRenda = adicCampo( txtRendaAmostragem, 403 , 20, 80 , 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
 		
 		setListaCampos( true, "ITRECMERC", "EQ");		
-		lcDet.setQueryInsert( true );
+		lcDet.setQueryInsert( false );
+
 		
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
 		adic( sepdet, 315, 4, 2, 52 );		
@@ -595,7 +596,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		else if ( evt.getSource() == btAdicBairro ) {
 			
-			FBairro bairro = new FBairro( true );
+			FBairro bairro = new FBairro( true, con );
 			
 			try {
 
@@ -631,7 +632,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			lbStatus.setBackground( Color.BLUE );
 			lbStatus.setVisible( true );
 		}
-		else if ( "E1".equals( txtStatus.getVlrString() ) ) {
+		else if ( "E2".equals( txtStatus.getVlrString() ) ) {
 			lbStatus.setText( "PESAGEM 2" );
 			lbStatus.setBackground( Color.BLUE );
 			lbStatus.setVisible( true );
@@ -763,6 +764,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			txtHoraPesagem.setVlrString( dl.getHora() );
 			
 			if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
+				
 				salvaAmostra();
 				
 				if( FTipoRecMerc.DESCARREGAMENTO.equals( txtTipoProcRecMerc.getVlrString() ) ) {
@@ -820,6 +822,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	}
 	
 	private void salvaAmostra() {
+		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		Integer codamostragem = 0;
@@ -855,10 +858,12 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			
 			ps = con.prepareStatement(sql.toString());
 			
+			Integer coditrecmerc = txtCodItRecMerc.getVlrInteger();
+			
 			ps.setInt( 1, lcDet.getCodEmp());	  	
 			ps.setInt( 2, lcDet.getCodFilial());
 			ps.setInt( 3, txtTicket.getVlrInteger() );
-			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+			ps.setInt( 4, coditrecmerc );
 			ps.setInt( 5, codamostragem );
 			ps.setBigDecimal( 6, txtPeso1.getVlrBigDecimal() );
 			ps.setBigDecimal( 7, txtPeso2.getVlrBigDecimal() );
@@ -867,6 +872,12 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			
 			ps.execute();			
 			con.commit();
+			
+			lcDet.edit();
+			lcDet.post();
+			
+			txtCodItRecMerc.setVlrInteger( coditrecmerc );
+			lcDet.carregaDados();
 			
 		}
 		catch (Exception e) {
@@ -1063,6 +1074,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			}
 		}
 	}
+	
+	public void afterPost( PostEvent pevt ) {
+		super.beforePost( pevt );
+		
+		if ( pevt.getListaCampos() == lcDet ) {
+			lcCampos.carregaDados();			
+		}
+	}
+	
 
 	public void beforeInsert( InsertEvent ievt ) {
 
