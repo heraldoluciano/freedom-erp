@@ -1,5 +1,13 @@
-#summary Manual Freedom Standard (STD)
 #labels FreedomSTD,manual
+#sidebar TableOfContents
+[StandardCliente Clientes]
+
+
+#summary Manual Freedom Standard (STD)
+
+
+
+
 
 = Introdução =
 
