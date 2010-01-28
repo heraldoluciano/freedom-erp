@@ -1,5 +1,9 @@
 package org.freedom.infra.util;
 
+import java.math.BigDecimal;
+
+import org.freedom.infra.model.jdbc.DbConnection;
+
 /*
  * Projeto: Freedom-nfe
  * Pacote: org.freedom.modules.nfe.control
@@ -26,10 +30,12 @@ package org.freedom.infra.util;
 
 public abstract class AbstractCalcRenda {
 
-	public AbstractCalcRenda() { }
+	public abstract void inicializa(Integer ticket, Integer coditrecmerc, DbConnection con);
 	
-	public abstract Integer getRenda(Integer pesoini, Integer pesofin);
+	public abstract Integer getRenda();
 	
-	public abstract Integer getMedia(Integer A1P2, Integer A2P2);
+	public abstract BigDecimal getMedia();
+	
+	public abstract boolean isInicialized();
 
 }
