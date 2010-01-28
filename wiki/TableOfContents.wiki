@@ -1,9 +1,7 @@
 ===Navegação===
-
-O Freedom
+O Freedom:
  * Instalação
-
 Modulos:
-*Standard
- *[Standard Introdução]
- *[StandardCliente Clientes]
+ * Standard
+  * [Standard Introdução]
+  * [StandardCliente Clientes]
