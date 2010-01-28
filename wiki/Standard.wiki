@@ -1,7 +1,7 @@
 #labels FreedomSTD,manual
 #sidebar TableOfContents
-[StandardCliente Clientes]
-
+*[StandardCliente Clientes]
+  *[PageName teste]
 
 #summary Manual Freedom Standard (STD)
 
