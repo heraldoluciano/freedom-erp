@@ -3,7 +3,7 @@
 #sidebar TableOfContents
 = Modulo Standard =
 == Introdução == 
-STD (Standard): Contempla todas as necessidades operacionais de uma empresa de pequeno porte como:
+STD (Standard): Contempla todas as necessidades operacionais de uma empresa de pequeno porte como  :
 *Entradas (Compras)
 *Saídas (Notas fiscais de saída);
 *Emissão de boletos (pré-impressos);
