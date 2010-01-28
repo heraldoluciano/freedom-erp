@@ -3824,6 +3824,70 @@ public class Funcoes {
 		}		
 		return dt2;
 	}
+	
+	public static BigDecimal getMedia( BigDecimal[] valores ) {
+		
+		BigDecimal media = null;
+		BigDecimal total = new BigDecimal(0);
+		
+		Integer qtd = null;
+		
+		try {
+			
+			if( valores !=null ) {
+				
+				qtd = valores.length;
+				
+				for( int i = 0; i < qtd; i++ ) {
+					
+					if( valores[i] != null ){				
+						total = total.add( valores[i] );
+					}
+					
+				}
+				
+				media = total.divide( new BigDecimal( qtd ) );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return media;		
+		
+	}
+	
+	public static boolean entreValores( Integer valor, Integer faixa1, Integer faixa2 ) {
+		
+		boolean ret = false;
+		Integer valormenor = null;
+		Integer valormaior = null;
+		
+		try {
+			
+			if(valor !=null && faixa1 !=null && faixa2 !=null ) {
+			
+				valormenor = faixa1.compareTo(faixa2) <= 0 ? faixa1 : faixa2 ;  
+				valormaior = faixa1.compareTo(faixa2) <= 0 ? faixa2 : faixa1 ;
+				
+				if( valor.compareTo( valormenor ) >= 0 && valor.compareTo(valormaior) <= 0 ) {
+					ret = true;				
+				}
+				else {
+					ret = false;
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+
 
 }
 
