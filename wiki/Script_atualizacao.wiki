@@ -1,5 +1,7 @@
-#summary Script de atualização do sistema.
 #labels script,atualização,shell
+<wiki:toc max_depth="1" />
+
+#summary Script de atualização do sistema.
 
 = Introdução =
 
