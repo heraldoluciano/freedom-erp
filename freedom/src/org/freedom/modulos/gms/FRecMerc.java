@@ -13,11 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -139,6 +137,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JLabelPad lbBairro = new JLabelPad("Bairro");
 	private JLabelPad lbStatus = new JLabelPad();
 	
+	private JLabelPad lbMedia = new JLabelPad("Media");
+	private JLabelPad lbRenda = new JLabelPad("Renda");
+	
 	// *** Separador label
 	
 	private JLabelPad sepdet = new JLabelPad();
@@ -159,7 +160,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private AbstractCalcRenda classplugin = null;
 	
-	private AbstractCalcRenda objectplugin = null;
+	private AbstractCalcRenda objplugin = null;
 
 	public FRecMerc (boolean novo) {
 		
@@ -204,6 +205,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
+		
+		txtMediaAmostragem.setAtivo( false );
+		txtRendaAmostragem.setAtivo( false );
+		
 				
 	}
 	
@@ -234,9 +239,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		pinDetGrid.add( spTab );
 		pinDetGrid.add( new JScrollPane( tabPesagem ) );
-				
+		
 		montaCabecalho();		
 		montaDetalhe();
+		mostraRenda( false );
+		
 				
 	}
 	
@@ -299,6 +306,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampoInvisivel( txtCodProcRecMerc, "CodProcRecMerc","Cod.Proc.",ListaCampos.DB_FK, txtDescProcRecMerc, true );		
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
 		adicCampoInvisivel( txtCodTipoRecMercDet, "CodTipoRecMerc","Cod.Tp.Rec.Merc", ListaCampos.DB_SI,  true );
+
+		lbMedia = adicCampo( txtMediaAmostragem, 320, 20, 80, 20,  "mediaamostragem", "Media", ListaCampos.DB_SI, false ); 
+		lbRenda = adicCampo( txtRendaAmostragem, 403 , 20, 80 , 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
 		
 		setListaCampos( true, "ITRECMERC", "EQ");		
 		lcDet.setQueryInsert( true );
@@ -306,6 +316,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		sepdet.setBorder( BorderFactory.createEtchedBorder() );
 		adic( sepdet, 315, 4, 2, 52 );		
 
+		
 		adic(btPesagem, 575, 5, 50, 50);
 		pinDetGrid.setBackground( Color.RED );
 
@@ -393,12 +404,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		tab.setRowHeight( 21 );
 		
-		tab.setTamColuna(40,0); 		
+		tab.setTamColuna(30,0); 		
 		tab.setColunaInvisivel(1);
 		tab.setColunaInvisivel(2);
-		tab.setTamColuna(270,4);
+		tab.setTamColuna(140,4);
 		tab.setColunaInvisivel(3);
 		tab.setColunaInvisivel(5);
+		tab.setTamColuna(70,6);
+		tab.setTamColuna(70,7);
 		
 	}
 	
@@ -437,11 +450,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		btPesagem.addActionListener( this );
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this); 
-
 		
 	}	
 	
 	private boolean validaSequenciaProcesso() {
+		
 		boolean ret = false;
 		
 		try {
@@ -742,20 +755,27 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		
 		if ( dl.OK ) {
+			
 			txtPeso1.setVlrBigDecimal( dl.getPeso1() );
 			txtPeso2.setVlrBigDecimal( dl.getPeso2() );
 			
 			txtDataPesagem.setVlrDate( dl.getData() );
 			txtHoraPesagem.setVlrString( dl.getHora() );
 			
-			if( objectplugin != null ) {
-				
-				calcRenda();
-				
-			}
-			
 			if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
 				salvaAmostra();
+				
+				if( FTipoRecMerc.DESCARREGAMENTO.equals( txtTipoProcRecMerc.getVlrString() ) ) {
+					
+					calcRenda();
+					
+				}
+				else {
+					
+					mostraRenda( false );
+					
+				}
+				
 			}
 			
 			limpaAmostra();
@@ -768,49 +788,29 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private void calcRenda() {
 		
-		StringBuilder sql = new StringBuilder();
-		
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		HashMap<String, BigDecimal[]> pesos = null;
-		
 		try {
 			
-			pesos = new HashMap<String, BigDecimal[]>();
+			if(objplugin != null ) {
 			
-			sql.append( "select coalesce(pesoamost,0) peso1, coalesce(pesoamost2,0) peso2 from eqrecamostragem ");
-			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
-			sql.append( "order by codamostragem " );
-								
-			ps = con.prepareStatement(sql.toString());
-			
-			ps.setInt( 1, lcCampos.getCodEmp() ) ;
-			ps.setInt( 2, lcCampos.getCodFilial() ) ;
-			ps.setInt( 3, txtTicket.getVlrInteger() ) ;
-			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() ) ;
-			
-			rs = ps.executeQuery();
-			
-			int i = 1;
-			
-			while(rs.next()) {
+				objplugin.inicializa( txtTicket.getVlrInteger(), txtCodItRecMerc.getVlrInteger(), con );
 				
-				BigDecimal[] peso = { rs.getBigDecimal( "peso1" ), rs.getBigDecimal( "peso2" ) };
+				if (objplugin.isInicialized()) {
 				
-				pesos.put( "P" + i + "A1" , peso  );
-				
-				i++;				
+					txtMediaAmostragem.setVlrBigDecimal( objplugin.getMedia() );
+					txtRendaAmostragem.setVlrInteger( objplugin.getRenda() );
 					
+					mostraRenda( true );
+					
+				}
 			}
-				
-		
-			con.commit();
-			
+			else {
+				System.out.println(" Plugin de calculo de renda nulo!");
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}
+		
 	}
 	
 	private void limpaAmostra() {
@@ -851,7 +851,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			
 			sql.append( "insert into eqrecamostragem ");
 			sql.append( "(codemp,codfilial,ticket,coditrecmerc,codamostragem,pesoamost,pesoamost2,dataamost,horaamost)" );
-			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?)" );
+			sql.append( "values(?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 			
 			ps = con.prepareStatement(sql.toString());
 			
@@ -861,7 +861,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
 			ps.setInt( 5, codamostragem );
 			ps.setBigDecimal( 6, txtPeso1.getVlrBigDecimal() );
-			ps.setBigDecimal( 7, txtPeso1.getVlrBigDecimal() );
+			ps.setBigDecimal( 7, txtPeso2.getVlrBigDecimal() );
 			ps.setDate( 8, Funcoes.dateToSQLDate( txtDataPesagem.getVlrDate()) );
 			ps.setTime( 9, Funcoes.strTimeTosqlTime( txtHoraPesagem.getVlrString()) );
 			
@@ -940,19 +940,18 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			e.printStackTrace();
 		}
 		
-		if(objectplugin!=null) {
-			mostraRenda();
-		}
-		
 	}
 	
-	private void mostraRenda() {
+	private void mostraRenda( boolean mostra ) {
 		
 		try {
-		
+
+			lbMedia.setVisible( mostra );
+			lbRenda.setVisible( mostra );
 			
-			
-			
+			txtMediaAmostragem.setVisible( mostra );			
+			txtRendaAmostragem.setVisible( mostra );
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1026,8 +1025,23 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			carregaStatus();
 		}
 		else if( cevt.getListaCampos() == lcDet ) {
+		
 			limpaAmostra();
+			
 			montaTabPesagem();
+			
+			if( FTipoRecMerc.DESCARREGAMENTO.equals( txtTipoProcRecMerc.getVlrString() ) ) {
+				
+				mostraRenda( true );
+				
+			}
+			else {
+				
+				mostraRenda( false );
+				
+			}
+			
+			
 		}
 
 		
@@ -1048,11 +1062,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				txtStatus.setVlrString( "PE" );
 			}
 		}
-//		else if ( pevt.getListaCampos() == lcDet ) {
-//			if(txtPeso.getVlrBigDecimal().floatValue()>0 && txtDataPesagem.getVlrDate()!=null && txtHoraPesagem.getVlrString() !=null) {
-//				salvaAmostra();
-//			}
-//		}
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -1080,9 +1089,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
     private void carregaPlugin() {
 
     	String strplugin = null;
-    	StringBuilder messagesError = new StringBuilder();
-    	String msgerror = "Classe de integração para cálculo de renda \"";
-    	
+    	StringBuilder messagesError = new StringBuilder("Classe de integração para cálculo de renda \"");
+
+    	int errorCount = 0;
     	try {
     		
     		strplugin = Aplicativo.getParameter("plugin_calc_renda");
@@ -1093,40 +1102,44 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
     		else {
     			
     			Class<AbstractCalcRenda> classplugin = ( (Class<AbstractCalcRenda>) Class.forName( strplugin ) );    		
-    			AbstractCalcRenda objplugin = classplugin.newInstance();    		   		
+    			objplugin = classplugin.newInstance();
+    			
     			
     		}
     	} 
     	catch ( ClassNotFoundException error ) {
-    		messagesError.append( msgerror );
     		messagesError.append( strplugin );
     		messagesError.append( "\" não encontrada.\nVerifique a variável CLASSPATH !\n" );
+    		errorCount++;
     	} 
     	catch ( ClassCastException error ) {
-    		messagesError.append( msgerror );
     		messagesError.append( strplugin );
     		messagesError.append( "\" não é derivada do tipo esperado\n\"org.freedom.infra.util.AbstractCalcRenda\"!" );
+    		errorCount++;
     	} 
     	catch ( InstantiationException error ) {
-    		messagesError.append( msgerror );
     		messagesError.append( strplugin );
     		messagesError.append( "\" não foi carregada!\n" );
     		messagesError.append( error.getMessage() );
+    		errorCount++;
     	} 
     	catch ( IllegalAccessException error ) {
-    		messagesError.append( msgerror );
     		messagesError.append( strplugin );
     		messagesError.append( "\" não foi carregada!\n" );
     		messagesError.append( error.getMessage() );
+    		errorCount++;
     	}
     	catch (Exception error) {
-    		messagesError.append( msgerror );
     		messagesError.append( strplugin );
     		messagesError.append( "\" não foi carregada!\n" );
     		messagesError.append( error.getMessage() );
+    		errorCount++;
 		}
-
-    	Funcoes.mensagemErro( this, msgerror );
+    	finally {
+    		if(errorCount>0) {
+    			Funcoes.mensagemErro( this, messagesError.toString() );
+    		}
+    	}
     	
     }
 	
