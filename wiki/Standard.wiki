@@ -1,19 +1,20 @@
+#summary Manual Freedom Standard (STD)
 #labels FreedomSTD,manual
 #sidebar TableOfContents
+= Modulo Standard =
+== Introdução == 
+STD (Standard): Contempla todas as necessidades operacionais de uma empresa de pequeno porte como:
+*Entradas (Compras)
+*Saídas (Notas fiscais de saída);
+*Emissão de boletos (pré-impressos);
+*Emissão de recibos;
+*Controle de estoque; 
+*Contas a pagar, receber;
+*Financeiro (Conciliação bancária);
+*Fluxo de caixa;
+*Relatórios diversos.
 
-
-#summary Manual Freedom Standard (STD)
-
-
-
-
-
-= Introdução =
-
-Add your content here.
-
-
-= Detalhes =
+== Detalhes ==
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
