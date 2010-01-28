@@ -11,6 +11,6 @@ Atalhos e Botões:
 	Os botões englobam diversas funcionalidades no sistema, convenhamos que o sistema tem aproximadamente 150 botoes diferentes os quais ao repousar o mouse por uns instantes a legenda de sua função aparece.
 	 * Novo ( Ctrl + N ) Insere um novo registro na tela, podendo ser de sequencia automatica incrementação ou com [CODIGO] em que o proprio usuário entra;
 	 * Deletar ( Ctrl + D ) : Apaga do sistema o registro selecionado;
-         * Editar ( Ctrl + E ) : Libera a tela para edição;
-         * Salvar ( Ctrl + S ) : Grava os dados no Banco de Dados (BD);
-         * Cancelar ( Ctrl + W ): Cancela as alterações feitas na tela sem salva-las no BD;
+        * Editar ( Ctrl + E ) : Libera a tela para edição;
+        * Salvar ( Ctrl + S ) : Grava os dados no Banco de Dados (BD);
+        * Cancelar ( Ctrl + W ): Cancela as alterações feitas na tela sem salva-las no BD;
