@@ -3,7 +3,7 @@
 
 = Introdução =
 
-Script de atualização do sistema v1.1 27/jan/2010, 
+Script de atualização do sistema v0.0.2 - 27/jan/2010, 
 
 (não esta 100% funcional ainda.)
 pretendo atualiza-lo diariamente, contemplando desde a instalação até a atualização.
