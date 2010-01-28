@@ -97,6 +97,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		txtHora.setAtivo( false );
 		
 		txtPeso1.setFont( SwingParams.getFontboldextra(20) );
+		txtPeso2.setFont( SwingParams.getFontboldextra(20) );
 		txtData.setFont( SwingParams.getFontboldextra(10) );
 		txtHora.setFont( SwingParams.getFontboldextra(10) );
 		
@@ -123,7 +124,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	}
 	
 	public String getHora() {
-		return Funcoes.dateToStrTime( txtHora.getVlrDate() );
+		return txtHora.getVlrString();
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {

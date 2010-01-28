@@ -68,10 +68,10 @@ public class FBairro extends FDados implements ActionListener {
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	public FBairro() {
-		this(false);
+		this(false, null);
 	}
 	
-	public FBairro(boolean novo) {
+	public FBairro(boolean novo, DbConnection pcon ) {
 
 		super();
 		
@@ -103,6 +103,7 @@ public class FBairro extends FDados implements ActionListener {
 		setImprimir( true );
 		
 		if(novo) {
+			setConexao( pcon );
 			lcCampos.insert( true );
 		}
 		
