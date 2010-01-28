@@ -1,5 +1,6 @@
 ===Navegação===
-O Freedom:
+FreedomERP:
+ * Introdução
  * Instalação
 Modulos:
  * Standard
