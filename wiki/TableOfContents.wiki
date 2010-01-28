@@ -1,2 +1,2 @@
 *[Standard Modulo Standard]
- *[StandardCliente Clientes]
+ *[StandardCliente HOWTO Clientes]
