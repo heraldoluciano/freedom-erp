@@ -1,12 +1,12 @@
 #summary Introdução as funcionalidades
 
- ==Tela de login:==
+===Tela de login:===
 	As Telas de login independente do modulo tem o mesmo padão de funcionamento:
         * Login (*Id. Usuário* cadastrado no modulo de configuração, FreedomCFG);
         * Senha;
         * Seleção da filial caso o usuário esteja inscrito em mais de uma.
 
-Atalhos e Botões:
+===Atalhos e Botões:===
 
 	Os botões englobam diversas funcionalidades no sistema, convenhamos que o sistema tem aproximadamente 150 botoes diferentes os quais ao repousar o mouse por uns instantes a legenda de sua função aparece.
 	 * Novo ( Ctrl + N ) Insere um novo registro na tela, podendo ser de sequencia automática incrementação ou com *CODIGO* em que o próprio usuário entra;
