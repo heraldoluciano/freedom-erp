@@ -81,6 +81,9 @@ ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
+	<variable name="SUB_TOTAL_ES" class="java.math.BigDecimal" resetType="Group" resetGroup="ENTRADA_SAIDA" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" minHeightToStartNewPage="10" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -125,7 +128,7 @@ ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 						key="textField-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
-						<font/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDOSSL_FINAL}.add($P{SALDOSL})]]></textFieldExpression>
 				</textField>
@@ -138,7 +141,7 @@ ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[SALDO FINAL DO PERÍODO]]></text>
 				</staticText>
@@ -198,7 +201,42 @@ ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="21"  isSplitAllowed="true" >
+			<band height="26"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="391"
+						y="2"
+						width="148"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="3"
+						width="99"
+						height="13"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-BoldOblique" isBold="true" isItalic="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUB_TOTAL_ES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="25"
+						y="3"
+						width="364"
+						height="13"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-BoldOblique" isBold="true" isItalic="true" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["SUB-TOTAL DE "+("E".equals($F{ESFIN})?"ENTRADAS ":"SAÍDAS ") + ("O".equals($F{CLASFIN})?"OPERACIONAIS":"NÃO OPERACIONAIS")]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>

@@ -70,6 +70,8 @@ public class FRPagar extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtDatacor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	private JRadioGroup<?, ?> cbFiltro = null;
 
 	private JRadioGroup<?, ?> cbOrdem = null;
@@ -105,7 +107,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 450 );
+		setAtribos( 80, 80, 410, 470 );
 		
 		montaListaCampos();
 		montaCheckBox();
@@ -113,47 +115,50 @@ public class FRPagar extends FRelatorio {
 
 		Calendar cal = Calendar.getInstance();
 		txtDatafim.setVlrDate( cal.getTime() );
+		txtDatacor.setVlrDate( cal.getTime() );
 		cal.set( Calendar.DAY_OF_MONTH, 1 );
 		txtDataini.setVlrDate( cal.getTime() );
 		
 	}
 
 	private void montaTela() {
-		
+		 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 
 		adic( lbPeriodo, 17, 0, 80, 20 );
-		adic( lbLinha, 7, 10, 360, 36 );
+		adic( lbLinha, 7, 10, 360, 56 );
 		
-		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 7, 20, 60, 20 );
-		adic( txtDataini, 67, 20, 100, 20 );
-		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 167, 20, 60, 20 );
-		adic( txtDatafim, 227, 20, 100, 20 );
-		adic( new JLabelPad( "Filtro:" ), 7, 45, 360, 20 );
-		adic( cbFiltro, 7, 65, 360, 30 );
-		adic( new JLabelPad( "Ordem:" ), 7, 95, 360, 20 );
-		adic( cbOrdem, 7, 115, 360, 30 );	
-		adic( rgTipoRel , 7, 150, 360, 30 );
-		adic( new JLabelPad( "Cód.for." ), 7, 180, 80, 20 );
-		adic( txtCodFor, 7, 200, 80, 20 );
-		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 180, 300, 20 );
-		adic( txtRazFor, 90, 200, 277, 20 );
+		adic( new JLabelPad( "De:", SwingConstants.LEFT ), 14, 20, 30, 20 );
+		adic( txtDataini, 14, 40, 100, 20 );
+		adic( new JLabelPad( "Até:", SwingConstants.LEFT ), 132, 20, 30, 20 );
+		adic( txtDatafim, 132, 40, 100, 20 );
+		adic( new JLabelPad( "Correção para:", SwingConstants.LEFT ), 260, 20, 100, 20 );
+		adic( txtDatacor, 260, 40, 100, 20 );
+		adic( new JLabelPad( "Filtro:" ), 7, 65, 360, 20 );
+		adic( cbFiltro, 7, 85, 360, 30 );
+		adic( new JLabelPad( "Ordem:" ), 7, 115, 360, 20 );
+		adic( cbOrdem, 7, 135, 360, 30 );	
+		adic( rgTipoRel , 7, 170, 360, 30 );
+		adic( new JLabelPad( "Cód.for." ), 7, 200, 80, 20 );
+		adic( txtCodFor, 7, 220, 80, 20 );
+		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 200, 300, 20 );
+		adic( txtRazFor, 90, 220, 277, 20 );
 		
-		adic( new JLabelPad( "Cód.pl.pag." ), 7, 223, 80, 20 );
-		adic( txtCodPlanoPag, 7, 245, 80, 20 );		
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 223, 300, 20 );
-		adic( txtDescPlanoPag, 90, 245, 277, 20 );
+		adic( new JLabelPad( "Cód.pl.pag." ), 7, 243, 80, 20 );
+		adic( txtCodPlanoPag, 7, 265, 80, 20 );		
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 243, 300, 20 );
+		adic( txtDescPlanoPag, 90, 265, 277, 20 );
 
-		adic( new JLabelPad( "Cód.Banco" ), 7, 263, 80, 20 );
-		adic( txtCodBanco, 7, 285, 80, 20 );						
-		adic( new JLabelPad( "Nome do banco" ), 90, 263, 300, 20 );
-		adic( txtDescBanco, 90, 285, 277, 20 );
+		adic( new JLabelPad( "Cód.Banco" ), 7, 283, 80, 20 );
+		adic( txtCodBanco, 7, 305, 80, 20 );						
+		adic( new JLabelPad( "Nome do banco" ), 90, 283, 300, 20 );
+		adic( txtDescBanco, 90, 305, 277, 20 );
 		
-		adic( cbObs, 7, 320, 385, 20 );
-		adic( cbParPar, 7, 340, 360, 20 );
+		adic( cbObs, 7, 340, 385, 20 );
+		adic( cbParPar, 7, 360, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
