@@ -131,7 +131,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 		sql.append( "ORDER BY  1 DESC, 2, 3, 4, 5" );
 		
 		try {
-			
+			//System.out.println(sqlsaldo.toString());
 			ps = con.prepareStatement( sqlsaldo.toString() );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -143,6 +143,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 			con.commit();
 
 			iparam = 1;
+			System.out.println(sql.toString());
 			ps = con.prepareStatement( sql.toString() );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));

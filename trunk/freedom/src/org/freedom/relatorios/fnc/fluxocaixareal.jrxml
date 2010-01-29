@@ -193,7 +193,7 @@ ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[("E".equals($F{CLASFIN})?"ENTRADAS ":"SAÍDAS ") + ("O".equals($F{CLASFIN})?"OPERACIONAIS":"NÃO OPERACIONAIS")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[("E".equals($F{ESFIN})?"ENTRADAS ":"SAÍDAS ") + ("O".equals($F{CLASFIN})?"OPERACIONAIS":"NÃO OPERACIONAIS")]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
