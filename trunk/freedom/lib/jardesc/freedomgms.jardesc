@@ -11,6 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FPais.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos{EvoluVendasLinha.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
@@ -26,6 +27,7 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FMunicipio.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.oc"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
@@ -42,7 +44,9 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FUF.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FBairro.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
