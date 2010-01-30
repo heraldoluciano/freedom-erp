@@ -237,10 +237,12 @@ public class FRVendasFisico extends FRelatorio {
 			}		
 	
 			sSQL.append( "SELECT SUBSTRING(P.CODGRUP FROM 1 FOR 4) as GRUPO," );
-			sSQL.append( "P.CODPROD,P.REFPROD,P.DESCPROD,G.DESCGRUP, " );
+			sSQL.append( "P.CODEMP, P.CODFILIAL, P.CODPROD,P.REFPROD,P.DESCPROD,G.DESCGRUP, " );
 					
-			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(49,1,P.CODPROD,49,1,1)) AS CUSTOMPMPROD ");
-					
+//			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMPAX,P.CODFILIALAX,P.CODALMOX)) AS CUSTOMPMPROD ");
+			
+			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null)) AS CUSTOMPMPROD ");
+
 			sSQL.append( ",IT.CODITVENDA," ); 
 			sSQL.append( "SUM(IT.QTDITVENDA) QTDITVENDA,SUM(IT.VLRDESCITVENDA) VLRDESCITVENDA,SUM(IT.VLRLIQITVENDA) VLRLIQITVENDA " ); 
 			sSQL.append( "FROM VDVENDA V,VDITVENDA IT,EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM " );
@@ -249,22 +251,32 @@ public class FRVendasFisico extends FRelatorio {
 			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 			sSQL.append( "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " );
 			sSQL.append( "AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND G.CODGRUP=P.CODGRUP " );
+			
 			sSQL.append( sWhere );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
+			
 			sSQL.append( "AND IT.QTDITVENDA > 0 " );
 			sSQL.append( "AND (V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) + ") " ); 
 			sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
-			sSQL.append( "GROUP BY 1,P.CODPROD,P.REFPROD,P.DESCPROD,G.DESCGRUP,IT.CODITVENDA, P.CUSTOMPMPROD " );
+			sSQL.append( "GROUP BY 1, P.CODEMP, P.CODFILIAL, P.CODPROD, P.REFPROD, P.DESCPROD, G.DESCGRUP, IT.CODITVENDA, P.CUSTOMPMPROD  " );
 			sSQL.append( "ORDER BY 1," );
 			sSQL.append( "C".equals( rgOrdem.getVlrString() ) ? comRef() ? "P.REFPROD" : "P.CODPROD" : "P.DESCPROD" );
 	
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+
+			int iparam = 1;
+			
+//			ps.setInt( 1, Aplicativo.iCodEmp );
+//			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+
+			
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+			
 			rs = ps.executeQuery();
 			
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
@@ -278,10 +290,13 @@ public class FRVendasFisico extends FRelatorio {
 			ps.close();
 	
 			con.commit();
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta ao relatório de vendas fisico!" + err.getMessage() );
-		} finally {
+		} 
+		finally {
 			System.gc();
 		}
 	}
@@ -438,11 +453,11 @@ public class FRVendasFisico extends FRelatorio {
 					imp.pulaLinha( 1, imp.comprimido() );
 				}
 	
-				bQtdVenda = rs.getBigDecimal( 8 ) != null ? rs.getBigDecimal( 8 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
-				bDescVenda = rs.getBigDecimal( 9 ) != null ? rs.getBigDecimal( 9 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
-				bVlrTotVenda = rs.getBigDecimal( 10 ) != null ? rs.getBigDecimal( 10 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );				
+				bQtdVenda = rs.getBigDecimal( 10 ) != null ? rs.getBigDecimal( 10 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
+				bDescVenda = rs.getBigDecimal( 11 ) != null ? rs.getBigDecimal( 11 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
+				bVlrTotVenda = rs.getBigDecimal( 12 ) != null ? rs.getBigDecimal( 12 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );				
 				bVlrUnitVenda = bVlrTotVenda.divide( bQtdVenda, 2, BigDecimal.ROUND_HALF_UP );
-				bVlrUnitCusto = rs.getBigDecimal( 6 ) != null ? rs.getBigDecimal( 6 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
+				bVlrUnitCusto = rs.getBigDecimal( 8 ) != null ? rs.getBigDecimal( 8 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
 				bVlrTotCusto = bVlrUnitCusto.multiply( bQtdVenda ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 				bVlrUnitLucro = bVlrUnitVenda.subtract( bVlrUnitCusto ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 				bVlrTotLucro = bVlrTotVenda.subtract( bVlrTotCusto ).setScale( 2, BigDecimal.ROUND_HALF_UP );
