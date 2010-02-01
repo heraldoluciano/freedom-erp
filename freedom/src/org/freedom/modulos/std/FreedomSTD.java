@@ -46,6 +46,7 @@ import org.freedom.modulos.fnc.FRFluxoCaixaRes;
 import org.freedom.modulos.fnc.FRReceber;
 import org.freedom.modulos.fnc.FRReceberMes;
 import org.freedom.modulos.fnc.FRReceberSetor;
+import org.freedom.modulos.gms.FRValorEstoque;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FNBM;
@@ -285,6 +286,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos por grupo", "Produtos pro grupo",'G', 700704000, 2, true, FRProdGrup.class ) ;
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque", "Giro de estoque",'i', 700705000, 2, true, FRGiroEstoque.class ) ;
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque",'s', 700706000, 2, true, FRContaEstoque.class ) ;				
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Valor em estoque", "Valor em estoque",'v', 700707000, 2, true, FRValorEstoque.class ) ;
 				addSeparador( 700000000 );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
