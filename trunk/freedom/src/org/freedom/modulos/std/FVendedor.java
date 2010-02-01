@@ -306,8 +306,8 @@ public class FVendedor extends FTabDados implements PostListener {
 
 		setPainel( pinComiss );
 		
-		adicCampo( txtCodSetor, 7, 460, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
-		adicDescFK( txtDescSetor, 110, 460, 262, 20, "DescSetor", "Descrição do setor" );
+		adicCampo( txtCodSetor, 7, 500, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
+		adicDescFK( txtDescSetor, 110, 500, 262, 20, "DescSetor", "Descrição do setor" );
 		lcSetor.setConexao( con );
 	}
 
