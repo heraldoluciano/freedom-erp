@@ -1,5 +1,5 @@
 #summary Introdução as funcionalidades
-
+#sidebar TableOfContents
 ===Tela de login:===
 	As Telas de login independente do modulo tem o mesmo padão de funcionamento:
         * Login (*Id. Usuário* cadastrado no modulo de configuração, FreedomCFG);
