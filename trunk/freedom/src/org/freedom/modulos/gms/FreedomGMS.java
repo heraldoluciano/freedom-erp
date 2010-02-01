@@ -63,18 +63,26 @@ import org.freedom.modulos.std.FPlanoPag;
 import org.freedom.modulos.std.FPrefereGeral;
 import org.freedom.modulos.std.FProcessaEQ;
 import org.freedom.modulos.std.FProduto;
+import org.freedom.modulos.std.FRCodbarProd;
+import org.freedom.modulos.std.FRCodficProd;
 import org.freedom.modulos.std.FRCompras;
 import org.freedom.modulos.std.FRComprasFor;
 import org.freedom.modulos.std.FRConfEstoq;
+import org.freedom.modulos.std.FRContaEstoque;
 import org.freedom.modulos.std.FRCpItem;
+import org.freedom.modulos.std.FRCpProd;
 import org.freedom.modulos.std.FRCpTipoMov;
 import org.freedom.modulos.std.FRDemanda;
+import org.freedom.modulos.std.FREstoqueLiquido;
 import org.freedom.modulos.std.FREstoqueMin;
 import org.freedom.modulos.std.FREtiqueta;
 import org.freedom.modulos.std.FREvoluVendas;
+import org.freedom.modulos.std.FRGiroEstoque;
 import org.freedom.modulos.std.FRInvPeps;
 import org.freedom.modulos.std.FRMediaItem;
 import org.freedom.modulos.std.FRMovProd;
+import org.freedom.modulos.std.FRMovProdCont;
+import org.freedom.modulos.std.FRProdGrup;
 import org.freedom.modulos.std.FRResumoDiario;
 import org.freedom.modulos.std.FRSaldoLote;
 import org.freedom.modulos.std.FRUltimaVenda;
@@ -183,8 +191,8 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(200700000, TP_OPCAO_ITEM, "Compras por fornecedor","Compras por Fornecedor", 'F', 200701000, 2, true,FRComprasFor.class);
 				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200702000, 2, true, FRCompras.class );
 				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200703000, 2, true, FRCpTipoMov.class );
-				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200704000, 2, true, FRCpItem.class );								
-
+				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200704000, 2, true, FRCpItem.class );
+				
 		addOpcao(-1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1,true, FVenda.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Cancela venda", "Cancelamento",'C', 300200000, 1, true, FCancVenda.class);
@@ -226,13 +234,23 @@ public class FreedomGMS extends AplicativoPD {
 			addOpcao(400000000, TP_OPCAO_ITEM, "Reprocessa estoque","Reprocessa estoque", 'R', 400600000, 1, true,FProcessaEQ.class);
 			addSeparador(400000000);
 			addOpcao(400000000, TP_OPCAO_MENU, "Listagens", "", 'L', 400700000, 1,false, null);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Estoque mínimo", "Estoque Mínimo",'s', 400701000, 2, true, FREstoqueMin.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Produtos/Movimentos","Listagem de Produtos", 'P', 400702000, 2, true,FRMovProd.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Vencimentos de lote","Vencimento Lote", 'V', 400703000, 2, true, FRVencLote.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Saldos de lote", "Saldos de Lote",'l', 400704000, 2, true, FRSaldoLote.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Demanda", "Demanda", 'D',400705000, 2, true, FRDemanda.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Conferência","Conferência de Estoque", 'C', 400706000, 2, true,FRConfEstoq.class);
-				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Estoque mínimo", "Estoque Mínimo",'s', 400701000, 2, true, FREstoqueMin.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Produtos/Movimentos","Listagem de Produtos", 'P', 400702000, 2, true,FRMovProd.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Vencimentos de lote","Vencimento Lote", 'V', 400703000, 2, true, FRVencLote.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Saldos de lote", "Saldos de Lote",'l', 400704000, 2, true, FRSaldoLote.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Demanda", "Demanda", 'D',400705000, 2, true, FRDemanda.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Conferência","Conferência de Estoque", 'C', 400706000, 2, true,FRConfEstoq.class);
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário","Inventário", 'I', 400707000, 2, true, FRInvPeps.class);
+				
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 400700800, 2, true, FRCodficProd.class );
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 400700900, 2, true, FRCodbarProd.class );
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 400701000, 2, true, FRCpProd.class );
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 400702000, 2, true, FRMovProdCont.class );
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Estoque liquido", "Estoque liquido", 'L', 400703000, 2, true, FREstoqueLiquido.class );
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Produtos por grupo", "Produtos pro grupo",'G', 400704000, 2, true, FRProdGrup.class ) ;
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Giro de estoque", "Giro de estoque",'i', 400705000, 2, true, FRGiroEstoque.class ) ;
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque",'s', 700706000, 2, true, FRContaEstoque.class ) ;				
+				addOpcao( 400700000, TP_OPCAO_ITEM, "Valor em estoque", "Valor em estoque",'v', 400707000, 2, true, FRValorEstoque.class ) ;
 
 		addOpcao(-1, TP_OPCAO_MENU, "Recepção", "", 'R', 500000000, 0, false,null);	
 				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FControleRecMerc.class);		
