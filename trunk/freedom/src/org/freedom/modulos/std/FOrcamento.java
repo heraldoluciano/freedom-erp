@@ -376,7 +376,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private HashMap<String, Object> permusu = null;
 	
-	private BigDecimal fatLucro = new BigDecimal (1);
+	private BigDecimal fatluc = new BigDecimal (1);
 
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
@@ -2054,10 +2054,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 
 		if(kevt.getKeyCode() == KeyEvent.VK_F12 && ( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ) ) {
-			DLAltFatLucro dl = new DLAltFatLucro(this, fatLucro);
+			DLAltFatLucro dl = new DLAltFatLucro(this, fatluc);
 			dl.setVisible( true );
 			if ( dl.OK ) {
-				fatLucro = dl.getValor();
+				fatluc = dl.getValor();
 				dl.dispose();
 			}
 
@@ -2328,7 +2328,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {
 				
-			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, oPrefs[ PrefOrc.TIPOCUSTO.ordinal() ].toString(), con );		   
+			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatluc, oPrefs[ PrefOrc.TIPOCUSTO.ordinal() ].toString(), con );		   
 		
 			/****************************
 			 * Atualizando painel geral 
