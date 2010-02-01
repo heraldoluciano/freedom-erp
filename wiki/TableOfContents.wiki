@@ -1,3 +1,4 @@
+#sidebar TableOfContents
 ===Navegação===
 FreedomERP:
  * Introdução
