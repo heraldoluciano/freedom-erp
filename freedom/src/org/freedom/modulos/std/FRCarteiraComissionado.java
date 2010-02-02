@@ -130,25 +130,27 @@ public class FRCarteiraComissionado extends FRelatorio {
 			sql.append( "select V.codvend, V.nomevend, V.dddfonevend, V.fonevend, V.cidvend, C.codcli, C.razcli, C.endcli, C.numcli, C.dddcli, C.fonecli, COALESCE( M.nomemunic, C.cidcli ) cidcli");
 		    sql.append( ", ( SELECT MAX(DTEMITVENDA) FROM vdvenda VD, EQTIPOMOV TM ");
 		    sql.append( "WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial ");
-		    sql.append( "AND VD.codempvd = V.codemp");
-		    sql.append( "AND VD.codcli = C.codcli");
-		    sql.append( "AND VD.codfilialcl = C.codfilial");
-		    sql.append( "AND VD.codempcl = C.codemp");
-		    sql.append( "AND VD.codemptm = TM.codemp");
-		    sql.append( "AND VD.codfilialtm = TM.codfilial");
-		    sql.append( "AND VD.codtipomov = TM.codtipomov");
-		    sql.append( "AND TM.fiscaltipomov = 'S'");
-		    sql.append( "AND TM.somavdtipomov = 'S'");
-		    sql.append( "AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' ) ultima_venda");
-		    sql.append( "FROM vdcliente C, vdvendedor V, sgmunicipio M");
-		    sql.append( "WHERE V.codvend = C.codvend AND V.codfilial = C.codfilial");
-		    sql.append( "AND V.codemp = C.codemp AND C.codmunic = M.codmunic");
-		    sql.append( "AND C.siglauf = M.siglauf AND C.codpais = M.codpais");
+		    sql.append( " AND VD.codempvd = V.codemp");
+		    sql.append( " AND VD.codcli = C.codcli");
+		    sql.append( " AND VD.codfilialcl = C.codfilial");
+		    sql.append( " AND VD.codempcl = C.codemp");
+		    sql.append( " AND VD.codemptm = TM.codemp");
+		    sql.append( " AND VD.codfilialtm = TM.codfilial");
+		    sql.append( " AND VD.codtipomov = TM.codtipomov");
+		    sql.append( " AND TM.fiscaltipomov = 'S'");
+		    sql.append( " AND TM.somavdtipomov = 'S'");
+		    sql.append( " AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' ) ultima_venda");
+		    sql.append( " FROM vdcliente C, vdvendedor V, sgmunicipio M");
+		    sql.append( " WHERE V.codvend = C.codvend AND V.codfilial = C.codfilial");
+		    sql.append( " AND V.codemp = C.codemp AND C.codmunic = M.codmunic");
+		    sql.append( " AND C.siglauf = M.siglauf AND C.codpais = M.codpais");
 		    			
 			if(txtCodComiss.getVlrInteger() > 0) 
 			{
 				sql.append( " AND C.codempvd =? and C.codfilialvd = ? and C.codvend = ? " );
 			}
+						
+			sql.append( " order by 2, 13 DESC, 7 ASC" );
 			
 			ps = con.prepareStatement( sql.toString() );
 
