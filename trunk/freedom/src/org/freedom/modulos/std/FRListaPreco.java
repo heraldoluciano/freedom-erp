@@ -132,7 +132,7 @@ public class FRListaPreco extends FRelatorio {
 		cbComSaldo.setVlrString( "S" );
 		cbPrecoFracionado.setVlrString( "S" );
 		cbSinalizarAlterados.setVlrString( "S" );
-		txtNroDiasAlt.setVlrInteger( new Integer(7) );
+		txtNroDiasAlt.setVlrInteger( new Integer(15) );
 		txtCodTabPreco.setVlrInteger( 1 );
 		txtCodPlanoPag1.setVlrInteger( 1 );
 		
