@@ -627,7 +627,9 @@ ORDER BY PP.CODPROD]]></queryString>
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-16"/>
+						key="textField-16">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -688,7 +690,9 @@ ORDER BY PP.CODPROD]]></queryString>
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-17"/>
+						key="textField-17">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -704,7 +708,9 @@ ORDER BY PP.CODPROD]]></queryString>
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-18"/>
+						key="textField-18">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -720,7 +726,9 @@ ORDER BY PP.CODPROD]]></queryString>
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-15"/>
+						key="textField-15">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -737,7 +745,10 @@ ORDER BY PP.CODPROD]]></queryString>
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-26">
-							<printWhenExpression><![CDATA[new Boolean("S".equals($P{IMPSALDO}))]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean(
+	("S".equals($P{IMPSALDO})) &&
+	("S".equals($F{ALTERADO}) && (!$P{DESTAQUE}.booleanValue()))
+)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
@@ -777,7 +788,10 @@ ORDER BY PP.CODPROD]]></queryString>
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-27">
-							<printWhenExpression><![CDATA[new Boolean("S".equals($P{IMPQTDEMB}))]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean(
+	("S".equals($P{IMPQTDEMB})) &&
+	("S".equals($F{ALTERADO}) && (!$P{DESTAQUE}.booleanValue()))
+)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
@@ -794,7 +808,9 @@ ORDER BY PP.CODPROD]]></queryString>
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-29"/>
+						key="textField-29">
+							<printWhenExpression><![CDATA[new Boolean("N".equals($F{ALTERADO}) || (!$P{DESTAQUE}.booleanValue()))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
@@ -827,6 +843,138 @@ ORDER BY PP.CODPROD]]></queryString>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOPROD}!=null?$F{PRECOPROD}:new BigDecimal(0)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="429"
+						y="2"
+						width="30"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-31">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ALIQIPI}.toString() + "%"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="395"
+						y="2"
+						width="30"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-32">
+							<printWhenExpression><![CDATA[new Boolean(
+	("S".equals($P{IMPQTDEMB})) &&
+	("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDEMBALAGEM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="354"
+						y="2"
+						width="36"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-33">
+							<printWhenExpression><![CDATA[new Boolean(
+	("S".equals($P{IMPSALDO})) &&
+	("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{SLDPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="183"
+						y="2"
+						width="167"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-34">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="100"
+						y="2"
+						width="79"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-35">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD} != null ? $F{CODBARPROD} : new String("")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="43"
+						y="2"
+						width="54"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-36">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODFABPROD} != null ? $F{CODFABPROD} : new String("")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="3"
+						y="2"
+						width="36"
+						height="12"
+						forecolor="#FF0000"
+						backcolor="#FFFFFF"
+						key="textField-37">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
