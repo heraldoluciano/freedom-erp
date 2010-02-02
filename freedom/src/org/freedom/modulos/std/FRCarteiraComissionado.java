@@ -126,7 +126,6 @@ public class FRCarteiraComissionado extends FRelatorio {
 		sCab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 		
 		try {
-
 			
 			sql.append( "select V.codvend ");
 		    sql.append( " , V.nomevend ");
