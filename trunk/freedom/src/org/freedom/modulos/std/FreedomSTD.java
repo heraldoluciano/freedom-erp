@@ -195,6 +195,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 301001700, 2, true, FROrcamento.class );
 				addSeparador( 301000000 );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Clientes sem movimento", "Clientes sem movimento", 'm', 301002000, 2, true, FRClientesSemVendas.class );
+				addOpcao( 301000000, TP_OPCAO_ITEM, "Carteira de Clientes por Comissionado", "Carteira de Clientes por Comissionado", 'm', 301002100, 2, true, FRCarteiraComissionado.class );
 				
 			addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 				addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );
