@@ -13,9 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -1106,7 +1108,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
         tela_mae.montaGrid();
     }
     
-    private void carregaPlugin() {
+    @ SuppressWarnings ( "unchecked" )
+	private void carregaPlugin() {
 
     	String strplugin = null;
     	StringBuilder messagesError = new StringBuilder("Classe de integração para cálculo de renda \"");

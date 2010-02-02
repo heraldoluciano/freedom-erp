@@ -36,7 +36,6 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
