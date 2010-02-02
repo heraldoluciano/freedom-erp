@@ -30,7 +30,6 @@
 	<parameter name="FILTROS" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[select V.codvend
      , V.nomevend
-     , v.codsetor
      , V.cidvend
      , C.codcli
      , C.razcli
@@ -49,29 +48,19 @@ WHERE V.codvend   = C.codvend
   AND C.siglauf   = M.siglauf
   AND C.codpais   = M.codpais]]></queryString>
 
-	<field name="CODVEND" class="java.lang.Long"/>
-	<field name="NOMEVEND" class="java.lang.String"/>
-	<field name="CODSETOR" class="java.lang.Long"/>
-	<field name="CIDVEND" class="java.lang.String"/>
-	<field name="CODCLI" class="java.lang.Long"/>
-	<field name="RAZCLI" class="java.lang.String"/>
-	<field name="ENDCLI" class="java.lang.String"/>
-	<field name="NUMCLI" class="java.lang.Long"/>
-	<field name="DDDCLI" class="java.lang.String"/>
-	<field name="FONECLI" class="java.lang.String"/>
 	<field name="CIDCLI" class="java.lang.String"/>
 
 
 		<group  name="VENDEDOR" >
 			<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
 			<groupHeader>
-			<band height="53"  isSplitAllowed="false" >
+			<band height="51"  isSplitAllowed="false" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="3"
 						y="39"
-						width="41"
+						width="31"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -81,14 +70,14 @@ WHERE V.codvend   = C.codvend
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Cód.Cli.]]></text>
+				<text><![CDATA[Código]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="482"
+						x="436"
 						y="39"
-						width="80"
+						width="59"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -111,17 +100,17 @@ WHERE V.codvend   = C.codvend
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="46"
-						y="37"
+						x="37"
+						y="36"
 						width="0"
-						height="13"
+						height="15"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="479"
-						y="37"
+						x="432"
+						y="36"
 						width="0"
 						height="15"
 						key="line-34"/>
@@ -147,9 +136,9 @@ WHERE V.codvend   = C.codvend
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="50"
+						x="40"
 						y="39"
-						width="281"
+						width="261"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -236,16 +225,16 @@ WHERE V.codvend   = C.codvend
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="38"
+						y="37"
 						width="0"
-						height="10"
+						height="14"
 						key="line-41"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="566"
-						y="37"
+						y="36"
 						width="0"
 						height="15"
 						key="line-42"/>
@@ -254,9 +243,9 @@ WHERE V.codvend   = C.codvend
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="338"
+						x="308"
 						y="39"
-						width="138"
+						width="120"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -270,17 +259,73 @@ WHERE V.codvend   = C.codvend
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="335"
-						y="37"
+						x="304"
+						y="36"
 						width="0"
 						height="15"
 						key="line-43"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="503"
+						y="39"
+						width="59"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-15"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Ult. Venda]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="499"
+						y="36"
+						width="0"
+						height="15"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="300"
+						y="21"
+						width="64"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-16"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Telefone:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="366"
+						y="21"
+						width="76"
+						height="11"
+						key="textField-35"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{dddfonevend}.toString() + ") " + $F{fonevend}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="6"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -454,7 +499,7 @@ WHERE V.codvend   = C.codvend
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="16"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -470,9 +515,9 @@ WHERE V.codvend   = C.codvend
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="1"
+						y="2"
 						width="0"
-						height="11"
+						height="12"
 						key="line-24"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -490,8 +535,8 @@ WHERE V.codvend   = C.codvend
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="3"
-						width="41"
+						y="2"
+						width="30"
 						height="11"
 						key="textField-23"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -502,7 +547,7 @@ WHERE V.codvend   = C.codvend
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="46"
+						x="37"
 						y="1"
 						width="0"
 						height="13"
@@ -512,7 +557,7 @@ WHERE V.codvend   = C.codvend
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="479"
+						x="432"
 						y="2"
 						width="0"
 						height="13"
@@ -522,9 +567,9 @@ WHERE V.codvend   = C.codvend
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="50"
-						y="3"
-						width="281"
+						x="40"
+						y="2"
+						width="262"
 						height="11"
 						key="textField-29"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -535,9 +580,9 @@ WHERE V.codvend   = C.codvend
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="340"
-						y="3"
-						width="135"
+						x="308"
+						y="2"
+						width="120"
 						height="11"
 						key="textField-32"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -548,9 +593,9 @@ WHERE V.codvend   = C.codvend
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="484"
-						y="4"
-						width="79"
+						x="436"
+						y="2"
+						width="59"
 						height="11"
 						key="textField-33"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -558,6 +603,37 @@ WHERE V.codvend   = C.codvend
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{DDDCLI}.toString() + ") " + $F{FONECLI}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="304"
+						y="1"
+						width="0"
+						height="15"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="499"
+						y="1"
+						width="0"
+						height="15"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="503"
+						y="2"
+						width="59"
+						height="11"
+						key="textField-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ultima_venda}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
