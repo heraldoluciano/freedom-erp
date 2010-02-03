@@ -9,7 +9,7 @@
 
 [http://freedomerp.googlegroups.com/web/kardex.jpeg]
 
-Campos:
+===Campos:===
   * Período: data a ser analisada;
   * Produto: [Introducao F2] para localizar o produto desejado;
   * Almoxarifado em analize;
