@@ -2,6 +2,9 @@
 #sidebar TableOfContents
   * FreedomERP:
     * [Introducao Introdução]
+      * [what O que é?]
+      * [similar Similaridade entre os módulos]
+      * [faq Faq? Perguntas Frequentes]
     * [Instalacao Instalação]
       * Windows:
         * [preWindows Pré-Requisitos]
