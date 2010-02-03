@@ -16,3 +16,7 @@
 
 
   * [http://freedomerp.googlegroups.com/web/novo.jpg] Novo ( Ctrl + N ) Insere um novo registro na tela, podendo ser de sequencia automatica incrementação ou com [CODIGO] em que o proprio usuário entra;
+  * [http://freedomerp.googlegroups.com/web/deletar.jpg]  	Deletar ( Ctrl + D ) : Apaga do sistema o registro selecionado;
+  * [http://freedomerp.googlegroups.com/web/editar.jpg]  Editar ( Ctrl + E ) : Libera a tela para edição
+  * [http://freedomerp.googlegroups.com/web/salvar.jpg] Salvar ( Ctrl + S ) : Grava os dados no Banco de Dados (BD)
+  * [http://freedomerp.googlegroups.com/web/cancelar.jpg] Cancelar ( Ctrl + W ): Cancela as alterações feitas na tela sem salva-las no BD;
