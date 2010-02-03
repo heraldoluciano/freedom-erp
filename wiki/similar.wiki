@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-
+#sidebar TableOfContents
 ==AS SIMILARIEDADES DOS MODULOS==
 
 ==Tela de login:==
@@ -38,12 +38,12 @@ Botão {F2} pressionado com o cursor do mouse no campo Cód.tp.cli.
  * Para alterar a coluna selecionada, campo a pesquisar, pressione {ENTER} com o cursor piscando no campo de pesquisa;
 Obs: Uma alternativa ao botão , sem utilizar o mouse, digitamos o caractere: % no campo de pesquisa seguido de {ENTER}.
 
-==ITENS OBRIGATORIOS==
+==ITENS OBRIGATÓRIOS==
 
 [http://groups.google.com.br/group/freedomerp/web/obrigatorio.png]
 Todos os campos contornados em vermelho devem ser preenchidos obrigatoriamente.
 
 ==DATA==
-	Os campos preenchidos por datas (Ex: 10/01/2010) tem preencimento automatico que pode ser explorado da seguinte maneira:
-  # .Entrada do dia + [ENTER] = dia /mes corrente/ ano corrente
-  # .Entrada do dia/mes + [ENTER] = dia/mes/ ano corrente
+	Os campos preenchidos por datas (Ex: 10/01/2010) tem preenchimento automático que pode ser explorado da seguinte maneira:
+  # Entrada do dia + {ENTER} = dia /mês corrente/ ano corrente
+  # Entrada do dia/mês + {ENTER} = dia/mês/ ano corrente
