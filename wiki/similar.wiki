@@ -15,4 +15,4 @@
 	Os botões englobam diversas funcionalidades no sistema, convenhamos que o sistema tem aproximadamente 150 botoes diferentes os quais ao repousar o mouse por uns instantes a legenda de sua função aparece.
 
 
-[http://freedomerp.googlegroups.com/web/novo.jpg]
+  * [http://freedomerp.googlegroups.com/web/novo.jpg] Novo ( Ctrl + N ) Insere um novo registro na tela, podendo ser de sequencia automatica incrementação ou com [CODIGO] em que o proprio usuário entra;
