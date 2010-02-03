@@ -3,9 +3,7 @@
 
 = Introdução =
 
-   Kardex se trata de um ficha, na qual o operador tem o auxilio de
-conhecer a disponibilidade do material em estoque, permitir a análise quando necessário,
-emitir um pedido de reposição, conhecer o valor monetário do estoque e o custo de cada item e indicar posteriores desvios ou perdas de material.
+   Kardex se trata de um ficha, na qual o operador tem o auxilio de conhecer a disponibilidade do material em estoque, permitir a análise quando necessário, emitir um pedido de reposição, conhecer o valor monetário do estoque e o custo de cada item e indicar posteriores desvios ou perdas de material.
   
 = Detalhes =
 
