@@ -2,10 +2,15 @@
 
 ==AS SIMILARIEDADES DOS MODULOS==
 
-	==Tela de login:==
+==Tela de login:==
 
 	As Telas de login independente do modulo tem o mesmo padão de funcionamento:
      * Entrada do login ({Id. Usuário} cadastrado no [CFG modulo de  configuração]);
      * Senha;
      * Seleção da filial caso o usuário esteja inscrito em mais de uma.
 [http://freedomerp.googlegroups.com/web/login.jpg] http://freedomerp.googlegroups.com/web/login2.jpg]
+
+==Atalhos e Botões:==
+
+	Os botões englobam diversas funcionalidades no sistema, convenhamos que o sistema tem aproximadamente 150 botoes diferentes os quais ao repousar o mouse por uns instantes a legenda de sua função aparece.
+[http://code.google.com/p/freedom-erp/source/browse/trunk/freedom/src/org/freedom/images/btEntrada.png]
