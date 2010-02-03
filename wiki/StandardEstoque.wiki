@@ -17,12 +17,12 @@ Entretanto algumas empresas não transformam seus produtos, apenas os revendem, 
 Gestão de estoque.  Modulo Standard:
 
 Menu > Estoque >
-  * Kardex
-  * Inventario 
-  * Consulta Estoque
-  * Consulta Produto
-  * Tipos de Movimento
-  * Reprocessa Estoque
-  * Listagens
-  * Transferência de Produtos
-  * Exportar/Importar Saldo  
+  * [Kardex]
+  * [Inventario] 
+  * [Consulta Estoque]
+  * [Consulta Produto]
+  * [Tipos de Movimento]
+  * [Reprocessa Estoque]
+  * [Listagens]
+  * [Transferência de Produtos]
+  * [Exportar/Importar Saldo]  
