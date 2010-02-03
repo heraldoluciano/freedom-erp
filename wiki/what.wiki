@@ -1,3 +1,4 @@
+#sidebar TableOfContents
 ====O que é o Freedom-ERP?=== 
 
     É um software livre de Gestão Empresarial. Pode ser utilizado em estabelecimentos comerciais, varejistas, atacadistas e industriais. Dividido em vários módulos, atende a diversas necessidades de empresas em diferentes áreas de atuação.
