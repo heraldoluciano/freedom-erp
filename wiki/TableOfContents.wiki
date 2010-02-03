@@ -1,11 +1,10 @@
+#summary documentation outline for docreader
 #sidebar TableOfContents
-
-===Navegação===
-FreedomERP:
-  * [Introducao Introdução]
-  * [Instalacao Instalação]
-Modulos:
-  * Standard
-    * [Standard Introdução]
-    * [StandardCliente Clientes]
-    * [StandardEstoque Estoque]
+  * FreedomERP:
+    * [Introducao Introdução]
+    * [Instalacao Instalação]
+  * Modulos:
+    * Standard
+      * [Standard Introdução]
+      * [StandardCliente Clientes]
+      * [StandardEstoque Estoque]
