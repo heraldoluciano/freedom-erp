@@ -2,8 +2,8 @@
 
 ===Navegação===
 FreedomERP:
-  * [Introdução]
-  * [Instalação]
+  * [Introducao Introdução]
+  * [Instalacao Instalação]
 Modulos:
   * Standard
     * [Standard Introdução]
