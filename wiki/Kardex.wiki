@@ -9,16 +9,9 @@ emitir um pedido de reposição, conhecer o valor monetário do estoque e o cust
   
 = Detalhes =
 
-|| *Campo* || *Temperature (low)* || *Temperature (high)* ||
-|| 1900 || -10 || 25 ||
-|| 1910 || -15 || 30 ||
-|| 1920 || -10 || 32 ||
-|| 1930 || _N/A_ || _N/A_ ||
-|| 1940 || -2 || 40 ||
+[http://freedomerp.googlegroups.com/web/kardex.jpeg]
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
-[http://freedomerp.googlegroups.com/web/boleto-cleison.JPG]
+Campos:
+  * Período: data a ser analisada;
+  * Produto [Introducao F2] para localizar o produto desejado;
+  * 
