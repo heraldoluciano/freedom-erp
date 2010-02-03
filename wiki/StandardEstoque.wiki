@@ -1,5 +1,6 @@
 #summary Controle de Estoque
 #labels standard,estoque
+#sidebar TableOfContents
 
 = Introdução =
 
