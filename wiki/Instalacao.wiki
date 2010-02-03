@@ -4,7 +4,7 @@
 
 O freedom como um sistema multiplataforma pode ser instalado de diversas maneiras:
 
- * [Windows]:
+ * Windows:
     * [preWindows Pré-Requisitos]
     * [instaladorWin Instalador]
     * Fonte:
@@ -12,7 +12,7 @@ O freedom como um sistema multiplataforma pode ser instalado de diversas maneira
        * [eclipseDowload Baixando os Fontes pelo eclipse]
        * [update Update para a versão mais recente]
 
- * [Linux Debian]:
+ * Linux Debian:
     * [preLinux Pré-Requisitos]
     * [instaladorLinux Instalador]
     * Fonte:
