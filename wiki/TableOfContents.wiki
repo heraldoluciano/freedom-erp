@@ -3,6 +3,23 @@
   * FreedomERP:
     * [Introducao Introdução]
     * [Instalacao Instalação]
+      * Windows:
+        * [preWindows Pré-Requisitos]
+        * [instaladorWin Instalador]
+        * Fonte:
+          * [eclipseWinInstall Instalando o eclipse]
+          * [eclipseDowload Baixando os Fontes pelo eclipse]
+          * [update Update para a versão mais recente]
+
+      * Linux Debian:
+        * [preLinux Pré-Requisitos]
+        * [instaladorLinux Instalador]
+        * Fonte:
+          * [eclipseLinInstall Instalando o eclipse]
+          * [eclipseDowload Baixando os Fontes pelo eclipse]
+          * [installIbDb Instalação do IbExpert e o DbComparer no linux]
+          * [update Update para a versão mais recente]
+          * [scriptLinux Script Linux]
   * Modulos:
     * Standard
       * [Standard Introdução]
