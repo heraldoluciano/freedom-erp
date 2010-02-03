@@ -1,22 +1,23 @@
 #sidebar TableOfContents
-====O que é o Freedom-ERP?=== 
+=INTRODUÇÃO=
 
-    É um software livre de Gestão Empresarial. Pode ser utilizado em estabelecimentos comerciais, varejistas, atacadistas e industriais. Dividido em vários módulos, atende a diversas necessidades de empresas em diferentes áreas de atuação.
- 
-Quais as vantagens de utilizar um software livre ?
- 
-    Você pode utilizá-lo, distribuí-lo, alterar seu conteúdo e até mesmo vendê-lo para qualquer pessoa, desde que os créditos aos autores originais sejam mantidos.
-    Você pode instalá-lo em quantos micros quiser ou vender micros com o Freedom pré-instalado, não é preciso nenhum tipo de comunicado nem muito menos pagar qualquer tipo de licença. 
+	 Enterprise Resource Planning (ERP) ou no Brasil: Sistemas Integrados de Gestão Empresarial (SIGE) são sistemas que organizam e relacionam informações de uma empresa em um único local. 
+	A integração pode ser vista sob a perspectiva funcional relaciona sistemas de: finanças, contabilidade, recursos humanos, fabricação, marketing, vendas, compras, etc e sob a perspectiva sistêmica: sistema de processamento de transações, sistemas de informações gerenciais, sistemas de apoio a decisão, etc
+===O Freedom ERP===
+	É um software livre de Gestão Empresarial. Pode ser utilizado em estabelecimentos comerciais, varejistas, atacadistas e industriais. Dividido em vários módulos, atende a diversas necessidades de empresas em diferentes áreas de atuação. 
+	Desenvolvido sob o modelo Open Source: ele é um software de utilização livre onde você pode utilizá-lo, distribuí-lo, alterar seu conteúdo e até mesmo vendê-lo para qualquer pessoa, desde que os créditos aos autores originais sejam mantidos. Você pode instalá-lo em quantos micros quiser ou vender micros com o Freedom pré-instalado, não é preciso nenhum tipo de comunicado nem muito menos pagar qualquer tipo de licença.
+	O Freedom-ERP é mantido pela Setpoint Informática Ltda, desde 2003 sob o licenciamento GPL. O seu desenvolvimento é contínuo, e os recursos para manutenção da equipe de desenvolvimento advém dos serviços de consultoria, suporte, treinamento e implantação do Freedom-ERP.
 
-    O Freedom-ERP é distribuído gratuitamente, como um presente à comunidade, não sendo ele nunca objeto de comercialização. Assim, não se aplica a ele a GARANTIA prevista pelo artigo 8° da Lei 9609/1998 e nem QUALQUER DAS GARANTIAS previstas pela Lei 8078/1990. O LICENCIADOR não terá obrigação de prestar suporte, assistência ou esclarecimentos ao LICENCIADO.
+===Modulos===
+ * [Standard STD] (Standard)
+ * [PCP](Planejamento e controle da produção)
+ * [FNC] (Financeiro) 
+ * [PDV] (Ponto de Venda)
+ * [CRM](Customer Relationship Management)
+ * [NF-e]
+   
 
-    Isso não quer dizer que você não possa adquirir suporte profissional, treinamento e consultoria para implantação fornecidos pelo mantenedor.
-
-===Quem mantém o Freedom-ERP ?===
-
-    O Freedom-ERP é mantido pela [http://www.stpinf.com/ Setpoint Informática Ltda], desde 2003 sob o licenciamento GPL.
-    O seu desenvolvimento é contínuo, e os recursos para manutenção da equipe de desenvolvimento advém dos serviços de consultoria, suporte, treinamento e implantação do Freedom-ERP.
-           
+-----
 
 Participe!
     Você está convidado a participar do Freedom-ERP.
