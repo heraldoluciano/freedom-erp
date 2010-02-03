@@ -1,5 +1,5 @@
 #summary Procedimentos para instalação do Freedom e pré-requisitos
-
+#sidebar TableOfContents
 = Introdução =
 
 O freedom como um sistema multiplataforma pode ser instalado de diversas maneiras:
