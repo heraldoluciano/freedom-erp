@@ -8,3 +8,4 @@ Modulos:
   * Standard
     * [Standard Introdução]
     * [StandardCliente Clientes]
+       * [StandardEstoque Estoque]
