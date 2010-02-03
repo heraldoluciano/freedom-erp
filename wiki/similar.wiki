@@ -1,0 +1,11 @@
+#summary One-sentence summary of this page.
+
+==AS SIMILARIEDADES DOS MODULOS==
+
+	==Tela de login:==
+
+	As Telas de login independente do modulo tem o mesmo padão de funcionamento:
+     * Entrada do login ([Id. Usuário] cadastrado no modulo de configuração);
+     * Senha;
+     * Seleção da filial caso o usuário esteja inscrito em mais de uma.
+[http://freedomerp.googlegroups.com/web/login.jpg] http://freedomerp.googlegroups.com/web/login2.jpg]
