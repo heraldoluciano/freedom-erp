@@ -23,7 +23,7 @@
           * [update Update para a versão mais recente]
           * [scriptLinux Script Linux]
   * Modulos:
-    * Standard
+    * STD
       * [Standard Introdução]
       * [StandardCliente Clientes]
       * [StandardEstoque Estoque]
@@ -35,4 +35,9 @@
         * [Reprocessa Estoque]
         * [Listagens]
         * [Transferência de Produtos]
-        * [Exportar/Importar Saldo]  
+        * [Exportar/Importar Saldo]
+    * PCP
+    * CRM
+    * PDV
+    * FNC
+    * Representante
