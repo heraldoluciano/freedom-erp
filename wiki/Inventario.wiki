@@ -11,5 +11,4 @@ Inventário deriva da palavra do latim inventarium que significa, relação de b
 
 [http://groups.google.com.br/group/freedomerp/web/inventario.jpeg]
 
-Tela com a finalidade de acertar qual quer discrepância no estoque, entra-se com o novo estoque, custo do mesmo e etc. Pode ser usada também em industrias de transformação que não estão com o modulo [PCP] em operação... Assim o usuário pode acertar o estoque de determinado produto a partir da produção.
-
+Tela com a finalidade de acertar qual quer discrepância no estoque, entra-se com o novo estoque, custo do mesmo e etc. Pode ser usada também em industrias de transformação que não estão com o modulo [PCP] em operação... Assim o usuário pode acertar o estoque de determinado produto a partir da produção realizada que posteriormente sera abatido com a efetuação de vendas.
