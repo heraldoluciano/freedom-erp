@@ -13,5 +13,6 @@ emitir um pedido de reposição, conhecer o valor monetário do estoque e o cust
 
 Campos:
   * Período: data a ser analisada;
-  * Produto [Introducao F2] para localizar o produto desejado;
-  * 
+  * Produto: [Introducao F2] para localizar o produto desejado;
+  * Almoxarifado em analize;
+  * Lote utilizado;
