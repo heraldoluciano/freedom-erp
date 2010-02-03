@@ -1,11 +1,13 @@
 #sidebar TableOfContents
 =INTRODUÇÃO=
 
-	 Enterprise Resource Planning (ERP) ou no Brasil: Sistemas Integrados de Gestão Empresarial (SIGE) são sistemas que organizam e relacionam informações de uma empresa em um único local. 
-	A integração pode ser vista sob a perspectiva funcional relaciona sistemas de: finanças, contabilidade, recursos humanos, fabricação, marketing, vendas, compras, etc e sob a perspectiva sistêmica: sistema de processamento de transações, sistemas de informações gerenciais, sistemas de apoio a decisão, etc
+	 "Enterprise Resource Planning (ERP) ou no Brasil: Sistemas Integrados de Gestão Empresarial (SIGE) são sistemas que organizam e relacionam informações de uma empresa em um único local. 
+	A integração pode ser vista sob a perspectiva funcional relaciona sistemas de: finanças, contabilidade, recursos humanos, fabricação, marketing, vendas, compras, etc e sob a perspectiva sistêmica: sistema de processamento de transações, sistemas de informações gerenciais, sistemas de apoio a decisão, etc"
 ===O Freedom ERP===
 	É um software livre de Gestão Empresarial. Pode ser utilizado em estabelecimentos comerciais, varejistas, atacadistas e industriais. Dividido em vários módulos, atende a diversas necessidades de empresas em diferentes áreas de atuação. 
+
 	Desenvolvido sob o modelo Open Source: ele é um software de utilização livre onde você pode utilizá-lo, distribuí-lo, alterar seu conteúdo e até mesmo vendê-lo para qualquer pessoa, desde que os créditos aos autores originais sejam mantidos. Você pode instalá-lo em quantos micros quiser ou vender micros com o Freedom pré-instalado, não é preciso nenhum tipo de comunicado nem muito menos pagar qualquer tipo de licença.
+
 	O Freedom-ERP é mantido pela Setpoint Informática Ltda, desde 2003 sob o licenciamento GPL. O seu desenvolvimento é contínuo, e os recursos para manutenção da equipe de desenvolvimento advém dos serviços de consultoria, suporte, treinamento e implantação do Freedom-ERP.
 
 ===Modulos===
