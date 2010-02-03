@@ -1,5 +1,6 @@
 #summary Standard > Estoque > Inventario
 #labels Standard,Estoque
+#sidebar TableOfContents
 
 = Introdução =
 
