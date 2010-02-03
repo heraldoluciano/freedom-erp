@@ -1,10 +1,10 @@
 #sidebar TableOfContents
-<wiki:toc max_depth="5" />
+
 ===Navegação===
 FreedomERP:
- * Introdução
- * Instalação
+  * Introdução
+  * Instalação
 Modulos:
- * Standard
-  * [Standard Introdução]
-  * [StandardCliente Clientes]
+  * Standard
+    * [Standard Introdução]
+    * [StandardCliente Clientes]
