@@ -36,8 +36,8 @@
         * [Listagens]
         * [Transferência de Produtos]
         * [Exportar/Importar Saldo]
-    * PCP
-    * CRM
-    * PDV
-    * FNC
-    * Representante
+    * [PCP]
+    * [CRM]
+    * [PDV]
+    * [FNC]
+    * [Representante]
