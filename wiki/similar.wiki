@@ -36,6 +36,14 @@ Botão {F2} pressionado com o cursor do mouse no campo Cód.tp.cli.
  * Abre-se a pesquisa na tabela VDTIPOCLI ( Grupo: vendas Tabela: Tipo de cliente; Acessada pelo Tabela > Cliente > Tipo de Cliente )
  * [http://groups.google.com.br/group/freedomerp/web/raio.png] Botão Raio: Lista todos os dados inseridos na tabela ordenando pela coluna selecionada ( em cinza escuro:[http://groups.google.com.br/group/freedomerp/web/pesquisa2.png] )
  * Para alterar a coluna selecionada, campo a pesquisar, pressione {ENTER} com o cursor piscando no campo de pesquisa;
-Obs: Uma alternativa ao botão , sem utilizar o mouse, digitamos o caractere: % no campo de pesquisa seguido de [ENTER].
+Obs: Uma alternativa ao botão , sem utilizar o mouse, digitamos o caractere: % no campo de pesquisa seguido de {ENTER}.
 
-[
+==ITENS OBRIGATORIOS==
+
+[http://groups.google.com.br/group/freedomerp/web/obrigatorio.png]
+Todos os campos contornados em vermelho devem ser preenchidos obrigatoriamente.
+
+==DATA==
+	Os campos preenchidos por datas (Ex: 10/01/2010) tem preencimento automatico que pode ser explorado da seguinte maneira:
+  # .Entrada do dia + [ENTER] = dia /mes corrente/ ano corrente
+  # .Entrada do dia/mes + [ENTER] = dia/mes/ ano corrente
