@@ -1307,6 +1307,10 @@ public class ListaCampos extends Container implements PostListener,
 
 		if (sWhereT.length() > 0)
 			sSQLTab += sWhereT + sOrdem;
+		
+		
+		System.out.println("SQL DO GRID:" + sSQLTab);
+		
 	}
 
 	public Vector<GuardaCampo> getCamposPK() {
@@ -1436,6 +1440,10 @@ public class ListaCampos extends Container implements PostListener,
 			}
 			montaSqlCircular1(lcM);
 		}
+	}
+	
+	public String getSqlSelect() {
+		 return sSQLSelect;
 	}
 
 	public void montaSql(boolean bAuto, String sTab, String sA) {
