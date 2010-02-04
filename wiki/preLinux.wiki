@@ -40,10 +40,7 @@ Para instalar o Java 1.6 (repare o "java6" no nome do pacote) e o conjunto de pl
 {{{
  apt-get install sun-java6-jdk
 }}}
-Para o IcedTea, o procedimento é semelhante, veja um exemplo:
-{{{
- apt-get install icedtea-java7-jdk icedtea-java7-plugin
-}}}
+
 outras distribuições e o tutorial completo http://www.guiadohardware.net/tutoriais/java-linux
 
 =Firebird 1.5.x=
