@@ -34,7 +34,7 @@ Os pacotes também permanecem nos repositórios Debian e Ubuntu, sendo assim mai
 {{{
  apt-get update
 
- apt-get install sun-java6-jre sun-java5-plugin
+ apt-get install sun-java6-jre sun-java6-plugin
 }}}
 Para instalar o Java 1.6 (repare o "java6" no nome do pacote) e o conjunto de plugins (Firefox, etc). Para o Java 1.5, troque o "java6" por "java5" no nome dos pacotes. Para instalar o SDK, troque, no nome do pacote, "jre" por "jdk":
 {{{
