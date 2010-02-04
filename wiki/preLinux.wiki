@@ -67,7 +67,7 @@ Facil:
 
 {{{
 getconf GNU_LIBPTHREAD_VERSION
-*_saida algo como:_ NPTL 2.10.1*
+saida algo como: *NPTL 2.10.1*
 }}}
 
 ===Instalação===
