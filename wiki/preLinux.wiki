@@ -48,5 +48,28 @@ outras distribuições e o tutorial completo http://www.guiadohardware.net/tutor
 
 =Firebird 1.5.x=
 
+==Instalação do Firebird disponivel na aba downloads do code==
+
+http://freedom-erp.googlecode.com/files/ubuntu.zip
+
+==Instalação do Firebird Super Server v1.5.6 (Último da Serie 1.5). com NPTL==
+
+===O que é o NPTL?===
+
+The Native POSIX Thread Library (NPTL) is a software feature that enables the Linux kernel to run programs written to use POSIX Threads efficiently.
+
+ * In tests, NPTL succeeded in starting 100,000 threads on a IA-32 in two seconds. In comparison, this test under a kernel without NPTL would have taken around 15 minutes. [1][2] [http://en.wikipedia.org/wiki/Native_POSIX_Thread_Library wikipedia]
+ * NPTL, também conhecido como Native POSIX Thread Library, é o novo sistema de threading do kernel 2.6. O NPTL promete melhor compatibilidade com o padrão POSIX, maior escalabilidade e maior desempenho na criação e destruição de threads, colocando o Linux em pé de igualdade com os Unix comerciais em termos de alto desempenho (e custando muuuuuuuuito menos! :-) [http://www.vivaolinux.com.br/artigo/NPTL-ExecShield-e-outros-palavroes-que-fazem-seus-programas-crasharem/?pagina=1 Viva o Linux]
+
+===Seu sistema tem NTPL?===
+
+Facil 
+{{{
+#getconf GNU_LIBPTHREAD_VERSION
+*saida algo como: NPTL 2.10.1*
+}}}
+
+
+
 
 =FreedomERP Compilado p/ Linux=
