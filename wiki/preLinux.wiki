@@ -50,7 +50,7 @@ outras distribuições e o tutorial completo http://www.guiadohardware.net/tutor
 
 ==Instalação do Firebird disponivel na aba downloads do code==
 
-http://freedom-erp.googlecode.com/files/ubuntu.zip
+[http://freedom-erp.googlecode.com/files/ubuntu.zip]
 
 ==Instalação do Firebird Super Server v1.5.6 (Último da Serie 1.5). com NPTL==
 
@@ -63,13 +63,39 @@ The Native POSIX Thread Library (NPTL) is a software feature that enables the Li
 
 ===Seu sistema tem NTPL?===
 
-Facil 
+Facil:
+
 {{{
 #getconf GNU_LIBPTHREAD_VERSION
 *saida algo como: NPTL 2.10.1*
 }}}
 
+===Instalação===
+  # Instalando a dependência libstdc++5 para o Firebird.
+{{{
+wget http://ftp.br.debian.org/debian/pool/main/g/gcc-3.3/libstdc++5_3.3.6-18_i386.deb
+sudo dpkg -i libstdc++5_3.3.6-18_i386.deb
+}}}
+  # Instalando o Firebird Super Server v1.5.6 (Último da Serie 1.5).
+{{{
+wget http://ufpr.dl.sourceforge.net/project/firebird/firebird-linux-i386/1.5.6-Release/FirebirdSS-1.5.6.5026-0.nptl.i686.tar.gz
+tar -zxvf FirebirdSS-1.5.6.5026-0.nptl.i686.tar.gz
+cd FirebirdSS-1.5.6.5026-0.i686
+}}}
 
+  # IMPORTANTE: Para *UBUNTU* -> Abra o arquivo *scripts/postinstall.sh* com seu editor preferido
+   * Vá para a linha 82 e *delete o "-M"*
 
+  # Finalizando:
+{{{
+sudo ./install.sh
+Firebird super 1.5.6.5026-0.i686 Installation
+Press Enter to start installation or ^C to abort  [ENTER]
+Extracting install data
+Starting Firebird server: server has been successfully started
+Please enter new password for SYSDBA user:
+
+Install completed
+}}}
 
 =FreedomERP Compilado p/ Linux=
