@@ -12,37 +12,37 @@ A maneira correta de instalar o Java da Sun numa máquina Debian é através do 
 
 Para instalar o java-package em distribuições baseadas no Debian:
 {{{
-# apt-get update
+ apt-get update
 
-# apt-get install java-package
+ apt-get install java-package
 }}}
 A seguir, entre no diretório onde está salvo o arquivo binário do Java, baixado no site acima e rode o comando:
 {{{
-# make-jpkg --full-name nomedocriadordopacote --email emaildocriadordopacote JRE.bin
+ make-jpkg --full-name nomedocriadordopacote --email emaildocriadordopacote JRE.bin
 }}}
 Obviamente, substituindo o JRE.bin/.deb pelo caminho completo do executável/pacote. Um exemplo seria:
 {{{
-# make-jpkg --full-name JulioCBM --email emaildojulio@email.com jre-6u3-linux-i586.bin
+ make-jpkg --full-name JulioCBM --email emaildojulio@email.com jre-6u3-linux-i586.bin
 }}}
 O pacote será feito, após a revisão da licença da Sun. Para avançar, pressione Enter, até que a palavra destacada "More" suma do canto inferior esquerdo da tela. Após a extração do binário e a contrução do pacote, na pasta local aparecerá um pacote Debian, e para instalá-lo, use o comando:
 {{{
-# dpkg -i sun-j2re1.6_1.6.0+update3_i386.deb
+ dpkg -i sun-j2re1.6_1.6.0+update3_i386.deb
 }}}
 Note que o nome do arquivo pode variar de acordo com a versão baixada por você disponibilizada no site da Sun. O pacote já se encarregará de fazer os links simbólicos necessários para o funcionamento total da nova versão, uma outra facilidade desse método.
 
 Os pacotes também permanecem nos repositórios Debian e Ubuntu, sendo assim mais fáceis de instalar, apesar de algumas vezes não estarem nas últimas versões. Para isso, rode os comandos:
 {{{
-# apt-get update
+ apt-get update
 
-# apt-get install sun-java6-jre sun-java5-plugin
+ apt-get install sun-java6-jre sun-java5-plugin
 }}}
 Para instalar o Java 1.6 (repare o "java6" no nome do pacote) e o conjunto de plugins (Firefox, etc). Para o Java 1.5, troque o "java6" por "java5" no nome dos pacotes. Para instalar o SDK, troque, no nome do pacote, "jre" por "jdk":
 {{{
-# apt-get install sun-java6-jdk
+ apt-get install sun-java6-jdk
 }}}
 Para o IcedTea, o procedimento é semelhante, veja um exemplo:
 {{{
-# apt-get install icedtea-java7-jdk icedtea-java7-plugin
+ apt-get install icedtea-java7-jdk icedtea-java7-plugin
 }}}
 outras distribuições e o tutorial completo http://www.guiadohardware.net/tutoriais/java-linux
 
@@ -66,8 +66,8 @@ The Native POSIX Thread Library (NPTL) is a software feature that enables the Li
 Facil:
 
 {{{
-#getconf GNU_LIBPTHREAD_VERSION
-*saida algo como: NPTL 2.10.1*
+getconf GNU_LIBPTHREAD_VERSION
+*_saida algo como:_ NPTL 2.10.1*
 }}}
 
 ===Instalação===
