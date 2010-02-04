@@ -44,6 +44,9 @@ Para o IcedTea, o procedimento é semelhante, veja um exemplo:
 {{{
 # apt-get install icedtea-java7-jdk icedtea-java7-plugin
 }}}
+outras distribuições e o tutorial completo http://www.guiadohardware.net/tutoriais/java-linux
 
 =Firebird 1.5.x=
+
+
 =FreedomERP Compilado p/ Linux=
