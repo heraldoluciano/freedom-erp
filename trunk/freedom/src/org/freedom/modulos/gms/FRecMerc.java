@@ -659,58 +659,285 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 	}
 
-	private void imprimir(boolean bVisualizar) {
-		ImprimeOS imp = new ImprimeOS("",con);
-		int linPag = imp.verifLinPag()-1;
-		imp.montaCab();
-		imp.setTitulo("Relatório de tipo de recebimento de mercadorias");
-
-		String sSQL = "SELECT CODTIPORECMERC,DESCTIPORECMERC FROM EQTIPORECMERC "
-					+ "WHERE CODEMP=? AND CODFILIAL=? ORDER BY 1 ";
-
+	private HashMap<String, Object> buscaPrimeiraPesagem() {
+		
+		HashMap<String, Object> pesagem = null;;
+		StringBuilder sql = new StringBuilder();
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			ps = con.prepareStatement(sSQL);
 			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQTIPORECMERC" ) );
+			pesagem = new HashMap<String, Object>();
 			
+			sql.append( "select first 1 a.pesoamost peso, a.dataamost data, a.horaamost hora, pd.codunid, a.seqamostragem ");
+			sql.append( "from eqrecamostragem a, eqitrecmerc i, eqprocrecmerc p, eqproduto pd ");
+			sql.append( "where ");
+			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditrecmerc=i.coditrecmerc ");
+			sql.append( "and i.codemp=? and i.codfilial=? and i.ticket=? ");
+			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc='PI' ");
+			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
+			sql.append( "order by a.dataamost desc, a.codamostragem desc"); 
+			
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );			
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+						
 			rs = ps.executeQuery();
-			imp.limpaPags();
-			while ( rs.next() ) {
-				if (imp.pRow()==0) {
-					imp.impCab(80, false);
-					imp.say(imp.pRow()+0,0,""+imp.normal());
-					imp.say(imp.pRow()+0,0,"");
-					imp.say(imp.pRow()+0,2,"Código");
-					imp.say(imp.pRow()+0,25,"Descrição");
-					imp.say(imp.pRow()+1,0,""+imp.normal());
-					imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
-				}
-				imp.say(imp.pRow()+1,0,""+imp.normal());
-				imp.say(imp.pRow()+0,2,rs.getString("CodTipoRecMerc"));
-				imp.say(imp.pRow()+0,25,rs.getString("DescTipoRecMerc"));
-				if (imp.pRow()>=linPag) {
-					imp.incPags();
-					imp.eject();
-				}
+
+			if ( rs.next() ) {
+				
+				pesagem.put( "peso", rs.getBigDecimal( "peso" ) );
+				pesagem.put( "data", Funcoes.dateToStrDate( rs.getDate( "data" ) ) );
+				pesagem.put( "hora", rs.getString( "hora" ) );
+				pesagem.put( "unid", rs.getString( "codunid" ).trim() );
+				pesagem.put( "interno", rs.getString( "seqamostragem" ) );
+								
 			}
-
-			imp.say(imp.pRow()+1,0,""+imp.normal());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
-			imp.eject();
-
-			imp.fechaGravacao();
-
-			//      rs.close();
-			//      ps.close();
+		
 			con.commit();
 			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return pesagem;
+	}
+	
+	private HashMap<String, Object> buscaSegundaPesagem() {
+		
+		HashMap<String, Object> pesagem = null;;
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			pesagem = new HashMap<String, Object>();
+			
+			sql.append( "select first 1 a.pesoamost peso, a.dataamost data, a.horaamost hora, pd.codunid ");
+			sql.append( "from eqrecamostragem a, eqitrecmerc i, eqprocrecmerc p, eqproduto pd ");
+			sql.append( "where ");
+			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditrecmerc=i.coditrecmerc ");
+			sql.append( "and i.codemp=? and i.codfilial=? and i.ticket=? ");
+			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc='PF' ");
+			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
+			sql.append( "order by a.dataamost, a.codamostragem desc"); 
+			
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );			
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+						
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				
+				pesagem.put( "peso", rs.getBigDecimal( "peso" ) );
+				pesagem.put( "data", Funcoes.dateToStrDate( rs.getDate( "data" ) ) );
+				pesagem.put( "hora", rs.getString( "hora" ) );
+				pesagem.put( "unid", rs.getString( "codunid" ).trim() );
+								
+			}
+		
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return pesagem;
+	}
+	
+	private HashMap<String, Object> buscaRenda() {
+		
+		HashMap<String, Object> pesagem = null;;
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			pesagem = new HashMap<String, Object>();
+			
+			sql.append( "select first 1 i.mediaamostragem media, i.rendaamostragem renda ");
+			sql.append( "from eqitrecmerc i, eqprocrecmerc p ");
+			sql.append( "where ");
+			sql.append( "i.codemp=? and i.codfilial=? and i.ticket=? ");
+			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc='TR' ");
+			sql.append( "order by i.coditrecmerc desc"); 
+						
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );			
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+						
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				
+				pesagem.put( "media", rs.getBigDecimal( "media" ) );
+				pesagem.put( "renda", rs.getString( "renda" ) );
+								
+			}
+		
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return pesagem;
+	}
+
+
+	
+	private void imprimir(boolean bVisualizar) {
+
+		ImprimeOS imp = new ImprimeOS("",con);
+		String DataP1 = null;
+		String HoraP1 = null;
+		String UnidP1 = null;
+		String interno = null;
+		BigDecimal PesoP1 = null; 
+		
+		String DataP2 = null;
+		String HoraP2 = null;
+		String UnidP2 = null;
+		BigDecimal PesoP2 = null; 
+		
+		BigDecimal PesoLiq = null;
+		
+		BigDecimal media = null;
+		String renda = null;
+
+		
+		try {
+
+			try {
+				
+				HashMap<String, Object> p1 = buscaPrimeiraPesagem();
+				
+				PesoP1 = (BigDecimal) p1.get( "peso" );
+				DataP1 = (String) p1.get( "data" );
+				HoraP1 = (String) p1.get( "hora" );
+				UnidP1 = (String) p1.get( "unid" );
+				interno = (String) p1.get( "interno" );
+				
+				HashMap<String, Object> p2 = buscaSegundaPesagem();
+				
+				PesoP2 = (BigDecimal) p2.get( "peso" );
+				DataP2 = (String) p2.get( "data" );
+				HoraP2 = (String) p2.get( "hora" );
+				UnidP2 = (String) p2.get( "unid" );
+				
+				PesoLiq = PesoP1.subtract( PesoP2 );
+				
+				HashMap<String, Object> p3 = buscaRenda();
+				
+				media = (BigDecimal) p3.get( "media" );
+				renda = (String) p3.get( "renda" );
+
+				
+
+			}
+			catch (Exception e) {
+				System.out.println("Erro ao buscar primeira pesagem");
+			}
+			
+			imp.pulaLinha( 7, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 70,  txtDescMun.getVlrString().trim()  );
+			
+			imp.pulaLinha( 3, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 3,  "PLACA:............:"  );			
+			imp.say( imp.pRow(), 24, Funcoes.setMascara( txtPlacaTran.getVlrString(), JTextFieldPad.mascplaca ) );
+			
+			imp.say( imp.pRow(), 70,  "INTERNO.:"  );
+
+			imp.say( imp.pRow(), 0, " " +  imp.normal());
+			
+			imp.say( imp.pRow(), 48,  Funcoes.strZero( interno,10  ) );
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 3,  "PRODUTO:..........:" );			
+
+			imp.say( imp.pRow(), 0, " " + imp.normal());
+			imp.say( imp.pRow(), 15, txtDescProdCab.getVlrString().trim() );						
+			
+			imp.pulaLinha( 1, imp.comprimido() );			
+						
+			imp.say( imp.pRow(), 3,  "PRODUTOR:.........:" );
+			
+			imp.say( imp.pRow(), 24,  txtCodFor.getVlrString().trim() + " " + txtRazFor.getVlrString().trim() );
+			
+			imp.pulaLinha( 2, imp.comprimido() );			
+			
+			imp.say( imp.pRow(), 3,  "PRIMEIRA PESAGEM..:" );
+			
+			imp.say( imp.pRow(), 0, " " + imp.normal());
+			
+			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoP1 ) ) );
+			
+			imp.say( imp.pRow(), 23, UnidP1 );		
+			imp.say( imp.pRow(), 30, DataP1 );			
+			imp.say( imp.pRow(), 46, HoraP1 );
+			
+			imp.pulaLinha( 1, imp.comprimido() ); 
+			
+			imp.say( imp.pRow(), 3,  "SEGUNDA PESAGEM...:" );
+
+			imp.say( imp.pRow(), 0, " " + imp.normal());
+			
+			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoP2 ) ) );
+			imp.say( imp.pRow(), 23, UnidP2 );		
+			imp.say( imp.pRow(), 30, DataP2 );			
+			imp.say( imp.pRow(), 46, HoraP2 );
+
+			
+			imp.pulaLinha( 2, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 3,  "LIQUIDO...........:" );
+
+			imp.say( imp.pRow(), 0, " " + imp.normal());
+			
+			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoLiq ) ) );
+			imp.say( imp.pRow(), 23, UnidP1 );		
+
+			
+			imp.pulaLinha( 2, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 3,  "Renda.............:" );
+			imp.say( imp.pRow(), 24, String.valueOf( media.intValue()) );
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 3,  "Renda Classif.....:");
+			
+			imp.say( imp.pRow(), 0, " " + imp.normal());
+			
+			imp.say( imp.pRow(), 15,  renda );
+			
+			
+			
+			imp.pulaLinha( 3 );
+			imp.fechaGravacao();
+
+			
 		}  
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de recebimento de mercadorias!\n"+err.getMessage(),true,con,err);      
+		catch ( Exception err ) {
+			Funcoes.mensagemErro(this,"Erro na impressão de ticket!\n"+err.getMessage(),true,con,err);      
 		}
 
 		if (bVisualizar) {
