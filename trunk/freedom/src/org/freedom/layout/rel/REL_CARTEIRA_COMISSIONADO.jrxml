@@ -32,24 +32,28 @@
 , ( SELECT MAX(DTEMITVENDA) FROM vdvenda VD, EQTIPOMOV TM WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial
 AND VD.codempvd = V.codemp AND VD.codcli = C.codcli AND VD.codfilialcl = C.codfilial AND VD.codempcl = C.codemp AND VD.codemptm = TM.codemp
 AND VD.codfilialtm = TM.codfilial AND VD.codtipomov = TM.codtipomov AND TM.fiscaltipomov = 'S' AND TM.somavdtipomov = 'S'
-AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' ) ultima_venda FROM vdcliente C, vdvendedor V, sgmunicipio M
+AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' ) ultima_venda, 0 doc_ultima_venda  FROM vdcliente C, vdvendedor V, sgmunicipio M
 WHERE V.codvend = C.codvend AND V.codfilial = C.codfilial AND V.codemp = C.codemp AND C.codmunic = M.codmunic
 AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 
-	<field name="CODVEND" class="java.lang.Long"/>
+	<field name="CODVEND" class="java.lang.Integer"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="DDDFONEVEND" class="java.lang.String"/>
 	<field name="FONEVEND" class="java.lang.String"/>
 	<field name="CIDVEND" class="java.lang.String"/>
-	<field name="CODCLI" class="java.lang.Long"/>
+	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="ENDCLI" class="java.lang.String"/>
-	<field name="NUMCLI" class="java.lang.Long"/>
+	<field name="NUMCLI" class="java.lang.Integer"/>
 	<field name="DDDCLI" class="java.lang.String"/>
 	<field name="FONECLI" class="java.lang.String"/>
 	<field name="CIDCLI" class="java.lang.String"/>
 	<field name="ULTIMA_VENDA" class="java.sql.Date"/>
+	<field name="DOC_ULTIMA_VENDA" class="java.lang.Integer"/>
 
+	<variable name="COUNT_CLI_VEND" class="java.lang.Integer" resetType="Group" resetGroup="VENDEDOR" calculation="Sum">
+		<variableExpression><![CDATA[new Integer(1)]]></variableExpression>
+	</variable>
 
 		<group  name="VENDEDOR" >
 			<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
@@ -59,7 +63,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="3"
-						y="39"
+						y="38"
 						width="31"
 						height="11"
 						forecolor="#000000"
@@ -75,9 +79,9 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="448"
-						y="39"
-						width="59"
+						x="392"
+						y="38"
+						width="70"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -109,7 +113,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="445"
+						x="388"
 						y="36"
 						width="0"
 						height="15"
@@ -137,8 +141,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="40"
-						y="39"
-						width="272"
+						y="38"
+						width="214"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -161,7 +165,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODVEND}.toString() + " - " + $F{NOMEVEND}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODVEND}==null?"Vendedor indeterminado": ($F{CODVEND}.toString() + " - " + $F{NOMEVEND})]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -209,7 +213,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					</textElement>
 				<text><![CDATA[Cidade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="69"
 						y="21"
@@ -243,8 +247,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="318"
-						y="39"
+						x="262"
+						y="38"
 						width="124"
 						height="11"
 						forecolor="#000000"
@@ -259,7 +263,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="315"
+						x="257"
 						y="36"
 						width="0"
 						height="15"
@@ -269,8 +273,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="513"
-						y="39"
+						x="471"
+						y="38"
 						width="49"
 						height="11"
 						forecolor="#000000"
@@ -285,7 +289,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="510"
+						x="466"
 						y="36"
 						width="0"
 						height="15"
@@ -309,7 +313,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					</textElement>
 				<text><![CDATA[Telefone:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="####-###-####" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="366"
 						y="21"
@@ -320,17 +324,52 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{DDDFONEVEND}.toString() + ") " + $F{FONEVEND}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONEVEND}==null? "" :( "(" + $F{DDDFONEVEND}.trim() + ") " + $F{FONEVEND}.substring(0,4) + "-" + $F{FONEVEND}.substring(4)   )]]></textFieldExpression>
 				</textField>
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="5"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="526"
+						y="38"
+						width="37"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-17"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Doc.]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="523"
+						y="36"
+						width="0"
+						height="15"
+						key="line-57"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="1"
+						y="50"
 						width="567"
+						height="0"
+						key="line-63"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="17"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="14"
+						width="258"
 						height="0"
 						key="line-4"
 						positionType="FixRelativeToBottom"
@@ -340,64 +379,37 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="566"
-						y="0"
-						width="0"
-						height="1"
-						key="line-6"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="445"
-						y="0"
-						width="0"
-						height="2"
-						key="line-7"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="315"
-						y="0"
-						width="0"
-						height="2"
-						key="line-44"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="566"
-						y="0"
-						width="0"
-						height="2"
-						key="line-49"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="37"
-						y="0"
-						width="0"
-						height="2"
-						key="line-50"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="0"
 						y="0"
 						width="0"
-						height="2"
+						height="15"
 						key="line-51"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="257"
+						y="0"
+						width="0"
+						height="15"
+						key="line-60"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="2"
+						width="250"
+						height="11"
+						key="textField-36"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{COUNT_CLI_VEND} + " clientes para o vendedor " + ($F{NOMEVEND} == null ? "indeterminado" : $F{NOMEVEND} ) + "."]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -532,20 +544,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 			<band height="14"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="0"
-						y="1"
-						width="567"
-						height="0"
-						key="line-16"
-						isPrintRepeatedValues="false"
-						isPrintInFirstWholeBand="true"
-						isPrintWhenDetailOverflows="true"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="566"
-						y="1"
+						y="0"
 						width="0"
 						height="13"
 						key="line-29"
@@ -563,13 +563,13 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="40"
 						y="2"
-						width="272"
+						width="214"
 						height="11"
 						key="textField-29"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -580,7 +580,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="318"
+						x="262"
 						y="2"
 						width="124"
 						height="11"
@@ -591,22 +591,22 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="( #### ) #### - #### 0000 - 0000 - 0000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="448"
+						x="392"
 						y="2"
-						width="59"
+						width="70"
 						height="11"
 						key="textField-33"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{DDDCLI}.toString() + ") " + $F{FONECLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECLI}==null? "" :( "(" + $F{DDDCLI}.trim() + ") " + $F{FONECLI}.substring(0,4) + "-" + $F{FONECLI}.substring(4)   )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="512"
+						x="470"
 						y="2"
 						width="50"
 						height="11"
@@ -619,8 +619,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="510"
-						y="1"
+						x="466"
+						y="0"
 						width="0"
 						height="13"
 						key="line-52"/>
@@ -628,8 +628,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="445"
-						y="1"
+						x="388"
+						y="0"
 						width="0"
 						height="13"
 						key="line-53"/>
@@ -637,8 +637,8 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="315"
-						y="1"
+						x="257"
+						y="0"
 						width="0"
 						height="13"
 						key="line-54"/>
@@ -647,7 +647,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="37"
-						y="1"
+						y="0"
 						width="0"
 						height="13"
 						key="line-55"/>
@@ -655,13 +655,44 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="0"
-						y="1"
+						x="523"
+						y="0"
 						width="0"
 						height="13"
-						key="line-56"/>
+						key="line-58"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="13"
+						width="567"
+						height="0"
+						key="line-61"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="13"
+						key="line-62"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="526"
+						y="2"
+						width="33"
+						height="11"
+						key="textField-37"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{DOC_ULTIMA_VENDA}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -731,6 +762,67 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]></queryString>
 				</line>
 			</band>
 		</pageFooter>
+		<lastPageFooter>
+			<band height="19"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="15"
+						width="258"
+						height="0"
+						key="line-64"
+						positionType="FixRelativeToBottom"
+						isPrintRepeatedValues="false"
+						printWhenGroupChanges="VENDEDOR"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="0"
+						height="15"
+						key="line-65"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="257"
+						y="1"
+						width="0"
+						height="15"
+						key="line-66"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="3"
+						width="250"
+						height="11"
+						key="textField-38"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{REPORT_COUNT} + " clientes no total."]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="258"
+						height="0"
+						key="line-67"
+						positionType="FixRelativeToBottom"
+						isPrintRepeatedValues="false"
+						printWhenGroupChanges="VENDEDOR"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</lastPageFooter>
 		<summary>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
