@@ -107,7 +107,9 @@ public class FRCarteiraComissionado extends FRelatorio {
 				
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
-		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
+		cPeriodo.set( Calendar.DAY_OF_MONTH, 1 );
+		cPeriodo.set( Calendar.MONTH, 0 );
+		cPeriodo.set( Calendar.YEAR, cPeriodo.get( Calendar.YEAR ) - 1  );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 
@@ -128,7 +130,7 @@ public class FRCarteiraComissionado extends FRelatorio {
 		try {
 			
 			sql.append( "select V.codvend, V.nomevend, V.dddfonevend, V.fonevend, V.cidvend, C.codcli, C.razcli, C.endcli, C.numcli, C.dddcli, C.fonecli, COALESCE( M.nomemunic, C.cidcli ) cidcli");
-		    sql.append( ", ( SELECT MAX(DTEMITVENDA) FROM vdvenda VD, EQTIPOMOV TM ");
+		    sql.append( ", ( SELECT first 1 DTEMITVENDA FROM vdvenda VD, EQTIPOMOV TM ");
 		    sql.append( "WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial ");
 		    sql.append( " AND VD.codempvd = V.codemp");
 		    sql.append( " AND VD.codcli = C.codcli");
@@ -139,28 +141,49 @@ public class FRCarteiraComissionado extends FRelatorio {
 		    sql.append( " AND VD.codtipomov = TM.codtipomov");
 		    sql.append( " AND TM.fiscaltipomov = 'S'");
 		    sql.append( " AND TM.somavdtipomov = 'S'");
-		    sql.append( " AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' ) ultima_venda");
-		    sql.append( " FROM vdcliente C, vdvendedor V, sgmunicipio M");
-		    sql.append( " WHERE V.codvend = C.codvend AND V.codfilial = C.codfilial");
-		    sql.append( " AND V.codemp = C.codemp AND C.codmunic = M.codmunic");
+		    sql.append( " AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' " );
+		    sql.append( " AND VD.DTEMITVENDA BETWEEN ? AND ? order by vd.dtemitvenda desc ) ultima_venda");
+		    
+		    sql.append( ", ( SELECT first 1 vd.docvenda FROM vdvenda VD, EQTIPOMOV TM ");
+		    sql.append( "WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial ");
+		    sql.append( " AND VD.codempvd = V.codemp");
+		    sql.append( " AND VD.codcli = C.codcli");
+		    sql.append( " AND VD.codfilialcl = C.codfilial");
+		    sql.append( " AND VD.codempcl = C.codemp");
+		    sql.append( " AND VD.codemptm = TM.codemp");
+		    sql.append( " AND VD.codfilialtm = TM.codfilial");
+		    sql.append( " AND VD.codtipomov = TM.codtipomov");
+		    sql.append( " AND TM.fiscaltipomov = 'S'");
+		    sql.append( " AND TM.somavdtipomov = 'S'");
+		    sql.append( " AND substring(VD.statusvenda FROM 1 FOR 1 ) <> 'C' " );
+		    sql.append( " AND VD.DTEMITVENDA BETWEEN ? AND ? order by vd.DTEMITVENDA desc ) doc_ultima_venda ");
+		    
+		    sql.append( " FROM sgmunicipio M, vdcliente C left outer join vdvendedor V on ");
+		    sql.append( " V.codvend = C.codvend AND V.codfilial = C.codfilialvd AND V.codemp = C.codempvd " );
+    		sql.append( " WHERE  C.codmunic = M.codmunic" );
 		    sql.append( " AND C.siglauf = M.siglauf AND C.codpais = M.codpais");
 		    			
-			if(txtCodComiss.getVlrInteger() > 0) 
-			{
+			if(txtCodComiss.getVlrInteger() > 0 ) {
 				sql.append( " AND C.codempvd =? and C.codfilialvd = ? and C.codvend = ? " );
 			}
+			
 						
-			sql.append( " order by 2, 13 DESC, 7 ASC" );
+			
+//			sql.append( " order by 2, 13 DESC, 7 ASC" );
+			sql.append( " order by 2 , 7" );
 			
 			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
 
-//			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
-//			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
 			
-			if(txtCodComiss.getVlrInteger() > 0) 
-			{
+			if(txtCodComiss.getVlrInteger() > 0) {
 				ps.setInt( param++, lcComiss.getCodEmp() );
 				ps.setInt( param++, lcComiss.getCodFilial() );
 				ps.setInt( param++, txtCodComiss.getVlrInteger() );
