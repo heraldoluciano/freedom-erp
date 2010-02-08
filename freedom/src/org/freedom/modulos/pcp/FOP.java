@@ -42,7 +42,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -50,9 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -89,7 +86,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private static final long serialVersionUID = 1L;
 
 	private int casasDec = Aplicativo.casasDec;
-
+		
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
@@ -1960,7 +1957,19 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		String sSql = "SELECT CLASSOP FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
 		String sClassOP = "";
 		Vector<Object> vParamOP = new Vector<Object>();
-		//LeiauteGR leiOP = null;
+		DLROP dl = new DLROP();
+		
+		
+		dl.setVisible(true);
+		
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
+		
+		String ordem = dl.getValor();
+		
+		
 		try {
 			try {
 				ps = con.prepareStatement( sSql );
@@ -1992,6 +2001,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					hParam.put( "CODOP", txtCodOP.getVlrInteger() );
 					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );
 					hParam.put( "SUBREPORT_DIR", "org/freedom/layout/op/"); 
+					hParam.put( "ORDEM", ordem );
 					
 					dlGr = new FPrinterJob("layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con ); 
 
@@ -2005,18 +2015,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 							Funcoes.mensagemErro( this, "Erro na impressão de Ordem de produção!" + err.getMessage(), true, con, err );
 						}
 					}
-				/*	leiOP = (LeiauteGR) Class.forName( "org.freedom.layout.op." + sClassOP ).newInstance();
-					leiOP.setConexao( con );
-					vParamOP.clear();
-					vParamOP.addElement( txtCodOP.getText() );
-					vParamOP.addElement( txtSeqOP.getText() );
-					leiOP.setParam( vParamOP );
-					if ( bVisualizar ) {
-						dl = new FPrinterJob( leiOP, this );
-						dl.setVisible( true );
-					}
-					else
-						leiOP.imprimir( true );*/
 				} catch ( Exception err ) {
 					Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Ordem de produção!\n" + err.getMessage() );
 					err.printStackTrace();
