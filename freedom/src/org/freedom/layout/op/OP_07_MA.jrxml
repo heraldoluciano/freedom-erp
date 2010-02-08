@@ -53,6 +53,7 @@
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="ORDEM" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT P.CODOP, P.QTDPREVPRODOP, P.DTFABROP, P.DTVALIDPDOP, P.CODLOTE, P.CODPROD,
 E.DESCEST, P.DTEMITOP
 FROM PPOP P, PPESTRUTURA E WHERE P.CODOP=$P{CODOP} AND P.SEQOP=$P{SEQOP}
@@ -114,7 +115,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						<subreportParameterExpression><![CDATA[$P{SEQOP}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_01.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_01" + "_SORT_" + $P{ORDEM} + ".jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupHeader>
