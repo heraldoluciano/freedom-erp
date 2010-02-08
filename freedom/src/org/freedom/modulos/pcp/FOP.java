@@ -2000,7 +2000,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 					hParam.put( "CODOP", txtCodOP.getVlrInteger() );
 					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );
-					hParam.put( "SUBREPORT_DIR", "org/freedom/layout/op/"); 
+					hParam.put( "SUBREPORT_DIR", "org/freedom/layout/op/" );
 					hParam.put( "ORDEM", ordem );
 					
 					dlGr = new FPrinterJob("layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con ); 
