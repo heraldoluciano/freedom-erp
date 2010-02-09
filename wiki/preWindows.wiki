@@ -1,4 +1,4 @@
- * Servidor e Cliente
+ = Servidor e Cliente =
  * Processador 1Ghz ou superior
  * Sistema operacional (Compatível com Java 1.6)
  * 256 MB de RAM
