@@ -43,6 +43,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
@@ -64,6 +65,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	private JLabelPad lbpeso2 = new JLabelPad(( "Peso 2" ));
 	
 	private SerialPort porta =  null;
+	
+	private String leitura = null;
 
 	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
@@ -96,7 +99,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
 		
-		listaPortasSeriais();
+//		listaPortasSeriais();
+		abrePorta("/dev/ttyS0");
+		
+		lePorta();
 		
 		
 	}
@@ -172,6 +178,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	}
 	
 	public String[] listaPortasSeriais() {
+		
 		Enumeration listadeportas = null;
 		String[] portas = new String[10];
 		
@@ -200,13 +207,23 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
-	private void abrePorta() {
+	private void abrePorta(String nomeporta) {
+	
+		try {
+			
+			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier(nomeporta);
+			porta = (SerialPort) cp.open( "SComm", 1 );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void lePorta() {
 		
 		try {
 	
-			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier("/dev/ttyS0");
-			porta = (SerialPort) cp.open( "SComm", 1 );
-			
 			InputStream entrada = porta.getInputStream();
 
 			porta.notifyOnDataAvailable( true );
@@ -239,13 +256,37 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				}
 				
-				String leitura = new String(bufferLeitura);
+				String strleitura = new String(bufferLeitura);
+				
+				String leitura2 = Funcoes.alltrim( strleitura );
+
+				leitura2 = leitura2.substring( 0, 22 );
+				
+				if(leitura2.length()==22) {
+					
+					String validador = leitura2.substring( 11, 1 ) 
+					 				 + leitura2.substring( 11, 1 )
+					 				 + leitura2.substring( 19, 1 );
+					
+					if("//:".equals( validador )) {
+						
+						leitura = leitura2;
+						
+						porta.notifyOnDataAvailable( false );
+					
+						porta.close();
+						
+					}
+					
+					
+				}
+				
 				
 				if(bufferLeitura.length>0) {
-					System.out.print( leitura );
+					System.out.println( strleitura );
 				}
 				else {
-					System.out.print( "nada lido!" );
+					System.out.println( "nada lido!" );
 				}
 				
 				System.out.println( "número de bytes lidos:" + nodeBytes );
