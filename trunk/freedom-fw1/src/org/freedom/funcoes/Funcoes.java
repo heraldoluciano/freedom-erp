@@ -874,6 +874,31 @@ public class Funcoes {
 		return copy(sTmp, 0, iTam);
 	}
 
+	public static String ltrim( String texto) {
+		if (texto==null) {
+			return "";
+		}
+		
+		while (texto.charAt(0) == ' ') {
+			texto = texto.substring(1);
+		}
+		return texto;
+		
+	}
+	
+	public static String alltrim(String texto) {
+		
+		if(texto==null) {
+			return "";
+		}
+		
+		texto = ltrim(texto.trim());
+		
+		return texto;
+		
+		
+	}
+	
 	public static String limpaString(String sTexto) {
 		String sResult = "";
 		String sCaracs = "- .,;/\\";
