@@ -28,11 +28,15 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Enumeration;
 
 import javax.comm.CommPortIdentifier;
+import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -43,7 +47,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +61,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private JLabelPad lbpeso1 = new JLabelPad(( "Peso 1" ));
 	
-	private JLabelPad lbpeso2 = new JLabelPad(( "Peso 2" ));	
+	private JLabelPad lbpeso2 = new JLabelPad(( "Peso 2" ));
+	
+	private SerialPort porta =  null;
 
 	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
@@ -193,6 +199,68 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		return portas;	
 		
 	}
+	
+	private void abrePorta() {
+		
+		try {
+	
+			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier("/dev/ttyS0");
+			porta = (SerialPort) cp.open( "SComm", 1 );
+			
+			InputStream entrada = porta.getInputStream();
+
+			porta.notifyOnDataAvailable( true );
+			
+			porta.addEventListener( this );
+				
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+	}
+
+	public void serialEvent( SerialPortEvent ev ) {
+
+		try {
+		
+			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+				
+				InputStream entrada = porta.getInputStream();
+				int nodeBytes = 0;
+				
+				byte[] bufferLeitura = new byte[64];
+				
+				while ( entrada.available() > 0 ) {
+					
+					nodeBytes = entrada.read( bufferLeitura );	
+				
+				}
+				
+				String leitura = new String(bufferLeitura);
+				
+				if(bufferLeitura.length>0) {
+					System.out.print( leitura );
+				}
+				else {
+					System.out.print( "nada lido!" );
+				}
+				
+				System.out.println( "número de bytes lidos:" + nodeBytes );
+				
+				
+			}
+				
+				
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 	
 
