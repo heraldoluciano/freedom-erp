@@ -30,6 +30,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Enumeration;
+
+import javax.comm.CommPortIdentifier;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -71,7 +74,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		adic( txtPeso1, 7, 20, 252, 50 );
 
 		if( FTipoRecMerc.DESCARREGAMENTO.equals( tipoprocrecmerc ) ) {
-			
+			 
 			adic( lbpeso2 , 7, 80, 252, 20 );
 			adic( txtPeso2, 7, 100, 252, 50 );
 			
@@ -86,6 +89,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
+		
+		listaPortasSeriais();
 		
 		
 	}
@@ -159,5 +164,36 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 		super.setConexao( cn );
 	}
+	
+	public String[] listaPortasSeriais() {
+		Enumeration listadeportas = null;
+		String[] portas = new String[10];
+		
+		try {
+			listadeportas = CommPortIdentifier.getPortIdentifiers();
+			
+			int i = 0;
+			
+			while (listadeportas.hasMoreElements()) {
+								
+				CommPortIdentifier ips = (CommPortIdentifier) listadeportas.nextElement();
+				portas[i] = ips.getName();
+				
+				System.out.println(ips.getName());
+				
+				i++;
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return portas;	
+		
+	}
+	
+	
 
 }
