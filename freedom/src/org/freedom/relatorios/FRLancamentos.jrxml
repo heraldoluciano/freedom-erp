@@ -69,6 +69,10 @@ ORDER BY
 	<variable name="TOT_PLAN" class="java.math.BigDecimal" resetType="Group" resetGroup="GROUP_PLAN" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
 	</variable>
+	<variable name="TOT_GERAL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -77,7 +81,42 @@ ORDER BY
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="8"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="-1"
+						y="0"
+						width="539"
+						height="18"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="307"
+						y="4"
+						width="55"
+						height="12"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GERAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="2"
+						y="4"
+						width="63"
+						height="13"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total]]></text>
+				</staticText>
 			</band>
 			</groupFooter>
 		</group>
@@ -276,7 +315,7 @@ ORDER BY
 				</line>
 				<staticText>
 					<reportElement
-						x="3"
+						x="2"
 						y="2"
 						width="63"
 						height="13"
@@ -285,7 +324,7 @@ ORDER BY
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Subtotal]]></text>
 				</staticText>
 			</band>
 			</groupFooter>
