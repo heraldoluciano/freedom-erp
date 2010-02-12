@@ -260,8 +260,9 @@ public class FRValorEstoque extends FRelatorio {
 
 			}
 			
-			System.out.println("SQL:" + sql.toString() );
-						
+			
+			sql.append( " and  sldprod > 0 " );
+			
 			if("C".equals(rgOrdem.getVlrString())) {
 				sql.append("order by p.codprod ");
 			}
@@ -269,6 +270,8 @@ public class FRValorEstoque extends FRelatorio {
 			if("D".equals(rgOrdem.getVlrString())) {
 				sql.append("order by p.descprod ");
 			}
+			
+			System.out.println("SQL:" + sql.toString() );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
