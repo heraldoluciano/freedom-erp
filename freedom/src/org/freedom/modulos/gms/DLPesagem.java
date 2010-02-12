@@ -119,9 +119,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private void carregaPadroes() {
 		
-		Date dataatual = new Date();
-		txtData.setVlrDate( dataatual );
-		txtHora.setVlrTime( dataatual );		
+//		Date dataatual = new Date();
+//		txtData.setVlrDate( dataatual );
+//		txtHora.setVlrTime( dataatual );		
 		
 	}
 
@@ -242,6 +242,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		String leitura = null;
 		
 		try {
+			
+			Funcoes.espera( 1 );
 		
 			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 				
@@ -259,7 +261,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				String strleitura = new String(bufferLeitura);
 				
 				String leitura2 = Funcoes.alltrim( strleitura );
-
+				
+				int posicaobranca = leitura2.indexOf( " " );
+				
+				if(posicaobranca<22) {
+					leitura2 = leitura2.substring( posicaobranca );
+					leitura2 = Funcoes.alltrim( leitura2 );
+				}
 				
 				if(leitura2.length()>=22) {
 				
@@ -298,7 +306,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			e.printStackTrace();
 		}
 		finally {
-			parseLeitura( leitura );
+			if(leitura != null) {
+				parseLeitura( leitura );
+			}
 		}
 		
 	}
@@ -312,8 +322,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		try {
 			
 			peso = leitura.substring( 0,  07 );
-			data = leitura.substring( 9,  06 );
-			hora = leitura.substring( 16, 21 );
+			data = leitura.substring( 9,  17 );
+			hora = leitura.substring( 17, 22 );
 			
 			txtPeso1.setVlrBigDecimal( Funcoes.strToBd( peso ) );
 			txtData.setVlrDate( Funcoes.strDate6digToDate( data ) );
