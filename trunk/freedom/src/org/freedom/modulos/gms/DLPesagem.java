@@ -66,8 +66,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private SerialPort porta =  null;
 	
-	private String leitura = null;
-
 	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
 		super( cOrig );
@@ -104,9 +102,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 		lePorta();
 		
-		System.out.println("Leitura:" + leitura);
-		
-		
+
 	}
 	
 	private void ajustaCampos() {
@@ -242,7 +238,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	}
 	
 	public void serialEvent( SerialPortEvent ev ) {
-
+		
+		String leitura = null;
+		
 		try {
 		
 			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
@@ -262,20 +260,18 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				String leitura2 = Funcoes.alltrim( strleitura );
 
-				leitura2 = leitura2.substring( 0, 22 );
 				
-				if(leitura2.length()==22) {
+				if(leitura2.length()>=22) {
+				
+					leitura2 = leitura2.substring( 0, 22 );
 					
-					String validador = leitura2.substring( 11, 1 ) 
-					 				 + leitura2.substring( 11, 1 )
-					 				 + leitura2.substring( 19, 1 );
+					String validador = leitura2.substring( 11, 12 )  + leitura2.substring( 14, 15 ) + leitura2.substring( 19, 20 );
 					
 					if("//:".equals( validador )) {
 						
 						leitura = leitura2;
 						
-						porta.notifyOnDataAvailable( false );
-					
+						porta.notifyOnDataAvailable( false );					
 						porta.close();
 						
 					}
@@ -301,7 +297,33 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			parseLeitura( leitura );
+		}
 		
+	}
+	
+	private void parseLeitura(String leitura) {
+		
+		String peso = "";
+		String data = "";
+		String hora = "";
+		
+		try {
+			
+			peso = leitura.substring( 0,  07 );
+			data = leitura.substring( 9,  06 );
+			hora = leitura.substring( 16, 21 );
+			
+			txtPeso1.setVlrBigDecimal( Funcoes.strToBd( peso ) );
+			txtData.setVlrDate( Funcoes.strDate6digToDate( data ) );
+			txtHora.setVlrString( hora );
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
