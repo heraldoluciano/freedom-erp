@@ -122,69 +122,25 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 		</title>
 		<pageHeader>
 			<band height="158"  isSplitAllowed="true" >
-				<ellipse>
-					<reportElement
-						x="120"
-						y="2"
-						width="14"
-						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="ellipse-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
 				<rectangle>
 					<reportElement
-						x="7"
-						y="2"
+						x="0"
+						y="3"
 						width="120"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#010101"
+						backcolor="#FEFEFE"
 						key="rectangle-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="0"
-						y="9"
-						width="7"
-						height="7"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="rectangle-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<ellipse>
-					<reportElement
-						x="0"
-						y="2"
-						width="14"
-						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="ellipse-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
-				<rectangle>
-					<reportElement
-						x="127"
-						y="9"
-						width="7"
-						height="7"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="rectangle-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="45"
+						x="38"
 						y="3"
 						width="44"
 						height="12"
-						forecolor="#6464C8"
+						forecolor="#010101"
 						backcolor="#FFFFFF"
 						key="staticText-14"
 						positionType="Float"/>
@@ -231,10 +187,10 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="13"
+						y="16"
 						width="0"
-						height="144"
-						forecolor="#CCCCFF"
+						height="142"
+						forecolor="#010101"
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -360,10 +316,10 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="156"
+						y="157"
 						width="535"
 						height="0"
-						forecolor="#CCCCFF"
+						forecolor="#010101"
 						backcolor="#CCCCFF"
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -537,7 +493,7 @@ $F{CNPJCLI}.substring(12)
 						y="49"
 						width="535"
 						height="0"
-						forecolor="#CCCCFF"
+						forecolor="#010101"
 						backcolor="#CCCCFF"
 						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -575,11 +531,11 @@ $F{FONETRAN}.substring(4)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="134"
+						x="0"
 						y="16"
-						width="401"
+						width="535"
 						height="0"
-						forecolor="#CCCCFF"
+						forecolor="#010101"
 						backcolor="#CCCCFF"
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -894,8 +850,8 @@ $F{CEPCLI}.substring(5)
 						x="534"
 						y="17"
 						width="0"
-						height="139"
-						forecolor="#CCCCFF"
+						height="140"
+						forecolor="#010101"
 						key="line-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -934,22 +890,11 @@ $F{CEPCLI}.substring(5)
 		</columnFooter>
 		<pageFooter>
 			<band height="25"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="9"
-						y="9"
-						width="516"
-						height="16"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="rectangle-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="315"
-						y="9"
+						x="320"
+						y="8"
 						width="174"
 						height="11"
 						forecolor="#000000"
@@ -964,8 +909,8 @@ $F{CEPCLI}.substring(5)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="489"
-						y="9"
+						x="494"
+						y="8"
 						width="36"
 						height="11"
 						forecolor="#000000"
@@ -977,55 +922,11 @@ $F{CEPCLI}.substring(5)
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
-				<rectangle>
-					<reportElement
-						x="525"
-						y="9"
-						width="9"
-						height="9"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="rectangle-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="0"
-						y="9"
-						width="9"
-						height="9"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="rectangle-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<ellipse>
-					<reportElement
-						x="0"
-						y="9"
-						width="18"
-						height="16"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="ellipse-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
-				<ellipse>
-					<reportElement
-						x="516"
-						y="9"
-						width="18"
-						height="16"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
-						key="ellipse-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</ellipse>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="9"
-						y="9"
+						x="6"
+						y="7"
 						width="207"
 						height="12"
 						forecolor="#6464C8"
@@ -1034,7 +935,7 @@ $F{CEPCLI}.substring(5)
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+						<font fontName="" pdfFontName="Helvetica" size="6" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Setpoint informática - (41) 3668-6500]]></text>
 				</staticText>
