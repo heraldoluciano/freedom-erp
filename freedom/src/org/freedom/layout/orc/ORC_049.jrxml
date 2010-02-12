@@ -24,19 +24,19 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["/home/setpointadm/workspace/freedom/src/org/freedom/layout/orc/"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(6)]]></defaultValueExpression>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(49)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIALPF" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(1122)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CIDADEDIAMESANO" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, MC.NOMEMUNIC CIDCLI, C.ENDCLI,
