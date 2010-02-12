@@ -2122,7 +2122,7 @@ public class Funcoes {
 				
 				cal = (GregorianCalendar) GregorianCalendar.getInstance();
 				
-				String milenio = cal.get(Calendar.YEAR) + "".substring( 0, 2 ) ;
+				String milenio = ( cal.get(Calendar.YEAR) + "" ).substring( 0, 2 ) ;
 				
 				iAno = Integer.parseInt( milenio + iAno );
 				
@@ -2130,6 +2130,7 @@ public class Funcoes {
 				
 			} 
 			catch (Exception err) {
+				err.printStackTrace();
 				cal = null;
 			}
 		} else
