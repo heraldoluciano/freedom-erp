@@ -294,13 +294,15 @@ public class NF049 extends Layout {
 //						BigDecimal dificmssubst = cab.getBigDecimal( NF.C_VLRICMSST );
 						BigDecimal vlradic = cab.getBigDecimal( NF.C_VLRADICPED );
 //						BigDecimal vlrsoma = vlradic.add(dificmssubst);
-						BigDecimal vlrtotnota = vlrliq.add(vlradic);																		
+						BigDecimal vlrtotnota = vlrliq.add(vlradic);
+						BigDecimal vlripinota = cab.getBigDecimal( NF.C_VLRIPIPED );
+						BigDecimal vlrliqnota = vlrliq.subtract(vlripinota);		
 						
 						if(!complementar){
 														
 							imp.say( 61, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSST ) ) ) );
 							imp.say( 90, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRICMSST ) ) ) );							
-							imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRPRODPED ) ) ) );
+							imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( vlrliqnota ) ) );
 						}
 						
 						imp.pulaLinha( 2, imp.comprimido() );
