@@ -99,10 +99,12 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
 		
-//		listaPortasSeriais();
+
 		abrePorta("/dev/ttyS0");
 		
 		lePorta();
+		
+		System.out.println("Leitura:" + leitura);
 		
 		
 	}
@@ -238,7 +240,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 
 	}
-
+	
 	public void serialEvent( SerialPortEvent ev ) {
 
 		try {
@@ -301,6 +303,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 		
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	
 	
