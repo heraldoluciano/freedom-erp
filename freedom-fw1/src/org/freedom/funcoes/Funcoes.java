@@ -2107,6 +2107,37 @@ public class Funcoes {
 			return null;
 		return cal.getTime();
 	}
+	
+	public static Date strDate6digToDate(String sVal) {
+		GregorianCalendar cal = new GregorianCalendar();
+		if (sVal.trim().length() == 8) {
+			sVal = sVal.trim();
+			try {
+				
+				int iDia = Integer.parseInt(sVal.substring(0, 2));
+				
+				int iMes = Integer.parseInt(sVal.substring(3, 5)) - 1;
+				
+				int iAno = Integer.parseInt(sVal.substring(6));
+				
+				cal = (GregorianCalendar) GregorianCalendar.getInstance();
+				
+				String milenio = cal.get(Calendar.YEAR) + "".substring( 0, 2 ) ;
+				
+				iAno = Integer.parseInt( milenio + iAno );
+				
+				cal = new GregorianCalendar(iAno, iMes, iDia);
+				
+			} 
+			catch (Exception err) {
+				cal = null;
+			}
+		} else
+			cal = null;
+		if (cal == null)
+			return null;
+		return cal.getTime();
+	}
 
 	public static String dateToStrDataHora(Date dVal) {
 		GregorianCalendar cal = new GregorianCalendar();
