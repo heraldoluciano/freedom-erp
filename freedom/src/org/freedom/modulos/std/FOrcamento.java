@@ -1136,6 +1136,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
 		}
 	}
+	
+	private void calcPercDescIt() {
+		if ( txtVlrDescItOrc.floatValue() > 0 ) {
+			txtPercDescItOrc.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( (txtVlrDescItOrc.floatValue() * 100 ) / txtVlrProdItOrc.floatValue()  , casasDecFin ) ) );
+			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
+		}
+		else if ( txtVlrDescItOrc.floatValue() == 0 ) {
+			txtPercDescItOrc.setVlrString( "" );
+			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
+		}
+	}
+
 
 	private void calcTot() {
 		txtVlrLiqItOrc.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItOrc.getVlrBigDecimal(), txtVlrDescItOrc.getVlrBigDecimal() ) );
@@ -1659,10 +1671,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				
 				EmailBean mail = Aplicativo.getEmailBean();				
 				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
-				
-				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con, mail );
 
-				if ( bVisualizar ) {
+				FPrinterJob dlGr = new FPrinterJob( "layout/orc/"  + sClassOrc , null, null, this, hParam, con, mail );
+
+				if ( bVisualizar ) { 
 					dlGr.setVisible( true );
 				}
 				else {
@@ -1996,10 +2008,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void focusLost( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtVlrDescItOrc ) {
-			if ( bdVlrDescItAnt != txtVlrDescItOrc.getVlrBigDecimal() )
-				if ( txtPercDescItOrc.getText().trim().length() < 1 ) {
-					txtPercDescItOrc.setVlrString( "" );
-				}
+			
+			if ( bdVlrDescItAnt != txtVlrDescItOrc.getVlrBigDecimal() ) {
+				calcPercDescIt();
+			}
+				
 			if ( txtVlrDescItOrc.getVlrBigDecimal().floatValue() >= 0 ) {
 				calcDescIt();
 				calcVlrProd();
