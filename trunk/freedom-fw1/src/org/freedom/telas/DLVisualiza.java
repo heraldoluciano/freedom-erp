@@ -73,6 +73,7 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 	  
 	public DLVisualiza(ImprimeOS impOS, JInternalFrame pai) {
 		super(pai);
+//		super(false);
 		//Prepara arquivo temp:
 		imp = impOS;
 		//monta a area de visualização:

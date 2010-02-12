@@ -26,6 +26,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -37,13 +38,13 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.FileInputStream;
-import org.freedom.infra.model.jdbc.DbConnection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JRException;
@@ -54,11 +55,15 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ImprimeLayout;
+import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
@@ -69,6 +74,8 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	private JPanelPad pnCab = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
 
 	private ImprimeLayout impLay = new ImprimeLayout();
+	
+	private ImprimeOS imp = null;
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -104,10 +111,16 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private PageFormat pag = null;
 
-	private JPanelPad pinTools = new JPanelPad( 47, 45 );
+	private JPanelPad pinTools = new JPanelPad( 87, 45 );
 
+	private JButtonPad btTxt = new JButtonPad(Icone.novo("btTXT.gif"));
+	
 	private JButtonPad btPdf = new JButtonPad( Icone.novo( "btPdf.gif" ) );
 
+	private JTextArea txa = new JTextArea();
+
+	private JScrollPane spn2 = new JScrollPane(txa);
+	
 	public String strTemp = "";
 
 	private int iZoomAtual = 100;
@@ -139,7 +152,11 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		pinCab.adic( btMenos, 192, 5, 30, 30 );
 
 		pinTools.adic( btPdf, 7, 5, 30, 30 );
+		pinTools.adic( btTxt, 17, 15, 30, 30 );
 		btPdf.setToolTipText( "Exporta para formato PDF" );
+		btTxt.setToolTipText( "Exporta para formato de texto" );
+		
+		
 		pnCab.add( pinTools );
 		// monta a area de visualização:
 
@@ -348,7 +365,12 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		if ( evt.getSource() == btSair )
 			dispose();
 		else if ( evt.getSource() == btImp ) {
-			impLay.imprimir( false );
+			if( imp == null ) { 
+				impLay.imprimir( false );
+			}
+			else {
+				imp.print();
+			}
 		}
 		else if ( evt.getSource() == btAnt )
 			impLay.toPagina( impLay.getPagAtual() - 1 );
@@ -416,21 +438,31 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private void setZoom( int iVal ) {
 
-		if ( iVal == 0 ) {
-			Funcoes.mensagemErro( this, "Não é poissível ajustar o zoom para 0%!" );
-			return;
+		if(imp == null) {
+			if ( iVal == 0 ) {
+				Funcoes.mensagemErro( this, "Não é poissível ajustar o zoom para 0%!" );
+				return;
+			}
+	
+			// double dX = (double)iVal/100.0;
+			double dX = iVal / 100.0;
+			// double dY = (double)iVal/100.0;
+			double dY = iVal / 100.0;
+			Dimension dAnt = new Dimension( (int) pag.getWidth(), (int) pag.getHeight() );
+			impLay.setEscala( dX, dY );
+			dAnt.setSize( dAnt.getWidth() * dX, dAnt.getHeight() * dY );
+			impLay.setPreferredSize( dAnt );
+			impLay.revalidate();
+			iZoomAtual = iVal;
 		}
-
-		// double dX = (double)iVal/100.0;
-		double dX = iVal / 100.0;
-		// double dY = (double)iVal/100.0;
-		double dY = iVal / 100.0;
-		Dimension dAnt = new Dimension( (int) pag.getWidth(), (int) pag.getHeight() );
-		impLay.setEscala( dX, dY );
-		dAnt.setSize( dAnt.getWidth() * dX, dAnt.getHeight() * dY );
-		impLay.setPreferredSize( dAnt );
-		impLay.revalidate();
-		iZoomAtual = iVal;
+		else {
+			Font fAtual = getFonte();
+			int newsize = (fAtual.getSize() * iVal) / 100;
+			
+			txa.setFont(new Font(fAtual.getName(),fAtual.getStyle(),newsize));
+			txa.updateUI();
+			iZoomAtual = iVal;
+		}
 	}
 
 	private int getPercEncaixaX() {
@@ -461,5 +493,163 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	public void keyReleased( KeyEvent kevt ) {
 
 	}
+	
+	public FPrinterJob( ImprimeOS imp, JInternalFrame ifOrig) {
+		super( false );
+		
+		this.imp = imp;
+		
+		txa.setText(imp.lePagina(1));
+		txa.setFont(getFonte());
+
+		setTitulo( "Visualizar Impressão Gráfica", this.getClass().getName() );
+
+		setBounds( 50, 50, 500, 400 );
+
+		txtZoom.setTipo( JTextFieldPad.TP_INTEGER, 3, 0 );
+		txtZoom.setEnterSai( false );
+
+		Container c = getContentPane();
+
+		c.add( pnCab, BorderLayout.NORTH );
+		btSair.setPreferredSize( new Dimension( 80, 30 ) );
+		pnCab.add( pinCab );
+		pinCab.adic( btZoom100, 7, 5, 30, 30 );
+		pinCab.adic( btZoomIn, 40, 5, 30, 30 );
+		pinCab.adic( btZoomPag, 73, 5, 30, 30 );
+		pinCab.adic( txtZoom, 106, 5, 50, 30 );
+		pinCab.adic( btMais, 159, 5, 30, 30 );
+		pinCab.adic( btMenos, 192, 5, 30, 30 );
+
+		pinTools.adic( btPdf, 7, 5, 30, 30 );
+		btPdf.setToolTipText( "Exporta para formato PDF" );
+		pnCab.add( pinTools );
+		// monta a area de visualização:
+
+		spn.setViewportView( txa );
+		pnCli.add( spn );
+
+		c.add( pnCli, BorderLayout.CENTER );
+
+		// monta tela atual:
+
+		JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+		JPanelPad pnFCenter = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
+
+		JPanelPad pnDir = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+		pnDir.add( btImp );
+		pnDir.add( btSair );
+		pnRod.add( pnDir, BorderLayout.EAST );
+
+		JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 5 ) );
+
+		pnFCenter.add( pnCenter );
+
+		pnCenter.add( btPrim );
+		pnCenter.add( btAnt );
+		pnCenter.add( lbPag );
+		pnCenter.add( btProx );
+		pnCenter.add( btUlt );
+		pnRod.add( pnFCenter, BorderLayout.CENTER );
+
+		c.add( pnRod, BorderLayout.SOUTH );
+
+		// Configura os Listeners e Componentes
+
+		lbPag.setHorizontalAlignment( SwingConstants.CENTER );
+		btSair.addActionListener( this );
+		btImp.addActionListener( this );
+		btProx.addActionListener( this );
+		btAnt.addActionListener( this );
+		btPrim.addActionListener( this );
+		btUlt.addActionListener( this );
+
+		btZoom100.addActionListener( this );
+		btZoomIn.addActionListener( this );
+		btZoomPag.addActionListener( this );
+		btMais.addActionListener( this );
+		btMenos.addActionListener( this );
+		btSair.addActionListener( this );
+		txtZoom.addKeyListener( this );
+
+		btPdf.addActionListener( this );
+
+		impLay.montaG();
+		impLay.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent mevt ) {
+
+				if ( mevt.getButton() == 1 ) {
+					if ( iZoomAtual < 990 ) {
+						setZoom( iZoomAtual + 10 );
+						impLay.repaint();
+					}
+				}
+				else {
+					if ( iZoomAtual > 10 ) {
+						setZoom( iZoomAtual - 10 );
+						impLay.repaint();
+					}
+				}
+				txtZoom.setVlrString( "" + iZoomAtual );
+			}
+		} );
+
+		impLay.setCursor( getToolkit().createCustomCursor( Imagem.novo( "curZoom.gif" ), new Point( 5, 5 ), "Zoom" ) );
+
+		upContaPag( impLay.getPagAtual(), impLay.getNumPags() );
+		pag = impLay.getPFPad();
+		txtZoom.setVlrString( "100" );
+
+		ifOrig.getDesktopPane().add( this );
+
+		try {
+			setMaximum( true );
+		} catch ( Exception err ) {
+			err.printStackTrace();
+		}
+	
+	}	
+	
+	private Font getFonte() {
+		Font ret = null;;
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			if(con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}
+						
+			sql.append( "select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");  
+			sql.append( "from sgestacao ");
+			sql.append( "where ");
+			sql.append( "codemp=? and codfilial=? and codest=? ;");
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAO" ) );
+			ps.setInt( 3, Aplicativo.iNumEst );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				ret = new Font(rs.getString( 1 ).trim(),Font.BOLD, rs.getInt( 2 ));	
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				con.commit();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}
+
 	
 }
