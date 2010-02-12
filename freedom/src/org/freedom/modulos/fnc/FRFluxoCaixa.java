@@ -35,6 +35,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRFluxoCaixa extends FRelatorio {
@@ -76,7 +77,9 @@ public class FRFluxoCaixa extends FRelatorio {
 	  Funcoes.mensagemInforma(this,"Data final não informada!");
       return;
     }
+    
     ImprimeOS imp = new ImprimeOS("",con);
+    
     int linPagi = imp.verifLinPag()-1;
     
     imp.montaCab();
@@ -141,7 +144,9 @@ public class FRFluxoCaixa extends FRelatorio {
     
     
     if (bVisualizar) {
-    	imp.preview(this);
+//    	imp.preview(this);   
+    	imp.preview2(this);
+    	
     }
     else {
     	imp.print();
