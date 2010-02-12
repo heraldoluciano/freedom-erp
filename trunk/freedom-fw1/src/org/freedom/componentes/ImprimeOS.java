@@ -46,6 +46,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.DLVisualiza;
 import org.freedom.telas.FAndamento;
+import org.freedom.telas.FPrinterJob;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -238,6 +239,12 @@ public class ImprimeOS implements ActionListener {
 		else
 			previewTexto( pai );
 	}
+	
+	public void preview2 (JInternalFrame pai) {
+		
+		previewTexto2(pai);
+		
+	}
 
 	public void previewGrafico( JInternalFrame pai ) {
 
@@ -257,6 +264,13 @@ public class ImprimeOS implements ActionListener {
 		dlPrev.toFront();
 		dlPrev.setNomeImp( sImpressora );
 		dlPrev.setVisible( true );
+		
+	}
+	
+	public void previewTexto2( JInternalFrame pai ) {
+
+		FPrinterJob dlGr = new FPrinterJob( this,  pai  );
+		dlGr.setVisible(true);
 	}
 
 	public String getTitulo() {
