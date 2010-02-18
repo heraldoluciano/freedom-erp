@@ -404,9 +404,9 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="630"
+						x="627"
 						y="2"
-						width="49"
+						width="57"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -416,7 +416,7 @@ from eqrelgiroprod(49,1,cast('today' as date))]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Qtd.Vend.]]></text>
+				<text><![CDATA[Vend.(30dd)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
