@@ -161,6 +161,7 @@ public class FreedomFNC extends AplicativoPD {
 			addSeparador( 400000000 );
 			addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401200000, 1, false, null );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 401201000, 2, true, FRExtrato.class );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Extrato Previsionado", "Extrato Previsionado", 'P', 401210000, 2, true, FRExtrato.class );				
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 401202000, 2, true, FRBalancete.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 401203000, 2, true, FRCentroCusto.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 401204000, 2, true, FRRazaoFin.class );
