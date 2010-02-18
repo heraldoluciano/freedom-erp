@@ -308,7 +308,15 @@ public class NF049 extends Layout {
 														
 							imp.say( 61, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSST ) ) ) );
 							imp.say( 90, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRICMSST ) ) ) );							
-							imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( vlrliqnota ) ) );
+							
+							if( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
+								imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRPRODPED ) ) ) );
+							}
+							else {
+								imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( vlrliqnota ) ) );	
+							}
+							
+							
 						}
 						
 						imp.pulaLinha( 2, imp.comprimido() );
