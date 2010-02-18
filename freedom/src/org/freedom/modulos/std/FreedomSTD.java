@@ -41,6 +41,7 @@ import org.freedom.modulos.fnc.FManutPag;
 import org.freedom.modulos.fnc.FManutRec;
 import org.freedom.modulos.fnc.FRBordero;
 import org.freedom.modulos.fnc.FRCobranca;
+import org.freedom.modulos.fnc.FRExtratoPrevisto;
 import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.fnc.FRFluxoCaixaRes;
 import org.freedom.modulos.fnc.FRReceber;
@@ -250,6 +251,7 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "", 'L', 601400000, 1, false, null );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 601401000, 2, true, FRExtrato.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Extrato Previsionado", "Extrato Previsionado", 'P', 601409000, 2, true, FRExtratoPrevisto.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 601402000, 2, true, FRBalancete.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 601403000, 2, true, FRCentroCusto.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 601404000, 2, true, FRRazaoFin.class );
