@@ -49,6 +49,8 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 	private JTextFieldPad txtParcItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtPrevItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -132,12 +134,18 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 
 	private void montaTela() {
 
-		adic( new JLabelPad( "Valor" ), 7, 0, 140, 20 );
-		adic( txtParcItRec, 7, 20, 140, 20 );
-		adic( new JLabelPad( "Vencimento" ), 150, 0, 87, 20 );
-		adic( txtDtVencItRec, 150, 20, 87, 20 );
-		adic( new JLabelPad( "Desconto" ), 240, 0, 80, 20 );
-		adic( txtVlrDescItRec, 240, 20, 80, 20 );		
+		adic( new JLabelPad( "Valor" ), 7, 0, 80, 20 );
+		adic( txtParcItRec, 7, 20, 80, 20 );
+		
+		adic( new JLabelPad( "Vencimento" ), 90, 0, 75, 20 );
+		adic( txtDtVencItRec, 90, 20, 75, 20 );
+
+		adic( new JLabelPad( "Previsão" ), 168, 0, 75, 20 );
+		adic( txtDtPrevItRec, 168, 20, 75, 20 );
+		
+		adic( new JLabelPad( "Desconto" ), 246, 0, 75, 20 );
+		adic( txtVlrDescItRec, 246, 20, 75, 20 );	
+		
 		adic( new JLabelPad( "Cód.Tp.Cob" ), 7, 40, 80, 20 );
 		adic( txtCodTipoCob, 7, 60, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo cobrança" ), 90, 40, 230, 20 );
@@ -160,6 +168,9 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 			
 			txtParcItRec.setVlrBigDecimal( (BigDecimal) args[ EFields.VALOR.ordinal() ] );
 			txtDtVencItRec.setVlrDate( (Date) args[ EFields.DATA.ordinal() ] );
+			
+			txtDtPrevItRec.setVlrDate( (Date) args[ EFields.DATAPREV.ordinal() ] );			
+			
 			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) args[ EFields.DESCONTO.ordinal() ] );
 			txtCodTipoCob.setVlrInteger( (Integer) args[ EFields.TIPOCOB.ordinal() ] );
 			txtCodBanco.setVlrString( (String) args[ EFields.BANCO.ordinal() ] );
@@ -189,6 +200,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		oRetorno[ DLFechaParcela.EFields.CARTCOB.ordinal() ] = txtCodCartCob.getVlrString();
 		oRetorno[ DLFechaParcela.EFields.DESCPONT.ordinal() ] = cbDescPont.getVlrString();
 //		oRetorno[ DLFechaParcela.EFields.CODCONTA.ordinal() ] = txt.getVlrString();
+		oRetorno[ DLFechaParcela.EFields.DATAPREV.ordinal() ] = txtDtPrevItRec.getVlrDate();
 
 		return oRetorno;
 	}
@@ -263,6 +275,6 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		BANCO,
 		CARTCOB,
 		DESCPONT,
-		CODCONTA
+		DATAPREV
 	}
 }
