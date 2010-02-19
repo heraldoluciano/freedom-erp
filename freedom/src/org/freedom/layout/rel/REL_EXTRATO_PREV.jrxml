@@ -17,7 +17,7 @@
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="2" />
+	<property name="ireport.scriptlethandling" value="0" />
 	<property name="ireport.encoding" value="UTF-8" />
 	<import value="java.util.*" />
 	<import value="net.sf.jasperreports.engine.*" />
@@ -44,6 +44,9 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 	<field name="HISTORICO" class="java.lang.String"/>
 	<field name="DOC" class="java.lang.String"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
+	<field name="TIPO" class="java.lang.String">
+		<fieldDescription><![CDATA[""]]></fieldDescription>
+	</field>
 
 	<variable name="SALDO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
@@ -61,9 +64,9 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 			<band height="40"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="3"
+						x="17"
 						y="4"
-						width="64"
+						width="50"
 						height="11"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -175,7 +178,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="463"
+						x="464"
 						y="1"
 						width="0"
 						height="18"
@@ -200,19 +203,6 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<staticText>
-					<reportElement
-						x="390"
-						y="22"
-						width="69"
-						height="14"
-						key="staticText-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[ Saldo Anterior:]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="539"
@@ -242,9 +232,9 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="468"
 						y="22"
-						width="71"
+						width="67"
 						height="14"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -253,6 +243,15 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$P{SALDO_ANT}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="20"
+						width="0"
+						height="19"
+						key="line-35"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -266,7 +265,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO}]]></textFieldExpression>
 				</textField>
@@ -279,7 +278,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{tot_debito}]]></textFieldExpression>
 				</textField>
@@ -292,7 +291,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						key="textField-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{tot_credito}]]></textFieldExpression>
 				</textField>
@@ -460,7 +459,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="40"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="1"
@@ -661,9 +660,9 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 			<band height="19"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
+						x="17"
 						y="2"
-						width="63"
+						width="49"
 						height="14"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -693,7 +692,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						height="14"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOC}.trim()]]></textFieldExpression>
@@ -813,22 +812,161 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<ellipse>
+					<reportElement
+						x="4"
+						y="4"
+						width="10"
+						height="10"
+						forecolor="#FEFEFE"
+						backcolor="#FF0000"
+						key="ellipse-1">
+							<printWhenExpression><![CDATA[new Boolean("P".equals($F{TIPO}))]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="4"
+						y="4"
+						width="10"
+						height="10"
+						forecolor="#FEFEFE"
+						backcolor="#24A831"
+						key="ellipse-2">
+							<printWhenExpression><![CDATA[new Boolean("R".equals($F{TIPO}))]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="4"
+						y="4"
+						width="10"
+						height="10"
+						forecolor="#FEFEFE"
+						backcolor="#125BCD"
+						key="ellipse-3">
+							<printWhenExpression><![CDATA[new Boolean("E".equals($F{TIPO}))]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="32"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="11"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="325"
+						y="0"
+						width="174"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="502"
+						y="0"
+						width="36"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<ellipse>
+					<reportElement
+						x="4"
+						y="2"
+						width="6"
+						height="6"
+						forecolor="#FEFEFE"
+						backcolor="#125BCD"
+						key="ellipse-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="85"
+						y="2"
+						width="6"
+						height="6"
+						forecolor="#FEFEFE"
+						backcolor="#24A831"
+						key="ellipse-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<ellipse>
+					<reportElement
+						x="164"
+						y="2"
+						width="6"
+						height="6"
+						forecolor="#FEFEFE"
+						backcolor="#FF0000"
+						key="ellipse-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<staticText>
+					<reportElement
+						x="13"
+						y="2"
+						width="57"
+						height="8"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<text><![CDATA[Lançamento efetivado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="95"
+						y="2"
+						width="45"
+						height="8"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<text><![CDATA[Contas a receber]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="2"
+						width="45"
+						height="8"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<text><![CDATA[Contas a pagar]]></text>
+				</staticText>
 			</band>
 		</pageFooter>
-		<lastPageFooter>
-			<band height="15"  isSplitAllowed="true" >
-			</band>
-		</lastPageFooter>
 		<summary>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</summary>
 </jasperReport>
