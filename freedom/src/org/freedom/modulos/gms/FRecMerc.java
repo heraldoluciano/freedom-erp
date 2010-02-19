@@ -301,7 +301,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 		
-		adicCampo(txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc","Seq.",ListaCampos.DB_PK, true);
+		lcDet.setPodeIns( false );
+		lcDet.setPodeExc( false );
+		
+		navRod.btNovo.setEnabled( false );
+		navRod.btExcluir.setEnabled( false );
+		
+		adicCampo( txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc","Seq.",ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdDet, 50, 20, 50, 20,"CodProd","Cód.Pd.",ListaCampos.DB_FK, txtDescProdDet, true );
 		adicDescFK( txtDescProdDet, 103, 20, 203, 20, "DescProd", "Descrição do Produto" );		
 		
@@ -798,8 +804,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}	
 		return pesagem;
 	}
-
-
 	
 	private void imprimir(boolean bVisualizar) {
 
