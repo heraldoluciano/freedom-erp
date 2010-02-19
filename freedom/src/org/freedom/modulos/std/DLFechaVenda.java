@@ -64,6 +64,8 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modulos.fnc.DLNovoRec;
+import org.freedom.objetos.ObjetoHistorico;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
@@ -165,6 +167,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final JTextFieldPad txtDtPrevItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtCodComi = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -177,6 +181,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtDtEmisRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private final JTextFieldPad txtDocRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private final JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -272,7 +282,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private boolean bCarFrete = false;
 
-	private boolean bPrefs[] = null;
+	private Object oPrefs[] = null;
 	
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 	
@@ -293,6 +303,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private ListaCampos lcContaitrec = new ListaCampos( this, "CA" );
 	
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
+	
+	private ObjetoHistorico historico = null;
+	
+	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtObsrec = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	
+	private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	public static enum COL_RETDFV { CODPLANOPAG, VLRDESCVENDA, VLRADICVENDA, IMPPED, IMPNOTA, 
 		MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL, NUMCONTA};
@@ -322,7 +340,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setTitulo( "Fechar Venda" );
 		setAtribos( 405, 490 );		
 
-		bPrefs = prefs();
+		oPrefs = prefs();
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -482,11 +500,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.add( new GuardaCampo( txtVlrDescVenda, "VlrDescVenda", "% Desc it.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrAdicVenda, "VlrAdicVenda", "% Adic.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrProdVenda, "VlrProdVenda", "V.prod.", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false ) );		
 		lcVenda.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cod.tp.cob.", ListaCampos.DB_FK, txtDescTipoCob, false ) );
 		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBanco, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ));
 		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtNumConta, "NumConta", "Cod.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
+		lcVenda.add( new GuardaCampo( txtObsrec, "obsrec", "Obs.rec.", ListaCampos.DB_SI, false ) );		
+		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "N doc.", ListaCampos.DB_SI, false ) );
+		
 		
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setConexao( cn );
@@ -497,8 +519,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtPercDescVenda.setListaCampos( lcVenda );
 		txtStatusVenda.setListaCampos( lcVenda );
 		txtCodPlanoPag.setListaCampos( lcVenda );
-		txtNumConta.setListaCampos( lcVenda );
-		
+		txtNumConta.setListaCampos( lcVenda );		
 
 		lcFreteVD.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
 		lcFreteVD.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
@@ -571,6 +592,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcReceber.add( new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor tot.", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtAltUsuRec, "AltUsuRec", "Usu.alt.", ListaCampos.DB_SI, false ) );
+		lcReceber.add( new GuardaCampo( txtDtEmisRec, "DataRec", "Dt.emissão", ListaCampos.DB_SI, true ) );
+		lcReceber.add( new GuardaCampo( txtDocRec, "DocRec", "N.doc.", ListaCampos.DB_SI, true ) );
+
 		lcReceber.montaSql( false, "RECEBER", "FN" );
 		lcReceber.setConexao( cn );
 		txtCodRec.setListaCampos( lcReceber );
@@ -583,6 +607,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcItReceber.add( new GuardaCampo( cbImpReciboItRec, "ImpReciboItRec", "Imp.rec.", ListaCampos.DB_SI, false) );
 		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt. vencto.", ListaCampos.DB_SI, false ) );
+		lcItReceber.add( new GuardaCampo( txtDtPrevItRec, "DtPrevItRec", "Dt. prev.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodTipoCobItRec, "CodTipoCob", "Cod.tp.cob.", ListaCampos.DB_FK, txtDescTipoCobItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBancoItRec, false ) );
@@ -745,7 +770,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( new JLabelPad( "Marca" ), 185, 170, 175, 20 );
 		adic( txtMarcaFreteVD, 185, 190, 175, 20 );
 		
-		if ( bPrefs[3] ) {
+		if ( (Boolean) oPrefs[3] ) {
 			adic( cbAdicICMSFrete, 7, 220, 300, 20 );
 			adic( new JLabelPad( "% icms" ), 7, 240, 70, 20 );
 			adic( txtPercIcmsFreteVD, 7, 260, 70, 20 );
@@ -834,7 +859,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			txtPlacaFreteVD.setVlrString( "*******" );
 			txtUFFreteVD.setVlrString( "**" );
 			
-			if(bPrefs[4]) {
+			if( (Boolean) oPrefs[4] ) {
 				txtQtdFreteVD.setVlrBigDecimal( volumes );
 			}
 			else {
@@ -881,6 +906,38 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 	}
 	
+	private void geraHistoricoRec() {
+
+		// Gerando histórico dinâmico
+
+		try {
+
+			Integer codhistrec = null;
+
+			codhistrec = (Integer) oPrefs[5];
+
+			if ( codhistrec != 0 ) {
+				historico = new ObjetoHistorico( codhistrec, con );
+			}
+			else {
+				historico = new ObjetoHistorico();
+				historico.setHistoricocodificado( DLNovoRec.HISTORICO_PADRAO );
+			}
+			
+			historico.setData( txtDtEmisRec.getVlrDate() );
+			historico.setDocumento( txtDocVenda.getVlrString() );
+			historico.setPortador( txtDescCli.getVlrString() );
+			historico.setValor( txtVlrLiqVenda.getVlrBigDecimal() ); 
+			historico.setHistoricoant( "" ) ;			
+			txtObsrec.setVlrString( historico.getHistoricodecodificado() );
+						
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private boolean finaliza() {
 
 		boolean bRet = false;
@@ -893,6 +950,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( "N".equals( cbReImpNot.getVlrString() ) ) {
 			
 			lcVenda.edit();
+
+			geraHistoricoRec();
 			
 			if ( "V2".equals( txtStatusVenda.getVlrString() ) ) {
 			
@@ -915,7 +974,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private void gravaVenda() {
 
-		if ( "N".equals( cbReImpNot.getVlrString() ) ) {			
+		if ( "N".equals( cbReImpNot.getVlrString() ) ) {	
+			
+			geraHistoricoRec();
+			
 			txtPlacaFreteVD.getVlrString();			
 			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {			
 				lcFreteVD.post();
@@ -930,6 +992,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			else if ( "V".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {			
 				txtStatusVenda.setVlrString( "V2" );
 			}			
+			
+			
 			lcVenda.post();
 			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {			
 				lcAuxVenda.post();
@@ -960,7 +1024,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtCodTipoCobItRec.getVlrInteger(), 
 				txtCodBancoItRec.getVlrString(),
 				txtCodCartCobItRec.getVlrString(),
-				cbDescPont.getVlrString()
+				cbDescPont.getVlrString(),
+				txtDtPrevItRec.getVlrDate()
 		};
 
 		dl.setValores( valores );
@@ -972,6 +1037,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.VALOR.ordinal() ] );
 			txtDtVencItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATA.ordinal() ] );
+			txtDtPrevItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATAPREV.ordinal() ] );
 			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.DESCONTO.ordinal() ] );
 			txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
 			txtCodBancoItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.BANCO.ordinal() ] );
@@ -986,7 +1052,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			// Atualiza lcReceber
 			if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
-			
+								
+				geraHistoricoRec();
+							
 				lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
 			}
 			else {
@@ -999,10 +1067,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			lcItReceber.cancel( true );
 		}
 		
-		
-			
-		
 		dl.dispose();
+		
 	}
 
 	private void gravaImpRecibo( int codrec, int nparcitrec, boolean imprecibo ) {
@@ -1093,7 +1159,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				
 				// frete
-				if ( bPrefs[ 0 ] ) {	
+				if ( (Boolean) oPrefs[ 0 ] ) {	
 					if ( ! bCarFrete ) {					
 						calcPeso();
 						getTipoFrete();
@@ -1106,7 +1172,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tpn.setSelectedIndex( 1 );
 				}
 				// adicional
-				else if ( bPrefs[ 1 ] ) {			
+				else if ( (Boolean) oPrefs[ 1 ] ) {			
 					tpn.setEnabledAt( 0, false );		
 					tpn.setEnabledAt( 1, false );		
 					tpn.setEnabledAt( 2, true );	
@@ -1128,11 +1194,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				break;
 			case ABA_FERETE :
 				
-				if ( bPrefs[ 0 ] ) {				
+				if ( (Boolean)oPrefs[ 0 ] ) {				
 					lcFreteVD.edit();
 				}
 				// adicional
-				if ( bPrefs[ 1 ] ) {					
+				if ( (Boolean) oPrefs[ 1 ] ) {					
 					tpn.setEnabledAt( 0, false );		
 					tpn.setEnabledAt( 1, false );		
 					tpn.setEnabledAt( 2, true );	
@@ -1174,16 +1240,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		return bRet;
 	}
 
-	private boolean[] prefs() {
+	private Object[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 5 ];
+		Object[] ret = new Object[ 6 ];
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
 			ps = con.prepareStatement( 
-					"SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+					"SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES, CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			
@@ -1191,11 +1257,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			if ( rs.next() ) {
 			
-				bRetorno[ 0 ] = rs.getString( "TABFRETEVD" ).trim().equals( "S" );
-				bRetorno[ 1 ] = rs.getString( "TABADICVD" ).trim().equals( "S" );
-				bRetorno[ 2 ] = rs.getString( "VERIFALTPARCVENDA" ).trim().equals( "S" );
-				bRetorno[ 3 ] = rs.getString( "ADICFRETEBASEICM" ).trim().equals( "S" );
-				bRetorno[ 4 ] = rs.getString( "SOMAVOLUMES" ).trim().equals( "S" );
+				ret[ 0 ] = new Boolean(rs.getString( "TABFRETEVD" ).trim().equals( "S" ));
+				ret[ 1 ] = new Boolean(rs.getString( "TABADICVD" ).trim().equals( "S" ));
+				ret[ 2 ] = new Boolean(rs.getString( "VERIFALTPARCVENDA" ).trim().equals( "S" ));
+				ret[ 3 ] = new Boolean(rs.getString( "ADICFRETEBASEICM" ).trim().equals( "S" ));
+				ret[ 4 ] = new Boolean(rs.getString( "SOMAVOLUMES" ).trim().equals( "S" ));
+				ret[ 5 ] = new Integer(rs.getInt( "CODHISTREC" ));
+				
 			}
 			
 			rs.close();
@@ -1210,7 +1278,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			rs = null;
 		}
 		
-		return bRetorno;
+		return ret;
 	}
 
 	private int getCodRec() {
@@ -1384,7 +1452,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			try {
 				
-				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO, C.CODCARTCOB " );
+				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO, C.CODCARTCOB, C.RAZCLI " );
 				sSQL.append( "FROM VDCLIENTE C, VDVENDA V " );
 				sSQL.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 				sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'" );
@@ -1401,12 +1469,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					txtCodBanco.setVlrString( rs.getString( "CODBANCO" ));	
 					txtCodTipoCob.setVlrString( rs.getString( "CODTIPOCOB" ));
 					txtCodCartCob.setVlrString( rs.getString( "CODCARTCOB" ) );
+					txtDescCli.setVlrString( rs.getString( "RAZCLI" ) );
 					
 					lcBanco.carregaDados();		
-					lcTipoCob.carregaDados(); 
+					lcTipoCob.carregaDados(); 					
 		
 				}
-			} catch ( Exception e ) {
+			} 
+			catch ( Exception e ) {
 			
 				Funcoes.mensagemErro( this, "Erro ao carregar dados do cliente \n" +e.getMessage());
 				e.printStackTrace();
@@ -1521,7 +1591,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 		else if ( mevt.getClickCount() == 2 ) {			
 			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
-				if ( bPrefs[ 2 ] ) {					
+				if ( (Boolean) oPrefs[ 2 ] ) {					
 					FPassword fpw = new FPassword( this, FPassword.ALT_PARC_VENDA, null, con );
 					fpw.execShow();					
 					if ( fpw.OK ) {					
