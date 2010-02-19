@@ -162,7 +162,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	
 	private Component owner = null; 
 	
-	private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";	
+	public static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";	
 	
 	private Map<String, Integer> prefere = null;
 	
