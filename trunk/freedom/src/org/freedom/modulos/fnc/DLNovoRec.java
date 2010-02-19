@@ -73,6 +73,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtParcPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -101,6 +103,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldPad txtCodCartCobItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtDescCartCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtDtPrevItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -228,6 +232,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		 ****************/
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtParcPlanoPag, "ParcPlanoPag", "Nro. parcelas", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
@@ -357,6 +362,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcItReceber.add( new GuardaCampo( txtNParcRec, "NParcItRec", "N.parc.", ListaCampos.DB_PK, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt.vencto.", ListaCampos.DB_SI, false ) );
+		lcItReceber.add( new GuardaCampo( txtDtPrevItRec, "DtPrevItRec", "Dt.Prev.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodTipoCobItRec, "CodTipoCob", "Cód.Tipo.Cob", ListaCampos.DB_FK, txtDescTipoCobItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.Banco", ListaCampos.DB_FK, txtDescBancoItRec, false ) );
@@ -495,7 +501,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 				txtCodTipoCobItRec.getVlrInteger(), 
 				txtCodBancoItRec.getVlrString(), 
 				txtCodCartCobItRec.getVlrString(),
-				"N"
+				"N",
+				txtDtPrevItRec.getVlrDate()
 		};
 		
 		try {
@@ -509,6 +516,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 				
 				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.VALOR.ordinal() ] );
 				txtDtVencItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATA.ordinal() ] );
+				txtDtPrevItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATAPREV.ordinal() ] );
 				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.DESCONTO.ordinal() ] );
 				txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
 				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ DLFechaParcela.EFields.BANCO.ordinal() ] );

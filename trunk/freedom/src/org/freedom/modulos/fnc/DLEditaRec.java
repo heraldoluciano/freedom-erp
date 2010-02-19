@@ -78,6 +78,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtPrev = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -112,10 +114,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
-		VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB, DESCPONT };
+		VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV };
 
 	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO,
-		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT };		
+		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV };		
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
@@ -236,10 +238,15 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		
 		adic( new JLabelPad( "Doc." ), 7, 280, 110, 20 );
 		adic( txtDoc, 7, 300, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 280, 107, 20 );
-		adic( txtDtEmis, 120, 300, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 280, 110, 20 );
-		adic( txtDtVenc, 230, 300, 110, 20 );
+		
+		adic( new JLabelPad( "Emissão" ), 120, 280, 72, 20 );		
+		adic( txtDtEmis, 120, 300, 72, 20 );
+		
+		adic( new JLabelPad( "Vencimento" ), 195, 280, 71, 20 );
+		adic( txtDtVenc, 195, 300, 71, 20 );
+		
+		adic( new JLabelPad( "Previsão" ), 269, 280, 71, 20 );
+		adic( txtDtPrev, 269, 300, 71, 20 );
 		
 		adic( new JLabelPad( "Vlr.juros." ), 7, 320, 81, 20 );
 		adic( txtVlrJuros, 7, 340, 81, 20 );
@@ -269,6 +276,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 			txtDoc.setAtivo( bEdita );
 			txtDtEmis.setAtivo( bEdita );
 			txtDtVenc.setAtivo( bEdita );
+			txtDtPrev.setAtivo( bEdita );
 			txtObs.setAtivo( bEdita );
 			txtSiglaCC.setAtivo( bEdita );
 			txtVlrDesc.setAtivo( bEdita );
@@ -291,6 +299,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
 		txtDtEmis.setVlrDate( (Date) sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
+		txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTPREV.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
 		txtVlrDev.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDEVOLUCAO.ordinal()] );		
@@ -321,6 +330,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		oRetorno[ EColRet.VLRDESC.ordinal() ] = txtVlrDesc.getVlrBigDecimal();
 		oRetorno[ EColRet.VLRDEVOLUCAO.ordinal() ] = txtVlrDev.getVlrBigDecimal();
 		oRetorno[ EColRet.DTVENC.ordinal() ] = txtDtVenc.getVlrDate();
+		oRetorno[ EColRet.DTPREV.ordinal() ] = txtDtPrev.getVlrDate();
 		oRetorno[ EColRet.OBS.ordinal() ] = txtObs.getVlrString();
 		oRetorno[ EColRet.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
 		oRetorno[ EColRet.CODTPCOB.ordinal() ] = txtCodTipoCob.getVlrString();

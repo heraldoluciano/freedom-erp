@@ -85,7 +85,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 //	private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
 
 	private enum EColTabManut {
-		IMGSTATUS, STATUS, DTVENC, DTEMIT, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRDEVOLUCAO, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBS, DESCPONT
+		IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRDEVOLUCAO, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBS, DESCPONT
 	};
 
 	private enum EColTabBaixa {
@@ -704,10 +704,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		vValsData.addElement( "V" );
 		vValsData.addElement( "E" );
+		vValsData.addElement( "P" );
 		vLabsData.addElement( "Vencto." );
 		vLabsData.addElement( "Emissão" );
+		vLabsData.addElement( "Previsão" );
 
-		rgData = new JRadioGroup<String, String>( 2, 1, vLabsData, vValsData );
+		rgData = new JRadioGroup<String, String>( 3, 1, vLabsData, vValsData );
 		rgData.setVlrString( "V" );
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 310, 0, 100, 20 );
 		pinManut.adic( rgData, 310, 20, 100, 65 );
@@ -787,41 +789,44 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "St." ); // 1
-		tabManut.adicColuna( "Dt.vencto." ); // 2
-		tabManut.adicColuna( "Dt.emissão" ); // 3
-		tabManut.adicColuna( "Cód.cli." ); // 4
-		tabManut.adicColuna( "Razão social do cliente" ); // 5
-		tabManut.adicColuna( "Cód.rec." ); // 6
-		tabManut.adicColuna( "Parc." ); // 7
-		tabManut.adicColuna( "Doc.lanca" ); // 8
-		tabManut.adicColuna( "Doc.venda" ); // 9
-		tabManut.adicColuna( "Valor parc." ); // 10
-		tabManut.adicColuna( "Data pagamento" ); // 11
-		tabManut.adicColuna( "Valor.pago" ); // 12
-		tabManut.adicColuna( "Valor desconto" ); // 13
-		tabManut.adicColuna( "Valor juros" ); // 14
-		tabManut.adicColuna( "Valor devolução" ); // 15
-		tabManut.adicColuna( "Valor aberto" ); // 16
-		tabManut.adicColuna( "Valor cancelado" ); // 17
-		tabManut.adicColuna( "Nro.conta" ); // 18
-		tabManut.adicColuna( "Descrição da conta" ); // 19
-		tabManut.adicColuna( "Cód.categ." ); // 20
-		tabManut.adicColuna( "Categoria" ); // 21
-		tabManut.adicColuna( "Cód.c.c." ); // 22
-		tabManut.adicColuna( "Descrição do centro de custo" ); // 23
-		tabManut.adicColuna( "Cód.tp.cob" ); // 24
-		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 25
-		tabManut.adicColuna( "Cód.banco" ); // 26
-		tabManut.adicColuna( "Nome do banco" ); // 27
-		tabManut.adicColuna( "Cód.cart.cob." ); // 28
-		tabManut.adicColuna( "Descrição da carteira de cobrança" ); // 29
-		tabManut.adicColuna( "Observação" ); // 30
-		tabManut.adicColuna( "pontualidade" ); // 31
+		tabManut.adicColuna( "Vencto." ); // 2
+		tabManut.adicColuna( "Emissão" ); // 3
+		tabManut.adicColuna( "Previsão" ); // 4
+		tabManut.adicColuna( "Cód.cli." ); // 5
+		tabManut.adicColuna( "Razão social do cliente" ); // 6
+		tabManut.adicColuna( "Cód.rec." ); // 7
+		tabManut.adicColuna( "Parc." ); // 8
+		tabManut.adicColuna( "Doc.lanca" ); // 9
+		tabManut.adicColuna( "Doc.venda" ); // 10
+		tabManut.adicColuna( "Valor parc." ); // 11
+		tabManut.adicColuna( "Data pagamento" ); // 12
+		tabManut.adicColuna( "Valor.pago" ); // 13
+		tabManut.adicColuna( "Valor desconto" ); // 14
+		tabManut.adicColuna( "Valor juros" ); // 15
+		tabManut.adicColuna( "Valor devolução" ); // 16
+		tabManut.adicColuna( "Valor aberto" ); // 17
+		tabManut.adicColuna( "Valor cancelado" ); // 18
+		tabManut.adicColuna( "Nro.conta" ); // 19
+		tabManut.adicColuna( "Descrição da conta" ); // 20
+		tabManut.adicColuna( "Cód.categ." ); // 21
+		tabManut.adicColuna( "Categoria" ); // 22
+		tabManut.adicColuna( "Cód.c.c." ); // 23
+		tabManut.adicColuna( "Descrição do centro de custo" ); // 24
+		tabManut.adicColuna( "Cód.tp.cob" ); // 25
+		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 26
+		tabManut.adicColuna( "Cód.banco" ); // 27
+		tabManut.adicColuna( "Nome do banco" ); // 28
+		tabManut.adicColuna( "Cód.cart.cob." ); // 29
+		tabManut.adicColuna( "Descrição da carteira de cobrança" ); // 30
+		tabManut.adicColuna( "Observação" ); // 31
+		tabManut.adicColuna( "pontualidade" ); // 32
 
 		tabManut.setTamColuna( 0, EColTabManut.IMGSTATUS.ordinal() );
-		// tabManut.setTamColuna( 5, EColTabManut.STATUS.ordinal() );
 		tabManut.setColunaInvisivel( EColTabManut.STATUS.ordinal() );
-		tabManut.setTamColuna( 70, EColTabManut.DTVENC.ordinal() );
+
+		tabManut.setTamColuna( 62, EColTabManut.DTVENC.ordinal() );
+		tabManut.setTamColuna( 62, EColTabManut.DTEMIT.ordinal() );
+		tabManut.setTamColuna( 62, EColTabManut.DTPREV.ordinal() );
 		tabManut.setTamColuna( 50, EColTabManut.CODCLI.ordinal() );
 		tabManut.setTamColuna( 200, EColTabManut.RAZCLI.ordinal() );
 		tabManut.setTamColuna( 50, EColTabManut.CODREC.ordinal() );
@@ -900,7 +905,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private void visualizaRec() {
 
 		DLEditaRec dl = null;
-		Object[] sVals = new Object[ 17 ];
+		Object[] sVals = new Object[ 18 ];
 		try {
 			dl = new DLEditaRec( this, false );
 			sVals = getTabManutValores();
@@ -1269,7 +1274,19 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 
 			sWhereManut.append( " AND " );
-			sWhereManut.append( rgData.getVlrString().equals( "V" ) ? "IR.DTVENCITREC" : "IR.DTITREC" );
+			
+			if("V".equals( rgData.getVlrString() )) {
+				sWhereManut.append( "IR.DTVENCITREC" );
+			}
+			else if ("E".equals( rgData.getVlrString() )) {
+				sWhereManut.append( "IR.DTITREC" );
+			}
+			else {
+				sWhereManut.append( "COALESCE(IR.DTPREVITREC,IR.DTVENCITREC)" );
+			}
+			
+			
+//			sWhereManut.append( rgData.getVlrString().equals( "V" ) ? "IR.DTVENCITREC" : "IR.DTITREC" );
 			sWhereManut.append( " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?" );
 
 			if ( "S".equals( cbRecebidas.getVlrString() ) || "S".equals( cbAReceber.getVlrString() ) || "S".equals( cbRecParcial.getVlrString() ) || "S".equals( cbCanceladas.getVlrString() ) || "S".equals( cbEmBordero.getVlrString() ) ) {
@@ -1335,7 +1352,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sWhereManut.append( " AND R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
 
-		sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
+		sSQL.append( "SELECT IR.DTVENCITREC,IR.DTPREVITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
 		sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
 		sSQL.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
 		sSQL.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
@@ -1447,6 +1464,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabManut.setValor( rs.getString( "STATUSITREC" ), i, EColTabManut.STATUS.ordinal() );
 				tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DTVENCITREC" ) ), i, EColTabManut.DTVENC.ordinal() );
 				tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DTITREC" ) ), i, EColTabManut.DTEMIT.ordinal() );
+				
+				tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DTPREVITREC" ) ), i, EColTabManut.DTPREV.ordinal() );
+				
 				tabManut.setValor( rs.getInt( "CODCLI" ), i, EColTabManut.CODCLI.ordinal() );
 				tabManut.setValor( rs.getString( "RAZCLI" ), i, EColTabManut.RAZCLI.ordinal() );
 				tabManut.setValor( rs.getInt( "CODREC" ), i, EColTabManut.CODREC.ordinal() );
@@ -1598,6 +1618,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sRet[ EColEdit.CODCARTCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.CODCARTCOB.ordinal() ) );
 			sRet[ EColEdit.DESCCARTCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCCARTCOB.ordinal() ) );
 			sRet[ EColEdit.DESCPONT.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCPONT.ordinal() ) );
+			sRet[ EColEdit.DTPREV.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTPREV.ordinal() ).toString() );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1747,7 +1768,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
 		Object[] sVals = new Object[ 18 ];
-		Object[] sRets = null;
+		Object[] oRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
 		BigDecimal vlrPago = new BigDecimal( 0 );
@@ -1777,42 +1798,42 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 					if ( dl.OK ) {
 
-						sRets = dl.getValores();
+						oRets = dl.getValores();
 
 						sSQL.append( "UPDATE FNITRECEBER SET " );
 						sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?,VLRDEVITREC=?," );
 						sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
 						sSQL.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
-						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=? " );
+						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=? " );
 						sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
 							ps = con.prepareStatement( sSQL.toString() );
 
-							if ( "".equals( sRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
 								ps.setNull( 1, Types.CHAR );
 								ps.setNull( 2, Types.INTEGER );
 								ps.setNull( 3, Types.INTEGER );
 							}
 							else {
-								ps.setString( 1, (String) sRets[ EColRet.NUMCONTA.ordinal() ] );
+								ps.setString( 1, (String) oRets[ EColRet.NUMCONTA.ordinal() ] );
 								ps.setInt( 2, Aplicativo.iCodEmp );
 								ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
 							}
 
-							if ( "".equals( String.valueOf( sRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
+							if ( "".equals( String.valueOf( oRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
 								ps.setNull( 4, Types.CHAR );
 								ps.setNull( 5, Types.INTEGER );
 								ps.setNull( 6, Types.INTEGER );
 							}
 							else {
-								ps.setString( 4, (String) sRets[ EColRet.CODPLAN.ordinal() ] );
+								ps.setString( 4, (String) oRets[ EColRet.CODPLAN.ordinal() ] );
 								ps.setInt( 5, Aplicativo.iCodEmp );
 								ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 							}
 
-							if ( "".equals( String.valueOf( sRets[ EColRet.CODCC.ordinal() ] ).trim() ) ) {
+							if ( "".equals( String.valueOf( oRets[ EColRet.CODCC.ordinal() ] ).trim() ) ) {
 								ps.setNull( 7, Types.INTEGER );
 								ps.setNull( 8, Types.CHAR );
 								ps.setNull( 9, Types.INTEGER );
@@ -1820,54 +1841,54 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							}
 							else {
 								ps.setInt( 7, iAnoCC );
-								ps.setString( 8, (String) sRets[ EColRet.CODCC.ordinal() ] );
+								ps.setString( 8, (String) oRets[ EColRet.CODCC.ordinal() ] );
 								ps.setInt( 9, Aplicativo.iCodEmp );
 								ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 							}
 
-							if ( "".equals( String.valueOf( sRets[ EColRet.DOC.ordinal() ] ).trim() ) ) {
+							if ( "".equals( String.valueOf( oRets[ EColRet.DOC.ordinal() ] ).trim() ) ) {
 								ps.setNull( 11, Types.CHAR );
 							}
 							else {
-								ps.setString( 11, (String) sRets[ EColRet.DOC.ordinal() ] );
+								ps.setString( 11, (String) oRets[ EColRet.DOC.ordinal() ] );
 							}
 
-							if ( "".equals( sRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
 								ps.setNull( 12, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 12, (BigDecimal) sRets[ EColRet.VLRJUROS.ordinal() ] );
+								ps.setBigDecimal( 12, (BigDecimal) oRets[ EColRet.VLRJUROS.ordinal() ] );
 							}
 
-							if ( "".equals( sRets[ EColRet.VLRDEVOLUCAO.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] ) ) {
 								ps.setNull( 13, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 13, (BigDecimal) sRets[ EColRet.VLRDEVOLUCAO.ordinal() ] );
+								ps.setBigDecimal( 13, (BigDecimal) oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] );
 							}
 
-							if ( "".equals( sRets[ EColRet.VLRDESC.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.VLRDESC.ordinal() ] ) ) {
 								ps.setNull( 14, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 14, (BigDecimal) ( sRets[ EColRet.VLRDESC.ordinal() ] ) );
+								ps.setBigDecimal( 14, (BigDecimal) ( oRets[ EColRet.VLRDESC.ordinal() ] ) );
 							}
 
-							if ( "".equals( sRets[ EColRet.DTVENC.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.DTVENC.ordinal() ] ) ) {
 								ps.setNull( 15, Types.DECIMAL );
 							}
 							else {
-								ps.setDate( 15, Funcoes.dateToSQLDate( (java.util.Date) sRets[ EColRet.DTVENC.ordinal() ] ) );
+								ps.setDate( 15, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTVENC.ordinal() ] ) );
 							}
 
-							if ( "".equals( sRets[ EColRet.OBS.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.OBS.ordinal() ] ) ) {
 								ps.setNull( 16, Types.CHAR );
 							}
 							else {
-								ps.setString( 16, (String) sRets[ EColRet.OBS.ordinal() ] );
+								ps.setString( 16, (String) oRets[ EColRet.OBS.ordinal() ] );
 							}
 
-							if ( "".equals( sRets[ EColRet.CODBANCO.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.CODBANCO.ordinal() ] ) ) {
 								ps.setNull( 17, Types.INTEGER );
 								ps.setNull( 18, Types.INTEGER );
 								ps.setNull( 19, Types.CHAR );
@@ -1875,10 +1896,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							else {
 								ps.setInt( 17, Aplicativo.iCodEmp );
 								ps.setInt( 18, ListaCampos.getMasterFilial( "FNBANCO" ) );
-								ps.setString( 19, (String) sRets[ EColRet.CODBANCO.ordinal() ] );
+								ps.setString( 19, (String) oRets[ EColRet.CODBANCO.ordinal() ] );
 							}
 
-							if ( "".equals( sRets[ EColRet.CODTPCOB.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.CODTPCOB.ordinal() ] ) ) {
 								ps.setNull( 20, Types.INTEGER );
 								ps.setNull( 21, Types.INTEGER );
 								ps.setNull( 22, Types.INTEGER );
@@ -1886,10 +1907,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							else {
 								ps.setInt( 20, Aplicativo.iCodEmp );
 								ps.setInt( 21, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
-								ps.setInt( 22, Integer.parseInt( (String) sRets[ EColRet.CODTPCOB.ordinal() ] ) );
+								ps.setInt( 22, Integer.parseInt( (String) oRets[ EColRet.CODTPCOB.ordinal() ] ) );
 							}
 
-							if ( "".equals( sRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
 								ps.setNull( 23, Types.INTEGER );
 								ps.setNull( 24, Types.INTEGER );
 								ps.setNull( 25, Types.CHAR );
@@ -1897,19 +1918,26 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							else {
 								ps.setInt( 23, Aplicativo.iCodEmp );
 								ps.setInt( 24, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
-								ps.setString( 25, ( (String) sRets[ EColRet.CODCARTCOB.ordinal() ] ) );
+								ps.setString( 25, ( (String) oRets[ EColRet.CODCARTCOB.ordinal() ] ) );
 							}
-							if ( "".equals( sRets[ EColRet.DESCPONT.ordinal() ] ) ) {
+							if ( "".equals( oRets[ EColRet.DESCPONT.ordinal() ] ) ) {
 								ps.setNull( 26, Types.CHAR );
 							}
 							else {
-								ps.setString( 26, ( (String) sRets[ EColRet.DESCPONT.ordinal() ] ) );
+								ps.setString( 26, ( (String) oRets[ EColRet.DESCPONT.ordinal() ] ) );
 							}
+							if ( oRets[ EColRet.DTPREV.ordinal() ] == null || "".equals( oRets[ EColRet.DTPREV.ordinal() ] ) ) {
+								ps.setNull( 27, Types.DECIMAL );
+							}
+							else {
+								ps.setDate( 27, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTPREV.ordinal() ] ) );
+							}
+							
 
-							ps.setInt( 27, iCodRec );
-							ps.setInt( 28, iNParcItRec );
-							ps.setInt( 29, Aplicativo.iCodEmp );
-							ps.setInt( 30, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setInt( 28, iCodRec );
+							ps.setInt( 29, iNParcItRec );
+							ps.setInt( 30, Aplicativo.iCodEmp );
+							ps.setInt( 31, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 							ps.executeUpdate();
 
@@ -1933,7 +1961,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps = null;
 			sSQL = null;
 			sVals = new String[ 13 ];
-			sRets = null;
+			oRets = null;
 			dl = null;
 			imgStatusAt = null;
 		}
