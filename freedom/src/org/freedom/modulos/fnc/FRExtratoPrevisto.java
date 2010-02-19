@@ -174,7 +174,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			// Lançamentos
 			
 			sql.append( "select sl.datasublanca data, sl.histsublanca historico, " );
-			sql.append( "cast(substring(l.doclanca from 1 for 10) as char(10)) doc, sl.vlrsublanca valor, 'E' " );
+			sql.append( "cast(substring(l.doclanca from 1 for 10) as char(10)) doc, sl.vlrsublanca valor, 'E' tipo " );
 			sql.append( "from fnlanca l, fnconta c, fnsublanca sl " );
 			sql.append( "where c.codemp = ? and c.codfilial = ? and c.numconta=? " );
 			sql.append( "and l.codemp=? and l.codfilial = ? and l.codlanca = sl.codlanca " );
@@ -186,8 +186,8 @@ public class FRExtratoPrevisto extends FRelatorio {
 			
 			// Contas a receber
 			
-			sql.append( "select ir.dtvencitrec data, cast( substring(ir.obsitrec from 1 for 100) as varchar(100)) historico, " );
-			sql.append( "ir.doclancaitrec doc, ir.vlrapagitrec valor, 'R' " );
+			sql.append( "select coalesce(ir.dtprevitrec,ir.dtvencitrec) data, cast( substring(ir.obsitrec from 1 for 100) as varchar(100)) historico, " );
+			sql.append( "ir.doclancaitrec doc, ir.vlrapagitrec valor, 'R' tipo " );
 			sql.append( "from fnitreceber ir " );
 			sql.append( "where " );
 			sql.append( "ir.codemp = ? and ir.codfilial=? and ir.numconta = ? " );
@@ -198,7 +198,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( " union " );
 			
 			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , ip.doclancaitpag doc, ");
-			sql.append( "ip.vlrapagitpag valor, 'P' ");
+			sql.append( "ip.vlrapagitpag valor, 'P' tipo ");
 			sql.append( "from fnitpagar ip ");
 			sql.append( "where ");
 			sql.append( "ip.codemp = ? and ip.codfilial = ? and ip.numconta = ? ");
@@ -296,7 +296,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "SALDO_ANT", bAnt );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_EXTRATO_PREV.jasper", "Extrato de contas futuro", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/REL_EXTRATO_PREV.jasper", "Extrato com previsionamento", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
