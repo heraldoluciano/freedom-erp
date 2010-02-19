@@ -359,9 +359,9 @@ public class FCLFiscal extends FDetalhe
 		txtVlrIssUnidTrib.setAtivo( false );
 		txtAliqIssFisc.setAtivo( false );
 		txtVlrIrUnidTrib.setAtivo( false );
-		txtAliqIrFisc.setAtivo( false );
+		txtAliqIrFisc.setAtivo( true );
 		txtVlrCsUnidTrib.setAtivo( false );
-		txtAliqCSocialFisc.setAtivo( false );
+		txtAliqCSocialFisc.setAtivo( true );
 		txtVlrIiUnidTrib.setAtivo( false );
 		txtAliqIiFisc.setAtivo( false );
 				
@@ -822,23 +822,21 @@ public class FCLFiscal extends FDetalhe
 //		adicCampo( txtAliqIssFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );	
 //		adicCampo( txtVlrIssUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 //		
-//		// **********  ABA IR  **/
-//				
+		// **********  ABA IR  **/
+				
+		tpnGeral.addTab( "IR", panelIR );
+		setPainel( panelIRCampos );
+		
+		adicCampo( txtAliqIrFisc, 7, 20, 80, 20, "AliqIrFisc", "Aliq. IR", ListaCampos.DB_SI, null, false );	
 
-//		tpnGeral.addTab( "IR", panelIR );
-//		setPainel( panelIRCampos );
-//		
-//		adicCampo( txtCodSitTribIR, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_SI, txtDescSitTribIR, false );	
-//		adicCampoInvisivel( txtImpSitTribIR, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
-//		adicDescFK( txtDescSitTribIR, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-//	
-//		adicCampo( txtAliqIrFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );	
-//		adicCampo( txtVlrIrUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
-//		
-//		// **********  ABA CONTRIBUIÇÃO SOCIAL  **/
+		
+//		**********  ABA CONTRIBUIÇÃO SOCIAL  **/
 //				
-//		tpnGeral.addTab( "Contribuição Social", panelCSocial );
-//		setPainel( panelCSocialCampos );
+		tpnGeral.addTab( "Contribuição Social", panelCSocial );
+		setPainel( panelCSocialCampos );
+		
+		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI, null, false );
+		
 //		
 //		// **********  ABA II  **/
 //				
