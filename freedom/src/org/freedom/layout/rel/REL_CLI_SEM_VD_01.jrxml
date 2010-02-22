@@ -55,7 +55,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 		<group  name="SETOR" >
 			<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
 			<groupHeader>
-			<band height="45"  isSplitAllowed="true" >
+			<band height="44"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
@@ -93,7 +93,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="44"
+						y="43"
 						width="567"
 						height="0"
 						key="line-16"/>
@@ -146,9 +146,9 @@ order by cl.codvend, cl.razcli]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="47"
+						x="48"
 						y="31"
-						width="425"
+						width="424"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -178,7 +178,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="0"
 						y="10"
 						width="0"
-						height="34"
+						height="20"
 						key="line-38"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -188,7 +188,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="566"
 						y="10"
 						width="0"
-						height="34"
+						height="20"
 						key="line-39"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -202,59 +202,29 @@ order by cl.codvend, cl.razcli]]></queryString>
 						key="line-40"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="8"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="1"
-						width="567"
-						height="0"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="0"
-						height="1"
-						key="line-5"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="566"
-						y="0"
+						y="30"
 						width="0"
-						height="1"
-						key="line-6"
+						height="13"
+						key="line-41"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="479"
-						y="0"
+						x="0"
+						y="31"
 						width="0"
-						height="2"
-						key="line-7"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
+						height="13"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="46"
-						y="0"
-						width="0"
-						height="2"
-						key="line-10"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="14"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -387,10 +357,19 @@ order by cl.codvend, cl.razcli]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="13"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="12"
+						width="567"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="482"
-						y="1"
+						y="0"
 						width="81"
 						height="11"
 						key="textField-18"/>
@@ -405,7 +384,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="13"
+						height="12"
 						key="line-24"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -415,7 +394,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="566"
 						y="0"
 						width="0"
-						height="13"
+						height="12"
 						key="line-29"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -423,7 +402,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="1"
+						y="0"
 						width="41"
 						height="11"
 						key="textField-23"/>
@@ -438,7 +417,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="46"
 						y="0"
 						width="0"
-						height="13"
+						height="12"
 						key="line-36"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -448,7 +427,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 						x="479"
 						y="0"
 						width="0"
-						height="13"
+						height="12"
 						key="line-37"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -456,7 +435,7 @@ order by cl.codvend, cl.razcli]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="49"
-						y="1"
+						y="0"
 						width="423"
 						height="11"
 						key="textField-29"/>
