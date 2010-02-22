@@ -65,7 +65,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="490"
-						y="8"
+						y="7"
 						width="72"
 						height="12"
 						forecolor="#000000"
@@ -81,7 +81,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="448"
-						y="8"
+						y="7"
 						width="39"
 						height="12"
 						forecolor="#000000"
@@ -98,7 +98,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="27"
+						y="26"
 						width="567"
 						height="0"
 						forecolor="#000000"
@@ -109,18 +109,9 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="1"
-						width="567"
-						height="0"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
 						y="0"
 						width="0"
-						height="27"
+						height="26"
 						key="line-20"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -130,78 +121,8 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="566"
 						y="0"
 						width="0"
-						height="27"
+						height="26"
 						key="line-21"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="490"
-						y="0"
-						width="0"
-						height="2"
-						key="line-22"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="306"
-						y="0"
-						width="0"
-						height="2"
-						key="line-23"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="257"
-						y="0"
-						width="0"
-						height="2"
-						key="line-24"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="219"
-						y="0"
-						width="0"
-						height="2"
-						key="line-25"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="187"
-						y="0"
-						width="0"
-						height="2"
-						key="line-26"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="29"
-						y="0"
-						width="0"
-						height="2"
-						key="line-30"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="333"
-						y="0"
-						width="0"
-						height="2"
-						key="line-31"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
@@ -519,7 +440,16 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="11"  isSplitAllowed="true" >
+			<band height="13"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="12"
+						width="567"
+						height="0"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="32"
@@ -596,14 +526,14 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCVENDA}.toString().trim() ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCVENDA}.toString().trim()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="187"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-3"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -613,7 +543,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-6"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -623,7 +553,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="219"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-10"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -633,7 +563,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="257"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-11"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -643,7 +573,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="306"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-14"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -653,7 +583,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="490"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-16"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -663,7 +593,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="566"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-18"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -721,7 +651,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="333"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-28"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -731,7 +661,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 						x="29"
 						y="0"
 						width="0"
-						height="11"
+						height="12"
 						key="line-29"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
