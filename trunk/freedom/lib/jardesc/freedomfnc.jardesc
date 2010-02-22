@@ -28,11 +28,11 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRLancaExp.java"/>
         <file path="/freedom/src/org/freedom/relatorios/RegistroSaida.jrxml"/>
-        <file path="/freedom/src/org/freedom/relatorios/filtros.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanAnal.java"/>
+        <file path="/freedom/src/org/freedom/relatorios/filtros.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasFisico.jasper"/>
-        <file path="/freedom/src/org/freedom/relatorios/cabecario.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/receberSetor.jrxml"/>
+        <file path="/freedom/src/org/freedom/relatorios/cabecario.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRRestricao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLanca.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPapel.java"/>
