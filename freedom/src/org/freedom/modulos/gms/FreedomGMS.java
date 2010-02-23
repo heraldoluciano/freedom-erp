@@ -62,7 +62,6 @@ import org.freedom.modulos.std.FPesquisaOrc;
 import org.freedom.modulos.std.FPlanoPag;
 import org.freedom.modulos.std.FPrefereGeral;
 import org.freedom.modulos.std.FProcessaEQ;
-import org.freedom.modulos.std.FProduto;
 import org.freedom.modulos.std.FRCodbarProd;
 import org.freedom.modulos.std.FRCodficProd;
 import org.freedom.modulos.std.FRCompras;

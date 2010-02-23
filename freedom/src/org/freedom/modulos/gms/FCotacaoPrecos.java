@@ -65,7 +65,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
-import org.freedom.modulos.std.FProduto;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
