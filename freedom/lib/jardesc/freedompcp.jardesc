@@ -21,7 +21,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProduto.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
@@ -29,6 +28,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProcessaEQ.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRDemanda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FProduto.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRVencLote.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRConfEstoq.java"/>
@@ -40,14 +40,14 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRSaldoLote.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FKardex.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItCLFiscal.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FConsRMA.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRMovProd.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInvPeps.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
