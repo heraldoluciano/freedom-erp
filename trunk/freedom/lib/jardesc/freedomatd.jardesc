@@ -41,6 +41,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLROrcamento.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FProduto.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FOrcamento.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
