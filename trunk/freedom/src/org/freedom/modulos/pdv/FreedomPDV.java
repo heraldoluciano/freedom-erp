@@ -26,6 +26,7 @@ package org.freedom.modulos.pdv;
 
 import org.freedom.componentes.JButtonPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.gms.FProduto;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FBanco;
 import org.freedom.modulos.std.FClasCli;
@@ -39,7 +40,6 @@ import org.freedom.modulos.std.FMarca;
 import org.freedom.modulos.std.FModGrade;
 import org.freedom.modulos.std.FMoeda;
 import org.freedom.modulos.std.FPlanoPag;
-import org.freedom.modulos.std.FProduto;
 import org.freedom.modulos.std.FRListaPreco;
 import org.freedom.modulos.std.FSimilar;
 import org.freedom.modulos.std.FTabPreco;
