@@ -272,7 +272,7 @@ public class NF049 extends Layout {
 					
 					iProdImp++;
 					
-					vlricmsorig = vlricmsorig.add(( itens.getBigDecimal( NF.C_PERCICMSITPED ).multiply( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( new BigDecimal(100))))); 
+					vlricmsorig = vlricmsorig.add(( itens.getBigDecimal( NF.C_PERCICMSITPED ).multiply( itens.getBigDecimal( NF.C_VLRLIQITPED ).divide( new BigDecimal(100))))); 
 					//System.out.println("***: vlricms:" + String.valueOf( ( itens.getBigDecimal( NF.C_PERCICMSITPED ).multiply( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( new BigDecimal(100))))));
 					// xxx
 				}
