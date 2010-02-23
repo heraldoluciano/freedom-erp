@@ -47,6 +47,7 @@ import org.freedom.modulos.fnc.FRFluxoCaixaRes;
 import org.freedom.modulos.fnc.FRReceber;
 import org.freedom.modulos.fnc.FRReceberMes;
 import org.freedom.modulos.fnc.FRReceberSetor;
+import org.freedom.modulos.gms.FProduto;
 import org.freedom.modulos.gms.FRValorEstoque;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
