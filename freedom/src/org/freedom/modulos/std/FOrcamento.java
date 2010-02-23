@@ -144,7 +144,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtPrecoItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 5 );
 
 	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	
@@ -377,12 +377,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private HashMap<String, Object> permusu = null;
 	
 	private BigDecimal fatluc = new BigDecimal (1);
+	
+	BigDecimal cem = new BigDecimal(100);
 
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
 		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, 
 		VENDAMATPRIM, VISUALIZALUCR, DIASVENCORC, CODCLI, CODPLANOPAG, PRAZO, CLASSORC,
-		DESCORC, CONTRIBIPI, ABATRANSP, ORDNOTA, TIPOCUSTO ;  
+		DESCORC, CONTRIBIPI, ABATRANSP, ORDNOTA, TIPOCUSTO, HABVLRTOTITORC ;  
 	}
 	
 	private enum OrcVenda {
@@ -436,7 +438,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrComisItOrc.setEditable( false );
 		txtVlrIPIItOrc.setEditable( false );
 		
-		
 		// Adiciona os Listeners
 		btFechaOrc.addActionListener( this );
 		btObs.addActionListener( this );
@@ -452,6 +453,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		txtPercDescItOrc.addFocusListener( this );
 		txtVlrDescItOrc.addFocusListener( this );
+		txtVlrLiqItOrc.addFocusListener( this );
 		txtQtdItOrc.addFocusListener( this );
 		txtPrecoItOrc.addFocusListener( this );
 
@@ -817,9 +819,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		navEast.tiraBorda();	
 		pnNavCab.add( navEast, BorderLayout.EAST );
 
-		txtVlrLiqItOrc.setAtivo( false );
-		
-		
+		txtVlrLiqItOrc.setEditable( (Boolean) oPrefs[ PrefOrc.HABVLRTOTITORC.ordinal() ] );
+				
 		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {		
 			adicPainelLucr();			
 		}
@@ -1139,7 +1140,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private void calcPercDescIt() {
 		if ( txtVlrDescItOrc.floatValue() > 0 ) {
-			txtPercDescItOrc.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( (txtVlrDescItOrc.floatValue() * 100 ) / txtVlrProdItOrc.floatValue()  , casasDecFin ) ) );
+			
+			BigDecimal vlrdesc = txtVlrDescItOrc.getVlrBigDecimal();
+			BigDecimal vlrprod = txtVlrProdItOrc.getVlrBigDecimal();
+			
+			txtPercDescItOrc.setVlrBigDecimal( (vlrdesc.multiply( cem )).divide( vlrprod, casasDecFin, BigDecimal.ROUND_HALF_UP )  );
+			
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
 		}
 		else if ( txtVlrDescItOrc.floatValue() == 0 ) {
@@ -1217,7 +1223,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				BigDecimal perccomisitem = new BigDecimal(0);
 				BigDecimal vlrcomisitem = new BigDecimal(0);
 				BigDecimal vlrliqitem = txtVlrLiqItOrc.getVlrBigDecimal();
-				BigDecimal cem = new BigDecimal(100);
 				
 				if( (perccomisvend!=null && perccomisvend.floatValue()>0) && (perccomisprod!=null && perccomisprod.floatValue()>0) ) {
 					perccomisvend = perccomisvend.divide( cem, 2, BigDecimal.ROUND_CEILING );
@@ -1921,7 +1926,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sql.append( "P1.VENDAMATPRIM, P1.TABTRANSPORC, P1.VISUALIZALUCR, P1.CLASSORC, COALESCE(P1.DESCORC,'Orçamento') DESCORC, " );
 			sql.append( "P4.USALOTEORC, P4.USABUSCAGENPROD, COALESCE(P4.DIASVENCORC,0) DIASVENCORC, COALESCE(P4.CODCLI,0) CODCLI, " );
 			sql.append( "COALESCE(P4.CODPLANOPAG,0) CODPLANOPAG, COALESCE(P4.PRAZO,0) PRAZO, " );
-			sql.append( "FI.CONTRIBIPIFILIAL, P1.TIPOCUSTOLUC " );
+			sql.append( "FI.CONTRIBIPIFILIAL, P1.TIPOCUSTOLUC, HabVlrTotItOrc " );
 			 
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4, SGFILIAL FI " ); 
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? AND ");
@@ -1967,6 +1972,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				oRetorno[ PrefOrc.CONTRIBIPI.ordinal() ] = rs.getString( "CONTRIBIPIFILIAL" );
 				oRetorno[ PrefOrc.ABATRANSP.ordinal() ] = rs.getString( "TABTRANSPORC" );
 				oRetorno[ PrefOrc.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
+				oRetorno[ PrefOrc.HABVLRTOTITORC.ordinal() ] = new Boolean( rs.getString( "HabVlrTotItOrc" ).equals( "S" ) );
 				
 			}
 			
@@ -2019,7 +2025,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				calcTot();
 			}
 
-			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT && ( ! (Boolean) oPrefs[ PrefOrc.HABVLRTOTITORC.ordinal() ]) ) {
 				lcDet.post();
 				lcDet.limpaCampos( true );
 				lcDet.setState( ListaCampos.LCS_NONE );
@@ -2036,6 +2042,52 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			calcVlrProd();
 			calcTot();
 			calcComis();
+		}
+		else if ( (fevt.getSource() == txtVlrLiqItOrc) && ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()==0 ) ) {
+
+			if ( (lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT) && ( (Boolean) oPrefs[ PrefOrc.HABVLRTOTITORC.ordinal() ]) ) {
+				
+				calcDesconto();
+				
+				lcDet.post();
+				lcDet.limpaCampos( true );
+				lcDet.setState( ListaCampos.LCS_NONE );
+				lcDet.edit();
+				
+				focusCodprod();
+				
+			}
+		}
+	}
+	
+	private void calcDesconto() {
+		
+		BigDecimal vlrdesconto = null;
+		BigDecimal vlrdigitado = null;
+		BigDecimal preco = null;
+		
+		try {
+			vlrdigitado = txtVlrLiqItOrc.getVlrBigDecimal();
+			preco = txtPrecoItOrc.getVlrBigDecimal().multiply( txtQtdItOrc.getVlrBigDecimal() );
+			
+			if( preco==null || preco.floatValue()<=0 ) {
+				
+				txtPrecoItOrc.setVlrBigDecimal( vlrdigitado );
+				
+			}
+			else if ( vlrdigitado.compareTo( preco ) < 0 ) {
+			
+				vlrdesconto = preco.subtract( vlrdigitado );
+	
+				txtVlrDescItOrc.setVlrBigDecimal( vlrdesconto );
+				calcPercDescIt();
+				calcVlrProd();
+				calcTot();
+					
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
