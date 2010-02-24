@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import javax.comm.CommPortIdentifier;
+import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
@@ -97,12 +98,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
 		
-
-		abrePorta("/dev/ttyS0");
+//		listaPortasSeriais();
 		
-		lePorta();
+		abrePorta("/dev/ttyS0");		
 		
-
 	}
 	
 	private void ajustaCampos() {
@@ -185,6 +184,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			
 			int i = 0;
 			
+			
+			
 			while (listadeportas.hasMoreElements()) {
 								
 				CommPortIdentifier ips = (CommPortIdentifier) listadeportas.nextElement();
@@ -208,27 +209,47 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	private void abrePorta(String nomeporta) {
 	
 		try {
-			
+						
 			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier(nomeporta);
-			porta = (SerialPort) cp.open( "SComm", 1 );
+			
+			if ( cp.isCurrentlyOwned() ) {			
+				Funcoes.mensagemErro( this, "A porta " + nomeporta + " está em uso no momento por " + cp.getCurrentOwner() + "!\nTente novamente mais tarde." );							
+			}
+			else {
+				porta = (SerialPort) cp.open( "SComm", 1 );
+				
+				System.out.println("Abriu porta!");
+				
+				porta.setSerialPortParams( 9600, porta.DATABITS_8, porta.STOPBITS_2, porta.PARITY_EVEN );
+				
+				System.out.println("Setou parametros!");
+				
+				
+				lePorta();
+				
+			}
+						
+		}
+		catch (PortInUseException e) {
+			Funcoes.mensagemErro( this, "A porta " + nomeporta + " está em uso no momento!\nTente novamente mais tarde." );
+			btCancel.doClick();
 			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	private void lePorta() {
 		
 		try {
 	
-			InputStream entrada = porta.getInputStream();
-
-			porta.notifyOnDataAvailable( true );
-			
 			porta.addEventListener( this );
-				
 			
+			porta.notifyOnDataAvailable( true );
+				
+			System.out.println("Escutando na porta...");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -242,15 +263,21 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		String leitura = null;
 		
 		try {
-			
-			Funcoes.espera( 1 );
+
+			InputStream entrada = porta.getInputStream();
+
+			System.out.println("Aguardando dados para leitura...");
+			Funcoes.espera( 2 );
 		
 			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 				
-				InputStream entrada = porta.getInputStream();
+				entrada = porta.getInputStream();
+				
 				int nodeBytes = 0;
 				
 				byte[] bufferLeitura = new byte[64];
+				
+				System.out.println("Lendo dados da porta serial...");
 				
 				while ( entrada.available() > 0 ) {
 					
@@ -281,6 +308,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 						
 						porta.notifyOnDataAvailable( false );					
 						porta.close();
+						System.out.println("Finalizou leitura e fechou a porta!");
 						
 					}
 					
@@ -299,6 +327,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				
 			}
+			else {
+				System.out.println("Porta não está pronta!");
+			}
 				
 				
 		}
@@ -309,6 +340,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			if(leitura != null) {
 				parseLeitura( leitura );
 			}
+			porta.close();
+			System.out.println("Fechou Porta!");
 		}
 		
 	}
@@ -335,6 +368,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			e.printStackTrace();
 		}
 	}
+	
+    public void cancel() {
+    	super.cancel();
+    }
 	
 	
 	
