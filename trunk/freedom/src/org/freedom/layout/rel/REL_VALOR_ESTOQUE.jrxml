@@ -781,7 +781,7 @@ and p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod]]><
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{SLDPROD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="650"
