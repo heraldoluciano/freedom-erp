@@ -813,9 +813,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		
 		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 150, 30 ) );
-		navEast.adic( lbStatus, 3, 3, 110, 20 );
-		navEast.adic( btExp, 118, 0, 28, 25 );
+		navEast.setPreferredSize( new Dimension( 230, 30 ) );
+		navEast.adic( lbStatus, 12, 3, 180, 20 );
+		navEast.adic( btExp, 200, 0, 28, 25 );
 		navEast.tiraBorda();	
 		pnNavCab.add( navEast, BorderLayout.EAST );
 
