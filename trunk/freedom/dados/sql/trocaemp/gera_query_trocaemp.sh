@@ -9,7 +9,7 @@ ISC_PASSWORD="masterkey"
 CMD_ISQL="/opt/firebird/bin/isql"
 ARQ_DEST="trocaemp.sql"
 #ARQ_LOG="gera_query_troca_emp.log"
-ARQ_SQL="gera_query_troca_emp.sql"
+ARQ_SQL="gera_query_trocaemp.sql"
 ARQ_DADOS="localhost:/opt/firebird/dados/desenv/freedom.fdb"
 LINHA_COMENTARIO="----------------------------------------------"
 RESULT=0
@@ -22,6 +22,8 @@ fn_executa()
    fi 
 #   echo $ISC_USER
 #   echo $ISC_PASSWORD
+   rm $ARQ_DEST
+echo "$CMD_ISQL -i $ARQ_SQL -o $ARQ_DEST -user $ISC_USER -pass $ISC_PASSWORD -page 20000 $ARQ_DADOS"
    $CMD_ISQL -i $ARQ_SQL -o $ARQ_DEST -user $ISC_USER -pass $ISC_PASSWORD -page 20000 $ARQ_DADOS
    
    echo "COMMIT WORK ; " >> $ARQ_DEST
