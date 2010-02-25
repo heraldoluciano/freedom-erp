@@ -196,6 +196,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodNat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldFK txtDiasAvisoLote = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtPercICMSItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, casasDecFin );
 
@@ -559,6 +561,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLote, false ) );
 		lcLote.add( new GuardaCampo( txtDescLote, "VenctoLote", "Dt.vencto.", ListaCampos.DB_SI, false ) );
 		lcLote.add( new GuardaCampo( txtSldLiqProd, "SldLiqLote", "Saldo", ListaCampos.DB_SI, false ) );
+		lcLote.add( new GuardaCampo( txtDiasAvisoLote, "DiasAvisoLote", "Dias Aviso", ListaCampos.DB_SI, false ) );
 		lcLote.setDinWhereAdic( "CODPROD=#N AND (VENCTOLOTE >= #D OR #S IN('DV','PE'))", txtCodProd );
 		lcLote.setDinWhereAdic( "", txtDtSaidaVenda );
 		lcLote.setDinWhereAdic( "", txtTipoMov );
@@ -1327,7 +1330,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			sql.append( "select origfisc,codtrattrib,redfisc,tipofisc,codmens,aliqfisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr," );
 			sql.append( "codempif,codfilialif,codfisc,coditfisc " );
-			sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?)" );				
+			sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?)" );				
 				
 			try {
 	
@@ -1342,6 +1345,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				ps.setInt( 8, Aplicativo.iCodFilial );
 				ps.setInt( 9, txtCodTipoMov.getVlrInteger() );
 				ps.setString( 10, "VD" );
+				ps.setNull( 11, Types.CHAR );
 				
 				rs = ps.executeQuery();
 	
@@ -2092,8 +2096,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		boolean retorno = true;
 
-		if ( !testaCodLote( txtCodLote.getVlrString().trim(), txtCodProd.getVlrInteger().intValue() ) ) {
+		Integer statuslote = testaCodLote( txtCodLote.getVlrString().trim(), txtCodProd.getVlrInteger().intValue() );
+		
+		if ( statuslote == DLLote.LOTE_INVALIDO ) {
 			retorno = txtCodLote.mostraDLF2FK();
+		}
+		else if ( statuslote > 0 ){
+			
+			Funcoes.mensagemInforma( this, "Faltam " + statuslote + " dias para o vencimento deste lote!" );
+			
 		}
 
 		return retorno;
