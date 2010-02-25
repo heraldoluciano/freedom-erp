@@ -50,7 +50,7 @@ public abstract class FVD extends FDetalhe {
 	protected int casasDec = Aplicativo.casasDec;
 
 	protected int casasDecFin = Aplicativo.casasDecFin;
-
+	
 	/**
 	 * indica se pode recalcular os itens. ajuda a evitar updates desnecessarios ou erroneos.
 	 */
@@ -242,14 +242,17 @@ public abstract class FVD extends FDetalhe {
 	 *            Código do produto.
 	 * @return verdadeiro se tem o lote.
 	 */
-	protected boolean testaCodLote( String lote, int codProd ) {
+	protected int testaCodLote( String lote, int codProd ) {
 
-		boolean bValido = false;
-		String sSQL = "SELECT COUNT(*) FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?" + " AND CODEMP=? AND CODFILIAL=?";
+		int ret = DLLote.LOTE_INVALIDO;
+		
+		String sSQL = "SELECT (VENCTOLOTE - cast('today' as date)) DIASVENCIMENTO, COALESCE(DIASAVISOLOTE,0) DIASAVISOLOTE FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?" + " AND CODEMP=? AND CODFILIAL=?";
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setString( 1, lote );
 			ps.setInt( 2, codProd );
@@ -258,9 +261,24 @@ public abstract class FVD extends FDetalhe {
 			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				if ( rs.getInt( 1 ) > 0 ) {
-					bValido = true;
+
+				Integer diasvencimento = rs.getInt( "DIASVENCIMENTO" );
+				Integer diasavisolote = rs.getInt( "DIASAVISOLOTE" );
+				
+				if(diasavisolote>0) {
+					
+					if(diasvencimento<=diasavisolote) {
+						ret = diasvencimento;
+					}
+					else {				
+						ret = DLLote.LOTE_VALIDO;
+					}
+					
 				}
+				else {				
+					ret = DLLote.LOTE_VALIDO;
+				}
+
 			}
 
 			rs.close();
@@ -268,16 +286,18 @@ public abstract class FVD extends FDetalhe {
 
 			con.commit();
 			
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
 		}
 
-		return bValido;
+		return ret;
 
 	}
 
