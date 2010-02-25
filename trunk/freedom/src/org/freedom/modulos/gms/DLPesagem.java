@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Enumeration;
@@ -224,6 +225,12 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				System.out.println("Setou parametros!");
 				
+				OutputStream saida = porta.getOutputStream();
+				
+				saida.write( 0x05 );
+				saida.write( 0x00 );	
+				
+				saida.flush();
 				
 				lePorta();
 				
@@ -371,6 +378,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
     public void cancel() {
     	super.cancel();
+    	porta.close();
     }
 	
 	
