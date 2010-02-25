@@ -2099,7 +2099,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		Integer statuslote = testaCodLote( txtCodLote.getVlrString().trim(), txtCodProd.getVlrInteger().intValue() );
 		
 		if ( statuslote == DLLote.LOTE_INVALIDO ) {
+			
 			retorno = txtCodLote.mostraDLF2FK();
+			
 		}
 		else if ( statuslote > 0 ){
 			
