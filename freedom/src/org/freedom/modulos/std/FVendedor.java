@@ -218,7 +218,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		
 		setPainel( pinComiss );
 		adicTab( "Comissionado", pinComiss );
-		adicCampo( txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.Comiss.", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeVend, 110, 20, 192, 20, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, true );
 		adicDB( cbAtivo, 305, 20, 70, 20, "AtivoComis", "Ativo", true );
 		adicCampo( txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF", ListaCampos.DB_SI, false );
@@ -245,11 +245,11 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicCampo( txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.comis.for.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.", ListaCampos.DB_FK, txtDescPlan, false );
 		adicDescFK( txtDescPlan, 110, 300, 262, 20, "DescPlan", "Descrição do planejamento" );
-		adicCampo( txtCodClComis, 7, 340, 100, 20, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false );
+		adicCampo( txtCodClComis, 7, 340, 100, 20, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, txtDescClComis, false );
 		adicDescFK( txtDescClComis, 110, 340, 262, 20, "DescClComis", "Descrição da Classificacao da comissão" );
 		adicCampo( txtCodFunc, 7, 380, 100, 20, "CodFunc", "Cód.função", ListaCampos.DB_FK, txtDescFunc, false );
 		adicDescFK( txtDescFunc, 110, 380, 262, 20, "DescFunc", "Descrição da função" );
-		adicCampo( txtCodTipoVend, 7, 420, 100, 20, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_FK, txtDescTipoVend, false );
+		adicCampo( txtCodTipoVend, 7, 420, 100, 20, "CodTipoVend", "Cód.tp.Comiss.", ListaCampos.DB_FK, txtDescTipoVend, false );
 		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
 		adicCampo( txtNumConta, 7, 460, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 110, 460, 262, 20, "DescConta", "Descrição da conta" );
