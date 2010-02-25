@@ -50,6 +50,8 @@ public class DLLote extends FFDialogo {
 	private JTextFieldPad txtDataINILote = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVenctoLote = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDiasAvisoLote = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -63,9 +65,16 @@ public class DLLote extends FFDialogo {
 
 	private JLabelPad lbVenctoLote = new JLabelPad( "Vencimento" );
 	
-	private JLabelPad lbQtdProdLote = new JLabelPad( "Quantidade no lote" );
+	private JLabelPad lbQtdProdLote = new JLabelPad( "Qtd. no lote" );
+	
+	private JLabelPad lbDiasAvisoLote = new JLabelPad( "Dias para aviso" );
 	
 	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 ); 
+	
+	protected static final int LOTE_VALIDO = 0;
+	
+	protected static final int LOTE_INVALIDO = -1;
+
 	
 
 	public DLLote( Component cOrig, String sCodLote, String sCodProd, String sDescProd, DbConnection cn ) {
@@ -92,6 +101,9 @@ public class DLLote extends FFDialogo {
 		adic( txtDescProd, 90, 60, 200, 20 );
 		adic( lbQtdProdLote, 7, 80, 300, 20 );
 		adic( txtQtdProdLote, 7, 100, 80, 20 );
+		
+		adic( lbDiasAvisoLote, 90, 80, 150, 20 );
+		adic( txtDiasAvisoLote, 90, 100, 80, 20 );
 
 		txtCodLote.setVlrString( sCodLote );
 		txtCodProd.setVlrString( sCodProd );
@@ -103,7 +115,7 @@ public class DLLote extends FFDialogo {
 	private boolean gravaLote() {
 
 		boolean bRet = false;
-		String sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE, QTDPRODLOTE) VALUES(?,?,?,?,?,?,?)";
+		String sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE, QTDPRODLOTE, DIASAVISOLOTE) VALUES(?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -111,6 +123,7 @@ public class DLLote extends FFDialogo {
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
 			ps.setString( 3, txtCodLote.getText().trim() );
 			ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
+			
 			if ( txtDataINILote.getVlrString().equals( "" ) )
 				ps.setNull( 5, Types.DATE );
 			else
@@ -123,6 +136,14 @@ public class DLLote extends FFDialogo {
 			else {
 				ps.setBigDecimal( 7, txtQtdProdLote.getVlrBigDecimal() );
 			}
+			
+			if (txtDiasAvisoLote.getVlrInteger()==null) {
+				ps.setInt( 8, 0 );
+			}
+			else {
+				ps.setInt( 8, txtDiasAvisoLote.getVlrInteger() );
+			}
+
 				
 			ps.executeUpdate();
 			ps.close();
