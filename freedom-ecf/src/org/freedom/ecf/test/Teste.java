@@ -3,8 +3,8 @@ package org.freedom.ecf.test;
 
 import java.util.Date;
 
-import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.ECFBematech;
+import org.freedom.infra.comm.Serial;
 
 public class Teste {
 
