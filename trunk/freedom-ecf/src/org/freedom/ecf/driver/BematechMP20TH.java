@@ -2,8 +2,8 @@
 package org.freedom.ecf.driver;
 
 import java.util.Date;
-import org.freedom.ecf.com.AbstractPort;
 import org.freedom.ecf.layout.AbstractLayout;
+import org.freedom.infra.comm.AbstractPort;
 
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>
