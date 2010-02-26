@@ -221,23 +221,11 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				System.out.println("Abriu porta!");
 				
-				porta.setSerialPortParams( 9600, porta.DATABITS_8, porta.STOPBITS_2, porta.PARITY_EVEN );
+				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
 
 				escutaPorta();
 				
-				System.out.println("Setou parametros!");
-				
-				OutputStream saida = porta.getOutputStream();
-				
-				saida.write( 0x05 );
-				saida.write( 0x00 );	
-				
-				saida.flush();
-				
-				Thread.sleep( 100 );
-				
-				
-				
+				lePorta();
 				
 			}
 						
@@ -273,6 +261,15 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	private void lePorta() {
 		try {
 			
+			OutputStream saida = porta.getOutputStream();
+			
+			saida.write( 0x05 );
+			saida.write( 0x00 );	
+			
+			saida.flush();
+			
+			System.out.println("Setou parâmetros");
+			
 			Thread.sleep( 100 );
 			
 			InputStream entrada = porta.getInputStream();
@@ -292,6 +289,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			String strleitura = new String(bufferLeitura);
 			
 			String leitura2 = Funcoes.alltrim( strleitura );
+			
+			System.out.print( "Leu:" + leitura2 );
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
