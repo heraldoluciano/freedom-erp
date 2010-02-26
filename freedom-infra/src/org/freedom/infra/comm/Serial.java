@@ -67,7 +67,7 @@ public class Serial extends AbstractPort {
 	public boolean activePort( final int portn, final SerialParams serialParams, final EventListener event ) {
 
 		boolean result = false;
-		String portstr = convPorta( portn );
+		String portstr = convPort( portn );
 		Enumeration<CommPortIdentifier> listaPortas = null;
 		CommPortIdentifier ips = null;
 		listaPortas = (Enumeration<CommPortIdentifier>) CommPortIdentifier.getPortIdentifiers();

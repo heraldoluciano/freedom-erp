@@ -180,7 +180,7 @@ public abstract class AbstractPort {
 		return result;
 	}
 	
-	public static String convPorta( final int portn ) {
+	public static String convPort( final int portn ) {
 
 		final StringBuffer porta = new StringBuffer();
 
