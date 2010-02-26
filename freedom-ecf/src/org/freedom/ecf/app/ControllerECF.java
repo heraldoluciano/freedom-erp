@@ -104,7 +104,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * com o estado de modo demostração false e convertendo o nome da porta para a constante indicativa.<br>
 	 * 
-	 * @see org.freedom.infra.comm.Serial#convPorta(int)
+	 * @see org.freedom.infra.comm.Serial#convPort(int)
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @param porta
@@ -125,7 +125,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * convertendo o nome da porta para a constante indicativa.<br>
 	 * 
-	 * @see org.freedom.infra.comm.Serial#convPorta(int)
+	 * @see org.freedom.infra.comm.Serial#convPort(int)
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @param porta
