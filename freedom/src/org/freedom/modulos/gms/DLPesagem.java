@@ -28,17 +28,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Enumeration;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
-import javax.comm.SerialPortEvent;
-import javax.comm.SerialPortEventListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -46,11 +39,12 @@ import org.freedom.acao.EditEvent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener {//, SerialPortEventListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -101,7 +95,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 //		listaPortasSeriais();
 		
-		abrePorta("/dev/ttyS0");		
+//		abrePorta("/dev/ttyS0");		
+		
+		FilizolaBP15 balanca = new FilizolaBP15();
 		
 	}
 	
@@ -174,7 +170,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 		super.setConexao( cn );
 	}
-	
+	/*
 	public String[] listaPortasSeriais() {
 		
 		Enumeration listadeportas = null;
@@ -207,6 +203,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
+	*/
+/*	
 	private void abrePorta(String nomeporta) {
 	
 		try {
@@ -243,6 +241,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
+	*/
+	/*
 	private void escutaPorta() {
 		
 		try {
@@ -259,7 +259,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 
 	}
+	*/
 	
+	/*
 	private void lePorta() {
 		try {
 			
@@ -283,9 +285,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 	
 	}
+	*/
 	
-	
-	
+	/*
 	public void serialEvent( SerialPortEvent ev ) {
 		
 		String leitura = null;
@@ -376,7 +378,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 		
 	}
-	
+	*/
 	private void parseLeitura(String leitura) {
 		
 		String peso = "";
