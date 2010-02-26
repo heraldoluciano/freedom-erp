@@ -222,6 +222,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				System.out.println("Abriu porta!");
 				
 				porta.setSerialPortParams( 9600, porta.DATABITS_8, porta.STOPBITS_2, porta.PARITY_EVEN );
+
+				escutaPorta();
 				
 				System.out.println("Setou parametros!");
 				
@@ -232,7 +234,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				saida.flush();
 				
-				lePorta();
+				Thread.sleep( 100 );
+				
+				
+				
 				
 			}
 						
@@ -248,7 +253,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
-	private void lePorta() {
+	private void escutaPorta() {
 		
 		try {
 	
@@ -264,6 +269,37 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 
 	}
+	
+	private void lePorta() {
+		try {
+			
+			Thread.sleep( 100 );
+			
+			InputStream entrada = porta.getInputStream();
+			
+			int nodeBytes = 0;
+			
+			byte[] bufferLeitura = new byte[64];
+			
+			System.out.println("Lendo dados da porta serial...");
+			
+			while ( entrada.available() > 0 ) {
+				
+				nodeBytes = entrada.read( bufferLeitura );	
+			
+			}
+			
+			String strleitura = new String(bufferLeitura);
+			
+			String leitura2 = Funcoes.alltrim( strleitura );
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+	
 	
 	public void serialEvent( SerialPortEvent ev ) {
 		
