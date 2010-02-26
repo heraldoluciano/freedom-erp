@@ -49,6 +49,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FBairro.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.comm"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
     </selectedElements>
