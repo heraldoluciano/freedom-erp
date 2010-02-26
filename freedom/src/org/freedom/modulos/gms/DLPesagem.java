@@ -217,11 +217,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				Funcoes.mensagemErro( this, "A porta " + nomeporta + " está em uso no momento por " + cp.getCurrentOwner() + "!\nTente novamente mais tarde." );							
 			}
 			else {
-				porta = (SerialPort) cp.open( "SComm", 1 );
+				
+				porta = (SerialPort) cp.open( "SComm", 1000 );
 				
 				System.out.println("Abriu porta!");
 				
-				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
+//				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
+				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_NONE );
 
 				escutaPorta();
 				
@@ -264,34 +266,16 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			OutputStream saida = porta.getOutputStream();
 			
 			saida.write( 0x05 );
+			
 			saida.write( 0x00 );	
+			
+			Thread.sleep( 100 );
 			
 			saida.flush();
 			
 			System.out.println("Setou parâmetros");
 			
 			Thread.sleep( 100 );
-			
-			InputStream entrada = porta.getInputStream();
-			
-			int nodeBytes = 0;
-			
-			byte[] bufferLeitura = new byte[64];
-			
-			System.out.println("Lendo dados da porta serial...");
-			
-			while ( entrada.available() > 0 ) {
-				
-				nodeBytes = entrada.read( bufferLeitura );	
-			
-			}
-			
-			String strleitura = new String(bufferLeitura);
-			
-			String leitura2 = Funcoes.alltrim( strleitura );
-			
-			System.out.print( "Leu:" + leitura2 );
-			
 			
 		}
 		catch (Exception e) {
@@ -319,13 +303,14 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				int nodeBytes = 0;
 				
-				byte[] bufferLeitura = new byte[64];
+				byte[] bufferLeitura = new byte[100];
 				
 				System.out.println("Lendo dados da porta serial...");
 				
 				while ( entrada.available() > 0 ) {
 					
 					nodeBytes = entrada.read( bufferLeitura );	
+					System.out.println("Teste");
 				
 				}
 				
@@ -333,9 +318,11 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				String leitura2 = Funcoes.alltrim( strleitura );
 				
+				System.out.println("Leitura no listener:" + leitura2);
+				
 				int posicaobranca = leitura2.indexOf( " " );
 				
-				if(posicaobranca<22) {
+				if(posicaobranca<22 && posicaobranca>-1) {
 					leitura2 = leitura2.substring( posicaobranca );
 					leitura2 = Funcoes.alltrim( leitura2 );
 				}
@@ -416,6 +403,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
     public void cancel() {
     	super.cancel();
     	porta.close();
+    	System.out.println("Fechou porta...");
     }
 	
 	
