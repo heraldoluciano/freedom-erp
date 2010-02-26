@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.freedom.ecf.com.AbstractPort;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.STResult;
 import org.freedom.ecf.layout.AbstractLayout;
+import org.freedom.infra.comm.AbstractPort;
 
 public class ControllerECF {
 		
@@ -44,7 +44,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * com a porta default Serial.COM1 e o estado de modo demostração false.<br>
 	 * 
-	 * @see org.freedom.ecf.com.Serial#COM1
+	 * @see org.freedom.infra.comm.Serial#COM1
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @throws IllegalArgumentException
@@ -63,7 +63,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * com a porta default Serial.COM1<br>
 	 * 
-	 * @see org.freedom.ecf.com.Serial#COM1
+	 * @see org.freedom.infra.comm.Serial#COM1
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @param mododemostracao
@@ -104,7 +104,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * com o estado de modo demostração false e convertendo o nome da porta para a constante indicativa.<br>
 	 * 
-	 * @see org.freedom.ecf.com.Serial#convPorta(int)
+	 * @see org.freedom.infra.comm.Serial#convPorta(int)
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @param porta
@@ -125,7 +125,7 @@ public class ControllerECF {
 	 * Invoca o construtor Control( String, int, boolean )<br>
 	 * convertendo o nome da porta para a constante indicativa.<br>
 	 * 
-	 * @see org.freedom.ecf.com.Serial#convPorta(int)
+	 * @see org.freedom.infra.comm.Serial#convPorta(int)
 	 * @param ecfdriver
 	 *            nome do driver de comunicação serial.
 	 * @param porta
