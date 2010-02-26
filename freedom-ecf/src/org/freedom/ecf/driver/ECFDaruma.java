@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.freedom.ecf.com.Serial;
+
+import org.freedom.infra.comm.Serial;
 
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>

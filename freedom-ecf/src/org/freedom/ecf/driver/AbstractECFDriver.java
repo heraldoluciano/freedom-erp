@@ -12,10 +12,10 @@ import javax.comm.ParallelPortEventListener;
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
-import org.freedom.ecf.com.AbstractPort;
-import org.freedom.ecf.com.CtrlPort;
-import org.freedom.ecf.com.SerialParams;
 import org.freedom.ecf.layout.AbstractLayout;
+import org.freedom.infra.comm.AbstractPort;
+import org.freedom.infra.comm.CtrlPort;
+import org.freedom.infra.comm.SerialParams;
 
 /**
  * @version 05/04/2006 <BR>
