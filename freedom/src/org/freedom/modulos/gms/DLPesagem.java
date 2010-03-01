@@ -99,6 +99,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 		FilizolaBP15 balanca = new FilizolaBP15();
 		
+		balanca.getWeight();
+		
 	}
 	
 	private void ajustaCampos() {
