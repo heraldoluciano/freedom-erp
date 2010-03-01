@@ -34,13 +34,9 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	private boolean outputWrite;
 	
-	protected static int TIMEOUT_READ = 30000;
+	protected static int TIMEOUT_READ = 1000;
 	
 	public static final int TIMEOUT_ACK = 500;
-	
-	public static final byte ENQ = 5;
-	
-	
 	
 	public boolean activePort( final int com ) {
 
@@ -98,7 +94,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	private void writeOutput( final byte[] CMD ) {
 		
 		try {
-			final OutputStream output = CtrlPort.getInstance().getOutput();
+			final OutputStream output = CtrlPort.getInstance().getOutput();			
 			output.flush();
 			output.write( CMD );		
 			closeOutput();
