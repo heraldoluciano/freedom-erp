@@ -55,6 +55,9 @@ public class FilizolaBP15 extends AbstractScale  {
 
 	public BigDecimal getWeight() {
 		// TODO Auto-generated method stub
+		
+		System.out.println("Peso= parse de:" + new String(buffer) );
+		
 		return null;
 	}
 	
