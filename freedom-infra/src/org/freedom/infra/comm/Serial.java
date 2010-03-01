@@ -70,6 +70,7 @@ public class Serial extends AbstractPort {
 		String portstr = convPort( portn );
 		Enumeration<CommPortIdentifier> listaPortas = null;
 		CommPortIdentifier ips = null;
+		
 		listaPortas = (Enumeration<CommPortIdentifier>) CommPortIdentifier.getPortIdentifiers();
 
 		while ( listaPortas.hasMoreElements() ) {
