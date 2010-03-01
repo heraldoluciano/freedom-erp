@@ -16,6 +16,7 @@ import org.freedom.ecf.layout.AbstractLayout;
 import org.freedom.infra.comm.AbstractPort;
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.comm.SerialParams;
+import org.freedom.infra.functions.SystemFunctions;
 
 /**
  * @version 05/04/2006 <BR>
@@ -440,7 +441,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 				if ( stmp.length() >= tamanho ) {
 					stmp = ( stmp.substring( 0, param.length() - 2 ) );
 				}
-				tmp.append( stmp + (AbstractPort.OS_LINUX == AbstractPort.getSistema() ? (char) 13 : (char) 10) );
+				tmp.append( stmp + (AbstractPort.OS_LINUX == SystemFunctions.getOS() ? (char) 13 : (char) 10) );
 				//tmp.append( (char) 10 + stmp + (char) 10 );
 			}
 			else {
