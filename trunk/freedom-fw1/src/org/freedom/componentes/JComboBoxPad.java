@@ -32,6 +32,7 @@ import org.freedom.acao.JComboBoxListener;
 
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {
+
 public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
