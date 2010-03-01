@@ -39,6 +39,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
@@ -62,6 +63,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private SerialPort porta =  null;
 	
+	private AbstractScale balanca = null;
+	
 	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
 		super( cOrig );
@@ -70,8 +73,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		setTitulo( "Pesagem" );
 		
 		ajustaCampos();
-		carregaPadroes();
-		txtPeso1.setVlrBigDecimal( new BigDecimal( 0 ) );
 		
 		adic( lbpeso1 , 7, 0, 252, 20 );
 		adic( txtPeso1, 7, 20, 252, 50 );
@@ -92,14 +93,10 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
+				
+		balanca = new FilizolaBP15( 0 );
 		
-//		listaPortasSeriais();
-		
-//		abrePorta("/dev/ttyS0");		
-		
-		FilizolaBP15 balanca = new FilizolaBP15();
-		
-		balanca.getWeight();
+		carregaPadroes();
 		
 	}
 	
@@ -117,9 +114,11 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private void carregaPadroes() {
 		
-//		Date dataatual = new Date();
-//		txtData.setVlrDate( dataatual );
-//		txtHora.setVlrTime( dataatual );		
+
+		txtData.setVlrDate( balanca.getDate() );
+		txtHora.setVlrTime( balanca.getTime() );	
+		
+		txtPeso1.setVlrBigDecimal( balanca.getWeight() );
 		
 	}
 
@@ -406,18 +405,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
     public void cancel() {
     	super.cancel();
-    	porta.close();
-    	System.out.println("Fechou porta...");
     }
-	
-	
-	
-	
-	
-	
-	
-
-	
 	
 
 }
