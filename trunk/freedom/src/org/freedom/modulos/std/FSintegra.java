@@ -31,8 +31,9 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,9 +57,15 @@ import org.freedom.telas.FFilho;
 
 public class FSintegra extends FFilho implements ActionListener {
 
+	protected static final String ISO88591 = "ISO8859_1";
+	
 	private static final long serialVersionUID = 1L;
 
-	private FileWriter fwSintegra;
+	//private FileWriter fwSintegra;
+
+	private FileOutputStream fosSintegra;
+	
+	private OutputStreamWriter oswSintegra;
 
 	private String sFileName = "";
 
@@ -258,6 +265,10 @@ public class FSintegra extends FFilho implements ActionListener {
 			return;
 		}
 
+		//System.setProperty(SUN_JNU_ENCODING, ISO88591);
+		//System.setProperty(FILE_ENCODING, ISO88591);
+		
+		
 		File fSintegra = new File( sFileName );
 
 		if ( fSintegra.exists() ) {
@@ -274,7 +285,10 @@ public class FSintegra extends FFilho implements ActionListener {
 		}
 
 		try {
-			fwSintegra = new FileWriter( fSintegra );
+			//fwSintegra = new FileWriter( fSintegra );
+			fosSintegra = new FileOutputStream( fSintegra ); 
+			oswSintegra = new OutputStreamWriter( fosSintegra, ISO88591 );
+			
 		} catch ( IOException ioError ) {
 			Funcoes.mensagemErro( this, "Erro Criando o arquivo: " + sFileName + "\n" + ioError.getMessage() );
 			return;
@@ -366,7 +380,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		gravaBuffer( sBuffer.toString() );
 
 		try {
-			fwSintegra.close();
+			oswSintegra.close();
 		} catch ( IOException ioError ) {
 			ioError.printStackTrace();
 			Funcoes.mensagemInforma( this, "Fechando o arquivo: " + sFileName + "\n" + ioError.getMessage() );
@@ -1743,8 +1757,9 @@ public class FSintegra extends FFilho implements ActionListener {
 	private void gravaBuffer( String sBuf ) {
 
 		try {
-			fwSintegra.write( sBuf );
-			fwSintegra.flush();
+		
+			oswSintegra.write( sBuf );
+			oswSintegra.flush();
 		} catch ( IOException err ) {
 			Funcoes.mensagemErro( this, "Erro grando no arquivo: '" + sFileName + "\n" + err.getMessage(), true, con, err );
 		}
