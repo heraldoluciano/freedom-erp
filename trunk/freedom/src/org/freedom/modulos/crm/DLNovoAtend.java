@@ -163,6 +163,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	private Integer codrec = null;
 	
 	private Integer nparcitrec = null;
+	
 		
 	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
 
