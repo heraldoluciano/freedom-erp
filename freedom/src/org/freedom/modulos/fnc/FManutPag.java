@@ -65,6 +65,7 @@ import org.freedom.componentes.ListaCampos;
 //import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLCancItem;
 import org.freedom.telas.Aplicativo;
@@ -1394,7 +1395,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 						ps.setString( 7, sRets[ 2 ] );
 						ps.setDate( 8, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
-						ps.setBigDecimal( 9, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
+						ps.setBigDecimal( 9, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
 						
 						if ( "".equals( sRets[ 5 ].trim() ) ) {							
 							ps.setNull( 10, Types.INTEGER );
@@ -1530,7 +1531,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						
 						ps.setString( 11, sRets[ 2 ] );
 						ps.setDate( 12, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
-						ps.setBigDecimal( 13, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
+						ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
 						ps.setString( 14, sRets[ 7 ] );
 						ps.setInt( 15, iCodPag );
 						ps.setInt( 16, iNParcPag );
@@ -1697,25 +1698,25 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 								ps.setNull( 12, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 12, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
+								ps.setBigDecimal( 12, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
 							}
 							if ( "".equals( sRets[ 5 ].trim() ) ) {
 								ps.setNull( 13, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 13, Funcoes.strCurrencyToBigDecimal( sRets[ 5 ] ) );
+								ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 5 ] ) );
 							}
 							if ( "".equals( sRets[ 6 ].trim() ) ) {
 								ps.setNull( 14, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 14, Funcoes.strCurrencyToBigDecimal( sRets[ 6 ] ) );
+								ps.setBigDecimal( 14, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 6 ] ) );
 							}
 							if ( "".equals( sRets[ 7 ].trim() ) ) {
 								ps.setNull( 15, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 15, Funcoes.strCurrencyToBigDecimal( sRets[ 7 ] ) );
+								ps.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 7 ] ) );
 							}
 							if ( "".equals( sRets[ 8 ].trim() ) ) {
 								ps.setNull( 16, Types.DECIMAL );
@@ -1743,7 +1744,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 								ps.setNull( 21, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 21, Funcoes.strCurrencyToBigDecimal( sRets[ 11 ] ) );
+								ps.setBigDecimal( 21, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 11 ] ) );
 							}
 
 							ps.setInt( 22, iCodPag );
