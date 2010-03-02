@@ -30,9 +30,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import javax.comm.SerialPort;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
@@ -94,9 +92,28 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		adic( new JLabelPad( "Hora" ), 147, 80 + irow, 110, 20 );
 		adic( txtHora, 147, 100 + irow, 110, 50 );
 				
-		balanca = new FilizolaBP15( 0 );
+		buscaPeso();
 		
-		carregaPadroes();
+	}
+	
+	private void buscaPeso() {
+		
+		try {
+			
+			balanca = new FilizolaBP15( 0 );
+			
+			if(balanca!=null) {
+				
+				txtData.setVlrDate( balanca.getDate() );			
+				txtHora.setVlrTime( balanca.getTime() );				
+				txtPeso1.setVlrBigDecimal( balanca.getWeight() );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -112,16 +129,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
-	private void carregaPadroes() {
-		
-
-		txtData.setVlrDate( balanca.getDate() );
-		txtHora.setVlrTime( balanca.getTime() );	
-		
-		txtPeso1.setVlrBigDecimal( balanca.getWeight() );
-		
-	}
-
 	public BigDecimal getPeso1() {
 		return txtPeso1.getVlrBigDecimal();
 	}
@@ -140,8 +147,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK ) {
-				carregaPadroes();
+		if ( evt.getSource() == btOK ) {				
 				super.actionPerformed( evt );			
 		}
 		else {
