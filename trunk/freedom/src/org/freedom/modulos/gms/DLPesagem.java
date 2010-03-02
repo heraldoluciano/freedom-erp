@@ -28,9 +28,17 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
+
+import javax.comm.CommPortIdentifier;
+import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
@@ -40,11 +48,13 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
+import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener {//, SerialPortEventListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener , SerialPortEventListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -95,6 +105,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 		buscaPeso();
 		
+//		abrePorta( "/dev/ttyS0" );
+		
 	}
 	
 	private void buscaPeso() {
@@ -106,9 +118,30 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			
 			if(balanca!=null) {
 				
-				txtData.setVlrDate( balanca.getDate() );			
-				txtHora.setVlrTime( balanca.getTime() );				
-				txtPeso1.setVlrBigDecimal( balanca.getWeight() );
+				Date data = balanca.getDate();
+				Time hora = balanca.getTime();
+				BigDecimal peso = balanca.getWeight();
+				
+				if(data != null) {
+					txtData.setVlrDate( data );
+				}
+				else {
+					System.out.println("Data inválida na leitura!");
+				}
+				
+				if(hora != null) {
+					txtHora.setVlrTime( hora );
+				}
+				else {
+					System.out.println("Hora inválida na leitura!");
+				}
+				if(peso != null) {
+					txtPeso1.setVlrBigDecimal( peso );
+				}
+				else {
+					System.out.println("Peso inválido na leitura!");
+				}
+				
 				
 			}
 			
@@ -180,7 +213,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		super.setConexao( cn );
 	}
 	
-/*	
+	
 	private void abrePorta(String nomeporta) {
 	
 		try {
@@ -197,7 +230,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				System.out.println("Abriu porta!");
 				
 //				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
-				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_NONE );
+				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE );
 
 				escutaPorta();
 				
@@ -217,8 +250,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
-	*/
-	/*
+	
+	
 	private void escutaPorta() {
 		
 		try {
@@ -235,21 +268,23 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 
 	}
-	*/
 	
-	/*
+	
+	
 	private void lePorta() {
 		try {
 			
-			OutputStream saida = porta.getOutputStream();
+//			OutputStream saida = porta.getOutputStream();
 			
-			saida.write( 0x05 );
+//			saida.write( 0x05 );
 			
-			saida.write( 0x00 );	
+//			saida.write( 0x00 );	
 			
-			Thread.sleep( 100 );
+//			Thread.sleep( 100 );
 			
-			saida.flush();
+//			saida.flush();
+			
+			InputStream entrada = porta.getInputStream();
 			
 			System.out.println("Setou parâmetros");
 			
@@ -261,9 +296,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 	
 	}
-	*/
 	
-	/*
+	
+	
 	public void serialEvent( SerialPortEvent ev ) {
 		
 		String leitura = null;
@@ -294,7 +329,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				String strleitura = new String(bufferLeitura);
 				
-				String leitura2 = Funcoes.alltrim( strleitura );
+				String leitura2 = StringFunctions.alltrim( strleitura );
 				
 				System.out.println("Leitura no listener:" + leitura2);
 				
@@ -302,7 +337,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				if(posicaobranca<22 && posicaobranca>-1) {
 					leitura2 = leitura2.substring( posicaobranca );
-					leitura2 = Funcoes.alltrim( leitura2 );
+					leitura2 = StringFunctions.alltrim( leitura2 );
 				}
 				
 				if(leitura2.length()>=22) {
@@ -367,8 +402,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			data = leitura.substring( 9,  17 );
 			hora = leitura.substring( 17, 22 );
 			
-			txtPeso1.setVlrBigDecimal( Funcoes.strToBd( peso ) );
-			txtData.setVlrDate( Funcoes.strDate6digToDate( data ) );
+			txtPeso1.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( peso ) );
+			txtData.setVlrDate( ConversionFunctions.strDate6digToDate( data ) );
 			txtHora.setVlrString( hora );
 			
 			
@@ -381,6 +416,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
     public void cancel() {
     	super.cancel();
     }
-	*/
+	
 
 }
