@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 import javax.comm.SerialPort;
-import org.freedom.infra.functions.StrFunctions;
+import org.freedom.infra.functions.StringFunctions;
 
 public class FilizolaBP15 extends AbstractScale  {
 
@@ -83,7 +83,7 @@ public class FilizolaBP15 extends AbstractScale  {
 				
 				strweight = strweight.substring(1,strweight.length()-1);
 				
-				strweight = StrFunctions.alltrim(strweight);
+				strweight = StringFunctions.alltrim(strweight);
 				
 				System.out.print( strweight );
 			
