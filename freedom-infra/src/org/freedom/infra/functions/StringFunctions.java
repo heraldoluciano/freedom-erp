@@ -54,6 +54,21 @@ public final class StringFunctions {
 		
 	}
 	
+	public static String clearString(String str) {
+		
+		String sResult = "";
+		String sCaracs = "<>- .,;/\\";
+		
+		if (str != null) {
+			for (int i = 0; i < str.length(); i++) {
+				if (sCaracs.indexOf(str.substring(i, i + 1)) == -1)
+					sResult = sResult + str.substring(i, i + 1);
+			}
+		}
+		return sResult;
+	}
+
+	
 
 }
 
