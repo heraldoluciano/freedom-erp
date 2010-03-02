@@ -71,6 +71,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -1178,8 +1179,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					fSldLote = rs.getFloat( "SLDLOTE" );
 				}
 
-				if ( fSldLote < Funcoes.strCurrencyToBigDecimal((String)tab.getValor( i, 5 )).
-						        subtract( Funcoes.strCurrencyToBigDecimal((String)tab.getValor( i, 6 )) ).floatValue()
+				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal((String)tab.getValor( i, 5 )).
+						        subtract( ConversionFunctions.stringCurrencyToBigDecimal((String)tab.getValor( i, 6 )) ).floatValue()
 						&& ! "".equals((String) tab.getValor( i, 3 )) ) {
 					iSldNeg++;
 					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + Funcoes.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
