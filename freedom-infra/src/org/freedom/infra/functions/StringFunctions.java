@@ -28,7 +28,7 @@
 package org.freedom.infra.functions;
 
 
-public final class StrFunctions {
+public final class StringFunctions {
 
 	public static String ltrim( String text) {
 		if( text==null || "".equals(text)) {
