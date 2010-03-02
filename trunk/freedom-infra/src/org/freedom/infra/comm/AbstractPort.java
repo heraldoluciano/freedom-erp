@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.EventListener;
 
+import org.freedom.infra.functions.SystemFunctions;
+
 public abstract class AbstractPort {
 
 	protected static int sistema = -1;
@@ -184,7 +186,7 @@ public abstract class AbstractPort {
 
 		final StringBuffer porta = new StringBuffer();
 
-		if ( getSistema() == OS_WINDOWS ) {
+		if ( SystemFunctions.getOS() == OS_WINDOWS ) {
 			if (portn<=MAX_COM) {
 			   porta.append( "COM" );
 			   porta.append( portn + 1 );
@@ -211,28 +213,6 @@ public abstract class AbstractPort {
 			}
 		} 
 		return porta.toString();
-	}
-	
-	/**
-	 * 
-	 * @return o nome do sistema operacional.<BR>
-	 */
-	public static int getSistema() {
-
-		final String system = System.getProperty( "os.name" ).toLowerCase();
-
-		if ( sistema == OS_NONE ) {
-
-			if ( system.indexOf( "linux" ) > OS_NONE ) {
-				sistema = OS_LINUX;
-			} else if ( system.indexOf( "windows" ) > OS_NONE ) {
-				sistema = OS_WINDOWS;
-			}
-
-		}
-
-		return sistema;
-
 	}
 	
 }
