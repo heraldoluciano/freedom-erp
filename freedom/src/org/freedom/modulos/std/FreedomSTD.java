@@ -55,6 +55,7 @@ import org.freedom.modulos.lvf.FNBM;
 import org.freedom.modulos.lvf.FNCM;
 import org.freedom.modulos.lvf.FRIcmsNcm;
 import org.freedom.modulos.lvf.FServico;
+import org.freedom.modulos.lvf.FSintegra;
 import org.freedom.modulos.lvf.FSitTrib;
 import org.freedom.modulos.lvf.FTabICMS;
 import org.freedom.modulos.lvf.FTratTrib;
