@@ -38,6 +38,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.driver.scale.AbstractScale;
+import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
@@ -100,7 +101,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 		try {
 			
-			balanca = new FilizolaBP15( 0 );
+//			balanca = new FilizolaBP15( 0 );
+			balanca = new EpmSP2400( 0 );
 			
 			if(balanca!=null) {
 				
@@ -177,40 +179,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 		super.setConexao( cn );
 	}
-	/*
-	public String[] listaPortasSeriais() {
-		
-		Enumeration listadeportas = null;
-		String[] portas = new String[10];
-		
-		try {
-			listadeportas = CommPortIdentifier.getPortIdentifiers();
-			
-			int i = 0;
-			
-			
-			
-			while (listadeportas.hasMoreElements()) {
-								
-				CommPortIdentifier ips = (CommPortIdentifier) listadeportas.nextElement();
-				portas[i] = ips.getName();
-				
-				System.out.println(ips.getName());
-				
-				i++;
-				
-			}
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return portas;	
-		
-	}
 	
-	*/
 /*	
 	private void abrePorta(String nomeporta) {
 	
@@ -385,7 +354,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 		
 	}
-	*/
+	
 	private void parseLeitura(String leitura) {
 		
 		String peso = "";
@@ -412,6 +381,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
     public void cancel() {
     	super.cancel();
     }
-	
+	*/
 
 }
