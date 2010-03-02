@@ -64,7 +64,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 
 				result = new byte[ input.available() ];
 
-				if ( result != null ) {
+				if ( result != null ) { 
 
 					input.read( result );
 
@@ -95,11 +95,16 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		
 		try {
 			final OutputStream output = CtrlPort.getInstance().getOutput();			
-			output.flush();
-			output.write( CMD );		
-			closeOutput();
+			try {
+				output.flush();			
+				output.write( CMD );		
+				closeOutput();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		catch ( IOException e ) {
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}

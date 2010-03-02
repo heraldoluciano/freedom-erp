@@ -8,7 +8,9 @@ import java.util.Date;
 
 import javax.comm.SerialPort;
 
+import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 
 public class EpmSP2400 extends AbstractScale  {
 
@@ -20,11 +22,17 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	public EpmSP2400( int port ) {
 		
-		super();
+//		super();
 		
 		configSerialParams();
 		
 		activePort( port );
+		
+//		byte[] comando = { 0 };
+		
+//		sendCmd( comando, 0, 100 );
+		
+
 	
 		readReturn();
 		
@@ -85,6 +93,32 @@ public class EpmSP2400 extends AbstractScale  {
 		
 		try {
 			
+			int posicaobranca = str.indexOf( " " );
+			
+			if(posicaobranca<22 && posicaobranca>-1) {
+				str = str.substring( posicaobranca );
+				str = StringFunctions.alltrim( str );
+			}
+			
+			if(str.length()>=22) {
+			
+				str = str.substring( 0, 22 );
+				
+				String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
+				
+				if("//:".equals( validador )) {
+					
+					CtrlPort.getInstance().disablePort();
+										
+					System.out.println("Finalizou leitura e fechou a porta!");
+					
+				}
+				
+				
+			}
+			
+			
+			
 			strweight = str.substring( 0,  07 );
 			strdate = str.substring( 9,  17 );
 			strtime = str.substring( 17, 22 );
@@ -112,7 +146,7 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	private void configSerialParams() {
 
-		serialParams.setTimeout( 100 );
+		serialParams.setTimeout( 1000 );
 		serialParams.setBauderate( 9600 );
 		serialParams.setDatabits( SerialPort.DATABITS_8 );
 		serialParams.setStopbits( SerialPort.STOPBITS_1 );
