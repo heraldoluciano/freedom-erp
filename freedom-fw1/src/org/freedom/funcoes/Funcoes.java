@@ -41,6 +41,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -863,17 +865,6 @@ public class Funcoes {
 		return copy(sTmp, 0, iTam);
 	}
 
-	public static String limpaString(String sTexto) {
-		String sResult = "";
-		String sCaracs = "- .,;/\\";
-		if (sTexto != null) {
-			for (int i = 0; i < sTexto.length(); i++) {
-				if (sCaracs.indexOf(sTexto.substring(i, i + 1)) == -1)
-					sResult = sResult + sTexto.substring(i, i + 1);
-			}
-		}
-		return sResult;
-	}
 	
 	public static int contaMeses(Date dDataIni, Date dDataFim) {
 		int iMeses = 0;
@@ -2430,7 +2421,7 @@ public class Funcoes {
 	
 	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
 	//	String mascara = IE.getMask();
-		sIEValida = setMascara(limpaString( sIE ), IE.getMask());		
+		sIEValida = setMascara( StringFunctions.clearString( sIE ), IE.getMask());		
 		return true;
 	}
 	
