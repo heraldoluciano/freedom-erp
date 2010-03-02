@@ -69,6 +69,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.pcp.DLFinalizaOP;
 import org.freedom.modulos.std.DLBuscaDescProd;
@@ -1060,7 +1061,7 @@ public class FColeta extends FDetalhe implements PostListener, CarregaListener, 
 				con.commit();
 			}
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro verificando bloqueido da compra!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro verificando bloqueio da compra!\n" + err.getMessage(), true, con, err );
 		} finally {
 			rs = null;
 			ps = null;
@@ -1323,7 +1324,7 @@ public class FColeta extends FDetalhe implements PostListener, CarregaListener, 
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
-			retorno = retorno.add( Funcoes.strCurrencyToBigDecimal( tab.getValor( i, 5 ).toString() ) );
+			retorno = retorno.add( ConversionFunctions.stringCurrencyToBigDecimal( tab.getValor( i, 5 ).toString() ) );
 		}
 
 		return retorno;
