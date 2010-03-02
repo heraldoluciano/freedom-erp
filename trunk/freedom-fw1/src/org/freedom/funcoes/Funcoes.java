@@ -144,17 +144,6 @@ public class Funcoes {
 		return retorno;
 	}
 	
-	public static BigDecimal strToBd(Object vlr) {
-		BigDecimal retorno = null;
-		if (vlr==null) {
-			retorno = new BigDecimal(0);
-		}
-		else {
-			retorno = Funcoes.strCurrencyToBigDecimal( vlr.toString() );
-		}
-		return retorno;
-	}
-
 	public static String getTimeString(Date data) {
 		String bRetorno	= "";
 		if (data!=null) {
@@ -2083,38 +2072,6 @@ public class Funcoes {
 		return cal.getTime();
 	}
 	
-	public static Date strDate6digToDate(String sVal) {
-		GregorianCalendar cal = new GregorianCalendar();
-		if (sVal.trim().length() == 8) {
-			sVal = sVal.trim();
-			try {
-				
-				int iDia = Integer.parseInt(sVal.substring(0, 2));
-				
-				int iMes = Integer.parseInt(sVal.substring(3, 5)) - 1;
-				
-				int iAno = Integer.parseInt(sVal.substring(6));
-				
-				cal = (GregorianCalendar) GregorianCalendar.getInstance();
-				
-				String milenio = ( cal.get(Calendar.YEAR) + "" ).substring( 0, 2 ) ;
-				
-				iAno = Integer.parseInt( milenio + iAno );
-				
-				cal = new GregorianCalendar(iAno, iMes, iDia);
-				
-			} 
-			catch (Exception err) {
-				err.printStackTrace();
-				cal = null;
-			}
-		} else
-			cal = null;
-		if (cal == null)
-			return null;
-		return cal.getTime();
-	}
-
 	public static String dateToStrDataHora(Date dVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(dVal);
@@ -2183,24 +2140,7 @@ public class Funcoes {
 		return new Timestamp(d.getTime());
 	}
 
-	public static BigDecimal strCurrencyToBigDecimal(String sVal) {
-		BigDecimal bigRetorno = new BigDecimal("0");
-		if (sVal == null)
-			return new BigDecimal("0");
-		int iPosPonto = sVal.indexOf('.');
-		if (iPosPonto > -1)
-			sVal = sVal.substring(0, iPosPonto) + sVal.substring(iPosPonto + 1);
-		char[] cVal = sVal.toCharArray();
-		int iPos = sVal.indexOf(",");
-		if (iPos >= 0)
-			cVal[iPos] = '.';
-		sVal = new String(cVal);
-		try {
-			bigRetorno = new BigDecimal(sVal.trim());
-		} catch (Exception err) {
-		}
-		return bigRetorno;
-	}
+
 
 	public static double strCurrencyToDouble(String sVal) {
 		if (sVal == null)
