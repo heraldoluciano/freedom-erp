@@ -56,6 +56,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.fnc.DLBaixaRec;
 import org.freedom.telas.Aplicativo;
@@ -580,19 +581,19 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			baixaRecBean.setDocumento( (String)tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
 			baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
 			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
-			baixaRecBean.setValorParcela( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ) );
-			baixaRecBean.setValorDesconto( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
-			baixaRecBean.setValorJuros( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
-			baixaRecBean.setValorAPagar( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
+			baixaRecBean.setValorParcela( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ) );
+			baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
+			baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
+			baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
 			baixaRecBean.setCentroCusto( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
 
 			if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
 				baixaRecBean.setDataPagamento( new Date() );
-				baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
+				baixaRecBean.setValorPago( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
 			else {
 				baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
-				baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
+				baixaRecBean.setValorPago( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
 			if ( "".equals( ((String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim()) ) {
 				baixaRecBean.setObservacao( "RECEBIMENTO REF. AO PED.: " + txtCodVendaBaixa.getVlrString() );
