@@ -816,7 +816,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 			return false;
 		}
 		else if ( ( cbEntrada.getVlrString() != "S" ) & ( cbSaida.getVlrString() != "S" ) ) {
-			Funcoes.mensagemInforma( this, "Nenhuma operção foi selecionada!" );
+			Funcoes.mensagemInforma( this, "Nenhuma operação foi selecionada!" );
 			return false;
 		}
 		return true;
