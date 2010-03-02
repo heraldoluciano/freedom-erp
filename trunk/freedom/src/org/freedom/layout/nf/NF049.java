@@ -302,7 +302,8 @@ public class NF049 extends Layout {
 //						BigDecimal vlrsoma = vlradic.add(dificmssubst);
 						BigDecimal vlrtotnota = vlrliq.add(vlradic);
 						BigDecimal vlripinota = cab.getBigDecimal( NF.C_VLRIPIPED );
-						BigDecimal vlrliqnota = vlrliq.subtract(vlripinota);		
+						BigDecimal vlrliqnota = vlrliq.subtract(vlripinota);	
+						vlrliqnota = vlrliqnota.subtract( cab.getBigDecimal( NF.C_VLRICMSST ) );
 						
 						if(!complementar){
 														
