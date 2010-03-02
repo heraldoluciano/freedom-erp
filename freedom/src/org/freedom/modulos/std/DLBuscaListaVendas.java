@@ -39,6 +39,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -260,8 +261,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
 				gridBuscaRemessa.setCodigoProduto( (Integer)tabItens.getValor( row, ITENS.CODPROD.ordinal() ) );
 				gridBuscaRemessa.setDescricaoProduto( (String)tabItens.getValor( row, ITENS.DESCPROD.ordinal() ) );
-				gridBuscaRemessa.setQuantidade( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
-				gridBuscaRemessa.setPreco( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
+				gridBuscaRemessa.setQuantidade( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
+				gridBuscaRemessa.setPreco( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
 				gridBuscaRemessa.setCliente( (Integer)tabItens.getValor( row, ITENS.CODCLI.ordinal() ) );
 				gridBuscaRemessa.setPlanoPagamento( (Integer)tabItens.getValor( row, ITENS.CODPLANOPAG.ordinal() ) );
 				

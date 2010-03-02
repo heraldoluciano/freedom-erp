@@ -46,6 +46,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -607,17 +608,17 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 				psI.setInt( 12, ( tab1.getValor( i, 8 ) + "" ).equals( "" ) ? 0 : Integer.parseInt( ( tab1.getValor( i, 8 ) + "" ) ) );
 				psI.setString( 13, Funcoes.adicionaEspacos( tab1.getValor( i, 5 ) + "", 3 ) );
 				psI.setString( 14, tab1.getValor( i, 4 ) + "" );
-				psI.setBigDecimal( 15, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 11 ) + "" ) ); // VLRCONTABIL
-				psI.setBigDecimal( 16, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 12 ) + "" ) ); // VLRBASEICMS
-				psI.setBigDecimal( 17, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 9 ) + "" ) ); // ALIQICMS
-				psI.setBigDecimal( 18, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 13 ) + "" ) ); // VLRICMS
-				psI.setBigDecimal( 19, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 14 ) + "" ) ); // VLRISENTAS ICMS
-				psI.setBigDecimal( 20, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 15 ) + "" ) ); // VLROUTRAS ICMS
-				psI.setBigDecimal( 21, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 16 ) + "" ) ); // VLRBASEIPI
-				psI.setBigDecimal( 22, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 10 ) + "" ) ); // ALIQIPI
-				psI.setBigDecimal( 23, Funcoes.strCurrencyToBigDecimal( tab1.getValor( i, 17 ) + "" ) ); // VLRIPI
-				psI.setBigDecimal( 24, Funcoes.strCurrencyToBigDecimal( "0" ) ); // VLRISENTAS IPI
-				psI.setBigDecimal( 25, Funcoes.strCurrencyToBigDecimal( "0" ) ); // VLRIOUTRAS IPI
+				psI.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 11 ) + "" ) ); // VLRCONTABIL
+				psI.setBigDecimal( 16, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 12 ) + "" ) ); // VLRBASEICMS
+				psI.setBigDecimal( 17, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 9 ) + "" ) ); // ALIQICMS
+				psI.setBigDecimal( 18, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 13 ) + "" ) ); // VLRICMS
+				psI.setBigDecimal( 19, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 14 ) + "" ) ); // VLRISENTAS ICMS
+				psI.setBigDecimal( 20, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 15 ) + "" ) ); // VLROUTRAS ICMS
+				psI.setBigDecimal( 21, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 16 ) + "" ) ); // VLRBASEIPI
+				psI.setBigDecimal( 22, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 10 ) + "" ) ); // ALIQIPI
+				psI.setBigDecimal( 23, ConversionFunctions.stringCurrencyToBigDecimal( tab1.getValor( i, 17 ) + "" ) ); // VLRIPI
+				psI.setBigDecimal( 24, ConversionFunctions.stringCurrencyToBigDecimal( "0" ) ); // VLRISENTAS IPI
+				psI.setBigDecimal( 25, ConversionFunctions.stringCurrencyToBigDecimal( "0" ) ); // VLRIOUTRAS IPI
 				psI.setInt( 26, ( tab1.getValor( i, 6 ) + "" ).equals( "" ) ? 0 : Integer.parseInt( ( tab1.getValor( i, 6 ) + "" ) ) ); // MODELO DE NOTA FISCAL
 				if ( ( ! ( tab1.getValor( i, 18 ) + "" ).equals( "" ) ) || ( ! ( tab1.getValor( i, 18 ) + "" ).equals( "0" ) ) )
 					psI.setInt( 27, Integer.parseInt( tab1.getValor( i, 18 ) + "" ) ); // CODEMPET
@@ -651,11 +652,11 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 					psI.setString( 33, "N" ); // Status para documento normal no sintegra.
 				}
 				
-				psI.setBigDecimal( 34, Funcoes.strCurrencyToBigDecimal( "0" ));
+				psI.setBigDecimal( 34, ConversionFunctions.stringCurrencyToBigDecimal( "0" ));
 				
-				psI.setBigDecimal( 35, Funcoes.strCurrencyToBigDecimal( "0" ));
+				psI.setBigDecimal( 35, ConversionFunctions.stringCurrencyToBigDecimal( "0" ));
 				
-				psI.setBigDecimal( 36, Funcoes.strCurrencyToBigDecimal( "0" ));
+				psI.setBigDecimal( 36, ConversionFunctions.stringCurrencyToBigDecimal( "0" ));
 
 				psI.executeUpdate();
 
@@ -690,17 +691,17 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 				psI.setString( 13, Funcoes.adicionaEspacos( tab2.getValor( i, EColSaida.ESPECIE.ordinal() ) + "", 3 ) );
 				psI.setString( 14, tab2.getValor( i, EColSaida.UF.ordinal() ) + "" );
-				psI.setBigDecimal( 15, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRCONTABIL.ordinal() ) + "" ) ); // VLRCONTABIL
-				psI.setBigDecimal( 16, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEICMS.ordinal() ) + "" ) ); // VLRBASEICMS
-				psI.setBigDecimal( 17, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.PERCICMS.ordinal() ) + "" ) ); // ALIQICMS
-				psI.setBigDecimal( 18, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRICMS.ordinal() ) + "" ) ); // VLRICMS
-				psI.setBigDecimal( 19, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRISENTAS.ordinal() ) + "" ) ); // VLRISENTAS ICMS
-				psI.setBigDecimal( 20, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLROUTRAS.ordinal() ) + "" ) ); // VLROUTRAS ICMS
-				psI.setBigDecimal( 21, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEIPI.ordinal() ) + "" ) ); // VLRBASEIPI
-				psI.setBigDecimal( 22, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.PERCIPI.ordinal() ) + "" ) ); // ALIQIPI
-				psI.setBigDecimal( 23, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRIPI.ordinal() ) + "" ) ); // VLRIPI
-				psI.setBigDecimal( 24, Funcoes.strCurrencyToBigDecimal( "0" ) ); // VLRISENTAS IPI
-				psI.setBigDecimal( 25, Funcoes.strCurrencyToBigDecimal( "0" ) ); // VLRIOUTRAS IPI
+				psI.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRCONTABIL.ordinal() ) + "" ) ); // VLRCONTABIL
+				psI.setBigDecimal( 16, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEICMS.ordinal() ) + "" ) ); // VLRBASEICMS
+				psI.setBigDecimal( 17, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.PERCICMS.ordinal() ) + "" ) ); // ALIQICMS
+				psI.setBigDecimal( 18, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRICMS.ordinal() ) + "" ) ); // VLRICMS
+				psI.setBigDecimal( 19, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRISENTAS.ordinal() ) + "" ) ); // VLRISENTAS ICMS
+				psI.setBigDecimal( 20, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLROUTRAS.ordinal() ) + "" ) ); // VLROUTRAS ICMS
+				psI.setBigDecimal( 21, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEIPI.ordinal() ) + "" ) ); // VLRBASEIPI
+				psI.setBigDecimal( 22, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.PERCIPI.ordinal() ) + "" ) ); // ALIQIPI
+				psI.setBigDecimal( 23, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRIPI.ordinal() ) + "" ) ); // VLRIPI
+				psI.setBigDecimal( 24, ConversionFunctions.stringCurrencyToBigDecimal( "0" ) ); // VLRISENTAS IPI
+				psI.setBigDecimal( 25, ConversionFunctions.stringCurrencyToBigDecimal( "0" ) ); // VLRIOUTRAS IPI
 				psI.setInt( 26, ( tab2.getValor( i, EColSaida.MODNOTA.ordinal() ) + "" ).equals( "" ) ? 0 : Integer.parseInt( ( tab2.getValor( i, EColSaida.MODNOTA.ordinal() ) + "" ) ) ); // MODELO DE NOTA FISCAL
 				if ( ( ! ( tab2.getValor( i, EColSaida.E1.ordinal() ) + "" ).equals( "" ) ) || ( ! ( tab2.getValor( i, EColSaida.E1.ordinal() ) + "" ).equals( "0" ) ) )
 					psI.setInt( 27, Integer.parseInt( tab2.getValor( i, EColSaida.E1.ordinal() ) + "" ) ); // CODEMPET
@@ -734,9 +735,9 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 					psI.setString( 33, "N" ); // Status para documento normal no sintegra.
 				}
 				
-				psI.setBigDecimal( 34, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEICMSST.ordinal() ) + "" ) ); // BASE ICMSST
-				psI.setBigDecimal( 35, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRICMSST.ordinal() ) + "" ) ); //  ICMSST
-				psI.setBigDecimal( 36, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRACESSORIAS.ordinal() ) + "" ) ); // BASE ICMSST
+				psI.setBigDecimal( 34, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEICMSST.ordinal() ) + "" ) ); // BASE ICMSST
+				psI.setBigDecimal( 35, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRICMSST.ordinal() ) + "" ) ); //  ICMSST
+				psI.setBigDecimal( 36, ConversionFunctions.stringCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRACESSORIAS.ordinal() ) + "" ) ); // BASE ICMSST
 
 				psI.executeUpdate();
 
