@@ -36,6 +36,7 @@ import org.freedom.modulos.fnc.FRReceberSetor;
 import org.freedom.modulos.gms.FProduto;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
+import org.freedom.modulos.lvf.FSintegra;
 import org.freedom.modulos.lvf.FTabICMS;
 import org.freedom.modulos.lvf.FTratTrib;
 import org.freedom.plugin.Background34;
