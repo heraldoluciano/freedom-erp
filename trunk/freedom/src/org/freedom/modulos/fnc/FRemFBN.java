@@ -62,6 +62,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.funcoes.boleto.BancodoBrasil;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
@@ -677,7 +678,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
 						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ), 
-						Funcoes.strToBd( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() )).toString(),
+						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() )).toString(),
 						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ),

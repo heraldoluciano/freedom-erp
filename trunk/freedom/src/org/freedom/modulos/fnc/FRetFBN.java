@@ -55,6 +55,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.fnc.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.FbnUtil.EParcela;
@@ -277,11 +278,11 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			baixaRecBean.setDataEmissao( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTREC.ordinal() ) ) );
 			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTVENC.ordinal() ) ) );
 			baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tab.getValor( row, EColTab.DTPAG.ordinal() ) ) );
-			baixaRecBean.setValorParcela( Funcoes.strToBd( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );//xxx???
-			baixaRecBean.setValorAPagar( Funcoes.strToBd( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );
-			baixaRecBean.setValorDesconto( Funcoes.strToBd( tab.getValor( row, EColTab.VLRDESC.ordinal() ) ) );
-			baixaRecBean.setValorJuros( Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) ) );
-			baixaRecBean.setValorPago( Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) ) );
+			baixaRecBean.setValorParcela( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );//xxx???
+			baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) );
+			baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRDESC.ordinal() ) ) );
+			baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) ) );
+			baixaRecBean.setValorPago( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRPAG.ordinal() ) ) );
 			baixaRecBean.setObservacao( (String)tab.getValor( row, EColTab.OBS.ordinal() ) );
 
 			dl.setConexao( con );
@@ -323,8 +324,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 				if ( codcli == ( (Integer) tab.getValor( row, EColTab.CODCLI.ordinal() ) ) ) {
 
-					vlrpago = Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
-					vlrdescjuros = vlrpago.subtract( Funcoes.strToBd( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+					vlrpago = ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
+					vlrdescjuros = vlrpago.subtract( ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 
 					tab.setValor( baixaRecBean.getConta(), row, EColTab.NUMCONTA.ordinal() );
 					tab.setValor( baixaRecBean.getPlanejamento(), row, EColTab.CODPLAN.ordinal() );
@@ -460,9 +461,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					args[ EParcela.DOCLANCAITREC.ordinal() ] = (String) tab.getValor( row, EColTab.DOCREC.ordinal() );
 					//args[ EParcela.DTPAGOITREC.ordinal() ] = Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTPAG.ordinal() ) );
 					args[ EParcela.DTPAGOITREC.ordinal() ] = tab.getValor( row, EColTab.DTPAG.ordinal() );
-					args[ EParcela.VLRPAGOITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
-					args[ EParcela.VLRDESCITREC.ordinal() ] = Funcoes.strToBd(  tab.getValor( row, EColTab.VLRDESC.ordinal() ) );
-					args[ EParcela.VLRJUROSITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
+					args[ EParcela.VLRPAGOITREC.ordinal() ] = ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
+					args[ EParcela.VLRDESCITREC.ordinal() ] = ConversionFunctions.stringToBigDecimal(  tab.getValor( row, EColTab.VLRDESC.ordinal() ) );
+					args[ EParcela.VLRJUROSITREC.ordinal() ] = ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
 					args[ EParcela.OBSITREC.ordinal() ] = (String) tab.getValor( row, EColTab.OBS.ordinal() );
 					
 					parcela = new SiaccUtil().new StuffParcela( codrec, numparcrec, args );
