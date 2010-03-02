@@ -210,6 +210,21 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		
 		montaTela();		
 		
+		adicListeners();
+		
+		adicToolTips();
+		
+	
+	}
+	
+	private void adicToolTips() {
+	
+		btAtualizaConhecimentos.setToolTipText( "Atualizar número de conhecimento nas vendas" );
+		
+	}
+	
+	private void adicListeners() {
+		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAtualizaConhecimentos.addActionListener( this );
@@ -225,7 +240,6 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 		tpnGeral.addChangeListener( this );
 		
-		btAtualizaConhecimentos.setToolTipText( "Atualizar número de conhecimento nas vendas" );
 	}
 				
 	private void montaRadios() {
