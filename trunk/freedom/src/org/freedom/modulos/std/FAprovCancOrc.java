@@ -59,6 +59,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLJustCanc;
@@ -625,10 +626,10 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 
 		while (iLin<tab.getRowCount()) {
 			if (tab.getValor(iLin,0).equals(new Boolean("true"))) {
-				bVlrAceito = bVlrAceito.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,7).toString()));		  	
+				bVlrAceito = bVlrAceito.add(ConversionFunctions.stringCurrencyToBigDecimal(tab.getValor(iLin,7).toString()));		  	
 			}
 			if (tab.getValor(iLin,1).equals(new Boolean("true"))) {
-				bVlrAprovado = bVlrAprovado.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,8).toString()));		  	
+				bVlrAprovado = bVlrAprovado.add(ConversionFunctions.stringCurrencyToBigDecimal(tab.getValor(iLin,8).toString()));		  	
 			} 
 			iLin++;	
 		}

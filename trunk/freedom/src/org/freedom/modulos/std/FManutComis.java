@@ -29,6 +29,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -448,7 +450,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		BigDecimal bVal = new BigDecimal( "0" );
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			if ( ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) {
-				bVal = bVal.add( Funcoes.strCurrencyToBigDecimal( (String) tab.getValor( i, 5 ) ) );
+				bVal = bVal.add( ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 5 ) ) );
 			}
 		}
 		txtTotLib.setVlrBigDecimal( bVal );
@@ -488,7 +490,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				ps.setInt( 12, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				ps.setDate( 13, Funcoes.strDateToSqlDate( sVals[ 2 ] ) );
 				ps.setInt( 14, Integer.parseInt( sVals[ 3 ] ) );
-				ps.setBigDecimal( 15, Funcoes.strCurrencyToBigDecimal( sVals[ 4 ] ) );
+				ps.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ] ) );
 				ps.setString( 16, sVals[ 5 ] );
 				ps.setInt( 17, Aplicativo.iCodEmp );
 				ps.setInt( 18, ListaCampos.getMasterFilial( "FNRECEBER" ) );

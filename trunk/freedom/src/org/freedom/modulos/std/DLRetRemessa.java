@@ -39,6 +39,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -259,13 +260,13 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 				gridBuscaRemessa.setItemRemessa( (Integer)tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
 				gridBuscaRemessa.setCodigoProduto( (Integer)tabItens.getValor( row, ITENS.PRODUTO.ordinal() ) );
 				gridBuscaRemessa.setDescricaoProduto( (String)tabItens.getValor( row, ITENS.DESCRICAO_PRODUTO.ordinal() ) );
-				gridBuscaRemessa.setQuantidadeRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
-				gridBuscaRemessa.setPrecoRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
+				gridBuscaRemessa.setQuantidadeRemessa( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
+				gridBuscaRemessa.setPrecoRemessa( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
 //				gridBuscaRemessa.setCodigoVenda( (Integer)tabItens.getValor( row, ITENS.VENDA.ordinal() ) );
 //				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM_VENDA.ordinal() ) );
 //				gridBuscaRemessa.setQuantidadeVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE_VENDA.ordinal() ) ) );
 //				gridBuscaRemessa.setPrecoVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO_VENDA.ordinal() ) ) );
-				gridBuscaRemessa.setSaldo( Funcoes.strToBd( tabItens.getValor( row, ITENS.SALDO.ordinal() ) ) );
+				gridBuscaRemessa.setSaldo( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.SALDO.ordinal() ) ) );
 				
 				list.add( gridBuscaRemessa );
 			}
