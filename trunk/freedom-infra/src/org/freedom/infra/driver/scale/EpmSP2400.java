@@ -95,14 +95,14 @@ public class EpmSP2400 extends AbstractScale  {
 			
 			int posicaobranca = str.indexOf( " " );
 			
-			if(posicaobranca<22 && posicaobranca>-1) {
+			if(posicaobranca<24 && posicaobranca>-1) {
 				str = str.substring( posicaobranca );
 				str = StringFunctions.alltrim( str );
 			}
 			
-			if(str.length()>=22) {
+			if(str.length()>=24) {
 			
-				str = str.substring( 0, 22 );
+				str = str.substring( 0, 24 );
 				
 				String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
 				
@@ -111,21 +111,22 @@ public class EpmSP2400 extends AbstractScale  {
 					CtrlPort.getInstance().disablePort();
 										
 					System.out.println("Finalizou leitura e fechou a porta!");
+
+					strweight = str.substring( 0,  07 );
+					strdate = str.substring( 9,  17 );
+					strtime = str.substring( 17 );
 					
+					strtime = StringFunctions.clearString(strtime);
+					
+					setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
+					setDate( ConversionFunctions.strDate6digToDate( strdate ) );
+					setTime( ConversionFunctions.strTimetoTime( strtime ) );
+
 				}
 				
 				
 			}
 			
-			
-			
-			strweight = str.substring( 0,  07 );
-			strdate = str.substring( 9,  17 );
-			strtime = str.substring( 17, 22 );
-			
-			setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
-			setDate( ConversionFunctions.strDate6digToDate( strdate ) );
-			setTime( ConversionFunctions.strTimetoTime( strtime ) );
 			
 		}
 		catch (Exception e) {
