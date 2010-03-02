@@ -48,8 +48,7 @@ public class FilizolaBP15 extends AbstractScale  {
 			}
 			else {
 				System.out.println("Buffer is null!");
-			}
-			
+			}			
 			
 		}
 		catch (Exception e) {
@@ -104,8 +103,8 @@ public class FilizolaBP15 extends AbstractScale  {
 				weight = new BigDecimal(String.valueOf(strweight));
 
 			}
-			else {
-				
+			else { 
+				System.out.println("Invalid return!");
 			}			
 									
 		}		
