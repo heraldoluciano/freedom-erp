@@ -15,6 +15,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInadimplentes.java"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasCliente.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/boleto.jasper"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <file path="/freedom/src/org/freedom/relatorios/Extrato.jasper"/>
         <file path="/freedom/src/org/freedom/relatorios/CpProd.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
@@ -31,8 +32,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanAnal.java"/>
         <file path="/freedom/src/org/freedom/relatorios/filtros.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasFisico.jasper"/>
-        <file path="/freedom/src/org/freedom/relatorios/receberSetor.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/cabecario.jrxml"/>
+        <file path="/freedom/src/org/freedom/relatorios/receberSetor.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRRestricao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLanca.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPapel.java"/>
@@ -95,7 +96,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRGraficoCC.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FAtendimento.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FSintegra.java"/>
         <file path="/freedom/src/org/freedom/relatorios/boleto.jrxml"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
@@ -125,8 +125,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoCli.java"/>
         <file path="/freedom/src/org/freedom/relatorios/recursos.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FSubLanca.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRestrCli.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasGeral.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLConsultaObs.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItNatoper.java"/>

@@ -14,6 +14,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FPais.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos{EvoluVendasLinha.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>

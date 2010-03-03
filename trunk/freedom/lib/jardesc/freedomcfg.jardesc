@@ -12,6 +12,7 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
@@ -38,7 +39,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv{FLeFiscal.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
     </selectedElements>
 </jardesc>
