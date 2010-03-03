@@ -22,18 +22,10 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	public EpmSP2400( int port ) {
 		
-//		super();
-		
 		configSerialParams();
 		
 		activePort( port );
 		
-//		byte[] comando = { 0 };
-		
-//		sendCmd( comando, 0, 100 );
-		
-
-	
 		readReturn();
 		
 	}
