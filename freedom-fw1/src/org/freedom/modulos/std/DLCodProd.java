@@ -129,7 +129,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		String sql = null;
 		String sqladiclote = null;
 		String sqladic = null;
-		String sqlfor = null;
+		String sqlfor = "";
 		
 		String where = "";
 		
@@ -235,11 +235,12 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 							
 				}
 			}
-			if(bFilCodProdFor && codfor!=null) {
+			if(bFilCodProdFor) {
 				
 				sqlfor = "UNION SELECT PF.CODPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P "
 					   + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
-					   + "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? AND PF.CODFOR=?";
+					   + "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? " 
+					   + ( codfor!=null ? (" AND PF.CODFOR=" + codfor) : "");
 				
 			}
 			
@@ -279,8 +280,6 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				ps.setInt(iparam++, Aplicativo.iCodEmp);			
 				ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));			
 				ps.setString(iparam++, valor);
-				ps.setInt(iparam++, codfor);
-				
 				
 			}
 			
