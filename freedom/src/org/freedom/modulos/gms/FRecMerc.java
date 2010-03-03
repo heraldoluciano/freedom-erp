@@ -467,7 +467,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		boolean ret = false;
 		
 		try {
-			
+			// Implementação futura.
 		}
 		catch (Exception e) {
 			e.printStackTrace();
