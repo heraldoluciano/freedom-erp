@@ -983,14 +983,10 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 05 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "UF" ), 2 ) );
 					/* 06 */buffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
 					
-					
-					
 					/* 07 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );					
 
 					/* 09 */buffer.append( Funcoes.strZero( rs.getInt( "DOCFRETE" ) + "", 6 ) );
 					/* 10 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );		
-					
-					
 					
 					/* 11 */buffer.append( Funcoes.transValor( rs.getString( "VLRFRETE" ), 13, 2, true ) );
 					/* 12 */buffer.append( Funcoes.transValor( rs.getString( "VLRBASEICMSFRETE" ), 14, 2, true ) );
