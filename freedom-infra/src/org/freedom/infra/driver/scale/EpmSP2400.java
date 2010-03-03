@@ -24,6 +24,8 @@ public class EpmSP2400 extends AbstractScale  {
 		
 		configSerialParams();
 		
+		
+		
 		activePort( port );
 		
 		readReturn();
@@ -33,6 +35,8 @@ public class EpmSP2400 extends AbstractScale  {
 	protected void readReturn() {
 		
 		try {
+			
+			Thread.sleep( TIMEOUT_ACK );
 			
 			if(buffer!=null) {
 			
