@@ -2381,10 +2381,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( ((Boolean) oPrefs[ PrefOrc.USABUSCAGENPROD.ordinal() ]).booleanValue() ) {
 			if ( ((Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ]).booleanValue() ) {
-				txtRefProd.setBuscaGenProd( new DLCodProd( cn, null ) );
+				txtRefProd.setBuscaGenProd( new DLCodProd( cn, null, null ) );
 			}
 			else {
-				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null ) );
+				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null, null ) );
 			}
 		}
 	}

@@ -179,7 +179,7 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	public void setConexao(DbConnection cn) {
 	    super.setConexao(cn);
 		montaTela();
-		txtCodProd.setBuscaGenProd(new DLCodProd(con,tbPreco));
+		txtCodProd.setBuscaGenProd(new DLCodProd(con,tbPreco,null));
     }
 	
 	public void keyTyped(KeyEvent e) { }
