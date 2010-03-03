@@ -2388,7 +2388,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		txtCodTipoMov.setVlrInteger( new Integer( CODTIPOMOV ) );
 		txtCodCli.setVlrInteger( new Integer( CODCLI ) );
 
-		txtCodProd.setBuscaGenProd( new DLCodProd( con, txtQtdade ) );
+		txtCodProd.setBuscaGenProd( new DLCodProd( con, txtQtdade, null ) );
 
 		carregaPlugin();
 	}
