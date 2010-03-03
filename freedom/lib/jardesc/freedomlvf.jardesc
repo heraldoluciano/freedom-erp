@@ -11,9 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <file path="/freedom/retorno11.txt"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FFornecedor.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <file path="/freedom/freedom.ini"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRegraFiscal.java"/>
         <file path="/freedom/build.xml"/>
@@ -43,8 +43,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRSetor.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRImpServ.java"/>
-        <file path="/freedom/freedomwin.ini"/>
         <file path="/freedom/impres.cfg"/>
+        <file path="/freedom/freedomwin.ini"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FImpressora.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRMensagem.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
@@ -55,13 +55,12 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFor.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRClasCli.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FSintegra.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <file path="/freedom/.project"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRFornecedor.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMensagem.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.exporta"/>
         <file path="/freedom/keystore"/>
