@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
@@ -55,7 +54,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
-
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.BorderFactory;
@@ -71,7 +69,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
-
 import org.brazilutils.br.uf.UF;
 import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.freedom.componentes.JLabelPad;
@@ -82,15 +79,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FSuporte;
 
-//import org.freedom.telas.Aplicativo;
-
 public class Funcoes {
-
-//	private static Vector<Vector<Object>> vIE = new Vector<Vector<Object>>(34);
-
-//	private static Vector<Vector<Object>> vPesoIE = new Vector<Vector<Object>>(13);
-
-//	private static ImageIcon imgIcone = null;
 	
 	public static String sIEValida = "";
 
