@@ -155,7 +155,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "WHERE L.CODEMPFR=F.CODEMP AND L.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "L.CODFOR=F.CODFOR AND " );
 			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
-			sSQL.append( "L.DATALANCA < ? ), 0) -  " );
+			sSQL.append( "L.DATALANCA < ? ), 0) +  " );
 			
 			
 			 /**
