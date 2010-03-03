@@ -26,6 +26,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,23 +46,32 @@ import org.freedom.telas.FFDialogo;
 public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
+	
 	public Tabela tab = new Tabela();
+	
 	private JScrollPane spnCentro = new JScrollPane(tab); 
 	private int iCodProd = 0;
+	
 	private boolean bFilCodProd = false;
 	private boolean bFilRefProd = false;
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
+	private boolean bFilCodProdFor = false;
+	
+	private Integer codfor = null;
+	
 	private Vector<Integer> vProds = new Vector<Integer>();
 	private Vector<String> vUsaLote = new Vector<String>();
 	private JComponent proxFoco = null;
 	
-	public DLCodProd(DbConnection con, JComponent proxFoco) {
+	public DLCodProd(DbConnection con, JComponent proxFoco, Integer codfor) {
 
 		setTitulo("Pesquisa auxiliar");
 		setAtribos( 575, 260);		
 	    setResizable(true);	 
 		setConexao(con);
+		
+		this.codfor = codfor;
 		this.proxFoco = proxFoco;
 	    
 	    c.add( spnCentro, BorderLayout.CENTER);    
@@ -106,22 +117,32 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	}
 	
 	public boolean buscaCodProd(String valor) {
-
+		
+		valor = StringFunctions.alltrim( valor ); 
+		
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
+		
 		ResultSet rs = null;
 		ResultSet rs2 = null;
-		String sSQL = null;
-		String sSQL1 = null;
-		String sSQL2 = null;
-		String sWhere = "";
+		
+		String sql = null;
+		String sqladiclote = null;
+		String sqladic = null;
+		String sqlfor = null;
+		
+		String where = "";
+		
 		String sTemp = null;
+		
 		boolean usaOR = false;
-		boolean adicCodProd = false;
+		boolean adicCodProd = false;		
+		
 		int ilinha = 0;
 		
-		if(valor == null || valor.trim().length() <= 0)
+		if(valor == null || valor.trim().length() <= 0) {
 			return false;		
+		}
 		
 		try{
 			
@@ -129,73 +150,139 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			vUsaLote.clear();
 			tab.limpa();
 			iCodProd = 0;
+						
+			sqladiclote = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " 
+						+ "L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " 
+						+ "FROM EQPRODUTO P, EQLOTE L, EQALMOX A " 
+						+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " 
+						+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX " 
+						+ "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " 
+						+ "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " 
+						+ "FROM EQLOTE LS " 
+						+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " 
+						+ "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+	
+			sqladic = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " 
+					+ "FROM EQPRODUTO P, EQALMOX A " 
+					+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " 
+					+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";	
 			
-			if(bFilCodBar)
-				sWhere = "AND (P.CODBARPROD=?) ";
+			
+			sql =  "SELECT P.CODPROD, P.CLOTEPROD FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? ";			
+					
+			if(bFilCodBar) {
+						
+				where = "AND (P.CODBARPROD=?) ";
+						
+			}
+			
 			if(bFilCodProd) {
-				try{
+						
+				try {
+							
 					int val = Integer.parseInt(valor);
+							
 					if(val < Integer.MAX_VALUE && val > Integer.MIN_VALUE ) {
-						if(sWhere.length()>0) {
-							sWhere += "OR (P.CODPROD=?) ";
+								
+						if(where.length()>0) {
+							
+							where += "OR (P.CODPROD=?) ";
+							
 							usaOR = true;
-						} else 
-							sWhere += "AND P.CODPROD=? ";
+						
+						} 
+						else { 
+							
+							where += "AND P.CODPROD=? ";
+							
+						}
+								
 						adicCodProd = true;
+								
 					}
-				} catch (NumberFormatException e) {
+				} 
+				catch (NumberFormatException e) {
 					System.out.println("Erro ao fazer busca generica de produtos\n"+e.getMessage());
 				}
 			}
-			if(bFilRefProd)
-				if(sWhere.length()>0) {
-					sWhere += "OR (P.REFPROD=?) ";
+			
+			if(bFilRefProd) {
+				
+				if(where.length()>0) {
+							
+					where += "OR (P.REFPROD=?) ";
 					usaOR = true;
-				} else
-					sWhere = "AND (P.REFPROD=?) ";			
-			if(bFilCodFab)
-				if(sWhere.length()>0) {
-					sWhere += "OR (P.CODFABPROD=?) ";
+							
+				} 
+				else {
+							
+					where = "AND (P.REFPROD=?) ";
+							
+				}
+			}
+			
+			if(bFilCodFab){
+						
+				if(where.length()>0) {
+							
+					where += "OR (P.CODFABPROD=?) ";
 					usaOR = true;
-				} else
-					sWhere = "AND (P.CODFABPROD=?) ";
-			if(usaOR)
-				sWhere = " AND (" + sWhere.substring(4,sWhere.length()) +") ";	
-
+							
+				} 
+				else {
+							
+					where = "AND (P.CODFABPROD=?) ";
+							
+				}
+			}
+			if(bFilCodProdFor && codfor!=null) {
+				
+				sqlfor = "UNION SELECT PF.CODPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P "
+					   + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
+					   + "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? AND PF.CODFOR=?";
+				
+			}
 			
-			sSQL =  "SELECT P.CODPROD, P.CLOTEPROD " +
-					"FROM EQPRODUTO P " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? " +
-					sWhere;
 			
-			sSQL1 = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " +
-					"L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " +
-					"FROM EQPRODUTO P, EQLOTE L, EQALMOX A " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " +
-					"AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX " +
-					"AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +
-					"AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " +
-					                     "FROM EQLOTE LS " +
-					                     "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " +
-					                     "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+			if(usaOR) {
+				where = " AND (" + where.substring(4,where.length()) +") ";
+			}
+						
+			sql = sql +  where + sqlfor;		
 			
-			sSQL2 = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " +
-					"FROM EQPRODUTO P, EQALMOX A " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " +
-					"AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";	
 			
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sql);
+			
 			int iparam = 1;
+			
 			ps.setInt(iparam++, Aplicativo.iCodEmp);
+			
 			ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));
-			if(bFilCodBar)
+			
+			if(bFilCodBar) {
 				ps.setString(iparam++, valor);
-			if(adicCodProd)
+			}
+			
+			if(adicCodProd) {
 				ps.setString(iparam++, valor);
-			if(bFilRefProd)
+			}
+			
+			if(bFilRefProd) {
 				ps.setString(iparam++, valor);
-			if(bFilCodFab)
+			}
+			
+			if(bFilCodFab) {
 				ps.setString(iparam++, valor);
+			}
+			if(bFilCodProdFor) {
+				
+				ps.setInt(iparam++, Aplicativo.iCodEmp);			
+				ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));			
+				ps.setString(iparam++, valor);
+				ps.setInt(iparam++, codfor);
+				
+				
+			}
 			
 			rs = ps.executeQuery();
 			
@@ -215,9 +302,9 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			
 			for(int i=0; i<vProds.size(); i++) {
 				if(vUsaLote.elementAt(i).equals("S"))
-					sTemp = sSQL1;
+					sTemp = sqladiclote;
 				else 
-					sTemp = sSQL2;
+					sTemp = sqladic;
 				
 				ps2 = con.prepareStatement(sTemp);
 				ps2.setInt(1, Aplicativo.iCodEmp);
@@ -253,7 +340,8 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			if(ilinha <= 0) {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
-			} else if(ilinha == 1) {
+			} 
+			else if(ilinha == 1) {
 				iCodProd = vProds.elementAt(0).intValue();
 				ok();
 				return true;
@@ -263,7 +351,8 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			tab.setLinhaSel(0);
 			setVisible(true);
 			
-		} catch (SQLException e) {
+		} 
+			catch (SQLException e) {
 			Funcoes.mensagemErro(this, "Erro ao buscar produtos por código de barras!\n"+
 					e.getMessage(), true, con, e);
 			e.printStackTrace();
@@ -271,7 +360,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		} finally {
 			ps = null;
 			rs = null;
-			sSQL = null;			
+			sql = null;			
 		}
 		
 		return true;
@@ -290,7 +379,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		
 		try{
 			
-			sSQL =  "SELECT FILBUSCGENPROD, FILBUSCGENREF, FILBUSCGENCODBAR, FILBUSCGENCODFAB " +
+			sSQL =  "SELECT FILBUSCGENPROD, FILBUSCGENREF, FILBUSCGENCODBAR, FILBUSCGENCODFAB, FILBUSCGENCODFOR " +
 					"FROM SGPREFERE1 " +
 					"WHERE CODEMP=? AND CODFILIAL=?";
 			
@@ -301,10 +390,13 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				bFilCodProd = (rs.getString(1)!=null && rs.getString(1).equals("S")) ? true : false;
-				bFilRefProd = (rs.getString(2)!=null && rs.getString(2).equals("S")) ? true : false;
-				bFilCodBar  = (rs.getString(3)!=null && rs.getString(3).equals("S")) ? true : false;
-				bFilCodFab  = (rs.getString(4)!=null && rs.getString(4).equals("S")) ? true : false;
+				
+				bFilCodProd = (rs.getString("FILBUSCGENPROD")!=null && rs.getString("FILBUSCGENPROD").equals("S")) ? true : false;
+				bFilRefProd = (rs.getString("FILBUSCGENREF")!=null && rs.getString("FILBUSCGENREF").equals("S")) ? true : false;
+				bFilCodBar  = (rs.getString("FILBUSCGENCODBAR")!=null && rs.getString("FILBUSCGENCODBAR").equals("S")) ? true : false;
+				bFilCodFab  = (rs.getString("FILBUSCGENCODFAB")!=null && rs.getString("FILBUSCGENCODFAB").equals("S")) ? true : false;
+				bFilCodProdFor  = (rs.getString("FILBUSCGENCODFOR")!=null && rs.getString("FILBUSCGENCODFOR").equals("S")) ? true : false;
+				
 			}
 			
 			// Garante pelo menos um filtro na busca...

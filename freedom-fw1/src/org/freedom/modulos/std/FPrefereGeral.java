@@ -465,6 +465,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbFilBuscGenProd3 = new JCheckBoxPad( "Código de barras", "S", "N" );
 
 	private final JCheckBoxPad cbFilBuscGenProd4 = new JCheckBoxPad( "Código do fabricante", "S", "N" );
+	
+	private final JCheckBoxPad cbFilBuscGenProd5 = new JCheckBoxPad( "Referência no fornecedor", "S", "N" );
 
 	private final JCheckBoxPad cbUsaBuscGenProdORC = new JCheckBoxPad( "Permitir busca generica de produto no orçamento.", "S", "N" );
 
@@ -1288,12 +1290,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbBuscaProdSimilar, 17, 55, 310, 20, "BuscaProdSimilar", "", false );
 		adicDB( cbDescCompl, 17, 75, 480, 20, "DescCompPed", "", true );
 		adicDB( cbUsaBuscGenProd, 17, 95, 350, 20, "BUSCACODPRODGEN", "", false );
+		
 		adicDB( cbFilBuscGenProd1, 37, 115, 350, 20, "FILBUSCGENPROD", "", false );
 		adicDB( cbFilBuscGenProd2, 37, 135, 350, 20, "FILBUSCGENREF", "", false );
 		adicDB( cbFilBuscGenProd3, 37, 155, 350, 20, "FILBUSCGENCODBAR", "", false );
 		adicDB( cbFilBuscGenProd4, 37, 175, 350, 20, "FILBUSCGENCODFAB", "", false );
-		adicDB( cbUsaRefProd, 17, 195, 160, 20, "UsaRefProd", "", true );
-		adicDB( cbTamDescProd, 17, 250, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
+		adicDB( cbFilBuscGenProd5, 37, 195, 350, 20, "FILBUSCGENCODFOR", "", false );
+				
+		adicDB( cbUsaRefProd, 17, 215, 160, 20, "UsaRefProd", "", true );
+		adicDB( cbTamDescProd, 17, 255, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
 		adic( new JLabelPad("Tipo de código de barras"), 17, 280, 200, 20 );
 		adicDB( rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false );				
 
@@ -1595,12 +1600,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbFilBuscGenProd2.setEnabled( true );
 			cbFilBuscGenProd3.setEnabled( true );
 			cbFilBuscGenProd4.setEnabled( true );
+			cbFilBuscGenProd5.setEnabled( true );
 		}
 		else {
 			cbFilBuscGenProd1.setEnabled( false );
 			cbFilBuscGenProd2.setEnabled( false );
 			cbFilBuscGenProd3.setEnabled( false );
 			cbFilBuscGenProd4.setEnabled( false );
+			cbFilBuscGenProd5.setEnabled( false );
 		}
 	}
 
