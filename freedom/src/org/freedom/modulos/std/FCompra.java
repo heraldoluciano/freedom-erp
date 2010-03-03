@@ -328,6 +328,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String sOrdNota = "";
 
 	private boolean comref = false;
+	
+	private boolean buscagenericaprod = false;
 
 	private boolean podeBloq = false;
 
@@ -1271,10 +1273,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private void getPrefere() {
 		StringBuffer sql = new StringBuffer();
 		try {
-
+			
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, "); 
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, ");
-			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP " ); 
+			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP " ); 
 			sql.append(	"FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON ");
 			sql.append(	"P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL ");
 			sql.append(	"WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );			
@@ -1288,6 +1290,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( rs.next() ) {
 				
 				comref = rs.getString( "USAREFPROD" ).trim().equals( "S" );
+				buscagenericaprod = rs.getString( "USABUSCAGENPRODCP" ).trim().equals( "S" );
 				podeBloq = rs.getString( "BLOQCOMPRA" ).trim().equals( "S" );
 				buscaVlrUltCompra = rs.getString( "BUSCAVLRULTCOMPRA" ).trim().equals( "S" );
 				sOrdNota = rs.getString( "ORDNOTA" );
@@ -1982,13 +1985,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodCompra.setVlrString( s );
 			
 			
-			if ( comref ) {
-				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
-			}
-			else {
-				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
-			}
+			if(buscagenericaprod) {
 			
+				if ( comref ) {
+					txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+				else {
+					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+				}
+			}
 			
 			
 		}
