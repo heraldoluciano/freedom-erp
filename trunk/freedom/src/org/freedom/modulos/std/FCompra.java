@@ -85,6 +85,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private static final long serialVersionUID = 1L;
 
 	private int casasDec = Aplicativo.casasDec;
+	
+	private String codProdutoFornecedor;
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
@@ -141,7 +143,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtQtdItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
+	
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -526,6 +528,38 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProd );
+		
+		/*
+		 * Código adicionado para pesquisar um produto pelo código associado ao fornecedor
+		 */
+		txtCodProd.addKeyListener(new java.awt.event.KeyAdapter() {
+			public void keyPressed(java.awt.event.KeyEvent evt) {
+				if ((evt.getKeyCode() == 9) || (evt.getKeyCode() == 10)) {
+					if ((codProdutoFornecedor.length() > 0) &&(txtCodProd.getText().length() ==0)) {
+						String sSQL = " SELECT CODPROD FROM CPPRODFOR WHERE CODEMP = ? AND CODFILIAL = ? AND CODFOR = ? AND REFPRODFOR = ? ";
+						PreparedStatement ps = null;
+						ResultSet rs = null;
+						try {							
+							ps = con.prepareStatement( sSQL );
+							ps.setInt( 1, Aplicativo.iCodEmp );
+							ps.setInt( 2, Aplicativo.iCodFilialMz );
+							ps.setString( 3, txtCodFor.getText() );
+							ps.setString( 4, codProdutoFornecedor );
+							rs = ps.executeQuery();
+							if ( rs.next() ) {
+								txtCodProd.setText( rs.getString( 1 ) );
+								txtCodProd.requestFocus();
+							}
+						} catch ( SQLException err ) {
+							Funcoes.mensagem( "Erro ao buscar código produto no fornecedor!\n" + err.getMessage(), "Erro SQL", 1);
+						}						
+					}
+				} else {
+			        char keyText = evt.getKeyChar();				
+					codProdutoFornecedor = txtCodProd.getText() + keyText;
+				}
+			}
+		});  
 
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
@@ -758,7 +792,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		setImprimir( true );
 		
 	}
-
+	
 	private void montaDetalhe() {
 
 		setAltDet( 100 );
@@ -1946,6 +1980,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
+			
+			
+			if ( comref ) {
+				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+			}
+			else {
+				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
+			}
+			
+			
+			
 		}
 		else if ( cevt.getListaCampos() == lcSerie ) {
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
