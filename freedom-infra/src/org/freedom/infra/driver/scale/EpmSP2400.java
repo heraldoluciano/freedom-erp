@@ -20,11 +20,11 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	private Time time = null;
 	
+	public static final String NOME_BAL = "Rodoviária EPM SP-2400";
+	
 	public EpmSP2400( int port ) {
 		
 		configSerialParams();
-		
-		
 		
 		activePort( port );
 		

@@ -20,6 +20,8 @@ public class FilizolaBP15 extends AbstractScale  {
 	
 	public static final String OVERFLOW = "SSSSS";
 	
+	public static final String NOME_BAL = "Filizola BP-15";
+	
 	public FilizolaBP15( int port ) {
 		
 		super();
