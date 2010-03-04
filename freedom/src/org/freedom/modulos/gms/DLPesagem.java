@@ -28,33 +28,24 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
-import javax.comm.SerialPortEvent;
-import javax.comm.SerialPortEventListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.driver.scale.EpmSP2400;
-import org.freedom.infra.driver.scale.FilizolaBP15;
-import org.freedom.infra.functions.ConversionFunctions;
-import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener , SerialPortEventListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -105,16 +96,11 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 		buscaPeso();
 		
-//		abrePorta( "/dev/ttyS0" );
-		
 	}
 	
 	private void buscaPeso() {
 		
 		try {
-			
-//			balanca = new FilizolaBP15( 0 );
-			balanca = new EpmSP2400( 0 );
 			
 			if(balanca!=null) {
 				
@@ -151,11 +137,24 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 		
 	}
+
+	private void instanciaBalanca() {
+		
+		balanca = new EpmSP2400( 0 );
+		
+	}
 	
 	private void ajustaCampos() {
 		
+
+		instanciaBalanca();
+		
 		txtData.setAtivo( false );
-		txtHora.setAtivo( false );
+		txtHora.setAtivo( false );		
+		
+		txtPeso1.setAtivo( balanca!=null );
+		txtPeso2.setAtivo( balanca!=null );
+		
 		
 		txtPeso1.setFont( SwingParams.getFontboldextra(20) );
 		txtPeso2.setFont( SwingParams.getFontboldextra(20) );
@@ -212,210 +211,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 		super.setConexao( cn );
 	}
-	
-	
-	private void abrePorta(String nomeporta) {
-	
-		try {
-						
-			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier(nomeporta);
-			
-			if ( cp.isCurrentlyOwned() ) {			
-				Funcoes.mensagemErro( this, "A porta " + nomeporta + " está em uso no momento por " + cp.getCurrentOwner() + "!\nTente novamente mais tarde." );							
-			}
-			else {
-				
-				porta = (SerialPort) cp.open( "SComm", 1000 );
-				
-				System.out.println("Abriu porta!");
-				
-//				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
-				porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE );
-
-				escutaPorta();
-				
-				lePorta();
-				
-			}
-						
-		}
-		catch (PortInUseException e) {
-			Funcoes.mensagemErro( this, "A porta " + nomeporta + " está em uso no momento!\nTente novamente mais tarde." );
-			btCancel.doClick();
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	
-	private void escutaPorta() {
-		
-		try {
-	
-			porta.addEventListener( this );
-			
-			porta.notifyOnDataAvailable( true );
-				
-			System.out.println("Escutando na porta...");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-
-	}
-	
-	
-	
-	private void lePorta() {
-		try {
-			
-//			OutputStream saida = porta.getOutputStream();
-			
-//			saida.write( 0x05 );
-			
-//			saida.write( 0x00 );	
-			
-//			Thread.sleep( 100 );
-			
-//			saida.flush();
-			
-			InputStream entrada = porta.getInputStream();
-			
-			System.out.println("Setou parâmetros");
-			
-			Thread.sleep( 100 );
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	
-	}
-	
-	
-	
-	public void serialEvent( SerialPortEvent ev ) {
-		
-		String leitura = null;
-		
-		try {
-
-			InputStream entrada = porta.getInputStream();
-
-			System.out.println("Aguardando dados para leitura...");
-			Funcoes.espera( 2 );
-		
-			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-				
-				entrada = porta.getInputStream();
-				
-				int nodeBytes = 0;
-				
-				byte[] bufferLeitura = new byte[100];
-				
-				System.out.println("Lendo dados da porta serial...");
-				
-				while ( entrada.available() > 0 ) {
-					
-					nodeBytes = entrada.read( bufferLeitura );	
-					System.out.println("Teste");
-				
-				}
-				
-				String strleitura = new String(bufferLeitura);
-				
-				String leitura2 = StringFunctions.alltrim( strleitura );
-				
-				System.out.println("Leitura no listener:" + leitura2);
-				
-				int posicaobranca = leitura2.indexOf( " " );
-				
-				if(posicaobranca<22 && posicaobranca>-1) {
-					leitura2 = leitura2.substring( posicaobranca );
-					leitura2 = StringFunctions.alltrim( leitura2 );
-				}
-				
-				if(leitura2.length()>=22) {
-				
-					leitura2 = leitura2.substring( 0, 22 );
-					
-					String validador = leitura2.substring( 11, 12 )  + leitura2.substring( 14, 15 ) + leitura2.substring( 19, 20 );
-					
-					if("//:".equals( validador )) {
-						
-						leitura = leitura2;
-						
-						porta.notifyOnDataAvailable( false );					
-						porta.close();
-						System.out.println("Finalizou leitura e fechou a porta!");
-						
-					}
-					
-					
-				}
-				
-				
-				if(bufferLeitura.length>0) {
-					System.out.println( strleitura );
-				}
-				else {
-					System.out.println( "nada lido!" );
-				}
-				
-				System.out.println( "número de bytes lidos:" + nodeBytes );
-				
-				
-			}
-			else {
-				System.out.println("Porta não está pronta!");
-			}
-				
-				
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			if(leitura != null) {
-				parseLeitura( leitura );
-			}
-			porta.close();
-			System.out.println("Fechou Porta!");
-		}
-		
-	}
-	
-	private void parseLeitura(String leitura) {
-		
-		String peso = "";
-		String data = "";
-		String hora = "";
-		
-		try {
-			
-			peso = leitura.substring( 0,  07 );
-			data = leitura.substring( 9,  17 );
-			hora = leitura.substring( 17, 22 );
-			
-			txtPeso1.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( peso ) );
-			txtData.setVlrDate( ConversionFunctions.strDate6digToDate( data ) );
-			txtHora.setVlrString( hora );
-			
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-    public void cancel() {
-    	super.cancel();
-    }
 	
 
 }
