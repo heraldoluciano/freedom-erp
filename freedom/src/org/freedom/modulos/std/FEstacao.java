@@ -212,13 +212,13 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabTipoUsoImp.addElement( "Todos" );
 
 		vLabDriversBal.addElement( "<Selecione um modelo>" );
-		vLabDriversBal.addElement( FilizolaBP15.class.toString() );
-		vLabDriversBal.addElement( EpmSP2400.class.toString() );
+		vLabDriversBal.addElement( FilizolaBP15.NOME_BAL );
+		vLabDriversBal.addElement( EpmSP2400.NOME_BAL );
 		
 		vValDriversBal.addElement( "" );
-		vValDriversBal.addElement( FilizolaBP15.NOME_BAL );
-		vValDriversBal.addElement( EpmSP2400.NOME_BAL );
-		
+		vValDriversBal.addElement( FilizolaBP15.class.toString() );
+		vValDriversBal.addElement( EpmSP2400.class.toString() );
+
 		vLabPortasBal.addElement( "<Selecione uma porta>" );
 		
 		if(SystemFunctions.OS_LINUX == SystemFunctions.getOS()) {						
