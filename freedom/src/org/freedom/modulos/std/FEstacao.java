@@ -48,8 +48,11 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.driver.scale.EpmSP2400;
+import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modulos.gms.FTipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -123,9 +126,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	
 	private JTextFieldPad txtParityBal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 1, 0 );
 	
-	private Vector<String> vValModelosBal = new Vector<String>();
+	private Vector<String> vValDriversBal = new Vector<String>();
 	
-	private Vector<String> vLabModelosBal = new Vector<String>();
+	private Vector<String> vLabDriversBal = new Vector<String>();
 	
 	private Vector<Integer> vValPortasBal = new Vector<Integer>();
 	
@@ -147,7 +150,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	
 	private Vector<String> vLabParidadeBal = new Vector<String>();
 	
-	private JComboBoxPad cbModeloBal = new JComboBoxPad( vLabModelosBal, vValModelosBal, JComboBoxPad.TP_STRING, 50, 0 );
+	private JComboBoxPad cbDriverBal = new JComboBoxPad( vLabDriversBal, vValDriversBal, JComboBoxPad.TP_STRING, 50, 0 );
 	
 	private JComboBoxPad cbPortaBal = new JComboBoxPad( vLabPortasBal, vValPortasBal, JComboBoxPad.TP_INTEGER, 1, 0 );
 	
@@ -159,9 +162,12 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	
 	private JComboBoxPad cbStopBitsBal = new JComboBoxPad( vLabStopBitsBal, vValStopBitsBal, JComboBoxPad.TP_INTEGER, 1, 0 );
 	
+	private JComboBoxPad cbTipoProcRecMerc = null;
+	
+	private Vector<String> vValsTipoProc = new Vector<String>();
 
-
-
+	private Vector<String> vLabsTipoProc = new Vector<String>();
+	
 	public FEstacao() {
 
 		setTitulo( "Cadastro de estações de trabalho" );
@@ -205,13 +211,13 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabTipoUsoImp.addElement( "Etiquetas" );
 		vLabTipoUsoImp.addElement( "Todos" );
 
-		vLabModelosBal.addElement( "<Selecione um modelo>" );
-		vLabModelosBal.addElement( "Filizola BP" );
-		vLabModelosBal.addElement( "Rodoviária EPM SP-2400" );
+		vLabDriversBal.addElement( "<Selecione um modelo>" );
+		vLabDriversBal.addElement( FilizolaBP15.class.toString() );
+		vLabDriversBal.addElement( EpmSP2400.class.toString() );
 		
-		vValModelosBal.addElement( "" );
-		vValModelosBal.addElement( "Filizola BP" );
-		vValModelosBal.addElement( "Rodoviária EPM SP-2400" );
+		vValDriversBal.addElement( "" );
+		vValDriversBal.addElement( FilizolaBP15.NOME_BAL );
+		vValDriversBal.addElement( EpmSP2400.NOME_BAL );
 		
 		vLabPortasBal.addElement( "<Selecione uma porta>" );
 		
@@ -272,11 +278,21 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vValStopBitsBal.addElement( SerialPort.STOPBITS_1_5 );		
 		vValStopBitsBal.addElement( SerialPort.STOPBITS_2 );
 		
-//		porta.setSerialPortParams( 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_2, SerialPort.PARITY_EVEN );
+		vLabsTipoProc.addElement( "Todos" );
+		vLabsTipoProc.addElement( "Pesagem inicial" );
+		vLabsTipoProc.addElement( "Descarregamento" );
+		vLabsTipoProc.addElement( "Pesagem final" );
+		
+		vValsTipoProc.addElement( "TO" );
+		vValsTipoProc.addElement( FTipoRecMerc.PESAGEM_INICIAL );
+		vValsTipoProc.addElement( FTipoRecMerc.DESCARREGAMENTO );
+		vValsTipoProc.addElement( FTipoRecMerc.PESAGEM_FINAL );
+		
+		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipoProc, vValsTipoProc, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		rgTipoUsoImp = new JRadioGroup<String, String>( 3, 3, vLabTipoUsoImp, vValTipoUsoImp );
 		
-		cbModeloBal = new JComboBoxPad( vLabModelosBal, vValModelosBal, JComboBoxPad.TP_STRING, 50, 0 );
+		cbDriverBal = new JComboBoxPad( vLabDriversBal, vValDriversBal, JComboBoxPad.TP_STRING, 50, 0 );
 			
 		cbPortaBal = new JComboBoxPad( vLabPortasBal, vValPortasBal, JComboBoxPad.TP_INTEGER, 1, 0 );
 		
@@ -408,13 +424,14 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		setNavegador( navDetBal );
 		
 		adicCampo( txtNroBal, 7, 20, 60, 24, "NroBal", "Seq.Bal.", ListaCampos.DB_PK, true );		
-		adicDB( cbModeloBal, 70, 20, 200, 24, "ModeloBal", "Modelo", true );		
+		adicDB( cbDriverBal, 70, 20, 200, 24, "DriverBal", "Driver", true );		
 		adicDB( cbPortaBal, 273, 20, 160, 24, "PortaBal", "Porta", true );		
 		adicDB( cbSpeedBal, 436, 20, 80, 24, "SpeedBal", "Velocidade", true );
 		
 		adicDB( cbParidadeBal, 7, 64, 115, 24, "ParityBal", "Paridade", true );
 		adicDB( cbBitsBal, 125, 64, 71, 24, "BitsBal", "Bits", true );
 		adicDB( cbStopBitsBal, 199, 64, 71, 24, "StopBitBal", "Stop Bits", true );
+		adicDB( cbTipoProcRecMerc, 273, 64, 160, 24, "TipoProcRecMerc", "Padrão para:", true );
 		 
 		setListaCampos( true, "ESTACAOBAL", "SG" );
 		
