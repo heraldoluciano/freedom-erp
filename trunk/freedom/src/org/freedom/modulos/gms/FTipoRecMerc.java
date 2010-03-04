@@ -21,13 +21,13 @@
  */
 
 package org.freedom.modulos.gms;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JPanelPad;
@@ -45,7 +45,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 	
 	public static String DESCARREGAMENTO = "TR";
 	
-	public static String PESAGEM_FINAL = "TR";
+	public static String PESAGEM_FINAL = "PF";
 	
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 
@@ -172,6 +172,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 
 			//      rs.close();
 			//      ps.close();
+			
 			con.commit();
 			
 		}  
