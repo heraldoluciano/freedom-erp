@@ -97,7 +97,7 @@ public class FilizolaBP15 extends AbstractScale  {
 
 	public BigDecimal getWeight() {
 		
-		BigDecimal weight = new BigDecimal(0);
+		BigDecimal weight = null;
 		
 		if( buffer!=null && buffer.length>0 ) {
 		
@@ -112,11 +112,14 @@ public class FilizolaBP15 extends AbstractScale  {
 				System.out.print( strweight );
 			
 				if( FilizolaBP15.INSTABLE.equals( strweight ) ) {
-					System.out.println("Escale is unstable, try again!" );
+					System.out.println( AbstractScale.MESSAGE_UNSTABLE );
+					setLog( AbstractScale.LOG_MESSAGE, AbstractScale.MESSAGE_UNSTABLE );
 					return weight;
 				}
 				else if ( FilizolaBP15.NEGATIVE.equals( strweight ) ) {
-					System.out.println("Escale return a negative value, try again!" );
+					System.out.println( AbstractScale.MESSAGE_NEGATIVE_VALUE );
+					setLog( AbstractScale.LOG_MESSAGE, AbstractScale.MESSAGE_NEGATIVE_VALUE );
+					
 					return weight;					
 				}
 				else if ( FilizolaBP15.OVERFLOW.equals( strweight ) ) {
@@ -135,6 +138,8 @@ public class FilizolaBP15 extends AbstractScale  {
 		
 		return weight;
 	}
+	
+	
 	
 
 }
