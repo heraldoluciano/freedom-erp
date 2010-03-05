@@ -96,6 +96,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtTipoProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	
 	private JTextFieldPad txtStatus = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0); 
+	
+	private JTextFieldPad txtStatusItRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 
 	private JComboBoxPad cbBairro = new JComboBoxPad( vLabsBairro, vValsBairro, JComboBoxPad.TP_INTEGER, 8, 0 );
 	
@@ -317,6 +319,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lbMedia = adicCampo( txtMediaAmostragem, 320, 20, 80, 20,  "mediaamostragem", "Media", ListaCampos.DB_SI, false ); 
 		lbRenda = adicCampo( txtRendaAmostragem, 403 , 20, 80 , 20, "rendaamostragem", "Renda", ListaCampos.DB_SI, false );
+
+		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc","Status", ListaCampos.DB_SI, false );
 		
 		setListaCampos( true, "ITRECMERC", "EQ");		
 		lcDet.setQueryInsert( false );
@@ -421,6 +425,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		tab.setColunaInvisivel(5);
 		tab.setTamColuna(70,6);
 		tab.setTamColuna(70,7);
+		tab.setColunaInvisivel(8);
 		
 	}
 	
@@ -461,19 +466,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		btPrevimp.addActionListener(this); 
 		
 	}	
-	
-	private boolean validaSequenciaProcesso() {
-		
-		boolean ret = false;
-		
-		try {
-			// Implementação futura.
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
-	}
 	
 	private void montaListaCampos() {
 
@@ -622,10 +614,68 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			}
 		}
 		else if ( evt.getSource() == btPesagem ) {
-			capturaAmostra();
+			if(validaProcesso()) {
+				capturaAmostra();
+			}
 		}
 		
 		super.actionPerformed(evt);
+	}
+	
+	private boolean validaProcesso() {
+		
+		boolean ret = false;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		
+		try {
+			
+			if("PE".equals( txtStatusItRecMerc.getVlrString() )) {
+				
+				sql.append( "select first 1 statusitrecmerc from eqitrecmerc ");
+				sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc < ? " );
+				sql.append( "order by coditrecmerc desc" );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, lcCampos.getCodEmp() );			
+				ps.setInt( 2, lcCampos.getCodFilial() );
+				ps.setInt( 3, txtTicket.getVlrInteger() );
+				ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+							
+				rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+						
+					String statusant = rs.getString( "statusitrecmerc" );
+					
+					if("PE".equals( statusant )) {
+						Funcoes.mensagemInforma( this, "Processo anterior ainda está pendente!" );
+						ret = false;
+					}
+					else if ("FN".equals( statusant )){
+						ret = true;
+					}
+
+				}
+				else {
+					ret = true;
+				}
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Processo ja foi finalizado" );
+				ret = false;
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
 	}
 	
 	private void carregaStatus() {
@@ -974,6 +1024,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	}
 
 	private void capturaAmostra() {
+		
 		DLPesagem dl = null;
 				
 		try {
