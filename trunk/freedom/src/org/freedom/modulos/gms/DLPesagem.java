@@ -36,7 +36,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.Date;
+
 import javax.comm.SerialPort;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
@@ -94,7 +96,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private JPanelPad pnCampos = new JPanelPad();
 	
-	private JPanelPad pnMensagens = new JPanelPad(500, 34);
+	private JPanelPad pnMensagens = new JPanelPad(280,28);
 	
 	private JLabelPad mensagem = new JLabelPad("");
 	
@@ -114,8 +116,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private void montatela() {
 		
-		setTitulo( "Pesagem" );
-		
 		int irow = 0; // Variavel para salto na posição do campo de data e hora
 		
 		c.add( pnGeral, BorderLayout.CENTER );
@@ -123,9 +123,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		pnGeral.add( pnCampos, BorderLayout.CENTER );
 		pnGeral.add( pnMensagens, BorderLayout.SOUTH );
 		
+//		mensagem.setBackground( Color.RED );
+		
 		setMensagem( "Iniciando parâmetros...", Color.BLUE, null, false );
 		
-		pnMensagens.adic( mensagem, 4, 0, 200, 27 );
+//		pnMensagens.add( mensagem, BorderLayout.WEST );
+		
+		pnMensagens.adic( mensagem, 6, 0, 280, 24 );
 		
 		pnCampos.adic( lbpeso1 , 7, 0, 252, 20 );
 		pnCampos.adic( txtPeso1, 7, 20, 252, 50 );
@@ -155,8 +159,6 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	}
 	
 	private void setMensagem(String msg, Color cortexto, Color corpainel, boolean refazer) {
-		
-		pnMensagens.remove( btRefazer );
 		
 		if( cortexto!=null ) {
 			mensagem.setForeground( cortexto );
@@ -208,6 +210,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				Time hora = balanca.getTime();
 				BigDecimal peso = balanca.getWeight();
 				
+				
+				// Valore incluídos para testes
+				data = new Date();
+				hora = new Time(new Date().getTime());
+				peso = new BigDecimal(650);
+				
+				
 				if(peso != null) {
 					if(txtPeso1.getVlrBigDecimal().floatValue()>0 && tipoprocrecmerc.equals( FTipoRecMerc.DESCARREGAMENTO )){
 						txtPeso2.setVlrBigDecimal( peso );
@@ -237,7 +246,14 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					return;
 				}
 				
-				setMensagem( "Leitura realizada com sucesso!", Color.WHITE, Color.GREEN, false );
+				if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtPeso2.getVlrBigDecimal().floatValue()==0 && tipoprocrecmerc.equals( FTipoRecMerc.DESCARREGAMENTO )){
+					setMensagem( "Clique no botão abaixo para realizar a segunda pesagem!", Color.WHITE, Color.orange, true );
+				}
+				else {
+					setMensagem( "Leitura realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
+				}
+				
+				
 				
 			}
 			else {
