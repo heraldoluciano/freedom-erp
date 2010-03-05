@@ -981,7 +981,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			dl = new DLPesagem( this, txtTipoProcRecMerc.getVlrString() );
 
 			dl.setConexao( con );
-			dl.setVisible( true );
+			dl.execShow();
 			
 		}
 		catch (Exception e) {
