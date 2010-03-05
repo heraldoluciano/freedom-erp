@@ -54,6 +54,8 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 	private JTextFieldPad txtCodProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 
 	private JTextFieldPad txtDescProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	
+	private JTextFieldPad txtNroAmostProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
 
 	private JPanelPad pinCab = new JPanelPad();
 
@@ -71,7 +73,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		super();
 
 		setTitulo("Cadastro de tipos de recepção de mercadorias");
-		setAtribos( 50, 50, 470, 350);
+		setAtribos( 50, 50, 555, 350);
 
 		setAltCab(90);
 		
@@ -91,7 +93,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		adicCampo(txtCodTipoRecMerc, 7, 20, 70, 20,"CodTipoRecMerc","Cód.Tp.Rec.",ListaCampos.DB_PK,true);
-		adicCampo(txtDescTipoRecMerc, 80, 20, 355, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
+		adicCampo(txtDescTipoRecMerc, 80, 20, 440, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
 		
 		setListaCampos( true, "TIPORECMERC", "EQ");
 
@@ -100,15 +102,19 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
-		adicCampo(txtCodProcRecMerc, 7, 20, 40, 20, "CodProcRecMerc","Cód.Et.",ListaCampos.DB_PK, true);
-		adicCampo(txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true);
-		adicDB( cbTipoProcRecMerc, 293, 20, 140, 24, "TipoProcRecMerc","Tipo de processo",true);		
+		adicCampo( txtCodProcRecMerc, 7, 20, 40, 20, "CodProcRecMerc","Cód.Et.",ListaCampos.DB_PK, true );
+		adicCampo( txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true );		
+		adicCampo( txtNroAmostProcRecMerc, 293, 20, 85, 20, "NroAmostProcRecMerc","Nro.Amostras", ListaCampos.DB_SI, true );
+		adicDB( cbTipoProcRecMerc, 381, 20, 139, 24, "TipoProcRecMerc","Tipo de processo", true );
 		
 		setListaCampos( true, "PROCRECMERC", "EQ");
 
 		montaTab();    
-		tab.setTamColuna(70,0); 
-		tab.setTamColuna(300,1);
+		
+		tab.setTamColuna(50,0); 
+		tab.setTamColuna(264,1);
+		tab.setTamColuna(100,2);
+		tab.setTamColuna(110,3);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);  

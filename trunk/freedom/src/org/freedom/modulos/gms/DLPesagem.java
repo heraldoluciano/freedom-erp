@@ -237,7 +237,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					return;
 				}
 				
-				setMensagem( "Leitura realizada com sucesso!", Color.RED, null, false );
+				setMensagem( "Leitura realizada com sucesso!", Color.WHITE, Color.GREEN, false );
 				
 			}
 			else {
