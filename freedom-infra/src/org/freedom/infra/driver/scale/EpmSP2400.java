@@ -1,12 +1,8 @@
 package org.freedom.infra.driver.scale;
 
 import java.math.BigDecimal;
-
 import java.sql.Time;
-
 import java.util.Date;
-
-import javax.comm.SerialPort;
 
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.functions.ConversionFunctions;
@@ -22,16 +18,26 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	public static final String NOME_BAL = "Rodoviária EPM SP-2400";
 	
-	public EpmSP2400( int port ) {
+public void initialize( Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity ) {
 		
-		configSerialParams();
+		this.com = com;
 		
-		activePort( port );
+		serialParams.setTimeout( timeout );
+		serialParams.setBauderate( baudrate );
+		serialParams.setDatabits( databits );
+		serialParams.setStopbits( stopbits );
+		serialParams.setParity( parity );
+
+		activePort();
 		
 		readReturn();
 		
 	}
 	
+	public String getName() {
+		return NOME_BAL;
+	}
+
 	protected void readReturn() {
 		
 		try {
@@ -140,17 +146,6 @@ public class EpmSP2400 extends AbstractScale  {
 		
 		return weight;
 	}
-	
-	private void configSerialParams() {
-
-		serialParams.setTimeout( 1000 );
-		serialParams.setBauderate( 9600 );
-		serialParams.setDatabits( SerialPort.DATABITS_8 );
-		serialParams.setStopbits( SerialPort.STOPBITS_1 );
-		serialParams.setParity( SerialPort.PARITY_NONE );
-		
-	}
-	
 	
 
 }

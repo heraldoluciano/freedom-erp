@@ -3,7 +3,7 @@ package org.freedom.infra.driver.scale;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
-import javax.comm.SerialPort;
+
 import org.freedom.infra.functions.StringFunctions;
 
 public class FilizolaBP15 extends AbstractScale  {
@@ -22,21 +22,43 @@ public class FilizolaBP15 extends AbstractScale  {
 	
 	public static final String NOME_BAL = "Filizola BP-15";
 	
-	public FilizolaBP15( int port ) {
+	private byte[] command = { ENQ };
+	
+	
+	public void setCom(Integer com) {
+		this.com = com;
+	}
+	
+	public void initialize( Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity ) {
+		
+		this.com = com;
+		
+		serialParams.setTimeout( timeout );
+		serialParams.setBauderate( baudrate );
+		serialParams.setDatabits( databits );
+		serialParams.setStopbits( stopbits );
+		serialParams.setParity( parity );
+		
+		activePort();
+	
+		sendCmd( command, 100 );
+		
+		readReturn();	
+		
+	}
+	
+	public String getName() {
+		return NOME_BAL;
+	}
+	
+	public FilizolaBP15( ) {
 		
 		super();
 		
-		configSerialParams();
-		
-		activePort( port );
 	
-		byte[] comando = { ENQ };
-		
-		sendCmd( comando, 0, 100 );
-		
-		readReturn();
 		
 	}
+	
 	
 	protected void readReturn() {
 		
@@ -113,17 +135,6 @@ public class FilizolaBP15 extends AbstractScale  {
 		
 		return weight;
 	}
-	
-	private void configSerialParams() {
-
-		serialParams.setTimeout( 100 );
-		serialParams.setBauderate( 9600 );
-		serialParams.setDatabits( SerialPort.DATABITS_8 );
-		serialParams.setStopbits( SerialPort.STOPBITS_1 );
-		serialParams.setParity( SerialPort.PARITY_NONE );
-		
-	}
-	
 	
 
 }

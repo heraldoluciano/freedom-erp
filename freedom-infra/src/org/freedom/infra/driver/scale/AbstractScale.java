@@ -38,16 +38,39 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	public static final int TIMEOUT_ACK = 500;
 	
-	public boolean activePort( final int com ) {
+	public Integer com = null;
+	
+	public abstract void initialize( Integer com, Integer timeout, Integer baundrate, Integer databits, Integer stopbits, Integer parity );
+	
+	public boolean activePort() {
 
 		boolean result = CtrlPort.getInstance().isActive();
 
 		if ( !result ) {
 			result = CtrlPort.getInstance().activePort( com, serialParams, this );
 		}
-
+		
 		return result;
 	}
+	
+	public void inactivePort() {
+		try {
+
+			boolean result = CtrlPort.getInstance().isActive();
+
+			if ( result ) {
+				
+				CtrlPort.getInstance().disablePort();
+				
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public abstract String getName();
 	
 	public void serialEvent( final SerialPortEvent event ) {
 
@@ -121,7 +144,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		}
 	}
 	
-	public byte[] sendCmd( final byte[] CMD, final int com, final int tamresult ) {
+	public byte[] sendCmd( final byte[] CMD, final int tamresult ) {
 
 		long tempo = 0;
 		long tempoAtual = 0;
@@ -129,7 +152,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		isRead = false;
 		buffer = null;
 
-		if ( activePort( com ) ) {
+		if ( activePort( ) ) {
 
 			try {
 
