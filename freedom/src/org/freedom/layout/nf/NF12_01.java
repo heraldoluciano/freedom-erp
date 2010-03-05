@@ -29,7 +29,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Leiaute;
 
 
-public class NFMaviGesso extends Leiaute {
+public class NF12_01 extends Leiaute {
   private String sMensAdic="";
   private String sNumNota = ""; 
   
