@@ -216,8 +216,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabDriversBal.addElement( EpmSP2400.NOME_BAL );
 		
 		vValDriversBal.addElement( "" );
-		vValDriversBal.addElement( FilizolaBP15.class.toString() );
-		vValDriversBal.addElement( EpmSP2400.class.toString() );
+		vValDriversBal.addElement( FilizolaBP15.class.toString().substring( 6 ) );
+		vValDriversBal.addElement( EpmSP2400.class.toString().substring( 6 ) );
 
 		vLabPortasBal.addElement( "<Selecione uma porta>" );
 		
