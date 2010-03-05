@@ -80,7 +80,7 @@ public class FFDialogo extends JDialog implements ActionListener,
 
     protected JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 3, 3));
 
-    private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
+    protected JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
     
     private boolean fechaJanela = true;
 
