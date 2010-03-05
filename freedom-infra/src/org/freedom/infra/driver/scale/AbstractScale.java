@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
@@ -38,7 +39,21 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	public static final int TIMEOUT_ACK = 500;
 	
+	public static final Integer LOG_MESSAGE = 0;
+	
+	public static final Integer LOG_WARNING = 1;
+	
+	public static final Integer LOG_ERROR = 2;	
+	
+	public static final String MESSAGE_UNSTABLE = "Escale is unstable, try again!";
+	
+	public static final String MESSAGE_NEGATIVE_VALUE = "Escale return a negative value, try again!";
+	
+	
+	
 	public Integer com = null;
+	
+	private HashMap<Integer, String> log = new HashMap<Integer, String>();
 	
 	public abstract void initialize( Integer com, Integer timeout, Integer baundrate, Integer databits, Integer stopbits, Integer parity );
 	
@@ -51,6 +66,14 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		}
 		
 		return result;
+	}
+	
+	protected void setLog( Integer typelog, String message ) {
+		log.put(typelog, message);
+	}
+	
+	public HashMap<Integer, String> getLog() {
+		return log;
 	}
 	
 	public void inactivePort() {
@@ -188,6 +211,8 @@ public abstract class AbstractScale implements SerialPortEventListener {
 
 		return buffer;
 	}
+	
+	
 	
 
 	
