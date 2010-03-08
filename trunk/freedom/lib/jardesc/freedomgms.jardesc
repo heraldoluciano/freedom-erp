@@ -40,6 +40,7 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.driver.scale"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
