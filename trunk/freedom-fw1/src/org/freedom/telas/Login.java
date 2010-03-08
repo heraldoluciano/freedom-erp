@@ -202,6 +202,9 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 					return;
 				}
 			}
+			// Setar a filial independentemente do usuário
+			// Incluído para corrigir problemas nas procedures 
+			iFilialPadrao = cbEmp.getVlrInteger();
 		}
 		super.actionPerformed(evt);
 		
