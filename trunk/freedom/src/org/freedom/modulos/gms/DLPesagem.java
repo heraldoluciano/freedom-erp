@@ -227,14 +227,14 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					
 				}
 				else {
-					setMensagem( "Peso inválido na leitura!", Color.WHITE, Color.RED, true );
+					setMensagem( "Peso inválido na pesagem!", Color.WHITE, Color.RED, true );
 					return;
 				}				
 				if(data != null) {
 					txtData.setVlrDate( data );
 				}
 				else {
-					setMensagem( "Data inválida na leitura!", Color.ORANGE, null, false );
+					setMensagem( "Data inválida na pesagem!", Color.ORANGE, null, false );
 					return;
 				}
 				
@@ -242,15 +242,15 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					txtHora.setVlrTime( hora );
 				}
 				else {
-					setMensagem( "Hora inválida na leitura!", Color.ORANGE, null, false );
+					setMensagem( "Hora inválida na pesagem!", Color.ORANGE, null, false );
 					return;
 				}
 				
 				if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtPeso2.getVlrBigDecimal().floatValue()==0 && tipoprocrecmerc.equals( FTipoRecMerc.DESCARREGAMENTO )){
-					setMensagem( "Clique no botão abaixo para realizar a segunda pesagem!", Color.WHITE, Color.orange, true );
+					setMensagem( "Aguardando segunda pesagem...", Color.WHITE, Color.orange, true );
 				}
 				else {
-					setMensagem( "Leitura realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
+					setMensagem( "Pesagem realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
 				}
 				
 				
