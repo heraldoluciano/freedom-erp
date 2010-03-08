@@ -265,6 +265,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtStrDescItVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtBaseICMSItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	
+	private JTextFieldPad txtBaseICMSBrutItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtAliqFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, casasDecFin );
 
@@ -780,7 +782,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		lcProd.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produtos", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProdAux, "DescAuxProd", "Descrição auxiliar do produtos", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
@@ -800,7 +802,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// FK do produto (*Somente em caso de referências este listaCampos
 		// Trabalha como gatilho para o listaCampos de produtos, assim
 		// carregando o código do produto que será armazenado no Banco)
-		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, false ) );
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProdAux, "DescAuxProd", "Descrição auxiliar do produtos", ListaCampos.DB_SI, false ) );
@@ -874,13 +876,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setListaCampos( lcCampos );
 		setAltCab( 160 );
 		setPainel( pinCabVenda );
-		adicCampo( txtCodVenda, 7, 20, 90, 20, "CodVenda", "N. pedido", ListaCampos.DB_PK, true );
+		adicCampo( txtCodVenda, 7, 20, 90, 20, "CodVenda", "Nro. Pedido", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTipoMov, 100, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 180, 20, 197, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtCodSerie, 380, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, false );
-		adicCampo( txtDocVenda, 460, 20, 77, 20, "DocVenda", "N doc.", ListaCampos.DB_SI, false );
-		adicCampo( txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data emis.", ListaCampos.DB_SI, true );
-		adicCampo( txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda", "Data saída", ListaCampos.DB_SI, true );
+		adicCampo( txtDocVenda, 460, 20, 77, 20, "DocVenda", "Nro. Doc.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data da emissão", ListaCampos.DB_SI, true );
+		adicCampo( txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda", "Data da saída", ListaCampos.DB_SI, true );
 		adicCampo( txtCodCli, 7, 60, 80, 20, "CodCli", "Cód. cli.", ListaCampos.DB_FK, txtDescCli, true );
 		adicDescFK( txtDescCli, 90, 60, 197, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
@@ -961,18 +963,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
-			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, true );
-			adic( new JLabelPad( "Ref. prod." ), 40, 0, 60, 20 );
-			adic( txtRefProd, 40, 20, 60, 20 );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, true );
+			adic( new JLabelPad( "Referência" ), 40, 0, 70, 20 );
+			adic( txtRefProd, 40, 20, 70, 20 );
 			txtRefProd.setFK( true );
 			txtRefProd.removeKeyListener( this );
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
-			adicCampo( txtCodProd, 40, 20, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+			adicCampo( txtCodProd, 40, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		}
 
-		adicDescFK( txtDescProd, 103, 20, 200, 20, "DescProd", "Descrição do produto" );
+		adicDescFK( txtDescProd, 113, 20, 190, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtCodLote, 306, 20, 67, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		adicCampo( txtQtdItVenda, 376, 20, 67, 20, "QtdItVenda", "Qtd.", ListaCampos.DB_SI, true );
 
@@ -993,6 +995,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// colocar aqui o campo de saldo
 		adicDescFK( txtSldLiqProd, 280, 60, 67, 20, "SldLiqProd", "Saldo" );
 		adicCampo( txtBaseICMSItVenda, 350, 60, 67, 20, "VlrBaseICMSItVenda", "B. ICMS", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtBaseICMSBrutItVenda, "VlrBaseICMSBrutItVenda", "B. ICMS S/Red.", ListaCampos.DB_SI, false );		
 		adicCampo( txtPercICMSItVenda, 420, 60, 57, 20, "PercICMSItVenda", "% ICMS", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrICMSItVenda, 480, 60, 67, 20, "VlrICMSItVenda", "V. ICMS", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI", ListaCampos.DB_SI, false );
@@ -1858,6 +1861,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		float fVlrProd = 0;
 		float fBaseIPI = 0;
 		float fBaseICMS = 0;
+		float fBaseICMSBrut = 0; // Base do ICMS sem redução
 		float fICMS = 0;
 		float fIPI = 0;
 		String tpredicmsfisc = null;
@@ -1870,6 +1874,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			if ( !bBuscaBase ) {
 				fBaseICMS = txtBaseICMSItVenda.floatValue();
+				fBaseICMSBrut = txtBaseICMSBrutItVenda.floatValue();
 			}
 
 			if ( txtTipoFisc.getText().trim().equals( "II" ) ) {
@@ -1879,6 +1884,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				if ( bBuscaBase ) {
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
@@ -1907,6 +1913,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				if ( bBuscaBase ) {
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
@@ -1941,6 +1948,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				if ( bBuscaBase ) {
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
@@ -1978,9 +1986,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						else {
 							fBaseICMS = Funcoes.arredFloat( fVlrProd, casasDecFin );
 						}
+						
+						fBaseICMSBrut =  Funcoes.arredFloat( fVlrProd, casasDecFin );
+						
 					}
 
 					fBaseIPI = fVlrProd;
+					
 					if ( ( "V".equals( tpredicmsfisc ) ) && ( fRed > 0 ) ) {
 						fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
 						fICMS -= Funcoes.arredFloat( fICMS * fRed / 100, casasDecFin );
@@ -1994,6 +2006,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( fICMS ) );
 				txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMS ) );
+				txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMSBrut ) );
+				
 				txtVlrIPIItVenda.setVlrBigDecimal( new BigDecimal( fIPI ) );
 				txtBaseIPIItVenda.setVlrBigDecimal( new BigDecimal( fBaseIPI ) );
 				txtAliqIPIItVenda.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
@@ -2249,8 +2263,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 				}
 	
-				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) || 
-						( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) ) {
+				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) || ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) ) {
 					if ( txtTipoMov.getVlrString().equals( "VD" ) || 
 							txtTipoMov.getVlrString().equals( "VT" ) || 
 							txtTipoMov.getVlrString().equals( "TR" ) || 
