@@ -399,7 +399,7 @@ ORDER BY CODITORC]]></queryString>
 						key="line-60"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="#,##0.000;-#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="459"
 						y="27"
@@ -601,7 +601,7 @@ ORDER BY CODITORC]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}.multiply($F{QTDEMBALAGEM})]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.000;-#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="420"
 						y="0"
@@ -616,7 +616,7 @@ ORDER BY CODITORC]]></queryString>
 ? ($F{PRECOITORC}.subtract( ($F{VLRDESCITORC}.divide($F{QTDITORC},4,BigDecimal.ROUND_CEILING ))).divide($F{QTDEMBALAGEM},2, BigDecimal.ROUND_CEILING ))
 : $F{PRECOITORC}.divide($F{QTDEMBALAGEM},4, BigDecimal.ROUND_CEILING )]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.000;-#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="470"
 						y="0"
