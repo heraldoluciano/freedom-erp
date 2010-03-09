@@ -2402,8 +2402,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtTotFat.setVlrBigDecimal( luc.getTotfat() == null ? new BigDecimal(0): luc.getTotfat() );
 			txtTotCusto.setVlrBigDecimal( luc.getTotcusto() == null ? new BigDecimal(0): luc.getTotcusto() );
 			txtTotLucro.setVlrBigDecimal( luc.getTotlucro()  == null ? new BigDecimal(0): luc.getTotlucro() );
-			
-			txtTotCustoUC.setVlrBigDecimal( luc.getVlrcustouc() == null ? new BigDecimal(0): luc.getVlrcustouc()  );
+			 
+			txtTotCustoUC.setVlrBigDecimal( luc.getVlrcustoinfo() == null ? new BigDecimal(0): luc.getVlrcustoinfo()  );
 			txtTotComiss.setVlrBigDecimal( luc.getVlrcomis()  == null ? new BigDecimal(0): luc.getVlrcomis() );
 			txtTotPIS.setVlrBigDecimal( luc.getVlrpis()  == null ? new BigDecimal(0): luc.getVlrpis() );
 			txtTotCofins.setVlrBigDecimal( luc.getVlrcofins()  == null ? new BigDecimal(0): luc.getVlrcofins()  );
@@ -2440,7 +2440,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtItemCusto.setVlrBigDecimal( luc.getItemcusto() == null ? new BigDecimal(0): luc.getItemcusto() );
 			txtItemLucro.setVlrBigDecimal( luc.getItemlucro() == null ? new BigDecimal(0): luc.getItemlucro() );
 			
-			txtTotCustoUCIt.setVlrBigDecimal( luc.getVlrcustoucit() == null ? new BigDecimal(0): luc.getVlrcustoucit()  );
+			txtTotCustoUCIt.setVlrBigDecimal( luc.getVlrcustoinfoit() == null ? new BigDecimal(0): luc.getVlrcustoinfoit() );
 			txtTotComissIt.setVlrBigDecimal( luc.getVlrcomisit() == null ? new BigDecimal(0): luc.getVlrcomisit() );
 			txtTotPISIt.setVlrBigDecimal( luc.getVlrpisit() == null ? new BigDecimal(0): luc.getVlrpisit()  );
 			txtTotCofinsIt.setVlrBigDecimal( luc.getVlrcofinsit()  == null ? new BigDecimal(0): luc.getVlrcofinsit()  );
