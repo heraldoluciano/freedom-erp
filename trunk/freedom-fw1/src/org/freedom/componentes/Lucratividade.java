@@ -138,6 +138,10 @@ public class Lucratividade {
 		if(vlrcomis==null) {
 			return new BigDecimal(0);
 		}
+		if(fatLucro.floatValue()>1) {
+			return vlrcomis.multiply(fatLucro);
+		}
+
 
 		return vlrcomis;
 	}
@@ -740,6 +744,9 @@ public class Lucratividade {
 
 		if(vlrcomisit==null) {
 			return new BigDecimal(0);
+		}
+		if(fatLucro.floatValue()>1) {
+			return vlrcomisit.multiply(fatLucro);
 		}
 	
 		return vlrcomisit;
