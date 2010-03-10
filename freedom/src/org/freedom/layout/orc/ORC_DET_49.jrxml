@@ -612,9 +612,8 @@ ORDER BY CODITORC]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[($F{VLRDESCITORC}!=null && $F{VLRDESCITORC}.floatValue()>0) 
-? ($F{PRECOITORC}.subtract( ($F{VLRDESCITORC}.divide($F{QTDITORC},4,BigDecimal.ROUND_CEILING ))).divide($F{QTDEMBALAGEM},2, BigDecimal.ROUND_CEILING ))
-: $F{PRECOITORC}.divide($F{QTDEMBALAGEM},4, BigDecimal.ROUND_CEILING )]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[($F{VLRLIQITORC}.subtract( ($F{VLRDESCITORC}.divide($F{QTDITORC},4,BigDecimal.ROUND_CEILING ))).divide($F{QTDEMBALAGEM},2, BigDecimal.ROUND_CEILING ))
+]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
