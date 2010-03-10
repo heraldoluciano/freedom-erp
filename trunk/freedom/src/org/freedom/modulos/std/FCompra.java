@@ -67,6 +67,8 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
+import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.DLFinalizaOP;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -79,7 +81,9 @@ import org.freedom.telas.FPrinterJob;
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva (14/07/2003)
  * @version 31/08/2009 - Alex Rodrigues
  * @version 16/12/2009 - Anderson Sanchez 
+ * @version 10/03/2010 - Anderson Sanchez
  */
+
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
@@ -284,8 +288,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JTextFieldPad txtIdentContainer = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
-	private JTextFieldPad txtLocDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
-	
+	private JTextFieldPad txtLocDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );	
 	
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -374,6 +377,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JLabelPad lbChaveNfe = null;
 	
 	private boolean novo = false;
+	
+	private NFEConnectionFactory nfecf = null;
 	
 	private enum PROCEDUREOP {
 		  TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC,  CODFILIALOC,  CODORC, TIPOORC, CODITORC, 
@@ -1111,8 +1116,30 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		BigDecimal vlrtot = qtd.multiply( preco );
 		txtVlrProdItCompra.setVlrBigDecimal( vlrtot );		
 	}
+	
+	private void emiteNFE() {
+		
+		nfecf.setTpNF( AbstractNFEFactory.TP_NF_IN );
+		
+		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), 
+				  null, 
+				  txtCodCompra.getVlrInteger(), 
+				  txtDocCompra.getVlrInteger() );
+	
+		nfecf.post();		
+		
+	}
+	
+	private void emiteNotaFiscal( final String sTipo ) {
+		if ( (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) ) {
+			emiteNFE();
+		} 
+		else {
+			emiteNF( sTipo );
+		}
+	}
 
-	private void emitNota( String tipo ) {
+	private void emiteNF( String tipo ) {
 
 		Object layNF = null;
 		Vector<Integer> parans = null;
@@ -1739,7 +1766,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		if ( evt.getSource() == btFechaCompra ) {
 			lcCampos.carregaDados();
-			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes() );
+			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes(), (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) );
 			dl.setVisible( true );
 			if ( dl.OK ) {
 				sValores = dl.getValores();
@@ -1761,13 +1788,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 							txtTipoMov.getVlrString().equals( "DV" ) || 
 							txtTipoMov.getVlrString().equals( "DR" ) || 
 							txtTipoMov.getVlrString().equals( "BN" ) ) {
-						emitNota( "NF" );
+						emiteNotaFiscal( "NF" );
 					}
 					else if ( "CP,CO".indexOf( txtTipoMov.getVlrString() )>-1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
-						emitNota( "NF" );
+						emiteNotaFiscal( "NF" );
 					}
 					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-						emitNota( "NS" );
+						emiteNotaFiscal( "NS" );
 					}
 					else {
 						Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
@@ -2164,6 +2191,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
+		setNfecf( new NFEConnectionFactory( cn ) );
+		
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );
 		lcFor.setConexao( cn );
@@ -2447,6 +2477,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			
 		}
+	}
+	
+	public NFEConnectionFactory getNfecf() {	
+		return nfecf;
+	}
+
+	public void setNfecf( NFEConnectionFactory nfecf ) {	
+		this.nfecf = nfecf;
 	}
 	
 	

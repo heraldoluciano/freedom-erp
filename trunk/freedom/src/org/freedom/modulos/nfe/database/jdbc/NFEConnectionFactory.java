@@ -57,7 +57,8 @@ public class NFEConnectionFactory implements NFEListener {
 
 	private StringBuilder messagesError = new StringBuilder();
 	
-
+	private Integer tpNF = AbstractNFEFactory.TP_NF_OUT;
+	
 	public NFEConnectionFactory( final DbConnection conFreedom ) {
 
 		this.con = conFreedom;
@@ -71,10 +72,14 @@ public class NFEConnectionFactory implements NFEListener {
 				if ( getHasNFE() ) {
 					
 					props = conFreedom.getProperties();
+					
 					setUrl( getUrlDb() );
 					setConNFE( new DbConnection( getUrl(), props ) );
+					
 					getObjNFEFactory().setConSys( getCon() );
 					getObjNFEFactory().setConNFE( getConNFE() );
+					getObjNFEFactory().setTpNF( getTpNF() );
+					
 				}
 				else {
 					displayMessages();
@@ -95,6 +100,14 @@ public class NFEConnectionFactory implements NFEListener {
 
 	public DbConnection getConNFE() {
 		return conNFE;
+	}
+	
+	public void setTpNF( Integer tpNF ) {
+		this.tpNF = tpNF;
+	}
+	
+	public Integer getTpNF() {
+		return tpNF;
 	}
 
 	public void setConNFE( DbConnection conNFE ) {

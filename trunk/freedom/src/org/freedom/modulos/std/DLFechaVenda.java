@@ -41,8 +41,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -218,15 +220,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbImpPed = new JCheckBoxPad( "Imprime Pedido?", "S", "N" );
 
-	private JCheckBoxPad cbImpNot = new JCheckBoxPad("", "S", "N");
+	private JCheckBoxPad cbEmiteNota = new JCheckBoxPad("", "S", "N");
 
-	private final JCheckBoxPad cbImpBol = new JCheckBoxPad( "Imprime Boleto?", "S", "N" );
+	private final JCheckBoxPad cbEmiteBoleto = new JCheckBoxPad( "Emite Boleto?", "S", "N" );
 
-	private final JCheckBoxPad cbImpRec = new JCheckBoxPad( "Imprime Recibo?", "S", "N" );
+	private final JCheckBoxPad cbEmiteRecibo = new JCheckBoxPad( "Emite Recibo?", "S", "N" );
 
 	private final JCheckBoxPad cbImpReciboItRec = new JCheckBoxPad( "Imp.rec.", "S", "N" );
 
-	private final JCheckBoxPad cbReImpNot = new JCheckBoxPad( "", "S", "N" );
+	private final JCheckBoxPad cbReEmiteNota = new JCheckBoxPad( "", "S", "N" );
 
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
 
@@ -326,11 +328,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao( cn );
          
 		if ( NFe ) {
-		    cbImpNot.setText( "Emite NFE?" );
-		    cbReImpNot.setText( "Consulta NFE?" );
+		    cbEmiteNota.setText( "Emite NFE?" );
+		    cbReEmiteNota.setText( "Consulta NFE?" );
 		} else {
-		    cbImpNot.setText( "Imprime Nota?" );
-		    cbReImpNot.setText( "Reimprime Nota?" );
+		    cbEmiteNota.setText( "Imprime Nota?" );
+		    cbReEmiteNota.setText( "Reimprime Nota?" );
 		}
 		
 		iCodVendaFecha = iCodVenda.intValue();
@@ -659,11 +661,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 		getDadosCli();
 
-		cbImpNot.addCheckBoxListener( this );
+		cbEmiteNota.addCheckBoxListener( this );
 		cbImpPed.addCheckBoxListener( this );
-		cbImpBol.addCheckBoxListener( this );
-		cbImpRec.addCheckBoxListener( this );
-		cbReImpNot.addCheckBoxListener( this );
+		cbEmiteBoleto.addCheckBoxListener( this );
+		cbEmiteRecibo.addCheckBoxListener( this );
+		cbReEmiteNota.addCheckBoxListener( this );
 		cbAdicICMSFrete.addCheckBoxListener( this );
 
 		// Carrega o frete
@@ -737,10 +739,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		
 		adic( cbImpPed, 230, 250, 150, 20 );
-		adic( cbImpNot, 230, 270, 150, 20 );
-		adic( cbImpBol, 230, 290, 150, 20 );
-		adic( cbImpRec, 230, 310, 150, 20 );
-		adic( cbReImpNot, 230, 330, 150, 20 );		
+		adic( cbEmiteNota, 230, 270, 150, 20 );
+		adic( cbEmiteBoleto, 230, 290, 150, 20 );
+		adic( cbEmiteRecibo, 230, 310, 150, 20 );
+		adic( cbReEmiteNota, 230, 330, 150, 20 );		
 	//	adic( cbDescPont, 7, 250, 180, 20 );		
 
 		setPainel( pinFrete );
@@ -822,10 +824,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtVlrFreteVD.addFocusListener( this );
 
 		cbImpPed.setVlrString( impPed );
-		cbImpNot.setVlrString( impNf );
-		cbImpBol.setVlrString( impBol );
-		cbImpRec.setVlrString( impRec );
-		cbReImpNot.setVlrString( reImpNf );
+		cbEmiteNota.setVlrString( impNf );
+		cbEmiteBoleto.setVlrString( impBol );
+		cbEmiteRecibo.setVlrString( impRec );
+		cbReEmiteNota.setVlrString( reImpNf );
 
 		lcVenda.edit();
 		lcFreteVD.addCarregaListener( this );
@@ -947,7 +949,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			lcReceber.post();
 		}
 		
-		if ( "N".equals( cbReImpNot.getVlrString() ) ) {
+		if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
 			
 			lcVenda.edit();
 
@@ -974,7 +976,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private void gravaVenda() {
 
-		if ( "N".equals( cbReImpNot.getVlrString() ) ) {	
+		if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {	
 			
 			geraHistoricoRec();
 			
@@ -983,7 +985,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				lcFreteVD.post();
 			}
 			lcVenda.edit();			
-			if ( "S".equals( cbImpNot.getVlrString() ) ) {			
+			if ( "S".equals( cbEmiteNota.getVlrString() ) ) {			
 				txtStatusVenda.setVlrString( "V2" );
 			}
 			else if ( "P".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {			
@@ -1004,7 +1006,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		if ( iCodRec > 0 ) {			
 			txtCodRec.setVlrInteger( new Integer( iCodRec ) );
-			if ("S".equals( cbImpRec.getVlrString())) {
+			if ("S".equals( cbEmiteRecibo.getVlrString())) {
 				gravaImpRecibo( iCodRec, 1, new Boolean(true) );
 			}
 			lcReceber.carregaDados();
@@ -1142,7 +1144,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtCodVenda.setVlrInteger( new Integer( iCodVendaFecha ) );
 				txtTipoVenda.setVlrString( "V" );
 				
-				if( cbImpRec.getVlrString().equals( "S" )){
+				if( cbEmiteRecibo.getVlrString().equals( "S" )){
 					if( txtCodModBol.getVlrString().equals( "" )){
 						Funcoes.mensagemInforma( this, "Selecione o modelo de recibo!" );
 						break;
@@ -1150,7 +1152,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					 modeloBoleto = txtCodModBol.getVlrString();
 				}
 				
-				if( cbImpBol.getVlrString().equals( "S" )){
+				if( cbEmiteBoleto.getVlrString().equals( "S" )){
 					if( txtCodModBol.getVlrString().equals( "" )){
 						Funcoes.mensagemInforma( this, "Selecione o modelo de boleto!" );
 						break;
@@ -1504,12 +1506,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		sRetorno[ COL_RETDFV.VLRDESCVENDA.ordinal() ] = txtVlrDescVenda.getVlrString();
 		sRetorno[ COL_RETDFV.VLRADICVENDA.ordinal() ] = txtVlrAdicVenda.getVlrString();
 		sRetorno[ COL_RETDFV.IMPPED.ordinal() ] = cbImpPed.getVlrString();
-		sRetorno[ COL_RETDFV.IMPNOTA.ordinal() ] = cbImpNot.getVlrString();
+		sRetorno[ COL_RETDFV.IMPNOTA.ordinal() ] = cbEmiteNota.getVlrString();
 		sRetorno[ COL_RETDFV.MODBOL1.ordinal() ] = modeloBoleto1;
-		sRetorno[ COL_RETDFV.IMPREC.ordinal() ] = cbImpRec.getVlrString();
+		sRetorno[ COL_RETDFV.IMPREC.ordinal() ] = cbEmiteRecibo.getVlrString();
 		sRetorno[ COL_RETDFV.MODBOL2.ordinal() ] = modeloBoleto;
-		sRetorno[ COL_RETDFV.REIMPNOTA.ordinal() ] = cbReImpNot.getVlrString();		
-		sRetorno[ COL_RETDFV.IMPBOL.ordinal() ] = cbImpBol.getVlrString();
+		sRetorno[ COL_RETDFV.REIMPNOTA.ordinal() ] = cbReEmiteNota.getVlrString();		
+		sRetorno[ COL_RETDFV.IMPBOL.ordinal() ] = cbEmiteBoleto.getVlrString();
 		sRetorno[ COL_RETDFV.NUMCONTA.ordinal() ] = txtNumConta.getVlrString();
 		return sRetorno;
 	}
@@ -1619,20 +1621,20 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
-		if ( evt.getCheckBox() == cbReImpNot ) {
-			if ( cbReImpNot.getVlrString().equals( "S" ) ) {
-				cbImpBol.setVlrString( "N" );
-				cbImpRec.setVlrString( "N" );
-				cbImpNot.setVlrString( "N" );
+		if ( evt.getCheckBox() == cbReEmiteNota ) {
+			if ( cbReEmiteNota.getVlrString().equals( "S" ) ) {
+				cbEmiteBoleto.setVlrString( "N" );
+				cbEmiteRecibo.setVlrString( "N" );
+				cbEmiteNota.setVlrString( "N" );
 				cbImpPed.setVlrString( "N" );
 				txtCodModBol.setSoLeitura( true );
 				txtCodModBol.setRequerido( false );
 			}
 		}
-		else if ( ( evt.getCheckBox() == cbImpNot ) || ( evt.getCheckBox() == cbImpBol ) || 
-				( evt.getCheckBox() == cbImpRec ) || ( evt.getCheckBox() == cbImpPed ) ) {
+		else if ( ( evt.getCheckBox() == cbEmiteNota ) || ( evt.getCheckBox() == cbEmiteBoleto ) || 
+				( evt.getCheckBox() == cbEmiteRecibo ) || ( evt.getCheckBox() == cbImpPed ) ) {
 			if ( ( (JCheckBoxPad) evt.getCheckBox() ).getVlrString().equals( "S" ) ) {
-				cbReImpNot.setVlrString( "N" );
+				cbReEmiteNota.setVlrString( "N" );
 			}
 		}
 		else if ( evt.getCheckBox() == cbAdicICMSFrete ) {
@@ -1642,8 +1644,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtVlrIcmsFreteVD.setVlrString( "" );
 			}
 		}
-		if( evt.getCheckBox() == cbImpRec || evt.getCheckBox() == cbImpBol ){
-			if( cbImpRec.getVlrString().equals( "S" ) || cbImpBol.getVlrString().equals( "S" )){
+		if( evt.getCheckBox() == cbEmiteRecibo || evt.getCheckBox() == cbEmiteBoleto ){
+			if( cbEmiteRecibo.getVlrString().equals( "S" ) || cbEmiteBoleto.getVlrString().equals( "S" )){
 				txtCodModBol.setRequerido( true );
 				txtCodModBol.setSoLeitura( false );
 			}else{

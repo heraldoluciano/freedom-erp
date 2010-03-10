@@ -123,10 +123,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JCheckBoxPad cbImpPed = new JCheckBoxPad( "Imprime Pedido?", "S", "N" );
+	private JCheckBoxPad cbEmitePedido = new JCheckBoxPad( "Emite Pedido?", "S", "N" );
 
-	private JCheckBoxPad cbImpNot = new JCheckBoxPad( "Imprime Nota?", "S", "N" );
-
+	private JCheckBoxPad cbEmiteNota = new JCheckBoxPad( "Emite Nota Fiscal?", "S", "N" );
+	
 	private JCheckBoxPad cbAdicFreteCusto = new JCheckBoxPad( "Soma Valor do frete ao custo dos produtos.", "S", "N" );
 	
 	private JCheckBoxPad cbAdicAdicCusto = new JCheckBoxPad( "Soma Valor adicional ao custo dos produtos.", "S", "N" );
@@ -180,10 +180,15 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JPanelPad pinICMS = new JPanelPad();
 
 
-	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes) {
+	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes, boolean NFe) {
 
 		super( cOrig );
 		setConexao( cn );
+		
+		if ( NFe ) {
+		    cbEmiteNota.setText( "Emite NFE?" );
+		} 
+		
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo( "Fechar Compra" );
 		setAtribos( 560, 530 );
@@ -414,17 +419,17 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinCusto.adic( cbAdicAdicCusto, 7, 30, 280, 20 );
 
 	   /**********************
-		*  Quadro Impressão
+		*  Quadro Emissão
 		**********************/
 		
-		pinLbImp.adic( new JLabelPad( "   Impressão " ), 0, 0, 90, 15 );
+		pinLbImp.adic( new JLabelPad( "   Emissão " ), 0, 0, 90, 15 );
 		pinLbImp.tiraBorda();
 		
 		adic( pinLbImp, 349, 300, 90, 15 ); 
 		adic( pinImp, 336, 310, 200, 60 );
 
-		pinImp.adic( cbImpPed, 7, 10, 180, 20 );
-		pinImp.adic( cbImpNot, 7, 30, 180, 20 );
+		pinImp.adic( cbEmitePedido, 7, 10, 180, 20 );
+		pinImp.adic( cbEmiteNota, 7, 30, 180, 20 );
 		
 		
 		/********** FIM DOS QUADROS  ***********/
@@ -550,8 +555,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		sRetorno[ 0 ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ 1 ] = txtVlrDescCompra.getVlrString();
 		sRetorno[ 2 ] = txtVlrAdicCompra.getVlrString();
-		sRetorno[ 3 ] = cbImpPed.getVlrString();
-		sRetorno[ 4 ] = cbImpNot.getVlrString();
+		sRetorno[ 3 ] = cbEmitePedido.getVlrString();
+		sRetorno[ 4 ] = cbEmiteNota.getVlrString();
 		sRetorno[ 5 ] = txtVlrLiqCompra.getVlrString();
 		sRetorno[ 6 ] = txtQtdFreteCompra.getVlrString();
 		return sRetorno;
@@ -585,18 +590,18 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 				if ( lcPagar.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcPagar.post();
 				}
-				if ( cbImpPed.getVlrString().trim().equals( "S" ) ) {
+				if ( cbEmitePedido.getVlrString().trim().equals( "S" ) ) {
 					lcCompra.edit();
 					txtStatusCompra.setVlrString( "P3" );
 					if ( !lcCompra.post() ) {
-						cbImpPed.setVlrString( "N" );
+						cbEmitePedido.setVlrString( "N" );
 					}
 				}
-				if ( cbImpNot.getVlrString().trim().equals( "S" ) ) {
+				if ( cbEmiteNota.getVlrString().trim().equals( "S" ) ) {
 					lcCompra.edit();
 					txtStatusCompra.setVlrString( "C3" );
 					if ( !lcCompra.post() ) {
-						cbImpNot.setVlrString( "N" );
+						cbEmiteNota.setVlrString( "N" );
 					}
 				}
 				super.actionPerformed( evt );
