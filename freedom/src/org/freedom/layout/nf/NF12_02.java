@@ -92,16 +92,18 @@ public class NF12_02 extends Leiaute {
 				}
 				if (imp.pRow()==0) {
 					imp.say(imp.pRow()+2,0,""+imp.comprimido());
-					imp.say(imp.pRow()+1,90,"X");
-					imp.say(imp.pRow()+1,126,sNumNota);
-					//		   imp.say(imp.pRow()+5,0,""+imp.comprimido());
-					imp.say(imp.pRow()+2,6,sNat[0]);
-					imp.say(imp.pRow()+0,46,sNat[1]);
-					imp.say(imp.pRow()+0,60,"");// insc. do subst. tribut.
+					imp.say(imp.pRow()+1,88,"X");
+//					imp.say(imp.pRow()+1,126,sNumNota);
+							   
+					imp.say(imp.pRow()+5,0,""+imp.comprimido());
+					
+					imp.say(imp.pRow()+2,3,sNat[0]);
+					imp.say(imp.pRow()+0,41,sNat[1]);
+//					imp.say(imp.pRow()+0,60,"");// insc. do subst. tribut.
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+"      -      "+rs.getString("RazCli"));
+					imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
 					imp.say(imp.pRow()+0,88,rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
 					imp.say(imp.pRow()+0,125,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 					//           imp.say(imp.pRow()+1,0,"");
@@ -125,31 +127,40 @@ public class NF12_02 extends Leiaute {
 					imp.say(imp.pRow()+0,125,sHora);
 
 					imp.say(imp.pRow()+3,0,""+imp.comprimido());		
+					
 					imp.say(imp.pRow()+0,6,sDuplics[0]);
-					imp.say(imp.pRow()+0,14,sVals[0]);            
-					imp.say(imp.pRow()+0,36,sVencs[0]);             
+					imp.say(imp.pRow()+0,60,sVals[0]);            
+					imp.say(imp.pRow()+0,129,sVencs[0]);             
 
-					imp.say(imp.pRow()+0,51,sDuplics[1]);
-					imp.say(imp.pRow()+0,59,sVals[1]);
-					imp.say(imp.pRow()+0,81,sVencs[1]);             
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					
+					imp.say(imp.pRow()+0,6,sDuplics[1]);
+					imp.say(imp.pRow()+0,60,sVals[1]);
+					imp.say(imp.pRow()+0,129,sVencs[1]);             
 
-					imp.say(imp.pRow()+0,96,sDuplics[2]);
-					imp.say(imp.pRow()+0,104,sVals[2]);
-					imp.say(imp.pRow()+0,126,sVencs[2]);             
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					
+					imp.say(imp.pRow()+0,6,sDuplics[2]);
+					imp.say(imp.pRow()+0,60,sVals[2]);
+					imp.say(imp.pRow()+0,129,sVencs[2]);             
 
-					imp.say(imp.pRow()+2,0,""+imp.comprimido());
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 
 					imp.say(imp.pRow()+0,6,sDuplics[3]);
-					imp.say(imp.pRow()+0,14,sVals[3]);            
-					imp.say(imp.pRow()+0,36,sVencs[3]);             
+					imp.say(imp.pRow()+0,60,sVals[3]);            
+					imp.say(imp.pRow()+0,129,sVencs[3]);             
 
-					imp.say(imp.pRow()+0,51,sDuplics[4]);
-					imp.say(imp.pRow()+0,59,sVals[4]);
-					imp.say(imp.pRow()+0,81,sVencs[4]);             
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					
+					imp.say(imp.pRow()+0,6,sDuplics[4]);
+					imp.say(imp.pRow()+0,60,sVals[4]);
+					imp.say(imp.pRow()+0,129,sVencs[4]);             
 
-					imp.say(imp.pRow()+0,96,sDuplics[5]);
-					imp.say(imp.pRow()+0,104,sVals[5]);
-					imp.say(imp.pRow()+0,126,sVencs[5]);             
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					
+					imp.say(imp.pRow()+0,6,sDuplics[5]);
+					imp.say(imp.pRow()+0,60,sVals[5]);
+					imp.say(imp.pRow()+0,129,sVencs[5]);             
 
 					imp.say(imp.pRow()+4,0,"");
 				}
@@ -173,11 +184,11 @@ public class NF12_02 extends Leiaute {
 
 					//            imp.say(imp.pRow()+0,69,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
 					//   Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) 
-					imp.say(imp.pRow()+0,86,Funcoes.copy( rs.getString("CodUnid"), 4 ));
+					imp.say(imp.pRow()+0,85,Funcoes.copy( rs.getString("CodUnid"), 4 ));
 					imp.say(imp.pRow()+0,94,""+rs.getDouble("QtdItVenda"));
-					imp.say(imp.pRow()+0,106,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
+					imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
 					imp.say(imp.pRow()+0,115,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
-					imp.say(imp.pRow()+0,135,""+rs.getDouble("PercICMSItVenda"));
+					imp.say(imp.pRow()+0,132,""+rs.getDouble("PercICMSItVenda"));
 				}
 				// UTILIZADO QUANDO SERVIÇO.
 				/*
@@ -187,7 +198,7 @@ public class NF12_02 extends Leiaute {
             vDesc.addElement(Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda"))); 
             if (vDesc!=null) {
             	vDescServ.addElement(vDesc.clone());
-         	}
+         	} 
 
          	bigSomaServ = bigSomaServ.add(new BigDecimal(rs.getDouble("VlrLiqItVenda")));
 
