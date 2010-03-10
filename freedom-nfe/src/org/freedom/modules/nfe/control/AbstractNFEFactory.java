@@ -12,6 +12,7 @@
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
+
 package org.freedom.modules.nfe.control;
 
 import java.util.ArrayList;
@@ -27,11 +28,17 @@ import org.freedom.modules.nfe.event.NFEListener;
  * Classe padrão para implementação de NF-e.
  * 
  * @author Setpoint Informática Ltda./Robson Sanchez
- * @version 15/07/2009
+ * @version 15/07/2009 Robson Sanchez
+ * @version 10/03/2010 Anderson Sanchez
  */
+
 public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
+	
+	public static final Integer TP_NF_IN = 0;
+	
+	public static final Integer TP_NF_OUT = 1;
 
 	private DbConnection conSys = null;
 
@@ -42,11 +49,12 @@ public abstract class AbstractNFEFactory {
 	private List<NFEInconsistency> listInconsistency;
 
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
+	
+	private Integer tpNF = TP_NF_OUT;
 
 	public enum SYSTEM {
 		FREEDOM
-	};
-	
+	};	
 
 	public AbstractNFEFactory() { }
 
@@ -99,6 +107,14 @@ public abstract class AbstractNFEFactory {
 		}
 		
 		return listInconsistency;
+	}
+	
+	public void setTpNF( Integer tpNF) {
+		this.tpNF = tpNF;
+	}
+	
+	public Integer getTpNF() {
+		return tpNF;
 	}
 
 	public void setListInconsistency( List<NFEInconsistency> listInconsistency ) {
