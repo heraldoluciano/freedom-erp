@@ -131,7 +131,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 					<reportElement
 						x="465"
 						y="4"
-						width="74"
+						width="69"
 						height="11"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -205,7 +205,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="539"
+						x="538"
 						y="1"
 						width="0"
 						height="39"
@@ -217,15 +217,15 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						x="0"
 						y="1"
 						width="0"
-						height="39"
+						height="18"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="0"
+						x="464"
 						y="39"
-						width="539"
+						width="75"
 						height="0"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -255,20 +255,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="21"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="469"
-						y="2"
-						width="65"
-						height="14"
-						key="textField-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO}]]></textFieldExpression>
-				</textField>
+			<band height="23"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="318"
@@ -297,7 +284,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="539"
+						x="538"
 						y="0"
 						width="0"
 						height="19"
@@ -306,9 +293,9 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="1"
-						y="18"
-						width="539"
+						x="313"
+						y="19"
+						width="226"
 						height="0"
 						key="line-30"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -342,11 +329,119 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
+						x="313"
+						y="1"
+						width="226"
+						height="0"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="470"
+						y="4"
+						width="65"
+						height="11"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO}.add($P{SALDO_ANT})]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="DIA" >
+			<groupExpression><![CDATA[$F{DATA}]]></groupExpression>
+			<groupHeader>
+			<band height="5"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
 						x="0"
+						y="4"
+						width="539"
+						height="0"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="24"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="470"
+						y="3"
+						width="65"
+						height="11"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO}.add($P{SALDO_ANT})]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="538"
 						y="0"
 						width="0"
-						height="19"
-						key="line-34"/>
+						height="17"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="396"
+						y="3"
+						width="68"
+						height="11"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DATA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="318"
+						y="3"
+						width="74"
+						height="11"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Saldo em ]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="313"
+						y="0"
+						width="0"
+						height="17"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="313"
+						y="17"
+						width="226"
+						height="0"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="0"
+						width="0"
+						height="17"
+						key="line-45"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -727,19 +822,6 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="470"
-						y="2"
-						width="65"
-						height="14"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO}.add($P{SALDO_ANT})]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -751,7 +833,7 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="1"
+						x="0"
 						y="18"
 						width="539"
 						height="0"
@@ -760,20 +842,11 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="539"
+						x="538"
 						y="0"
 						width="0"
 						height="19"
 						key="line-23"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="464"
-						y="0"
-						width="0"
-						height="19"
-						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -851,10 +924,19 @@ and sl.codemp = 60 and sl.codfilial = 1]]></queryString>
 						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="0"
+						width="0"
+						height="19"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="18"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
