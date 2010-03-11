@@ -18,10 +18,11 @@
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FInventario.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRegraFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
@@ -49,6 +50,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FConsRMA.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRMovProd.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInvPeps.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>

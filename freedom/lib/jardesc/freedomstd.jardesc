@@ -17,6 +17,7 @@
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBaixaRec.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLRestrCli.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBaixaPag.java"/>
@@ -31,6 +32,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLConsultaBaixa.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRCobranca.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRFluxoCaixa.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
@@ -57,6 +59,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FPais.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutRec.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBordero.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.util"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAtend.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>

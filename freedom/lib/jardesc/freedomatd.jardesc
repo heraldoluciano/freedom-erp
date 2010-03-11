@@ -51,5 +51,9 @@
         <file path="/freedom/src/org/freedom/relatorios/TermReceb.jasper"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
+		<javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
+		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
+		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FTipoMov.java"/>		
+		        
     </selectedElements>
 </jardesc>

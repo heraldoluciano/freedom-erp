@@ -21,6 +21,7 @@
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std{FPrefereGeral.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FRValorEstoque.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
@@ -30,7 +31,8 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.rep"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
     </selectedElements>
 </jardesc>
