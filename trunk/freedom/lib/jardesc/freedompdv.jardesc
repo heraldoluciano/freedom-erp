@@ -12,8 +12,8 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
@@ -21,6 +21,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
@@ -35,7 +36,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FProduto.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.comm"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
     </selectedElements>
 </jardesc>

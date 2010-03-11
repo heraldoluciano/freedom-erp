@@ -17,6 +17,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos{EvoluVendasLinha.java"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{ImprimeOrc.java"/>
@@ -27,10 +28,11 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FMunicipio.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.oc"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
@@ -38,8 +40,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos{EvoluVendasBarras.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.driver.scale"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
