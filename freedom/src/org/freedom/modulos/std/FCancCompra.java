@@ -68,12 +68,14 @@ public class FCancCompra extends FFilho implements ActionListener{
 	public FCancCompra() {
 
 		super( false );
+		
 		setTitulo( "Cancelamento" );
 		setAtribos( 50, 50, 340, 170 );
 		
 		Funcoes.setBordReq( txtCodCompra );
 		txtDocCompra.setAtivo( false );
 		txtVlrLiqCompra.setAtivo( false );
+		txtStatusCompra.setAtivo( false );
 		
 		montaTela();
 		montaListaCampos();
@@ -100,6 +102,9 @@ public class FCancCompra extends FFilho implements ActionListener{
 		pinCli.adic( txtDocCompra, 90, 20, 80, 20 );
 		pinCli.adic( new JLabelPad( "Vlr.liq.Compra" ), 173, 0, 80, 20 );
 		pinCli.adic( txtVlrLiqCompra, 173, 20, 100, 20 );
+		pinCli.adic( new JLabelPad( "Status" ), 276, 0, 80, 20 );
+		pinCli.adic( txtStatusCompra, 276, 20, 40, 20 );
+		
 		pinCli.adic( btCancelar, 7, 50, 130, 30 );
 		
 		btSair.addActionListener( this );
