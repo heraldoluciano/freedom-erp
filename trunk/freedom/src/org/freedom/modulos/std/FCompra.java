@@ -1779,17 +1779,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( sValores != null ) {
 				lcCampos.edit();
 				if ( sValores[ 4 ].equals( "S" ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || 
-							txtTipoMov.getVlrString().equals( "VT" ) || 
-							txtTipoMov.getVlrString().equals( "TR" ) || 
-							txtTipoMov.getVlrString().equals( "CS" ) || 
-							txtTipoMov.getVlrString().equals( "CE" ) || 
-							txtTipoMov.getVlrString().equals( "PE" ) || 
-							txtTipoMov.getVlrString().equals( "DV" ) || 
-							txtTipoMov.getVlrString().equals( "DR" ) || 
-							txtTipoMov.getVlrString().equals( "BN" ) ) {
+					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
+						 txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || 
+ 						 txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" ) || 
+					     txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "DR" ) || 
+ 						 txtTipoMov.getVlrString().equals( "BN" ) ) {
+						
 						emiteNotaFiscal( "NF" );
 					}
+					
 					else if ( "CP,CO".indexOf( txtTipoMov.getVlrString() )>-1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 						emiteNotaFiscal( "NF" );
 					}
@@ -2064,7 +2062,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		
 		if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "C2" ) || txtStatusCompra.getVlrString().trim().equals( "C3" ) ) ) {
-			lbStatus.setText( "RECEBIDA" );
+			lbStatus.setText( "EMITIDA" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
 		}
@@ -2078,9 +2076,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
+		else if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "P2" ) || txtStatusCompra.getVlrString().trim().equals( "P3" ) ) ) {
+			lbStatus.setText( "EM ABERTO" );
+			lbStatus.setBackground( Color.ORANGE );
+			lbStatus.setVisible( true );
+		}
 		else {
-			lbStatus.setText( "terste" );
-//			lbStatus.setVisible( false );
+			lbStatus.setText( "PENDENTE" );
+			lbStatus.setBackground( Color.ORANGE );
+			lbStatus.setVisible( true );
 		}
 
 	}

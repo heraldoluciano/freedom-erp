@@ -34,6 +34,7 @@ import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.fnc.FRReceber;
 import org.freedom.modulos.fnc.FRReceberSetor;
 import org.freedom.modulos.gms.FProduto;
+import org.freedom.modulos.gms.FTipoMov;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FSintegra;

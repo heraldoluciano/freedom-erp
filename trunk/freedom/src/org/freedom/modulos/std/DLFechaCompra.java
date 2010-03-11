@@ -124,6 +124,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbEmitePedido = new JCheckBoxPad( "Emite Pedido?", "S", "N" );
+	
+	private JCheckBoxPad cbFinalizar = new JCheckBoxPad( "Finalizar?", "S", "N" );
 
 	private JCheckBoxPad cbEmiteNota = new JCheckBoxPad( "Emite Nota Fiscal?", "S", "N" );
 	
@@ -413,7 +415,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbCusto.tiraBorda();
 
 		adic( pinLbCusto, 20, 300, 150, 15 ); 
-		adic( pinCusto, 7, 310,  326, 60 );
+		adic( pinCusto, 7, 310,  326, 90 );
 		
 		pinCusto.adic( cbAdicFreteCusto, 7, 10, 280, 20 );
 		pinCusto.adic( cbAdicAdicCusto, 7, 30, 280, 20 );
@@ -426,11 +428,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbImp.tiraBorda();
 		
 		adic( pinLbImp, 349, 300, 90, 15 ); 
-		adic( pinImp, 336, 310, 200, 60 );
+		adic( pinImp, 336, 310, 200, 90 );
 
 		pinImp.adic( cbEmitePedido, 7, 10, 180, 20 );
 		pinImp.adic( cbEmiteNota, 7, 30, 180, 20 );
-		
+		pinImp.adic( cbFinalizar, 7, 50, 180, 20 );		
 		
 		/********** FIM DOS QUADROS  ***********/
 		
@@ -551,7 +553,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 7 ];
+		String[] sRetorno = new String[ 8 ];
+		
 		sRetorno[ 0 ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ 1 ] = txtVlrDescCompra.getVlrString();
 		sRetorno[ 2 ] = txtVlrAdicCompra.getVlrString();
@@ -559,7 +562,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		sRetorno[ 4 ] = cbEmiteNota.getVlrString();
 		sRetorno[ 5 ] = txtVlrLiqCompra.getVlrString();
 		sRetorno[ 6 ] = txtQtdFreteCompra.getVlrString();
+		sRetorno[ 7 ] = cbFinalizar.getVlrString();
+		
 		return sRetorno;
+		
 	}
 	
 	private void fecharCompra() {
