@@ -198,7 +198,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( " union " );
 			
 			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , ip.doclancaitpag doc, ");
-			sql.append( "ip.vlrapagitpag valor, 'P' tipo ");
+			sql.append( "(ip.vlrapagitpag * -1) valor, 'P' tipo ");
 			sql.append( "from fnitpagar ip ");
 			sql.append( "where ");
 			sql.append( "ip.codemp = ? and ip.codfilial = ? and ip.numconta = ? ");
