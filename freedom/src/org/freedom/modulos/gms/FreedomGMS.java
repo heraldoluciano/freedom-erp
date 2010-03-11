@@ -97,7 +97,6 @@ import org.freedom.modulos.std.FSimilar;
 import org.freedom.modulos.std.FStatusItOrc;
 import org.freedom.modulos.std.FTipoCob;
 import org.freedom.modulos.std.FTipoFor;
-import org.freedom.modulos.std.FTipoMov;
 import org.freedom.modulos.std.FTransp;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
