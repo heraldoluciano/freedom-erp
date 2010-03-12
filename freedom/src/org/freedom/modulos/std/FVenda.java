@@ -1326,7 +1326,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
-	private void getTratTrib() {
+	private void getTratTrib() { 
 	
 			PreparedStatement ps = null;
 			ResultSet rs = null;
