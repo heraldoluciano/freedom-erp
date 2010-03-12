@@ -159,6 +159,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JTextFieldPad txtCodForCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSuframaFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -185,6 +187,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private Navegador navForCli = new Navegador( true );
 	
 	private JPanelPad pnForCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinComplemento = new JPanelPad( 500, 290 );
 	
 	private JPanelPad pinForCli = new JPanelPad( 0, 80 );
 	
@@ -363,7 +367,6 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtCodHistPad, 7, 340, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 340, 379, 20, "DescHist", "Descrição do histórico padrão" );
 
-		
 		adicCampo( txtCodTipoFor, 7, 380, 80, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, true );
 		adicDescFK( txtDescTipoFor, 90, 380, 379, 20, "DescTipoFor", "Descrição do tipo de Fornecedor" );
 						
@@ -389,10 +392,19 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		 
 		}
 
+		// Painel Complemento
+		
+		setPainel( pinComplemento );
+
+		adicTab( "Complemento", pinComplemento );
+		
+		adicCampo( txtSuframaFor, 7, 20, 137, 20, "suframacli", "SUFRAMA", ListaCampos.DB_SI, false );
+						
+		// Painel Observações
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
 		panelObservacao.add( spnObs );
-		
+
 		setListaCampos( true, "FORNECED", "CP" );
 		txtCodFiscFor.setNomeCampo( "CodFiscCli" );		
 		
