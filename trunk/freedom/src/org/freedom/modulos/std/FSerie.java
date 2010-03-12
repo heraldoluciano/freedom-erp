@@ -27,11 +27,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -40,7 +43,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FFDialogo;
 
-public class FSerie extends FDados implements ActionListener {
+public class FSerie extends FDados implements ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +56,6 @@ public class FSerie extends FDados implements ActionListener {
 	private JTextFieldPad txtReset = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JLabelPad lbReset = new JLabelPad( "Novo nº." );
-	
 
 	public FSerie() {
 
@@ -72,6 +74,7 @@ public class FSerie extends FDados implements ActionListener {
 		setListaCampos( false, "SERIE", "LF" );
 
 		btReset.addActionListener( this );
+		lcCampos.addCarregaListener( this );
 		nav.setAtivo( 2, false );
 	}
 
@@ -95,11 +98,16 @@ public class FSerie extends FDados implements ActionListener {
 
 		PreparedStatement ps = null;
 		try {
-			ps = con.prepareStatement( "UPDATE LFSERIE SET DOCSERIE=? WHERE SERIE=? AND CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "UPDATE LFSEQSERIE SET DOCSERIE=? " +
+					"WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " +
+					"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
 			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
 			ps.setString( 2, txtSerie.getVlrString() );
 			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, lcCampos.getCodFilial() );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+			
 			ps.executeUpdate();
 			// ps.close();
 			con.commit();
@@ -121,5 +129,35 @@ public class FSerie extends FDados implements ActionListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if (cevt.getListaCampos()==lcCampos) {
+			try {
+			  PreparedStatement ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
+			  		"WHERE CODEMP=? AND CODFILIAL=? AND SERIE=? AND " +
+			  		"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+			  ps.setInt( 1, Aplicativo.iCodEmp );
+			  ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );
+			  ps.setString( 3, txtSerie.getVlrString() );
+			  ps.setInt( 4, Aplicativo.iCodEmp );
+			  ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+			  ResultSet rs = ps.executeQuery();
+			  if (rs.next()) {
+				  txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
+			  }
+			  con.commit();
+			} catch (Exception e) {
+		    	e.printStackTrace();
+		    }
+			
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		
 	}
 }
