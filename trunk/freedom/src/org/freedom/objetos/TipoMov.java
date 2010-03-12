@@ -16,6 +16,7 @@ public class TipoMov implements java.io.Serializable {
 	public static final Constant TM_ORDEM_DE_PRODUCAO = new Constant("Ordem de produção", "OP");
 	public static final Constant TM_DEVOLUCAO_VENDA = new Constant("Devolução", "DV");
 	public static final Constant TM_DEVOLUCAO_REMESSA = new Constant("Devolução de remessa", "DR");
+	public static final Constant TM_TRANSFERENCIA_ENTRADA = new Constant("Transferência", "TR");
 	public static final Constant TM_CONHECIMENTO_FRETE_COMPRA = new Constant("Conhecimento de frete", "CF");
 	public static final Constant TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA = new Constant("Nota fiscal complementar", "CO");
 	
