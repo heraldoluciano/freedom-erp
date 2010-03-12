@@ -70,6 +70,7 @@ import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.DLFinalizaOP;
+import org.freedom.objetos.TipoMov;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
@@ -1779,21 +1780,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( sValores != null ) {
 				lcCampos.edit();
 				if ( sValores[ 4 ].equals( "S" ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
-						 txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || 
- 						 txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" ) || 
-					     txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "DR" ) || 
- 						 txtTipoMov.getVlrString().equals( "BN" ) ) {
+					if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) ||
+						 txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) ||
+						 txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
 						
 						emiteNotaFiscal( "NF" );
+						
 					}
 					
 					else if ( "CP,CO".indexOf( txtTipoMov.getVlrString() )>-1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 						emiteNotaFiscal( "NF" );
 					}
-					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-						emiteNotaFiscal( "NS" );
-					}
+//					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
+//						emiteNotaFiscal( "NS" );
+//					}
 					else {
 						Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
 						return;
