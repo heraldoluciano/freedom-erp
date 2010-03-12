@@ -30,7 +30,7 @@
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[select rtrim(coalesce(ir.obsitrec,'RECEBIMENTO REF. AO PED.: '||re.codvenda )) receber, 
+	<queryString><![CDATA[select coalesce(ir.obsitrec,'RECEBIMENTO REF. AO PED.: '||re.codvenda ) receber, 
 ir.vlrapagitrec valor, cast('today' as date)-ir.dtvencitrec diasatraso
 from fnitreceber ir, fnreceber re
 where ir.codemp=$P{CODEMP} and ir.codfilial=$P{CODFILIAL} and ir.dtvencitrec<=$P{DATA}
