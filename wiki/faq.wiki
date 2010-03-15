@@ -9,44 +9,47 @@
 
 ==1 - Baixe e instale o Java JDK6 do site da sun em:==
 
-{{{http://java.sun.com/javase/downloads/widget/jdk6.jsp}}}
+{{{
+http://java.sun.com/javase/downloads/widget/jdk6.jsp
+}}}
 
 https://sites.google.com/site/freedomimgs/home/page_down_java.png
             
 
 ===Click em (Continue)===
 
-
 https://sites.google.com/site/freedomimgs/home/page_log_java.png
-          
-
-===Irá aparece a tela acima, basta fecha-la e download começará!===
-
-===Quando terminar basta instala-lo!===
-
+       
+===Irá aparece a tela acima, basta fecha-la e download começará, quando terminar basta instala-lo!===
 
 ==2 - Baixe o Eclipse SDK e salve-o na pasta C:\opt\:==
 
+{{{
 http://eclipse.c3sl.ufpr.br/eclipse/downloads/drops/R-3.5.1-200909170800/eclipse-SDK-3.5.1-win32.zip
 
-===Descompacte-o dentro da pasta!===
-===Execute o arquivo C:\opt\eclipse\eclipse.exe===
-===Irá aparace a opção para selecionar o Workspace, Coloque Workspace: ===
+Descompacte-o dentro da pasta!
 
-C:\opt\eclipse\workspace
+Execute o arquivo C:\opt\eclipse\eclipse.exe
+
+}}}
+
+===Irá aparace a opção para selecionar o Workspace ===
 
 https://sites.google.com/site/freedomimgs/home/workspace.png
 
+{{{
+Coloque Workspace: 
+C:\opt\eclipse\workspace
 
-===Com o Eclipse aberto vá em:===
+Com o Eclipse aberto vá em:
 
-Window > Preferences/Java/Installed JRE
+Window > Preferences > Java > Installed JRE
 
-===Selecione o jre6 e click em [Edit]===
-===Alterer o JRE name para: jdk1.5.x===
+Selecione o jre6 e click em (Edit)
+Alterer o JRE name para: jdk1.5.x
+}}}
 
 https://sites.google.com/site/freedomimgs/home/installed_jre.png
-
 
 ==3 - Instalado o Mylyn no Eclipse:==
 
