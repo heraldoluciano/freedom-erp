@@ -54,7 +54,8 @@ https://sites.google.com/site/freedomimgs/home/installed_jre.png
 
 ==3 - Instalado o Mylyn no Eclipse:==
 
-{{{Vá em:  Help > Install New Software
+{{{
+Vá em:  Help > Install New Software
 
 Em Work with: http://download.eclipse.org/tools/mylyn/update/e3.4 (ENTER)
 
@@ -63,7 +64,6 @@ Selecione as 3 opções:
 (x) Mylyn Features
 (x) Mylyn Integration
 (x) Mylyn Plug-in Development
-
 }}}
 
 ===Click em:  ( Next > )===
@@ -73,7 +73,7 @@ https://sites.google.com/site/freedomimgs/home/mylyn.png
 === ( Next > )===
 
 {{{
-[x] I accept the terms of the licence agreements
+(x) I accept the terms of the licence agreements
 }}}
                                                                                                    ===( Finish )===
 
@@ -93,9 +93,9 @@ Em Work with:=== http://subclipse.tigris.org/update_1.6.x (ENTER)
 
 Selecione as 3 opções:
 
-[x] Core SVNKit Library
-[x] Optional JNA Library (recommended)
-[x] Subclipse
+(x) Core SVNKit Library
+(x) Optional JNA Library (recommended)
+(x) Subclipse
 
 }}}
 
@@ -106,7 +106,7 @@ https://sites.google.com/site/freedomimgs/home/subclipse.png
 ===( Next > )===
 
 {{{
-[x] I accept the terms of the licence agreements
+(x) I accept the terms of the licence agreements
 }}}
                                                                                                    ===( Finish )===
 
