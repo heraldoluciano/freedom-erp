@@ -86,10 +86,9 @@ Click em ( Yes )
 
 ==4 - Instalando o Subclipse no Eclipse: ==
                                               
-===Vá em:  Help/Install New Software===
+{{{Vá em:  Help > Install New Software
 
-{{{
-Em Work with:=== http://subclipse.tigris.org/update_1.6.x (ENTER)
+Em Work with: http://subclipse.tigris.org/update_1.6.x (ENTER)
 
 Selecione as 3 opções:
 
