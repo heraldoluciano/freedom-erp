@@ -60,9 +60,9 @@ Em Work with: http://download.eclipse.org/tools/mylyn/update/e3.4 (ENTER)
 
 Selecione as 3 opções:
 
-[x] Mylyn Features
-[x] Mylyn Integration
-[x] Mylyn Plug-in Development
+(x) Mylyn Features
+(x) Mylyn Integration
+(x) Mylyn Plug-in Development
 
 }}}
 
