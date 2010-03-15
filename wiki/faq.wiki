@@ -2,18 +2,17 @@
 <wiki:toc max_depth="2" />
 = Perguntas Frequentes =
 
-== Como baixar, sincronizar e compilar o código fonte do Freedom ERP [Windows] ? ==
+= Como baixar, sincronizar e compilar o código fonte do Freedom ERP [Windows] ? =
 [ cc-by-sa ] - Jonatas dos Anjos - jonataz @ gmail . com
 
 
-=1 - Baixe e instale o Java JDK6 do site da sun:=
-            http://java.sun.com/javase/downloads/widget/jdk6.jsp
+==#1 - Baixe e instale o Java JDK6 do site da sun em:==
 
+http://java.sun.com/javase/downloads/widget/jdk6.jsp
 
 https://sites.google.com/site/freedomimgs/home/page_down_java.png
-                
             
-             Click em [ Continue >> ]
+Click em [ Continue >> ]
 
 https://sites.google.com/site/freedomimgs/home/page_log_java.png
           
@@ -23,7 +22,7 @@ https://sites.google.com/site/freedomimgs/home/page_log_java.png
          Quando terminar basta instala-lo!
 
 
-        2 - Baixe o Eclipse SDK e salve-o na pasta C:\opt\:
+==#2 - Baixe o Eclipse SDK e salve-o na pasta C:\opt\:
 
                      http://eclipse.c3sl.ufpr.br/eclipse/downloads/drops/R-3.5.1-200909170800/eclipse-SDK-3.5.1-win32.zip
 
