@@ -2,7 +2,7 @@
 <wiki:toc max_depth="2" />
 = Perguntas Frequentes =
 
-== Como baixar, sincronizar e compilar o código fonte do Freedom ERP [Windows] ?
+== Como baixar, sincronizar e compilar o código fonte do Freedom ERP [Windows] ? ==
 [ cc-by-sa ] - Jonatas dos Anjos - jonataz @ gmail . com
 
 
