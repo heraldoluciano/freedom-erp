@@ -13,7 +13,7 @@ https://sites.google.com/site/freedomimgs/home/page_down_java.png
             
              Click em [ Continue >> ]
 
-
+https://sites.google.com/site/freedomimgs/home/page_log_java.png
           
 
           Irá aparece a tela acima, basta fecha-la e download começará!
@@ -30,6 +30,7 @@ https://sites.google.com/site/freedomimgs/home/page_down_java.png
                     Irá aparace a opção para selecionar o Workspace
                     Coloque Workspace: C:\opt\eclipse\workspace
 
+https://sites.google.com/site/freedomimgs/home/workspace.png
 
 
                     Com o Eclipse aberto vá em:
@@ -38,7 +39,7 @@ https://sites.google.com/site/freedomimgs/home/page_down_java.png
                           Selecione o jre6 e click em [Edit]
                           Alterer o JRE name para: jdk1.5.x
 
-
+https://sites.google.com/site/freedomimgs/home/installed_jre.png
 
 
                    3 - Instalado o Mylyn no Eclipse:
@@ -55,7 +56,7 @@ https://sites.google.com/site/freedomimgs/home/page_down_java.png
                           Click em:  [ Next > ]
 
 
-
+https://sites.google.com/site/freedomimgs/home/mylyn.png
 
                                             [ Next > ]
 
@@ -81,7 +82,7 @@ Click em [ Yes ] para isso!
 
                                              Click em:  [ Next > ]
 
-
+https://sites.google.com/site/freedomimgs/home/subclipse.png
 
                                             [ Next > ]
 
@@ -122,7 +123,7 @@ freedom-nfe
                                              [Finish]
 
 
-
+https://sites.google.com/site/freedomimgs/home/repositorio.png
 
 
 
@@ -138,7 +139,7 @@ Click com botão direito do mouse e vá em Create JAR.
 
 Quando terminar de gerar os JAR´s aparecerá um aviso, é só clickar em [ ok ] e pronto!
 
-
+https://sites.google.com/site/freedomimgs/home/compilando.png
 
 
 
