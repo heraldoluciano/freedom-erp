@@ -191,7 +191,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( "from fnitreceber ir " );
 			sql.append( "where " );
 			sql.append( "ir.codemp = ? and ir.codfilial=? and ir.numconta = ? " );
-			sql.append( "and ir.dtvencitrec between ? and ? and ir.statusitrec in ('RL','R1') " );
+			sql.append( "and coalesce(ir.dtprevitrec,ir.dtvencitrec) between ? and ? and ir.statusitrec in ('RL','R1') " );
 			
 			// Contas a pagar
 			
