@@ -9,12 +9,12 @@
 
 ==1 - Baixe e instale o Java JDK6 do site da sun em:==
 
-http://java.sun.com/javase/downloads/widget/jdk6.jsp
-{{{
-https://sites.google.com/site/freedomimgs/home/page_down_java.png
-}}}            
+{{{http://java.sun.com/javase/downloads/widget/jdk6.jsp}}}
 
-===Click em [ Continue ]===
+https://sites.google.com/site/freedomimgs/home/page_down_java.png
+            
+
+===Click em (Continue)===
 
 
 https://sites.google.com/site/freedomimgs/home/page_log_java.png
