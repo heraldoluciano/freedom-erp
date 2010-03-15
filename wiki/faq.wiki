@@ -111,14 +111,14 @@ https://sites.google.com/site/freedomimgs/home/subclipse.png
 
 ===Irá aparecer um aviso de segurança!===
 
-Click em ( ok ) para continuar.
+=== ( ok ) para continuar.===
 
-===Após concluir a instalação do Subclipse é preciso reiniciar o Eclipse
+===Após concluir a instalação do Subclipse é preciso reiniciar o Eclipse===
 
-Click em ( Yes ) para isso!===
-
+===( Yes )===
 
 ==5 - Adicionando o repositório e baixando o código fonte==
+
 {{{
 Vá em: File > New > Other SVN > Checkout Projects from SVN
 }}}
@@ -162,14 +162,17 @@ Click com botão direito do mouse e vá em Create JAR.
 Quando terminar de gerar os JAR´s aparecerá um aviso, é só clickar em ( ok ) e pronto!
 }}}
 
+
 https://sites.google.com/site/freedomimgs/home/compilando.png
+
 
 
 ==7 - Colocando os arquivos para produção==
 
 ===Dentro de C:\opt crie a pasta freedom com as seguintes subpastas:===
 
-{{{C:\opt\freedom
+{{{
+C:\opt\freedom
              |- bin
              |- lib
              |- ini
