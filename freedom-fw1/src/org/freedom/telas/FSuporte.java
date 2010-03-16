@@ -28,9 +28,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.JarURLConnection;
-import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,23 +49,21 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JFileChooser;
-import org.freedom.componentes.JLabelPad;
-import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.crm.FPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
+import org.freedom.infra.functions.SystemFunctions;
+
 
 /**
  * @author robson
@@ -145,6 +140,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 	public void setMensagem(String sMensagem){
 		txaMen.setVlrString(sMensagem);
 	}
+	
 	private String buscaEmailFilial(){
 	    String sRet = "";
 	    ResultSet rs = null;
@@ -174,14 +170,6 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		return sRetorno;
 	}
 
-	private void abrePrefere() {
-		if (cPai instanceof FPrincipal)
-			if (!((FPrincipal) cPai).temTela("Pref. Gerais")) {
-				FPrefere tela = new FPrefere();
-				((FPrincipal) cPai).criatela("Pref. Gerais", tela, con);
-			}
-	}
-
 	private boolean verifSmtp() {
 		boolean bRet = false;
 		String sSQL = "SELECT SMTPMAIL,USERMAIL,PASSMAIL FROM SGPREFERE3 WHERE CODEMP=? AND CODFILIAL=?";
@@ -190,6 +178,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			ResultSet rs = ps.executeQuery();
+		
 			if (rs.next()) {
 				sSMTP = rs.getString("SMTPMail") != null ? rs.getString(
 						"SMTPMail").trim() : null;
@@ -199,13 +188,12 @@ public class FSuporte extends FFDialogo implements ActionListener {
 						"PassMail").trim() : null;
 			}
 			if (sSMTP == null) {
-				if (Funcoes
-						.mensagemConfirma(this,
-								"Não foi cadastrado o servidor de SMTP, gostaria de cadastrar agora?") == JOptionPane.YES_OPTION)
-					abrePrefere();
-			} else
+				Funcoes.mensagemInforma(null, "Não foi cadastrado o servidor de SMTP!\nUtilize a tela de preferências gerais para configurar.");
+			} 
+			else
 				bRet = true;
-		} catch (SQLException err) {
+		} 
+		catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o as informações de SMTP!\n"
 							+ err.getMessage());
@@ -266,7 +254,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		}
 
 		bEnvia = true;
-		String sEmail = Aplicativo.sMailSuporte;
+		String sEmail = Aplicativo.getEmailSuporte();
 		if (!bEnvia)
 			return;
 		if (sEmail != null) {
@@ -276,6 +264,63 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pbAnd.setValue(++iConta);
 	}
 
+	private void mandaMail(String sTo,Session se) {
+		state("Preparando envio para: '"+sTo+"'");
+		try {
+
+			txtDe.setVlrString(buscaEmailFilial());
+			
+			MimeMessage mes = new MimeMessage(se);
+			mes.setFrom(new InternetAddress(txtDe.getVlrString()));
+			mes.setSubject(txtAssunto.getVlrString());
+			mes.setSentDate(new Date());
+			mes.addRecipient(RecipientType.TO,new InternetAddress(sTo));
+
+			BodyPart parte = new MimeBodyPart();
+
+			parte.setText(txaMen.getVlrString());
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(parte);
+
+			String sTextoAdic = "";
+			
+			try {				
+
+				Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());
+				sTextoAdic += "Versão:"+Funcoes.dateToStrDataHora( datacompilacao )+"\n";
+				
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			sTextoAdic += "\nMensagem:\n"+txaMen.getVlrString();
+			parte.setText(sTextoAdic);			
+			
+			if (fArq != null) {
+				parte = new MimeBodyPart();
+				FileDataSource orig = new FileDataSource(fArq);
+				parte.setDataHandler(new DataHandler(orig));
+				parte.setFileName(fArq.getName());
+//				parte.setDisposition(rgTipo.getVlrString().equals("A") ? Part.ATTACHMENT : Part.INLINE);
+
+				parte.setDisposition(Part.ATTACHMENT);
+				
+				multipart.addBodyPart(parte);
+			}
+			mes.setContent(multipart);		
+			state("Enviando dados...");
+			Transport.send(mes);
+			state("Envio OK...");
+		}
+		catch (MessagingException err) {
+			Funcoes.mensagemErro(this,"Erro ao enviar mensagem para: "+sTo+"\n"+err.getMessage());
+			err.getStackTrace();
+			state("Aguardando reenvio.");
+		}
+	}
+
+	/*
 	private void mandaMail(String sTo, Session se) {
 		state("Preparando envio para: '" + sTo + "'");
 		try {
@@ -296,9 +341,10 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			BodyPart parte = new MimeBodyPart();
 			
 			String sTextoAdic = "Novo pedido de suporte da empresa:"+Aplicativo.sNomeFilial+"\n"; 
-			sTextoAdic += "Usuário:"+Aplicativo.strUsuario+"\n";
-			sTextoAdic += "Sistema:"+Aplicativo.sNomeSis+"\n";
-			sTextoAdic += "Módulo:"+Aplicativo.sNomeModulo+"\n";
+			sTextoAdic += "Usuário:"+Aplicativo.strUsuario + "\n";
+			sTextoAdic += "Sistema:"+Aplicativo.getNomeSis() + "\n";
+			sTextoAdic += "Módulo:"+Aplicativo.nomemodulo + "\n";
+			
 		    try {
 			    URL uPath = getClass().getResource("FSuporte.class");
 		        JarURLConnection juc = (JarURLConnection)uPath.openConnection();
@@ -332,7 +378,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			state("Aguardando reenvio.");
 		}
 	}
-
+*/
 	public void actionPerformed(ActionEvent evt) {
 		String sArq = "";
 		if (evt.getSource() == btBuscaArq) {

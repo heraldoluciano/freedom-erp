@@ -167,19 +167,19 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected DbConnection conIB;
 
-	public static Vector<String> vEquipeSis = new Vector<String>();
+	private static Vector<String> vEquipeSis = new Vector<String>();
 
-	public static String sNomeSis = "";
+	private static String nomesis = "";
 
-	public static String sNomeModulo = "";
+	public static String nomemodulo = "";
 
-	public static String sEmpSis = "";
+	private static String mantenedor = "";
 
 	public static String sArqIni = "";
 
 	private static String sArqINI = "";
 
-	public static String sMailSuporte = "";
+	private static String emailsuporte = "";
 
 	public static ObjetoEmpresa empresa = null;
 
@@ -199,8 +199,57 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public Aplicativo() {
 
 		Locale.setDefault( new Locale( "pt", "BR" ) );
+		
 		instance = this;
+		
+		setEquipeSis();
+		
+		setEmailSuporte( "suporte@stpinf.com" );
+		setNomeSis( "Freedom-ERP" );
+		setMantenedor( "Setpoint Informática Ltda.");
+		
 	}
+	
+	public static Vector<String> getEquipeSis() {
+		return vEquipeSis;
+	}
+	
+	protected void setEquipeSis() {
+		
+		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
+		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
+		vEquipeSis.add( "Sergio Murilo - Suporte / Testes" );
+		vEquipeSis.add( "Alexandre Marcondes - Programação" );
+		vEquipeSis.add( "Fernando Oliveira - Programação" );
+		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );		
+		
+	}
+	
+	protected void setEmailSuporte( String emailsuporte) {
+		Aplicativo.emailsuporte = emailsuporte;
+	}
+	
+	protected void setNomeSis( String nomesis) {
+		Aplicativo.nomesis = nomesis;	
+	}
+	
+	protected void setMantenedor( String mantenedor) {
+		Aplicativo.mantenedor = mantenedor;	
+	}
+
+	public static String getNomeSis() {
+		return nomesis;
+	}
+	
+	public static String getEmailSuporte() {
+		return emailsuporte;
+	}
+
+	
+	public static String getMantenedor() {
+		return mantenedor;
+	}
+	
 	
 	public static Aplicativo getInstace() {
 		return instance;
