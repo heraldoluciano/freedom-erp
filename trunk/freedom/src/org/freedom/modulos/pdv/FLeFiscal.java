@@ -220,7 +220,7 @@ public class FLeFiscal extends FTabDados {
 		montaTela();
 		montaTabela();
 		
-		moduloPDV = Aplicativo.sNomeModulo.equals( "Ponto de Venda" );
+		moduloPDV = Aplicativo.nomemodulo.equals( "Ponto de Venda" );
 
 		btExec.addActionListener( this );
 		

@@ -120,16 +120,7 @@ public class FreedomPDV extends AplicativoPDV {
 		addBotao( "btPdvLeituraXPq.gif", "Ler memória fiscal", "Le Fiscal", 200700000, FLeFiscal.class );
 
 		ajustaMenu();
-		sNomeModulo = "Ponto de Venda";
-		sMailSuporte = "suporte@stpinf.com";
-		sNomeSis = "Freedom";
-		sEmpSis = "Setpoint Informática Ltda.";
-		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Alex Rodrigues - Programação" );
-		vEquipeSis.add( "Alexandre Marcondes - Programação" );
-		vEquipeSis.add( "Fernando Oliveira - Programação" );
-		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
+		nomemodulo = "Ponto de Venda";
 
 	}
 
