@@ -22,7 +22,6 @@
 
 package org.freedom.objetos;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -32,6 +31,8 @@ import java.util.Vector;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 public abstract class ObjetoModeloLote {
@@ -161,7 +162,7 @@ public abstract class ObjetoModeloLote {
 						
 						sCampo = String.valueOf( iCodProd );
 						if ( sCampo.length() < iTamAdic ) {
-							sCampo = Funcoes.strZero( sCampo, iTamAdic );
+							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
 						}
 						else if ( sCampo.length() > iTamAdic ) {
 							sCampo = sCampo.substring( 0, iTamAdic );
@@ -171,7 +172,7 @@ public abstract class ObjetoModeloLote {
 						
 						sCampo = String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) );
 						if ( sCampo.length() < iTamAdic ) {
-							sCampo = Funcoes.strZero( sCampo, iTamAdic );
+							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
 						}
 						else if ( sCampo.length() > iTamAdic ) {
 							sCampo = sCampo.substring( 0, iTamAdic );
@@ -181,7 +182,7 @@ public abstract class ObjetoModeloLote {
 						
 						sCampo = String.valueOf( cal.get( Calendar.MONTH ) + 1 );
 						if ( sCampo.length() < iTamAdic ) {
-							sCampo = Funcoes.strZero( sCampo, iTamAdic );
+							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
 						}
 						else if ( sCampo.length() > iTamAdic ) {
 							sCampo = sCampo.substring( 0, iTamAdic );
