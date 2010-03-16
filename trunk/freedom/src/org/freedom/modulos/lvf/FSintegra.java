@@ -42,15 +42,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
@@ -376,8 +375,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			sBuffer.append( retorna90( sBuffer.toString(), "75", iTot75 ) );
 
 		sBuffer.append( "99" );
-		sBuffer.append( Funcoes.strZero( String.valueOf( iTotreg ), 8 ) );
-		sBuffer.append( Funcoes.replicate( " ", 125 - sBuffer.length() ) + "1" + CR );
+		sBuffer.append( StringFunctions.strZero( String.valueOf( iTotreg ), 8 ) );
+		sBuffer.append( StringFunctions.replicate( " ", 125 - sBuffer.length() ) + "1" + CR );
 		gravaBuffer( sBuffer.toString() );
 
 		try {
@@ -429,7 +428,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "RAZFILIAL" ), 35 ) );
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "NOMEMUNIC" ), 30 ) );
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SIGLAUF" ), 2 ) );
-				sBuffer.append( Funcoes.strZero( rs.getString( "FAXFILIAL" ), 10 ) );
+				sBuffer.append( StringFunctions.strZero( rs.getString( "FAXFILIAL" ), 10 ) );
 				sBuffer.append( Funcoes.dataAAAAMMDD( txtDataini.getVlrDate() ) );
 				sBuffer.append( Funcoes.dataAAAAMMDD( txtDatafim.getVlrDate() ) );
 				sBuffer.append( sConvenio );
@@ -438,12 +437,12 @@ public class FSintegra extends FFilho implements ActionListener {
 
 				sBuffer.append( "11" );
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "ENDFILIAL" ), 34 ) );
-				sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "NUMFILIAL" ) ), 5 ) );
-				sBuffer.append( Funcoes.replicate( " ", 22 ) );
+				sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "NUMFILIAL" ) ), 5 ) );
+				sBuffer.append( StringFunctions.replicate( " ", 22 ) );
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "BAIRFILIAL" ), 15 ) );
-				sBuffer.append( Funcoes.strZero( rs.getString( "CEPFILIAL" ), 8 ) );
+				sBuffer.append( StringFunctions.strZero( rs.getString( "CEPFILIAL" ), 8 ) );
 				sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "NOMECONTEMP" ), 28 ) );
-				sBuffer.append( Funcoes.strZero( StringFunctions.clearString( rs.getString( "FONEFILIAL" ) ), 12 ) + CR );
+				sBuffer.append( StringFunctions.strZero( StringFunctions.clearString( rs.getString( "FONEFILIAL" ) ), 12 ) + CR );
 
 				gravaBuffer( sBuffer.toString() );
 
@@ -522,9 +521,9 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 03 */sBuffer.append( Funcoes.adicionaEspacos(StringFunctions.clearString( inscfor), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
-					/* 06 */sBuffer.append( Funcoes.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
+					/* 06 */sBuffer.append( StringFunctions.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
 					/* 07 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );
-					/* 08 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 08 */sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
 					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 10 */sBuffer.append( ( sConvenio.equals( "1" ) ? "" : "T" ) ); // Emitente da nota fiscal P-Própio ou T-Terceiros
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
@@ -586,8 +585,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					sBuffer.delete( 0, sBuffer.length() );
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
-						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
-						insccli = Funcoes.replicate( "0", 14 );
+						cnpjcli =  StringFunctions.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = StringFunctions.replicate( "0", 14 );
 					} else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
@@ -601,10 +600,10 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( StringFunctions.clearString( insccli ), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
-					/* 06 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );
+					/* 06 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 07 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );
 					/* 07 sBuffer.append(  "  "  ); //SUBSERIE*/
-					/* 08 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "DOCINILF" ) ), 6 ) );
+					/* 08 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "DOCINILF" ) ), 6 ) );
 					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 10 */sBuffer.append( ( sConvenio.equals( "1" ) ? "" : "P" ) ); // Emitente da nota fiscal P-Própio ou T-Terceiros
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
@@ -704,13 +703,13 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );					
 					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );					
-					/* 07 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 07 */sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
 					/* 08 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );					
 					/* 09 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
 					/* 10 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRIPILF" ), 13, 2, true ) );
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRISENTASIPILF" ), 13, 2, true ) );
 					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLROUTRASIPILF" ), 13, 2, true ) );
-					/* 13 */sBuffer.append( Funcoes.replicate( " ", 20 ));					
+					/* 13 */sBuffer.append( StringFunctions.replicate( " ", 20 ));					
 					/* 14 */sBuffer.append( rs.getString( "SITUACAOLF" ) + CR );
 					
 					gravaBuffer( sBuffer.toString() );
@@ -764,8 +763,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					sBuffer.delete( 0, sBuffer.length() );
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
-						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
-						insccli = Funcoes.replicate( "0", 14 );
+						cnpjcli =  StringFunctions.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = StringFunctions.replicate( "0", 14 );
 					} else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
@@ -782,13 +781,13 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
 					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );					
-					/* 08 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 08 */sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
 					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 10 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRIPILF" ), 13, 2, true ) );
 					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRISENTASIPILF" ), 13, 2, true ) );					
 					/* 13 */sBuffer.append( Funcoes.transValor( rs.getString( "VLROUTRASIPILF" ), 13, 2, true ) );
-					/* 14 */sBuffer.append( Funcoes.replicate( " ", 20 ));
+					/* 14 */sBuffer.append( StringFunctions.replicate( " ", 20 ));
 					/* 15 */sBuffer.append( rs.getString( "SITUACAOLF" ) + CR );
 					
 					gravaBuffer( sBuffer.toString() );
@@ -876,8 +875,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					sBuffer.delete( 0, sBuffer.length() );
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
-						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
-						insccli = Funcoes.replicate( "0", 14 );
+						cnpjcli =  StringFunctions.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = StringFunctions.replicate( "0", 14 );
 					} else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
@@ -893,16 +892,16 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( StringFunctions.clearString( insccli ), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
-					/* 06 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
+					/* 06 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
 					/* 07 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );					
-					/* 09 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 09 */sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
 					/* 10 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 )  ) );
 					/* 10 */sBuffer.append( ( sConvenio.equals( "1" ) ? "" : "P" ) ); // Emitente da nota fiscal P-Própio ou T-Terceiros
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRBASEICMSSTLF" ), 13, 2, true ) );
 					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRICMSSTLF" ), 13, 2, true ) );
 					/* 13 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRACESSORIASLF" ), 13, 2, true ) );					
 					/* 14 */sBuffer.append( rs.getString( "SITUACAOLF" ) );
-					/* 15 */sBuffer.append( Funcoes.replicate( " ", 30 ) + CR );
+					/* 15 */sBuffer.append( StringFunctions.replicate( " ", 30 ) + CR );
 					
 					gravaBuffer( sBuffer.toString() );
 					cont++;
@@ -981,11 +980,11 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 03 */buffer.append( Funcoes.adicionaEspacos( StringFunctions.clearString( insc ), 14 ) );
 					/* 04 */buffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "dtemitfrete" ) ) ) );
 					/* 05 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "UF" ), 2 ) );
-					/* 06 */buffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
+					/* 06 */buffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
 					
 					/* 07 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );					
 
-					/* 09 */buffer.append( Funcoes.strZero( rs.getInt( "DOCFRETE" ) + "", 6 ) );
+					/* 09 */buffer.append( StringFunctions.strZero( rs.getInt( "DOCFRETE" ) + "", 6 ) );
 					/* 10 */buffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );		
 					
 					/* 11 */buffer.append( Funcoes.transValor( rs.getString( "VLRFRETE" ), 13, 2, true ) );
@@ -1091,13 +1090,13 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					/* 01 */sBuffer.append( "54" );
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
-					/* 03 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
+					/* 03 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );
 					//sBuffer.append( "  "); //Subsérie
-					/* 05 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "DOCCOMPRA" ) ), 6 ) );
+					/* 05 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "DOCCOMPRA" ) ), 6 ) );
 					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 07 */sBuffer.append( Funcoes.copy( ( sConvenio.equals( "1" ) ? "" : ( rs.getString( "ORIGFISC" ).trim() + rs.getString( "CODTRATTRIB" ).trim() ) ), 3 ) );
-					/* 08 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODITCOMPRA" ) ), 3 ) );
+					/* 08 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODITCOMPRA" ) ), 3 ) );
 					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( ( sUsaRefProd.equals( "S" ) ? "REFPROD" : "CODPROD" ) ), 14 ) );
 					/* 10 */sBuffer.append( Funcoes.transValor( rs.getString( "QTDITCOMPRA" ), ( sConvenio.equals( "1" ) ? 13 : 11 ), 3, true ) );
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRLIQITCOMPRA" ), 12, 2, true ) );
@@ -1163,20 +1162,20 @@ public class FSintegra extends FFilho implements ActionListener {
 					sBuffer.delete( 0, sBuffer.length() );
 
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
-						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						cnpjcli =  StringFunctions.replicate( "0", 14 );// rs.getString( "CPFCLI" );
 					} else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 					}
 
 					/* 01 */sBuffer.append( "54" );
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
-					/* 03 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
+					/* 03 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );
-					/* 05 */sBuffer.append( ( sConvenio.equals( "1" ) ? Funcoes.replicate( " ", 2 ) : "" ) ); // Sub serie
-					/* 06 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "DOCVENDA" ) ), 6 ) );
+					/* 05 */sBuffer.append( ( sConvenio.equals( "1" ) ? StringFunctions.replicate( " ", 2 ) : "" ) ); // Sub serie
+					/* 06 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "DOCVENDA" ) ), 6 ) );
 					/* 07 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 08 */sBuffer.append( Funcoes.copy( ( sConvenio.equals( "1" ) ? "" : rs.getString( "ORIGFISC" ).trim() + rs.getString( "CODTRATTRIB" ).trim() ), 3 ) );
-					/* 09 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODITVENDA" ) ), 3 ) );
+					/* 09 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODITVENDA" ) ), 3 ) );
 					/* 10 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( ( sUsaRefProd.equals( "S" ) ? "REFPROD" : "CODPROD" ) ), 14 ) );
 					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "QTDITVENDA" ), ( sConvenio.equals( "1" ) ? 13 : 11 ), 3, true ) );
 					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRLIQITVENDA" ), 12, 2, true ) );
@@ -1282,15 +1281,15 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 02 */sBuffer.append( "M" );
 					/* 03 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTLX" ) ) ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "NUMSERIEIMP" ), 20 ) );
-					/* 05 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODCAIXA" ) ), 3 ) );
+					/* 05 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "CODCAIXA" ) ), 3 ) );
 					/* 06 */sBuffer.append( "2D" ); // por se tratar de emição por ECF.
-					/* 07 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "PRIMCUPOMLX" ) ), 6 ) );
-					/* 08 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "ULTCUPOMLX" ) ), 6 ) );
-					/* 09 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "NUMREDLX" ) ), 6 ) );
+					/* 07 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "PRIMCUPOMLX" ) ), 6 ) );
+					/* 08 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "ULTCUPOMLX" ) ), 6 ) );
+					/* 09 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getInt( "NUMREDLX" ) ), 6 ) );
 					/* ?? */sBuffer.append( "000" );
 					/* 10 */sBuffer.append( Funcoes.transValor( String.valueOf( rs.getInt( "VLRCONTABILLX" ) ), 16, 2, true ) );
 					/* 11 */sBuffer.append( Funcoes.transValor( String.valueOf( rs.getInt( "TGTOTAL" ) ), 16, 2, true ) );
-					/* 12 */sBuffer.append( Funcoes.replicate( " ", 37 ) + CR );
+					/* 12 */sBuffer.append( StringFunctions.replicate( " ", 37 ) + CR );
 
 					gravaBuffer( sBuffer.toString() );
 					sBuffer.delete( 0, sBuffer.length() );
@@ -1302,9 +1301,9 @@ public class FSintegra extends FFilho implements ActionListener {
 						fValor = 0;
 
 						if ( i <= 16 ) {
-							sCampo = "ALIQ" + Funcoes.strZero( String.valueOf( i ), 2 );
+							sCampo = "ALIQ" + StringFunctions.strZero( String.valueOf( i ), 2 );
 							sAliq = rs.getString( sCampo );
-							sCampo = "TT" + Funcoes.strZero( String.valueOf( i ), 2 );
+							sCampo = "TT" + StringFunctions.strZero( String.valueOf( i ), 2 );
 							fValor = rs.getFloat( sCampo );
 						}
 						else {
@@ -1337,7 +1336,7 @@ public class FSintegra extends FFilho implements ActionListener {
 							/* 05 */sBuffer.append( Funcoes.transValor( sAliq, 4, 2, true ) );
 
 						/* 06 */sBuffer.append( Funcoes.transValor( String.valueOf( fValor ), 12, 2, true ) );
-						/* 07 */sBuffer.append( Funcoes.replicate( " ", 79 ) + CR );
+						/* 07 */sBuffer.append( StringFunctions.replicate( " ", 79 ) + CR );
 
 						gravaBuffer( sBuffer.toString() );
 						sBuffer.delete( 0, sBuffer.length() );
@@ -1376,8 +1375,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					/* 01 */sBuffer.append( "60" );
 					/* 02 */sBuffer.append( "R" );
-					/* 03 */sBuffer.append( Funcoes.strZero( rs.getString( "MES" ), 2 ) );
-					/* 03 */sBuffer.append( Funcoes.strZero( rs.getString( "ANO" ), 4 ) );
+					/* 03 */sBuffer.append( StringFunctions.strZero( rs.getString( "MES" ), 2 ) );
+					/* 03 */sBuffer.append( StringFunctions.strZero( rs.getString( "ANO" ), 4 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODPROD" ).trim(), 14 ) );
 					/* 05 */sBuffer.append( Funcoes.transValor( rs.getString( "QTDITVENDA" ), 13, 3, true ) );
 					/* 06 */sBuffer.append( Funcoes.transValor( String.valueOf( rs.getBigDecimal( "VLRBRUTO" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ), 16, 2, true ) );
@@ -1390,7 +1389,7 @@ public class FSintegra extends FFilho implements ActionListener {
 						/* 08 */sBuffer.append( Funcoes.copy( rs.getString( "TIPOFISC" ), 1 ) + "   " );
 					}
 
-					/* 09 */sBuffer.append( Funcoes.replicate( " ", 54 ) + CR );
+					/* 09 */sBuffer.append( StringFunctions.replicate( " ", 54 ) + CR );
 
 					gravaBuffer( sBuffer.toString() );
 					cont++;
@@ -1449,14 +1448,14 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					sBuffer.delete( 0, sBuffer.length() );
 
-					sBuffer.append( "61" + Funcoes.replicate( " ", 14 ) );
-					sBuffer.append( Funcoes.replicate( " ", 14 ) );
+					sBuffer.append( "61" + StringFunctions.replicate( " ", 14 ) );
+					sBuffer.append( StringFunctions.replicate( " ", 14 ) );
 					sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
-					sBuffer.append( Funcoes.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
+					sBuffer.append( StringFunctions.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
 					sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );
-					sBuffer.append( Funcoes.replicate( " ", 2 ) ); // Sub serie
-					sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
-					sBuffer.append( Funcoes.strZero( rs.getInt( "DOCFIMLF" ) + "", 6 ) );
+					sBuffer.append( StringFunctions.replicate( " ", 2 ) ); // Sub serie
+					sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					sBuffer.append( StringFunctions.strZero( rs.getInt( "DOCFIMLF" ) + "", 6 ) );
 					sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
 					sBuffer.append( Funcoes.transValor( rs.getString( "VLRBASEICMSLF" ), 13, 2, true ) );
 					sBuffer.append( Funcoes.transValor( rs.getString( "VLRICMSLF" ), 12, 2, true ) );
@@ -1538,9 +1537,9 @@ public class FSintegra extends FFilho implements ActionListener {
 					sBuffer.append( Funcoes.transValor( rs.getString( "VLRESTOQ" ), 13, 2, true ) );
 					sBuffer.append( rs.getString( "CODPOSSE" ) );
 					sBuffer.append( "00000000000000" );
-					sBuffer.append( Funcoes.replicate( " ", 14 ) );
+					sBuffer.append( StringFunctions.replicate( " ", 14 ) );
 					sBuffer.append( rs.getString( "SIGLAUF" ));
-					sBuffer.append( Funcoes.replicate( " ", 45 ) + CR ); 
+					sBuffer.append( StringFunctions.replicate( " ", 45 ) + CR ); 
 
 					gravaBuffer( sBuffer.toString() );
 
@@ -1699,7 +1698,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					sBuffer.append( Funcoes.copy( rs.getString( COL_75_ORIGFISC ).trim() + rs.getString( COL_75_CODTRATTRIB ).trim(), 3 ) );
 					sBuffer.append( Funcoes.transValor( rs.getString( COL_75_PERCIPI ), 4, 2, true ) );
 					sBuffer.append( Funcoes.transValor( rs.getString( COL_75_PERCICMS ), 4, 2, true ) );
-					sBuffer.append( Funcoes.strZero( "0", 4 ) );
+					sBuffer.append( StringFunctions.strZero( "0", 4 ) );
 					sBuffer.append( Funcoes.transValor( "0", 14, 2, true ) + CR );
 
 					// Caso não seja necessário a geração do registro 74 grava o buffer agora. 
@@ -1745,7 +1744,7 @@ public class FSintegra extends FFilho implements ActionListener {
 			sBuf.append( sInscEmp );
 		}
 		sBuf.append( sTipo );
-		sBuf.append( Funcoes.strZero( String.valueOf( iTot ), 8 ) );
+		sBuf.append( StringFunctions.strZero( String.valueOf( iTot ), 8 ) );
 
 		return sBuf.toString();
 
