@@ -1263,7 +1263,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQRMA" ));
-		hParam.put( "RAZAOEMP" , Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP" , Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "RESUMIDO", new Boolean( isResum ) );
 
