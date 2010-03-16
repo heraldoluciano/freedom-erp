@@ -176,7 +176,7 @@ public class FRIcmsNcm extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_ICMS_01.jasper", "Relatório de ICMS por NCM", sCab, rs, hParam, this );
