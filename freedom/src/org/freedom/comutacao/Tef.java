@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 
 public class Tef {
@@ -496,7 +497,7 @@ public class Tef {
                 .parseInt(prop.getProperty(TEF_QTD_LINHAS, "0"));
         for (int i = 1; i < iNumLinhas; i++) {
             if ((sLinha = prop.getProperty(IMP_BASE
-                    + Funcoes.strZero("" + i, 3))) != null)
+                    + StringFunctions.strZero("" + i, 3))) != null)
                 vRet.addElement(sLinha.replaceAll("\"", ""));
             else
                 break;
