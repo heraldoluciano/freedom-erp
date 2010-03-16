@@ -30,66 +30,64 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
 public class Calc extends FFilho implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
-
 	
-	GridBagConstraints gbConst = new GridBagConstraints();        
-	GridBagLayout gbCalc = new GridBagLayout();
-	JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DOUBLE,13,0);
-	JTextArea txaCalc = new JTextArea();
-	JButtonPad btPerc = new JButtonPad("%");
-	JButtonPad btRaiz = new JButtonPad("Raiz");
-	JButtonPad btC = new JButtonPad("C");
-	JButtonPad btCE = new JButtonPad("CE");
-	JButtonPad btMC = new JButtonPad("MC");
-	JButtonPad btMR = new JButtonPad("MR");
-	JButtonPad btMmais = new JButtonPad("M+");
-	JButtonPad btMmenos = new JButtonPad("M-");
-	JButtonPad bt7 = new JButtonPad("7");
-	JButtonPad bt8 = new JButtonPad("8");
-	JButtonPad bt9 = new JButtonPad("9");
-	JButtonPad btDiv = new JButtonPad("÷");
-	JButtonPad bt4 = new JButtonPad("4");
-	JButtonPad bt5 = new JButtonPad("5");
-	JButtonPad bt6 = new JButtonPad("6");
-	JButtonPad btVez = new JButtonPad("*");
-	JButtonPad bt1 = new JButtonPad("1");
-	JButtonPad bt2 = new JButtonPad("2");
-	JButtonPad bt3 = new JButtonPad("3");
-	JButtonPad btMenos = new JButtonPad("-");
-	JButtonPad bt0 = new JButtonPad("0");
-	JButtonPad btPonto = new JButtonPad(".");
-	JButtonPad btIgual = new JButtonPad("=");
-	JButtonPad btMais = new JButtonPad("+");
-	JButtonPad btPot = new JButtonPad("x^x");
-	JButtonPad btAlt = new JButtonPad("+/-");
-	JButtonPad btBac = new JButtonPad("Back");
-	JLabelPad lbMemo = new JLabelPad(" "); 
-	JPanelPad pnTeclas = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas1 = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas2 = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas3 = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas4 = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas5 = new JPanelPad(JPanelPad.TP_JPANEL);
-	JPanelPad pnTeclas6 = new JPanelPad(JPanelPad.TP_JPANEL); 
-	JPanelPad pnTeclas7 = new JPanelPad(JPanelPad.TP_JPANEL);
-	GridLayout glTeclas = new GridLayout( 1, 4);
-	String dg = "";
+	private GridBagConstraints gbConst = new GridBagConstraints();        
+	private GridBagLayout gbCalc = new GridBagLayout();
+	private JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);
+	private JTextAreaPad txaCalc = new JTextAreaPad();
+	private JButtonPad btPerc = new JButtonPad("%");
+	private JButtonPad btRaiz = new JButtonPad("Raiz");
+	private JButtonPad btC = new JButtonPad("C");
+	private JButtonPad btCE = new JButtonPad("CE");
+	private JButtonPad btMC = new JButtonPad("MC");
+	private JButtonPad btMR = new JButtonPad("MR");
+	private JButtonPad btMmais = new JButtonPad("M+");
+	private JButtonPad btMmenos = new JButtonPad("M-");
+	private JButtonPad bt7 = new JButtonPad("7");
+	private JButtonPad bt8 = new JButtonPad("8");
+	private JButtonPad bt9 = new JButtonPad("9");
+	private JButtonPad btDiv = new JButtonPad("÷");
+	private JButtonPad bt4 = new JButtonPad("4");
+	private JButtonPad bt5 = new JButtonPad("5");
+	private JButtonPad bt6 = new JButtonPad("6");
+	private JButtonPad btVez = new JButtonPad("*");
+	private JButtonPad bt1 = new JButtonPad("1");
+	private JButtonPad bt2 = new JButtonPad("2");
+	private JButtonPad bt3 = new JButtonPad("3");
+	private JButtonPad btMenos = new JButtonPad("-");
+	private JButtonPad bt0 = new JButtonPad("0");
+	private JButtonPad btPonto = new JButtonPad(".");
+	private JButtonPad btIgual = new JButtonPad("=");
+	private JButtonPad btMais = new JButtonPad("+");
+	private JButtonPad btPot = new JButtonPad("x^x");
+	private JButtonPad btAlt = new JButtonPad("+/-");
+	private JButtonPad btBac = new JButtonPad("Back");
+	private JLabelPad lbMemo = new JLabelPad(" "); 
+	private JPanelPad pnTeclas = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas1 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas2 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas3 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas4 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas5 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnTeclas6 = new JPanelPad(JPanelPad.TP_JPANEL); 
+	private JPanelPad pnTeclas7 = new JPanelPad(JPanelPad.TP_JPANEL);
+	private GridLayout glTeclas = new GridLayout( 1, 4);
+	private String dg = "";
 	double ret = 0;
 	double men = 0;
-	String num = "";
+	private String num = "";
 	double res = 0;
 	double memo = 0;
 	boolean soma = false;
@@ -107,16 +105,22 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	boolean Ctrl = false;
 	boolean Esc = false;
 	int esp = 32;
+	
 	public Calc() {
+		
 		super(false);
+		
 		Container c = getContentPane();
-		txaCalc.setEnabled(false);
-		txtRes.setEnabled(false);
+
+		txaCalc.setEditable(false);
+		txtRes.setEditable(false);
 
 		txtRes.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		txaCalc.setFont(new Font( "fixed", Font.BOLD, 14));
+		txaCalc.setFont(new Font( "fixed", Font.BOLD, 14));		
+		
 		txtRes.setFont(new Font( "Arial", Font.BOLD, 20));
+		
 		lbMemo.setFont(new Font( "Arial", Font.BOLD, 20));
 		
 		JScrollPane pnCalc = new JScrollPane(txaCalc);
@@ -251,8 +255,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		gbConst.gridwidth = 1;
 		gbConst.weightx = 1;
 		gbConst.weighty = 1;
-		gbCalc.setConstraints(pnTeclas, gbConst);	
-		
+		gbCalc.setConstraints(pnTeclas, gbConst);			
 		
 		c.add(pnTeclas);
 
@@ -260,14 +263,15 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 
 		addKeyListener(this);
 
-
 		setResizable(false);  
+		
 		setTitulo("Calculadora", this.getClass().getName());
 		setAtribos( 50, 50, 310, 390);
+		
 	}
 
 	public void actionPerformed(ActionEvent evt) { 
-		((JButton)evt.getSource()).requestFocus();		
+		((JButtonPad)evt.getSource()).requestFocus();		
 		calcular(evt.getActionCommand());
 	}
 	
