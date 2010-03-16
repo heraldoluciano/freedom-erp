@@ -25,6 +25,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF021 extends Layout {
@@ -59,9 +60,9 @@ public class NF021 extends Layout {
 			vClfisc.addElement("3901200100");
 			vClfisc.addElement("7317000201");
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" + 
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" + 
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" + 
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" + 
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
 			
 			cab.next();		
 			
@@ -195,9 +196,9 @@ public class NF021 extends Layout {
 					vValores.addElement(String.valueOf(cab.getInt(NF.C_CODVEND)));//25
 					
 					if (cab.getString(NF.C_NOMEVEND).equals(""))
-						vValores.addElement(Funcoes.replicate(" ",25)); // 26
+						vValores.addElement(StringFunctions.replicate(" ",25)); // 26
 					else 
-						vValores.addElement(cab.getString(NF.C_NOMEVEND)+Funcoes.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
+						vValores.addElement(cab.getString(NF.C_NOMEVEND)+StringFunctions.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
 							
 					bTotalizou = true;
 				} 

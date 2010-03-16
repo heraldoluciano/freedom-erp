@@ -111,7 +111,7 @@ public class NF053 extends Layout {
 					else
 						imp.say( 57, "X");
 
-				//	imp.say( 73, Funcoes.strZero(String.valueOf(iNumNota),7) );
+				//	imp.say( 73, StringFunctions.strZero(String.valueOf(iNumNota),7) );
 					imp.pulaLinha( 6, imp.comprimido());
 					imp.say(  10, sNat[0]);
 					imp.say( 60, sNat[1]);
@@ -276,7 +276,7 @@ public class NF053 extends Layout {
 					//	Imprime canhoto ...
 					
 					imp.pulaLinha( 5, imp.normal());
-				//	imp.say( 73, Funcoes.strZero(String.valueOf(iNumNota),7) );
+				//	imp.say( 73, StringFunctions.strZero(String.valueOf(iNumNota),7) );
 					
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());					
 					imp.setPrc(0,0);

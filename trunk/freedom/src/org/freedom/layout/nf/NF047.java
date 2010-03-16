@@ -31,6 +31,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF047 extends Layout {
@@ -70,9 +71,9 @@ public class NF047 extends Layout {
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 		Calendar cHora = Calendar.getInstance();
-		String sHora = Funcoes.strZero( String.valueOf( cHora.get( Calendar.HOUR_OF_DAY ) ), 2 ) + ":" + 
-		Funcoes.strZero( String.valueOf( cHora.get( Calendar.MINUTE ) ), 2 ) + ":" + 
-		Funcoes.strZero( String.valueOf( cHora.get( Calendar.SECOND ) ), 2 );
+		String sHora = StringFunctions.strZero( String.valueOf( cHora.get( Calendar.HOUR_OF_DAY ) ), 2 ) + ":" + 
+		StringFunctions.strZero( String.valueOf( cHora.get( Calendar.MINUTE ) ), 2 ) + ":" + 
+		StringFunctions.strZero( String.valueOf( cHora.get( Calendar.SECOND ) ), 2 );
 
 		imp.setMargem( 0 );
 
@@ -86,7 +87,7 @@ public class NF047 extends Layout {
 			for ( int i = 0; i < 9; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
-						sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
+						sDuplics[ i ] = StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
 						sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
 						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );
 					}
@@ -142,7 +143,7 @@ public class NF047 extends Layout {
 						imp.say( 96, "X" );
 					}
 
-					imp.say( 146, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 146, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 					imp.pulaLinha( 6, imp.comprimido() );
 					imp.say( 0, sNat[ 0 ] ); // Descrição da natureza da operação 
 					imp.say( 40, sNat[ 1 ] ); // CFOP 
@@ -350,7 +351,7 @@ public class NF047 extends Layout {
 						imp.say( 0, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 					imp.say( 22, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 					imp.say( 62, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 27 ) );
-					imp.say( 94, Funcoes.strZero( String.valueOf( iNumNota ), 6 )  );
+					imp.say( 94, StringFunctions.strZero( String.valueOf( iNumNota ), 6 )  );
 					imp.say( 123, Funcoes.copy( frete.getString( NF.C_PESOBRUTO ), 4 ) + "KG" );
 					imp.say( 144, Funcoes.copy( frete.getString( NF.C_PESOLIQ ), 4 ) + "KG" );
 					
@@ -420,7 +421,7 @@ public class NF047 extends Layout {
 					
 					imp.pulaLinha( 10-linCl, "" );
 					imp.say( imp.pRow()+1, imp.comprimido());
-					imp.say( 146, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 146, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					// Imprime canhoto
 

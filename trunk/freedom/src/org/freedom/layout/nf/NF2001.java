@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.telas.Aplicativo;
 
@@ -72,14 +73,14 @@ public class NF2001 extends Layout {
 			imp.limpaPags();
 			vClfisc.addElement("");
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
 			
 			if (cab.next()) 
 				sNumNota = String.valueOf(cab.getInt(NF.C_DOC));
 			else 
-				sNumNota = Funcoes.strZero(String.valueOf(iNumNota),6);			
+				sNumNota = StringFunctions.strZero(String.valueOf(iNumNota),6);			
 
 			for (int i=0; i<4; i++) {
 				if (bFat) {
@@ -251,9 +252,9 @@ public class NF2001 extends Layout {
 					vValores.addElement(String.valueOf(cab.getInt(NF.C_CODVEND)));//25
 					
 					if (cab.getString(NF.C_NOMEVEND).equals(""))
-						vValores.addElement(Funcoes.replicate(" ",25)); // 26
+						vValores.addElement(StringFunctions.replicate(" ",25)); // 26
 					else 
-						vValores.addElement(cab.getString(NF.C_NOMEVEND) + Funcoes.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
+						vValores.addElement(cab.getString(NF.C_NOMEVEND) + StringFunctions.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
 					
 					bTotalizou = true;
 				} 

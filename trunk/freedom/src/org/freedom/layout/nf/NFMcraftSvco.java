@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFMcraftSvco extends Leiaute {
@@ -46,7 +47,7 @@ public class NFMcraftSvco extends Leiaute {
 //		String sIncra = "" ;
 //		String[] sMarcs = {"*","**","***","****"}; //Tipos de Marcs. 
 //		String[] sMarcs2 = {"\"","\"\"","\"\"\"","\"\"\"\""}; //Tipos de Marcs. 
-//		String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+//		String sHora = StringFunctions.strZero(""+cHora.get(Calendar.HOUR),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.SECOND),2);
 		try {
 			/*
 			for (int i=0; i<4; i++) {
@@ -86,7 +87,7 @@ public class NFMcraftSvco extends Leiaute {
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+4,0,"");
-					imp.say(imp.pRow()+0,120,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
+					imp.say(imp.pRow()+0,120,rs.getString("DocVenda") != null ? StringFunctions.strZero(""+iNumNota,6) : "000000");
 					imp.say(imp.pRow()+1,0,"");
 				//	imp.say(imp.pRow()+1,0,"");
 				//	imp.say(imp.pRow()+1,0,"");
@@ -319,7 +320,7 @@ public class NFMcraftSvco extends Leiaute {
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
 		//			imp.say(imp.pRow()+1,0,"");
-//					imp.say(imp.pRow()+0,120,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
+//					imp.say(imp.pRow()+0,120,rs.getString("DocVenda") != null ? StringFunctions.strZero(""+iNumNota,6) : "000000");
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					

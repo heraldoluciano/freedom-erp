@@ -26,6 +26,7 @@ import java.util.Calendar;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 public class NF099b extends Layout {
 
@@ -46,9 +47,9 @@ public class NF099b extends Layout {
 		try {
 			imp.limpaPags();
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
 			  
 			cab.next();
 			
@@ -57,7 +58,7 @@ public class NF099b extends Layout {
 			if(iNumNota==0) 
 				sNumNota = "000000";
 			else 
-				sNumNota = Funcoes.strZero(String.valueOf(iNumNota),6);
+				sNumNota = StringFunctions.strZero(String.valueOf(iNumNota),6);
 			     
 			while (itens.next()) {  
 				  
