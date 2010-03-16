@@ -21,22 +21,24 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-import org.freedom.componentes.JLabelPad;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -226,8 +228,8 @@ public class FRDemanda extends FRelatorio {
     	  sWhere += " p.sldfim>0";
       }  
         
-      sOrdenado = "|"+Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
-      sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
+      sOrdenado = "|"+StringFunctions.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+      sOrdenado += StringFunctions.replicate(" ",133-sOrdenado.length())+" |";
     
       ImprimeOS imp = new ImprimeOS("",con);
       int linPag = imp.verifLinPag()-1;
@@ -236,8 +238,8 @@ public class FRDemanda extends FRelatorio {
     	  sWhere += " P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
     	  String sTmp = "MARCA: "+txtDescMarca.getText().trim();
     	  sCab += "\n"+imp.comprimido();
-    	  sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-    	  sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+    	  sTmp = "|"+StringFunctions.replicate(" ",67-(sTmp.length()/2))+sTmp;
+    	  sCab += sTmp+StringFunctions.replicate(" ",133-sTmp.length())+" |";
       }
     
       if (txtCodGrup.getText().trim().length() > 0) {
@@ -257,8 +259,8 @@ public class FRDemanda extends FRelatorio {
     	  sWhere += " P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
     	  String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
     	  sCab += "\n"+imp.comprimido();
-    	  sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-    	  sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+    	  sTmp = "|"+StringFunctions.replicate(" ",67-(sTmp.length()/2))+sTmp;
+    	  sCab += sTmp+StringFunctions.replicate(" ",133-sTmp.length())+" |";
       }
     
       if (!sWhere.trim().equals(""))
@@ -289,14 +291,14 @@ public class FRDemanda extends FRelatorio {
     	  while ( rs.next() ) {
     		  if (imp.pRow()>=(linPag-1)) {
     			  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    			  imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+    			  imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
     			  imp.incPags();
     			  imp.eject();
     		  }
     		  else if (sDivGrupo.equals("S")) {
     			  if ((sCodgrup.length() > 0) && (!sCodgrup.equals(rs.getString("Codgrup")))) {
     				  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    				  imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+    				  imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
     				  imp.incPags();
     				  imp.eject();
     			  }
@@ -312,17 +314,17 @@ public class FRDemanda extends FRelatorio {
            
     			  if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
     			  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    			  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+    			  imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
            
     			  if (sDivGrupo.equals("S")) {
     				  String sDescGrup = rs.getString("DescGrup");
     				  sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
-    				  sDescGrup = "|"+Funcoes.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
-    				  sDescGrup += Funcoes.replicate(" ",133-sDescGrup.length())+" |";
+    				  sDescGrup = "|"+StringFunctions.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
+    				  sDescGrup += StringFunctions.replicate(" ",133-sDescGrup.length())+" |";
     				  imp.say(imp.pRow()+1,0,""+imp.comprimido());
     				  imp.say(imp.pRow()+0,0,sDescGrup);
     				  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    				  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");    			  
+    				  imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");    			  
     			  }
     			  
     			  imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -338,7 +340,7 @@ public class FRDemanda extends FRelatorio {
     			  imp.say(imp.pRow()+0,127,"| Saldo");
     			  imp.say(imp.pRow()+0,135,"|");
     			  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    			  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+    			  imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
     			  
     		  }
 
@@ -357,7 +359,7 @@ public class FRDemanda extends FRelatorio {
     	  }
     	  
     	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    	  imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+    	  imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
     	  imp.eject();
     	  imp.fechaGravacao();
       

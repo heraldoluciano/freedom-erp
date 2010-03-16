@@ -81,6 +81,7 @@ import org.freedom.componentes.Lucratividade;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
@@ -1743,7 +1744,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		String linhaFina = Funcoes.replicate( "-", 135 );
+		String linhaFina = StringFunctions.replicate( "-", 135 );
 		Vector<?> vDesc = null;
 		Vector<?> vObs = null;
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -1883,7 +1884,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, linhaFina );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 5, Funcoes.replicate( "-", 40 ) );
+			imp.say( 5, StringFunctions.replicate( "-", 40 ) );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 5, rs.getString( "NomeVend" ) );
 			imp.pulaLinha( 1, imp.comprimido() );

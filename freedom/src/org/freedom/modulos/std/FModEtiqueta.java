@@ -26,11 +26,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -42,14 +39,18 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDados;
 
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener, CheckBoxListener {
@@ -209,7 +210,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
 	private void adicionaCampo(){
 	    int iTam = Integer.parseInt(vTamanhos.elementAt(cbCampos.getSelectedIndex()).toString());		   
-	    txaEtiqueta.insert("["+cbCampos.getVlrString()+Funcoes.replicate("-",iTam)+"]",txaEtiqueta.getCaretPosition());
+	    txaEtiqueta.insert("["+cbCampos.getVlrString()+StringFunctions.replicate("-",iTam)+"]",txaEtiqueta.getCaretPosition());
 	}
 	
 	public void actionPerformed(ActionEvent evt) {

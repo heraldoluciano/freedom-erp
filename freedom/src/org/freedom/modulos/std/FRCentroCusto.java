@@ -25,21 +25,21 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -281,7 +281,7 @@ public class FRCentroCusto extends FRelatorio {
 					imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 0, "|" );
 					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow(), 0, "| Cód.cc." );
 					imp.say( imp.pRow(), 23, "| Sigla " );
@@ -291,17 +291,17 @@ public class FRCentroCusto extends FRelatorio {
 					imp.say( imp.pRow(), 119, "| Saldo " );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				if ( rs.getString( 7 ) != null ) {
 					iNivelcc = rs.getString( "NIVELCC" ) == null ? 1 : rs.getInt( "NIVELCC" );
 					iNivelcc = iNivelcc == 0 ? 1 : iNivelcc;
-					sDesccc = " " + Funcoes.replicate( " ", iNivelcc ) + rs.getString( "DESCCC" );
+					sDesccc = " " + StringFunctions.replicate( " ", iNivelcc ) + rs.getString( "DESCCC" );
 					sSiglacc = Funcoes.copy( rs.getString( "SIGLACC" ) != null ? rs.getString( "SIGLACC" ) : "", 1, 10 );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow(), 0, "| " + Funcoes.copy( rs.getString( "CODCC" ), 0, 19 ) + " | " + sSiglacc + " | " + Funcoes.copy( sDesccc, 0, 50 ) + " | " + ( rs.getString( 5 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 5 ) ) : Funcoes.replicate( " ", 12 ) ) + " | "
-							+ ( rs.getString( 6 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 6 ) ) : Funcoes.replicate( " ", 12 ) ) + " | " + ( rs.getString( 7 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 7 ) ) : Funcoes.replicate( " ", 12 ) ) );
+					imp.say( imp.pRow(), 0, "| " + Funcoes.copy( rs.getString( "CODCC" ), 0, 19 ) + " | " + sSiglacc + " | " + Funcoes.copy( sDesccc, 0, 50 ) + " | " + ( rs.getString( 5 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 5 ) ) : StringFunctions.replicate( " ", 12 ) ) + " | "
+							+ ( rs.getString( 6 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 6 ) ) : StringFunctions.replicate( " ", 12 ) ) + " | " + ( rs.getString( 7 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 7 ) ) : StringFunctions.replicate( " ", 12 ) ) );
 					imp.say( imp.pRow(), 136, "|" );
 					if ( iNivelcc == 10 ) {
 						bTotal = bTotal.add( new BigDecimal( rs.getString( 7 ) != null ? rs.getString( 7 ) : "0" ) );
@@ -310,7 +310,7 @@ public class FRCentroCusto extends FRelatorio {
 
 				if ( imp.pRow() == ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.eject();
 					imp.incPags();
 				}
@@ -318,14 +318,14 @@ public class FRCentroCusto extends FRelatorio {
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
 			imp.say( imp.pRow(), 70, "TOTAL RECEITAS/DESPESAS" );
 			imp.say( imp.pRow(), 119, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, "" + bTotal ) );
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 			imp.eject();
 

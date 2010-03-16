@@ -35,6 +35,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 
 public class FModNota extends FDados implements ActionListener {
@@ -120,7 +121,7 @@ public class FModNota extends FDados implements ActionListener {
 					imp.say( 2, "Cód.mod.nfs." );
 					imp.say( 30, "Descrição do modelo de nota" );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 79 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
 				}
 				
 				imp.pulaLinha( 1, imp.normal() );
@@ -134,7 +135,7 @@ public class FModNota extends FDados implements ActionListener {
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 79 ) );
 			imp.eject();
 
 			imp.fechaGravacao();

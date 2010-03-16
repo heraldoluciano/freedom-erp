@@ -25,21 +25,21 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -194,23 +194,23 @@ public class FRRazaoFin extends FRelatorio {
 			while ( rs.next() ) {
 				if ( imp.pRow() >= linPag ) {
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.eject();
 					imp.incPags();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 105, "SALDO ANTERIOR" );
 					imp.say( 121, sSaldoAnt );
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 6, "Data" );
@@ -226,7 +226,7 @@ public class FRRazaoFin extends FRelatorio {
 					imp.say( 126, "Saldo" );
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				imp.pulaLinha( 1, imp.comprimido() );
@@ -277,7 +277,7 @@ public class FRRazaoFin extends FRelatorio {
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+			imp.say( 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 90, "|" );
@@ -288,7 +288,7 @@ public class FRRazaoFin extends FRelatorio {
 			imp.say( 122, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotal ) ) );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 

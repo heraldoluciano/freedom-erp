@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +36,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -164,20 +165,20 @@ public class FREstoqueMin extends FRelatorio {
       sOrdem = sOrdemGrupo+"P.DESCPROD";
       sOrdenado = "ORDENADO POR DESCRICAO"; 
     }
-    sOrdenado = Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
-    sOrdenado += Funcoes.replicate(" ",132-sOrdenado.length());
+    sOrdenado = StringFunctions.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+    sOrdenado += StringFunctions.replicate(" ",132-sOrdenado.length());
     
     if (txtCodGrup.getText().trim().length() > 0) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
             String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
-            sTmp = Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+            sTmp = StringFunctions.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+StringFunctions.replicate(" ",133-sTmp.length())+" |";
     }
     if (txtCodMarca.getText().trim().length() > 0) {
             sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
             String sTmp = "MARCA: "+txtDescMarca.getText().trim();
-            sTmp = Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+            sTmp = StringFunctions.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+StringFunctions.replicate(" ",133-sTmp.length())+" |";
     }
  
     String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD,"+
@@ -202,14 +203,14 @@ public class FREstoqueMin extends FRelatorio {
       while ( rs.next() ) {
         if (imp.pRow()>=(linPag-1)) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+           imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
            imp.incPags();
            imp.eject();
         }
         else if (sDivGrupo.equals("S")) {
            if ((sCodgrup.length() > 0) && (!sCodgrup.equals(rs.getString("Codgrup")))) {
               imp.say(imp.pRow()+1,0,""+imp.comprimido());
-              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+              imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
               imp.incPags();
               imp.eject();
            }
@@ -224,22 +225,22 @@ public class FREstoqueMin extends FRelatorio {
            	 hasData = true;
              String sDescGrup = rs.getString("DescGrup");
              sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
-             sDescGrup = "|"+Funcoes.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
-             sDescGrup += Funcoes.replicate(" ",133-sDescGrup.length())+" |";
+             sDescGrup = "|"+StringFunctions.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
+             sDescGrup += StringFunctions.replicate(" ",133-sDescGrup.length())+" |";
              imp.say(imp.pRow()+0,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+             imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,sDescGrup);
            }
 
            imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+           imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Linha.        | Ref.         |"+
                  " Descrição                         | U.Compra  | Estoq.|"+
                  " Min. | Falta| C.Unit. | C.Estoq.  |  C.Falta |");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+           imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
          }
 
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -268,19 +269,19 @@ public class FREstoqueMin extends FRelatorio {
       }
 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+      imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow(),0,"| "+Funcoes.copy(" ",0,14)+
-             "| "+Funcoes.replicate(" ",13)+
-             "| "+Funcoes.replicate(" ",34)+
+             "| "+StringFunctions.replicate(" ",13)+
+             "| "+StringFunctions.replicate(" ",34)+
              "| TOTAL     | "+Funcoes.strDecimalToStrCurrency(6,0,""+bSldLiqProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdMinProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdFaltaProd)+
-             "|"+Funcoes.replicate(" ",9)+
+             "|"+StringFunctions.replicate(" ",9)+
              "|"+Funcoes.strDecimalToStrCurrency(10,2,""+bVlrEstoqProd)+
              "|"+Funcoes.strDecimalToStrCurrency(10,2,""+bVlrFaltaProd)+"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+      imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("=",133)+"+");
       
       imp.eject();
       

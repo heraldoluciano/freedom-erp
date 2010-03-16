@@ -21,8 +21,8 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 public class FMensagem extends FDados implements ActionListener {
 
@@ -91,7 +92,7 @@ public class FMensagem extends FDados implements ActionListener {
             imp.say(imp.pRow()+0,2,"Cód.mens.");
             imp.say(imp.pRow()+0,20,"Mensagem");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+            imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",80));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodMens"));
@@ -103,7 +104,7 @@ public class FMensagem extends FDados implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",80));
       imp.eject();
       
       imp.fechaGravacao();

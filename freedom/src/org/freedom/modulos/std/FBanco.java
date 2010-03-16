@@ -24,7 +24,6 @@ package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +37,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -148,7 +149,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 					imp.say( 2, "Código" );
 					imp.say( 30, "Nome" );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 79 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
 				}
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodBanco" ) );
@@ -160,7 +161,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 79 ) );
 			imp.eject();
 
 			imp.fechaGravacao();

@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -45,6 +44,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -93,9 +94,9 @@ public class FRVendasCFOP extends FRelatorio {
 
 	private BigDecimal bTotalGeral;
 
-	private String sLinhaFina = Funcoes.replicate( "-", 133 );
+	private String sLinhaFina = StringFunctions.replicate( "-", 133 );
 
-	private String sLinhaLarga = Funcoes.replicate( "=", 133 );
+	private String sLinhaLarga = StringFunctions.replicate( "=", 133 );
 
 	public FRVendasCFOP() {
 

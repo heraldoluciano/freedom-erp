@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -40,6 +39,8 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -245,7 +246,7 @@ public class FRVendasCli extends FRelatorio {
 	
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 		
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		int count = 1;

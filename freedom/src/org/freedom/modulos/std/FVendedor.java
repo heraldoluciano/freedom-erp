@@ -27,7 +27,6 @@ package org.freedom.modulos.std;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -45,6 +43,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -53,6 +52,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 import org.freedom.webservices.WSCep;
@@ -530,7 +531,7 @@ public class FVendedor extends FTabDados implements PostListener {
 					imp.montaCab();
 					imp.impCab( 136, true );
 					imp.say( imp.pRow(), 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" );
 					imp.say( imp.pRow(), 4, "Código" );
@@ -548,7 +549,7 @@ public class FVendedor extends FTabDados implements PostListener {
 					imp.say( imp.pRow(), 108, "Cidade:" );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
@@ -571,14 +572,14 @@ public class FVendedor extends FTabDados implements PostListener {
 
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
 				iContaReg++;
 			}
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 			imp.eject();
 
 			imp.fechaGravacao();

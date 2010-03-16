@@ -24,21 +24,22 @@
 
 package org.freedom.modulos.std;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
@@ -189,7 +190,7 @@ public class FTipoCli extends FDados implements ActionListener {
 
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
 
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
@@ -216,7 +217,7 @@ public class FTipoCli extends FDados implements ActionListener {
 					imp.say( 20, "Descrição" );
 					imp.say( 70, "Qtd.cli." );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 79 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
 				}
 
 				imp.pulaLinha( 1, imp.normal() );
@@ -231,13 +232,13 @@ public class FTipoCli extends FDados implements ActionListener {
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 79 ) );
 			imp.pulaLinha( 1, imp.normal() );
 			imp.say( 0, "|" );
 			imp.say( 50, "Total de clientes:" );
 			imp.say( 79, "|" );
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 79 ) );
 
 			imp.eject();
 			imp.fechaGravacao();

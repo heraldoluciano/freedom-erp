@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,15 +34,16 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -224,20 +224,20 @@ public class FRCompras extends FRelatorio {
 			while( rs.next() ) {
             	if(imp.pRow() >= linPag) {
                     imp.say(imp.pRow()+1, 0, imp.comprimido());
-                    imp.say(imp.pRow(),0, "+" + Funcoes.replicate("-",133) + "+");
+                    imp.say(imp.pRow(),0, "+" + StringFunctions.replicate("-",133) + "+");
                     imp.eject();
                     imp.incPags();
             	}
 				if(imp.pRow() == 0) {
 					imp.impCab(136, true);
         			imp.say(imp.pRow(), 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("=",133) + "|");
 				}
             	if(iCodCompra != rs.getInt("CODCOMPRA")) {
             		iCodCompra = rs.getInt("CODCOMPRA");
             		if(imp.pRow() > iCab) {
             			imp.say(imp.pRow()+1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=",133) + "|");
+						imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("=",133) + "|");
             		}
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| N. Compra");
@@ -249,7 +249,7 @@ public class FRCompras extends FRelatorio {
 					imp.say(imp.pRow(),122, "|  Entrada");
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| " + (rs.getString("CODCOMPRA") != null ? rs.getString("CODCOMPRA") : ""));
 					imp.say(imp.pRow(), 13, "| " + (rs.getString("DOCCOMPRA") != null ? rs.getString("DOCCOMPRA") : ""));
@@ -260,7 +260,7 @@ public class FRCompras extends FRelatorio {
 					imp.say(imp.pRow(),122, "| " + Funcoes.dateToStrDate(rs.getDate("DTENTCOMPRA")));
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| Item");
 					imp.say(imp.pRow(), 8, "| Cod.prod.");
@@ -272,7 +272,7 @@ public class FRCompras extends FRelatorio {
 					imp.say(imp.pRow(),122, "|  Vlr.desc");
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
             	}
             	imp.say(imp.pRow()+1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "| " + (rs.getString("CODITCOMPRA") != null ? rs.getString("CODITCOMPRA") : ""));
@@ -288,13 +288,13 @@ public class FRCompras extends FRelatorio {
 			}
 
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
-			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
+			imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("=",133) + "+");
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "| ");
 			imp.say(imp.pRow(), 94, "VALOR TOTAL DE COMPRAS = " + Funcoes.strDecimalToStrCurrency(15,2,bTotal.toString()));
 			imp.say(imp.pRow(),135, "|");
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
-			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
+			imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("=",133) + "+");
 		 
 			imp.eject();		 
 			imp.fechaGravacao();

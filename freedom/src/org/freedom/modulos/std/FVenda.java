@@ -80,6 +80,7 @@ import org.freedom.componentes.Lucratividade;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
@@ -2770,11 +2771,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 											+ ( rs.getString( "CEPCli" ) != null ? " - " + rs.getString( "CEPCli" ).trim() : "" ) + " TEL: " + ( rs.getString( "DDDCli" ) != null ? Funcoes.setMascara( rs.getString( "DDDCli" ), "(####)" ) : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ) + " - FAX:"
 											+ ( rs.getString( "FaxCli" ) != null ? Funcoes.setMascara( rs.getString( "FaxCli" ), "####-####" ) : "" ) );// endereço e telefone cliente
 									imp.pulaLinha( 1, imp.comprimido() );
-									imp.say( 0, Funcoes.replicate( "-", 135 ) );
+									imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 									imp.pulaLinha( 1, imp.comprimido() );
 									imp.say( 55, "DADO(S) DO(S) PRODUTO(S)" );
 									imp.pulaLinha( 1, imp.comprimido() );
-									imp.say( 0, Funcoes.replicate( "-", 135 ) );
+									imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 									imp.pulaLinha( 1, imp.comprimido() );
 									imp.say( 1, "ITEM|  CÓDIGO  |                 DESCRIÇÃO               |     LOTE     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% " );
 	
@@ -2808,13 +2809,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 	
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, Funcoes.replicate( "-", 135 ) );
+						imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 4, "TOTAL IPI: " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrIPIVenda" ) ) );
 						imp.say( 44, "|    TOTAL ICMS: " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrICMSVenda" ) ) );
 						imp.say( 84, "|    TOTAL PRODUTOS: " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrLiqVenda" ) ) );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, Funcoes.replicate( "-", 135 ) );
+						imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "PAGAMENTO.........:    " + rs.getString( "CODPLANOPAG" ) + " - " + rs.getString( "DESCPLANOPAG" ) );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -2843,11 +2844,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 						
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 70, Funcoes.replicate( "-", 40 ) );
+						imp.say( 70, StringFunctions.replicate( "-", 40 ) );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 85, "Assinatura" );	
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, Funcoes.replicate( "-", 135 ) );
+						imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 62, "OBSERVACÃO" );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -2867,7 +2868,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 	
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, Funcoes.replicate( "-", 135 ) );
+						imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 						imp.pulaLinha( 2, imp.comprimido() );
 						
 	

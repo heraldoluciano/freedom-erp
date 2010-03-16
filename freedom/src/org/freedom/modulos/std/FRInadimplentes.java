@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,16 +35,17 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -251,7 +251,7 @@ public class FRInadimplentes extends FRelatorio {
 				if (imp.pRow() == linPag) {
 	                
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
 					imp.eject();
 					imp.incPags();
 	        
@@ -271,7 +271,7 @@ public class FRInadimplentes extends FRelatorio {
 	          	imp.impCab(136, true);
 	          	
 	          	imp.say(imp.pRow()+0,0,""+imp.comprimido());
-	          	imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	          	imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 	          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	          	imp.say(imp.pRow()+0,0,"| Vencto.");
 	          	imp.say(imp.pRow()+0,13,"|Vlr. da Parc.");
@@ -283,7 +283,7 @@ public class FRInadimplentes extends FRelatorio {
 	          	imp.say(imp.pRow()+0,119,"|Telefone");
 	          	imp.say(imp.pRow()+0,135,"|");
 	          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	          	imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	          	imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 	        
     		}
 	        
@@ -308,15 +308,15 @@ public class FRInadimplentes extends FRelatorio {
     	}
 	     
     	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	    imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
+	    imp.say(imp.pRow(),0,"+"+StringFunctions.replicate("=",133)+"+");
 	    imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	    imp.say(imp.pRow()+0,0,"|");
-	    imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+Funcoes.strZero(""+iNumLanca,5)+
+	    imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+StringFunctions.strZero(""+iNumLanca,5)+
 	    "     Total a Receber: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalDev));
 	    imp.say(imp.pRow(),135,"|");
 	
 	    imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+	    imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("=",133)+"+");
 	      
 	    imp.eject();
 	    imp.fechaGravacao();

@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +38,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -186,20 +187,20 @@ public class FRSaldoLote extends FRelatorio {
 		if ( txtCodGrup.getText().trim().length() > 0 ) {
 			sWhere += " AND P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'";
 			String sTmp = "GRUPO: " + txtDescGrup.getText().trim();
-			sTmp = Funcoes.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
-			sCab += sTmp + Funcoes.replicate( " ", 133 - sTmp.length() ) + " |";
+			sTmp = StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
+			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
 		if ( txtCodMarca.getText().trim().length() > 0 ) {
 			sWhere += " AND P.CODMARCA = '" + txtCodMarca.getText().trim() + "'";
 			String sTmp = "MARCA: " + txtDescMarca.getText().trim();
-			sTmp = Funcoes.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
-			sCab += sTmp + Funcoes.replicate( " ", 133 - sTmp.length() ) + " |";
+			sTmp = StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
+			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
 		if ( cbLoteZerado.getVlrString().equals( "N" ) ) {
 			sWhere += " AND L.SLDLIQLOTE > 0";
 			String sTmp = "LOTES COM SALDO";
-			sTmp = Funcoes.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
-			sCab += sTmp + Funcoes.replicate( " ", 133 - sTmp.length() ) + " |";
+			sTmp = StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
+			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
 		if ( sOrdem.equals( "C" ) ) {
 			if ( bComRef ) {
@@ -210,14 +211,14 @@ public class FRSaldoLote extends FRelatorio {
 				sOrdem = "P.CODPROD";
 				sOrdenado = "ORDENADO POR CODIGO";
 			}
-			sOrdenado = Funcoes.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
-			sOrdenado += Funcoes.replicate( " ", 133 - sOrdenado.length() ) + " |";
+			sOrdenado = StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
+			sOrdenado += StringFunctions.replicate( " ", 133 - sOrdenado.length() ) + " |";
 		}
 		else {
 			sOrdem = "P.DESCPROD";
 			sOrdenado = "ORDENADO POR DESCRICAO";
-			sOrdenado = Funcoes.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
-			sOrdenado += Funcoes.replicate( " ", 133 - sOrdenado.length() ) + " |";
+			sOrdenado = StringFunctions.replicate( " ", 67 - ( sOrdenado.length() / 2 ) ) + sOrdenado;
+			sOrdenado += StringFunctions.replicate( " ", 133 - sOrdenado.length() ) + " |";
 		}
 
 		bComRef = getUsaRef();
@@ -244,14 +245,14 @@ public class FRSaldoLote extends FRelatorio {
 			while ( rs.next() ) {
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( imp.pRow(), 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "| Código" );
 					imp.say( imp.pRow(), 16, "| Descrição" );
@@ -260,18 +261,18 @@ public class FRSaldoLote extends FRelatorio {
 					imp.say( imp.pRow(), 98, "| Saldo" );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 				if ( rs.getInt( "CodProd" ) != iCodProdAnt && iCodProdAnt != -1 ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" );
 					imp.say( imp.pRow(), 75, "Saldo do produto: " );
 					imp.say( imp.pRow(), 98, "| " + Funcoes.strDecimalToStrCurrency( 15, 1, "" + dConta ) );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					dConta = 0;
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
@@ -286,14 +287,14 @@ public class FRSaldoLote extends FRelatorio {
 			}
 
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
 			imp.say( imp.pRow(), 75, "Saldo do produto: " );
 			imp.say( imp.pRow(), 98, "| " + Funcoes.strDecimalToStrCurrency( 15, 1, "" + dConta ) );
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.eject();
 			imp.fechaGravacao();
 

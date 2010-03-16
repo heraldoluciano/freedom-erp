@@ -27,17 +27,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JButtonPad;
-
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 
 public class FNatoPer extends FDados implements ActionListener, InsertListener {
@@ -120,7 +120,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       while ( rs.next() ) {
       	 if (imp.pRow()>=linPag) {
          	imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+            imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
             imp.incPags();
             imp.eject();
          }
@@ -139,7 +139,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
             imp.say(imp.pRow()+0,108,"Aliq.federal");
             imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
          }
                   
          sAliqe = rs.getString("AliqeNat") != null ? rs.getString("AliqeNat") : "";
@@ -170,7 +170,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+      imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
       imp.eject();
       
       imp.fechaGravacao();

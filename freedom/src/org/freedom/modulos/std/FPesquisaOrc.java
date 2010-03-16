@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +38,6 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -47,6 +45,7 @@ import javax.swing.SwingConstants;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -55,6 +54,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -519,7 +520,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					}
 
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 136 ) );
+					imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
 				}
 
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
@@ -546,7 +547,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 					imp.say( imp.pRow() + 0, 137, "|" );
 				}
 
-				imp.say( imp.pRow() + 1, 0, "+ " + Funcoes.replicate( "-", 133 ) );
+				imp.say( imp.pRow() + 1, 0, "+ " + StringFunctions.replicate( "-", 133 ) );
 				imp.say( imp.pRow() + 0, 136, "+" );
 
 				if ( tab.getValor( iLin, 9 ) != null )
@@ -564,7 +565,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			imp.say( imp.pRow() + 0, 136, "|" );
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 136 ) );
+			imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 136 ) );
 			imp.eject();
 
 			imp.fechaGravacao();

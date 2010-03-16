@@ -34,14 +34,14 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -52,8 +52,8 @@ public class FRImpServ extends FRelatorio {
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?", "S", "N");
 	private JRadioGroup<?, ?> rgFormato = null;
-	private String linhaFina = Funcoes.replicate("-", 133);
-	private String linhaLarga = Funcoes.replicate("=", 133);
+	private String linhaFina = StringFunctions.replicate("-", 133);
+	private String linhaLarga = StringFunctions.replicate("=", 133);
 	private float fTotMesBase = 0;
 	private float fTotMesISS = 0;
 	private float fTotMesPIS = 0;
@@ -229,8 +229,8 @@ public class FRImpServ extends FRelatorio {
 						}
 						
 						imp.pulaLinha( 1, imp.comprimido());
-						imp.say(  0, "|" + Funcoes.strZero(rs.getString("CodVenda"), 7));
-						imp.say( 10, "|" + Funcoes.strZero(rs.getString("DocVenda"), 7));
+						imp.say(  0, "|" + StringFunctions.strZero(rs.getString("CodVenda"), 7));
+						imp.say( 10, "|" + StringFunctions.strZero(rs.getString("DocVenda"), 7));
 						imp.say( 19, "|" + Funcoes.copy(rs.getString("Serie"), 4));
 						imp.say( 23, "|" + Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 						imp.say( 35, "|" + Funcoes.copy(rs.getInt("CodCli") + "-" + rs.getString("RazCli"), 24));
@@ -287,7 +287,7 @@ public class FRImpServ extends FRelatorio {
 						}
 						
 						imp.pulaLinha( 1, imp.comprimido());
-						imp.say(  0, "| " + Funcoes.strZero(rs.getString(2), 2) + "/" + Funcoes.strZero(rs.getString(1), 4));
+						imp.say(  0, "| " + StringFunctions.strZero(rs.getString(2), 2) + "/" + StringFunctions.strZero(rs.getString(1), 4));
 						imp.say( 10, "| " + Funcoes.strDecimalToStrCurrency(15, 2, rs.getString(3)));
 						imp.say( 28, "| " + Funcoes.strDecimalToStrCurrency(15, 2, rs.getString(4)));
 						imp.say( 46, "| " + Funcoes.strDecimalToStrCurrency(15, 2, rs.getString(5)));
@@ -331,7 +331,7 @@ public class FRImpServ extends FRelatorio {
 	private void impTotMes(ImprimeOS imp) {
 
 		imp.pulaLinha( 1, imp.comprimido());
-		imp.say(  0, "|" + Funcoes.replicate("-", 133) + "|");
+		imp.say(  0, "|" + StringFunctions.replicate("-", 133) + "|");
 		imp.pulaLinha( 1, imp.comprimido());
 		imp.say(  0, "|");
 		imp.say( 24, "TOTAIS DO MES");

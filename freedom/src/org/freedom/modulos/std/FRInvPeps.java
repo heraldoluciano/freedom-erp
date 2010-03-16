@@ -21,7 +21,6 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +38,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -272,7 +273,7 @@ public class FRInvPeps extends FRelatorio {
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
   					imp.incPags();
   					imp.eject();
 
@@ -280,7 +281,7 @@ public class FRInvPeps extends FRelatorio {
 	  			if (imp.pRow()==0) {	  				
 	  				imp.impCab(136, true);
 /*	  					  				
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+					imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"| CODIGO");
 					imp.say(imp.pRow()+0,16,"| DESCRICAO ");
@@ -289,9 +290,9 @@ public class FRInvPeps extends FRelatorio {
 					imp.say(imp.pRow()+0,101,"| CUSTO TOTAL");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");*/
+					imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");*/
 					
-	  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	  				imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"| CODIGO");
 					imp.say(imp.pRow()+0,16,"| COD.FAB. ");
@@ -302,7 +303,7 @@ public class FRInvPeps extends FRelatorio {
 					imp.say(imp.pRow()+0,118,"| CUSTO TOTAL"); //15
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+					imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 	  				
 	  				
 				}
@@ -336,7 +337,7 @@ public class FRInvPeps extends FRelatorio {
   			ps.close();
 			con.commit();
 /*  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+  			imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"| TOTAL");
   			imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10));
@@ -344,10 +345,10 @@ public class FRInvPeps extends FRelatorio {
   			imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+""));
   			imp.say(imp.pRow()+0,135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");*/
+  			imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");*/
 
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+  			imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"| TOTAL");
   			imp.say(imp.pRow()+0,95,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",8));//19
@@ -355,7 +356,7 @@ public class FRInvPeps extends FRelatorio {
   			imp.say(imp.pRow()+0,119,"|"+Funcoes.strDecimalToStrCurrency(14,2,deCustoTot+""));//17
   			imp.say(imp.pRow()+0,135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
   			
   			
   			imp.eject();

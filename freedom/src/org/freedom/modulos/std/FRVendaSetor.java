@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +42,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -410,10 +411,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
 			
 			sRetorno.append( "|" );
-			sRetorno.append( Funcoes.replicate( " ", 10 ) );
+			sRetorno.append( StringFunctions.replicate( " ", 10 ) );
 		}
 
-		sRetorno.append( Funcoes.replicate( " ", 102 - sRetorno.length() ) );
+		sRetorno.append( StringFunctions.replicate( " ", 102 - sRetorno.length() ) );
 		sRetorno.append( iPassada == 0 ? "| TOTAL" : "|      " );
 
 		return sRetorno.toString();
@@ -455,12 +456,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
 			
 			sRetorno.append( "|" );
-			sRetorno.append( Funcoes.replicate( " ", 10 ) );
+			sRetorno.append( StringFunctions.replicate( " ", 10 ) );
 		}
 
-		sRetorno.append( Funcoes.replicate( " ", 102 - sRetorno.length() ) );
+		sRetorno.append( StringFunctions.replicate( " ", 102 - sRetorno.length() ) );
 		sRetorno.append( "|" );
-		sRetorno.append( ( ( iTotPassadas - 1 ) == iPassada ? Funcoes.strDecimalToStrCurrency( 11, 2, deTotal + "" ) : Funcoes.replicate( " ", 11 ) ) );
+		sRetorno.append( ( ( iTotPassadas - 1 ) == iPassada ? Funcoes.strDecimalToStrCurrency( 11, 2, deTotal + "" ) : StringFunctions.replicate( " ", 11 ) ) );
 
 		return sRetorno.toString();
 
@@ -825,13 +826,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						if ( !sCodSetorAnt.equals( "" ) ) {
 
 							for ( int iConta = iPosCol; iConta < NUM_COLUNAS; iConta++ ) {
-								imp.say( 21 + ( iConta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
+								imp.say( 21 + ( iConta * 11 ), "|" + StringFunctions.replicate( " ", 10 ) );
 							}
 
 							imp.say( 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, vItens.elementAt( i - 1 ).elementAt( POS_TOTSETOR ).toString() ) );
 							imp.say( 135, "|" );
 							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+							imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 							iLinsSetor++;
 
 							if ( imp.pRow() >= ( linPag - 1 ) ) {
@@ -846,7 +847,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 							imp.impCab( 136, true );
 							imp.say( 0, imp.comprimido() );
-							imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+							imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 							iCol = 0;
 							iPosCol = 0;
 
@@ -866,7 +867,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 										imp.say( imp.pRow(), 21, getTotSetor( vTotSetor, iTotPassadas, iPassada ) );
 										imp.say( imp.pRow(), 135, "|" );
 										imp.pulaLinha( 1, imp.comprimido() );
-										imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+										imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 									}
 
 								}
@@ -892,7 +893,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 								imp.pulaLinha( 1, imp.comprimido() );
 
 								if ( iPassada == 0 ) {
-									imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+									imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 									imp.pulaLinha( 1, imp.comprimido() );
 									imp.say( imp.pRow(), 0, "|MES" );
 									imp.say( imp.pRow(), 9, "|GRUPO" );
@@ -907,7 +908,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 							}
 
 							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+							imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 							iLinsSetor = 0;
 
 						}
@@ -936,7 +937,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					if ( iCol >= NUM_COLUNAS && iPosCol < iPosColAnt ) { // Para fechar as colunas na linha atual
 
 						for ( int iAjusta = iPosColAnt; iAjusta < NUM_COLUNAS; iAjusta++ ) {
-							imp.say( imp.pRow(), 21 + ( iAjusta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
+							imp.say( imp.pRow(), 21 + ( iAjusta * 11 ), "|" + StringFunctions.replicate( " ", 10 ) );
 						}
 
 						iPosColAnt = 0;
@@ -948,7 +949,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					}
 
 					for ( int iAjusta = iPosColAnt; iAjusta < iPosCol; iAjusta++ ) {
-						imp.say( imp.pRow(), 21 + ( iAjusta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
+						imp.say( imp.pRow(), 21 + ( iAjusta * 11 ), "|" + StringFunctions.replicate( " ", 10 ) );
 					}
 
 					imp.say( imp.pRow(), 21 + ( iPosCol * 11 ), "|" + Funcoes.strDecimalToStrCurrency( 10, 2, vItem.elementAt( POS_VALOR ) + "" ) );
@@ -974,13 +975,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 							imp.say( imp.pRow(), 0, "|" );
 						}
 
-						imp.say( imp.pRow(), 21 + ( iPosCol * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
+						imp.say( imp.pRow(), 21 + ( iPosCol * 11 ), "|" + StringFunctions.replicate( " ", 10 ) );
 						iPosCol++;
 
 					}
 
 					for ( int iConta = iPosCol; iConta < NUM_COLUNAS; iConta++ ) {
-						imp.say( imp.pRow(), 21 + ( iConta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
+						imp.say( imp.pRow(), 21 + ( iConta * 11 ), "|" + StringFunctions.replicate( " ", 10 ) );
 					}
 
 					imp.say( imp.pRow(), 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, vItens.elementAt( iPos ).elementAt( POS_TOTSETOR ).toString() ) );
@@ -995,7 +996,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					if ( iLinsSetor > 1 ) {
 
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+						imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 						iTotPassadas = getPassadas( vTotSetor.size() );
 
@@ -1010,7 +1011,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 					// Total Geral
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "| TOTAL" );
 					imp.say( imp.pRow(), 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, deTotalGeral + "" ) );
@@ -1021,7 +1022,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				// Fim da impressão do total por setor
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+				imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 				imp.eject();
 				imp.fechaGravacao();
@@ -1308,7 +1309,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 					}
@@ -1322,7 +1323,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 						imp.say( 136, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 1, "| DESCRICAO DO PRODUTO" );
 						imp.say( 55, "| CODIGO" );
@@ -1331,7 +1332,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( 99, "|" );
 						imp.say( 136, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 					}
 
@@ -1351,14 +1352,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				// Fim da impressão do total por setor
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 1, "| TOTAL" );
 				imp.say( 67, "| " + Funcoes.strDecimalToStrCurrency( 11, 2, String.valueOf( deQtdTotal ) ) );
 				imp.say( 81, "| " + Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( deVlrTotal ) ) + " |" );
 				imp.say( 136, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 				imp.eject();
 				imp.fechaGravacao();
@@ -1642,7 +1643,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 					}
@@ -1655,7 +1656,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( 40, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() + " - Ordem: " + sDescOrdemRel );
 						imp.say( 136, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 1, "| RAZAO SOCIAL" );
 						imp.say( 55, "| CODIGO" );
@@ -1664,7 +1665,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( 99, "|" );
 						imp.say( 136, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 					}
 
@@ -1678,7 +1679,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 							sCab = "SUB-TOTAL " + sDescTipoCliAnt.trim() + ":";
 
 							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+							imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 							imp.pulaLinha( 1, imp.comprimido() );
 							imp.say( 1, "|" );
 							imp.say( 3, sCab );
@@ -1686,7 +1687,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 							imp.say( 81, "| " + Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( deVlrSubTotal ) ) + " |" );
 							imp.say( 136, "|" );
 							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( imp.pRow(), 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+							imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 							deVlrSubTotal = 0;
 							deQtdSubTotal = 0;
 
@@ -1699,7 +1700,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( ( ( 136 - sCab.length() ) / 2 ), sCab );
 						imp.say( 136, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 					}
 
@@ -1723,7 +1724,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sCab = "SUB-TOTAL " + sDescTipoCliAnt.trim() + ":";
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+				imp.say( 1, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 1, "|" );
 				imp.say( 3, sCab );
@@ -1732,7 +1733,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				imp.say( 136, "|" );
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+				imp.say( 1, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 1, "| TOTAL" );
 				imp.say( 68, "| " + Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( deQtdTotal ) ) );
@@ -1740,7 +1741,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				imp.say( 136, "|" );
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+				imp.say( 1, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 				imp.eject();
 				imp.fechaGravacao();

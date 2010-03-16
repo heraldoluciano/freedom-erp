@@ -29,10 +29,11 @@ import java.sql.SQLException;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
@@ -137,7 +138,7 @@ public class FSetor extends FDados implements ActionListener{
 				imp.say(imp.pRow(), 2, "Código");
 				imp.say(imp.pRow(), 30, "Descrição");
 				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-				imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+				imp.say(imp.pRow(), 0, StringFunctions.replicate("-",79));
 			}
 			imp.say(imp.pRow() + 1, 0, imp.normal());
 			imp.say(imp.pRow(), 2, rs.getString("Codsetor"));
@@ -145,14 +146,14 @@ public class FSetor extends FDados implements ActionListener{
 			
 			if (imp.pRow()>=linPag) {
 				imp.say(imp.pRow() + 1, 0, imp.normal());
-				imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+				imp.say(imp.pRow(), 0, StringFunctions.replicate("-",79));
 				imp.incPags();
 				imp.eject();
 			}
 		}
 		
 		imp.say(imp.pRow() + 1, 0, imp.normal());
-		imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+		imp.say(imp.pRow(), 0, StringFunctions.replicate("=",79));
 		imp.eject();      
 		imp.fechaGravacao();
 		

@@ -29,13 +29,14 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -156,7 +157,7 @@ public class FREstatAtend extends FRelatorio {
            if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) & (bFimDia)) {
            	imp.impCab(136, false);
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|");
              imp.say(imp.pRow()+0,61,"Totais do Dia-> "+sDtemitvenda+" |"+
@@ -165,7 +166,7 @@ public class FREstatAtend extends FRelatorio {
                Funcoes.strDecimalToStrCurrency(11,2,""+bTotalDiaLiq));
              imp.say(imp.pRow(),136,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
              bTotalDiaVal = new BigDecimal("0");
              bTotalDiaDesc = new BigDecimal("0");
              bTotalDiaLiq = new BigDecimal("0");
@@ -174,14 +175,14 @@ public class FREstatAtend extends FRelatorio {
 
            if (imp.pRow()>=(linPag-1)) {
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
              imp.incPags();
              imp.eject();
            }
 
            if (imp.pRow()==0) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+            imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",134)+"+");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
             imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
@@ -194,7 +195,7 @@ public class FREstatAtend extends FRelatorio {
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,136,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"| Dt. Emissao");
             imp.say(imp.pRow()+0,17,"NF./Ped.");
@@ -203,7 +204,7 @@ public class FREstatAtend extends FRelatorio {
                  "   Liquido F.Pagto.");
             imp.say(imp.pRow()+0,136,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
            }
          
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -247,7 +248,7 @@ public class FREstatAtend extends FRelatorio {
 
        if (bFimDia) {
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,61,"Totais do Dia-> "+sDtemitvenda+" |"+
@@ -258,7 +259,7 @@ public class FREstatAtend extends FRelatorio {
        }
       
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+        imp.say(imp.pRow(),0,"|"+StringFunctions.replicate("-",134)+"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|");
         imp.say(imp.pRow()+0,72,"Totais Geral    |"+
@@ -268,7 +269,7 @@ public class FREstatAtend extends FRelatorio {
         imp.say(imp.pRow(),136,"|");
 
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+        imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
       
      }
      else if (rgFormato.getVlrString().equals("R")){
@@ -277,13 +278,13 @@ public class FREstatAtend extends FRelatorio {
       	while (rs.next()) {
       		if (imp.pRow()>=(linPag-1)) {
       			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
       			imp.incPags();
       			imp.eject();
       		}
       		if (imp.pRow()==0) {
       			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      			imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",134)+"+");
       			imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
       			imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
@@ -292,7 +293,7 @@ public class FREstatAtend extends FRelatorio {
       			imp.say(imp.pRow()+0,0,"|");
       			imp.say(imp.pRow()+0,5,"RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
       			imp.say(imp.pRow()+0,136,"|");
-      			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",134)+"|");
       		    imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			imp.say(imp.pRow()+0,0,"|  Data");
       			imp.say(imp.pRow()+0,14,"        Valor");
@@ -303,7 +304,7 @@ public class FREstatAtend extends FRelatorio {
       			imp.say(imp.pRow()+0,105,"|  Data");
       			imp.say(imp.pRow()+0,119,"       Valor");
       			imp.say(imp.pRow()+0,136,"|");
-      			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",134)+"|");
       			
       			      			
       			
@@ -336,12 +337,12 @@ public class FREstatAtend extends FRelatorio {
       if ( (iCol<105) && (iLinha==0) ) {
         	imp.say(imp.pRow()+0,136,"|");
       }
-      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+1,0,"+"+StringFunctions.replicate("-",134)+"+");
       imp.say(imp.pRow()+1,0,"|");
       imp.say(imp.pRow()+0,88,"| Total Geral do Período   | "+
       			Funcoes.strDecimalToStrCurrency(11,2,""+bTotalLiq));
       imp.say(imp.pRow(),136,"|");
-      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+1,0,"+"+StringFunctions.replicate("-",134)+"+");
     
       imp.eject();
       

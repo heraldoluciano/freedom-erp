@@ -28,14 +28,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -247,7 +247,7 @@ public class FRPisCofins extends FRelatorio {
 				while ( rs.next() ) {
 					if (imp.pRow()>=(linPag-1)) {
 						imp.say(imp.pRow() + 1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
+						imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("-",133) + "+");
 						imp.incPags();
 						imp.eject();
 					}
@@ -258,7 +258,7 @@ public class FRPisCofins extends FRelatorio {
 						imp.say(imp.pRow(), 49, "PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
 						imp.say(imp.pRow(),136, "|");
 						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow(), 1, "|" + Funcoes.replicate("-",133) + "|");
+						imp.say(imp.pRow(), 1, "|" + StringFunctions.replicate("-",133) + "|");
 						imp.say(imp.pRow()+1,0, imp.comprimido());
 						imp.say(imp.pRow(), 1, "| DESCRICAO DO PRODUTO");
 						imp.say(imp.pRow(), 60, "| CODIGO NBM");
@@ -266,7 +266,7 @@ public class FRPisCofins extends FRelatorio {
 						imp.say(imp.pRow(),109, "| SAIDAS");
 						imp.say(imp.pRow(),136, "|");
 						imp.say(imp.pRow()+1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 1, "|" + Funcoes.replicate("-",133) + "|");							
+						imp.say(imp.pRow(), 1, "|" + StringFunctions.replicate("-",133) + "|");							
 					}
 					if ( (sSemMov.equals("N")) || ( rs.getDouble(3)!=0 ) || ( rs.getDouble(4)!=0 ) )  {
 						imp.say(imp.pRow()+1,0, imp.comprimido());
@@ -283,14 +283,14 @@ public class FRPisCofins extends FRelatorio {
 				// Fim da impressão do total por setor
 				
 				imp.say(imp.pRow()+1, 0, imp.comprimido());
-				imp.say(imp.pRow(), 1, "|" + Funcoes.replicate("=",133) + "|");
+				imp.say(imp.pRow(), 1, "|" + StringFunctions.replicate("=",133) + "|");
 				imp.say(imp.pRow()+1,0, imp.comprimido());
 				imp.say(imp.pRow(), 1, "| TOTAL");
 				imp.say(imp.pRow(), 89, "| " + Funcoes.strDecimalToStrCurrency(10,2,deVlrEntradas+""));
 				imp.say(imp.pRow(),109, "| " + Funcoes.strDecimalToStrCurrency(15,2,deVlrSaidas+""));
 				imp.say(imp.pRow(),136, "|");							
 				imp.say(imp.pRow()+1,0, imp.comprimido());
-				imp.say(imp.pRow(), 1, "+" + Funcoes.replicate("=",133) + "+");				
+				imp.say(imp.pRow(), 1, "+" + StringFunctions.replicate("=",133) + "+");				
 				imp.eject();
 				imp.fechaGravacao();
 

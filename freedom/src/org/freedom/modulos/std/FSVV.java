@@ -51,6 +51,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -447,7 +448,7 @@ public class FSVV extends FFilho implements ActionListener {
 				tab.setValor(Funcoes.strDecimalToStrCurrency(14,2, (rs.getFloat(8)*ftFatConv)+"" ).trim(),i,8); //A quantidade também precisa de ","
 				tab.setValor(Funcoes.strDecimalToStrCurrency(18,2,rs.getString(9)).trim(),i,9);
 				tab.setValor(""+(new BigDecimal(rs.getDouble(10)/(rs.getDouble(9) != 0 ? rs.getDouble(9) : 1))).setScale(0,BigDecimal.ROUND_HALF_UP).intValue(),i,10);
-				tab.setValor(verifErro('B',Funcoes.strZero(rs.getString("CodTipoCli"),2),sIdentC+"[Cat. Cliente]",null),i,11);
+				tab.setValor(verifErro('B',StringFunctions.strZero(rs.getString("CodTipoCli"),2),sIdentC+"[Cat. Cliente]",null),i,11);
 				tab.setValor(verifErro('C',rs.getString("CidCli"),sIdentC+"[Cidade]",sTipoMov),i,12);
 				tab.setValor(verifErro('D',rs.getString("UfCli"),sIdentC+"[UF]",sTipoMov),i,13);
 				tab.setValor(verifErro('E',rs.getString("CepCli"),sIdentC+"[CEP]",sTipoMov),i,14);
@@ -544,7 +545,7 @@ public class FSVV extends FFilho implements ActionListener {
 		pbAnd.setMaximum(tab.getNumLinhas());
 		pbAnd.setValue(iAnd);
 		lbAnd.setText("Iniciando...");
-		File fArq = new File("m"+Funcoes.strZero(sInfoEmp[3],6)+".txt");
+		File fArq = new File("m"+StringFunctions.strZero(sInfoEmp[3],6)+".txt");
 		if (fArq.exists())
 			fArq.delete();
 		try {
@@ -552,7 +553,7 @@ public class FSVV extends FFilho implements ActionListener {
 				PrintStream pst = new PrintStream(new FileOutputStream(fArq));
 				lbAnd.setText("Gravando vendas...");
 				pst.print(
-						"60;"+Funcoes.strZero(sInfoEmp[3],6)+";"+
+						"60;"+StringFunctions.strZero(sInfoEmp[3],6)+";"+
 						Funcoes.dateToStrDate(new Date()).replaceAll("/","")+";"+
 						txtDataini.getVlrString().replaceAll("/","")+";"+
 						txtDatafim.getVlrString().replaceAll("/","")+CRLF);

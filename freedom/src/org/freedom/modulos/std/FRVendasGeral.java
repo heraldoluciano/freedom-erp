@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,6 +45,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -300,14 +301,14 @@ public class FRVendasGeral extends FRelatorio {
 				
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( imp.pRow(), 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|Dt.Saida" );
 					imp.say( imp.pRow(), 12, "| NF./Ped." );
@@ -319,7 +320,7 @@ public class FRVendasGeral extends FRelatorio {
 					imp.say( imp.pRow(), 119, "| F.Pagto." );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
@@ -362,7 +363,7 @@ public class FRVendasGeral extends FRelatorio {
 			}
 
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
 			imp.say( imp.pRow(), 100, "Total Geral:");
@@ -384,7 +385,7 @@ public class FRVendasGeral extends FRelatorio {
 			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalLiq ));
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();

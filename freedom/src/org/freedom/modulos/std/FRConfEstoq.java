@@ -30,13 +30,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -138,7 +138,7 @@ public class FRConfEstoq extends FRelatorio {
 				while ( rs.next() ) {
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 
@@ -150,7 +150,7 @@ public class FRConfEstoq extends FRelatorio {
 						imp.impCab( 136, true );
 
 						imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "| DESCRICAO DO PRODUTO" );
 						imp.say( imp.pRow() + 0, 32, "| CODIGO" );
@@ -165,7 +165,7 @@ public class FRConfEstoq extends FRelatorio {
 						imp.say( imp.pRow() + 0, 124, "| DIF.SD." );
 						imp.say( imp.pRow() + 0, 135, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 					}
 
@@ -203,7 +203,7 @@ public class FRConfEstoq extends FRelatorio {
 				// Fim da impressão do total por setor
 
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 				imp.eject();
 				imp.fechaGravacao();
@@ -278,7 +278,7 @@ public class FRConfEstoq extends FRelatorio {
 				while ( rs.next() ) {
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 
@@ -293,7 +293,7 @@ public class FRConfEstoq extends FRelatorio {
 						imp.say( imp.pRow() + 0, 0, "|" );
 						imp.say( imp.pRow() + 0, 135, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "| DESCRICAO" );
 						imp.say( imp.pRow() + 0, 35, "| CODIGO" );
@@ -308,7 +308,7 @@ public class FRConfEstoq extends FRelatorio {
 						imp.say( imp.pRow() + 0, 124, "| DIF.SD." );
 						imp.say( imp.pRow() + 0, 135, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 					}
 
@@ -338,7 +338,7 @@ public class FRConfEstoq extends FRelatorio {
 				// Fim da impressão do total por setor
 
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 1, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( imp.pRow() + 0, 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 				imp.eject();
 				imp.fechaGravacao();

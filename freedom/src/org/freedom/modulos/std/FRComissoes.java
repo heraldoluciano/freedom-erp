@@ -29,7 +29,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,16 +41,17 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -380,7 +380,7 @@ public class FRComissoes extends FRelatorio {
 				if (imp.pRow() >= (linPag - 1)) {
 						
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("-", 133) + "|");
 					imp.incPags();		
 					imp.eject();
 						
@@ -393,15 +393,15 @@ public class FRComissoes extends FRelatorio {
 				
 					String sVendedor = "COMISSIONADO: " + iCodVend + " - " + txtDescVend.getVlrString();
 							
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|");
 					imp.say(imp.pRow() + 0, (135 - sVendedor.length()) / 2,sVendedor);
 					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());					
 						
 					
@@ -438,7 +438,7 @@ public class FRComissoes extends FRelatorio {
 					
 					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("-", 133) + "|");
 
 				}
 			
@@ -496,7 +496,7 @@ public class FRComissoes extends FRelatorio {
 			}
 			
 			imp.say(imp.pRow() + ((hasData) ? 1 : 0), 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+			imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			
 			if (cbResumido.getStatus()) 	{				
@@ -524,7 +524,7 @@ public class FRComissoes extends FRelatorio {
 					
 			imp.say(imp.pRow(), 135, "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 0, 0, "+" + StringFunctions.replicate("=", 133) + "+");
 
 			imp.eject();
 
