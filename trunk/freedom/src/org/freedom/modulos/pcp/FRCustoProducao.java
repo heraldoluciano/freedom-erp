@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.pcp;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
@@ -38,6 +37,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -142,7 +143,7 @@ public class FRCustoProducao extends FRelatorio {
 		String sCpCodigo = null;
 		String sCodMarca = null;
 		String sCodGrup = null;
-		String sLinhaFina = Funcoes.replicate("-",133);
+		String sLinhaFina = StringFunctions.replicate("-",133);
 		int iCodAlmox = 0;
 		int linPag = 0;
 		BigDecimal bdCustoTot = new BigDecimal("0");

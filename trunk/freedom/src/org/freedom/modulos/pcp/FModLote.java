@@ -45,6 +45,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDados;
 
@@ -119,7 +120,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private void adicionaCampo() {
 		
 		int iTam = Integer.parseInt( vTamanhos.elementAt( cbCampos.getSelectedIndex() ).toString() );
-		txaModLote.insert( "[" + cbCampos.getVlrString() + Funcoes.replicate( "-", iTam ) + "]", txaModLote.getCaretPosition() );
+		txaModLote.insert( "[" + cbCampos.getVlrString() + StringFunctions.replicate( "-", iTam ) + "]", txaModLote.getCaretPosition() );
 	}
 
 	private void imprimir( boolean bVisualizar ) {

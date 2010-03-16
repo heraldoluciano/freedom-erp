@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +53,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -565,7 +566,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 						if ( imp.pRow() == 0 ) {
 							imp.impCab( 136, true );
 							imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 							imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
 							imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
 							imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
@@ -578,7 +579,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 						}
 
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "CodProd" ) );
 						imp.say( imp.pRow() + 0, 13, "| " + rs.getString( "DescProd" ).substring( 0, 34 ) );
@@ -592,13 +593,13 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 						if ( imp.pRow() >= linPag ) {
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+							imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 							imp.incPags();
 							imp.eject();
 						}
 					}
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 					imp.eject();
 					imp.fechaGravacao();
@@ -634,14 +635,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 						if ( imp.pRow() >= linPag ) {
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+							imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 							imp.incPags();
 							imp.eject();
 						}
 						if ( imp.pRow() == 0 ) {
 							imp.impCab( 136, true );
 							imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( " ", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( " ", 133 ) + "|" );
 						}
 						if ( (!sCodProd.equals( rs.getString( 1 ) )) || (seqest!=rs.getInt( "SEQEST" )) ) {
 							cont = 0;
@@ -650,7 +651,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 						}
 						if ( sCodProd.equals( rs.getString( 1 ) ) && cont == 0 ) {
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 							imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
 							imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
 							imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
@@ -661,7 +662,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 							imp.say( imp.pRow() + 0, 121, "| Valid" );
 							imp.say( imp.pRow() + 0, 135, "|" );
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 							imp.say( imp.pRow() + 0, 0, "| " + rs.getString( 1 ) );
@@ -674,7 +675,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 							imp.say( imp.pRow() + 0, 121, "| " + rs.getString( 8 ) + " Dias" );
 							imp.say( imp.pRow() + 0, 135, "|" );
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 							imp.say( imp.pRow() + 1, 0, "| Item" );
 							imp.say( imp.pRow() + 0, 8, "| Cod.prod" );
 							imp.say( imp.pRow() + 0, 20, "| Descrição do produto" );
@@ -684,7 +685,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 							imp.say( imp.pRow() + 0, 123, "| Auto Rma" );
 							imp.say( imp.pRow() + 0, 135, "|" );
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 							cont++;
 						}
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
@@ -698,7 +699,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 						imp.say( imp.pRow() + 0, 135, "|" );
 					}
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 					imp.eject();
 					imp.fechaGravacao();
