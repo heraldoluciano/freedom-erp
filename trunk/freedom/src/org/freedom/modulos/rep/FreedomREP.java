@@ -116,14 +116,8 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		
 		ajustaMenu();
 
-		sNomeModulo = "Representação";
-		sMailSuporte = "suporte@stpinf.com";
-		sNomeSis = "Freedom";
-		sEmpSis = "Setpoint Informática Ltda.";
-		vEquipeSis.add( "Robson Sanchez - Supervisão/Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão/Desenvolvimento" );
-		vEquipeSis.add( "Alex Rodrigues - Desenvolvimento" );
-		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
+		nomemodulo = "Representação";
+			
 
 	}
 
