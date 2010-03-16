@@ -22,7 +22,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Classe de funções de tratamento de texto.
+ * Classe de funções para tratamento de texto.
  */
 
 package org.freedom.infra.functions;
@@ -66,6 +66,47 @@ public final class StringFunctions {
 			}
 		}
 		return sResult;
+	}
+	
+	public static String replicate(String text, int times) {
+
+		StringBuffer ret = new StringBuffer("");
+		
+		try {
+			for (int i = 0; i < times; i++) {
+				ret.append(text);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret.toString();
+		
+	}
+	
+	public static String strZero(String text, int times) {
+		
+		String ret = null;
+		
+		try {
+			if( text.length() > times ) {
+				return text.substring(0, times);
+			}
+			if (text == null) {
+				ret = replicate("0", times);
+			} 
+			else {	
+				ret = replicate("0", times - text.trim().length());
+				ret += text.trim();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
 	}
 
 	
