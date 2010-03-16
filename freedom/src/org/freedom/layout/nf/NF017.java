@@ -26,6 +26,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF017 extends Layout {
@@ -65,9 +66,9 @@ public class NF017 extends Layout {
 		try {
 			imp.limpaPags();
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" + 
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" + 
-					Funcoes.strZero( String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" + 
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" + 
+					StringFunctions.strZero( String.valueOf(cHora.get(Calendar.SECOND)),2);
 
 			vMens.clear();
 			
@@ -79,7 +80,7 @@ public class NF017 extends Layout {
 			if (iNumNota==0)
 				sNumNota = "000000";
 			else
-				sNumNota = Funcoes.strZero(String.valueOf(iNumNota),6);
+				sNumNota = StringFunctions.strZero(String.valueOf(iNumNota),6);
 			
 			for (int i=0; i<2; i++) {
 				if (bFat) {
@@ -164,7 +165,7 @@ public class NF017 extends Layout {
 						}
 					}
 					if (iLinha==vMens.size()) {
-						vMens.add(new String[] {Funcoes.replicate("*",iContaMens++),sTmp});
+						vMens.add(new String[] {StringFunctions.replicate("*",iContaMens++),sTmp});
 						sDescAdic += " " +vMens.elementAt(iLinha)[0];
 					}				 	 
 				}

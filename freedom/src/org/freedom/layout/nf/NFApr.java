@@ -27,6 +27,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.telas.Aplicativo;
 
@@ -61,9 +62,9 @@ public class NFApr extends Leiaute {
 		
 		try {
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
 	
 			for (int i=0; i<5; i++) {
 				if (bFat) {
@@ -94,7 +95,7 @@ public class NFApr extends Leiaute {
 					if (iNumNota == 0)
 						sNumNota = "0000000000";
 					else
-						sNumNota = Funcoes.strZero(""+iNumNota,10);
+						sNumNota = StringFunctions.strZero(""+iNumNota,10);
 					bNat = false;
 					
 				}
@@ -266,7 +267,7 @@ public class NFApr extends Leiaute {
 					imp.pulaLinha(0, imp.comprimido());
 					//imp.say(  2, "FORMA DE PAGAMENTO : "+rs.getString("DescPlanoPag"));
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  2, "PEDIDO No.: "+Funcoes.strZero(""+rs.getInt("CodVenda"),8));
+					imp.say(  2, "PEDIDO No.: "+StringFunctions.strZero(""+rs.getInt("CodVenda"),8));
 					
 					if (iNumPares>0)
 						imp.say(  2, "Numero de Pares: " + iNumPares);

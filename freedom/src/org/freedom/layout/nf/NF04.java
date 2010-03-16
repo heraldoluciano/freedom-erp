@@ -25,6 +25,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF04 extends Layout {
@@ -118,7 +119,7 @@ public class NF04 extends Layout {
 					else
 						imp.say( 95, "X");
 					
-					imp.say(128, Funcoes.strZero(String.valueOf(iNumNota),6));
+					imp.say(128, StringFunctions.strZero(String.valueOf(iNumNota),6));
 					imp.pulaLinha( 3, imp.comprimido());
 					imp.say(  6, sNat[0]);
 					imp.say( 51, sNat[1]);
@@ -190,7 +191,7 @@ public class NF04 extends Layout {
 						}
 					}				
 					if (i == vMensT1.size()) {
-						vMensT1.add(new String[] {Funcoes.replicate("*",iContaAst++),sTmp});
+						vMensT1.add(new String[] {StringFunctions.replicate("*",iContaAst++),sTmp});
 						sDescAdic += " "+((String[])vMensT1.elementAt(i))[0];
 						vMens.add(((String[])vMensT1.elementAt(i))[0] + " - " +((String[])vMensT1.elementAt(i))[1]);
 					}
@@ -328,7 +329,7 @@ public class NF04 extends Layout {
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say(  4, sMatObs[4]);
 					imp.pulaLinha( 5, imp.comprimido());
-					imp.say( 128, Funcoes.strZero(String.valueOf(iNumNota),6));
+					imp.say( 128, StringFunctions.strZero(String.valueOf(iNumNota),6));
 					   
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());
 					

@@ -26,6 +26,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF060 extends Layout {
@@ -86,7 +87,7 @@ public class NF060 extends Layout {
 			for ( int i = 0; i < 6; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
-						sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
+						sDuplics[ i ] = StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
 						sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
 						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getBigDecimal( NF.C_VLRPARC ) ) );
 					}
@@ -142,7 +143,7 @@ public class NF060 extends Layout {
 						imp.say( 48, "X" );
 					}
 
-					imp.say( 65, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 65, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( 3, imp.normal() + imp.comprimido() );
 					imp.say( 30, cab.getString( NF.C_ENDFILIAL ).trim() + "," + cab.getString( NF.C_NUMFILIAL ) + " - " + 
@@ -405,7 +406,7 @@ public class NF060 extends Layout {
 					
 						imp.say( 5, frete.getString( NF.C_RAZTRANSP )!=null ? 
 								(frete.getString( NF.C_RAZTRANSP ).trim() + " - " + 
-								 "(" + Funcoes.strZero( frete.getString(NF.C_DDDTRANSP), 4 ) + ")" +
+								 "(" + StringFunctions.strZero( frete.getString(NF.C_DDDTRANSP), 4 ) + ")" +
 								 Funcoes.setMascara( frete.getString(NF.C_FONETRANSP).trim(), "####-####" )) : "" );
 						imp.say( 88, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
 						imp.say( 95, frete.getString( NF.C_PLACAFRETE ) );
@@ -485,7 +486,7 @@ public class NF060 extends Layout {
 					// Imprime canhoto
 
 					imp.pulaLinha( 6, imp.normal() + imp.comprimido() + imp.expandido() );
-					imp.say( 66, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 66, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.normal() + imp.comprimido() );
 					imp.setPrc( 0, 0 );

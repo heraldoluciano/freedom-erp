@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFNBim extends Leiaute {
@@ -55,7 +56,7 @@ public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
 	bigSomaServ = new BigDecimal(0);
 	//	String[] sMarcs = {"\"","\"\"","\"\"\"","\"\"\"\""}; //Tipos de Marcs. 
 //	String[] sMarcs2 = {"*","**","***","****"}; //Tipos de Marcs.
-	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+	String sHora = StringFunctions.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.SECOND),2);
     try {
       imp.limpaPags();
       boolean bNat = true;
@@ -69,7 +70,7 @@ public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
             sNumNota = "000000";
          } 
          else {
-            sNumNota = Funcoes.strZero(""+iNumNota,6);
+            sNumNota = StringFunctions.strZero(""+iNumNota,6);
          }
          for (int i=0; i<4; i++) {
            if (bFat) {

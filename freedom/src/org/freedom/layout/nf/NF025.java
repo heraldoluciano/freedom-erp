@@ -29,6 +29,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF025 extends Layout {
@@ -119,7 +120,7 @@ public class NF025 extends Layout {
 						imp.say( 49, "X" );
 					}
 
-					imp.say( 73, Funcoes.strZero( String.valueOf( iNumNota ), 7 ) );
+					imp.say( 73, StringFunctions.strZero( String.valueOf( iNumNota ), 7 ) );
 					imp.pulaLinha( 5, imp.comprimido() );
 					imp.say( 0, sNat[ 0 ] );
 					imp.say( 43, sNat[ 1 ] );
@@ -316,7 +317,7 @@ public class NF025 extends Layout {
 					// Imprime canhoto ...
 
 					imp.pulaLinha( 5, imp.normal() );
-					imp.say( 73, Funcoes.strZero( String.valueOf( iNumNota ), 7 ) );
+					imp.say( 73, StringFunctions.strZero( String.valueOf( iNumNota ), 7 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );

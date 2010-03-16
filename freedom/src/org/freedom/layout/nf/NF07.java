@@ -26,6 +26,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.telas.Aplicativo;
 
@@ -131,7 +132,7 @@ public class NF07 extends Layout {
 					else
 						imp.say( 88, "X");
 
-					imp.say( 130, Funcoes.strZero(String.valueOf(iNumNota),6) );
+					imp.say( 130, StringFunctions.strZero(String.valueOf(iNumNota),6) );
 					imp.pulaLinha( 5, imp.comprimido());
 					imp.say(  2, sNat[0]);
 					imp.say( 37, sNat[1]);
@@ -370,7 +371,7 @@ public class NF07 extends Layout {
 					imp.pulaLinha( 6, imp.comprimido());
 					imp.say( 31, Funcoes.copy(cab.getString(NF.C_RAZEMIT),40) );
 					imp.say( 73, Funcoes.copy(cab.getString(NF.C_NOMEEMIT),40) );
-					imp.say(130, Funcoes.strZero(String.valueOf(iNumNota),6) );
+					imp.say(130, StringFunctions.strZero(String.valueOf(iNumNota),6) );
 					
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());					
 					imp.setPrc(0,0);

@@ -27,6 +27,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF006 extends Layout {
@@ -129,7 +130,7 @@ public class NF006 extends Layout {
 						imp.say( 93, "X" );
 					}
 
-					imp.say( 123, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 123, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 2, sNat[ 0 ] );
@@ -158,7 +159,7 @@ public class NF006 extends Layout {
 					// Imprime dados da fatura
 
 					imp.pulaLinha( 3, imp.comprimido() );
-					imp.say( 4, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 4, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 					imp.say( 24, sVencs[ 0 ] );
 					imp.say( 38, sVals[ 0 ] );
 					imp.say( 64, sVencs[ 1 ] );
@@ -427,7 +428,7 @@ public class NF006 extends Layout {
 					// Imprime canhoto
 
 					imp.say( imp.pRow()+1, 0, imp.comprimido() );
-					imp.say( 128, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );

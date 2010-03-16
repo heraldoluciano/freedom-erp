@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFBuzzi extends Leiaute {
@@ -63,9 +64,9 @@ public class NFBuzzi extends Leiaute {
 			
 			imp.limpaPags();
 			
-			sHora = Funcoes.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
-					Funcoes.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
+			sHora = StringFunctions.strZero(String.valueOf(cHora.get(Calendar.HOUR_OF_DAY)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.MINUTE)),2) + ":" +
+					StringFunctions.strZero(String.valueOf(cHora.get(Calendar.SECOND)),2);
 
 			vClfisc.addElement("");
 			
@@ -76,7 +77,7 @@ public class NFBuzzi extends Leiaute {
 				if (iNumNota == 0)
 					sNumNota = "000000";
 				else
-					sNumNota = Funcoes.strZero(String.valueOf(iNumNota),6);
+					sNumNota = StringFunctions.strZero(String.valueOf(iNumNota),6);
 
 				for (int i=0; i<6; i++) {
 					if (bFat) {
@@ -245,9 +246,9 @@ public class NFBuzzi extends Leiaute {
 					vValores.addElement(rs.getString("CodVend"));//25
 					
 					if (rs.getString("NomeVend")==null)					
-						vValores.addElement(Funcoes.replicate(" ",25)); // 26
+						vValores.addElement(StringFunctions.replicate(" ",25)); // 26
 					else 
-						vValores.addElement(rs.getString("NomeVend") + Funcoes.replicate(" ",25-rs.getString("NomeVend").length()));
+						vValores.addElement(rs.getString("NomeVend") + StringFunctions.replicate(" ",25-rs.getString("NomeVend").length()));
 					
 					bTotalizou = true;
 					

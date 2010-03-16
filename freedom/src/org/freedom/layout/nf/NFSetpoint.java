@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFSetpoint extends Leiaute {
@@ -39,7 +40,7 @@ public class NFSetpoint extends Leiaute {
           imp.say(imp.pRow()+8,0,imp.comprimido());
           imp.say(imp.pRow(),25,Funcoes.copy(rs.getString("CODCLI"),0,6)+"-"+Funcoes.copy(rs.getString("RAZCLI"),0,40));
           imp.say(imp.pRow(),93,Funcoes.copy(rs.getString("CODVEND"),0,4)+"-"+Funcoes.copy(rs.getString("NomeVend"),0,30));
-          imp.say(imp.pRow()+1,91,Funcoes.strZero(rs.getString("CodVenda"),8));
+          imp.say(imp.pRow()+1,91,StringFunctions.strZero(rs.getString("CodVenda"),8));
           imp.say(imp.pRow()+2,22,Funcoes.copy(rs.getString("ENDCLI"),0,30));
           imp.say(imp.pRow()+1,101,Funcoes.copy(rs.getString("DescPlanoPag"),0,30));
           imp.say(imp.pRow()+2,22,Funcoes.copy(rs.getString("CIDCLI"),0,30));

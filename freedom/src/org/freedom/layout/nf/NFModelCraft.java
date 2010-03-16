@@ -24,10 +24,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFModelCraft extends Leiaute {
@@ -51,7 +53,7 @@ public class NFModelCraft extends Leiaute {
     String[] sVals = new String[4];
     String[] sDuplics = new String[4];
 	String[] sMatObs = null;
-	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+	String sHora = StringFunctions.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.SECOND),2);
 	vClfiscal = new Vector<String[]>();
 	String sItemCF[] = new String[2];
 	sItemCF[0] = "A";
@@ -67,7 +69,7 @@ public class NFModelCraft extends Leiaute {
             sNumNota = "000000";
          } 
          else {
-            sNumNota = Funcoes.strZero(""+iNumNota,6);
+            sNumNota = StringFunctions.strZero(""+iNumNota,6);
          }
 
          for (int i=0; i<3; i++) {

@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 
 public class NF049 extends Layout {
@@ -86,7 +87,7 @@ public class NF049 extends Layout {
 			for ( int i = 0; i < 9; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
-						sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
+						sDuplics[ i ] = StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
 						sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
 						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getBigDecimal( NF.C_VLRPARC ) ) );
 					}
@@ -142,7 +143,7 @@ public class NF049 extends Layout {
 						imp.say( 84, "X" );
 					}
 
-					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 120, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 					imp.pulaLinha( 6, imp.comprimido() );
 					imp.say( 1, sNat[ 0 ] );
 					imp.say( 43, sNat[ 1 ] );
@@ -460,7 +461,7 @@ public class NF049 extends Layout {
 //					 Fim da observação
 					
 					imp.pulaLinha( 5, imp.comprimido() );
-					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 120, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					// Imprime canhoto
 

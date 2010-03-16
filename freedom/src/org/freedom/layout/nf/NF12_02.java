@@ -25,8 +25,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
+
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NF12_02 extends Leiaute {
@@ -49,7 +51,7 @@ public class NF12_02 extends Leiaute {
 		String[] sDuplics = new String[6];
 		//    String[] sMatObs = null;       
 
-		String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+		String sHora = StringFunctions.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+StringFunctions.strZero(""+cHora.get(Calendar.SECOND),2);
 		try {
 			imp.limpaPags();
 			boolean bNat = true;
@@ -60,7 +62,7 @@ public class NF12_02 extends Leiaute {
 					sNumNota = "000000";
 				} 
 				else {
-					sNumNota = Funcoes.strZero(""+iNumNota,6);
+					sNumNota = StringFunctions.strZero(""+iNumNota,6);
 				}
 				for (int i=0; i<6; i++) {
 					if (bFat) {
@@ -250,9 +252,9 @@ public class NF12_02 extends Leiaute {
 					vValores.addElement(rs.getString("VlrIssVenda"));//24
 					vValores.addElement(rs.getString("CodVend"));//25
 					if (rs.getString("NomeVend")==null)
-						vValores.addElement(Funcoes.replicate(" ",25)); // 26
+						vValores.addElement(StringFunctions.replicate(" ",25)); // 26
 					else 
-						vValores.addElement(rs.getString("NomeVend")+Funcoes.replicate(" ",25-rs.getString("NomeVend").length()));
+						vValores.addElement(rs.getString("NomeVend")+StringFunctions.replicate(" ",25-rs.getString("NomeVend").length()));
 					bTotalizou = true;
 				} 
 
