@@ -49,6 +49,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -428,7 +429,7 @@ public class FLeFiscal extends FTabDados {
 			
 			for ( String str : aliquotas ) {
 				aliquota = str.substring( 0, 2 ) + "." + str.substring( 2 );
-				field = lcCampos.getCampo( "Aliq" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+				field = lcCampos.getCampo( "Aliq" + StringFunctions.strZero( String.valueOf( index ), 2 ) );
 				if ( field != null ) {
 					field.setVlrBigDecimal( new BigDecimal( aliquota ) );
 				}
@@ -533,7 +534,7 @@ public class FLeFiscal extends FTabDados {
 			int index = 1;
 			
 			for ( BigDecimal totalizador : totalizadores ) {
-				field = lcCampos.getCampo( "TT" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+				field = lcCampos.getCampo( "TT" + StringFunctions.strZero( String.valueOf( index ), 2 ) );
 				if ( field != null ) {
 					field.setVlrBigDecimal( totalizador );
 				}
