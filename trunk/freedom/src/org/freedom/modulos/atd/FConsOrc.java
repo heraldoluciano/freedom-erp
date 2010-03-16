@@ -52,6 +52,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
@@ -416,14 +417,14 @@ public class FConsOrc extends FFilho implements ActionListener {
 			for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( imp.pRow(), 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "| N.ORC." );
 					imp.say( imp.pRow(), 14, "|  Emissão" );
@@ -435,7 +436,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 					imp.say( imp.pRow(), 119, "| Telefone" );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 				imp.say( imp.pRow(), 0, "| " + tab.getValor( iLin, 1 ) );
@@ -449,7 +450,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 				imp.say( imp.pRow(), 135, "|" );
 			}
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.eject();
 			imp.fechaGravacao();
 

@@ -34,6 +34,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 
 public class FTipoConv extends FDados implements ActionListener {
@@ -117,7 +118,7 @@ public class FTipoConv extends FDados implements ActionListener {
 					imp.say( 2, "Código" );
 					imp.say( 25, "Descrição" );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 79 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
 					
 				}
 
@@ -128,7 +129,7 @@ public class FTipoConv extends FDados implements ActionListener {
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 79 ) );
 			imp.eject();
 
 			imp.fechaGravacao();
