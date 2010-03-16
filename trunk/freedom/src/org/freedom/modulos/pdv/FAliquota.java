@@ -42,6 +42,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
@@ -165,7 +166,7 @@ public class FAliquota extends FFDialogo {
 				
 				aliq = 
 					"T" + 
-					Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + 
+					StringFunctions.strZero( String.valueOf( i + 1 ), 2 ) + 
 					" = " + 
 					df.format( aliquota / 100 ) + " %";
 				
