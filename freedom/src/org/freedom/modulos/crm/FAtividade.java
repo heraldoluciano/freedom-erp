@@ -21,15 +21,17 @@
  */
 package org.freedom.modulos.crm;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.freedom.componentes.ListaCampos;
+
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 
 public class FAtividade extends FDados implements ActionListener {
@@ -93,7 +95,7 @@ public class FAtividade extends FDados implements ActionListener {
 					imp.say(imp.pRow(), 3, "Código");
 					imp.say(imp.pRow(), 23, "Descrição");
 					imp.say(imp.pRow()+1, 0, imp.normal());
-					imp.say(imp.pRow(), 0,Funcoes.replicate("-",79));
+					imp.say(imp.pRow(), 0,StringFunctions.replicate("-",79));
 				}
 				imp.say(imp.pRow()+1, 0, imp.normal());
 				imp.say(imp.pRow(), 3,Funcoes.alinhaDir(rs.getInt("CodAtiv"),8));
@@ -104,7 +106,7 @@ public class FAtividade extends FDados implements ActionListener {
 				}
 			}			  
 			imp.say(imp.pRow()+1, 0, imp.normal());
-			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			imp.say(imp.pRow(), 0, StringFunctions.replicate("=",79));
 			imp.eject();		  
 			imp.fechaGravacao();
 			con.commit();

@@ -51,6 +51,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
@@ -702,7 +703,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 					if ( imp.pRow() == 0 ) {
 						imp.impCab( 136, true );
 					    imp.say( imp.pRow()+1, 0, imp.comprimido() );
-					    imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					    imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					}
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" );
@@ -774,7 +775,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 						imp.say( imp.pRow(), 135, "|" );
 					}
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 
 					And.atualiza( iContaReg );
 					iContaReg++;
@@ -812,16 +813,16 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 				while ( rs.next() ) {
 					if ( imp.pRow() == 0 ) {
 						imp.impCab( 136, true );
-						imp.say( imp.pRow() + 0, 2, "|" + Funcoes.replicate( " ", 60 ) + "Filtrado por:" + Funcoes.replicate( " ", 60 ) + "|" );
+						imp.say( imp.pRow() + 0, 2, "|" + StringFunctions.replicate( " ", 60 ) + "Filtrado por:" + StringFunctions.replicate( " ", 60 ) + "|" );
 						for ( int i = 0; i < vFiltros.size(); i++ ) {
 							sTmp = vFiltros.elementAt( i );
-							sTmp = "|" + Funcoes.replicate( " ", ( ( ( 135 - sTmp.length() ) / 2 ) - 1 ) ) + sTmp;
-							sTmp += Funcoes.replicate( " ", 134 - sTmp.length() ) + "|";
+							sTmp = "|" + StringFunctions.replicate( " ", ( ( ( 135 - sTmp.length() ) / 2 ) - 1 ) ) + sTmp;
+							sTmp += StringFunctions.replicate( " ", 134 - sTmp.length() ) + "|";
 							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 							imp.say( imp.pRow(), 2, sTmp );
 						}
 						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 						imp.say( imp.pRow(), 0, "| Código" );
 						imp.say( imp.pRow(), 10, "Nome:" );
@@ -830,7 +831,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 						imp.say( imp.pRow(), 120, "Tel:" );
 						imp.say( imp.pRow(), 135, "|" );
 						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					}
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" );
@@ -848,7 +849,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 					iContaReg++;
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 				imp.eject();
 				imp.fechaGravacao();
 				con.commit();
