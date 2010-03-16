@@ -62,6 +62,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
@@ -924,7 +925,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				if (imp.pRow() == 0) {
 					imp.impCab(137, true);
 					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 134) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 134) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Sol. Comp. No.: ");
@@ -958,7 +959,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				if (rs.getInt("CODITSOL") != codItSol)
 				{
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 134) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 134) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) PRODUTO(S)");
@@ -1039,7 +1040,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 134) + "|");
+			imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 134) + "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 1, "|");
 			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
@@ -1088,9 +1089,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			}
 
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 134) + "+");
+			imp.say(imp.pRow() + 0, 0, "+" + StringFunctions.replicate("=", 134) + "+");
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 52, Funcoes.replicate("_", 41));
+			imp.say(imp.pRow() + 0, 52, StringFunctions.replicate("_", 41));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 62, "Ass. do funcionário");
 
