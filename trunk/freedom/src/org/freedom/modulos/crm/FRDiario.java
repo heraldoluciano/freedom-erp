@@ -29,14 +29,14 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -129,7 +129,7 @@ public class FRDiario extends FRelatorio {
 			while ( rs.next() ) {
 				if (imp.pRow() >= linPag) {
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+" );
+					imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("-",133) + "+" );
 					imp.eject();
 					imp.incPags();
 				}
@@ -139,7 +139,7 @@ public class FRDiario extends FRelatorio {
 					imp.say(imp.pRow(), 0, "|");
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| Hora ");
 					imp.say(imp.pRow(), 10, "| Sit ");
@@ -153,23 +153,23 @@ public class FRDiario extends FRelatorio {
 						imp.say(imp.pRow(), 80, "| Resumo");
 					imp.say(imp.pRow(), 135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|" );
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|" );
 				}
 				if (!Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")).equals(sDatahist)) {
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|    Dia: " + Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")));
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 				}
 
 				GregorianCalendar calHora = new GregorianCalendar();
 				calHora.setTime(rs.getTime("HoraHistTk"));
 				
 				imp.say(imp.pRow()+1, 0, imp.comprimido());
-				imp.say(imp.pRow(), 0, "| " + Funcoes.strZero(calHora.get(Calendar.HOUR_OF_DAY)+"",2)+":"+Funcoes.strZero(calHora.get(Calendar.MINUTE)+"",2));
+				imp.say(imp.pRow(), 0, "| " + StringFunctions.strZero(calHora.get(Calendar.HOUR_OF_DAY)+"",2)+":"+StringFunctions.strZero(calHora.get(Calendar.MINUTE)+"",2));
 				imp.say(imp.pRow(), 10, "| " + rs.getString("SitHistTK"));
 				imp.say(imp.pRow(), 17, "| " + Funcoes.alinhaDir(rs.getInt("CodCto"),8) + " - " + Funcoes.copy(rs.getString("RazCto"),0,50));
 				if (bComp) {
@@ -189,7 +189,7 @@ public class FRDiario extends FRelatorio {
 				sDatahist = Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK"));				
 			}
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
-			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+" );
+			imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("-",133) + "+" );
 			imp.eject();		  
 			imp.fechaGravacao();
 			  

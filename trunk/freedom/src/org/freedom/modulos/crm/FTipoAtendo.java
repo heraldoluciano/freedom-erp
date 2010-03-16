@@ -23,7 +23,6 @@
 package org.freedom.modulos.crm;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,12 +30,14 @@ import java.util.Vector;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDetalhe;
 
 public class FTipoAtendo extends FDetalhe implements ActionListener {
@@ -166,7 +167,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 					imp.say(imp.pRow()+0,2,"Código");
 					imp.say(imp.pRow()+0,25,"Descrição");
 					imp.say(imp.pRow()+1,0,""+imp.normal());
-					imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
+					imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",79));
 				}
 				imp.say(imp.pRow()+1,0,""+imp.normal());
 				imp.say(imp.pRow()+0,2,rs.getString("CodTpAtendo"));
@@ -178,7 +179,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 			}
 
 			imp.say(imp.pRow()+1,0,""+imp.normal());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
+			imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",79));
 			imp.eject();
 
 			imp.fechaGravacao();
