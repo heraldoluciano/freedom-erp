@@ -34,6 +34,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 
 public class FCodGPS extends FDados implements ActionListener {
@@ -112,7 +113,7 @@ public class FCodGPS extends FDados implements ActionListener {
 					imp.say( 15, "Descrição" );
 					
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 135 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 					
 				}
 				
@@ -123,7 +124,7 @@ public class FCodGPS extends FDados implements ActionListener {
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 135 ) );
+			imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 135 ) );
 			
 			imp.eject();
 			imp.fechaGravacao();
