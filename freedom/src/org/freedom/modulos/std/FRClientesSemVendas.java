@@ -181,7 +181,7 @@ public class FRClientesSemVendas extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_CLI_SEM_VD_01.jasper", "Relatório de clientes sem movimento", sCab, rs, hParam, this );

@@ -248,7 +248,7 @@ public class FRVolVendasProd extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_PROD_01.jasper", "Volume de vendas por produto", sCab, rs, hParam, this );
