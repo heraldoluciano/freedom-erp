@@ -41,6 +41,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
@@ -978,11 +979,11 @@ public class ImprimeOS implements ActionListener {
 			if ( borda ) { // com borda
 
 				say( 0, comprimido() );
-				say( 0, "+" + Funcoes.replicate( "-", iTamRel - 3 ) + "+" );
+				say( 0, "+" + StringFunctions.replicate( "-", iTamRel - 3 ) + "+" );
 
 				say( pRow() + 1, 0, comprimido() );
 				say( 0, "| " + sVals[ 0 ].trim() ); // Razão
-				say( iTamRel - 15, "Pagina: " + Funcoes.strZero( String.valueOf( ( getNumPags() + this.numAdicPagina ) ), 5 ) );
+				say( iTamRel - 15, "Pagina: " + StringFunctions.strZero( String.valueOf( ( getNumPags() + this.numAdicPagina ) ), 5 ) );
 				say( iTamRel - 1, "|" );
 
 				say( pRow() + 1, 0, comprimido() );
@@ -1022,7 +1023,7 @@ public class ImprimeOS implements ActionListener {
 
 				say( pRow() + 1, 0, comprimido() );
 				say( 0, " " + sVals[ 0 ].trim() ); // Razão
-				say( iTamRel - 14, "Pagina: " + Funcoes.strZero( String.valueOf( ( getNumPags() + this.numAdicPagina ) ), 5 ) );
+				say( iTamRel - 14, "Pagina: " + StringFunctions.strZero( String.valueOf( ( getNumPags() + this.numAdicPagina ) ), 5 ) );
 
 				say( pRow() + 1, 0, comprimido() );
 				say( 0, " " + sTitulo.trim().toUpperCase() );
@@ -1051,7 +1052,7 @@ public class ImprimeOS implements ActionListener {
 				else
 					say( pRow() + 1, 0, normal() );
 
-				say( 0, Funcoes.replicate( "=", iTamRel - 1 ) );
+				say( 0, StringFunctions.replicate( "=", iTamRel - 1 ) );
 
 				if ( iTamRel == 136 )
 					say( pRow() + 1, 0, comprimido() );
@@ -1075,7 +1076,7 @@ public class ImprimeOS implements ActionListener {
 			else
 				say( pRow() + 1, 0, comprimido() );
 
-			say( 0, Funcoes.replicate( "=", iTamRel ) );
+			say( 0, StringFunctions.replicate( "=", iTamRel ) );
 
 			if ( iTamRel == 80 )
 				say( pRow() + 1, 0, normal() );

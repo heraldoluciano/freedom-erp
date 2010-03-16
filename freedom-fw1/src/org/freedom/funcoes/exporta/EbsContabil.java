@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
@@ -984,7 +985,7 @@ public class EbsContabil extends Contabil {
 		BigDecimal valueTmp = null;
 		
 		if ( value != null ) {
-//			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP ).divide( new BigDecimal( "1" + Funcoes.strZero( "0", decimal ) ) );
+//			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP ).divide( new BigDecimal( "1" + StringFunctions.strZero( "0", decimal ) ) );
 			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP );
 			
 		}
@@ -992,12 +993,12 @@ public class EbsContabil extends Contabil {
 			valueTmp = new BigDecimal( "0.00" ); 
 		}
 		
-		return Funcoes.strZero( String.valueOf( valueTmp ).replace( ".", "" ), size );
+		return StringFunctions.strZero( String.valueOf( valueTmp ).replace( ".", "" ), size );
 	}
 
 	private String format( int value, int size ) {
 		
-		return Funcoes.strZero( String.valueOf( value ), size );
+		return StringFunctions.strZero( String.valueOf( value ), size );
 	}
 
 	private String format( Date date ) {
@@ -1005,9 +1006,9 @@ public class EbsContabil extends Contabil {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime( date );
 		StringBuffer result = new StringBuffer();
-		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ), 2 ) );
-		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.MONTH ) + 1 ), 2 ) );
-		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.YEAR ) ), 4 ) );
+		result.append( StringFunctions.strZero( String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ), 2 ) );
+		result.append( StringFunctions.strZero( String.valueOf( cal.get( Calendar.MONTH ) + 1 ), 2 ) );
+		result.append( StringFunctions.strZero( String.valueOf( cal.get( Calendar.YEAR ) ), 4 ) );
 		
 		return result.toString();
 	}

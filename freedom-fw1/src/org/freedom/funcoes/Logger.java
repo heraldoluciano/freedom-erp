@@ -24,6 +24,8 @@ package org.freedom.funcoes;
 
 import java.util.Date;
 
+import org.freedom.infra.functions.StringFunctions;
+
 public class Logger {
 
 	// Erros de Comunição:
@@ -136,9 +138,9 @@ public class Logger {
 		buf.append( "|" );
 		buf.append( sUserID );
 		buf.append( "|" );
-		buf.append( Funcoes.strZero( String.valueOf( lg.idpai ), 2 ) );
+		buf.append( StringFunctions.strZero( String.valueOf( lg.idpai ), 2 ) );
 		buf.append( "|" );
-		buf.append( Funcoes.strZero( String.valueOf( lg.id ), 2 ) );
+		buf.append( StringFunctions.strZero( String.valueOf( lg.id ), 2 ) );
 		buf.append( "|" );
 		buf.append( lg.desc );
 		buf.append( "|" );

@@ -3,7 +3,6 @@ package org.freedom.funcoes.exporta;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -12,6 +11,8 @@ import java.util.List;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 public class SafeContabil extends Contabil {
@@ -289,12 +290,12 @@ public class SafeContabil extends Contabil {
 		row.append( format( scvo.getContadeb(), CHAR, 11, 0 ) );
 		row.append( format( scvo.getContacred(), CHAR, 11, 0 ) );
 		row.append( format( scvo.getValor(), NUMERIC, 14, 2 ) );
-		row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
+		row.append( StringFunctions.replicate( " ", 14 ) ); // Centro de custo
 		row.append( format( scvo.getDocumento(), CHAR, 12, 0 ) );
 		row.append( format( scvo.getHistorico(), CHAR, 250, 0 ) );
 		row.append( format( scvo.getData(), DATE, 0, 0 ) );
 		row.append( format( scvo.getFilial(), NUMERIC, 5, 0 ) );
-		row.append( Funcoes.replicate( " ", 25 ) );
+		row.append( StringFunctions.replicate( " ", 25 ) );
 	}
 	
 	private String format( Object obj, int tipo, int tam, int dec ) {
@@ -315,7 +316,7 @@ public class SafeContabil extends Contabil {
 				retorno = retorno.substring( 0, tam - dec - 1 ) + "," + retorno.substring( tam - dec - 1 );
 			}
 			else {
-				retorno = Funcoes.strZero( str, tam );
+				retorno = StringFunctions.strZero( str, tam );
 			}
 		}
 		else if ( tipo == CHAR ) {
@@ -323,9 +324,9 @@ public class SafeContabil extends Contabil {
 		}
 		else if ( tipo == DATE ) {
 			int[] args = Funcoes.decodeDate( (Date) obj );
-			retorno = Funcoes.strZero( String.valueOf( args[2] ), 2 ) + 
-					  Funcoes.strZero( String.valueOf( args[1] ), 2 ) + 
-					  Funcoes.strZero( String.valueOf( args[0] ), 4 );
+			retorno = StringFunctions.strZero( String.valueOf( args[2] ), 2 ) + 
+					  StringFunctions.strZero( String.valueOf( args[1] ), 2 ) + 
+					  StringFunctions.strZero( String.valueOf( args[0] ), 4 );
 		}
 
 		return retorno;

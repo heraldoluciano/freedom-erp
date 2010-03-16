@@ -1,5 +1,7 @@
 package org.freedom.funcoes;
 
+import org.freedom.infra.functions.StringFunctions;
+
 
 public class EANFactory {
 
@@ -14,7 +16,7 @@ public class EANFactory {
 			codbar.append( codemp.trim() );
 			
 			tamcod = 12-codbar.length();
-			codbar.append( Funcoes.strZero( codigo, tamcod ) );
+			codbar.append( StringFunctions.strZero( codigo, tamcod ) );
 			codbar.append( calcDigEAN13( codbar.toString() ));
 		 
 		} catch ( Exception e ) {
@@ -40,12 +42,12 @@ public class EANFactory {
 		int dig =0;
 		StringBuilder codigo = new StringBuilder();
 		if (codbar == null) {
-			codigo.append( Funcoes.replicate( "0", 12 ) );
+			codigo.append( StringFunctions.replicate( "0", 12 ) );
 		} else if (codbar.length()>=12) {
 			codigo.append( codbar.substring( 0, 12 ) );
 		} else {
 			codigo.append( codbar );
-			codigo.append( Funcoes.replicate( "0" , 12 - codbar.length() ));
+			codigo.append( StringFunctions.replicate( "0" , 12 - codbar.length() ));
 		}
 		for (int i=11; i>-1; i--) {
 			digitos[11-i] = Integer.parseInt( codigo.substring( i, i+1 ) ) ;

@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 
 public class Bradesco extends Banco {
 
@@ -70,13 +70,13 @@ public class Bradesco extends Banco {
 			contalimpa = contalimpa.substring(0,contalimpa.indexOf("-"));			
 		}
 		
-		agencialimpa = Funcoes.strZero(agencialimpa, 4);
-		contalimpa = Funcoes.strZero(contalimpa, 7);
+		agencialimpa = StringFunctions.strZero(agencialimpa, 4);
+		contalimpa = StringFunctions.strZero(contalimpa, 7);
 		
 		
 		String parte1 = agencialimpa;
 		
-		String parte2 = Funcoes.strZero(getCarteiraBanco(),2 );
+		String parte2 = StringFunctions.strZero(getCarteiraBanco(),2 );
 		String parte3 = getNossoNumero();
 		String parte4 = contalimpa;
 		
@@ -486,7 +486,7 @@ public class Bradesco extends Banco {
 	}
 	
 	public String getSiglaCarteiraBanco() {
-		return Funcoes.strZero(getCarteira().toString(),2);
+		return StringFunctions.strZero(getCarteira().toString(),2);
 	}
 	
 	public String getModulo11( String campo, int type ) {
