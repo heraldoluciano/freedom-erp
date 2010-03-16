@@ -18,6 +18,7 @@ package org.freedom.modules.nfe.bean;
  * 
  * @author Setpoint Informática Ltda./Robson Sanchez
  * @version 04/04/2009
+ * @version 16/03/2010 Anderson Sanchez
  */
 public class FreedomNFEKey extends AbstractNFEKey {
 	
@@ -27,9 +28,13 @@ public class FreedomNFEKey extends AbstractNFEKey {
 	
 	public static final String CODVENDA = "CODVENDA";
 	
+	public static final String CODCOMPRA = "CODCOMPRA";
+	
 	public static final String TIPOVENDA = "TIPOVENDA";
 	
 	public static final String DOCVENDA = "DOCVENDA";
+	
+	public static final String DOCCOMPRA = "DOCCOMPRA";
 	
 	public static final String DIRNFE = "DIRNFE";
 
@@ -48,4 +53,22 @@ public class FreedomNFEKey extends AbstractNFEKey {
 		put( DOCVENDA, docvenda );
 		put( DIRNFE, dirNFE );
 	}
+	
+	public FreedomNFEKey( Integer codemp, 
+			  Integer codfilial, 
+			  Integer codcompra,  
+			  Integer doccompra, 
+			  String dirNFE ) {
+
+		put( CODEMP, codemp );
+		put( CODFILIAL, codfilial );
+		put( CODCOMPRA, codcompra );
+		put( DOCCOMPRA, doccompra );
+		put( DIRNFE, dirNFE );
+	}
+	
+	
+	
+	
+	
 }
