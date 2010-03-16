@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDetalhe;
 
@@ -143,7 +144,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
             imp.say(imp.pRow()+0,2,"Código");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
+            imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",79));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodProc"));
@@ -155,7 +156,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
+      imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",79));
       imp.eject();
       
       imp.fechaGravacao();

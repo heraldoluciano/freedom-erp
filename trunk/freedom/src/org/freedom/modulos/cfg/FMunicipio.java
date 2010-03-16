@@ -24,9 +24,6 @@
 package org.freedom.modulos.cfg;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.std.DLRMunicipio;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +36,9 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modulos.std.DLRMunicipio;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 
@@ -178,7 +178,7 @@ public class FMunicipio extends FDados{
 	
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
 
-		String sLinhaFina = Funcoes.replicate( "-", 125 );
+		String sLinhaFina = StringFunctions.replicate( "-", 125 );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
@@ -216,7 +216,7 @@ public class FMunicipio extends FDados{
 					imp.say( 106, "Nome.País" );
 					imp.say( 126, "|" );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 125 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 125 ) );
 				}
 
 				imp.pulaLinha( 1, imp.normal() );
@@ -241,7 +241,7 @@ public class FMunicipio extends FDados{
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 125 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 125 ) );
 			imp.pulaLinha( 1, imp.normal() );
 		
 
