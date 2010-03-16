@@ -636,7 +636,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.getMantenedor() );
 		hParam.put( "FILTROS", sCab );
 
 		dlGr = new FPrinterJob( "relatorios/FRConsAutoriz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
