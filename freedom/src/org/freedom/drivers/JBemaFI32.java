@@ -28,6 +28,7 @@ import java.util.Date;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
+import org.freedom.infra.functions.StringFunctions;
 
 public class JBemaFI32 {
 
@@ -358,14 +359,14 @@ public class JBemaFI32 {
 
 	public String retornaTotalizadores( String sUserID, boolean bModoDemo ) {
 
-		String sRetorno = Funcoes.replicate( " ", 445 );
+		String sRetorno = StringFunctions.replicate( " ", 445 );
 		// int iRetorno = 0;
 		if ( !bModoDemo ) {
 			sRetorno = bVerificaTotalizadoresParciais();
 			// iRetorno = Integer.parseInt(sRetorno.substring(0,10).trim());
 			sRetorno = sRetorno.substring( 10 );
 			if ( sRetorno.length() < 445 ) {
-				sRetorno = Funcoes.replicate( " ", 445 );
+				sRetorno = StringFunctions.replicate( " ", 445 );
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_RET_TOTALIZ, sMensErroLog );
 			}
 			else {
@@ -520,14 +521,14 @@ public class JBemaFI32 {
 	public boolean[][] verificaEstadoImpressora( String sUserID, boolean bModoDemo ) {
 
 		boolean bRet[][] = null;
-		String sRetorno = Funcoes.replicate( " ", 40 );
+		String sRetorno = StringFunctions.replicate( " ", 40 );
 		int iRetorno = 0;
 		if ( !bModoDemo ) {
 			sRetorno = bVerificaEstadoImpressora();
 			iRetorno = Integer.parseInt( sRetorno.substring( 0, 10 ).trim() );
 			sRetorno = sRetorno.substring( 10 );
 			if ( !trataRetornoFuncao( iRetorno ) || sRetorno.length() < 5 ) {
-				sRetorno = Funcoes.replicate( " ", 40 );
+				sRetorno = StringFunctions.replicate( " ", 40 );
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_STATUS_IMPRES, sMensErroLog );
 			}
 			else {
@@ -544,14 +545,14 @@ public class JBemaFI32 {
 	public boolean[][] retornoImpressora( String sUserID, boolean bModoDemo ) {
 
 		boolean bRet[][] = null;
-		String sRetorno = Funcoes.replicate( " ", 40 );
+		String sRetorno = StringFunctions.replicate( " ", 40 );
 		int iRetorno = 0;
 		if ( !bModoDemo ) {
 			sRetorno = bRetornoImpressora();
 			iRetorno = Integer.parseInt( sRetorno.substring( 0, 10 ).trim() );
 			sRetorno = sRetorno.substring( 10 );
 			if ( !trataRetornoFuncao( iRetorno ) || sRetorno.length() < 5 ) {
-				sRetorno = Funcoes.replicate( " ", 40 );
+				sRetorno = StringFunctions.replicate( " ", 40 );
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_STATUS_IMPRES, sMensErroLog );
 			}
 			else {
@@ -711,9 +712,9 @@ public class JBemaFI32 {
 		if ( ( iPosVlrX == 0 ) || ( iPosExt1X == 0 ) || ( iPosExt2X == 0 ) || ( iPosFavX == 0 ) || ( iPosLocalX == 0 ) || ( iPosDiaX == 0 ) || ( iPosMesX == 0 ) || ( iPosAnoX == 0 ) || ( iPosVlrY == 0 ) || ( iPosExt1Y == 0 ) || ( iPosExt2Y == 0 ) || ( iPosFavY == 0 ) || ( iPosLocalY == 0 ) ) {
 			sRetorno = "";
 		}
-		else sRetorno = Funcoes.strZero( "" + iPosVlrX, 2 ) + "|" + Funcoes.strZero( "" + iPosExt1X, 2 ) + "|" + Funcoes.strZero( "" + iPosExt2X, 2 ) + "|" + Funcoes.strZero( "" + iPosFavX, 2 ) + "|" + Funcoes.strZero( "" + iPosLocalX, 2 ) + "|" + Funcoes.strZero( "" + iPosDiaX, 2 ) + "|"
-				+ Funcoes.strZero( "" + iPosMesX, 2 ) + "|" + Funcoes.strZero( "" + iPosAnoX, 2 ) + "|" + Funcoes.strZero( "" + iPosVlrY, 2 ) + "|" + Funcoes.strZero( "" + iPosExt1Y, 2 ) + "|" + Funcoes.strZero( "" + iPosExt2Y, 2 ) + "|" + Funcoes.strZero( "" + iPosFavY, 2 ) + "|"
-				+ Funcoes.strZero( "" + iPosLocalY, 2 );
+		else sRetorno = StringFunctions.strZero( "" + iPosVlrX, 2 ) + "|" + StringFunctions.strZero( "" + iPosExt1X, 2 ) + "|" + StringFunctions.strZero( "" + iPosExt2X, 2 ) + "|" + StringFunctions.strZero( "" + iPosFavX, 2 ) + "|" + StringFunctions.strZero( "" + iPosLocalX, 2 ) + "|" + StringFunctions.strZero( "" + iPosDiaX, 2 ) + "|"
+				+ StringFunctions.strZero( "" + iPosMesX, 2 ) + "|" + StringFunctions.strZero( "" + iPosAnoX, 2 ) + "|" + StringFunctions.strZero( "" + iPosVlrY, 2 ) + "|" + StringFunctions.strZero( "" + iPosExt1Y, 2 ) + "|" + StringFunctions.strZero( "" + iPosExt2Y, 2 ) + "|" + StringFunctions.strZero( "" + iPosFavY, 2 ) + "|"
+				+ StringFunctions.strZero( "" + iPosLocalY, 2 );
 		return sRetorno;
 	}
 
@@ -831,7 +832,7 @@ public class JBemaFI32 {
 
 		boolean bRetorno = true;
 		if ( !bModoDemo ) {
-			String sItem = Funcoes.strZero( "" + iItem, 3 );
+			String sItem = StringFunctions.strZero( "" + iItem, 3 );
 			Logger.gravaLogTxt( "", sUserID, Logger.LGEP_CANC_ITEM, "CANCELAMENTO DE ITEM [" + sItem + "] PELO " + sUserID );
 			bRetorno = trataRetornoFuncao( bCancelaItemGenerico( sItem ) );
 			if ( !sMensErroLog.trim().equals( "" ) ) {
@@ -1430,8 +1431,8 @@ public class JBemaFI32 {
 
 		try {
 			if ( !bModoDemo ) {
-				sData = Funcoes.replicate( " ", 6 );
-				sHora = Funcoes.replicate( " ", 6 );
+				sData = StringFunctions.replicate( " ", 6 );
+				sHora = StringFunctions.replicate( " ", 6 );
 				if ( trataRetornoFuncao( bDataHoraImpressora( sData, sHora ) ) ) {
 					iDataTmp = Funcoes.decodeDate( new Date() );
 					iAnoAtu = iDataTmp[ 0 ];
@@ -1440,7 +1441,7 @@ public class JBemaFI32 {
 					iDia = Integer.parseInt( sData.substring( 0, 2 ) );
 					iMes = Integer.parseInt( sData.substring( 2, 4 ) );
 					iAno = Integer.parseInt( sData.substring( 4, 6 ) );
-					if ( Funcoes.strZero( "" + iAnoAtu, 4 ).substring( 2, 4 ).equals( Funcoes.strZero( "" + iAno, 2 ) ) )
+					if ( StringFunctions.strZero( "" + iAnoAtu, 4 ).substring( 2, 4 ).equals( StringFunctions.strZero( "" + iAno, 2 ) ) )
 						iAno = iAnoAtu;
 					iHora = Integer.parseInt( sHora.substring( 0, 2 ) );
 					iMinutos = Integer.parseInt( sHora.substring( 2, 4 ) );
@@ -1500,8 +1501,8 @@ public class JBemaFI32 {
 		int[] iDataTmp = { 0, 0, 0 };
 		try {
 			if ( !bModoDemo ) {
-				sData = Funcoes.replicate( " ", 6 );
-				sHora = Funcoes.replicate( " ", 6 );
+				sData = StringFunctions.replicate( " ", 6 );
+				sHora = StringFunctions.replicate( " ", 6 );
 				if ( trataRetornoFuncao( bDataHoraReducao( sData, sHora ) ) ) {
 					iDataTmp = Funcoes.decodeDate( new Date() );
 					iAnoAtu = iDataTmp[ 0 ];
@@ -1510,7 +1511,7 @@ public class JBemaFI32 {
 					iDia = Integer.parseInt( sData.substring( 0, 2 ) );
 					iMes = Integer.parseInt( sData.substring( 2, 4 ) );
 					iAno = Integer.parseInt( sData.substring( 4, 6 ) );
-					if ( Funcoes.strZero( "" + iAnoAtu, 4 ).substring( 2, 4 ).equals( Funcoes.strZero( "" + iAno, 2 ) ) )
+					if ( StringFunctions.strZero( "" + iAnoAtu, 4 ).substring( 2, 4 ).equals( StringFunctions.strZero( "" + iAno, 2 ) ) )
 						iAno = iAnoAtu;
 					iHora = Integer.parseInt( sHora.substring( 0, 2 ) );
 					iMinutos = Integer.parseInt( sHora.substring( 2, 4 ) );
