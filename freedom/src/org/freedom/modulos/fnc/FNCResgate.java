@@ -24,10 +24,10 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -36,6 +36,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDados;
 
 public class FNCResgate extends FDados implements PostListener {
@@ -251,13 +253,13 @@ public class FNCResgate extends FDados implements PostListener {
 						imp.say( imp.pRow() + 0, 3, "Valor" );
 						imp.say( imp.pRow() + 0, 18, "Banco" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-						imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 140 ) );
+						imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 140 ) );
 					}
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
 					imp.say( imp.pRow() + 0, 2, Funcoes.dateToStrDate( rs.getDate( "dtins" ) ) );
 					imp.say( imp.pRow() + 0, 2, Funcoes.adicEspacosDireita( rs.getString( "DESCRICAO" ), 5 ) );
 					imp.say( imp.pRow() + 0, 2, rs.getString( "nome" ) );
-					imp.say( imp.pRow() + 0, 2, Funcoes.strZero( rs.getString( "NCheque" ), 8 ) );
+					imp.say( imp.pRow() + 0, 2, StringFunctions.strZero( rs.getString( "NCheque" ), 8 ) );
 					imp.say( imp.pRow() + 0, 3, "R$ " + Funcoes.adicEspacosDireita( rs.getString( "valor" ), 10 ) );
 					imp.say( imp.pRow() + 0, 2, "| " + rs.getString( "banco" ) );
 					if ( imp.pRow() >= linPag ) {
@@ -267,8 +269,8 @@ public class FNCResgate extends FDados implements PostListener {
 				}
 
 				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-				imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 140 ) );
-				imp.say( imp.pRow() + 1, 94, "  Total --->" );
+				imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 140 ) );
+				imp.say( imp.pRow() + 1, 94, "  Total --->" ); 
 				imp.say( imp.pRow() + 0, 1, "    R$ " + Funcoes.strDecimalToStrCurrency( 0, 2, ( total ) + "" ) );
 				imp.eject();
 

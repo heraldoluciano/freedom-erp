@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.fnc;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +47,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -625,7 +626,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			while ( rs.next() ) {
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
@@ -633,7 +634,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( 0, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "| Vencto.    |" );
 					imp.say( 15, " Cliente                                  |" );
@@ -643,13 +644,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imp.say( 106, " Vlr Aberto   |" );
 					imp.say( 122, " Data Receb. |" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) 
 						&& ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 41, "Totais do Dia-> | " + sDtTotal + " | " + 
@@ -658,7 +659,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 							Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( deTotalDiaApag ) ) + " | " );
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					deTotalDiaParc = 0;
 					deTotalDiaPago = 0;
 					deTotalDiaApag = 0;
@@ -717,7 +718,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 			if ( ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+				imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 41, "Totais do Dia-> | " + sDtTotal + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaParc ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaPago ) ) + " | "
@@ -726,13 +727,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+			imp.say( 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 55, "Totais Geral-> | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotParc ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalPago ) ) + " | " + Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( deTotalApag ) ) );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();

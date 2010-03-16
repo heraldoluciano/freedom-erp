@@ -32,6 +32,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -97,14 +98,14 @@ public class FRFluxoCaixa extends FRelatorio {
       impPagar(imp,linPagi);
     
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+    imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),19,"| RECEITAS");
     imp.say(imp.pRow(),39,"| DESPESAS");
     imp.say(imp.pRow(),59,"| SALDO");
     imp.say(imp.pRow(),79,"|");
-    imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",77)+"+");
+    imp.say(imp.pRow()+1,0,"+"+StringFunctions.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),5,"LANÇAMENTOS: ");
@@ -127,14 +128,14 @@ public class FRFluxoCaixa extends FRelatorio {
     imp.say(imp.pRow(),59,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bPag.negate()));
     imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+    imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),20,"| DIFERENCA FINAL -->");
     imp.say(imp.pRow(),59,Funcoes.strDecimalToStrCurrency(20,2,""+bLRec.subtract(bLPag).add(bRec).subtract(bPag)));
     imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+    imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
 
     imp.eject();
     
@@ -181,18 +182,18 @@ public class FRFluxoCaixa extends FRelatorio {
       imp.limpaPags();
       while ( rs.next() ) {
         if (bPrim) {
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+           imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
            imp.say(imp.pRow(),0,"|");
            imp.say(imp.pRow(),35, "LANÇAMENTOS");
            imp.say(imp.pRow(),79,"|");
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+           imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,"| Código Plan.");
            imp.say(imp.pRow(),15, "| Descrição");
            imp.say(imp.pRow(),65, "| Saldo");
            imp.say(imp.pRow(),79,"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
+           imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",77)+"|");
            bPrim = false;
         }
         
@@ -202,7 +203,7 @@ public class FRFluxoCaixa extends FRelatorio {
             int iNivelplan = iNivel==0||iNivel==2?1:iNivel;
             iNivelplan = (iNivelplan-1)*2;
             
-            sDescplan = " "+Funcoes.replicate(" ",iNivelplan)+rs.getString("descplan");
+            sDescplan = " "+StringFunctions.replicate(" ",iNivelplan)+rs.getString("descplan");
             
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow(),0,"|"+Funcoes.copy(rs.getString("codplan"),0,13)+
@@ -221,7 +222,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
         if (imp.pRow() == (linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.normal());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+          imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
           imp.eject();
           imp.incPags();          
         }
@@ -257,18 +258,18 @@ public class FRFluxoCaixa extends FRelatorio {
   		rs = ps.executeQuery();
   		while ( rs.next() ) {
   			if (bPrim) {
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
   				imp.say(imp.pRow(),0,"|");
   				imp.say(imp.pRow(),36, "CLIENTES");
   				imp.say(imp.pRow(),79,"|");
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,"| Código Cli.");
   				imp.say(imp.pRow(),15, "| Razão");
   				imp.say(imp.pRow(),65, "| Saldo");
   				imp.say(imp.pRow(),79,"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",77)+"|");
   				bPrim = false;
   			}
   			
@@ -285,7 +286,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
   			if (imp.pRow() == (linPag-1)) {
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+  				imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
   				imp.eject();
   				imp.incPags();          
   			}
@@ -324,18 +325,18 @@ public class FRFluxoCaixa extends FRelatorio {
   		rs = ps.executeQuery();
   		while ( rs.next() ) {
   			if (bPrim) {
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
   				imp.say(imp.pRow(),0,"|");
   				imp.say(imp.pRow(),34, "FORNECEDORES");
   				imp.say(imp.pRow(),79,"|");
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+StringFunctions.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,"| Código For.");
   				imp.say(imp.pRow(),15, "| Razão");
   				imp.say(imp.pRow(),65, "| Saldo");
   				imp.say(imp.pRow(),79,"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
+  				imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",77)+"|");
   				bPrim = false;
   			}
   			
@@ -352,7 +353,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
   			if (imp.pRow() == (linPag-1)) {
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+  				imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
   				imp.eject();
   				imp.incPags();          
   			}

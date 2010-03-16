@@ -25,16 +25,19 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
+
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FRelatorio;
 
 public class FRChequeAberto extends FRelatorio {
@@ -135,7 +138,7 @@ public class FRChequeAberto extends FRelatorio {
      
       	if (imp.pRow()>=(linPag-1)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",107)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",107)+"|");
             imp.incPags();
             imp.eject();
         }
@@ -145,12 +148,12 @@ public class FRChequeAberto extends FRelatorio {
         	imp.addSubTitulo("RELATÓRIO DE CHEQUES EM ABERTO "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
         	imp.impCab(110, true);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",107)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",107)+"|");
       	
       	
       	         
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("=",108));
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",108));
                              
            imp.say(imp.pRow()+2,0,""+imp.comprimido());
       	}           
@@ -161,13 +164,13 @@ public class FRChequeAberto extends FRelatorio {
            imp.say(imp.pRow()+0,15,"Valor");
            imp.say(imp.pRow()+0,11,"Banco");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",109));          
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",109));          
       		
         imp.say(imp.pRow()+1,0,""+imp.normal());
       	
         imp.say(imp.pRow()+0,2,Funcoes.dateToStrDate(rs.getDate("Data")));
         imp.say(imp.pRow()+0,5,rs.getString("nome"));
-        imp.say(imp.pRow()+0,2, Funcoes.strZero(rs.getString("NCheque"),8));
+        imp.say(imp.pRow()+0,2, StringFunctions.strZero(rs.getString("NCheque"),8));
         imp.say(imp.pRow()+0,3,Funcoes.dateToStrDate(rs.getDate("predata")));
         imp.say(imp.pRow()+0,3,"R$ "+Funcoes.adicEspacosDireita(rs.getString("valor"),10));
         imp.say(imp.pRow()+0,2,"| "+rs.getString("banco"));
@@ -179,7 +182,7 @@ public class FRChequeAberto extends FRelatorio {
      }
      
      imp.say(imp.pRow()+1,0,""+imp.normal());
-     imp.say(imp.pRow()+0,0,Funcoes.replicate("=",109));
+     imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",109));
      imp.say(imp.pRow()+1,73,"  Total --->");
      imp.say(imp.pRow()+0,1,"    R$ "+Funcoes.strDecimalToStrCurrency(1,
 			2, (total) + "") );

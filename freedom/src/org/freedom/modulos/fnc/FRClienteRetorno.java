@@ -25,19 +25,22 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FRelatorio;
 
 public class FRClienteRetorno extends FRelatorio {
@@ -210,7 +213,7 @@ public class FRClienteRetorno extends FRelatorio {
       	
       	if (imp.pRow()>=(linPag-1)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",89)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",89)+"|");
             imp.incPags();
             imp.eject();
         }
@@ -220,13 +223,13 @@ public class FRClienteRetorno extends FRelatorio {
         	imp.addSubTitulo("RELATÓRIO DE CLIENTE X RETORNO "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
         	imp.impCab(91, true);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",88)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",88)+"|");
       	}
       	
       	if (pass==true){	
          
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("=",90));
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",90));
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            imp.say(imp.pRow()+0,0," Cliente:");
@@ -249,11 +252,11 @@ public class FRClienteRetorno extends FRelatorio {
            imp.say(imp.pRow()+0,5,"Valor");
            imp.say(imp.pRow()+0,8,"Banco");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",90));          
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",90));          
       	  }
       	
            imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,5,Funcoes.strZero(rs.getString("NCheque"),8));
+           imp.say(imp.pRow()+0,5,StringFunctions.strZero(rs.getString("NCheque"),8));
            imp.say(imp.pRow()+0,23,"R$ "+rs.getString("valor"));
            imp.say(imp.pRow()+0,5,rs.getString("nomebanco"));
      
@@ -263,7 +266,7 @@ public class FRClienteRetorno extends FRelatorio {
         }
      }
      imp.say(imp.pRow()+1,0,""+imp.normal());
-     imp.say(imp.pRow()+0,0,Funcoes.replicate("=",90));
+     imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",90));
       
      imp.eject();
       

@@ -2553,10 +2553,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			cancelaItem();
 		}
 		else if ( evt.getSource() == btCarregaBaixas ) {
-			consBaixa( txtCodRecBaixa.getVlrInteger().intValue(), Integer.parseInt( tabBaixa.getValor( tabBaixa.getLinhaSel(), 3 ).toString() ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPARC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor(
-					tabBaixa.getLinhaSel(), EColTabBaixa.VLRPAGO.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRDESC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRJUROS.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa
-					.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRAPAG.ordinal() ) ) );
-
+			if(tabBaixa.getLinhaSel()>-1) {
+				consBaixa( txtCodRecBaixa.getVlrInteger().intValue(), Integer.parseInt( tabBaixa.getValor( tabBaixa.getLinhaSel(), 3 ).toString() ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPARC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor(
+						 tabBaixa.getLinhaSel(), EColTabBaixa.VLRPAGO.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRDESC.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRJUROS.ordinal() ) ), ConversionFunctions.stringToBigDecimal( tabBaixa
+								 .getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRAPAG.ordinal() ) ) );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um título no grid!" );
+			}
 		}
 		else if ( evt.getSource() == btCarregaBaixasMan ) {
 			consBaixa( Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ).toString() ), ConversionFunctions.stringToBigDecimal( tabManut

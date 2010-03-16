@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 
 public class CnabUtil extends FbnUtil {
 
@@ -35,7 +36,7 @@ public class CnabUtil extends FbnUtil {
 				}
 				else {
 
-					retorno = Funcoes.strZero( str, tam );
+					retorno = StringFunctions.strZero( str, tam );
 				}
 			}
 			else {
@@ -402,7 +403,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( getLoteServico() );
 					line.append( getRegistroHeader() );
-					line.append( Funcoes.replicate( " ", 9 ) );
+					line.append( StringFunctions.replicate( " ", 9 ) );
 					line.append( format( getTipoInscEmp(), ETipo.$9, 1, 0 ) );
 					line.append( format( getCpfCnpjEmp(), ETipo.$9, 14, 0 ) );
 					line.append( format( getCodConvBanco(), ETipo.X, 20, 0 ) );
@@ -413,7 +414,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
 					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );
 					line.append( format( getNomeBanco(), ETipo.X, 30, 0 ) );
-					line.append( Funcoes.replicate( " ", 10 ) );
+					line.append( StringFunctions.replicate( " ", 10 ) );
 					line.append( format( getTipoOperacao(), ETipo.$9, 1, 0 ) );
 					line.append( dateToString( getDataGeracao(), null ) );
 					line.append( format( getHoraGeracao(), ETipo.$9, 6, 0 ) );
@@ -422,7 +423,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getDensidadeArq(), ETipo.$9, 5, 0 ) );
 					line.append( format( getUsoBanco(), ETipo.X, 20, 0 ) );
 					line.append( format( getUsoEmp(), ETipo.X, 20, 0 ) );
-					line.append( Funcoes.replicate( " ", 11 ) );
+					line.append( StringFunctions.replicate( " ", 11 ) );
 					line.append( "CSP" );// indentifica cobrança sem papel.
 					line.append( format( getUsoVans(), ETipo.$9, 3, 0 ) );
 					line.append( format( getTipoServico(), ETipo.X, 2, 0 ) );
@@ -437,15 +438,15 @@ public class CnabUtil extends FbnUtil {
 					line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa 
 					line.append( "01" ); //Posição 010 a 011 - Código do serviço (01)
 					line.append( format( LITERAL_SERV, ETipo.X, 15,0 ));// Posição 012 a 026 - Literal Serviço
-					line.append( Funcoes.strZero( getCodConvBanco(),20 ) );// Posição 027 a 046 - Código da Empresa
+					line.append( StringFunctions.strZero( getCodConvBanco(),20 ) );// Posição 027 a 046 - Código da Empresa
 					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação 
 					line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
 					line.append( dateToString( getDataGeracao(),DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo 
-					line.append( Funcoes.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
+					line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
 					line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
 					line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
-					line.append( Funcoes.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
+					line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
 					line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um 
 					line.append( (char) 13 );
 					line.append( (char) 10 );
@@ -892,7 +893,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) );
 					line.append( dateToString( getDataRemRet(),null ) );
 					line.append( dateToString( getDataCred(),null ) );
-					line.append( Funcoes.replicate( " ", 33 ) );
+					line.append( StringFunctions.replicate( " ", 33 ) );
 					line.append( (char) 13 );
 					line.append( (char) 10 );
 				}
@@ -1982,7 +1983,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getRazAva(), ETipo.X, 40, 0 ) );
 				line.append( format( getCodCompensacao(), ETipo.$9, 3, 0 ) );
 				line.append( format( getNossoNumero(), ETipo.X, 20, 0 ) );
-				line.append( Funcoes.replicate( " ", 8 ) );
+				line.append( StringFunctions.replicate( " ", 8 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 			
@@ -2539,7 +2540,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getLinhaImp(), ETipo.$9, 2, 0 ) );
 					line.append( format( getMsgImp(), ETipo.X, 140, 0 ) );
 					line.append( format( getTipoChar(), ETipo.$9, 2, 0 ) );
-					line.append( Funcoes.replicate( " ", 78 ) );
+					line.append( StringFunctions.replicate( " ", 78 ) );
 				}
 				else if ( getTipoImpressao() == 3 ) {
 
@@ -2548,7 +2549,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getMsg7(), ETipo.X, 40, 0 ) );
 					line.append( format( getMsg8(), ETipo.X, 40, 0 ) );
 					line.append( format( getMsg9(), ETipo.X, 40, 0 ) );
-					line.append( Funcoes.replicate( " ", 22 ) );
+					line.append( StringFunctions.replicate( " ", 22 ) );
 				}
 
 				line.append( (char) 13 );
@@ -2923,7 +2924,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getContratoCred(), ETipo.$9, 10, 0 ) );
 				line.append( format( getVlrTarifa(), ETipo.$9, 15, 2 ) );
 				line.append( format( getCodRejeicoes(), ETipo.$9, 10, 0 ) );
-				line.append( Funcoes.replicate( " ", 17 ) );
+				line.append( StringFunctions.replicate( " ", 17 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 
@@ -3217,7 +3218,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getCompOcorrSac(), ETipo.X, 30, 0 ) );
 				line.append( format( getCodBancoCompens(), ETipo.$9, 3, 0 ) );
 				line.append( format( getNossoNrCompens(), ETipo.$9, 20, 0 ) );
-				line.append( Funcoes.replicate( " ", 7 ) );
+				line.append( StringFunctions.replicate( " ", 7 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 
@@ -3487,7 +3488,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
 				line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
-				line.append( Funcoes.replicate( " ", 9 ) );
+				line.append( StringFunctions.replicate( " ", 9 ) );
 				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
 				line.append( format( getQtdSimples(), ETipo.$9, 6, 0 ) );
 				line.append( format( getVlrSimples(), ETipo.$9, 17, 2 ) );
@@ -3498,7 +3499,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getQtdDescontado(), ETipo.$9, 6, 0 ) );
 				line.append( format( getVlrDescontado(), ETipo.$9, 17, 2 ) );
 				line.append( format( getAvisoLanca(), ETipo.X, 8, 0 ) );
-				line.append( Funcoes.replicate( " ", 117 ) );
+				line.append( StringFunctions.replicate( " ", 117 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 
@@ -3649,17 +3650,17 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
 					line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
-					line.append( Funcoes.replicate( " ", 9 ) );
+					line.append( StringFunctions.replicate( " ", 9 ) );
 					line.append( format( getQtdLotes(), ETipo.$9, 6, 0 ) );
 					line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
 					line.append( format( getQtdConsilacoes(), ETipo.$9, 6, 0 ) );
-					line.append( Funcoes.replicate( " ", 205 ) );
+					line.append( StringFunctions.replicate( " ", 205 ) );
 					line.append( (char) 13 );
 					line.append( (char) 10 );
 				}
 				else if(padraocnab.equals( CNAB_400 )) {
-					line.append( Funcoes.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
-					line.append( Funcoes.replicate( " ", 393 ) ); // Posição 002 a 394 - Branco
+					line.append( StringFunctions.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
+					line.append( StringFunctions.replicate( " ", 393 ) ); // Posição 002 a 394 - Branco
 					line.append( format( seqregistro, ETipo.$9, 6, 0 ) ); // Posição 395 a 400 - Nro Sequancial do ultimo registro
 				}
 				
@@ -3840,8 +3841,8 @@ public class CnabUtil extends FbnUtil {
 
 		public String encode() {
 			
-			this.code = Funcoes.strZero( String.valueOf( getCodrec() ), 10 ) 
-						+ Funcoes.strZero( String.valueOf( getNrparcrec() ), 3 );
+			this.code = StringFunctions.strZero( String.valueOf( getCodrec() ), 10 ) 
+						+ StringFunctions.strZero( String.valueOf( getNrparcrec() ), 3 );
 			
 			return this.code;
 		}
@@ -3876,12 +3877,12 @@ public class CnabUtil extends FbnUtil {
 			if ( arg != null ) {
 
 				int[] args = Funcoes.decodeDate( arg );
-				retorno = Funcoes.strZero( 
+				retorno = StringFunctions.strZero( 
 						String.valueOf( args[ 2 ] ), 2 ) + 
-						Funcoes.strZero( String.valueOf( args[ 1 ] ), 2 ) ;
+						StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 ) ;
 						
 						if( "DDMMAAAA".equals(formato) || formato==null ) {						
-							retorno = retorno + Funcoes.strZero( String.valueOf( args[ 0 ] ), 4 );
+							retorno = retorno + StringFunctions.strZero( String.valueOf( args[ 0 ] ), 4 );
 						}
 						else if("DDMMAA".equals(formato)) {
 							retorno = retorno + String.valueOf( args[ 0 ] ).substring( 2 );
@@ -4842,14 +4843,14 @@ public class CnabUtil extends FbnUtil {
 			try {
 				
 				line.append("1");
-				line.append( Funcoes.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
+				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
 				line.append(  " "  ); 						// Opcional - Dígito da Agencia para debito em conta
-				line.append( Funcoes.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito 
-				line.append( Funcoes.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito 
+				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito 
+				line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito 
 				line.append( " " ); 						// Opcional - Dígito da conta para debito 
 				// Identificação da Empresa cedente no banco
 				line.append( "0" ); // Posição 21 a 21 - Zero
-				line.append( Funcoes.strZero( getCodCarteira()+"", 3 ) ); // Posição 22 a 24 - Código da Carteira
+				line.append( StringFunctions.strZero( getCodCarteira()+"", 3 ) ); // Posição 22 a 24 - Código da Carteira
 				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) ); // Posição 25 a 29 - Código da Agência Cedente
 				line.append( format( getConta(), ETipo.$9, 7, 0 ) ); // Posição 30 a 36 - Conta Corrente
 				line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Posição 37 a 37 - Dígito da conta
@@ -4864,7 +4865,7 @@ public class CnabUtil extends FbnUtil {
 				}
 				else {
 					line.append( "0" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0  sem multa.
-					line.append( Funcoes.replicate( "0", 4 ) ); // Posição 67 a 70 - Percentual de multa (preenchido com zeros)
+					line.append( StringFunctions.replicate( "0", 4 ) ); // Posição 67 a 70 - Percentual de multa (preenchido com zeros)
 				}
 				
 				line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 71 a 81 - Identificação do título no banco (nosso numero)					
@@ -4878,15 +4879,15 @@ public class CnabUtil extends FbnUtil {
 				
 				line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
 				
-				line.append( Funcoes.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
+				line.append( StringFunctions.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
 				
 				line.append( " "  ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não
 				line.append( "2" ); // Posição 106 a 106 - Endereçamento para aviso do debito autom. 1 = emite aviso / 2 =não emite
 				
-				line.append( Funcoes.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
+				line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) ); // Posição 109 a 110 - Identificação da ocorrência 
 				
-				line.append( Funcoes.strZero( getDocCobranca(), 10 )); // Posição 111 a 120 - Nro do documento
+				line.append( StringFunctions.strZero( getDocCobranca(), 10 )); // Posição 111 a 120 - Nro do documento
 				
 				line.append( dateToString( getDtVencTitulo(),"DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
 				
@@ -4923,18 +4924,18 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getVlrJurosTaxa(), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso						
 				}
 				else {
-					line.append( Funcoes.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
+					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
 				}
 				
 				line.append( dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
 				
 				line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
 				
-				line.append( Funcoes.replicate( "0", 13 ) ); // Posição 193 a 205 - (Valor do IOF (Apenas para empresas seguradoras))
+				line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 193 a 205 - (Valor do IOF (Apenas para empresas seguradoras))
 				
 				line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 )); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
 				
-				line.append( Funcoes.strZero( getTipoInscCli()+"" , 2 ));// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
+				line.append( StringFunctions.strZero( getTipoInscCli()+"" , 2 ));// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
 
 				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) );// Posição 221 a 234 - CNPJ/CPF
 				

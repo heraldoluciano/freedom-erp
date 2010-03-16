@@ -39,12 +39,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Bradesco;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;
@@ -260,7 +263,7 @@ public class FRemCnab extends FRemFBN {
 		
 		reg.setIdentTitEmp( Banco.getNumCli( (long)rec.getCodrec(), (long)rec.getNParcitrec(), 25 ) );
 		
-		reg.setIdentTitulo( Funcoes.strZero(banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ),11) );
+		reg.setIdentTitulo( StringFunctions.strZero(banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ),11) );
 
 		reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ));
 		
@@ -630,9 +633,9 @@ public class FRemCnab extends FRemFBN {
 				if (Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
 					Calendar clhoje = new GregorianCalendar();
 					clhoje = Calendar.getInstance();
-					String dia = Funcoes.strZero(clhoje.get( Calendar.DAY_OF_MONTH )+"" ,2) ;
-					String mes = Funcoes.strZero((clhoje.get( Calendar.MONTH )+1)+"" ,2 );
-					String seq = Funcoes.strZero(prefs.get( EPrefs.NROSEQ )+"",2);
+					String dia = StringFunctions.strZero(clhoje.get( Calendar.DAY_OF_MONTH )+"" ,2) ;
+					String mes = StringFunctions.strZero((clhoje.get( Calendar.MONTH )+1)+"" ,2 );
+					String seq = StringFunctions.strZero(prefs.get( EPrefs.NROSEQ )+"",2);
 					sFileName = "CB" + dia + mes + seq +".REM";
 				}
 				else {
