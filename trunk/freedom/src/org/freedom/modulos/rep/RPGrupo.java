@@ -47,6 +47,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -191,7 +192,7 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 				else {
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
-					ps.setString( 3, grupo[ 0 ].trim() + Funcoes.replicate( "0", 4 - grupo[ 0 ].trim().length() ) );
+					ps.setString( 3, grupo[ 0 ].trim() + StringFunctions.replicate( "0", 4 - grupo[ 0 ].trim().length() ) );
 					ps.setString( 4, grupo[ 1 ].trim() );
 					ps.setInt( 5, 1 );
 					ps.setString( 6, grupo[ 2 ].trim() );	
