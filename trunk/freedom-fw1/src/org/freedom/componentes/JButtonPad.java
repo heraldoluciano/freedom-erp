@@ -108,11 +108,18 @@ public class JButtonPad extends JButton {
 	 */
 
 	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo) {
+		
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;
+		
 		this.tela = tela;
 		this.titulo = titulo;
+		
+		if(titulo!=null && !"".equals(titulo) && getIcon()==null) {
+			this.setText(titulo);
+		}
+		
     	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		//iCodNiv = iCodNivel;
 
