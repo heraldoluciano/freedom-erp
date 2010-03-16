@@ -260,7 +260,7 @@ public class FRProducao extends FRelatorio {
 		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_PROD_01.jasper", "Relatório de Produção", sCab, rs, hParam, this );

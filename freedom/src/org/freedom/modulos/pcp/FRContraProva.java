@@ -203,7 +203,7 @@ public class FRContraProva extends FRelatorio{
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
 		dlGr = new FPrinterJob( "relatorios/RelContraProva.jasper", "Relatório de Contra-Provas", sCab, rs, hParam, this );

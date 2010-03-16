@@ -261,7 +261,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );		
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );		
 	    hParam.put( "CODLOTE", txtCodLote.getVlrString() );
 		hParam.put( "DESCPROD", descProd );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );

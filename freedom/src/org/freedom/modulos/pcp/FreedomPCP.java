@@ -133,16 +133,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		
 		ajustaMenu(); 
 		
-		sNomeModulo = "Produção";
-		sMailSuporte = "suporte@stpinf.com";
-		sNomeSis = "Freedom";
-		sEmpSis = "Setpoint Informática Ltda.";
-		vEquipeSis.add("Robson Sanchez - Supervisão / Analise");
-		vEquipeSis.add("Anderson Sanchez - Supervisão / Programação");
-		vEquipeSis.add("Alex Rodrigues - Programação");
-		vEquipeSis.add("Alexandre Marcondes - Programação");
-		vEquipeSis.add("Fernando Oliveira - Programação");
-		vEquipeSis.add("Moyzes Braz - Arte gráfica");
+		nomemodulo = "Produção";
 		
 	}
 
