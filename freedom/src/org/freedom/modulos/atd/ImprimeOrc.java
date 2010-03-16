@@ -23,7 +23,6 @@
 package org.freedom.modulos.atd;
 import java.awt.BasicStroke;
 import java.awt.Font;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +32,8 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 @Deprecated
@@ -171,7 +172,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabEmp);
 		drawTexto("Orçamento:   ",5,iY); 
 		setFonte(fnCabEmpNeg);
-		drawTexto(Funcoes.strZero(""+iCodOrc,8),65,iY);
+		drawTexto(StringFunctions.strZero(""+iCodOrc,8),65,iY);
 		setFonte(fnCabEmp);
 		drawTexto("Medida:", 140,iY);
 		setFonte(fnCabEmp);
@@ -179,7 +180,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabEmpNeg);
 		drawTexto(Funcoes.sqlDateToStrDate(rs.getDate("DtOrc")),350,iY);
 		setFonte(fnCabEmpNeg);
-		drawTexto(Funcoes.strZero(""+(rs.getInt(4)),8),190,iY);
+		drawTexto(StringFunctions.strZero(""+(rs.getInt(4)),8),190,iY);
 		
 		//drawTexto(rs.getString(4),190,iY);
 		

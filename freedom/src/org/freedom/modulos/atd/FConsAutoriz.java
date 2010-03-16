@@ -55,6 +55,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
@@ -550,7 +551,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
@@ -558,7 +559,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( imp.pRow(), 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|Cod.Orc." );
 					imp.say( imp.pRow(), 05, "|Emissão" );
@@ -580,7 +581,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 					imp.say( imp.pRow(), 315, "|Vlr.Item" );
 					imp.say( imp.pRow(), 180, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 				imp.say( imp.pRow(), 0, "| " + tab.getValor( iLin, 0 ) );
@@ -606,10 +607,10 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 			}
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 103, " Total Geral | " + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) + "      |" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();
