@@ -228,7 +228,7 @@ public class FRCustoProj extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/"); 
 				
 		dlGr = new FPrinterJob( "layout/rel/REL_FIN_PROJ_01.jasper", "Relatório de custos de projeto/contrato", "", rs, hParam,this );

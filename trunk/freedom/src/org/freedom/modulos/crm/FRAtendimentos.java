@@ -268,7 +268,7 @@ public class FRAtendimentos extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/"); 
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
 		hParam.put( "DTINI", txtDataini.getVlrDate());
