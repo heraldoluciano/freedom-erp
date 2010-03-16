@@ -92,7 +92,7 @@ public class FRMovProdCont extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "DATAANT", anterior.getTime() );
 		hParam.put( "DATAINI", txtDataini.getVlrDate() );

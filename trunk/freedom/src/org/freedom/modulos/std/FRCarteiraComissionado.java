@@ -211,7 +211,7 @@ public class FRCarteiraComissionado extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		
 		dlGr = new FPrinterJob( "layout/rel/REL_CARTEIRA_COMISSIONADO.jasper", "Carteira de Clientes por Comissionado", sCab, rs, hParam, this );

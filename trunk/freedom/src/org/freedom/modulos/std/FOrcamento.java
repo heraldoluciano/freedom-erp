@@ -680,7 +680,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		pnGImp.add( btObs );// Agora o painel está maior
 		pnGImp.add( btOrc );// Botão provisório para emissão de orçamento padrão
 		
-		if(Aplicativo.sNomeModulo.equals( "Atendimento" )){
+		if(Aplicativo.nomemodulo.equals( "Atendimento" )){
 			pnGImp.add( btOrcTst );// Botão para teste de laudo fisioterapia
 			pnGImp.add( btOrcTst2 );// Outro botão de teste para contrato
 		}
@@ -705,7 +705,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
 		adicCampo( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
-		if( Aplicativo.sNomeModulo.equals( "Atendimento" ) ){
+		if( Aplicativo.nomemodulo.equals( "Atendimento" ) ){
 			setAltCab( 190 );
 			adicCampoInvisivel( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false );			
 			adicDescFK( txtRazCli, 7, 100, 345, 20, "RazCli", "Razão social do cliente" );

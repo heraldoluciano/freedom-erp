@@ -1612,7 +1612,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "CODCOMPRA", txtCodCompra.getVlrInteger() );
 
 		EmailBean email = Aplicativo.getEmailBean();

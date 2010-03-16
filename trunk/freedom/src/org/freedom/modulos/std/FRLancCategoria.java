@@ -267,7 +267,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNCONTA" ) );
-			hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+			hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 			hParam.put( "FILTROS", sCab );
 
 			dlGr = new FPrinterJob( "relatorios/FRLancamentos.jasper", "Lançamentos por categoria", sCab, rs, hParam, this );
