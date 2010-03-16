@@ -80,17 +80,9 @@ public class FreedomCFG extends AplicativoPD {
 		// Inicia a variável de conexão com o banco interno do interbase
 		conIB = conexaoIB( getParameter( "driver" ), getParameter( "bancocfg" ) ); 
 
-		sNomeModulo = "Configurador";
-		sNomeSis = "Freedom";
-		sEmpSis = "Setpoint Informática Ltda.";
-		sMailSuporte = "suporte@stpinf.com";
-		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Alex Rodrigues - Programação" );
-		vEquipeSis.add( "Alexandre Marcondes - Programação" );
-		vEquipeSis.add( "Fernando Oliveira - Programação" );
-		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
+		nomemodulo = "Configurador";
 
+		
 	}
 
 	public static void main( String sParams[] ) {
