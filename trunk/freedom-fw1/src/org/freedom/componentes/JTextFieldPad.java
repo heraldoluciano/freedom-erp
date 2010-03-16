@@ -32,10 +32,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+
 import javax.swing.JTextField;
+
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.telas.Aplicativo;
@@ -361,7 +364,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		if (sVal.indexOf('.') >= 0)
 			val[sVal.indexOf('.')] = pontoDecMask;
 		texto = new String(val);
-		texto += Funcoes.replicate("0",iDecimal-(texto.length()-(texto.indexOf(pontoDecMask)+1)));
+		texto += StringFunctions.replicate("0",iDecimal-(texto.length()-(texto.indexOf(pontoDecMask)+1)));
 		super.setText(texto);
 	}
 	
@@ -762,11 +765,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		int iQuant = -1;
 		iPos = sNum.indexOf(pontoDecMask);
 		if (iPos == -1)
-			retorno = sNum.trim()+pontoDecMask+Funcoes.replicate("0",iDecimal);
+			retorno = sNum.trim()+pontoDecMask+StringFunctions.replicate("0",iDecimal);
 		else {
 			iQuant = iDecimal-(sNum.length() - (iPos+1));
 			if (iQuant > 0) 
-				retorno = sNum+Funcoes.replicate("0",iQuant);
+				retorno = sNum+StringFunctions.replicate("0",iQuant);
 			else if (iQuant == 0) 
 				retorno = sNum;
 			else if (iQuant < 0) 
@@ -779,13 +782,13 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		String retorno = sData;
 		switch(retorno.trim().length()) {
 			case 1: 
-				retorno = "0"+retorno+"/"+Funcoes.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
+				retorno = "0"+retorno+"/"+StringFunctions.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
 				break;
 			case 2: 
-				retorno += "/"+Funcoes.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
+				retorno += "/"+StringFunctions.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
 				break;
 			case 3: 
-				retorno += Funcoes.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
+				retorno += StringFunctions.strZero((data.get(Calendar.MONTH)+1)+"",2)+"/"+(data.get(Calendar.YEAR));
 				break;
 			case 4: 
 				retorno = retorno.substring(0,3)+"0"+retorno.substring(3)+"/"+(data.get(Calendar.YEAR));
@@ -797,7 +800,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				retorno += (data.get(Calendar.YEAR));
 				break;
 			case 7: 
-				retorno = retorno.substring(0,6)+(""+data.get(Calendar.YEAR)).substring(0,2)+Funcoes.strZero(""+retorno.substring(6,7),2);
+				retorno = retorno.substring(0,6)+(""+data.get(Calendar.YEAR)).substring(0,2)+StringFunctions.strZero(""+retorno.substring(6,7),2);
 				break;
 			case 8:
 				retorno = retorno.substring(0,6)+(""+data.get(Calendar.YEAR)).substring(0,2)+retorno.substring(6,8);
@@ -815,25 +818,25 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		time = new GregorianCalendar();
 		switch(retorno.trim().length()) {
 			case 1: 
-				retorno = "0"+retorno+":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "") ;
+				retorno = "0"+retorno+":"+StringFunctions.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "") ;
 				break;
 			case 2: 
-				retorno += ":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "") ;
+				retorno += ":"+StringFunctions.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "") ;
 				break;
 			case 3: 
-				retorno += Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
+				retorno += StringFunctions.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 4: 
-				retorno = retorno.substring(0,3)+"0"+retorno.substring(3) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
+				retorno = retorno.substring(0,3)+"0"+retorno.substring(3) + (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 5: 
-				retorno += (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
+				retorno += (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 6: 
-				retorno += (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
+				retorno += (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 7: 
-				retorno = (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
+				retorno = (iTamanho>5?":"+StringFunctions.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 		}
 		if (!Funcoes.validaTime(retorno.trim()))

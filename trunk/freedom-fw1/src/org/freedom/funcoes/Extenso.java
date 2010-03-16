@@ -20,6 +20,8 @@
 
 package org.freedom.funcoes;
 
+import org.freedom.infra.functions.StringFunctions;
+
 
 /**
  * @author robson
@@ -47,7 +49,7 @@ public class Extenso {
 		int iTamEx = 0;
 
 		sExValor2 = Funcoes.transValor(dExValor+"",17,2,false);
-		sExValor2 = Funcoes.replicate(" ",17-sExValor2.length())+sExValor2;
+		sExValor2 = StringFunctions.replicate(" ",17-sExValor2.length())+sExValor2;
 		//System.out.println(sExValor2.length());
 
 		iTamEx = sExValor2.trim().length();

@@ -140,11 +140,13 @@ public class Funcoes {
 		if (data!=null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(data);
-		   bRetorno = strZero(cal.get(Calendar.HOUR)+"",2)+":"+
-		      strZero(cal.get(Calendar.MINUTE) +"",2)+":"+strZero(cal.get(Calendar.SECOND)+"",2);
+			bRetorno = StringFunctions.strZero(cal.get(Calendar.HOUR) + "", 2) + ":" 
+		             + StringFunctions.strZero(cal.get(Calendar.MINUTE) + "", 2) + ":" 
+		             + StringFunctions.strZero(cal.get(Calendar.SECOND) + "", 2);
 		}
 		return bRetorno;
 	}
+	
     public static int contaChar(String sTexto,char cChar) {
         int iRet = 0;
         
@@ -223,20 +225,6 @@ public class Funcoes {
     }
 
     
-	public static String replicate(String texto, int Quant) {
-		/*String sRetorno = "";
-		for (int i = 1; i <= Quant; i++) {
-			sRetorno = sRetorno + texto;
-		}*/
-		// fazendo assim evita a copia de varias strings.
-		StringBuffer sRetorno = new StringBuffer();
-		sRetorno.append("");
-		for (int i = 0; i < Quant; i++) {
-			sRetorno.append(texto);
-		}
-		return sRetorno.toString();
-	}
-
 	public static double arredDouble(double deValor, int iDec) {
 		BigDecimal bdValor = null;
 		try {
@@ -377,13 +365,13 @@ public class Funcoes {
 
 	public static String adicEspacosEsquerda(String sTexto, int iEspacos) {
 		if (iEspacos > sTexto.length()) {
-			sTexto = replicate(" ", iEspacos - sTexto.length()) + sTexto;
+			sTexto = StringFunctions.replicate(" ", iEspacos - sTexto.length()) + sTexto;
 		}
 		return sTexto;
 	}
 	public static String adicEspacosDireita(String sTexto, int iEspacos) {
 		if (iEspacos > sTexto.length()) {
-			sTexto = sTexto + replicate(" ", iEspacos - sTexto.length());
+			sTexto = sTexto + StringFunctions.replicate(" ", iEspacos - sTexto.length());
 		}
 		return sTexto;
 	}
@@ -843,7 +831,7 @@ public class Funcoes {
 		if (sTmp == null)
 			sTmp = "";
 		if (sTmp.length() < (iTam + 1)) {
-			sTmp = sTmp + replicate(" ", iTam - sTmp.length());
+			sTmp = sTmp + StringFunctions.replicate(" ", iTam - sTmp.length());
 		} else {
 			sTmp = sTmp.substring(iPos, iTam);
 		}
@@ -885,7 +873,7 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		sRet = strZero("" + iDia, 2) + " de " + strMes(iMes).toLowerCase()
+		sRet = StringFunctions.strZero("" + iDia, 2) + " de " + strMes(iMes).toLowerCase()
 				+ " de " + iAno;
 		return sRet;
 	}
@@ -944,8 +932,8 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return strZero(iAno + "", 4) + strZero(iMes + "", 2)
-				+ strZero(iDia + "", 2);
+		return StringFunctions.strZero(iAno + "", 4) + StringFunctions.strZero(iMes + "", 2)
+				+ StringFunctions.strZero(iDia + "", 2);
 	}
 
 	public static String dataDDMMAAAA(Date data) {
@@ -959,8 +947,8 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return strZero(iDia + "", 2) + strZero(iMes + "", 2)
-				+ strZero(iAno + "", 4);
+		return StringFunctions.strZero(iDia + "", 2) + StringFunctions.strZero(iMes + "", 2)
+				+ StringFunctions.strZero(iAno + "", 4);
 	}
 
 	public static String doubleToStrCurExtenso(double dVal, String sMoeda[]) {
@@ -1172,7 +1160,7 @@ public class Funcoes {
 			sVal = sVal.substring(iTam);
 		else {
 			int iSpaceAdic = (iTam - iTamStr - 1) / 2;
-			sVal = replicate(" ", iSpaceAdic) + sVal + replicate(" ", iSpaceAdic);
+			sVal = StringFunctions.replicate(" ", iSpaceAdic) + sVal + StringFunctions.replicate(" ", iSpaceAdic);
 		}
 		return sVal;
 	}
@@ -1188,7 +1176,7 @@ public class Funcoes {
 			sVal = "";
 		int iTamStr = sVal.length();
 		if (iTamStr <= iTam) {
-			sVal = replicate(" ", iTam - iTamStr) + sVal;
+			sVal = StringFunctions.replicate(" ", iTam - iTamStr) + sVal;
 		}
 		return sVal;
 	}
@@ -1198,7 +1186,7 @@ public class Funcoes {
 	    if (sVal == null)
 	        return bigRet;
 	    if (sVal.length() < 3)
-	        sVal = "0"+replicate("0",2 - sVal.length()) + sVal;
+	        sVal = "0"+StringFunctions.replicate("0",2 - sVal.length()) + sVal;
 	    
 	    sVal = sVal.substring(0,sVal.length()-2)+"."+sVal.substring(sVal.length()-2);
 	    bigRet = new BigDecimal(sVal);
@@ -1220,7 +1208,7 @@ public class Funcoes {
 				sDec = sValor.substring(i + 1, sValor.length());
 				if (sDec.length() < iDec) {
 					//           System.out.println("sDec e menor que idec");
-					sDec = sDec + replicate("0", iDec - sDec.length());
+					sDec = sDec + StringFunctions.replicate("0", iDec - sDec.length());
 				} else if (sDec.length() > iDec) {
 					//           System.out.println("sDec e maior que idec");
 					sDec = sDec.substring(0, iDec);
@@ -1230,7 +1218,7 @@ public class Funcoes {
 		}
 
 		if ((sDec.trim().equals("")) & (iDec > 0)) {
-			sDec = replicate("0", iDec);
+			sDec = StringFunctions.replicate("0", iDec);
 		}
 		if (sResult.length() > (iTam - iDec)) {
 			sResult = sResult.substring(sResult.length() - (iTam - iDec) - 1,
@@ -1238,7 +1226,7 @@ public class Funcoes {
 		}
 		if (bZeroEsq) {
 			if (sResult.length() < (iTam - iDec))
-				sResult = replicate("0", (iTam - iDec) - sResult.length())
+				sResult = StringFunctions.replicate("0", (iTam - iDec) - sResult.length())
 						+ sResult;
 		}
 		//  System.out.println("Depois de converter: "+sResult+sDec);
@@ -1673,8 +1661,8 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/"
-				+ strZero("" + iAno, 4);
+		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/"
+				+ StringFunctions.strZero("" + iAno, 4);
 	}
 
 	public static boolean validaData(String data) {
@@ -1718,8 +1706,8 @@ public class Funcoes {
 	public static String timeStampToStrDate(Timestamp tVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(tVal);
-		String sRetorno = strZero("" + cal.get(Calendar.DATE), 2);
-		sRetorno += "/" + strZero("" + (cal.get(Calendar.MONTH) + 1), 2);
+		String sRetorno = StringFunctions.strZero("" + cal.get(Calendar.DATE), 2);
+		sRetorno += "/" + StringFunctions.strZero("" + (cal.get(Calendar.MONTH) + 1), 2);
 		sRetorno += "/" + (cal.get(Calendar.YEAR));
 		return sRetorno;
 	}
@@ -1944,7 +1932,7 @@ public class Funcoes {
 		int iDia = cal.get(Calendar.DAY_OF_MONTH);
 		int iMes = cal.get(Calendar.MONTH) + 1;
 		int iAno = cal.get(Calendar.YEAR);
-		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/" + iAno;
+		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno;
 	}
 
 	public static String sqlTimeToStrTime(java.sql.Time t) {
@@ -1956,9 +1944,9 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		System.out.println(strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2));
+		System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
 
-		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2);
+		return StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2);
 	}
 	
 	public static java.sql.Time	strTimeTosqlTime(String stime) {
@@ -2003,7 +1991,7 @@ public class Funcoes {
 			
 			ttime = Funcoes.dateToSQLTime( cal.getTime() );
 			
-			System.out.println(strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2));
+			System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -2061,10 +2049,10 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/" + iAno
-				+ " - " + Funcoes.strZero("" + iHora, 2) + ":"
-				+ Funcoes.strZero("" + iMinuto, 2) + ":"
-				+ Funcoes.strZero("" + iSegundo, 2);
+		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno
+				+ " - " + StringFunctions.strZero("" + iHora, 2) + ":"
+				+ StringFunctions.strZero("" + iMinuto, 2) + ":"
+				+ StringFunctions.strZero("" + iSegundo, 2);
 	}
 
 	public static String dateToStrDate(Date dVal) {
@@ -2075,7 +2063,7 @@ public class Funcoes {
 			int iAno = cal.get(Calendar.YEAR);
 			int iMes = cal.get(Calendar.MONTH) + 1;
 			int iDia = cal.get(Calendar.DAY_OF_MONTH);
-			ret = strZero(String.valueOf(iDia), 2) + "/" + strZero(String.valueOf(iMes), 2) + "/" + String.valueOf(iAno);
+			ret = StringFunctions.strZero(String.valueOf(iDia), 2) + "/" + StringFunctions.strZero(String.valueOf(iMes), 2) + "/" + String.valueOf(iAno);
 		}
 		return ret;
 			
@@ -2087,7 +2075,7 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		return strZero(String.valueOf(iHora), 2) + ":" + strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
+		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":" + StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
 	}
 
 	public static String strDateToStrDB(String sVal) {
@@ -2204,10 +2192,10 @@ public class Funcoes {
 
 	public static String strDecimalToStrCurrency(int iTam, int iDec, String sVal) {
 		if (sVal == null)
-			return replicate(" ", iTam);
+			return StringFunctions.replicate(" ", iTam);
 
 		sVal = strDecimalToStrCurrency(iDec, sVal);
-		sVal = replicate(" ", iTam - sVal.length()) + sVal;
+		sVal = StringFunctions.replicate(" ", iTam - sVal.length()) + sVal;
 		return sVal;
 	}
 
@@ -2225,7 +2213,7 @@ public class Funcoes {
 		if (iPonto != -1) {
 			cVal[iPonto] = ',';
 			sVal = new String(cVal);
-			sVal += replicate("0", iDec - (sVal.length() - (iPonto + 1)));
+			sVal += StringFunctions.replicate("0", iDec - (sVal.length() - (iPonto + 1)));
 			sVal = sVal.substring(0, iPonto + 1 + iDec);
 			cVal = sVal.toCharArray();
 			for (int i = (sVal.length() - 1); i >= 0; i--) {
@@ -2241,7 +2229,7 @@ public class Funcoes {
 				}
 			}
 		} else {
-			sRetorno = sVal + ',' + replicate("0", iDec);
+			sRetorno = sVal + ',' + StringFunctions.replicate("0", iDec);
 		}
 		if (iDec == 0) {
 			sRetorno = sRetorno.substring(0, sRetorno.length() - 1);
@@ -2288,20 +2276,6 @@ public class Funcoes {
 		txt.setEditable(false);
 		dlErro.setVisible(true);
 		dlErro.dispose();
-	}
-
-	public static String strZero(String val, int zeros) {
-		String sRetorno = null;
-		if(val.length()>zeros) {
-			return val.substring(0,zeros);
-		}
-		if (val == null) {
-			sRetorno = replicate("0", zeros);
-		} else {	
-			sRetorno = replicate("0", zeros - val.trim().length());
-			sRetorno += val.trim();
-		}
-		return sRetorno;
 	}
 
 	public static boolean ValidaCNPJ(String sDado) {

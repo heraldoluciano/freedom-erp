@@ -94,6 +94,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.crm.agenda.visoes.DayViewPanel;
 import org.freedom.modulos.crm.agenda.visoes.MonthViewPanel;
@@ -951,9 +952,9 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 				String codage = rs.getString( "CODAGE" );
 				String dtainiagd = Funcoes.sqlDateToStrDate( rs.getDate( "DTAINIAGD" ) );
-				String hiniagd = Funcoes.strZero( "" + calIni.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + Funcoes.strZero( "" + calIni.get( java.util.Calendar.MINUTE ), 2 );
+				String hiniagd = StringFunctions.strZero( "" + calIni.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + StringFunctions.strZero( "" + calIni.get( java.util.Calendar.MINUTE ), 2 );
 				String dtafimagd = Funcoes.sqlDateToStrDate( rs.getDate( "DTAFIMAGD" ) );
-				String hfimagd = Funcoes.strZero( "" + calFim.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + Funcoes.strZero( "" + calFim.get( java.util.Calendar.MINUTE ), 2 );
+				String hfimagd = StringFunctions.strZero( "" + calFim.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + StringFunctions.strZero( "" + calFim.get( java.util.Calendar.MINUTE ), 2 );
 				String assuntoagd = rs.getString( "ASSUNTOAGD" );
 				String descagd = rs.getString( "DESCAGD" );
 				String caagd = rs.getString( "CAAGD" );
