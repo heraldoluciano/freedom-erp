@@ -24,16 +24,19 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
+
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FRelatorio;
 
 public class FRSaidaRetorno extends FRelatorio {
@@ -142,7 +145,7 @@ public class FRSaidaRetorno extends FRelatorio {
       	
       	if (imp.pRow()>=(linPag-1)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",89)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",89)+"|");
             imp.incPags();
             imp.eject();
         }
@@ -152,13 +155,13 @@ public class FRSaidaRetorno extends FRelatorio {
         	imp.addSubTitulo("RELATÓRIO DE SAIDA X RETORNO "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
         	imp.impCab(91, true);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",88)+"|");
+            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",88)+"|");
       	}
       	
       	if (pass==true){	
          
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("=",90));
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",90));
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            imp.say(imp.pRow()+0,0," Cliente:");
@@ -180,7 +183,7 @@ public class FRSaidaRetorno extends FRelatorio {
            imp.say(imp.pRow()+0,42,"Data/Retorno");
            imp.say(imp.pRow()+0,5,"Cód.Retorno");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",90));          
+           imp.say(imp.pRow()+0,0,StringFunctions.replicate("-",90));          
         }
       	
         imp.say(imp.pRow()+1,0,""+imp.normal());
@@ -196,7 +199,7 @@ public class FRSaidaRetorno extends FRelatorio {
      }
      
      imp.say(imp.pRow()+1,0,""+imp.normal());
-     imp.say(imp.pRow()+0,0,Funcoes.replicate("=",90));
+     imp.say(imp.pRow()+0,0,StringFunctions.replicate("=",90));
       
      imp.eject();
       

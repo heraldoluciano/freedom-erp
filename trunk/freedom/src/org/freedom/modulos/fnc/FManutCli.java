@@ -23,7 +23,6 @@
  */
 package org.freedom.modulos.fnc;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
 
 import javax.swing.JLabel;
@@ -42,8 +41,10 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Banco;
+import org.freedom.funcoes.boleto.BancodoBrasil;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -158,8 +159,8 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		
 		try {
 			
-			String agencia = Funcoes.strZero( txtAgencia.getVlrString().trim().replaceAll( "-", "" ), 5 );
-			String conta = Funcoes.strZero( txtConta.getVlrString().trim().replaceAll( "-", "" ), 10 );
+			String agencia = StringFunctions.strZero( txtAgencia.getVlrString().trim().replaceAll( "-", "" ), 5 );
+			String conta = StringFunctions.strZero( txtConta.getVlrString().trim().replaceAll( "-", "" ), 10 );
 			String digito = "";
 			
 			if(Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() )) {
