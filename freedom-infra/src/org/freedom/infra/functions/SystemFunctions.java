@@ -1,5 +1,9 @@
 package org.freedom.infra.functions;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class SystemFunctions {
 
 	public static final int OS_LINUX = 0;
@@ -26,6 +30,16 @@ public class SystemFunctions {
 
 		return ret;
 
+	}
+	
+	public static java.util.Date getClassDateCompilation(Class<?> clazz) throws IOException {  
+	    String className = clazz.getName();  
+	    className = className.replaceAll("\\.", "/");  
+	    className = "/" + className + ".class";  
+	    URL url = Class.class.getResource(className);  
+	    URLConnection urlConnection = url.openConnection();  
+	    java.util.Date lastModified = new java.util.Date(urlConnection.getLastModified());  
+	    return lastModified;  
 	}
 	
 }
