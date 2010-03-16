@@ -27,20 +27,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
+
 import javax.swing.ImageIcon;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
-import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.SystemFunctions;
 
 public class FSobre extends FFDialogo {
 
@@ -87,15 +88,18 @@ public class FSobre extends FFDialogo {
 		String sVersao = "";
 
 		try {
-			URL uPath = getClass().getResource( "FSobre.class" );
-			JarURLConnection juc = (JarURLConnection) uPath.openConnection();
-			sVersao = Funcoes.dateToStrDataHora( new Date( juc.getJarEntry().getTime() ) );
-		} catch ( Exception err ) {
+			
+			Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());			
+			sVersao = Funcoes.dateToStrDataHora( datacompilacao ) ;
+			
+		} 
+		catch ( Exception err ) {
+			err.printStackTrace();
 		}
 
 		pnSobre.add( lbImg, BorderLayout.NORTH );
-		pnSobre.add( new JLabelPad( "<HTML><BR> Versão do jar: " + sVersao + "<BR> " + Aplicativo.sEmpSis + "<BR>" + ( new GregorianCalendar().get( Calendar.YEAR ) ) + "<BR></HTML>" ), BorderLayout.CENTER );
-
+		pnSobre.add( new JLabelPad( "<HTML><BR> Data de compilação: " + sVersao + "<BR> " + Aplicativo.getMantenedor() + "<BR>" + ( new GregorianCalendar().get( Calendar.YEAR ) ) + "<BR></HTML>" ), BorderLayout.CENTER );
+		
 		tpnSobre.addTab( "Equipe", pnEquipe );
 		
 		StringBuffer sHtmlEquipe = new StringBuffer();
@@ -103,10 +107,12 @@ public class FSobre extends FFDialogo {
 		sHtmlEquipe.append( "<HTML>" );
 		sHtmlEquipe.append( "<TABLE width='280' border=\"1\">" );
 		
-		for ( int i = 0; Aplicativo.vEquipeSis.size() > i; i++ ) {
+		Vector<String> equipesis = Aplicativo.getEquipeSis();
+		
+		for ( int i = 0; equipesis.size() > i; i++ ) {
 			
 			sHtmlEquipe.append( "<TR><CENTER>" );
-			sHtmlEquipe.append( Aplicativo.vEquipeSis.elementAt( i ).toString() );
+			sHtmlEquipe.append( equipesis.elementAt( i ).toString() );
 			sHtmlEquipe.append( "</CENTER></TR>" );
 		}
 		
