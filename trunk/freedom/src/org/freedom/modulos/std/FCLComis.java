@@ -38,6 +38,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 
@@ -142,7 +143,7 @@ public class FCLComis extends FDados implements PostListener {
 
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
 
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
@@ -179,7 +180,7 @@ public class FCLComis extends FDados implements PostListener {
 					imp.say( imp.pRow() + 0, 108, "Perc.Receb." );
 					imp.say( imp.pRow() + 0, 135, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 				}
 
 				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
@@ -200,7 +201,7 @@ public class FCLComis extends FDados implements PostListener {
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 			imp.eject();
 
 			imp.fechaGravacao();

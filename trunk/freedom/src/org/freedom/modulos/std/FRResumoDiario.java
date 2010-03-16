@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,6 +44,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -285,8 +286,8 @@ public class FRResumoDiario extends FRelatorio {
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
 		String sDtemitvenda = "";
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
-		String sLinhaDupla = Funcoes.replicate( "=", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
+		String sLinhaDupla = StringFunctions.replicate( "=", 133 );
 		BigDecimal bTotalDiaVal = new BigDecimal( "0" );
 		BigDecimal bTotalDiaDesc = new BigDecimal( "0" );
 		BigDecimal bTotalDiaLiq = new BigDecimal( "0" );

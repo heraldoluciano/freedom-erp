@@ -46,6 +46,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -289,7 +290,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 			iCodFilho =
 			  Integer.parseInt(
 			      sMax.substring(sMax.length() - 2));
-			sCodFilho = sCodPai + Funcoes.strZero("" + (iCodFilho + 1), 2);
+			sCodFilho = sCodPai + StringFunctions.strZero("" + (iCodFilho + 1), 2);
 			iNivelFilho = iNivelPai + 1;
 			//      rs.close();
 			//      psQuery.close();
@@ -390,7 +391,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 			}
 			if (sMax.length() == 0) {
 				sCodFilho =
-					sCodPai + Funcoes.replicate("0", 18 - sCodPai.length()) + 1;
+					sCodPai + StringFunctions.replicate("0", 18 - sCodPai.length()) + 1;
 			} else {
 				if (sMax.length() > 17)
 					iCodFilho = Integer.parseInt(sMax.substring(17));
@@ -399,7 +400,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 				iCodFilho = iCodFilho + 1;
 				sCodFilho =
 					sCodPai
-						+ Funcoes.strZero(
+						+ StringFunctions.strZero(
 							"" + iCodFilho,
 							(19 - (sCodPai.length())));
 			}
@@ -754,7 +755,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 					imp.say(imp.pRow() + 0, 23, "Cód. Red.");
 					imp.say(imp.pRow() + 0, 35, "Descrição");
 					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 80));
+					imp.say(imp.pRow() + 0, 0, StringFunctions.replicate("-", 80));
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
 				imp.say(imp.pRow() + 0, 0, "");
@@ -772,7 +773,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 			}
 
 			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=", 80));
+			imp.say(imp.pRow() + 0, 0, StringFunctions.replicate("=", 80));
 			imp.eject();
 
 			imp.fechaGravacao();

@@ -41,6 +41,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
@@ -352,14 +353,14 @@ public class FRListaPreco extends FRelatorio {
         String sCodRel = null;
         String sAgrupar = cbAgrupar.getVlrString();
 		String sCodprod = "";
-		String sCodProdPrint = Funcoes.replicate(" ",12)+"|";
-		String sDescProd = Funcoes.replicate(" ",39)+"|";
+		String sCodProdPrint = StringFunctions.replicate(" ",12)+"|";
+		String sDescProd = StringFunctions.replicate(" ",39)+"|";
 		String sGrupoPrint = "";
 		String sCodunid = "";
 		//String sCodgrup = "";
 		String sTextoImp = "";
-		String linhaFina = Funcoes.replicate("-",133);
-		String space = Funcoes.replicate(" ",9);
+		String linhaFina = StringFunctions.replicate("-",133);
+		String space = StringFunctions.replicate(" ",9);
 		String sPrecopag1 = space+"|";
 		String sPrecopag2 = space+"|";
 		String sPrecopag3 = space+"|";
@@ -487,8 +488,8 @@ public class FRListaPreco extends FRelatorio {
                	if ( (sAgrupar.equals("S")) && (!sCodgrup.equals(sCodgrupAnt)) ) {
 
 					sSubGrupo = "SUBGRUPO: "+sGrupoPrint;
-					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
-					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
+					sSubGrupo = "|" + StringFunctions.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
+					sSubGrupo += StringFunctions.replicate(" ", 133-sSubGrupo.length()) + " |";
 					
                		imp.pulaLinha( 1, imp.comprimido() );
 			   		imp.say(  0, sSubGrupo);

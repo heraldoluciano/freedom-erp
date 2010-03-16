@@ -35,20 +35,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -210,7 +212,7 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 		String sEstNeg = ( dl.getValores() )[ 3 ];
 		String sEstNegLot = ( dl.getValores() )[ 4 ];
 		dl.dispose();
-		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup,estneggrup,estlotneggrup) VALUES(?,?,'" + sCod + Funcoes.replicate( "0", 4 - sCod.trim().length() ) + "','" + sDesc.trim() + "',1,'" + sSigla + "',?,?)";
+		String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup,estneggrup,estlotneggrup) VALUES(?,?,'" + sCod + StringFunctions.replicate( "0", 4 - sCod.trim().length() ) + "','" + sDesc.trim() + "',1,'" + sSigla + "',?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -272,7 +274,7 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 			iNivelPai = rsQuery.getInt( "NivelGrup" );
 			sMax = rsQuery.getString( 2 ) != null ? rsQuery.getString( 2 ).trim() : sCodPai + "00";
 			iCodFilho = Integer.parseInt( sMax.substring( sMax.length() - 2, sMax.length() ) );
-			sCodFilho = sCodPai + Funcoes.strZero( "" + ( iCodFilho + 1 ), 2 );
+			sCodFilho = sCodPai + StringFunctions.strZero( "" + ( iCodFilho + 1 ), 2 );
 			iNivel = iNivelPai + 1;
 			// rsQuery.close();
 			// psQuery.close();
@@ -323,7 +325,7 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 			return;
 		}
 		String sCod = dl.getValores()[ 0 ];
-		sCod = Funcoes.replicate( "0", 4 - sCod.trim().length() ) + sCod.trim();
+		sCod = StringFunctions.replicate( "0", 4 - sCod.trim().length() ) + sCod.trim();
 		String sDesc = dl.getValores()[ 1 ];
 		sDesc = sDesc.trim();
 		String sSigla = dl.getValores()[ 2 ];
@@ -490,7 +492,7 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 					imp.say( imp.pRow() + 0, 2, "Cód.grupo" );
 					imp.say( imp.pRow() + 0, 29, "Descrição do grupo" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 79 ) );
+					imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 79 ) );
 				}
 				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
 				imp.say( imp.pRow() + 0, 0, "" );
@@ -498,14 +500,14 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 				imp.say( imp.pRow() + 0, 29, Funcoes.copy( rs.getString( "DescGrup" ), 0, 40 ) );
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 79 ) );
+					imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 79 ) );
 					imp.incPags();
 					imp.eject();
 				}
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 79 ) );
+			imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 79 ) );
 			imp.eject();
 
 			imp.fechaGravacao();

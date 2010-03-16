@@ -35,7 +35,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,15 +42,17 @@ import java.sql.Types;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -272,7 +273,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				return;
 			}
 			iCodFilho = Integer.parseInt( sMax.substring( sMax.length() - 2, sMax.length() ) );
-			sCodFilho = sCodPai + Funcoes.strZero( "" + ( iCodFilho + 1 ), 2 );
+			sCodFilho = sCodPai + StringFunctions.strZero( "" + ( iCodFilho + 1 ), 2 );
 			iNivelFilho = iNivelPai + 1;
 			// rs.close();
 			// psQuery.close();
@@ -356,7 +357,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				return;
 			}
 			if ( sMax.length() == 0 ) {
-				sCodFilho = sCodPai + Funcoes.replicate( "0", 12 - sCodPai.length() ) + 1;
+				sCodFilho = sCodPai + StringFunctions.replicate( "0", 12 - sCodPai.length() ) + 1;
 			}
 			else {
 				if ( sMax.length() > 10 ) {
@@ -366,7 +367,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					iCodFilho = 0;
 				}
 				iCodFilho = iCodFilho + 1;
-				sCodFilho = sCodPai + Funcoes.strZero( String.valueOf( iCodFilho ), ( 13 - ( sCodPai.length() ) ) );
+				sCodFilho = sCodPai + StringFunctions.strZero( String.valueOf( iCodFilho ), ( 13 - ( sCodPai.length() ) ) );
 			}
 			con.commit();
 		} catch ( SQLException e ) {
@@ -866,7 +867,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					imp.say( 29, "Descrição" );
 					imp.say( 71, "Tipo" );
 					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 0, Funcoes.replicate( "-", 80 ) );
+					imp.say( 0, StringFunctions.replicate( "-", 80 ) );
 				}
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodPlan" ) );
@@ -882,7 +883,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			}
 	
 			imp.pulaLinha( 1, imp.normal() );
-			imp.say( 0, Funcoes.replicate( "=", 80 ) );
+			imp.say( 0, StringFunctions.replicate( "=", 80 ) );
 			imp.eject();
 	
 			imp.fechaGravacao();

@@ -24,27 +24,28 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -290,7 +291,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                         tab.setLinhaSel(i);
                 	if (imp.pRow() == linPag) {
                                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+                                imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
                                 imp.eject();
                         	imp.incPags();
                 	}
@@ -308,7 +309,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                             imp.say(imp.pRow()+0,118,"| Custo MPM "); //15
                             imp.say(imp.pRow()+0,135,"|");
                             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+                            imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
                     }
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"| "+tab.getValor(i,0));
@@ -324,7 +325,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                     imp.say(imp.pRow()+0,135,"|");
                 }
                 imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+                imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
       
                 imp.eject();
       

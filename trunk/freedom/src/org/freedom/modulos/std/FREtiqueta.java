@@ -26,12 +26,11 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import org.freedom.componentes.JButtonPad;
+
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JRException;
@@ -44,6 +43,7 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -54,6 +54,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.objetos.ObjetoEtiqueta;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
@@ -830,7 +832,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 							if ( sCampo.length() >= iTmp )
 								sCampo = sCampo.substring( 0, iTmp );
 							else
-								sCampo = sCampo + Funcoes.replicate( " ", iTmp - sCampo.length() );
+								sCampo = sCampo + StringFunctions.replicate( " ", iTmp - sCampo.length() );
 
 							sRetorno = sRetorno.replaceAll( "\\" + sFragmento, sCampo );
 

@@ -31,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,22 +40,23 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -509,7 +509,7 @@ public class FRPagar extends FRelatorio {
 
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
@@ -518,7 +518,7 @@ public class FRPagar extends FRelatorio {
 
 					imp.impCab( 136, true );
 					imp.say( 0, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "| Vencto.    |" );
 					imp.say( 15, " Fornecedor                               |" );
@@ -528,14 +528,14 @@ public class FRPagar extends FRelatorio {
 					imp.say( 106, " Vlr Aberto   |" );
 					imp.say( 122, " Data Pagto. |" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 
 				}
 
 				if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ).equals( sDtVencItPag ) ) & ( bFimDia ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 41, 
@@ -546,7 +546,7 @@ public class FRPagar extends FRelatorio {
 							+ Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( bTotalDiaApag ) ) + " | " );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 
 					bTotalDiaParc = new BigDecimal( "0" );
 					bTotalDiaPago = new BigDecimal( "0" );
@@ -600,7 +600,7 @@ public class FRPagar extends FRelatorio {
 
 			if ( bFimDia ) {
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+				imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 41, 
@@ -613,7 +613,7 @@ public class FRPagar extends FRelatorio {
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+			imp.say( 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 55, 
@@ -623,7 +623,7 @@ public class FRPagar extends FRelatorio {
 					+ Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( bTotalApag ) ) + " | " );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();

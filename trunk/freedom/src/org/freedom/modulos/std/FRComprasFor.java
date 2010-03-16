@@ -24,7 +24,6 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,15 +36,16 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -212,7 +212,7 @@ public class FRComprasFor extends FRelatorio {
 		int linPag = imp.verifLinPag() - 1;
 		int iCodFor = 0;
 		int iCodForAnt = -1;
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		boolean termFor = false;
 		String sTmp = "";
 		

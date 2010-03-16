@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,6 +45,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -305,8 +306,8 @@ public class FRVendasFisico extends FRelatorio {
 		
 		String sCodGrup = null;
 		String sGrup = null;
-		final String sLinhaFina = Funcoes.replicate( "-", 133 );
-		final String sLinhaDupla = Funcoes.replicate( "=", 133 );
+		final String sLinhaFina = StringFunctions.replicate( "-", 133 );
+		final String sLinhaDupla = StringFunctions.replicate( "=", 133 );
 		ImprimeOS imp = null;
 		int linPag = 0;
 	

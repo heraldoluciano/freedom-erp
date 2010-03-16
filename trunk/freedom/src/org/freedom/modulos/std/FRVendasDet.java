@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +46,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -349,8 +350,8 @@ public class FRVendasDet extends FRelatorio {
 
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
-		String sLinFina = Funcoes.replicate( "-", 133 );
-		String sLinDupla = Funcoes.replicate( "=", 133 );
+		String sLinFina = StringFunctions.replicate( "-", 133 );
+		String sLinDupla = StringFunctions.replicate( "=", 133 );
 		BigDecimal bVlrDesc = new BigDecimal( 0 );
 		BigDecimal bVlrLiq = new BigDecimal( 0 );
 		BigDecimal bVlrDescTot = new BigDecimal( 0 );
@@ -408,9 +409,9 @@ public class FRVendasDet extends FRelatorio {
 					}
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "| Pedido: " );
-					imp.say( 10, Funcoes.strZero( rs.getString( "CodVenda" ), 8 ) );
+					imp.say( 10, StringFunctions.strZero( rs.getString( "CodVenda" ), 8 ) );
 					imp.say( 25, "Doc: " );
-					imp.say( 30, Funcoes.strZero( rs.getString( "DocVenda" ), 8 ) );
+					imp.say( 30, StringFunctions.strZero( rs.getString( "DocVenda" ), 8 ) );
 					imp.say( 45, "Emissão: " );
 					imp.say( 53, Funcoes.sqlDateToStrDate( rs.getDate( "DtEmitVenda" ) ) );
 					imp.say( 68, "Saida: " );

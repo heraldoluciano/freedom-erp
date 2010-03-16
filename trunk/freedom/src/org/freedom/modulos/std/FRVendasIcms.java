@@ -29,11 +29,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasIcms extends FRelatorio {
@@ -123,7 +124,7 @@ public class FRVendasIcms extends FRelatorio {
 				cont++;
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, imp.normal() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 77 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 77 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
@@ -132,12 +133,12 @@ public class FRVendasIcms extends FRelatorio {
 					imp.impCab( 80, true );
 
 					imp.say( imp.pRow(), 0, imp.normal() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 77 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 77 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.normal() );
 					imp.say( imp.pRow(), 0, "| Dt. Emissao | Tipo | Valor Liq.   | Base Calc.   | Valor Icms" );
 					imp.say( imp.pRow(), 79, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.normal() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 77 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 77 ) + "|" );
 				}
 
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
@@ -162,7 +163,7 @@ public class FRVendasIcms extends FRelatorio {
 				bVlrIcmsPagar = bVlrIcmsPagar.add( bVlrIcmsVenda );
 				bVlrIcmsPagar = bVlrIcmsPagar.add( bVlrIcmsCompra.negate() );
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
-				imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 77 ) + "|" );
+				imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 77 ) + "|" );
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
 				imp.say( imp.pRow(), 0, "|" );
 				imp.say( imp.pRow(), 2, "TOTAL COMPRAS" );
@@ -178,11 +179,11 @@ public class FRVendasIcms extends FRelatorio {
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
 				imp.say( imp.pRow(), 0, "|" );
 				imp.say( imp.pRow(), 2, "ICMS A PAGAR" );
-				imp.say( imp.pRow(), 22, "| " + Funcoes.replicate( " ", 13 ) + "| " + Funcoes.replicate( " ", 13 ) + "| " + Funcoes.strDecimalToStrCurrency( 13, 2, "" + bVlrIcmsPagar ) );
+				imp.say( imp.pRow(), 22, "| " + StringFunctions.replicate( " ", 13 ) + "| " + StringFunctions.replicate( " ", 13 ) + "| " + Funcoes.strDecimalToStrCurrency( 13, 2, "" + bVlrIcmsPagar ) );
 				imp.say( imp.pRow(), 79, "|" );
 
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
-				imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 77 ) + "+" );
+				imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 77 ) + "+" );
 			}
 			imp.eject();
 			imp.fechaGravacao();

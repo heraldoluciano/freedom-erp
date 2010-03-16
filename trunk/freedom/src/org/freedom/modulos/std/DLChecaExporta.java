@@ -38,6 +38,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.exporta.Contabil;
 import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.DLRelatorio;
 
@@ -143,7 +144,7 @@ public class DLChecaExporta extends DLRelatorio {
 		
 		try {
 			
-			String linha = "|" + Funcoes.replicate( "-", 133 ) + "|";
+			String linha = "|" + StringFunctions.replicate( "-", 133 ) + "|";
 			String tipo = "";
 			ImprimeOS imp = new ImprimeOS( "", con );
 			int linPag = imp.verifLinPag() - 1;

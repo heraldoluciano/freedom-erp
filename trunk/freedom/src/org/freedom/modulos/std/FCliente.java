@@ -76,6 +76,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.atd.FConveniado;
 import org.freedom.modulos.crm.DLNovoHist;
@@ -2586,7 +2587,7 @@ public class FCliente extends FTabDados
 		String sObs = "";
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
+		String linhaFina = StringFunctions.replicate( "-", 133 );
 		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
@@ -2828,7 +2829,7 @@ public class FCliente extends FTabDados
 		String sObs = "";
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
+		String linhaFina = StringFunctions.replicate( "-", 133 );
 		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
@@ -3068,7 +3069,7 @@ public class FCliente extends FTabDados
 		String sObs = "";
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
+		String linhaFina = StringFunctions.replicate( "-", 133 );
 		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
@@ -3301,7 +3302,7 @@ public class FCliente extends FTabDados
 		String sObs = "";
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
+		String linhaFina = StringFunctions.replicate( "-", 133 );
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
@@ -3566,7 +3567,7 @@ public class FCliente extends FTabDados
 		String sCodpesqant = "";
 		String sOrdem = "";
 		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
+		String linhaFina = StringFunctions.replicate( "-", 133 );
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;

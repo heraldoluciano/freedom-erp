@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,16 +37,17 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -287,7 +287,7 @@ public class FRUltimaVenda extends FRelatorio {
 	
 	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
 		
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		BigDecimal bTotalVd = null;
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -394,13 +394,13 @@ public class FRUltimaVenda extends FRelatorio {
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 68, "Total de Vendas no Periodo: " + Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( bTotalVd ) ) );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();

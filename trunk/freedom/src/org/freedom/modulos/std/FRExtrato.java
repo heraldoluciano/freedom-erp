@@ -23,7 +23,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -45,6 +44,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrinterJob;
@@ -264,7 +265,7 @@ public class FRExtrato extends FRelatorio {
 		BigDecimal bVlrTotCred = new BigDecimal( "0" );
 		BigDecimal bAnt = buscaSaldoAnt();
 		ImprimeOS imp = new ImprimeOS( "", con );
-		String linhafina = Funcoes.replicate( "-", 133 );
+		String linhafina = StringFunctions.replicate( "-", 133 );
 		String sDataLanca = "";
 		String sConta = "";
 		String sCodConta = txtCodConta.getVlrString();

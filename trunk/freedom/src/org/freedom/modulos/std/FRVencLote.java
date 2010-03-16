@@ -24,22 +24,22 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
@@ -224,7 +224,7 @@ public class FRVencLote extends FRelatorio {
 						imp.say( imp.pRow(), 135, "|" );
 						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					}
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "| Código" );
 					imp.say( imp.pRow(), 16, "| Descrição" );
@@ -233,7 +233,7 @@ public class FRVencLote extends FRelatorio {
 					imp.say( imp.pRow(), 98, "| Saldo" );
 					imp.say( imp.pRow(), 135, "|" );
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
@@ -246,14 +246,14 @@ public class FRVencLote extends FRelatorio {
 
 				if ( imp.pRow() >= linPag ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 					imp.incPags();
 					imp.eject();
 				}
 			}
 
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();

@@ -22,7 +22,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -38,6 +37,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -250,8 +251,8 @@ public class FRCpProd extends FRelatorio {
 	
 	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
 		
-		String sLinFina = Funcoes.replicate( "-", 133 );
-		String sLinDupla = Funcoes.replicate( "=", 133 );
+		String sLinFina = StringFunctions.replicate( "-", 133 );
+		String sLinDupla = StringFunctions.replicate( "=", 133 );
 		ImprimeOS imp = null;
 		int linPag = 0;
 		BigDecimal subtotal = new BigDecimal(0);

@@ -29,7 +29,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +47,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -261,7 +262,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 			imp.setTitulo( "Relatório de Lancamentos de Fretes" );
 			imp.addSubTitulo( "RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :" + sDataini + " Até: " + sDatafim );
 			
-			String linha = Funcoes.replicate( "-", 133 );
+			String linha = StringFunctions.replicate( "-", 133 );
 			
 			while ( rs.next() ) {
 				

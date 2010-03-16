@@ -29,7 +29,6 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +47,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -332,7 +333,7 @@ public class FRMediaItem extends FRelatorio {
 					+ "' AND '"
 					+ Funcoes.dateToStrDB(Funcoes.periodoMes(cIni.get(Calendar.MONTH) + 1, cIni.get(Calendar.YEAR))[1]) + "')";
 			sSubCab += " | "
-					+ Funcoes.strZero("" + (cIni.get(Calendar.MONTH) + 1), 2);
+					+ StringFunctions.strZero("" + (cIni.get(Calendar.MONTH) + 1), 2);
 			sSubCab += "/" + (cIni.get(Calendar.YEAR));
 			sOr = " OR ";
 			iSoma++;
@@ -372,7 +373,7 @@ public class FRMediaItem extends FRelatorio {
 					imp.impCab(136, true);
 
 					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|"+ StringFunctions.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "| Cod. Prod     ");
 					imp.say(imp.pRow() + 0, 16,"  Desc. Produto                            ");
@@ -385,7 +386,7 @@ public class FRMediaItem extends FRelatorio {
 					imp.say(imp.pRow() + 0, 4, sSubCab);
 					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|"+ StringFunctions.replicate("-", 133) + "|");
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "| "+ Funcoes.copy(rs.getString(1), 0, 13) + " ");
@@ -413,7 +414,7 @@ public class FRMediaItem extends FRelatorio {
 				imp.say(imp.pRow() + 0, iPos, " | "+ Funcoes.strDecimalToStrCurrency(7, 0, ""+ dMediaItem));
 				imp.say(imp.pRow() + 0, 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133)+ "|");
+				imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("-", 133)+ "|");
 				if (imp.pRow() >= (linPag - 1)) {
 					imp.incPags();
 					imp.eject();
@@ -421,7 +422,7 @@ public class FRMediaItem extends FRelatorio {
 				iNumItens++;
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 0, 0, "+" + StringFunctions.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "| T:");
 			
@@ -435,7 +436,7 @@ public class FRMediaItem extends FRelatorio {
 			
 			imp.say(imp.pRow() + 0, 135, "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 0, 0, "+" + StringFunctions.replicate("=", 133) + "+");
 
 			imp.eject();
 

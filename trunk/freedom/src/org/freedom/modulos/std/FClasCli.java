@@ -34,6 +34,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 
@@ -127,7 +128,7 @@ public class FClasCli extends FDados implements ActionListener {
 					imp.say( imp.pRow() + 0, 2, "Código" );
 					imp.say( imp.pRow() + 0, 30, "Descrição" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 80 ) );
+					imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 80 ) );
 				}
 				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
 				imp.say( imp.pRow() + 0, 2, rs.getString( "CodClasCli" ) );
@@ -139,7 +140,7 @@ public class FClasCli extends FDados implements ActionListener {
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
+			imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 80 ) );
 			
 			imp.eject();
 			imp.fechaGravacao();

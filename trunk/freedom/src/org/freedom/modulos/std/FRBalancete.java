@@ -25,19 +25,20 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -211,14 +212,14 @@ public class FRBalancete extends FRelatorio {
 					}
 
 					imp.impCab( 80, true );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 77 ) + "|" );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 77 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, "| Código Plan." );
 					imp.say( imp.pRow(), 15, "| Descrição" );
 					imp.say( imp.pRow(), 59, "|  %   " );
 					imp.say( imp.pRow(), 66, "| Valor" );
 					imp.say( imp.pRow(), 79, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "-", 77 ) + "|" );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 77 ) + "|" );
 				}
 
 				if ( rs.getString( 4 ) != null ) {
@@ -228,7 +229,7 @@ public class FRBalancete extends FRelatorio {
 						int iNivelplan = iNivel == 0 || iNivel == 2 ? 1 : iNivel;
 						iNivelplan = ( iNivelplan - 1 ) * 2;
 
-						sDescplan = " " + Funcoes.replicate( " ", iNivelplan ) + rs.getString( "descplan" );
+						sDescplan = " " + StringFunctions.replicate( " ", iNivelplan ) + rs.getString( "descplan" );
 
 						if ( iNivel > 1 ) {
 							bigBasePerc = new BigDecimal( rs.getString( 4 ) );
@@ -249,7 +250,7 @@ public class FRBalancete extends FRelatorio {
 
 				if ( imp.pRow() == ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 77 ) + "+" );
+					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 77 ) + "+" );
 					imp.eject();
 					imp.incPags();
 				}
@@ -257,13 +258,13 @@ public class FRBalancete extends FRelatorio {
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 77 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 77 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
 			imp.say( imp.pRow(), 0, "|" );
 			imp.say( imp.pRow(), 40, "TOTAL RECEITAS/DESPESAS" );
 			imp.say( imp.pRow(), 66, "|" + Funcoes.strDecimalToStrCurrency( 12, 2, "" + bTotal ) + "|" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "-", 77 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 77 ) + "+" );
 
 			imp.eject();
 

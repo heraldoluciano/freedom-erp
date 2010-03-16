@@ -23,7 +23,6 @@
 package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +34,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDados;
 
 public class FLancaExp extends FDados implements ActionListener {
@@ -132,7 +133,7 @@ public class FLancaExp extends FDados implements ActionListener {
 					imp.impCab(136, false);
 					String sTitulo = "RELATORIO LANCAMENTOS DE EXPOSITORES   -   PERIODO DE :"+sRet[0]+" ATE: "+sRet[1];
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+					imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",134)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
 					imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
@@ -145,7 +146,7 @@ public class FLancaExp extends FDados implements ActionListener {
 					imp.say(imp.pRow()+0,0,"|");
 					imp.say(imp.pRow()+0,136,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|Vend");
 					imp.say(imp.pRow()+0,7,"|Nome Comissionado");
@@ -156,7 +157,7 @@ public class FLancaExp extends FDados implements ActionListener {
 					imp.say(imp.pRow()+0,125,"|Data Ret. ");
 					imp.say(imp.pRow()+0,136,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
 				}	
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 				imp.say(imp.pRow()+0,0,"|"+rs.getString("CodVend"));
@@ -173,7 +174,7 @@ public class FLancaExp extends FDados implements ActionListener {
 				}
 	        	}
 	        	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        		imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+        		imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",134)+"+");
 		        imp.eject();
 		
         		imp.fechaGravacao();

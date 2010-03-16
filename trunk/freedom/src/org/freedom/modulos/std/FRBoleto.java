@@ -29,7 +29,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,7 +42,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -54,6 +52,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -62,6 +61,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.objetos.ObjetoEmpresa;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
@@ -514,9 +515,9 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null ) {
 					sTxa = sTxa.replaceAll( "\\[DATADOC_]", Funcoes.sqlDateToStrDate( dCampo ) );
-					sTxa = sTxa.replaceAll( "\\[DIA_E]", Funcoes.strZero( String.valueOf( Funcoes.getDiaMes( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
-					sTxa = sTxa.replaceAll( "\\[MES_E]", Funcoes.strZero( Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ), 2 ) );
-					sTxa = sTxa.replaceAll( "\\[ANO_E]", Funcoes.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[DIA_E]", StringFunctions.strZero( String.valueOf( Funcoes.getDiaMes( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[MES_E]", StringFunctions.strZero( Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[ANO_E]", StringFunctions.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
 				}
 				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
@@ -652,7 +653,7 @@ public class FRBoleto extends FRelatorio {
 			StringBuffer sb = new StringBuffer();
 
 			while ( m.find() ) {
-				m.appendReplacement( sb, Funcoes.replicate( " ", m.end() - m.start() ) );
+				m.appendReplacement( sb, StringFunctions.replicate( " ", m.end() - m.start() ) );
 			}
 
 			m.appendTail( sb );

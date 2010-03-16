@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.Vector;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -42,6 +41,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -52,7 +52,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
-import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 
@@ -504,11 +504,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 			
 			if ( cbCamposEspec.getSelectedIndex() < 3 ) { 
 				// Campos de valores			
-				sVal = cbCamposEspec.getVlrString().replaceAll( "#####.##", Funcoes.strZero( bigVal.setScale( 2, BigDecimal.ROUND_HALF_UP ).toString(), 8 ) );
+				sVal = cbCamposEspec.getVlrString().replaceAll( "#####.##", StringFunctions.strZero( bigVal.setScale( 2, BigDecimal.ROUND_HALF_UP ).toString(), 8 ) );
 			}
 			else if ( cbCamposEspec.getSelectedIndex() == 3 ) { 
 				// Campos de datas				
-				sVal = cbCamposEspec.getVlrString().replaceAll( "###", Funcoes.strZero( bigVal.intValue() + "", 3 ) );
+				sVal = cbCamposEspec.getVlrString().replaceAll( "###", StringFunctions.strZero( bigVal.intValue() + "", 3 ) );
 			}
 
 			txaBoleto.insert( sVal, txaBoleto.getCaretPosition() );

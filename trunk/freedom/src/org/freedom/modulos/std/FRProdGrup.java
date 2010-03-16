@@ -21,7 +21,6 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +36,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -150,8 +151,8 @@ public class FRProdGrup extends FRelatorio {
       sOrdem = sOrdemGrupo+"P.DESCPROD";
       sOrdenado = "ORDENADO POR DESCRICAO"; 
     }
-    sOrdenado = Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
-    sOrdenado += Funcoes.replicate(" ",132-sOrdenado.length());
+    sOrdenado = StringFunctions.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+    sOrdenado += StringFunctions.replicate(" ",132-sOrdenado.length());
     
     if (txtCodGrup.getText().trim().length() > 0) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";

@@ -27,10 +27,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -100,21 +101,21 @@ public class FVariantes extends FDados implements ActionListener{
 					imp.say(imp.pRow(), 2, "Cód.var.");
 					imp.say(imp.pRow(), 30, "Descrição");
 					imp.say(imp.pRow() + 1, 0, imp.normal());
-					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+					imp.say(imp.pRow(), 0, StringFunctions.replicate("-",79));
 				}
 				imp.say(imp.pRow() + 1, 0, imp.normal());
 				imp.say(imp.pRow(), 2, rs.getString("CodVarG"));
 				imp.say(imp.pRow(), 30, rs.getString("DescVarG"));
 				if (imp.pRow()>=linPag) {
 					imp.say(imp.pRow() + 1, 0, imp.normal());
-					imp.say(imp.pRow(), 0, Funcoes.replicate("-", 79));
+					imp.say(imp.pRow(), 0, StringFunctions.replicate("-", 79));
 					imp.incPags();
 					imp.eject();
 				}
 			}
 			  
 			imp.say(imp.pRow() + 1, 0, imp.normal());
-			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			imp.say(imp.pRow(), 0, StringFunctions.replicate("=",79));
 			imp.eject();
 			  
 			imp.fechaGravacao();

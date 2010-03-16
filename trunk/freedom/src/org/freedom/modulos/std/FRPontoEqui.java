@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +34,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
@@ -237,13 +238,13 @@ public class FRPontoEqui extends FRelatorio {
 			if (imp.pRow()==0) {
 				imp.impCab(80, true);				     
 				imp.say(imp.pRow(), 0, imp.normal());         
-				imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",77) + "|" );   
+				imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",77) + "|" );   
 				imp.say(imp.pRow() + 1, 0, imp.normal()); 
 				imp.say(imp.pRow(), 0, "|");
 				imp.say(imp.pRow(), 47, "|      Valor");
 				imp.say(imp.pRow(), 65, "|           % |");
 				imp.say(imp.pRow() + 1, 0, imp.normal());
-				imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",77) + "|" );
+				imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",77) + "|" );
 			}
 			
 			impAux( imp, "|      Receitas:", 
@@ -297,7 +298,7 @@ public class FRPontoEqui extends FRelatorio {
 			
 			if (imp.pRow() == (linPag-1)) {
 				imp.say(imp.pRow()+1,0,""+imp.normal());
-				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+				imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",77)+"+");
 				imp.eject();
 				imp.incPags();          
 			}
@@ -325,9 +326,9 @@ public class FRPontoEqui extends FRelatorio {
 		String aux;
 		
 		if( linhaGroca )
-			aux = "|" + Funcoes.replicate("=",45) + "+" + Funcoes.replicate("=",17) + "+" + Funcoes.replicate("=",13) + "|";
+			aux = "|" + StringFunctions.replicate("=",45) + "+" + StringFunctions.replicate("=",17) + "+" + StringFunctions.replicate("=",13) + "|";
 		else 
-			aux = "|----+" + Funcoes.replicate("-",40) + "+" + Funcoes.replicate("-",17) + "+" + Funcoes.replicate("-",13) + "|";
+			aux = "|----+" + StringFunctions.replicate("-",40) + "+" + StringFunctions.replicate("-",17) + "+" + StringFunctions.replicate("-",13) + "|";
 		
 		imp.say(imp.pRow() + 1, 0, imp.normal() );
 		imp.say(imp.pRow(), 0, aux );
