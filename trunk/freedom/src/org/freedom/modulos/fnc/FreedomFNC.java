@@ -181,16 +181,7 @@ public class FreedomFNC extends AplicativoPD {
 		
 		ajustaMenu();
 
-		sNomeModulo = "Financeiro";
-		sNomeSis = "Freedom";
-		sMailSuporte = "suporte@stpinf.com";
-		sEmpSis = "Setpoint Informática Ltda.";
-		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Alex Rodrigues - Programação" );
-		vEquipeSis.add( "Alexandre Marcondes - Programação" );
-		vEquipeSis.add( "Fernando Oliveira - Programação" );
-		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
+		nomemodulo = "Financeiro";
 
 	}
 

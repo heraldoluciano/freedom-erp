@@ -172,7 +172,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/fnc/"); 
 		hParam.put( "SALDOSL", saldosl );
 		hParam.put( "DTINI", txtDataini.getVlrDate());
