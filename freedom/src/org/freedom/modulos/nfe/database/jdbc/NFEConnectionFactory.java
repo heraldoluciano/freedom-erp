@@ -60,8 +60,19 @@ public class NFEConnectionFactory implements NFEListener {
 	private Integer tpNF = AbstractNFEFactory.TP_NF_OUT;
 	
 	public NFEConnectionFactory( final DbConnection conFreedom ) {
+		this(conFreedom, null);
+	}
+	
+	public NFEConnectionFactory( final DbConnection conFreedom, Integer TP_NF ) {
 
 		this.con = conFreedom;
+		
+		if(TP_NF==null) {
+			setTpNF( AbstractNFEFactory.TP_NF_OUT );
+		}
+		else {
+			setTpNF( TP_NF );
+		}
 		
 		if ( conFreedom != null ) {
 			
@@ -77,7 +88,7 @@ public class NFEConnectionFactory implements NFEListener {
 					setConNFE( new DbConnection( getUrl(), props ) );
 					
 					getObjNFEFactory().setConSys( getCon() );
-					getObjNFEFactory().setConNFE( getConNFE() );
+					getObjNFEFactory().setConNFE( getConNFE() );									
 					getObjNFEFactory().setTpNF( getTpNF() );
 					
 				}
@@ -169,7 +180,16 @@ public class NFEConnectionFactory implements NFEListener {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, docvenda, getDirNFE() );
 		getObjNFEFactory().setKey( key );
+		
 	}
+	
+	public void setKey( Integer codemp, Integer codfilial, Integer codcompra, Integer doccompra ) {
+
+		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, codcompra, doccompra, getDirNFE() );
+		getObjNFEFactory().setKey( key );
+		
+	}
+
 
 	private String getUrlDb() {
 		return Aplicativo.getParameter( "banconfe" );
@@ -250,12 +270,15 @@ public class NFEConnectionFactory implements NFEListener {
 							result = false;
 						}
 					}
+					
+					rs.close();
+					ps.close();			
+					con.commit();
+					
 				}
 			}
 			
-			rs.close();
-			ps.close();			
-			con.commit();
+
 		}
 		
 		return result;
