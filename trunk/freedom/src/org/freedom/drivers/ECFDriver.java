@@ -7,6 +7,7 @@ import org.freedom.ecf.driver.ECFBematech;
 import org.freedom.ecf.driver.STResult;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.AplicativoPDV;
 
 public class ECFDriver {
@@ -325,7 +326,7 @@ public class ECFDriver {
 
 			if ( bresult ) {
 				String formaPag = Funcoes.adicEspacosDireita( Funcoes.tiraAcentos( sFormaPagto ), 16 );
-				String sCodFormaPag = Funcoes.strZero( ecf.programaFormaPagamento( formaPag ), 2 );
+				String sCodFormaPag = StringFunctions.strZero( ecf.programaFormaPagamento( formaPag ), 2 );
 
 				bresult = trataresultFuncao( ecf.efetuaFormaPagamento( sCodFormaPag, fVlrPago, "" ) );
 			}
@@ -845,7 +846,7 @@ public class ECFDriver {
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			String sCodprod = Funcoes.strZero( String.valueOf( iCodprod ), 29 );
+			String sCodprod = StringFunctions.strZero( String.valueOf( iCodprod ), 29 );
 			String sDescricao = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sDescprod, 29 ) );
 			int index = 1;
 
