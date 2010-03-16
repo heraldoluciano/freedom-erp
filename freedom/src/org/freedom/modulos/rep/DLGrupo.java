@@ -34,6 +34,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -106,7 +107,7 @@ public class DLGrupo extends FFDialogo {
 			
 			if ( rs.next() ) {
 				
-				retorno = txtCodGrupo.getVlrString().trim() + Funcoes.strZero( String.valueOf( ( rs.getInt( 1 ) + 1 ) ), 2 );
+				retorno = txtCodGrupo.getVlrString().trim() + StringFunctions.strZero( String.valueOf( ( rs.getInt( 1 ) + 1 ) ), 2 );
 			}
 
 			ps.close();
