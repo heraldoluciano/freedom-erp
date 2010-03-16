@@ -27,6 +27,7 @@ import java.util.Calendar;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.telas.Aplicativo;
 
@@ -50,13 +51,13 @@ public class PVNCACongelados extends Leiaute {
 			imp.setTitulo("Pedido de Venda.");
 			sVal = imp.getValCab();
 
-			sHora = Funcoes.strZero(String.valueOf(cHora
+			sHora = StringFunctions.strZero(String.valueOf(cHora
 					.get(Calendar.HOUR_OF_DAY)), 2)
 					+ ":"
-					+ Funcoes.strZero(String
+					+ StringFunctions.strZero(String
 							.valueOf(cHora.get(Calendar.MINUTE)), 2)
 					+ ":"
-					+ Funcoes.strZero(String
+					+ StringFunctions.strZero(String
 							.valueOf(cHora.get(Calendar.SECOND)), 2);
 
 			bRec = rsRec.next();
@@ -67,7 +68,7 @@ public class PVNCACongelados extends Leiaute {
 
 					imp.montaCab();
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "+" + Funcoes.replicate("-", 133) + "+");
+					imp.say(1, "+" + StringFunctions.replicate("-", 133) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(1, "|");
 					imp.say(4, sVal[0]);// Razão social
@@ -84,7 +85,7 @@ public class PVNCACongelados extends Leiaute {
 							+ Aplicativo.strUsuario.toUpperCase());// usuario
 					imp.say(135, " |");
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "+" + Funcoes.replicate("-", 133) + "+");
+					imp.say(1, "+" + StringFunctions.replicate("-", 133) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(1, "|");
 					imp.say(4, "Pedido: " + rs.getString("CODVENDA"));
@@ -130,11 +131,11 @@ public class PVNCACongelados extends Leiaute {
 											"####-####") : ""));
 					imp.say(135, " |");
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "|" + Funcoes.replicate("-", 9) + "+");
-					imp.say(12, Funcoes.replicate("-", 6) + "+");
-					imp.say(19, Funcoes.replicate("-", 85) + "+");
-					imp.say(105, Funcoes.replicate("-", 14) + "+");
-					imp.say(120, Funcoes.replicate("-", 15) + "+");
+					imp.say(1, "|" + StringFunctions.replicate("-", 9) + "+");
+					imp.say(12, StringFunctions.replicate("-", 6) + "+");
+					imp.say(19, StringFunctions.replicate("-", 85) + "+");
+					imp.say(105, StringFunctions.replicate("-", 14) + "+");
+					imp.say(120, StringFunctions.replicate("-", 15) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(1, "|");
 					imp.say(4, "  QTD");
@@ -145,11 +146,11 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(126, "Total");
 					imp.say(136, "|");
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "|" + Funcoes.replicate("-", 9) + "+");
-					imp.say(12, Funcoes.replicate("-", 6) + "+");
-					imp.say(19, Funcoes.replicate("-", 85) + "+");
-					imp.say(105, Funcoes.replicate("-", 14) + "+");
-					imp.say(120, Funcoes.replicate("-", 15) + "+");
+					imp.say(1, "|" + StringFunctions.replicate("-", 9) + "+");
+					imp.say(12, StringFunctions.replicate("-", 6) + "+");
+					imp.say(19, StringFunctions.replicate("-", 85) + "+");
+					imp.say(105, StringFunctions.replicate("-", 14) + "+");
+					imp.say(120, StringFunctions.replicate("-", 15) + "+");
 
 				}
 
@@ -185,21 +186,21 @@ public class PVNCACongelados extends Leiaute {
 					if (rs.getInt(1) == contItem) {
 						for (int i = 0; i < (maxLine - iLinha); i++) {
 							imp.pulaLinha(1, imp.comprimido());
-							imp.say(1, "|" + Funcoes.replicate(" ", 9) + "|");
-							imp.say(12, Funcoes.replicate(" ", 6) + "|");
-							imp.say(19, Funcoes.replicate(" ", 85) + "|");
-							imp.say(105, Funcoes.replicate(" ", 14) + "|");
-							imp.say(120, Funcoes.replicate(" ", 15) + "|");
+							imp.say(1, "|" + StringFunctions.replicate(" ", 9) + "|");
+							imp.say(12, StringFunctions.replicate(" ", 6) + "|");
+							imp.say(19, StringFunctions.replicate(" ", 85) + "|");
+							imp.say(105, StringFunctions.replicate(" ", 14) + "|");
+							imp.say(120, StringFunctions.replicate(" ", 15) + "|");
 						}
 					}
 
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "|" + Funcoes.replicate("-", 9) + "+");
-					imp.say(12, Funcoes.replicate("-", 6) + "+");
-					imp.say(19, Funcoes.replicate("-", 34) + "+");
-					imp.say(54, Funcoes.replicate("-", 50) + "+");
-					imp.say(105, Funcoes.replicate("-", 14) + "+");
-					imp.say(120, Funcoes.replicate("-", 15) + "+");
+					imp.say(1, "|" + StringFunctions.replicate("-", 9) + "+");
+					imp.say(12, StringFunctions.replicate("-", 6) + "+");
+					imp.say(19, StringFunctions.replicate("-", 34) + "+");
+					imp.say(54, StringFunctions.replicate("-", 50) + "+");
+					imp.say(105, StringFunctions.replicate("-", 14) + "+");
+					imp.say(120, StringFunctions.replicate("-", 15) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(1, "|" + (Funcoes.alinhaDir(iQtdItem, 8)));
 					imp.say(12, "| ---- |");
@@ -228,11 +229,11 @@ public class PVNCACongelados extends Leiaute {
 							casaDecFin, bdTotalItem.toString()));
 					imp.say(135, " |");
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "|" + Funcoes.replicate("-", 9) + "+");
-					imp.say(12, Funcoes.replicate("-", 6) + "+");
-					imp.say(19, Funcoes.replicate("-", 34) + "+");
-					imp.say(54, Funcoes.replicate("-", 50) + "+");
-					imp.say(105, Funcoes.replicate("-", 30) + "+");
+					imp.say(1, "|" + StringFunctions.replicate("-", 9) + "+");
+					imp.say(12, StringFunctions.replicate("-", 6) + "+");
+					imp.say(19, StringFunctions.replicate("-", 34) + "+");
+					imp.say(54, StringFunctions.replicate("-", 50) + "+");
+					imp.say(105, StringFunctions.replicate("-", 30) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(1, "| Obrigado pela prefência.");
 					imp.say(54,
@@ -248,8 +249,8 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(136, "|");
 
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(1, "+" + Funcoes.replicate("-", 51) + "+");
-					imp.say(54, Funcoes.replicate("-", 81) + "+");
+					imp.say(1, "+" + StringFunctions.replicate("-", 51) + "+");
+					imp.say(54, StringFunctions.replicate("-", 81) + "+");
 					imp.pulaLinha(1, imp.comprimido());
 					imp.setPrc(0, 0);
 					imp.incPags();
