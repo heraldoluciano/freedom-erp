@@ -42,6 +42,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -49,7 +50,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -72,6 +75,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -1183,7 +1187,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 						        subtract( ConversionFunctions.stringCurrencyToBigDecimal((String)tab.getValor( i, 6 )) ).floatValue()
 						&& ! "".equals((String) tab.getValor( i, 3 )) ) {
 					iSldNeg++;
-					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + Funcoes.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
+					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + StringFunctions.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
 				}
 
 				rs.close();

@@ -22,7 +22,6 @@ package org.freedom.modulos.pcp;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +35,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -235,7 +236,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			rs = ps.executeQuery();
 			
 			bNumCert.append( iCodProd );
-			bNumCert.append( Funcoes.strZero( txtCodCli.getVlrString().trim(), 4 ));
+			bNumCert.append( StringFunctions.strZero( txtCodCli.getVlrString().trim(), 4 ));
 			
 			if( txtDocVenda.getVlrInteger() != 0 && txtDocVenda.getVlrInteger() != null ){
 				
