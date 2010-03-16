@@ -20,7 +20,6 @@
 
 package org.freedom.layout.atd;
 import java.awt.Font;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +28,8 @@ import java.util.Vector;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 
@@ -91,7 +92,7 @@ public class FichaMedida extends LeiauteGR {
 			setFonte(fnCabEmp);
 			drawTexto("Ficha Nº:   ",5,iY); 
 			setFonte(fnCabEmpNeg);
-			drawTexto(Funcoes.strZero(""+iCodLev,8),65,iY);
+			drawTexto(StringFunctions.strZero(""+iCodLev,8),65,iY);
 			drawTexto("Emissão: ",285,iY); 
 			setFonte(fnCabEmpNeg);
 			drawTexto(Funcoes.dateToStrDataHora(new Date()),350,iY);
