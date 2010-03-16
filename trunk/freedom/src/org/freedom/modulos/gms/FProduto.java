@@ -69,6 +69,7 @@ import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EANFactory;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLRProduto;
 import org.freedom.objetos.ObjetoCustosProd;
@@ -1506,7 +1507,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					
 					if ( imp.pRow() >= linPag ) {
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 					}
@@ -1519,7 +1520,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					}
 
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 2, "Código:" );
@@ -1555,7 +1556,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				}
 				
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 				
 				imp.eject();
 				imp.fechaGravacao();
@@ -1605,7 +1606,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 					if ( imp.pRow() >= linPag ) {
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.incPags();
 						imp.eject();
 					}
@@ -1616,7 +1617,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 						imp.say( 0, "|" );
 						imp.say( 135, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
 						imp.say( 3, "Código:" );
@@ -1630,7 +1631,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 						imp.say( 120, "Preço Base:" );
 						imp.say( 135, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 
 					}
 
@@ -1652,7 +1653,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				}
 				
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+				imp.say( 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 				
 				imp.eject();
 				imp.fechaGravacao();

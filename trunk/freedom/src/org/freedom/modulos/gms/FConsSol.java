@@ -54,6 +54,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -438,7 +439,7 @@ public class FConsSol extends FFilho implements ActionListener {
 
 					}
 
-					imp.say(imp.pRow() + 0, 0,"|"+Funcoes.replicate("-", 133)+"|");
+					imp.say(imp.pRow() + 0, 0,"|"+StringFunctions.replicate("-", 133)+"|");
 
 				}
 
@@ -468,7 +469,7 @@ public class FConsSol extends FFilho implements ActionListener {
 				}
 			}
 
-			imp.say(imp.pRow() + 1, 0,"+"+Funcoes.replicate("-", 133)+"+");
+			imp.say(imp.pRow() + 1, 0,"+"+StringFunctions.replicate("-", 133)+"+");
 			imp.eject();
 
 			imp.fechaGravacao();

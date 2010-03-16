@@ -61,6 +61,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
@@ -789,7 +790,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 				if (imp.pRow() == 0) {
 					imp.impCab(136, true);
 					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "R.M.A.   No.: ");
@@ -845,7 +846,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 							.getString("SeqOP").trim() : "");
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
@@ -901,7 +902,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+			imp.say(imp.pRow() + 0, 0, "|" + StringFunctions.replicate("=", 133) + "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 1, "|");
 			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
@@ -937,9 +938,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 			}
 
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 0, 0, "+" + StringFunctions.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 52, Funcoes.replicate("_", 41));
+			imp.say(imp.pRow() + 0, 52, StringFunctions.replicate("_", 41));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 62, "Ass. do requisitante");
 

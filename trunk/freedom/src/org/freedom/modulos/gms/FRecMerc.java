@@ -39,6 +39,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.modulos.cfg.FBairro;
@@ -935,7 +936,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			imp.say( imp.pRow(), 0, " " + imp.normal() );
 
-			imp.say( imp.pRow(), 48, Funcoes.strZero( interno, 10 ) );
+			imp.say( imp.pRow(), 48, StringFunctions.strZero( interno, 10 ) );
 
 			imp.pulaLinha( 1, imp.comprimido() );
 

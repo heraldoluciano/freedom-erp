@@ -64,6 +64,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -1088,7 +1089,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
 					imp.say( imp.pRow() + 0, 4, "R.M.A.   No.: " );
@@ -1132,7 +1133,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 37, rs.getString( "SeqOP" ) != null ? rs.getString( "SeqOP" ).trim() : "" );
 					imp.say( imp.pRow() + 0, 136, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
@@ -1201,7 +1202,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 			}
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+			imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 1, "|" );
 			imp.say( imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS" );
@@ -1234,9 +1235,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 2, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 52, Funcoes.replicate( "_", 41 ) );
+			imp.say( imp.pRow() + 0, 52, StringFunctions.replicate( "_", 41 ) );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 62, "Ass. do requisitante" );
 			
