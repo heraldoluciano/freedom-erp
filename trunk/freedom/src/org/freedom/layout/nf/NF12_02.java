@@ -37,6 +37,7 @@ public class NF12_02 extends Leiaute {
 	private String sNumNota = ""; 
 
 	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
+		
 		Calendar cHora = Calendar.getInstance();
 		boolean bRetorno;
 		int iNumNota = 0;
@@ -112,7 +113,7 @@ public class NF12_02 extends Leiaute {
 					imp.say(imp.pRow()+2,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndCli"),0,50).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
 					imp.say(imp.pRow()+0,68,rs.getString("BairCli")!=null ? Funcoes.copy(rs.getString("BairCli"),0,15) : "");
-					imp.say(imp.pRow()+0,88,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
+					imp.say(imp.pRow()+0,90,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
 					imp.say(imp.pRow()+0,122,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
 					
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -161,7 +162,7 @@ public class NF12_02 extends Leiaute {
 					imp.say(imp.pRow()+0,60,sVals[5]);
 					imp.say(imp.pRow()+0,129,sVencs[5]);             
 
-					imp.say(imp.pRow()+1,0,"");
+					imp.say(imp.pRow()+2,0,"");
 				}
 
 				if (!rs.getString("TipoProd").equals("S")) {
@@ -277,7 +278,7 @@ public class NF12_02 extends Leiaute {
 	private void impTotais(ImprimeOS imp,Vector<String> vValores){
 		try {
 			
-			for (int i=0;(imp.pRow()<47);i++) { 
+			for (int i=0;(imp.pRow()<46);i++) { 
 				imp.say(imp.pRow()+1,0,"");
 			}
 
@@ -286,7 +287,7 @@ public class NF12_02 extends Leiaute {
 			imp.say(imp.pRow()+0,115,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString())); // VLR TOT PROD
 			imp.say(imp.pRow()+2,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));//VLR FRETE
-			imp.say(imp.pRow()+0,60,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));//VLR ADIC
+			imp.say(imp.pRow()+0,58,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));//VLR ADIC
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(5).toString()));//VLR IPI
 			imp.say(imp.pRow()+0,115,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));//VLR LIQ VD
 			imp.say(imp.pRow()+3,0,""+imp.comprimido());
@@ -306,7 +307,7 @@ public class NF12_02 extends Leiaute {
 			else {
 				imp.say(imp.pRow()+0,118,Funcoes.setMascara(vValores.elementAt(13).toString() != null ? vValores.elementAt(13).toString() : "","##.###.###/####-##")); 
 			}
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+2,0,""+imp.comprimido());
 
 			imp.say(imp.pRow()+0,8,vValores.elementAt(14).toString().trim()); //END TRANSP
 			imp.say(imp.pRow()+0,68,vValores.elementAt(16).toString().trim()); //CID TRANSP
@@ -330,7 +331,8 @@ public class NF12_02 extends Leiaute {
 			//  		  imp.say(imp.pRow()+0,43,"Vendedor: "+vValores.elementAt(25).toString()); //COD VEND
 			imp.say(imp.pRow()+1,0,"");
 			imp.say(imp.pRow()+0,6,sMatObs[1]);
-			imp.say(imp.pRow()+0,43,vValores.elementAt(26).toString().substring(0,20));
+			imp.say(imp.pRow()+0,30,vValores.elementAt(26).toString().substring(0,20));
+			imp.say(imp.pRow()+0,60,sNumNota);
 			imp.say(imp.pRow()+1,0,"");
 			imp.say(imp.pRow()+0,6,sMatObs[2]);
 			imp.say(imp.pRow()+1,0,"");
@@ -339,7 +341,7 @@ public class NF12_02 extends Leiaute {
 			imp.say(imp.pRow()+0,6,sMatObs[4]);
 
 			imp.say(imp.pRow()+4,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,125,sNumNota);
+//			imp.say(imp.pRow()+0,125,sNumNota);
 			imp.say(imp.pRow()+3,0,""+imp.comprimido());
 
 			imp.setPrc(0,0);
