@@ -400,7 +400,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbImportAbaCp = new JCheckBoxPad( "Aba Importação na tela de compras.", "S", "N" );
 
-	private final JCheckBoxPad cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras.", "S", "N" );
+//	private final JCheckBoxPad cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras.", "S", "N" );
 	
 	private final JCheckBoxPad cbPrecoRel = new JCheckBoxPad( "Mostra preço de compra nos relatórios.", "S", "N", true );
 
@@ -1084,12 +1084,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel( pinCompras );
 		adicDB( cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "",false );
 		adicDB( cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "",false );
-		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );		
-		adicDB( cbImportAbaCp, 7, 75, 250, 20, "TabImportCp", "",false );		
-		adicDB( cbPrecoRel, 7, 95, 270, 20, "PrecoCpRel", "",false );
-		adicDB( cbHabiitaCustoCompra, 7, 115, 300, 20, "CustoCompra", "", true );		
-		adicDB( cbInfCPDevolucao, 7, 135, 300, 20, "INFCPDEVOLUCAO", "", true );
-		adicDB( cbUsaBuscGenProdCP, 7, 155, 300, 20, "USABUSCAGENPRODCP", "", true );
+//		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );		
+		adicDB( cbImportAbaCp, 7, 55, 250, 20, "TabImportCp", "",false );		
+		adicDB( cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "",false );
+		adicDB( cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true );		
+		adicDB( cbInfCPDevolucao, 7, 115, 300, 20, "INFCPDEVOLUCAO", "", true );
+		adicDB( cbUsaBuscGenProdCP, 7, 135, 300, 20, "USABUSCAGENPRODCP", "", true );
 		
 		adicCampo( txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false );
 		adicCampo( txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false );
