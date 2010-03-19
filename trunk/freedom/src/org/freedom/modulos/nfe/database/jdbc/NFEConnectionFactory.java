@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
@@ -218,13 +219,29 @@ public class NFEConnectionFactory implements NFEListener {
 					result = true;
 				}
 			}
+			
 			rs.close();
 			ps.close();
+			
 			con.commit();
 			
 			if ( result ) {
 				
-				ps = con.prepareStatement( "SELECT CLASSNFE, DIRNFE FROM SGPREFERE1 P WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+				StringBuilder sqlpref = new StringBuilder();
+				
+				sqlpref.append( "SELECT CLASSNFE, " );
+				
+				if(SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+					sqlpref.append( "DIRNFELIN " );
+				}
+				else if(SystemFunctions.getOS()==SystemFunctions.OS_WINDOWS) {
+					sqlpref.append( "DIRNFE " );
+				}
+				
+				sqlpref.append( "DIRNFE FROM SGPREFERE1 P WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+				
+				ps = con.prepareStatement( sqlpref.toString() ); 
+						
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 				rs = ps.executeQuery();
