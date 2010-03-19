@@ -24,16 +24,16 @@
 
 package org.freedom.modulos.std;
 
-import org.freedom.infra.model.jdbc.DbConnection;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
-import javax.swing.BorderFactory; 
+
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -59,6 +59,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.functions.SystemFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 import org.freedom.telas.SwingParams;
 
@@ -202,7 +204,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JTextFieldPad txtDescClassNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
-	private JTextFieldPad txtDirNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	private JTextFieldPad txtDirNfeWin = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private JTextFieldPad txtDirNfeLin = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
 	private JTextFieldPad txtDescClassCp = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
@@ -592,7 +596,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private ListaCampos lcMensGeral = new ListaCampos( this, "MS" );
 	
-	private final JButtonPad btDirNfe = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private final JButtonPad btDirNfeWin = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	
+	private final JButtonPad btDirNfeLin = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
 	
 	private JRadioGroup<String, String> rgFormatoDANFE = null;
 	
@@ -1351,14 +1357,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFePlugin = new JPanelPad();
 		pnNFePlugin.setBorder( SwingParams.getPanelLabel("Configuração do plugin NF-e", Color.BLUE) );
 		setPainel( pinNFe );
-		adic( pnNFePlugin, 7, 105, 370, 155 );
+		adic( pnNFePlugin, 7, 105, 370, 195 );
 		
 		setPainel(pnNFePlugin);
-		
+		 
 		adicCampo( txtDescClassNfe, 4, 22, 350, 20, "CLASSNFE", "Classe do plugin de integração NFe", ListaCampos.DB_SI, false );
-		adicCampo( txtDirNfe, 4, 62, 327, 20, "DIRNFE", "Diretório padrão para arquvos NFe", ListaCampos.DB_SI, false );
-		adic( btDirNfe,333,62,20,20 );
-		adicCampo(txtVerProcNfe, 4, 102, 350, 20, "VerProcNfe", "Versão do Aplicativo", ListaCampos.DB_SI, false );
+		adicCampo( txtDirNfeWin, 4, 62, 327, 20, "DIRNFE", "Diretório padrão para arquvos NFe (Windows)", ListaCampos.DB_SI, false );
+		adicCampo( txtDirNfeLin, 4, 102, 327, 20, "DIRNFELIN", "Diretório padrão para arquvos NFe (Linux)", ListaCampos.DB_SI, false );		
+		
+		adic( btDirNfeWin,333,62,20,20 );
+		adic( btDirNfeLin,333,102,20,20 );
+		
+		adicCampo(txtVerProcNfe, 4, 142, 350, 20, "VerProcNfe", "Versão do Aplicativo", ListaCampos.DB_SI, false );
 				
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder( SwingParams.getPanelLabel("Parâmetros", Color.BLUE) );
@@ -1505,8 +1515,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPrefere3.addInsertListener( this );
 		lcPrefere3.addEditListener( this );
 		
-		btDirNfe.setToolTipText( "Localizar diretório" );
-		btDirNfe.addActionListener( this );
+		btDirNfeWin.setToolTipText( "Localizar diretório" );
+		btDirNfeLin.setToolTipText( "Localizar diretório" );
+		
+		btDirNfeWin.addActionListener( this );
+		btDirNfeLin.addActionListener( this );
 		
 		cbEstNegGrupo.addCheckBoxListener( this );
 		cbJurosPosCalc.addCheckBoxListener( this );
@@ -1674,26 +1687,41 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	public void actionPerformed( ActionEvent e ) {
 
-		if ( e.getSource() == btDirNfe ) {
+		if ( e.getSource() == btDirNfeWin ) {
 			Thread th = new Thread( new Runnable() {
 				public void run() {
-					getDiretorio();
+					getDiretorio(SystemFunctions.OS_WINDOWS);
 				}
 			} );
 			th.start();
 		}
 		
+		if ( e.getSource() == btDirNfeLin ) {
+			Thread th = new Thread( new Runnable() {
+				public void run() {
+					getDiretorio(SystemFunctions.OS_LINUX);
+				}
+			} );
+			th.start();
+		}
+
+		
 		super.actionPerformed( e );
 		
 	}
 	
-	private void getDiretorio() {
+	private void getDiretorio(int SO) {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
 		if ( fileChooser.showOpenDialog( this ) == JFileChooser.APPROVE_OPTION ) {
-			txtDirNfe.setVlrString( fileChooser.getSelectedFile().getPath() );
+			if(SO == SystemFunctions.OS_WINDOWS ) {
+				txtDirNfeWin.setVlrString( fileChooser.getSelectedFile().getPath() );
+			}
+			else if( SO == SystemFunctions.OS_LINUX ) {
+				txtDirNfeLin.setVlrString( fileChooser.getSelectedFile().getPath() );
+			}
 		}
 	}
 
