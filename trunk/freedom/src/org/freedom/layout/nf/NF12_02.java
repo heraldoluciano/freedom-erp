@@ -328,7 +328,7 @@ public class NF12_02 extends Leiaute {
 			String[] sMatObs = Funcoes.strToStrArray(sMensAdic,5);
 			imp.say(imp.pRow()+1,0,"");
 			imp.say(imp.pRow()+0,6,sMatObs[0]);
-			//  		  imp.say(imp.pRow()+0,43,"Vendedor: "+vValores.elementAt(25).toString()); //COD VEND
+//  		 imp.say(imp.pRow()+0,43,"Vendedor: "+vValores.elementAt(25).toString()); //COD VEND
 			imp.say(imp.pRow()+1,0,"");
 			imp.say(imp.pRow()+0,6,sMatObs[1]);
 			imp.say(imp.pRow()+0,30,vValores.elementAt(26).toString().substring(0,20));
