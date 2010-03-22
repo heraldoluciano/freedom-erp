@@ -101,6 +101,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pnLote = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
+	private JPanelPad pnSerie = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
 	private JPanelPad pnFoto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnPreco = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -215,6 +217,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtVenctoLote = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
+	private JTextFieldPad txtDtFabricSerie = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDtValidSerie = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
 	private JTextFieldPad txtSldLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtSldResLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
@@ -365,8 +373,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Tabela tabLote = new Tabela();
 
+	private Tabela tabSerie = new Tabela();
+	
 	private JScrollPane spnLote = new JScrollPane( tabLote );
 
+	private JScrollPane spnSerie = new JScrollPane( tabSerie );
+	
 	private Tabela tabFoto = new Tabela();
 
 	private JScrollPane spnFoto = new JScrollPane( tabFoto );
@@ -389,6 +401,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pinRodLote = new JPanelPad( 650, 120 );
 
+	private JPanelPad pinRodSerie = new JPanelPad( 650, 165 );
+	
 	private JPanelPad pinRodFoto = new JPanelPad( 650, 170 );
 
 	private JPanelPad pinRodPreco = new JPanelPad( 650, 120 );
@@ -397,8 +411,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextAreaPad txaDescComp = new JTextAreaPad();
 
+	private JTextAreaPad txaObsSerie = new JTextAreaPad();
+	
 	private JScrollPane spnDesc = new JScrollPane( txaDescComp );
 
+	private JScrollPane spnObsSerie = new JScrollPane( txaObsSerie );
+	
 	private ListaCampos lcMoeda = new ListaCampos( this, "MA" );
 
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
@@ -439,6 +457,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcLote = new ListaCampos( this );
 
+	private ListaCampos lcSerie = new ListaCampos( this );
+	
 	private ListaCampos lcFoto = new ListaCampos( this );
 
 	private ListaCampos lcPreco = new ListaCampos( this );
@@ -457,6 +477,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Navegador navLote = new Navegador( true );
 
+	private Navegador navSerie = new Navegador( true );
+	
 	private Navegador navFoto = new Navegador( true );
 
 	private Navegador navPreco = new Navegador( true );
@@ -533,6 +555,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCampos.adicDetalhe( lcLote );
 		lcLote.setTabela( tabLote );
 
+		lcSerie.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcSerie );
+		lcSerie.setTabela( tabSerie );
+		
 		lcFoto.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFoto );
 		lcFoto.setTabela( tabFoto );
@@ -1116,7 +1142,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		// Lote
 		setPainel( pinRodLote, pnLote );
-		adicTab( "Lotes", pnLote );
+//		adicTab( "Lotes", pnLote );
 		setListaCampos( lcLote );
 		setNavegador( navLote );
 		pnLote.add( pinRodLote, BorderLayout.SOUTH );
@@ -1149,6 +1175,35 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabLote.setTamColuna( 100, 1 );
 		tabLote.setTamColuna( 100, 2 );
 
+		// Seriex
+		setPainel( pinRodSerie, pnSerie );
+		adicTab( "Séries", pnSerie );
+		setListaCampos( lcSerie );
+		setNavegador( navSerie );
+		pnSerie.add( pinRodSerie, BorderLayout.SOUTH );
+		pnSerie.add( spnSerie, BorderLayout.CENTER );
+
+		pinRodSerie.adic( navSerie, 0, 135, 270, 25 );
+
+		adicCampo( txtNumSerie, 7, 20, 250, 20, "NumSerie", "Num.Série", ListaCampos.DB_PK, true );
+		adicCampo( txtDtFabricSerie, 260, 20, 100, 20, "DtFabricSerie", "Data fabricação", ListaCampos.DB_SI, false );
+		adicCampo( txtDtValidSerie, 363, 20, 100, 20, "DtValidSerie", "Data de validade", ListaCampos.DB_SI, false );
+		JLabelPad lbObsSerie = adicDBLiv( txaObsSerie, "ObsSerie", "Observações", false );
+		adic( lbObsSerie, 7, 40, 200, 20 );
+		adic( spnObsSerie, 7, 60, 458, 60 );		
+		
+		setListaCampos( false, "SERIE", "EQ" );
+		lcSerie.setOrdem( "DtValidSerie desc" );
+		lcSerie.setQueryInsert( false );
+		lcSerie.setQueryCommit( false );
+		lcSerie.montaTab();
+		lcSerie.setDinWhereAdic( "CODPROD = #N", txtCodProd );
+		tabSerie.setTamColuna( 200, 0 );
+		tabSerie.setTamColuna( 100, 1 );
+		tabSerie.setTamColuna( 100, 2 );
+		tabSerie.setTamColuna( 250, 3 );
+
+		
 		// Codigo alternativo
 
 		setPainel( pinRodCodAltProd, pnCodAltProd );
@@ -1833,13 +1888,32 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	public void afterCarrega( CarregaEvent cevt ) {
 		try {		
-			buscaEstoque();
-			ObjetoCustosProd custos = new ObjetoCustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+			if(cevt.getListaCampos()==lcCampos) {
+				
+				buscaEstoque();
+				ObjetoCustosProd custos = new ObjetoCustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 			
-			txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
-			txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
-			txtCustoPEPSAlmox.setVlrBigDecimal( custos.getCustoPEPSAlmox() );
-			txtCustoMPMAlmox.setVlrBigDecimal( custos.getCustoMPMAlmox() );			
+				txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
+				txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
+				txtCustoPEPSAlmox.setVlrBigDecimal( custos.getCustoPEPSAlmox() );
+				txtCustoMPMAlmox.setVlrBigDecimal( custos.getCustoMPMAlmox() );			
+
+				//Oculta aba Lote, caso produto não o utilize
+				if( "S".equals(cbLote.getVlrString()) ){
+					adicTab("Lotes", pnLote );
+				}
+				else {
+					removeTab("Lotes", pnLote );
+				}
+				//Oculta aba Serie, caso produto não o utilize
+				if( "S".equals(cbSerie.getVlrString()) ){
+					adicTab("Series", pnSerie );
+				}
+				else {
+					removeTab("Series", pnSerie );
+				}
+				
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1886,6 +1960,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		montaTela();
 		
 		lcLote.setConexao( cn );
+		lcSerie.setConexao( cn );
 		lcMoeda.setConexao( cn );
 		lcUnid.setConexao( cn );
 		lcFisc.setConexao( cn );
