@@ -366,7 +366,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		return lbTmp;
 	}
 
-	public void adicDBLiv( Component comp, String nome, String label, boolean req) { 
+	public JLabelPad adicDBLiv( Component comp, String nome, String label, boolean req) { 
 		comp.setName(nome);
 		comp.addKeyListener(this);
 		if (navSeq!=null) {
@@ -380,6 +380,8 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 			((JTextAreaPad) comp).setListaCampos(lcSeq);
 		lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
 
+		return new JLabelPad(label); 
+		
 	}
 	public void adicDBLiv(Component comp,int X,int Y,int Larg,int Alt, String nome, String label, boolean req) { 
 		comp.setName(nome);
