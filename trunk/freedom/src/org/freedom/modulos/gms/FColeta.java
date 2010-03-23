@@ -76,7 +76,6 @@ import org.freedom.modulos.std.DLBuscaDescProd;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLGuiaTraf;
-import org.freedom.modulos.std.DLLote;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.modulos.std.DLRetRemessa;
 import org.freedom.telas.Aplicativo;
