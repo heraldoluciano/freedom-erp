@@ -270,7 +270,7 @@ public class NF070 extends Layout {
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( MAXPROD - itens.getInt( NF.C_CONTAITENS ) );
 						
-						imp.say( 8, "-" + Funcoes.strDecimalToStrCurrency( 2, 1, String.valueOf( itens.getBigDecimal( NF.C_ALIQFUNRURALITCOMPRA ) ) ) + "% FUNRUAL" );
+						imp.say( 8, "-" + Funcoes.strDecimalToStrCurrency( 3, 1, String.valueOf( itens.getBigDecimal( NF.C_ALIQFUNRURALITCOMPRA ) ) ) + "% FUNRUAL" );
 						imp.say( 67, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRFUNRURALCOMPRA ) ) ) );
 						
 					}
@@ -290,7 +290,7 @@ public class NF070 extends Layout {
 						BigDecimal vlrtotnota = vlrliq.add(vlradic);
 						BigDecimal vlrprod = cab.getBigDecimal( NF.C_VLRPRODPED );
 						BigDecimal vlripi = cab.getBigDecimal( NF.C_VLRIPIPED );
-						BigDecimal vlrfrete = cab.getBigDecimal( NF.C_VLRFRETEPED );
+						BigDecimal vlrfrete = frete.getBigDecimal( NF.C_VLRFRETEPED );
 						BigDecimal vlrdesc = cab.getBigDecimal( NF.C_VLRDESCVENDA );
 						
 						vlrliq = vlrliq.add(vlradic);
