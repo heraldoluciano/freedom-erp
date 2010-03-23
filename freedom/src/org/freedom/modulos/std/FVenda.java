@@ -85,6 +85,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFSaida;
+import org.freedom.modulos.gms.DLLote;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.util.CtrlMultiComis;
 import org.freedom.telas.Aplicativo;
