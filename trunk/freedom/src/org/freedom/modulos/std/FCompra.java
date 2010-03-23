@@ -2198,6 +2198,26 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		else if ( cevt.getListaCampos() == lcSerie ) {
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+				// Busca de sequencia pela LFSEQSERIE
+				try {
+					  PreparedStatement ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
+					  		"WHERE CODEMP=? AND CODFILIAL=? AND SERIE=? AND " +
+					  		"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+					  ps.setInt( 1, Aplicativo.iCodEmp );
+					  ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );
+					  ps.setString( 3, txtSerieCompra.getVlrString() );
+					  ps.setInt( 4, Aplicativo.iCodEmp );
+					  ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+					  ResultSet rs = ps.executeQuery();
+					  if (rs.next()) {
+						  txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
+					  } else {
+						  txtDocSerie.setVlrInteger( 0 );
+					  }
+					  con.commit();
+				} catch (Exception e) {
+				    	e.printStackTrace();
+				}
 				txtDocCompra.setVlrInteger( new Integer( txtDocSerie.getVlrInteger().intValue() + 1 ) );
 			}
 		}
