@@ -15,6 +15,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCompOrc.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FVenda.java"/>
@@ -24,12 +25,15 @@
         <file path="/freedom/src/org/freedom/relatorios/FRConsAutoriz.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{DLLote.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
@@ -49,11 +53,7 @@
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <file path="/freedom/src/org/freedom/relatorios/TermReceb.jasper"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-		<javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
-		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
-		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FTipoMov.java"/>		
-		        
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
     </selectedElements>
 </jardesc>
