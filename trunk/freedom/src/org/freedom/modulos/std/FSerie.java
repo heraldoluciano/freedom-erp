@@ -121,7 +121,7 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
     			ps.executeUpdate();
             } else {
     			ps = con.prepareStatement( "INSERT INTO LFSEQSERIE (" +
-    					"DOCSERIE, SERIE, CODEMP, CODFILIAL, CODEMPSS, CODFILIALSS, ATIVSERIE) " +
+    					"DOCSERIE, SERIE, CODEMP, CODFILIAL, CODEMPSS, CODFILIALSS, SEQSERIE, ATIVSERIE) " +
     					"VALUES (?,?,?,?,?,?,?)");
     			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
     			ps.setString( 2, txtSerie.getVlrString() );
@@ -129,7 +129,8 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
     			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
     			ps.setInt( 5, Aplicativo.iCodEmp );
     			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-    			ps.setString( 7, "S" );
+    			ps.setInt( 7, 1 );
+    			ps.setString( 8, "S" );
     			ps.executeUpdate();
             }
 			con.commit();
