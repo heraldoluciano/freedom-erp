@@ -168,7 +168,10 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
 			  ResultSet rs = ps.executeQuery();
 			  if (rs.next()) {
 				  txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
+			  } else {
+				  txtDocSerie.setVlrInteger( 0 );
 			  }
+				  
 			  con.commit();
 			} catch (Exception e) {
 		    	e.printStackTrace();
