@@ -516,6 +516,7 @@ public class FCLFiscal extends FDetalhe
 
 	private void montaListaCampos() {
 		
+		lcRegraFiscal.setUsaME( true );
 		lcRegraFiscal.add( new GuardaCampo( txtCodRegra, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, true ) );
 		lcRegraFiscal.add( new GuardaCampo( txtDescRegra, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false ) );
 		lcRegraFiscal.montaSql( false, "REGRAFISCAL", "LF" );
@@ -970,7 +971,7 @@ public class FCLFiscal extends FDetalhe
 	public void beforeCarrega( CarregaEvent e ) { }
 
 	public void afterCarrega( CarregaEvent e ) { 
-		
+		//System.out.println("Regrafiscal filial "+ ListaCampos.getMasterFilial("LFREGRAFISCAL"));
 		if ( e.getListaCampos() == lcCampos ) {
 			// aba de serviços
 			//tpnGeral.setEnabledAt( 5, txtCodServ.getVlrInteger() > 0 );
