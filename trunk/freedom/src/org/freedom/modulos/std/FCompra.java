@@ -61,6 +61,9 @@ import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.gms.DLLote;
+import org.freedom.modulos.gms.DLSerie;
+import org.freedom.modulos.gms.DLSerieGrid;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.DLFinalizaOP;
 import org.freedom.objetos.TipoMov;
@@ -146,6 +149,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtPrecoItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtPercDescItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
@@ -167,7 +172,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
+	private JTextFieldFK txtObsSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 150, 0 );
+	
 	private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
@@ -285,6 +294,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtLocDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JLabelPad lbStatus = new JLabelPad();
+	
+	private JLabelPad lbCodLote = new JLabelPad();
+	
+	private JLabelPad lbNumSerie = new JLabelPad();
 
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Aloc.NF", "S", "N" );
 
@@ -304,6 +317,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private ListaCampos lcLote = new ListaCampos( this, "LE" );
 
+	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
+	
 	private ListaCampos lcFisc = new ListaCampos( this );
 
 	private ListaCampos lcCompra2 = new ListaCampos( this );
@@ -335,7 +350,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean habconvcp = false;
 
 	private boolean habilitaCusto = false;
-
+	
 	private String abaTransp = "N";
 
 	private String abaSolCompra = "N";
@@ -509,14 +524,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcProd.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cod.Fiscal", ListaCampos.DB_FK, false ) );
-		lcProd.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );		
 		lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cod.Fiscal", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
-
+		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		
 		txtCodUn.setAtivo( false );
 		lcProd.setWhereAdic( "ATIVOPROD='S'" );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
@@ -527,7 +543,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		/*
 		 * Código adicionado para pesquisar um produto pelo código associado ao fornecedor
 		 */
-		txtCodProd.addKeyListener( new java.awt.event.KeyAdapter() {
+	/*	txtCodProd.addKeyListener( new java.awt.event.KeyAdapter() {
 
 			public void keyPressed( java.awt.event.KeyEvent evt ) {
 
@@ -558,17 +574,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				}
 			}
 		} );
-
+*/
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.Fisc.", ListaCampos.DB_FK, false ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );		
+
+		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );		
 		lcProd2.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barras", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.Fisc.", ListaCampos.DB_FK, false ) );
+		
 		lcProd2.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
-
+		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
 		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
@@ -577,6 +596,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2 );
 
+		// FK do Lote
+		
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false ) );
 		lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcLote.add( new GuardaCampo( txtDescLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false ) );
@@ -590,6 +611,21 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtDescLote.setNomeCampo( "VenctoLote" );
 		txtDescLote.setLabel( "Vencimento" );
 
+		// FK do número de série
+		
+		lcNumSerie.add( new GuardaCampo( txtNumSerie, "NumSerie", "Num.Série", ListaCampos.DB_PK, false ) );
+		lcNumSerie.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcNumSerie.add( new GuardaCampo( txtObsSerie, "ObsSerie", "Observações", ListaCampos.DB_SI, false ) );
+		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
+		lcNumSerie.setAutoLimpaPK( false );
+		lcNumSerie.montaSql( false, "SERIE", "EQ" );
+		lcNumSerie.setQueryCommit( false );
+		lcNumSerie.setReadOnly( true );
+		txtNumSerie.setTabelaExterna( lcNumSerie );
+		txtObsSerie.setListaCampos( lcNumSerie );
+		txtObsSerie.setNomeCampo( "ObsSerie" );
+		txtObsSerie.setLabel( "Observações" );
+		
 		// FK de Almoxarifado Produto
 
 		lcAlmoxProd.add( new GuardaCampo( txtCodAlmoxProd, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
@@ -744,7 +780,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtPrecoItCompra.addFocusListener( this );
 		txtPercICMSItCompra.addFocusListener( this );
 		txtVlrIPIItCompra.addFocusListener( this );
-
+		txtCodLote.addFocusListener( this );
+		txtNumSerie.addFocusListener( this );
+		
 		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
 		txtDescProd.addMouseListener( new MouseAdapter() {
 
@@ -790,62 +828,78 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	}
 
+	private void redimensionaDet(int alt) {
+		
+		setAltDet( alt );
+		pinDet.setPreferredSize( new Dimension(740, alt) );
+
+	}
+	
 	private void montaDetalhe() {
 
-		setAltDet( 100 );
-		pinDet = new JPanelPad( 740, 100 );
+		redimensionaDet( 100 );
 
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item", ListaCampos.DB_PK, true );
+		adicCampo( txtCodItCompra, 7, 20, 45, 20, "CodItCompra", "Item", ListaCampos.DB_PK, true );
 
 		if ( comref ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
-			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
+			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false );
 
-			adic( new JLabelPad( "Referência" ), 40, 0, 67, 20 );
-			adic( txtRefProd, 40, 20, 67, 20 );
+			adic( new JLabelPad( "Referência" ), 55, 0, 70, 20 );
+			adic( txtRefProd, 55, 20, 70, 20 );
 			txtRefProd.setFK( true );
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
-			adicCampo( txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
+			adicCampo( txtCodProd, 55, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 		}
 
 		txtCustoItCompra.setSoLeitura( !habilitaCusto );
 
-		adicDescFK( txtDescProd, 110, 20, 197, 20, "DescProd", "Descrição do produto" );
-		adic( new JLabelPad( "Unidade" ), 310, 0, 60, 20 );
-		adic( txtCodUn, 310, 20, 60, 20 );
-		adicCampo( txtCodLote, 373, 20, 95, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
-		adicCampo( txtQtdItCompra, 470, 20, 67, 20, "qtditcompra", "Qtd.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProd, 128, 20, 220, 20, "DescProd", "Descrição do produto" );
+		adic( new JLabelPad( "Unid." ), 351, 0, 50, 20 );
+		adic( txtCodUn, 351, 20, 50, 20 );
+		adicCampo( txtQtdItCompra, 404, 20, 70, 20, "qtditcompra", "Quant.", ListaCampos.DB_SI, true );
 
 		adicCampoInvisivel( txtCodAlmoxItCompra, "codalmox", "Cod.Almox", ListaCampos.DB_FK, false );
 
 		txtQtdItCompra.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmoxItem, lcProd, con, "qtditcompra" ) );
 
-		adicCampo( txtPrecoItCompra, 540, 20, 67, 20, "PrecoItCompra", "Preço", ListaCampos.DB_SI, true );
-		adicCampo( txtPercDescItCompra, 610, 20, 57, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoItCompra, 477, 20, 70, 20, "PrecoItCompra", "Preço", ListaCampos.DB_SI, true );
 
-		adicCampo( txtVlrDescItCompra, 670, 20, 67, 20, "VlrDescItCompra", "V. Desc.", ListaCampos.DB_SI, false );
+		adicCampo( txtPercDescItCompra, 550, 20, 50, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDescItCompra, 603, 20, 70, 20, "VlrDescItCompra", "Vlr.Desc.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodNat, 7, 60, 57, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
-		adicDescFK( txtDescNat, 70, 60, 147, 20, "DescNat", "Descrição da CFOP" );
-		adicCampo( txtVlrBaseICMSItCompra, 220, 60, 67, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercICMSItCompra, 290, 60, 47, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrICMSItCompra, 340, 60, 67, 20, "VlrICMSItCompra", "V. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrBaseIPIItCompra, 410, 60, 67, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtAliqIPIItCompra, 480, 60, 47, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIPIItCompra, 530, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLiqItCompra, 676, 20, 67, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodNat, 7, 60, 45, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
+		adicDescFK( txtDescNat, 55, 60, 220, 20, "DescNat", "Descrição da CFOP" );
+		
+		adicCampo( txtVlrBaseICMSItCompra, 278, 60, 70, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercICMSItCompra, 351, 60, 50, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrICMSItCompra, 404, 60, 70, 20, "VlrICMSItCompra", "Vlr. ICMS", ListaCampos.DB_SI, false );
+
+		adicCampo( txtVlrBaseIPIItCompra, 477, 60, 70, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqIPIItCompra, 550, 60, 50, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );		
+		adicCampo( txtVlrIPIItCompra, 603, 60, 70, 20, "VlrIPIItCompra", "Vlr. IPI", ListaCampos.DB_SI, false );
+		
 		adicCampoInvisivel( txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLiqItCompra, 600, 60, 67, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
-		adicCampo( txtCustoItCompra, 670, 60, 67, 20, "CustoItCompra", "Custo Estoq.", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCustoItCompra, 676, 60, 67, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 
 		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
 
+		lbCodLote = adicCampo( txtCodLote, 7, 100, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
+		lbNumSerie = adicCampo( txtNumSerie, 127, 100, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
+		
+		lbNumSerie.setVisible( false );
+		lbCodLote.setVisible( false );
+		
 		pinTot.adic( new JLabelPad( "Tot. IPI" ), 7, 0, 120, 20 );
 		pinTot.adic( txtVlrIPICompra, 7, 20, 120, 20 );
 		pinTot.adic( new JLabelPad( "Tot. Desc." ), 7, 40, 120, 20 );
@@ -1736,6 +1790,74 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		return bRetorno;
 	}
 
+	public boolean testaNumSerie() {
+
+		
+		
+		boolean bRetorno = false;
+		boolean bValido = false;
+
+		// Validação e abertura da tela para cadastramento da serie unitária
+		if(txtNumSerie.isEditable()) {
+		
+			String sSQL = "SELECT COUNT(*) FROM EQSERIE WHERE NUMSERIE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
+			
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
+			try {
+			
+				ps = con.prepareStatement( sSQL );
+				ps.setString( 1, txtNumSerie.getVlrString() );
+				ps.setInt( 2, txtCodProd.getVlrInteger() );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, lcSerie.getCodFilial() );
+				
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					if ( rs.getInt( 1 ) > 0 ) {
+						bValido = true;
+					}
+				}
+				
+				rs.close();
+				ps.close();
+				con.commit();
+				
+			} 
+			catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, con, err );
+			}
+			if ( !bValido ) {
+				
+				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), con );
+				
+				dl.setVisible( true );
+				
+				if ( dl.OK ) {
+					bRetorno = true;
+					txtNumSerie.setVlrString( dl.getNumSerie() );
+					lcSerie.carregaDados();
+				}
+				dl.dispose();
+			}
+			else {
+				bRetorno = true;
+			}
+		}
+		// Tela para cadastramento da série para quantidade maior que 1
+		else {
+			
+			abreDlSerieMuitiplos();
+			
+		}
+		
+		
+		return bRetorno;
+	}
+
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		String[] sValores = null;
@@ -1831,6 +1953,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else if ( ( fevt.getSource() == txtQtdItCompra ) || ( fevt.getSource() == txtPrecoItCompra ) || ( fevt.getSource() == txtCodNat ) ) {
 			calcVlrProd();
 			calcImpostos( true );
+			habilitaSerie();
 		}
 		else if ( fevt.getSource() == txtPercICMSItCompra ) {
 			calcVlrProd();
@@ -1857,9 +1980,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					txtCodItCompra.requestFocus();
 				}
 			}
-			else if ( kevt.getSource() == txtVlrLiqItCompra ) {
-				// É o último se o custo não estiver habilitado.
-				if ( !habilitaCusto ) {
+			else if ( kevt.getSource() == txtVlrIPIItCompra ) {
+				// É o último se o custo/serie e lote não estiver habilitado.
+				if ( !habilitaCusto  && ("N".equals(txtSerieProd.getVlrString()) || txtQtdItCompra.getVlrBigDecimal().floatValue()>1 ) && "N".equals(txtCLoteProd.getVlrString()) ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 						lcDet.post();
 						lcDet.limpaCampos( true );
@@ -1880,6 +2003,54 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					txtCustoItCompra.requestFocus();
 				}
 			}
+			
+			else if ( kevt.getSource() == txtCodLote ) {
+				// É o último se estiver habilitado.
+				if ( txtCodLote.isEditable() && !txtNumSerie.isEditable() ) {
+					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+						lcDet.post();
+						lcDet.limpaCampos( true );
+						lcDet.setState( ListaCampos.LCS_NONE );
+						if ( comref ) {
+							txtRefProd.requestFocus();
+						}
+						else {
+							txtCodProd.requestFocus();
+						}
+					}
+					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+						lcDet.post();
+						txtCodItCompra.requestFocus();
+					}
+				}
+			}
+			else if ( kevt.getSource() == txtNumSerie ) {
+				// É o último se estiver habilitado.
+				if ( txtNumSerie.isEditable() ) {
+					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+						lcDet.post();
+						lcDet.limpaCampos( true );
+						lcDet.setState( ListaCampos.LCS_NONE );
+						if ( comref ) {
+							txtRefProd.requestFocus();
+						}
+						else {
+							txtCodProd.requestFocus();
+						}
+					}
+					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+						lcDet.post();
+						txtCodItCompra.requestFocus();
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
 			else if ( kevt.getSource() == txtCustoItCompra ) {
 				// É o último se estiver habilitado.
 				if ( habilitaCusto ) {
@@ -1910,6 +2081,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					calcIpi( false );
 				}
 			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F4 ) {
 			btFechaCompra.doClick();
@@ -1956,14 +2136,37 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
-			if ( txtCLoteProd.getText().trim().equals( "N" ) ) {
-				txtCodLote.setAtivo( false );// Desativa o Cógigo do lote por o
-				// produto não possuir lote
+			if ( "S".equals( txtCLoteProd.getVlrString() ) || "S".equals( txtSerieProd.getVlrString() ) ) {
+				
+				redimensionaDet( 140 );
+				
+				lbCodLote.setVisible( true );
+				txtCodLote.setVisible( true );
+				
+				lbNumSerie.setVisible( true );
+				txtNumSerie.setVisible( true );
+				
+				if( "S".equals( txtCLoteProd.getVlrString() ) ) {
+					txtCodLote.setEditable(  true );
+				}
+				else {
+					txtCodLote.setEditable( false );
+				}
+				habilitaSerie();
+				
 			}
-			else if ( txtCLoteProd.getText().trim().equals( "S" ) ) {
-				txtCodLote.setAtivo( true );// Ativa o Cógigo do Lote pois o
-				// produto tem lote
+			else  {
+				
+				redimensionaDet( 100 );
+				
+				lbCodLote.setVisible( false );
+				txtCodLote.setVisible( false );
+				
+				lbNumSerie.setVisible( false );
+				txtNumSerie.setVisible( false );
+				
 			}
+			
 			lcAlmoxProd.carregaDados();
 		}
 		else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
@@ -1973,6 +2176,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
+			
+			habilitaSerie();
+			
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
 			String s = txtCodCompra.getText();
@@ -2050,6 +2256,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	}
 
+	private void habilitaSerie() {
+		if( "S".equals( txtSerieProd.getVlrString() ) && txtQtdItCompra.getVlrBigDecimal().compareTo( new BigDecimal( 1 ) )==0 ) {
+			
+			txtNumSerie.setEditable( true );
+		}
+		else {
+			txtNumSerie.setEditable( false );
+		}				
+
+	}
+	
 	public void beforeInsert( InsertEvent e ) {
 
 	}
@@ -2072,6 +2289,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( habconvcp ) {
 				geraOpConversao();
 			}
+			
+		}
+		if (pevt.getListaCampos() == lcDet) {
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItCompra.getVlrBigDecimal().floatValue()>1  ) {
+				testaNumSerie();								
+			}			
 		}
 		novo = false;
 	}
@@ -2083,6 +2306,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtRefProd.setVlrString( txtRefProd.getText() ); // ?
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				if ( !testaCodLote() ) {
+					pevt.cancela();
+				}
+			}
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItCompra.getVlrBigDecimal().floatValue()==1  ) {
+				if ( !testaNumSerie() ) {
 					pevt.cancela();
 				}
 			}
@@ -2165,6 +2393,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );
+		lcNumSerie.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcProd.setConexao( cn );
@@ -2451,6 +2680,31 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void setNfecf( NFEConnectionFactory nfecf ) {
 
 		this.nfecf = nfecf;
+	}
+	
+	private void abreDlSerieMuitiplos() {
+		
+		DLSerieGrid dl = new DLSerieGrid();
+		dl.setCodemp( lcDet.getCodEmp() );
+		dl.setCodfilial( lcDet.getCodFilial() );
+		dl.setCodcompra( txtCodCompra.getVlrInteger() );
+		dl.setCoditcompra( txtCodItCompra.getVlrInteger() );
+		dl.setCodemppd( lcProd.getCodEmp() );
+		dl.setCodfilialpd( lcProd.getCodFilial() );
+		dl.setCodprod( txtCodProd.getVlrInteger() );
+		dl.setDescprod( txtDescProd.getVlrString().trim() );
+		
+		dl.setConexao( con );
+		dl.setVisible( true );
+		HashMap<String,Integer> retorno = null;
+		
+		if ( dl.OK ) {
+
+		}
+		else {	
+		}
+		
+		dl.dispose();
 	}
 
 }
