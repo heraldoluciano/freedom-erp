@@ -97,19 +97,41 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
 	private void gravaReset() {
 
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement( "UPDATE LFSEQSERIE SET DOCSERIE=? " +
+			ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
 					"WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " +
-					"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
-			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
-			ps.setString( 2, txtSerie.getVlrString() );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-			
-			ps.executeUpdate();
-			// ps.close();
+			"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+			ps.setString( 1, txtSerie.getVlrString() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "LFSERIE") );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+            rs = con.executeQuery( ps );
+            if (rs.next()) {
+    			ps = con.prepareStatement( "UPDATE LFSEQSERIE SET DOCSERIE=? " +
+    					"WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " +
+    					"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+    			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
+    			ps.setString( 2, txtSerie.getVlrString() );
+    			ps.setInt( 3, Aplicativo.iCodEmp );
+    			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
+    			ps.setInt( 5, Aplicativo.iCodEmp );
+    			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+    			ps.executeUpdate();
+            } else {
+    			ps = con.prepareStatement( "INSERT INTO LFSEQSERIE (" +
+    					"DOCSERIE, SERIE, CODEMP, CODFILIAL, CODEMPSS, CODFILIALSS, ATIVSERIE) " +
+    					"VALUES (?,?,?,?,?,?,?)");
+    			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
+    			ps.setString( 2, txtSerie.getVlrString() );
+    			ps.setInt( 3, Aplicativo.iCodEmp );
+    			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
+    			ps.setInt( 5, Aplicativo.iCodEmp );
+    			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+    			ps.setString( 7, "S" );
+    			ps.executeUpdate();
+            }
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao gravar o número inicial!\n" + err.getMessage(), true, con, err );
