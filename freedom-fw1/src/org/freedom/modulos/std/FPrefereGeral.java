@@ -508,7 +508,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido.", "S", "N" );
 	
-	private final JCheckBoxPad cbMultiComis = new JCheckBoxPad( "Habilita multi-comissionamento", "S", "N" );
+	private final JCheckBoxPad cbMultiComis = new JCheckBoxPad( "Habilita múltiplo comissionamento.", "S", "N" );
 	
 	private final JCheckBoxPad cbLiberacaoCreGlobal = new JCheckBoxPad( "Liberação de crédito globalizado.", "S", "N" );
 	
@@ -1010,7 +1010,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbEstNeg, 7, 20, 160, 20, "EstNeg", "", true );
 		adicDB( cbEstLotNeg, 7, 40, 200, 20, "EstLotNeg", "", true );
 		adicDB( cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true );
-		adicDB( cbMultiComis, 7, 80, 180, 20, "MultiComis", "", true);
+		adicDB( cbMultiComis, 7, 80, 250, 20, "MultiComis", "", true);
 		
 		setPainel( pinConsistenciasGeral );
 		
