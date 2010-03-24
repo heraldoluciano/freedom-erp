@@ -191,7 +191,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 				vValsSetor.addElement(new Integer(rs.getInt("CodSetAt")));
 				vLabsSetor.addElement(rs.getString("DescSetAt"));
 			}
-			cbSetor.setItens(vLabsSetor,vValsSetor);
+			cbSetor.setItensGeneric(vLabsSetor,vValsSetor);
 			rs.close();
 			ps.close();
 			con.commit();
