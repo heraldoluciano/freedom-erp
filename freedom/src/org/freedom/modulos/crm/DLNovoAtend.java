@@ -18,7 +18,6 @@ package org.freedom.modulos.crm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -334,7 +333,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		vLabsStatus.addElement( "Atendido" );
 		vLabsStatus.addElement( "Não computado" );
 	
-		cbStatus.setItens( vLabsStatus, vValsStatus );		
+		cbStatus.setItensGeneric( vLabsStatus, vValsStatus );		
 	}
 	
 	private void montaComboTipo() {
@@ -358,7 +357,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 				vLabsTipo.addElement( rs.getString( "DescTpAtendo" ) );
 			}
 			
-			cbTipo.setItens( vLabsTipo, vValsTipo );
+			cbTipo.setItensGeneric( vLabsTipo, vValsTipo );
 			
 			rs.close();
 			ps.close();
@@ -400,7 +399,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 				vLabsSetor.addElement( rs.getString( "DescSetAt" ) );
 			}
 			
-			cbSetor.setItens( vLabsSetor, vValsSetor );
+			cbSetor.setItensGeneric( vLabsSetor, vValsSetor );
 			
 			rs.close();			
 			ps.close();
@@ -814,7 +813,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		}
 		if ( evt.getComboBoxPad() == cbContr ) {
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Sem contrato>" );
-			cbitContr.setItens( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+			cbitContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 	}
 
@@ -826,7 +825,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		montaComboStatus();
 		
 		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
-		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );  	 
+		cbContr.setItensGeneric( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );  	 
 		
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
