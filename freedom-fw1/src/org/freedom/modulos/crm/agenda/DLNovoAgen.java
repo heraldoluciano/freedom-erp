@@ -401,7 +401,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 				Funcoes.mensagemInforma( this, "Nenhum tipo de agendamento foi encontrado!" );
 			}
 
-			cbTipo.setItens( vDescTipoAGD, vCodTipoAGD );
+			cbTipo.setItensGeneric( vDescTipoAGD, vCodTipoAGD );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
