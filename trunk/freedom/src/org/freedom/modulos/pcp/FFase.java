@@ -59,7 +59,7 @@ public class FFase extends FDados implements ActionListener {
     vLabs.addElement("Execução");
     vLabs.addElement("Controle da qualidade");
     vLabs.addElement("Embalagem");
-    cbTipo.setItens(vLabs,vVals);
+    cbTipo.setItensGeneric(vLabs,vVals);
             
     adicCampo(txtCodFase, 7, 20, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_PK, true);
     adicCampo(txtDescFase, 80, 20, 230, 20,"DescFase","Descrição da fase", ListaCampos.DB_SI, true);
