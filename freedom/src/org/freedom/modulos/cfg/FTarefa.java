@@ -69,7 +69,7 @@ public class FTarefa extends FDados implements ActionListener {
 	vLabsTipo.add("Atualiza");
 	vLabsTipo.add("Exclui");
 	vLabsTipo.add("Executa");
-    cbTipo.setItens(vLabsTipo,vValsTipo);
+    cbTipo.setItensGeneric(vLabsTipo,vValsTipo);
     
     
     lcObjeto.setUsaFI(false);
