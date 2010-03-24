@@ -83,7 +83,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	}
 
-	public void setItens( Vector<?> label, Vector<?> val ) {
+	public void setItens( Vector<String> label, Vector<Object> val ) {
 
 		criando = true;
 		removeAllItems();
@@ -95,6 +95,19 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		criando = false;
 	}
 
+	public void setItensGeneric( Vector<?> label, Vector<?> val ) {
+
+		criando = true;
+		removeAllItems();
+		valores = val;
+
+		for ( int i = 0; i < label.size(); i++ ) {
+			addItem( label.elementAt( i ) );
+		}
+		criando = false;
+	}
+
+	
 	public void setAtivo( boolean bVal ) {
 
 		setEnabled( bVal );
