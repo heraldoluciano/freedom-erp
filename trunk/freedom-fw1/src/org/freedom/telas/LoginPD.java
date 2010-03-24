@@ -149,7 +149,7 @@ protected boolean montaCombo(String sUsu) {
 				iFilialPadrao = rs.getInt(1);  
 		}
 
-		cbEmp.setItens(vLabs,vVals);
+		cbEmp.setItensGeneric(vLabs,vVals);
 		cbEmp.setVlrInteger(new Integer(iFilialPadrao));
 
 		sUsuAnt = sUsu;

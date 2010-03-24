@@ -119,7 +119,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private JTextArea txa = new JTextArea();
 
-	private JScrollPane spn2 = new JScrollPane(txa);
+//	private JScrollPane spn2 = new JScrollPane(txa);
 	
 	public String strTemp = "";
 
