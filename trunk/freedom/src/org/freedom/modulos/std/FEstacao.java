@@ -34,6 +34,7 @@ import javax.comm.SerialPort;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -52,7 +53,7 @@ import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.gms.FTipoRecMerc;
+import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -279,14 +280,14 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vValStopBitsBal.addElement( SerialPort.STOPBITS_2 );
 		
 		vLabsTipoProc.addElement( "Todos" );
-		vLabsTipoProc.addElement( "Pesagem inicial" );
-		vLabsTipoProc.addElement( "Descarregamento" );
-		vLabsTipoProc.addElement( "Pesagem final" );
+		vLabsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getName() );
+		vLabsTipoProc.addElement( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getName() );
+		vLabsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_FINAL.getName() );
 		
 		vValsTipoProc.addElement( "TO" );
-		vValsTipoProc.addElement( FTipoRecMerc.PESAGEM_INICIAL );
-		vValsTipoProc.addElement( FTipoRecMerc.DESCARREGAMENTO );
-		vValsTipoProc.addElement( FTipoRecMerc.PESAGEM_FINAL );
+		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
+		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
+		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
 		
 		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipoProc, vValsTipoProc, JComboBoxPad.TP_STRING, 2, 0 );
 		

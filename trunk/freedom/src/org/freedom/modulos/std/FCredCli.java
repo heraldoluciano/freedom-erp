@@ -1419,7 +1419,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Não foi possível carregar estado civil!\n" + err.getMessage(), true, con, err );
 		} finally {
-			cbEstCivCli.setItens( vDesc, vCod );
+			cbEstCivCli.setItensGeneric( vDesc, vCod );
 			rs = null;
 			ps = null;
 			sSQL = null;
