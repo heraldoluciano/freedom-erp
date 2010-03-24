@@ -167,7 +167,7 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(100300000, TP_OPCAO_ITEM, "Estação", "FEstacao", 'E',100303000, 2, true, FEstacao.class);// lom
 				addSeparador(100300000);
 				addOpcao(100300000, TP_OPCAO_MENU, "Preferências", "", 'P', 100304000,2, false, null);
-   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências gerais","Pref. Gerais", 'g', 100304010, 3, true, FPrefereGeral.class);
+   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências Gerais","Preferências Gerais", 'G', 100304010, 3, true, FPrefereGeral.class);
    					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências GMS","Preferências GMS", 'S', 100304020, 3, true, FPrefereGMS.class);
    					addOpcao(100304000, TP_OPCAO_ITEM, "Série de NFs", "", 'N', 100304030,3, true, FSerie.class);
 					addOpcao(100304000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo NF", 'M',100304040, 3, true, FModNota.class);
@@ -260,7 +260,7 @@ public class FreedomGMS extends AplicativoPD {
 				
 		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 500000000, 0, false,null);
 				
-				
+				addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
 				addBotao("btForneced.gif","Fornecedor","Fornecedor",100102020,FFornecedor.class);
 				addBotao("btRma.gif","Requisição de material", "Requisição de material", 300900000,FRma.class);
@@ -278,8 +278,10 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
 				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class);
 				
+				addBotao("btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
 				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FControleRecMerc.class);
-
+				
+				
 		
 		ajustaMenu();
 		
