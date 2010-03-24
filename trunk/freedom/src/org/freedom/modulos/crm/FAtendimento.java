@@ -521,15 +521,15 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		vValsContr.addElement( -1 );
 		vLabsContr.addElement( "<Todos>" );
-		cbContr.setItens( vLabsContr, vValsContr );
+		cbContr.setItensGeneric( vLabsContr, vValsContr );
 
 		vValsitContr.addElement( -1 );
 		vLabsitContr.addElement( "<Todos>" );
-		cbitContr.setItens( vLabsitContr, vValsitContr );
+		cbitContr.setItensGeneric( vLabsitContr, vValsitContr );
 
 		vValsTipo.addElement( -1 );
 		vLabsTipo.addElement( "<Todos>" );
-		cbTipo.setItens( vLabsTipo, vValsTipo );
+		cbTipo.setItensGeneric( vLabsTipo, vValsTipo );
 	}
 
 	private void visualizaAtend() {
@@ -719,7 +719,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		else if ( cevt.getListaCampos() == lcCli ) {
 			carregaAtendimentos();
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>" );
-			cbContr.setItens( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 	}
 
@@ -771,7 +771,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 				vValsTipo.addElement( new Integer( rs.getInt( "CodTpAtendo" ) ) );
 				vLabsTipo.addElement( rs.getString( "DescTpAtendo" ) );
 			}
-			cbTipo.setItens( vLabsTipo, vValsTipo );
+			cbTipo.setItensGeneric( vLabsTipo, vValsTipo );
 			rs.close();
 			ps.close();
 			con.commit();
@@ -810,13 +810,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		if ( evt.getComboBoxPad() == cbContr ) {
 			if ( cbContr.getVlrInteger() > 0 ) {
 				HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Todos>" );
-				cbitContr.setItens( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+				cbitContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 			}
 			else {
 				cbitContr.limpa();
 				vValsitContr.addElement( -1 );
 				vLabsitContr.addElement( "<Todos>" );
-				cbitContr.setItens( vLabsitContr, vValsitContr );
+				cbitContr.setItensGeneric( vLabsitContr, vValsitContr );
 				carregaAtendimentos();
 			}
 		}
