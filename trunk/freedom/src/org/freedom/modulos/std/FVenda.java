@@ -302,7 +302,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -535,7 +535,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		// FK Vendedor
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Venda", ListaCampos.DB_PK, false ) );
-		lcVendedor.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.c.comis.", ListaCampos.DB_SI, false ) );
 		lcVendedor.add( new GuardaCampo( txtPercComisVenda, "PercComVend", "% Comis.", ListaCampos.DB_SI, false ) );
 		lcVendedor.add( new GuardaCampo( cbAtivo, "AtivoComis", "Ativo", ListaCampos.DB_SI, false ) );
@@ -895,8 +895,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		setPainel( pinCabComis );
 
-		adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtDescVend, true );
-		adicDescFK( txtDescVend, 90, 20, 197, 20, "NomeVend", "Nome do comissionado" );
+		adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, true );
+		adicDescFK( txtNomeVend, 90, 20, 197, 20, "NomeVend", "Nome do comissionado" );
 		if ( (Boolean) oPrefs[ POS_PREFS.USACLASCOMIS.ordinal() ] ) {
 			adicCampo( txtCodClComis, 290, 20, 80, 20, "CodClComis", "Cód.c.comis.", ListaCampos.DB_FK, txtDescClComis, true );
 			adicDescFK( txtDescClComis, 373, 20, 260, 20, "DescClComis", "Descrição da class. de comis." );

@@ -708,7 +708,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		
 		if (cevt.getListaCampos() == lcCli ) {	  		
 	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>" );
-	  		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	  		
+	  		cbContr.setItensGeneric( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	  		
 	  	}
 		if (cevt.getListaCampos() == lcDet ) {
 			if("O".equals(rgTipoLanca.getVlrString())) {
@@ -724,7 +724,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void valorAlterado( JComboBoxEvent evt ) {
 		if( evt.getComboBoxPad() == cbContr ){
 	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Não selecionado>" );
-	  		cbitContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );
+	  		cbitContr.setItensGeneric( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );
 		}
 		else if (evt.getComboBoxPad() == cbitContr ) {
 			if(cbContr.getVlrInteger()>0)
