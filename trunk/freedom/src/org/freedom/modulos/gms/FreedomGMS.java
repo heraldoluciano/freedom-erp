@@ -168,7 +168,7 @@ public class FreedomGMS extends AplicativoPD {
 				addSeparador(100300000);
 				addOpcao(100300000, TP_OPCAO_MENU, "Preferências", "", 'P', 100304000,2, false, null);
    					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências gerais","Pref. Gerais", 'g', 100304010, 3, true, FPrefereGeral.class);
-   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências GMS","Pref. GMS", 'S', 100304020, 3, true, FPreferegms.class);
+   					addOpcao(100304000, TP_OPCAO_ITEM, "Preferências GMS","Preferências GMS", 'S', 100304020, 3, true, FPrefereGMS.class);
    					addOpcao(100304000, TP_OPCAO_ITEM, "Série de NFs", "", 'N', 100304030,3, true, FSerie.class);
 					addOpcao(100304000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo NF", 'M',100304040, 3, true, FModNota.class);
 
@@ -253,7 +253,8 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao(-1, TP_OPCAO_MENU, "Recepção", "", 'R', 500000000, 0, false,null);	
 				addOpcao(500000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de Controle", 'P', 500100000,1, true, FControleRecMerc.class);		
 				addSeparador(500000000);
-				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FAprovCancOrc.class);
+				addOpcao(500000000, TP_OPCAO_ITEM, "Recepção de matéria prima", "Recepção de matéria prima", 'R', 500200000,1, true, FRecMerc.class);
+				addOpcao(500000000, TP_OPCAO_ITEM, "Coleta de materiais", "Coleta de materiais", 'C', 500400000,1, true, FColeta.class);
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_ITEM, "Tipos de Recepção", "Cadastro de tipos de recepção de mercadorias", 'T', 500300000,1, true, FTipoRecMerc.class);
 				

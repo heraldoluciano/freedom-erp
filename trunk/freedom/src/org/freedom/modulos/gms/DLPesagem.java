@@ -50,6 +50,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
@@ -134,7 +135,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		pnCampos.adic( lbpeso1 , 7, 0, 252, 20 );
 		pnCampos.adic( txtPeso1, 7, 20, 252, 50 );
 		
-		if( FTipoRecMerc.DESCARREGAMENTO.equals( tipoprocrecmerc ) ) {
+		if( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( tipoprocrecmerc ) ) {
 			 
 			pnCampos.adic( lbpeso2 , 7, 80, 252, 20 );
 			pnCampos.adic( txtPeso2, 7, 100, 252, 50 );
@@ -218,7 +219,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				
 				if(peso != null) {
-					if(txtPeso1.getVlrBigDecimal().floatValue()>0 && tipoprocrecmerc.equals( FTipoRecMerc.DESCARREGAMENTO )){
+					if(txtPeso1.getVlrBigDecimal().floatValue()>0 && tipoprocrecmerc.equals( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() )){
 						txtPeso2.setVlrBigDecimal( peso );
 					}
 					else {
@@ -246,7 +247,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					return;
 				}
 				
-				if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtPeso2.getVlrBigDecimal().floatValue()==0 && tipoprocrecmerc.equals( FTipoRecMerc.DESCARREGAMENTO )){
+				if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtPeso2.getVlrBigDecimal().floatValue()==0 && tipoprocrecmerc.equals( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() )){
 					setMensagem( "Aguardando segunda pesagem...", Color.WHITE, Color.orange, true );
 				}
 				else {
