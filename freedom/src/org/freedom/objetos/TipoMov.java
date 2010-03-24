@@ -85,7 +85,7 @@ public class TipoMov implements java.io.Serializable {
 			ret.add( TM_REMESSA_SAIDA.getName() );	
 
 		}
-		else if ( INVENTARIO.equals( tipo ) ) {
+		else if ( INVENTARIO.getValue().equals( tipo ) ) {
 			ret.add( TM_INVENTARIO.getName() );
 		}
 		
@@ -93,9 +93,9 @@ public class TipoMov implements java.io.Serializable {
 		
 	}
 	
-	public static Vector<String> getValores( String tipo ) {
+	public static Vector<Object> getValores( String tipo ) {
 		
-		Vector<String> ret = new Vector<String>();
+		Vector<Object> ret = new Vector<Object>();
 		
 		ret.addElement( "" );
 		
