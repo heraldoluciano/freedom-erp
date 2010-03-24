@@ -43,6 +43,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.modulos.cfg.FBairro;
+import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -62,7 +63,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private Vector<String> vLabsFrete = new Vector<String>();
 
-	private Vector<Integer> vValsBairro = new Vector<Integer>();
+	private Vector<Object> vValsBairro = new Vector<Object>();
 
 	private Vector<String> vLabsBairro = new Vector<String>();
 
@@ -199,11 +200,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private AbstractCalcRenda objplugin = null;
 
-	public FRecMerc( boolean novo ) {
-
-		super();
-
-		this.novo = novo;
+	public FRecMerc() {
+		montaTela();
+	}
+	
+	private void montaTela() {
 
 		setTitulo( "Recepção de mercadorias" );
 		setAtribos( 50, 50, 653, 480 );
@@ -212,13 +213,24 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		carregaPlugin();
 		criaTabelas();
 		montaListaCampos();
-		montaTela();
+		montaPaineis();
 		montaTab();
 		ajustaTabela();
 		adicListeners();
 
 		setImprimir( true );
 
+
+	} 
+	
+	public FRecMerc( boolean novo ) {
+
+		super();
+
+		this.novo = novo;
+
+		montaTela();
+		
 	}
 
 	private void configuraCampos() {
@@ -267,7 +279,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	}
 
-	private void montaTela() {
+	private void montaPaineis() {
 
 		pnMaster.remove( spTab );
 		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
@@ -1059,7 +1071,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 				salvaAmostra();
 				
-				if ( FTipoRecMerc.DESCARREGAMENTO.equals( txtTipoProcRecMerc.getVlrString() ) ) {
+				if ( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( txtTipoProcRecMerc.getVlrString() ) ) {
 
 					calcRenda();
 
@@ -1334,7 +1346,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			montaTabPesagem();
 
-			if ( FTipoRecMerc.DESCARREGAMENTO.equals( txtTipoProcRecMerc.getVlrString() ) ) {
+			if ( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( txtTipoProcRecMerc.getVlrString() ) ) {
 
 				mostraRenda( true );
 
@@ -1398,7 +1410,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	public void dispose() {
 
 		super.dispose();
-		tela_mae.montaGrid();
+		
+		if(tela_mae!=null) {
+			tela_mae.montaGrid();
+		}
+		
 	}
 
 	@ SuppressWarnings ( "unchecked" )

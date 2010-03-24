@@ -408,8 +408,6 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		cbTipoMov.limpa();
 		
-		TipoMov.getLabels( ES );
-		
 		cbTipoMov.setItens( TipoMov.getLabels( ES ), TipoMov.getValores( ES ) );
 		
 	}

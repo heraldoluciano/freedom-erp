@@ -27,8 +27,9 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JPanelPad;
@@ -37,17 +38,12 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.FDetalhe;
 
-public class FTipoRecMerc extends FDetalhe implements ActionListener {
+public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
-	
-	public static String PESAGEM_INICIAL = "PI";
-	
-	public static String DESCARREGAMENTO = "TR";
-	
-	public static String PESAGEM_FINAL = "PF";
 	
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 
@@ -65,11 +61,8 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 	
 	private JComboBoxPad cbTipoProcRecMerc = null;
 	
-	private Vector<String> vValsTipo = new Vector<String>();
-
-	private Vector<String> vLabsTipo = new Vector<String>();
-
-
+	private JComboBoxPad cbTipoRecMerc = new JComboBoxPad( TipoRecMerc.getLabelsTipoRecMerc(), TipoRecMerc.getValoresTipoRecMerc(), JComboBoxPad.TP_STRING, 2, 0 );
+	
 	public FTipoRecMerc () {
 		
 		super();
@@ -84,18 +77,11 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
 
-		vLabsTipo.addElement( "Pesagem inicial" );
-		vLabsTipo.addElement( "Descarregamento" );
-		vLabsTipo.addElement( "Pesagem final" );
-		
-		vValsTipo.addElement( PESAGEM_INICIAL );
-		vValsTipo.addElement( DESCARREGAMENTO );
-		vValsTipo.addElement( PESAGEM_FINAL );
-		
-		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0 );
+		cbTipoProcRecMerc = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		adicCampo(txtCodTipoRecMerc, 7, 20, 70, 20,"CodTipoRecMerc","Cód.Tp.Rec.",ListaCampos.DB_PK,true);
-		adicCampo(txtDescTipoRecMerc, 80, 20, 440, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
+		adicCampo(txtDescTipoRecMerc, 80, 20, 267, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
+		adicDB( cbTipoRecMerc, 350, 20, 170, 24, "TipoRecMerc", "Tipo de recebimento", true );
 		
 		setListaCampos( true, "TIPORECMERC", "EQ");
 
@@ -105,9 +91,11 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		setNavegador(navRod);
 
 		adicCampo( txtCodProcRecMerc, 7, 20, 40, 20, "CodProcRecMerc","Cód.Et.",ListaCampos.DB_PK, true );
-		adicCampo( txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true );		
+		adicCampo( txtDescProcRecMerc, 50, 20, 240, 20, "DescProcRecMerc","Descrição do processo de recepção", ListaCampos.DB_SI, true );				
+		
 		adicCampo( txtNroAmostProcRecMerc, 293, 20, 85, 20, "NroAmostProcRecMerc","Nro.Amostras", ListaCampos.DB_SI, true );
 		adicDB( cbTipoProcRecMerc, 381, 20, 139, 24, "TipoProcRecMerc","Tipo de processo", true );
+		
 		
 		setListaCampos( true, "PROCRECMERC", "EQ");
 
@@ -120,6 +108,8 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);  
+		cbTipoRecMerc.addComboBoxListener( this );
+		
 		setImprimir(true);
 
 	}
@@ -194,5 +184,13 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener {
 		else {
 			imp.print();
 		}
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+
+		cbTipoProcRecMerc.limpa();
+		
+		cbTipoProcRecMerc.setItens( TipoRecMerc.getLabelsProcesso( cbTipoRecMerc.getVlrString() ), TipoRecMerc.getValoresProcesso( cbTipoRecMerc.getVlrString() ));
+		
 	}
 }
