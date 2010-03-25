@@ -39,6 +39,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.telas.Aplicativo;
@@ -994,6 +995,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		} 
 		else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null) && (dlBuscaAdic instanceof DLBuscaEstoq)) {
 			buscaAdic("estoque");
+		}
+		else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null) && (dlBuscaAdic instanceof DLBuscaSerie)) {
+			buscaAdic("serie");
 		}
 		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() > 0) && (bPK || bFK)) {
 			if(dlCodProd!=null) {
