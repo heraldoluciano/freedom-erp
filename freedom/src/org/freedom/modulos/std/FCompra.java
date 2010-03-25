@@ -187,7 +187,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtTpRedIcmsFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtCodUn = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -528,12 +528,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cod.Fiscal", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtCodUnid, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
 		
-		txtCodUn.setAtivo( false );
+		txtCodUnid.setAtivo( false );
 		lcProd.setWhereAdic( "ATIVOPROD='S'" );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
@@ -583,7 +583,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd2.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barras", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.Fisc.", ListaCampos.DB_FK, false ) );
 		
-		lcProd2.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodUnid, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
@@ -863,7 +863,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicDescFK( txtDescProd, 128, 20, 220, 20, "DescProd", "Descrição do produto" );
 		adic( new JLabelPad( "Unid." ), 351, 0, 50, 20 );
-		adic( txtCodUn, 351, 20, 50, 20 );
+		adic( txtCodUnid, 351, 20, 50, 20 );
 		adicCampo( txtQtdItCompra, 404, 20, 70, 20, "qtditcompra", "Quant.", ListaCampos.DB_SI, true );
 
 		adicCampoInvisivel( txtCodAlmoxItCompra, "codalmox", "Cod.Almox", ListaCampos.DB_FK, false );
@@ -2115,12 +2115,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
 			if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
-				cevt.getListaCampos().cancLerCampo( 4, true ); // Código da Classificação Fiscal
+				cevt.getListaCampos().cancLerCampo( 6, true ); // Código da Classificação Fiscal
 			}
 		}
 		else {
 			if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
-				cevt.getListaCampos().cancLerCampo( 4, false ); // Código da Classificação Fiscal
+				cevt.getListaCampos().cancLerCampo( 6, false ); // Código da Classificação Fiscal
 				if ( buscaVlrUltCompra )
 					getVlrUltimaCompra();
 			}
@@ -2323,7 +2323,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
-			txtRefProd.setVlrString( txtRefProd.getText() ); // ?
+			txtRefProd.setVlrString( txtRefProd.getText() ); // ??? que que é isso.
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				if ( !testaCodLote() ) {
 					pevt.cancela();
