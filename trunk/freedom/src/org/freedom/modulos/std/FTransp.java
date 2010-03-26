@@ -276,7 +276,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		
 		adicCampo( txtCpfTran, 7, 20, 125, 20, "CpfTran", "CPF", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtRgTran, 135, 20, 125, 20, "RgTransp", "RG", ListaCampos.DB_SI, false );
+		adicCampo( txtRgTran, 135, 20, 125, 20, "RgTran", "RG", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtSSPTran, 263, 20, 60, 20, "SSPTran", "Org.exp.", ListaCampos.DB_SI, false );
 		
