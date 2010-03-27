@@ -508,6 +508,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido.", "S", "N" );
 	
+	private final JCheckBoxPad cbAdicObsOrcPed = new JCheckBoxPad( "Adicionar observações do orçamento no pedido.", "S", "N" );
+	
 	private final JCheckBoxPad cbMultiComis = new JCheckBoxPad( "Habilita múltiplo comissionamento.", "S", "N" );
 	
 	private final JCheckBoxPad cbLiberacaoCreGlobal = new JCheckBoxPad( "Liberação de crédito globalizado.", "S", "N" );
@@ -1149,8 +1151,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbUsaImgOrc, 10, 40, 300, 20, "UsaImgAssOrc", "", true );
 		adicDB( cbUsaNomeVendOrc, 10, 60, 300, 20, "UsaNomeVendOrc", "", true );
 		adicDB( cbAdicCodOrcObsPed, 10, 80, 370, 20, "ADICORCOBSPED", "", false );
-		adicDB( cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true );
-		adicDB( cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true );
+		adicDB( cbAdicObsOrcPed, 10, 100, 370, 20, "ADICOBSORCPED", "", false );
+		adicDB( cbMostraTransp, 10, 120, 370, 20, "TabTranspOrc", "", true );
+		adicDB( cbHabVlrTotItOrc, 10, 140, 370, 20, "HabVlrTotItOrc", "", true );
 		
 		adicDB( imgAssOrc, 405, 60, 300, 95, "ImgAssOrc", "Assinatura", false );
 		
