@@ -50,6 +50,11 @@
 	<parameter name="UFFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CEPFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="FONEFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="TIPOVENDA" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA
 AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA),
 (SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),
@@ -588,7 +593,30 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="80"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="1"
+						y="7"
+						width="538"
+						height="65"
+						key="subreport-1"
+						stretchType="RelativeToBandHeight"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODVENDA">
+						<subreportParameterExpression><![CDATA[$P{CODVENDA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="TIPOVENDA">
+						<subreportParameterExpression><![CDATA[$P{TIPOVENDA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "PED_066_FATURAMENTO.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 			</groupFooter>
 		</group>
