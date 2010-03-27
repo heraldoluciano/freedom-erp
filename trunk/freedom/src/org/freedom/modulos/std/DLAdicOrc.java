@@ -605,7 +605,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							}							
 						}
 						// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
-						else {
+						else if (prefs[3]){
 							obs.append( tabOrc.getValor( 0, 8 ) );
 						}
 						
@@ -840,9 +840,9 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		boolean[] ret = new boolean[ 3 ];
+		boolean[] ret = new boolean[ 4 ];
 		try {
-			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA,P1.ADICORCOBSPED " 
+			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA,P1.ADICORCOBSPED, P1.ADICOBSORCPED " 
 				 + "FROM SGPREFERE1 P1, SGPREFERE4 P4 " 
 			     + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " 
 			     + "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL";
@@ -858,6 +858,9 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 					ret[ 1 ] = true;
 				if ( rs.getString( 3 ).equals( "S" ) )
 					ret[ 2 ] = true;
+				if ( rs.getString( 4 ).equals( "S" ) )
+					ret[ 3 ] = true;
+
 				
 			}
 			rs.close();
