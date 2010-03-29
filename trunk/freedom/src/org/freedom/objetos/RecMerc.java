@@ -38,48 +38,39 @@ public class RecMerc implements java.io.Serializable {
 	
 	public static final Color COR_NOTA_ENTRADA_EMITIDA = Color.RED;
 
-	public static JLabelPad getLabelStatus( String status ) {
+	public static void atualizaStatus( String status, JLabelPad lbstatus ) {
 
-		JLabelPad ret = new JLabelPad();
-		
-		ret.setForeground( Color.WHITE );
-		ret.setFont( new Font( "Arial", Font.BOLD, 13 ) );
-		ret.setOpaque( true );
-		ret.setHorizontalAlignment( SwingConstants.CENTER );
+		lbstatus.setForeground( Color.WHITE );
+		lbstatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbstatus.setOpaque( true );
+		lbstatus.setHorizontalAlignment( SwingConstants.CENTER );
 		
 		if ( status == STATUS_NAO_SALVO.getValue()) {
-			ret.setText( STATUS_PENDENTE.getName() );
-			ret.setBackground( COR_NAO_SALVO );
+			lbstatus.setText( STATUS_PENDENTE.getName() );
+			lbstatus.setBackground( COR_NAO_SALVO );
 		}
 		else if ( STATUS_PENDENTE.getValue().equals( status )) {
-			ret.setText( STATUS_PENDENTE.getName() );
-			ret.setBackground( COR_PENDENTE );
+			lbstatus.setText( STATUS_PENDENTE.getName() );
+			lbstatus.setBackground( COR_PENDENTE );
 		}
 		else if ( STATUS_PESAGEM_1.getValue().equals( status )) {
-			ret.setText( STATUS_PESAGEM_1.getName() );
-			ret.setBackground( COR_PESAGEM_1 );
+			lbstatus.setText( STATUS_PESAGEM_1.getName() );
+			lbstatus.setBackground( COR_PESAGEM_1 );
 		}
 		else if ( STATUS_PESAGEM_2.getValue().equals( status )) {
-			ret.setText( STATUS_PESAGEM_2.getName() );
-			ret.setBackground( COR_PESAGEM_2 );
+			lbstatus.setText( STATUS_PESAGEM_2.getName() );
+			lbstatus.setBackground( COR_PESAGEM_2 );
 		}
 		else if ( STATUS_RECEBIMENTO_FINALIZADO.getValue().equals( status )) {
-			ret.setText( STATUS_RECEBIMENTO_FINALIZADO.getName() );
-			ret.setBackground( COR_RECEBIMENTO_FINALIZADO );
+			lbstatus.setText( STATUS_RECEBIMENTO_FINALIZADO.getName() );
+			lbstatus.setBackground( COR_RECEBIMENTO_FINALIZADO );
 		}
 		else if ( STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( status )) {
-			ret.setText( STATUS_NOTA_ENTRADA_EMITIDA.getName() );
-			ret.setBackground( COR_NOTA_ENTRADA_EMITIDA );
+			lbstatus.setText( STATUS_NOTA_ENTRADA_EMITIDA.getName() );
+			lbstatus.setBackground( COR_NOTA_ENTRADA_EMITIDA );
 		}
 
-		return ret;
-
-	}
-
-	
-	
-	
-	
+	}	
 
 }
 
