@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -31,7 +30,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.objetos.RecMerc;
 import org.freedom.telas.Aplicativo;
@@ -169,7 +167,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	public FColeta( ) {
 
-		super();
+//		super();
 
 		setTitulo( "Coleta de materiais" );
 		setAtribos( 50, 50, 772, 480 );
@@ -311,13 +309,14 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			prefere = new HashMap<String, Object>();
 
 			sql.append( "select pf1.usarefprod, coalesce(pf8.codtiporecmerccm,0) codtiporecmerc " );
-			sql.append( "from sgprefere8 pf8, sgprefere1 pf1 " );
-			sql.append( "where pf1.codemp=pf8.codemp and pf1.codfilial=pf8.codfilial and pf8.codemp=? and pf8.codfilial=? " );
+			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
+			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
+			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
 
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE8" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 			rs = ps.executeQuery();
 
@@ -608,6 +607,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcProc.setConexao( cn );
 
 		getPreferencias();
+		
 		montaTela();
  
 		lcCampos.insert( true );
