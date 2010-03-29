@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class SwingParams {
 
@@ -50,9 +51,6 @@ public class SwingParams {
 		return new Font( FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MAX + adic + TAMANHO_FONTE);
 	}
 	
-
-	
-	
 	public static Font getFontboldmed() {
 		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
@@ -62,8 +60,13 @@ public class SwingParams {
 		return new Font(FONT_PAD, FONT_STYLE_ITALIC, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
 	
-	public static Border getPanelLabel(String label, Color cortitulo) {
-		Border border = BorderFactory.createTitledBorder( null, label, 2, 0, SwingParams.getFontbold(), cortitulo ); 
+	public static Border getPanelLabel(String label, Color cortitulo, int alinhamento_horizontal ) {
+		Border border = BorderFactory.createTitledBorder( null, label, alinhamento_horizontal , 0, SwingParams.getFontbold(), cortitulo ); 
+		return border;
+	}
+	
+	public static Border getPanelLabel(String label, Color cortitulo ) {
+		Border border = getPanelLabel(label, cortitulo,TitledBorder.DEFAULT_JUSTIFICATION); 
 		return border;
 	}
 
