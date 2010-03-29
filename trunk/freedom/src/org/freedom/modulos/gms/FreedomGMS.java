@@ -123,6 +123,7 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(100100000, TP_OPCAO_MENU, "Produtos", "", 'u', 100103000, 2,false, null);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Almoxarifados", "Almoxarifado",'x', 100103030, 3, true, FAlmox.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'r', 100103040,3, true, FGrupo.class);
+					addOpcao(100103000, TP_OPCAO_ITEM, "Seções", "Seções", 'e', 100103091,3, true, FSecaoProd.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Marcas", "Marcas", 'c', 100103050,3, true, FMarca.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Unidades", "Unidades", 'U',100103060, 3, true, FUnidade.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Kits de produtos","Kits de produtos", 'K', 100103070, 3, true, FGrupo.class);
@@ -257,8 +258,12 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(500000000, TP_OPCAO_ITEM, "Coleta de materiais", "Coleta de materiais", 'C', 500400000,1, true, FColeta.class);
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_ITEM, "Tipos de Recepção", "Cadastro de tipos de recepção de mercadorias", 'T', 500300000,1, true, FTipoRecMerc.class);
+				addSeparador(500000000);
+				addOpcao(500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500500000, 1,false, null);
+					addOpcao( 500500000, TP_OPCAO_ITEM, "Coletas por dia", "Coletas por dia",'o', 500501000, 2, true, FRColetasDia.class);
+			
 				
-		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 500000000, 0, false,null);
+		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false,null);
 				
 				addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
