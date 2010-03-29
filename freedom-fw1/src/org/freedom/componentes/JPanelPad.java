@@ -27,6 +27,7 @@ import java.awt.LayoutManager;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import org.freedom.telas.SwingParams;
 //import javax.swing.text.JTextComponent;
@@ -46,7 +47,7 @@ public class JPanelPad extends JPanel  {
   
   public JPanelPad (String titulo, Color cortitulo) {
 	  setLayout(new GridLayout(1,1));
-	  setBorder(SwingParams.getPanelLabel( titulo , cortitulo));
+	  setBorder(SwingParams.getPanelLabel( titulo , cortitulo, TitledBorder.DEFAULT_JUSTIFICATION));
 	  add(lpn);	  
   }
   
