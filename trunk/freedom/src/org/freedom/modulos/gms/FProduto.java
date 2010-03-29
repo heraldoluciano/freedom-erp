@@ -605,7 +605,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcSecao.montaSql( false, "SECAO", "EQ" );
 		lcSecao.setReadOnly( true );
 		lcSecao.setQueryCommit( false );
-		txtCodSecao.setTabelaExterna( lcMarca );
+		txtCodSecao.setTabelaExterna( lcSecao );
 		
 		lcFisc.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.c.fisc.", ListaCampos.DB_PK, true ) );
 		lcFisc.add( new GuardaCampo( txtDescFisc, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
