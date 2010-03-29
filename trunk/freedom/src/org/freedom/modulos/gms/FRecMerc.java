@@ -77,6 +77,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtCodTipoRecMercDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtRefProdCab = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtRefProdDet = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescTipoRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -309,7 +313,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		adicCampo( txtCodProdCab, 7, 60, 70, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
 		adicDescFK( txtDescProdCab, 80, 60, 417, 20, "DescProd", "Descrição do Produto" );
-
+		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCodTran, 7, 100, 70, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
 		adicDescFK( txtNomeTran, 80, 100, 417, 20, "NomeTran", "Nome da transportadora" );
 
@@ -355,6 +360,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampo( txtCodItRecMerc, 7, 20, 40, 20, "CodItRecMerc", "Seq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdDet, 50, 20, 50, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProdDet, true );
 		adicDescFK( txtDescProdDet, 103, 20, 203, 20, "DescProd", "Descrição do Produto" );
+		adicCampoInvisivel( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtCodProcRecMerc, "CodProcRecMerc", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcRecMerc, true );
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
@@ -523,6 +529,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcProdCab.add( new GuardaCampo( txtCodProdCab, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdCab.add( new GuardaCampo( txtDescProdCab, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdCab.add( new GuardaCampo( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		
 
 		txtCodProdCab.setTabelaExterna( lcProdCab );
 		txtCodProdCab.setNomeCampo( "CodProd" );
@@ -564,6 +572,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcProdDet.add( new GuardaCampo( txtCodProdDet, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdDet.add( new GuardaCampo( txtDescProdDet, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdDet.add( new GuardaCampo( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 
 		txtCodProdDet.setTabelaExterna( lcProdDet );
 		txtCodProdDet.setNomeCampo( "CodProd" );
