@@ -24,7 +24,7 @@
 
 package org.freedom.modulos.gms;
 
-import java.math.BigDecimal;
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,23 +32,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
+import org.freedom.telas.SwingParams;
 
 public class FRColetasDia extends FRelatorio {
 
@@ -62,13 +62,13 @@ public class FRColetasDia extends FRelatorio {
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JRadioGroup<?, ?> rgTipo = null;
 
-	private ListaCampos lcGrup = new ListaCampos( this );
+	private ListaCampos lcSecao = new ListaCampos( this );
 
 	private ListaCampos lcCliente = new ListaCampos( this );
 
@@ -77,9 +77,9 @@ public class FRColetasDia extends FRelatorio {
 	public FRColetasDia() {
 
 		setTitulo( "Coletas por dia" );
-		setAtribos( 80, 80, 620, 380 );
+		setAtribos( 80, 80, 380, 280 );
 
-		txtDescGrup.setAtivo( false );
+		txtDescSecao.setAtivo( false );
 		txtRazCli.setAtivo( false );
 
 		Vector<String> vLabs = new Vector<String>();
@@ -92,16 +92,14 @@ public class FRColetasDia extends FRelatorio {
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
-		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
-		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
-		txtCodGrup.setTabelaExterna( lcGrup );
-		txtCodGrup.setNomeCampo( "CodGrup" );
-		txtCodGrup.setFK( true );
-		lcGrup.setReadOnly( true );
-		lcGrup.montaSql( false, "GRUPO", "EQ" );
+		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
+		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
+		txtCodSecao.setTabelaExterna( lcSecao );
+		txtCodSecao.setNomeCampo( "CodSecao" );
+		txtCodSecao.setFK( true );
+		lcSecao.setReadOnly( true );
+		lcSecao.montaSql( false, "SECAO", "EQ" );
 
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
@@ -113,20 +111,32 @@ public class FRColetasDia extends FRelatorio {
 		lcCliente.setReadOnly( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 
-		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
-		adic( lbLinha, 7, 25, 273, 55 );
-		adic( new JLabelPad( "De:" ), 15, 40, 30, 20 );
-		adic( txtDataini, 45, 40, 90, 20 );
-		adic( new JLabelPad( "Até:" ), 145, 40, 30, 20 );
-		adic( txtDatafim, 180, 40, 90, 20 );		
-		adic( new JLabelPad( "Cód.grupo" ), 7, 100, 70, 20 );
-		adic( txtCodGrup, 7, 100, 70, 20 );
-		adic( new JLabelPad( "Descrição do grupo" ), 90, 100, 200, 20 );
-		adic( txtDescGrup, 90, 120, 200, 20 );		
-		adic( new JLabelPad( "Cód.cli." ), 7, 140, 200, 20 );
-		adic( txtCodCli, 7, 160, 70, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 80, 140, 200, 20 );
-		adic( txtRazCli, 80, 160, 200, 20 );		
+		JPanelPad pnPeriodo = new JPanelPad();
+		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
+		
+		adic( pnPeriodo, 4, 5, 325, 60 );
+		
+		pnPeriodo.adic( new JLabelPad( "De:" ), 5, 05, 30, 20 );
+		pnPeriodo.adic( txtDataini, 35, 05, 90, 20 );
+		pnPeriodo.adic( new JLabelPad( "Até:" ), 135, 05, 30, 20 );
+		pnPeriodo.adic( txtDatafim, 170, 05, 90, 20 );		
+		
+		JPanelPad pnFiltros = new JPanelPad();
+		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
+		
+		adic( pnFiltros, 4, 75, 325, 120 );
+		
+		pnFiltros.adic( new JLabelPad( "Cód.Seção" ), 4, 5, 70, 20 );
+		pnFiltros.adic( txtCodSecao, 4, 25, 70, 20 );
+		
+		pnFiltros.adic( new JLabelPad( "Descrição da seção de produção" ), 77, 5, 230, 20 );
+		pnFiltros.adic( txtDescSecao, 77, 25, 230, 20 );		
+		
+		pnFiltros.adic( new JLabelPad( "Cód.Cliente" ), 4, 45, 70, 20 );
+		pnFiltros.adic( txtCodCli, 4, 65, 70, 20 );
+		
+		pnFiltros.adic( new JLabelPad( "Razão social do cliente" ), 77, 45, 230, 20 );
+		pnFiltros.adic( txtRazCli, 77, 65, 230, 20 );		
 
 	}
 
@@ -149,7 +159,7 @@ public class FRColetasDia extends FRelatorio {
 		try {
 	
 			sql.append( "select " );
-			sql.append( "se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
+			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
 			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli " );
 			sql.append( "from " );
 			sql.append( "eqrecmerc rm " );
@@ -163,7 +173,16 @@ public class FRColetasDia extends FRelatorio {
 			sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
 			sql.append( "where " );
 			sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
-			sql.append( "order by rm.dtent, rm.codcli, it.codprod " );
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
+			}
+			
+			if( ! "".equals( txtCodSecao.getVlrString())) {
+				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+			
+			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, it.codprod " );
 
 			ps = con.prepareStatement( sql.toString() );
 			
@@ -171,6 +190,24 @@ public class FRColetasDia extends FRelatorio {
 			ps.setInt( param++, Aplicativo.iCodFilial );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate()) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate()) );
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				ps.setInt( param++, lcCliente.getCodEmp() );
+				ps.setInt( param++, lcCliente.getCodFilial() );
+				ps.setInt( param++, txtCodCli.getVlrInteger() );
+				
+				sCab2.append( "Cliente: " + txtRazCli.getVlrString() + "\n" );
+			}
+			
+			if( ! "".equals( txtCodSecao.getVlrString())) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );	
+				ps.setString( param++, txtCodSecao.getVlrString() );
+				
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
+			}
 			
 			rs = ps.executeQuery();
 			
@@ -190,100 +227,13 @@ public class FRColetasDia extends FRelatorio {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab, final boolean bComRef ) {
-
-		String sLinhaFina = StringFunctions.replicate( "-", 133 );
-		String sLinhaLarga = StringFunctions.replicate( "=", 133 );
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		BigDecimal bdQtd = new BigDecimal("0");
-		BigDecimal bdVlr = new BigDecimal("0");
-		
-		try {
-
-			imp.limpaPags();
-			imp.montaCab();
-			imp.setTitulo( "Relatório de Vendas por ítem" );
-			imp.addSubTitulo( "RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
-			
-			for ( int i=0; i < cab.size(); i++ ) {
-				imp.addSubTitulo( (String) cab.elementAt( i ) );
-			}
-			
-			while ( rs.next() ) {
-				if ( imp.pRow() == linPag ) {
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "+" + sLinhaFina + "+" );
-					imp.eject();
-					imp.incPags();
-				}
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 136, true );
-					imp.pulaLinha( 0, imp.comprimido() );
-					imp.say( 0, "|" );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + sLinhaFina + "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 1, "| Cod.prod." );
-					imp.say( 14, "| Desc.produto" );
-					imp.say( 68, "| Unid. " );
-					imp.say( 76, "|   Quantidade " );
-					imp.say( 99, "|    Vlr.tot.item. " );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + sLinhaFina + "|" );
-				}
-
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "|" );
-				imp.say( 3, Funcoes.copy( rs.getString( 1 ), 0, 10 ) + " | " );
-				imp.say( 17, Funcoes.copy( rs.getString( 3 ), 0, 50 ) + " | " );
-				imp.say( 70, Funcoes.copy( rs.getString( 4 ), 0, 5 ) + " | " );
-				imp.say( 86, Funcoes.strDecimalToStrCurrency( 10, 1, rs.getString( 5 ) ) );
-				imp.say( 99, "|" );
-				imp.say( 100, Funcoes.strDecimalToStrCurrency( 20, 2, rs.getString( 6 ) ) );
-				imp.say( 135, "|" );
-				
-				bdQtd = bdQtd.add( rs.getBigDecimal( 5 ) );
-				bdVlr = bdVlr.add( rs.getBigDecimal( 6 ) );
-			}
-
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" + sLinhaLarga + "|" );
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" );
-			imp.say( 30, "Quant. vendida -> " );
-			imp.say( 50, Funcoes.copy( String.valueOf( bdQtd ), 6 ) );
-			imp.say( 60, "Valor vendido -> " );
-			imp.say( 78, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlr ) ) );
-			imp.say( 135, "|" );
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "+" + sLinhaLarga + "+" );
-
-			imp.eject();
-			imp.fechaGravacao();
-
-			if ( bVisualizar ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
-			}
-			
-		}catch ( Exception err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
-		}
-	}
-
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 		
-		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_COLETAS_01.jasper", "Coletas por dia", sCab, rs, hParam, this );
+		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_COLETA_01.jasper", "Relação de Coletas", sCab, rs, hParam, this );
+				    
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -292,7 +242,7 @@ public class FRColetasDia extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas detalhadas!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de coletas!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
@@ -329,7 +279,7 @@ public class FRColetasDia extends FRelatorio {
 
 		super.setConexao( cn );
 
-		lcGrup.setConexao( cn );
+		lcSecao.setConexao( cn );
 
 		lcCliente.setConexao( cn );
 
