@@ -49,6 +49,7 @@ import org.freedom.modulos.fnc.FRReceberMes;
 import org.freedom.modulos.fnc.FRReceberSetor;
 import org.freedom.modulos.gms.FProduto;
 import org.freedom.modulos.gms.FRValorEstoque;
+import org.freedom.modulos.gms.FSecaoProd;
 import org.freedom.modulos.gms.FTipoMov;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
@@ -108,6 +109,7 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 100100000, TP_OPCAO_MENU, "Produto", "", 'u', 100130000, 2, false, null );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Almoxarifado", "Almoxarifado", 'x', 100130030, 3, true, FAlmox.class );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Grupo", "Grupos", 'r', 100130040, 3, true, FGrupo.class );
+				addOpcao( 100130000, TP_OPCAO_ITEM, "Seções", "Seções", 'e', 100103080,3, true, FSecaoProd.class);
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Marca", "Marcas", 'c', 100130050, 3, true, FMarca.class );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Unidade", "Unidades", 'U', 100130060, 3, true, FUnidade.class );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Produto", "Produtos", 'P', 100130070, 3, true, FProduto.class );
