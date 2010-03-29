@@ -43,6 +43,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.modulos.cfg.FBairro;
+import org.freedom.objetos.RecMerc;
 import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -711,42 +712,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		return ret;
 	}
 
-	private void carregaStatus() {
-
-		if ( "PE".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "PENDENTE" );
-			lbStatus.setBackground( Color.ORANGE );
-			lbStatus.setVisible( true );
-		}
-		else if ( "E1".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "PESAGEM 1" );
-			lbStatus.setBackground( Color.BLUE );
-			lbStatus.setVisible( true );
-		}
-		else if ( "E2".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "PESAGEM 2" );
-			lbStatus.setBackground( Color.BLUE );
-			lbStatus.setVisible( true );
-		}
-		else if ( "FN".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "FINALIZADO" );
-			lbStatus.setBackground( new Color( 45, 190, 60 ) );
-			lbStatus.setVisible( true );
-		}
-		else if ( "NE".equals( txtStatus.getVlrString() ) ) {
-			lbStatus.setText( "NOTA EMITIDA" );
-			lbStatus.setBackground( Color.RED );
-			lbStatus.setVisible( true );
-		}
-
-		else {
-			lbStatus.setForeground( Color.WHITE );
-			lbStatus.setBackground( Color.GRAY );
-			lbStatus.setText( "INDEFINIDO" );
-			lbStatus.setVisible( true );
-		}
-
-	}
 
 	private HashMap<String, Object> buscaPrimeiraPesagem() {
 
@@ -1323,6 +1288,12 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 	}
 
+	private void atualizaStatus() {
+		
+		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );		
+	
+	}
+	
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcFor ) {
@@ -1338,7 +1309,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			montaComboBairro();
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
-			carregaStatus();
+			atualizaStatus();
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
 

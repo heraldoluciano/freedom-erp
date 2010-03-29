@@ -188,7 +188,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		rgFrete = new JRadioGroup<String, String>( 1, 2, vLabsFrete, vValsFrete, -4 );
 
-		lbStatus = RecMerc.getLabelStatus( null );
+		RecMerc.atualizaStatus( RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
 
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
@@ -265,6 +265,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 			adicCampo( txtCodProd, 55, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false );
 		}
 
 		adicDescFK( txtDescProd, 128, 20, 230, 20, "DescProd", "Descrição do Produto" );
@@ -640,7 +641,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
-			lbStatus = RecMerc.getLabelStatus( txtStatus.getVlrString() );
+			RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 		}
 		else if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
 			if ( "S".equals( txtSerieProd.getVlrString() ) ) {
