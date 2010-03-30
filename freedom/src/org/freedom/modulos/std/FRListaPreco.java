@@ -58,6 +58,7 @@ public class FRListaPreco extends FRelatorio {
 //	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 //	private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+	private JTextFieldPad txtCodSecao = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldPad txtCodClasCli = new JTextFieldPad (JTextFieldPad.TP_INTEGER,6,0);
@@ -70,6 +71,7 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtCodPlanoPag6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtCodPlanoPag7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescSecao = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtDescClasCli = new JTextFieldFK (JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescTabPreco = new JTextFieldFK (JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -97,6 +99,7 @@ public class FRListaPreco extends FRelatorio {
 	private Vector<String> vLabs2 = new Vector<String>(2);
 	private Vector<String> vVals2 = new Vector<String>(2);
 	private ListaCampos lcGrup = new ListaCampos(this);
+	private ListaCampos lcSecao = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);
 	private ListaCampos lcFor = new ListaCampos(this);
 	private ListaCampos lcClassCli = new ListaCampos(this);
@@ -148,6 +151,15 @@ public class FRListaPreco extends FRelatorio {
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
 
+		lcSecao.add(new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false));
+		lcSecao.add(new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da Seção", ListaCampos.DB_SI, false));
+		lcSecao.montaSql(false, "SECAO", "EQ");
+		lcSecao.setReadOnly(true);
+		txtCodSecao.setTabelaExterna(lcSecao);
+		txtCodSecao.setFK(true);
+		txtCodSecao.setNomeCampo("CodSecao");
+
+		
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
 		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
@@ -270,6 +282,11 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic(new JLabelPad("Descrição da tabela de preço"),383,40,200,20);
 		pinOpt.adic(txtDescTabPreco,383,60,200,20);		
 
+		pinOpt.adic(new JLabelPad("Cód.Seção"),300,80,80,20);
+		pinOpt.adic(txtCodSecao,300,100,80,20);
+		pinOpt.adic(new JLabelPad("Descrição da seção"),383,80,200,20);
+		pinOpt.adic(txtDescSecao,383,100,200,20);		
+		
 		pinOpt.adic(new JLabelPad("Cód.for."),7,80,80,20);
 		pinOpt.adic(txtCodFor,7,100,80,20);
 		pinOpt.adic(new JLabelPad("Nome do fornecedor"),90,80,200,20);
@@ -608,13 +625,10 @@ public class FRListaPreco extends FRelatorio {
         	hParam.put("DESCTABPRECO",txtDescTabPreco.getVlrString().trim());
         	hParam.put("IMPSALDO",cbImpSaldo.getVlrString().trim());
         	hParam.put("IMPQTDEMB",cbImpQtdEmb.getVlrString().trim());
+        	hParam.put("SEÇÃO",txtDescSecao.getVlrString().trim());
+        	hParam.put("COMREF", new Boolean(comRef()) );
         	hParam.put("DESTAQUE",new Boolean("S".equals( cbSinalizarAlterados.getVlrString().trim())));
         	
-        	if (comRef()) 
-            	sCodRel = "REFPROD";
-            else
-            	sCodRel = "CODPROD";
-
     		if (sOrdem.equals("C")) 
     			sOrdem = (cbAgrupar.getVlrString().equals("S")?"P.CODGRUP,":"")+"P."+sCodRel;
     		else 
@@ -641,6 +655,9 @@ public class FRListaPreco extends FRelatorio {
     		if (txtCodFor.getVlrInteger() > 0) {
     			sWhere += " AND "+txtCodFor.getVlrInteger()+ " IN (SELECT CODFOR FROM CPPRODFOR WHERE CODEMP=P.CODEMP AND CODFILIAL=P.CODFILIAL AND CODPROD=P.CODPROD )";
 
+    		}
+    		if(txtCodSecao.getVlrString().trim().length() > 0) {
+    			sWhere += " AND P.CODSECAO='" + txtCodSecao.getVlrString().trim() +"'";
     		}
     		if ("S".equals( cbComSaldo.getVlrString() )) {
     			sWhere += " AND P.SLDPROD>0 ";
@@ -732,8 +749,11 @@ public class FRListaPreco extends FRelatorio {
 	}
 	
 	public void setConexao(DbConnection cn) {
+		
 		super.setConexao(cn);
+		
 		lcGrup.setConexao(cn);
+		lcSecao.setConexao(cn);
 		lcMarca.setConexao(cn);
 		lcFor.setConexao(cn);
 		lcTabPreco.setConexao(cn);
@@ -745,6 +765,8 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag5.setConexao(cn);
 		lcPlanoPag6.setConexao(cn);
 		lcPlanoPag7.setConexao(cn);
+		
 	}
 }
+
 
