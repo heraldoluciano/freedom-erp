@@ -654,6 +654,7 @@ public class FRPagar extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "DATAORDEM", cbOrdem.getVlrString() );
+		hParam.put( "IMPOBS", new Boolean("S".equals(cbObs.getVlrString())));
 
 		dlGr = new FPrinterJob( "relatorios/FRPagar.jasper", "Relatório de Pagar/Pagas", sCab, rs, hParam, this );
 
