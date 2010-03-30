@@ -73,6 +73,10 @@ public class FRColetasDia extends FRelatorio {
 	private ListaCampos lcCliente = new ListaCampos( this );
 
 	private boolean comref = false;
+	
+	boolean cliente = false;
+	
+	boolean diario = false;
 
 	public FRColetasDia() {
 
@@ -140,12 +144,115 @@ public class FRColetasDia extends FRelatorio {
 
 	}
 
-	public void imprimir( boolean bVisualizar ) {
-
+	public void imprimir( boolean visualizar ) {
+		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		if(txtCodCli.getVlrInteger()>0) {
+			cliente = true;
+			diario = false;
+		}
+		else {
+			cliente = false;
+			diario = true;
+		}
+		
+		if(cliente) {
+			imprimirCliente( visualizar );
+		}
+		else if (diario) {
+			imprimirDiario( visualizar );
+		}
+		
+	}
+	
+	private void imprimirCliente( boolean visualizar ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sCab2 = new StringBuffer();
+		
+		int param = 1;
+
+		sql.append( "select " );
+		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
+		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+		sql.append( "from " );
+		sql.append( "eqrecmerc rm " );
+		sql.append( "left outer join vdcliente cl on " );
+		sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+		sql.append( "left outer join sgmunicipio mn on " );
+		sql.append( "mn.codpais=cl.codpais and mn.siglauf=cl.siglauf and mn.codmunic=cl.codmunic " );
+		sql.append( "left outer join vdvendedor vd on " );
+		sql.append( "vd.codemp=rm.codempvd and vd.codfilial=rm.codfilialvd and vd.codvend=rm.codvend " );
+		sql.append( "left outer join eqitrecmerc it on " );
+		sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
+		sql.append( "left outer join eqproduto pd on " );
+		sql.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod " );
+		sql.append( "left outer join eqsecao se on " );
+		sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
+		sql.append( "where " );
+		sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
+		
+		if(txtCodCli.getVlrInteger()>0) {
+			sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );				
+		}
+		
+		if( ! "".equals( txtCodSecao.getVlrString())) {
+			sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+		}
+		
+		sql.append( "order by it.coditrecmerc " );
+
+		try {
+			
+			System.out.println("SQL:" + sql.toString());
+
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQCOLETA" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				ps.setInt( param++, lcCliente.getCodEmp() );
+				ps.setInt( param++, lcCliente.getCodFilial() );
+				ps.setInt( param++, txtCodCli.getVlrInteger() );
+				
+				sCab2.append( "Cliente: " + txtRazCli.getVlrString() + "\n" );
+			}
+			
+			if( ! "".equals( txtCodSecao.getVlrString())) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );	
+				ps.setString( param++, txtCodSecao.getVlrString() );
+				
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
+			}
+
+			System.out.println( sql.toString() );
+
+			rs = ps.executeQuery();
+
+		} 
+		catch ( SQLException err ) {
+
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da coleta" );
+			
+		}
+
+		imprimirGrafico( visualizar, rs, "", comref );
+		
+	}
+	
+	public void imprimirDiario( boolean visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -154,7 +261,6 @@ public class FRColetasDia extends FRelatorio {
 		StringBuffer sCab2 = new StringBuffer();
 		
 		int param = 1;
-
 
 		try {
 	
@@ -175,7 +281,7 @@ public class FRColetasDia extends FRelatorio {
 			sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
 			
 			if(txtCodCli.getVlrInteger()>0) {
-				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
+				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );				
 			}
 			
 			if( ! "".equals( txtCodSecao.getVlrString())) {
@@ -211,12 +317,13 @@ public class FRColetasDia extends FRelatorio {
 			
 			rs = ps.executeQuery();
 			
-			imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
 			
 			rs.close();
 			ps.close();
 			
 			con.commit();
+			
 		}
 		catch ( Exception err ) {
 			err.printStackTrace();
@@ -232,8 +339,14 @@ public class FRColetasDia extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 		
-		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_COLETA_01.jasper", "Relação de Coletas", sCab, rs, hParam, this );
-				    
+		FPrinterJob dlGr = null;
+		
+		if(diario) {
+			dlGr = new FPrinterJob( "layout/rel/REL_COLETA_01.jasper", "Relação de Coletas", sCab, rs, hParam, this );
+		}
+		else if(cliente) {
+			dlGr = new FPrinterJob( "layout/rel/REL_COLETA_CLI.jasper", "Relação de Coletas por Cliente", sCab, rs, hParam, this );
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -286,3 +399,4 @@ public class FRColetasDia extends FRelatorio {
 		comref = comRef();
 	}
 }
+
