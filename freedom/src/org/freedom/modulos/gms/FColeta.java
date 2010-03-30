@@ -9,8 +9,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -21,19 +24,20 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.objetos.RecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FPrinterJob;
 
 public class FColeta extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 
@@ -98,6 +102,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JTextFieldPad txtCodProcRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtDescProcRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtTipoProcRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -366,6 +372,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		txtQtdItColeta.addFocusListener( this );
 		txtDocRecMerc.addKeyListener( this );
 		txtQtdItColeta.addKeyListener( this );
+		txtNumSerie.addKeyListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -391,6 +398,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcCli.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
 
 		txtCodCli.setTabelaExterna( lcCli );
 		txtCodCli.setNomeCampo( "CodCli" );
@@ -515,83 +523,85 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	}
 
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		hParam.put( "TICKET", txtTicket.getVlrInteger() );
+
+		EmailBean email = Aplicativo.getEmailBean();
+		email.setPara( txtEmailCli.getVlrString() );
+		
+		dlGr = new FPrinterJob( "layout/col/COL_PD.jasper", "Coleta", "", rs, hParam, this, email );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} 
+			catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório coleta!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
 
 	private void imprimir( boolean bVisualizar ) {
 
-		ImprimeOS imp = new ImprimeOS( "", con );
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+
+		sql.append( "select " );
+		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
+		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+		sql.append( "from " );
+		sql.append( "eqrecmerc rm " );
+		sql.append( "left outer join vdcliente cl on " );
+		sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+		sql.append( "left outer join sgmunicipio mn on " );
+		sql.append( "mn.codpais=cl.codpais and mn.siglauf=cl.siglauf and mn.codmunic=cl.codmunic " );
+		sql.append( "left outer join vdvendedor vd on " );
+		sql.append( "vd.codemp=rm.codempvd and vd.codfilial=rm.codfilialvd and vd.codvend=rm.codvend " );
+		sql.append( "left outer join eqitrecmerc it on " );
+		sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
+		sql.append( "left outer join eqproduto pd on " );
+		sql.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod " );
+		sql.append( "left outer join eqsecao se on " );
+		sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
+		sql.append( "where " );
+		sql.append( "rm.codemp=? and rm.codfilial=? and rm.ticket=? " );
+		sql.append( "order by it.coditrecmerc " );
 
 		try {
+			
+			System.out.println("SQL:" + sql.toString());
 
-			imp.montaCab();
-			imp.setTitulo( "Relação de Coleta" );
-			imp.impCab( 136, false );
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQCOLETA" ) );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
 
-			imp.pulaLinha( 7, imp.comprimido() );
+			System.out.println( sql.toString() );
 
-			imp.pulaLinha( 3, imp.comprimido() );
+			rs = ps.executeQuery();
 
-			imp.say( imp.pRow(), 70, "INTERNO.:" );
+		} 
+		catch ( SQLException err ) {
 
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-
-			imp.pulaLinha( 1, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "PRODUTO:..........:" );
-
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-			imp.pulaLinha( 1, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "PRODUTOR:.........:" );
-
-			imp.say( imp.pRow(), 24, txtCodCli.getVlrString().trim() + " " + txtRazCli.getVlrString().trim() );
-
-			imp.pulaLinha( 2, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "PRIMEIRA PESAGEM..:" );
-
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-
-
-			imp.pulaLinha( 1, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "SEGUNDA PESAGEM...:" );
-
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-
-			imp.pulaLinha( 2, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "LIQUIDO...........:" );
-
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-
-			imp.pulaLinha( 2, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "Renda.............:" );
-
-			imp.pulaLinha( 1, imp.comprimido() );
-
-			imp.say( imp.pRow(), 3, "Renda Classif.....:" );
-
-			imp.say( imp.pRow(), 0, " " + imp.normal() );
-
-			imp.pulaLinha( 3 );
-			imp.fechaGravacao();
-
-		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro na impressão de ticket!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da coleta" );
+			
 		}
 
-		if ( bVisualizar ) {
-			imp.preview( this );
-		}
-		else {
-			imp.print();
-		}
+		imprimiGrafico( rs, bVisualizar );
+	
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -744,14 +754,49 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 				}
-				else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+/*				else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 					txtCodItRecMerc.requestFocus();
+				}*/
+			}	
+			
+			if ( ( kevt.getSource() == txtQtdItColeta || kevt.getSource() == txtNumSerie ) && ( (lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT ) )  ) {			
+				if ( "S".equals( txtSerieProd.getVlrString()) && kevt.getSource() == txtNumSerie ) {
+					
+					lcDet.post();
+					
+					lcDet.limpaCampos( true );
+					
+					lcDet.setState( ListaCampos.LCS_NONE );
+					
+					if(comRef()) {
+						txtRefProd.requestFocus();
+					}
+					else {
+						txtCodProd.requestFocus();
+					}
+						
+				}
+				else if ( ! "S".equals( txtSerieProd.getVlrString()) && kevt.getSource() == txtQtdItColeta ) {
+
+					lcDet.post();
+					
+					lcDet.limpaCampos( true );
+					
+					lcDet.setState( ListaCampos.LCS_NONE );
+					
+					if(comRef()) {
+						txtRefProd.requestFocus();
+					}
+					else {
+						txtCodProd.requestFocus();
+					}
+
 				}
 			}
 		}
 				
-		super.keyPressed( kevt );
+//		super.keyPressed( kevt );
 		
 	}
 
