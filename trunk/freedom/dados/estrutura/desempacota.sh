@@ -59,7 +59,7 @@ fn_executa()
 
 #   rm /tmp/freedom.fbk
 
-  unzip -o ./freedom.zip -d /
+  unzip -o ./freedom.zip -d /tmp/
 
   mkdir --parents /opt/firebird/dados/desenv/
 
