@@ -434,14 +434,17 @@ public class FCLFiscal extends FDetalhe
 	
 		Vector<String> vTipoIcmsVals = new Vector<String>();
 		Vector<String> vTipoIcmsLabs = new Vector<String>();		
+		
 		vTipoIcmsLabs.addElement( "Isento" );
 		vTipoIcmsLabs.addElement( "Subst. Trib." );
 		vTipoIcmsLabs.addElement( "Não inside" );
 		vTipoIcmsLabs.addElement( "Trib. Integral" );
+		
 		vTipoIcmsVals.addElement( "II" );
 		vTipoIcmsVals.addElement( "FF" );
 		vTipoIcmsVals.addElement( "NN" );
 		vTipoIcmsVals.addElement( "TT" );
+		
 		rgTipoFisc = new JRadioGroup<String, String>( 2, 2, vTipoIcmsLabs, vTipoIcmsVals );
 		
 		/** Tipo de substituição tributária */
