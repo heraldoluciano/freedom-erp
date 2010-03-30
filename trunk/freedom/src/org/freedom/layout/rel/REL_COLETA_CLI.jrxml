@@ -76,12 +76,12 @@ order by it.coditrecmerc]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="26"  isSplitAllowed="true" >
+			<band height="21"  isSplitAllowed="true" >
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="3"
+						y="2"
 						width="534"
 						height="0"
 						forecolor="#000000"
@@ -91,9 +91,9 @@ order by it.coditrecmerc]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="53"
-						y="6"
-						width="59"
+						x="3"
+						y="4"
+						width="47"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -104,26 +104,11 @@ order by it.coditrecmerc]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOT}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="3"
-						y="6"
-						width="50"
-						height="11"
-						forecolor="#010101"
-						backcolor="#FFFFFF"
-						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Total :]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="22"
+						y="18"
 						width="534"
 						height="0"
 						forecolor="#000000"
@@ -327,12 +312,12 @@ order by it.coditrecmerc]]></queryString>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="31"  isSplitAllowed="true" >
+			<band height="29"  isSplitAllowed="true" >
 				<rectangle radius="0" >
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="28"
+						y="25"
 						width="535"
 						height="2"
 						forecolor="#010101"
@@ -343,7 +328,7 @@ order by it.coditrecmerc]]></queryString>
 				<staticText>
 					<reportElement
 						x="483"
-						y="10"
+						y="9"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -358,7 +343,7 @@ order by it.coditrecmerc]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="10"
+						y="9"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -373,7 +358,7 @@ order by it.coditrecmerc]]></queryString>
 				<staticText>
 					<reportElement
 						x="124"
-						y="10"
+						y="9"
 						width="295"
 						height="11"
 						forecolor="#010101"
@@ -388,7 +373,7 @@ order by it.coditrecmerc]]></queryString>
 				<staticText>
 					<reportElement
 						x="428"
-						y="10"
+						y="9"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -403,7 +388,7 @@ order by it.coditrecmerc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="62"
-						y="10"
+						y="9"
 						width="49"
 						height="11"
 						forecolor="#000000"
@@ -430,11 +415,11 @@ order by it.coditrecmerc]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="13"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="483"
-						y="2"
+						y="1"
 						width="47"
 						height="11"
 						forecolor="#000000"
@@ -449,7 +434,7 @@ order by it.coditrecmerc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="2"
+						y="1"
 						width="47"
 						height="11"
 						forecolor="#000000"
@@ -464,14 +449,14 @@ order by it.coditrecmerc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="62"
-						y="2"
+						y="1"
 						width="49"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? $F{REFPROD} : $F{CODPROD}.toString()]]></textFieldExpression>
@@ -479,7 +464,7 @@ order by it.coditrecmerc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="124"
-						y="2"
+						y="1"
 						width="295"
 						height="11"
 						forecolor="#000000"
