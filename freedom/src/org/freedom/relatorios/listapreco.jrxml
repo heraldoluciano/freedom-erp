@@ -66,6 +66,7 @@
 	<parameter name="DESTAQUE" isForPrompting="false" class="java.lang.Boolean">
 		<defaultValueExpression ><![CDATA[new Boolean(true)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="COMREF" isForPrompting="false" class="java.lang.Boolean"/>
 	<queryString><![CDATA[SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODFABPROD, P.CODUNID, PP.PRECOPROD, P.SLDPROD,P.QTDEMBALAGEM, P.CODBARPROD,
 (select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI,
 (case when (cast('today' as date) - (PP.DTALT))<7 then 'S' else 'N' end) as alterado,P.SLDPROD
@@ -608,7 +609,7 @@ ORDER BY PP.CODPROD]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{COMREF}.booleanValue()?$F{REFPROD}:$F{CODPROD}.toString()]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement
@@ -903,7 +904,7 @@ ORDER BY PP.CODPROD]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{COMREF}.booleanValue()?$F{REFPROD}:$F{CODPROD}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
