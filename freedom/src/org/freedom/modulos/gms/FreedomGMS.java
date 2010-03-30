@@ -260,7 +260,7 @@ public class FreedomGMS extends AplicativoPD {
 				addOpcao(500000000, TP_OPCAO_ITEM, "Tipos de Recepção", "Cadastro de tipos de recepção de mercadorias", 'T', 500300000,1, true, FTipoRecMerc.class);
 				addSeparador(500000000);
 				addOpcao(500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500500000, 1,false, null);
-					addOpcao( 500500000, TP_OPCAO_ITEM, "Coletas por dia", "Coletas por dia",'o', 500501000, 2, true, FRColetasDia.class);
+					addOpcao( 500500000, TP_OPCAO_ITEM, "Coletas por dia", "Coletas por dia",'o', 500501000, 2, true, FRColetas.class);
 			
 				
 		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false,null);

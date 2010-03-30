@@ -50,7 +50,7 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 import org.freedom.telas.SwingParams;
 
-public class FRColetasDia extends FRelatorio {
+public class FRColetas extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,7 +78,7 @@ public class FRColetasDia extends FRelatorio {
 	
 	boolean diario = false;
 
-	public FRColetasDia() {
+	public FRColetas() {
 
 		setTitulo( "Coletas por dia" );
 		setAtribos( 80, 80, 380, 280 );
@@ -266,17 +266,25 @@ public class FRColetasDia extends FRelatorio {
 	
 			sql.append( "select " );
 			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli " );
+//			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli " );
+	
+			sql.append( "pd.descprod, rm.ticket, 'teste' as razcli " );
+			
 			sql.append( "from " );
 			sql.append( "eqrecmerc rm " );
-			sql.append( "left outer join vdcliente cl on " );
-			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+
+//			sql.append( "left outer join vdcliente cl on " );
+//			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			
 			sql.append( "left outer join eqitrecmerc it on " );
 			sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
+			
 			sql.append( "left outer join eqproduto pd on " );
 			sql.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod " );
+			
 			sql.append( "left outer join eqsecao se on " );
 			sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
+			
 			sql.append( "where " );
 			sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
 			
@@ -287,6 +295,8 @@ public class FRColetasDia extends FRelatorio {
 			if( ! "".equals( txtCodSecao.getVlrString())) {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
+			
+			sql.append( "group by 1,2,3,4, " );
 			
 			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, it.codprod " );
 
@@ -399,4 +409,5 @@ public class FRColetasDia extends FRelatorio {
 		comref = comRef();
 	}
 }
+
 
