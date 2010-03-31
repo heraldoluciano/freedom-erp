@@ -29,14 +29,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -45,6 +49,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextAreaPad;
@@ -57,6 +62,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FPrinterJob;
 
 public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, PostListener {
 
@@ -88,6 +94,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtDescEstDistrib = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtCLoteProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodFase = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -104,6 +112,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProdItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtRefProdItem = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescProdItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -192,6 +202,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcProdEst = new ListaCampos( this, "" );
 
 	private ListaCampos lcProdItem = new ListaCampos( this, "PD" );
+	
+	private ListaCampos lcProdItemRef = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcFase = new ListaCampos( this, "FS" );
 
@@ -211,13 +223,18 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
 	
+	private HashMap<String, Object> prefere = null;
+	
 
 	public FEstrutura() {
 
 		setTitulo( "Estrutura de produtos" );
 		setAtribos( 50, 20, 670, 550 );
 		setAltCab( 170 );
-		
+
+	}
+	
+	private void montaTela() {
 		pnMaster.remove( spTab );
 		pnMaster.remove( pnDet );
 
@@ -244,6 +261,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetEstrAnalise.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetEstrAnalise );
 
+		txtQtdMat.addKeyListener( this );
+		
 		pinCab = new JPanelPad( 500, 90 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -253,6 +272,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdEst.add( new GuardaCampo( txtDescProdEst, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtRefProdEst, "RefProd", "Referencia", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "Usa Lote", ListaCampos.DB_SI, false ) );
+		lcProdEst.add( new GuardaCampo( txtSerieProd, "SerieProd", "Usa Série", ListaCampos.DB_SI, false ) );
 		
 		lcProdEst.setWhereAdic( "TIPOPROD='F' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
 		lcProdEst.montaSql( false, "PRODUTO", "EQ" );
@@ -265,13 +285,26 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		
 		lcProdItem.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdItem.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdItem.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProdItem.add( new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false ) );
+
 		lcProdItem.montaSql( false, "PRODUTO", "EQ" );
 		lcProdItem.setQueryCommit( false );
 		lcProdItem.setReadOnly( true );
 		txtCodProdItem.setTabelaExterna( lcProdItem );
 		txtDescProdItem.setListaCampos( lcProdItem );
 
+		lcProdItemRef.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
+		lcProdItemRef.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdItemRef.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );		
+		lcProdItemRef.add( new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false ) );
+
+		lcProdItemRef.montaSql( false, "PRODUTO", "EQ" );
+		lcProdItemRef.setQueryCommit( false );
+		lcProdItemRef.setReadOnly( true );
+		txtRefProdItem.setTabelaExterna( lcProdItemRef );
+		txtDescProdItem.setListaCampos( lcProdItemRef );
+		
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
 		lcFase.add( new GuardaCampo( txtTipoFase, "TipoFase", "Tipo da fase", ListaCampos.DB_SI, false ) );
@@ -353,13 +386,28 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		setListaCampos( lcDetItens );
 		setNavegador( navRod );
 
-		cbRmaAutoItEst.setVlrString( "N" );
-
 		adicCampo( txtSeqItem, 7, 20, 40, 20, "SeqItEst", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
+
+		if ( comRef() ) {
+//			txtRefProdItem.setBuscaAdic( new DLBuscaProd( con, "RefProdPD", lcProdItemRef.getWhereAdic() ) );
+			adicCampoInvisivel( txtCodProdItem, "CodProdPD", "Cód.Prod.", ListaCampos.DB_FK, txtDescProdItem, false );
+			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, false );
+
+			adic( new JLabelPad( "Referência" ), 50, 0, 77, 20 );
+			adic( txtRefProdItem, 50, 20, 77, 20 );
+			txtRefProdItem.setRequerido( true );
+			txtRefProdItem.setFK( true );
+		}
+		else {
+//			txtCodProdItem.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdItem.getWhereAdic() ) );
+			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, false );
+			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, false );
+		}
+
+//		adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdMat, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
-	
+		
 		adicDB( cbRmaAutoItEst, 10, 60, 80, 20, "RmaAutoItEst", "", true );		
 		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
 		adicDB( cbQtdVariavelItem, 210, 60, 100, 20, "QtdVariavel", "", true );
@@ -367,7 +415,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
-		txtCodProdItem.setNomeCampo( "CodProd" );
+//		txtCodProdItem.setNomeCampo( "CodProd" );
 		lcDetItens.setTabela( tabItens );
 
 		// Fim Detalhe Itens
@@ -473,6 +521,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDet.addPostListener( this );
 		lcProdEst.addCarregaListener( this );
 		lcProdItem.addCarregaListener( this );
+		lcProdItemRef.addCarregaListener( this );
 		lcDetDistrib.addCarregaListener( this );
 		lcFase.addCarregaListener( this );
 		lcTpAnalise.addCarregaListener( this );
@@ -518,6 +567,181 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcCampos.setNavegador( nav );
 
 	}
+	
+	private void imprimirTexto(ResultSet rs, boolean visualizar, boolean resumido) {
+		
+		ImprimeOS imp = null;
+		int linPag = 0;
+		imp = new ImprimeOS( "", con );
+		linPag = imp.verifLinPag() - 1;
+		imp.montaCab();
+		imp.setTitulo( "Relatório de Estrutura do Produto" );
+		imp.limpaPags();
+				
+		try {
+			
+			if(resumido) {
+			
+				while ( rs.next() ) {
+					
+					if ( imp.pRow() == 0 ) {
+						imp.impCab( 136, true );
+						imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+						imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
+						imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
+						imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
+						imp.say( imp.pRow() + 0, 60, "| Qtd." );
+						imp.say( imp.pRow() + 0, 70, "| Descrição" );
+						imp.say( imp.pRow() + 0, 101, "| Ativo" );
+						imp.say( imp.pRow() + 0, 110, "| Mod.Lote" );
+						imp.say( imp.pRow() + 0, 121, "| Validade" );
+						imp.say( imp.pRow() + 0, 135, "|" );
+					}
+					
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "CodProd" ) );
+					imp.say( imp.pRow() + 0, 13, "| " + rs.getString( "DescProd" ).substring( 0, 34 ) );
+					imp.say( imp.pRow() + 0, 50, "| " + rs.getString( "SeqEst" ) );
+					imp.say( imp.pRow() + 0, 60, "| " + rs.getString( "QtdEst" ) );
+					imp.say( imp.pRow() + 0, 70, "| " + rs.getString( "DescEst" ).substring( 0, 29 ) );
+					imp.say( imp.pRow() + 0, 100, "| " + ( rs.getString( "AtivoEst" ).equals( "S" ) ? "Sim" : "Não" ) );
+					imp.say( imp.pRow() + 0, 110, "| " + rs.getString( "CodModLote" ) );
+					imp.say( imp.pRow() + 0, 121, "| " + rs.getString( "NroDiasValid" ) + " Dias" );
+					imp.say( imp.pRow() + 0, 135, "|" );
+		
+					if ( imp.pRow() >= linPag ) {
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+						imp.incPags();
+						imp.eject();
+					}
+				}
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+		
+			}
+			else {
+				int seqest = 0;
+				int cont = 0;
+				while ( rs.next() ) {
+					
+					
+					String sCodProd = txtCodProdEst.getVlrString();
+
+					if ( imp.pRow() >= linPag ) {
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+						imp.incPags();
+						imp.eject();
+					}
+					if ( imp.pRow() == 0 ) {
+						imp.impCab( 136, true );
+						imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( " ", 133 ) + "|" );
+					}
+					if ( (!sCodProd.equals( rs.getString( 1 ) )) || (seqest!=rs.getInt( "SEQEST" )) ) {
+						cont = 0;
+						sCodProd = rs.getString( 1 );
+						seqest = rs.getInt( "SEQEST" );
+					}
+					if ( sCodProd.equals( rs.getString( 1 ) ) && cont == 0 ) {
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
+						
+						if(comRef()) {
+							imp.say( imp.pRow() + 1, 0, "| Referência" );
+						}
+						else {
+							imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
+						}
+						
+						imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
+						imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
+						imp.say( imp.pRow() + 0, 60, "| Qtd." );
+						imp.say( imp.pRow() + 0, 70, "| Descrição" );
+						imp.say( imp.pRow() + 0, 101, "| Ativo" );
+						imp.say( imp.pRow() + 0, 110, "| Mod.Lote" );
+						imp.say( imp.pRow() + 0, 121, "| Validade" );
+						imp.say( imp.pRow() + 0, 135, "|" );
+						
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
+
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						
+						if(comRef()) {
+							imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "REFPROD" ).trim() );
+						}
+						else{
+							imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "CODPROD" ) );
+						}
+						
+						imp.say( imp.pRow() + 0, 13, "| " + rs.getString( "DESCPROD" ).substring( 0, 34 ) );
+						imp.say( imp.pRow() + 0, 50, "| " + rs.getString( "SEQEST" ) );
+						imp.say( imp.pRow() + 0, 60, "| " + rs.getString( "QTDEST" ) );
+						imp.say( imp.pRow() + 0, 70, "| " + rs.getString( "DESCEST" ).substring( 0, 29 ) );
+						imp.say( imp.pRow() + 0, 100, "| " + ( rs.getString( "ATIVOEST" ).equals( "S" ) ? "Sim" : "Não" ) );
+						imp.say( imp.pRow() + 0, 110, "| " + rs.getString( "CODMODLOTE" )==null ? "" : rs.getString( "CODMODLOTE" ) );
+						imp.say( imp.pRow() + 0, 121, "| " + rs.getString( "NRODIASVALID" )==null ? "" :  ( rs.getString( "NRODIASVALID" ) + " Dias" ) );
+						imp.say( imp.pRow() + 0, 135, "|" );
+						
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+						
+						imp.say( imp.pRow() + 1, 0, "| Item" );
+						imp.say( imp.pRow() + 0, 8, "| Cod.prod" );
+						imp.say( imp.pRow() + 0, 20, "| Descrição do produto" );
+						imp.say( imp.pRow() + 0, 60, "| Qtd." );
+						imp.say( imp.pRow() + 0, 70, "| Cod.fase" );
+						imp.say( imp.pRow() + 0, 80, "| Descrição da fase" );
+						imp.say( imp.pRow() + 0, 123, "| Auto Rma" );
+						imp.say( imp.pRow() + 0, 135, "|" );
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+						cont++;
+					}
+					
+					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+					
+					imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "SEQITEST" ) );
+					if(comRef()) {
+						imp.say( imp.pRow() + 0, 8, "| " + rs.getString( "REFPRODPD" ).trim() );
+					}
+					else {
+						imp.say( imp.pRow() + 0, 8, "| " + rs.getString( "CODPRODPD" ) );
+					}
+					imp.say( imp.pRow() + 0, 20, "| " + rs.getString( "DESCPRODPD" ).substring( 0, 38 ) );
+					imp.say( imp.pRow() + 0, 60, "| " + rs.getString( "QTDITEST" ) );
+					imp.say( imp.pRow() + 0, 70, "| " + rs.getString( "CODFASE" ) );
+					imp.say( imp.pRow() + 0, 80, "| " + rs.getString( "DESCFASE" ).substring( 0, 38 ) );
+					imp.say( imp.pRow() + 0, 123, "|   " + ( rs.getString( "RMAAUTOITEST" ).equals( "S" ) ? "Sim" : "Não" ) );
+					imp.say( imp.pRow() + 0, 135, "|" );
+				}
+				
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+
+			}
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			con.commit();
+			
+			if ( visualizar )
+				imp.preview( this );
+			else
+				imp.print();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	private void imprimir( boolean bVisualizar ) {
 
@@ -527,207 +751,127 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		String sWhere = "";
 		String[] sValores;
 		DLREstrutura dl = null;
-		ImprimeOS imp = null;
-		int linPag = 0;
+		
 
 		try {
+			
 			dl = new DLREstrutura();
 			dl.setVisible( true );
+			
 			if ( dl.OK == false ) {
 				dl.dispose();
 				return;
 			}
-			sValores = dl.getValores();
+			
+			sValores = dl.getValores(comRef());
+			
+			boolean resumido = "R".equals( sValores[ 1 ] );
+			
+			if(resumido && sValores[ 3 ].equals( "G" ) ) { 
+				Funcoes.mensagemInforma( this, "Não existe modelo de relatório resumido para o tipo de impressão gráfica!" );
+				return;
+			}
+			
 			dl.dispose();
 
-			if ( sValores[ 2 ].equals( "A" ) ) {
-				sWhere += " AND E.CODPROD=" + txtCodProdEst.getVlrString();
-				sWhere += " AND E.SEQEST=" + txtSeqEst.getVlrString();
+			if ( "A".equals( sValores[ 2 ] )) {
+
+				if(txtCodProdEst.getVlrInteger()>0) {
+					sWhere += " AND E.CODPROD=" + txtCodProdEst.getVlrString();				
+					sWhere += " AND E.SEQEST=" + txtSeqEst.getVlrString();
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Nenhum estrutura selecionada para impressão!" );
+					return;
+				}
+			
 			}
 
-			imp = new ImprimeOS( "", con );
-			linPag = imp.verifLinPag() - 1;
-			imp.montaCab();
-			imp.setTitulo( "Relatório de Estrutura do Produto" );
-			imp.limpaPags();
-
-			if ( sValores[ 1 ].equals( "R" ) ) {
+			if ( resumido ) {
 
 				try {
 
-					sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, E.CODMODLOTE, E.NRODIASVALID " 
+					sSQL = "SELECT E.CODPROD, E.REFPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, E.CODMODLOTE, E.NRODIASVALID " 
 						+ "FROM PPESTRUTURA E, EQPRODUTO PD " 
 						+ "WHERE PD.CODEMP=E.CODEMP AND PD.CODFILIAL=E.CODFILIAL AND E.CODPROD=PD.CODPROD " 
 						+ sWhere + " ORDER BY " + sValores[ 0 ] + ",E.SEQEST";
 
 					ps = con.prepareStatement( sSQL );
 					rs = ps.executeQuery();
-					while ( rs.next() ) {
-						if ( imp.pRow() == 0 ) {
-							imp.impCab( 136, true );
-							imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-							imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
-							imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
-							imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
-							imp.say( imp.pRow() + 0, 60, "| Qtd." );
-							imp.say( imp.pRow() + 0, 70, "| Descrição" );
-							imp.say( imp.pRow() + 0, 101, "| Ativo" );
-							imp.say( imp.pRow() + 0, 110, "| Mod.Lote" );
-							imp.say( imp.pRow() + 0, 121, "| Valid" );
-							imp.say( imp.pRow() + 0, 135, "|" );
-						}
-
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "CodProd" ) );
-						imp.say( imp.pRow() + 0, 13, "| " + rs.getString( "DescProd" ).substring( 0, 34 ) );
-						imp.say( imp.pRow() + 0, 50, "| " + rs.getString( "SeqEst" ) );
-						imp.say( imp.pRow() + 0, 60, "| " + rs.getString( "QtdEst" ) );
-						imp.say( imp.pRow() + 0, 70, "| " + rs.getString( "DescEst" ).substring( 0, 29 ) );
-						imp.say( imp.pRow() + 0, 100, "| " + ( rs.getString( "AtivoEst" ).equals( "S" ) ? "Sim" : "Não" ) );
-						imp.say( imp.pRow() + 0, 110, "| " + rs.getString( "CodModLote" ) );
-						imp.say( imp.pRow() + 0, 121, "| " + rs.getString( "NroDiasValid" ) + " Dias" );
-						imp.say( imp.pRow() + 0, 135, "|" );
-
-						if ( imp.pRow() >= linPag ) {
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-							imp.incPags();
-							imp.eject();
-						}
-					}
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-
-					imp.eject();
-					imp.fechaGravacao();
-
-					con.commit();
-					dl.dispose();
-				} catch ( SQLException err ) {
+					
+				} 
+				catch ( SQLException err ) {
 					Funcoes.mensagemErro( this, "Erro consulta tabela de estrutura do produto!\n" + err.getMessage(), true, con, err );
 				}
 			}
 			else if ( sValores[ 1 ].equals( "C" ) ) {
 
-				sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, " 
-					 + "E.CODMODLOTE, E.NRODIASVALID, IT.SEQITEST, IT.CODPRODPD, PI.DESCPROD, IT.QTDITEST, " 
+				sSQL = "SELECT E.CODPROD, E.REFPROD, PD.DESCPROD, IT.REFPRODPD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, " 
+					 + "E.CODMODLOTE, E.NRODIASVALID, IT.SEQITEST, IT.CODPRODPD, PI.DESCPROD DESCPRODPD, IT.QTDITEST, " 
 					 + "IT.CODFASE, F.DESCFASE, IT.RMAAUTOITEST "
 						+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO PD, EQPRODUTO PI, PPFASE F " 
 						+ "WHERE E.CODPROD=PD.CODPROD AND E.CODEMP=PD.CODEMP AND E.CODFILIAL=PD.CODFILIAL " 
 						+ "AND IT.CODPROD=E.CODPROD AND IT.SEQEST=E.SEQEST AND IT.CODEMP=E.CODEMP AND IT.CODFILIAL=E.CODFILIAL "
 						+ "AND IT.CODPRODPD=PI.CODPROD AND IT.CODEMPPD=PI.CODEMP AND IT.CODFILIALPD=PI.CODFILIAL " 
 						+ "AND IT.CODFASE=F.CODFASE AND IT.CODEMPFS=F.CODEMP AND IT.CODFILIALFS=F.CODFILIAL " 
-						+ sWhere + " ORDER BY " + sValores[ 0 ] + ", IT.CODPROD, E.SEQEST, IT.CODFASE";
+						+ sWhere + " ORDER BY " + sValores[ 0 ] + " ";
+
+				
 
 				try {
 
-					String sCodProd = txtCodProdEst.getVlrString();
-					
-					int cont = 0;
-
 					ps = con.prepareStatement( sSQL );
 					rs = ps.executeQuery();
-					int seqest = 0;
-					while ( rs.next() ) {
-
-						if ( imp.pRow() >= linPag ) {
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-							imp.incPags();
-							imp.eject();
-						}
-						if ( imp.pRow() == 0 ) {
-							imp.impCab( 136, true );
-							imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( " ", 133 ) + "|" );
-						}
-						if ( (!sCodProd.equals( rs.getString( 1 ) )) || (seqest!=rs.getInt( "SEQEST" )) ) {
-							cont = 0;
-							sCodProd = rs.getString( 1 );
-							seqest = rs.getInt( "SEQEST" );
-						}
-						if ( sCodProd.equals( rs.getString( 1 ) ) && cont == 0 ) {
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
-							imp.say( imp.pRow() + 1, 0, "| Cód.prod." );
-							imp.say( imp.pRow() + 0, 13, "| Descrição do produto" );
-							imp.say( imp.pRow() + 0, 50, "| Seq.Est." );
-							imp.say( imp.pRow() + 0, 60, "| Qtd." );
-							imp.say( imp.pRow() + 0, 70, "| Descrição" );
-							imp.say( imp.pRow() + 0, 101, "| Ativo" );
-							imp.say( imp.pRow() + 0, 110, "| Mod.Lote" );
-							imp.say( imp.pRow() + 0, 121, "| Valid" );
-							imp.say( imp.pRow() + 0, 135, "|" );
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "=", 133 ) + "|" );
-
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "| " + rs.getString( 1 ) );
-							imp.say( imp.pRow() + 0, 13, "| " + rs.getString( 2 ).substring( 0, 34 ) );
-							imp.say( imp.pRow() + 0, 50, "| " + rs.getString( 3 ) );
-							imp.say( imp.pRow() + 0, 60, "| " + rs.getString( 4 ) );
-							imp.say( imp.pRow() + 0, 70, "| " + rs.getString( 5 ).substring( 0, 29 ) );
-							imp.say( imp.pRow() + 0, 100, "| " + ( rs.getString( 6 ).equals( "S" ) ? "Sim" : "Não" ) );
-							imp.say( imp.pRow() + 0, 110, "| " + rs.getString( 7 ) );
-							imp.say( imp.pRow() + 0, 121, "| " + rs.getString( 8 ) + " Dias" );
-							imp.say( imp.pRow() + 0, 135, "|" );
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-							imp.say( imp.pRow() + 1, 0, "| Item" );
-							imp.say( imp.pRow() + 0, 8, "| Cod.prod" );
-							imp.say( imp.pRow() + 0, 20, "| Descrição do produto" );
-							imp.say( imp.pRow() + 0, 60, "| Qtd." );
-							imp.say( imp.pRow() + 0, 70, "| Cod.fase" );
-							imp.say( imp.pRow() + 0, 80, "| Descrição da fase" );
-							imp.say( imp.pRow() + 0, 123, "| Auto Rma" );
-							imp.say( imp.pRow() + 0, 135, "|" );
-							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-							cont++;
-						}
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "| " + rs.getString( 9 ) );
-						imp.say( imp.pRow() + 0, 8, "| " + rs.getString( 10 ) );
-						imp.say( imp.pRow() + 0, 20, "| " + rs.getString( 11 ).substring( 0, 38 ) );
-						imp.say( imp.pRow() + 0, 60, "| " + rs.getString( 12 ) );
-						imp.say( imp.pRow() + 0, 70, "| " + rs.getString( 13 ) );
-						imp.say( imp.pRow() + 0, 80, "| " + rs.getString( 14 ).substring( 0, 38 ) );
-						imp.say( imp.pRow() + 0, 123, "|   " + ( rs.getString( 15 ).equals( "S" ) ? "Sim" : "Não" ) );
-						imp.say( imp.pRow() + 0, 135, "|" );
-					}
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-
-					imp.eject();
-					imp.fechaGravacao();
-
-					con.commit();
-					dl.dispose();
-
-				} catch ( SQLException err ) {
+				
+				} 
+				catch ( SQLException err ) {
 					Funcoes.mensagemErro( this, "Erro consulta tabela de insumos do produto!\n" + err.getMessage(), true, con, err );
 				}
 			}
 
-			if ( bVisualizar )
-				imp.preview( this );
-			else
-				imp.print();
-
-		} finally {
+			System.out.println("SQL:" + sSQL );
+			
+			if ( sValores[ 3 ].equals( "T" ) ) {
+				imprimirTexto(rs, bVisualizar, resumido);
+			}
+			else {
+				imprimirGrafico(bVisualizar, rs, comRef(), resumido );
+			}
+						
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
 			sWhere = null;
 			sValores = null;
-			dl = null;
-			imp = null;
+			dl = null;			
 		}
 
 	}
+	
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final boolean bComRef, boolean resumido ) {
+
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		hParam.put( "COMREF", bComRef ? "S" : "N" );
+		
+		FPrinterJob dlGr = null;
+		
+		dlGr = new FPrinterJob( "layout/rel/REL_ESTRUTURA_01.jasper", "Relação de componentes do produto", "", rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} 
+			catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de extruturas!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -782,7 +926,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcProdItem ) {
+		if ( cevt.getListaCampos() == lcProdItem || cevt.getListaCampos() == lcProdItemRef ) {
 			String sRma = txtRMA.getVlrString();
 			if ( sRma.equals( "S" ) )
 				cbRmaAutoItEst.setEnabled( true );
@@ -792,6 +936,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		else if ( cevt.getListaCampos() == lcProdEst ) {
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				txtCodModLote.setAtivo( true );
+				txtNroDiasValid.setAtivo( true );
+			}
+			else if("S".equals(txtSerieProd.getVlrString())) {
 				txtNroDiasValid.setAtivo( true );
 			}
 			else {
@@ -880,12 +1027,54 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			}	
 		}
 	}
+	
+	private boolean comRef(){
+		return ((Boolean) prefere.get( "usarefprod" )).booleanValue(); 
+	}
+	
+	private void getPreferencias() {
+
+		StringBuilder sql = new StringBuilder();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			prefere = new HashMap<String, Object>();
+
+			sql.append( "select pf1.usarefprod from sgprefere1 pf1 ");
+			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				prefere.put( "usarefprod", new Boolean("S".equals( rs.getString( "usarefprod" ))) );
+			}
+
+			con.commit();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
+		getPreferencias();
+		
+		montaTela();
+		
 		lcProdEst.setConexao( cn );
 		lcProdItem.setConexao( cn );
+		lcProdItemRef.setConexao( cn );
 		lcModLote.setConexao( cn );
 		lcTipoRec.setConexao( cn );
 		lcFase.setConexao( cn );
@@ -895,5 +1084,38 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcTpAnalise.setConexao( cn ); 
 		lcDetEstrAnalise.setConexao( cn );
 		lcUnid.setConexao( cn );
+		
+		
+		
 	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER && kevt.getSource()==txtQtdMat) {
+
+			if ( lcDetItens.getStatus() == ListaCampos.LCS_INSERT ) {
+
+				cbRmaAutoItEst.setVlrString( "S" );
+				cbQtdVariavelItem.setVlrString( "S" );
+				
+				lcDetItens.post();
+//				lcDetItens.limpaCampos( true );
+				lcDetItens.insert( true );
+				lcDetItens.setState( ListaCampos.LCS_NONE );
+				
+				if ( comRef() ) {
+					txtRefProdItem.requestFocus();
+				}
+				else {
+					txtCodProdItem.requestFocus();
+				}
+				
+				
+			}
+		}
+	}
+	
+	
+	
 }
+
