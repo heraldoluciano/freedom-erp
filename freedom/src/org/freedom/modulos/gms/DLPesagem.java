@@ -213,9 +213,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				
 				// Valore incluídos para testes
-				data = new Date();
-				hora = new Time(new Date().getTime());
-				peso = new BigDecimal(650);
+				//data = new Date();
+				//hora = new Time(new Date().getTime());
+				//peso = new BigDecimal(650);
 				
 				
 				if(peso != null) {
