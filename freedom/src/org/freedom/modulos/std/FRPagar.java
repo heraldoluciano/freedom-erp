@@ -463,6 +463,11 @@ public class FRPagar extends FRelatorio {
 
 		sCab += "   Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString();
 		
+		
+		if(txtCodBanco.getVlrString().length()>0) {
+			sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtDescBanco.getVlrString().trim();
+		}
+		
 		if("T".equals( rgTipoRel.getVlrString())){
 			imprimiTexto( rs, bVisualizar, sCab );
 		}
