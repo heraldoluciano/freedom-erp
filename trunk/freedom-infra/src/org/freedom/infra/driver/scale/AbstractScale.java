@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
+import java.util.EventListener;
 import java.util.HashMap;
 
 import javax.comm.SerialPortEvent;
@@ -57,13 +58,13 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	public abstract void initialize( Integer com, Integer timeout, Integer baundrate, Integer databits, Integer stopbits, Integer parity );
 	
-	public boolean activePort() {
+	public boolean activePort(final EventListener event) {
 
 		boolean result = CtrlPort.getInstance().isActive();
 
-		if ( !result ) {
-			result = CtrlPort.getInstance().activePort( com, serialParams, this );
-		}
+//		if ( !result ) {
+			result = CtrlPort.getInstance().activePort( com, serialParams, event==null?this:event );
+//		}
 		
 		return result;
 	}
@@ -108,7 +109,8 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		try {
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
 
-				result = new byte[ input.available() ];
+//				result = new byte[ input.available() ];
+				result = new byte[ 50 ];
 
 				if ( result != null ) { 
 
@@ -175,7 +177,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		isRead = false;
 		buffer = null;
 
-		if ( activePort( ) ) {
+		if ( activePort( this ) ) {
 
 			try {
 
