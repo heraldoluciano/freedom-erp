@@ -134,7 +134,7 @@ public final class ConversionFunctions {
 			int minutes = Integer.parseInt( strtime.substring(3,5));
 			int seconds = 0;
 			
-			if( strtime.length() > 5 ) {
+			if( strtime.length() >= 5 ) {
 			
 				seconds = Integer.parseInt( strtime.substring(5));
 				
