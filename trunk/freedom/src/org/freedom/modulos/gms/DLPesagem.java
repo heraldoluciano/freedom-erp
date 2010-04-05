@@ -31,13 +31,17 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.comm.CommPortIdentifier;
 import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -47,7 +51,10 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.driver.scale.AbstractScale;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.objetos.TipoRecMerc;
@@ -55,7 +62,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.SwingParams;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -193,6 +200,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			
 		}
 		
+		System.out.println("mensagem:" + msg);
+		
 	}
 	
 	private void buscaPeso() {
@@ -204,6 +213,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				setMensagem( "Inicializando balança...", Color.BLUE, null, false );
 				
 				balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
+				
+//				Thread.sleep( 550);
 				
 				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false );
 				
@@ -254,7 +265,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					setMensagem( "Pesagem realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
 				}
 				
-				
+				balanca.inactivePort();
+				balanca = null;
 				
 			}
 			else {
@@ -401,11 +413,153 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 	public void afterEdit( EditEvent eevt ) { }
 
+private void abrePorta() {
+		
+		try {
+	
+			CommPortIdentifier cp = CommPortIdentifier.getPortIdentifier("/dev/ttyS0");
+			porta = (SerialPort) cp.open( "SComm", 1 );
+			
+			InputStream entrada = porta.getInputStream();
+
+			
+			
+			porta.notifyOnDataAvailable( true );
+			
+			porta.addEventListener( this );
+				
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+	}
+
+	public void serialEvent( SerialPortEvent ev ) {
+
+		try {
+		
+			if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+				
+				InputStream entrada = porta.getInputStream();
+				int nodeBytes = 0;
+				
+				byte[] bufferLeitura = new byte[64];
+				
+				while ( entrada.available() > 0 ) {
+					
+					nodeBytes = entrada.read( bufferLeitura );	
+				
+				}
+				
+				String leitura = new String(bufferLeitura);
+				
+				if(bufferLeitura.length>0) {
+					System.out.print( leitura );
+					parseString( leitura );
+				}
+				else {
+					System.out.print( "nada lido!" );
+				}
+				
+				System.out.println( "número de bytes lidos:" + nodeBytes );
+				
+				
+			}
+				
+				
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void parseString(String str) {
+		
+		String strweight = "";
+		String strdate = "";
+		String strtime = "";
+		
+		try {
+			
+			int posicaobranca = str.lastIndexOf( " " );
+			
+			if(posicaobranca<24 && posicaobranca>-1) {
+				str = str.substring( posicaobranca );
+				str = StringFunctions.alltrim( str );
+			}
+			
+			if(str.length()>=24) {
+			
+				if (posicaobranca + 24 > str.length()) {
+					str = str.substring( posicaobranca );
+				}
+				else {
+					str = str.substring( posicaobranca, 24 );
+				}
+				
+				str = StringFunctions.alltrim(str);
+				
+				System.out.println("Parcial analisada: " + str);
+				
+				String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
+				
+				if("//:".equals( validador )) {
+					
+					CtrlPort.getInstance().disablePort();
+					
+//					InputStream input = null;
+//					CtrlPort ctrlport = CtrlPort.getInstance();
+//					ctrlport.setActive(false);
+//					input = ctrlport.getInput();
+					
+//					input.close();
+					
+//					ctrlport.disablePort();
+//					ctrlport = null;
+					
+//					buffer = null;
+					
+										
+					System.out.println("Finalizou leitura e fechou a porta!");
+
+					strweight = str.substring( 0,  07 );
+					strdate = str.substring( 9,  17 );
+					strtime = str.substring( 17 );
+					
+					
+					strtime = StringFunctions.clearString(strtime);
+	
+					System.out.println("peso:" + ConversionFunctions.stringToBigDecimal( strweight ));
+					System.out.println("data:" + ConversionFunctions.strDate6digToDate( strdate ) );
+					System.out.println("data:" + ConversionFunctions.strTimetoTime( strtime ) );
+//					setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
+//					setDate( ConversionFunctions.strDate6digToDate( strdate ) );
+//					setTime( ConversionFunctions.strTimetoTime( strtime ) );
+					
+					
+
+				}
+				
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setConexao( DbConnection cn ) {
 	
 		super.setConexao( cn );
 		
 		instanciaBalanca();
+//		abrePorta();
 		
 		ajustaCampos();
 	
