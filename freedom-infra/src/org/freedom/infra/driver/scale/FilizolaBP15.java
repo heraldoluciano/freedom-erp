@@ -39,7 +39,7 @@ public class FilizolaBP15 extends AbstractScale  {
 		serialParams.setStopbits( stopbits );
 		serialParams.setParity( parity );
 		
-		activePort();
+		activePort(null);
 	
 		sendCmd( command, 100 );
 		
