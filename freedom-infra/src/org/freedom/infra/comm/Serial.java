@@ -45,6 +45,10 @@ public class Serial extends AbstractPort {
 		super();
 
 	}
+	
+	public SerialPort getSerialPort() {
+		return portSerial;
+	}
 
 	public static Serial getInstance() {
 
@@ -121,8 +125,10 @@ public class Serial extends AbstractPort {
 			}	
 			
 			try {
+				
 				portSerial.addEventListener( (SerialPortEventListener) event );
 				portSerial.notifyOnDataAvailable( true );
+				
 			} catch ( TooManyListenersException e ) {
 				e.printStackTrace();
 				result = false;

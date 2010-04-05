@@ -46,6 +46,10 @@ public class CtrlPort {
 		return result;
 	}
 	
+	public static AbstractPort getPort() {
+		return port;
+	}
+	
 	public int getPortnsel() {
 		return this.portnSel;
 	}
@@ -80,7 +84,12 @@ public class CtrlPort {
 			active = result;
 
 		}
+		result = port.activePort( portn, serialParams, event );
 		return result;
+	}
+	
+	public void setActive(boolean status) {
+		active = status;
 	}
 	
 	/**
@@ -88,7 +97,7 @@ public class CtrlPort {
 	 * 
 	 */
 	public void disablePort() {
-
+	
         if (port!=null) {
         	port.disablePort();
         }
