@@ -171,7 +171,7 @@ public abstract class AbstractPort {
 		return porta;
 	}
 	
-	abstract boolean activePort(final int portn, final SerialParams serialParams, final EventListener event);
+	abstract boolean activePort(final int portn, final SerialParams serialParams, final EventListener event );
 
 	abstract void disablePort();
 	
