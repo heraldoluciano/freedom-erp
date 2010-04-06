@@ -2194,7 +2194,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) ) );
 				baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) ) );
 				
-
+				baixaRecBean.setValorPagoParc( ConversionFunctions.stringToBigDecimal( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				
 				if ( "".equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
 					baixaRecBean.setDataPagamento( new Date() );

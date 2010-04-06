@@ -255,16 +255,27 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private void atualizaAberto() {
 
 
-		BigDecimal aberto = txtVlrParc.getVlrBigDecimal();
+		BigDecimal atualizado = txtVlrParc.getVlrBigDecimal();
+		
 		BigDecimal descontos = txtVlrDesc.getVlrBigDecimal();
 		BigDecimal juros = txtVlrJuros.getVlrBigDecimal();
+
+		BigDecimal pagoparcial = null;
+		
+		if( baixaRecBean != null ) {
+			pagoparcial = baixaRecBean.getValorPagoParc();
+		}
+		
+		pagoparcial = new BigDecimal( 0 );
+		
 		BigDecimal pago = txtVlrPago.getVlrBigDecimal();
 		
-		aberto = aberto.subtract( descontos );
-		aberto = aberto.add( juros );
-		aberto = aberto.subtract( pago );
+		atualizado = atualizado.subtract( descontos );
+		atualizado = atualizado.add( juros );
+		atualizado = atualizado.subtract( pagoparcial );
 		
-//		txtVlrAberto.setVlrBigDecimal( aberto );
+		txtVlrAberto.setVlrBigDecimal( atualizado );
+		txtVlr.setVlrBigDecimal( atualizado );
 		
 //		txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
 		
@@ -481,7 +492,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcConta.carregaDados();
 		lcPlan.carregaDados();
 		lcCC.carregaDados();
-		
+			
 		if ( ! ( bJurosPosCalc = getJurosPosCalc() ) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
 			adic( new JLabelPad( "% Juros." ), 180, 200, 57, 20 );
 			aplicaJuros();
@@ -489,6 +500,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		else {
 			adic( new JLabelPad( "% Dia." ), 180, 200, 57, 20 );
 		}
+		
 	}
 
 	public BaixaRecBean getValores() {
@@ -630,6 +642,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		private BigDecimal valorJuros;
 		
 		private BigDecimal valorPago;
+		
+		private BigDecimal valorPagoParc;
 		
 		private String observacao;
 		
@@ -780,5 +794,20 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		public void setEmBordero( boolean travarConta ) {		
 			this.emBordero = travarConta;
 		}
+
+		
+		public BigDecimal getValorPagoParc() {
+		
+			return valorPagoParc;
+		}
+
+		
+		public void setValorPagoParc( BigDecimal valorPagoParc ) {
+		
+			this.valorPagoParc = valorPagoParc;
+		}
+		
+		
+		
 	};
 }
