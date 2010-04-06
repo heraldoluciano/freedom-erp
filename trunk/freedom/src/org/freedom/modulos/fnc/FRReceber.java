@@ -92,7 +92,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
-	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+//	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 	
 //	private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
 	
@@ -269,7 +269,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		
 		adic( cbObs, 420, 15, 180, 20 );
 		adic( cbImpTotDia, 420, 40, 180, 20 );
-		adic( cbParPar, 420, 65, 250, 20 );			
+//		adic( cbParPar, 420, 65, 250, 20 );			
 //		adic( cbAgrupCli, 420, 90, 250, 20 );
 		
 		adic( new JLabelPad( "Primeira ordem:" ), 7, 110, 390, 20 );
@@ -360,12 +360,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		if ( rgOrdem.getVlrString().equals( "P" ) ) {
 			sTitRel1 = "PAGAMENTO";
-			if ( "S".equals( cbParPar.getVlrString() ) ) {
+/*			if ( "S".equals( cbParPar.getVlrString() ) ) {
 				sCampoOrdem = "L.DATALANCA";
 			}
-			else {
+			else {*/
 				sCampoOrdem = "IT.DTPAGOITREC";
-			}
+			//}
 			sCampoTotal = "DTPAGOITREC";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
@@ -431,7 +431,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
-		
+		/*
 		if ( "S".equals( cbParPar.getVlrString() ) ) {
 			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
 			sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " );
@@ -454,13 +454,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sSQL.append( "ELSE 0 END) VLRAPAGITREC, " );
 			sSQL.append( "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, " );
 		}
-		else {
+		else {*/
 			sSQL.append( "IT.VLRPARCITREC, " );
 			sSQL.append( "IT.VLRPAGOITREC, " );
 			sSQL.append( "IT.VLRAPAGITREC, " );
 			sSQL.append( "IT.DTPAGOITREC, " );
 
-		}
+		//}
 		
 		sSQL.append( "R.DOCREC, IT.OBSITREC, " );
 		sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
@@ -469,13 +469,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		sSQL.append( "FROM FNRECEBER R,VDCLIENTE C " );
 		sSQL.append( sFrom );
 		sSQL.append( ",FNITRECEBER IT " );
-		
+		/*
 		if ( "S".equals( cbParPar.getVlrString() ) ) {
 			sSQL.append( " LEFT OUTER JOIN FNLANCA L ON " );
 			sSQL.append( "L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND " );
 			sSQL.append( "L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC " );
 		}
-		
+		*/
 		sSQL.append( "WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " + sCampoOrdem + " BETWEEN ? AND ? " );
 		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
@@ -487,14 +487,14 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		try {
 			iParans = 1;
 			ps = con.prepareStatement( sSQL.toString() );
-
+/*
 			if ( "S".equals( cbParPar.getVlrString() ) && "P".equals( rgOrdem.getVlrString() ) ) {
 				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			}
-
+*/
 			ps.setInt( iParans++, Aplicativo.iCodEmp );
 			ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
