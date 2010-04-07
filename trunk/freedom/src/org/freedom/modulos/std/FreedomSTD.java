@@ -44,6 +44,7 @@ import org.freedom.modulos.fnc.FRCobranca;
 import org.freedom.modulos.fnc.FRExtratoPrevisto;
 import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.fnc.FRFluxoCaixaRes;
+import org.freedom.modulos.fnc.FRRecPag;
 import org.freedom.modulos.fnc.FRReceber;
 import org.freedom.modulos.fnc.FRReceberMes;
 import org.freedom.modulos.fnc.FRReceberSetor;
@@ -265,6 +266,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Ponto de equilíbrio", "Ponto de equilíbrio", 'q', 601406000, 2, true, FRPontoEqui.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Lançamentos por categoria", "Lançamentos por categoria", 'q', 601407000, 2, true, FRLancCategoria.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'C', 601408000, 1, true, FRRestricao.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Receber/Pagar", "Receber/Pagar", 'g', 601409000, 1, true, FRRecPag.class );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
 				addOpcao( 601500000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601501000, 2, true, FRBalanceteGrafico.class );
 				addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
