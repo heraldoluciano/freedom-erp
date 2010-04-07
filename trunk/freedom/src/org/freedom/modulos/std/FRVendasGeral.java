@@ -84,9 +84,15 @@ public class FRVendasGeral extends FRelatorio {
 
 	private JRadioGroup<?, ?> rgTipo = null;
 	
+	private JRadioGroup<?, ?> rgData = null;
+	
 	private Vector<String> vLabs1 = new Vector<String>();
 	
 	private Vector<String> vVals1 = new Vector<String>();
+
+	private Vector<String> vLabsData = new Vector<String>();
+	
+	private Vector<String> vValsData = new Vector<String>();
 	
 	private ListaCampos lcVend = new ListaCampos( this );
 	
@@ -127,6 +133,14 @@ public class FRVendasGeral extends FRelatorio {
 	    
 	    rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
 	    rgTipo.setVlrString("T");
+	    
+	    vLabsData.addElement("Emissão");
+	    vLabsData.addElement("Saída");
+	    vValsData.addElement("E");
+	    vValsData.addElement("S");
+	    
+	    rgData = new JRadioGroup<String, String>(1,2,vLabsData,vValsData);
+	    rgData.setVlrString("E");
 		
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -147,22 +161,31 @@ public class FRVendasGeral extends FRelatorio {
 
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
 		adic( lbLinha, 60, 15, 210, 2 );
+		
 		adic( new JLabelPad( "De:" ), 7, 30, 30, 20 );
 		adic( txtDataini, 32, 30, 97, 20 );
+		
 		adic( new JLabelPad( "Até:" ), 140, 30, 30, 20 );
 		adic( txtDatafim, 170, 30, 100, 20 );
-		adic( new JLabelPad( "Cód.comiss." ), 7, 60, 210, 20 );
-		adic( txtCodVend, 7, 80, 70, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 80, 60, 210, 20 );
-		adic( txtDescVend, 80, 80, 190, 20 );
-		adic( new JLabelPad("Cód.Cli"),7, 100, 210, 20 );
-		adic(txtCodCli, 7, 120, 70, 20 );
-		adic( new JLabelPad("Descrição do cliente"),80, 100, 190, 20 );
-		adic( txtNomeCli,80, 120, 190, 20 );
-		adic( rgTipo,7, 150, 265, 30 );
-		adic( rgFaturados, 7, 190, 120, 70 );
-		adic( rgFinanceiro, 153, 190, 120, 70 );
-		adic( cbVendaCanc, 7, 270, 200, 20 );
+		
+		adic( rgData,7, 65, 265, 30 );
+		
+		adic( new JLabelPad( "Cód.comiss." ), 7, 100, 210, 20 );
+		adic( txtCodVend, 7, 120, 70, 20 );
+		
+		adic( new JLabelPad( "Nome do comissionado" ), 80, 100, 210, 20 );
+		adic( txtDescVend, 80, 120, 190, 20 );
+		
+		adic( new JLabelPad("Cód.Cli"),7, 140, 210, 20 );
+		adic(txtCodCli, 7, 160, 70, 20 );
+		
+		adic( new JLabelPad("Descrição do cliente"),80, 140, 190, 20 );
+		
+		adic( txtNomeCli,80, 160, 190, 20 );
+		adic( rgTipo,7, 190, 265, 30 );
+		adic( rgFaturados, 7, 230, 120, 70 );
+		adic( rgFinanceiro, 153, 230, 120, 70 );
+		adic( cbVendaCanc, 7, 310, 200, 20 );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -238,8 +261,25 @@ public class FRVendasGeral extends FRelatorio {
 		sSQL.append( sWhere1 );
 		sSQL.append( sWhere2 );
 		sSQL.append( sWhere3 );
-		sSQL.append( "AND V.DTSAIDAVENDA BETWEEN ? AND ? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sSQL.append( "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA " );
+		
+		if("E".equals( rgData.getVlrString() )) {
+			sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+		}
+		else {
+			sSQL.append( "AND V.DTSAIDAVENDA BETWEEN ? AND ? " );	
+		}
+		
+		sSQL.append( "AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sSQL.append( "ORDER BY " );
+		
+		if("E".equals( rgData.getVlrString() )) {
+			sSQL.append( "V.DTEMITVENDA" );
+		}
+		else {
+			sSQL.append( "V.DTSAIDAVENDA" );
+		}
+		
+		sSQL.append( ", V.DOCVENDA " );
 
 			
 		try {
