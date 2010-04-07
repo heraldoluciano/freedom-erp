@@ -154,6 +154,7 @@ public class FreedomFNC extends AplicativoPD {
 
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FTipoRestr.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 401100000, 1, true, FRestrCli.class );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Receber/Pagar", "Receber/Pagar", 'g', 401200000, 1, true, FRRecPag.class );
 
 			addSeparador( 400000000 );
 			
