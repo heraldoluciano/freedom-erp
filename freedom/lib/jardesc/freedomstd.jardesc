@@ -36,6 +36,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAtendente.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRFluxoCaixaRes.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.bol"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRRecPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutRec.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBordero.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
@@ -50,8 +51,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FContato.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRBordero.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLNovoRec.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRBordero.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FHistPad.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBaixaRec.java"/>
@@ -102,8 +103,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRExtratoPrevisto.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.etiquetas.clientes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLEditaPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FRAtendimentos.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLEditaPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FBairro.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
