@@ -533,6 +533,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 
 	}
+ 
 
 	public void abreTela(String titulo, Class<? extends IFilho> telaClass) {
 		String name = telaClass.getName();
@@ -543,7 +544,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				if ( obj instanceof FFDialogo ) {
 					FFDialogo tela = (FFDialogo) obj;
 				
-					Class partypes[] = new Class[ 2 ];
+					Class<?> partypes[] = new Class[ 2 ];
 					partypes[ 0 ] = DbConnection.class;
 					partypes[ 1 ] = DbConnection.class;
 					Method meth = null;
@@ -567,7 +568,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				else if ( obj instanceof FFilho ) {
 					FFilho tela = (FFilho) obj;
 
-					Class partypes[] = new Class[ 2 ];
+					Class<?> partypes[] = new Class[ 2 ];
 					partypes[ 0 ] = DbConnection.class;
 					partypes[ 1 ] = DbConnection.class;
 					Method meth = null;
@@ -589,7 +590,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				else if ( obj instanceof FDialogo ) {
 					FDialogo tela = (FDialogo) obj;
 
-					Class partypes[] = new Class[ 2 ];
+					Class<?> partypes[] = new Class[ 2 ];
 					partypes[ 0 ] = DbConnection.class;
 					partypes[ 1 ] = DbConnection.class;
 					Method meth = null;
