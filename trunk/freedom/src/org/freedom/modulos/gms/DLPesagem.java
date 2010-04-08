@@ -51,7 +51,6 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.functions.ConversionFunctions;
@@ -324,6 +323,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 	}
 	
+	@ SuppressWarnings ( "unchecked" )
 	private void instanciaBalanca() {
 				
 		try {
