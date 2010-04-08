@@ -142,24 +142,27 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );
 				addOpcao( 400100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 400101000, 2, true, FModBoleto.class );
 				addOpcao( 400100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 400101000, 2, true, FRBoleto.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 400200000, 1, true, FBanco.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 400300000, 1, true, FPlanejamento.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 400400000, 1, true, FCentroCusto.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Contas", "Contas", 't', 400500000, 1, true, FConta.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Histórico", "Histórico", 't', 400600000, 1, true, FHistPad.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Lançamentos", "Lançamentos", 'L', 400700000, 1, true, FLanca.class );
-			addSeparador( 400000000 );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'T', 400800000, 1, true, FTipoCred.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'b', 400900000, 1, true, FLiberaCredito.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 400200000, 1, true, FBanco.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 400300000, 1, true, FPlanejamento.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 400400000, 1, true, FCentroCusto.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Contas", "Contas", 't', 400500000, 1, true, FConta.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Histórico", "Histórico", 't', 400600000, 1, true, FHistPad.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Lançamentos", "Lançamentos", 'L', 400700000, 1, true, FLanca.class );
+			
+				addSeparador( 400000000 );
+				
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'T', 400800000, 1, true, FTipoCred.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'b', 400900000, 1, true, FLiberaCredito.class );
 
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FTipoRestr.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 401100000, 1, true, FRestrCli.class );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Receber/Pagar", "Receber/Pagar", 'g', 401200000, 1, true, FRRecPag.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FTipoRestr.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 401100000, 1, true, FRestrCli.class );
+				addOpcao( 400000000, TP_OPCAO_ITEM, "Receber/Pagar", "Receber/Pagar", 'g', 401400000, 1, true, FRRecPag.class );
 
-			addSeparador( 400000000 );
+				addSeparador( 400000000 );
 			
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Reprocessa saldo", "Reprocessamento de saldos", 'R', 401000000, 1, true, FProcessaSL.class );
 			addSeparador( 400000000 );
+			
 			addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401200000, 1, false, null );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 401201000, 2, true, FRExtrato.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Extrato Previsionado", "Extrato Previsionado", 'P', 401210000, 2, true, FRExtrato.class );				
@@ -171,6 +174,7 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'R', 401206000, 2, true, FRRestricao.class );	
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'P', 401208000, 2, true, FRPontoEqui.class );	
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa realizado", "Fluxo de caixa realizado", 'c', 401209000, 2, true, FRFluxoCaixaReal.class );	
+			
 			addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
 				addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
 				addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
