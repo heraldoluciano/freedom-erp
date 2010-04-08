@@ -220,8 +220,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		bFK = FK;
 	}
 	
-	public void setFK(boolean FK, Class tst) {
+	public void setFK(boolean FK, Class<? extends IFilho> telaexterna) {
 		bFK = FK;
+		this.telaexterna = telaexterna;
 	}
 
 	public void setTabelaExterna(ListaCampos lc) {
