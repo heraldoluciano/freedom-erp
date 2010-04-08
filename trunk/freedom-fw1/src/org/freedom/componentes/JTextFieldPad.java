@@ -46,6 +46,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
+import org.freedom.telas.IFilho;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
 
@@ -104,6 +105,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private DLF3 dlBuscaAdic = null; 
 	private DLCodProd dlCodProd = null;
 	private boolean uppercase = false;
+	private Class<? extends IFilho> telaexterna = null;
 	
 	public JTextFieldPad (int tipo, int tam, int dec) {
 		addFocusListener(this);
@@ -217,9 +219,18 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public void setFK(boolean FK) {
 		bFK = FK;
 	}
+	
+	public void setFK(boolean FK, Class tst) {
+		bFK = FK;
+	}
 
 	public void setTabelaExterna(ListaCampos lc) {
+		setTabelaExterna(lc, null);
+	}
+
+	public void setTabelaExterna(ListaCampos lc, Class<? extends IFilho> telaexterna) {
 		lcTabExt = lc;
+		this.telaexterna = telaexterna;
 	}
 
 	public void setNomeCampo(String nm) {
@@ -1041,7 +1052,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		else if (kevt.getKeyCode() == KeyEvent.VK_F1) {
 			FAtalhos tela = new FAtalhos();
 			tela.setVisible(true);
-			tela.dispose();
+			tela.dispose();			
 		} 
 		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() > 0) && (bPK) & (lcTxt != null)) {
 			if (Aplicativo.bBuscaProdSimilar)  	  	
@@ -1053,10 +1064,19 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			if (lcTabExt.carregaDados())
 				transferFocus();
 		} 
-		else if (kevt.getKeyCode() == KeyEvent.VK_F3 && (bPK || bFK))
+		else if (kevt.getKeyCode() == KeyEvent.VK_F3 && (bPK || bFK)) {
 			buscaAdic("alternativo");		
-		if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai)) 
+		}
+		else if (kevt.getKeyCode() == KeyEvent.VK_F6) {// && (bPK || bFK)) {
+			if(telaexterna!=null) {
+				Aplicativo.getInstace().abreTela("", telaexterna );
+			}
+		}
+		if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai)) { 
 			transferFocus(); 
+		}
+		
+		
 	}
 
 	public void keyReleased(KeyEvent kevt) {
