@@ -121,7 +121,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Funcoes.strZero($F{AGENCIACONTA}.trim(),7)+ " / " + org.freedom.funcoes.Funcoes.strZero($F{NUMCONTA},9)]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($F{AGENCIACONTA}.trim(),7)+ " / " + org.freedom.infra.functions.StringFunctions.strZero($F{NUMCONTA},9)]]></variableExpression>
 	</variable>
 	<variable name="VCONVENIO" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
