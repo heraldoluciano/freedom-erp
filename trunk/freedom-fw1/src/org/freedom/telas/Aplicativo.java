@@ -465,11 +465,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		item.addActionListener( this );
 	}
 
-	@SuppressWarnings("unchecked")
 	public void actionPerformed( ActionEvent evt ) {
-
 		Object oTemp = evt.getSource();
-		String name = "";
 		int iCodMenu = -1;
 		if ( oTemp != null ) {
 			if ( oTemp instanceof JButtonPad ) {
@@ -527,87 +524,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					}
 				}
 				if ( telaClass != null ) {
-					name = telaClass.getName();
-					if ( !telaPrincipal.temTela( name ) ) {
-						try {
-							Object obj = telaClass.newInstance();
-							if ( obj instanceof FFDialogo ) {
-								FFDialogo tela = (FFDialogo) obj;
-							
-								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = DbConnection.class;
-								partypes[ 1 ] = DbConnection.class;
-								Method meth = null;
-								try {
-									meth = telaClass.getMethod( "setConexao", partypes );
-								} catch ( NoSuchMethodException e ) {
-								}
+					
+					abreTela(titulo, telaClass);
 
-								telaPrincipal.criatela( titulo, tela, con );
-								tela.setTelaPrim( telaPrincipal );
-
-								if ( meth != null ) {
-									Object arglist[] = new Object[ 2 ];
-									arglist[ 0 ] = con;
-									arglist[ 1 ] = conIB;
-									meth.invoke( obj, arglist );
-									
-									
-								}
-							}
-							else if ( obj instanceof FFilho ) {
-								FFilho tela = (FFilho) obj;
-
-								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = DbConnection.class;
-								partypes[ 1 ] = DbConnection.class;
-								Method meth = null;
-								try {
-									meth = telaClass.getMethod( "setConexao", partypes );
-								} catch ( NoSuchMethodException e ) {
-								}
-
-								telaPrincipal.criatela( titulo, tela, con );
-								tela.setTelaPrim( telaPrincipal );
-
-								if ( meth != null ) {
-									Object arglist[] = new Object[ 2 ];
-									arglist[ 0 ] = con;
-									arglist[ 1 ] = conIB;
-									meth.invoke( obj, arglist );
-								}
-							}
-							else if ( obj instanceof FDialogo ) {
-								FDialogo tela = (FDialogo) obj;
-
-								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = DbConnection.class;
-								partypes[ 1 ] = DbConnection.class;
-								Method meth = null;
-								try {
-									meth = telaClass.getMethod( "setConexao", partypes );
-								} catch ( NoSuchMethodException e ) {
-								}
-
-								telaPrincipal.criatela( titulo, tela, con );
-
-								if ( meth != null ) {
-									Object arglist[] = new Object[ 2 ];
-									arglist[ 0 ] = con;
-									arglist[ 1 ] = conIB;
-									meth.invoke( obj, arglist );
-								}
-							}
-							else {
-								Funcoes.mensagemInforma( framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada." );
-							}
-							obj = null;
-						} catch ( Exception err ) {
-							Funcoes.mensagemErro( framePrinc, err.getMessage(), true, con, err );
-
-							err.printStackTrace();
-						}
-					}
 				}
 
 			}
@@ -615,6 +534,92 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
+	public void abreTela(String titulo, Class<? extends IFilho> telaClass) {
+		String name = telaClass.getName();
+	//	Class<? extends IFilho> telaClass = null;
+		if ( !telaPrincipal.temTela( name ) ) {
+			try {
+				Object obj = telaClass.newInstance();
+				if ( obj instanceof FFDialogo ) {
+					FFDialogo tela = (FFDialogo) obj;
+				
+					Class partypes[] = new Class[ 2 ];
+					partypes[ 0 ] = DbConnection.class;
+					partypes[ 1 ] = DbConnection.class;
+					Method meth = null;
+					try {
+						meth = telaClass.getMethod( "setConexao", partypes );
+					} catch ( NoSuchMethodException e ) {
+					}
+
+					telaPrincipal.criatela( titulo, tela, con );
+					tela.setTelaPrim( telaPrincipal );
+
+					if ( meth != null ) {
+						Object arglist[] = new Object[ 2 ];
+						arglist[ 0 ] = con;
+						arglist[ 1 ] = conIB;
+						meth.invoke( obj, arglist );
+						
+						
+					}
+				}
+				else if ( obj instanceof FFilho ) {
+					FFilho tela = (FFilho) obj;
+
+					Class partypes[] = new Class[ 2 ];
+					partypes[ 0 ] = DbConnection.class;
+					partypes[ 1 ] = DbConnection.class;
+					Method meth = null;
+					try {
+						meth = telaClass.getMethod( "setConexao", partypes );
+					} catch ( NoSuchMethodException e ) {
+					}
+
+					telaPrincipal.criatela( titulo, tela, con );
+					tela.setTelaPrim( telaPrincipal );
+
+					if ( meth != null ) {
+						Object arglist[] = new Object[ 2 ];
+						arglist[ 0 ] = con;
+						arglist[ 1 ] = conIB;
+						meth.invoke( obj, arglist );
+					}
+				}
+				else if ( obj instanceof FDialogo ) {
+					FDialogo tela = (FDialogo) obj;
+
+					Class partypes[] = new Class[ 2 ];
+					partypes[ 0 ] = DbConnection.class;
+					partypes[ 1 ] = DbConnection.class;
+					Method meth = null;
+					try {
+						meth = telaClass.getMethod( "setConexao", partypes );
+					} catch ( NoSuchMethodException e ) {
+					}
+
+					telaPrincipal.criatela( titulo, tela, con );
+
+					if ( meth != null ) {
+						Object arglist[] = new Object[ 2 ];
+						arglist[ 0 ] = con;
+						arglist[ 1 ] = conIB;
+						meth.invoke( obj, arglist );
+					}
+				}
+				else {
+					Funcoes.mensagemInforma( framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada." );
+				}
+				obj = null;
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( framePrinc, err.getMessage(), true, con, err );
+
+				err.printStackTrace();
+			}
+		}
+	}
+	
+	
 	public void atualizaMenus() {
 
 		JMenuBar menuBar = telaPrincipal.bar;
