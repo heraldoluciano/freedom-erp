@@ -4,8 +4,8 @@ import java.awt.event.MouseEvent;
 
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.agenda.FAgenda;
-import org.freedom.modulos.fnc.FManutPag;
-import org.freedom.modulos.fnc.FManutRec;
+import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
+import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
