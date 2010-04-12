@@ -26,9 +26,9 @@ package org.freedom.objetos;
 
 import org.freedom.objetos.ObjetoEtiqueta;
 
-public class ObjetoEtiquetaCli extends ObjetoEtiqueta {
+public class EtiquetaCli extends ObjetoEtiqueta {
 
-	public ObjetoEtiquetaCli() { 
+	public EtiquetaCli() { 
 		 		 
 		adicOpcao( "Código do cliente", "#CODIGO#", "CODCLI", new Integer( 8 ), null, "Cód.Cli." );
 		adicOpcao( "Razão social do cliente", "#RAZAO_SOCIAL#", "RAZCLI", new Integer( 50 ), null, "Razão" );

@@ -25,6 +25,8 @@
 package org.freedom.modulos.std.view.frame.report;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.layout.graphics.EvoluVendasBarras;
+import org.freedom.layout.graphics.EvoluVendasLinha;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
@@ -47,8 +49,6 @@ import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.graficos.EvoluVendasBarras;
-import org.freedom.graficos.EvoluVendasLinha;
 
 public class FREvoluVendas extends FRelatorio {
 

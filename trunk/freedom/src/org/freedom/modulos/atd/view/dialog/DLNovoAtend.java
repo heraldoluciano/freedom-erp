@@ -40,7 +40,7 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.layout.componentes.LeiauteGR;
+import org.freedom.library.component.LeiauteGR;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;

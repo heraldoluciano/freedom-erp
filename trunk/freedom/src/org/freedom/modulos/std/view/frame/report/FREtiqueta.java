@@ -61,8 +61,8 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.std.view.frame.comum.FModEtiqueta;
 import org.freedom.objetos.ObjetoEtiqueta;
-import org.freedom.objetos.ObjetoEtiquetaCli;
-import org.freedom.objetos.ObjetoEtiquetaComis;
+import org.freedom.objetos.EtiquetaCli;
+import org.freedom.objetos.EtiquetaComis;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
 
@@ -114,7 +114,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	
 	private ObjetoEtiqueta objEtiq = null;
 	
-	private ObjetoEtiquetaComis objEtiqComis = new ObjetoEtiquetaComis();
+	private EtiquetaComis objEtiqComis = new EtiquetaComis();
 
 	private JTextFieldPad txtCodPapel = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -309,10 +309,10 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	public void montaTabela( JTablePad tb ) {
 
 		if( cbComissionados.getVlrString().equals( "CL" ) ){
-			objEtiq = new ObjetoEtiquetaCli();
+			objEtiq = new EtiquetaCli();
 		}
 		else if( cbComissionados.getVlrString().equals( "CM" )){
-			objEtiq = new ObjetoEtiquetaComis();
+			objEtiq = new EtiquetaComis();
 		}			
 		
 		objEtiq.setTexto( txaEtiqueta.getVlrString() );

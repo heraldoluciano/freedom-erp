@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.graficos;
+package org.freedom.layout.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.componentes.LeiauteGR;
+import org.freedom.library.component.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;

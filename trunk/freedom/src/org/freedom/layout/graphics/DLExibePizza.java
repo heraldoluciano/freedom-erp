@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.graficos;
+package org.freedom.layout.graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
