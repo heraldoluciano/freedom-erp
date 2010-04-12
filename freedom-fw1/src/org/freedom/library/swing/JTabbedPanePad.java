@@ -22,12 +22,13 @@
  * 
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.JTabbedPane;
+
 
 public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 

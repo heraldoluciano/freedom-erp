@@ -41,10 +41,10 @@ import javax.swing.text.BadLocationException;
 
 import org.freedom.bmps.Icone;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 
 public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {private static final long serialVersionUID = 1L;
 	

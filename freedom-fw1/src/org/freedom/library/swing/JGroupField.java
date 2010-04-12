@@ -18,11 +18,12 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.Component;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.ListaCampos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

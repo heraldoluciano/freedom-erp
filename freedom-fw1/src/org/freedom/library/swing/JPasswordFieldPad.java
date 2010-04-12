@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;

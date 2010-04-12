@@ -27,14 +27,14 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JTablePad;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
 	private JScrollPane spnCentro = new JScrollPane(tab); 
 	public Object oRetVal = null;
 	/**

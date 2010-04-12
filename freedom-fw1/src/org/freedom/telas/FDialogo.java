@@ -39,8 +39,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;

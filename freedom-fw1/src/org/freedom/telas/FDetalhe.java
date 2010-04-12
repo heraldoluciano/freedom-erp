@@ -29,10 +29,10 @@ import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 
 public class FDetalhe extends FDados {
 
@@ -72,7 +72,7 @@ public class FDetalhe extends FDados {
 
 	public ListaCampos lcDet = new ListaCampos( this );
 
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
 
 	public JScrollPane spTab = new JScrollPane( tab );
 

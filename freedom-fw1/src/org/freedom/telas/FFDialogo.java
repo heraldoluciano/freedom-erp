@@ -52,8 +52,8 @@ import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
 
 public class FFDialogo extends JDialog implements ActionListener,
         KeyListener, IFilho {

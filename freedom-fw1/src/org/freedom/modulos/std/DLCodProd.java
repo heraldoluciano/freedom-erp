@@ -30,7 +30,7 @@ import java.awt.event.WindowEvent;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JTablePad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +48,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
 	
 	private JScrollPane spnCentro = new JScrollPane(tab); 
 	private int iCodProd = 0;

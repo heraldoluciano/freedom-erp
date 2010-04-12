@@ -25,10 +25,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPasswordFieldPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPasswordFieldPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.util.Properties;
 import java.util.Vector;

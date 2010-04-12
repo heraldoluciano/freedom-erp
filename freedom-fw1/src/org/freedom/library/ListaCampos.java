@@ -33,6 +33,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -192,7 +196,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private Vector<ListaCampos> vLcDetalhe = new Vector<ListaCampos>();
 
-	private Tabela tab = null;
+	private JTablePad tab = null;
 
 	private int[] iTipos = new int[1];
 
@@ -465,12 +469,12 @@ public class ListaCampos extends Container implements PostListener,
 	 * Ajusta a tabela para este ListaCampos. <BR>
 	 * Ajusta a tabela para um ListaCampos Master.
 	 * 
-	 * @param Tabela
+	 * @param JTablePad
 	 *            A tabela que desaja adicionar
 	 * @see #getTab
 	 *  
 	 */
-	public void setTabela(Tabela tb) {
+	public void setTabela(JTablePad tb) {
 		tab = tb;
 		tab.addMouseListener(this);
 	}
@@ -525,7 +529,7 @@ public class ListaCampos extends Container implements PostListener,
 	 * @see #setTabela
 	 *  
 	 */
-	public Tabela getTab() {
+	public JTablePad getTab() {
 		return tab;
 	}
 

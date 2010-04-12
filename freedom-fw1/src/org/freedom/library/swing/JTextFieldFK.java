@@ -18,11 +18,11 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Color;
 
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.SwingParams;
 
 public class JTextFieldFK extends JTextFieldPad { 

@@ -20,13 +20,13 @@
 
 package org.freedom.acao;
 
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JTablePad;
 public class TabelaEditEvent {
-  private Tabela tab = null;
-  public TabelaEditEvent(Tabela tb) {
+  private JTablePad tab = null;
+  public TabelaEditEvent(JTablePad tb) {
     tab = tb;
   }
-  public Tabela getTabela() {
+  public JTablePad getTabela() {
     return tab;
   }
 }

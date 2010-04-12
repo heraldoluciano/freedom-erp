@@ -31,8 +31,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JDialog;
 
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
 
 import javax.swing.BorderFactory;
 

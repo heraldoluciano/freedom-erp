@@ -31,8 +31,8 @@ import java.awt.Component;
 import javax.swing.JScrollPane;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextAreaPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextAreaPad;
 
 /**
  * @author robson

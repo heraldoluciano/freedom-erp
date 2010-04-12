@@ -44,7 +44,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JPanelPad;
 import org.freedom.telas.FZoom;
 
 public class PainelImagem extends JPanelPad implements ActionListener, MouseListener {

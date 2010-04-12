@@ -43,11 +43,11 @@ import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.StringDireita;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
