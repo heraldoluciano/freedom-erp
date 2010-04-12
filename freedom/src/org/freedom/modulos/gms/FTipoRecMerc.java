@@ -33,13 +33,13 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.objetos.TipoRecMerc;
 
 public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener {
 

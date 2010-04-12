@@ -65,11 +65,12 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.library.swing.frame.FPassword;
-import org.freedom.modulos.std.view.dialog.tool.DLFechaParcela;
+import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.text.TextTefAction;
+
 
 public class DLFechaVenda extends FFDialogo implements ControllerTefListener, CarregaListener, MouseListener, FocusListener {
 

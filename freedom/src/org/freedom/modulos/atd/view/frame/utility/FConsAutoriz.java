@@ -60,7 +60,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.std.view.frame.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
 

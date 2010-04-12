@@ -26,6 +26,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.RecMerc;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
@@ -36,8 +37,8 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
-import org.freedom.objetos.RecMerc;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+
 
 public class FColeta extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 

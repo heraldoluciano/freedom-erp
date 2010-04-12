@@ -76,8 +76,9 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.modulos.std.view.dialog.tool.DLAdicOrc;
+import org.freedom.modulos.std.view.dialog.utility.DLAdicOrc;
 import org.freedom.plugin.AbstractControleVendaPDV;
+
 
 public class FVenda extends FDialogo implements KeyListener, CarregaListener, PostListener, FocusListener {
 

@@ -39,6 +39,8 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Endereco;
+import org.freedom.library.business.webservices.WSCep;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -55,9 +57,7 @@ import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
-import org.freedom.modulos.std.view.frame.tabbed.FCliente;
-import org.freedom.objetos.Endereco;
-import org.freedom.webservices.WSCep;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 /**

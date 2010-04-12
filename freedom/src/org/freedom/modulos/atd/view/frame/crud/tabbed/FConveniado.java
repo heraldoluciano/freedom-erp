@@ -50,7 +50,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
-import org.freedom.modulos.std.view.frame.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FConveniado extends FTabDados implements PostListener {
  

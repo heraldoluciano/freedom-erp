@@ -40,10 +40,10 @@ import org.freedom.modulos.gms.FConsRmaItem;
 import org.freedom.modulos.gms.FProduto;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.gms.FTipoMov;
-import org.freedom.modulos.std.view.frame.comum.FAlmox;
-import org.freedom.modulos.std.view.frame.comum.FInventario;
-import org.freedom.modulos.std.view.frame.comum.FMarca;
-import org.freedom.modulos.std.view.frame.comum.FUnidade;
+import org.freedom.modulos.std.view.frame.crud.comum.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.comum.FInventario;
+import org.freedom.modulos.std.view.frame.crud.comum.FMarca;
+import org.freedom.modulos.std.view.frame.crud.comum.FUnidade;
 import org.freedom.modulos.std.view.frame.report.FRConfEstoq;
 import org.freedom.modulos.std.view.frame.report.FRDemanda;
 import org.freedom.modulos.std.view.frame.report.FREstoqueMin;
@@ -52,10 +52,10 @@ import org.freedom.modulos.std.view.frame.report.FRMovProd;
 import org.freedom.modulos.std.view.frame.report.FRSaldoLote;
 import org.freedom.modulos.std.view.frame.report.FRVencLote;
 import org.freedom.modulos.std.view.frame.special.FGrupo;
-import org.freedom.modulos.std.view.frame.tool.FConsPreco;
-import org.freedom.modulos.std.view.frame.tool.FConsulta;
-import org.freedom.modulos.std.view.frame.tool.FKardex;
-import org.freedom.modulos.std.view.frame.tool.FProcessaEQ;
+import org.freedom.modulos.std.view.frame.utility.FConsPreco;
+import org.freedom.modulos.std.view.frame.utility.FConsulta;
+import org.freedom.modulos.std.view.frame.utility.FKardex;
+import org.freedom.modulos.std.view.frame.utility.FProcessaEQ;
 
 public class FreedomPCP extends AplicativoPD implements ActionListener {
 	public FreedomPCP() {

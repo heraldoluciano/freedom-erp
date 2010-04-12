@@ -45,6 +45,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Historico;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
@@ -55,8 +56,8 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.tool.DLFechaParcela;
-import org.freedom.objetos.ObjetoHistorico;
+import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
+
 
 public class DLNovoRec extends FFDialogo implements CarregaListener, PostListener, FocusListener {
 
@@ -166,7 +167,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	
 	private Map<String, Integer> prefere = null;
 	
-	private ObjetoHistorico historico = null;
+	private Historico historico = null;
 
 	public DLNovoRec( Component cOrig ) {
 
@@ -640,10 +641,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 			codhistrec = (Integer) prefere.get( "codhistrec" );
 
 			if ( codhistrec != 0 ) {
-				historico = new ObjetoHistorico( codhistrec, con );
+				historico = new Historico( codhistrec, con );
 			}
 			else {
-				historico = new ObjetoHistorico();
+				historico = new Historico();
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
 			

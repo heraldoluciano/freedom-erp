@@ -25,6 +25,7 @@
 package org.freedom.modulos.gms;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
@@ -32,7 +33,6 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 
-import org.freedom.objetos.TipoRecMerc;
 
 public class FPrefereGMS extends FTabDados {
 
