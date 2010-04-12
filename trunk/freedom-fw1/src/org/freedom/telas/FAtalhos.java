@@ -21,8 +21,9 @@
 package org.freedom.telas;
 
 import java.awt.BorderLayout;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
+
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
 
 public class FAtalhos extends FFDialogo {
 	private static final long serialVersionUID = 1L;

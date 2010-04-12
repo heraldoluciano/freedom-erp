@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JToggleButton;
 
+import org.freedom.library.JButtonPad;
 import org.freedom.modulos.crm.agenda.EventModel;
 import lu.tudor.santec.bizcal.CalendarIcons;
 import lu.tudor.santec.bizcal.NamedCalendar;

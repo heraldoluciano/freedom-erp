@@ -32,10 +32,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
 
 public abstract class FRelatorio extends FFilho implements ActionListener, KeyListener {
 

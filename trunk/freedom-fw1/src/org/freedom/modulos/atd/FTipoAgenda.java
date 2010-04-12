@@ -24,13 +24,13 @@ package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Navegador;
 
 import javax.swing.JLabel;
 
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
 import org.freedom.telas.FDialogo;
 
 public class FTipoAgenda extends FDialogo {

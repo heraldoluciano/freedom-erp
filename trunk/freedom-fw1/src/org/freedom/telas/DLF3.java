@@ -27,7 +27,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.Tabela;
+import org.freedom.library.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
 	/**

@@ -31,9 +31,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
+
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+
 import javax.swing.border.EtchedBorder;
 
 public class FWizard extends FFDialogo {

@@ -19,7 +19,7 @@
  */
 
 package org.freedom.acao;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.ListaCampos;
 public class EditEvent {
   private ListaCampos lcCampos = null;
   private Object oSrc = null;

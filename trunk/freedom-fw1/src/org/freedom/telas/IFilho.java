@@ -26,8 +26,8 @@ package org.freedom.telas;
 import java.awt.Component;
 import java.awt.Container;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JPanelPad;
 
-import org.freedom.componentes.JPanelPad;
 
 public interface IFilho {
     public abstract void setTitulo(String tit, String name);

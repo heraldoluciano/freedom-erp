@@ -39,16 +39,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
 
 public class FDialogo extends JDialog implements ActionListener, KeyListener, WindowListener, IFilho {
 

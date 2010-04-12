@@ -26,11 +26,11 @@ package org.freedom.telas;
 
 import javax.swing.JLabel;
 
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JPasswordFieldPad;
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JPasswordFieldPad;
+import org.freedom.library.JTextFieldPad;
 
 public class DLEmailBean extends FFDialogo {
 

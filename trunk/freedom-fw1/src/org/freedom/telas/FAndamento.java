@@ -22,10 +22,10 @@ package org.freedom.telas;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
 
-import org.freedom.componentes.JPanelPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
 
 public class FAndamento extends JFrame {
 	private static final long serialVersionUID = 1L;	

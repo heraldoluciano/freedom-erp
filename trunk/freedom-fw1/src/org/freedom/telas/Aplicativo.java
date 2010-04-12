@@ -53,13 +53,13 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JMenuItemPad;
-import org.freedom.componentes.JMenuPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JMenuItemPad;
+import org.freedom.library.JMenuPad;
+import org.freedom.library.JPanelPad;
 import org.freedom.objetos.ObjetoEmpresa;
 import org.freedom.objetos.ObjetoTab;
 

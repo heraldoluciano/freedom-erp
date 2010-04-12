@@ -33,9 +33,9 @@ import javax.swing.ImageIcon;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.DLF3;
 
 public class DLBuscaSerie extends DLF3 implements TabelaSelListener {

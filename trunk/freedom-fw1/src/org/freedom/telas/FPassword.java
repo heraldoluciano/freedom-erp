@@ -23,15 +23,16 @@ package org.freedom.telas;
 
 import java.awt.Component;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPasswordFieldPad;
+import org.freedom.library.JTextFieldPad;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPasswordFieldPad;
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
 public class FPassword extends FFDialogo {

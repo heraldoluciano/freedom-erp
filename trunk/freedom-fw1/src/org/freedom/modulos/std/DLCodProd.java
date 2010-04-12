@@ -29,6 +29,9 @@ import java.awt.event.WindowEvent;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Tabela;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,8 +40,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;

@@ -24,6 +24,8 @@ package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.ListaCampos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +34,6 @@ import javax.swing.ImageIcon;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF3;
