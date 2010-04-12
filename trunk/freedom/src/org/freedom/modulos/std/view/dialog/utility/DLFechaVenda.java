@@ -70,8 +70,8 @@ import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
-import org.freedom.modulos.fnc.DLNovoRec;
-import org.freedom.modulos.std.view.frame.crud.detail.FConhecFrete;
+import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
+import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener, CarregaListener {
 
