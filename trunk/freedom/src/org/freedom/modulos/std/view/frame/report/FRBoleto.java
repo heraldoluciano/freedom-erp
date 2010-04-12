@@ -54,6 +54,7 @@ import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Empresa;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -66,7 +67,6 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.objetos.ObjetoEmpresa;
 
 import sun.awt.image.ToolkitImage;
 public class FRBoleto extends FRelatorio {
@@ -876,7 +876,7 @@ public class FRBoleto extends FRelatorio {
 	private HashMap< String, Object > getParametros() {
 
 		HashMap< String, Object > parametros = new HashMap< String, Object >();
-		ObjetoEmpresa empresa = new ObjetoEmpresa(con);
+		Empresa empresa = new Empresa(con);
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
