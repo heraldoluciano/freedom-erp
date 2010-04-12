@@ -34,7 +34,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Endereco;
-import org.freedom.library.business.webservices.WSCep;
+import org.freedom.library.business.object.webservice.WSCep;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
