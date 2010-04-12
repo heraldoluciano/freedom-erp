@@ -25,11 +25,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
 import javax.swing.event.ChangeEvent;
@@ -44,6 +46,7 @@ import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
+import org.freedom.business.object.RecMerc;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
@@ -129,6 +132,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
 //	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
+	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btCompra.gif" ) );
 		
 	// Enums
 	
@@ -153,7 +157,6 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		montaTela();				
 		montaListeners();
 		carregaValoresPadrao();
-		
 	
 	}
 
@@ -165,34 +168,15 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	
 	private void montaListaCampos() {
 		
-//		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-//		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-//		lcProd.setWhereAdic( "TIPOPROD='F'" );
-//		txtCodProd.setTabelaExterna( lcProd );		
-//		txtCodProd.setNomeCampo( "CodProd" );
-//		txtCodProd.setFK( true );
-//		lcProd.setReadOnly( true );
-//		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		
-//		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-//		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-//		txtCodCli.setTabelaExterna( lcCliente );
-//		txtCodCli.setNomeCampo( "CodCli" );
-//		txtCodCli.setFK( true );
-//		lcCliente.setReadOnly( true );
-//		lcCliente.montaSql( false, "CLIENTE", "VD" );	
-
 	}
 	
 	private void montaListeners() {
 		
 		btRecarregar.addActionListener( this );
 		btNovo.addActionListener( this );
-//		btExcluir.addActionListener( this );
+
 		btEditar.addActionListener( this );
-	
-//		lcProd.addCarregaListener( this );
-//		lcCliente.addCarregaListener( this );
+		btCompra.addActionListener( this );
 		
 		tabDet.addTabelaSelListener( this );	
 		tabDet.addMouseListener( this );	
@@ -265,6 +249,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		panelNavegador.add( btNovo );
 //		panelNavegador.add( btExcluir );
 		panelNavegador.add( btEditar );
+		panelNavegador.add( btCompra );
 		
 		panelSouth.add( panelNavegador, BorderLayout.WEST);
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );		
@@ -299,8 +284,6 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setTamColuna( 400, DETALHAMENTO.NOMETRAN.ordinal() );
 		
 		tabDet.setColunaInvisivel( 2 );
-		
-
 		
 	}
 	
@@ -417,6 +400,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		}
 		else if ( e.getSource() == btEditar ) {
 			abreRecMerc();
+		}
+		else if( e.getSource() == btCompra ) {
+			geraCompra();
 		}
 
 	}
@@ -563,7 +549,48 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		}
 	}
 	
+	private void informaPlanoPag() {
+		
+	}
 	
+	private void geraCompra() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		Integer ticket = null;
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		String unid = null;
+		PreparedStatement ps = null;
+		
+		RecMerc recmerc = null;
+		
+		try {
+			
+			if(tabDet.getLinhaSel()>-1) {
+
+				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+			
+				recmerc = new RecMerc(ticket, con);
+				
+				if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+
+					recmerc.geraCompra();
+					
+				}	
+				
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
 
