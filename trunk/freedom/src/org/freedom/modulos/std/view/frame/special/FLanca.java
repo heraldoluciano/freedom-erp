@@ -41,7 +41,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
-import org.freedom.modulos.std.view.dialog.tool.DLDataTransf;
+import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,6 +59,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
+
 
 public class FLanca extends FFilho implements ActionListener,ChangeListener {
 
