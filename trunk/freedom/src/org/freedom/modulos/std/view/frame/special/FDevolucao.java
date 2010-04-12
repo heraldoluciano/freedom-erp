@@ -47,7 +47,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.FWizard;
-import org.freedom.modulos.std.view.dialog.utility2.DLBuscaItVenda;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaItVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.std.view.frame.utility.FCancVenda;
 

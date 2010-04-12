@@ -34,7 +34,7 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
 public class FEstFase extends FDetalhe {

@@ -73,7 +73,7 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
-import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, JComboBoxListener {
