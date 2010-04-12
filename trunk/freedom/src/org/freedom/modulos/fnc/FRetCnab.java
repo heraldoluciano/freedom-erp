@@ -39,7 +39,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.modulos.fnc.CnabUtil.Receber;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;

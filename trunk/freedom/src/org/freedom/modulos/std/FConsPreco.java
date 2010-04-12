@@ -28,11 +28,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.StringDireita;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.type.StringDireita;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

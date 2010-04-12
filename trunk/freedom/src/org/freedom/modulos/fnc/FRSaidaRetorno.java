@@ -34,7 +34,7 @@ import javax.swing.BorderFactory;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ImprimeOS;
+import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FRelatorio;

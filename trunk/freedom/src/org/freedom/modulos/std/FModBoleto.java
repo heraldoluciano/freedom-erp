@@ -41,10 +41,9 @@ import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ImprimeOS;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.Navegador;
+import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JComboBoxPad;
@@ -54,6 +53,7 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
 import org.freedom.telas.FTabDados;
 
 public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {

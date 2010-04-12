@@ -27,8 +27,8 @@ import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
-import org.freedom.library.ImprimeOS;
-import org.freedom.library.NF;
+import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.component.NF;
 
 public class NF045 extends Layout {
 

@@ -27,7 +27,7 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
 
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 

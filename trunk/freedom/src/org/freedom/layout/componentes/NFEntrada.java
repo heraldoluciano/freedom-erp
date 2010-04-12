@@ -26,8 +26,8 @@ package org.freedom.layout.componentes;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.NF;
-import org.freedom.library.TabVector;
+import org.freedom.library.component.NF;
+import org.freedom.library.component.TabVector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

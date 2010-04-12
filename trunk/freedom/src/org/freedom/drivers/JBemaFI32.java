@@ -395,8 +395,8 @@ public class JBemaFI32 {
 
 		boolean bRetorno = false;
 		if ( !bModoDemo ) {
-			sSing = Funcoes.tiraAcentos( sSing );
-			sPlur = Funcoes.tiraAcentos( sPlur );
+			sSing = StringFunctions.clearAccents( sSing );
+			sPlur = StringFunctions.clearAccents( sPlur );
 
 			bRetorno = trataRetornoFuncao( bProgramaMoedaSingular( sSing ) );
 			if ( bRetorno ) {
@@ -728,8 +728,8 @@ public class JBemaFI32 {
 			if ( !bModoDemo ) {
 				sCodbanc = Funcoes.copy( sCodbanc, 1, 3 );
 				sVlrCheq = Funcoes.transValor( new BigDecimal( deVlrCheque ), 14, 2, true );
-				sNome = Funcoes.tiraAcentos( Funcoes.copy( sNome, 1, 45 ) );
-				sCidade = Funcoes.tiraAcentos( Funcoes.copy( sCidade, 1, 27 ) ).trim();
+				sNome = StringFunctions.clearAccents( Funcoes.copy( sNome, 1, 45 ) );
+				sCidade = StringFunctions.clearAccents( Funcoes.copy( sCidade, 1, 27 ) ).trim();
 				sDataCheq = Funcoes.dataDDMMAAAA( dtCheq );
 				i = 1;
 
@@ -943,7 +943,7 @@ public class JBemaFI32 {
 				sFormaPagto = " ";
 			}
 			else {
-				sFormaPagto = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sFormaPagto, 16 ) );
+				sFormaPagto = StringFunctions.clearAccents( Funcoes.adicionaEspacos( sFormaPagto, 16 ) );
 			}
 
 			sValor = bdValor != null ? Funcoes.transValor( bdValor, 14, 2, true ) : "";
@@ -1174,7 +1174,7 @@ public class JBemaFI32 {
 		try {
 			if ( !bModoDemo ) {
 				sCodprod = "" + iCodprod;
-				sDescprod = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sDescprod, 29 ) );
+				sDescprod = StringFunctions.clearAccents( Funcoes.adicionaEspacos( sDescprod, 29 ) );
 				sQuant = Funcoes.transValor( deQuant + "", 7, 3, true );
 				sValor = Funcoes.transValor( deValor + "", 8, 2, true );
 				sValdesc = Funcoes.transValor( deValDesc + "", 8, 2, true );
@@ -1212,7 +1212,7 @@ public class JBemaFI32 {
 					sMensagem = ".";
 				}
 				
-				sFormaPagto = Funcoes.adicionaEspacos( Funcoes.tiraAcentos( sFormaPagto ), 16 );
+				sFormaPagto = Funcoes.adicionaEspacos( StringFunctions.clearAccents( sFormaPagto ), 16 );
 				
 				if ( sAcreDesc.trim().equals( "" ) ) {
 					sAcreDesc = "D";

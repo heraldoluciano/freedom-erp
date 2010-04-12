@@ -47,7 +47,7 @@ import org.freedom.funcoes.boleto.Banco;
 import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Bradesco;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;

@@ -38,8 +38,8 @@ import javax.swing.ImageIcon;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ImprimeLayout;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.ImprimeLayout;
 import org.freedom.telas.Aplicativo;
 
 public class ImprimeOrc extends ImprimeLayout {
