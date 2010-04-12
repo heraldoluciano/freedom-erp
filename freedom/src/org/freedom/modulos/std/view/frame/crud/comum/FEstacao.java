@@ -37,12 +37,12 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.business.object.TipoRecMerc;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;

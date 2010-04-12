@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.plugin.Background34;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipal2;
@@ -153,6 +152,7 @@ import org.freedom.modulos.std.view.frame.utility.FProcessaEQ;
 import org.freedom.modulos.std.view.frame.utility.FProcessaSL;
 import org.freedom.modulos.std.view.frame.utility.FSVV;
 import org.freedom.modulos.std.view.frame.utility.FStatusItOrc;
+import org.freedom.plugin.Background34;
 
 public class FreedomSTD2 extends AplicativoPD {
 

@@ -24,8 +24,8 @@
 
 package org.freedom.modulos.gms;
 
+import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;

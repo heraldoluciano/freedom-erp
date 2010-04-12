@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.library.business.component;
+package org.freedom.business.component;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.SQLException;

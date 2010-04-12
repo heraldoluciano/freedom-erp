@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.library.business.component;
+package org.freedom.business.component;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;

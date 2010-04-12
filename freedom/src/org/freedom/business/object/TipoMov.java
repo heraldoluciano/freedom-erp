@@ -1,4 +1,4 @@
-package org.freedom.library.business.object;
+package org.freedom.business.object;
 
 import java.util.Vector;
 

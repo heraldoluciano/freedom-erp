@@ -30,10 +30,10 @@ import java.sql.SQLException;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.business.object.TipoRecMerc;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;

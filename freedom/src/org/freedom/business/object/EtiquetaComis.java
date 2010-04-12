@@ -18,7 +18,9 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  */
-package org.freedom.library.business.object;
+package org.freedom.business.object;
+
+import org.freedom.library.business.object.Etiqueta;
 
 
 public class EtiquetaComis extends Etiqueta {

@@ -22,17 +22,19 @@
  * 
  */
 
-package org.freedom.library.component;
+package org.freedom.business.component;
 
 import java.math.BigDecimal;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.componet.NF;
+import org.freedom.library.component.TabVector;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.componet.NF;
 
 public class NFSaida extends NF {
 
