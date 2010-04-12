@@ -1,4 +1,4 @@
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import org.freedom.funcoes.Funcoes;
 
-public class ObjetoCustosProd {
+public class CustosProd {
 	
 	private BigDecimal custoPEPSProd = new BigDecimal(0);
 	private BigDecimal custoPEPSAlmox= new BigDecimal(0);
@@ -68,7 +68,7 @@ public class ObjetoCustosProd {
 		this.custoPEPSProd = custoPEPSProd;
 	}
 
-	public ObjetoCustosProd (Integer codalmox, Integer codprod, DbConnection con) {
+	public CustosProd (Integer codalmox, Integer codprod, DbConnection con) {
 		try {
 							
 			sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";

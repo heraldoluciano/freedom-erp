@@ -18,7 +18,7 @@
  * Objeto para guardar as informações referentes a empresa conectada.
  */
 
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import java.sql.Blob;
 import java.sql.PreparedStatement;
@@ -31,12 +31,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class ObjetoEmpresa {
+public class Empresa {
 
 	private HashMap<String, Object> hValores = new HashMap<String, Object>();
 	private String razemp = "";
 
-	public ObjetoEmpresa(DbConnection con){
+	public Empresa(DbConnection con){
 		carregaObjeto(con);
 	}
 

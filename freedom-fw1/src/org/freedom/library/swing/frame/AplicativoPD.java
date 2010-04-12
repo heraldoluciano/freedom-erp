@@ -44,11 +44,11 @@ import org.freedom.bmps.Imagem;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Empresa;
+import org.freedom.library.business.object.Tab;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.modulos.std.FPrefereGeral;
-import org.freedom.objetos.ObjetoEmpresa;
-import org.freedom.objetos.ObjetoTab;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {
 
@@ -182,10 +182,10 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Funcoes.mensagemErro( null, err.getMessage() );
 		}
 
-		tbObjetos = new ObjetoTab();
+		tbObjetos = new Tab();
 		tbObjetos.montaLista( con, iCodEmp, "SGOBJETO", "TB" );
 
-		empresa = new ObjetoEmpresa( con );
+		empresa = new Empresa( con );
 	}
 
 	public static int[] gravaLog( String sClas, String sTipo, String sDesc, String sObs, DbConnection con ) {

@@ -18,23 +18,23 @@
  * Comentários da classe.....
  */
 
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.util.Vector;
 
-public class ObjetoTab {
+public class Tab {
   public static final int IDOBJ = 0;
   public static final int DESCOBJ = 2;
   public static final int TIPOOBJ = 3;
   public static final int COMENTOBJ = 4;
   public static final int USOMEOBJ = 5;
   
-  private Vector<ObjetoBD> vObjetos = null;
-  public ObjetoTab() {
-  	vObjetos = new Vector<ObjetoBD>();
+  private Vector<BD> vObjetos = null;
+  public Tab() {
+  	vObjetos = new Vector<BD>();
   }
      
   public boolean montaLista(DbConnection con, int iCodEmp, String sTabela, String sTipoObj) {
@@ -52,7 +52,7 @@ public class ObjetoTab {
   	   	  ps.setString(2,sTipoObj);
   	   	  rs = ps.executeQuery();
   	   	  while ( rs.next() ) {
-  	   	  	 vObjetos.add(new ObjetoBD(rs.getString("IDOBJ"), 
+  	   	  	 vObjetos.add(new BD(rs.getString("IDOBJ"), 
  	 				rs.getString("DESCOBJ"), 
   	 				rs.getString("TIPOOBJ"), rs.getString("COMENTOBJ"), 
   	 				rs.getString("USOMEOBJ") ) );
