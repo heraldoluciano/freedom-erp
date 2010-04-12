@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.utility;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;

@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.detail;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -39,6 +39,7 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.cfg.view.dialog.report.DLRFluxo;
 
 public class FTratRet extends FDetalhe implements ActionListener {
   private static final long serialVersionUID = 1L;

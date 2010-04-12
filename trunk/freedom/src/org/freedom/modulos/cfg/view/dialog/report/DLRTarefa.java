@@ -1,11 +1,11 @@
 /**
- * @version 30/05/2003 <BR>
- * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
+ * @version 12/08/2003 <BR>
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.cfg <BR>
- * Classe: @(#)DLRGrauInst.java <BR>
+ * Classe: @(#)DLRTarefa.java <BR>
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.dialog.report;
 
 import java.util.Vector;
 
@@ -30,16 +30,16 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLRGrauInst extends FFDialogo {
+public class DLRTarefa extends FFDialogo {
   private static final long serialVersionUID = 1L;
   private JRadioGroup<?, ?> rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector<String> vLabs = new Vector<String>();
   private Vector<String> vVals = new Vector<String>();
-  public DLRGrauInst() {
+  public DLRTarefa() {
   	super(Aplicativo.telaPrincipal);
 	setTitulo("Ordem do Relatório");
-	setAtribos(300,140);
+	setAtribos(300,120);
 	vLabs.addElement("Código");
 	vLabs.addElement("Descrição");
 	vVals.addElement("C");
@@ -52,9 +52,9 @@ public class DLRGrauInst extends FFDialogo {
   public String getValor() {
 	String sRetorno = "";
 	if (rgOrdem.getVlrString().compareTo("C") == 0 )
-	  sRetorno = "CODGRI";
+	  sRetorno = "CODTAREFA";
 	else if (rgOrdem.getVlrString().compareTo("D") == 0 )
-	  sRetorno = "DESCGRI";
+	  sRetorno = "DESCTAREFA";
 	return sRetorno;
   }
 }

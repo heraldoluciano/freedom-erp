@@ -19,7 +19,7 @@
  * <BR>
  * 
  */
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

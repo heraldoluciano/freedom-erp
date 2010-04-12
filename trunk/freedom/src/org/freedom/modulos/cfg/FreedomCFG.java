@@ -29,6 +29,23 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FBairro;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FEstadoCivil;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FGrauInst;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FGrupoUsu;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FUF;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FFluxo;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FMenuObj;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FObjetoTb;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FProcesso;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FTabela;
+import org.freedom.modulos.cfg.view.frame.crud.special.FAcesso;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.cfg.view.frame.utility.FAjustaSeq;
+import org.freedom.modulos.cfg.view.frame.utility.FVisual;
 import org.freedom.modulos.crm.FConfEmail;
 import org.freedom.modulos.pdv.FLeFiscal;
 
@@ -41,7 +58,7 @@ public class FreedomCFG extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 				addOpcao( 100100000, TP_OPCAO_MENU, "Acesso ao sistema", "", 'A', 100101000, 2, false, null );
-					addOpcao( 100101000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 100101010, 3, true, FGrupo.class );
+					addOpcao( 100101000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 100101010, 3, true, FGrupoUsu.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Usuarios", "Usuarios", 'U', 100101020, 3, true, FUsuario.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Acesso", "Acesso Menu", 'A', 100101030, 3, true, FAcesso.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Menu", "Menu X Objeto", 'M', 100101040, 3, true, FMenuObj.class );
@@ -70,7 +87,7 @@ public class FreedomCFG extends AplicativoPD {
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 			addOpcao( 100300000, TP_OPCAO_ITEM, "Visual", "Configuração de Visual", 'A', 100301000, 2, true, FVisual.class );
 		
-		addBotao( "barraGrupo.gif", "Cadastro de Grupos", "Grupos", 100101010, FGrupo.class );
+		addBotao( "barraGrupo.gif", "Cadastro de Grupos", "Grupos", 100101010, FGrupoUsu.class );
 		addBotao( "barraUsuario.gif", "Cadastro de Usuarios", "Usuarios", 100101020, FUsuario.class );
 		addBotao( "barraAcesso.gif", "Controle de Acessos", "Acesso Menu", 100101030, FAcesso.class );
 

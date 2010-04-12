@@ -19,7 +19,7 @@
  * Comentários sobre a classe...
  * 
  */
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

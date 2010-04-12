@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

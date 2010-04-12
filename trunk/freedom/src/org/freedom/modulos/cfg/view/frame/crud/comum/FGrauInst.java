@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.comum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -33,6 +33,7 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.cfg.view.dialog.report.DLRGrauInst;
 
 public class FGrauInst extends FDados implements ActionListener {
   private static final long serialVersionUID = 1L;

@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.comum;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -37,13 +37,13 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
-public class FGrupo extends FDados implements PostListener,DeleteListener { 
+public class FGrupoUsu extends FDados implements PostListener,DeleteListener { 
   private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtNomeGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextAreaPad txaComentGrup = new JTextAreaPad(JTextFieldPad.TP_STRING);
   private JScrollPane spnObs = new JScrollPane(txaComentGrup);
-  public FGrupo () {
+  public FGrupoUsu () {
   	super();
     setTitulo("Cadastro de Grupos");
     setAtribos( 50, 50, 400, 200);
