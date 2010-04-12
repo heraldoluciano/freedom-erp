@@ -30,10 +30,10 @@ import java.math.BigDecimal;
 
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLCompOrc extends FFDialogo implements FocusListener {

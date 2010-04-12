@@ -44,14 +44,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.FVenda;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -123,9 +123,9 @@ public class FConsultaCliProd extends FFilho implements ActionListener, TabelaSe
 	
 	private JTextFieldFK txtTotalCompras = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 	
-	private Tabela tabVendas = new Tabela();
+	private JTablePad tabVendas = new JTablePad();
 	
-	private Tabela tabItensVendas = new Tabela();
+	private JTablePad tabItensVendas = new JTablePad();
 
 	private ImageIcon imgPedido = Icone.novo( "clPagoParcial.gif" );
 

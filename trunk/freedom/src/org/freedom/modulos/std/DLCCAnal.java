@@ -27,8 +27,8 @@ import java.awt.event.ActionEvent;
 
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLCCAnal extends FFDialogo {

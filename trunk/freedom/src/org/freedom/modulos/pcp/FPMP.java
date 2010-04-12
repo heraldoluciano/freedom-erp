@@ -53,15 +53,15 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLLoading;
@@ -99,7 +99,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JPanelPad panelTabDet = new JPanelPad( 700, 60 );
 	private JPanelPad panelGridDet = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JPanelPad panelTabDetItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	private Tabela tabDet = null;
+	private JTablePad tabDet = null;
 	
 	// *** Labels
 	
@@ -113,7 +113,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JPanelPad panelGridAgrup = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JPanelPad panelTabAgrupItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JPanelPad pnCritAgrup = new JPanelPad("Critérios de agrupamento", Color.BLUE);
-	private Tabela tabAgrup = null;
+	private JTablePad tabAgrup = null;
 		
 	// *** Geral
 
@@ -378,7 +378,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		// Tabela de detalhamento
 		
-		tabDet = new Tabela();
+		tabDet = new JTablePad();
 
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "" );
@@ -437,7 +437,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		// Tabela de Agrupamento
 		
-		tabAgrup = new Tabela();
+		tabAgrup = new JTablePad();
 		
 				
 		tabAgrup.adicColuna( "" ); //MARCACAO
@@ -997,7 +997,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 	}
 
 	public void mouseClicked( MouseEvent mevt ) {
-		Tabela tabEv = (Tabela) mevt.getSource();
+		JTablePad tabEv = (JTablePad) mevt.getSource();
 		
 		if ( mevt.getClickCount() == 2 ) {					
 			if( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
@@ -1079,13 +1079,13 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 	}
 	
-	private void selectAll(Tabela tab) {
+	private void selectAll(JTablePad tab) {
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( true ), i, 0 );
 		}
 	}
 	
-	private void limpaNaoSelecionados(Tabela tab) {
+	private void limpaNaoSelecionados(JTablePad tab) {
 		int linhas = tab.getNumLinhas();
 		int pos = 0;
 		try {			
@@ -1101,7 +1101,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 	
-	private void selectNecessarios(Tabela tab) {
+	private void selectNecessarios(JTablePad tab) {
 		BigDecimal qtdaprod = null;
 		
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -1110,7 +1110,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 
-	private void deselectAll(Tabela tab) {
+	private void deselectAll(JTablePad tab) {
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) { 
 			tab.setValor( new Boolean( false ), i, 0 );
 		}

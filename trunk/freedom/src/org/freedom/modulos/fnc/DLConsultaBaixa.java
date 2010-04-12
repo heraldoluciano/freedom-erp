@@ -28,11 +28,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +59,7 @@ public class DLConsultaBaixa extends FFDialogo {
 
 	private JTextFieldPad txtVlrAberto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
 
-	private Tabela tabConsulta = new Tabela();
+	private JTablePad tabConsulta = new JTablePad();
 
 	private JScrollPane spnTab = new JScrollPane( tabConsulta );
 

@@ -27,12 +27,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,7 +51,7 @@ public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
   private JPanelPad pinCab = new JPanelPad(0,60);
   public JTextFieldPad txtCodPesq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public JTextFieldFK txtRazPesq = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  public Tabela tab = new Tabela();
+  public JTablePad tab = new JTablePad();
   public boolean bPrimeira = false;
   private JScrollPane spnCentro = new JScrollPane(tab);
   /**

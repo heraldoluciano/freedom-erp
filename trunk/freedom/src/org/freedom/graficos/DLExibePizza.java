@@ -30,8 +30,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 import org.freedom.telas.FFilho;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

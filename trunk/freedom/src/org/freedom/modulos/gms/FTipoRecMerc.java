@@ -34,10 +34,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.FDetalhe;
 

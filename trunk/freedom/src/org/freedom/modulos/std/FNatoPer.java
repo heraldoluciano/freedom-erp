@@ -33,11 +33,11 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FNatoPer extends FDados implements ActionListener, InsertListener {

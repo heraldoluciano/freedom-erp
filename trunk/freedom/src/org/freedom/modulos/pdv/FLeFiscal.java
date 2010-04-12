@@ -44,13 +44,13 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
@@ -193,7 +193,7 @@ public class FLeFiscal extends FTabDados {
 
 	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private final Tabela tab = new Tabela();
+	private final JTablePad tab = new JTablePad();
 
 	private final JScrollPane spnTab = new JScrollPane( tab );
 

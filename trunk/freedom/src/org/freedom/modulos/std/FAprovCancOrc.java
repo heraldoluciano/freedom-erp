@@ -52,15 +52,15 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.StringDireita;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLJustCanc;
 import org.freedom.telas.FFilho;
@@ -84,7 +84,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 	private JTextFieldFK txtStatusOrc = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldFK txtVlrLiqOrc = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
 
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 
 	private JButtonPad btRecarregar = new JButtonPad(Icone.novo("btExecuta.gif"));
 	private JButtonPad btConfirmar = new JButtonPad(Icone.novo("btOk.gif"));

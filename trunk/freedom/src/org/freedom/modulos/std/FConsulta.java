@@ -26,14 +26,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.StringDireita;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,7 +64,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTextFieldFK txtDescAlmoxGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAlmoxProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);	
-	private Tabela tabProd = new Tabela();
+	private JTablePad tabProd = new JTablePad();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
 	private ListaCampos lcProd2 = new ListaCampos(this);
@@ -72,7 +72,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private ListaCampos lcAlmoxProd = new ListaCampos(this, "AX");
 	private JPanelPad pinCabGrup = new JPanelPad(700,60);
 	private JPanelPad pnCliGrup = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private Tabela tabGrup = new Tabela();
+	private JTablePad tabGrup = new JTablePad();
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);
 	private ListaCampos lcGrup = new ListaCampos(this);	
 	private JTabbedPanePad tpnConsulta = new JTabbedPanePad();

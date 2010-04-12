@@ -28,11 +28,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.StringDireita;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +55,7 @@ import org.freedom.telas.FFilho;
 public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	private static final long serialVersionUID = 1L;
     private JPanelPad pinCab = new JPanelPad(800,55);
-    private Tabela tbPreco = new Tabela();
+    private JTablePad tbPreco = new JTablePad();
     private JScrollPane spPreco = new JScrollPane(tbPreco);
     private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
     private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,10);

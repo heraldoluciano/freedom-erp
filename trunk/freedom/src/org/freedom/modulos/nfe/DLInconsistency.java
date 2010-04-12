@@ -27,10 +27,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.telas.FDialogo;
 
@@ -48,7 +48,7 @@ public class DLInconsistency extends FDialogo implements MouseListener {
 	
 	private JLabelPad grupo = new JLabelPad( "    Inconsistências da nota fiscal" );
 	
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	
 	private JPanelPad panelTextos = new JPanelPad( new GridLayout( 2, 1 ) );
 	

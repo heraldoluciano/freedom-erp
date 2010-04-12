@@ -31,13 +31,13 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.DLFechaPag;
 import org.freedom.objetos.ObjetoHistorico;
 
@@ -106,7 +106,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private Tabela tabPag = new Tabela();
+	private JTablePad tabPag = new JTablePad();
 
 	private JScrollPane spnTab = new JScrollPane( tabPag );
 

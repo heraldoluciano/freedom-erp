@@ -62,15 +62,15 @@ import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -104,7 +104,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private final JCheckBoxPad cbSelecionado = new JCheckBoxPad( "Seleção", "S", "N" );
 
-	private Tabela tabCont = new Tabela();
+	private JTablePad tabCont = new JTablePad();
 
 	private JButtonPad btRefresh = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -941,7 +941,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	public void mouseClicked( MouseEvent mevt ) {		
 
-		Tabela tabEv = (Tabela) mevt.getSource();
+		JTablePad tabEv = (JTablePad) mevt.getSource();
 
 		if ( tabEv == tabCont && tabEv.getLinhaSel() > -1 ) {
 			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {

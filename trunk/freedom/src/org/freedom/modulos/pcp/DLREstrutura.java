@@ -22,8 +22,8 @@
 package org.freedom.modulos.pcp;
 import java.util.Vector;
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JRadioGroup;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 public class DLREstrutura extends FFDialogo {
 	private static final long serialVersionUID = 1L;

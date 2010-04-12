@@ -50,15 +50,15 @@ import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.DLFechaParcela;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
@@ -207,7 +207,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final Navegador navItRec = new Navegador( false );
 
-	private final Tabela tabRec = new Tabela();
+	private final JTablePad tabRec = new JTablePad();
 
 	private String sTipoVenda = null;
 

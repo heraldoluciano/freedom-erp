@@ -48,14 +48,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
@@ -83,11 +83,11 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		
 	private static final long serialVersionUID = 1L;
 
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 
-	private Tabela tabOrc = new Tabela();
+	private JTablePad tabOrc = new JTablePad();
 
 	private JScrollPane spnTabOrc = new JScrollPane( tabOrc );
 
@@ -876,7 +876,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		return ret;
 	}
 
-	private void limpaNaoSelecionados(Tabela ltab) {
+	private void limpaNaoSelecionados(JTablePad ltab) {
 		int linhas = ltab.getNumLinhas();
 		int pos = 0;
 		try {			
@@ -893,7 +893,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		}
 	}
 	
-	private void limpaFilhos(Tabela ltab) {
+	private void limpaFilhos(JTablePad ltab) {
 		int linhas = ltab.getNumLinhas();
 		int pos = 0;
 		try {			
@@ -986,14 +986,14 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		}
 	}
 	
-	private void carregaTudo( Tabela tb ) {
+	private void carregaTudo( JTablePad tb ) {
 
 		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
 			tb.setValor( new Boolean( true ), i, 0 );
 		}
 	}
 
-	private void carregaNada( Tabela tb ) {
+	private void carregaNada( JTablePad tb ) {
 
 		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
 			tb.setValor( new Boolean( false ), i, 0 );

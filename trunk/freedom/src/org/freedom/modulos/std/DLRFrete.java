@@ -23,9 +23,9 @@ package org.freedom.modulos.std;
 
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 import java.util.Calendar;

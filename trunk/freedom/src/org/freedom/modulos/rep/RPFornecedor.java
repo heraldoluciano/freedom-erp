@@ -35,10 +35,10 @@ import java.util.Vector;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;

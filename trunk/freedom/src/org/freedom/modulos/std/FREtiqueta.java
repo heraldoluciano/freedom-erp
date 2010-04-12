@@ -46,16 +46,16 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.objetos.ObjetoEtiqueta;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
@@ -131,7 +131,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JPanelPad pinCab = new JPanelPad( 480, 230 );
 
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 
 	private JScrollPane spnDet = new JScrollPane( tab );
 
@@ -303,7 +303,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		}
 	}
 
-	public void montaTabela( Tabela tb ) {
+	public void montaTabela( JTablePad tb ) {
 
 		if( cbComissionados.getVlrString().equals( "CL" ) ){
 			objEtiq = new ObjetoEtiquetaCli();

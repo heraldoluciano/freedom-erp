@@ -68,15 +68,15 @@ import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
@@ -240,11 +240,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private ListaCampos lcAlmoxEst = new ListaCampos( this, "AX" );
 
-	private Tabela tabSimu = new Tabela();
+	private JTablePad tabSimu = new JTablePad();
 
-	public Tabela tabRMA = new Tabela();
+	public JTablePad tabRMA = new JTablePad();
 
-	public Tabela tabOPS = new Tabela();
+	public JTablePad tabOPS = new JTablePad();
 
 	private JScrollPane spSimu = new JScrollPane( tabSimu );
 

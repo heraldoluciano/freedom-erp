@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLDescontItOrc extends FFDialogo {

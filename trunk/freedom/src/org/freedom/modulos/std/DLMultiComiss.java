@@ -42,14 +42,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -61,7 +61,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private JPanelPad pnComiss = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private Tabela tabComiss = new Tabela();
+	private JTablePad tabComiss = new JTablePad();
 
 	private JScrollPane spnComiss = new JScrollPane( tabComiss );
 	

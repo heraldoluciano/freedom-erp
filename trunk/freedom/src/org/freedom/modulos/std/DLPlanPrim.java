@@ -29,11 +29,11 @@ import java.util.Vector;
 
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanPrim extends FFDialogo {

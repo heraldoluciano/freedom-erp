@@ -22,8 +22,8 @@
 
 package org.freedom.modulos.atd;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;

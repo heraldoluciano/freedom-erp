@@ -28,14 +28,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.ProcessoSec;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,9 +81,9 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JTextFieldFK txtCodFabINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodBarINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
-  private Tabela tab = new Tabela();
+  private JTablePad tab = new JTablePad();
   private JScrollPane spnTab = new JScrollPane(tab);
-  private Tabela tabMod = new Tabela();
+  private JTablePad tabMod = new JTablePad();
   private JScrollPane spnTabMod = new JScrollPane(tabMod);
   private JButtonPad btTudo = new JButtonPad(Icone.novo("btTudo.gif"));
   private JButtonPad btNada = new JButtonPad(Icone.novo("btNada.gif"));
@@ -409,12 +409,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 		Funcoes.mensagemErro(this,"Erro a carregar a tabela ITMODGRADE!\n"+err.getMessage(),true,con,err);
     }
   }
-  private void carregaTudo(Tabela tb) {
+  private void carregaTudo(JTablePad tb) {
     for (int i=0; i<tb.getNumLinhas(); i++) {
       tb.setValor(new Boolean(true),i,0);
     }
   }
-  private void carregaNada(Tabela tb) {
+  private void carregaNada(JTablePad tb) {
     for (int i=0; i<tb.getNumLinhas(); i++) {
       tb.setValor(new Boolean(false),i,0);
     }

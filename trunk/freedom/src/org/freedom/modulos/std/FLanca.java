@@ -31,13 +31,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +93,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JLabelPad lbDataSaldoVal = new JLabelPad("");
   private JLabelPad lbVlrSaldoVal = new JLabelPad("");
   private JLabelPad lbAtualSaldoVal = new JLabelPad("NÃO");
-  private Tabela tab = new Tabela();
+  private JTablePad tab = new JTablePad();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private String[] sPlanos = null;

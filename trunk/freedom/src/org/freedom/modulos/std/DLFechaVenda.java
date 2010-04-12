@@ -55,17 +55,17 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.fnc.DLNovoRec;
 import org.freedom.objetos.ObjetoHistorico;
 import org.freedom.telas.Aplicativo;
@@ -274,9 +274,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final Navegador navComis = new Navegador( false );
 
-	private final Tabela tabRec = new Tabela();
+	private final JTablePad tabRec = new JTablePad();
 
-	private final Tabela tabComis = new Tabela();
+	private final JTablePad tabComis = new JTablePad();
 
 	private int iCodVendaFecha = 0;
 	
@@ -1585,7 +1585,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public void mouseClicked( MouseEvent mevt ) {
 		
-		Tabela tab = (Tabela) mevt.getSource();
+		JTablePad tab = (JTablePad) mevt.getSource();
 		String imprecibo = "N";
 		if ( mevt.getClickCount() == 1) {			
 			gravaImpRecibo( txtCodRec.getVlrInteger(), (Integer) tabRec.getValor( tabRec.getLinhaSel(), 0 ),

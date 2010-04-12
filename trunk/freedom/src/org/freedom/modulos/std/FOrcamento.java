@@ -72,18 +72,18 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.library.GuardaCampo;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Lucratividade;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
@@ -255,7 +255,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JLabelPad lbStatus = new JLabelPad();
 	
-	private Tabela tabPedidos = new Tabela();
+	private JTablePad tabPedidos = new JTablePad();
 	
 	private JScrollPane spPedidos = new JScrollPane( tabPedidos );
 

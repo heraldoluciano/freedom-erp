@@ -27,8 +27,8 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
 
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class RPTransportadora extends FDados implements ActionListener {

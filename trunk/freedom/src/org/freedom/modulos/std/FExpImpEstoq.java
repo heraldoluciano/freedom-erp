@@ -40,13 +40,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.ProcessoSec;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -98,7 +98,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 	private JRadioGroup<String, String> rgFiltro2;
 	
-	private final Tabela tabProdutos = new Tabela();
+	private final JTablePad tabProdutos = new JTablePad();
 
 	private final JButtonPad btBuscarProdutos = new JButtonPad( "Buscar Produtos" );
 
@@ -844,7 +844,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 		private final JPanelPad panelBotaoTXT = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
 		
-		private final Tabela tabInvalidos = new Tabela();
+		private final JTablePad tabInvalidos = new JTablePad();
 
 		private final JButtonPad btTexto = new JButtonPad( "Exportar para TXT", Icone.novo( "btTXT.gif" ) );
 		

@@ -37,11 +37,11 @@ import java.sql.SQLException;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.ProcessoSec;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 

@@ -8,15 +8,15 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.JPanelPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.FFDialogo;
 
 
 public class DLSelRecibo extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	private final JPanelPad pnRec = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout()  );;
 
 	public DLSelRecibo( Frame fOrig, boolean bModal ) {

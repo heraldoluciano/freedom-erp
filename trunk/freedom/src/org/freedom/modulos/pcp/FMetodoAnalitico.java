@@ -27,14 +27,14 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
 import org.freedom.library.PainelImagem;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -99,7 +99,7 @@ public class FMetodoAnalitico extends FTabDados {
 	
 	private ListaCampos lcFoto = new ListaCampos( this );
 	
-	private Tabela tabFoto = new Tabela();
+	private JTablePad tabFoto = new JTablePad();
 
 	private JScrollPane spnFoto = new JScrollPane( tabFoto );
 	
