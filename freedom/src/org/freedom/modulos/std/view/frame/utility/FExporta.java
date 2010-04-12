@@ -55,7 +55,7 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.utility2.DLChecaExporta;
+import org.freedom.modulos.std.view.dialog.utility.DLChecaExporta;
 
 
 public class FExporta extends FFilho implements ActionListener, FocusListener {

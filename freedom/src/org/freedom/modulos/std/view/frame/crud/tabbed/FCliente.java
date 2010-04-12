@@ -87,7 +87,7 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.DLNovoHist;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
-import org.freedom.modulos.std.view.dialog.utility2.DLGrpCli;
+import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
 
 
 public class FCliente extends FTabDados 

@@ -56,7 +56,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.std.view.dialog.report.DLRConsProd;
-import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 

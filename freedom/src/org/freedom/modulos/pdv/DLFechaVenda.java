@@ -65,7 +65,7 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.library.swing.frame.FPassword;
-import org.freedom.modulos.std.view.dialog.utility2.DLFechaParcela;
+import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
