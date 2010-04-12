@@ -108,6 +108,59 @@ public final class StringFunctions {
 		return ret;
 		
 	}
+	
+	public static char clearAccent(char cKey) {
+
+		char cTmp = cKey;
+
+		if (isContained(cTmp, "ãâáàä"))
+			cTmp = 'a';
+		else if (isContained(cTmp, "ÃÂÁÀÄ"))
+			cTmp = 'A';
+		else if (isContained(cTmp, "êéèë"))
+			cTmp = 'e';
+		else if (isContained(cTmp, "ÊÉÈË"))
+			cTmp = 'E';
+		else if (isContained(cTmp, "îíìï"))
+			cTmp = 'i';
+		else if (isContained(cTmp, "ÎÍÌÏ"))
+			cTmp = 'I';
+		else if (isContained(cTmp, "õôóòö"))
+			cTmp = 'o';
+		else if (isContained(cTmp, "ÕÔÓÒÖ"))
+			cTmp = 'O';
+		else if (isContained(cTmp, "ûúùü"))
+			cTmp = 'u';
+		else if (isContained(cTmp, "ÛÚÙÜ"))
+			cTmp = 'U';
+		else if (isContained(cTmp, "ç"))
+			cTmp = 'c';
+		else if (isContained(cTmp, "Ç"))
+			cTmp = 'C';
+		return cTmp;
+	}
+
+	public static boolean isContained(char cTexto, String sTexto) {
+		boolean bRetorno = false;
+		for (int i = 0; i < sTexto.length(); i++) {
+			if (cTexto == sTexto.charAt(i)) {
+				bRetorno = true;
+				break;
+			}
+		}
+		return bRetorno;
+	}
+
+	
+	public static String clearAccents(String sTexto) {
+		String sRet = "";
+		char cVals[] = sTexto.toCharArray();
+		for (int i = 0; i < cVals.length; i++) {
+			cVals[i] = clearAccent(cVals[i]);
+		}
+		sRet = new String(cVals);
+		return sRet;
+	}
 
 	
 
