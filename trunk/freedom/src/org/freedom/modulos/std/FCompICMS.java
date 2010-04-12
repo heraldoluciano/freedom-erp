@@ -27,8 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JPanelPad;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
 import org.freedom.telas.FFilho;
 
 public class FCompICMS extends FFilho implements ActionListener {

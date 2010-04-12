@@ -26,13 +26,14 @@ package org.freedom.layout.componentes;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.NF;
+import org.freedom.library.TabVector;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.componentes.NF;
-import org.freedom.componentes.TabVector;
 import org.freedom.funcoes.Funcoes;
 
 public class NFSaida extends NF {

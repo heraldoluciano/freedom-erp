@@ -27,11 +27,11 @@ package org.freedom.modulos.fnc;
 
 import java.awt.Component;
 import java.util.Vector;
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JRadioGroup;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLRSCheque extends FFDialogo {

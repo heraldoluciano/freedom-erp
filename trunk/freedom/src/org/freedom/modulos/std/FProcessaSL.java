@@ -33,15 +33,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.ProcessoSec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 

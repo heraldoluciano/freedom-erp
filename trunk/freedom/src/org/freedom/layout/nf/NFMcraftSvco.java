@@ -26,10 +26,10 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
+import org.freedom.library.ImprimeOS;
 
 public class NFMcraftSvco extends Leiaute {
 	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {

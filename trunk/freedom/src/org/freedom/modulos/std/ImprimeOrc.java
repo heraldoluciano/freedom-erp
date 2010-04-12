@@ -35,11 +35,11 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-import org.freedom.componentes.ImprimeLayout;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.ImprimeLayout;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.Aplicativo;
 
 public class ImprimeOrc extends ImprimeLayout {

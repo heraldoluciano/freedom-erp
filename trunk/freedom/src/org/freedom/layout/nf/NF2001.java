@@ -27,11 +27,11 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.NF;
 import org.freedom.telas.Aplicativo;
 
 public class NF2001 extends Layout {

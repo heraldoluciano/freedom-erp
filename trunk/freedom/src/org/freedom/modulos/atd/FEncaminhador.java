@@ -22,11 +22,11 @@
 
 package org.freedom.modulos.atd;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 

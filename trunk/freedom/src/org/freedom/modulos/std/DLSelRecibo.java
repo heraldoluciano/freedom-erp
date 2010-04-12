@@ -8,8 +8,8 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.Tabela;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.Tabela;
 import org.freedom.telas.FFDialogo;
 
 

@@ -27,9 +27,9 @@ package org.freedom.modulos.rep;
 
 import java.util.Vector;
 
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class RPMoeda extends FDados {

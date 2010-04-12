@@ -27,10 +27,10 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
+import org.freedom.library.ImprimeOS;
 
 public class NFModelCraft extends Leiaute {
   private Vector<String[]> vClfiscal = null;

@@ -22,6 +22,14 @@
 
 package org.freedom.modulos.std;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.util.Date;
 
 import javax.swing.JScrollPane;
@@ -30,13 +38,6 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FRestrCli extends FDetalhe implements CarregaListener, InsertListener  {

@@ -32,10 +32,10 @@ import java.util.List;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;

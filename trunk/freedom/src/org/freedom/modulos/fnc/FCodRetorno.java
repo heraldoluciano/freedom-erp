@@ -24,17 +24,18 @@
 package org.freedom.modulos.fnc;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.util.Vector;
 
 import javax.swing.JLabel;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FCodRetorno extends FDados implements RadioGroupListener {

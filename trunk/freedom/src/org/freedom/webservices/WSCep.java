@@ -1,8 +1,9 @@
 package org.freedom.webservices;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.Endereco;
+
 import java.util.HashMap;
-import org.freedom.componentes.Endereco;
 import org.freedom.funcoes.Funcoes;
 
 public class WSCep{

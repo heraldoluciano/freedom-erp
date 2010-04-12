@@ -31,10 +31,10 @@ import java.sql.ResultSet;
 
 import javax.swing.JLabel;
 
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 

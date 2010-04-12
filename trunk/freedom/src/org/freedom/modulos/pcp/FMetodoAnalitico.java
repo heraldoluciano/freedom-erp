@@ -27,19 +27,19 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Navegador;
+import org.freedom.library.PainelImagem;
+import org.freedom.library.Tabela;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
-import org.freedom.componentes.PainelImagem;
-import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
 

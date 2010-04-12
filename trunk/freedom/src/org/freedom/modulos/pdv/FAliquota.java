@@ -34,15 +34,15 @@ import java.util.List;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.Tabela;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 

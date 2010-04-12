@@ -21,7 +21,7 @@
 package org.freedom.layout.componentes;
 import java.sql.ResultSet;
 
-import org.freedom.componentes.ImprimeOS;
+import org.freedom.library.ImprimeOS;
 public class Leiaute extends Object {
 	public boolean bEntrada = false; 
 	

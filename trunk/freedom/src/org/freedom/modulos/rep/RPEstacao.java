@@ -25,8 +25,8 @@
 
 package org.freedom.modulos.rep;
 
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class RPEstacao extends FDados {

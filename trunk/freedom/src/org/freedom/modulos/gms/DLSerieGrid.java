@@ -29,10 +29,10 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.Tabela;
 import org.freedom.telas.FFDialogo;
 
 

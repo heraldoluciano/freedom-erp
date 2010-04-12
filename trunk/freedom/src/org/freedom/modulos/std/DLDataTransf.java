@@ -24,10 +24,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLDataTransf extends FFDialogo {

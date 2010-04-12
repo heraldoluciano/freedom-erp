@@ -26,10 +26,10 @@ import java.awt.event.ActionListener;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {

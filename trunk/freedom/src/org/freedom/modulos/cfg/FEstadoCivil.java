@@ -23,8 +23,9 @@
 package org.freedom.modulos.cfg;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FEstadoCivil extends FDados implements ActionListener {

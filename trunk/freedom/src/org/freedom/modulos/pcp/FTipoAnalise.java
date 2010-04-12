@@ -24,14 +24,15 @@
 package org.freedom.modulos.pcp;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.util.Vector;
 
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 

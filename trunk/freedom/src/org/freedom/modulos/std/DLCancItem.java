@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JTextAreaPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLCancItem extends FFDialogo {

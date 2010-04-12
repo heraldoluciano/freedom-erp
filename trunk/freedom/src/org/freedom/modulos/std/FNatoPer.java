@@ -30,14 +30,14 @@ import java.sql.SQLException;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FNatoPer extends FDados implements ActionListener, InsertListener {

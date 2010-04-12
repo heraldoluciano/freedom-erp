@@ -30,13 +30,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 

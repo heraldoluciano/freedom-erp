@@ -34,12 +34,12 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FTabDados;
 
 public class FHistPad extends FTabDados implements ActionListener, JComboBoxListener {

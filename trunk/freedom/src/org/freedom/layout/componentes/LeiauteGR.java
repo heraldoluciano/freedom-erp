@@ -20,9 +20,10 @@
 
 package org.freedom.layout.componentes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.ImprimeLayout;
+
 import java.util.Vector;
 
-import org.freedom.componentes.ImprimeLayout;
 //@Deprecated
 public abstract class LeiauteGR extends ImprimeLayout {
 
