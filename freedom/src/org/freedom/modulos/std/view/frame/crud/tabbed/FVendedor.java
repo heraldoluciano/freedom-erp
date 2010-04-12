@@ -40,7 +40,7 @@ import javax.swing.JScrollPane;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
-import org.freedom.business.object.webservice.WSCep;
+import org.freedom.business.webservice.WSCep;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
