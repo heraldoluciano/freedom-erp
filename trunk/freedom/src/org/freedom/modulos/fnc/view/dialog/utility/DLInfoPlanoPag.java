@@ -90,16 +90,16 @@ public class DLInfoPlanoPag extends FFDialogo {
 
 	public void actionPerformed( ActionEvent evt ) {
 		
-		super.actionPerformed( evt );
-		
 		if ( evt.getSource() == btOK ) {
 			if ( txtCodPlanoPag.getText().trim().length() == 0 ) {
 				Funcoes.mensagemInforma( this, "Informe o plano de pagamento!" );
 				txtCodPlanoPag.requestFocus();
+				
 			}
 		}
+		ok();
 	//	else if ( evt.getSource() == btCancel ) {
-		//	super.actionPerformed( evt );
+			//super.actionPerformed( evt );
 		//}
 		
 	}

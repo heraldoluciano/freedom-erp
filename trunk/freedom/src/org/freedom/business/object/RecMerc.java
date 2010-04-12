@@ -70,6 +70,8 @@ public class RecMerc implements java.io.Serializable {
 	private Integer docserie = null;
 	
 	private String tipofrete = null;
+	
+	private Integer codcompra = null;
 
 
 	public RecMerc(Component orig, Integer ticket, DbConnection con) {
@@ -328,7 +330,7 @@ public class RecMerc implements java.io.Serializable {
 		this.ticket = ticket;
 	}
 
-	private Integer getCodCompra() {
+	private void geraCodCompra() {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -355,7 +357,7 @@ public class RecMerc implements java.io.Serializable {
 			e.printStackTrace();
 		}
 
-		return codcompra;
+		setCodcompra( codcompra );
 
 	}
 
@@ -369,7 +371,7 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select rm.tipofrete ,tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
+			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
 			
@@ -377,17 +379,21 @@ public class RecMerc implements java.io.Serializable {
 			sql.append( "tm.codemp=tr.codemptc and tm.codfilial=tr.codfilialtc and tm.codtipomov=tr.codtipomovcp " );
 			
 			sql.append( "left outer join lfseqserie ss " );
-			sql.append( "on ss.codemp=tm.codempse and ss.codfilial=tm.codfilialse and ss.serie=tm.serie ");
-			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? and ");
+			sql.append( "on ss.codemp=tm.codempse and ss.codfilial=tm.codfilialse and ss.serie=tm.serie and ");
 			sql.append( "codempss=? and codfilialss=? and ativserie='S'" );
+			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? ");
+			
 
 			ps = con.prepareStatement( sql.toString() );
 			
+			System.out.println("SQL:" + sql.toString());
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-			ps.setInt( 3, getTicket() );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 5, getTicket() );
+		
 
 			rs = ps.executeQuery();
 
@@ -396,6 +402,7 @@ public class RecMerc implements java.io.Serializable {
 				setSerie( rs.getString( "serie" ) );
 				setDocserie( rs.getInt( "docserie" ) );
 				setTipofrete( rs.getString( "tipofrete" ) );
+				setCodfor( rs.getInt( "codfor" ) );
 			} 
 
 			con.commit();
@@ -423,6 +430,8 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
+			geraCodCompra();
+			
 			codplanopag = getPlanoPag();
 			
 			if(codplanopag == null) {
@@ -457,7 +466,7 @@ public class RecMerc implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps.setInt( param++, getCodCompra() );
+			ps.setInt( param++, getCodcompra() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
@@ -489,7 +498,7 @@ public class RecMerc implements java.io.Serializable {
 			e.printStackTrace();
 		}
 		
-		return getCodCompra();
+		return getCodcompra();
 
 	}
 	
@@ -608,6 +617,22 @@ public class RecMerc implements java.io.Serializable {
 	public void setTipofrete( String tipofrete ) {
 	
 		this.tipofrete = tipofrete;
+	}
+
+
+
+	
+	public Integer getCodcompra() {
+	
+		return codcompra;
+	}
+
+
+
+	
+	public void setCodcompra( Integer codcompra ) {
+	
+		this.codcompra = codcompra;
 	}
 
 
