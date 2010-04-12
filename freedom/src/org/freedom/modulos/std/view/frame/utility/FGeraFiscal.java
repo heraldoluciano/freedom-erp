@@ -49,7 +49,7 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.utility.DLChecaLFSaida;
+import org.freedom.modulos.std.view.dialog.utility2.DLChecaLFSaida;
 
 
 public class FGeraFiscal extends FFilho implements ActionListener {

@@ -53,7 +53,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaListaVendas;
 import org.freedom.modulos.std.view.frame.special.FSubLanca;
 
 

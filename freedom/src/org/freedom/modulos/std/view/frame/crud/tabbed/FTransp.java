@@ -44,7 +44,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Endereco;
-import org.freedom.library.business.webservices.WSCep;
+import org.freedom.library.business.object.webservice.WSCep;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
@@ -55,7 +55,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
-import org.freedom.modulos.std.view.dialog.utility.DLTranspFor;
+import org.freedom.modulos.std.view.dialog.utility2.DLTranspFor;
 
 
 public class FTransp extends FTabDados implements PostListener, RadioGroupListener, InsertListener, CarregaListener {

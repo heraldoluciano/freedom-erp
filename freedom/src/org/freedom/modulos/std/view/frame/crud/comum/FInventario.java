@@ -64,7 +64,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.gms.DLLote;
 import org.freedom.modulos.std.view.dialog.report.DLRInventario;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
 
 
 public class FInventario extends FDados implements CarregaListener,

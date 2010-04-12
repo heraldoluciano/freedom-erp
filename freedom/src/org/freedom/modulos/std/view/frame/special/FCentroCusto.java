@@ -51,9 +51,9 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.std.view.dialog.report.DLRCentroCusto;
-import org.freedom.modulos.std.view.dialog.utility.DLCCAnal;
-import org.freedom.modulos.std.view.dialog.utility.DLCCPrim;
-import org.freedom.modulos.std.view.dialog.utility.DLCCSin;
+import org.freedom.modulos.std.view.dialog.utility2.DLCCAnal;
+import org.freedom.modulos.std.view.dialog.utility2.DLCCPrim;
+import org.freedom.modulos.std.view.dialog.utility2.DLCCSin;
 
 
 public class FCentroCusto extends FFilho 	implements ActionListener, MouseListener, KeyListener {

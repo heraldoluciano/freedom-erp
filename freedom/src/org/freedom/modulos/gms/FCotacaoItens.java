@@ -67,7 +67,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
 
 
 public class FCotacaoItens extends FDetalhe implements PostListener,

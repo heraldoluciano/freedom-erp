@@ -89,10 +89,10 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
-import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
-import org.freedom.modulos.std.view.dialog.utility.DLCompOrc;
-import org.freedom.modulos.std.view.dialog.utility.DLCopiaOrc;
+import org.freedom.modulos.std.view.dialog.utility2.DLAltFatLucro;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility2.DLCompOrc;
+import org.freedom.modulos.std.view.dialog.utility2.DLCopiaOrc;
 import org.freedom.modulos.std.view.frame.utility.FSelOrc;
 
 

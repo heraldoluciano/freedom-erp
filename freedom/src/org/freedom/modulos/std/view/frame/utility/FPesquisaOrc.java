@@ -58,7 +58,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
+import org.freedom.modulos.std.view.dialog.utility2.DLConsultaVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 

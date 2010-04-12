@@ -63,7 +63,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Endereco;
-import org.freedom.library.business.webservices.WSCep;
+import org.freedom.library.business.object.webservice.WSCep;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -87,7 +87,7 @@ import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.DLNovoHist;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
-import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
+import org.freedom.modulos.std.view.dialog.utility2.DLGrpCli;
 
 
 public class FCliente extends FTabDados 
