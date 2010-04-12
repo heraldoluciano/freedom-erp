@@ -54,6 +54,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.CustosProd;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -72,8 +73,8 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
-import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
-import org.freedom.objetos.ObjetoCustosProd;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, JComboBoxListener {
 
@@ -813,7 +814,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) && ( ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) || ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) ) ) {
-			ObjetoCustosProd custo = new ObjetoCustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(),con);
+			CustosProd custo = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(),con);
 			txtPrecoItRma.setVlrBigDecimal( custo.getCustoMPMProd() );
 		}
 

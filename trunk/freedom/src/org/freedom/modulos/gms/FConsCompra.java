@@ -30,7 +30,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.frame.detail.FCompra;
+import org.freedom.modulos.std.view.frame.crud.detail.FCompra;
 
 
 public class FConsCompra extends FFilho implements ActionListener{

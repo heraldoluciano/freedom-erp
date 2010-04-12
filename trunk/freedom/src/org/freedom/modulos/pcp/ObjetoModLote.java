@@ -5,12 +5,12 @@
  */
 package org.freedom.modulos.pcp;
 
-import org.freedom.objetos.ObjetoModeloLote;
+import org.freedom.library.business.object.ModeloLote;
 
 /**
  * @author anderson
  */
-public class ObjetoModLote extends ObjetoModeloLote {
+public class ObjetoModLote extends ModeloLote {
 
 	public ObjetoModLote() {
 		

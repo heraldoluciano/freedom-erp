@@ -66,7 +66,7 @@ import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
-import org.freedom.modulos.std.view.frame.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 
 /**

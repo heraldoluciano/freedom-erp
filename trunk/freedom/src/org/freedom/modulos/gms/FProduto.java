@@ -57,6 +57,7 @@ import org.freedom.funcoes.EANFactory;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.CustosProd;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -75,7 +76,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.std.view.dialog.report.DLRProduto;
-import org.freedom.objetos.ObjetoCustosProd;
 
 public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener, CarregaListener, RadioGroupListener, PostListener {
 
@@ -1891,7 +1891,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			if(cevt.getListaCampos()==lcCampos) {
 				
 				buscaEstoque();
-				ObjetoCustosProd custos = new ObjetoCustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+				CustosProd custos = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 			
 				txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
 				txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );

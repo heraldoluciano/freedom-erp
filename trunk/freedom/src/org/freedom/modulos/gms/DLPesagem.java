@@ -52,6 +52,7 @@ import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.TipoRecMerc;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
@@ -59,7 +60,6 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.util.SwingParams;
-import org.freedom.objetos.TipoRecMerc;
 
 public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
 

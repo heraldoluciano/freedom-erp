@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Historico;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
@@ -40,8 +41,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.tool.DLFechaPag;
-import org.freedom.objetos.ObjetoHistorico;
+import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +55,7 @@ import javax.swing.JScrollPane;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
+
 
 public class DLNovoPag extends FFDialogo implements PostListener {
 
@@ -134,7 +135,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	
 	private Map<String, Integer> prefere = null;
 	
-	private ObjetoHistorico historico = null;
+	private Historico historico = null;
 
 	
 	public DLNovoPag( Component cOrig ) {
@@ -347,10 +348,10 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 			codhistpag = (Integer) prefere.get( "codhistpag" );
 
 			if ( codhistpag != 0 ) {
-				historico = new ObjetoHistorico( codhistpag, con );
+				historico = new Historico( codhistpag, con );
 			}
 			else {
-				historico = new ObjetoHistorico();
+				historico = new Historico();
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
 			
