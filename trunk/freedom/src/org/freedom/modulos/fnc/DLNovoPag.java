@@ -41,7 +41,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.utility2.DLFechaPag;
+import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
