@@ -15,7 +15,6 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.fnc.business.component.SiaccUtil;
 import org.freedom.modulos.fnc.business.component.SiaccUtil.RegB;
 
 public class DLRegB extends FFDialogo{

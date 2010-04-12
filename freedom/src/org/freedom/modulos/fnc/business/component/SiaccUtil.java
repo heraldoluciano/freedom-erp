@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.business.exception.ExceptionSiacc;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 
 public class SiaccUtil extends FbnUtil {
 	

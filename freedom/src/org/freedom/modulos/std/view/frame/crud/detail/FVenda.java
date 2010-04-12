@@ -93,7 +93,7 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
-import org.freedom.modulos.std.view.dialog.utility.DLAdicOrc;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -2206,10 +2206,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		return true;
 	}
 
-	private void abreAdicOrc() {
+	private void abreBuscaOrc() {
 	
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			DLAdicOrc tela = new DLAdicOrc( this, "V" );
+			DLBuscaOrc tela = new DLBuscaOrc( this, "V" );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}
@@ -3391,7 +3391,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			mostraObs( "VDVENDA", txtCodVenda.getVlrInteger().intValue() );
 		}
 		else if ( evt.getSource() == btBuscaOrc ) {
-			abreAdicOrc();
+			abreBuscaOrc();
 		}
 		else if ( evt.getSource() == btAltComis ) {
 			altComisVend();
