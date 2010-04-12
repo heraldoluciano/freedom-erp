@@ -25,7 +25,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPasswordField;
 
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 public class JPasswordFieldPad extends JPasswordField {
 
 	private static final long serialVersionUID = 1L;

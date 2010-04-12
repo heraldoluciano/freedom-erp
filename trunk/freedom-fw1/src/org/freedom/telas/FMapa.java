@@ -33,7 +33,7 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 import org.freedom.bmps.Icone;
-import org.freedom.library.Mapa;
+import org.freedom.infra.x.swing.Mapa;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JPanelPad;
 import org.jdesktop.swingx.JXMapViewer;

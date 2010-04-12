@@ -29,7 +29,7 @@ import java.awt.event.WindowEvent;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTablePad;
 
 import java.sql.PreparedStatement;

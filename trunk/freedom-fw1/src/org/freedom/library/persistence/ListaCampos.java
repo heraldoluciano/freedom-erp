@@ -25,7 +25,7 @@
  * Classe de acesso direto a dados SQL.
  */
 
-package org.freedom.library;
+package org.freedom.library.persistence;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -36,6 +36,8 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.PainelImagem;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

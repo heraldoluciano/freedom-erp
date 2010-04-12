@@ -17,7 +17,7 @@
  *                    Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.component;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -43,6 +43,8 @@ import javax.swing.Timer;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.ImprimeLayout;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.DLVisualiza;
@@ -416,7 +418,7 @@ public class ImprimeOS implements ActionListener {
 		for ( int i = 0; i < 4; i++ ) {
 			try {
 				sRetorno = Funcoes.tiraString( sRetorno, sCarac[ i ] );
-				sRetorno = Funcoes.tiraAcentos( sRetorno );
+				sRetorno = StringFunctions.clearAccents( sRetorno );
 			} catch ( PatternSyntaxException e ) {
 
 			}

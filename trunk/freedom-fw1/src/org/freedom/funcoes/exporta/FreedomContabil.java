@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.telas.Aplicativo;
 
 public class FreedomContabil extends Contabil {

@@ -19,7 +19,7 @@
  */
 
 
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,7 +44,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.component.DadosImagem;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.telas.FZoom;
 
 public class PainelImagem extends JPanelPad implements ActionListener, MouseListener {

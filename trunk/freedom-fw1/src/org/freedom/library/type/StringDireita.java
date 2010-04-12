@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.type;
 
 public class StringDireita implements Comparable<String> {
 	private String sTexto = "";

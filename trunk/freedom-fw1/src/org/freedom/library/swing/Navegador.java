@@ -18,12 +18,12 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.persistence.ListaCampos;
 
 import javax.swing.JPanel;
 

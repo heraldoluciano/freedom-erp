@@ -19,7 +19,7 @@
  * 
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -47,7 +47,6 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JPanelPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

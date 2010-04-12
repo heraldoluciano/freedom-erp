@@ -26,7 +26,7 @@
  *  
  */
 
-package org.freedom.library;
+package org.freedom.library.component;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 

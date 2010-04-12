@@ -57,7 +57,7 @@ import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.SystemFunctions;
-import org.freedom.library.ProcessoSec;
+import org.freedom.library.business.ProcessoSec;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;

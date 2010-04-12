@@ -33,7 +33,7 @@ import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.app.PrinterMemory;
 import org.freedom.ecf.layout.AbstractLayout;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.modulos.pdv.FAbreCaixa;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.driver.text.TextTefProperties;
