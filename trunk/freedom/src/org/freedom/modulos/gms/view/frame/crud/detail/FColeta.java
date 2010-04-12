@@ -1,4 +1,4 @@
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,6 +37,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 

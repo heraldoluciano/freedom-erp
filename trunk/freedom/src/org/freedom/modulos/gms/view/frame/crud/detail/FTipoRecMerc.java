@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

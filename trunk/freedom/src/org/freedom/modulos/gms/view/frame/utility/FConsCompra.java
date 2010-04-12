@@ -1,4 +1,4 @@
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

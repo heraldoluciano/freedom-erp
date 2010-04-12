@@ -28,7 +28,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.modulos.fnc.FBanco;
-import org.freedom.modulos.gms.FProduto;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.comum.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.comum.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.comum.FMarca;

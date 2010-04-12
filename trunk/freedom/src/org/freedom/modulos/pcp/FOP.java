@@ -83,7 +83,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.gms.FRma;
+import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 

@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

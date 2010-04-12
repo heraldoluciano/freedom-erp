@@ -13,7 +13,7 @@
  * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,6 +58,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 
 
 /**

@@ -21,7 +21,7 @@
  *                  Tela para cadastro de solicitações de compra.
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

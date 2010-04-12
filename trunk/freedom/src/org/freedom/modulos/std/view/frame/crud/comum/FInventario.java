@@ -62,7 +62,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.modulos.gms.DLLote;
+import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.std.view.dialog.report.DLRInventario;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 

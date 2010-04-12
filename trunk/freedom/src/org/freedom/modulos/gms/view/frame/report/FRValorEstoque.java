@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.report;
 
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;

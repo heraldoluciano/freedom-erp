@@ -21,7 +21,7 @@
  * Comentários sobre a classe...
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

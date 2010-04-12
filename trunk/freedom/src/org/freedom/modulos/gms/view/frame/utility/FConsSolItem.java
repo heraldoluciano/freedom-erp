@@ -4,7 +4,7 @@
  *         Projeto: Freedom <BR>
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe:
- * @(#)FConsRmaItem.java <BR>
+ * @(#)FConsSolItem.java <BR>
  *                   Este programa é licenciado de acordo com a LPG-PC (Licença
  *                   Pública Geral para Programas de Computador), <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -21,7 +21,7 @@
  *                   Formulário de consulta de RMA.
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -38,7 +38,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -51,7 +50,6 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
@@ -59,13 +57,14 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
-public class FConsRmaItem extends FFilho implements ActionListener {
+public class FConsSolItem extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private JPanelPad pinCab = new JPanelPad(0, 215);
+	private JPanelPad pinCab = new JPanelPad(0, 145);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
+	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,5));
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
@@ -75,44 +74,36 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
-	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
-	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtRefProdOP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Itens pendentes", "S", "N");
-	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Itens aprovadas", "S", "N");
-	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Itens expedidas", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Itens canceladas", "S", "N");
 	private JTablePad tab = new JTablePad();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
 	private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
 	private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
 	private ImageIcon imgColuna = null;
+	private JButtonPad btCalc = new JButtonPad(Icone.novo("btExecuta.gif"));
 	private JButtonPad btBusca = new JButtonPad("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButtonPad btPrevimp = new JButtonPad("Imprimir", Icone.novo("btPrevimp.gif"));
 	private	JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
-	private ListaCampos lcOP = new ListaCampos(this, "OF");
-	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	private Vector<?> vSitRMA = new Vector<Object>();
-	public FConsRmaItem() {
+	private Vector<?> vSitSol = new Vector<Object>();
+	public FConsSolItem() {
 		super(false);
-		setTitulo("Pesquisa Requisições de material");
-		setAtribos(10, 10, 555, 480);
+		setTitulo("Sumário de Solicitações de Compra");
+		setAtribos(10, 10, 795, 480);
 
+		btCalc.setToolTipText("Criar cotação sumarizada");
+		btCalc.addActionListener(this);
+		
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
@@ -128,37 +119,6 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		
-		txtCodOP.setNomeCampo("CodOP");
-		txtCodOP.setFK(true);
-		
-		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, null, false));
-		lcOP.add(new GuardaCampo(txtDtEmiOP, "DTEMITOP", "Data de emissão", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtDtFabOP, "DTFABROP", "Data de fabricação", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtCodProdOP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtRefProdOP, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
-		lcOP.setQueryCommit(false);
-		lcOP.setReadOnly(true);
-		
-		txtDtEmiOP.setSoLeitura(true);
-		txtDtFabOP.setSoLeitura(true);
-		txtCodProdOP.setSoLeitura(true);
-		txtRefProdOP.setSoLeitura(true);
-		txtCodOP.setTabelaExterna(lcOP);
-		lcOP.montaSql(false, "OP", "PP");
-		
-		
-
-		txtSeqOP.setNomeCampo("SeqOP");
-		txtSeqOP.setFK(true);
-		
-		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
-		lcSeqOP.setQueryCommit(false);
-		lcSeqOP.setReadOnly(true);
-
-		txtSeqOP.setTabelaExterna(lcSeqOP);
-		lcSeqOP.montaSql(false, "OP", "PP");
-		
-		
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
 		
@@ -171,7 +131,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		txtDescProd.setSoLeitura(true);
 		txtRefProd.setSoLeitura(true);
 		txtCodProd.setTabelaExterna(lcProd);
-		lcProd.montaSql(false, "PRODUTO", "EQ");
+		lcProd.montaSql(false, "PRODUTO", "EQ");		
 				
 		txtCodUsu.setNomeCampo("IDUSU");
 		txtCodUsu.setFK(true);
@@ -205,19 +165,13 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		
 		pnLegenda.add(new JLabelPad("Cancelada",imgCancelada,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Aprovada",imgAprovada,SwingConstants.CENTER));
-		pnLegenda.add(new JLabelPad("Expedida",imgExpedida,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Em Cotação",imgExpedida,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Pendente",imgPendente,SwingConstants.CENTER));
+		pnLegenda.add(btCalc);
 		
 		pnRod.add(pnLegenda,BorderLayout.WEST);
 		pnRod.add(btSair, BorderLayout.EAST);
 		
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbLinha2 = new JLabelPad();
-		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
-		lbStatus.setOpaque(true);
-
 		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
 		pinCab.adic(txtDtIni, 7, 25, 95, 20);
 		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
@@ -232,62 +186,38 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		pinCab.adic(txtCodProd, 7, 65, 80, 20);
 		pinCab.adic(new JLabelPad("Descrição do produto"), 90, 45, 200, 20);
 		pinCab.adic(txtDescProd, 90, 65, 200, 20);
-		pinCab.adic(new JLabelPad("Cód. OP."),293, 45, 80, 20);
-		pinCab.adic(txtCodOP, 293, 65, 80, 20);
-		pinCab.adic(new JLabelPad("Seq. OP."),376, 45, 80, 20);
-		pinCab.adic(txtSeqOP, 376, 65, 80, 20);
 
 		pinCab.adic(new JLabelPad("Cód.c.c."), 7, 85, 70, 20);
 		pinCab.adic(txtCodCC, 7, 105, 140, 20);
 		pinCab.adic(new JLabelPad("Centro de custo"), 150, 85, 410, 20);
 		pinCab.adic(txtDescCC, 150, 105, 180, 20);
 
-		
-		pinCab.adic(lbStatus, 15, 125, 50, 18);
-		pinCab.adic(lbLinha2, 7, 135, 373, 66);
-		pinCab.adic(cbPendentes, 15, 147, 170, 20);
-		pinCab.adic(cbAprovadas, 15, 172, 170, 20);
-		pinCab.adic(cbExpedidas, 195, 147, 180, 20);
-		pinCab.adic(cbCanceladas, 195, 172, 180, 20);
-		
-
-		pinCab.adic(btBusca, 392, 135, 130, 30);
-		pinCab.adic(btPrevimp, 392, 170, 130, 30);
+		pinCab.adic(btBusca, 352, 57, 130, 30);
+		pinCab.adic(btPrevimp, 352, 93, 130, 30);
 
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
 
 		tab.adicColuna("");//0
-		tab.adicColuna("Cód.rma.");//1
+		tab.adicColuna("Cotar");//1		
 		tab.adicColuna("Cód.prod.");//2
-		tab.adicColuna("Descrição do produto");//3
-		tab.adicColuna("Cód.OP.");//4
-		tab.adicColuna("Aprov.");//5
-		tab.adicColuna("Exp.");//6
-		tab.adicColuna("Dt. requisição");//7
-		tab.adicColuna("Qt. requerida");//8
-		tab.adicColuna("Dt. aprovação");//9
-		tab.adicColuna("Qt. aprovada");//10
-		tab.adicColuna("Dt. expedição");//11
-		tab.adicColuna("Qt. expedida");//12
-		tab.adicColuna("Saldo");//13
+		tab.adicColuna("Ref.prod");//3
+		tab.adicColuna("Descrição do produto");//4
+		tab.adicColuna("Qt. requerida");//5
+		tab.adicColuna("Qt. aprovada");//6
+		tab.adicColuna("Saldo");//7
 		
-
 		tab.setTamColuna(12, 0);
-		tab.setTamColuna(70, 1);
+		tab.setTamColuna(35, 1);
 		tab.setTamColuna(70, 2);
-		tab.setTamColuna(150, 3);
-		tab.setTamColuna(70, 4);
-		tab.setTamColuna(40, 5);
-		tab.setTamColuna(40, 6);
-		tab.setTamColuna(90, 7);
-		tab.setTamColuna(90, 8);
-		tab.setTamColuna(90, 9);
-		tab.setTamColuna(90, 10);
-		tab.setTamColuna(90, 11);
-		tab.setTamColuna(90, 12);
-		tab.setTamColuna(90, 13);
+		tab.setTamColuna(70, 3);
+		tab.setTamColuna(320, 4);
+		tab.setTamColuna(90, 5);
+		tab.setTamColuna(90, 6);
+		tab.setTamColuna(80, 7);
 
+		tab.setColunaEditavel(1, true);
+		
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
 
@@ -340,58 +270,25 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		boolean usaOr = false;
 		boolean usaWhere = false;
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
-//		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
-		String sCodOp = txtCodOP.getVlrString();
-		String sSeqOp = txtSeqOP.getVlrString();
 		String sCodProd = txtCodProd.getVlrString();
 
 		
-		if (cbPendentes.getVlrString().equals("S")) {
-			usaWhere = true;
-			where = " SitItRma ='PE'";
+		if (where.trim().equals("")) {
+			where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')";
+		} 
+		else {
+			where = where + " OR (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')";
+			usaOr = true;
 		}
-		if (cbAprovadas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " (SitAprovItRma ='AP' OR SitAprovItRma ='AT')";
-			} 
-			else {
-				where = where + " OR (SitAprovItRma ='AP' OR SitAprovItRma ='AT')";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
-		if (cbExpedidas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " (SitExpItRma ='EP' OR SitExpItRma ='ET')";
-			} else {
-				where = where + " OR (SitExpItRma ='EP' OR SitExpItRma ='ET')";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}		
-		if (cbCanceladas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " SitItRma ='CA'";
-			} else {
-				where = where + " OR SitItRma ='CA'";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
+		usaWhere = true;
 		if (usaWhere && usaOr)
 			where = " AND (" + where + ")";
 		else if (usaWhere)
 			where = " AND " + where;
 		else
-			where = " AND SitItRma='PE'";
-		
-		if (sCodOp.length() > 0) 
-			where += " AND R.CODOP = '" + sCodOp + "'";
-		
-		if (sSeqOp.length() > 0) 
-			where += " AND R.SEQOP = '" + sSeqOp + "'";
+			where = " AND IT.SitItSol='PE'";
 		
 		if (sCodProd.length() > 0) 
 			where += " AND IT.CODPROD = '" + sCodProd + "'";
@@ -400,20 +297,21 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
 
 		if (CC)
-			where += " AND R.ANOCC=? AND R.CODCC=? AND R.CODEMPCC=? AND R.CODFILIALCC=? ";
+			where += " AND O.ANOCC=? AND O.CODCC=? AND O.CODEMPCC=? AND O.CODFILIALCC=? ";
 
 		if (usuario)
-			where += " AND (R.IDUSU=?) ";
+			where += " AND (O.IDUSU=?) ";
 
-		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
-				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP "
-				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
-				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
-				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
-				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " + where;
-
-
+		String sSQL = "	SELECT IT.CODPROD,IT.REFPROD, PD.DESCPROD, "+
+		  "SUM(IT.QTDITSOL), SUM(IT.QTDAPROVITSOL), PD.SLDPROD "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "+
+		"AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "+
+		where + " " +
+		"GROUP BY IT.CODPROD,IT.REFPROD, PD.DESCPROD, PD.SLDPROD "+
+		"ORDER BY PD.DESCPROD, IT.CODPROD, IT.REFPROD, PD.SLDPROD";
+		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			int param = 1;
@@ -444,49 +342,27 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
-			vSitRMA = new Vector<Object>();
+			vSitSol = new Vector<Object>();
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String sitRMA = rs.getString(5);
-				String sitAprovRMA = rs.getString(6);
-				String sitExpRMA = rs.getString(7);
-				if (sitRMA.equalsIgnoreCase("PE")) {
-					imgColuna = imgPendente;
-				} 
-				else if (sitRMA.equalsIgnoreCase("CA")) {
-					imgColuna = imgCancelada;
-				} 
-				else if (sitExpRMA.equals("EP") || sitExpRMA.equals("ET")) {
-					imgColuna = imgExpedida;
-				} 
-				else if (sitAprovRMA.equals("AP") || sitAprovRMA.equals("AT")) {
-					imgColuna = imgAprovada;
-				}
+				imgColuna = imgAprovada;
 
-				tab.setValor(imgColuna, iLin, 0);//SitItRma
-				tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
-				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
-				tab.setValor(rs.getString(15) == null ? "" : rs.getString(15) + "",iLin, 4);//Cod OP
-				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 5);//SitAprov
-				tab.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 6);//SitExp
-				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
-				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 11);//Dt Exp
-				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 8);//Qtd Req
-				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 10);//Qtd Aprov
-				tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 12);//Qdt Exp
-				tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 13);//Saldo Prod
+				tab.setValor(imgColuna, iLin, 0);//SitItSol
+				tab.setValor(new Boolean(false), iLin, 1);
+				tab.setValor(rs.getString(1) == null ? "" : rs.getString(1) + "",iLin, 2);//CodProd 
+				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 3);//CodProd 
+				tab.setValor(rs.getString(3) == null ? "" : rs.getString(3).trim() + "",iLin, 4);//DescProd
+				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 5);//Qtd Req
+				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 6);//Qtd Aprov
+				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 7);//Saldo Prod
 
 				iLin++;
-				
-				
 			}
 
 			con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela CPSOLICITACAO!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
@@ -542,7 +418,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|" + tab.getValor(iLin, 1));
 				imp.say(imp.pRow() + 0, 15, "| " + tab.getValor(iLin, 2));
-				imp.say(imp.pRow() + 0, 29, "| " + vSitRMA.elementAt(iLin).toString());
+				imp.say(imp.pRow() + 0, 29, "| " + vSitSol.elementAt(iLin).toString());
 				String sMotivo = ""+tab.getValor(iLin, 3);
 				imp.say(imp.pRow() + 0, 45, "| " + sMotivo.substring(0, sMotivo.length()>89?89:sMotivo.length()).trim());
 				imp.say(imp.pRow() + 0, 135, "| ");
@@ -646,8 +522,94 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
     }
   
+    public void criaCotacao(int codprod) {
+		String sSQLautoincrement = "SELECT coalesce(MAX(SS.CODSUMSOL) + 1, 1) AS CODSUMSOL FROM cpsumsol SS WHERE SS.CODEMP=? AND SS.CODFILIAL=?";
+		
+		String sSQLsumsol = "INSERT INTO CPSUMSOL "+
+		"(CODEMP, CODFILIAL, CODSUMSOL, CODEMPPD, CODFILIALPD, CODPROD, REFPROD, QTDITSOL, QTDAPROVITSOL, SITITSOL, SITAPROVITSOL) "+
+		"SELECT ?, ?, ?, "+
+		  "IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD,IT.REFPROD, "+
+		  "SUM(IT.QTDITSOL), SUM(IT.QTDAPROVITSOL), 'PE', 'PE' "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ? "+
+		"group BY IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, IT.REFPROD";
+
+		String sSQLitsumsol = "INSERT INTO CPITSUMSOL " +
+		"(CODEMP, CODFILIAL, CODSUMSOL, CODEMPSC, CODFILIALSC, CODSOL, CODITSOL) " +
+			"SELECT ?, ?, ?, IT.CODEMP, IT.CODFILIAL, IT.CODSOL, IT.CODITSOL "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ?";
+		
+		int codsumsol = 0;
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQLautoincrement);			
+			ps.setInt(1,Aplicativo.iCodEmp);	  	
+			ps.setInt(2,Aplicativo.iCodFilial);		  	
+		    
+	    	ResultSet rs = ps.executeQuery();
+	    	
+	    	if (rs.next()) {
+				codsumsol = rs.getInt("CODSUMSOL");
+	    	}	
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela CPSUMSOL!\n"+err.getMessage(),true,con,err);
+		}
+		
+		try {	
+			PreparedStatement ps2 = con.prepareStatement(sSQLsumsol);
+							
+			ps2.setInt(1,Aplicativo.iCodEmp);	  	
+			ps2.setInt(2,Aplicativo.iCodFilial);
+			ps2.setInt(3,codsumsol);
+			ps2.setInt(4,Aplicativo.iCodEmp);	  	
+			ps2.setInt(5,Aplicativo.iCodFilial);
+			ps2.setInt(6,codprod);
+			
+			ps2.execute();
+			
+			con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela SUMSOL!\n"+err.getMessage(),true,con,err);
+		}	
+
+		try {	
+			PreparedStatement ps3 = con.prepareStatement(sSQLitsumsol);
+							
+			ps3.setInt(1,Aplicativo.iCodEmp);	  	
+			ps3.setInt(2,Aplicativo.iCodFilial);
+			ps3.setInt(3,codsumsol);
+			ps3.setInt(4,Aplicativo.iCodEmp);	  	
+			ps3.setInt(5,Aplicativo.iCodFilial);
+			ps3.setInt(6,codprod);
+			
+			ps3.execute();
+			
+			con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITSUMSOL!\n"+err.getMessage(),true,con,err);
+		}    
+    }
 	
 	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btCalc) {
+			if (tab.getRowCount() <= 0) {
+				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser cotado");
+				return;
+			}
+			
+		    int iLin = 0;
+		    while (iLin<tab.getRowCount()) {
+		    	if (Boolean.valueOf(tab.getValor(iLin, 1).toString()).booleanValue())
+		    		criaCotacao(Integer.parseInt(tab.getValor(iLin, 3).toString().trim()));
+		    	iLin++;
+		    }
+		}
+		
 		if (evt.getSource() == btSair) {
 			dispose();
 		}
@@ -692,8 +654,6 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
-		lcOP.setConexao(cn);
-		lcSeqOP.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);

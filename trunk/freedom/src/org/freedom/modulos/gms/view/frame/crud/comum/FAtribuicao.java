@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.comum;
 import java.awt.event.ActionListener;
 
 import javax.swing.JScrollPane;

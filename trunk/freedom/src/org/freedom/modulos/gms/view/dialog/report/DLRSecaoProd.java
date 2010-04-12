@@ -19,7 +19,7 @@
  * Tela para escolha da ordem do relatório de seções de produtos
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.dialog.report;
 
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JRadioGroup;
