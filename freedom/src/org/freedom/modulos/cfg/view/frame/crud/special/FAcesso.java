@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.special;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

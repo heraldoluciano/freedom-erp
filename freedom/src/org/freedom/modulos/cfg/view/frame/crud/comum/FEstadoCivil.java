@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.comum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

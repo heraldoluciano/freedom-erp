@@ -29,7 +29,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
-import org.freedom.modulos.cfg.FEstadoCivil;
+import org.freedom.modulos.cfg.view.frame.crud.comum.FEstadoCivil;
 
 public class FreedomGRH extends AplicativoPD {
 

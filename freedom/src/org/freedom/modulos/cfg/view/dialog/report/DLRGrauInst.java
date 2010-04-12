@@ -5,7 +5,7 @@
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.cfg <BR>
- * Classe: @(#)DLRProcesso.java <BR>
+ * Classe: @(#)DLRGrauInst.java <BR>
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.dialog.report;
 
 import java.util.Vector;
 
@@ -30,13 +30,13 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLRProcesso extends FFDialogo {
+public class DLRGrauInst extends FFDialogo {
   private static final long serialVersionUID = 1L;
   private JRadioGroup<?, ?> rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector<String> vLabs = new Vector<String>();
   private Vector<String> vVals = new Vector<String>();
-  public DLRProcesso() {
+  public DLRGrauInst() {
   	super(Aplicativo.telaPrincipal);
 	setTitulo("Ordem do Relatório");
 	setAtribos(300,140);
@@ -52,9 +52,9 @@ public class DLRProcesso extends FFDialogo {
   public String getValor() {
 	String sRetorno = "";
 	if (rgOrdem.getVlrString().compareTo("C") == 0 )
-	  sRetorno = "CODPROC";
+	  sRetorno = "CODGRI";
 	else if (rgOrdem.getVlrString().compareTo("D") == 0 )
-	  sRetorno = "DESCPROC";
+	  sRetorno = "DESCGRI";
 	return sRetorno;
   }
 }

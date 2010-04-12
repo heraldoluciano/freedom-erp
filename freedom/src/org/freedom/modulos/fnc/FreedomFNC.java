@@ -29,7 +29,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
-import org.freedom.modulos.cfg.FFeriados;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
 import org.freedom.modulos.std.view.frame.crud.comum.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.comum.FEstacao;
 import org.freedom.modulos.std.view.frame.crud.comum.FImpressora;

@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.detail;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;

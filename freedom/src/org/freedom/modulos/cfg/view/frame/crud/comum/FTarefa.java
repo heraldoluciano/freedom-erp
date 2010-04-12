@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.comum;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -38,6 +38,7 @@ import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.cfg.view.dialog.report.DLRTarefa;
 
 public class FTarefa extends FDados implements ActionListener {
   private static final long serialVersionUID = 1L;

@@ -21,7 +21,7 @@
  * Comentários sobre a classe...
  * 
  */
-package org.freedom.modulos.cfg;
+package org.freedom.modulos.cfg.view.frame.crud.comum;
 
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
