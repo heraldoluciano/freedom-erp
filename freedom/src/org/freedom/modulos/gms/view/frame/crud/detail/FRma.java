@@ -17,7 +17,7 @@
  *               Tela para cadastro de Requisições de material ao almoxarifado.
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

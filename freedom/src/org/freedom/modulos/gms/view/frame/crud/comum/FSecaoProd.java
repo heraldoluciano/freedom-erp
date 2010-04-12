@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.comum;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +33,7 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.gms.view.dialog.report.DLRSecaoProd;
 
 public class FSecaoProd extends FDados implements ActionListener {
 

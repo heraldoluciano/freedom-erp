@@ -39,7 +39,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPassword;
-import org.freedom.modulos.gms.DLLote;
+import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLDescontItVenda;
 import org.freedom.modulos.std.view.frame.utility.FObsCliVend;

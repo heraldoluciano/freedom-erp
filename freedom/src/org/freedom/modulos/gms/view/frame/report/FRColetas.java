@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.report;
 
 import java.awt.Color;
 import java.sql.PreparedStatement;

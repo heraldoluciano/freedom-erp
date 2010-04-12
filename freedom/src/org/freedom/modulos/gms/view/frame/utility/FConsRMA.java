@@ -1,10 +1,10 @@
 /**
  * @version 02/08/2003 <BR>
- * @author Setpoint Informática Ltda./Alexandre Rocha Lima e Marcondes <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  *         Projeto: Freedom <BR>
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe:
- * @(#)FConsSol.java <BR>
+ * @(#)FConsRMA.java <BR>
  *                   Este programa é licenciado de acordo com a LPG-PC (Licença
  *                   Pública Geral para Programas de Computador), <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -18,10 +18,10 @@
  *                   ALTERAR este Programa é preciso estar <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  *                   <BR>
- *                   Formulário de consulta de solicitação de compra e cotação de preço.
+ *                   Formulário de consulta de RMA.
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,8 +59,9 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
-public class FConsSol extends FFilho implements ActionListener {
+public class FConsRMA extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCab = new JPanelPad(0, 185);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -67,10 +69,10 @@ public class FConsSol extends FFilho implements ActionListener {
 	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Solicitações pendentes", "S", "N");
-	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Solicitações aprovadas", "S", "N");
-	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Solicitações canceladas", "S", "N");
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
+	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
+	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
+	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
@@ -78,6 +80,12 @@ public class FConsSol extends FFilho implements ActionListener {
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtRefProdOP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTablePad tab = new JTablePad();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
@@ -86,19 +94,21 @@ public class FConsSol extends FFilho implements ActionListener {
 	private ImageIcon imgColuna = null;
 	private JButtonPad btBusca = new JButtonPad("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButtonPad btPrevimp = new JButtonPad("Imprimir", Icone.novo("btPrevimp.gif"));
-			JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
+	private ListaCampos lcOP = new ListaCampos(this, "OF");
+	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	private Vector<String> vSitSol = new Vector<String>();
-	public FConsSol() {
+	private Vector<String> vSitRMA = new Vector<String>();
+	public FConsRMA() {
 		super(false);
-		setTitulo("Pesquisa Solicitações de Compra");
-		setAtribos(10, 10, 663, 480);
+		setTitulo("Pesquisa Requisições de material");
+		setAtribos(10, 10, 735, 480);
 
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
@@ -114,7 +124,34 @@ public class FConsSol extends FFilho implements ActionListener {
 		txtDescAlmoxarife.setSoLeitura(true);
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
+		
+		txtCodOP.setNomeCampo("CodOP");
+		txtCodOP.setFK(true);
+		
+		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, null, false));
+		lcOP.add(new GuardaCampo(txtDtEmiOP, "DTEMITOP", "Data de emissão", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtDtFabOP, "DTFABROP", "Data de fabricação", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtCodProdOP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtRefProdOP, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
+		lcOP.setQueryCommit(false);
+		lcOP.setReadOnly(true);
 
+		txtDtEmiOP.setSoLeitura(true);
+		txtDtFabOP.setSoLeitura(true);
+		txtCodProdOP.setSoLeitura(true);
+		txtCodOP.setTabelaExterna(lcOP);
+		lcOP.montaSql(false, "OP", "PP");
+		
+		txtSeqOP.setNomeCampo("SeqOP");
+		txtSeqOP.setFK(true);
+		
+		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
+		lcSeqOP.setQueryCommit(false);
+		lcSeqOP.setReadOnly(true);
+
+		txtSeqOP.setTabelaExterna(lcSeqOP);
+		lcSeqOP.montaSql(false, "OP", "PP");
+				
 		txtCodUsu.setNomeCampo("IDUSU");
 		txtCodUsu.setFK(true);
 
@@ -147,7 +184,7 @@ public class FConsSol extends FFilho implements ActionListener {
 		
 		pnLegenda.add(new JLabelPad("Cancelada",imgCancelada,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Aprovada",imgAprovada,SwingConstants.CENTER));
-		pnLegenda.add(new JLabelPad("Cotação",imgExpedida,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Expedida",imgExpedida,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Pendente",imgPendente,SwingConstants.CENTER));
 		
 		pnRod.add(pnLegenda,BorderLayout.WEST);
@@ -157,34 +194,41 @@ public class FConsSol extends FFilho implements ActionListener {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
+		JLabelPad lbStatus = new JLabelPad("Filtrar:" ,SwingConstants.CENTER );
 		lbStatus.setOpaque(true);
 
-		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
-		pinCab.adic(txtDtIni, 7, 25, 95, 20);
-		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
-		pinCab.adic(txtDtFim, 139, 25, 95, 20);
+		JLabelPad lbLin = new JLabelPad();
+		lbLin.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("Periodo:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque(true);
+		
+		pinCab.adic( lbPeriodo, 10, 5, 80, 18 );
+		pinCab.adic( lbLin, 7, 10, 280, 50 );
+		
+		pinCab.adic( new JLabelPad("De"), 15, 25, 27, 20 );
+		pinCab.adic( txtDtIni, 35, 25, 95, 20 );
+		pinCab.adic( new JLabelPad("Até"), 135, 25, 27, 20 );
+		pinCab.adic( txtDtFim, 160, 25, 95, 20 );
 
-		pinCab.adic(new JLabelPad("Cód.c.c."), 237, 5, 70, 20);
-		pinCab.adic(txtCodCC, 237, 25, 140, 20);
-		pinCab.adic(new JLabelPad("Centro de custo"), 380, 5, 410, 20);
-		pinCab.adic(txtDescCC, 380, 25, 180, 20);
+		pinCab.adic(new JLabelPad("Cód.c.c."), 290, 5, 70, 20 );
+		pinCab.adic(txtCodCC, 290, 25, 130, 20 );
+		pinCab.adic(new JLabelPad("Centro de custo"), 427, 5, 410, 20 );
+		pinCab.adic(txtDescCC, 427, 25, 210, 20 );
 
-		pinCab.adic(new JLabelPad("Cód.usu."), 7, 48, 70, 20);
-		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 48, 153, 20);
-		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
-
-		pinCab.adic(new JLabelPad("Cód.almox."), 237, 48, 75, 20);
-		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do almoxarifado"), 310, 48, 410, 20);
-		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
+		pinCab.adic(new JLabelPad("Cód.usu."), 7, 58, 70, 20);
+		pinCab.adic(txtCodUsu, 7, 80, 70, 20);
+		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 58, 153, 20);
+		pinCab.adic(txtNomeUsu, 80, 80, 206, 20);
+		pinCab.adic(new JLabelPad("Cód. OP."),290, 58, 153, 20);
+		pinCab.adic(txtCodOP, 290, 80, 100, 20);
+		pinCab.adic(new JLabelPad("Seq. OP."),393, 58, 153, 20);
+		pinCab.adic(txtSeqOP, 393, 80, 100, 20);
 
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
 		pinCab.adic(lbLinha2, 7, 110, 373, 66);
 		pinCab.adic(cbPendentes, 15, 122, 170, 20);
 		pinCab.adic(cbAprovadas, 15, 147, 170, 20);
-		pinCab.adic(cbTomadasDePreco, 195, 122, 180, 20);
+		pinCab.adic(cbExpedidas, 195, 122, 180, 20);
 		pinCab.adic(cbCanceladas, 195, 147, 180, 20);
 
 		pinCab.adic(btBusca, 382, 110, 110, 30);
@@ -194,18 +238,20 @@ public class FConsSol extends FFilho implements ActionListener {
 		txtDtFim.setVlrDate(new Date());
 
 		tab.adicColuna("");
-		tab.adicColuna("Sol.");
+		tab.adicColuna("Rma.");
 		tab.adicColuna("Data");
 		tab.adicColuna("Usuário");
 		tab.adicColuna("CC");
 		tab.adicColuna("Motivo");
+		tab.adicColuna("Projeto/Contrato");
 
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(40, 1);
-		tab.setTamColuna(90, 2);
-		tab.setTamColuna(60, 3);
-		tab.setTamColuna(240, 4);
-		tab.setTamColuna(325, 5);
+		tab.setTamColuna(70, 2);
+		tab.setTamColuna(50, 3);
+		tab.setTamColuna(180, 4);
+		tab.setTamColuna(200, 5);
+		tab.setTamColuna(150, 6);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -214,7 +260,7 @@ public class FConsSol extends FFilho implements ActionListener {
 
 			public void mouseClicked(MouseEvent mevt) {
 				if (mevt.getSource() == tab && mevt.getClickCount() == 2)
-					abreSol();
+					abreRma();
 			}
 		});
 		btSair.addActionListener(this);
@@ -259,36 +305,39 @@ public class FConsSol extends FFilho implements ActionListener {
 		boolean usaOr = false;
 		boolean usaWhere = false;
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
-		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
+		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
+		String sCodOp = txtCodOP.getVlrString();
+		String sSeqOp = txtSeqOP.getVlrString();
 
 		if (cbPendentes.getVlrString().equals("S")) {
 			usaWhere = true;
-			where = " SitSol ='PE'";
+			where = " SitRma ='PE'";
 		}
 		if (cbAprovadas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitSol ='AF'";
-			} else {
-				where = where + " OR SitSol ='AF'";
+				where = " SitRma ='AF'";
+			} 
+			else {
+				where = where + " OR SitRma ='AF'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
-		if (cbTomadasDePreco.getVlrString().equals("S")) {
-			if (where.trim().equals(""))
-				where = " SitSol ='EF'";
-			else {
-				where = where + " OR SitSol ='EF'";
+		if (cbExpedidas.getVlrString().equals("S")) {
+			if (where.trim().equals("")) {
+				where = " SitRma ='EF'";
+			} else {
+				where = where + " OR SitRma ='EF'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}		
 		if (cbCanceladas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitSol ='CA'";
+				where = " SitRma ='CA'";
 			} else {
-				where = where + " OR SitSol ='CA'";
+				where = where + " OR SitRma ='CA'";
 				usaOr = true;
 			}
 			usaWhere = true;
@@ -299,32 +348,44 @@ public class FConsSol extends FFilho implements ActionListener {
 		else if (usaWhere)
 			where = " AND " + where;
 		else
-			where = " AND SitSol='PE'";
-
+			where = " AND SitRma='PE'";
+		
+		if (sCodOp.length() > 0) 
+			where += " AND R.CODOP = '" + sCodOp + "'";
+		
+		if (sSeqOp.length() > 0) 
+			where += " AND R.SEQOP = '" + sSeqOp + "'";
+		
 		if (almoxarifado)
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
 
 		if (CC)
-			where += " AND O.ANOCC=? AND O.CODCC=? AND O.CODEMPCC=? AND O.CODFILIALCC=? ";
+			where += " AND R.ANOCC=? AND R.CODCC=? AND R.CODEMPCC=? AND R.CODFILIALCC=? ";
 
 		if (usuario)
-			where += " AND (O.IDUSU=?) ";
+			where += " AND (R.IDUSU=?) ";
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "select r.sitrma, r.codrma, r.dtareqrma, r.idusu, fn.desccc, r.motivorma, " );
+		sql.append( "ct.codcontr, ct.desccontr ");
+		sql.append( "from  eqrma r " );
+		sql.append( "left outer join vdcontrato ct on ");
+		sql.append( "ct.codemp=r.codempct and ct.codfilial=r.codfilialct and ct.codcontr=r.codcontr, ");
+		sql.append( " eqitrma it, fncc fn ");
+		sql.append( "where r.codemp=? and r.codfilial=? and it.codrma=r.codrma and it.codemp=r.codemp and it.codfilial=r.codfilial ");
+		sql.append( "and r.anocc=fn.anocc and r.codcc=fn.codcc ");				
+		sql.append( "and ((it.dtaprovitrma between ? and ? ) or  (r.dtareqrma between ? and ?)) ");
+		sql.append( where );
+		sql.append( " group by r.codrma, r.sitrma, r.dtareqrma, r.idusu, fn.desccc, r.motivorma, ct.codcontr, ct.desccontr  ");
 
-		String sSQL = "SELECT O.SITSOL, O.CODSOL, O.DTEMITSOL, O.IDUSU, FN.DESCCC, O.MOTIVOSOL "
-				+ "FROM  CPSOLICITACAO O, CPITSOLICITACAO IT, FNCC FN "
-				+ "WHERE O.CODEMP=? "
-				+ "AND O.CODFILIAL=? "
-				+ "AND IT.CODSOL=O.CODSOL AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
-				+ "AND O.ANOCC=FN.ANOCC AND O.CODCC=FN.CODCC "
-				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "
-				+ where + " GROUP BY O.CODSol, O.SitSol, O.DTEmitSol, FN.DESCCC, O.IDUSU, O.MOTIVOSOL ";
-
-		System.out.println(sSQL);
+		System.out.println(sql.toString());
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			
+			PreparedStatement ps = con.prepareStatement(sql.toString());
 			int param = 1;
 			ps.setInt(param++, Aplicativo.iCodEmp);
-			ps.setInt(param++, ListaCampos.getMasterFilial("CPSOLICITACAO"));
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQRMA"));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
@@ -352,46 +413,44 @@ public class FConsSol extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
-			vSitSol = new Vector<String>();
+			vSitRMA = new Vector<String>();
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String sitSol = rs.getString(1);
-				if (sitSol.equalsIgnoreCase("PE")) {
+				String sitRMA = rs.getString(1);
+				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
-					vSitSol.addElement("Pendente");
+					vSitRMA.addElement("Pendente");
 				} 
-				else if (sitSol.equalsIgnoreCase("CA")) {
+				else if (sitRMA.equalsIgnoreCase("CA")) {
 					imgColuna = imgCancelada;
-					vSitSol.addElement("Cancelada");
+					vSitRMA.addElement("Cancelada");
 				} 
-				else if (sitSol.equalsIgnoreCase("EF")) {
+				else if (sitRMA.equalsIgnoreCase("EF")) {
 					imgColuna = imgExpedida;
-					vSitSol.addElement("Cotação");
+					vSitRMA.addElement("Expedida");
 				} 
-				else if (sitSol.equalsIgnoreCase("AF")) {
+				else if (sitRMA.equalsIgnoreCase("AF")) {
 					imgColuna = imgAprovada;
-					vSitSol.addElement("Aprovada");
+					vSitRMA.addElement("Aprovada");
 				}
 
 				tab.setValor(imgColuna, iLin, 0);
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
-				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
-						.sqlDateToStrDate(rs.getDate(3))
-						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
-						iLin, 3);				
-				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "",
-						iLin, 4);
-				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "",
-						iLin, 5);
+				tab.setValor(rs.getString(3) == null ? "-" : Funcoes.sqlDateToStrDate(rs.getDate(3)) + "", iLin, 2);
+				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "", iLin, 3);				
+				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "", iLin, 4);
+				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "", iLin, 5);
+				tab.setValor(rs.getString("desccontr") == null ? "" : rs.getString("desccontr") , iLin, 6);
 
 				iLin++;
 			}
 
 			con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela CPSOLICITACAO!\n"
+			
+		} 
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
@@ -400,6 +459,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	private void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
+		BigDecimal bTotalLiq = new BigDecimal("0");
 		boolean bImpCot = false;
 
 		/*
@@ -414,10 +474,10 @@ public class FConsSol extends FFilho implements ActionListener {
 			for (int iLin = 0; iLin < tab.getNumLinhas(); iLin++) {
 				if (imp.pRow() == 0) {
 					imp.montaCab();
-					imp.setTitulo("Relatório de Solicitações de Compra");
-					imp.addSubTitulo("Relatório de Solicitações de Compra");
+					imp.setTitulo("Relatório de Requisições de material");
+					imp.addSubTitulo("Relatório de Requisições de material");
 					imp.impCab(136, true);
-					imp.say(imp.pRow() + 0, 0, "| Sol.");
+					imp.say(imp.pRow() + 0, 0, "| Rma.");
 					imp.say(imp.pRow() + 0, 15, "| Emissão");
 					imp.say(imp.pRow() + 0, 29, "| Situação");
 					imp.say(imp.pRow() + 0, 45, "| Usuário");
@@ -446,21 +506,28 @@ public class FConsSol extends FFilho implements ActionListener {
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|" + tab.getValor(iLin, 1));
 				imp.say(imp.pRow() + 0, 15, "| " + tab.getValor(iLin, 2));
-				imp.say(imp.pRow() + 0, 29, "| " + vSitSol.elementAt(iLin).toString());
-				String sMotivo = ""+tab.getValor(iLin, 5);
+				imp.say(imp.pRow() + 0, 29, "| " + vSitRMA.elementAt(iLin).toString());
+				String sMotivo = ""+tab.getValor(iLin, 3);
 				imp.say(imp.pRow() + 0, 45, "| " + sMotivo.substring(0, sMotivo.length()>89?89:sMotivo.length()).trim());
 				imp.say(imp.pRow() + 0, 135, "| ");
 
 				if (bImpCot) {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 2, "|" + tab.getValor(iLin, 2));
-					imp.say(imp.pRow() + 0, 15, "|" + tab.getValor(iLin, 5));
+					imp.say(imp.pRow() + 0, 15, "|" + tab.getValor(iLin, 3));
 					imp.say(imp.pRow() + 0, 29, "|");
 					imp.say(imp.pRow() + 0, 41, "|");
 					imp.say(imp.pRow() + 0, 56, "|");
+					imp.say(imp.pRow() + 0, 87, "|" + tab.getValor(iLin, 12));
 					imp.say(imp.pRow() + 0, 105, "|");
 					imp.say(imp.pRow() + 0, 124, "|");
 					imp.say(imp.pRow() + 0, 135, "|");
+				}
+
+				
+				if (tab.getValor(iLin, 9) != null) {
+					bTotalLiq = bTotalLiq.add(new BigDecimal(Funcoes
+							.strCurrencyToDouble("" + tab.getValor(iLin, 9))));
 				}
 
 				if (imp.pRow() >= linPag) {
@@ -477,7 +544,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			con.commit();
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!"
+			Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!\n"
 					+ err.getMessage(),true,con,err);
 		}
 
@@ -488,17 +555,17 @@ public class FConsSol extends FFilho implements ActionListener {
 		}
 	}
 
-	private void abreSol() {
-		int iCodOrc = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
-		if (fPrim.temTela("Solicitação de Compra") == false) {
-			FSolicitacaoCompra tela = new FSolicitacaoCompra();
-			fPrim.criatela("Solicitação de Compra", tela, con);
-			tela.exec(iCodOrc);
+	private void abreRma() {
+		int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
+		if (fPrim.temTela("Requisição de material") == false) {
+			FRma tela = new FRma();
+			fPrim.criatela("Requisição de material", tela, con);
+			tela.exec(iRma);
 		}
 	}
 
     private void getAprova() {
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU " +
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
 				      "AND IDUSU=?";
 		PreparedStatement ps = null;
@@ -511,8 +578,8 @@ public class FConsSol extends FFilho implements ActionListener {
 			ps.setString(3, Aplicativo.strUsuario);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
-				String sExpede = rs.getString("COMPRASUSU");
+				String sAprova = rs.getString("APROVRMAUSU");
+				String sExpede = rs.getString("ALMOXARIFEUSU");
 				if(sAprova!=null){
 					if(!sAprova.equals("ND")) {
 						if(sAprova.equals("TD"))						
@@ -565,11 +632,35 @@ public class FConsSol extends FFilho implements ActionListener {
 
 	}
 
+	private int buscaVlrPadrao() {
+		int iRet = 0;
+		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt("ANOCENTROCUSTO");
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar o ano-base para o centro de custo.\n"
+							+ err.getMessage());
+		}
+
+		return iRet;
+	}
+
 	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
+		lcOP.setConexao(cn);
+		lcSeqOP.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
+		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());		
 		habCampos();
 	}
 }

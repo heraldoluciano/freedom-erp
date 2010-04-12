@@ -1,4 +1,4 @@
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,6 +47,8 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.comum.FBairro;
+import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
+import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 
 public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 

@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.dialog.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

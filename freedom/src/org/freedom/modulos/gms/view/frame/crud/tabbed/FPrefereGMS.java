@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.gms;
+package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
 import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.model.jdbc.DbConnection;
