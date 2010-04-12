@@ -59,7 +59,7 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
-import org.freedom.business.object.webservice.WSCep;
+import org.freedom.business.webservice.WSCep;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;

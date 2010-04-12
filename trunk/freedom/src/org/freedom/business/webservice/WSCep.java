@@ -1,4 +1,4 @@
-package org.freedom.business.object.webservice;
+package org.freedom.business.webservice;
 
 import java.util.HashMap;
 
