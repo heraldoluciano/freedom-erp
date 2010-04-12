@@ -28,6 +28,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.business.object.TipoRecMerc;
@@ -35,13 +37,16 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 
-public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener {
+public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -54,6 +59,12 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 	private JTextFieldPad txtDescProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	
 	private JTextFieldPad txtNroAmostProcRecMerc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
+	
+	private JTextFieldPad txtCodTipoMovCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMovCP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
 
 	private JPanelPad pinCab = new JPanelPad();
 
@@ -70,9 +81,12 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		setTitulo("Cadastro de tipos de recepção de mercadorias");
 		setAtribos( 50, 50, 555, 350);
 
-		setAltCab(90);
+		setAltCab(130);
 		
 		pinCab = new JPanelPad(420,90);
+		
+		montaListaCampos();
+		adicListeners();
 		
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
@@ -82,6 +96,11 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		adicCampo(txtCodTipoRecMerc, 7, 20, 70, 20,"CodTipoRecMerc","Cód.Tp.Rec.",ListaCampos.DB_PK,true);
 		adicCampo(txtDescTipoRecMerc, 80, 20, 267, 20,"DescTipoRecMerc","Descrição do tipo recepção de mercadorias",ListaCampos.DB_SI,true);
 		adicDB( cbTipoRecMerc, 350, 20, 170, 24, "TipoRecMerc", "Tipo de recebimento", true );
+		
+		adicCampo( txtCodTipoMovCP, 7, 60, 70, 20, "codtipomovcp", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovCP, false );
+		adicDescFK( txtDescTipoMovCP, 80, 60, 267, 20, "DescTipoMov", "Descrição do tipo de movimento para compra" );
+		
+		txtCodTipoMovCP.setNomeCampo( "codtipomov" );
 		
 		setListaCampos( true, "TIPORECMERC", "EQ");
 
@@ -95,8 +114,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		
 		adicCampo( txtNroAmostProcRecMerc, 293, 20, 85, 20, "NroAmostProcRecMerc","Nro.Amostras", ListaCampos.DB_SI, true );
 		adicDB( cbTipoProcRecMerc, 381, 20, 139, 24, "TipoProcRecMerc","Tipo de processo", true );
-		
-		
+				
 		setListaCampos( true, "PROCRECMERC", "EQ");
 
 		montaTab();    
@@ -106,12 +124,30 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		tab.setTamColuna(100,2);
 		tab.setTamColuna(110,3);
 
-		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this);  
-		cbTipoRecMerc.addComboBoxListener( this );
 		
 		setImprimir(true);
 
+	}
+	
+	private void adicListeners() {
+		lcTipoMovCP.addCarregaListener( this );
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);  
+		cbTipoRecMerc.addComboBoxListener( this );
+
+	}
+	
+	private void montaListaCampos() {
+		
+		lcTipoMovCP.add( new GuardaCampo( txtCodTipoMovCP, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMovCP.add( new GuardaCampo( txtDescTipoMovCP, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMovCP.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
+				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
+		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovCP.setQueryCommit( false );
+		lcTipoMovCP.setReadOnly( true );
+		txtCodTipoMovCP.setTabelaExterna( lcTipoMovCP );
+		
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -125,6 +161,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 
 	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
+		lcTipoMovCP.setConexao( cn );
 
 	}
 
@@ -188,9 +225,40 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 
-		cbTipoProcRecMerc.limpa();
+
+		if(evt.getComboBoxPad()==cbTipoRecMerc) {
+
+			cbTipoProcRecMerc.limpa();
 		
-		cbTipoProcRecMerc.setItens( TipoRecMerc.getLabelsProcesso( cbTipoRecMerc.getVlrString() ), TipoRecMerc.getValoresProcesso( cbTipoRecMerc.getVlrString() ));
+			cbTipoProcRecMerc.setItens( TipoRecMerc.getLabelsProcesso( cbTipoRecMerc.getVlrString() ), TipoRecMerc.getValoresProcesso( cbTipoRecMerc.getVlrString() ));
+			
+			if ( cbTipoRecMerc.getVlrString().equals( TipoRecMerc.TIPO_RECEBIMENTO_PESAGEM.getValue() ) ) {
+			//	setAltCab( 130 );
+			}
+			else {
+			//	setAltCab( 90 );
+			}
+		}
+
+		
+		
 		
 	}
+	
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+				
+		
+
+					
+	
 }
