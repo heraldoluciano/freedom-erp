@@ -30,9 +30,9 @@ import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.componet.NF;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Layout;
-import org.freedom.library.component.NF;
 import org.freedom.library.swing.frame.Aplicativo;
 
 public class NF033 extends Layout {
