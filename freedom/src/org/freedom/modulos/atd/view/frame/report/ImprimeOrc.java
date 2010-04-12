@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.frame.report;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.sql.PreparedStatement;

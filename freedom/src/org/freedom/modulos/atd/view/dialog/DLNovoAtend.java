@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

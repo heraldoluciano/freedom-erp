@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.frame.report;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;

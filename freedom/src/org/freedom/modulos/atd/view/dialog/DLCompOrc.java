@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.dialog;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
