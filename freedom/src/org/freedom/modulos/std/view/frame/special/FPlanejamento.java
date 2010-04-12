@@ -55,11 +55,11 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.comum.DLAnalBanc;
-import org.freedom.modulos.std.view.dialog.comum.DLPlanAnal;
-import org.freedom.modulos.std.view.dialog.comum.DLPlanPrim;
-import org.freedom.modulos.std.view.dialog.comum.DLPlanSin;
 import org.freedom.modulos.std.view.dialog.report.DLRPlanejamento;
+import org.freedom.modulos.std.view.dialog.tool.DLAnalBanc;
+import org.freedom.modulos.std.view.dialog.tool.DLPlanAnal;
+import org.freedom.modulos.std.view.dialog.tool.DLPlanPrim;
+import org.freedom.modulos.std.view.dialog.tool.DLPlanSin;
 
 public class FPlanejamento extends FFilho implements ActionListener, MouseListener, KeyListener {
 

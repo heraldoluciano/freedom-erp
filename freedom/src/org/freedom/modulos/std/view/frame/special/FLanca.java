@@ -41,7 +41,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
-import org.freedom.modulos.std.view.dialog.comum.DLDataTransf;
+import org.freedom.modulos.std.view.dialog.tool.DLDataTransf;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

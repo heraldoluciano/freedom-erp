@@ -44,7 +44,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.comum.DLBaixaComis;
+import org.freedom.modulos.std.view.dialog.tool.DLBaixaComis;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

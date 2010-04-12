@@ -66,7 +66,7 @@ import org.freedom.modulos.std.view.frame.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.tabbed.FModBoleto;
 import org.freedom.modulos.std.view.frame.tabbed.FMoeda;
 import org.freedom.modulos.std.view.frame.tabbed.FVendedor;
-import org.freedom.modulos.std.view.frame.tools.FProcessaSL;
+import org.freedom.modulos.std.view.frame.tool.FProcessaSL;
 
 public class FreedomFNC extends AplicativoPD {
 

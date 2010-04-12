@@ -47,7 +47,7 @@ import org.freedom.modulos.std.view.frame.tabbed.FCredCli;
 import org.freedom.modulos.std.view.frame.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.tabbed.FMoeda;
 import org.freedom.modulos.std.view.frame.tabbed.FVendedor;
-import org.freedom.modulos.std.view.frame.tools.FGeraFiscal;
+import org.freedom.modulos.std.view.frame.tool.FGeraFiscal;
 
 public class FreedomLVF extends AplicativoPD {
 

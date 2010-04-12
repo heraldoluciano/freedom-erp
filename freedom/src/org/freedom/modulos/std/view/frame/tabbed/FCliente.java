@@ -84,8 +84,8 @@ import org.freedom.library.swing.frame.FMapa;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.atd.view.frame.tabbed.FConveniado;
 import org.freedom.modulos.crm.DLNovoHist;
-import org.freedom.modulos.std.view.dialog.comum.DLGrpCli;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
+import org.freedom.modulos.std.view.dialog.tool.DLGrpCli;
 import org.freedom.objetos.Endereco;
 import org.freedom.webservices.WSCep;
 

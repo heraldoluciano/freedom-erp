@@ -46,8 +46,8 @@ import org.freedom.modulos.std.view.frame.special.FGrupo;
 import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.tabbed.FCredCli;
 import org.freedom.modulos.std.view.frame.tabbed.FMoeda;
-import org.freedom.modulos.std.view.frame.tools.FCpProd;
-import org.freedom.modulos.std.view.frame.tools.FManutPreco;
+import org.freedom.modulos.std.view.frame.tool.FCpProd;
+import org.freedom.modulos.std.view.frame.tool.FManutPreco;
 
 public class FreedomPDV extends AplicativoPDV {
 

@@ -43,7 +43,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.std.view.dialog.comum.DLAltFatLucro;
+import org.freedom.modulos.std.view.dialog.tool.DLAltFatLucro;
 
 public class FRValorEstoque extends FRelatorio {
 	private static final long serialVersionUID = 1L;
