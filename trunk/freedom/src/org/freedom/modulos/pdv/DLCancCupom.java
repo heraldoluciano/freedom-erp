@@ -57,13 +57,13 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.text.TextTefAction;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FDialogo;
 
 public class DLCancCupom extends FDialogo implements ControllerTefListener, ActionListener, MouseListener, KeyListener {
 

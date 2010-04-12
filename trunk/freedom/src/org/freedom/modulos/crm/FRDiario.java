@@ -37,8 +37,8 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FRelatorio;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRDiario extends FRelatorio {
 	private static final long serialVersionUID = 1L;

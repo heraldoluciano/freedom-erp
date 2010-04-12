@@ -30,10 +30,10 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.frame.FTabDados;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.telas.FTabDados;
 
 
 public class FCampanha extends FTabDados{

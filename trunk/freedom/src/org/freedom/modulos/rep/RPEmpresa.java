@@ -44,8 +44,8 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.PainelImagem;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FTabDados;
 
 public class RPEmpresa extends FTabDados {
 

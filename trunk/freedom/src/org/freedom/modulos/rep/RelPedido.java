@@ -50,10 +50,10 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FRelatorio;
 
 public class RelPedido extends FRelatorio implements RadioGroupListener {
 

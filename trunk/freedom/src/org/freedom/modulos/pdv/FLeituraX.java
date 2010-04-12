@@ -34,8 +34,8 @@ import javax.swing.JLayeredPane;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.library.swing.JLabelPad;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.AplicativoPDV;
 
 public class FLeituraX extends FFDialogo implements ActionListener {
 

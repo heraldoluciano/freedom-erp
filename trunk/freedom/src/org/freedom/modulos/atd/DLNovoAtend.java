@@ -50,9 +50,9 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLPrinterJob;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.DLPrinterJob;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private static final long serialVersionUID = 1L;

@@ -62,11 +62,11 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.FOrcamento;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLLoading;
-import org.freedom.telas.FFilho;
-import org.freedom.telas.SwingParams;
+import org.freedom.library.swing.dialog.DLLoading;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.std.view.frame.detail.FOrcamento;
 
 
 /**

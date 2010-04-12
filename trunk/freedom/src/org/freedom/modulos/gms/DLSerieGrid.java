@@ -33,7 +33,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 
 /**

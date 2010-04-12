@@ -48,14 +48,14 @@ import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.AplicativoPDV;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefAction;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FFilho;
 
 public class FAdmTef extends FFilho implements ControllerTefListener, ActionListener {
 

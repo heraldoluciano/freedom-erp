@@ -67,13 +67,13 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.DLEnviarEmail;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLEnviarEmail;
-import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FObservacao;
-import org.freedom.telas.FPrinterJob;
 
 public class RPPedido extends FDetalhe implements CarregaListener, InsertListener, DeleteListener, FocusListener {
 

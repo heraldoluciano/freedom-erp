@@ -44,9 +44,9 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FRelatorio;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRExtratoPrevisto extends FRelatorio {
 

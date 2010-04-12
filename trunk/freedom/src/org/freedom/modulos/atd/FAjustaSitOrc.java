@@ -29,12 +29,12 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.FDados;
 
 import java.util.Vector;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.telas.FDados;
 
 
 public class FAjustaSitOrc extends FDados implements ActionListener, CarregaListener {

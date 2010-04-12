@@ -38,8 +38,8 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.objetos.TipoRecMerc;
-import org.freedom.telas.FDetalhe;
 
 public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener {
 

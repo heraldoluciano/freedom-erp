@@ -35,8 +35,8 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FPrinterJob;
 
 public class FRecursos extends FDados implements ActionListener {
 	private static final long serialVersionUID = 1L;

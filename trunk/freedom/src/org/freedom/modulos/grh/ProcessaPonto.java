@@ -22,8 +22,8 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.PainelImagem;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.Login;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.Login;
 import org.jfree.ui.Align;
 
 public class ProcessaPonto extends JFrame implements ActionListener, KeyListener {

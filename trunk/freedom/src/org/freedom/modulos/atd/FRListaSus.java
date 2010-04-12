@@ -27,6 +27,7 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.FTabDados;
 
 import javax.swing.BorderFactory;
 
@@ -35,7 +36,6 @@ import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.FTabDados;
 
 
 public class FRListaSus extends FTabDados implements PostListener, CheckBoxListener {

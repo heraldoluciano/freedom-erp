@@ -38,9 +38,9 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FRelatorio;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRBordero extends FRelatorio {
 
@@ -193,8 +193,8 @@ public class FRBordero extends FRelatorio {
 			}
 
 			sSQL = "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA," + "R.CODCLI,C.RAZCLI, C.CNPJCLI, " + "C.ENDCOB, C.NUMCOB, C.BAIRCOB, C.CIDCOB, " + "C.UFCOB, C.CEPCOB, " + "C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.CIDCLI, " + "C.UFCLI, C.CEPCLI, " + "IT.VLRPARCITREC, IT.DTPAGOITREC, R.DATAREC, "
-					+ "(SELECT V.STATUSVENDA FROM VDVENDA V " + "WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) + " AND V.CODEMP = R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA)," + "R.DOCREC "
-					+ " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom + " WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) + " AND R.CODEMP=? AND R.CODFILIAL=? AND IT.DTVENCITREC BETWEEN ? AND ? AND"
+					+ "(SELECT V.STATUSVENDA FROM VDVENDA V " + "WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " AND V.CODEMP = R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA)," + "R.DOCREC "
+					+ " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom + " WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " AND R.CODEMP=? AND R.CODFILIAL=? AND IT.DTVENCITREC BETWEEN ? AND ? AND"
 					+ " IT.STATUSITREC IN (?,?) AND R.CODREC = IT.CODREC" + " AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL" + " AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " + sWhere + " ORDER BY C.RAZCLI, R.DOCREC, IT.NPARCITREC";
 
 			try {

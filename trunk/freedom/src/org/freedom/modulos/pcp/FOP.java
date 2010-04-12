@@ -77,14 +77,14 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.dialog.DLJustCanc;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.FRma;
-import org.freedom.modulos.std.DLBuscaProd;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLJustCanc;
-import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FObservacao;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
 
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener {
 

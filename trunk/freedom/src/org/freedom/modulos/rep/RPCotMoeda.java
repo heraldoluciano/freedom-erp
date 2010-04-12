@@ -34,6 +34,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,8 +48,6 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
 
 public class RPCotMoeda extends FDados implements InsertListener, CarregaListener {
 

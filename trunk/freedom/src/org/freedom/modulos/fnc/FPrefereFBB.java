@@ -37,6 +37,8 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FTabDados;
 
 import java.util.Vector;
 
@@ -47,8 +49,6 @@ import javax.swing.SwingConstants;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
 
 public class FPrefereFBB extends FTabDados implements CarregaListener {
 

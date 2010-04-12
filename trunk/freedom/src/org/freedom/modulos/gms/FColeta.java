@@ -33,11 +33,11 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.DLBuscaProd;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
 import org.freedom.objetos.RecMerc;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FPrinterJob;
 
 public class FColeta extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 

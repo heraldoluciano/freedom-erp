@@ -34,7 +34,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.ImprimeLayout;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 @Deprecated
 public class ImprimeOrc extends ImprimeLayout {

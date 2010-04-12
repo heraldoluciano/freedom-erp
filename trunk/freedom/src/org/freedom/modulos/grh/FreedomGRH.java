@@ -25,11 +25,11 @@
 package org.freedom.modulos.grh;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.FEstadoCivil;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FPrincipalPD;
-import org.freedom.telas.LoginPD;
 
 public class FreedomGRH extends AplicativoPD {
 

@@ -65,8 +65,8 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FTabDados;
 
 public class FUsuario extends FTabDados implements PostListener, DeleteListener, CarregaListener, ChangeListener, InsertListener, ActionListener, CheckBoxListener {
  

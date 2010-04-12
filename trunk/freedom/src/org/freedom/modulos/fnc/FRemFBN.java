@@ -64,9 +64,9 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
 
 public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener, RadioGroupListener {
 

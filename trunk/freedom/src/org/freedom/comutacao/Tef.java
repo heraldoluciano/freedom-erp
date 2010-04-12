@@ -41,7 +41,7 @@ import java.util.Properties;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class Tef {
     boolean bAtivo = false;

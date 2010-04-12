@@ -57,12 +57,12 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.FbnUtil.EParcela;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffParcela;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
 
 public abstract class FRetFBN extends FFilho implements ActionListener, MouseListener, KeyListener {
 

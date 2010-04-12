@@ -59,9 +59,9 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.objetos.TipoMov;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
 
 public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxListener, InsertListener, CarregaListener, JComboBoxListener {
 

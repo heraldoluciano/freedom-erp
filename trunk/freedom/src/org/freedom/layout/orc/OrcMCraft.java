@@ -32,7 +32,7 @@ import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class OrcMCraft extends LeiauteGR {
 	private static final long serialVersionUID = 1L;

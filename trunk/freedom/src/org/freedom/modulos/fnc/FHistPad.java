@@ -40,7 +40,7 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FTabDados;
+import org.freedom.library.swing.frame.FTabDados;
 
 public class FHistPad extends FTabDados implements ActionListener, JComboBoxListener {
 

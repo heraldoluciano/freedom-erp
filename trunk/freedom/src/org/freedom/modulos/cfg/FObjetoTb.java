@@ -30,10 +30,10 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.FDetalhe;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
-import org.freedom.telas.FDetalhe;
 
 public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener {
   private static final long serialVersionUID = 1L;

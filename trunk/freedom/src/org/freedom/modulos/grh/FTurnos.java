@@ -35,9 +35,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FPrinterJob;
 
 public class FTurnos extends FDados implements ActionListener {
 

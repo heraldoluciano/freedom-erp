@@ -38,11 +38,11 @@ import java.util.List;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.modulos.fnc.SiaccUtil.RegJ;
-import org.freedom.telas.Aplicativo;
 
 
 public class FRetSiacc extends FRetFBN {

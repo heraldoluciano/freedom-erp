@@ -42,11 +42,11 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.FBairro;
 import org.freedom.objetos.RecMerc;
 import org.freedom.objetos.TipoRecMerc;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDetalhe;
 
 public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 

@@ -22,10 +22,10 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.FFDialogo;
 
 /**
  * Dialogo de ajuste para campos não compatíveis entre Contato e Cliente.

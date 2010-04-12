@@ -52,11 +52,11 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
-import org.freedom.modulos.std.FCliente;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FAndamento;
+import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 import org.freedom.objetos.Endereco;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FAndamento;
-import org.freedom.telas.FTabDados;
 import org.freedom.webservices.WSCep;
 
 

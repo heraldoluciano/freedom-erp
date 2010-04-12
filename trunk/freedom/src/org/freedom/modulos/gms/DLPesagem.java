@@ -56,10 +56,10 @@ import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.objetos.TipoRecMerc;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.SwingParams;
 
 public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
 

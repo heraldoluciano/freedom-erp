@@ -41,7 +41,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FRelatorio;
+import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRClienteRetorno extends FRelatorio {
   private static final long serialVersionUID = 1L;	

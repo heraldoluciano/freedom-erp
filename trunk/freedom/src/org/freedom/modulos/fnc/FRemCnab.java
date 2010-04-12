@@ -48,6 +48,8 @@ import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Bradesco;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;
@@ -62,8 +64,6 @@ import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffRec;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
 
 
 public class FRemCnab extends FRemFBN {

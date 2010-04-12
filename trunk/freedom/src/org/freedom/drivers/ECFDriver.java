@@ -8,7 +8,7 @@ import org.freedom.ecf.driver.STResult;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.telas.AplicativoPDV;
+import org.freedom.library.swing.frame.AplicativoPDV;
 
 public class ECFDriver {
 

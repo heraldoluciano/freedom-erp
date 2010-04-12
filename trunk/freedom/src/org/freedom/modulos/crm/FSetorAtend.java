@@ -36,7 +36,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDetalhe;
+import org.freedom.library.swing.frame.FDetalhe;
 
 public class FSetorAtend extends FDetalhe implements ActionListener {
   private static final long serialVersionUID = 1L;

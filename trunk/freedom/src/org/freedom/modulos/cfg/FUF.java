@@ -40,9 +40,9 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.DLRUf;
-import org.freedom.telas.FDados;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.frame.FDados;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.std.view.dialog.report.DLRUf;
 
 
 public class FUF extends FDados {

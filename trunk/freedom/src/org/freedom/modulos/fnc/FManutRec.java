@@ -70,14 +70,14 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.FAtendimento;
 import org.freedom.modulos.fnc.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.DLEditaRec.EColRet;
-import org.freedom.modulos.std.DLCancItem;
-import org.freedom.modulos.std.DLConsultaVenda;
-import org.freedom.modulos.std.DLImpBoletoRec;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.modulos.std.view.dialog.comum.DLCancItem;
+import org.freedom.modulos.std.view.dialog.comum.DLConsultaVenda;
+import org.freedom.modulos.std.view.dialog.comum.DLImpBoletoRec;
 
 public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener {
 

@@ -35,12 +35,12 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
 
 import java.util.Vector;
 
 import org.freedom.bmps.Icone;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDetalhe;
 
 
 public class FContrato extends FDetalhe implements ActionListener{

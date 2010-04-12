@@ -30,7 +30,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDetalhe;
+import org.freedom.library.swing.frame.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {
   private static final long serialVersionUID = 1L;

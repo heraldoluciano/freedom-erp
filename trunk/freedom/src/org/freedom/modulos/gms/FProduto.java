@@ -71,11 +71,11 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.PainelImagem;
-import org.freedom.modulos.std.DLRProduto;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FAndamento;
+import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.std.view.dialog.report.DLRProduto;
 import org.freedom.objetos.ObjetoCustosProd;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FAndamento;
-import org.freedom.telas.FTabDados;
 
 public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener, CarregaListener, RadioGroupListener, PostListener {
 

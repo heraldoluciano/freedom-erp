@@ -23,12 +23,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
 import org.freedom.modulos.nfe.DLInconsistency;
-import org.freedom.telas.Aplicativo;
 
 /**
  * Classe para manipulação de conexão com banco de dados NFE.

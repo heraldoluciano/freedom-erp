@@ -31,6 +31,8 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FTabDados;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,8 +46,6 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
 
 public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener, InsertListener {
 
