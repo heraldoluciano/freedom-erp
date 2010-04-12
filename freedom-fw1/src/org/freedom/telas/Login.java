@@ -25,14 +25,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPasswordFieldPad;
+import org.freedom.library.JTextFieldPad;
+
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPasswordFieldPad;
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
 public abstract class Login extends FDialogo implements ActionListener, FocusListener {

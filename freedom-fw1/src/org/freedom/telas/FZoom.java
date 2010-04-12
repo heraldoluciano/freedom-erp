@@ -29,14 +29,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JDialog;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.PainelImagem;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.PainelImagem;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 

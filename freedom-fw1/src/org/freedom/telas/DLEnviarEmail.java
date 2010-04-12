@@ -47,7 +47,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
@@ -56,14 +55,15 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JPasswordFieldPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JPasswordFieldPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ProcessoSec;
 import org.freedom.modulos.rep.RPPrefereGeral;
 
 public class DLEnviarEmail extends FFDialogo {

@@ -30,11 +30,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ListaCampos;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -44,7 +40,11 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ImprimeOS;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.ListaCampos;
 
 public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {private static final long serialVersionUID = 1L;
 	

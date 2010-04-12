@@ -56,15 +56,15 @@ import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JMenuPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;
-import org.freedom.componentes.StatusBar;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JMenuPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTabbedPanePad;
+import org.freedom.library.StatusBar;
+import org.freedom.library.Tabela;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 

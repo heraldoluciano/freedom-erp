@@ -28,11 +28,11 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextAreaPad;
 
 /**
  * @author robson

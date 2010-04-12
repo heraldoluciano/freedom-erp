@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.ListaCampos;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;

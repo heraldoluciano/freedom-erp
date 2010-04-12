@@ -25,11 +25,11 @@ package org.freedom.telas;
 
 import java.util.Date;
 
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JTextFieldFK;
 
-import org.freedom.componentes.JTextFieldPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
 
 public class DLInfo extends FFDialogo {
 

@@ -20,7 +20,7 @@
 
 package org.freedom.acao;
 
-import org.freedom.componentes.Tabela;
+import org.freedom.library.Tabela;
 public class TabelaEditEvent {
   private Tabela tab = null;
   public TabelaEditEvent(Tabela tb) {

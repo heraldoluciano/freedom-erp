@@ -19,7 +19,7 @@
  */
 
 package org.freedom.acao;
-import org.freedom.componentes.JComboBoxPad;
+import org.freedom.library.JComboBoxPad;
 public class JComboBoxEvent {
   private JComboBoxPad cBox = null;
   private int Indice = -1;

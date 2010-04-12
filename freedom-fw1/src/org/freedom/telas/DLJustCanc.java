@@ -22,8 +22,8 @@ package org.freedom.telas;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JTextAreaPad;
 
 
 public class DLJustCanc extends FFDialogo {

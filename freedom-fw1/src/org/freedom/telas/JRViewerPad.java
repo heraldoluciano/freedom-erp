@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.freedom.componentes.JButtonPad;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.EmailBean;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
 
 
 public class JRViewerPad extends JRViewer {

@@ -36,12 +36,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.SystemFunctions;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTabbedPanePad;
 
 public class FSobre extends FFDialogo {
 

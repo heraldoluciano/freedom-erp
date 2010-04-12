@@ -29,8 +29,9 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;
+
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTabbedPanePad;
 
 public class FTabDados extends FDados implements KeyListener {
 

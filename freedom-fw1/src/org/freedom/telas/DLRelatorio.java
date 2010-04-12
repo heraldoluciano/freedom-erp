@@ -30,8 +30,10 @@ import java.awt.Container;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JDialog;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JPanelPad;
+
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
+
 import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;

@@ -21,7 +21,7 @@
 
 package org.freedom.acao;
 
-import org.freedom.componentes.Tabela;
+import org.freedom.library.Tabela;
 public class TabelaSelEvent {
   private Tabela tab = null;
   public TabelaSelEvent(Tabela tb) {
