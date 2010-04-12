@@ -27,16 +27,16 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.util.Vector;
 
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Tabela;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Navegador;
+import org.freedom.library.Tabela;
 import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {

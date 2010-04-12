@@ -28,19 +28,20 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.util.Vector;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListener, RadioGroupListener {

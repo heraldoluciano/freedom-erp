@@ -42,12 +42,12 @@ import java.util.HashSet;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Bradesco;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.ListaCampos;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;

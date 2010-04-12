@@ -26,18 +26,19 @@ package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;

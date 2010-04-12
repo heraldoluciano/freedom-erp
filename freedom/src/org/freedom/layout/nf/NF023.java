@@ -24,11 +24,11 @@ package org.freedom.layout.nf;
 
 import java.util.Vector;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.NF;
 import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Layout;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.NF;
 
 public class NF023 extends Layout {
 

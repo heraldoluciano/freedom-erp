@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JLabelPad;
+import org.freedom.library.JLabelPad;
 import org.freedom.modulos.pcp.DLAcaoCorretiva.EMs;
 import org.freedom.telas.FFDialogo;
 

@@ -23,11 +23,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.NF;
 import org.freedom.telas.Aplicativo;
 
 public class NF07 extends Layout {

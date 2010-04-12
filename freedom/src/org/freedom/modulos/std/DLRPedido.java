@@ -21,6 +21,10 @@
 
 package org.freedom.modulos.std;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.ListaCampos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +32,6 @@ import java.util.Vector;
 
 import javax.swing.JCheckBox;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 public class DLRPedido extends FFDialogo {

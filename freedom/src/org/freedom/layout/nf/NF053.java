@@ -23,10 +23,10 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Vector;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Layout;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.NF;
 
 public class NF053 extends Layout {
     	

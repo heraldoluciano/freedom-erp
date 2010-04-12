@@ -24,11 +24,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLSubGrupo extends FFDialogo {

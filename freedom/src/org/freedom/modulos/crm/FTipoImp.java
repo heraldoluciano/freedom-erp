@@ -39,13 +39,13 @@ import org.freedom.acao.DeleteListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Tabela;
 import org.freedom.telas.FDados;
 
 

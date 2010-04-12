@@ -30,9 +30,9 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class RPPagar extends FDados implements ActionListener {

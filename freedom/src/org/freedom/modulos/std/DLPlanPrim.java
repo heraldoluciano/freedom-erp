@@ -27,13 +27,13 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTabbedPanePad;
 
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTabbedPanePad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanPrim extends FFDialogo {

@@ -25,10 +25,10 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.Tabela;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.Tabela;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaLFSaida extends DLRelatorio {

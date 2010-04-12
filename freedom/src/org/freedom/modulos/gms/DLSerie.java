@@ -33,13 +33,13 @@ import java.util.Date;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 

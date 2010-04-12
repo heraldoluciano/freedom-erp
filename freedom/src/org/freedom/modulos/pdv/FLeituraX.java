@@ -31,9 +31,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLayeredPane;
 
-import org.freedom.componentes.JLabelPad;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JLabelPad;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 

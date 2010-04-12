@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.ListaCampos;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;

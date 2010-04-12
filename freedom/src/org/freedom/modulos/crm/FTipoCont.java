@@ -22,8 +22,9 @@
 
 package org.freedom.modulos.crm;
 import java.awt.event.ActionListener;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FTipoCont extends FDados implements ActionListener {

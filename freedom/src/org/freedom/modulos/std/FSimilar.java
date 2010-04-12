@@ -24,17 +24,17 @@ package org.freedom.modulos.std;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FSimilar extends FDetalhe implements CarregaListener, InsertListener, PostListener {

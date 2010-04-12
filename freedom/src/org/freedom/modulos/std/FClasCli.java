@@ -30,11 +30,11 @@ import java.sql.ResultSet;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 

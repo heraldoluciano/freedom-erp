@@ -23,17 +23,17 @@
 package org.freedom.modulos.atd;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldPad;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 

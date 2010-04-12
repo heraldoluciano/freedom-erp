@@ -27,9 +27,9 @@ import java.awt.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JTextFieldPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaPag extends FFDialogo {

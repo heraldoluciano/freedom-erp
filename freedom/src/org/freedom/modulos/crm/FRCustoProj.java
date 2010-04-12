@@ -25,6 +25,12 @@ package org.freedom.modulos.crm;
 
 import java.awt.Component;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,11 +43,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;

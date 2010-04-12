@@ -24,9 +24,9 @@ package org.freedom.modulos.crm;
 
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JRadioGroup;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 public class DLRTipoAtendo extends FFDialogo {

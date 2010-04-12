@@ -25,9 +25,9 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.util.Vector;
 
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
 import org.freedom.telas.FFilho;
 
 public class FVisual extends FFilho {

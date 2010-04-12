@@ -42,13 +42,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Tabela;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 

@@ -33,16 +33,16 @@ import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Tabela;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JRadioGroup;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Navegador;
+import org.freedom.library.Tabela;
 import org.freedom.telas.FTabDados;
 
 public class FConta extends FTabDados implements CheckBoxListener, RadioGroupListener {

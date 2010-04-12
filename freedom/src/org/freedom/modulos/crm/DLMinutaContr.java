@@ -2,7 +2,7 @@ package org.freedom.modulos.crm;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JTextAreaPad;
+import org.freedom.library.JTextAreaPad;
 import org.freedom.telas.FDialogo;
 
 

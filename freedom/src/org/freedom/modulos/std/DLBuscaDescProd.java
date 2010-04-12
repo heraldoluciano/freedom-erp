@@ -2,8 +2,9 @@ package org.freedom.modulos.std;
 
 
 import javax.swing.JScrollPane;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextAreaPad;
+
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextAreaPad;
 import org.freedom.telas.FDialogo;
 
 public class DLBuscaDescProd extends FDialogo {

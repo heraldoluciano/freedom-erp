@@ -28,16 +28,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.ImprimeOS;
+import org.freedom.library.JComboBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FTratRet extends FDetalhe implements ActionListener {

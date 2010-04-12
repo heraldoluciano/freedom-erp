@@ -24,9 +24,9 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JTextFieldPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLDescontItVenda extends FFDialogo {

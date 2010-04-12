@@ -26,9 +26,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.Aplicativo;
 
 public class OPApr extends LeiauteGR {

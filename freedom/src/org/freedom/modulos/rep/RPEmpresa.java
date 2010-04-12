@@ -34,16 +34,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
-import org.freedom.componentes.PainelImagem;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.Navegador;
+import org.freedom.library.PainelImagem;
+import org.freedom.library.Tabela;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 

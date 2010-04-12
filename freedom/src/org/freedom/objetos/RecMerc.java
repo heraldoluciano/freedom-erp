@@ -5,8 +5,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
-import org.freedom.componentes.JLabelPad;
 import org.freedom.infra.pojos.Constant;
+import org.freedom.library.JLabelPad;
 
 public class RecMerc implements java.io.Serializable {
 	

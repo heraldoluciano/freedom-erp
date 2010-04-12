@@ -28,10 +28,10 @@ import java.math.BigDecimal;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFinalizaOP extends FFDialogo implements FocusListener{

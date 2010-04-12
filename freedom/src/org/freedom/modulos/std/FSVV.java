@@ -40,18 +40,18 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JButtonPad;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ProcessoSec;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.JButtonPad;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JPanelPad;
+import org.freedom.library.JTextFieldFK;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+import org.freedom.library.ProcessoSec;
+import org.freedom.library.Tabela;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 

@@ -22,16 +22,17 @@
 package org.freedom.modulos.pcp;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 

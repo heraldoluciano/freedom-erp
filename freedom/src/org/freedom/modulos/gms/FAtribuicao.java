@@ -23,7 +23,6 @@
 package org.freedom.modulos.gms;
 import java.awt.event.ActionListener;
 
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -31,10 +30,11 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.library.JCheckBoxPad;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JTextAreaPad;
+import org.freedom.library.JTextFieldPad;
+import org.freedom.library.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {

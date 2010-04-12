@@ -25,10 +25,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
+import org.freedom.library.ImprimeOS;
 import org.freedom.telas.Aplicativo;
 
 public class PVNCACongelados extends Leiaute {

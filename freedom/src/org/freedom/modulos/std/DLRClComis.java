@@ -20,9 +20,9 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.componentes.JLabelPad;
 
-import org.freedom.componentes.JRadioGroup;
+import org.freedom.library.JLabelPad;
+import org.freedom.library.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 
