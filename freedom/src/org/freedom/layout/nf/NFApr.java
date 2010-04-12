@@ -27,8 +27,8 @@ import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.layout.componentes.Leiaute;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.component.Leiaute;
 import org.freedom.library.swing.frame.Aplicativo;
 
 public class NFApr extends Leiaute {

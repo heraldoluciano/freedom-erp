@@ -22,6 +22,9 @@
 
 package org.freedom.modulos.std.view.frame.report;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.layout.graphics.BalanceteBarras;
+import org.freedom.layout.graphics.BalancetePizza;
+import org.freedom.layout.graphics.DLExibePizza;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
@@ -42,9 +45,6 @@ import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.graficos.BalanceteBarras;
-import org.freedom.graficos.BalancetePizza;
-import org.freedom.graficos.DLExibePizza;
 
 public class FRBalanceteGrafico extends FRelatorio {
 	private static final long serialVersionUID = 1L;

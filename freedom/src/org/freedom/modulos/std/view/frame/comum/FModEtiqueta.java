@@ -52,7 +52,7 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.objetos.ObjetoEtiquetaCli;
+import org.freedom.objetos.EtiquetaCli;
 
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener, CheckBoxListener {
 
@@ -74,7 +74,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     private ListaCampos lcPapel = new ListaCampos(this,"PL");
     private Vector<?> vTamanhos = new Vector<Object>();
     private JCheckBoxPad cbComprimido = new JCheckBoxPad("Imprime Comprimido","S","N");
-	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+	EtiquetaCli objEtiqCli = new EtiquetaCli();
 	private final JCheckBoxPad cbPosScript = new JCheckBoxPad( "Gráfico?", "S", "N" );	
 	private JLabelPad labelEtiq = new JLabelPad("Etiqueta");
 	

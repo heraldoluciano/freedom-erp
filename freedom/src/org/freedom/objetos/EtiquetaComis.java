@@ -22,9 +22,9 @@ package org.freedom.objetos;
 
 import org.freedom.objetos.ObjetoEtiqueta;
 
-public class ObjetoEtiquetaComis extends ObjetoEtiqueta {
+public class EtiquetaComis extends ObjetoEtiqueta {
 
-  public ObjetoEtiquetaComis() { 	
+  public EtiquetaComis() { 	
 	  
       adicOpcao("Código do vendedor","#CODIGO#","CODVEND",new Integer(8),null,"Cód.Vend.");
       adicOpcao("Nome do vendedor","#NOME#","NOMEVEND",new Integer(40),null,"Nome Vend.");      
