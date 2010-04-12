@@ -46,7 +46,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
-import org.freedom.library.StringDireita;
+import org.freedom.library.type.StringDireita;
 
 public class JTablePad extends JTable implements TabelaEditListener, TabelaSelListener {
 

@@ -1,10 +1,11 @@
-package org.freedom.library;
+package org.freedom.library.business;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.telas.Aplicativo;
 
 

@@ -23,7 +23,7 @@ package org.freedom.library.swing;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;

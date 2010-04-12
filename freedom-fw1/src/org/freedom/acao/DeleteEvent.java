@@ -20,7 +20,7 @@
 
 
 package org.freedom.acao;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 public class DeleteEvent {
   private ListaCampos lcCampos = null;
   public boolean ok = false;

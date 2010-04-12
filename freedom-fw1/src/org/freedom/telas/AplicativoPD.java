@@ -44,7 +44,7 @@ import org.freedom.bmps.Imagem;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.modulos.std.FPrefereGeral;
 import org.freedom.objetos.ObjetoEmpresa;

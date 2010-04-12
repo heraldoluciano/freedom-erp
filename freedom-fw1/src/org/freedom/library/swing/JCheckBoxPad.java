@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 
 /**
  * Customisa JCheckBox.

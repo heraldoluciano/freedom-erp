@@ -25,7 +25,7 @@
  * Comentários sobre a classe...
  *  
  */
-package org.freedom.library;
+package org.freedom.library.component;
 
 import java.math.BigDecimal;
 import java.util.Date;

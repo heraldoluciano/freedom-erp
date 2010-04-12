@@ -24,10 +24,10 @@ package org.freedom.modulos.crm.agenda;
 
 import java.awt.BorderLayout;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.Navegador;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
 
 import javax.swing.JLabel;
 

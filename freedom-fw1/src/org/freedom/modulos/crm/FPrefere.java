@@ -18,8 +18,8 @@ package org.freedom.modulos.crm;
 import javax.swing.BorderFactory;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JPasswordFieldPad;

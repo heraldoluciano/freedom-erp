@@ -43,11 +43,11 @@ import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.StringDireita;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.type.StringDireita;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1055,15 +1055,7 @@ public class Funcoes {
 		return sRet;
 	}
 
-	public static String tiraAcentos(String sTexto) {
-		String sRet = "";
-		char cVals[] = sTexto.toCharArray();
-		for (int i = 0; i < cVals.length; i++) {
-			cVals[i] = tiraAcento(cVals[i]);
-		}
-		sRet = new String(cVals);
-		return sRet;
-	}
+
 	
 	public static String arrayToString(String[] lista, String sep) {
 	    String result = "";
@@ -1088,47 +1080,6 @@ public class Funcoes {
 	}
 
 	
-	public static char tiraAcento(char cKey) {
-
-		char cTmp = cKey;
-
-		if (contido(cTmp, "ãâáàä"))
-			cTmp = 'a';
-		else if (contido(cTmp, "ÃÂÁÀÄ"))
-			cTmp = 'A';
-		else if (contido(cTmp, "êéèë"))
-			cTmp = 'e';
-		else if (contido(cTmp, "ÊÉÈË"))
-			cTmp = 'E';
-		else if (contido(cTmp, "îíìï"))
-			cTmp = 'i';
-		else if (contido(cTmp, "ÎÍÌÏ"))
-			cTmp = 'I';
-		else if (contido(cTmp, "õôóòö"))
-			cTmp = 'o';
-		else if (contido(cTmp, "ÕÔÓÒÖ"))
-			cTmp = 'O';
-		else if (contido(cTmp, "ûúùü"))
-			cTmp = 'u';
-		else if (contido(cTmp, "ÛÚÙÜ"))
-			cTmp = 'U';
-		else if (contido(cTmp, "ç"))
-			cTmp = 'c';
-		else if (contido(cTmp, "Ç"))
-			cTmp = 'C';
-		return cTmp;
-	}
-
-	public static boolean contido(char cTexto, String sTexto) {
-		boolean bRetorno = false;
-		for (int i = 0; i < sTexto.length(); i++) {
-			if (cTexto == sTexto.charAt(i)) {
-				bRetorno = true;
-				break;
-			}
-		}
-		return bRetorno;
-	}
 
 	public static String adicionaEspacos(String sTexto, int iTamanho) {
 		int iTamIni = 0;

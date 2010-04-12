@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.component;
 import java.io.FileInputStream;
 
 public class DadosImagem {

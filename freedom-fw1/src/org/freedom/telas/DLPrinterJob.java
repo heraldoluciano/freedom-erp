@@ -39,7 +39,7 @@ import javax.swing.SwingConstants;
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ImprimeLayout;
+import org.freedom.library.swing.ImprimeLayout;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;

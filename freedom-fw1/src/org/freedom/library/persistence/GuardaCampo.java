@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.persistence;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.InputStream;
@@ -28,6 +28,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.component.DadosImagem;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JPasswordFieldPad;
@@ -35,6 +36,7 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.PainelImagem;
 
 public class GuardaCampo extends Component {
 	/**

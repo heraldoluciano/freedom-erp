@@ -42,7 +42,7 @@ import javax.swing.border.Border;
 import org.freedom.acao.DefaultRadioGroupListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 
 
 public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyListener {

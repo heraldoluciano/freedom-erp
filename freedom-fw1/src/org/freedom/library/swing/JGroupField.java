@@ -22,8 +22,8 @@ package org.freedom.library.swing;
 import java.awt.Component;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

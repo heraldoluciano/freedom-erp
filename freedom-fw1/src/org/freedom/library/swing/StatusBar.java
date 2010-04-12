@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,8 +33,6 @@ import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
 import org.freedom.telas.SwingParams;
 
 import javax.swing.SwingConstants;
