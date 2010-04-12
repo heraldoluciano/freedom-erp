@@ -44,10 +44,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -55,7 +55,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 
 	private static final long serialVersionUID = 1L;
 
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private FlowLayout flCliRod = new FlowLayout(FlowLayout.CENTER, 0, 0);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));

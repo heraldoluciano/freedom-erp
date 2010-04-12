@@ -38,11 +38,11 @@ import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
@@ -58,7 +58,7 @@ public class FAliquota extends FFDialogo {
 
 	private final JButtonPad btInsere = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private final Tabela tab = new Tabela();
+	private final JTablePad tab = new JTablePad();
 
 	private final JScrollPane spnTab = new JScrollPane( tab );
 

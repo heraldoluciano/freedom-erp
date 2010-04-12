@@ -31,12 +31,12 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {
@@ -77,7 +77,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 
 	private JPanelPad pinRod = new JPanelPad( 370, 80 );
 
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 

@@ -31,8 +31,8 @@ import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.FFDialogo;
 
 
@@ -52,7 +52,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 
 	private JPanelPad panelGrid = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private Tabela tabItens = new Tabela();
+	private JTablePad tabItens = new JTablePad();
 	
 	private Integer codemp;
 	
@@ -363,7 +363,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
     
 	
 	public void mouseClicked( MouseEvent mevt ) {
-		Tabela tabEv = (Tabela) mevt.getSource();
+		JTablePad tabEv = (JTablePad) mevt.getSource();
 		
 		if ( mevt.getClickCount() == 2 ) {					
 			if( tabEv == tabItens && tabEv.getLinhaSel() > -1 ) {

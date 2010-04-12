@@ -20,8 +20,8 @@
  */
 package org.freedom.modulos.crm;
 
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 

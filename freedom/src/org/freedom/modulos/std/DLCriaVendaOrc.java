@@ -2,8 +2,8 @@ package org.freedom.modulos.std;
 
 import java.awt.event.KeyEvent;
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDialogo;
 
 public class DLCriaVendaOrc extends FDialogo {

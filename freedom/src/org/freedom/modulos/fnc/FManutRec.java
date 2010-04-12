@@ -60,16 +60,16 @@ import org.freedom.funcoes.boleto.Banco;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.crm.FAtendimento;
 import org.freedom.modulos.fnc.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.DLEditaRec.EColRet;
@@ -99,15 +99,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
-	private Tabela tabBaixa = new Tabela();
+	private JTablePad tabBaixa = new JTablePad();
 
 	private JScrollPane spnBaixa = new JScrollPane( tabBaixa );
 
-	private Tabela tabManut = new Tabela();
+	private JTablePad tabManut = new JTablePad();
 
 	private JScrollPane spnManut = new JScrollPane( tabManut );
 
-	private Tabela tabConsulta = new Tabela();
+	private JTablePad tabConsulta = new JTablePad();
 
 	private JScrollPane spnConsulta = new JScrollPane( tabConsulta );
 

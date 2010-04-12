@@ -33,10 +33,10 @@ import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JRadioGroup;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JRadioGroup;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 

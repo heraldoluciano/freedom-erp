@@ -46,16 +46,16 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -86,7 +86,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private JPanelPad pnlbFiltros = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
-	private Tabela tabCli = new Tabela();
+	private JTablePad tabCli = new JTablePad();
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

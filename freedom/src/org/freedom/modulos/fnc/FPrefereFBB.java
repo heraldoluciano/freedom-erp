@@ -28,15 +28,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.util.Vector;
 
@@ -189,9 +189,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final Navegador nvCnab = new Navegador( true );
 	
-	private final Tabela tabSiacc = new Tabela();
+	private final JTablePad tabSiacc = new JTablePad();
 	
-	private final Tabela tabCnab = new Tabela();
+	private final JTablePad tabCnab = new JTablePad();
 	
 	public static final String TP_SIACC = "01";
 	

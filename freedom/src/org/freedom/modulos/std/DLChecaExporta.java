@@ -38,8 +38,8 @@ import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaExporta extends DLRelatorio {
@@ -52,7 +52,7 @@ public class DLChecaExporta extends DLRelatorio {
 	
 	private DbConnection con = null;
 
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
 	
 	private final String tipo;
 	

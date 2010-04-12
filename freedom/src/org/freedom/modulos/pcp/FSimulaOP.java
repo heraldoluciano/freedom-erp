@@ -38,13 +38,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 	
@@ -62,7 +62,7 @@ public class FSimulaOP extends FDados implements ActionListener, CarregaListener
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	private JButtonPad btGerar = new JButtonPad( "Simular", Icone.novo( "btExecuta.gif" ) );
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	private JScrollPane scroll = new JScrollPane( tab );
 	private ListaCampos lcProdEst = new ListaCampos( this );
 	

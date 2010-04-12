@@ -30,11 +30,11 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {

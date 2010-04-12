@@ -27,12 +27,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class DLConsultaPgto extends FFDialogo {
 
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private Tabela tabConsulta = new Tabela();
+  private JTablePad tabConsulta = new JTablePad();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private ListaCampos lcCli = new ListaCampos(this);
   private JPanelPad pinConsulta = new JPanelPad(0,60);

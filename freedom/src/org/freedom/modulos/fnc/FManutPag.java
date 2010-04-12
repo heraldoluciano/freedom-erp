@@ -57,16 +57,16 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.DLCancItem;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -99,7 +99,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
-	private Tabela tabConsulta = new Tabela();
+	private JTablePad tabConsulta = new JTablePad();
 
 	private JScrollPane spnConsulta = new JScrollPane( tabConsulta );
 
@@ -111,7 +111,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JPanelPad pnBaixa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private Tabela tabBaixa = new Tabela();
+	private JTablePad tabBaixa = new JTablePad();
 
 	private JScrollPane spnBaixa = new JScrollPane( tabBaixa );
 
@@ -123,7 +123,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JPanelPad pnManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private Tabela tabManut = new Tabela();
+	private JTablePad tabManut = new JTablePad();
 
 	private JScrollPane spnManut = new JScrollPane( tabManut );
 

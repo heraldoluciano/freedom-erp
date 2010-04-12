@@ -52,14 +52,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -99,9 +99,9 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	private final JTextFieldFK txtPretensaoSalCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private Tabela tabCand = new Tabela();
+	private JTablePad tabCand = new JTablePad();
 
-	private Tabela tabVagas = new Tabela();
+	private JTablePad tabVagas = new JTablePad();
 
 	private JButtonPad btRefreshCand = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -807,7 +807,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		try {
 			
 			String tipo = "C";
-			Tabela tab = tabCand;
+			JTablePad tab = tabCand;
 			String mensagem1 = "Confirma o encaminhamento do(s) candidato(s) para a vaga?";
 			
 			if ( tpn.getSelectedIndex() == 1 ) {
@@ -882,7 +882,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		try {
 			
 			String tipo = "C";
-			Tabela tab = tabCand;
+			JTablePad tab = tabCand;
 			String mensagem1 = "Confirma o efetivaçao do(s) candidato(s) para a vaga?";
 			
 			if ( tpn.getSelectedIndex() == 1 ) {
@@ -976,7 +976,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		Tabela tabEv = (Tabela) mevt.getSource();
+		JTablePad tabEv = (JTablePad) mevt.getSource();
 
 		if ( mevt.getClickCount() == 1 ) {
 		}

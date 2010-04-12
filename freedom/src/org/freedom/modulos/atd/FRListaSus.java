@@ -23,10 +23,10 @@
 package org.freedom.modulos.atd;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import javax.swing.BorderFactory;
 

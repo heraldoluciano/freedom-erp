@@ -30,8 +30,8 @@ import java.sql.SQLException;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FTipoRec extends FDados implements ActionListener {

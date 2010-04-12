@@ -32,15 +32,15 @@ import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,7 +94,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private final JButtonPad btExcluirTudo = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private final Tabela tabGrid = new Tabela();
+	private final JTablePad tabGrid = new JTablePad();
 
 	private final JScrollPane spnGrid = new JScrollPane( tabGrid );
 

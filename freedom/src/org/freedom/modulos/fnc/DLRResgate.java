@@ -26,9 +26,9 @@ package org.freedom.modulos.fnc;
 import java.awt.Component;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLRResgate extends FFDialogo {

@@ -14,9 +14,9 @@ import javax.swing.JScrollPane;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -29,7 +29,7 @@ public class DLRestrCli extends FFDialogo {
 	private static final long serialVersionUID = -1042635082152391826L;
 	private static boolean OK = true;
 	private static List<?> listrestr = null;
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	private final JPanelPad pnTab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	private JScrollPane spn = new JScrollPane(tab);
 	public DLRestrCli( final Component cOrig ) {

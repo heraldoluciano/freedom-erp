@@ -21,8 +21,8 @@
  */
 
 package org.freedom.modulos.cfg;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FAjustaSeq extends FDados {

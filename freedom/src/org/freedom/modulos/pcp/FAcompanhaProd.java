@@ -40,14 +40,14 @@ import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -103,7 +103,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private Vector<String> vLabsStatus = new Vector<String>();
 	
-	private Tabela tab = new Tabela();
+	private JTablePad tab = new JTablePad();
 	
 	private JScrollPane spnTab = new JScrollPane( tab );
 	
@@ -431,7 +431,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		Tabela tabEv = (Tabela) mevt.getSource();
+		JTablePad tabEv = (JTablePad) mevt.getSource();
 		
 		 if ( mevt.getClickCount() == 2 ) {		
 			 

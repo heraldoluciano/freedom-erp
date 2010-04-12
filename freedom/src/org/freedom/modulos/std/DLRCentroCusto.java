@@ -24,8 +24,8 @@ import java.awt.Component;
 import java.util.Vector;
 
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JRadioGroup;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 public class DLRCentroCusto extends FFDialogo {

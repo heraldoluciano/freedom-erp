@@ -34,12 +34,12 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;

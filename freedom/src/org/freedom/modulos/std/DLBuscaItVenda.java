@@ -39,13 +39,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -71,9 +71,9 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
   private JTextFieldPad txtVlrProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtVlrDesc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtVlrLiq = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-  private Tabela tab = new Tabela();
+  private JTablePad tab = new JTablePad();
   private JScrollPane spnTab = new JScrollPane(tab);
-  private Tabela tabVenda = new Tabela();
+  private JTablePad tabVenda = new JTablePad();
   private JScrollPane spnTabVenda = new JScrollPane(tabVenda);
   private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
   private JButtonPad btTudoVenda = new JButtonPad(Icone.novo("btTudo.gif"));
@@ -305,12 +305,12 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
      return vRet;
   }
   
-  private void carregaTudo(Tabela tb) {
+  private void carregaTudo(JTablePad tb) {
     for (int i=0; i<tb.getNumLinhas(); i++) {
       tb.setValor(new Boolean(true),i,0);
     }
   }
-  private void carregaNada(Tabela tb) {
+  private void carregaNada(JTablePad tb) {
     for (int i=0; i<tb.getNumLinhas(); i++) {
       tb.setValor(new Boolean(false),i,0);
     }

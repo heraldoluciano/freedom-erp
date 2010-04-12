@@ -21,11 +21,11 @@
 
 package org.freedom.modulos.crm;
 
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JPasswordFieldPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JPasswordFieldPad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FConfEmail extends FDados{

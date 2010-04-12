@@ -51,12 +51,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.fnc.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.FbnUtil.EParcela;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
@@ -82,7 +82,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	protected final Tabela tab = new Tabela();
+	protected final JTablePad tab = new JTablePad();
 
 	protected final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 

@@ -31,16 +31,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -179,13 +179,13 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 
 	// FIM FUNÇÕES.
 
-	private final Tabela tabCurso = new Tabela();
+	private final JTablePad tabCurso = new JTablePad();
 
-	private final Tabela tabCaracteristica = new Tabela();
+	private final JTablePad tabCaracteristica = new JTablePad();
 
-	private final Tabela tabFuncao = new Tabela();
+	private final JTablePad tabFuncao = new JTablePad();
 
-	private final Tabela tabHistorico = new Tabela();
+	private final JTablePad tabHistorico = new JTablePad();
 
 	private final ListaCampos lcEstadoCivil = new ListaCampos( this, "ES" );
 

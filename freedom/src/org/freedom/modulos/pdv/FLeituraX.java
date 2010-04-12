@@ -33,7 +33,7 @@ import javax.swing.JLayeredPane;
 
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JLabelPad;
+import org.freedom.library.swing.JLabelPad;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 

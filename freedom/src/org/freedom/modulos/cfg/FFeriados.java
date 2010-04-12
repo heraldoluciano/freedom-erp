@@ -26,11 +26,11 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,7 +69,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 	
 	//private DateField calendarpanel = TaskCalendarFactory.createDateField();
 	
-	private Tabela tabData = new Tabela();
+	private JTablePad tabData = new JTablePad();
 	
 	private JScrollPane spnData = new JScrollPane( tabData );
 	

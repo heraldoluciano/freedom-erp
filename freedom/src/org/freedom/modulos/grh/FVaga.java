@@ -28,12 +28,12 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.util.HashMap;
 
@@ -97,13 +97,13 @@ public class FVaga extends FTabDados {
 	private final JTextFieldFK txtDescFuncaoVaga = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 
-	private final Tabela tabCurso = new Tabela();
+	private final JTablePad tabCurso = new JTablePad();
 
-	private final Tabela tabCaracteristicaQ = new Tabela();
+	private final JTablePad tabCaracteristicaQ = new JTablePad();
 
-	private final Tabela tabCaracteristicaR = new Tabela();
+	private final JTablePad tabCaracteristicaR = new JTablePad();
 
-	private final Tabela tabFuncao = new Tabela();
+	private final JTablePad tabFuncao = new JTablePad();
 
 	private final ListaCampos lcEmpregador = new ListaCampos( this, "EM" );
 	

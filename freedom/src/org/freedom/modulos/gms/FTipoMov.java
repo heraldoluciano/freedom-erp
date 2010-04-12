@@ -49,16 +49,16 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.objetos.TipoMov;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
@@ -85,7 +85,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JPanelPad pinDetRestricoes = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private Tabela tbRestricoes = new Tabela();
+	private JTablePad tbRestricoes = new JTablePad();
 
 	private JScrollPane spnRestricoes = new JScrollPane( tbRestricoes );
 

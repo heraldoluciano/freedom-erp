@@ -33,15 +33,15 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
 import org.freedom.library.GuardaCampo;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.cfg.FBairro;
 import org.freedom.objetos.RecMerc;
 import org.freedom.objetos.TipoRecMerc;
@@ -197,7 +197,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	// *** Tabelas
 
-	private Tabela tabPesagem = null;
+	private JTablePad tabPesagem = null;
 
 	// *** Plugin
 
@@ -269,7 +269,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		// Tabela de pesagens
 
-		tabPesagem = new Tabela();
+		tabPesagem = new JTablePad();
 		tabPesagem.setRowHeight( 21 );
 
 		tabPesagem.adicColuna( "Data" );

@@ -25,13 +25,13 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,7 +52,7 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObs = new JTextAreaPad();
-  private Tabela tabConsulta = new Tabela();
+  private JTablePad tabConsulta = new JTablePad();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private JScrollPane spnObs = new JScrollPane(txaObs);
   private ListaCampos lcCliente = new ListaCampos(this);

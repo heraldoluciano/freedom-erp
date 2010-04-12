@@ -29,17 +29,17 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,21 +87,21 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 	private JPanelPad pinDetRefC = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private Tabela tbRefP = new Tabela();
+	private JTablePad tbRefP = new JTablePad();
 
-	private Tabela tbAutP = new Tabela();
+	private JTablePad tbAutP = new JTablePad();
 
-	private Tabela tbVeic = new Tabela();
+	private JTablePad tbVeic = new JTablePad();
 
-	private Tabela tbImov = new Tabela();
+	private JTablePad tbImov = new JTablePad();
 
-	private Tabela tbTerras = new Tabela();
+	private JTablePad tbTerras = new JTablePad();
 
-	private Tabela tbBancos = new Tabela();
+	private JTablePad tbBancos = new JTablePad();
 
-	private Tabela tbSocios = new Tabela();
+	private JTablePad tbSocios = new JTablePad();
 
-	private Tabela tbRefC = new Tabela();
+	private JTablePad tbRefC = new JTablePad();
 
 	private JScrollPane spnRefP = new JScrollPane( tbRefP ); // Scrool pane para
 
@@ -522,7 +522,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 	private JTextFieldPad txtPercCotasSocio = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
-	private Tabela tbFicha = new Tabela();
+	private JTablePad tbFicha = new JTablePad();
 
 	private JLabelPad lbNatCli = null;
 

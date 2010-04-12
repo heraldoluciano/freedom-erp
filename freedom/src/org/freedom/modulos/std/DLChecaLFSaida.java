@@ -27,15 +27,15 @@ import java.awt.BorderLayout;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.JPanelPad;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaLFSaida extends DLRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 

@@ -21,8 +21,8 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 public class FPapel extends FDados {

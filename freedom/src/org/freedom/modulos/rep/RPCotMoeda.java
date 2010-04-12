@@ -29,11 +29,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +67,7 @@ public class RPCotMoeda extends FDados implements InsertListener, CarregaListene
 
 	private final JTextFieldFK txtSingMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
 	
-	private final Tabela tabCotacao = new Tabela();
+	private final JTablePad tabCotacao = new JTablePad();
 	
 	private final ListaCampos lcMoeda = new ListaCampos( this, "" );
 	

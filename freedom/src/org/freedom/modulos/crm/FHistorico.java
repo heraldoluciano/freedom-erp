@@ -49,14 +49,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -82,9 +82,9 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 
 	private JTabbedPanePad tpnHist = new JTabbedPanePad();
 
-	private Tabela tabCont = new Tabela();
+	private JTablePad tabCont = new JTablePad();
 
-	private Tabela tabCli = new Tabela();
+	private JTablePad tabCli = new JTablePad();
 
 	private JScrollPane spnCont = new JScrollPane( tabCont );
 
@@ -160,7 +160,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 
 	private Vector<String> vCodAtends = new Vector<String>();
 
-	private Tabela tabTemp = null;
+	private JTablePad tabTemp = null;
 
 	public FHistorico() {
 

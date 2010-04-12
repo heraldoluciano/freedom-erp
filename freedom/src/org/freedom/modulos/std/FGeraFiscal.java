@@ -40,13 +40,13 @@ import javax.swing.Timer;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.ConversionFunctions;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -66,11 +66,11 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 	private JCheckBoxPad cbSaida = new JCheckBoxPad( "Saida", "S", "N" );
 
-	private Tabela tab1 = new Tabela();
+	private JTablePad tab1 = new JTablePad();
 
 	private JScrollPane spnTab1 = new JScrollPane( tab1 );
 
-	private Tabela tab2 = new Tabela();
+	private JTablePad tab2 = new JTablePad();
 
 	private JScrollPane spnTab2 = new JScrollPane( tab2 );
 

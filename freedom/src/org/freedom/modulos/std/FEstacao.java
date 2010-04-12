@@ -43,16 +43,16 @@ import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JComboBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JComboBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.objetos.TipoRecMerc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -115,7 +115,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	private JPanelPad panelBalancas = new JPanelPad( new GridLayout( 1, 1 ) );
 	
-	public Tabela tabDetBal = new Tabela();
+	public JTablePad tabDetBal = new JTablePad();
 	
 	public JScrollPane spTabDetBal = new JScrollPane( tabDetBal );
 	

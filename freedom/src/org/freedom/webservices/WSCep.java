@@ -1,7 +1,7 @@
 package org.freedom.webservices;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.Endereco;
+import org.freedom.objetos.Endereco;
 
 import java.util.HashMap;
 import org.freedom.funcoes.Funcoes;

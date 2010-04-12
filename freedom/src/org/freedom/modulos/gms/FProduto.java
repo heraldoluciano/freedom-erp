@@ -59,18 +59,18 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
 import org.freedom.library.ImprimeOS;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTextAreaPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.Navegador;
 import org.freedom.library.PainelImagem;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.DLRProduto;
 import org.freedom.objetos.ObjetoCustosProd;
 import org.freedom.telas.Aplicativo;
@@ -351,19 +351,19 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JCheckBoxPad cbAdicPDV = null;
 
-	private Tabela tabFatConv = new Tabela();
+	private JTablePad tabFatConv = new JTablePad();
 
 	private JScrollPane spnFatConv = new JScrollPane( tabFatConv );
 
-	private Tabela tabProdPlan = new Tabela();
+	private JTablePad tabProdPlan = new JTablePad();
 
 	private JScrollPane spnPlan = new JScrollPane( tabProdPlan );
 
-	private Tabela tabFor = new Tabela();
+	private JTablePad tabFor = new JTablePad();
 
-	private Tabela tabCodAltProd = new Tabela();
+	private JTablePad tabCodAltProd = new JTablePad();
 
-	private Tabela tabCodAcess = new Tabela();
+	private JTablePad tabCodAcess = new JTablePad();
 
 	private JScrollPane spnFor = new JScrollPane( tabFor );
 
@@ -371,19 +371,19 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JScrollPane spnCodAcess = new JScrollPane( tabCodAcess );
 
-	private Tabela tabLote = new Tabela();
+	private JTablePad tabLote = new JTablePad();
 
-	private Tabela tabSerie = new Tabela();
+	private JTablePad tabSerie = new JTablePad();
 	
 	private JScrollPane spnLote = new JScrollPane( tabLote );
 
 	private JScrollPane spnSerie = new JScrollPane( tabSerie );
 	
-	private Tabela tabFoto = new Tabela();
+	private JTablePad tabFoto = new JTablePad();
 
 	private JScrollPane spnFoto = new JScrollPane( tabFoto );
 
-	private Tabela tabPreco = new Tabela();
+	private JTablePad tabPreco = new JTablePad();
 
 	private JScrollPane spnPreco = new JScrollPane( tabPreco );
 

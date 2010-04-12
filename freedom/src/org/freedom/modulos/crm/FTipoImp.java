@@ -40,12 +40,12 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;
 
 
@@ -60,9 +60,9 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JCheckBoxPad cbTransBinTpImp = new JCheckBoxPad("Converter arquivo binário","S","N");
   private JCheckBoxPad cbCsepTpImp = new JCheckBoxPad("Utiliza separador","S","N");  
   private JCheckBoxPad cbEnterlnTpImp = new JCheckBoxPad("Enter quebra linha","S","N");
-  private Tabela tab = new Tabela();  
+  private JTablePad tab = new JTablePad();  
   private JScrollPane spnLayout = new JScrollPane(tab);    
-  private Tabela tabDest = new Tabela();  
+  private JTablePad tabDest = new JTablePad();  
   private JScrollPane spnLayoutDest = new JScrollPane(tabDest);    
   private JButtonPad btAdic = new JButtonPad(Icone.novo("btFlechaDir.gif"));
   private JButtonPad btDel = new JButtonPad(Icone.novo("btFlechaEsq.gif"));

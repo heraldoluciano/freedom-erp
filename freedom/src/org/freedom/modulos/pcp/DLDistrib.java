@@ -30,11 +30,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -79,7 +79,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 
 	private JPanelPad pinCab = new JPanelPad( 400, 60 );
 
-	private Tabela tabDistrib = new Tabela();
+	private JTablePad tabDistrib = new JTablePad();
 	
 	private String lotePrincipal = null;
 

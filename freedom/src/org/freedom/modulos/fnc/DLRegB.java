@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JPanelPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -20,7 +20,7 @@ public class DLRegB extends FFDialogo{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final Tabela tab = new Tabela();
+	private final JTablePad tab = new JTablePad();
 	
 	private JScrollPane spnTab = new JScrollPane( tab );
 	

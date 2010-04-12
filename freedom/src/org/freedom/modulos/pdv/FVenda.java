@@ -62,14 +62,14 @@ import org.freedom.ecf.driver.StatusStandard;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
 import org.freedom.library.StatusBar;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.std.DLAdicOrc;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.plugin.AbstractControleVendaPDV;
@@ -113,7 +113,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JPanelPad pnTots = new JPanelPad( 440, 45 );
 
-	private final Tabela tbItem = new Tabela();
+	private final JTablePad tbItem = new JTablePad();
 
 	private final JScrollPane spTb = new JScrollPane( tbItem );
 
