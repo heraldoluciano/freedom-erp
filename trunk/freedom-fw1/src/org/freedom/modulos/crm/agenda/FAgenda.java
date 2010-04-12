@@ -96,12 +96,12 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.DLEnviarEmail;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.crm.agenda.visoes.DayViewPanel;
 import org.freedom.modulos.crm.agenda.visoes.MonthViewPanel;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLEnviarEmail;
-import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrinterJob;
 
 import bizcal.common.DayViewConfig;
 import bizcal.common.Event;

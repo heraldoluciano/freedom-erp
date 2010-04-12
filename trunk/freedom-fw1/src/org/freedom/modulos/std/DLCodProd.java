@@ -31,6 +31,8 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,8 +43,6 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
 
 public class DLCodProd extends FFDialogo implements KeyListener {
 

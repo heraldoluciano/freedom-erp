@@ -9,11 +9,11 @@ import java.util.List;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrincipal;
+import org.freedom.library.swing.frame.Login;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FPrincipal;
-import org.freedom.telas.Login;
 
 public class AplicativoRep extends AplicativoPD {
 

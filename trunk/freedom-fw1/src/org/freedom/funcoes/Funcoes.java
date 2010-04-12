@@ -47,6 +47,9 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FSuporte;
 import org.freedom.library.type.StringDireita;
 
 import java.sql.PreparedStatement;
@@ -76,9 +79,6 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import org.brazilutils.br.uf.UF;
 import org.brazilutils.br.uf.ie.InscricaoEstadual;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FSuporte;
 
 public class Funcoes {
 	

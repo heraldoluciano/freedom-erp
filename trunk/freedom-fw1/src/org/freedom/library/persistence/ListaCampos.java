@@ -38,6 +38,7 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.PainelImagem;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,7 +65,6 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 public class ListaCampos extends Container implements PostListener,
 		InsertListener, EditListener, CancelListener, DeleteListener,

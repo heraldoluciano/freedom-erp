@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +49,6 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 
 public class JGroupField extends JScrollPane implements CarregaListener, InsertListener, EditListener, DeleteListener, PostListener {

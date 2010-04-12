@@ -23,7 +23,7 @@ package org.freedom.library.swing;
 import java.awt.Color;
 
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.SwingParams;
+import org.freedom.library.swing.util.SwingParams;
 
 public class JTextFieldFK extends JTextFieldPad { 
 	

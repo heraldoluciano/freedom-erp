@@ -41,14 +41,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.dialog.DLF2;
+import org.freedom.library.swing.dialog.DLF3;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FAtalhos;
+import org.freedom.library.swing.frame.IFilho;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLF2;
-import org.freedom.telas.DLF3;
-import org.freedom.telas.FAtalhos;
-import org.freedom.telas.IFilho;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
 

@@ -25,7 +25,7 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JPasswordFieldPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FTabDados;
+import org.freedom.library.swing.frame.FTabDados;
 
 /**
  * 

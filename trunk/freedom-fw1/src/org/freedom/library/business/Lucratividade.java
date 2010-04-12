@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 
 public class Lucratividade {

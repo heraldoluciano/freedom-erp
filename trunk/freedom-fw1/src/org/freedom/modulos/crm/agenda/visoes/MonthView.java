@@ -47,8 +47,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.agenda.FAgenda;
-import org.freedom.telas.Aplicativo;
 import bizcal.common.CalendarViewConfig;
 import bizcal.common.Event;
 import bizcal.swing.CalendarListener;

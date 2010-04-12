@@ -29,7 +29,7 @@ import javax.swing.ImageIcon;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class ObjetoEmpresa {
 

@@ -47,6 +47,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +66,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 import org.jfree.chart.JFreeChart;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

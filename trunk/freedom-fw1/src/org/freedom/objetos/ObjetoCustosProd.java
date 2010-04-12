@@ -3,13 +3,13 @@ package org.freedom.objetos;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 public class ObjetoCustosProd {
 	
