@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd.view.frame.comum;
+package org.freedom.modulos.atd.view.frame.crud.comum;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;

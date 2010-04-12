@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.atd.view.frame.tabbed;
+package org.freedom.modulos.atd.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
 import org.freedom.infra.model.jdbc.DbConnection;
