@@ -12,6 +12,7 @@ import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
-import org.freedom.telas.Aplicativo;
 
 public abstract class AbstractBackground extends JPanelPad implements MouseListener {
 

@@ -45,11 +45,11 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.ImprimeLayout;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLPrinterJob;
-import org.freedom.telas.DLVisualiza;
-import org.freedom.telas.FAndamento;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.dialog.DLPrinterJob;
+import org.freedom.library.swing.dialog.DLVisualiza;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FAndamento;
+import org.freedom.library.swing.frame.FPrinterJob;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;

@@ -33,7 +33,7 @@ import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-import org.freedom.telas.SwingParams;
+import org.freedom.library.swing.util.SwingParams;
 
 import javax.swing.SwingConstants;
 

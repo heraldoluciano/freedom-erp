@@ -46,7 +46,7 @@ import javax.swing.border.Border;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.library.component.DadosImagem;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.telas.FZoom;
+import org.freedom.library.swing.frame.FZoom;
 
 public class PainelImagem extends JPanelPad implements ActionListener, MouseListener {
 

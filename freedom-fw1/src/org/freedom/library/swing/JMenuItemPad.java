@@ -23,7 +23,7 @@ import java.awt.Cursor;
 
 import javax.swing.JMenuItem;
 
-import org.freedom.telas.IFilho;
+import org.freedom.library.swing.frame.IFilho;
 
 public class JMenuItemPad extends JMenuItem {
 

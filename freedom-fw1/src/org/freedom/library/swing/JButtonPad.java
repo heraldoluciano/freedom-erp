@@ -32,7 +32,7 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-import org.freedom.telas.IFilho;
+import org.freedom.library.swing.frame.IFilho;
 
 public class JButtonPad extends JButton {
 

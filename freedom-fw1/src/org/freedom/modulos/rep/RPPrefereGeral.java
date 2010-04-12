@@ -46,8 +46,8 @@ import org.freedom.library.swing.JPasswordFieldPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
 
 public class RPPrefereGeral extends FDados implements ActionListener {
 

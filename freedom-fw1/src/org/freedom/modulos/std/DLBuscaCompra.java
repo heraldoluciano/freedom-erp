@@ -45,7 +45,7 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLBuscaCompra extends FFDialogo implements TabelaSelListener {
     

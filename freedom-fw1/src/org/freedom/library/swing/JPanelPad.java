@@ -29,7 +29,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import org.freedom.telas.SwingParams;
+import org.freedom.library.swing.util.SwingParams;
 //import javax.swing.text.JTextComponent;
 public class JPanelPad extends JPanel  {
 

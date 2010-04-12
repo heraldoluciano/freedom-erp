@@ -28,10 +28,10 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.dialog.FDialogo;
 
 import javax.swing.JLabel;
 
-import org.freedom.telas.FDialogo;
 
 public class FTipoAgenda extends FDialogo {
 	

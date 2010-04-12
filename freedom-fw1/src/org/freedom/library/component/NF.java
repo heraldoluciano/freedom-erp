@@ -29,8 +29,8 @@
 package org.freedom.library.component;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.swing.frame.Aplicativo;
 
-import org.freedom.telas.Aplicativo;
 
 public class NF {
 	

@@ -61,8 +61,8 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.PainelImagem;
-import org.freedom.telas.FTabDados;
-import org.freedom.telas.SwingParams;
+import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.swing.util.SwingParams;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 

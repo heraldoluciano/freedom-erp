@@ -29,6 +29,9 @@ import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPDV;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -39,9 +42,6 @@ import javax.swing.JLabel;
 
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FDialogo;
 
 public class FAbreCaixa extends FDialogo {
 

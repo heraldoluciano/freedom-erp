@@ -36,7 +36,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.telas.DLF3;
+import org.freedom.library.swing.dialog.DLF3;
 
 public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 
