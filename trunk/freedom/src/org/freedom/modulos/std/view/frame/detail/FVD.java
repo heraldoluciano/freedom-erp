@@ -40,9 +40,9 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.gms.DLLote;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaDescProd;
-import org.freedom.modulos.std.view.dialog.comum.DLDescontItVenda;
-import org.freedom.modulos.std.view.frame.tools.FObsCliVend;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaDescProd;
+import org.freedom.modulos.std.view.dialog.tool.DLDescontItVenda;
+import org.freedom.modulos.std.view.frame.tool.FObsCliVend;
 
 public abstract class FVD extends FDetalhe {
 

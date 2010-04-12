@@ -52,10 +52,10 @@ import org.freedom.modulos.std.view.frame.report.FRMovProd;
 import org.freedom.modulos.std.view.frame.report.FRSaldoLote;
 import org.freedom.modulos.std.view.frame.report.FRVencLote;
 import org.freedom.modulos.std.view.frame.special.FGrupo;
-import org.freedom.modulos.std.view.frame.tools.FConsPreco;
-import org.freedom.modulos.std.view.frame.tools.FConsulta;
-import org.freedom.modulos.std.view.frame.tools.FKardex;
-import org.freedom.modulos.std.view.frame.tools.FProcessaEQ;
+import org.freedom.modulos.std.view.frame.tool.FConsPreco;
+import org.freedom.modulos.std.view.frame.tool.FConsulta;
+import org.freedom.modulos.std.view.frame.tool.FKardex;
+import org.freedom.modulos.std.view.frame.tool.FProcessaEQ;
 
 public class FreedomPCP extends AplicativoPD implements ActionListener {
 	public FreedomPCP() {

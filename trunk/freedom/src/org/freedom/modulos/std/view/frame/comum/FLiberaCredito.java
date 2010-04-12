@@ -39,8 +39,8 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.modulos.std.view.dialog.comum.DLConsultaObs;
-import org.freedom.modulos.std.view.dialog.comum.DLConsultaVenda;
+import org.freedom.modulos.std.view.dialog.tool.DLConsultaObs;
+import org.freedom.modulos.std.view.dialog.tool.DLConsultaVenda;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

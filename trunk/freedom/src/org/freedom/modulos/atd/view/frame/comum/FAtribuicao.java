@@ -34,7 +34,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
-import org.freedom.modulos.atd.view.dialog.DLRTipoConv;
+import org.freedom.modulos.atd.view.dialog.report.DLRTipoConv;
 
 public class FAtribuicao extends FDados implements ActionListener {
   private static final long serialVersionUID = 1L;	

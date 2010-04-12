@@ -55,7 +55,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.comum.DLFechaParcela;
+import org.freedom.modulos.std.view.dialog.tool.DLFechaParcela;
 import org.freedom.objetos.ObjetoHistorico;
 
 public class DLNovoRec extends FFDialogo implements CarregaListener, PostListener, FocusListener {

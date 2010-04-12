@@ -53,7 +53,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
-import org.freedom.modulos.std.view.dialog.comum.DLTranspFor;
+import org.freedom.modulos.std.view.dialog.tool.DLTranspFor;
 import org.freedom.objetos.Endereco;
 import org.freedom.webservices.WSCep;
 

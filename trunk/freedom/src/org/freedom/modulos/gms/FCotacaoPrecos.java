@@ -67,8 +67,8 @@ import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
 
 public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {

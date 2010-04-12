@@ -44,7 +44,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.std.view.dialog.comum.DLEtiqCompra;
+import org.freedom.modulos.std.view.dialog.tool.DLEtiqCompra;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

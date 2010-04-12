@@ -88,12 +88,12 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.modulos.std.view.dialog.comum.DLAltFatLucro;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
-import org.freedom.modulos.std.view.dialog.comum.DLCompOrc;
-import org.freedom.modulos.std.view.dialog.comum.DLCopiaOrc;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
-import org.freedom.modulos.std.view.frame.tools.FSelOrc;
+import org.freedom.modulos.std.view.dialog.tool.DLAltFatLucro;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.tool.DLCompOrc;
+import org.freedom.modulos.std.view.dialog.tool.DLCopiaOrc;
+import org.freedom.modulos.std.view.frame.tool.FSelOrc;
 
 public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 

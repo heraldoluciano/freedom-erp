@@ -53,8 +53,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.comum.DLGrupo;
-import org.freedom.modulos.std.view.dialog.comum.DLSubGrupo;
+import org.freedom.modulos.std.view.dialog.tool.DLGrupo;
+import org.freedom.modulos.std.view.dialog.tool.DLSubGrupo;
 
 public class FGrupo extends FFilho implements ActionListener, MouseListener, KeyListener {
 

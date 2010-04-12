@@ -96,15 +96,15 @@ import org.freedom.modulos.std.view.frame.special.FGrupo;
 import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.tabbed.FTransp;
-import org.freedom.modulos.std.view.frame.tools.FAprovCancOrc;
-import org.freedom.modulos.std.view.frame.tools.FCancVenda;
-import org.freedom.modulos.std.view.frame.tools.FConsPreco;
-import org.freedom.modulos.std.view.frame.tools.FConsulta;
-import org.freedom.modulos.std.view.frame.tools.FImpTabFor;
-import org.freedom.modulos.std.view.frame.tools.FKardex;
-import org.freedom.modulos.std.view.frame.tools.FPesquisaOrc;
-import org.freedom.modulos.std.view.frame.tools.FProcessaEQ;
-import org.freedom.modulos.std.view.frame.tools.FStatusItOrc;
+import org.freedom.modulos.std.view.frame.tool.FAprovCancOrc;
+import org.freedom.modulos.std.view.frame.tool.FCancVenda;
+import org.freedom.modulos.std.view.frame.tool.FConsPreco;
+import org.freedom.modulos.std.view.frame.tool.FConsulta;
+import org.freedom.modulos.std.view.frame.tool.FImpTabFor;
+import org.freedom.modulos.std.view.frame.tool.FKardex;
+import org.freedom.modulos.std.view.frame.tool.FPesquisaOrc;
+import org.freedom.modulos.std.view.frame.tool.FProcessaEQ;
+import org.freedom.modulos.std.view.frame.tool.FStatusItOrc;
 
 public class FreedomGMS extends AplicativoPD {
 

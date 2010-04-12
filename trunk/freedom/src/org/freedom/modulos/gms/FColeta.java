@@ -36,7 +36,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
 import org.freedom.objetos.RecMerc;
 
 public class FColeta extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {

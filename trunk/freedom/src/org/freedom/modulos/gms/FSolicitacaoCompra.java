@@ -66,8 +66,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.modulos.std.DLBuscaEstoq;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
 
 public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {

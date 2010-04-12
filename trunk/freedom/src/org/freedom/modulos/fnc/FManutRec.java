@@ -75,9 +75,9 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.FAtendimento;
 import org.freedom.modulos.fnc.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.DLEditaRec.EColRet;
-import org.freedom.modulos.std.view.dialog.comum.DLCancItem;
-import org.freedom.modulos.std.view.dialog.comum.DLConsultaVenda;
-import org.freedom.modulos.std.view.dialog.comum.DLImpBoletoRec;
+import org.freedom.modulos.std.view.dialog.tool.DLCancItem;
+import org.freedom.modulos.std.view.dialog.tool.DLConsultaVenda;
+import org.freedom.modulos.std.view.dialog.tool.DLImpBoletoRec;
 
 public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener {
 

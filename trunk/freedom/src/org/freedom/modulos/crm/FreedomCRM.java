@@ -68,9 +68,9 @@ import org.freedom.modulos.std.view.frame.report.FRVendasPlanoPag;
 import org.freedom.modulos.std.view.frame.report.FRVendasVend;
 import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.tabbed.FVendedor;
-import org.freedom.modulos.std.view.frame.tools.FAprovCancOrc;
-import org.freedom.modulos.std.view.frame.tools.FConsPreco;
-import org.freedom.modulos.std.view.frame.tools.FPesquisaOrc;
+import org.freedom.modulos.std.view.frame.tool.FAprovCancOrc;
+import org.freedom.modulos.std.view.frame.tool.FConsPreco;
+import org.freedom.modulos.std.view.frame.tool.FPesquisaOrc;
 
 public class FreedomCRM extends AplicativoPD {
 	private MenuItem miAtendimento = new MenuItem();

@@ -72,12 +72,12 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.DLFinalizaOP;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaDescProd;
-import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
-import org.freedom.modulos.std.view.dialog.comum.DLFechaCompra;
-import org.freedom.modulos.std.view.dialog.comum.DLGuiaTraf;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.report.DLRetRemessa;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaDescProd;
+import org.freedom.modulos.std.view.dialog.tool.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.tool.DLFechaCompra;
+import org.freedom.modulos.std.view.dialog.tool.DLGuiaTraf;
 import org.freedom.objetos.TipoMov;
 
 /**

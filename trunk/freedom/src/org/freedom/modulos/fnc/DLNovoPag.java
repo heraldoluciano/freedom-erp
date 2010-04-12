@@ -40,7 +40,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.comum.DLFechaPag;
+import org.freedom.modulos.std.view.dialog.tool.DLFechaPag;
 import org.freedom.objetos.ObjetoHistorico;
 
 import java.sql.PreparedStatement;
