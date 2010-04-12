@@ -75,10 +75,10 @@ import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.report.DLRetRemessa;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
-import org.freedom.modulos.std.view.dialog.utility.DLFechaCompra;
-import org.freedom.modulos.std.view.dialog.utility.DLGuiaTraf;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaDescProd;
+import org.freedom.modulos.std.view.dialog.utility2.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.utility2.DLFechaCompra;
+import org.freedom.modulos.std.view.dialog.utility2.DLGuiaTraf;
 
 
 /**
