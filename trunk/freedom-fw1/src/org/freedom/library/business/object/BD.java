@@ -18,16 +18,16 @@
  * Comentários da classe.....
  */
 
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
-public class ObjetoBD {
+public class BD {
   private String sIDObj = "";
   private String sDescObj = "";
   private String sTipoObj = "";
   private String sComentObj = "";
   private String sUsomeObj = "";
   
-  public ObjetoBD(String sIDObj,  
+  public BD(String sIDObj,  
          String sDescObj, String sTipoObj,String sComentObj,
          String sUsomeObj ) {
   	this.sIDObj = sIDObj;

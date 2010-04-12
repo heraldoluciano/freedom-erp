@@ -1,4 +1,4 @@
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.HashMap;

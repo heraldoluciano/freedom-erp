@@ -20,13 +20,13 @@
  * Objeto para guardar as informações necessárias para a criação e utilização de modelos de etiquetas.
  */
 
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
 
-public abstract class ObjetoEtiqueta {
+public abstract class Etiqueta {
 
 	private Vector<String> vLabels = new Vector<String>();
 
@@ -58,7 +58,7 @@ public abstract class ObjetoEtiqueta {
 
 	protected String nometabela = null;
 
-	public ObjetoEtiqueta() {
+	public Etiqueta() {
 
 	}
 

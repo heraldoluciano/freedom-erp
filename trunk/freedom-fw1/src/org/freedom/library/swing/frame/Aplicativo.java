@@ -56,6 +56,8 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Empresa;
+import org.freedom.library.business.object.Tab;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JMenuItemPad;
 import org.freedom.library.swing.JMenuPad;
@@ -63,8 +65,6 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
-import org.freedom.objetos.ObjetoEmpresa;
-import org.freedom.objetos.ObjetoTab;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 
@@ -128,7 +128,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static String tefFlags = "";
 
-	public static ObjetoTab tbObjetos = null;
+	public static Tab tbObjetos = null;
 
 	public static ImageIcon imgIcone = null;
 
@@ -184,7 +184,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private static String emailsuporte = "";
 
-	public static ObjetoEmpresa empresa = null;
+	public static Empresa empresa = null;
 
 	public static boolean bModoDemo = true;
 

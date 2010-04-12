@@ -20,7 +20,7 @@
  * Objeto para guardar as informações necessárias para a criação e utilização de modelos de lote.
  */
 
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +35,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public abstract class ObjetoModeloLote {
+public abstract class ModeloLote {
 
 	private Vector<String> vLabels = new Vector<String>();
 
@@ -67,7 +67,7 @@ public abstract class ObjetoModeloLote {
 
 	private String sTexto = "";
 
-	public ObjetoModeloLote() {
+	public ModeloLote() {
 
 	}
 

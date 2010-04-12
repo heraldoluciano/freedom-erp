@@ -1,4 +1,4 @@
-package org.freedom.objetos;
+package org.freedom.library.business.object;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -12,7 +12,7 @@ import java.util.Date;
 import org.freedom.funcoes.Funcoes;
 
 
-public class ObjetoHistorico {
+public class Historico {
 	private String historicocodificado;
 	private String documento;
 	private String portador;
@@ -23,7 +23,7 @@ public class ObjetoHistorico {
 	private String historicodecodificado;
 	private boolean isDecoded = false;
 	
-	public ObjetoHistorico() {
+	public Historico() {
 		super();
 	}
 
@@ -35,7 +35,7 @@ public class ObjetoHistorico {
 		this.historicoant = historicoant;
 	}
 
-	public ObjetoHistorico(final Integer codhist, DbConnection con) {
+	public Historico(final Integer codhist, DbConnection con) {
 		super();
 		
 		PreparedStatement ps = null;
