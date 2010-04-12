@@ -439,7 +439,7 @@ public class ECFDriver {
 	public String leStatus() {
 
 		String sMensagem = "";
-		String sSep = "";
+//		String sSep = "";
 
 		if ( dll ) {
 			sMensagem = bema.leStatus( sUserID, bModoDemo );
