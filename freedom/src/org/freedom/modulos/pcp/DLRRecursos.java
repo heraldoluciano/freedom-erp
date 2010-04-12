@@ -26,7 +26,7 @@ import java.util.Vector;
 
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JRadioGroup;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLRRecursos extends FFDialogo {
 	private static final long serialVersionUID = 1L;

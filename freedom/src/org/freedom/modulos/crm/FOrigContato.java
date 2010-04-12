@@ -22,7 +22,7 @@ package org.freedom.modulos.crm;
 
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 
 public class FOrigContato extends FDados {

@@ -48,8 +48,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 
 public class FAcompanhaProd extends FFilho implements ActionListener, MouseListener{
 

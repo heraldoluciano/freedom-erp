@@ -66,14 +66,14 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.DLBuscaEstoq;
-import org.freedom.modulos.std.DLBuscaProd;
-import org.freedom.modulos.std.DLRPedido;
+import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
+import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.objetos.ObjetoCustosProd;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FObservacao;
-import org.freedom.telas.FPrinterJob;
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, JComboBoxListener {
 

@@ -31,8 +31,8 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
-import org.freedom.telas.FDialogo;
 
 /**
  * Dialogo para exibição das inconsistências.

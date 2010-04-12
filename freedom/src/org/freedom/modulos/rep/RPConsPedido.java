@@ -50,8 +50,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 
 public class RPConsPedido extends FFilho implements ActionListener {
 

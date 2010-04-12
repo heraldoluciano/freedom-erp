@@ -58,10 +58,10 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.modulos.fnc.DLBaixaRec;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FFDialogo;
 
 public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelListener {
 

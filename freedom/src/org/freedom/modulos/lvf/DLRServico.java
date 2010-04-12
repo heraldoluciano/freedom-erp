@@ -23,7 +23,7 @@ package org.freedom.modulos.lvf;
 
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JRadioGroup;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 import java.util.Vector;
 public class DLRServico extends FFDialogo {

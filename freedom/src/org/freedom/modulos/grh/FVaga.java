@@ -34,6 +34,9 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FTabDados;
 
 import java.util.HashMap;
 
@@ -42,9 +45,6 @@ import javax.swing.JScrollPane;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FTabDados;
 
 public class FVaga extends FTabDados {
 

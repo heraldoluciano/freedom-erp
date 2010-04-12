@@ -23,7 +23,7 @@ package org.freedom.layout.componentes;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.NF;
 import org.freedom.library.component.TabVector;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 public class Layout extends Object {
 	//public boolean bEntrada = false;
 	protected TabVector cab = null;

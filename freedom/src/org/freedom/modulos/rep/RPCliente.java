@@ -47,9 +47,9 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FTabDados;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FTabDados;
 
 public class RPCliente extends FTabDados implements ActionListener {
 

@@ -31,15 +31,15 @@ package org.freedom.modulos.atd;
 import java.awt.event.ActionListener;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.crm.FSetorAtend;
 import org.freedom.modulos.crm.FTipoAtendo;
 import org.freedom.modulos.grh.FFuncao;
-import org.freedom.modulos.std.FCliente;
-import org.freedom.modulos.std.FOrcamento;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FPrincipalPD;
-import org.freedom.telas.LoginPD;
+import org.freedom.modulos.std.view.frame.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 
 public class FreedomATD extends AplicativoPD implements ActionListener {
 	public FreedomATD() {

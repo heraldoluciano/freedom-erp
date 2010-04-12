@@ -25,29 +25,29 @@
 package org.freedom.modulos.lvf;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.std.FClasCli;
-import org.freedom.modulos.std.FCliente;
-import org.freedom.modulos.std.FCredCli;
-import org.freedom.modulos.std.FEmpresa;
-import org.freedom.modulos.std.FEstacao;
-import org.freedom.modulos.std.FFornecedor;
-import org.freedom.modulos.std.FGeraFiscal;
-import org.freedom.modulos.std.FImpressora;
-import org.freedom.modulos.std.FMensagem;
-import org.freedom.modulos.std.FMoeda;
-import org.freedom.modulos.std.FPapel;
-import org.freedom.modulos.std.FRImpServ;
-import org.freedom.modulos.std.FRPisCofins;
-import org.freedom.modulos.std.FRVendasIcms;
-import org.freedom.modulos.std.FRegraFiscal;
-import org.freedom.modulos.std.FSetor;
-import org.freedom.modulos.std.FTipoCli;
-import org.freedom.modulos.std.FTipoFor;
-import org.freedom.modulos.std.FVendedor;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FPrincipalPD;
-import org.freedom.telas.LoginPD;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.library.swing.frame.LoginPD;
+import org.freedom.modulos.std.view.frame.comum.FClasCli;
+import org.freedom.modulos.std.view.frame.comum.FEstacao;
+import org.freedom.modulos.std.view.frame.comum.FImpressora;
+import org.freedom.modulos.std.view.frame.comum.FMensagem;
+import org.freedom.modulos.std.view.frame.comum.FPapel;
+import org.freedom.modulos.std.view.frame.comum.FSetor;
+import org.freedom.modulos.std.view.frame.comum.FTipoCli;
+import org.freedom.modulos.std.view.frame.comum.FTipoFor;
+import org.freedom.modulos.std.view.frame.detail.FEmpresa;
+import org.freedom.modulos.std.view.frame.report.FRImpServ;
+import org.freedom.modulos.std.view.frame.report.FRPisCofins;
+import org.freedom.modulos.std.view.frame.report.FRVendasIcms;
+import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
+import org.freedom.modulos.std.view.frame.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.tabbed.FCredCli;
+import org.freedom.modulos.std.view.frame.tabbed.FFornecedor;
+import org.freedom.modulos.std.view.frame.tabbed.FMoeda;
+import org.freedom.modulos.std.view.frame.tabbed.FVendedor;
+import org.freedom.modulos.std.view.frame.tools.FGeraFiscal;
 
 public class FreedomLVF extends AplicativoPD {
 

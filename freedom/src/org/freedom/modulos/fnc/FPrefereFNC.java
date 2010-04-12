@@ -30,8 +30,8 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.FTabDados;
 
-import org.freedom.telas.FTabDados;
 
 public class FPrefereFNC extends FTabDados {
 

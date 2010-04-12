@@ -29,8 +29,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 
 public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {

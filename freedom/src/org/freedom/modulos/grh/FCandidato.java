@@ -41,6 +41,10 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FTabDados;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,10 +66,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FTabDados;
 
 public class FCandidato extends FTabDados implements CarregaListener, PostListener {
 

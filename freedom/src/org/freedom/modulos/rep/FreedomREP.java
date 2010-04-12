@@ -28,9 +28,9 @@ package org.freedom.modulos.rep;
 import java.awt.event.ActionListener;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipalPD;
-import org.freedom.telas.LoginPD;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrincipalPD;
+import org.freedom.library.swing.frame.LoginPD;
 
 public class FreedomREP extends AplicativoRep implements ActionListener {
 

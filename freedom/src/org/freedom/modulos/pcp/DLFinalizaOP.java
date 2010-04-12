@@ -32,7 +32,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	

@@ -36,9 +36,9 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
 
 public class RPProduto extends FDados implements ActionListener, InsertListener {
 

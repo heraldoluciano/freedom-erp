@@ -70,14 +70,14 @@ import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.StatusBar;
-import org.freedom.modulos.std.DLAdicOrc;
+import org.freedom.library.swing.dialog.DlgCalc;
+import org.freedom.library.swing.dialog.FDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPDV;
+import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.std.DLCodProd;
+import org.freedom.modulos.std.view.dialog.comum.DLAdicOrc;
 import org.freedom.plugin.AbstractControleVendaPDV;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.DlgCalc;
-import org.freedom.telas.FDialogo;
-import org.freedom.telas.FPassword;
 
 public class FVenda extends FDialogo implements KeyListener, CarregaListener, PostListener, FocusListener {
 

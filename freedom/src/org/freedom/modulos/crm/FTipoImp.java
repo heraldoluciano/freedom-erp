@@ -46,7 +46,7 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 
 public class FTipoImp extends FDados implements PostListener, CarregaListener, DeleteListener, ActionListener {

@@ -2,14 +2,14 @@ package org.freedom.plugin;
 
 import java.awt.event.MouseEvent;
 
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.fnc.FManutPag;
 import org.freedom.modulos.fnc.FManutRec;
 import org.freedom.modulos.gms.FProduto;
-import org.freedom.modulos.std.FCliente;
-import org.freedom.modulos.std.FOrcamento;
-import org.freedom.modulos.std.FVenda;
-import org.freedom.telas.Aplicativo;
+import org.freedom.modulos.std.view.frame.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.detail.FVenda;
+import org.freedom.modulos.std.view.frame.tabbed.FCliente;
 
 public class Background34 extends AbstractBackground {
 

@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.FFilho;
 
 public class FVisual extends FFilho {
 	private static final long serialVersionUID = 1L;

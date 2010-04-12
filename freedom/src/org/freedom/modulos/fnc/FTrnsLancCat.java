@@ -49,8 +49,8 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 
 public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListener {
 

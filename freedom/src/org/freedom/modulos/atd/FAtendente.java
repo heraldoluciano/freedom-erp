@@ -38,9 +38,9 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
 import org.freedom.objetos.Endereco;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
 import org.freedom.webservices.WSCep;
 
 public class FAtendente extends FDados {

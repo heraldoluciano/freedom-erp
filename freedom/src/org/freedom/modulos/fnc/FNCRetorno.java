@@ -46,7 +46,7 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 public class FNCRetorno extends FDados implements JComboBoxListener {
 

@@ -6,8 +6,8 @@ import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.bmps.Icone;
 import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.modulos.pcp.DLAcaoCorretiva.EMs;
-import org.freedom.telas.FFDialogo;
 
 
 public class DLAcoesCorretivas extends FFDialogo implements MouseListener {

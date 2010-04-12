@@ -29,7 +29,7 @@ import java.awt.event.ActionListener;
 
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 public class RPContato extends FDados implements ActionListener {
 

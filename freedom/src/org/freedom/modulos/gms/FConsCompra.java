@@ -28,9 +28,9 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.FCompra;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.view.frame.detail.FCompra;
 
 
 public class FConsCompra extends FFilho implements ActionListener{

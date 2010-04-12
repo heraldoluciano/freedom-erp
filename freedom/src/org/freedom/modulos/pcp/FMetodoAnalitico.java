@@ -35,12 +35,12 @@ import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.Navegador;
 import org.freedom.library.swing.PainelImagem;
+import org.freedom.library.swing.frame.FTabDados;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freedom.telas.FTabDados;
 
 
 public class FMetodoAnalitico extends FTabDados {

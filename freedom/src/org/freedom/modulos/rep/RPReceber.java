@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 public class RPReceber extends FDados implements ActionListener {
 

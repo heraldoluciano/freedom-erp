@@ -55,10 +55,10 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JPasswordFieldPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FFilho;
-import org.freedom.telas.FObservacao;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FObservacao;
 
 public class RPImportacao extends FFilho implements ActionListener {
 

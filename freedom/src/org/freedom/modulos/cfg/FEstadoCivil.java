@@ -26,7 +26,7 @@ import java.awt.event.ActionListener;
 
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 public class FEstadoCivil extends FDados implements ActionListener {
 	private static final long serialVersionUID = 1L;

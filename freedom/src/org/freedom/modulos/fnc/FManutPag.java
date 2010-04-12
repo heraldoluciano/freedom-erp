@@ -67,9 +67,9 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.DLCancItem;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.view.dialog.comum.DLCancItem;
 
 public class FManutPag extends FFilho implements ActionListener,  CarregaListener, ChangeListener {
 	

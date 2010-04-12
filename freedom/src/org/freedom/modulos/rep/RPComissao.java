@@ -61,9 +61,9 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDialogo;
-import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.dialog.FDialogo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
 
 public class RPComissao extends FFilho implements ActionListener, MouseListener {
 

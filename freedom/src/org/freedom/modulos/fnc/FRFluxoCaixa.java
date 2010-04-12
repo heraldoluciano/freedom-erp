@@ -33,9 +33,9 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
-import org.freedom.telas.FRelatorio;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRFluxoCaixa extends FRelatorio {
 	private static final long serialVersionUID = 1L;
@@ -159,7 +159,7 @@ public class FRFluxoCaixa extends FRelatorio {
                   "(SELECT SUM(SL.VLRSUBLANCA*-1)"+
                   " FROM FNSUBLANCA SL,FNLANCA L " + 
                   "WHERE L.FLAG IN "+
-                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+                  AplicativoPD.carregaFiltro(con,org.freedom.library.swing.frame.Aplicativo.iCodEmp)+
                   " AND SUBSTR(SL.CODPLAN,1,STRLEN(RTRIM(P.CODPLAN)))=RTRIM(P.CODPLAN) AND "+
                   "SL.CODLANCA=L.CODLANCA AND "+
                   "SL.DATASUBLANCA <= ? AND "+
@@ -240,7 +240,7 @@ public class FRFluxoCaixa extends FRelatorio {
   	String sSQL = "SELECT C.CODCLI,C.RAZCLI,SUM(IR.VLRPARCITREC)"+
   	" FROM FNITRECEBER IR,FNRECEBER R, VDCLIENTE C" + 
   	" WHERE R.FLAG IN "+
-  	AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+  	AplicativoPD.carregaFiltro(con,org.freedom.library.swing.frame.Aplicativo.iCodEmp)+
   	" AND IR.DTVENCITREC <= ? AND IR.CODEMP=R.CODEMP" +
   	" AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC" +
   	" AND C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP" +
@@ -307,7 +307,7 @@ public class FRFluxoCaixa extends FRelatorio {
   	String sSQL = "SELECT F.CODFOR,F.RAZFOR,SUM(IP.VLRPARCITPAG)"+
   	" FROM FNITPAGAR IP,FNPAGAR P, CPFORNECED F" + 
   	" WHERE P.FLAG IN "+
-  	AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+  	AplicativoPD.carregaFiltro(con,org.freedom.library.swing.frame.Aplicativo.iCodEmp)+
   	" AND IP.DTVENCITPAG <= ? AND IP.CODEMP=P.CODEMP" +
   	" AND IP.CODFILIAL=P.CODFILIAL AND IP.CODPAG=P.CODPAG" +
   	" AND P.CODFOR=F.CODFOR AND P.CODEMPFR=F.CODEMP" +

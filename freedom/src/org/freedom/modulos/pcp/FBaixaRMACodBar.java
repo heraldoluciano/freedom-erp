@@ -55,9 +55,9 @@ import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.gms.FRma;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
 
 public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaListener,FocusListener{
 	private static final long serialVersionUID = 1L;

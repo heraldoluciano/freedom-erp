@@ -12,9 +12,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
 
 public class DLRegB extends FFDialogo{
 	

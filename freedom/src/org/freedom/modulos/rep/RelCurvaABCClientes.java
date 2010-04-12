@@ -28,6 +28,9 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.frame.FRelatorio;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,9 +45,6 @@ import javax.swing.SwingConstants;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrinterJob;
-import org.freedom.telas.FRelatorio;
 
 public class RelCurvaABCClientes extends FRelatorio {
 

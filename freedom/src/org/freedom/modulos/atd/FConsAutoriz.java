@@ -57,10 +57,10 @@ import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.FOrcamento;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrinterJob;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.std.view.frame.detail.FOrcamento;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
 

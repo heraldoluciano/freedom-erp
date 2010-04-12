@@ -33,8 +33,8 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.modulos.std.DLBuscaProd;
-import org.freedom.telas.FDetalhe;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.std.view.dialog.comum.DLBuscaProd;
 
 public class FEstFase extends FDetalhe {
 	private static final long serialVersionUID = 1L;

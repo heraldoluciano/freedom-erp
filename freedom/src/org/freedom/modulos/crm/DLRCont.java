@@ -33,11 +33,11 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 import java.util.Vector;
 
 
-import org.freedom.telas.FFDialogo;
 
 public class DLRCont extends FFDialogo {
 	private static final long serialVersionUID = 1L;

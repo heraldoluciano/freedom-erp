@@ -35,7 +35,7 @@ import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {
   private static final long serialVersionUID = 1L;	

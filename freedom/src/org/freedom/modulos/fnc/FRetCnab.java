@@ -40,6 +40,7 @@ import javax.swing.ImageIcon;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.CnabUtil.Receber;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -47,7 +48,6 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.CnabUtil.RegHeader;
 import org.freedom.modulos.fnc.CnabUtil.RegT400;
-import org.freedom.telas.Aplicativo;
 
 public class FRetCnab extends FRetFBN {
 

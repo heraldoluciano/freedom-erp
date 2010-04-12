@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.FFDialogo;
+import org.freedom.library.swing.dialog.FFDialogo;
 
 
 public class DLAtualiza extends FFDialogo {

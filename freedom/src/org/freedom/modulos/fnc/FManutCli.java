@@ -45,8 +45,8 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDados;
 
 public class FManutCli extends FDados implements RadioGroupListener, PostListener, InsertListener, CarregaListener {
 

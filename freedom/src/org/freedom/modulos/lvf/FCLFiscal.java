@@ -65,8 +65,8 @@ import org.freedom.library.swing.JTabbedPanePad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDetalhe;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
 
 
 public class FCLFiscal extends FDetalhe 

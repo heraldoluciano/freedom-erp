@@ -30,7 +30,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.NF;
-import org.freedom.telas.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class NF044 extends Layout {
 
