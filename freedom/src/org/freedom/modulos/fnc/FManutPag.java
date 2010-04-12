@@ -69,7 +69,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
+import org.freedom.modulos.std.view.dialog.utility2.DLCancItem;
 
 
 public class FManutPag extends FFilho implements ActionListener,  CarregaListener, ChangeListener {
