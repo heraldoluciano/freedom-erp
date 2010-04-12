@@ -17,7 +17,7 @@
  * 
  */
 
-package org.freedom.modulos.crm.tools;
+package org.freedom.modulos.crm.tool;
 
 import java.io.File;
 import java.io.IOException;

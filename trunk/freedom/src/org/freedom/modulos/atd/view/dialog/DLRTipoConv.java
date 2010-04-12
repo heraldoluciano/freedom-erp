@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.dialog;
 
 import java.util.Vector;
 

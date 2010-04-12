@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.frame.tool;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

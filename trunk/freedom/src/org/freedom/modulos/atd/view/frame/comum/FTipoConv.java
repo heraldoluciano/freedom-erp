@@ -22,7 +22,7 @@
  * 
  */
 
-package org.freedom.modulos.atd;
+package org.freedom.modulos.atd.view.frame.comum;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +36,7 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.atd.view.dialog.DLRTipoConv;
 
 public class FTipoConv extends FDados implements ActionListener {
 
