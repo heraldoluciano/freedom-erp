@@ -20,7 +20,7 @@
  * Campo do tipo combobox.
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Cursor;
 import java.awt.event.ItemEvent;
@@ -29,6 +29,7 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.library.ListaCampos;
 
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {

@@ -28,9 +28,9 @@ import javax.swing.JLabel;
 
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JPasswordFieldPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JPasswordFieldPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 public class DLEmailBean extends FFDialogo {
 

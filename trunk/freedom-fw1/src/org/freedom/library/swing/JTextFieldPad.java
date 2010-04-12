@@ -18,7 +18,7 @@
  * Classe padrão para entrada de dados.
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -39,6 +39,8 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.GuardaCampo;
+import org.freedom.library.ListaCampos;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;

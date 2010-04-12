@@ -33,8 +33,8 @@ import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 import org.freedom.telas.SwingParams;
 
 import javax.swing.SwingConstants;

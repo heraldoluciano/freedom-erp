@@ -56,10 +56,10 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JMenuItemPad;
-import org.freedom.library.JMenuPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JMenuItemPad;
+import org.freedom.library.swing.JMenuPad;
+import org.freedom.library.swing.JPanelPad;
 import org.freedom.objetos.ObjetoEmpresa;
 import org.freedom.objetos.ObjetoTab;
 

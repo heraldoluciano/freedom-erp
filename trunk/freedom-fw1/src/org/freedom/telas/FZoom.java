@@ -33,10 +33,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JDialog;
 
 import org.freedom.bmps.Icone;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.PainelImagem;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTextFieldPad;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 

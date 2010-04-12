@@ -45,8 +45,8 @@ import javax.swing.event.InternalFrameListener;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener,
         IFilho {

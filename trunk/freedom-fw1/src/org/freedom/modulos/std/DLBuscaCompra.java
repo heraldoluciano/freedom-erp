@@ -39,19 +39,19 @@ import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLBuscaCompra extends FFDialogo implements TabelaSelListener {
     
 	private static final long serialVersionUID = 1L;   
 	
-	public Tabela tab = new Tabela();
+	public JTablePad tab = new JTablePad();
     
 	private JScrollPane spnCentro = new JScrollPane(tab); 
 	

@@ -18,7 +18,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

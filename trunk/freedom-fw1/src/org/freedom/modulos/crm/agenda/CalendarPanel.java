@@ -70,7 +70,7 @@ import lu.tudor.santec.bizcal.widgets.CheckBoxPanel;
 import lu.tudor.santec.bizcal.widgets.NaviBar;
 import lu.tudor.santec.i18n.Translatrix;
 
-import org.freedom.library.JButtonPad;
+import org.freedom.library.swing.JButtonPad;
 
 import bizcal.common.Event;
 import bizcal.swing.DayView;

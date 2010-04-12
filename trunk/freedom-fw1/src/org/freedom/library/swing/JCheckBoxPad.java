@@ -13,7 +13,7 @@
  * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.library.ListaCampos;
 
 /**
  * Customisa JCheckBox.

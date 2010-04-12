@@ -20,7 +20,7 @@
  * Tabela tipo grid...
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -46,8 +46,9 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+import org.freedom.library.StringDireita;
 
-public class Tabela extends JTable implements TabelaEditListener, TabelaSelListener {
+public class JTablePad extends JTable implements TabelaEditListener, TabelaSelListener {
 
 	//Vetor de cores de background
 	private Vector<Color> vcoresb = new Vector<Color>();
@@ -70,7 +71,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	List<TabelaSelListener> seLis = new ArrayList<TabelaSelListener>();
 
-	public Tabela() {
+	public JTablePad() {
 
 		setModel( modelo );
 		setCursor( new Cursor( Cursor.HAND_CURSOR ) );
@@ -432,7 +433,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		boolean[] bColsEdit = null;
 
-		Tabela tabEdLis = null;
+		JTablePad tabEdLis = null;
 
 		public Modelo() {
 
@@ -465,7 +466,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			setDataVector( data, columnNames );
 		}
 
-		public void setTabelaEditListenerSrc( Tabela tab ) {
+		public void setTabelaEditListenerSrc( JTablePad tab ) {
 
 			tabEdLis = tab;
 		}

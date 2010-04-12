@@ -87,15 +87,15 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.GuardaCampo;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JCheckBoxPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JRadioGroup;
-import org.freedom.library.JTabbedPanePad;
-import org.freedom.library.JTextFieldFK;
-import org.freedom.library.JTextFieldPad;
 import org.freedom.library.ListaCampos;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JCheckBoxPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.JTextFieldFK;
+import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.crm.agenda.visoes.DayViewPanel;
 import org.freedom.modulos.crm.agenda.visoes.MonthViewPanel;
 import org.freedom.telas.Aplicativo;
@@ -113,9 +113,9 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	private static final long serialVersionUID = 1L;
 
-	private Tabela tabAgd = new Tabela();
+	private JTablePad tabAgd = new JTablePad();
 
-	private Tabela tabUsu = new Tabela();
+	private JTablePad tabUsu = new JTablePad();
 
 	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
 
@@ -586,7 +586,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 	}
 
-	public static List<Event> carregaTabAgd( final Vector<Vector<?>> agentes, final Object[] datas, final Tabela tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
+	public static List<Event> carregaTabAgd( final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
 			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta ) {
 		List<Event> eventos = new ArrayList<Event>();
 
@@ -1460,7 +1460,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		}
 	}
 
-	private static ResultSet consultaAgenda( final Vector<Vector<?>> agentes, final Object[] datas, final Tabela tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
+	private static ResultSet consultaAgenda( final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
 			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta ) {
 		ResultSet rs = null;
 //		List<Event> eventos = new ArrayList<Event>();

@@ -23,7 +23,7 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import org.freedom.library.JButtonPad;
+import org.freedom.library.swing.JButtonPad;
 
 import javax.swing.JPanel;
 

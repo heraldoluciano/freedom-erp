@@ -10,8 +10,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPanelPad;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

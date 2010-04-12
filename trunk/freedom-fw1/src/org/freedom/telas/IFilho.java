@@ -26,7 +26,7 @@ package org.freedom.telas;
 import java.awt.Component;
 import java.awt.Container;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JPanelPad;
 
 
 public interface IFilho {

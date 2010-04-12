@@ -13,8 +13,8 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.EmailBean;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JPanelPad;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JPanelPad;
 
 
 public class JRViewerPad extends JRViewer {

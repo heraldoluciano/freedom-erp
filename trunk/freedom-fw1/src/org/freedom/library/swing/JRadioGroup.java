@@ -20,7 +20,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;
@@ -42,6 +42,7 @@ import javax.swing.border.Border;
 import org.freedom.acao.DefaultRadioGroupListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.library.ListaCampos;
 
 
 public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyListener {

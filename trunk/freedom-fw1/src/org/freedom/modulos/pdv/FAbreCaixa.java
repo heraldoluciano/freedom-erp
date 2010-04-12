@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

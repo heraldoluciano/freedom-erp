@@ -18,20 +18,20 @@
  * Comentários da classe.....
  */
  
-package org.freedom.library;
+package org.freedom.library.swing;
 import java.awt.Component;
 import javax.swing.JTree;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freedom.acao.ArvoreFace;
-public class Arvore extends JTree implements ArvoreFace {
+public class JTreePad extends JTree implements ArvoreFace {
   /**
 	 * 
 	 */
   private static final long serialVersionUID = 1L;
   private ArvoreFace face = this;
-  public Arvore() {
+  public JTreePad() {
   	setCellRenderer(new NohImg(this));
   }
   public void setImgTrat(ArvoreFace imgT) {
@@ -49,8 +49,8 @@ class NohImg extends DefaultTreeCellRenderer {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Arvore pai = null;
-    public NohImg(Arvore p) {
+	private JTreePad pai = null;
+    public NohImg(JTreePad p) {
       pai = p;
     }
 

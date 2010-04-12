@@ -23,9 +23,9 @@ package org.freedom.telas;
 
 import java.awt.Component;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JPasswordFieldPad;
-import org.freedom.library.JTextFieldPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JPasswordFieldPad;
+import org.freedom.library.swing.JTextFieldPad;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

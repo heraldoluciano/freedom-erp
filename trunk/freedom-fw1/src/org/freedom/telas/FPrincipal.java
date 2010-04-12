@@ -58,13 +58,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.JButtonPad;
-import org.freedom.library.JLabelPad;
-import org.freedom.library.JMenuPad;
-import org.freedom.library.JPanelPad;
-import org.freedom.library.JTabbedPanePad;
 import org.freedom.library.StatusBar;
-import org.freedom.library.Tabela;
+import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.swing.JMenuPad;
+import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.JTabbedPanePad;
+import org.freedom.library.swing.JTablePad;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
@@ -129,7 +129,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JPanelPad pnAgd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private static Tabela tabAgd = new Tabela();
+	private static JTablePad tabAgd = new JTablePad();
 
 	private JScrollPane spnAgd = new JScrollPane( tabAgd );
 

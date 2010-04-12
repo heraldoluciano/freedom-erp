@@ -17,7 +17,7 @@
  *
  * Comentários da classe.....
  */
-package org.freedom.library;
+package org.freedom.library.swing;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
