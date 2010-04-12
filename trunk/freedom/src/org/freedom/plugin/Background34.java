@@ -1,4 +1,4 @@
-package org.freedom.library.plugin;
+package org.freedom.plugin;
 
 import java.awt.event.MouseEvent;
 

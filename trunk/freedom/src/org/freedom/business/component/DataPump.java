@@ -3,7 +3,7 @@
  * to Window - Preferences - Java - Code Style - Code Templates
  */
 
-package org.freedom.library.business.component;
+package org.freedom.business.component;
 
 import java.io.File;
 import java.io.FileReader;
