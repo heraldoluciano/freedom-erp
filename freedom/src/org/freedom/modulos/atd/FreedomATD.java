@@ -51,8 +51,8 @@ import org.freedom.modulos.atd.view.frame.utility.FConsOrc;
 import org.freedom.modulos.crm.FSetorAtend;
 import org.freedom.modulos.crm.FTipoAtendo;
 import org.freedom.modulos.grh.FFuncao;
-import org.freedom.modulos.std.view.frame.detail.FOrcamento;
-import org.freedom.modulos.std.view.frame.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FreedomATD extends AplicativoPD implements ActionListener {
 	public FreedomATD() {
