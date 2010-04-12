@@ -43,7 +43,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
-import org.freedom.modulos.fnc.business.component.FbnUtil.EPrefs;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 
 public class FRemSiacc extends FRemFBN {
 

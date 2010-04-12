@@ -61,6 +61,8 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 
 
@@ -132,7 +134,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
 //	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
-	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btCompra.gif" ) );
+	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 		
 	// Enums
 	
@@ -549,7 +551,37 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		}
 	}
 	
-	private void informaPlanoPag() {
+	private Integer getPlanoPag() {
+		
+		Integer codplanopag = null;
+		
+		try {
+		
+			DLInfoPlanoPag dl = new DLInfoPlanoPag(this, con);
+			dl.setVisible(true);
+			
+			if (dl.OK) {
+				codplanopag = dl.getValor();
+				dl.dispose();
+			} 
+			else {
+				dl.dispose();
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return codplanopag;
+	}
+	
+	private void abrecompra(Integer codcompra){
+		
+		if ( fPrim.temTela( "Compra" ) == false ) {
+			FCompra tela = new FCompra();
+			fPrim.criatela( "Compra", tela, con );
+			tela.exec( codcompra );
+		}
 		
 	}
 	
@@ -572,12 +604,17 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 			
-				recmerc = new RecMerc(ticket, con);
+				recmerc = new RecMerc(this, ticket, con);
 				
 				if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
 
-					recmerc.geraCompra();
+					Integer codcompra = recmerc.geraCompra();
 					
+					if( codcompra!=null && codcompra>0 ) {
+						
+						abrecompra(codcompra);
+						
+					}
 				}	
 				
 			}

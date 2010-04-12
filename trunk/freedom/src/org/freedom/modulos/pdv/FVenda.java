@@ -76,7 +76,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.modulos.std.view.dialog.utility.DLAdicOrc;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.plugin.AbstractControleVendaPDV;
 
 
@@ -625,7 +625,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void abreAdicOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			DLAdicOrc tela = new DLAdicOrc( this, "E" );
+			DLBuscaOrc tela = new DLBuscaOrc( this, "E" );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}

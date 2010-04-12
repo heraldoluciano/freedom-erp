@@ -60,10 +60,10 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
-import org.freedom.modulos.fnc.business.component.FbnUtil.EColcli;
-import org.freedom.modulos.fnc.business.component.FbnUtil.EParcela;
-import org.freedom.modulos.fnc.business.component.FbnUtil.StuffCli;
-import org.freedom.modulos.fnc.business.component.FbnUtil.StuffParcela;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColcli;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffCli;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffParcela;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 

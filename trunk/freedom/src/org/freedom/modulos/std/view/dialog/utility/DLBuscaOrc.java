@@ -59,7 +59,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
+public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
 	private final int POS_CODPROD = 2;
 	
@@ -179,7 +179,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 	private boolean[] prefs;
 
-	public DLAdicOrc( Object vd, String tipo ) {
+	public DLBuscaOrc( Object vd, String tipo ) {
 		
 		super();
 		

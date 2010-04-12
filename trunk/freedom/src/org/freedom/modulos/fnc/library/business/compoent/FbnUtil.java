@@ -1,4 +1,4 @@
-package org.freedom.modulos.fnc.business.component;
+package org.freedom.modulos.fnc.library.business.compoent;
 
 
 public class FbnUtil {

@@ -51,7 +51,6 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.fnc.business.component.CnabUtil;
-import org.freedom.modulos.fnc.business.component.FbnUtil;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
 import org.freedom.modulos.fnc.business.component.CnabUtil.Reg;
 import org.freedom.modulos.fnc.business.component.CnabUtil.Reg1;
@@ -63,11 +62,12 @@ import org.freedom.modulos.fnc.business.component.CnabUtil.Reg5;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegHeader;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegT400;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegTrailer;
-import org.freedom.modulos.fnc.business.component.FbnUtil.EColrec;
-import org.freedom.modulos.fnc.business.component.FbnUtil.EPrefs;
-import org.freedom.modulos.fnc.business.component.FbnUtil.StuffCli;
-import org.freedom.modulos.fnc.business.component.FbnUtil.StuffRec;
 import org.freedom.modulos.fnc.business.exception.ExceptionCnab;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColrec;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffCli;
+import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffRec;
 
 
 public class FRemCnab extends FRemFBN {

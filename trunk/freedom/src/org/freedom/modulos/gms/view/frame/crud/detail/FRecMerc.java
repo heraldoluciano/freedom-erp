@@ -743,7 +743,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		String renda = null;
 		
-		RecMerc recmerc = new RecMerc(txtTicket.getVlrInteger(), con);
+		RecMerc recmerc = new RecMerc(this, txtTicket.getVlrInteger(), con);
 
 		try {
 
