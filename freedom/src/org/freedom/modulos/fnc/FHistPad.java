@@ -34,7 +34,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;

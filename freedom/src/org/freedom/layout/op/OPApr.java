@@ -28,7 +28,7 @@ import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.telas.Aplicativo;
 
 public class OPApr extends LeiauteGR {

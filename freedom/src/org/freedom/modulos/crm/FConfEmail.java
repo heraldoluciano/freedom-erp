@@ -21,7 +21,7 @@
 
 package org.freedom.modulos.crm;
 
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JPasswordFieldPad;
 import org.freedom.library.swing.JTextAreaPad;

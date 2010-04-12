@@ -48,7 +48,7 @@ import org.freedom.funcoes.exporta.FreedomContabil;
 import org.freedom.funcoes.exporta.SafeContabil;
 import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;

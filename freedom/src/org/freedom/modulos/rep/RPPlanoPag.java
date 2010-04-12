@@ -34,7 +34,7 @@ import org.freedom.acao.DeleteListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDetalhe;

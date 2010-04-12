@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;

@@ -325,7 +325,7 @@ public class ECFDriver {
 			}
 
 			if ( bresult ) {
-				String formaPag = Funcoes.adicEspacosDireita( Funcoes.tiraAcentos( sFormaPagto ), 16 );
+				String formaPag = Funcoes.adicEspacosDireita( StringFunctions.clearAccents( sFormaPagto ), 16 );
 				String sCodFormaPag = StringFunctions.strZero( ecf.programaFormaPagamento( formaPag ), 2 );
 
 				bresult = trataresultFuncao( ecf.efetuaFormaPagamento( sCodFormaPag, fVlrPago, "" ) );
@@ -607,9 +607,9 @@ public class ECFDriver {
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			String simbolo = Funcoes.tiraAcentos( sSimb );
-			final String singular = Funcoes.tiraAcentos( sSing ); 
-			final String plural = Funcoes.tiraAcentos( sPlur );
+			String simbolo = StringFunctions.clearAccents( sSimb );
+			final String singular = StringFunctions.clearAccents( sSing ); 
+			final String plural = StringFunctions.clearAccents( sPlur );
 			
 			if ( simbolo.indexOf( '$' ) > -1 ) {
 				simbolo = " " + simbolo.replace( '$', ' ' );
@@ -847,7 +847,7 @@ public class ECFDriver {
 		else if ( !bModoDemo && ecf != null ) {
 			
 			String sCodprod = StringFunctions.strZero( String.valueOf( iCodprod ), 29 );
-			String sDescricao = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sDescprod, 29 ) );
+			String sDescricao = StringFunctions.clearAccents( Funcoes.adicionaEspacos( sDescprod, 29 ) );
 			int index = 1;
 
 			while ( ! trataresultFuncao( 

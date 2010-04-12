@@ -26,7 +26,7 @@ package org.freedom.modulos.grh;
 
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldPad;

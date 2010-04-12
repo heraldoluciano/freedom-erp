@@ -29,7 +29,7 @@ import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.layout.componentes.Leiaute;
-import org.freedom.library.ImprimeOS;
+import org.freedom.library.component.ImprimeOS;
 
 public class NFNBim extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);

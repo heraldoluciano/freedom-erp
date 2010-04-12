@@ -27,13 +27,13 @@ package org.freedom.modulos.grh;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.Navegador;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
 
 import java.util.HashMap;
 

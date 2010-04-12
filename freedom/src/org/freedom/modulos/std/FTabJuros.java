@@ -33,7 +33,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTextFieldPad;

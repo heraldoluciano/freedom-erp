@@ -1,9 +1,9 @@
 package org.freedom.modulos.std;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ImprimeOS;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;

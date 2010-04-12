@@ -37,7 +37,7 @@ import org.freedom.funcoes.exporta.Contabil;
 import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ImprimeOS;
+import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.telas.DLRelatorio;

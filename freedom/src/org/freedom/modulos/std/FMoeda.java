@@ -31,12 +31,12 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.Navegador;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
 import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {

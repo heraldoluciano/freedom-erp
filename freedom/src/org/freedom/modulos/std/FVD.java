@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.modulos.gms.DLLote;

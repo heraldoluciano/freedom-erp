@@ -27,14 +27,14 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.Navegador;
-import org.freedom.library.PainelImagem;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JTablePad;
 import org.freedom.library.swing.JTextAreaPad;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.PainelImagem;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;

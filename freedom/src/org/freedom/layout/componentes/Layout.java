@@ -20,9 +20,9 @@
 
 package org.freedom.layout.componentes;
 
-import org.freedom.library.ImprimeOS;
-import org.freedom.library.NF;
-import org.freedom.library.TabVector;
+import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.component.NF;
+import org.freedom.library.component.TabVector;
 import org.freedom.telas.Aplicativo;
 public class Layout extends Object {
 	//public boolean bEntrada = false;

@@ -26,7 +26,7 @@ package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

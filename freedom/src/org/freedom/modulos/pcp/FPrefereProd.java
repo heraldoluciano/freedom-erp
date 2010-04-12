@@ -25,9 +25,8 @@ import java.awt.Color;
 import java.util.Vector;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.GuardaCampo;
-import org.freedom.library.ListaCampos;
-import org.freedom.library.PainelImagem;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JComboBoxPad;
 import org.freedom.library.swing.JLabelPad;
@@ -35,6 +34,7 @@ import org.freedom.library.swing.JPanelPad;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.PainelImagem;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereProd extends FTabDados {

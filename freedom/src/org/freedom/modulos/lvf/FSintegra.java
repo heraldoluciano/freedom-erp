@@ -45,7 +45,7 @@ import java.util.Vector;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JButtonPad;
 import org.freedom.library.swing.JCheckBoxPad;
 import org.freedom.library.swing.JLabelPad;

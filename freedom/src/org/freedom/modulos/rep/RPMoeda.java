@@ -27,7 +27,7 @@ package org.freedom.modulos.rep;
 
 import java.util.Vector;
 
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JRadioGroup;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.telas.FDados;

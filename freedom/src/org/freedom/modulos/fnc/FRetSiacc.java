@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;

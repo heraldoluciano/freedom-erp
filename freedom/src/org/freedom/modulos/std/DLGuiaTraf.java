@@ -26,7 +26,7 @@ package org.freedom.modulos.std;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.ListaCampos;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.JLabelPad;
 import org.freedom.library.swing.JTextFieldPad;
 
