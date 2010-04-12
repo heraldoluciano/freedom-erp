@@ -44,7 +44,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.std.view.dialog.tool.DLEtiqCompra;
+import org.freedom.modulos.std.view.dialog.utility.DLEtiqCompra;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,6 +62,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.EtiquetaPPLA;
 import org.freedom.funcoes.Funcoes;
+
 
 public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaListener, KeyListener {
 

@@ -44,6 +44,9 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.object.Etiqueta;
+import org.freedom.library.business.object.EtiquetaCli;
+import org.freedom.library.business.object.EtiquetaComis;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -59,10 +62,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.std.view.frame.comum.FModEtiqueta;
-import org.freedom.objetos.ObjetoEtiqueta;
-import org.freedom.objetos.EtiquetaCli;
-import org.freedom.objetos.EtiquetaComis;
+import org.freedom.modulos.std.view.frame.crud.comum.FModEtiqueta;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
 
@@ -112,7 +112,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	
 	private JTextFieldPad txtPostScript= new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
-	private ObjetoEtiqueta objEtiq = null;
+	private Etiqueta objEtiq = null;
 	
 	private EtiquetaComis objEtiqComis = new EtiquetaComis();
 
