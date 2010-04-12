@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd.view.frame.tool;
+package org.freedom.modulos.atd.view.frame.utility;
 
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;

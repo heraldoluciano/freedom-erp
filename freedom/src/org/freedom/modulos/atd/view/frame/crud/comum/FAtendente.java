@@ -21,7 +21,7 @@
  * 
  */
 
-package org.freedom.modulos.atd.view.frame.comum;
+package org.freedom.modulos.atd.view.frame.crud.comum;
 
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
