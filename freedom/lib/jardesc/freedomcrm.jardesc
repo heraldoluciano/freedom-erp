@@ -11,43 +11,15 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.tools"/>
-        <file path="/freedom/src/org/freedom/relatorios/agenda.jasper"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <file path="/freedom/src/org/freedom/relatorios/agenda.jrxml"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <file path="/freedom/src/org/freedom/relatorios/atendimentos.jasper"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
-        <file path="/freedom/src/org/freedom/relatorios/atendimentos.jrxml"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
-        <file path="/freedom/src/org/freedom/relatorios/resumo_contrato.jrxml"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.webservices"/>
-        <file path="/freedom/src/org/freedom/relatorios/resumo_contrato.jasper"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
-        <file path="/freedom/src/org/freedom/relatorios/atendimentos_cli.jasper"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
-        <file path="/freedom/src/org/freedom/relatorios/atendimentos_cli.jrxml"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
-		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.tabbed"/>
     </selectedElements>
 </jardesc>
