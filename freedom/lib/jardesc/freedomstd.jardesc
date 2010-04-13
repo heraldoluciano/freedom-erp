@@ -11,103 +11,102 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoConv.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.detail{FConhecFrete.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.type"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutPag.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.col"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBaixaPag.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.control"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.oc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.dialog.utility{DLSerieGrid.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.oc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.report"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRFluxoCaixa.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FConsultaCli.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FFeriados.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.webservices"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.utility{FConsultaCli.java"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.driver.scale"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.swing.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.dialog.utility{DLLote.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.gms"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAtendente.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRFluxoCaixaRes.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.bol"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRRecPag.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutRec.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBordero.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.business.componet.integration"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.webservice"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.tabbed{FProduto.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.plain{FSecaoProd.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.atd"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.swing.frame"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.exporta"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FHistorico.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.plain"/>
+        <folder path="/freedom/icones/novos"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.fnc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.dialog.utility{DLSerie.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.utility{FManutRec.java"/>
         <javaElement handleIdentifier="=freedom-nfe/src"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRFluxoCaixaReal.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRReceberSetor.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.detail{FCompra.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FContato.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLNovoRec.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRBordero.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FHistPad.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLBaixaRec.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLRestrCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLRCheque.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.tabbed{FHistPad.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.plain{FCartCob.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.swing.dialog"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{DLNovoHist.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLConsultaBaixa.java"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRCobranca.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.plain{Entrada.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.database.jdbc"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.util"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRSaidaRetorno.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{DLNovoAtend.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLEditaRec.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FUF.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FPais.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.functions"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.tabbed{FTipoMov.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.graphics"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.util"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAtend.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.plain{FBanco.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FBordero.java"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.swing.util"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.plain{FManutCli.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.dup"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FManutCli.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FAtendimento.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.event"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.business.componet"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FMunicipio.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLNovoPag.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FCartCob.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRReceber.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.utility{FManutPag.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.plugin"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRChequeAberto.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRClienteRetorno.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRReceberMes.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FRExtratoPrevisto.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain{FFuncao.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain{FCodGPS.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.background"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.etiquetas.clientes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FRAtendimentos.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{DLEditaPag.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FBairro.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc.view.frame.crud.tabbed{FConta.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.report{FRValorEstoque.java"/>
+        <folder path="/freedom/META-INF"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.persistence"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.utility{FConsCompra.java"/>
     </selectedElements>
 </jardesc>
