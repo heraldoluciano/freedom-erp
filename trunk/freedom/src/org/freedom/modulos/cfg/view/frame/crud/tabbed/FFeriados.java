@@ -26,11 +26,12 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 
@@ -45,7 +46,6 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.funcoes.Funcoes;
 
 public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener, InsertListener {
 

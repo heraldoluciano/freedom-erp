@@ -23,9 +23,10 @@ package org.freedom.library.swing.frame;
 
 import java.awt.Component;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPasswordFieldPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPasswordFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 import java.sql.DriverManager;
@@ -34,7 +35,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.freedom.funcoes.Funcoes;
 
 public class FPassword extends FFDialogo {
 

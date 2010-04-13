@@ -31,8 +31,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class RPReceber extends FDados implements ActionListener {

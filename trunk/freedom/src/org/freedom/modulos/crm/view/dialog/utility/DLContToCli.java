@@ -17,15 +17,15 @@ package org.freedom.modulos.crm.view.dialog.utility;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 
-import org.freedom.funcoes.Funcoes;
 
 /**
  * Dialogo de ajuste para campos não compatíveis entre Contato e Cliente.

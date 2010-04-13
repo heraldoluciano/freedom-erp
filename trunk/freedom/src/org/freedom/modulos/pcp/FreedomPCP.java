@@ -30,7 +30,7 @@ package org.freedom.modulos.pcp;
 
 import java.awt.event.ActionListener;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;

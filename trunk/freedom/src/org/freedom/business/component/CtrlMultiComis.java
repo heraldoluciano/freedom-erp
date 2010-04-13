@@ -3,11 +3,12 @@ package org.freedom.business.component;
 import java.awt.Component;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
@@ -21,7 +22,6 @@ import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
-import org.freedom.funcoes.Funcoes;
 
 public class CtrlMultiComis implements CarregaListener {
     

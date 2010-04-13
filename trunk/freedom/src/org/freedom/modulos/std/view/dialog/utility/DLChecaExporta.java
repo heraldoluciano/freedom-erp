@@ -32,14 +32,14 @@ import java.util.List;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.exporta.Contabil;
-import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.componet.integration.Contabil;
+import org.freedom.library.business.componet.integration.SafeContabil.SafeContabilVO;
 import org.freedom.library.component.ImprimeOS;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.DLRelatorio;
 
 public class DLChecaExporta extends DLRelatorio {

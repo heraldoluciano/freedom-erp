@@ -31,13 +31,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTabbedPanePad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
@@ -58,7 +59,6 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.Funcoes;
 
 
 public class FLanca extends FFilho implements ActionListener,ChangeListener {

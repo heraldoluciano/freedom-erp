@@ -27,16 +27,16 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.library.component.DadosImagem;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JComboBoxPad;
-import org.freedom.library.swing.JPasswordFieldPad;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.library.swing.PainelImagem;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JPasswordFieldPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.PainelImagem;
 
 public class GuardaCampo extends Component {
 	/**

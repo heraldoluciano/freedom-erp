@@ -32,8 +32,8 @@ import java.util.Vector;
 
 import javax.swing.Timer;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.library.component.LeiauteGR;
+import org.freedom.library.functions.Funcoes;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;

@@ -29,7 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 
 public class FPrincipalPD extends FPrincipal implements ActionListener, MouseListener {
 

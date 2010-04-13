@@ -24,7 +24,7 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 import java.awt.event.ActionListener;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class FTipoCont extends FDados implements ActionListener {

@@ -26,9 +26,9 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.Logger;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.functions.Logger;
 
 public class JBemaFI32 {
 

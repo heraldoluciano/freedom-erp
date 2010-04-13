@@ -24,8 +24,8 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
 
 public class FAndamento extends JFrame {
 	private static final long serialVersionUID = 1L;	

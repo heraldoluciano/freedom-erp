@@ -24,7 +24,7 @@ package org.freedom.library.business.object;
 
 import java.util.Vector;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 
 public abstract class Etiqueta {
 

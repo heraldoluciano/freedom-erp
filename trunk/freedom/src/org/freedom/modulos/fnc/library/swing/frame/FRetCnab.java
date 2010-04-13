@@ -39,8 +39,8 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.boleto.Banco;
+import org.freedom.library.business.componet.Banco;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.business.component.CnabUtil;

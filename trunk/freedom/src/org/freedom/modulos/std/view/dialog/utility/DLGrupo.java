@@ -28,10 +28,11 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
@@ -40,7 +41,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-import org.freedom.funcoes.Funcoes;
 
 public class DLGrupo extends FFDialogo {
 

@@ -28,8 +28,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLFechaPag extends FFDialogo {

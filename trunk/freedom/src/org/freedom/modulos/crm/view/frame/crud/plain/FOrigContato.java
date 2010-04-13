@@ -21,7 +21,7 @@
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 

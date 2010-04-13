@@ -26,8 +26,8 @@ package org.freedom.modulos.std.view.frame.utility;
 
 import java.util.Vector;
 
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class FSelOrc extends FFDialogo{

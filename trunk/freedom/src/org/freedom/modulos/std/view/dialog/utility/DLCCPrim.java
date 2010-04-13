@@ -24,10 +24,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLCCPrim extends FFDialogo {

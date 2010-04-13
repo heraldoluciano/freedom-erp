@@ -26,7 +26,7 @@ package org.freedom.library.swing.frame;
 import java.awt.Component;
 import java.awt.Container;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.component.JPanelPad;
 
 
 public interface IFilho {

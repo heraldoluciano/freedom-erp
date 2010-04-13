@@ -1,9 +1,10 @@
 package org.freedom.library.business.object;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+
 import java.util.HashMap;
 
-import org.freedom.funcoes.Funcoes;
 
 public class Endereco {
 	private String tipo = "";

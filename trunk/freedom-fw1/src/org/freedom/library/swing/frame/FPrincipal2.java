@@ -30,11 +30,12 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.plugin.AbstractBackground;
 
 public class FPrincipal2 extends FPrincipal implements ActionListener, MouseListener {

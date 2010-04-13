@@ -29,8 +29,9 @@ import java.awt.event.WindowEvent;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
@@ -42,7 +43,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
-import org.freedom.funcoes.Funcoes;
 
 public class DLCodProd extends FFDialogo implements KeyListener {
 

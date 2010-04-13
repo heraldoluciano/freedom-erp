@@ -33,11 +33,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Blob;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.library.swing.Navegador;
-import org.freedom.library.swing.PainelImagem;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
+import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
@@ -64,7 +65,6 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.funcoes.Funcoes;
 
 public class ListaCampos extends Container implements PostListener,
 		InsertListener, EditListener, CancelListener, DeleteListener,

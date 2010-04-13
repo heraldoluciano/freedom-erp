@@ -34,8 +34,8 @@ import java.util.HashMap;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.x.swing.Mapa;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.jdesktop.swingx.JXMapViewer;
 
 public final class FMapa extends FFilho implements ActionListener, KeyListener {

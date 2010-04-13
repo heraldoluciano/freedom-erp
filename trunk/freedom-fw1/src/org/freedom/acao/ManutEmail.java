@@ -1,6 +1,6 @@
 package org.freedom.acao;
 
-import org.freedom.funcoes.EmailBean;
+import org.freedom.library.functions.EmailBean;
 
 
 public abstract interface ManutEmail {

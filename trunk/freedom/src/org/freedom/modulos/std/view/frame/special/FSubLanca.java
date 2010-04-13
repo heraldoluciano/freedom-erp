@@ -31,17 +31,19 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.functions.FuncoesCRM;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JComboBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 
@@ -69,8 +71,6 @@ import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.FuncoesCRM;
 
 public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
 

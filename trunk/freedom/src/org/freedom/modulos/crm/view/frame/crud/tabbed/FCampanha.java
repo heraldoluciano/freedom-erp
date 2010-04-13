@@ -24,12 +24,12 @@ import java.awt.BorderLayout;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
-import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FTabDados;
 
 import javax.swing.JScrollPane;

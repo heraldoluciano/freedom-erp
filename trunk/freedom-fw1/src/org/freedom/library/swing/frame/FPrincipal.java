@@ -56,15 +56,15 @@ import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JMenuPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTabbedPanePad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.StatusBar;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JMenuPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.StatusBar;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 

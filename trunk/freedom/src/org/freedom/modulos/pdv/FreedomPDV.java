@@ -24,8 +24,8 @@
 
 package org.freedom.modulos.pdv;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;

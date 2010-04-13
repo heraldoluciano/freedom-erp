@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFBematech;
 import org.freedom.ecf.driver.STResult;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.Logger;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.functions.Logger;
 import org.freedom.library.swing.frame.AplicativoPDV;
 
 public class ECFDriver {

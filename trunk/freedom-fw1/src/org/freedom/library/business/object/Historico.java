@@ -2,6 +2,7 @@ package org.freedom.library.business.object;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
@@ -9,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
-import org.freedom.funcoes.Funcoes;
 
 
 public class Historico {

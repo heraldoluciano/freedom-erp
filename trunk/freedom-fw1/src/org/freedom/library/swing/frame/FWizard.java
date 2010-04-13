@@ -32,9 +32,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 import javax.swing.border.EtchedBorder;

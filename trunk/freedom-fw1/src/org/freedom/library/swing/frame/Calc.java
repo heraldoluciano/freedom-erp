@@ -33,12 +33,12 @@ import java.awt.event.KeyListener;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 
 public class Calc extends FFilho implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;

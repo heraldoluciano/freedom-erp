@@ -41,13 +41,13 @@ import javax.swing.JMenuItem;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
-import org.freedom.funcoes.EmailBean;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Empresa;
 import org.freedom.library.business.object.Tab;
+import org.freedom.library.functions.EmailBean;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JButtonPad;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.modulos.std.FPrefereGeral;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {

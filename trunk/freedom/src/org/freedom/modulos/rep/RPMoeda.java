@@ -28,8 +28,8 @@ package org.freedom.modulos.rep;
 import java.util.Vector;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class RPMoeda extends FDados {

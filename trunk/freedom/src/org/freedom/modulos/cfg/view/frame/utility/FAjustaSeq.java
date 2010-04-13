@@ -22,7 +22,7 @@
 
 package org.freedom.modulos.cfg.view.frame.utility;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class FAjustaSeq extends FDados {

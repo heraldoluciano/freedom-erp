@@ -26,10 +26,11 @@ package org.freedom.modulos.grh.view.frame.report;
 
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
@@ -39,7 +40,6 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.funcoes.Funcoes;
 
 public class FRAtividade extends FRelatorio {
   private static final long serialVersionUID = 1L;

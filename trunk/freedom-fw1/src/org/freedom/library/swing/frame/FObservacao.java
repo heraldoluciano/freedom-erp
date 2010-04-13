@@ -26,8 +26,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.dialog.FDialogo;
 
 public class FObservacao extends FDialogo {

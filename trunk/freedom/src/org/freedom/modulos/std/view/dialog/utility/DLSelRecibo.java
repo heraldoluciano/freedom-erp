@@ -8,8 +8,8 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 

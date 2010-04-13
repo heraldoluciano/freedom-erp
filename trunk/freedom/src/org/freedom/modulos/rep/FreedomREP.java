@@ -27,7 +27,7 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;

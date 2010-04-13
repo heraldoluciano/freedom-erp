@@ -42,12 +42,12 @@ import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JComboBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.tef.app.ControllerTef;
