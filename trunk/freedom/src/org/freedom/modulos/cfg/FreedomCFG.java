@@ -46,7 +46,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.cfg.view.frame.utility.FAjustaSeq;
 import org.freedom.modulos.cfg.view.frame.utility.FVisual;
-import org.freedom.modulos.crm.FConfEmail;
+import org.freedom.modulos.crm.view.frame.crud.comum.FConfEmail;
 import org.freedom.modulos.pdv.FLeFiscal;
 
 public class FreedomCFG extends AplicativoPD {
