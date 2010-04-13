@@ -46,7 +46,7 @@ import org.freedom.library.swing.JTextFieldFK;
 import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.cfg.view.frame.crud.comum.FBairro;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 

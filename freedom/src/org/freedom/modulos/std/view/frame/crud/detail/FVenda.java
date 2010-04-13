@@ -101,7 +101,7 @@ import org.freedom.modulos.std.view.dialog.utility.DLBuscaRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaPgto;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLMultiComiss;
-import org.freedom.modulos.std.view.frame.crud.comum.FLiberaCredito;
+import org.freedom.modulos.std.view.frame.crud.plain.FLiberaCredito;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 import org.freedom.modulos.util.CtrlMultiComis;
 
