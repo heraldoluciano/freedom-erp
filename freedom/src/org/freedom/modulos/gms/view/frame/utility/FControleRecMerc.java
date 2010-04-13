@@ -139,7 +139,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// Enums
 	
 	private enum DETALHAMENTO {
-		STATUS, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN; 
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN; 
 	}
 	
 	public FControleRecMerc() {
@@ -267,6 +267,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setRowHeight( 21 );
 
 		tabDet.adicColuna( "" );
+		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Ticket" );
 		tabDet.adicColuna( "Cód.Tipo.Rec.Merc." );
 		
@@ -277,15 +278,16 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.adicColuna( "Transportador" );
 				
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
+		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );
-		// Coluna invisível
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPORECMERC.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );		
 		tabDet.setTamColuna( 400, DETALHAMENTO.NOMETRAN.ordinal() );
 		
-		tabDet.setColunaInvisivel( 2 );
+		//tabDet.setColunaInvisivel( 2 );
 		
 	}
 	
@@ -363,6 +365,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				}				
 				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
+				tabDet.setValor( rs.getString( "status" ), row, DETALHAMENTO.STATUSTXT.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString().trim() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
@@ -406,6 +409,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		else if( e.getSource() == btCompra ) {
 			geraCompra();
 		}
+		
+		
 
 	}
 
@@ -606,16 +611,23 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			
 				recmerc = new RecMerc(this, ticket, con);
 				
-				if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
-
-					Integer codcompra = recmerc.geraCompra();
+				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )) {
 					
-					if( codcompra!=null && codcompra>0 ) {
+					if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+
+						Integer codcompra = recmerc.geraCompra();
+					
+						if( codcompra!=null && codcompra>0 ) {
 						
-						abrecompra(codcompra);
+							abrecompra(codcompra);
 						
+						}
 					}
-				}	
+					
+				}
+				else {
+					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
+				}
 				
 			}
 			else {

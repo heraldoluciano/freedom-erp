@@ -86,8 +86,6 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
-
-
 	private void buscaPesagens() {
 
 		buscaPrimeiraPesagem();
@@ -436,20 +434,7 @@ public class RecMerc implements java.io.Serializable {
 			
 			if(codplanopag == null) {
 				return null;
-			}
-			
-			HashMap<String, Object> p1 = getPrimeirapesagem();
-
-			peso1 = (BigDecimal) p1.get( "peso" );
-
-			HashMap<String, Object> p2 = getSegundapesagem();
-
-			peso2 = (BigDecimal) p2.get( "peso" );
-			unid = (String) p2.get( "unid" );
-
-			pesoliq = peso1.subtract( peso2 );
-
-			// Executando procedure para geração da compra e vinculos.
+			}			
 
 			sql.append( "insert into cpcompra (");
 			sql.append( "codemp, codfilial, codcompra, ");
@@ -470,7 +455,7 @@ public class RecMerc implements java.io.Serializable {
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
-			ps.setInt( param++, getPlanoPag() );
+			ps.setInt( param++, codplanopag );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
@@ -492,9 +477,71 @@ public class RecMerc implements java.io.Serializable {
 			
 			ps.execute();
 			
+			con.commit();
+			ps.close();
+			
+			geraItemCompra( getCodcompra() );
+			
+			
 		}
 		catch (Exception e) {
 			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, con, e);
+			setCodcompra( null );
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return getCodcompra();
+
+	}
+	
+	public Integer geraItemCompra(Integer codcompra) {
+
+		StringBuilder sql = new StringBuilder();
+
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		String unid = null;
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+
+		try {
+
+	
+			HashMap<String, Object> p1 = getPrimeirapesagem();
+
+			peso1 = (BigDecimal) p1.get( "peso" );
+
+			HashMap<String, Object> p2 = getSegundapesagem();
+
+			peso2 = (BigDecimal) p2.get( "peso" );
+			unid = (String) p2.get( "unid" );
+
+			pesoliq = peso1.subtract( peso2 );
+
+			sql.append( "execute procedure cpadicitcomprarecmercsp(?,?,?,?,?,?,?)" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );					
+			ps.setInt( 3, getTicket());
+			
+			ps.setInt( 4, Aplicativo.iCodEmp);
+			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 6, codcompra );
+			ps.setBigDecimal( 7, pesoliq );
+			
+			ps.execute();
+			ps.close();
+
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar itens de compra!", true, con, e);
+			setCodcompra( null );
 			e.printStackTrace();
 		}
 		
