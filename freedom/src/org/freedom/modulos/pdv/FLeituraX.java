@@ -32,8 +32,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JLayeredPane;
 
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JLabelPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 

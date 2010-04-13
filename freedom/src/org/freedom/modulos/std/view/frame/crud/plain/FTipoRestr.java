@@ -28,12 +28,12 @@ import java.sql.ResultSet;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;

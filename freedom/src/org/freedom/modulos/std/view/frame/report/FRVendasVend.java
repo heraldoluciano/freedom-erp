@@ -25,12 +25,13 @@
 package org.freedom.modulos.std.view.frame.report;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
@@ -43,7 +44,6 @@ import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.funcoes.Funcoes;
 
 public class FRVendasVend extends FRelatorio {
 

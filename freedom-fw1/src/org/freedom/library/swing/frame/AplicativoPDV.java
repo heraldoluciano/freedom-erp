@@ -32,7 +32,7 @@ import java.util.Date;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.app.PrinterMemory;
 import org.freedom.ecf.layout.AbstractLayout;
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.modulos.pdv.FAbreCaixa;
 import org.freedom.tef.app.ControllerTef;

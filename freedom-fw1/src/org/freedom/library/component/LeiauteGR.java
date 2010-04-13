@@ -20,7 +20,7 @@
 
 package org.freedom.library.component;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.ImprimeLayout;
+import org.freedom.library.swing.component.ImprimeLayout;
 
 import java.util.Vector;
 

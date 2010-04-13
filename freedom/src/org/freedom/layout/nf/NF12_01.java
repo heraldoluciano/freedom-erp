@@ -24,10 +24,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Leiaute;
+import org.freedom.library.functions.Funcoes;
 
 
 public class NF12_01 extends Leiaute {

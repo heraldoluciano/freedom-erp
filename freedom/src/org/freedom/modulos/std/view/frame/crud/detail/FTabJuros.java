@@ -32,11 +32,11 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JComboBoxPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 
 public class FTabJuros extends FDetalhe implements CarregaListener, PostListener, ActionListener{

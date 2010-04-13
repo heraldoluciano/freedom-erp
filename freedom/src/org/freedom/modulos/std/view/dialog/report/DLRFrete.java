@@ -22,10 +22,10 @@
 package org.freedom.modulos.std.view.dialog.report;
 
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 import java.util.Calendar;

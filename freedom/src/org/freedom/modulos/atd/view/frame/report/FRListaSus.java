@@ -23,10 +23,11 @@
 package org.freedom.modulos.atd.view.frame.report;
 
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 
 import javax.swing.BorderFactory;
@@ -35,7 +36,6 @@ import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.funcoes.Funcoes;
 
 
 public class FRListaSus extends FTabDados implements PostListener, CheckBoxListener {

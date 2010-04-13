@@ -22,10 +22,10 @@
 package org.freedom.modulos.crm.view.frame.crud.plain;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JPasswordFieldPad;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPasswordFieldPad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class FConfEmail extends FDados{

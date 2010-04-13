@@ -54,16 +54,16 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
-import org.freedom.funcoes.EmailBean;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.functions.EmailBean;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.ImprimeLayout;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.ImprimeLayout;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 
 public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 

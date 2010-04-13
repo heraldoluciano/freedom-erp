@@ -12,9 +12,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
 
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.EmailBean;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.functions.EmailBean;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.DLEnviarEmail;
 
 

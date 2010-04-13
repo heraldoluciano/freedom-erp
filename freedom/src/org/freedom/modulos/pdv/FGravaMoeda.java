@@ -27,16 +27,16 @@ package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.funcoes.Funcoes;
 
 public class FGravaMoeda extends FFDialogo {
 

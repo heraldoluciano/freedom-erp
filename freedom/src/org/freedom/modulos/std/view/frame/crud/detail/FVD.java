@@ -31,10 +31,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;

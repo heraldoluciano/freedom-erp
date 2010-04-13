@@ -27,8 +27,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Vector;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 
 public class LoginPD extends Login implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;

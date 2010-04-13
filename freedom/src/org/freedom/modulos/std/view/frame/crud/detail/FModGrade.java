@@ -24,9 +24,9 @@ package org.freedom.modulos.std.view.frame.crud.detail;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 

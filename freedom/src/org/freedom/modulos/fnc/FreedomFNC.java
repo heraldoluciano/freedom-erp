@@ -24,7 +24,7 @@
 
 package org.freedom.modulos.fnc;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;

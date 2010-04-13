@@ -22,10 +22,10 @@ package org.freedom.layout.nf;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Leiaute;
+import org.freedom.library.functions.Funcoes;
 
 public class NFSetpoint extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {

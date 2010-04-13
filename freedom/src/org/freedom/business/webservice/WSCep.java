@@ -2,9 +2,9 @@ package org.freedom.business.webservice;
 
 import java.util.HashMap;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Endereco;
+import org.freedom.library.functions.Funcoes;
 
 public class WSCep{
 	private String cep = null;

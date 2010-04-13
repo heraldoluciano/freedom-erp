@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class FEstadoCivil extends FDados implements ActionListener {

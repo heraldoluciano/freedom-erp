@@ -22,8 +22,8 @@ package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
 
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class FAtalhos extends FFDialogo {

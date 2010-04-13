@@ -3,7 +3,7 @@ package org.freedom.modulos.grh.view.frame.crud.plain;
 import java.awt.event.ActionListener;
 
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 /**

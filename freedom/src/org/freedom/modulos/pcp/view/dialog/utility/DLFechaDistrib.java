@@ -32,11 +32,11 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.pcp.business.object.ModLote;

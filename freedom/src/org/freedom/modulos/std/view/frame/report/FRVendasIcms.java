@@ -30,11 +30,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRVendasIcms extends FRelatorio {

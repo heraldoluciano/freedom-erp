@@ -31,10 +31,10 @@ import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {

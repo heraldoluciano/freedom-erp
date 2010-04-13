@@ -25,10 +25,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLSubGrupo extends FFDialogo {

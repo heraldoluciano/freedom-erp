@@ -26,6 +26,7 @@ package org.freedom.modulos.std.view.dialog.utility;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.dialog.DLF3;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -36,7 +37,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
-import org.freedom.funcoes.Funcoes;
 
 public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 

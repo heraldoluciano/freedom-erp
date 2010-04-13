@@ -26,9 +26,9 @@ package org.freedom.modulos.fnc.view.frame.crud.plain;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextFieldFK;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 import java.util.Vector;

@@ -22,13 +22,13 @@
 
 package org.freedom.modulos.atd.view.frame.crud.plain;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.funcoes.Funcoes;
 
 public class FEncaminhador extends FDados implements PostListener { 
 

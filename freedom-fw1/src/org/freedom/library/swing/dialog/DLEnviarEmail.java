@@ -55,15 +55,15 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.funcoes.EmailBean;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.business.ProcessoSec;
-import org.freedom.library.swing.JButtonPad;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JPasswordFieldPad;
-import org.freedom.library.swing.JTextAreaPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.business.componet.ProcessoSec;
+import org.freedom.library.functions.EmailBean;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JPasswordFieldPad;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.rep.RPPrefereGeral;
 

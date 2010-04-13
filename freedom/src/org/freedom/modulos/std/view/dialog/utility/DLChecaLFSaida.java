@@ -27,8 +27,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.DLRelatorio;
 
 public class DLChecaLFSaida extends DLRelatorio {

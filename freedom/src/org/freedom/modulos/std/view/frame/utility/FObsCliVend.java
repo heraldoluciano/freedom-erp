@@ -34,7 +34,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class FObsCliVend extends FFDialogo implements KeyListener {

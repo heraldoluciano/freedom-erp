@@ -30,9 +30,9 @@ import javax.swing.JScrollPane;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.Navegador;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.Navegador;
 
 public class FDetalhe extends FDados {
 

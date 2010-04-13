@@ -21,7 +21,7 @@
 
 package org.freedom.acao;
 
-import org.freedom.library.swing.JTablePad;
+import org.freedom.library.swing.component.JTablePad;
 public class TabelaSelEvent {
   private JTablePad tab = null;
   public TabelaSelEvent(JTablePad tb) {

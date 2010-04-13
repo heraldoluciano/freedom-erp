@@ -27,11 +27,12 @@ package org.freedom.modulos.fnc.view.dialog.report;
 
 import java.awt.Component;
 import java.util.Vector;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.library.swing.JComboBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JRadioGroup;
-import org.freedom.library.swing.JTextFieldPad;
+
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLRSCheque extends FFDialogo {

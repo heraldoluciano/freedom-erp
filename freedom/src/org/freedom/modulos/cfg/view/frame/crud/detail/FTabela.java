@@ -27,9 +27,9 @@ import java.awt.event.ActionListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {

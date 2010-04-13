@@ -40,11 +40,11 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.ImprimeLayout;
+import org.freedom.library.swing.component.ImprimeLayout;
 import org.freedom.library.swing.dialog.DLPrinterJob;
 import org.freedom.library.swing.dialog.DLVisualiza;
 import org.freedom.library.swing.frame.Aplicativo;

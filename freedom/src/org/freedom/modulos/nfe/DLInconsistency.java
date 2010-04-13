@@ -27,10 +27,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTablePad;
-import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
 

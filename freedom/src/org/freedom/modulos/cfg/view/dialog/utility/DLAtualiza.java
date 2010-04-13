@@ -29,7 +29,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.freedom.funcoes.Funcoes;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 

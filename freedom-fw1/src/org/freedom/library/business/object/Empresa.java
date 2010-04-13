@@ -27,8 +27,8 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 
 public class Empresa {

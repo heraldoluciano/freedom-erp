@@ -3,8 +3,8 @@ package org.freedom.modulos.std.view.dialog.utility;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.library.swing.JPanelPad;
-import org.freedom.library.swing.JTextAreaPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.dialog.FDialogo;
 
 public class DLBuscaDescProd extends FDialogo {

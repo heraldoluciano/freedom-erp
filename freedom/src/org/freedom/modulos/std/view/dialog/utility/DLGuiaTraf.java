@@ -26,16 +26,17 @@ package org.freedom.modulos.std.view.dialog.utility;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.freedom.funcoes.Funcoes;
+
 
 public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener {
 

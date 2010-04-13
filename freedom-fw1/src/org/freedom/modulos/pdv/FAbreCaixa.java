@@ -28,7 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.swing.JTextFieldPad;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
@@ -41,7 +42,6 @@ import java.util.Date;
 import javax.swing.JLabel;
 
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.funcoes.Funcoes;
 
 public class FAbreCaixa extends FDialogo {
 

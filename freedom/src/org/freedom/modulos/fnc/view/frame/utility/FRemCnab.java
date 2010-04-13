@@ -42,11 +42,11 @@ import java.util.HashSet;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.boleto.Banco;
-import org.freedom.funcoes.boleto.BancodoBrasil;
-import org.freedom.funcoes.boleto.Bradesco;
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.componet.Banco;
+import org.freedom.library.business.componet.BancodoBrasil;
+import org.freedom.library.business.componet.Bradesco;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;

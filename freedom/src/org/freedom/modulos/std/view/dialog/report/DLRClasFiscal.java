@@ -24,9 +24,9 @@ import java.awt.Component;
 import java.util.Vector;
 
 
-import org.freedom.library.swing.JCheckBoxPad;
-import org.freedom.library.swing.JLabelPad;
-import org.freedom.library.swing.JRadioGroup;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLRClasFiscal extends FFDialogo {
