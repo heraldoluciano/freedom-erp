@@ -62,7 +62,7 @@ import org.freedom.library.swing.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.modulos.std.view.frame.crud.comum.FModEtiqueta;
+import org.freedom.modulos.std.view.frame.crud.plain.FModEtiqueta;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
 
