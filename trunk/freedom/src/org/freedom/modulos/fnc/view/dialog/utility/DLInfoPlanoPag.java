@@ -52,9 +52,10 @@ public class DLInfoPlanoPag extends FFDialogo {
 	public DLInfoPlanoPag( Component cOrig, DbConnection cn ) {
 
 		super( cOrig );
+		
 		setConexao( cn );
 		setTitulo( "Informe o plano de pagamento" );
-		setAtribos( 400, 220 );
+		setAtribos( 370, 140 );
 		
 		montaListaCampos();
 
@@ -71,7 +72,7 @@ public class DLInfoPlanoPag extends FFDialogo {
 
 	private void montaListaCampos() {
 
-		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, txtDescPlanoPag, true ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C','A')" );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
@@ -79,6 +80,7 @@ public class DLInfoPlanoPag extends FFDialogo {
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 		txtCodPlanoPag.setFK( true );
+		txtCodPlanoPag.setNomeCampo( "codplanopag" );
 
 	}
 
@@ -96,11 +98,13 @@ public class DLInfoPlanoPag extends FFDialogo {
 				txtCodPlanoPag.requestFocus();
 				
 			}
+			else {
+				super.actionPerformed( evt );
+			}
 		}
-		ok();
-	//	else if ( evt.getSource() == btCancel ) {
-			//super.actionPerformed( evt );
-		//}
+		else if ( evt.getSource() == btCancel ) {
+			super.actionPerformed( evt );
+		}
 		
 	}
 	

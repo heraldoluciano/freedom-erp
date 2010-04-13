@@ -880,7 +880,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
  		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
 		adicDescFK( txtDescAlmoxItOrc, 454, 60, 202, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicDescFK( txtSldLiqProd, 660, 60, 80, 20, "SldLiqProd", "Saldo" );
-//XXX		
+	
 		adicCampo( txtPercComisItOrc, 7, 60, 40, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrComisItOrc, 50, 60, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
 		
