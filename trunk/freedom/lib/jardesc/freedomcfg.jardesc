@@ -11,37 +11,14 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
-        <javaElement handleIdentifier="=freedom-ecf/src&lt;org.freedom.ecf.app"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom-ecf/src&lt;org.freedom.ecf.driver"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FConfEmail.java"/>
-        <javaElement handleIdentifier="=freedom-ecf/src&lt;org.freedom.ecf.com"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv{FLeFiscal.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-		<javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
-		<javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>        
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.plain"/>
     </selectedElements>
 </jardesc>

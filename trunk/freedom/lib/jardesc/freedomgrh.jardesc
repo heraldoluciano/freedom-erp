@@ -4,33 +4,18 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomgrh.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.objetos"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FEstadoCivil.java"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.crud"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain"/>
     </selectedElements>
 </jardesc>
