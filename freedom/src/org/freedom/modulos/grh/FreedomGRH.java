@@ -30,6 +30,23 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.view.frame.crud.comum.FEstadoCivil;
+import org.freedom.modulos.grh.view.crud.comum.FArea;
+import org.freedom.modulos.grh.view.crud.comum.FBeneficio;
+import org.freedom.modulos.grh.view.crud.comum.FCaracteristica;
+import org.freedom.modulos.grh.view.crud.comum.FCodGPS;
+import org.freedom.modulos.grh.view.crud.comum.FCurso;
+import org.freedom.modulos.grh.view.crud.comum.FDepto;
+import org.freedom.modulos.grh.view.crud.comum.FFuncao;
+import org.freedom.modulos.grh.view.crud.comum.FNivelCurso;
+import org.freedom.modulos.grh.view.crud.comum.FTurnos;
+import org.freedom.modulos.grh.view.crud.tabbed.FCandidato;
+import org.freedom.modulos.grh.view.crud.tabbed.FEmpregado;
+import org.freedom.modulos.grh.view.crud.tabbed.FEmpregadores;
+import org.freedom.modulos.grh.view.crud.tabbed.FVaga;
+import org.freedom.modulos.grh.view.frame.report.FRAtividade;
+import org.freedom.modulos.grh.view.frame.report.FRRelAtiv;
+import org.freedom.modulos.grh.view.frame.report.FRVagas;
+import org.freedom.modulos.grh.view.frame.utility.FGerencVagas;
 
 public class FreedomGRH extends AplicativoPD {
 
