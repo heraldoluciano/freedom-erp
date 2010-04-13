@@ -70,7 +70,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
-import org.freedom.modulos.pcp.DLFinalizaOP;
+import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;

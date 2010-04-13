@@ -47,6 +47,7 @@ import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
+import org.freedom.modulos.std.view.background.Background34;
 import org.freedom.modulos.std.view.frame.crud.detail.FEmpresa;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -152,7 +153,6 @@ import org.freedom.modulos.std.view.frame.utility.FProcessaEQ;
 import org.freedom.modulos.std.view.frame.utility.FProcessaSL;
 import org.freedom.modulos.std.view.frame.utility.FSVV;
 import org.freedom.modulos.std.view.frame.utility.FStatusItOrc;
-import org.freedom.plugin.Background34;
 
 public class FreedomSTD2 extends AplicativoPD {
 
