@@ -48,9 +48,9 @@ import org.freedom.modulos.atd.view.frame.utility.FAjustaSitOrc;
 import org.freedom.modulos.atd.view.frame.utility.FAprovaOrc;
 import org.freedom.modulos.atd.view.frame.utility.FConsAutoriz;
 import org.freedom.modulos.atd.view.frame.utility.FConsOrc;
-import org.freedom.modulos.crm.FSetorAtend;
-import org.freedom.modulos.crm.FTipoAtendo;
-import org.freedom.modulos.grh.FFuncao;
+import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
+import org.freedom.modulos.crm.view.frame.crud.detail.FTipoAtendo;
+import org.freedom.modulos.grh.view.crud.comum.FFuncao;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
