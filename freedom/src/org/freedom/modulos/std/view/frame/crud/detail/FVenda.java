@@ -65,6 +65,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.business.component.CtrlMultiComis;
 import org.freedom.business.component.NFSaida;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
@@ -103,7 +104,6 @@ import org.freedom.modulos.std.view.dialog.utility.DLFechaVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLMultiComiss;
 import org.freedom.modulos.std.view.frame.crud.plain.FLiberaCredito;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
-import org.freedom.modulos.util.CtrlMultiComis;
 
 
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener  {
