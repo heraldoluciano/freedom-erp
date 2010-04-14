@@ -1,5 +1,5 @@
 package org.freedom.library.functions;
-import org.freedom.library.business.componet.BancodoBrasil;
+import org.freedom.library.business.component.BancodoBrasil;
 
 
 

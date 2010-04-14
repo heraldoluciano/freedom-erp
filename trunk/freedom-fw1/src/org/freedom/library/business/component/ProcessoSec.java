@@ -19,7 +19,7 @@
  * Comentários da classe.....
  */
 
-package org.freedom.library.business.componet;
+package org.freedom.library.business.component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.Timer;

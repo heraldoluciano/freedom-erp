@@ -1,4 +1,4 @@
-package org.freedom.library.business.componet;
+package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -6,34 +6,19 @@ import java.text.DecimalFormat;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.NumberFormatter;
 
+import org.freedom.infra.functions.StringFunctions;
 
-public class CaixaEconomica extends Banco {
+public class Bradesco extends Banco {
 
-//	private final String CD_COBRANCA_SIMPLES = "11"; // Cobrança Simples
-
-//	private final String CD_COBRANCA_RAPIDA = "12"; // Cobrança rápida
-
-	private final String CD_COBRANCA_SR = "14"; // Cobrança sem registro
-
-//	private final String CD_COBRANCA_DESCONTADA = "41"; // Cobrança descontada
-
-//	private final String SG_COBRANCA_SIMPLES = "CS"; // Sigla Cobrança Simples
-
-//	private final String SG_COBRANCA_RAPIDA = "CR"; // Sigla Cobrança rápida
-
-	private final String SG_COBRANCA_SR = "SR"; // Cobrança sem registro
-
-//	private final String SG_COBRANCA_DESCONTADA = "DE"; // Cobrança descontada
-
-	private final String BC_COBRANCA_SR = "80"; // Cobrança sem registro
-
-	private final String CONSTANTE_CAMPO_LIVRE = "7"; // Constante para geração do campo livre
+	private final String CONSTANTE_CAMPO_LIVRE = "0"; // Constante para geração do campo livre
 
 	private String agencia = "";
+	
+	private String conta = "";
 
 	private String codcli = "";
 
-	private String carteira = "14";
+	private String carteira = "09";
 
 	private int moeda = 9; // Real
 
@@ -53,7 +38,11 @@ public class CaixaEconomica extends Banco {
 
 	private String convenio = "";
 
-	public CaixaEconomica( String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String conta, String carteira, String modalidade ) {
+	public Bradesco () {
+		super();
+	}
+	
+	public Bradesco( String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String contap, String carteira, String modalidade ) {
 	
 		setMoeda( new Integer( codmoeda ).intValue() );
 		setValorTitulo( vlrtitulo );
@@ -64,23 +53,50 @@ public class CaixaEconomica extends Banco {
 		setFatvenc( fatvenc );
 		setRec( rec );
 		setNparc( nparc );
-		setModalidade( modalidade );
+		setModalidade( modalidade );		
+		setConta(contap);
 	}
-
+	
 	private String getCampoLivre() {
+	
+		String agencialimpa = getAgencia();
+		String contalimpa = getConta();
+		
+		if(agencialimpa.indexOf("-")>0) {
+			agencialimpa = agencialimpa.substring(0,agencialimpa.indexOf("-"));			
+		}
+		
+		if(contalimpa.indexOf("-")>0) {
+			contalimpa = contalimpa.substring(0,contalimpa.indexOf("-"));			
+		}
+		
+		agencialimpa = StringFunctions.strZero(agencialimpa, 4);
+		contalimpa = StringFunctions.strZero(contalimpa, 7);
+		
+		
+		String parte1 = agencialimpa;
+		
+		String parte2 = StringFunctions.strZero(getCarteiraBanco(),2 );
+		String parte3 = getNossoNumero();
+		String parte4 = contalimpa;
+		
+/*		System.out.println("CL1:" + parte1);
+		System.out.println("CL2:" + parte2);
+		System.out.println("CL3:" + parte3);
+		System.out.println("CL4:" + parte4);*/
+		
+		
+		String livre = parte1 + parte2 + parte3 + parte4 + CONSTANTE_CAMPO_LIVRE ;
 
-		String parte1 = getCodcli();
-		String parte2 = getAgencia();
-		String parte3 = getCarteiraBanco().substring( 0, 1 );
-		String parte6 = getNossoNumero();
-		String livre = parte1.substring( 0, 5 ) + parte2.substring( 0, 4 ) + parte3 + CONSTANTE_CAMPO_LIVRE + parte6;
-
+//		System.out.println("campolivre:" + livre);
+		
 		return livre;
 	}
 
 	private String getCampo1() {
 
 		String campo = getNumero() + String.valueOf( moeda ) + getCampoLivre().substring( 0, 5 );
+
 		return getDigitoCampo( campo, 2 );
 	}
 
@@ -107,18 +123,32 @@ public class CaixaEconomica extends Banco {
 	}
 
 	/**
-	 * ver documentacao do banco para saber qual a ordem deste campo
+	 * Dígito verificador do código de barras
 	 */
 	private String getCampo4() {
 
-		String parte1 = getNumero();
-		String parte2 = String.valueOf( getMoeda() );
-		String parte3 = String.valueOf( getFatvenc() );
-		String parte4 = getValorTitulo();
-		String parte5 = getCampoLivre();
+		String parte1 = getNumero(); // 01-03 --- Código do banco
+		String parte2 = String.valueOf( getMoeda() ); // 04-04 --- Código da moeda (9-real)
 
-		String campo = parte1 + parte2 + parte3 + parte4 + parte5;
+		String parte4 = String.valueOf( getFatvenc() ); // 06-09 --- Fator de vencimento
+		String parte5 = getValorTitulo(); // 10-19 --- Valor do documento
+		String parte6 = getCampoLivre(); // 20-44 --- Campo Livre
+
+		String campo = parte1 + parte2 + parte4 + parte5 + parte6;
+		
+/*		System.out.println("PARTE1 :" + parte1);
+		System.out.println("PARTE2 :" + parte2);
+		System.out.println("PARTE4 :" + parte4);
+		System.out.println("PARTE5 :" + parte5);	
+		System.out.println("PARTE6 :" + parte6);*/
+		
+//		System.out.println("CAMPO :" + campo);
+		
 		String campo4 = getDigitoCodigoBarras( campo );
+		
+		
+		
+//		String campo4 = getModulo11( campo, 9 );
 
 		return campo4;
 	}
@@ -150,24 +180,24 @@ public class CaixaEconomica extends Banco {
 
 	public String geraLinhaDig() {
 
-		String parte1 = getCampo1().substring( 0, 5 );
-		System.out.println( "PT1:" + parte1 );
-		String parte2 = getCampo1().substring( 5 );
-		System.out.println( "PT2:" + parte2 );
-		String parte3 = getCampo2().substring( 0, 5 );
-		System.out.println( "PT3:" + parte3 );
-		String parte4 = getCampo2().substring( 5 );
-		System.out.println( "PT4:" + parte4 );
-		String parte5 = getCampo3();
-		System.out.println( "PT5:" + parte5 );
-		String parte7 = getCampo4();
-		System.out.println( "PT7:" + parte7 );
-		String parte8 = getCampo5();
-		System.out.println( "PT8:" + parte8 );
+		String parte1 = getCampo1();
+//		System.out.println( "PT1:" + parte1 );
 
-		String linhadig = parte1 + parte2 + parte3 + parte4 + parte5 + parte7 + parte8;
+		String parte2 = getCampo2();
+//		System.out.println( "PT2:" + parte2 );
+		
+		String parte3 = getCampo3();
+//		System.out.println( "PT3:" + parte3 );
+		
+		String parte4 = getCampo4();
+//		System.out.println( "PT4:" + parte4 );
+		
+		String parte5 = getCampo5();
+//		System.out.println( "PT5:" + parte5 );
 
-		System.out.println( "LINHA DIG:" + linhadig );
+		String linhadig = parte1 + parte2 + parte3 + parte4 + parte5;
+
+//		System.out.println( "LINHA DIG:" + linhadig );
 
 		return linhadig;
 	}
@@ -236,7 +266,7 @@ public class CaixaEconomica extends Banco {
 		int multiplicador = 4;
 		int multiplicacao = 0;
 		int soma_campo = 0;
-
+		
 		for ( int i = 0; i < campo.length(); i++ ) {
 			multiplicacao = Integer.parseInt( campo.substring( i, 1 + i ) ) * multiplicador;
 			soma_campo = soma_campo + multiplicacao;
@@ -256,10 +286,12 @@ public class CaixaEconomica extends Banco {
 
 	public String getNossoNumero() {
 
-		String nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 14 );
+		String nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 11 );
 		
-		if ( nn.length() > 14 ) {
-			nn = nn.substring( 0, 14 );
+//		String nn = "11922200667";
+		
+		if ( nn.length() > 11 ) {
+			nn = nn.substring( 0, 11 );
 		}
 		
 		return nn;
@@ -291,7 +323,7 @@ public class CaixaEconomica extends Banco {
 
 	public String getDvNossoNumero() {
 
-		String dv = getModulo11( ( getCarteiraBanco().substring( 0, 1 ) ) + getNossoNumero(), 9 );
+		String dv = getModulo11( getCarteiraBanco() + getNossoNumero(), 7 );
 		// dv = "800000000002783";
 		// dv = getModulo11( dv, 9 );
 		return dv;
@@ -309,6 +341,8 @@ public class CaixaEconomica extends Banco {
 
 		String numero = parte1 + parte2 + parte3 + parte4 + parte5 + parte6;
 
+		System.out.println("CODBAR:" + numero);
+		
 		return numero;
 	}
 
@@ -331,6 +365,14 @@ public class CaixaEconomica extends Banco {
 
 	public void setAgencia( String agencia ) {
 		this.agencia = agencia;
+	}
+
+	public String getConta() {
+		return conta;
+	}
+
+	public void setConta(String conta) {
+		this.conta = conta;
 	}
 
 	public String getCodcli() {
@@ -406,30 +448,12 @@ public class CaixaEconomica extends Banco {
 		this.fatvenc = fatvenc;
 	}
 
-	// Retorna o codigo da carteira de cobrança no formato interno do banco,
+	// Retorna o codigo da carteira de cobrança no formato interno do banco, (implementar caso seja diferente conforme CEF)
 	// devem ser implementados para as demais carteiras.
 	private String getCarteiraBanco() {
 
-		String ret = "";
+		return getCarteira();
 		
-		if ( CD_COBRANCA_SR.equals( getCarteira() ) ) {
-			ret = BC_COBRANCA_SR;
-		}
-		
-		return ret;
-	}
-
-	// Retorna a sigla da carteira de cobrança no formato interno do banco,
-	// devem ser implementados para as demais carteiras.
-	public String getSiglaCarteiraBanco() {
-
-		String ret = "";
-		
-		if ( CD_COBRANCA_SR.equals( getCarteira() ) ) {
-			ret = SG_COBRANCA_SR;
-		}
-		
-		return ret;
 	}
 
 	public String getConvenio() {
@@ -441,7 +465,7 @@ public class CaixaEconomica extends Banco {
 	}
 
 	public String getNumero() {
-		return Banco.CAIXA_ECONOMICA;
+		return Banco.BRADESCO;
 	}
 
 	public String geraNossoNumero( final String modalidade, final String convenio, final Long rec, final Long nparc ) {
@@ -460,4 +484,49 @@ public class CaixaEconomica extends Banco {
 
 		return retorno.toString();
 	}
+	
+	public String getSiglaCarteiraBanco() {
+		return StringFunctions.strZero(getCarteira().toString(),2);
+	}
+	
+	public String getModulo11( String campo, int type ) {
+
+		// Modulo 11 - 234567 (type = 7)
+		// Modulo 11 - 23456789 (type = 9)
+
+		int multiplicador = 2;
+		int multiplicacao = 0;
+		int soma_campo = 0;
+
+		for ( int i = campo.length(); i > 0; i-- ) {
+			int vlrposicao = Integer.parseInt( campo.substring( i - 1, i ) );
+			multiplicacao = vlrposicao * multiplicador;
+
+			soma_campo = soma_campo + multiplicacao;
+
+			multiplicador++;
+			if ( multiplicador > 7 && type == 7 )
+				multiplicador = 2;
+			else if ( multiplicador > 9 && type == 9 )
+				multiplicador = 2;
+		}
+
+		String dac = "0"; 
+		
+		if(soma_campo % 11==1) {
+			dac = "P";
+		}
+		else if(soma_campo % 11==0) {
+			dac = "0";
+		}
+		else {
+			dac = new Integer((11 - ( soma_campo % 11 ))).toString();	
+		}
+		
+		return dac;
+	}
+	
+	
+	
+	
 }

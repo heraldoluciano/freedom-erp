@@ -26,7 +26,7 @@
  *  
  */
 
-package org.freedom.library.business.componet;
+package org.freedom.library.business.component;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.TabVector;
