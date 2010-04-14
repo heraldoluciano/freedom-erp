@@ -127,7 +127,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I',	400200000, 1, true, FInventario.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta estoque", "Consulta", 'C',	400300000, 1, true, FConsulta.class);
-			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta produto","Consulta produto", 'P', 400400000, 1, true, FConsPreco.class);
+			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta preço","CConsulta preço", 'P', 400400000, 1, true, FConsPreco.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Tipos de movimentos","Tipo de Movimento", 'T', 400500000, 1, true, FTipoMov.class);
 			addSeparador(400000000);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Reprocessa estoque","Reprocessa estoque", 'R', 400600000, 1, true,FProcessaEQ.class);
