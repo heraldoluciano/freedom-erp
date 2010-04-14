@@ -43,9 +43,9 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.library.business.componet.Banco;
-import org.freedom.library.business.componet.BancodoBrasil;
-import org.freedom.library.business.componet.Bradesco;
+import org.freedom.library.business.component.Banco;
+import org.freedom.library.business.component.BancodoBrasil;
+import org.freedom.library.business.component.Bradesco;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;

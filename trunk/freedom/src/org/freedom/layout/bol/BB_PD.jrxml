@@ -115,20 +115,20 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRPARCITREC},  $F{CONVCOB}, $F{DOCREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRPARCITREC},  $F{CONVCOB}, $F{DOCREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$F{AGENCIACONTA}+ " / " +$F{NUMCONTA}]]></variableExpression>
 	</variable>
 	<variable name="VCONVENIO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC}, true, true )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC}, true, true )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{VLRPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{VLRPARCITREC} )]]></variableExpression>
 		<initialValueExpression><![CDATA["012345678901234567890123456789012345678901234567"]]></initialValueExpression>
 	</variable>
 	<variable name="LINHADIGEXT" class="java.lang.String" resetType="Report" calculation="Nothing">
@@ -140,11 +140,11 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 :$V{LINHADIG}]]></variableExpression>
 	</variable>
 	<variable name="DOCUMENTO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.funcoes.boleto.Banco) $V{BOLETO} ).getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC} )]]></variableExpression>
 	</variable>
 	<variable name="BOLETO" class="java.lang.Object" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new org.freedom.funcoes.boleto.BancodoBrasil()]]></variableExpression>
-		<initialValueExpression><![CDATA[new org.freedom.funcoes.boleto.BancodoBrasil()]]></initialValueExpression>
+		<variableExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></variableExpression>
+		<initialValueExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></initialValueExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >

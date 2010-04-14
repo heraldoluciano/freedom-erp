@@ -39,7 +39,7 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
-import org.freedom.library.business.componet.Banco;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
