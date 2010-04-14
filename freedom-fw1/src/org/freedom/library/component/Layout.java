@@ -20,7 +20,7 @@
 
 package org.freedom.library.component;
 
-import org.freedom.library.business.componet.NF;
+import org.freedom.library.business.component.NF;
 import org.freedom.library.swing.frame.Aplicativo;
 public class Layout extends Object {
 	//public boolean bEntrada = false;
