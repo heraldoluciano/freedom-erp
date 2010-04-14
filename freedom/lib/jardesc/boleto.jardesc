@@ -11,7 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.functions"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.library.business.component"/>
     </selectedElements>
 </jardesc>

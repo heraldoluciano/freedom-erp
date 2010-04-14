@@ -31,7 +31,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.componet.ProcessoSec;
+import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;

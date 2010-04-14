@@ -70,7 +70,7 @@ import org.freedom.business.component.NFSaida;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.componet.Lucratividade;
+import org.freedom.library.business.component.Lucratividade;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Layout;
 import org.freedom.library.component.Leiaute;

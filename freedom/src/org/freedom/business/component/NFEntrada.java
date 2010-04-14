@@ -26,7 +26,7 @@ package org.freedom.business.component;
 
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.componet.NF;
+import org.freedom.library.business.component.NF;
 import org.freedom.library.component.TabVector;
 import org.freedom.library.functions.Funcoes;
 

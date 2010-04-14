@@ -28,7 +28,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import org.freedom.infra.functions.StringFunctions;
-import org.freedom.library.business.componet.NF;
+import org.freedom.library.business.component.NF;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Layout;
 import org.freedom.library.functions.Funcoes;

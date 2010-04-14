@@ -27,7 +27,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.business.componet.ProcessoSec;
+import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;

@@ -36,7 +36,7 @@ import java.sql.SQLException;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
-import org.freedom.library.business.componet.ProcessoSec;
+import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
