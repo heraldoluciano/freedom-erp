@@ -514,8 +514,9 @@ public class FreedomSTD extends AplicativoPD {
 			Aplicativo.setLookAndFeel( "freedom.ini" );
 			FreedomSTD freedom = new FreedomSTD();
 			freedom.show();
-		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+		} 
+		catch ( Throwable e ) {
+			Funcoes.criaTelaErro( "Erro de execução\n" + e.getMessage() + "\n" + e.getCause() + "\n" + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
 	}
