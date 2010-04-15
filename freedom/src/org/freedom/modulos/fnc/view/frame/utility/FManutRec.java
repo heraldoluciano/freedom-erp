@@ -2041,7 +2041,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
 
-				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) ) {
+				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) || (imgStatusAt == imgPago2) || (imgStatusAt == imgPagoParcial2)) {
 
 					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == 0 ) {
 
