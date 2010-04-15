@@ -231,9 +231,20 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		setTabelaExterna(lc, null);
 	}
 
-	public void setTabelaExterna(ListaCampos lc, Class<? extends IFilho> telaexterna) {
+	@SuppressWarnings("unchecked")
+	public void setTabelaExterna(ListaCampos lc, String telaexterna) {
 		lcTabExt = lc;
-		this.telaexterna = telaexterna;
+
+		if(telaexterna!=null) {
+			try {
+				Class<? extends IFilho> class1 = (Class<? extends IFilho>) Class.forName( telaexterna );
+				this.telaexterna = class1;
+			}
+			catch (Exception e) {
+				System.out.println("Tela externa informada, não possui um tipo válido.");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void setNomeCampo(String nm) {
