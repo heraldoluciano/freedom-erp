@@ -105,8 +105,9 @@ protected boolean execConexao(String sUsu, String sSenha) {
 		props.put("password", sSenha);
 		conLogin = new DbConnection(strBanco, props);
 		conLogin.setAutoCommit(false);
-	} catch (java.sql.SQLException e) {
-		if (e.getErrorCode() == 335544472)
+	} 
+	catch (java.sql.SQLException e) {
+		if (e.getErrorCode() == 335544472 || e.getErrorCode() == 335544345)
 			Funcoes.mensagemErro( this, "Nome do usuário ou senha inválidos ! ! !");
 		else                                                                             
 			Funcoes.mensagemErro( this,"Não foi possível estabelecer conexão com o banco de dados.\n"+e.getMessage());
