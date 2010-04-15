@@ -36,6 +36,7 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
+import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
@@ -70,9 +71,8 @@ import org.freedom.modulos.std.view.frame.report.FRInvPeps;
 import org.freedom.modulos.std.view.frame.report.FRMovProd;
 import org.freedom.modulos.std.view.frame.report.FRSaldoLote;
 import org.freedom.modulos.std.view.frame.report.FRVencLote;
-import org.freedom.modulos.std.view.frame.special.FGrupo;
 import org.freedom.modulos.std.view.frame.utility.FConsPreco;
-import org.freedom.modulos.std.view.frame.utility.FConsulta;
+import org.freedom.modulos.std.view.frame.utility.FConsEstoque;
 import org.freedom.modulos.std.view.frame.utility.FKardex;
 import org.freedom.modulos.std.view.frame.utility.FProcessaEQ;
 
@@ -85,7 +85,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,false, null);			
 				addOpcao(100100000, TP_OPCAO_MENU, "Produtos", "", 'P', 100101000, 2,false, null);
 					addOpcao(100101000, TP_OPCAO_ITEM, "Almoxarifado", "Almoxarifado", 'x',100120030, 3, true, FAlmox.class);
-					addOpcao(100101000, TP_OPCAO_ITEM, "Grupo", "Grupo", 'r', 100120040, 3,true, FGrupo.class);
+					addOpcao(100101000, TP_OPCAO_ITEM, "Grupo", "Grupo", 'r', 100120040, 3,true, FGrupoProd.class);
 					addOpcao(100101000, TP_OPCAO_ITEM, "Marca", "Marca", 'c', 100120050, 3,true, FMarca.class);
 					addOpcao(100101000, TP_OPCAO_ITEM, "Unidade", "Unidade", 'U',100120060, 3, true, FUnidade.class);
 					addOpcao(100101000, TP_OPCAO_ITEM, "Produto", "Produto", 'P',100120070, 3, true, FProduto.class);
@@ -126,7 +126,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I',	400200000, 1, true, FInventario.class);
-			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta estoque", "Consulta", 'C',	400300000, 1, true, FConsulta.class);
+			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta estoque", "Consulta", 'C',	400300000, 1, true, FConsEstoque.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Consulta preço","CConsulta preço", 'P', 400400000, 1, true, FConsPreco.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Tipos de movimentos","Tipo de Movimento", 'T', 400500000, 1, true, FTipoMov.class);
 			addSeparador(400000000);
@@ -146,7 +146,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addBotao("btProduto.gif", "Produtos", "Produto", 100101000,FProduto.class);
 		addBotao("btOP.gif","Ordens de Produção","Ordens de Produção",200100000,FOP.class);
 		addBotao("btRma.gif","Requisição de material", "Requisição de material", 200200000,FRma.class);
-		addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);
+		addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsEstoque.class);
 		addBotao("btAcompanhaProd.png","Acompanhamento da produção","Acompanhamento da produção", 200300000, FAcompanhaProd.class);
 		addBotao("btPCP.png","Planejamento mestre da produção","Planejamento da produção", 200400000, FPMP.class);
 		
