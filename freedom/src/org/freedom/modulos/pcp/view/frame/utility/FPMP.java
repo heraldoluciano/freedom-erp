@@ -254,6 +254,8 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabDet.addMouseListener( this );	
 		tabAgrup.addMouseListener( this );
 		
+		tabbedAbas.addChangeListener( this );
+		
 	}
 
 	private void montaTela() {
@@ -289,9 +291,6 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		tabbedAbas.addTab( "Detalhamento", panelDet );
 		tabbedAbas.addTab( "Agrupamento", panelAgrup );
-		
-		tabbedAbas.addChangeListener( this );
-		
 		
 		// ***** Detalhamento
 		
