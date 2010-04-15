@@ -54,7 +54,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas;
-import org.freedom.modulos.std.view.frame.special.FSubLanca;
+import org.freedom.modulos.std.view.frame.crud.special.FSubLanca;
 
 
 /**
