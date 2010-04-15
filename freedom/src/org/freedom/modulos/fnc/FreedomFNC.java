@@ -68,6 +68,9 @@ import org.freedom.modulos.std.view.frame.crud.plain.FTipoCob;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCred;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoRestr;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
+import org.freedom.modulos.std.view.frame.crud.special.FLanca;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCredCli;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
@@ -88,9 +91,6 @@ import org.freedom.modulos.std.view.frame.report.FRRazFor;
 import org.freedom.modulos.std.view.frame.report.FRRazaoFin;
 import org.freedom.modulos.std.view.frame.report.FRRestricao;
 import org.freedom.modulos.std.view.frame.report.FRestrCli;
-import org.freedom.modulos.std.view.frame.special.FCentroCusto;
-import org.freedom.modulos.std.view.frame.special.FLanca;
-import org.freedom.modulos.std.view.frame.special.FPlanejamento;
 import org.freedom.modulos.std.view.frame.utility.FProcessaSL;
 
 public class FreedomFNC extends AplicativoPD {
