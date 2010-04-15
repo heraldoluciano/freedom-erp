@@ -32,9 +32,40 @@ public class Field {
 	 */
 	private Mask mask;
 	
+	private String name;
+	
+	private int sqltype;
+	
+	public Field() {
+		super();
+	}
+	
+	public Field(String name, Mask mask, int sqltype) {
 		
+		setName(name);
+		setMask(mask);
+		setSqltype(sqltype);
+		
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getSqltype() {
+		return sqltype;
+	}
+
+	public void setSqltype(int sqltype) {
+		this.sqltype = sqltype;
+	}
+
 	public void setValue( final Object value ) {	
-		this.value = value;
+		this.value = value;		
 	}
 	
 	public Object getValue() {	
