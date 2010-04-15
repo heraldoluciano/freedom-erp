@@ -47,7 +47,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 
 
-public class FConsulta extends FFilho implements CarregaListener {
+public class FConsEstoque extends FFilho implements CarregaListener {
 	private static final long serialVersionUID = 1L;
 
     private final int TAM_GRUPO = 14;
@@ -79,7 +79,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private ListaCampos lcGrup = new ListaCampos(this);	
 	private JTabbedPanePad tpnConsulta = new JTabbedPanePad();
 	
-	public FConsulta() {
+	public FConsEstoque() {
 		super(false);
 		setTitulo("Consulta");
 		setAtribos(10,20,790,460);
