@@ -56,6 +56,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.report.DLRConsProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
@@ -150,7 +151,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         lcProd.add(new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ));
         lcProd.add(new GuardaCampo( txtQtUltCp, "QtdUltCpProd","Qt.cp.", ListaCampos.DB_SI, false));
         
-		txtCodProd.setTabelaExterna(lcProd); 
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName()); 
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
 		lcProd.setReadOnly(true);
@@ -168,7 +169,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		lcProd2.add(new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ));
 		lcProd2.add(new GuardaCampo( txtQtUltCp, "QtdUltCpProd","Qt.cp.", ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
-		txtRefProd.setTabelaExterna(lcProd2); 
+		txtRefProd.setTabelaExterna(lcProd2, FProduto.class.getCanonicalName()); 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setFK(true);
 		lcProd2.setReadOnly(true);
@@ -179,14 +180,14 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         lcUnid.montaSql(false, "UNIDADE", "EQ");    
         lcUnid.setReadOnly(true);
         lcUnid.setQueryCommit(false);
-        txtCodUnid.setTabelaExterna(lcUnid);
+        txtCodUnid.setTabelaExterna(lcUnid, null);
 
         lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marc.", ListaCampos.DB_PK, false));
         lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
         lcMarca.montaSql(false, "MARCA", "EQ");    
         lcMarca.setReadOnly(true);
         lcMarca.setQueryCommit(false);
-        txtCodMarca.setTabelaExterna(lcMarca);
+        txtCodMarca.setTabelaExterna(lcMarca, null);
                 
         
         lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
@@ -194,14 +195,14 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         lcGrup.montaSql(false, "GRUPO", "EQ");    
         lcGrup.setReadOnly(true);
         lcGrup.setQueryCommit(false);
-        txtCodGrup.setTabelaExterna(lcGrup);     
+        txtCodGrup.setTabelaExterna(lcGrup, null);     
         
         lcFisc.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc", ListaCampos.DB_PK, false));
         lcFisc.add(new GuardaCampo( txtDescFisc, "DescFisc", "Descrição fiscal", ListaCampos.DB_SI, false));
         lcFisc.montaSql(false, "CLFISCAL", "LF");
         lcFisc.setReadOnly(true);
         lcFisc.setQueryCommit(false);
-        txtCodFisc.setTabelaExterna(lcFisc);               
+        txtCodFisc.setTabelaExterna(lcFisc, null);               
            
 		pinCab.adic(txtDescProd,80,20,197,20);
 		pinCab.adic(new JLabelPad("Saldo"),280,0,87,20);
