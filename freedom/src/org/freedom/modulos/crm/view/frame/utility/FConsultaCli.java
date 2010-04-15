@@ -217,7 +217,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
 		
-		// ***** Cabeçario
+		// ***** Cabeçalho
 
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
