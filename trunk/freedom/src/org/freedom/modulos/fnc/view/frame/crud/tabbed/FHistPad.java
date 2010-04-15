@@ -40,9 +40,9 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.swing.frame.FDados;
 
-public class FHistPad extends FTabDados implements ActionListener, JComboBoxListener {
+public class FHistPad extends FDados implements ActionListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
