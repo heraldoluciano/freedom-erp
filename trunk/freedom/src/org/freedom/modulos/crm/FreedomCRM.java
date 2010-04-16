@@ -51,6 +51,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FClasAtendo;
 import org.freedom.modulos.crm.view.frame.crud.plain.FConfEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
+import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoCont;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoImp;
 import org.freedom.modulos.crm.view.frame.crud.special.FHistorico;
@@ -154,6 +155,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(300000000, TP_OPCAO_ITEM, "Tipo de atendimento", "Tipo de atendimento", 'A',	300200000, 1, true, FTipoAtendo.class);
 		addOpcao(300000000, TP_OPCAO_ITEM, "Classificação de Atendimentos", "Classificação de Atendimento", 'i',	300250000, 1, true, FClasAtendo.class);
 		addOpcao(300000000, TP_OPCAO_ITEM, "Setor de Atendimentos", "Setor de Atendimento", 'i',	300260000, 1, true, FSetorAtend.class);
+		addOpcao(300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 't',	300270000, 1, true, FTipoChamado.class);
 		
 		addSeparador( 300000000 );
 		
