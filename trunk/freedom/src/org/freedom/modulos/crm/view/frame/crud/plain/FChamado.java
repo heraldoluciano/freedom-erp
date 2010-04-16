@@ -59,7 +59,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtDescChamado = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	private JTextFieldPad txtDescChamado = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -155,7 +155,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 		adicDB( cbPrioridade, 236, 100, 110, 20, "prioridade", "Prioridade", false );
 		
-		adicCampo( txtDtConclusao, 349, 102, 80, 20, "DtConclusao", "Dt.Conclusao", ListaCampos.DB_SI, false );
+		adicCampo( txtDtConclusao, 349, 100, 80, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
 
 		adicDB( cbStatus, 433, 100, 180, 20, "Status", "Status", false );
 		
@@ -210,6 +210,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		cbStatus.setItens( Chamado.getLabels( ), Chamado.getValores( ) );
 		
 	}
+	
+	public void exec( int codchamado ) {
+		txtCodChamado.setVlrInteger( codchamado );
+		lcCampos.carregaDados();
+	}
 
 	public void setConexao( DbConnection cn ) {
 
@@ -249,7 +254,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 		txtDtChamado.setVlrDate( new Date() );
 		txtDtPrevisao.setVlrDate( new Date() );
-		txtQtdHorasPrev.setVlrInteger( new Integer(1) );	
+		txtQtdHorasPrev.setVlrInteger( new Integer(1) );
+		cbStatus.setVlrString( "PE" );
 		
 		
 	}
