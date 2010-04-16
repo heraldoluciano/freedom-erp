@@ -250,9 +250,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		vLabsES.addElement( TipoMov.SAIDA.getName() );
 		vLabsES.addElement( TipoMov.INVENTARIO.getName() );
 		
-		vValsES.addElement( TipoMov.ENTRADA.getValue() );
-		vValsES.addElement( TipoMov.SAIDA.getValue() );
-		vValsES.addElement( TipoMov.INVENTARIO.getValue() );
+		vValsES.addElement( (String) TipoMov.ENTRADA.getValue() );
+		vValsES.addElement( (String) TipoMov.SAIDA.getValue() );
+		vValsES.addElement( (String) TipoMov.INVENTARIO.getValue() );
 		
 		rgESTipoMov = new JRadioGroup<String, String>( 1, 3, vLabsES, vValsES );
 		rgESTipoMov.addRadioGroupListener( this );
