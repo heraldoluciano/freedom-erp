@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class SwingParams {
@@ -26,6 +27,8 @@ public class SwingParams {
 	public static String FONT_PAD = "Arial";
 	
 	public static int TAMANHO_FONTE = 0;
+	
+	
 	
 	public static Font getFontpad() {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_PAD + TAMANHO_FONTE);
@@ -60,13 +63,22 @@ public class SwingParams {
 		return new Font(FONT_PAD, FONT_STYLE_ITALIC, FONT_SIZE_MED + TAMANHO_FONTE);
 	}
 	
-	public static Border getPanelLabel(String label, Color cortitulo, int alinhamento_horizontal ) {
-		Border border = BorderFactory.createTitledBorder( null, label, alinhamento_horizontal , 0, SwingParams.getFontbold(), cortitulo ); 
+    public static Border blackline = BorderFactory.createLineBorder(Color.black);
+    public static Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
+    public static Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+    public static Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+    public static Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+	
+	public static Border getPanelLabel(String label, Color cortitulo, int justificacao ) {
+		Border border = BorderFactory.createTitledBorder( loweredetched, label ,justificacao , TitledBorder.TOP, SwingParams.getFontbold(), cortitulo ); 
 		return border;
+		
+		
+		
 	}
 	
 	public static Border getPanelLabel(String label, Color cortitulo ) {
-		Border border = getPanelLabel(label, cortitulo,TitledBorder.DEFAULT_JUSTIFICATION); 
+		Border border = getPanelLabel(label, cortitulo, TitledBorder.DEFAULT_JUSTIFICATION); 
 		return border;
 	}
 
