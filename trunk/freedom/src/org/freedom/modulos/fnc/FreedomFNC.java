@@ -42,6 +42,7 @@ import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFNC;
 import org.freedom.modulos.fnc.view.frame.report.FRBordero;
+import org.freedom.modulos.fnc.view.frame.report.FRCartaCobranca;
 import org.freedom.modulos.fnc.view.frame.report.FRCobranca;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixa;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixaReal;
@@ -160,6 +161,7 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 300400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 300405000, 2, true, FRRazCli.class );
 			addOpcao( 300400000, TP_OPCAO_ITEM, "Recebimentos por Mês", "Recebimentos por Mês", 'M', 300407000, 2, true, FRReceberMes.class );
 			addOpcao( 300400000, TP_OPCAO_ITEM, "Relatório de cobrança", "Relatório de cobrança", 'o', 300408000, 2, true, FRCobranca.class );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Carta de cobrança", "Carta de cobrança", 'C', 300409000, 2, true, FRCartaCobranca.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 400000000, 0, false, null );
 			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );
