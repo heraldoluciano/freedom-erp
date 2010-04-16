@@ -285,9 +285,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_FINAL.getName() );
 		
 		vValsTipoProc.addElement( "TO" );
-		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
-		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
-		vValsTipoProc.addElement( TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
+		vValsTipoProc.addElement( (String) TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
+		vValsTipoProc.addElement( (String) TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
+		vValsTipoProc.addElement( (String) TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
 		
 		cbTipoProcRecMerc = new JComboBoxPad( vLabsTipoProc, vValsTipoProc, JComboBoxPad.TP_STRING, 2, 0 );
 		
