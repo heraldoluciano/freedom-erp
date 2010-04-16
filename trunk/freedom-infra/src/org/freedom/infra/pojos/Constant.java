@@ -4,19 +4,19 @@ public class Constant implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String value = null;
+	private Object value = null;
 	
 	private String name = null;
 	
-	public Constant(String name, String value) {
+	public Constant(String name, Object value) {
 		setName( name );
 		setValue( value );
 	}
 	
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
-	private void setValue(String value) {
+	private void setValue(Object value) {
 		this.value = value;
 	}
 	public String getName() {
