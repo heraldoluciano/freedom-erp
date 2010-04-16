@@ -154,7 +154,7 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setInt( 3, getTicket() );
-			ps.setString( 4, TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
+			ps.setString( 4, (String) TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
 
 			rs = ps.executeQuery();
 
@@ -202,7 +202,7 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setInt( 3, getTicket() );
-			ps.setString( 4, TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
+			ps.setString( 4, (String)TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
 
 			rs = ps.executeQuery();
 
@@ -247,7 +247,7 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setInt( 3, getTicket() );
-			ps.setString( 4, TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
+			ps.setString( 4, (String)TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
 
 			rs = ps.executeQuery();
 

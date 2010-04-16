@@ -43,8 +43,8 @@ public class TipoRecMerc implements java.io.Serializable {
 		
 		ret.addElement( "" );
 			
-		ret.add( TIPO_RECEBIMENTO_PESAGEM.getValue() );
-		ret.add( TIPO_COLETA_DE_MATERIAIS.getValue() );
+		ret.add( (String) TIPO_RECEBIMENTO_PESAGEM.getValue() );
+		ret.add( (String) TIPO_COLETA_DE_MATERIAIS.getValue() );
 
 		return ret;
 		
