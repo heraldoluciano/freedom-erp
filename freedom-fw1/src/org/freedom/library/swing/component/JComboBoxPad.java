@@ -25,11 +25,19 @@ package org.freedom.library.swing.component;
 import java.awt.Cursor;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Types;
 import java.util.Vector;
+
 import javax.swing.JComboBox;
+
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {
@@ -59,13 +67,22 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	private int dec = 0;
 
 	private boolean bZeroNull = false;
-
+	
+	private String nomecampo;
+	
+	private String nomecampolabel;
+	
+	private String tabelaexterna;
+	
+	private String whereadic;
+	
+	private String orderby;
+	
 	public void setZeroNulo() {
 
 		bZeroNull = true;
 	}
 
-	//public JComboBoxPad( Vector<S> label, Vector<T> val, int tipo, int tam, int dec ) {
 	public JComboBoxPad( Vector<String> label, Vector<?> val, int tipo, int tam, int dec ) {
 
 		criando = true;
@@ -219,4 +236,136 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 			fireValorAlterado( getSelectedIndex() );
 		}
 	}
+
+	public String getNomecampo() {
+		return nomecampo;
+	}
+
+	public void setNomecampo(String nomecampo) {
+		this.nomecampo = nomecampo;
+	}
+
+	public String getNomecampolabel() {
+		return nomecampolabel;
+	}
+
+	public void setNomecampolabel(String nomecampolabel) {
+		this.nomecampolabel = nomecampolabel;
+	}
+
+	public String getTabelaexterna() {
+		return tabelaexterna;
+	}
+
+	public void setTabelaexterna(String tabelaexterna) {
+		this.tabelaexterna = tabelaexterna;
+	}
+
+	public String getWhereadic() {
+		return whereadic;
+	}
+
+	public void setWhereadic(String whereadic) {
+		this.whereadic = whereadic;
+	}		
+	
+	public String getOrderby() {
+		return orderby;
+	}
+
+	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
+
+	public void carregaValores() {
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		Vector<Object> values = new Vector<Object>();
+		Vector<String> labels = new Vector<String>();
+		DbConnection con = null;
+		
+		try {
+			
+			con = Aplicativo.getInstace().getConexao();
+			
+			if(con!=null) {
+			
+				sql.append("select ");
+				sql.append(getNomecampo());
+				sql.append(",");
+				sql.append(getNomecampolabel());
+				
+				sql.append(" from ");
+				sql.append(getTabelaexterna());
+				sql.append(" where codemp=? and codfilial=?");
+				
+				if(getWhereadic()!=null) {
+					sql.append(" and " + getWhereadic());
+				}
+				
+				if(getOrderby()!=null) {			
+					sql.append(" order by " + getOrderby());
+				}
+				
+				ps = con.prepareStatement(sql.toString());
+				
+				int param = 1;
+				
+				ps.setInt(param++, Aplicativo.iCodEmp);
+				ps.setInt(param++, ListaCampos.getMasterFilial(getTabelaexterna()));
+				
+				rs = ps.executeQuery();
+				
+				ResultSetMetaData metadata = rs.getMetaData();
+
+				boolean first = true;
+				
+				while (rs.next()) {
+					if(metadata.getColumnType(1) == Types.INTEGER) {
+						if(first) {
+							values.add(new Integer(-1));
+						}
+						values.add(new Integer(rs.getInt(1)));
+					}
+					else {
+						if(first) {
+							values.add("-1");
+						}
+						values.add(rs.getString((1)));
+					}
+					if(first) {
+						labels.add("<Selecione>");
+					}
+					labels.add(rs.getString(2));
+	
+					first = false;
+				}
+	
+				rs.close();
+				con.commit();
+				ps.close();
+				
+				setItens(labels, values);				
+				
+			}
+			else {
+				System.out.println("Conexão nula no combobox!");
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+	public void setAutoSelect(String nomecampo, String nomecampolabel, String tabelaexterna) {
+		
+		setNomecampo(nomecampo);
+		setNomecampolabel(nomecampolabel);
+		setTabelaexterna(tabelaexterna);
+		
+	}
+	
+	
 }
