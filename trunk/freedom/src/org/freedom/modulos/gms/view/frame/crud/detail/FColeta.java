@@ -196,7 +196,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		rgFrete = new JRadioGroup<String, String>( 1, 2, vLabsFrete, vValsFrete, -4 );
 
-		RecMerc.atualizaStatus( RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
+		RecMerc.atualizaStatus( (String) RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
 
 		lbStatus.setText( "NÃO SALVO" );
 		lbStatus.setVisible( true );
@@ -701,7 +701,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		if ( pevt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
 			if ( "".equals( txtStatus.getVlrString() ) ) {
-				txtStatus.setVlrString( RecMerc.STATUS_PENDENTE.getValue() );
+				txtStatus.setVlrString( (String) RecMerc.STATUS_PENDENTE.getValue() );
 			}
 
 			if ( pevt.getEstado() == ListaCampos.LCS_INSERT ) {
