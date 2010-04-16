@@ -8,11 +8,11 @@ public class Prioridade implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static final Constant MUITO_ALTA = new Constant("Muito Alta", new Integer(0)); 
-	public static final Constant ALTA = new Constant("Alta", new Integer(1));
-	public static final Constant MEDIA = new Constant("Média", new Integer(2));
-	public static final Constant BAIXA = new Constant("Baixa", new Integer(3));
-	public static final Constant MUITO_BAIXA = new Constant("Muito Baixa", new Integer(4));
+	public static final Constant MUITO_ALTA = new Constant("Muito Alta", new Integer(1)); 
+	public static final Constant ALTA = new Constant("Alta", new Integer(2));
+	public static final Constant MEDIA = new Constant("Média", new Integer(3));
+	public static final Constant BAIXA = new Constant("Baixa", new Integer(4));
+	public static final Constant MUITO_BAIXA = new Constant("Muito Baixa", new Integer(5));
 	
 	public static Vector<String> getLabels( ) {
 
