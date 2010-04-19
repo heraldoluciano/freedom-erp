@@ -111,6 +111,31 @@ public class Empresa {
 	public String toString() {
 		return razemp;
 	}
+	
+	public String getEndereco() {
+		return (String) hValores.get( "ENDFILIAL" ); 
+	}
+	
+	public String getNumFilial() {
+		return (String) hValores.get( "NUMFILIAL" ); 
+	}
+	
+	public String getCidFilial() {
+		return (String) hValores.get( "CIDFILIAL" ); 
+	}
+	
+	public String getUFFilial() {
+		return (String) hValores.get( "UFFILIAL" ); 
+	}
+
+	public String getBairFilial() {
+		return (String) hValores.get( "BAIRFILIAL" ); 
+	}
+	
+	public String getEnderecoCompleto() {
+		return (String) hValores.get( "RODAPE" ); 
+	}
+
 
 
 }
