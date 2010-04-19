@@ -42,7 +42,7 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="CIDEMP" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CIDFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENDEMP" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
 cl.codcli, cl.razcli,
@@ -580,7 +580,7 @@ order by 1, 3 desc]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="3"
+						y="12"
 						width="397"
 						height="12"
 						forecolor="#000000"
@@ -588,7 +588,7 @@ order by 1, 3 desc]]></queryString>
 						key="Empresa"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 				</textField>
@@ -596,7 +596,7 @@ order by 1, 3 desc]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="166"
-						y="29"
+						y="38"
 						width="310"
 						height="12"
 						forecolor="#000000"
@@ -604,7 +604,7 @@ order by 1, 3 desc]]></queryString>
 						key="Data"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times-Roman" pdfFontName="Times-Roman" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+						<font fontName="SansSerif" pdfFontName="Times-Roman" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
@@ -612,7 +612,7 @@ order by 1, 3 desc]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="16"
+						y="25"
 						width="397"
 						height="12"
 						forecolor="#000000"
@@ -620,7 +620,7 @@ order by 1, 3 desc]]></queryString>
 						key="Empresa-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENDEMP}]]></textFieldExpression>
 				</textField>
@@ -628,7 +628,7 @@ order by 1, 3 desc]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="29"
+						y="38"
 						width="85"
 						height="12"
 						forecolor="#000000"
@@ -636,9 +636,9 @@ order by 1, 3 desc]]></queryString>
 						key="Empresa-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDEMP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDFILIAL}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
