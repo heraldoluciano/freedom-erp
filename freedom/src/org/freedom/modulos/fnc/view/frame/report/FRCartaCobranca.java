@@ -125,12 +125,18 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 			sql.append( "and rc.codemp=? and rc.codfilial=? ");
 			
 			if( txtCodCli.getVlrInteger() > 0 ) {
-				sql.append( "and rc.codempcl=? and rc.codfilialcl=? and rc.codcli=? " );
+				sql.append( " and rc.codempcl=? and rc.codfilialcl=? and rc.codcli=? " );
 			}
 			
-			sql.append( "order by 1, 3 desc" );
+			if( txtDiasAtrazo.getVlrInteger()>0) {
+				sql.append( " and (cast('today' as date) - ir.dtvencitrec) >= " + txtDiasAtrazo.getVlrInteger()  );
+			}
+			
+			sql.append( " order by 1, 3 desc" );
 						
 			int param = 1;
+			
+			System.out.println( "Query:" + sql.toString() );
 			
 			ps = con.prepareStatement( sql.toString() );
 
@@ -170,6 +176,8 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "ENDEMP", Aplicativo.empresa.getEnderecoCompleto() );
+		hParam.put( "CIDFILIAL", Aplicativo.empresa.getCidFilial() );
 
 		dlGr = new FPrinterJob( "layout/rel/REL_CARTA_COB_01.jasper", "Carta de cobrança", sCab, rs, hParam, this );
 
