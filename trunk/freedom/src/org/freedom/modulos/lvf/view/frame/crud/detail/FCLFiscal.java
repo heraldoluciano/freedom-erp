@@ -33,13 +33,11 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -67,7 +65,6 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
-
 
 public class FCLFiscal extends FDetalhe 
 		implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
@@ -345,7 +342,7 @@ public class FCLFiscal extends FDetalhe
 		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
-		rgTpRedIcmsFisc.setAtivo( false );
+//		rgTpRedIcmsFisc.setAtivo( false );
 		txtRedFisc.setAtivo( false );
 		rgTipoFisc.setAtivo( false );
 		txaDescServ.setAtivo( false );
@@ -982,7 +979,7 @@ public class FCLFiscal extends FDetalhe
 		}
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
-			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
+			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString()) ||  "00".equals( txtCodTratTrib.getVlrString()) ) {
 				rgTpRedIcmsFisc.setAtivo( true );
 				txtRedFisc.setAtivo( true );
 				if("70".equals( txtCodTratTrib.getVlrString() )) {
