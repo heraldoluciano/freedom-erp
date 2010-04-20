@@ -79,7 +79,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 	<variable name="TOTALHORAS" class="java.sql.Time" resetType="Report" calculation="Sum">
 	</variable>
 	<variable name="HORAATEND" class="java.lang.Long" resetType="None" calculation="Nothing">
-		<variableExpression><![CDATA["NC".equals($F{STATUSATENDO})?new Long(0):new Long(org.freedom.funcoes.Funcoes.subtraiTime($F{HORAATENDO},$F{HORAATENDOFIN}))]]></variableExpression>
+		<variableExpression><![CDATA["NC".equals($F{STATUSATENDO})?new Long(0):new Long(org.freedom.library.functions.Funcoes.subtraiTime($F{HORAATENDO},$F{HORAATENDOFIN}))]]></variableExpression>
 	</variable>
 	<variable name="HORAATENDSUM" class="java.lang.Long" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA["NC".equals($F{STATUSATENDO})?new Long(0):$V{HORAATEND}]]></variableExpression>
@@ -323,7 +323,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.funcoes.Funcoes.longTostrTime($V{HORAATENDSUM}.longValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.library.functions.Funcoes.longTostrTime($V{HORAATENDSUM}.longValue())]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -601,7 +601,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.funcoes.Funcoes.longTostrTime($V{HORAATEND}.longValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.library.functions.Funcoes.longTostrTime($V{HORAATEND}.longValue())]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
