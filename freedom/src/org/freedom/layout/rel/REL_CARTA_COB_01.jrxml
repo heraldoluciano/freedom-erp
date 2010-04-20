@@ -561,7 +561,7 @@ order by 1, 3 desc]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="73"  isSplitAllowed="true" >
+			<band height="69"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -595,9 +595,9 @@ order by 1, 3 desc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="166"
+						x="425"
 						y="38"
-						width="310"
+						width="113"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -627,7 +627,7 @@ order by 1, 3 desc]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
+						x="338"
 						y="38"
 						width="85"
 						height="12"
@@ -635,10 +635,10 @@ order by 1, 3 desc]]></queryString>
 						backcolor="#FFFFFF"
 						key="Empresa-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDFILIAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDFILIAL}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
