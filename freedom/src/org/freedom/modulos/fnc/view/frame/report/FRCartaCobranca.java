@@ -122,6 +122,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 			sql.append( "ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec " );
 			sql.append( "and cl.codemp=rc.codempcl and cl.codfilial=rc.codfilialcl and cl.codcli=rc.codcli " );
 			sql.append( "and ir.statusitrec not in('RP') " );
+			sql.append( "and ir.dtvencitrec <= cast('today' as date) " );
 			sql.append( "and rc.codemp=? and rc.codfilial=? ");
 			
 			if( txtCodCli.getVlrInteger() > 0 ) {
@@ -129,7 +130,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 			}
 			
 			if( txtDiasAtrazo.getVlrInteger()>0) {
-				sql.append( " and (cast('today' as date) - ir.dtvencitrec) >= " + txtDiasAtrazo.getVlrInteger()  );
+				sql.append( " and ( ( ( cast('today' as date) ) - ir.dtvencitrec ) ) >= " + txtDiasAtrazo.getVlrInteger()  );
 			}
 			
 			sql.append( " order by 1, 3 desc" );
