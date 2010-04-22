@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
 	<classpathentry kind="lib" path="lib/barbecue.jar"/>
 	<classpathentry kind="lib" path="lib/jaybird-full.jar"/>
-	<classpathentry kind="lib" path="lib/comm.jar"/>
 	<classpathentry kind="lib" path="lib/commons-discovery-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/dsn.jar"/>
 	<classpathentry kind="lib" path="lib/imap.jar"/>
