@@ -279,6 +279,8 @@ public class FCLFiscal extends FDetalhe
 	
 	private JComboBoxPad cbModBCICMSST = null;
 	
+	private JCheckBoxPad cbRedBaseST = new JCheckBoxPad( "Red. base Subst.", "S", "N" );
+	
 	private JRadioGroup<String, String> rgNoUF = null;
 	
 	private JRadioGroup<String, String> rgTipo = null;
@@ -288,7 +290,7 @@ public class FCLFiscal extends FDetalhe
 	private JRadioGroup<String, String> rgTipoST = null;
 	
 	private JRadioGroup<String, String> rgTpRedIcmsFisc = null;
-
+	
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
 	
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
@@ -497,6 +499,7 @@ public class FCLFiscal extends FDetalhe
 		
 		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMSST, vValsModBCICMSST, JComboBoxPad.TP_INTEGER, 1, 0 );		
 		cbModBCICMSST.setVlrInteger( new Integer(4) );
+
 		
 		/** Tipo de cálculo do IPI */
 		
@@ -761,6 +764,8 @@ public class FCLFiscal extends FDetalhe
 		adicCampo( txtMargemVlAgr, 506, 110, 110, 20, "MargemVlAgr", "% Vlr.Agregado" , ListaCampos.DB_SI,  false );
 		adicCampo( txtRedFisc, 619, 110, 110, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false );
 		
+		adicDB( cbRedBaseST, 615, 140, 180, 20, "redbasest", "", false );
+		
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );		
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
@@ -981,6 +986,7 @@ public class FCLFiscal extends FDetalhe
 			// Redução na base de calculo.
 			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString()) ||  "00".equals( txtCodTratTrib.getVlrString()) ) {
 				rgTpRedIcmsFisc.setAtivo( true );
+				cbRedBaseST.setEnabled( true );
 				txtRedFisc.setAtivo( true );
 				if("70".equals( txtCodTratTrib.getVlrString() )) {
 					rgTipoFisc.setVlrString( "FF" );
@@ -992,6 +998,7 @@ public class FCLFiscal extends FDetalhe
 			else {
 
 				rgTpRedIcmsFisc.setAtivo( false );
+				cbRedBaseST.setEnabled( false );
 				txtRedFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtRedFisc.setAtivo( false );
 
