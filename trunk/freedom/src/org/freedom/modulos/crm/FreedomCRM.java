@@ -204,14 +204,15 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u',	500201000, 2, true, FRCustoProj.class);
 
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100104000, FCliente.class );		
-		addBotao("btAtendimentos.gif", "Atendimentos", "Atendimentos", 300100000,FAtendimento.class);
-		addBotao("btCampanha.gif", "Campanha", "Campanha", 100110020,FCampanha.class);
-		addBotao("btEmail.gif", "Email", "Email", 100110020,FEmail.class);
-		addBotao("btContato.gif", "Contato", "Contato", 100110020,FContato.class);
-		addBotao("btGerencCampanha.gif", "Gerenciamento de campanhas", "Gerenciamento de campanhas", 100304000,FGerencCampanhas.class);
-		addBotao("btProjeto.png", "Projetos", "Projetos/Contratos", 500100000,FContrato.class);
-		addBotao( "btOrcamento.png", "Orçamento", "Orçamento", 400200000, FOrcamento.class );
-		addBotao("btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
+		addBotao( "btAtendimentos.gif", "Atendimentos", "Atendimentos", 300100000,FAtendimento.class);
+		addBotao( "btChamado.png", "Chamados", "Chamados", 300200000,FChamado.class);
+		addBotao( "btCampanha.gif", "Campanhas", "Campanhas", 100110020,FCampanha.class);
+		addBotao( "btEmail.gif", "Email", "Email", 100110020,FEmail.class);
+		addBotao( "btContato.gif", "Contatos", "Contatos", 100110020,FContato.class);
+		addBotao( "btGerencCampanha.gif", "Gerenciamento de campanhas", "Gerenciamento de campanhas", 100304000,FGerencCampanhas.class);
+		addBotao( "btProjeto.png", "Projetos", "Projetos/Contratos", 500100000,FContrato.class);
+		addBotao( "btOrcamento.png", "Orçamentos", "Orçamento", 400200000, FOrcamento.class );
+		addBotao( "btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
 		
 		ajustaMenu();
 		
