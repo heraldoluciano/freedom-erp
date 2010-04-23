@@ -32,12 +32,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JSpinner.DateEditor;
-
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
@@ -56,11 +54,11 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-
 /**
  * 
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 10/10/2009 - Alex Rodrigues
+ * @version 23/04/2010 - Anderson Sanchez
  */
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyListener{
 
@@ -75,6 +73,10 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -128,6 +130,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 	
+	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
+	
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 	
 	private ListaCampos lcAtendimento = new ListaCampos( this );
@@ -163,9 +167,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	private Integer codrec = null;
 	
 	private Integer nparcitrec = null;
-	
-    
-	
 		
 	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
 
@@ -233,28 +234,43 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 		adic( new JLabelPad( "Cód.Cliente" ), 7, 10, 80, 20 );
 		adic( txtCodCli, 7, 30, 80, 20 );
+		
 		adic( new JLabelPad( "Razão Social do Cliente" ), 90, 10, 480, 20 );
 		adic( txtRazCli, 90, 30, 524, 20 );
+		
 		adic( new JLabelPad( "Cód.Atend." ), 7, 50, 80, 20 );
 		adic( txtCodAtend, 7, 70, 80, 20 );
+		
 		adic( new JLabelPad( "Nome do Atendente" ), 90, 50, 200, 20 );
 		adic( txtNomeAtend, 90, 70, 200, 20 );
+		
 		adic( new JLabelPad( "Tipo de Atendimento" ), 293, 50, 198, 20 );
 		adic( cbTipo, 293, 70, 198, 20 );
+		
 		adic( new JLabelPad( "Setor" ), 494, 50, 120, 20 );
 		adic( cbSetor, 494, 70, 120, 20 );
-		adic( new JLabelPad( "Início" ), 7, 130, 80, 20 );
-		adic( txtDataAtendimento, 7, 150, 80, 20 );
-		adic( txtHoraini, 90, 150, 53, 20 );
-		adic( new JLabelPad( "Final" ), 146, 130, 70, 20 );
-		adic( txtDataAtendimentoFin, 146, 150, 70, 20 );
-		adic( txtHorafim, 219, 150, 53, 20 );
-		adic( btRun, 272, 150, 19, 19 );
+	
 		adic( new JLabelPad( "Contrato/Projeto" ), 7, 90, 284, 20 );
 		adic( cbContr, 7, 110, 284, 20 );
+
 		adic( new JLabelPad( "Item" ), 294, 90, 320, 20 );
 		adic( cbitContr, 294, 110, 320, 20 );
 
+		adic( new JLabelPad( "Cód.Chamado" ), 7, 130, 80, 20 );
+		adic( txtCodChamado, 7, 150, 80, 20 );
+		
+		adic( new JLabelPad( "Descrição do chamado" ), 90, 130, 200, 20 );
+		adic( txtDescChamado, 90, 150, 200, 20 );
+		
+		adic( new JLabelPad( "Início" ), 294, 130, 80, 20 );
+		adic( txtDataAtendimento, 294, 150, 80, 20 );
+		adic( txtHoraini, 377, 150, 53, 20 );
+		
+		adic( new JLabelPad( "Final" ), 433, 130, 70, 20 );
+		adic( txtDataAtendimentoFin, 433, 150, 70, 20 );
+		adic( txtHorafim, 506, 150, 53, 20 );
+		adic( btRun, 559, 150, 19, 19 );
+	
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
 		txtDataAtendimentoFin.setSoLeitura( true );
@@ -322,6 +338,16 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ));				
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
+		
+		txtCodChamado.setTabelaExterna( lcChamado );
+		txtCodChamado.setFK( true );
+		txtCodChamado.setNomeCampo( "CodChamado" );
+		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
+		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
+		lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
+		lcChamado.montaSql( false, "CHAMADO", "CR" );
+		lcChamado.setReadOnly( true );
+		
 	}
 	
 	private void montaComboStatus() {
@@ -521,7 +547,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -565,6 +591,17 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 			ps.setNull( 19, Types.INTEGER ); // Código do contas a receber
 			ps.setInt( 20, Types.INTEGER ); // Código do ítem do contas a receber
 		}
+		
+		if ( txtCodChamado.getVlrInteger()>0 ) {
+			ps.setInt( 21, lcChamado.getCodEmp() ); // Código da empresa do chamado
+			ps.setInt( 22, lcChamado.getCodFilial() ); // Código da filial do chamado
+			ps.setInt( 23, txtCodChamado.getVlrInteger() ); // Código do chamado
+		}
+		else {
+			ps.setNull( 21, Types.INTEGER ); 
+			ps.setNull( 22, Types.INTEGER );
+			ps.setNull( 23, Types.INTEGER );			
+		}		
 
 		ps.execute();
 		ps.close();
@@ -581,6 +618,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		sql.append( "a.horaatendo=?, a.horaatendofin=?, a.obsatendo=?, " );
 		sql.append( "a.codempto=?, a.codfilialto=?, a.codtpatendo=?, " );
 		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
+		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
 		sql.append( "a.statusatendo=? ");
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
@@ -602,14 +640,28 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		ps.setInt( 12, cbSetor.getVlrInteger() );			
 		ps.setInt( 13, Aplicativo.iCodEmp );
 		ps.setInt( 14, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
+		
+		if ( txtCodChamado.getVlrInteger()>0 ) {
+			ps.setInt( 21, lcChamado.getCodEmp() ); // Código da empresa do chamado
+			ps.setInt( 22, lcChamado.getCodFilial() ); // Código da filial do chamado
+			ps.setInt( 23, txtCodChamado.getVlrInteger() ); // Código do chamado
+		}
+		else {
+			ps.setNull( 21, Types.INTEGER ); 
+			ps.setNull( 22, Types.INTEGER );
+			ps.setNull( 23, Types.INTEGER );			
+		}		
+		
 		if( cbContr.getVlrInteger() == -1  ){
 			ps.setNull( 15, Types.INTEGER );
-		}else{
+		}
+		else{
 			ps.setInt( 15, cbContr.getVlrInteger());
 		}		
 		if( cbitContr.getVlrInteger() == -1  ){
 			ps.setInt( 16, cbContr.getVlrInteger());
-		}else{
+		}
+		else{
 			ps.setInt( 16, cbitContr.getVlrInteger() );
 		}
 		
@@ -618,10 +670,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		ps.setInt( 18, Aplicativo.iCodEmp );
 		ps.setInt( 19, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
 		ps.setInt( 20, txtCodAtendo.getVlrInteger() );
-		
-		
-		
-		
 		
 		ps.executeUpdate();
 
@@ -831,13 +879,15 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtend.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcCli.carregaDados();
+		lcChamado.setConexao( cn );
 		
 		sPrefs = getPref();	
 	}
 
 	public Object[] getValores() {
 	
-		Object[] sVal = new Object[ 12 ];
+		Object[] sVal = new Object[ 13 ];
+		
 		sVal[ 0 ] = String.valueOf( cbTipo.getVlrInteger() );
 		sVal[ 1 ] = txtCodAtend.getVlrString();
 		sVal[ 2 ] = String.valueOf( cbSetor.getVlrInteger() );
@@ -849,8 +899,10 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		sVal[ 8 ] = txaDescAtend.getVlrString();
 		sVal[ 9 ] = cbContr.getVlrInteger();
 		sVal[ 10 ] =  cbitContr.getVlrInteger();
-		
+		sVal[ 11 ] = txtCodChamado.getVlrInteger();
+
 		return sVal;
+		
 	}
 	
 }	
