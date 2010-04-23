@@ -188,8 +188,11 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcChamado.carregaDados();
 
 		if ( update ) {
-			pnCampos.adic( new JLabelPad( "Status" ), 494, 130, 120, 20 );
-			pnCampos.adic( cbStatus, 494, 150, 120, 20 );
+			pnCampos.adic( new JLabelPad( "Status" ), 494, 90, 120, 20 );
+			pnCampos.adic( cbStatus, 494, 110, 120, 20 );
+			
+			cbitContr.setSize( 198, 20 );
+			
 		}
 	}
 
@@ -347,7 +350,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
-		lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
+//		lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
+		lcChamado.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
 		
@@ -617,62 +621,72 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "update atatendimento a set  " );
+		
 		sql.append( "a.codatend=?, a.dataatendo=?, a.dataatendofin=?, " );
+		
 		sql.append( "a.horaatendo=?, a.horaatendofin=?, a.obsatendo=?, " );
+		
 		sql.append( "a.codempto=?, a.codfilialto=?, a.codtpatendo=?, " );
+		
 		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
+		
 		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
+		
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
+		
 		sql.append( "a.statusatendo=? ");
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 					
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		
 		ps.setInt( 1, txtCodAtend.getVlrInteger() );
 		ps.setDate( 2,  Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()  ));
 		ps.setDate( 3,  Funcoes.dateToSQLDate( txtDataAtendimentoFin.getVlrDate() ));
 			
 		ps.setTime( 4, Funcoes.strTimeTosqlTime( txtHoraini.getVlrString()) );
-		ps.setTime( 5, Funcoes.strTimeTosqlTime( txtHorafim.getVlrString()) );
-		
+		ps.setTime( 5, Funcoes.strTimeTosqlTime( txtHorafim.getVlrString()) );		
 		ps.setString( 6, txaDescAtend.getVlrString() );
+		
 		ps.setInt( 7, Aplicativo.iCodEmp );
 		ps.setInt( 8, ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
 		ps.setInt( 9, cbTipo.getVlrInteger() );				
+		
 		ps.setInt( 10, Aplicativo.iCodEmp );
 		ps.setInt( 11, ListaCampos.getMasterFilial( "ATSETOR" ));
 		ps.setInt( 12, cbSetor.getVlrInteger() );			
-		ps.setInt( 13, Aplicativo.iCodEmp );
-		ps.setInt( 14, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
 		
 		if ( txtCodChamado.getVlrInteger()>0 ) {
-			ps.setInt( 21, lcChamado.getCodEmp() ); // Código da empresa do chamado
-			ps.setInt( 22, lcChamado.getCodFilial() ); // Código da filial do chamado
-			ps.setInt( 23, txtCodChamado.getVlrInteger() ); // Código do chamado
+			ps.setInt( 13, lcChamado.getCodEmp() ); // Código da empresa do chamado
+			ps.setInt( 14, lcChamado.getCodFilial() ); // Código da filial do chamado
+			ps.setInt( 15, txtCodChamado.getVlrInteger() ); // Código do chamado
 		}
 		else {
-			ps.setNull( 21, Types.INTEGER ); 
-			ps.setNull( 22, Types.INTEGER );
-			ps.setNull( 23, Types.INTEGER );			
+			ps.setNull( 13, Types.INTEGER ); 
+			ps.setNull( 14, Types.INTEGER );
+			ps.setNull( 15, Types.INTEGER );			
 		}		
+		
+		ps.setInt( 16, Aplicativo.iCodEmp );
+		ps.setInt( 17, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
 		
 		if( cbContr.getVlrInteger() == -1  ){
-			ps.setNull( 15, Types.INTEGER );
+			ps.setNull( 18, Types.INTEGER );
 		}
 		else{
-			ps.setInt( 15, cbContr.getVlrInteger());
+			ps.setInt( 18, cbContr.getVlrInteger());
 		}		
 		if( cbitContr.getVlrInteger() == -1  ){
-			ps.setInt( 16, cbContr.getVlrInteger());
+			ps.setInt( 19, cbContr.getVlrInteger());
 		}
 		else{
-			ps.setInt( 16, cbitContr.getVlrInteger() );
+			ps.setInt( 19, cbitContr.getVlrInteger() );
 		}
 		
-		ps.setString( 17, cbStatus.getVlrString() );
+		ps.setString( 20, cbStatus.getVlrString() );
 		
-		ps.setInt( 18, Aplicativo.iCodEmp );
-		ps.setInt( 19, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
-		ps.setInt( 20, txtCodAtendo.getVlrInteger() );
+		ps.setInt( 21, Aplicativo.iCodEmp );
+		ps.setInt( 22, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
+		ps.setInt( 23, txtCodAtendo.getVlrInteger() );
 		
 		ps.executeUpdate();
 
