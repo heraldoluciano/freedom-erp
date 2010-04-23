@@ -91,7 +91,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btCalc.png" ) );
 
-	private JButtonPad btAgenda = new JButtonPad( Icone.novo( "btAgenda.png" ) );
+	private JButtonPad btAgenda = new JButtonPad( Icone.novo( "btAgenda2.png" ) );
 
 	public JPanelPad pinBotoesDir = new JPanelPad();
 
