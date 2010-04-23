@@ -530,7 +530,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabatd.adicColuna( "Atendente" );
 		tabatd.adicColuna( "Hora inicial" );
 		tabatd.adicColuna( "Hora final" );
-		tabatd.adicColuna( "" );
+		tabatd.adicColuna( "chamado" );
 
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
