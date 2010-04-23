@@ -1,21 +1,22 @@
 package org.freedom.library.swing.frame;
 
-import javax.swing.JInternalFrame;
-import java.awt.Dimension;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import java.awt.Rectangle;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.Insets;
-import javax.swing.JScrollBar;
-import org.freedom.library.swing.component.JTextFieldPad;;
+import java.awt.Rectangle;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.freedom.library.swing.component.JTextFieldPad;
 
 public class FChild extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
 	private JPanel jPanel = null;
 	private JScrollPane jScrollPane = null;
