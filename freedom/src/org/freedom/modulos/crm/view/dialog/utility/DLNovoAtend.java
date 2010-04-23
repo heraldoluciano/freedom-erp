@@ -168,7 +168,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private Integer nparcitrec = null;
 		
-	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
+	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, Integer codchamado ) {
 
 		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
 
@@ -183,6 +183,9 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
 		cbContr.setVlrInteger( txtContr.getVlrInteger() );
 		cbitContr.setVlrInteger( txtitContr.getVlrInteger() );
+		txtCodChamado.setVlrInteger( codchamado );
+		
+		lcChamado.carregaDados();
 
 		if ( update ) {
 			pnCampos.adic( new JLabelPad( "Status" ), 494, 130, 120, 20 );
