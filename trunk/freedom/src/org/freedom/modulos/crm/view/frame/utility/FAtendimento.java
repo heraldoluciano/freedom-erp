@@ -530,6 +530,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabatd.adicColuna( "Atendente" );
 		tabatd.adicColuna( "Hora inicial" );
 		tabatd.adicColuna( "Hora final" );
+		tabatd.adicColuna( "" );
 
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
@@ -542,11 +543,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabatd.setTamColuna( 70, 8 );
 		tabatd.setTamColuna( 70, 9 );
 
+
 		tabatd.setColunaInvisivel( 0 );
 		tabatd.setColunaInvisivel( 1 );
 		tabatd.setColunaInvisivel( 2 );
 		tabatd.setColunaInvisivel( 4 );
 		tabatd.setColunaInvisivel( 6 );
+		tabatd.setColunaInvisivel( 10 );
 
 		tabatd.setRowHeight( 20 );
 	}
@@ -775,9 +778,10 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		String codatend = (String) tabatd.getValor( tabatd.getLinhaSel(), 6 ).toString();
 		int icodAtend = Integer.parseInt( codatend );
 		int icodAtendo = Integer.parseInt( codatendo );
+		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), 10 );
 
 		try {
-			dl = new DLNovoAtend( txtCodCli.getVlrInteger(), this, true, con, icodAtendo, icodAtend, tipoatendo );
+			dl = new DLNovoAtend( txtCodCli.getVlrInteger(), this, true, con, icodAtendo, icodAtend, tipoatendo, codchamado );
 			dl.setVisible( true );
 			dl.dispose();
 
@@ -799,7 +803,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
+			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
@@ -895,6 +899,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					tabatd.setValor( rs.getString( "NomeAtend" ), i, 7 );
 					tabatd.setValor( rs.getTime( "HoraAtendo" ).toString(), i, 8 );
 					tabatd.setValor( rs.getTime( "HoraAtendoFin" ).toString(), i, 9 );
+					tabatd.setValor( rs.getInt( "CODCHAMADO" ), i, 10 );
 
 				}
 				rs.close();
