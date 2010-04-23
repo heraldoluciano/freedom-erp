@@ -627,10 +627,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public void atualizaMenus() {
 
 		JMenuBar menuBar = telaPrincipal.bar;
+		
 		for ( int i = 0; i < menuBar.getMenuCount(); i++ ) {
-			if ( !upMenuDB( menuBar.getMenu( i ), new JMenuPad() ) )
+			
+			if ( !upMenuDB( menuBar.getMenu( i ), new JMenuPad() ) ) {
 				break;
+			}
+			
 			buscaMenuItem( menuBar.getMenu( i ) );
+			
 		}
 	}
 
@@ -657,6 +662,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		String sNomeMenu = null;
 		String sAcaoMenu = null;
 		int iCodMenu = 0;
+		
 		try {
 			if ( men instanceof JMenuItemPad ) {
 				iCodMenu = ( (JMenuItemPad) men ).getCodItem();
