@@ -115,7 +115,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 		sqlsaldo.append( "WHERE SL.DATASL < ? AND ");
 		sqlsaldo.append( "SL.CODEMP=CT.CODEMPPN AND SL.CODFILIAL=CT.CODFILIALPN AND SL.CODPLAN=CT.CODPLAN " );
 		sqlsaldo.append( "ORDER BY SL.DATASL DESC )) SALDOSL FROM FNCONTA CT " );
-		sqlsaldo.append( "WHERE CT.CODEMP=? AND CT.CODFILIAL=? AND CT.TIPOCAIXA='F'" );
+		sqlsaldo.append( "WHERE CT.CODEMP=? AND CT.CODFILIAL=? AND CT.TIPOCAIXA='F' AND CT.ATIVACONTA='S'" );
 		
 		sql.append( "SELECT F.CLASFIN, F.ESFIN, P.CODPLAN, P.DESCPLAN, P.NIVELPLAN, ");
         sql.append( "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L ");
