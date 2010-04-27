@@ -46,7 +46,6 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.business.object.TipoMov;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -62,6 +61,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.gms.business.object.TipoMov;
 
 public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxListener, InsertListener, CarregaListener, JComboBoxListener {
 
