@@ -39,7 +39,6 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
-import org.freedom.business.object.Prioridade;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -52,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.crm.business.object.Chamado;
+import org.freedom.modulos.crm.business.object.Prioridade;
 
 public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener {
 
