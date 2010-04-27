@@ -28,6 +28,8 @@ public class SwingParams {
 	
 	public static int TAMANHO_FONTE = 0;
 	
+	public static Color COR_FUNDO_BARRA_BOTOES = new Color(238,238,238);
+	
 	
 	
 	public static Font getFontpad() {
