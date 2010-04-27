@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
@@ -67,14 +68,15 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.StatusBar;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.util.SwingParams;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
-
 	
 //	private Image icone;
 //	private SystemTray tray;
 //	private Toolkit toolkit;
 //	private TrayIcon trayIcon;
+	
 	private PopupMenu popupMenu;
 	
 	private static final long serialVersionUID = 1L;
@@ -93,7 +95,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JButtonPad btAgenda = new JButtonPad( Icone.novo( "btAgenda2.png" ) );
 
-	public JPanelPad pinBotoesDir = new JPanelPad();
+	public JPanelPad pinBotoesDir = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));  
 
 	public Container c = getContentPane();
 
@@ -626,16 +628,24 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void preparaBarra() {
 
-		pinBotoesDir.setBorder( null );
 		c.add( tBar, BorderLayout.NORTH );
-		tBar.setLayout( new BorderLayout() );
-		pinBotoesDir.setPreferredSize( new Dimension( 102, 34 ) );
+
+		tBar.setLayout( new BorderLayout() ); 
+		tBar.setBackground( SwingParams.COR_FUNDO_BARRA_BOTOES );
+		
+		pinBotoesDir.setBackground(SwingParams.COR_FUNDO_BARRA_BOTOES);
+		
 		tBar.add( pinBotoesDir, BorderLayout.EAST );
+		
+		
 	}
 
 	public void adicBtAgenda() {
-
-		btAgenda.setPreferredSize( new Dimension( 34, 34 ) );
+		
+		btAgenda.setBorderPainted(false);
+		btAgenda.setContentAreaFilled(false);
+		
+		btAgenda.setPreferredSize( new Dimension( 30, 30 ) );
 		btAgenda.setToolTipText( "Agenda" );
 		btAgenda.addActionListener( this );
 		pinBotoesDir.add( btAgenda );
@@ -643,11 +653,18 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void adicBtCalc() {
 
-		btCalc.setPreferredSize( new Dimension( 34, 34 ) );
+		btCalc.setBorderPainted(false);
+		btCalc.setContentAreaFilled(false);
+		
+		btCalc.setPreferredSize( new Dimension( 30, 30 ) );
 		btCalc.setToolTipText( "Calculadora" );
 		btCalc.addActionListener( this );
 		pinBotoesDir.add( btCalc );
 	}
+	
+  
+	
+	
 /*
 	private class TratadorDuploClique implements ActionListener {
 
