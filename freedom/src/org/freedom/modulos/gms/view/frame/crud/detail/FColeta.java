@@ -23,7 +23,6 @@ import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.business.object.RecMerc;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.EmailBean;
 import org.freedom.library.functions.Funcoes;
@@ -38,6 +37,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
+import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
