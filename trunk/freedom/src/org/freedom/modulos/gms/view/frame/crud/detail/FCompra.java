@@ -18,8 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,7 +43,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.business.component.NFEntrada;
-import org.freedom.business.object.TipoMov;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -66,6 +65,8 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
@@ -88,9 +89,10 @@ import org.freedom.modulos.std.view.dialog.utility.DLGuiaTraf;
  * @version 31/08/2009 - Alex Rodrigues
  * @version 16/12/2009 - Anderson Sanchez
  * @version 10/03/2010 - Anderson Sanchez
+ * @version 22/03/2010 - Anderson Sanchez
  */
 
-public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
+public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -391,10 +393,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JScrollPane spnObs03 = new JScrollPane( txaObs03 );
 
 	private JScrollPane spnObs04 = new JScrollPane( txaObs04 );
+	
+	private JButtonPad btBuscaCompra = new JButtonPad( "Busca Pedido", Icone.novo( "btEntrada.png" ) );
 
 	private JLabelPad lbChaveNfe = null;
 
 	private boolean novo = false;
+	
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 4 ) );
 
 	private NFEConnectionFactory nfecf = null;
 
@@ -406,62 +412,112 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		setTitulo( "Compra" );
 		setAtribos( 15, 10, 770, 500 );
+		
 	}
 
 	public void montaTela() {
+		
+		adicAbas();
 
-		pnCliCab.add( tpnCab );
-		tpnCab.addTab( "Compra", pinCabCompra );
+		adicPaineis();
 
-		if ( "S".equals( abaTransp ) ) {
-			tpnCab.addTab( "Tranportadora", pinCabTransp );
+		adicListaCampos();
+		
+		adicToolTips();
+		
+		
+
+		txtVlrIPICompra.setAtivo( false );
+		txtVlrDescCompra.setAtivo( false );
+		txtVlrLiqCompra.setAtivo( false );
+
+		pinCab = new JPanelPad( 740, 130 );
+		setListaCampos( lcCampos );
+		setAltCab( 160 );
+		setPainel( pinCabCompra );
+
+		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
+		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true );
+		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
+		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
+		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
+		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do p.pagto." );
+		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );
+
+		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+		adicDBLiv( txaObs03, "Obs03", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+		adicDBLiv( txaObs04, "Obs04", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+
+		if ( abaTransp.equals( "S" ) ) {
+			setListaCampos( lcCampos );
+			setPainel( pinCabTransp );
+			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
+			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
 		}
-		if ( "S".equals( abaSolCompra ) ) {
-			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
-		}
+
 		if ( "S".equals( abaImport ) ) {
-			tpnCab.addTab( "Importação", pinCabImportacao );
+
+			setPainel( pinCabImportacao );
+
+			adicCampo( txtNroDI, 7, 25, 85, 20, "NroDI", "Nro. da DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtRegDI, 95, 25, 70, 20, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtDesembDI, 168, 25, 70, 20, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, false );
+			adicCampo( txtIdentContainer, 241, 25, 150, 20, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, false );
+
+			adicCampo( txtCodPaisDesembDI, 394, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
+			adicDescFK( txtDescPaisDesembDI, 467, 25, 227, 20, "NomePais", "Nome do país" );
+
+			adicCampo( txtLocDesembDI, 7, 65, 384, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
+
+			adicCampo( txtSiglaUFDesembDI, 394, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
+			adicDescFK( txtNomeUFDEsembDI, 467, 65, 227, 20, "NomeUF", "Nome UF" );
+
 		}
 
-		if ( labelobs01cp != null && !"".equals( labelobs01cp.trim() ) ) {
-			pinCabObs01.add( spnObs01 );
-			tpnCab.addTab( labelobs01cp.trim(), pinCabObs01 );
+		adicCampoInvisivel( txtCalcTrib, "CalcTrib", "Calculo de tributos", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
+
+		setListaCampos( true, "COMPRA", "CP" );
+		lcCampos.setQueryInsert( false );
+
+		if ( "S".equals( abaSolCompra ) ) {
+			setListaCampos( lcSolCompra );
+			setPainel( pinCabSolCompra );
+			adicCampo( txtCodSol, 7, 25, 70, 20, "CodSol", "Cód.sol.", ListaCampos.DB_FK, false );
+			adicCampo( txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário", ListaCampos.DB_FK, true );
+			adicCampo( txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol", "Data da Sol.", ListaCampos.DB_SI, true );
+			adicDescFKInvisivel( txtDescCC, "DescCC", "Descrição do centro de custos" );
+			adicCampo( txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
+			adicCampo( txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
+			adicDescFK( txtDescCC, 286, 20, 162, 20, "DescCC", "Descrição do centro de custos" );
+
+			txtCodSol.setNaoEditavel( true );
+			txtIDUsu.setNaoEditavel( true );
+			txtDtEmitSolicitacao.setNaoEditavel( true );
+			txtDescCC.setNaoEditavel( true );
+			txtCodCC.setNaoEditavel( true );
+			txtAnoCC.setNaoEditavel( true );
 		}
-		if ( labelobs02cp != null && !"".equals( labelobs02cp.trim() ) ) {
-			pinCabObs02.add( spnObs02 );
-			tpnCab.addTab( labelobs02cp.trim(), pinCabObs02 );
-		}
-		if ( labelobs03cp != null && !"".equals( labelobs03cp.trim() ) ) {
-			pinCabObs03.add( spnObs03 );
-			tpnCab.addTab( labelobs03cp.trim(), pinCabObs03 );
-		}
-		if ( labelobs04cp != null && !"".equals( labelobs04cp.trim() ) ) {
-			pinCabObs04.add( spnObs04 );
-			tpnCab.addTab( labelobs04cp.trim(), pinCabObs04 );
-		}
 
-		btBuscarRemessa.setVisible( false );
-		pnNavCab.add( btBuscarRemessa, BorderLayout.EAST );
+		
+		adicListeners();
 
-		pnMaster.remove( 2 );
-		pnGImp.removeAll();
-		pnGImp.setLayout( new GridLayout( 1, 4 ) );
-		pnGImp.setPreferredSize( new Dimension( 220, 26 ) );
-		pnGImp.add( btPrevimp );
-		pnGImp.add( btImp );
-		pnGImp.add( btFechaCompra );
-		pnGImp.add( btObs );
+		setImprimir( true );
 
-		pnTot.setPreferredSize( new Dimension( 140, 200 ) );
-		pnTot.add( pinTot );
-		pnCenter.add( pnTot, BorderLayout.EAST );
-		pnCenter.add( spTab, BorderLayout.CENTER );
-
-		JPanelPad pnLab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-		pnLab.add( new JLabelPad( " Totais:" ) );
-
-		pnMaster.add( pnCenter, BorderLayout.CENTER );
-
+	}
+	
+	private void adicToolTips() {
+		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
+		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
+	}
+	
+	private void adicListaCampos() {
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ) );
@@ -549,41 +605,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProd );
 
-		/*
-		 * Código adicionado para pesquisar um produto pelo código associado ao fornecedor
-		 */
-	/*	txtCodProd.addKeyListener( new java.awt.event.KeyAdapter() {
-
-			public void keyPressed( java.awt.event.KeyEvent evt ) {
-
-				if ( ( evt.getKeyCode() == 9 ) || ( evt.getKeyCode() == 10 ) ) {
-					if ( ( codProdutoFornecedor.length() > 0 ) && ( txtCodProd.getText().length() == 0 ) ) {
-						String sSQL = " SELECT CODPROD FROM CPPRODFOR WHERE CODEMP = ? AND CODFILIAL = ? AND CODFOR = ? AND REFPRODFOR = ? ";
-						PreparedStatement ps = null;
-						ResultSet rs = null;
-						try {
-							ps = con.prepareStatement( sSQL );
-							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, Aplicativo.iCodFilialMz );
-							ps.setString( 3, txtCodFor.getText() );
-							ps.setString( 4, codProdutoFornecedor );
-							rs = ps.executeQuery();
-							if ( rs.next() ) {
-								txtCodProd.setText( rs.getString( 1 ) );
-								txtCodProd.requestFocus();
-							}
-						} catch ( SQLException err ) {
-							Funcoes.mensagem( "Erro ao buscar código produto no fornecedor!\n" + err.getMessage(), "Erro SQL", 1 );
-						}
-					}
-				}
-				else {
-					char keyText = evt.getKeyChar();
-					codProdutoFornecedor = txtCodProd.getText() + keyText;
-				}
-			}
-		} );
-*/
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );		
@@ -692,95 +713,99 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUFDesembDI.setTabelaExterna( lcUF );
+	}
+	
+	private void adicPaineis() {
+		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );		
+		
+		btBuscarRemessa.setVisible( false );
+		pnAdicionalCab.add( btBuscarRemessa );
 
-		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
+		btBuscaCompra.setPreferredSize( new Dimension( 110, 0 ) );
+		pnAdicionalCab.add( btBuscaCompra );
+		
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setBackground( Color.BLACK );
+		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setOpaque( true );
+		lbStatus.setText( "NÃO SALVO" );
 
-		txtVlrIPICompra.setAtivo( false );
-		txtVlrDescCompra.setAtivo( false );
-		txtVlrLiqCompra.setAtivo( false );
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 150, 30 ) );
+		navEast.adic( lbStatus, 26, 3, 110, 20 );
+		navEast.tiraBorda();
+		pnAdicionalCab.add( navEast );
 
-		pinCab = new JPanelPad( 740, 130 );
-		setListaCampos( lcCampos );
-		setAltCab( 160 );
-		setPainel( pinCabCompra );
+		pnMaster.remove( 2 );
+		pnGImp.removeAll();
+		pnGImp.setLayout( new GridLayout( 1, 4 ) );
+		pnGImp.setPreferredSize( new Dimension( 220, 26 ) );
+		pnGImp.add( btPrevimp );
+		pnGImp.add( btImp );
+		pnGImp.add( btFechaCompra );
+		pnGImp.add( btObs );
 
-		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
-		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
-		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true );
-		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
-		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
-		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
-		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
-		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do p.pagto." );
-		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );
+		pnTot.setPreferredSize( new Dimension( 140, 200 ) );
+		pnTot.add( pinTot );
+		pnCenter.add( pnTot, BorderLayout.EAST );
+		pnCenter.add( spTab, BorderLayout.CENTER );
 
-		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
-		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
-		adicDBLiv( txaObs03, "Obs03", labelobs01cp == null ? "Observações" : labelobs01cp, false );
-		adicDBLiv( txaObs04, "Obs04", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+		JPanelPad pnLab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+		pnLab.add( new JLabelPad( " Totais:" ) );
 
-		if ( abaTransp.equals( "S" ) ) {
-			setListaCampos( lcCampos );
-			setPainel( pinCabTransp );
-			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
-			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
+		pnMaster.add( pnCenter, BorderLayout.CENTER );
+	}
+	
+	private void adicAbas() {
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Compra", pinCabCompra );
+
+		if ( "S".equals( abaTransp ) ) {
+			tpnCab.addTab( "Tranportadora", pinCabTransp );
 		}
-
-		if ( "S".equals( abaImport ) ) {
-
-			setPainel( pinCabImportacao );
-
-			adicCampo( txtNroDI, 7, 25, 85, 20, "NroDI", "Nro. da DI", ListaCampos.DB_SI, false );
-			adicCampo( txtDtRegDI, 95, 25, 70, 20, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, false );
-			adicCampo( txtDtDesembDI, 168, 25, 70, 20, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, false );
-			adicCampo( txtIdentContainer, 241, 25, 150, 20, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, false );
-
-			adicCampo( txtCodPaisDesembDI, 394, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
-			adicDescFK( txtDescPaisDesembDI, 467, 25, 227, 20, "NomePais", "Nome do país" );
-
-			adicCampo( txtLocDesembDI, 7, 65, 384, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
-
-			adicCampo( txtSiglaUFDesembDI, 394, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
-			adicDescFK( txtNomeUFDEsembDI, 467, 65, 227, 20, "NomeUF", "Nome UF" );
-
-		}
-
-		adicCampoInvisivel( txtCalcTrib, "CalcTrib", "Calculo de tributos", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
-
-		setListaCampos( true, "COMPRA", "CP" );
-		lcCampos.setQueryInsert( false );
-
 		if ( "S".equals( abaSolCompra ) ) {
-			setListaCampos( lcSolCompra );
-			setPainel( pinCabSolCompra );
-			adicCampo( txtCodSol, 7, 25, 70, 20, "CodSol", "Cód.sol.", ListaCampos.DB_FK, false );
-			adicCampo( txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário", ListaCampos.DB_FK, true );
-			adicCampo( txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol", "Data da Sol.", ListaCampos.DB_SI, true );
-			adicDescFKInvisivel( txtDescCC, "DescCC", "Descrição do centro de custos" );
-			adicCampo( txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
-			adicCampo( txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
-			adicDescFK( txtDescCC, 286, 20, 162, 20, "DescCC", "Descrição do centro de custos" );
-
-			txtCodSol.setNaoEditavel( true );
-			txtIDUsu.setNaoEditavel( true );
-			txtDtEmitSolicitacao.setNaoEditavel( true );
-			txtDescCC.setNaoEditavel( true );
-			txtCodCC.setNaoEditavel( true );
-			txtAnoCC.setNaoEditavel( true );
+			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
+		}
+		if ( "S".equals( abaImport ) ) {
+			tpnCab.addTab( "Importação", pinCabImportacao );
 		}
 
+		if ( labelobs01cp != null && !"".equals( labelobs01cp.trim() ) ) {
+			pinCabObs01.add( spnObs01 );
+			tpnCab.addTab( labelobs01cp.trim(), pinCabObs01 );
+		}
+		if ( labelobs02cp != null && !"".equals( labelobs02cp.trim() ) ) {
+			pinCabObs02.add( spnObs02 );
+			tpnCab.addTab( labelobs02cp.trim(), pinCabObs02 );
+		}
+		if ( labelobs03cp != null && !"".equals( labelobs03cp.trim() ) ) {
+			pinCabObs03.add( spnObs03 );
+			tpnCab.addTab( labelobs03cp.trim(), pinCabObs03 );
+		}
+		if ( labelobs04cp != null && !"".equals( labelobs04cp.trim() ) ) {
+			pinCabObs04.add( spnObs04 );
+			tpnCab.addTab( labelobs04cp.trim(), pinCabObs04 );
+		}
+	}
+	
+	private void adicListeners() {
+
+		// Mouse Listeners
+		
+		txtDescProd.addMouseListener( this );
+		
+		//Action Listeners
+		
 		btFechaCompra.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btObs.addActionListener( this );
 		btBuscarRemessa.addActionListener( this );
-
-		txtCodPlanoPag.addKeyListener( this );
-
+		btBuscaCompra.addActionListener( this );
+		
+		// Focus Listeners
+		
 		txtPercDescItCompra.addFocusListener( this );
 		txtPercComItCompra.addFocusListener( this );
 		txtVlrDescItCompra.addFocusListener( this );
@@ -792,17 +817,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtCodLote.addFocusListener( this );
 		txtNumSerie.addFocusListener( this );
 		
-		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
-		txtDescProd.addMouseListener( new MouseAdapter() {
+		// Key Listeners
+		
+		txtCodPlanoPag.addKeyListener( this );
 
-			public void mouseClicked( MouseEvent mevt ) {
-
-				if ( mevt.getClickCount() == 2 ) {
-					mostraTelaDecricao( txaObsItCompra, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
-				}
-			}
-		} );
-
+		// Carrega Listeners 
+		
 		lcCampos.addCarregaListener( this );
 		lcFor.addCarregaListener( this );
 		lcSerie.addCarregaListener( this );
@@ -815,26 +835,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcTipoMov.addCarregaListener( this );
 		lcAlmoxProd.addCarregaListener( this );
 		lcModNota.addCarregaListener( this );
-
+		
+		// Insert Listeners
 		lcCampos.addInsertListener( this );
 
+		// Post Listeners
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
-
-		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
-		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
-		lbStatus.setOpaque( true );
-		lbStatus.setVisible( false );
-
-		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 150, 30 ) );
-		navEast.adic( lbStatus, 26, 3, 110, 20 );
-		navEast.tiraBorda();
-		pnNavCab.add( navEast, BorderLayout.EAST );
-
-		setImprimir( true );
-
+				
 	}
 
 	private void redimensionaDet(int alt) {
@@ -1927,8 +1935,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else if ( evt.getSource() == btBuscarRemessa ) {
 			buscaRetornoRemessa();
 		}
+		else if ( evt.getSource() == btBuscaCompra ) {
+			abreBuscaCompra();
+		}
 
 		super.actionPerformed( evt );
+	}
+	
+	private void abreBuscaCompra() {
+		
+		if ( !Aplicativo.telaPrincipal.temTela( "Busca pedido de compra" ) ) {
+			DLBuscaPedCompra tela = new DLBuscaPedCompra( this );
+			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
+		}
 	}
 
 	public void focusGained( FocusEvent fevt ) {
@@ -2053,13 +2072,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					}
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
 			else if ( kevt.getSource() == txtCustoItCompra ) {
 				// É o último se estiver habilitado.
 				if ( habilitaCusto ) {
@@ -2090,15 +2102,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					calcIpi( false );
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F4 ) {
 			btFechaCompra.doClick();
@@ -2257,7 +2260,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			 */
 		}
 
-		if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "C2" ) || txtStatusCompra.getVlrString().trim().equals( "C3" ) ) ) {
+		String statuscompra = txtStatusCompra.getVlrString().trim();
+		
+		if ( statuscompra.length() > 0 && ( statuscompra.equals( "C2" ) || statuscompra.equals( "C3" ) ) ) {
 			lbStatus.setText( "EMITIDA" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
@@ -2267,17 +2272,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			lbStatus.setBackground( Color.BLUE );
 			lbStatus.setVisible( true );
 		}
-		else if ( txtStatusCompra.getVlrString().trim().length() > 0 && txtStatusCompra.getVlrString().substring( 0, 1 ).equals( "X" ) ) {
+		else if ( statuscompra.length() > 0 && statuscompra.substring( 0, 1 ).equals( "X" ) ) {
 			lbStatus.setText( "CANCELADA" );
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
-		else if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "P2" ) || txtStatusCompra.getVlrString().trim().equals( "P3" ) ) ) {
+		else if ( statuscompra.length() > 0 && ( statuscompra.equals( "P2" ) || statuscompra.equals( "P3" ) ) ) {
 			lbStatus.setText( "EM ABERTO" );
 			lbStatus.setBackground( Color.ORANGE );
 			lbStatus.setVisible( true );
 		}
-		else {
+		else if ( statuscompra.equals( "P1" )) {
 			lbStatus.setText( "PENDENTE" );
 			lbStatus.setBackground( Color.ORANGE );
 			lbStatus.setVisible( true );
@@ -2734,6 +2739,38 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		
 		dl.dispose();
+	}
+
+	public void mouseClicked( MouseEvent mevt ) {
+		if(mevt.getSource()==txtDescProd) {
+			if ( mevt.getClickCount() == 2 ) {
+				mostraTelaDecricao( txaObsItCompra, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
+			}
+		}
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }

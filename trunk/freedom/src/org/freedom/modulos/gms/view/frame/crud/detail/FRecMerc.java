@@ -27,8 +27,6 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
-import org.freedom.business.object.RecMerc;
-import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
@@ -47,6 +45,8 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
+import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 

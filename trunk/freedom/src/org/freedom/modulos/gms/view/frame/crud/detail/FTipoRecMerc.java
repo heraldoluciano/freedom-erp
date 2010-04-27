@@ -32,7 +32,6 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
-import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -45,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
 public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener, CarregaListener {
 
