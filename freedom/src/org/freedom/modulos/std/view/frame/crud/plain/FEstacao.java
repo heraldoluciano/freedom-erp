@@ -37,7 +37,6 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
@@ -56,6 +55,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
 public class FEstacao extends FDetalhe implements PostListener, ActionListener, ChangeListener  {
 
