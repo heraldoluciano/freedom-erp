@@ -555,24 +555,24 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		int[] iValsVec = null; 
 
 		StringBuffer obs = new StringBuffer();		
-		DLCriaVendaOrc diag = null;
+		DLCriaVendaCompra diag = null;
 
 		try {
 			
 			if ( tab.getNumLinhas() > 0 ) {
 				
 				boolean usaPedSeq = prefs[ 0 ];
-				diag = new DLCriaVendaOrc( !usaPedSeq, sTipoVenda );
+				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda );
 				
 				if ( sTipoVenda.equals( "V" ) && !usaPedSeq ) {
-					diag.setNewCodVenda( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
+					diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
 				}
 				
 				diag.setVisible( true );
 
 				if ( diag.OK ) {
 					if ( !usaPedSeq && sTipoVenda.equals( "V" ) )
-						iCodVenda = diag.getNewCodVenda();
+						iCodVenda = diag.getNewCodigo();
 				}
 				else
 					return false;
