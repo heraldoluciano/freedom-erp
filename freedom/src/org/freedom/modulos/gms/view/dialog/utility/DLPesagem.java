@@ -47,7 +47,6 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.bmps.Icone;
-import org.freedom.business.object.TipoRecMerc;
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.driver.scale.AbstractScale;
 import org.freedom.infra.functions.ConversionFunctions;
@@ -60,6 +59,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
 public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
 
@@ -223,9 +223,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				
 				// Valore incluídos para testes
-				//data = new Date();
-				//hora = new Time(new Date().getTime());
-				//peso = new BigDecimal(650);
+				data = new Date();
+				hora = new Time(new Date().getTime());
+				peso = new BigDecimal(650);
 				
 				
 				if(peso != null) {
@@ -356,8 +356,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		txtData.setAtivo( false );
 		txtHora.setAtivo( false );		
 		
-		txtPeso1.setAtivo( balanca==null );
-		txtPeso2.setAtivo( balanca==null );
+		// Liberado para testes
+//		txtPeso1.setAtivo( balanca==null );
+//		txtPeso2.setAtivo( balanca==null );
 		
 		txtPeso1.setFont( SwingParams.getFontboldextra(20) );
 		txtPeso2.setFont( SwingParams.getFontboldextra(20) );
