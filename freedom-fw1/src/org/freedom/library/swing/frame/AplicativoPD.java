@@ -95,7 +95,10 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 		if ( strUsuario.toUpperCase().trim().equals( "SYSDBA" ) ) {
 			iXPanel = 30;
+			btAtualMenu.setBorder(null);
+			btAtualMenu.setContentAreaFilled(false);
 			pinBotoes.adic( btAtualMenu, 0, 0, 30, 30 );
+			
 		}
 		else
 			iXPanel = 0;
@@ -115,6 +118,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		setaSysdba();
 
 		telaPrincipal.adicCompInBar( pinBotoes, BorderLayout.WEST );
+		
 		btAtualMenu.addActionListener( this );
 		bModoDemo = getModoDemo();
 

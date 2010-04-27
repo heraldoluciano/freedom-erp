@@ -137,6 +137,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public String[][][] sConfig = new String[ 0 ][ 0 ][ 0 ];
 
 	public JPanelPad pinBotoes = new JPanelPad( 30, 30 );
+	
+//	public ReflectionPanel pinBotoes = new ReflectionPanel(30,30);
 
 	public int iXPanel = 0;
 
@@ -422,6 +424,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			btOpcao = new JButtonPad( iCodSis, iCodModu, iCodMenu, tela, null );
 			
 			btOpcao.setIcon( Icone.novo( sImagem ) );
+			
+			btOpcao.setContentAreaFilled(false);
+			btOpcao.setBorderPainted(false);
+			
 			if ( sToolTip != null ) {
 				btOpcao.setToolTipText( sToolTip );
 
@@ -450,13 +456,18 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public void adicTelaBotao( JButtonPad bt ) {
-
+		
+		pinBotoes.setBorder(null);
+		
 		bt.setEnabled( verifAcesso( bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem() ) );
+
 		pinBotoes.adic( bt, iXPanel, 0, 30, 30 );
+		
 		bt.addActionListener( this );
 		iXPanel += 30;
+		
 	}
-
+	
 	protected abstract void buscaInfoUsuAtual();
 
 	public abstract boolean verifAcesso( int iCodSisP, int iCodModuP, int iCodMenuP );
