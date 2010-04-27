@@ -293,7 +293,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItem.setQueryCommit( false );
 		lcProdItem.setReadOnly( true );
 		txtCodProdItem.setTabelaExterna( lcProdItem );
-		txtDescProdItem.setListaCampos( lcProdItem );
+		txtDescProdItem.setListaCampos( lcDetItens );
 
 		lcProdItemRef.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProdItemRef.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -304,7 +304,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItemRef.setQueryCommit( false );
 		lcProdItemRef.setReadOnly( true );
 		txtRefProdItem.setTabelaExterna( lcProdItemRef );
-		txtDescProdItem.setListaCampos( lcProdItemRef );
+		txtRefProdItem.setListaCampos( lcDetItens );
 		
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
@@ -390,22 +390,23 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtSeqItem, 7, 20, 40, 20, "SeqItEst", "Item", ListaCampos.DB_PK, true );
 
 		if ( comRef() ) {
-//			txtRefProdItem.setBuscaAdic( new DLBuscaProd( con, "RefProdPD", lcProdItemRef.getWhereAdic() ) );
-			adicCampoInvisivel( txtCodProdItem, "CodProdPD", "Cód.Prod.", ListaCampos.DB_FK, txtDescProdItem, false );
-			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, false );
+			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItem, true );
+			adicCampoInvisivel( txtCodProdItem, "CodProdPD", "Cód.Prod.", ListaCampos.DB_SI, true );
 
 			adic( new JLabelPad( "Referência" ), 50, 0, 77, 20 );
 			adic( txtRefProdItem, 50, 20, 77, 20 );
-			txtRefProdItem.setRequerido( true );
+			txtRefProdItem.setRequerido( true );			
+			txtRefProdItem.setPK( true );
 			txtRefProdItem.setFK( true );
+			txtRefProdItem.setNomeCampo( "refprod" );
 		}
 		else {
-//			txtCodProdItem.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdItem.getWhereAdic() ) );
-			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, false );
-			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, false );
+			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
+			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_SI, true );	
+			txtCodProdItem.setNomeCampo( "codprod" );
 		}
+		
 
-//		adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdMat, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 		
@@ -416,7 +417,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
-//		txtCodProdItem.setNomeCampo( "CodProd" );
 		lcDetItens.setTabela( tabItens );
 
 		// Fim Detalhe Itens
