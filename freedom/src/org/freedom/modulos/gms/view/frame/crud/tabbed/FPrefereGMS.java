@@ -25,12 +25,14 @@
 package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
 
@@ -46,6 +48,8 @@ public class FPrefereGMS extends FTabDados {
 
 	private ListaCampos lcTipoRecMercCM = new ListaCampos( this, "CM" );
 	
+	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
+	
 	/****************
 	 *    Fields    *
 	 ****************/
@@ -57,6 +61,11 @@ public class FPrefereGMS extends FTabDados {
 	private JTextFieldPad txtCodTipoRecMercCM = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescTipoRecMercCM = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodTipoMovTC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMovTC = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 
 	
 	/****************
@@ -72,7 +81,7 @@ public class FPrefereGMS extends FTabDados {
 		super();
 			
 		setTitulo( "Preferências GMS" );
-		setAtribos( 30, 40, 440, 200 );
+		setAtribos( 30, 40, 440, 240 );
 		lcCampos.setMensInserir( false );
 
 		montaListaCampos();		
@@ -106,6 +115,18 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercCM.setReadOnly( true );
 		txtCodTipoRecMercCM.setTabelaExterna( lcTipoRecMercCM );
 
+		/***************************************
+		 * Tipo de movimento de compra    *
+		 **************************************/
+		
+		lcTipoMovCP.add( new GuardaCampo( txtCodTipoMovTC, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
+		lcTipoMovCP.add( new GuardaCampo( txtDescTipoMovTC, "DescTipoMov", "Descrição do tipo de movimento para compra", ListaCampos.DB_SI, false ) );
+		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovCP.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
+		lcTipoMovCP.setQueryCommit( false );
+		lcTipoMovCP.setReadOnly( true );
+		txtCodTipoMovTC.setTabelaExterna( lcTipoMovCP );
+		
 		
 	}
 	
@@ -123,19 +144,32 @@ public class FPrefereGMS extends FTabDados {
 		adicDescFK( txtDescTipoRecMercCM, 80, 60, 330, 20, "DescTipoRecMercCM", "Descrição do tipo de recebimento padrão para coleta" );
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
+
+		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
+		adicDescFK( txtDescTipoMovTC, 80, 100, 330, 20, "DescTipoMov", "Descrição do tipo de movimento para compra" );
+		txtCodTipoMovTC.setFK( true );
+		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
 		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
-		lcCampos.setPodeExc( false );
+		lcCampos.setPodeExc( false ); 
 	}
 
-	public void setConexao( DbConnection cn ) {
+	public void setConexao( DbConnection cn ) { //throws ExceptionSetConexao {
 
 		super.setConexao( cn );
 		
 		lcTipoRecMercRP.setConexao( cn );
 		lcTipoRecMercCM.setConexao( cn );
+		lcTipoMovCP.setConexao( cn );
 		
-		lcCampos.carregaDados();
+		try {
+			lcCampos.carregaDados();
+		}
+	
+		catch (Exception e) {
+			new ExceptionCarregaDados( "Erro ao carregar dados do lista campos " + lcCampos.getName() );
+		}
+		
 	}
 }
