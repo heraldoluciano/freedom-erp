@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.modulos.fnc.business.exception.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 
 public class CnabUtil extends FbnUtil {

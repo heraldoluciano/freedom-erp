@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.freedom.library.business.exceptions.ExceptionSiacc;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.modulos.fnc.business.exception.ExceptionSiacc;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 
 public class SiaccUtil extends FbnUtil {
