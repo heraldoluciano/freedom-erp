@@ -1168,6 +1168,14 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			CalendarOutputter outputter = new CalendarOutputter();
 			outputter.output(icsCalendar, fout);
 
+/*			CalendarEventEntry myEntry = new CalendarEventEntry();
+			myEntry.setContent(new PlainTextConstruct("Tennis with John April 11 3pm-3:30pm"));
+			myEntry.setQuickAdd(true);
+
+			// Send the request and receive the response:
+			CalendarEventEntry insertedEntry = myService.insert(postUrl, myEntry);
+*/			
+			
 			/****************************************
 			 * Fim da geração do anexo ICS
 			 ****************************************/
