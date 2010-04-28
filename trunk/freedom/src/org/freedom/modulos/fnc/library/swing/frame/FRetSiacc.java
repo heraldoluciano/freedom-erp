@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.freedom.library.business.exceptions.ExceptionSiacc;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -44,7 +45,6 @@ import org.freedom.modulos.fnc.business.component.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.business.component.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.business.component.SiaccUtil.RegF;
 import org.freedom.modulos.fnc.business.component.SiaccUtil.RegJ;
-import org.freedom.modulos.fnc.business.exception.ExceptionSiacc;
 import org.freedom.modulos.fnc.library.swing.dialog.DLRegB;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 

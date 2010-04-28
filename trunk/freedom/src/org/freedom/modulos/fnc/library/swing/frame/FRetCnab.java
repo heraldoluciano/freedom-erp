@@ -40,6 +40,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 
 import org.freedom.library.business.component.Banco;
+import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -51,7 +52,6 @@ import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegHeader;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegT400;
-import org.freedom.modulos.fnc.business.exception.ExceptionCnab;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 
 public class FRetCnab extends FRetFBN {
