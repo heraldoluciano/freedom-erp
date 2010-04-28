@@ -62,7 +62,7 @@ import org.freedom.modulos.std.view.dialog.utility.DLCriaVendaCompra;
 
 public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener, FocusListener {
 
-	private final int POS_CODPROD = 2;
+/*	private final int POS_CODPROD = 2;
 
 	private final int POS_QTD = 4;
 
@@ -81,7 +81,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private final int POS_CODCOMPRA = 11;
 
 	private final int POS_CODITCOMPRA = 1;
-
+*/
 	private static final long serialVersionUID = 1L;
 
 	private JTablePad tabitcompra = new JTablePad();
@@ -438,7 +438,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			sql.append( "where pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod " );
 			sql.append( "and ic.codemp=? and ic.codfilial=? and ic.codcompra=? " );
 
-			sql.append( "order by ic.coditcompra " );
+			sql.append( "order by ic.codprod " );
 
 			for ( int i = 0; i < tabcompra.getNumLinhas(); i++ ) {
 
@@ -456,7 +456,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				rs = ps.executeQuery();
 
-				int irow = 0;
+				int irow = tabitcompra.getNumLinhas();
 
 				while ( rs.next() ) {
 
@@ -635,9 +635,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						ps2.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 						ps2.setInt( 6, Aplicativo.iCodEmp );
 						ps2.setString( 7, null );
-						ps2.setString( 8, tabitcompra.getValor( i, POS_TPAGR ).toString() );
-						ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_QTD ).toString() ) ) );
-						ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_DESC ).toString() ) ) );
+//						ps2.setString( 8, tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA ).toString() );
+//						ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_QTD ).toString() ) ) );
+//						ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_DESC ).toString() ) ) );
 
 						ps2.execute();
 						ps2.close();
@@ -696,7 +696,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		return true;
 	}
 
-	private void buscar() {
+	private void buscaCompra() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -762,6 +762,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() )), irow, COMPRA.VLRLIQCOMPRA.ordinal() );				
 				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() )) , irow, COMPRA.VLRLIB.ordinal() );
  				
+				irow ++;
+				
 			}
 			
 			rs.close();
@@ -822,13 +824,14 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		int pos = 0;
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { // xxx
+				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { 
 					ltab.tiraLinha( i );
 					vValidos.remove( i );
 					i--;
 				}
 			}
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -837,9 +840,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		int linhas = ltab.getNumLinhas();
 		int pos = 0;
+		
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ltab.getValor( i, POS_TPAGR ).toString().equals( "F" ) ) {
+				if ( "F".equals( ltab.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString() ) ) {
 					ltab.tiraLinha( i );
 					i--;
 				}
@@ -857,25 +861,29 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		Float qtdfilho = null;
 		Float ret = new Float( 0 );
 		String tpagrup = null;
-		int i = iLinha;
+		int i = iLinha; 
 		int iPai = iLinha - 1;
 
 		try {
 			while ( i < tabitcompra.getNumLinhas() ) {
-				codprodfilho = new Integer( tabitcompra.getValor( i, POS_CODPROD ).toString() );
-				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_QTD ).toString() ) );
-				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_VLRLIQ ).toString() ) );
-				tpagrup = tabitcompra.getValor( i, POS_TPAGR ).toString();
-				precofilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_PRECO ).toString() ) );
-				// if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
+				
+				codprodfilho = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
+				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
+				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRLIQITCOMPRA.ordinal() ).toString() ) );
+				tpagrup = tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString();
+				precofilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) );
+
 				if ( ( codprodfilho.compareTo( codprodpai ) == 0 ) && ( precopai.compareTo( precofilho ) == 0 ) ) {
-					tabitcompra.setValor( "F", i, POS_TPAGR );
-					tabitcompra.setValor( String.valueOf( iPai ), i, POS_PAI );
+					tabitcompra.setValor( "F", i, ITCOMPRA.TPAGRUP.ordinal() );
 					ret += qtdfilho;
+					tabitcompra.setValor( "AGRUPADO", i, ITCOMPRA.DESCPROD.ordinal() );
 				}
+
 				i++;
 			}
-		} catch ( Exception e ) {
+			
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -896,32 +904,36 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			int linhaPai = -1;
 
 			for ( int i = 0; i < tabitcompra.getNumLinhas(); i++ ) {
-				codprodpai = new Integer( tabitcompra.getValor( i, POS_CODPROD ).toString() );
-				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_QTD ).toString() ) );
-				precopai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_PRECO ).toString() ) );
-				tpagr = tabitcompra.getValor( i, POS_TPAGR ).toString();
-				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_DESC ).toString() ) );
+				
+				codprodpai = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
+				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
+				precopai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) );
+				tpagr = tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString();
+				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString() ) );
 
 				if ( tpagr.equals( "" ) ) {
 					qtdnovopai = qtdatupai;
 					qtdnovopai += marcaFilhos( i + 1, codprodpai, precopai );
 
 					if ( qtdatupai.compareTo( qtdnovopai ) != 0 ) {
-						tabitcompra.setValor( "P", i, POS_TPAGR );
-						tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, POS_QTD );
+						tabitcompra.setValor( "P", i, ITCOMPRA.TPAGRUP.ordinal() );
+						tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, ITCOMPRA.QTDITCOMPRA.ordinal() );
 						linhaPai = i;
 					}
 					else {
-						tabitcompra.setValor( "N", i, POS_TPAGR );
+						tabitcompra.setValor( "N", i, ITCOMPRA.TPAGRUP.ordinal() );
 					}
 				}
 			}
 
 			if ( linhaPai > -1 ) {
-				tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, POS_DESC );
-			}
-			// limpaFilhos( tab );
-		} catch ( Exception e ) {
+				tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
+			} 
+			
+//			limpaFilhos( tabitcompra );
+			 
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -972,7 +984,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			dispose();
 		}
 		else if ( evt.getSource() == btBuscar ) {
-			buscar();
+			buscaCompra();
 		}
 		else if ( evt.getSource() == btExec ) {
 			carregar();
