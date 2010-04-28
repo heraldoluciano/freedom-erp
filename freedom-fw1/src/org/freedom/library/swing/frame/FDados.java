@@ -43,6 +43,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionSetConexao;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -497,11 +498,18 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	public void setBordaPad(JComponent comp) {
 		comp.setBorder( BorderFactory.createEtchedBorder());
 	}
-	public synchronized void setConexao(DbConnection cn) {
-		super.setConexao(cn);
-		lcCampos.setConexao(con);
-		lcSeq.setConexao(con);
-		setPKFoco();
+	public synchronized void setConexao(DbConnection cn) { //throws ExceptionSetConexao  {
+		try {
+			super.setConexao(cn);
+
+			lcCampos.setConexao(con);
+			lcSeq.setConexao(con);
+			setPKFoco();
+		}
+		catch (Exception e) {
+			new ExceptionSetConexao("Erro ao setar a conexão");
+		}
+	
 	}
 
 	public void beforePost(PostEvent pevt) {		

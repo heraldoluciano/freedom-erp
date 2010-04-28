@@ -45,14 +45,14 @@ import javax.swing.event.InternalFrameListener;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionSetConexao;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 
-public class FFilho extends JInternalFrame implements InternalFrameListener,
-        IFilho {
+public class FFilho extends JInternalFrame implements InternalFrameListener, IFilho {
+	
 	private static final long serialVersionUID = 1L;
 
-	
     protected FPrincipal fPrim;
     
     private Component firstFocus = null;
@@ -297,8 +297,14 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         firstFocus();
     }
 
-    public void setConexao(DbConnection cn) {
-        con = cn;
+    public void setConexao(DbConnection cn) { //throws ExceptionSetConexao {
+    	
+        try {
+        	con = cn;
+        }
+        catch (Exception e) {
+        	new ExceptionSetConexao("Erro ao setar a conexão");
+		}
     }
 
     public void show() {
