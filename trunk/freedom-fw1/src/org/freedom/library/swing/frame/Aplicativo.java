@@ -626,11 +626,30 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					Funcoes.mensagemInforma( framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada." );
 				}
 				obj = null;
-			} catch ( Exception err ) {
+			}
+			catch ( NullPointerException err) {
+				
+				StackTraceElement ste = err.getStackTrace()[0];
+				
+				int linha = ste.getLineNumber();
+				String classe = ste.getClassName();
+				String metodo = ste.getMethodName();
+				
+				Funcoes.mensagemErro( framePrinc, "Erro de ponteiro nulo ao abrir a tela!\n" 
+						+ "Classe:" + classe + "\n" 
+						+ "Metodo:" + metodo + "\n"
+						+ "Linha:" + linha 						
+						, true, con, err );
+
+				err.printStackTrace();
+			}
+			catch ( Exception err ) {
 				Funcoes.mensagemErro( framePrinc, err.getMessage(), true, con, err );
 
 				err.printStackTrace();
 			}
+			
+			
 		}
 	}
 	

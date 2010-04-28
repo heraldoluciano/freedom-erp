@@ -26,6 +26,7 @@ package org.freedom.library.swing.frame;
 import java.awt.Component;
 import java.awt.Container;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionSetConexao;
 import org.freedom.library.swing.component.JPanelPad;
 
 
@@ -43,8 +44,8 @@ public interface IFilho {
     public abstract void setFirstFocus(Component firstFocus);
 
     public abstract void firstFocus();
-
-    public abstract void setConexao(DbConnection cn);
+ 
+    public abstract void setConexao(DbConnection cn) throws ExceptionSetConexao ;
 
     public abstract void execShow();
 
