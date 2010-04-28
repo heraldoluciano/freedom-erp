@@ -46,6 +46,7 @@ import javax.swing.SwingConstants;
 import org.freedom.bmps.Icone;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.functions.Logger;
 import org.freedom.library.persistence.GuardaCampo;
@@ -592,9 +593,14 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		if ( txtVenda.getVlrInteger().intValue() != 0 ) {
 			txtVenda.setAtivo( false );
 		}
-
-		lcVenda.carregaDados();
-		carregaTabela();
+		
+		try {
+			lcVenda.carregaDados();
+			carregaTabela();
+		}
+		catch (Exception e) {
+			new ExceptionCarregaDados( "Erro ao carregar dados do lista campos " + lcVenda.getName() );
+		}
 
 	}
 
