@@ -607,6 +607,7 @@ public class FLeFiscal extends FTabDados {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcCampos.setConexao( cn );
 		lcCaixa.setConexao( cn );
 	}
