@@ -310,6 +310,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, Aplicativo.iCodFilial );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				switch ( rs.getString( "TipoTBJ" ).toCharArray()[ 0 ] ) {
 					case 'D' :
