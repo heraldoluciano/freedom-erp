@@ -27,6 +27,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 
+import org.freedom.library.business.exceptions.ExceptionLimpaComponent;
 import org.freedom.library.component.DadosImagem;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -280,11 +281,16 @@ public class GuardaCampo extends Component {
 	public boolean ehFK() {
 		return bFK;
 	}
-	public void limpa() {
+	public void limpa() throws ExceptionLimpaComponent {
 		byte[] bVals = new byte[1];
 
 		if ((bFK) && (txtCampo != null)) {
-			txtCampo.getTabelaExterna().limpaCampos(false);
+			try {
+				txtCampo.getTabelaExterna().limpaCampos(false);
+			}
+			catch (Exception e) {
+				throw new ExceptionLimpaComponent( "Tabela externa nula ao limpar o componente do campo " + txtCampo.getNomeCampo() );
+			}
 		}
 
 		if (comp instanceof JTextFieldPad)

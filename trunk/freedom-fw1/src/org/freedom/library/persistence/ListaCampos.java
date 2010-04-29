@@ -32,15 +32,6 @@ import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Blob;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
-import org.freedom.library.swing.component.JCheckBoxPad;
-import org.freedom.library.swing.component.JTablePad;
-import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.component.Navegador;
-import org.freedom.library.swing.component.PainelImagem;
-import org.freedom.library.swing.frame.Aplicativo;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,6 +56,17 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.exceptions.ExceptionCarregaDados;
+import org.freedom.library.business.exceptions.ExceptionCarregaItem;
+import org.freedom.library.business.exceptions.ExceptionLimpaComponent;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
+import org.freedom.library.swing.component.PainelImagem;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class ListaCampos extends Container implements PostListener,
 		InsertListener, EditListener, CancelListener, DeleteListener,
@@ -1078,7 +1080,12 @@ public class ListaCampos extends Container implements PostListener,
 				Funcoes.mensagemErro(cOwner, "Erro ao montar grid para tabela " + sTabela + "\n" + err.getMessage());
 				err.printStackTrace();
 			}
-			carregaItem(0);
+			try {
+				carregaItem(0);
+			}
+			catch (Exception e) {
+				new ExceptionCarregaDados("Erro ao carregar dados do primeiro item");
+			}
 		}
 	}
 
@@ -1089,7 +1096,7 @@ public class ListaCampos extends Container implements PostListener,
 	 * @see #setTabela
 	 *  
 	 */
-	public boolean carregaItem(int ind) {
+	public boolean carregaItem(int ind) throws ExceptionCarregaItem {
 		boolean bRetorno = false;
 		GuardaCampo gcCampo = null;
 //		int iSalto = 0;
@@ -1116,7 +1123,12 @@ public class ListaCampos extends Container implements PostListener,
 					i++;
 				}
 			}
-			bRetorno = carregaDados();
+			try {
+				bRetorno = carregaDados();
+			}
+			catch (Exception e) {
+				throw new ExceptionCarregaItem("Erro ao carregar dados");
+			}
 		}
 		return bRetorno;
 	}
@@ -1637,7 +1649,12 @@ public class ListaCampos extends Container implements PostListener,
 	public void first() {
 		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
 			tab.setLinhaSel(0);
-			carregaItem(0);
+			try {
+				carregaItem(0);
+			}
+			catch (Exception e) {
+				new ExceptionCarregaDados("Erro ao carregar primeiro item");
+			}
 		}
 	}
 
@@ -1647,7 +1664,12 @@ public class ListaCampos extends Container implements PostListener,
 			iLin = getNumLinha();
 			if (iLin > 0) {
 				tab.setLinhaSel(iLin - 1);
-				carregaItem(iLin - 1);
+				try {
+					carregaItem(iLin - 1);
+				}
+				catch (Exception e) {
+					new ExceptionCarregaDados("Erro ao carregar item anterior");
+				}
 			}
 		}
 	}
@@ -1661,7 +1683,12 @@ public class ListaCampos extends Container implements PostListener,
 				iLin = getNumLinha();
 				if (iLin < (iNumLinhas - 1)) {
 					tab.setLinhaSel(iLin + 1);
-					carregaItem(iLin + 1);
+					try {
+						carregaItem(iLin + 1);
+					}
+					catch (Exception e) {
+						new ExceptionCarregaDados("Erro ao carregar proximo item");						
+					}
 				}
 			}
 		}
@@ -1670,7 +1697,12 @@ public class ListaCampos extends Container implements PostListener,
 	public void last() {
 		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
 			tab.setLinhaSel(tab.getNumLinhas() - 1);
-			carregaItem(tab.getNumLinhas() - 1);
+			try {
+				carregaItem(tab.getNumLinhas() - 1);
+			}
+			catch (Exception e) {
+				new ExceptionCarregaDados("Erro ao carregar ultimo item");
+			}
 		}
 	}
 
@@ -1772,13 +1804,24 @@ public class ListaCampos extends Container implements PostListener,
 								else if (comp.getTipo() == JTextFieldPad.TP_TIME) {comp.setVlrString(Funcoes.sqlTimeToStrTime(rsLC.getTime(comp.getNomeCampo())));
 								}
 							} 
-							else
-								comp.limpa();
+							else {
+								try {
+									comp.limpa();
+								}
+								catch (ExceptionLimpaComponent e) { 
+									e.printStackTrace();
+								}
+							}
 							if (comp.ehFK())
 								comp.atualizaFK();
 						} 
 						else if (!bCamposCanc[i]) {
-							comp.limpa();
+							try {
+								comp.limpa();
+							}
+							catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					}
 					bResultado = true;
@@ -1955,11 +1998,22 @@ public class ListaCampos extends Container implements PostListener,
 			comp = (GuardaCampo) getComponent(i);
 			if (comp.ehPK()) {
 				if (bLimpaPK) {
-					comp.limpa();
+					try {
+						comp.limpa();
+					}
+					catch (Exception e) {
+						new ExceptionLimpaComponent("Erro ao limpar componente da PK");
+					}
 				}
 			} 
 			else {
-				comp.limpa();
+				try {
+					comp.limpa();
+				}
+				catch (Exception e) {
+					new ExceptionLimpaComponent("Erro ao limpar componente");
+				}
+				
 			}
 		}
 	}
@@ -2395,8 +2449,14 @@ public class ListaCampos extends Container implements PostListener,
 					}
 				}
 				setState(LCS_SELECT);
-				if (bQueryInsert)
-					carregaDados();
+				if (bQueryInsert) {
+					try {
+						carregaDados();
+					}
+					catch (Exception e) {
+						new ExceptionCarregaDados("Erro ao carregar dados no post");
+					}
+				}
 				bRetorno = true;
 			} 
 			catch (SQLException err) {
@@ -2651,7 +2711,12 @@ public class ListaCampos extends Container implements PostListener,
 			}
 			if ((carrega) & (lcState != LCS_INSERT)) {
 				setState(LCS_SELECT);
-				carregaDados();
+				try {
+					carregaDados();
+				}
+				catch (Exception e) {
+					new ExceptionCarregaDados("Erro ao carregar dados no cancel");
+				}
 			} 
 			else if ((carrega) & (lcState == LCS_INSERT)) {
 				limpaCampos(true);
@@ -2851,9 +2916,13 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	public void mouseClicked(MouseEvent mevt) {
-		if ((mevt.getSource() == tab) & (mevt.getClickCount() == 2)
-				& (tab.getLinhaSel() >= 0)) {
-			carregaItem(tab.getLinhaSel());
+		if ((mevt.getSource() == tab) & (mevt.getClickCount() == 2) & (tab.getLinhaSel() >= 0)) {
+			try {
+				carregaItem(tab.getLinhaSel());
+			}
+			catch (Exception e) {
+				new ExceptionCarregaDados("Erro ao carregar dados do grid");
+			}
 		}
 	}
 
