@@ -84,7 +84,7 @@ public class CtrlPort {
 			active = result;
 
 		}
-		result = port.activePort( portn, serialParams, event );
+		//result = port.activePort( portn, serialParams, event );
 		return result;
 	}
 	
@@ -100,6 +100,8 @@ public class CtrlPort {
 	
         if (port!=null) {
         	port.disablePort();
+        	active = false;
+        	port=null;
         }
 
 	}
