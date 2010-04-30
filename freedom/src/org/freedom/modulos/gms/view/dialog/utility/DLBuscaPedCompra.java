@@ -616,35 +616,47 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						}
 						bPrim = false;
 					}
-				}
 				
-				// Se o cabeçalho da compra foi inserido corretamente, o código da compra não é nulo, portanto deve inserir os ítens.
-				if( codcompra !=null ) {
 				
+					// Se o cabeçalho da compra foi inserido corretamente, o código da compra não é nulo, portanto deve inserir os ítens.
+					if( codcompra !=null ) {
 					
-					
-					try {
 						
-						sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?)";
-						ps2 = con.prepareStatement( sSQL );
-						ps2.setInt( 1, Aplicativo.iCodFilial );
-						ps2.setInt( 2, codcompra );
-//xxxxx
-						ps2.execute();
-						ps2.close();
-
-					} catch ( SQLException err ) {
-//						Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
+						
 						try {
-							con.rollback();
-						} catch ( SQLException err1 ) {
-						}
-						return false;
-					}
+							
+							sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?)";
+							ps2 = con.prepareStatement( sSQL );
+							ps2.setInt( 1, Aplicativo.iCodEmp );
+							ps2.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+							ps2.setInt( 3, codcompra );
+							ps2.setInt( 4, Aplicativo.iCodEmp );
+							ps2.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+							ps2.setInt( 6, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODCOMPRA.ordinal() ) );
+							ps2.setInt( 7, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODITCOMPRA.ordinal() ) );
+							ps2.setString( 8, (String) tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ) );
+							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString())));
+							ps2.setFloat( 10, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString())));
 
+							ps2.execute();
+							ps2.close();
+	
+						} catch ( SQLException err ) {
+							Funcoes.mensagemErro( this, "Erro ao gerar itcompra: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
+							try {
+								con.rollback();
+							} 
+							catch ( SQLException err1 ) {
+								err1.printStackTrace();
+							}
+							err.printStackTrace();
+							return false;
+							
+						}
+	
+					}
+				
 				}
-				
-				
 				
 				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
 					telacompra.exec( codcompra );
