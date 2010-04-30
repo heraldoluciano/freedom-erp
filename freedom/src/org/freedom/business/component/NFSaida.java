@@ -190,6 +190,7 @@ public class NFSaida extends NF {
 				cab.setString( C_FONEFILIAL, rs.getString( "FONEFILIAL" ) != null ? rs.getString( "FONEFILIAL" ) : "" );
 				cab.setString( C_WWWFILIAL, rs.getString( "WWWFILIAL" ) != null ? rs.getString( "WWWFILIAL" ) : "" );
 				cab.setString( C_EMAILFILIAL, rs.getString( "EMAILFILIAL" ) != null ? rs.getString( "EMAILFILIAL" ) : "" );
+				cab.setString( C_HALT, rs.getString( "HALT" ) != null ? rs.getString( "HALT" ) : "" );
 					
 				geraMensagens( rs.getString( "MENS1" ), rs.getBigDecimal( "VLRICMSSIMPLES" ), rs.getBigDecimal( "PERCICMSSIMPLES" ) );
 				
