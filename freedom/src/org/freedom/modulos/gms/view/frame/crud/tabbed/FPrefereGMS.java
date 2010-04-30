@@ -145,7 +145,7 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
 
-		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
+		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
 		adicDescFK( txtDescTipoMovTC, 80, 100, 330, 20, "DescTipoMov", "Descrição do tipo de movimento para compra" );
 		txtCodTipoMovTC.setFK( true );
 		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
