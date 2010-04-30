@@ -70,6 +70,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
+import org.freedom.modulos.lvf.business.object.SeqSerie;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
 import org.freedom.modulos.std.DLBuscaEstoq;
@@ -446,7 +447,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
 		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
 		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do p.pagto." );
+		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );
 
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
@@ -2212,22 +2213,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				// Busca de sequencia pela LFSEQSERIE
 				try {
-					  PreparedStatement ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
-					  		"WHERE CODEMP=? AND CODFILIAL=? AND SERIE=? AND " +
-					  		"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
-					  ps.setInt( 1, Aplicativo.iCodEmp );
-					  ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );
-					  ps.setString( 3, txtSerieCompra.getVlrString() );
-					  ps.setInt( 4, Aplicativo.iCodEmp );
-					  ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-					  ResultSet rs = ps.executeQuery();
-					  if (rs.next()) {
-						  txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
-					  } else {
-						  txtDocSerie.setVlrInteger( 0 );
-					  }
-					  con.commit();
-				} catch (Exception e) {
+					
+					SeqSerie ss = new SeqSerie( txtSerieCompra.getVlrString() );					
+					txtDocSerie.setVlrInteger( ss.getDocserie() );
+					
+				} 
+				catch (Exception e) {
 				    	e.printStackTrace();
 				}
 				txtDocCompra.setVlrInteger( new Integer( txtDocSerie.getVlrInteger().intValue() + 1 ) );
