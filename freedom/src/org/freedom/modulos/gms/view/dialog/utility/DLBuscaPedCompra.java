@@ -37,10 +37,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -64,26 +62,6 @@ import org.freedom.modulos.std.view.dialog.utility.DLCriaVendaCompra;
 
 public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener, FocusListener {
 
-/*	private final int POS_CODPROD = 2;
-
-	private final int POS_QTD = 4;
-
-	private final int POS_PRECO = 5;
-
-	private final int POS_DESC = 6;
-
-	private final int POS_VLRLIQ = 7;
-
-	private final int POS_TPAGR = 8;
-
-	private final int POS_PAI = 9;
-
-	private final int POS_VLRAGRP = 10;
-
-	private final int POS_CODCOMPRA = 11;
-
-	private final int POS_CODITCOMPRA = 1;
-*/
 	private static final long serialVersionUID = 1L;
 
 	private JTablePad tabitcompra = new JTablePad();
@@ -419,7 +397,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	}
 
-	private void carregar() {
+	private void buscaItCompra() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -512,28 +490,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	}
 
-	private void atualizaObsCompra( final StringBuffer obs, final int codcompra ) {
-
-		PreparedStatement ps = null;
-
-		try {
-
-			PreparedStatement ps2 = con.prepareStatement( "UPDATE CPCOMPRA SET OBSCOMPRA=? WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?" );
-
-			ps2.setString( 1, obs.toString().length() > 10000 ? obs.toString().substring( 0, 10000 ) : obs.toString() );
-
-			ps2.setInt( 2, Aplicativo.iCodEmp );
-			ps2.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps2.setInt( 4, codcompra );
-
-			ps2.execute();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar observações da compra!\n" + err.getMessage(), true, con, err );
-		}
-	}
-
-	private boolean gerar() {
+	private boolean geraCompra() {
 
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
@@ -570,6 +527,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						codfor = (Integer) tabcompra.getValor( i, COMPRA.CODFOR.ordinal() );
 						
 					}
+					
 				}
 				
 				
@@ -600,12 +558,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 					if ( bPrim ) {
 						
-						
-						
-						
 						try {
 							
 							int param = 1;
+							
+							// Executando procedure para geração do cabeçalho da compra.
 							
 							sSQL = "SELECT IRET FROM CPADICCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 							ps = con.prepareStatement( sSQL );
@@ -632,6 +589,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							if ( rs.next() ) {
 								codcompra = rs.getInt( 1 );
 							}
+							// Se houve algum problema na procedure e não inseriu a compra deve anular a variável para não tentar inserir os ítens
+							else {
+								codcompra = null;
+							}
 							
 							rs.close();
 							ps.close();
@@ -640,41 +601,40 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {
 								Funcoes.mensagemErro( this, "Compra já existe!" );
-								return gerar();
+								return geraCompra();
 							}
 							else
 								Funcoes.mensagemErro( this, "Erro ao gerar compra!\n" + err.getMessage(), true, con, err );
+								codcompra = null;
 
-							err.printStackTrace();
-							return false;
-						} catch ( Exception e ) {
+								err.printStackTrace();
+								return false;
+						} 
+						catch ( Exception e ) {
 							Funcoes.mensagemErro( this, "Erro genérico ao gerar compra!\n" + e.getMessage(), true, con, e );
+							codcompra = null;
 						}
 						bPrim = false;
 					}
 				}
-					/*
+				
+				// Se o cabeçalho da compra foi inserido corretamente, o código da compra não é nulo, portanto deve inserir os ítens.
+				if( codcompra !=null ) {
+				
+					
 					
 					try {
 						
-						sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
+						sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?)";
 						ps2 = con.prepareStatement( sSQL );
 						ps2.setInt( 1, Aplicativo.iCodFilial );
 						ps2.setInt( 2, codcompra );
-						ps2.setInt( 3, new Integer( tabitcompra.getValor( i, 11 ).toString() ) );
-						ps2.setInt( 4, new Integer( tabitcompra.getValor( i, 1 ).toString() ) );
-						ps2.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-						ps2.setInt( 6, Aplicativo.iCodEmp );
-						ps2.setString( 7, null );
-//						ps2.setString( 8, tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA ).toString() );
-//						ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_QTD ).toString() ) ) );
-//						ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, POS_DESC ).toString() ) ) );
-
+//xxxxx
 						ps2.execute();
 						ps2.close();
 
 					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
+//						Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 						try {
 							con.rollback();
 						} catch ( SQLException err1 ) {
@@ -684,7 +644,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				}
 				
-				*/
+				
 				
 				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
 					telacompra.exec( codcompra );
@@ -696,9 +656,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			}
 			else
 				Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar uma compra!" );
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			ps = null;
 			ps2 = null;
 			rs = null;
@@ -718,71 +680,76 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		try {
 
-			sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, " );
-			sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens , " );
-			sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib, " );
-			sql.append( "cp.vlrliqcompra, cp.vlrliqcompra vlrlib " );
-			sql.append( "from cpcompra cp, cpforneced fr " );
-			sql.append( "where " );
-			sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
-			sql.append( "and cp.statuscompra in ('P1','P2','P3') " );
-
-			if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
-				sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
-			}
-
-			sql.append( "and cp.codemp=? and cp.codfilial=? " );
-
-			if ( txtCodCompra.getVlrInteger() > 0 ) {
-				sql.append( " and cp.codcompra=? " );
-			}
-
-			ps = con.prepareStatement( sql.toString() );
-
-			int param = 1;
-
-			if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
-				ps.setInt( param++, lcFor.getCodEmp() );
-				ps.setInt( param++, lcFor.getCodFilial() );
-				ps.setInt( param++, txtCodFor.getVlrInteger() );
-			}
-
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-
-			if ( txtCodCompra.getVlrInteger() > 0 ) {
-				ps.setInt( param++, txtCodCompra.getVlrInteger() );
-			}
-
-			rs = ps.executeQuery();
-			
-			tabcompra.limpa();
-
-			int irow = 0;
-
-			while ( rs.next() ) {
-
-				tabcompra.adicLinha();
-
-				tabcompra.setValor( new Boolean( true ), irow, COMPRA.SEL.ordinal() );
-
-				tabcompra.setValor( rs.getInt( COMPRA.CODCOMPRA.toString()), irow, COMPRA.CODCOMPRA.ordinal() );
-				tabcompra.setValor( rs.getInt( COMPRA.CODPLANOPAG.toString()), irow, COMPRA.CODPLANOPAG.ordinal() );
-				tabcompra.setValor( rs.getInt( COMPRA.CODFOR.toString()), irow, COMPRA.CODFOR.ordinal() );
-				tabcompra.setValor( rs.getString( COMPRA.RAZFOR.toString()), irow, COMPRA.RAZFOR.ordinal() );
+			if(txtCodFor.getVlrInteger()>0 || txtCodCompra.getVlrInteger()>0) {
 				
-				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENS.toString() )), irow, COMPRA.NROITENS.ordinal() );
-				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENSLIB.toString() )), irow, COMPRA.NROITENSLIB.ordinal() );					
-				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() )), irow, COMPRA.VLRLIQCOMPRA.ordinal() );				
-				tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() )) , irow, COMPRA.VLRLIB.ordinal() );
- 				
-				irow ++;
+				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, " );
+				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens , " );
+				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib, " );
+				sql.append( "cp.vlrliqcompra, cp.vlrliqcompra vlrlib " );
+				sql.append( "from cpcompra cp, cpforneced fr " );
+				sql.append( "where " );
+				sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
+				sql.append( "and cp.statuscompra in ('P1','P2','P3') " );
+	
+				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
+					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
+				}
+	
+				sql.append( "and cp.codemp=? and cp.codfilial=? " );
+	
+				if ( txtCodCompra.getVlrInteger() > 0 ) {
+					sql.append( " and cp.codcompra=? " );
+				}
+	
+				ps = con.prepareStatement( sql.toString() );
+	
+				int param = 1;
+	
+				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
+					ps.setInt( param++, lcFor.getCodEmp() );
+					ps.setInt( param++, lcFor.getCodFilial() );
+					ps.setInt( param++, txtCodFor.getVlrInteger() );
+				}
+	
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+	
+				if ( txtCodCompra.getVlrInteger() > 0 ) {
+					ps.setInt( param++, txtCodCompra.getVlrInteger() );
+				}
+	
+				rs = ps.executeQuery();
 				
+				tabcompra.limpa();
+	
+				int irow = 0;
+	
+				while ( rs.next() ) {
+	
+					tabcompra.adicLinha();
+	
+					tabcompra.setValor( new Boolean( true ), irow, COMPRA.SEL.ordinal() );
+	
+					tabcompra.setValor( rs.getInt( COMPRA.CODCOMPRA.toString()), irow, COMPRA.CODCOMPRA.ordinal() );
+					tabcompra.setValor( rs.getInt( COMPRA.CODPLANOPAG.toString()), irow, COMPRA.CODPLANOPAG.ordinal() );
+					tabcompra.setValor( rs.getInt( COMPRA.CODFOR.toString()), irow, COMPRA.CODFOR.ordinal() );
+					tabcompra.setValor( rs.getString( COMPRA.RAZFOR.toString()), irow, COMPRA.RAZFOR.ordinal() );
+					
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENS.toString() )), irow, COMPRA.NROITENS.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENSLIB.toString() )), irow, COMPRA.NROITENSLIB.ordinal() );					
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() )), irow, COMPRA.VLRLIQCOMPRA.ordinal() );				
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() )) , irow, COMPRA.VLRLIB.ordinal() );
+	 				
+					irow ++;
+					
+				}
+				
+				rs.close();
+				ps.close();
+			}	
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um pedido ou um fornecedor para busca!" );
 			}
-			
-			rs.close();
-			ps.close();
-			
 		} 
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar compras!\n" + err.getMessage(), true, con, err );
@@ -793,9 +760,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			rs = null;
 			vVals = null;
 		}
+		
 	}
-
-
 
 	private void limpaNaoSelecionados( JTablePad ltab ) {
 
@@ -943,7 +909,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				tabitcompra.requestFocus();
 			}
 			else if ( kevt.getSource() == btGerar ) {
-				if ( !gerar() ) {
+				if ( !geraCompra() ) {
 					try {
 						con.rollback();
 					} catch ( SQLException err ) {
@@ -966,10 +932,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			buscaCompra();
 		}
 		else if ( evt.getSource() == btExec ) {
-			carregar();
+			buscaItCompra();
 		}
 		else if ( evt.getSource() == btGerar ) {
-			if ( !gerar() ) {
+			if ( !geraCompra() ) {
 				try {
 					con.rollback();
 				} catch ( SQLException err ) {
