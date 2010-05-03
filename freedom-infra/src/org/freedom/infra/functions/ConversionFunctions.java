@@ -130,13 +130,15 @@ public final class ConversionFunctions {
 		
 		try {
 
+			strtime = StringFunctions.clearString(strtime);
+			
 			int hours = Integer.parseInt( strtime.substring(0, 2) );
-			int minutes = Integer.parseInt( strtime.substring(3,5));
+			int minutes = Integer.parseInt( strtime.substring(2,4));
 			int seconds = 0;
 			
-			if( strtime.length() >= 5 ) {
+			if( strtime.length() > 4 ) {
 			
-				seconds = Integer.parseInt( strtime.substring(5));
+				seconds = Integer.parseInt( strtime.substring(4));
 				
 			}
 			
