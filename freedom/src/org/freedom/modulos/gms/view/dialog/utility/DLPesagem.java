@@ -264,7 +264,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					setMensagem( "Pesagem realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
 				}
 				
-				balanca.inactivePort();
+				//balanca.inactivePort();
 				balanca = null;
 				
 			}
