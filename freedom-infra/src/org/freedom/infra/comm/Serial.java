@@ -142,6 +142,7 @@ public class Serial extends AbstractPort {
 	public void disablePort() {
 		
 		if ( portSerial != null ) {
+			portSerial.removeEventListener();
 			portSerial.notifyOnDataAvailable( false );
 			portSerial.close();
 		}
