@@ -180,6 +180,7 @@ import org.freedom.modulos.std.view.frame.report.FRVendasDet;
 import org.freedom.modulos.std.view.frame.report.FRVendasFisico;
 import org.freedom.modulos.std.view.frame.report.FRVendasGeral;
 import org.freedom.modulos.std.view.frame.report.FRVendasIcms;
+import org.freedom.modulos.std.view.frame.report.FRVendasIpi;
 import org.freedom.modulos.std.view.frame.report.FRVendasItem;
 import org.freedom.modulos.std.view.frame.report.FRVendasPlanoPag;
 import org.freedom.modulos.std.view.frame.report.FRVendasVend;
@@ -481,6 +482,7 @@ public class FreedomSTD extends AplicativoPD {
 						
 			addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800600000, 1, false, null );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS sobre vendas", "Icms Vendas e Compras", 'I', 800601000, 2, true, FRVendasIcms.class );
+				addOpcao( 800600000, TP_OPCAO_ITEM, "IPI sobre vendas", "Ipi Vendas e Compras", 'I', 800601000, 2, true, FRVendasIpi.class);
 				addOpcao( 800600000, TP_OPCAO_ITEM, "Impostos sobre serviços", "Impostos sobre serviços", 'S', 800602000, 2, true, FRImpServ.class );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "Pis e cofins", "Pis e cofins", 'P', 800603000, 2, true, FRPisCofins.class );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM", 'N', 800604000, 2, true, FRIcmsNcm.class );
