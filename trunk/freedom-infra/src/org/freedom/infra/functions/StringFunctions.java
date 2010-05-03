@@ -54,12 +54,16 @@ public final class StringFunctions {
 		return text;
 		
 	}
-	
+	 
 	public static String clearString(String str) {
+		return clearString(str,"");
+	}
+	
+	public static String clearString(String str, String strnew) {
 		
 		StringBuilder validstring = new StringBuilder();
 		
-		validstring.append( str.replaceAll( "\\W", " " ) ); 
+		validstring.append( str.replaceAll( "\\W", strnew ) ); 
 
 		return validstring.toString().trim();
 	}
