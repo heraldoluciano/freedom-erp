@@ -100,9 +100,15 @@ public class FRPagar extends FRelatorio {
 	
 	private ListaCampos lcBanco = new ListaCampos( this );
 	
+	private ListaCampos lcTipoCob = new ListaCampos(this);
+	
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	
+	private JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtDescCodCobrança = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private Calendar calAtual = Calendar.getInstance();
 
@@ -159,9 +165,14 @@ public class FRPagar extends FRelatorio {
 		adic( new JLabelPad( "Nome do banco" ), 90, 283, 300, 20 );
 		adic( txtDescBanco, 90, 305, 277, 20 );
 		
-		adic( cbObs, 7, 340, 385, 20 );
-		adic( cbParPar, 7, 360, 360, 20 );
-
+		adic( new JLabelPad( "Cód.T.Cob." ), 7, 323, 80, 20 );
+		adic( txtCodTipoCob, 7, 343, 80, 20 );						
+		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 323, 300, 20 );
+		adic( txtDescCodCobrança, 90, 343, 277, 20 );
+		
+		adic( cbObs, 7, 365, 385, 20 );
+		adic( cbParPar, 7, 385, 360, 20 );
+		
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
 		pnBotoes.setPreferredSize( new Dimension( 120, 28 ) );
@@ -198,6 +209,16 @@ public class FRPagar extends FRelatorio {
 		txtCodBanco.setTabelaExterna( lcBanco );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
+		
+		
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.T.Cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescCodCobrança, "DESCTIPOCOB", "Nome do Tipo de Cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setReadOnly( true );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setFK( true );
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		
 		
 	}
 	
@@ -377,6 +398,12 @@ public class FRPagar extends FRelatorio {
 			sql.append( " AND COALESCE(CT.CODEMPBO,P.CODEMPBO)=? AND COALESCE(CT.CODFILIALBO,P.CODFILIALBO)=?");
 			sql.append( " AND COALESCE(CT.CODBANCO,P.CODBANCO)=? " );
 		}
+		
+		if(txtCodTipoCob.getVlrInteger()>0) {
+			sql.append( " AND IT.CODTIPOCOB=? AND IT.CODEMPTC=? AND IT.CODFILIALTC=? ");
+			
+		}
+				
 
 		sql.append( "ORDER BY " );
 		
@@ -426,6 +453,12 @@ public class FRPagar extends FRelatorio {
 				ps.setInt( paramsql++, lcBanco.getCodFilial() );
 				ps.setInt( paramsql++, txtCodBanco.getVlrInteger() );
 
+			}
+			
+			if(txtCodTipoCob.getVlrInteger()>0) {
+				ps.setInt( paramsql++, txtCodTipoCob.getVlrInteger() );
+				ps.setInt( paramsql++, lcTipoCob.getCodEmp() );
+				ps.setInt( paramsql++, lcTipoCob.getCodFilial() );
 			}
 
 			rs = ps.executeQuery();
@@ -691,6 +724,7 @@ public class FRPagar extends FRelatorio {
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcBanco.setConexao( cn );
+		lcTipoCob.setConexao( cn );
 		
 	}
 
