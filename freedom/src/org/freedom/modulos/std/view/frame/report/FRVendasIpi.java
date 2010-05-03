@@ -1,12 +1,12 @@
 /**
- * @version 07/10/2009 <BR>
+ * @version 03/05/2010 <BR>
  * @author Setpoint Informática Ltda./Cristian Ribeiro Mietlicki<BR>
  * 
  * Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
+ * Pacote: org.freedom.modulos.std.view.frame.report <BR>
  * Classe:
- * @(#)FRVolVendasProd.java <BR>
+ * @(#)FRVendasIpi.java <BR>
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
