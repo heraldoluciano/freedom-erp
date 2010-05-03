@@ -14,7 +14,7 @@ public class FilizolaBP15 extends AbstractScale  {
 	
 	public static final byte ETX = 3;
 	
-	public static final String INSTABLE = "|||||";
+	public static final String INSTABLE = "IIIII";//"|||||";
 	
 	public static final String NEGATIVE = "NNNNN";
 	
