@@ -297,7 +297,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
+		
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
@@ -418,11 +418,12 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
+		
+		
 	}
 
 	public void beforePost( PostEvent pevt ) {
-
+		
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( cbAutoBaixa.getVlrString().equals( "S" ) && ( txtNumConta.getVlrString().equals( "" ) || txtCodPlan.getVlrString().equals( "" ) ) ) {
 				Funcoes.mensagemInforma( this, "Para quitar os pagamentos é necessário um 'N.Conta' e um 'Cód. Planejamento'!" );
@@ -435,18 +436,18 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 			pevt.cancela();
 			txtDiaVctoPPag.requestFocus();
 			
-		}	
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
+		
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
+		
 		if ( cevt.getListaCampos() == lcCampos && cevt.ok ){
 			txtNumParc.setEditable( false );
 		}
@@ -469,7 +470,9 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
+		
+		cbAtivo.setVlrString( "S" );
+		
 		if( ievt.getListaCampos() == lcCampos ){
 			txtNumParc.setEditable( true );
 			rgRegraVenc.setVlrString( "N" );
@@ -486,6 +489,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
+		
 
 		if( evt.getSource() == rgRegraVenc  ){
 			
