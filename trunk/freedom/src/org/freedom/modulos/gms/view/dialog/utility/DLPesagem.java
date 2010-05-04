@@ -203,17 +203,17 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 	}
 	
-	private void buscaPeso() {
+	private synchronized void buscaPeso() {
 		
 		try {
 			
-			if(balanca!=null) {
+			if(balanca!=null) { 
 				
 				setMensagem( "Inicializando balança...", Color.BLUE, null, false );
 				
 				balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
 				
-//				Thread.sleep( 550);
+				//Thread.sleep( 550);
 				
 				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false );
 				
