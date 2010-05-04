@@ -38,7 +38,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	protected static int TIMEOUT_READ = 5000;
 	
-	public static final int TIMEOUT_ACK = 1500;
+	public static int TIMEOUT_ACK = 1500;
 	
 	public static final Integer LOG_MESSAGE = 0;
 	
