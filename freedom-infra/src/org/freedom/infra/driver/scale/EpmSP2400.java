@@ -24,7 +24,9 @@ public class EpmSP2400 extends AbstractScale  {
 	
 	public static final String NOME_BAL = "Rodoviária EPM SP-2400";
 	
-public void initialize( Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity ) {
+	private boolean reading = true; // Indica se ainda está lendo o buffer.
+	
+	public void initialize( Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity ) {
 		
 		this.com = com;
 		
@@ -35,6 +37,8 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 		serialParams.setParity( parity );
 
 		activePort(this);
+		
+		reading = true;
 		
 		readReturn();
 		
@@ -80,8 +84,10 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 //				porta.addEventListener(this);
 //			}
 
+			while (reading) {
+				Thread.sleep( TIMEOUT_ACK );
+			}
 			
-			Thread.sleep( TIMEOUT_ACK );
 			
 /*			if(buffer!=null) {
 			
@@ -99,6 +105,9 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			CtrlPort.getInstance().disablePort();
 		}
 		
 	}
@@ -136,29 +145,31 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 			
 			System.out.println("Leitura:" + str);
 			
-			int posicaobranca = str.indexOf( " " );
+			str = str.trim();
 			
-			// pega os ultimos 48 caracteres do buffer
-			if(str.length()>48) {
-				str = str.substring(str.length()-48);
+			// pega os ultimos 56 caracteres do buffer
+			if(str.length()>56) {
+				str = str.substring(str.length()-56);
 			}
+
+			int posicaobranca = str.indexOf( "    " );
 			
 			if(posicaobranca<24 && posicaobranca>-1) {
-				str = str.substring( posicaobranca );
+				str = str.substring( posicaobranca+4 );
 				str = StringFunctions.alltrim( str );
-			}
 			
 			
+			//str = str.trim();
 			
 			if(str.length()>=24) {
-			
+				
 				str = str.substring( 0, 24 );
 				
 				String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
 				
 				if("//:".equals( validador )) {
 					
-					
+					System.out.println("CARACTER MALDITO:" + ((int) str.charAt(23)) );
 										
 					System.out.println("Finalizou leitura!");
 					
@@ -176,21 +187,25 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 					
 					System.out.println("hora lida antes: " + strtime);
 					
-					strtime = StringFunctions.clearString(strtime);
-					
-					System.out.println("hora lida depois: " + strtime);
-					
 					setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
 					setDate( ConversionFunctions.strDate6digToDate( strdate ) );
 					setTime( ConversionFunctions.strTimetoTime( strtime ) );
+
+					System.out.println("Setou o peso:" + getWeight());
+					System.out.println("Setou a data:" + getDate());
+					System.out.println("Setou a hora:" + getTime());					
 					
-					CtrlPort.getInstance().disablePort();
+					// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
+					
+					reading = false;
+					buffer = null;
 
 				}
 				else {				
 					System.out.println("String nao validada: " + str);
 				}
 				
+			}
 				
 			}
 			
@@ -216,7 +231,7 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
 
 				result = new byte[ input.available() ];
-//				result = new byte[ 64 ];
+//				result = new byte[ 256 ];
 
 				int nodeBytes = 0;
 				
@@ -245,11 +260,10 @@ public void initialize( Integer com, Integer timeout, Integer baudrate, Integer 
 								bufferTmp[ i ] = result[ i - tmp.length ];
 							}
 						}
-					}
+					}  
 					
 					buffer = bufferTmp;
-					parseString( new String(buffer) );
-//					buffer = null;
+					parseString( new String(buffer) );					
 				}
 			}
 		} catch ( IOException e ) {
