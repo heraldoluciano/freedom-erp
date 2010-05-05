@@ -83,6 +83,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private final JTextAreaPad txaDetChamado = new JTextAreaPad( 1000 );
 	
 	private final JTextAreaPad txaObsChamado = new JTextAreaPad( 1000 );
@@ -93,7 +97,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private JPanelPad panelCabecalho = new JPanelPad( 700, 140 );
+	private JPanelPad panelCabecalho = new JPanelPad( 700, 180 );
 	
 	private final JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -112,6 +116,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 	
 	private ListaCampos lcTipoChamado = new ListaCampos( this, "TC" );
+	
+	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	public FChamado() {
 
@@ -156,8 +162,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDB( cbPrioridade, 236, 100, 110, 20, "prioridade", "Prioridade", false );
 		
 		adicCampo( txtDtConclusao, 349, 100, 80, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
-
+		
 		adicDB( cbStatus, 433, 100, 180, 20, "Status", "Status", false );
+
+		adicCampo( txtCodAtend, 7, 140, 80, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
+		adicDescFK( txtNomeAtend, 90, 140, 250, 20, "NomeAtend", "Nome do atendente designado" );
 		
 		txtDtConclusao.setEditable( false );
 		
@@ -198,6 +207,16 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtCodTpChamado.setTabelaExterna( lcTipoChamado );
 		txtCodTpChamado.setFK( true );
 
+		// FK para Atendente/Técnico designado
+		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setFK( true );
+		txtCodAtend.setNomeCampo( "CodAtend" );
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
+		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ), "txtCodVendx" );
+		lcAtend.montaSql( false, "ATENDENTE", "AT" );
+		lcAtend.setReadOnly( true );
+
+
 	}
 	
 	private void montaCombos() {
@@ -222,6 +241,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 		lcCli.setConexao( cn );
 		lcTipoChamado.setConexao( cn );
+		lcAtend.setConexao( cn );
 	
 	}
 	
