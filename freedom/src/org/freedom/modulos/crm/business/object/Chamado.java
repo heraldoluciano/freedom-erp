@@ -18,7 +18,8 @@ public class Chamado {
 		DTPREVISAO, QTDHORASPREVISAO, DTCONCLUSAO, DTINS, HINS, IDUSUINS, DTALT, HALT, IDUSUALT
 	}
 	
-	public static final Constant STATUS_PENDENTE = new Constant("Pendente", "PE" ); 
+	public static final Constant STATUS_PENDENTE = new Constant("Pendente", "PE" );
+	public static final Constant STATUS_ANALISE = new Constant("Em analise", "AN" );	
 	public static final Constant STATUS_EM_ANDAMENTO = new Constant("Em andamento", "EA" );
 	public static final Constant STATUS_CANCELADO = new Constant("Cancelado", "CA" );
 	public static final Constant STATUS_CONCLUIDO = new Constant("Concluído", "CO" );
@@ -43,6 +44,7 @@ public class Chamado {
 		ret.addElement( "<--Selecione-->" );
 	
 		ret.add( STATUS_PENDENTE.getName() );
+		ret.add( STATUS_ANALISE.getName() );
 		ret.add( STATUS_EM_ANDAMENTO.getName() );
 		ret.add( STATUS_CANCELADO.getName() );
 		ret.add( STATUS_CONCLUIDO.getName() );
@@ -58,6 +60,7 @@ public class Chamado {
 		ret.addElement( "" );
 		
 		ret.add( (String) STATUS_PENDENTE.getValue() );
+		ret.add( (String) STATUS_ANALISE.getValue() );
 		ret.add( (String) STATUS_EM_ANDAMENTO.getValue() );
 		ret.add( (String) STATUS_CANCELADO.getValue() );
 		ret.add( (String) STATUS_CONCLUIDO.getValue() );
