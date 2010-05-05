@@ -326,7 +326,7 @@ public class NF073 extends Layout {
 					if(!complementar) {
 					
 						imp.say( 6, frete.getString( NF.C_RAZTRANSP ) != null ? frete.getString( NF.C_RAZTRANSP ).toUpperCase(): "" );
-						imp.say( 85, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
+						imp.say( 83, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
 						
 						imp.say( 97, frete.getString( NF.C_PLACAFRETE ) );
 
@@ -383,7 +383,7 @@ public class NF073 extends Layout {
 						}
 						
 						
-						imp.pulaLinha( 2, imp.comprimido() );
+						imp.pulaLinha( 4, imp.comprimido() );
 					
 					}
 
@@ -425,6 +425,7 @@ public class NF073 extends Layout {
 					// Fim da observação
 
 					// Imprime canhoto					
+					
 					imp.pulaLinha( iLinPag - imp.pRow() , imp.comprimido() );					
 					imp.say( 0, imp.normal() + imp.comprimido() + imp.expandido() );
 					imp.say( 67, StringFunctions.strZero( String.valueOf( iNumNota ), 4 ) );	
