@@ -1810,8 +1810,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	public boolean testaNumSerie() {
 
-		
-		
 		boolean bRetorno = false;
 		boolean bValido = false;
 
