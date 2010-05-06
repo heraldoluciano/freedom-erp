@@ -33,6 +33,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -42,6 +44,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoItens;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
+import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.detail.FSolicitacaoCompra;
@@ -285,7 +288,13 @@ public class FreedomGMS extends AplicativoPD {
 			
 				
 		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false,null);
-				
+		
+		addOpcao(-1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
+			addOpcao(700000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600100000,1, true, FOrdemServico.class);
+			addSeparador(700000000);
+			addOpcao(700000000, TP_OPCAO_ITEM, "Tipo de atendente", "Tipo de atendente", 'T', 600200000,1, true, FTipoAtend.class);
+			addOpcao(700000000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'd', 600300000,1, true, FAtendente.class);
+		
 				addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
 				addBotao("btForneced.gif","Fornecedor","Fornecedor",100102020,FFornecedor.class);
@@ -306,7 +315,9 @@ public class FreedomGMS extends AplicativoPD {
 				
 				addBotao("btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
 				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FControleRecMerc.class);
-				
+
+	
+		
 				
 		
 		ajustaMenu();
