@@ -50,6 +50,8 @@ public class FPrefereGMS extends FTabDados {
 	
 	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
 	
+	private ListaCampos lcTipoRecMercOS = new ListaCampos( this, "TO" );
+	
 	/****************
 	 *    Fields    *
 	 ****************/
@@ -66,6 +68,10 @@ public class FPrefereGMS extends FTabDados {
 	
 	private JTextFieldFK txtDescTipoMovTC = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodTipoRecMercOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoRecMercOS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 
 	
 	/****************
@@ -81,7 +87,7 @@ public class FPrefereGMS extends FTabDados {
 		super();
 			
 		setTitulo( "Preferências GMS" );
-		setAtribos( 30, 40, 440, 240 );
+		setAtribos( 30, 40, 440, 280 );
 		lcCampos.setMensInserir( false );
 
 		montaListaCampos();		
@@ -96,7 +102,7 @@ public class FPrefereGMS extends FTabDados {
 		 **************************************/
 		
 		lcTipoRecMercRP.add( new GuardaCampo( txtCodTipoRecMercRP, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
-		lcTipoRecMercRP.add( new GuardaCampo( txtDescTipoRecMercRP, "DescTipoRecMerc", "Descrição do tipo de recebimento para pesagem", ListaCampos.DB_SI, false ) );
+		lcTipoRecMercRP.add( new GuardaCampo( txtDescTipoRecMercRP, "DescTipoRecMerc", "Tipo de recebimento para pesagem", ListaCampos.DB_SI, false ) );
 		lcTipoRecMercRP.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercRP.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_RECEBIMENTO_PESAGEM.getValue() + "'" );
 		lcTipoRecMercRP.setQueryCommit( false );
@@ -108,7 +114,7 @@ public class FPrefereGMS extends FTabDados {
 		 **************************************/
 		
 		lcTipoRecMercCM.add( new GuardaCampo( txtCodTipoRecMercCM, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
-		lcTipoRecMercCM.add( new GuardaCampo( txtDescTipoRecMercCM, "DescTipoRecMerc", "Descrição do tipo de recebimento com coleta", ListaCampos.DB_SI, false ) );
+		lcTipoRecMercCM.add( new GuardaCampo( txtDescTipoRecMercCM, "DescTipoRecMerc", "Tipo de recebimento com coleta", ListaCampos.DB_SI, false ) );
 		lcTipoRecMercCM.montaSql( false, "TIPORECMERC", "EQ" );
 		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_COLETA_DE_MATERIAIS.getValue() + "'" );
 		lcTipoRecMercCM.setQueryCommit( false );
@@ -120,12 +126,24 @@ public class FPrefereGMS extends FTabDados {
 		 **************************************/
 		
 		lcTipoMovCP.add( new GuardaCampo( txtCodTipoMovTC, "CodTipoMov", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
-		lcTipoMovCP.add( new GuardaCampo( txtDescTipoMovTC, "DescTipoMov", "Descrição do tipo de movimento para compra", ListaCampos.DB_SI, false ) );
+		lcTipoMovCP.add( new GuardaCampo( txtDescTipoMovTC, "DescTipoMov", "Tipo de movimento para compra", ListaCampos.DB_SI, false ) );
 		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCP.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
 		lcTipoMovCP.setQueryCommit( false );
 		lcTipoMovCP.setReadOnly( true );
 		txtCodTipoMovTC.setTabelaExterna( lcTipoMovCP );
+		
+		/***************************************
+		 * Tipo de recepcao de mercadoria para ordem de sevico    *
+		 **************************************/
+		
+		lcTipoRecMercOS.add( new GuardaCampo( txtCodTipoRecMercOS, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
+		lcTipoRecMercOS.add( new GuardaCampo( txtDescTipoRecMercOS, "DescTipoRecMerc", "Tipo de recepção e mercadorias para Ordem de Serviço", ListaCampos.DB_SI, false ) );
+		lcTipoRecMercOS.montaSql( false, "TIPORECMERC", "EQ" );
+		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_ENTRADA_CONCERTO.getValue() + "'" );
+		lcTipoRecMercOS.setQueryCommit( false );
+		lcTipoRecMercOS.setReadOnly( true );
+		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS );
 		
 		
 	}
@@ -136,17 +154,23 @@ public class FPrefereGMS extends FTabDados {
 		adicTab( "Geral", pinGeral );
 		
 		adicCampo( txtCodTipoRecMercRP, 7, 20, 70, 20, "CodTipoRecMerc", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercRP, false );
-		adicDescFK( txtDescTipoRecMercRP, 80, 20, 330, 20, "DescTipoRecMerc", "Descrição do tipo de recebimento padrão para pesagem" );		
+		adicDescFK( txtDescTipoRecMercRP, 80, 20, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para pesagem" );		
 		txtCodTipoRecMercRP.setFK( true );
 		txtCodTipoRecMercRP.setNomeCampo( "CodTipoRecMerc" );
 
 		adicCampo( txtCodTipoRecMercCM, 7, 60, 70, 20, "CodTipoRecMercCM", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercCM, false );
-		adicDescFK( txtDescTipoRecMercCM, 80, 60, 330, 20, "DescTipoRecMercCM", "Descrição do tipo de recebimento padrão para coleta" );
+		adicDescFK( txtDescTipoRecMercCM, 80, 60, 330, 20, "DescTipoRecMercCM", "Tipo de recebimento padrão para coleta" );
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
 
-		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
-		adicDescFK( txtDescTipoMovTC, 80, 100, 330, 20, "DescTipoMov", "Descrição do tipo de movimento para compra" );
+		adicCampo( txtCodTipoRecMercOS, 7, 100, 70, 20, "CodTipoRecMercOS", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercOS, false );
+		adicDescFK( txtDescTipoRecMercOS, 80, 100, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
+		txtCodTipoRecMercOS.setFK( true );
+		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
+		
+		
+		adicCampo( txtCodTipoMovTC, 7, 140, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
+		adicDescFK( txtDescTipoMovTC, 80, 140, 330, 20, "DescTipoMov", "Tipo de movimento padrão para compra" );
 		txtCodTipoMovTC.setFK( true );
 		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
 		
@@ -161,6 +185,7 @@ public class FPrefereGMS extends FTabDados {
 		
 		lcTipoRecMercRP.setConexao( cn );
 		lcTipoRecMercCM.setConexao( cn );
+		lcTipoRecMercOS.setConexao( cn );
 		lcTipoMovCP.setConexao( cn );
 		
 		try {
