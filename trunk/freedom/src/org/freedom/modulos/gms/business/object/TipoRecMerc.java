@@ -14,6 +14,8 @@ public class TipoRecMerc implements java.io.Serializable {
 	
 	public static final Constant TIPO_COLETA_DE_MATERIAIS = new Constant("Coleta de materiais", "CM");
 	
+	public static final Constant TIPO_ENTRADA_CONCERTO = new Constant("Entrada para concerto", "EC");
+	
 	//Processos
 	
 	public static final Constant PROCESSO_PESAGEM_INICIAL = new Constant( "Pesagem inicial", "PI" );
@@ -23,6 +25,17 @@ public class TipoRecMerc implements java.io.Serializable {
 	public static final Constant PROCESSO_PESAGEM_FINAL = new Constant( "Pesagem final", "PF");
 	
 	public static final Constant PROCESSO_COLETA = new Constant( "Coleta", "CM");
+	
+	
+	// Processos para Entradas para concerto (Ordens de serviço)
+	
+	public static final Constant PROCESSO_ENTRADA_CONCERTO = new Constant( "Recepçao", "RC");
+	
+	public static final Constant PROCESSO_AVALIACAO_CONCERTO = new Constant( "Avaliação", "AV");
+	
+	public static final Constant PROCESSO_ORCAMENTO_CONCERTO = new Constant( "Orçamento", "OC");
+	
+	public static final Constant PROCESSO_EXECUCAO_CONCERTO = new Constant( "Execução", "EX");
 		
 	public static Vector<String> getLabelsTipoRecMerc( ) {
 
@@ -32,6 +45,7 @@ public class TipoRecMerc implements java.io.Serializable {
 		
 		ret.add( TIPO_RECEBIMENTO_PESAGEM.getName() );
 		ret.add( TIPO_COLETA_DE_MATERIAIS.getName() );
+		ret.add( TIPO_ENTRADA_CONCERTO.getName() );
 
 		return ret;
 		
@@ -45,6 +59,7 @@ public class TipoRecMerc implements java.io.Serializable {
 			
 		ret.add( (String) TIPO_RECEBIMENTO_PESAGEM.getValue() );
 		ret.add( (String) TIPO_COLETA_DE_MATERIAIS.getValue() );
+		ret.add( (String) TIPO_ENTRADA_CONCERTO.getValue() );
 
 		return ret;
 		
@@ -64,6 +79,12 @@ public class TipoRecMerc implements java.io.Serializable {
 		else if( TIPO_COLETA_DE_MATERIAIS.getValue().equals( tipo )) {
 			ret.add( PROCESSO_COLETA.getName() );
 		}
+		else if( TIPO_ENTRADA_CONCERTO.getValue().equals( tipo )) {
+			ret.add( PROCESSO_ENTRADA_CONCERTO.getName() );
+			ret.add( PROCESSO_AVALIACAO_CONCERTO.getName() );
+			ret.add( PROCESSO_ORCAMENTO_CONCERTO.getName() );
+			ret.add( PROCESSO_EXECUCAO_CONCERTO.getName() );
+		}
 				
 		return ret;
 		
@@ -82,6 +103,12 @@ public class TipoRecMerc implements java.io.Serializable {
 		}
 		else if( TIPO_COLETA_DE_MATERIAIS.getValue().equals( tipo )) {
 			ret.add( PROCESSO_COLETA.getValue() );
+		}
+		else if( TIPO_ENTRADA_CONCERTO.getValue().equals( tipo )) {
+			ret.add( PROCESSO_ENTRADA_CONCERTO.getValue() );
+			ret.add( PROCESSO_AVALIACAO_CONCERTO.getValue() );
+			ret.add( PROCESSO_ORCAMENTO_CONCERTO.getValue() );
+			ret.add( PROCESSO_EXECUCAO_CONCERTO.getValue() );
 		}
 		
 		return ret;
