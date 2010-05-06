@@ -334,12 +334,9 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 		if ( rgOrdem.getVlrString().equals( "P" ) ) {
 			sTitRel1 = "PAGAMENTO";
-//			if ( "S".equals( cbParPar.getVlrString() ) ) {
-//				sCampoOrdem = "L.DATALANCA";
-//			}
-//			else {
-				sCampoOrdem = "IT.DTPAGOITREC";
-//			}
+
+			sCampoOrdem = "IT.DTPAGOITREC";
+			
 			sCampoTotal = "DTPAGOITREC";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
@@ -406,36 +403,12 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI, C.DDDCLI, C.FONECLI, " );
 
-/*		if ( "S".equals( cbParPar.getVlrString() ) ) {
-			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
-			sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " );
-			sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" );
-			if ( "P".equals( rgOrdem.getVlrString() ) ) {
-				sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " );
-			}
-			sSQL.append( ") THEN IT.VLRPARCITREC " );
-			sSQL.append( "ELSE 0 END) VLRPARCITREC, " );
-			sSQL.append( "COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, " );
-			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
-			sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " );
-			sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" );
-			if ( "P".equals( rgOrdem.getVlrString() ) ) {
-				sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " );
-			}
-			sSQL.append( ") THEN IT.VLRAPAGITREC " );
-			sSQL.append( "ELSE 0 END) VLRAPAGITREC, " );
-			sSQL.append( "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, " );
-		}
-		else {
-*/
+
 		sSQL.append( "IT.VLRPARCITREC, " );
 			sSQL.append( "IT.VLRPAGOITREC, " );
 			sSQL.append( "IT.VLRAPAGITREC, " );
 			sSQL.append( "IT.DTPAGOITREC, " );
 
-		//}
 
 		sSQL.append( "R.DOCREC, IT.OBSITREC, " );
 		sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
@@ -444,16 +417,10 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		sSQL.append( "FROM FNRECEBER R,VDCLIENTE C " );
 		sSQL.append( sFrom );
 		sSQL.append( ",FNITRECEBER IT " );
-/*
-		if ( "S".equals( cbParPar.getVlrString() ) ) {
-			sSQL.append( " LEFT OUTER JOIN FNLANCA L ON " );
-			sSQL.append( "L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC " );
-		}
-*/
+
 		sSQL.append( "WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " + sCampoOrdem + " BETWEEN ? AND ? " );
-		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
+		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC AND IT.STATUSITREC NOT IN('CR') " );
 		sSQL.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
 		sSQL.append( "AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
 		sSQL.append( sWhere.toString() );
@@ -463,13 +430,6 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 			iParans = 1;
 			ps = con.prepareStatement( sSQL.toString() );
 
-	/*		if ( "S".equals( cbParPar.getVlrString() ) && "P".equals( rgOrdem.getVlrString() ) ) {
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			}
-*/
 			ps.setInt( iParans++, Aplicativo.iCodEmp );
 			ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );

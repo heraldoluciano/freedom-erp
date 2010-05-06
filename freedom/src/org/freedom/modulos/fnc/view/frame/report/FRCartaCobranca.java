@@ -121,7 +121,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 			sql.append( "where " );
 			sql.append( "ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec " );
 			sql.append( "and cl.codemp=rc.codempcl and cl.codfilial=rc.codfilialcl and cl.codcli=rc.codcli " );
-			sql.append( "and ir.statusitrec not in('RP') " );
+			sql.append( "and ir.statusitrec not in('RP','CR') " );
 			sql.append( "and ir.dtvencitrec <= cast('today' as date) " );
 			sql.append( "and rc.codemp=? and rc.codfilial=? ");
 			
