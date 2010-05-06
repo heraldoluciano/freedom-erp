@@ -122,7 +122,49 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 
 	}
 	
-	private void carregaSeries() {
+	private void carregaSeriesCompra() {
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select cs.seqitserie, se.numserie, se.dtfabricserie, se.dtvalidserie " );
+			sql.append( "from cpitcompraserie cs left outer join eqserie se on ");
+			sql.append( "se.codemp=cs.codemppd and se.codfilial=cs.codfilialpd and se.codprod=cs.codprod and se.numserie=cs.numserie " );
+			sql.append( "where cs.codemp=? and cs.codfilial=? and cs.codcompra=? and cs.coditcompra=? " );
+			sql.append( "order by cs.codcompra, cs.coditcompra, cs.seqitserie " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
+			ps.setInt( 3, getCodcompra() );
+			ps.setInt( 4, getCoditcompra() );
+
+			ResultSet rs = ps.executeQuery();
+			
+			tabItens.limpa();
+			
+			int row = 0;
+			while ( rs.next() ) {
+				
+				tabItens.adicLinha();
+				tabItens.setValor( rs.getInt( ITENS.SEQITSERIE.toString() ), row, ITENS.SEQITSERIE.ordinal() );
+				tabItens.setValor( rs.getString( ITENS.NUMSERIE.toString() ), row, ITENS.NUMSERIE.ordinal() );
+				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTFABRICSERIE.toString() )), row, ITENS.DTFABRICSERIE.ordinal() );
+				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTVALIDSERIE.toString() )), row, ITENS.DTVALIDSERIE.ordinal() );
+					
+				row++;
+			}
+			
+			con.commit();
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar nota de remessa.\n" + e.getMessage(), true, con, e );
+		}
+	}
+	
+	private void carregaSeriesRecMerc() {
 		
 		try {
 			
@@ -357,7 +399,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
     	super.setConexao( cn );
     	
     	setTitulo( "Números de série para o produto " + getDescprod() + " desta compra." );
-    	carregaSeries();
+    	carregaSeriesCompra();
     	
     }
     
