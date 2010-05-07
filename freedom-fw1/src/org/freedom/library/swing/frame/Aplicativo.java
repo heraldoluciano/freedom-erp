@@ -421,7 +421,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		JButtonPad btOpcao = null;
 		try {
 			
-			btOpcao = new JButtonPad( iCodSis, iCodModu, iCodMenu, tela, null );
+			btOpcao = new JButtonPad( iCodSis, iCodModu, iCodMenu, tela, titulo, false );
 			
 			btOpcao.setIcon( Icone.novo( sImagem ) );
 			
@@ -435,7 +435,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			vBotoes.add( btOpcao );
 			adicTelaBotao( btOpcao );
 			return btOpcao;
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 			return null;
 		}

@@ -108,6 +108,19 @@ public class JButtonPad extends JButton {
 	 */
 
 	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo) {
+
+		this(iCodSistema, iCodModulo, iCodItem, tela, titulo, true);
+
+	}
+	
+	/**
+	 * Construtor da classe JButtonPad(). <BR>
+	 * Construtor que ja ajusta os paramatros basicos do JButtonPad.
+	 * @param tela Tela que receberá o botão.
+	 * @param titulo Título do botão.
+	 *  
+	 */
+	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo, boolean blabelbotao) {
 		
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
@@ -116,7 +129,7 @@ public class JButtonPad extends JButton {
 		this.tela = tela;
 		this.titulo = titulo;
 		
-		if(titulo!=null && !"".equals(titulo) && getIcon()==null) {
+		if(titulo!=null && !"".equals(titulo) && getIcon()==null && blabelbotao) {
 			this.setText(titulo);
 		}
 		
@@ -125,6 +138,7 @@ public class JButtonPad extends JButton {
 
 
 	}
+
 
 	/**
 	 * Ajusta o código do sistema. <BR>
