@@ -152,7 +152,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JPanelPad pinCab = new JPanelPad();
 
-	private JPanelPad pinDet = new JPanelPad();// JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pinDet = new JPanelPad();
 
 	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
