@@ -59,6 +59,20 @@ public final class StringFunctions {
 		return clearString(str,"");
 	}
 	
+	public static String clearStringOld(String str) {
+		
+		String sResult = "";
+		String sCaracs = "=<>- .,;/\\?";
+		
+		if (str != null) {
+			for (int i = 0; i < str.length(); i++) {
+				if (sCaracs.indexOf(str.substring(i, i + 1)) == -1)
+					sResult = sResult + str.substring(i, i + 1);
+			}
+		}
+		return sResult;
+	}
+	
 	public static String clearString(String str, String strnew) {
 		
 		StringBuilder validstring = new StringBuilder();
@@ -66,6 +80,7 @@ public final class StringFunctions {
 		validstring.append( str.replaceAll( "\\W", strnew ) ); 
 
 		return validstring.toString().trim();
+		
 	}
 	
 	public static String replicate(String text, int times) {
