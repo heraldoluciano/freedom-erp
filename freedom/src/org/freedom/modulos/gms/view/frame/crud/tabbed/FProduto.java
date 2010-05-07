@@ -650,16 +650,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		vValsTipo.addElement( "P" );
 		vValsTipo.addElement( "S" );
+		vValsTipo.addElement( "E" );
 		vValsTipo.addElement( "F" );
 		vValsTipo.addElement( "M" );
 		vValsTipo.addElement( "O" );
 		vValsTipo.addElement( "C" );
+		
 		vLabsTipo.addElement( "Comércio" );
 		vLabsTipo.addElement( "Serviço" );
+		vLabsTipo.addElement( "Equipamento" );
 		vLabsTipo.addElement( "Fabricação" );
 		vLabsTipo.addElement( "Mat.prima" );
-		vLabsTipo.addElement( "Patrimonio" );
+		vLabsTipo.addElement( "Patrimônio" );
 		vLabsTipo.addElement( "Consumo" );
+		
 		rgTipo = new JRadioGroup<String, String>( 6, 1, vLabsTipo, vValsTipo );
 		rgTipo.setVlrString( "P" );
 
@@ -785,7 +789,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 		adicCampo( txtDescProd, 153, 20, 384, 20, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true );
 		
-		adicDB( rgTipo, 540, 20, 110, 140, "TipoProd", "Fluxo:", true );
+		adicDB( rgTipo, 540, 20, 110, 140, "TipoProd", "Tipo:", true );
 		
 		adicCampo( txtDescAuxProd, 7, 60, 530, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
 		
