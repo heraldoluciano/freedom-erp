@@ -45,25 +45,42 @@
 	<parameter name="CIDFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENDEMP" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
-cl.codcli, cl.razcli,
-rc.datarec emissao, ir.dtvencitrec vencimento, ir.dtpagoitrec recebimento,
-rc.docrec doc, ir.vlrparcitrec, ir.vlrpagoitrec recebido, ir.vlrapagitrec aberto
-from fnitreceber ir, fnreceber rc, vdcliente cl
+(CAST('TODAY' AS DATE) - ir.dtvencitrec) diaAtraso,
+ir.dtvencitrec vencimento, cl.codcli, cl.razcli, t.TIPOTBJ,
+rc.datarec emissao, ir.dtpagoitrec recebimento,
+rc.docrec doc, ir.vlrparcitrec, ir.vlrpagoitrec recebido,
+ir.vlrapagitrec aberto,
+    case t.tipotbj
+        when 'D' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100)
+        when 'M' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100*30)
+        when 'B' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100*60)
+        when 'T' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100*90)
+        when 'S' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100*182)
+        when 'A' then (ir.vlrparcitrec *((CAST('TODAY' AS DATE) - ir.dtvencitrec) * it.percittbj)/ 100*365)
+    end
+from fnitreceber ir, fnreceber rc, vdcliente cl, fntbjuros t, FNITTBJUROS it , sgprefere1 sg
 where
 ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec
 and cl.codemp=rc.codempcl and cl.codfilial=rc.codfilialcl and cl.codcli=rc.codcli
-and ir.statusitrec not in('RP') and rc.codempcl=66 and rc.codfilialcl=1 and rc.codcli=2
+and ir.statusitrec not in('RP') and rc.codempcl=71 and rc.codfilialcl=1 and rc.codcli=1
+and t.codemp = it.codemp and t.codfilial = it.codfilial and t.codtbj = it.codtbj
+and t.codemp = ir.codemp and t.codfilial = ir.codfilial
+and it.codemp = ir.codemp and it.codfilial = ir.codfilial
+and t.codemp = sg.codemptj and t.codfilial = sg.codfilialtj and t.codtbj = sg.codtbj
 order by 1, 3 desc]]></queryString>
 
+	<field name="DIAATRASO" class="java.lang.Integer"/>
+	<field name="VENCIMENTO" class="java.sql.Date"/>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="TIPOTBJ" class="java.lang.String"/>
 	<field name="EMISSAO" class="java.sql.Date"/>
-	<field name="VENCIMENTO" class="java.sql.Date"/>
 	<field name="RECEBIMENTO" class="java.sql.Date"/>
 	<field name="DOC" class="java.lang.Integer"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
 	<field name="RECEBIDO" class="java.math.BigDecimal"/>
 	<field name="ABERTO" class="java.math.BigDecimal"/>
+	<field name="CASE" class="java.math.BigDecimal"/>
 
 	<variable name="TOT_PARC_CLI" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPARCITREC}]]></variableExpression>
@@ -73,6 +90,9 @@ order by 1, 3 desc]]></queryString>
 	</variable>
 	<variable name="TOT_ABERTO_CLI" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
 		<variableExpression><![CDATA[$F{ABERTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CASE_1" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{CASE}]]></variableExpression>
 	</variable>
 
 		<group  name="CLIENTE" isStartNewPage="true" >
@@ -94,9 +114,9 @@ order by 1, 3 desc]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="76"
+						x="66"
 						y="65"
-						width="60"
+						width="62"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -107,9 +127,9 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="236"
+						x="225"
 						y="65"
-						width="40"
+						width="38"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -120,9 +140,9 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="307"
+						x="265"
 						y="65"
-						width="75"
+						width="64"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -160,7 +180,7 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="143"
+						x="127"
 						y="62"
 						width="0"
 						height="17"
@@ -223,9 +243,9 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="148"
+						x="131"
 						y="65"
-						width="67"
+						width="54"
 						height="11"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -236,7 +256,7 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="331"
 						y="62"
 						width="0"
 						height="17"
@@ -245,7 +265,7 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="223"
 						y="62"
 						width="0"
 						height="17"
@@ -267,7 +287,7 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="68"
+						x="61"
 						y="62"
 						width="0"
 						height="17"
@@ -302,14 +322,58 @@ order by 1, 3 desc]]></queryString>
 					</textElement>
 				<text><![CDATA[Vimos pela presente informar a V.sa. que encontra-se em aberto, junto à nossa empresa, a(s) duplicata(s) relacionadas abaixo:]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="187"
+						y="62"
+						width="0"
+						height="17"
+						key="line-58"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="191"
+						y="65"
+						width="29"
+						height="11"
+						key="staticText-29"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[D. Atra.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="332"
+						y="63"
+						width="49"
+						height="13"
+						key="staticText-30"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Juros. Prev]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="267"
+						y="63"
+						width="0"
+						height="17"
+						key="line-60"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
 			<band height="300"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="222"
-						y="2"
+						x="190"
+						y="1"
 						width="75"
 						height="11"
 						key="staticText-18"/>
@@ -321,7 +385,7 @@ order by 1, 3 desc]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="267"
 						y="0"
 						width="0"
 						height="16"
@@ -357,7 +421,7 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="331"
 						y="0"
 						width="0"
 						height="16"
@@ -366,18 +430,18 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="221"
-						y="15"
-						width="318"
-						height="0"
+						x="188"
+						y="14"
+						width="351"
+						height="2"
 						key="line-55"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
-						y="1"
-						width="60"
+						x="271"
+						y="0"
+						width="54"
 						height="12"
 						key="textField-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -410,7 +474,8 @@ order by 1, 3 desc]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_ABERTO_CLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_ABERTO_CLI}.add($V{SUM_CASE_1})
+]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -549,6 +614,28 @@ order by 1, 3 desc]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="343"
+						y="0"
+						width="35"
+						height="12"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUM_CASE_1}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="187"
+						y="0"
+						width="0"
+						height="15"
+						key="line-62"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -650,7 +737,7 @@ order by 1, 3 desc]]></queryString>
 			<band height="17"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="143"
+						x="127"
 						y="0"
 						width="0"
 						height="17"
@@ -704,7 +791,7 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="331"
 						y="0"
 						width="0"
 						height="17"
@@ -713,9 +800,9 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="82"
+						x="68"
 						y="2"
-						width="49"
+						width="55"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -726,7 +813,7 @@ order by 1, 3 desc]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="235"
+						x="225"
 						y="2"
 						width="42"
 						height="12"
@@ -739,9 +826,9 @@ order by 1, 3 desc]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
-						y="2"
-						width="60"
+						x="272"
+						y="0"
+						width="53"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -774,13 +861,14 @@ order by 1, 3 desc]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ABERTO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ABERTO}.add($F{CASE})
+]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="155"
+						x="131"
 						y="2"
-						width="50"
+						width="51"
 						height="12"
 						key="textField-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -791,7 +879,7 @@ order by 1, 3 desc]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="223"
 						y="0"
 						width="0"
 						height="17"
@@ -800,7 +888,7 @@ order by 1, 3 desc]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="68"
+						x="61"
 						y="0"
 						width="0"
 						height="17"
@@ -820,6 +908,50 @@ order by 1, 3 desc]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{EMISSAO}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="187"
+						y="0"
+						width="0"
+						height="17"
+						key="line-59"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="190"
+						y="2"
+						width="27"
+						height="13"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{DIAATRASO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="341"
+						y="1"
+						width="40"
+						height="13"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CASE}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="267"
+						y="0"
+						width="0"
+						height="17"
+						key="line-61"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
