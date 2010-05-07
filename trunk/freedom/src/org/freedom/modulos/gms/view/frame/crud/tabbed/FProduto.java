@@ -845,7 +845,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 		adic( pnControles, 7, 245, 639, 55 );
 		
-		separador1.setBorder( BorderFactory.createEtchedBorder() );
+		separador1.setBorder( BorderFactory.createEtchedBorder() ); 
 		separador2.setBorder( BorderFactory.createEtchedBorder() );
 		
 		setPainel( pnControles );
