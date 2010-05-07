@@ -42,7 +42,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 
-public class FREstruturaPCP extends FRelatorio {
+public class FREstruturaItem extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -50,29 +50,15 @@ public class FREstruturaPCP extends FRelatorio {
 	
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JTextFieldPad txtCodProdDE = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	 
-	private JTextFieldFK txtDescProdDE = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodProdATE = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	 
-	private JTextFieldFK txtDescProdATE = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private JTextFieldFK txtRefProdDE = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
 	
-	private JTextFieldFK txtRefProdATE = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private ListaCampos lcProdDE = new ListaCampos( this );
 	
-	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
-
-	private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	
-	private ListaCampos lcProdDE = new ListaCampos( this, ""  );
-	
-	private ListaCampos lcProdATE = new ListaCampos( this, ""  );
-	
-	private ListaCampos lcGrup = new ListaCampos(this);
-	
-	public FREstruturaPCP(){
+	public FREstruturaItem(){
 				
 		super( false );
 		setTitulo( "Produção" );
@@ -83,14 +69,12 @@ public class FREstruturaPCP extends FRelatorio {
 	}
 	
 	private void montaTela(){
-		
-
-		
+			
 		adic( new JLabelPad("Cód.Prod.Ini."), 7, 25, 80, 20 );
-		adic( txtCodProdDE, 7, 50, 80, 20 );
+		adic( txtCodProd, 7, 50, 80, 20 );
 		
 		adic( new JLabelPad("Descrição do produto inicial"), 90, 25, 210, 20 );
-		adic( txtDescProdDE, 90, 50, 210, 20 );
+		adic( txtDescProd, 90, 50, 210, 20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -101,13 +85,13 @@ public class FREstruturaPCP extends FRelatorio {
 	
 	private void montaListaCampos() {
 
-		lcProdDE.add( new GuardaCampo( txtCodProdDE, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProdDE.add( new GuardaCampo( txtRefProdDE, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
-		lcProdDE.add( new GuardaCampo( txtDescProdDE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProdDE.setWhereAdic( "TIPOPROD='F'" );
-		txtCodProdDE.setTabelaExterna( lcProdDE );
-		txtCodProdDE.setNomeCampo( "CodProd" );
-		txtCodProdDE.setFK( true );
+		lcProdDE.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProdDE.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
+		lcProdDE.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdDE.setWhereAdic( "TIPOPROD IN ('F','M') " );
+		txtCodProd.setTabelaExterna( lcProdDE );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
 		lcProdDE.setReadOnly( true );
 		lcProdDE.montaSql( false, "PRODUTO", "EQ" );
 
@@ -124,7 +108,7 @@ public class FREstruturaPCP extends FRelatorio {
 		
 		try {
 			
-			sql.append("select es.descest,es.codprod, ie.qtditest, fs.descfase ");
+			sql.append("select es.seqest, es.descest,es.codprod, ie.qtditest, fs.descfase ");
 			sql.append("from ppestrutura es, ppitestrutura ie, ppfase fs ");
 			sql.append("where es.codemp=ie.codemp and es.codfilial=ie.codfilial and es.codprod=ie.codprod and es.seqest=ie.seqest ");
 			sql.append("and fs.codemp=ie.codempfs and fs.codfilial=ie.codfilialfs and fs.codfase=ie.codfase ");
@@ -136,11 +120,12 @@ public class FREstruturaPCP extends FRelatorio {
 			
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( iparam++, txtCodProdDE.getVlrInteger() );
+			ps.setInt( iparam++, txtCodProd.getVlrInteger() );
 			
 			rs = ps.executeQuery();
 			
-			sCab.append( "Perido: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			sCab.append( "Periodo: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() + " - " + 
+						 "Produto: " + txtCodProd.getVlrString() + "-" + txtDescProd.getVlrString() 	);
 			
 			imprimiGrafico( rs, b, sCab.toString() );
 			
