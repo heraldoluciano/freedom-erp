@@ -781,7 +781,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório coleta!" + err.getMessage(), true, con, err );
 			}
-		}
+		} 
 	}
 
 	private void imprimir( boolean bVisualizar ) {
