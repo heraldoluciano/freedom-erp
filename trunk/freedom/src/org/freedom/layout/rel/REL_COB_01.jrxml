@@ -42,19 +42,36 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, 
+	<queryString><![CDATA[SELECT (CAST('TODAY' AS DATE) - it.dtvencitrec) as diasatraso,
+ r.docrec, IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI,
 C.NOMECLI, C.DDDCLI, C.FONECLI, IT.VLRPARCITREC, IT.VLRPAGOITREC, 
 IT.VLRAPAGITREC, IT.DTPAGOITREC, 
 R.DOCREC, IT.OBSITREC, (SELECT V.STATUSVENDA FROM VDVENDA V 
 WHERE V.FLAG IN ('S','N') AND V.CODEMP=R.CODEMPVA AND 
 V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND 
-V.TIPOVENDA=R.TIPOVENDA) FROM FNRECEBER R,VDCLIENTE C  ,FNITRECEBER IT 
-WHERE R.FLAG IN ('S','N')AND R.CODEMP=4 AND R.CODFILIAL=1 AND 
+V.TIPOVENDA=R.TIPOVENDA),
+case tj.tipotbj
+    when 'D' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100)
+    when 'M' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*30)
+    when 'B' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*60)
+    when 'T' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*90)
+    when 'S' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*182)
+    when 'A' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*365)
+end
+  FROM FNRECEBER R,VDCLIENTE C  ,FNITRECEBER IT,
+fntbjuros TJ, fnittbjuros TJ2, sgprefere1 PF
+WHERE R.FLAG IN ('S','N')AND R.CODEMP=71 AND R.CODFILIAL=1 AND 
 IT.DTVENCITREC BETWEEN '01.01.2010' AND '31.01.2010' AND 
 IT.STATUSITREC IN ('R1') AND R.CODREC = IT.CODREC AND IT.CODEMP=R.CODEMP AND 
 IT.CODFILIAL=R.CODFILIAL AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND 
-C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
+C.CODCLI= R.CODCLI AND R.codemp = tj.codemp AND r.codfilial = tj.codfilial  AND
+tj.codemp = tj2.codemp AND tj.codfilial = tj2.codfilial AND tj.codtbj = tj2.codtbj AND
+tj2.codemp = pf.codemptj AND tj2.codfilial = pf.codfilialtj AND tj2.codtbj = pf.codtbj
+and it.statusitrec not in('RP','CR')
+ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 
+	<field name="DIASATRASO" class="java.lang.Integer"/>
+	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="DTITREC" class="java.sql.Date"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Integer"/>
@@ -68,8 +85,8 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 	<field name="VLRPAGOITREC" class="java.math.BigDecimal"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="DTPAGOITREC" class="java.sql.Date"/>
-	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="OBSITREC" class="java.lang.String"/>
+	<field name="CASE" class="java.math.BigDecimal"/>
 
 	<variable name="VLR_TOT_PARC" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPARCITREC}]]></variableExpression>
@@ -97,6 +114,12 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 	</variable>
 	<variable name="TOT_ABERTO_CLI" class="java.math.BigDecimal" resetType="Group" resetGroup="CLIENTE" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRAPAGITREC}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_JUROS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{CASE}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_JUROS_DIA" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{CASE}]]></variableExpression>
 	</variable>
 
 		<group  name="CLIENTE" isStartNewPage="true" >
@@ -213,9 +236,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 			<band height="19"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="222"
+						x="189"
 						y="2"
-						width="75"
+						width="66"
 						height="11"
 						key="staticText-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -226,7 +249,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="184"
 						y="0"
 						width="0"
 						height="16"
@@ -244,7 +267,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="467"
+						x="439"
 						y="0"
 						width="0"
 						height="16"
@@ -253,7 +276,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="385"
+						x="374"
 						y="0"
 						width="0"
 						height="16"
@@ -262,28 +285,19 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="263"
 						y="0"
 						width="0"
 						height="16"
 						key="line-54"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="221"
-						y="15"
-						width="318"
-						height="0"
-						key="line-55"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
-						y="1"
-						width="60"
-						height="12"
+						x="265"
+						y="0"
+						width="51"
+						height="15"
 						key="textField-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -293,10 +307,10 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="397"
-						y="1"
-						width="60"
-						height="12"
+						x="378"
+						y="0"
+						width="53"
+						height="15"
 						key="textField-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -306,17 +320,48 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="477"
-						y="1"
-						width="57"
-						height="12"
+						x="455"
+						y="0"
+						width="79"
+						height="15"
 						key="textField-22"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_ABERTO_CLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_PARC_CLI}.add($V{TOTAL_JUROS})]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="319"
+						y="0"
+						width="0"
+						height="16"
+						key="line-62"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="323"
+						y="0"
+						width="50"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTAL_JUROS}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="184"
+						y="16"
+						width="356"
+						height="0"
+						key="line-64"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -326,7 +371,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 			<band height="21"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="80"
+						x="63"
 						y="7"
 						width="49"
 						height="11"
@@ -339,8 +384,8 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="236"
-						y="7"
+						x="221"
+						y="6"
 						width="40"
 						height="11"
 						key="staticText-3"/>
@@ -352,9 +397,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="307"
-						y="7"
-						width="75"
+						x="263"
+						y="6"
+						width="57"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -365,7 +410,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="396"
+						x="376"
 						y="7"
 						width="60"
 						height="11"
@@ -378,7 +423,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="476"
+						x="465"
 						y="7"
 						width="57"
 						height="11"
@@ -392,7 +437,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="143"
+						x="116"
 						y="4"
 						width="0"
 						height="17"
@@ -428,7 +473,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="385"
+						x="374"
 						y="4"
 						width="0"
 						height="17"
@@ -437,7 +482,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="467"
+						x="439"
 						y="4"
 						width="0"
 						height="17"
@@ -455,7 +500,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="153"
+						x="121"
 						y="7"
 						width="55"
 						height="11"
@@ -468,7 +513,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="263"
 						y="4"
 						width="0"
 						height="17"
@@ -477,7 +522,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="184"
 						y="4"
 						width="0"
 						height="17"
@@ -486,7 +531,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="10"
+						x="3"
 						y="7"
 						width="48"
 						height="11"
@@ -499,11 +544,55 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="68"
+						x="57"
 						y="4"
 						width="0"
 						height="17"
 						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="220"
+						y="4"
+						width="0"
+						height="17"
+						key="line-58"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="186"
+						y="6"
+						width="33"
+						height="13"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Bottom">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[D.atraso]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="322"
+						y="7"
+						width="50"
+						height="11"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Juros. Prev]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="319"
+						y="4"
+						width="0"
+						height="17"
+						key="line-61"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -535,9 +624,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 			<band height="15"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="224"
+						x="183"
 						y="2"
-						width="72"
+						width="69"
 						height="11"
 						key="staticText-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -548,7 +637,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="184"
 						y="0"
 						width="0"
 						height="15"
@@ -584,7 +673,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="319"
 						y="0"
 						width="0"
 						height="15"
@@ -593,7 +682,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="385"
+						x="374"
 						y="0"
 						width="0"
 						height="15"
@@ -602,7 +691,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="467"
+						x="439"
 						y="0"
 						width="0"
 						height="15"
@@ -611,9 +700,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
-						y="1"
-						width="60"
+						x="263"
+						y="0"
+						width="52"
 						height="12"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -624,9 +713,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="397"
+						x="379"
 						y="1"
-						width="60"
+						width="52"
 						height="12"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -637,16 +726,38 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="477"
+						x="456"
 						y="1"
-						width="57"
+						width="78"
 						height="12"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLR_TOT_ABERTO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[($V{VLR_TOT_PARC}).add($V{TOTAL_JUROS_DIA})]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="263"
+						y="0"
+						width="0"
+						height="15"
+						key="line-63"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="324"
+						y="0"
+						width="46"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTAL_JUROS_DIA}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -766,7 +877,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 			<band height="17"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="143"
+						x="116"
 						y="0"
 						width="0"
 						height="17"
@@ -793,7 +904,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="385"
+						x="374"
 						y="0"
 						width="0"
 						height="17"
@@ -802,7 +913,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="467"
+						x="439"
 						y="0"
 						width="0"
 						height="17"
@@ -820,7 +931,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="300"
+						x="263"
 						y="0"
 						width="0"
 						height="17"
@@ -829,7 +940,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="82"
+						x="63"
 						y="2"
 						width="49"
 						height="12"
@@ -842,8 +953,8 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="235"
-						y="2"
+						x="221"
+						y="1"
 						width="42"
 						height="12"
 						key="textField-2"/>
@@ -855,9 +966,9 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
-						y="2"
-						width="60"
+						x="266"
+						y="1"
+						width="49"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -868,7 +979,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="397"
+						x="371"
 						y="1"
 						width="60"
 						height="12"
@@ -881,22 +992,22 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="477"
-						y="2"
-						width="57"
+						x="455"
+						y="1"
+						width="80"
 						height="12"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITREC}.add($F{CASE})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="155"
+						x="121"
 						y="2"
-						width="50"
+						width="59"
 						height="12"
 						key="textField-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -907,7 +1018,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="184"
 						y="0"
 						width="0"
 						height="17"
@@ -916,7 +1027,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="68"
+						x="57"
 						y="0"
 						width="0"
 						height="17"
@@ -925,7 +1036,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="10"
+						x="3"
 						y="1"
 						width="49"
 						height="12"
@@ -936,6 +1047,50 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTITREC}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="220"
+						y="0"
+						width="0"
+						height="17"
+						key="line-59"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="187"
+						y="0"
+						width="30"
+						height="13"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{DIASATRASO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="324"
+						y="0"
+						width="46"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CASE}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="319"
+						y="0"
+						width="0"
+						height="17"
+						key="line-60"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
@@ -979,7 +1134,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="17"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="236"
@@ -1093,7 +1248,7 @@ C.CODCLI=R.CODCLI  ORDER BY IT.DTVENCITREC ,C.RAZCLI]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GER_ABERTO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GER_ABERTO}.add$V{TOTAL_JUROS}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
