@@ -1016,8 +1016,8 @@ public class ListaCampos extends Container implements PostListener,
 					gcComp = (GuardaCampo) getComponent(i);
 					if (gcComp.ehFK()) {
 						ListaCampos lcExt = gcComp.getCampo().getTabelaExterna();
-						if (!lcExt.getWhereAdic().equals("")) {
-							sTmp = lcExt.inDinWhereAdic(sTmp, lcExt.vTxtValor);
+						if ( (lcExt!=null) && (! "".equals(lcExt.getWhereAdic())) ) {						
+							sTmp = lcExt.inDinWhereAdic(sTmp, lcExt.vTxtValor); 
 						}
 					}
 				}
@@ -1127,6 +1127,7 @@ public class ListaCampos extends Container implements PostListener,
 				bRetorno = carregaDados();
 			}
 			catch (Exception e) {
+				e.printStackTrace();
 				throw new ExceptionCarregaItem("Erro ao carregar dados");
 			}
 		}
@@ -2921,6 +2922,7 @@ public class ListaCampos extends Container implements PostListener,
 				carregaItem(tab.getLinhaSel());
 			}
 			catch (Exception e) {
+				e.printStackTrace();
 				new ExceptionCarregaDados("Erro ao carregar dados do grid");
 			}
 		}
