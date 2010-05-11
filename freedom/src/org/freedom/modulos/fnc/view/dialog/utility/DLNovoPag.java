@@ -136,11 +136,13 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	private Map<String, Integer> prefere = null;
 	
 	private Historico historico = null;
-
+	
+	private Component owner = null; 
 	
 	public DLNovoPag( Component cOrig ) {
 
 		super( cOrig );
+		this.owner = cOrig; 
 		setTitulo( "Novo" );
 		setAtribos( 600, 320 );
 
@@ -444,28 +446,36 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 			rs = null;
 		}
 		return retorno;
-	}
+	} 
 
 	
 	private class HandlerMouseListenerPagamento extends MouseAdapter {
 		
 		public void mouseClicked( MouseEvent mevt ) {
 			
-			if ( mevt.getClickCount() == 2 && tabPag.getLinhaSel() >= 0 ) {							
-				lcItPagar.edit();							
-				DLFechaPag dl = new DLFechaPag( DLNovoPag.this, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );							
-				dl.setVisible( true );							
-				if ( dl.OK ) {								
+			if ( mevt.getClickCount() == 2 && tabPag.getLinhaSel() >= 0 ) {	
+				
+				lcItPagar.edit();
+				
+//				DLFechaPag dl = new DLFechaPag( DLNovoPag.this, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );							
+				DLFechaPag dl = new DLFechaPag( owner, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );
+				dl.setVisible( true );
+				
+				if ( dl.OK ) {
+					
 					txtVlrParcItPag.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
 					txtDtVencItPag.setVlrDate( (Date) dl.getValores()[ 1 ] );
 					lcItPagar.post();								
+					
 					// Atualiza lcPagar
+					
 					if ( lcPagar.getStatus() == ListaCampos.LCS_EDIT ) {									
 						lcPagar.post(); // Caso o lcPagar estaja como edit executa o post que atualiza
 					}
 					else {								
 						lcPagar.carregaDados(); // Caso não, atualiza
 					}
+					dl.dispose(); 
 				}
 				else {								
 					dl.dispose();
