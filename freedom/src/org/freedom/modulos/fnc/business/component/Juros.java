@@ -11,17 +11,81 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
-
 public class Juros {
 
+	private static final char JURO_DIARIO = 'D';
+	
+	private static final char JURO_MENSAL = 'M';
+	
+	private static final char JURO_BIMESTRAL = 'B';
+	
+	private static final char JURO_TRIMESTRAL = 'T';
+		
+	private static final char JURO_SEMESTRAL = 'S';
+	
+	private static final char JURO_ANUAL = 'A';
+		
+	private Date dtvenc = null;
+	
+	private BigDecimal vlrjuros = new BigDecimal(0); // Valor dos juros
+	
+	private BigDecimal vlrorig = null; // Valor original
+
+	private BigDecimal vlrcomjuros = null; // Valor original
+	
+	private BigDecimal percjuros = null; // Percentual de juros da tabela
+	
+	private String tipotabjuros = null; // Tipo da Tabela de Juros;
+
+	public Juros() {
+		getTabJuros();
+	}
+	
+	public Juros(Date dtvenc, BigDecimal vlrorig) {
+		
+		if(getTipotabjuros()==null) {
+			getTabJuros();
+		}
+		
+		setVlrorig( vlrorig );
+		setDtvenc( dtvenc );
+
+		carregaValores( dtvenc, vlrorig );
+		
+	}
+	
+	public void carregaValores(Date dtvenc, BigDecimal vlrorig) {
+
+		setVlrorig( vlrorig );
+		setDtvenc( dtvenc );
+		
+		if(getPercjuros()!=null && getPercjuros().floatValue()>0 && getVlrorig()!=null && getVlrorig().floatValue()>0) {
+			aplicaJuros();
+		}
+		else {
+			System.out.println("Tabela de juros, ou valor original inválidos.");
+		}
+	}
+	
+	
+	public Date getDtvenc() {
+	
+		return dtvenc;
+	}
 
 	
-	public static BigDecimal aplicaJuros(Date dtvenc, BigDecimal vlrparc) {
+	public void setDtvenc( Date dtvenc ) {
+	
+		this.dtvenc = dtvenc;
+	}
+
+	private BigDecimal getTabJuros() {
+		
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		GregorianCalendar cal = null;
-		GregorianCalendar calVenc = null;
+
 		StringBuilder sql = new StringBuilder();
 		BigDecimal vlrjuros = new BigDecimal(0);
 
@@ -34,64 +98,78 @@ public class Juros {
 			sql.append( "and it.codemp=t.codemp and it.codfilial=t.codfilial and it.codtbj=t.codtbj ");
 			sql.append( "and it.anoittbj <= ? and it.mesittbj <= ? ");
 			sql.append( "and p.codemp=? and p.codfilial=? ");
-			sql.append( "order by it.anoittbj desc, itmesittbj desc ");
-
+			sql.append( "order by it.anoittbj desc, it.mesittbj desc ");
 			
 			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
 			cal = new GregorianCalendar();
-			calVenc = new GregorianCalendar();
-			calVenc.setTime( dtvenc );
 			
 			ps.setInt( 1, cal.get( Calendar.YEAR ) );
 			ps.setInt( 2, cal.get( Calendar.MONTH ) + 1 );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, Aplicativo.iCodFilial );
-			rs = ps.executeQuery();
+			
+			rs = ps.executeQuery();			
 
 			if ( rs.next() ) {
-				switch ( rs.getString( "TipoTBJ" ).toCharArray()[ 0 ] ) {
-					case 'D' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) ;
-						break;
-					case 'M' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 * 30 ), 2, BigDecimal.ROUND_HALF_UP ) ;
-						break;
-					case 'B' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 * 60 ), 2, BigDecimal.ROUND_HALF_UP ) ;
-						break;
-					case 'T' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 * 90 ), 2, BigDecimal.ROUND_HALF_UP ) ;
-						break;
-					case 'S' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 * 182 ), 2, BigDecimal.ROUND_HALF_UP );
-						break;
-					case 'A' :
-						vlrjuros = vlrparc.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( dtvenc, new Date() ) ) * rs.getDouble( "PERCITTBJ" ) ) )
-								.divide( new BigDecimal( 100 * 365 ), 2, BigDecimal.ROUND_HALF_UP ) ;
-						break;
-				}
+				setPercjuros( rs.getBigDecimal( "percittbj" ) );
+				setTipotabjuros( rs.getString( "tipotbj" ) ) ;
 			}
+			
 			rs.close();
 			ps.close();
-			Aplicativo.getInstace().con.commit();
-		} 
+			//Aplicativo.getInstace().con.commit();
+		} 		
 		catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar juros do sistema!\n" + err.getMessage(), true, null, err );
+			Funcoes.mensagemErro( null, "Erro ao buscar tabela de juros do sistema!\n" + err.getMessage(), true, null, err );
 			err.printStackTrace();
 		} 
 		finally {
 			ps = null;
 			rs = null;
 			cal = null;
-			calVenc = null;
 			sql = null;
 		}
 		return vlrjuros;
+	}
+	
+	public void aplicaJuros() {
+		char tipotabjuros = getTipotabjuros().toCharArray()[0];
+		try {
+			if ( getPercjuros()!=null && getPercjuros().floatValue()>0) {
+				switch ( tipotabjuros ) {
+					case JURO_DIARIO :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP )) ;
+						break;
+					case JURO_MENSAL :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 * 30 ), 2, BigDecimal.ROUND_HALF_UP )) ;
+						break;
+					case JURO_BIMESTRAL :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 * 60 ), 2, BigDecimal.ROUND_HALF_UP )) ;
+						break;
+					case JURO_TRIMESTRAL :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 * 90 ), 2, BigDecimal.ROUND_HALF_UP )) ;
+						break;
+					case JURO_SEMESTRAL :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 * 182 ), 2, BigDecimal.ROUND_HALF_UP ));
+						break;
+					case JURO_ANUAL :
+						setVlrjuros( vlrorig.multiply( new BigDecimal( ( Funcoes.getNumDiasAbs( getDtvenc(), new Date() ) ) * getPercjuros().doubleValue() ) )
+								.divide( new BigDecimal( 100 * 365 ), 2, BigDecimal.ROUND_HALF_UP )) ;
+						break;
+				}
+				setVlrcomjuros( getVlrorig().add( getVlrjuros() ) );	
+			}
+		} 
+		catch ( Exception err ) {
+			Funcoes.mensagemErro( null, "Erro ao verificar juros do sistema!\n" + err.getMessage(), true, null, err );
+			err.printStackTrace();
+		} 
+		
 	}
 
 	public static boolean getJurosPosCalc() {
@@ -110,7 +188,7 @@ public class Juros {
 			}
 			rs.close();
 			ps.close();
-			Aplicativo.getInstace().con.commit();
+			//Aplicativo.getInstace().con.commit();
 		} 
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar juros pos calculados.\n" + err.getMessage(), true, null, err );
@@ -122,5 +200,72 @@ public class Juros {
 		}
 		return bRet;
 	}
+
+	
+	public BigDecimal getVlrjuros() {
+	
+		return vlrjuros;
+	}
+
+	
+	public void setVlrjuros( BigDecimal vlrjuros ) {
+	
+		this.vlrjuros = vlrjuros;
+	}
+	
+	public BigDecimal getVlrjuros(Date dtvenc, BigDecimal vlrorig) {
+		carregaValores( dtvenc, vlrorig );
+		return getVlrjuros();
+	}
+
+	
+	public BigDecimal getVlrorig() {
+	
+		return vlrorig;
+	}
+
+	
+	public void setVlrorig( BigDecimal vlrorig ) {
+	
+		this.vlrorig = vlrorig;
+	}
+
+	
+	public BigDecimal getVlrcomjuros() {
+	
+		return vlrcomjuros;
+	}
+
+	
+	public void setVlrcomjuros( BigDecimal vlrcomjuros ) {
+	
+		this.vlrcomjuros = vlrcomjuros;
+	}
+
+	
+	public String getTipotabjuros() {
+	
+		return tipotabjuros;
+	}
+
+	
+	public void setTipotabjuros( String tipotabjuros ) {
+	
+		this.tipotabjuros = tipotabjuros;
+	}
+
+	
+	public BigDecimal getPercjuros() {
+	
+		return percjuros;
+	}
+
+	
+	public void setPercjuros( BigDecimal percjuros ) {
+	
+		this.percjuros = percjuros;
+	}
+	
+	
 	
 }
