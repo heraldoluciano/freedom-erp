@@ -148,7 +148,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 		super( cOrig );
 		setTitulo( bEdita ? "Editar" : "Visualizar" );
-		setAtribos( 365, 370 );
+		setAtribos( 365, 530 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -388,7 +388,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDescCartCob.setVlrString( (String) sVals[ EColEdit.DESCCARTCOB.ordinal() ] );
 		cbDescPont.setVlrString( (String) sVals[ EColEdit.DESCPONT.ordinal() ] );
 		// txtCodBordero.setVlrString( (String) sVals[ EColEdit.CODBOR.ordinal()] );//novo
-		txtCodRec.setVlrString( (String) sVals[ EColEdit.CODREC.ordinal() ] );// novo
+		txtCodRec.setVlrInteger( (Integer) sVals[ EColEdit.CODREC.ordinal() ] );// novo
 		txtnParcitrec.setVlrInteger( (Integer) sVals[ EColEdit.NPARCITREC.ordinal() ] );// novo
 
 		lcConta.carregaDados();
