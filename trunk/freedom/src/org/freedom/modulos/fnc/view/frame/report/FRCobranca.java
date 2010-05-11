@@ -37,6 +37,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.fnc.business.component.Juros;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -334,12 +335,9 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 		if ( rgOrdem.getVlrString().equals( "P" ) ) {
 			sTitRel1 = "PAGAMENTO";
-//			if ( "S".equals( cbParPar.getVlrString() ) ) {
-//				sCampoOrdem = "L.DATALANCA";
-//			}
-//			else {
-				sCampoOrdem = "IT.DTPAGOITREC";
-//			}
+
+			sCampoOrdem = "IT.DTPAGOITREC";
+			
 			sCampoTotal = "DTPAGOITREC";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
@@ -405,47 +403,27 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI, C.DDDCLI, C.FONECLI, " );
-					
-			sSQL.append( "IT.VLRPARCITREC, " );
+
+
+		sSQL.append( "IT.VLRPARCITREC, " );
 			sSQL.append( "IT.VLRPAGOITREC, " );
 			sSQL.append( "IT.VLRAPAGITREC, " );
 			sSQL.append( "IT.DTPAGOITREC, " );
 
-		sSQL.append("(CAST('TODAY' AS DATE) - it.dtvencitrec) diasatraso, ");	
-			
+
 		sSQL.append( "R.DOCREC, IT.OBSITREC, " );
 		sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
 		sSQL.append( "WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sSQL.append( " AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA), " );
-		
-		/*
-		 * 
-		 * Sql com case para calcular o tipo de juros.
-		 */
-		sSQL.append( "case tj.tipotbj ");
-		sSQL.append( "when 'D' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100) ");
-		sSQL.append( "when 'M' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*30) ");
-		sSQL.append( "when 'B' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*60) ");
-		sSQL.append( "when 'T' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*90) "); 
-		sSQL.append( "when 'S' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*182) ");
-		sSQL.append( "when 'A' then (it.vlrparcitrec *((CAST('TODAY' AS DATE) - it.dtvencitrec) * tj2.percittbj)/ 100*365) ");
-		sSQL.append( "end "); 
-		//
-		sSQL.append( "FROM FNRECEBER R,VDCLIENTE C, " );
-		sSQL.append( "fntbjuros TJ, fnittbjuros TJ2, sgprefere1 PF " );
+		sSQL.append( " AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " );
+		sSQL.append( "FROM FNRECEBER R,VDCLIENTE C " );
 		sSQL.append( sFrom );
 		sSQL.append( ",FNITRECEBER IT " );
 
 		sSQL.append( "WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " + sCampoOrdem + " BETWEEN ? AND ? " );
-		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
+		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC AND IT.STATUSITREC NOT IN('CR') " );
 		sSQL.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
 		sSQL.append( "AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
-		sSQL.append("AND R.codemp = tj.codemp AND r.codfilial = tj.codfilial ");
-		sSQL.append("AND tj.codemp = tj2.codemp AND tj.codfilial = tj2.codfilial AND tj.codtbj = tj2.codtbj ");
-		sSQL.append("AND tj2.codemp = pf.codemptj AND tj2.codfilial = pf.codfilialtj AND tj2.codtbj = pf.codtbj "); 
-		sSQL.append("AND it.statusitrec not in('RP','CR') ");
-		
 		sSQL.append( sWhere.toString() );
 		sSQL.append( " ORDER BY C.CODCLI, " + sCampoOrdem + " ," + sCampoOrdem2 );
 
@@ -537,6 +515,10 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
+		
+		Juros calcjuros = new Juros();
+		
+		hParam.put( "CALCJUROS", calcjuros );
 
 		dlGr = new FPrinterJob( "layout/rel/REL_COB_01.jasper", "Relatório de cobrança", sCab, rs, hParam, this );
 
