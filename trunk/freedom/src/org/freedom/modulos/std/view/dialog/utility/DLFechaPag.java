@@ -34,6 +34,8 @@ import org.freedom.library.swing.dialog.FFDialogo;
 
 public class DLFechaPag extends FFDialogo {
 
+	private Component owner = null; 
+	
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtParcItPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
@@ -43,6 +45,7 @@ public class DLFechaPag extends FFDialogo {
 	public DLFechaPag( Component cOrig, BigDecimal bigParcItPag, Date dDtVencItPag ) {
 
 		super( cOrig );
+
 		setTitulo( "Parcela" );
 		setAtribos( 250, 150 );
 
