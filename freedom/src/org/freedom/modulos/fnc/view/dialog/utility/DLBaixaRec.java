@@ -392,9 +392,10 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcPlan.carregaDados();
 		lcCC.carregaDados();
 
-		if ( ! ( bJurosPosCalc = Juros.getJurosPosCalc() ) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
+		if ( (! ( bJurosPosCalc = Juros.getJurosPosCalc() )) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
 			adic( new JLabelPad( "% Juros." ), 180, 200, 57, 20 );
-			txtVlrJuros.setVlrBigDecimal( Juros.aplicaJuros(txtDtVenc.getVlrDate(), txtVlrParc.getVlrBigDecimal()));
+			Juros calcjuros = new Juros(txtDtVenc.getVlrDate(), txtVlrParc.getVlrBigDecimal());
+			txtVlrJuros.setVlrBigDecimal( calcjuros.getVlrjuros() );
 		}
 		else {
 			adic( new JLabelPad( "% Dia." ), 180, 200, 57, 20 );
