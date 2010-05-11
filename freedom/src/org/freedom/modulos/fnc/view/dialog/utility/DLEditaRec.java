@@ -464,7 +464,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	}
 
 	/**
-	 * Método que verifica se o status está com estrela (STATUSBOR=RB) confirmando preenche alguns campos.
+	 * Método que preenche os novos campos de visualização tendo como entrada no primeiro parametro o CODREC e segundo o NPARCITREC.
 	 * 
 	 */
 	private void buscaBordero( String valor1, int valor2 ) {
@@ -474,7 +474,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		int numConta = 0;
 		String obsBor = "";
 		String statusBor = "";
-		int numContaBordero = 0;
+		String numContaBordero = "";
 
 		try {
 
@@ -497,11 +497,11 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 				numConta = rs.getInt( "NUMCONTA" );
 				obsBor = rs.getString( "OBSBOR" );
 				statusBor = rs.getString( "STATUSBOR" );
-				numContaBordero = rs.getInt( "NUMCONTABOR" );
+				numContaBordero = rs.getString( "NUMCONTABOR" );
 
 				txtCodBordero.setVlrInteger( codBor );
 				txtDatBordero.setVlrString( dataBor );
-				txtNumContaBor.setVlrInteger( numContaBordero );
+				txtNumContaBor.setVlrString( numContaBordero );
 				txtNumConta.setVlrInteger( numConta );
 
 			}
@@ -524,7 +524,6 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		}
 
 		if ( txtnParcitrec.getVlrInteger() != 0 ) {
-
 			buscaBordero( txtCodRec.getVlrString(), txtnParcitrec.getVlrInteger() );
 		}
 
