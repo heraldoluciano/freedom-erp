@@ -80,21 +80,34 @@ public class DLPlanAnal extends FFDialogo {
 	private Vector<String> vValsFinPlan = new Vector<String>();
 
 	private Vector<String> vLabsFinPlan = new Vector<String>();
+	
+	private Vector<String> vValsEsFinPlan = new Vector<String>();
+
+	private Vector<String> vLabsEsFinPlan = new Vector<String>();
+
+	private Vector<String> vValsClasFinPlan = new Vector<String>();
+
+	private Vector<String> vLabsClasFinPlan = new Vector<String>();
 
 	private JRadioGroup<String, String> rgTipoPlan = null;
 
 	private JRadioGroup<String, String> rgFinPlan = null;
+	
+	private JRadioGroup<String, String> rgEsFinPlan = null;
+	
+	private JRadioGroup<String, String> rgClasFinPlan = null;
 
 	private ListaCampos lcHist = new ListaCampos( this, "HP" );
 	
 
 	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, 
 			String sCod, String sDesc, String sTipo, String sFin,
-			String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade ) {
+			String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade, 
+			String sESFin, String sClasFin) {
 
 		super( cOrig );
 		setTitulo( "Planejamento financeiro (Conta Analítica)" );
-		setAtribos( 430, 430 );
+		setAtribos( 430, 550 );
 		
 		montaListaCampos();
 		montaRadioGroup();
@@ -112,19 +125,27 @@ public class DLPlanAnal extends FFDialogo {
 		txtCodContDeb.setVlrString( sCodContDeb );	
 		txtCodHistPad.setVlrInteger( iCodHist );	
 		rgFinPlan.setVlrString( sFinalidade );
-
 		rgTipoPlan.setVlrString( sTipo );
-		
 		if ( "".equals( sFin.trim() ) ) {
 			rgFinPlan.setVlrString( sFin );
 		}
-		
 		if ( sDesc != null ) {
 			setTitulo( "Edição de Conta Analítica" );
 			txtDescAnal.setVlrString( sDesc );
 			txtDescAnal.selectAll();
 		}
-		
+		if ( sESFin==null || "".equals(sESFin) ) {
+			if ("D".equals( sTipo )) {
+				sESFin="S";
+			} else {
+				sESFin="E";
+			}
+		} 
+		if ( sClasFin == null || "".equals( sESFin )) {
+			sClasFin = "O";
+		}
+		rgEsFinPlan.setVlrString( sESFin );
+		rgClasFinPlan.setVlrString( sClasFin );
 		txtDescAnal.requestFocus();
 	}
 	
@@ -183,6 +204,19 @@ public class DLPlanAnal extends FFDialogo {
 		vLabsFinPlan.addElement( "IR - Imposto de renda" );
 		vLabsFinPlan.addElement( "OO - Outros" );
 		rgFinPlan = new JRadioGroup<String, String>( 6, 2, vLabsFinPlan, vValsFinPlan );		
+		
+		vValsEsFinPlan.addElement( "E" );
+		vValsEsFinPlan.addElement( "S" );
+		vLabsEsFinPlan.addElement( "Entrada" );
+		vLabsEsFinPlan.addElement( "Saída" );
+		rgEsFinPlan = new JRadioGroup<String, String>( 1, 2, vLabsEsFinPlan, vValsEsFinPlan );
+
+		vValsClasFinPlan.addElement( "O" );
+		vValsClasFinPlan.addElement( "N" );
+		vLabsClasFinPlan.addElement( "Operacional" );
+		vLabsClasFinPlan.addElement( "Não Operacional" );
+		rgClasFinPlan = new JRadioGroup<String, String>( 1, 2, vLabsClasFinPlan, vValsClasFinPlan );
+		
 	}
 
 	private void montaTela() {
@@ -198,6 +232,10 @@ public class DLPlanAnal extends FFDialogo {
 		panelfields.adic( rgTipoPlan, 7, 90, 383, 60 );
 		panelfields.adic( new JLabelPad( "Finalidade" ), 7, 155, 270, 20 );
 		panelfields.adic( rgFinPlan, 7, 175, 383, 130 );
+		panelfields.adic( new JLabelPad( "Origem" ), 7, 310, 270, 20 );
+		panelfields.adic( rgEsFinPlan, 7, 330, 383, 30 );
+		panelfields.adic( new JLabelPad( "Classificação" ), 7, 360, 270, 20 );
+		panelfields.adic( rgClasFinPlan, 7, 380, 383, 30 );
 		
 		panelcontabil.adic( new JLabelPad( "Cód.cont.débito" ), 7, 0, 150, 20 );
 		panelcontabil.adic( txtCodContDeb, 7, 20, 150, 20 );
@@ -237,12 +275,14 @@ public class DLPlanAnal extends FFDialogo {
 
 	public Object[] getValores() {
 
-		Object[] ret = new Object[ 5 ];
+		Object[] ret = new Object[ 7 ];
 		ret[ 0 ] = txtDescAnal.getVlrString();
 		ret[ 1 ] = rgFinPlan.getVlrString();
 		ret[ 2 ] = txtCodContCred.getVlrString();
 		ret[ 3 ] = txtCodContDeb.getVlrString();
 		ret[ 4 ] = txtCodHistPad.getVlrInteger();
+		ret[ 5 ] = rgEsFinPlan.getVlrString();
+		ret[ 6 ] = rgClasFinPlan.getVlrString();
 		
 		return ret;
 	}
