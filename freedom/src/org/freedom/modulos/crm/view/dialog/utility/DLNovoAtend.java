@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.component.Atendimento;
 
 /**
  * 
@@ -297,13 +298,17 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		setConexao( conn );
 
 		if ( !update ) {
-			buscaAtendente();
+			
+			txtCodAtend.setVlrInteger( Atendimento.buscaAtendente() );			
+			lcAtend.carregaDados();
 			
 			if ( getAutoDataHora() ) {
+				
 				txtHoraini.setVlrTime( new Date() );
 				txtDataAtendimento.setVlrDate( new Date() );
 				txtDataAtendimentoFin.setVlrDate( new Date() );
 				iniciaContagem();
+				
 			}
 		}
 	}
@@ -694,35 +699,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 								 	
 	}
 	
-	private void buscaAtendente() {
-	
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = new StringBuilder();
-		try {
-	
-			sql.append( "SELECT CODATEND FROM ATATENDENTE " );
-			sql.append( "WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=? " );
-	
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
-	
-			rs = ps.executeQuery();
-	
-			if ( rs.next() ) {
-				txtCodAtend.setVlrInteger( rs.getInt( "CODATEND" ) );
-				lcAtend.carregaDados();
-			}
-			
-			con.commit();
-	
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
-
 	private void iniciaContagem() {
 	
 		if ( !contando ) {
