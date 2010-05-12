@@ -1,1 +1,0 @@
-javaw -classpath ".;jars\jcommon-0.8.7.jar;jars\jfreechart-0.9.12.jar;jars\freedomatd.jar;jars\firebirdsql-full.jar;jars\itext-1.02b.jar;" -DARQINI=c:\opt\freedom\freedom.ini projetos.freedomatd.FreedomATD
