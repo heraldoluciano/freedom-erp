@@ -376,6 +376,11 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDtEmis.setVlrDate( (Date) sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTPREV.ordinal() ] );
+		
+		if (txtDtPrev.getVlrDate() == null){
+			txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
+		}
+		
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
 		txtVlrDev.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDEVOLUCAO.ordinal() ] );
