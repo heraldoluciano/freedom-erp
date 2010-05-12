@@ -56,6 +56,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.view.dialog.utility.DLNovoAtend;
@@ -560,8 +561,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private void montaGridAtend() {
 
-		tabatd.setRowHeight( 20 );
-
 		tabatd.adicColuna( "Atd." );
 		tabatd.adicColuna( "Doc." );
 		tabatd.adicColuna( "Status" );
@@ -598,8 +597,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private void montaGridChamado() {
 		
-		tabatd.setRowHeight( 20 );
-
 		tabchm.adicColuna( "Data" );
 		tabchm.adicColuna( "Pri." );
 		tabchm.adicColuna( "Tipo" );
@@ -621,6 +618,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTCONCLUSAO.ordinal() );
+		
+		tabchm.setRowHeight( 20 );
 
 	}
 
@@ -645,7 +644,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tpnAbas.addTab( "Chamados", pnChm );
 
 	}
-
+	
 	private void adicionaFiltroCli() {
 
 		pinCabCli.add( pinCli, BorderLayout.CENTER );
@@ -832,7 +831,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			if ( dl.OK ) {
 				carregaAtendimentos();
 			}
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar campos!" );
 		}
@@ -991,7 +991,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 				sql.append( " and ch.codempae=? and ch.codfilialae=? and ch.codatend=? " );
 			}
 
-			sql.append( "order by ch.dtchamado desc, ch.prioridade desc " );
+			sql.append( "order by ch.dtprevisao, ch.prioridade, ch.dtchamado, ch.status, ch.dtconclusao " );
 
 			try {
 				int param = 1;
@@ -1213,6 +1213,10 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		montaComboTipoAtend();
 		montaComboTipoChamado();
 		
+		txtCodAtendenteAtendimento.setVlrInteger( Atendimento.buscaAtendente() );
+		txtCodAtendenteChamado.setVlrInteger( Atendimento.buscaAtendente() );
+		lcAtendenteAtendimento.carregaDados();
+		lcAtendenteChamado.carregaDados();		
 		
 	}
 
