@@ -181,6 +181,10 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	
+	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
+	
+	private JButtonPad btAtualizaAtendimentos = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
 	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
@@ -290,6 +294,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		pinFiltrosAtend.adic( new JLabelPad( "Item" ), 481, 40, 230, 20 );
 		pinFiltrosAtend.adic( cbitContr, 481, 60, 230, 20 );
+		
+		pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
 
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 		
@@ -313,20 +319,23 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinFiltrosChamado.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20 );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 153, 0, 244, 20 );
-		pinFiltrosChamado.adic( cbTpChamado, 153, 20, 244, 20 );
-
-		pinFiltrosChamado.adic( new JLabelPad( "Status" ), 400, 0, 120, 20 );
-		pinFiltrosChamado.adic( cbStatus, 400, 20, 120, 20 );
+		pinFiltrosChamado.adic( new JLabelPad( "Status" ), 459, 0, 110, 20 );
+		pinFiltrosChamado.adic( cbStatus, 459, 20, 110, 20 ); 
 		
-		pinFiltrosChamado.adic( new JLabelPad( "Prioridade" ), 523, 0, 120, 20 );
-		pinFiltrosChamado.adic( cbPrioridade, 523, 20, 160, 20 );
+		pinFiltrosChamado.adic( new JLabelPad( "Prioridade" ), 571, 0, 110, 20 );
+		pinFiltrosChamado.adic( cbPrioridade, 571, 20, 110, 20 );
 		
-		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 7, 40, 70, 20 );
-		pinFiltrosChamado.adic( txtCodAtendenteChamado, 7, 60, 70, 20 );
-		pinFiltrosChamado.adic( new JLabelPad( "Nome do Atendente designado" ), 80, 40, 230, 20 );
-		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 80, 60, 230, 20 );
+		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
+		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20 );
 
+		pinFiltrosChamado.adic( new JLabelPad( "Nome do Atendente designado" ), 226, 0, 230, 20 );
+		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 226, 20, 230, 20 );
+
+		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 7, 40, 215, 20 );
+		pinFiltrosChamado.adic( cbTpChamado, 7, 60, 215, 20 );		
+		
+		pinFiltrosChamado.adic( btAtualizaChamados, 715, 15, 30, 30 );
+		
 		
 		pnChm.add( pinFiltrosChamado, BorderLayout.NORTH );
 		
@@ -701,6 +710,16 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pnBotConv.add( btNovo );
 		pnBotConv.add( btExcluir );
 		pnBotConv.add( btImprimir );
+		
+		/*
+		
+		btAtualizaAtendimentos.setContentAreaFilled(false);
+		btAtualizaAtendimentos.setBorderPainted(false);
+		
+		btAtualizaChamados.setContentAreaFilled(false);
+		btAtualizaChamados.setBorderPainted(false);
+
+		*/
 
 	}
 
@@ -759,6 +778,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		btNovo.addActionListener( this );
 		btExcluir.addActionListener( this );
 		btImprimir.addActionListener( this );
+		btAtualizaChamados.addActionListener( this );
+		btAtualizaAtendimentos.addActionListener( this );
 
 		btSair.addActionListener( this );
 		lcCli.addCarregaListener( this );
@@ -768,6 +789,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		lcAtendenteChamado.addCarregaListener( this );
 		
 		txtDatafimAtend.addFocusListener( this );
+		txtDatafimCham.addFocusListener( this );
 
 		cbContr.addComboBoxListener( this );
 		cbitContr.addComboBoxListener( this );
@@ -1075,7 +1097,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			ps.execute();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao salvar o atendimento!\n" + err.getMessage(), true, con, err );
 		}
 		carregaAtendimentos();
@@ -1128,6 +1151,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			carregaAtendimentos();
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>" );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+			carregaChamados();
 		}
 	}
 
@@ -1154,6 +1178,12 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
+		}
+		else if ( evt.getSource() == btAtualizaChamados ) {
+			carregaChamados();
+		}
+		else if ( evt.getSource() == btAtualizaAtendimentos ) {
+			carregaAtendimentos();
 		}
 	}
 
@@ -1229,6 +1259,10 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		if ( fevt.getSource() == txtDatafimAtend ) {
 			carregaAtendimentos();
 		}
+		else if ( fevt.getSource() == txtDatafimCham ) {
+			carregaChamados();
+		}
+
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
