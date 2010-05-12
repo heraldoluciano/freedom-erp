@@ -887,7 +887,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="17"  isSplitAllowed="true" >
+			<band height="36"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
@@ -935,7 +935,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="21"  isSplitAllowed="true" >
+			<band height="33"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="29"
@@ -947,19 +947,6 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				</line>
 				<staticText>
 					<reportElement
-						x="78"
-						y="9"
-						width="95"
-						height="11"
-						key="staticText-49"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Responsável]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="338"
 						y="9"
 						width="95"
@@ -969,7 +956,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Responsável]]></text>
+				<text><![CDATA[Cliente]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -980,6 +967,33 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="28"
+						width="535"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="30"
+						y="9"
+						width="197"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEATEND}]]></textFieldExpression>
+				</textField>
 			</band>
 		</lastPageFooter>
 		<summary>
