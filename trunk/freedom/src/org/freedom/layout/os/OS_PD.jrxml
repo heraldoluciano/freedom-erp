@@ -5,9 +5,9 @@
 		 name="OS_PD"
 		 columnCount="1"
 		 printOrder="Vertical"
-		 orientation="Portrait"
+		 orientation="Landscape"
 		 pageWidth="595"
-		 pageHeight="842"
+		 pageHeight="421"
 		 columnWidth="535"
 		 columnSpacing="0"
 		 leftMargin="30"
@@ -171,7 +171,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="5"  isSplitAllowed="true" >
+			<band height="3"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -380,14 +380,14 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</background>
 		<title>
-			<band height="67"  isSplitAllowed="true" >
+			<band height="43"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="5"
 						y="0"
 						width="70"
-						height="63"
+						height="40"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
@@ -400,7 +400,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 						mode="Opaque"
 						x="80"
 						y="13"
-						width="397"
+						width="356"
 						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -446,9 +446,9 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="396"
-						y="33"
-						width="135"
+						x="437"
+						y="13"
+						width="96"
 						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -457,16 +457,16 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Emitido por: "+$P{USUARIO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="51"  isSplitAllowed="true" >
+			<band height="44"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="2"
-						y="33"
+						y="31"
 						width="56"
 						height="11"
 						forecolor="#010101"
@@ -481,7 +481,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="61"
-						y="33"
+						y="31"
 						width="216"
 						height="11"
 						forecolor="#000000"
@@ -496,7 +496,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="2"
-						y="19"
+						y="18"
 						width="37"
 						height="11"
 						forecolor="#010101"
@@ -511,7 +511,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="41"
-						y="19"
+						y="18"
 						width="200"
 						height="11"
 						forecolor="#000000"
@@ -583,7 +583,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="244"
-						y="19"
+						y="18"
 						width="37"
 						height="11"
 						forecolor="#010101"
@@ -598,7 +598,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="284"
-						y="19"
+						y="18"
 						width="246"
 						height="11"
 						forecolor="#000000"
@@ -665,13 +665,13 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="45"  isSplitAllowed="true" >
+			<band height="35"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
 						y="0"
 						width="535"
-						height="25"
+						height="20"
 						backcolor="#E0E0E0"
 						key="rectangle-28"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
@@ -679,7 +679,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="3"
-						y="8"
+						y="5"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -694,7 +694,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="53"
-						y="8"
+						y="5"
 						width="192"
 						height="11"
 						forecolor="#010101"
@@ -721,7 +721,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="250"
-						y="8"
+						y="5"
 						width="102"
 						height="11"
 						forecolor="#010101"
@@ -736,7 +736,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="429"
-						y="8"
+						y="5"
 						width="102"
 						height="11"
 						forecolor="#010101"
@@ -751,7 +751,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="389"
-						y="8"
+						y="5"
 						width="37"
 						height="11"
 						forecolor="#010101"
@@ -766,7 +766,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="359"
-						y="8"
+						y="5"
 						width="27"
 						height="11"
 						forecolor="#010101"
@@ -782,7 +782,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="25"
+						y="19"
 						width="535"
 						height="2"
 						forecolor="#010101"
@@ -793,7 +793,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="31"
+						y="22"
 						width="47"
 						height="11"
 						forecolor="#000000"
@@ -808,7 +808,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="53"
-						y="31"
+						y="22"
 						width="192"
 						height="11"
 						forecolor="#000000"
@@ -823,7 +823,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="250"
-						y="30"
+						y="22"
 						width="103"
 						height="11"
 						forecolor="#000000"
@@ -838,7 +838,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="429"
-						y="31"
+						y="22"
 						width="101"
 						height="11"
 						forecolor="#000000"
@@ -853,7 +853,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="390"
-						y="31"
+						y="22"
 						width="35"
 						height="11"
 						forecolor="#000000"
@@ -868,7 +868,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="360"
-						y="31"
+						y="22"
 						width="26"
 						height="11"
 						forecolor="#000000"
@@ -935,614 +935,11 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="184"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="28"
-						y="11"
-						width="196"
-						height="18"
-						key="rectangle-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="58"
-						y="15"
-						width="138"
-						height="11"
-						key="staticText-22"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[CONFERÊNCIA - CHEGADA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="28"
-						y="35"
-						width="95"
-						height="11"
-						key="staticText-23"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Estado S.O.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="49"
-						y="50"
-						width="70"
-						height="11"
-						key="staticText-24"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Corrompido]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="28"
-						y="49"
-						width="17"
-						height="13"
-						key="rectangle-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="28"
-						y="64"
-						width="17"
-						height="13"
-						key="rectangle-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="49"
-						y="65"
-						width="70"
-						height="11"
-						key="staticText-25"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Normal]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="128"
-						y="49"
-						width="17"
-						height="13"
-						key="rectangle-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="149"
-						y="50"
-						width="70"
-						height="11"
-						key="staticText-26"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[HD]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="149"
-						y="65"
-						width="70"
-						height="11"
-						key="staticText-27"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Gravador]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="128"
-						y="64"
-						width="17"
-						height="13"
-						key="rectangle-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="128"
-						y="79"
-						width="17"
-						height="13"
-						key="rectangle-8"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="149"
-						y="80"
-						width="70"
-						height="11"
-						key="staticText-28"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[PCI's]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="28"
-						y="96"
-						width="95"
-						height="11"
-						key="staticText-29"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Estado Hardware]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="49"
-						y="112"
-						width="70"
-						height="11"
-						key="staticText-30"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Placa mãe]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="28"
-						y="111"
-						width="17"
-						height="13"
-						key="rectangle-9"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="28"
-						y="125"
-						width="17"
-						height="13"
-						key="rectangle-10"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="49"
-						y="127"
-						width="70"
-						height="11"
-						key="staticText-31"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Processador]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="49"
-						y="142"
-						width="70"
-						height="11"
-						key="staticText-32"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Memória]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="28"
-						y="141"
-						width="17"
-						height="13"
-						key="rectangle-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<line direction="TopDown">
-					<reportElement
-						x="129"
-						y="124"
-						width="78"
-						height="0"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="129"
-						y="138"
-						width="78"
-						height="0"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="129"
-						y="151"
-						width="78"
-						height="0"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="11"
-						width="196"
-						height="18"
-						key="rectangle-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="318"
-						y="15"
-						width="138"
-						height="11"
-						key="staticText-33"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[CONFERÊNCIA - SAIDA]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="35"
-						width="17"
-						height="13"
-						key="rectangle-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="309"
-						y="36"
-						width="70"
-						height="11"
-						key="staticText-34"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Sistema]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="309"
-						y="51"
-						width="70"
-						height="11"
-						key="staticText-35"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Drivers]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="50"
-						width="17"
-						height="13"
-						key="rectangle-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="65"
-						width="17"
-						height="13"
-						key="rectangle-15"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="309"
-						y="66"
-						width="70"
-						height="11"
-						key="staticText-36"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Backup]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="110"
-						width="17"
-						height="13"
-						key="rectangle-16"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="80"
-						width="17"
-						height="13"
-						key="rectangle-17"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="95"
-						width="17"
-						height="13"
-						key="rectangle-18"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="309"
-						y="96"
-						width="70"
-						height="11"
-						key="staticText-37"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Office]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="309"
-						y="81"
-						width="70"
-						height="11"
-						key="staticText-38"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[MSN /IE]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="309"
-						y="111"
-						width="70"
-						height="11"
-						key="staticText-39"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Anti-vírus]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="125"
-						width="17"
-						height="13"
-						key="rectangle-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="309"
-						y="126"
-						width="70"
-						height="11"
-						key="staticText-40"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Hardware]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="288"
-						y="140"
-						width="17"
-						height="13"
-						key="rectangle-20"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="309"
-						y="141"
-						width="70"
-						height="11"
-						key="staticText-41"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Adobe reader]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="35"
-						width="17"
-						height="13"
-						key="rectangle-21"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="411"
-						y="36"
-						width="70"
-						height="11"
-						key="staticText-42"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[E-mail]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="411"
-						y="51"
-						width="70"
-						height="11"
-						key="staticText-43"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[SP3]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="50"
-						width="17"
-						height="13"
-						key="rectangle-22"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="65"
-						width="17"
-						height="13"
-						key="rectangle-23"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="411"
-						y="66"
-						width="70"
-						height="11"
-						key="staticText-44"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Nero]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="110"
-						width="17"
-						height="13"
-						key="rectangle-24"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="80"
-						width="17"
-						height="13"
-						key="rectangle-25"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="95"
-						width="17"
-						height="13"
-						key="rectangle-26"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="411"
-						y="96"
-						width="70"
-						height="11"
-						key="staticText-45"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Limpeza]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="411"
-						y="81"
-						width="70"
-						height="11"
-						key="staticText-46"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Winrar]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="411"
-						y="111"
-						width="70"
-						height="11"
-						key="staticText-47"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[CD's]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="390"
-						y="125"
-						width="17"
-						height="13"
-						key="rectangle-27"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="411"
-						y="126"
-						width="70"
-						height="11"
-						key="staticText-48"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Codec]]></text>
-				</staticText>
+			<band height="21"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="29"
-						y="171"
+						y="8"
 						width="200"
 						height="0"
 						key="line-8"/>
@@ -1551,7 +948,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="78"
-						y="172"
+						y="9"
 						width="95"
 						height="11"
 						key="staticText-49"/>
@@ -1564,7 +961,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<staticText>
 					<reportElement
 						x="338"
-						y="172"
+						y="9"
 						width="95"
 						height="11"
 						key="staticText-50"/>
@@ -1577,23 +974,11 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<line direction="TopDown">
 					<reportElement
 						x="289"
-						y="171"
+						y="8"
 						width="200"
 						height="0"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="4"
-						width="535"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch" pen="2Point"/>
 				</line>
 			</band>
 		</lastPageFooter>
