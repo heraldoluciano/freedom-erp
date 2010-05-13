@@ -230,9 +230,19 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		
 	}
 	
-	public void exec( int codchamado ) {
-		txtCodChamado.setVlrInteger( codchamado );
-		lcCampos.carregaDados();
+	public void exec( Integer codchamado, Integer codcli ) {
+		if(codchamado!=null) {
+			txtCodChamado.setVlrInteger( codchamado );
+			lcCampos.carregaDados();
+		}
+		else if(codcli!=null) {
+			lcCampos.insert( true );
+			txtCodCli.setVlrInteger( codcli );
+			lcCli.carregaDados();
+		}
+		else {
+			lcCampos.insert( true );
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
