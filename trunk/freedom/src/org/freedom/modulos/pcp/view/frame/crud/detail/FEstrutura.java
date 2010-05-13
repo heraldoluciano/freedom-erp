@@ -174,7 +174,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private JCheckBoxPad cbCProva = new JCheckBoxPad( "Contra prova?", "S", "N" );
 	
-	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Qtd. variavél?", "S", "N" );
+	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Qtd. variável?", "S", "N" );
 	
 	private JCheckBoxPad cbQtdFixaItem = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
 	
@@ -262,7 +262,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetEstrAnalise.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetEstrAnalise );
 
-		txtQtdMat.addKeyListener( this );
+//		txtQtdMat.addKeyListener( this );
 		
 		pinCab = new JPanelPad( 500, 90 );
 		setListaCampos( lcCampos );
@@ -293,7 +293,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItem.setQueryCommit( false );
 		lcProdItem.setReadOnly( true );
 		txtCodProdItem.setTabelaExterna( lcProdItem );
-		txtDescProdItem.setListaCampos( lcDetItens );
+//		txtDescProdItem.setListaCampos( lcDetItens );
 
 		lcProdItemRef.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProdItemRef.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -304,7 +304,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItemRef.setQueryCommit( false );
 		lcProdItemRef.setReadOnly( true );
 		txtRefProdItem.setTabelaExterna( lcProdItemRef );
-		txtRefProdItem.setListaCampos( lcDetItens );
+//		txtRefProdItem.setListaCampos( lcDetItens );
 		
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
@@ -401,7 +401,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			txtRefProdItem.setNomeCampo( "refprod" );
 		}
 		else {
-			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
+			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, false );
 			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_SI, true );	
 			txtCodProdItem.setNomeCampo( "codprod" );
 		}
@@ -1011,7 +1011,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	public void beforePost( PostEvent pevt ) {
 
-		super.beforePost( pevt );
+//		super.beforePost( pevt );
 		
 		if( pevt.getListaCampos() == lcDetEstrAnalise ){
 			if( "MM".equals( txtTpExp.getVlrString())){
@@ -1086,8 +1086,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetEstrAnalise.setConexao( cn );
 		lcUnid.setConexao( cn );
 		
-		
-		
 	}
 	
 	public void keyPressed( KeyEvent kevt ) {
@@ -1100,22 +1098,25 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				cbQtdVariavelItem.setVlrString( "S" );
 				
 				lcDetItens.post();
-//				lcDetItens.limpaCampos( true );
-				lcDetItens.insert( true );
+				lcDetItens.limpaCampos( true );
 				lcDetItens.setState( ListaCampos.LCS_NONE );
-				
-				if ( comRef() ) {
-					txtRefProdItem.requestFocus();
-				}
-				else {
-					txtCodProdItem.requestFocus();
-				}
-				
+				lcDetItens.edit();
+								
+				focusCodprodDetItens();			
 				
 			}
 		}
 	}
 	
+	private void focusCodprodDetItens() {
+		
+		if ( comRef() ) {
+			txtRefProdItem.requestFocus();
+		}
+		else {
+			txtCodProdItem.requestFocus();
+		}
+	}
 	
 	
 }
