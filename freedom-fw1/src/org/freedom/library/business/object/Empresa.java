@@ -74,6 +74,7 @@ public class Empresa {
 				hValores.put("CNPJFILIAL",rs.getString("CNPJFILIAL"));
 				hValores.put("INSCFILIAL",rs.getString("INSCFILIAL"));
 				hValores.put("CEPFILIAL",rs.getString("CEPFILIAL"));
+				hValores.put("EMAILFILIAL",rs.getString("EMAILFILIAL"));
 
 				hValores.put("RODAPE",rs.getString("ENDFILIAL")!=null ? ( rs.getString("ENDFILIAL").trim() + ", " 
 						+(rs.getString("NUMFILIAL")==null?"":rs.getString("NUMFILIAL").trim() + "-") 
