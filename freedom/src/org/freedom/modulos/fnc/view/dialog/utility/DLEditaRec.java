@@ -25,6 +25,8 @@ package org.freedom.modulos.fnc.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,7 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLEditaRec extends FFDialogo implements CarregaListener {
+public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -340,6 +342,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( txtNumContaBor, 7, 540, 220, 20 );
 
 		lcCC.addCarregaListener( this );
+		txtDtVenc.addFocusListener( this );
 
 		if ( !bEdita ) {
 			txtAnoCC.setAtivo( bEdita );
@@ -376,11 +379,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDtEmis.setVlrDate( (Date) sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTPREV.ordinal() ] );
-		
-		if (txtDtPrev.getVlrDate() == null){
-			txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
-		}
-		
+
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
 		txtVlrDev.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDEVOLUCAO.ordinal() ] );
@@ -554,6 +553,22 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		lcCartCob.carregaDados();
 		lcBordero.setConexao( cn );
 		lcBordero.carregaDados();
+
+	}
+
+	public void focusGained( FocusEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+
+	}
+
+	public void focusLost( FocusEvent e ) {
+
+		if ( e.getSource() == txtDtVenc ) {
+
+			txtDtPrev.setVlrDate( txtDtVenc.getVlrDate() );
+
+		}
 
 	}
 }
