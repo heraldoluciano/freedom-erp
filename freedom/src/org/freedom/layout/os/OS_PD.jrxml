@@ -34,6 +34,14 @@
 		<defaultValueExpression ><![CDATA["/home/anderson/workspace/freedom/src/org/freedom/layout/os/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" isForPrompting="false" class="java.lang.Object"/>
+	<parameter name="ENDFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="NUMFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="EMAILFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DDDFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="FONEFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CEPFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="UFFILIAL" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="BAIRFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select it.codemp, it.codfilial, it.coditrecmerc, se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, 
 pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, cl.cnpjcli, 
 cl.rgcli, cl.endcli, cl.numcli, cl.baircli, ae.nomeatend, it.defeitoitrecmerc, it.servicosolicitrecmerc, 
@@ -380,12 +388,12 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</background>
 		<title>
-			<band height="43"  isSplitAllowed="true" >
+			<band height="51"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="5"
-						y="0"
+						y="7"
 						width="70"
 						height="40"
 						forecolor="#FFFFFF"
@@ -395,22 +403,6 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 				</image>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="80"
-						y="13"
-						width="356"
-						height="17"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Empresa-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -446,18 +438,104 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="437"
+						x="387"
 						y="13"
-						width="96"
-						height="17"
+						width="146"
+						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Emitido por: "+$P{USUARIO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="80"
+						y="24"
+						width="453"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($P{ENDFILIAL}.trim() + ", " + $P{NUMFILIAL}) 
++ " - " + $P{BAIRFILIAL}.trim()
++ " - " + ($F{NOMEMUNIC}.trim()!=null?$F{NOMEMUNIC}.trim():"") 
++ "/" +$P{UFFILIAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="80"
+						y="35"
+						width="190"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMAILFILIAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="80"
+						y="13"
+						width="307"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="272"
+						y="35"
+						width="100"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fone : " + $P{DDDFILIAL}+ "-" + ($P{FONEFILIAL}!=null?$P{FONEFILIAL}.substring(0,4) + "-" + $P{FONEFILIAL}.substring(4):"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="376"
+						y="35"
+						width="95"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["CEP : " + ($P{CEPFILIAL} != null ? 
+$P{CEPFILIAL}.trim().substring(0,5) 
++ "-" + $P{CEPFILIAL}.trim().substring(5)
+: "")]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>
@@ -887,7 +965,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="36"  isSplitAllowed="true" >
+			<band height="24"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
