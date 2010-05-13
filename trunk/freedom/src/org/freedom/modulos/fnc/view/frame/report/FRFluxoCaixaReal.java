@@ -123,7 +123,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 		sql.append( "SL.DATASUBLANCA BETWEEN ? AND ? AND ");
 		sql.append( "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=? AND L.CODFILIAL=?) VLRSUBLANCA ");
 		sql.append( "FROM FNPLANEJAMENTO P WHERE P.TIPOPLAN IN ('R','D') AND ");
-		sql.append( "P.CODEMP=5 AND P.CODFILIAL=1 AND ");
+		sql.append( "P.CODEMP=? AND P.CODFILIAL=? AND ");
 		sql.append( "EXISTS( SELECT * FROM FNSUBLANCA SL, FNLANCA L ");
 		sql.append( "WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND ");
 		sql.append( "SL.DATASUBLANCA BETWEEN ? AND ? AND ");
@@ -149,6 +149,8 @@ public class FRFluxoCaixaReal extends FRelatorio {
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNLANCA" ));
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ));
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
