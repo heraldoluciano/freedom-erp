@@ -831,7 +831,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}    	    		 
 		
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ), null );
 
 	}
 	
@@ -1134,6 +1134,22 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		carregaAtendimentos();
 	}
 	
+	private void novoChamado() {
+			
+		FChamado chamado = null;    
+
+		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
+			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
+		}
+		else {
+			chamado = new FChamado();
+			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
+		}    	    		 
+		
+		chamado.exec( null, txtCodCli.getVlrInteger() ) ;
+
+	}
+	
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -1164,7 +1180,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			dispose();
 		}
 		else if ( evt.getSource() == btNovo ) {
-			novoAtend();
+			if(tpnAbas.getSelectedIndex()==0){ // Aba de Atendimentos selecionada
+				novoAtend();
+			}
+			else if(tpnAbas.getSelectedIndex()==1) {
+				novoChamado();
+			}
+		
+		
 		}
 		else if ( evt.getSource() == btExcluir ) {
 			excluiAtend();
