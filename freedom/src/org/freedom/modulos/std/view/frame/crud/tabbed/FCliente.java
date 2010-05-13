@@ -85,9 +85,21 @@ import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FMapa;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.crm.view.dialog.utility.DLNovoHist;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.std.view.dialog.report.DLRCliente;
 import org.freedom.modulos.std.view.dialog.utility.DLGrpCli;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
+import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCob;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
 
 
 public class FCliente extends FTabDados 
@@ -640,28 +652,28 @@ public class FCliente extends FTabDados
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, FTipoCli.class.getCanonicalName() );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
 
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "NomeTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
 		lcTran.setReadOnly( true );
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 
 		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, true ) );
@@ -669,7 +681,7 @@ public class FCliente extends FTabDados
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 		
 		lcPaisEnt.setUsaME( false );
 		lcPaisEnt.add( new GuardaCampo( txtCodPaisEnt, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
@@ -677,7 +689,7 @@ public class FCliente extends FTabDados
 		lcPaisEnt.montaSql( false, "PAIS", "SG" );
 		lcPaisEnt.setQueryCommit( false );
 		lcPaisEnt.setReadOnly( true );
-		txtCodPaisEnt.setTabelaExterna( lcPaisEnt );
+		txtCodPaisEnt.setTabelaExterna( lcPaisEnt, FPais.class.getCanonicalName()  );
 		
 		lcPaisCob.setUsaME( false );
 		lcPaisCob.add( new GuardaCampo( txtCodPaisCob, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
@@ -685,28 +697,28 @@ public class FCliente extends FTabDados
 		lcPaisCob.montaSql( false, "PAIS", "SG" );
 		lcPaisCob.setQueryCommit( false );
 		lcPaisCob.setReadOnly( true );
-		txtCodPaisCob.setTabelaExterna( lcPaisCob );
+		txtCodPaisCob.setTabelaExterna( lcPaisCob, FPais.class.getCanonicalName() );
 
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
 		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, FTipoCob.class.getCanonicalName() );
 
 		lcTipoFiscCli.add( new GuardaCampo( txtCodFiscCli, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição do tipo fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
 		lcTipoFiscCli.setQueryCommit( false );
 		lcTipoFiscCli.setReadOnly( true );
-		txtCodFiscCli.setTabelaExterna( lcTipoFiscCli );
+		txtCodFiscCli.setTabelaExterna( lcTipoFiscCli, FTipoFisc.class.getCanonicalName() );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		
 		/************************
          * CARTEIRA DE COBRANÇA *
@@ -720,7 +732,7 @@ public class FCliente extends FTabDados
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );		
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, FCartCob.class.getCanonicalName() );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
@@ -738,7 +750,7 @@ public class FCliente extends FTabDados
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );		
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *      UF     *
@@ -751,7 +763,7 @@ public class FCliente extends FTabDados
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 		
 		/******************
 		 *  MUNICIPIO ENT *
@@ -765,7 +777,7 @@ public class FCliente extends FTabDados
 		lcMunicEnt.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicEnt.setQueryCommit( false );
 		lcMunicEnt.setReadOnly( true );
-		txtCodMunEnt.setTabelaExterna( lcMunicEnt );		
+		txtCodMunEnt.setTabelaExterna( lcMunicEnt, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *   UF ENT    *
@@ -778,7 +790,7 @@ public class FCliente extends FTabDados
 		lcUFEnt.montaSql( false, "UF", "SG" );
 		lcUFEnt.setQueryCommit( false );
 		lcUFEnt.setReadOnly( true );
-		txtSiglaUFEnt.setTabelaExterna( lcUFEnt );
+		txtSiglaUFEnt.setTabelaExterna( lcUFEnt, FUF.class.getCanonicalName() );
 		
 		/******************
 		 *  MUNICIPIO COB *
@@ -792,7 +804,7 @@ public class FCliente extends FTabDados
 		lcMunicCob.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicCob.setQueryCommit( false );
 		lcMunicCob.setReadOnly( true );
-		txtCodMunCob.setTabelaExterna( lcMunicCob );		
+		txtCodMunCob.setTabelaExterna( lcMunicCob, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *   UF COB    *
@@ -805,28 +817,28 @@ public class FCliente extends FTabDados
 		lcUFCob.montaSql( false, "UF", "SG" );
 		lcUFCob.setQueryCommit( false );
 		lcUFCob.setReadOnly( true );
-		txtSiglaUFCob.setTabelaExterna( lcUFCob );
+		txtSiglaUFCob.setTabelaExterna( lcUFCob, FUF.class.getCanonicalName() );
 
 		lcPesq.add( new GuardaCampo( txtCodPesq, "CodCli", "Cód.cli.p.", ListaCampos.DB_PK, false ) );
 		lcPesq.add( new GuardaCampo( txtDescPesq, "RazCli", "Razão social do cliente pricipal", ListaCampos.DB_SI, false ) );
 		lcPesq.montaSql( false, "CLIENTE", "VD" );
 		lcPesq.setQueryCommit( false );
 		lcPesq.setReadOnly( true );
-		txtCodPesq.setTabelaExterna( lcPesq );
+		txtCodPesq.setTabelaExterna( lcPesq, null );
 
 		lcClas.add( new GuardaCampo( txtCodClas, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, true ) );
 		lcClas.add( new GuardaCampo( txtDescClas, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
 		lcClas.montaSql( false, "CLASCLI", "VD" );
 		lcClas.setQueryCommit( false );
 		lcClas.setReadOnly( true );
-		txtCodClas.setTabelaExterna( lcClas );
+		txtCodClas.setTabelaExterna( lcClas, FClasCli.class.getCanonicalName() );
 		
 		lcHistorico.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHistorico.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHistorico.montaSql( false, "HISTPAD", "FN" );
 		lcHistorico.setQueryCommit( false );
 		lcHistorico.setReadOnly( true );
-		txtCodHistPad.setTabelaExterna( lcHistorico );
+		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
 
 		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
@@ -1125,7 +1137,7 @@ public class FCliente extends FTabDados
 		lcFor.setReadOnly( true );
 		lcFor.setQueryCommit( false );
 		txtCodFor.setListaCampos( lcFor );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
 
 		adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", ListaCampos.DB_PF, txtDescFor, true );
 		adicDescFK( txtDescFor, 90, 20, 257, 20, "RazFor", "Razão social do fornecedor" );
@@ -1410,7 +1422,7 @@ public class FCliente extends FTabDados
 			lcSetor.montaSql( false, "SETOR", "VD" );
 			lcSetor.setQueryCommit( false );
 			lcSetor.setReadOnly( true );
-			txtCodSetor.setTabelaExterna( lcSetor );
+			txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
 
 			adicCampo( txtCodSetor, 7, 300, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true );
 			adicDescFK( txtDescSetor, 90, 300, 237, 20, "DescSetor", "Descrição do setor" );
@@ -1448,7 +1460,7 @@ public class FCliente extends FTabDados
 		lcForCli.setReadOnly( true );
 		lcForCli.setQueryCommit( false );
 		txtCodForCli.setListaCampos( lcForCli );
-		txtCodForCli.setTabelaExterna( lcForCli );
+		txtCodForCli.setTabelaExterna( lcForCli, FFornecedor.class.getCanonicalName() );
 		
 		adic( btBuscaFor, 7, 7, 30, 30 );
 		btBuscaFor.setToolTipText("Buscar fornecedor");
