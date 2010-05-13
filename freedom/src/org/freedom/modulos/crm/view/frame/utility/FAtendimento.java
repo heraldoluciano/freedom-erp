@@ -26,13 +26,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
@@ -100,6 +98,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JTablePad tabatd = new JTablePad();
 
 	private JTablePad tabchm = new JTablePad();
+	
+	private JTablePad tabstatus= new JTablePad();
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -216,7 +216,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	
 	private JComboBoxPad cbTpChamado = new JComboBoxPad( null, null, JComboBoxPad.TP_INTEGER, 4, 0 );
 	
-	private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
+//	private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
@@ -240,6 +240,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	
 	private JComboBoxPad cbPrioridade = new JComboBoxPad( null, null, JComboBoxPad.TP_INTEGER, 4, 0 );
 
+	private JScrollPane scpStatus = new JScrollPane( tabstatus );
+	
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, DTCONCLUSAO
 	}
@@ -319,11 +321,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinFiltrosChamado.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20 );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Status" ), 459, 0, 110, 20 );
-		pinFiltrosChamado.adic( cbStatus, 459, 20, 110, 20 ); 
-		
-		pinFiltrosChamado.adic( new JLabelPad( "Prioridade" ), 571, 0, 110, 20 );
-		pinFiltrosChamado.adic( cbPrioridade, 571, 20, 110, 20 );
 		
 		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20 );
@@ -336,6 +333,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		
 		pinFiltrosChamado.adic( btAtualizaChamados, 715, 15, 30, 30 );
 		
+//		pinFiltrosChamado.adic( new JLabelPad( "Status" ), 225, 20, 110, 20 );
+//		pinFiltrosChamado.adic( cbStatus, 225, 60, 110, 20 ); 
+		
+		pinFiltrosChamado.adic( new JLabelPad( "Prioridade" ), 226, 40, 110, 20 );
+		pinFiltrosChamado.adic( cbPrioridade, 226, 60, 110, 20 );
+
+		pinFiltrosChamado.adic( scpStatus, 459, 7, 140, 78 );				
 		
 		pnChm.add( pinFiltrosChamado, BorderLayout.NORTH );
 		
@@ -603,6 +607,49 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		tabatd.setRowHeight( 20 );
 	}
+	
+	private void montaGridStatus() {
+
+		tabstatus.adicColuna( "" );
+		tabstatus.adicColuna( "Cod." );
+		tabstatus.adicColuna( "Status" );
+
+		tabstatus.setTamColuna( 10, 0 );
+		
+		tabstatus.setColunaInvisivel( 1 );
+		
+		tabstatus.setTamColuna( 100, 2 );
+
+		tabstatus.setRowHeight( 12 );
+		
+		tabstatus.setColunaEditavel( 0, new Boolean(true) );
+		
+	}
+	
+	private void carregaStatus() {
+		
+		Vector<Object> valores = Chamado.getValores();
+		Vector<String> labels = Chamado.getLabels( );
+		
+		Vector<Object> item = null;
+		
+		for(int i = 1 ; i < valores.size(); i++) { // Começa em um para não carregar o item <--Selecione-->
+			
+			item = new Vector<Object>();
+			
+			item.addElement( new Boolean(true) );
+			item.addElement( valores.elementAt( i ) );
+			item.addElement( labels.elementAt( i ) );
+			
+			tabstatus.adicLinha( item );
+			
+		}
+		
+
+		
+			
+	}
+
 
 	private void montaGridChamado() {
 		
@@ -711,16 +758,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pnBotConv.add( btExcluir );
 		pnBotConv.add( btImprimir );
 		
-		/*
-		
-		btAtualizaAtendimentos.setContentAreaFilled(false);
-		btAtualizaAtendimentos.setBorderPainted(false);
-		
-		btAtualizaChamados.setContentAreaFilled(false);
-		btAtualizaChamados.setBorderPainted(false);
-
-		*/
-
 	}
 
 	private void montaTela() {
@@ -740,6 +777,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		montaGridAtend();
 
 		montaGridChamado();
+		
+		montaGridStatus();
 
 		adicBotoes();
 		
@@ -765,10 +804,12 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		vLabsTipo.addElement( "<Todos>" );
 		cbTipoAtend.setItensGeneric( vLabsTipo, vValsTipo );
 		
-		cbStatus.setItens( Chamado.getLabels( ), Chamado.getValores( ) );
-		cbStatus.setVlrString( (String) Chamado.STATUS_PENDENTE.getValue() );
+//		cbStatus.setItens( Chamado.getLabels( ), Chamado.getValores( ) );
+//		cbStatus.setVlrString( (String) Chamado.STATUS_PENDENTE.getValue() );
 		
 		cbPrioridade.setItens( Prioridade.getLabels( ), Prioridade.getValores( ) );
+		
+		carregaStatus();
 		
 	}
 	
@@ -797,7 +838,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		txtCodCli.addKeyListener( this );
 		txtCodAtendenteAtendimento.addKeyListener( this );
 		
-		cbStatus.addComboBoxListener( this );
+//		cbStatus.addComboBoxListener( this );
 		cbTpChamado.addComboBoxListener( this );
 		cbPrioridade.addComboBoxListener( this );
 		
@@ -1003,9 +1044,33 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			if ( cbTpChamado.getVlrInteger() > 0 ) { 
 				sql.append( " and ch.codemptc=? and ch.codfilialtc=? and tc.codtpchamado=? " );
 			}
-			if ( cbStatus.getVlrString().length() > 0 ) { 
-				sql.append( " and ch.status=? " );
+
+			// Verifica os status selecionados 
+			
+			boolean primeiro = true;
+
+			for(int i = 0; i< tabstatus.getNumLinhas(); i++ ) {
+				
+				if( (Boolean) tabstatus.getValor( i, 0 )) {
+					
+					if(primeiro) {
+						sql.append( " and ch.status in (" );					
+					}
+					else {
+						sql.append( "," );						
+					}
+					
+					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
+					
+					primeiro = false;
+				}
+				
+				if(i==tabstatus.getNumLinhas()-1 && !primeiro) {
+					sql.append( " ) " );		
+				}
+				
 			}
+			
 			if ( cbPrioridade.getVlrInteger() > 0 ) { 
 				sql.append( " and ch.prioridade=? " );
 			}
@@ -1038,9 +1103,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					ps.setInt( param++, cbTpChamado.getVlrInteger() );
 					
 				}
-				if ( cbStatus.getVlrString().length() > 0 ) { 
-					ps.setString( param++, cbStatus.getVlrString() );
-				}
+
 				if ( cbPrioridade.getVlrInteger() > 0 ) { 
 					ps.setInt( param++, cbPrioridade.getVlrInteger() );
 				}
@@ -1060,15 +1123,15 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 				for ( int i = 0; rs.next(); i++ ) {
 					tabchm.adicLinha();
 
-					tabchm.setValor( Funcoes.sqlDateToDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
+					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.PRIORIDADE.name() ), i, GridChamado.PRIORIDADE.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
 					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
-					tabchm.setValor( Funcoes.sqlDateToDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
-					tabchm.setValor( Funcoes.sqlDateToDate( rs.getDate( GridChamado.DTCONCLUSAO.name() ) ), i, GridChamado.DTCONCLUSAO.ordinal() );
+					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
+					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTCONCLUSAO.name() ) ), i, GridChamado.DTCONCLUSAO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
 
 				}
@@ -1308,9 +1371,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}
 		else if ( evt.getComboBoxPad() == cbTipoAtend ) {
 			carregaAtendimentos();
-		}
-		else if ( evt.getComboBoxPad() == cbStatus ) {
-			carregaChamados();
 		}
 		else if ( evt.getComboBoxPad() == cbTpChamado ) {
 			carregaChamados();
