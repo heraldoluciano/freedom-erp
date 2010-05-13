@@ -655,7 +655,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vValsTipo.addElement( "M" );
 		vValsTipo.addElement( "O" );
 		vValsTipo.addElement( "C" );
-		
+				
 		vLabsTipo.addElement( "Comércio" );
 		vLabsTipo.addElement( "Serviço" );
 		vLabsTipo.addElement( "Equipamento" );
