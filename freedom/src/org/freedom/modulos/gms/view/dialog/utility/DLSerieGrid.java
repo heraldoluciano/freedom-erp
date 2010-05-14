@@ -424,7 +424,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 	}
 
 	private void abreDLSerie() {
-		DLSerie dl = new DLSerie( this, null, getCodprod(), getDescprod(), con ); 
+		DLSerie dl = new DLSerie( this, null, getCodprod(), getDescprod() ); 
 		
 		if( ! "".equals( (String) tabItens.getValor( tabItens.getLinhaSel(), ITENS.NUMSERIE.ordinal() )) ) {
 			dl.setNumSerie( (String) tabItens.getValor( tabItens.getLinhaSel(), ITENS.NUMSERIE.ordinal() ) );

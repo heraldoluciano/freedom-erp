@@ -33,7 +33,6 @@ import java.util.Date;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
@@ -84,10 +83,11 @@ public class DLSerie extends FFDialogo {
 		DTFABRICSERIE, DTVALIDSERIE, OBSSERIE, CODEMP, CODFILIAL, CODPROD, NUMSERIE 
 	}
 	
-	public DLSerie( Component orig, String numserie, Integer codprod, String descprod, DbConnection cn ) {
-
+	public DLSerie( Component orig, String numserie, Integer codprod, String descprod ) {
+		
 		super( orig );
-		setConexao( cn );
+		
+		setConexao( Aplicativo.getInstace().con );
 		setTitulo( "Série" );
 		setAtribos( 380, 300 );
 
