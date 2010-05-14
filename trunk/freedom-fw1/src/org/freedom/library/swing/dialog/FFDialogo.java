@@ -112,8 +112,10 @@ public class FFDialogo extends JDialog implements ActionListener,
     }
 
     public FFDialogo(Component cOrig) {
-        this(cOrig instanceof JFrame ? (JFrame) cOrig
-                : Aplicativo.telaPrincipal,true);
+    	
+    	 	
+    	this(cOrig instanceof JFrame ? (JFrame) cOrig : Aplicativo.telaPrincipal,true);
+    	
         
         cPai = cOrig;
 
