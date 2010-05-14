@@ -107,7 +107,7 @@ public class RPCotMoeda extends FDados implements InsertListener, CarregaListene
 		lcMoeda.montaSql( false, "MOEDA", "RP" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 	}
 	
 	private void montaTela() {

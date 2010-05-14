@@ -83,7 +83,7 @@ public class FRDesempVend extends FRelatorio {
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setReadOnly( true );
 		txtCodVend.setPK( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 		txtCodVend.setListaCampos( lcVend );
 		txtCodVend.setNomeCampo( "CodVend" );
 	}

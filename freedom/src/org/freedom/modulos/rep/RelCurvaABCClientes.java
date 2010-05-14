@@ -104,7 +104,7 @@ public class RelCurvaABCClientes extends FRelatorio {
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setListaCampos( lcFornecedor );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 		
@@ -118,7 +118,7 @@ public class RelCurvaABCClientes extends FRelatorio {
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVendedor );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 	}

@@ -87,7 +87,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     lcAtendente.montaSql(true, "ATENDENTE", "AT");
     lcAtendente.setQueryCommit(true);
     lcAtendente.setReadOnly(false);
-    txtCodAtend.setTabelaExterna(lcAtendente);
+    txtCodAtend.setTabelaExterna(lcAtendente, null);
     txtCodAtend.setListaCampos(lcAtendente);
   
     lcHistorico.setNavegador(navHist);
@@ -104,7 +104,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     lcHistorico.montaSql(true, "HISTORICO", "TK");
     lcHistorico.setQueryCommit(true);
     lcHistorico.setReadOnly(false);
-    txtCodHist.setTabelaExterna(lcHistorico);
+    txtCodHist.setTabelaExterna(lcHistorico, null);
     txtCodHist.setListaCampos(lcHistorico);
     
     navHist.setListaCampos(lcHistorico);   

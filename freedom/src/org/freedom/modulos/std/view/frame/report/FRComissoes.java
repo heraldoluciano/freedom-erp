@@ -143,7 +143,7 @@ public class FRComissoes extends FRelatorio {
 		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		lcVend.setReadOnly(true);
-		txtCodVend.setTabelaExterna(lcVend);
+		txtCodVend.setTabelaExterna(lcVend, null);
 		txtCodVend.setFK(true);
 		txtCodVend.setNomeCampo("CodVend");
 		

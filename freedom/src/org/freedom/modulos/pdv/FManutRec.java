@@ -215,7 +215,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		lcRecBaixa.montaSql( false, "RECEBER", "FN" );
 		lcRecBaixa.setQueryCommit( false );
 		lcRecBaixa.setReadOnly( true );
-		txtCodRecBaixa.setTabelaExterna( lcRecBaixa );
+		txtCodRecBaixa.setTabelaExterna( lcRecBaixa, null );
 		txtCodRecBaixa.setFK( true );
 		txtCodRecBaixa.setNomeCampo( "CodRec" );
 
@@ -225,7 +225,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		lcCliBaixa.montaSql( false, "CLIENTE", "VD" );
 		lcCliBaixa.setQueryCommit( false );
 		lcCliBaixa.setReadOnly( true );
-		txtCodCliBaixa.setTabelaExterna( lcCliBaixa );
+		txtCodCliBaixa.setTabelaExterna( lcCliBaixa, null );
 		txtCodCliBaixa.setFK( true );
 		txtCodCliBaixa.setNomeCampo( "CodCli" );
 		txtCPFCliBaixa.setMascara( JTextFieldPad.MC_CPF );
@@ -235,7 +235,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		lcVendaBaixa.montaSql( false, "VENDA", "VD" );
 		lcVendaBaixa.setQueryCommit( false );
 		lcVendaBaixa.setReadOnly( true );
-		txtCodVendaBaixa.setTabelaExterna( lcVendaBaixa );
+		txtCodVendaBaixa.setTabelaExterna( lcVendaBaixa, null );
 		txtCodVendaBaixa.setFK( true );
 		txtCodVendaBaixa.setNomeCampo( "CodVenda" );
 
@@ -244,7 +244,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		lcBancoBaixa.montaSql( false, "BANCO", "FN" );
 		lcBancoBaixa.setQueryCommit( false );
 		lcBancoBaixa.setReadOnly( true );
-		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa );
+		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa, null );
 		txtCodBancoBaixa.setFK( true );
 		txtCodBancoBaixa.setNomeCampo( "CodBanco" );
 	}

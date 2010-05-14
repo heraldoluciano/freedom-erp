@@ -74,7 +74,7 @@ public class FREstoqueMin extends FRelatorio {
     lcGrup.add(new GuardaCampo( txtDescGrup,"DescGrup", "Descrição do grupo", ListaCampos.DB_SI,false));
     lcGrup.montaSql(false, "GRUPO", "EQ");
     lcGrup.setReadOnly(true);
-    txtCodGrup.setTabelaExterna(lcGrup);
+    txtCodGrup.setTabelaExterna(lcGrup, null);
     txtCodGrup.setFK(true);
     txtCodGrup.setNomeCampo("CodGrup");
 
@@ -83,7 +83,7 @@ public class FREstoqueMin extends FRelatorio {
     lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI,false));
     lcMarca.montaSql(false, "MARCA", "EQ");
     lcMarca.setReadOnly(true);
-    txtCodMarca.setTabelaExterna(lcMarca);
+    txtCodMarca.setTabelaExterna(lcMarca, null);
     txtCodMarca.setFK(true);
     txtCodMarca.setNomeCampo("CodMarca");
 

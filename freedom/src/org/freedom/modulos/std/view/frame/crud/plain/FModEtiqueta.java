@@ -96,7 +96,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	lcPapel.montaSql(false, "PAPEL", "SG");
      	lcPapel.setQueryCommit(false);
      	lcPapel.setReadOnly(true);
-     	txtCodpapel.setTabelaExterna(lcPapel);
+     	txtCodpapel.setTabelaExterna(lcPapel, FPapel.class.getCanonicalName());
 
     	txaEtiqueta.setFont(new Font("Courier",Font.PLAIN,11));
     	

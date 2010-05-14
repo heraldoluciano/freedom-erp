@@ -102,7 +102,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		lcPlanoPag.add(new GuardaCampo(txtApOrcPlanoPag, "ApOrcPlanoPag","Aprova orçamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
-		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+		txtCodPlanoPag.setTabelaExterna(lcPlanoPag, null);
 		txtCodPlanoPag.setFK(true);
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		
@@ -110,7 +110,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtend.add( new GuardaCampo( txtDescAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false ) );
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, null );
 		txtDescAtend.setListaCampos( lcAtend );
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setQueryCommit( false );

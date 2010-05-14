@@ -103,7 +103,7 @@ public class FRVendasCliProd extends FRelatorio {
 	
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -111,7 +111,7 @@ public class FRVendasCliProd extends FRelatorio {
 	
 		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodComiss.setTabelaExterna( lcComiss );
+		txtCodComiss.setTabelaExterna( lcComiss, null );
 		txtCodComiss.setNomeCampo( "CodVend" );
 		txtCodComiss.setFK( true );
 		lcComiss.setReadOnly( true );

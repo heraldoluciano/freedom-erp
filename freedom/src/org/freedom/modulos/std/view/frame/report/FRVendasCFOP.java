@@ -137,7 +137,7 @@ public class FRVendasCFOP extends FRelatorio {
 		lcCFOP.setReadOnly( true );
 		txtCodCFOP.setNomeCampo( "CodNat" );
 		txtCodCFOP.setFK( true );
-		txtCodCFOP.setTabelaExterna( lcCFOP );
+		txtCodCFOP.setTabelaExterna( lcCFOP, null );
 
 		lcMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -146,7 +146,7 @@ public class FRVendasCFOP extends FRelatorio {
 		lcMov.setReadOnly( true );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		txtCodTipoMov.setFK( true );
-		txtCodTipoMov.setTabelaExterna( lcMov );
+		txtCodTipoMov.setTabelaExterna( lcMov, null);
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );

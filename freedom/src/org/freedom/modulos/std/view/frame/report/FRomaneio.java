@@ -150,7 +150,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setQueryCommit( false );
 		lcVenda.setReadOnly( true );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtDescVenda.setListaCampos( lcVenda );
 		
 		/********************
@@ -162,7 +162,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		lcTransp.montaSql( false, "TRANSP", "VD" );
 		lcTransp.setQueryCommit( false );
 		lcTransp.setReadOnly( true );
-		txtCodTransp.setTabelaExterna( lcTransp );
+		txtCodTransp.setTabelaExterna( lcTransp, null );
 		
 	}
 	

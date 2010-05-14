@@ -78,7 +78,7 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 		lcEst.montaSql( false, "ESTACAO", "SG" );
 		lcEst.setQueryCommit( false );
 		lcEst.setReadOnly( true );
-		txtCodEst.setTabelaExterna( lcEst );
+		txtCodEst.setTabelaExterna( lcEst, FEstacao.class.getCanonicalName() );
 
 		cbECF.setVlrString( "N" );
 		cbTEF.setVlrString( "N" );

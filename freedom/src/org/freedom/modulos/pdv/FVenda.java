@@ -380,7 +380,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão Social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 		lcCliente.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -389,7 +389,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcVendedor.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_FK, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 
@@ -397,7 +397,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descrição da classificação da comissão", ListaCampos.DB_SI, false ) );
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setReadOnly( true );
-		txtCodClComis.setTabelaExterna( lcClComis );
+		txtCodClComis.setTabelaExterna( lcClComis, null );
 		txtCodClComis.setFK( true );
 		txtCodClComis.setNomeCampo( "CodClComis" );
 
@@ -405,13 +405,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcClFiscal.add( new GuardaCampo( txtTipoFisc, "TipoFisc", "Cód.tp.fisc.", ListaCampos.DB_SI, false ) );
 		lcClFiscal.montaSql( false, "CLFISCAL", "LF" );
 		lcClFiscal.setReadOnly( true );
-		txtCodFisc.setTabelaExterna( lcClFiscal );
+		txtCodFisc.setTabelaExterna( lcClFiscal, null );
 
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 
@@ -419,7 +419,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcSerie.add( new GuardaCampo( txtNumeroCupom, "DocSerie", "Doc", ListaCampos.DB_SI, true ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setReadOnly( true );
-		txtSerieCupom.setTabelaExterna( lcSerie );
+		txtSerieCupom.setTabelaExterna( lcSerie, null );
 		txtSerieCupom.setFK( true );
 		txtSerieCupom.setNomeCampo( "Serie" );
 
@@ -427,7 +427,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcTipoMov.add( new GuardaCampo( txtSerieCupom, "Serie", "Serie", ListaCampos.DB_FK, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 		txtCodTipoMov.setFK( true );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 
@@ -435,7 +435,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, false ) );
 		lcConv.montaSql( false, "CONVENIADO", "AT" );
 		lcConv.setReadOnly( true );
-		txtCodConv.setTabelaExterna( lcConv );
+		txtCodConv.setTabelaExterna( lcConv, null );
 		txtCodConv.setFK( true );
 		txtCodConv.setNomeCampo( "CodConv" );
 
@@ -462,7 +462,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcLote.setDinWhereAdic( "CODPROD=#N ", txtCodProd );
 		lcLote.montaSql( false, "LOTE", "EQ" );
 		lcLote.setReadOnly( true );
-		txtCodLote.setTabelaExterna( lcLote );
+		txtCodLote.setTabelaExterna( lcLote, null );
 		txtCodLote.setFK( true );
 		txtCodLote.setNomeCampo( "CodLote" );
 
@@ -475,7 +475,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcProduto.setWhereAdic( "CVPROD IN ('V','A')" );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
 		lcProduto.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 		txtCodProd.setFK( true );
 		txtCodProd.setNomeCampo( "CodProd" );
 	}

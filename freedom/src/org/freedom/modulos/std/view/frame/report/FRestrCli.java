@@ -97,7 +97,7 @@ public class FRestrCli extends FDetalhe implements CarregaListener, InsertListen
 		lcTipoRestr.montaSql(false, "TIPORESTR", "FN");    
 		lcTipoRestr.setQueryCommit(false);
 		lcTipoRestr.setReadOnly(true);
-		txtCodTipoRestr.setTabelaExterna(lcTipoRestr);
+		txtCodTipoRestr.setTabelaExterna(lcTipoRestr, null);
 		
 		setAltDet( 150 );
 		pinDet = new JPanelPad( 600, 90 );

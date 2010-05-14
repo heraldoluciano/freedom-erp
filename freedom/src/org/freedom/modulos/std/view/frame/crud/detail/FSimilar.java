@@ -30,6 +30,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -64,7 +65,7 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
 		lcProd.setQueryInsert(false);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
 		
 		//  ********************  Master  ************************************
 		

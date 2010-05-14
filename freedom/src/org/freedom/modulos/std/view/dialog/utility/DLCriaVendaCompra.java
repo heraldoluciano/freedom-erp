@@ -112,7 +112,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		
 		//Lista campos para o tipo de movimento
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
@@ -125,7 +125,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 
 		//Lista campos para a serie da compra 
 		lcSerie.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
@@ -133,7 +133,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
-		txtSerie.setTabelaExterna( lcSerie );
+		txtSerie.setTabelaExterna( lcSerie, null );
 
 	}
 	

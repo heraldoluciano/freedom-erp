@@ -123,7 +123,7 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
 		txtCodCli.setListaCampos( lcCliente );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setPK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		
@@ -137,7 +137,7 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setListaCampos( lcFornecedor );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 	}

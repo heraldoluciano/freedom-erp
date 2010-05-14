@@ -76,7 +76,7 @@ public class FRegraComiss extends FDetalhe {
 		lcTipoVend.montaSql( false, "TIPOVEND", "VD" );
 		lcTipoVend.setQueryCommit( false );
 		lcTipoVend.setReadOnly( true );
-		txtCodTipoVend.setTabelaExterna( lcTipoVend );
+		txtCodTipoVend.setTabelaExterna( lcTipoVend, null );
 
 		setAltDet( 80 );
 

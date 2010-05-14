@@ -33,6 +33,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 
 
 public class FEmpresa extends FDetalhe{
@@ -264,7 +267,7 @@ public class FEmpresa extends FDetalhe{
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 		
 		/***************
 		 *  MUNICIPIO  *
@@ -277,7 +280,7 @@ public class FEmpresa extends FDetalhe{
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );	
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );	
 		
 		/***************
 		 *    PAÍS     *
@@ -289,7 +292,7 @@ public class FEmpresa extends FDetalhe{
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 		
 	}
 	

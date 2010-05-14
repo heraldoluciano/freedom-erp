@@ -62,7 +62,7 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
 		lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		lcCli.setReadOnly(true);
-		txtCodCli.setTabelaExterna(lcCli);
+		txtCodCli.setTabelaExterna(lcCli, null);
 		txtCodCli.setFK(true);
 		txtCodCli.setNomeCampo("CodCli");
 
@@ -70,7 +70,7 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
 		lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado",  ListaCampos.DB_SI, false));
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		lcVend.setReadOnly(true);
-		txtCodVend.setTabelaExterna(lcVend);
+		txtCodVend.setTabelaExterna(lcVend, null);
 		txtCodVend.setFK(true);
 		txtCodVend.setNomeCampo("CodVend");
  
@@ -78,7 +78,7 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
 		lcTipoExp.add(new GuardaCampo( txtDescTipoExp, "DescTipoExp", "Descrição do tipo de expositor", ListaCampos.DB_SI,false));
 		lcTipoExp.montaSql(false, "TIPOEXP", "EQ");
 		lcTipoExp.setReadOnly(true);
-		txtCodTipoExp.setTabelaExterna(lcTipoExp);
+		txtCodTipoExp.setTabelaExterna(lcTipoExp, null);
 		txtCodTipoExp.setFK(true);
 		txtCodTipoExp.setNomeCampo("CodTipoExp");
 		

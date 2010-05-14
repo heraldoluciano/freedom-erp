@@ -91,7 +91,7 @@ public class RelCurvaABCData extends FRelatorio {
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVendedor );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 	}

@@ -237,7 +237,7 @@ public class FLeFiscal extends FTabDados {
 		lcCaixa.montaSql( false, "CAIXA", "PV" );
 		lcCaixa.setQueryCommit( false );
 		lcCaixa.setReadOnly( true );
-		txtNumTermX.setTabelaExterna( lcCaixa );
+		txtNumTermX.setTabelaExterna( lcCaixa, null );
 	}
 	
 	private void montaTela() {

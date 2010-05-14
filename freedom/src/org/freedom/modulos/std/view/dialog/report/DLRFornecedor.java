@@ -95,7 +95,7 @@ public class DLRFornecedor extends FFDialogo {
     lcTipoFor.add(new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor",ListaCampos.DB_SI, false));
     lcTipoFor.montaSql(false, "TIPOFOR", "CP");
     lcTipoFor.setReadOnly(true);
-    txtCodTipoFor.setTabelaExterna(lcTipoFor);
+    txtCodTipoFor.setTabelaExterna(lcTipoFor, null);
     txtCodTipoFor.setFK(true);
     txtCodTipoFor.setNomeCampo("CodTipoFor");
 

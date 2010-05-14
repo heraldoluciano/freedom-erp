@@ -101,13 +101,13 @@ public class FRVendasCanc extends FRelatorio {
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null);
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		
 		lcTipoMov.add(new GuardaCampo( txtCodTipoMov , "CodTipoMov", "Cód.Mov.", ListaCampos.DB_PK, false));
 		lcTipoMov.add(new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI,false));
-		txtCodTipoMov.setTabelaExterna(lcTipoMov);
+		txtCodTipoMov.setTabelaExterna(lcTipoMov, null);
 		txtCodTipoMov.setNomeCampo("CodTipoMov");
 		txtCodTipoMov.setFK(true);
 		lcTipoMov.setReadOnly(true);

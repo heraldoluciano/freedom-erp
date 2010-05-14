@@ -82,7 +82,7 @@ public class FRCentroCusto extends FRelatorio {
 		lcConta.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cod.plan.", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
@@ -91,7 +91,7 @@ public class FRCentroCusto extends FRelatorio {
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
 		txtSiglaCC.setListaCampos( lcCC );

@@ -152,7 +152,7 @@ public class RPFaturamento extends FDialogo {
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CODCLI" );
 
@@ -165,7 +165,7 @@ public class RPFaturamento extends FDialogo {
 		lcVendedor.montaSql( false, "VENDEDOR", "RP" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CODVEND" );
 
@@ -178,7 +178,7 @@ public class RPFaturamento extends FDialogo {
 		lcPlanoPag.montaSql( false, "PLANOPAG", "RP" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CODPLANOPAG" );
 
@@ -191,7 +191,7 @@ public class RPFaturamento extends FDialogo {
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CODFOR" );
 	}

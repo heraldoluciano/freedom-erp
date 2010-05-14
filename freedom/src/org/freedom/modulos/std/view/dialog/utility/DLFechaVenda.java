@@ -382,7 +382,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
@@ -394,7 +394,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI,  false ) );
 		txtDescTran.setListaCampos( lcTran );
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, null );
 		txtCodTran.setFK( true );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
@@ -409,7 +409,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		lcBanco.setConexao( cn );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtDescBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
@@ -422,7 +422,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );
 		lcCartCob.setConexao( cn );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );		
@@ -434,7 +434,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
 		lcTipoCob.setConexao( cn );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
@@ -446,7 +446,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcTipoCobItRec.setQueryCommit( false );
 		lcTipoCobItRec.setReadOnly( true );
 		lcTipoCobItRec.setConexao( cn );
-		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec );
+		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec, null );
 		txtCodTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtDescTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtCodTipoCobItRec.setFK( true );
@@ -458,7 +458,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcBancoItRec.setQueryCommit( false );
 		lcBancoItRec.setReadOnly( true );
 		lcBancoItRec.setConexao( cn );
-		txtCodBancoItRec.setTabelaExterna( lcBancoItRec );
+		txtCodBancoItRec.setTabelaExterna( lcBancoItRec, null );
 		txtCodBancoItRec.setListaCampos( lcBancoItRec );
 		txtDescBancoItRec.setListaCampos( lcBancoItRec );
 		txtCodBancoItRec.setFK( true );
@@ -471,7 +471,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcCartCobItRec.setQueryCommit( false );
 		lcCartCobItRec.setReadOnly( true );
 		lcCartCobItRec.setConexao( cn );
-		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec, null );
 		txtCodCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtDescCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtCodCartCobItRec.setFK( true );
@@ -481,7 +481,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcContaitrec.montaSql( false, "CONTA", "FN" );
 		lcContaitrec.setReadOnly( true );
 		lcContaitrec.setConexao( cn );
-		txtNumContaitrec.setTabelaExterna( lcContaitrec );
+		txtNumContaitrec.setTabelaExterna( lcContaitrec, null );
 		txtNumContaitrec.setFK( true );
 		txtNumContaitrec.setNomeCampo( "NumConta" );
 		
@@ -490,11 +490,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
 		lcConta.setConexao( cn );
-		txtNumConta.setTabelaExterna( lcConta );
+		txtNumConta.setTabelaExterna( lcConta, null );
 		txtNumConta.setFK( true );
 		txtNumConta.setNomeCampo( "NumConta" );
 
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
@@ -649,7 +649,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
 		lcModBol.setReadOnly( true );
 		lcModBol.montaSql( false, "MODBOLETO", "FN" );
-		txtCodModBol.setTabelaExterna( lcModBol );
+		txtCodModBol.setTabelaExterna( lcModBol, null );
 		txtCodModBol.setFK( true );
 		txtCodModBol.setNomeCampo( "CodModBol" );
 		lcModBol.setConexao( cn );

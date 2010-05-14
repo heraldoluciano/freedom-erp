@@ -213,7 +213,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -221,7 +221,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, null, false ) );
 		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, null, false ) );
-		txtCodConv.setTabelaExterna( lcConv );
+		txtCodConv.setTabelaExterna( lcConv, null );
 		txtCodConv.setNomeCampo( "CodConv" );
 		txtCodConv.setFK( true );
 		lcConv.setReadOnly( true );

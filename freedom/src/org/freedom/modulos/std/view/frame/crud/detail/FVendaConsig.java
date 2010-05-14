@@ -53,8 +53,11 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas;
 import org.freedom.modulos.std.view.frame.crud.special.FSubLanca;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 
 /**
@@ -353,7 +356,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/************
 		 * VENDEDOR *
 		 ************/
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, FVendedor.class.getCanonicalName() );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vendedor", ListaCampos.DB_PK, false ) );
@@ -364,7 +367,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/***********
 		 * PRODUTO *
 		 ***********/
-		txtCodProdRem.setTabelaExterna( lcProdutoRemessa );
+		txtCodProdRem.setTabelaExterna( lcProdutoRemessa, FProduto.class.getCanonicalName() );
 		txtCodProdRem.setFK( true );
 		txtCodProdRem.setNomeCampo( "CodProd" );
 		lcProdutoRemessa.add( new GuardaCampo( txtCodProdRem, "CodProd", "Cód.prod", ListaCampos.DB_PK, false ) );
@@ -376,7 +379,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/****************************
 		 * PRODUTO VENDA CONSIGNADA *
 		 ****************************/
-		txtCodProdVenda.setTabelaExterna( lcProdutoVenda );
+		txtCodProdVenda.setTabelaExterna( lcProdutoVenda, FProduto.class.getCanonicalName() );
 		txtCodProdVenda.setFK( true );
 		txtCodProdVenda.setNomeCampo( "CodProd" );
 		lcProdutoVenda.add( new GuardaCampo( txtCodProdVenda, "CodProd", "Cód.prod", ListaCampos.DB_PK, false ) );
@@ -388,7 +391,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/***********
 		 * CLIENTE *
 		 ***********/
-		txtCodCliVenda.setTabelaExterna( lcClienteVenda );
+		txtCodCliVenda.setTabelaExterna( lcClienteVenda, FCliente.class.getCanonicalName() );
 		txtCodCliVenda.setFK( true );
 		txtCodCliVenda.setNomeCampo( "CodCli" );
 		lcClienteVenda.add( new GuardaCampo( txtCodCliVenda, "CodCli", "Cód.cli", ListaCampos.DB_PK, false ) );
@@ -399,7 +402,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/**********************
 		 * PLANO DE PAGEMENTO *
 		 **********************/
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPagamento );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPagamento, FPlanoPag.class.getCanonicalName() );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodCli" );
 		lcPlanoPagamento.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.pl.pag.", ListaCampos.DB_PK, false ) );
@@ -410,7 +413,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		/***********
 		 * CLIENTE *
 		 ***********/
-		txtCodCliRec.setTabelaExterna( lcClienteRec );
+		txtCodCliRec.setTabelaExterna( lcClienteRec, FCliente.class.getCanonicalName() );
 		txtCodCliRec.setFK( true );
 		txtCodCliRec.setNomeCampo( "CodCli" );
 		lcClienteRec.add( new GuardaCampo( txtCodCliRec, "CodCli", "Cód.cli", ListaCampos.DB_PK, false ) );

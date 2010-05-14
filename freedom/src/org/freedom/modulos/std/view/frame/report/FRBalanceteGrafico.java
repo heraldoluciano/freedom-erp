@@ -75,7 +75,7 @@ public class FRBalanceteGrafico extends FRelatorio {
     lcPlan.setWhereAdic("NIVELPLAN<6 AND TIPOPLAN IN ('R','D')");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
     lcPlan.setReadOnly(true);
-    txtCodPlan.setTabelaExterna(lcPlan);
+    txtCodPlan.setTabelaExterna(lcPlan, null);
     txtCodPlan.setFK(true);
     txtCodPlan.setNomeCampo("CodPlan");
   
@@ -84,7 +84,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo",  ListaCampos.DB_SI, false));
 	lcCC.setReadOnly(true);
 	lcCC.montaSql(false, "CC", "FN");
-	txtCodCC.setTabelaExterna(lcCC);
+	txtCodCC.setTabelaExterna(lcCC, null);
 	txtCodCC.setFK(true);
 	txtCodCC.setNomeCampo("CodCC");
 	txtSiglaCC.setListaCampos(lcCC);

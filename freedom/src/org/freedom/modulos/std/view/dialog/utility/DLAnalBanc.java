@@ -114,7 +114,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     lcMoeda.add(new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição", ListaCampos.DB_SI,false));
     lcMoeda.montaSql(false, "MOEDA", "FN");    
     lcMoeda.setReadOnly(true);
-    txtCodMoeda.setTabelaExterna(lcMoeda); //Tabela da Foreign Key
+    txtCodMoeda.setTabelaExterna(lcMoeda, null); //Tabela da Foreign Key
     txtCodMoeda.setFK(true);
     txtCodMoeda.setNomeCampo("CodMoeda");
     vValsCont.addElement("B"); //Aqui é montado o JRadioGroup<?, ?> do tipo de entrada:
@@ -159,7 +159,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
 	lcBanc.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Descrição do banco", ListaCampos.DB_SI, false));
 	lcBanc.montaSql(false, "BANCO", "FN");    
 	lcBanc.setReadOnly(true);
-	txtCodBanco.setTabelaExterna(lcBanc);
+	txtCodBanco.setTabelaExterna(lcBanc, null);
 	txtCodBanco.setFK(true);
 	txtCodBanco.setNomeCampo("CodBanco");
 	//Se for Novo:

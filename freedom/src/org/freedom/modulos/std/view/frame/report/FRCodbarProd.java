@@ -125,7 +125,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProduto.setReadOnly( true );

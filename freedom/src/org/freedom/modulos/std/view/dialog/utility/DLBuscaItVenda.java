@@ -102,7 +102,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     lcVenda.setConexao(con);
-    txtCodVenda.setTabelaExterna(lcVenda);
+    txtCodVenda.setTabelaExterna(lcVenda, null);
     txtCodVenda.setFK(true);
     txtCodVenda.setNomeCampo("CodVenda");
 	    

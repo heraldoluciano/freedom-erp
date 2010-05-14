@@ -190,7 +190,7 @@ public class FRPagar extends FRelatorio {
 		
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 
@@ -198,7 +198,7 @@ public class FRPagar extends FRelatorio {
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		
@@ -206,7 +206,7 @@ public class FRPagar extends FRelatorio {
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		
@@ -215,7 +215,7 @@ public class FRPagar extends FRelatorio {
 		lcTipoCob.add( new GuardaCampo( txtDescCodCobrança, "DESCTIPOCOB", "Nome do Tipo de Cobrança.", ListaCampos.DB_SI, false ) );
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		

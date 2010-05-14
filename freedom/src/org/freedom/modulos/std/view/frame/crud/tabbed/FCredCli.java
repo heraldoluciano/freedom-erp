@@ -43,6 +43,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCob;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCred;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -724,7 +728,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, FTipoCli.class.getCanonicalName() );
 
 		lcTipoCred.add( new GuardaCampo( txtCodTpCred, "CodTpCred", "Cód.tp.cred.", ListaCampos.DB_PK, true ) );
 		lcTipoCred.add( new GuardaCampo( txtDescTpCred, "DescTpCred", "Descrição do tipo de crédito", ListaCampos.DB_SI, false ) );
@@ -732,21 +736,21 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 		lcTipoCred.montaSql( false, "TIPOCRED", "FN" );
 		lcTipoCred.setQueryCommit( false );
 		lcTipoCred.setReadOnly( true );
-		txtCodTpCred.setTabelaExterna( lcTipoCred );
+		txtCodTpCred.setTabelaExterna( lcTipoCred, FTipoCred.class.getCanonicalName() );
 
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
 		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, FTipoCob.class.getCanonicalName() );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.Bco.", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "nomebanco", "Nome Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 
 		setPainel( pinGeral );
 

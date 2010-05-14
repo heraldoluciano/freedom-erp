@@ -31,6 +31,8 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -142,7 +144,7 @@ public class FRCodficProd extends FRelatorio {
 		lcGrupo.add(new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrupo.montaSql(false, "GRUPO", "EQ");
 		lcGrupo.setReadOnly(true);
-		txtCodGrupo.setTabelaExterna(lcGrupo);
+		txtCodGrupo.setTabelaExterna(lcGrupo, FGrupoProd.class.getCanonicalName());
 		txtCodGrupo.setFK(true);
 		txtCodGrupo.setNomeCampo("CodGrup");
 		
@@ -151,7 +153,7 @@ public class FRCodficProd extends FRelatorio {
 		 ************/
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
-		txtCodMarca.setTabelaExterna(lcMarca);
+		txtCodMarca.setTabelaExterna(lcMarca, FMarca.class.getCanonicalName());
 		txtCodMarca.setNomeCampo("CodMarca");
 		txtCodMarca.setFK(true);
 		lcMarca.setReadOnly(true);

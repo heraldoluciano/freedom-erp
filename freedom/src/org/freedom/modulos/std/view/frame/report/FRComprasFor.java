@@ -86,7 +86,7 @@ public class FRComprasFor extends FRelatorio {
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );

@@ -105,7 +105,7 @@ public class DLSelecionaLote extends FFDialogo {
 		lcLote.setDinWhereAdic( "CODPROD=#N AND (VENCTOLOTE >= #D )", txtCodProd );
 		lcLote.setDinWhereAdic( "", txtDtSaidaVenda );
 		txtCodLote.setFK(true);
-		txtCodLote.setTabelaExterna( lcLote );
+		txtCodLote.setTabelaExterna( lcLote, null );
 		txtCodLote.setNomeCampo( "codlote" );
 		lcLote.setQueryCommit( false );
 		lcLote.setReadOnly( true );

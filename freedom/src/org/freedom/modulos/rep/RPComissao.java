@@ -152,7 +152,7 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 		lcVendedor.montaSql( false, "VENDEDOR", "RP" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CODVEND" );
 	}

@@ -57,7 +57,12 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
+import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.std.view.dialog.report.DLRVendedor;
+import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
+import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoVend;
 
 
 public class FVendedor extends FTabDados implements PostListener {
@@ -178,12 +183,12 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setQueryCommit( false );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 
 		lcFuncao.add( new GuardaCampo( txtCodFunc, "CodFunc", "Cód.função", ListaCampos.DB_PK, txtDescFunc, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFunc, "DescFunc", "Descriçao da função", ListaCampos.DB_SI, false ) );
 
-		txtCodFunc.setTabelaExterna( lcFuncao );
+		txtCodFunc.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName() );
 		txtCodFunc.setNomeCampo( "codfunc" );
 		txtCodFunc.setFK( true );
 		lcFuncao.setQueryCommit( false );
@@ -196,12 +201,12 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
-		txtCodClComis.setTabelaExterna( lcClComis );
+		txtCodClComis.setTabelaExterna( lcClComis, FCLComis.class.getCanonicalName() );
 		
 		lcTipoComis.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.comis.", ListaCampos.DB_PK, txtDescTipoVend, true ) );
 		lcTipoComis.add( new GuardaCampo( txtDescTipoVend, "DescTipoVend", "Descrição tipo de venda", ListaCampos.DB_SI, false ) );
 
-		txtCodTipoVend.setTabelaExterna( lcTipoComis );
+		txtCodTipoVend.setTabelaExterna( lcTipoComis, FTipoVend.class.getCanonicalName() );
 		txtCodTipoVend.setNomeCampo( "CodTipoVend" );
 		txtCodTipoVend.setFK( true );
 		lcTipoComis.setQueryCommit( false );
@@ -213,7 +218,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setQueryCommit( false );
 		lcConta.setReadOnly( true );
-		txtNumConta.setTabelaExterna( lcConta );
+		txtNumConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 	}
 	
 	private void montaTela(){
@@ -304,7 +309,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setQueryCommit( false );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
 
 		setPainel( pinComiss );
 		

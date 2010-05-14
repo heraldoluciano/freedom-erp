@@ -86,7 +86,7 @@ public class DLEtiqCompra extends FFDialogo {
 		lcCompra.setReadOnly( true );
 		txtCodCompra.setFK( true );
 		txtCodCompra.setNomeCampo( "CodCompra" );
-		txtCodCompra.setTabelaExterna( lcCompra );
+		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtDataCompra.setListaCampos( lcCompra );
 		txtValorCompra.setListaCampos( lcCompra );
 		txtStatusCompra.setListaCampos( lcCompra );
@@ -101,7 +101,7 @@ public class DLEtiqCompra extends FFDialogo {
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
 		
 		/******************
@@ -114,7 +114,7 @@ public class DLEtiqCompra extends FFDialogo {
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtRazFor.setListaCampos( lcFornecedor );
 	}
 	

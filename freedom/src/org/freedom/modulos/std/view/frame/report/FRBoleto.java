@@ -213,7 +213,7 @@ public class FRBoleto extends FRelatorio {
 		lcModBol.add( new GuardaCampo( txtClassModBol, "ClassModBol", "Classe do modelo", ListaCampos.DB_SI, false ) );
 		lcModBol.setReadOnly( true );
 		lcModBol.montaSql( false, "MODBOLETO", "FN" );
-		txtCodModBol.setTabelaExterna( lcModBol );
+		txtCodModBol.setTabelaExterna( lcModBol, null );
 		txtCodModBol.setFK( true );
 		txtCodModBol.setNomeCampo( "CodModBol" );
 
@@ -230,7 +230,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ));
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 		
@@ -242,7 +242,7 @@ public class FRBoleto extends FRelatorio {
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		
 		/************
 		 * VENDA 2  *
@@ -255,7 +255,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda2.add( new GuardaCampo( txtTipoVenda2, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
 		lcVenda2.setReadOnly( true );
 		lcVenda2.montaSql( false, "VENDA", "VD" );
-		txtCodVenda2.setTabelaExterna( lcVenda2 );
+		txtCodVenda2.setTabelaExterna( lcVenda2, null );
 		txtCodVenda2.setFK( true );
 		txtCodVenda2.setNomeCampo( "CodVenda" );
 		
@@ -267,7 +267,7 @@ public class FRBoleto extends FRelatorio {
 		lcCli2.add( new GuardaCampo( txtRazCli2, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli2.setReadOnly( true );
 		lcCli2.montaSql( false, "CLIENTE", "VD" );
-		txtCodCli2.setTabelaExterna( lcCli2 );
+		txtCodCli2.setTabelaExterna( lcCli2, null );
 
 		/*********
 		 * BANCO *
@@ -277,7 +277,7 @@ public class FRBoleto extends FRelatorio {
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.setReadOnly( true );
 		lcBanco.montaSql( false, "BANCO", "FN" );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setPK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		txtCodBanco.setListaCampos( lcBanco );
@@ -290,7 +290,7 @@ public class FRBoleto extends FRelatorio {
 		lcTipoCob.add( new GuardaCampo( txtDescTpCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
 		lcTipoCob.setReadOnly( true );
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
-		txtCodTpCob.setTabelaExterna( lcTipoCob );
+		txtCodTpCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTpCob.setPK( true );
 		txtCodTpCob.setNomeCampo( "CodTipoCob" );
 		txtCodTpCob.setListaCampos( lcTipoCob );
@@ -307,7 +307,7 @@ public class FRBoleto extends FRelatorio {
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );		
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
@@ -322,7 +322,7 @@ public class FRBoleto extends FRelatorio {
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 		txtCodTipoMov.setFK( true );
 	}
 

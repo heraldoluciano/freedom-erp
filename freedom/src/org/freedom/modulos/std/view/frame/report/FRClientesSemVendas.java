@@ -73,7 +73,7 @@ public class FRClientesSemVendas extends FRelatorio {
 	
 		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodComiss.setTabelaExterna( lcComiss );
+		txtCodComiss.setTabelaExterna( lcComiss, null );
 		txtCodComiss.setNomeCampo( "CodVend" );
 		txtCodComiss.setFK( true );
 		lcComiss.setReadOnly( true );

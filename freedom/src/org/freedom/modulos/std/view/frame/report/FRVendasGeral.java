@@ -51,6 +51,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FRVendasGeral extends FRelatorio {
 
@@ -149,11 +150,11 @@ public class FRVendasGeral extends FRelatorio {
 		lcVend.setReadOnly( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, FRVendasGeral.class.getCanonicalName() );
 		
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );

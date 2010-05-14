@@ -54,7 +54,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 /**
@@ -179,7 +181,7 @@ public class FConsultaCliProd extends FFilho implements ActionListener, TabelaSe
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtAtivoCli, "AtivCli", "ativo", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );
@@ -196,7 +198,7 @@ public class FConsultaCliProd extends FFilho implements ActionListener, TabelaSe
 		lcProduto.setQueryCommit( false );		
 		lcProduto.setReadOnly( true );
 		txtCodProd.setListaCampos( lcProduto );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, FProduto.class.getCanonicalName() );
 		txtCodProd.setPK( true );
 		txtCodProd.setNomeCampo( "CodProd" );
 

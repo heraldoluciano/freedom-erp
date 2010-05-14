@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.std.view.dialog.utility.DLBaixaComis;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -178,7 +179,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setReadOnly( true );
 		txtCodVend.setPK( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
 		txtCodVend.setListaCampos( lcVend );
 		txtCodVend.setNomeCampo( "CodVend" );
 

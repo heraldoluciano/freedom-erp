@@ -156,7 +156,7 @@ public class FRVendasItem extends FRelatorio {
 		
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
-		txtCodGrup.setTabelaExterna( lcGrup );
+		txtCodGrup.setTabelaExterna( lcGrup, null );
 		txtCodGrup.setNomeCampo( "CodGrup" );
 		txtCodGrup.setFK( true );
 		lcGrup.setReadOnly( true );
@@ -165,7 +165,7 @@ public class FRVendasItem extends FRelatorio {
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ) );
-		txtCodMarca.setTabelaExterna( lcMarca );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
 		txtCodMarca.setNomeCampo( "CodMarca" );
 		txtCodMarca.setFK( true );
 		lcMarca.setReadOnly( true );
@@ -173,7 +173,7 @@ public class FRVendasItem extends FRelatorio {
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null);
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
 		lcVend.setReadOnly( true );
@@ -186,7 +186,7 @@ public class FRVendasItem extends FRelatorio {
 
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );
