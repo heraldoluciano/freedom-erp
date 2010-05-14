@@ -1,9 +1,29 @@
-/*
- * Projeto: Freedom Pacote: org.freedom.modules.std Classe: @(#)FCompra.java
+/**
+ * @version 14/07/2003 <BR>
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 31/08/2009 - Alex Rodrigues
+ * @version 16/12/2009 - Anderson Sanchez
+ * @version 10/03/2010 - Anderson Sanchez
+ * @version 22/03/2010 - Anderson Sanchez
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
- * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR> <BR>
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.gms <BR>
+ * Classe:
+ * @(#)FCompra.java <BR>
+ * 
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ * Tela para cadastro de pedidos e notas fiscais de compra.
+ * 
  */
 
 package org.freedom.modulos.gms.view.frame.crud.detail;
@@ -65,11 +85,10 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
-import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
-import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.lvf.business.object.SeqSerie;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
@@ -82,16 +101,6 @@ import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaCompra;
 import org.freedom.modulos.std.view.dialog.utility.DLGuiaTraf;
 
-
-/**
- * Tela para cadastro de notas fiscais de compra.
- * 
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva (14/07/2003)
- * @version 31/08/2009 - Alex Rodrigues
- * @version 16/12/2009 - Anderson Sanchez
- * @version 10/03/2010 - Anderson Sanchez
- * @version 22/03/2010 - Anderson Sanchez
- */
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
@@ -404,6 +413,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 4 ) );
 
 	private NFEConnectionFactory nfecf = null;
+	
+	private NumSerie numserie = null;
 
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
@@ -1808,70 +1819,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		return bRetorno;
 	}
 
-	public boolean testaNumSerie() {
-
-		boolean bRetorno = false;
-		boolean bValido = false;
-
-		// Validação e abertura da tela para cadastramento da serie unitária
-		if(txtNumSerie.isEditable()) {
-		
-			String sSQL = "SELECT COUNT(*) FROM EQSERIE WHERE NUMSERIE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
-			
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			
-			try {
-			
-				ps = con.prepareStatement( sSQL );
-				ps.setString( 1, txtNumSerie.getVlrString() );
-				ps.setInt( 2, txtCodProd.getVlrInteger() );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setInt( 4, lcSerie.getCodFilial() );
-				
-				rs = ps.executeQuery();
-				
-				if ( rs.next() ) {
-					if ( rs.getInt( 1 ) > 0 ) {
-						bValido = true;
-					}
-				}
-				
-				rs.close();
-				ps.close();
-				con.commit();
-				
-			} 
-			catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, con, err );
-			}
-			if ( !bValido ) {
-				
-				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), con );
-				
-				dl.setVisible( true );
-				
-				if ( dl.OK ) {
-					bRetorno = true;
-					txtNumSerie.setVlrString( dl.getNumSerie() );
-					lcSerie.carregaDados();
-				}
-				dl.dispose();
-			}
-			else {
-				bRetorno = true;
-			}
-		}
-		// Tela para cadastramento da série para quantidade maior que 1
-		else {
-			
-			abreDlSerieMuitiplos();
-			
-		}
-		
-		
-		return bRetorno;
-	}
+	
 
 	
 	public void actionPerformed( ActionEvent evt ) {
@@ -2322,6 +2270,25 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		novo = false;
 	}
 
+	private boolean testaNumSerie() {
+		
+		boolean ret = false;
+		
+		try {
+			
+			numserie = new NumSerie(this,txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable());
+		
+			ret = numserie.testaNumSerie();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
 		boolean tem = false;
@@ -2705,31 +2672,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		this.nfecf = nfecf;
 	}
 	
-	private void abreDlSerieMuitiplos() {
-		
-		DLSerieGrid dl = new DLSerieGrid();
-		dl.setCodemp( lcDet.getCodEmp() );
-		dl.setCodfilial( lcDet.getCodFilial() );
-		dl.setCodcompra( txtCodCompra.getVlrInteger() );
-		dl.setCoditcompra( txtCodItCompra.getVlrInteger() );
-		dl.setCodemppd( lcProd.getCodEmp() );
-		dl.setCodfilialpd( lcProd.getCodFilial() );
-		dl.setCodprod( txtCodProd.getVlrInteger() );
-		dl.setDescprod( txtDescProd.getVlrString().trim() );
-		
-		dl.setConexao( con );
-		dl.setVisible( true );
-		HashMap<String,Integer> retorno = null;
-		
-		if ( dl.OK ) {
-
-		}
-		else {	
-		}
-		
-		dl.dispose();
-	}
-
 	public void mouseClicked( MouseEvent mevt ) {
 		if(mevt.getSource()==txtDescProd) {
 			if ( mevt.getClickCount() == 2 ) {
