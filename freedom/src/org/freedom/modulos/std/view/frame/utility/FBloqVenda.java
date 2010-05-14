@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.pdv.FVenda;
 
 public class FBloqVenda extends FFilho implements ActionListener, CarregaListener {
 
@@ -93,7 +94,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     lcVenda.addCarregaListener(this);
-    txtCodVenda.setTabelaExterna(lcVenda);
+    txtCodVenda.setTabelaExterna(lcVenda, FVenda.class.getCanonicalName());
     txtCodVenda.setFK(true);
     txtCodVenda.setNomeCampo("CodVenda");
     

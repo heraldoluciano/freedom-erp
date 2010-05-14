@@ -114,7 +114,7 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
         lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
         lcVenda.montaSql( false, "VENDA", "VD" );
         lcVenda.setReadOnly( true );
-        txtCodVenda.setTabelaExterna( lcVenda );
+        txtCodVenda.setTabelaExterna( lcVenda, null );
         txtCodVenda.setFK( true );
         txtCodVenda.setNomeCampo( "CodVenda" );
         
@@ -123,7 +123,7 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
         lcCompra.add( new GuardaCampo( txtVlrCompra, "VlrLiqCompra", "Valor da compra", ListaCampos.DB_SI, false ) );
         lcCompra.montaSql( false, "COMPRA", "CP" );
         lcCompra.setReadOnly( true );
-        txtCodCompra.setTabelaExterna( lcCompra );
+        txtCodCompra.setTabelaExterna( lcCompra, null );
         txtCodCompra.setFK( true );
         txtCodCompra.setNomeCampo( "CodCompra" );
         

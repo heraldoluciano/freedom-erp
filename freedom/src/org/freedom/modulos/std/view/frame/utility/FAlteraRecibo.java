@@ -89,7 +89,7 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 
 		lcReceber.montaSql(false, "RECEBER", "FN");
 		lcReceber.setReadOnly(true);
-		txtCodRec.setTabelaExterna(lcReceber);
+		txtCodRec.setTabelaExterna(lcReceber, null);
 		txtCodRec.setFK(true);
 		txtCodRec.setNomeCampo("CodRec");
 
@@ -101,7 +101,7 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 		lcItReceber.montaSql(false, "ITRECEBER", "FN");
 		lcItReceber.setReadOnly(true);
 
-		txtNParcItRec.setTabelaExterna(lcItReceber);
+		txtNParcItRec.setTabelaExterna(lcItReceber, null);
 		txtNParcItRec.setFK(true);
 		txtNParcItRec.setNomeCampo("NParcItRec"); 
 	}

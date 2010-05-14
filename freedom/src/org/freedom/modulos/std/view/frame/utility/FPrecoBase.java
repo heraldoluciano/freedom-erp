@@ -73,7 +73,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
     lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Decrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false,"GRUPO", "EQ");
     lcGrup.setReadOnly(true);
-    txtCodGrup.setTabelaExterna(lcGrup);
+    txtCodGrup.setTabelaExterna(lcGrup, null);
     txtCodGrup.setFK(true);
     txtDescGrup.setListaCampos(lcGrup);
 
@@ -82,7 +82,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
     lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagto.", ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag.setReadOnly(true);
-    txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+    txtCodPlanoPag.setTabelaExterna(lcPlanoPag, null);
     txtCodPlanoPag.setFK(true);
     txtDescPlanoPag.setListaCampos(lcPlanoPag);
     

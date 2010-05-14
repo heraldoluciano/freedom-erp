@@ -139,7 +139,7 @@ public class FTransfEstoque extends FFilho implements ActionListener, CarregaLis
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProduto.setReadOnly( true );
@@ -151,7 +151,7 @@ public class FTransfEstoque extends FFilho implements ActionListener, CarregaLis
 		
 		lcAlmoxOrig.add(new GuardaCampo( txtCodAlmoxOrig, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true));
         lcAlmoxOrig.add(new GuardaCampo( txtDescAlmoxOrig, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
-        txtCodAlmoxOrig.setTabelaExterna(lcAlmoxOrig);
+        txtCodAlmoxOrig.setTabelaExterna(lcAlmoxOrig, null);
         txtCodAlmoxOrig.setNomeCampo("CodAlmox");
         txtCodAlmoxOrig.setFK(true);
         lcAlmoxOrig.setReadOnly(true);
@@ -163,7 +163,7 @@ public class FTransfEstoque extends FFilho implements ActionListener, CarregaLis
         
         lcAlmoxDest.add(new GuardaCampo( txtCodAlmoxDest, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true));
         lcAlmoxDest.add(new GuardaCampo( txtDescAlmoxDest, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
-        txtCodAlmoxDest.setTabelaExterna(lcAlmoxDest);
+        txtCodAlmoxDest.setTabelaExterna(lcAlmoxDest, null);
         txtCodAlmoxDest.setNomeCampo("CodAlmox");
         txtCodAlmoxDest.setFK(true);
         lcAlmoxDest.setReadOnly(true);

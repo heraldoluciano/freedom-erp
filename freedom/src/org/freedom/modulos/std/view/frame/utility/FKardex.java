@@ -94,7 +94,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fab.prod.",ListaCampos.DB_SI,false));
                 lcProd.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmox, false));
-                txtCodProd.setTabelaExterna(lcProd);
+                txtCodProd.setTabelaExterna(lcProd, null);
                 txtCodProd.setNomeCampo("CodProd");
                 txtCodProd.setFK(true);
                 lcProd.setReadOnly(true);
@@ -102,7 +102,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 
                 lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
                 lcAlmox.add(new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
-                txtCodAlmox.setTabelaExterna(lcAlmox);
+                txtCodAlmox.setTabelaExterna(lcAlmox, null);
                 txtCodAlmox.setNomeCampo("CodAlmox");
                 txtCodAlmox.setFK(true);
                 lcAlmox.setReadOnly(true);
@@ -110,7 +110,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 
                 lcLote.add(new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false));
                 lcLote.add(new GuardaCampo( txtDescLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false));
-                txtCodLote.setTabelaExterna(lcLote);
+                txtCodLote.setTabelaExterna(lcLote, null);
                 txtCodLote.setNomeCampo("CodLote");
                 txtCodLote.setFK(true);
                 lcLote.setReadOnly(true);

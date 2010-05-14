@@ -78,7 +78,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 		lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, null, false));
 		lcVenda.montaSql(false, "VENDA", "VD");
 		lcVenda.setReadOnly(true);
-		txtCodVenda.setTabelaExterna(lcVenda);
+		txtCodVenda.setTabelaExterna(lcVenda, null);
 		txtCodVenda.setFK(true);
 		txtCodVenda.setNomeCampo("CodVenda");
 		

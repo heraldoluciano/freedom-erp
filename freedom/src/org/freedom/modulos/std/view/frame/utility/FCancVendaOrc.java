@@ -84,7 +84,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 		lcVenda.montaSql(false, "VENDA", "VD");
 		lcVenda.setReadOnly(true);
 		lcVenda.addCarregaListener(this);
-		txtCodVenda.setTabelaExterna(lcVenda);
+		txtCodVenda.setTabelaExterna(lcVenda, null);
 		txtCodVenda.setFK(true);
 		txtCodVenda.setNomeCampo("CodVenda");
     

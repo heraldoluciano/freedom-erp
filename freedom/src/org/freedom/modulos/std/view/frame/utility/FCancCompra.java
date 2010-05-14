@@ -120,7 +120,7 @@ public class FCancCompra extends FFilho implements ActionListener{
 	    lcCompra.add(new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false ));
 		lcCompra.montaSql( false, "COMPRA", "CP");
 		lcCompra.setReadOnly( true );
-		txtCodCompra.setTabelaExterna( lcCompra );
+		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setFK( true );
 		txtCodCompra.setNomeCampo( "CodCompra" );
 	}

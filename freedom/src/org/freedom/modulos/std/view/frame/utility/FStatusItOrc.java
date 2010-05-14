@@ -68,7 +68,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     
     lcOrc.montaSql(false, "ORCAMENTO", "VD");
     lcOrc.setReadOnly(true);
-    txtCodOrc.setTabelaExterna(lcOrc);
+    txtCodOrc.setTabelaExterna(lcOrc, null);
     txtCodOrc.setFK(true);
     
     lcItOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.",  ListaCampos.DB_PK,true));

@@ -186,7 +186,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		lcProduto.add(new GuardaCampo(txtDescProduto, "DescProd","Decrição do produto", ListaCampos.DB_SI, false));
 		lcProduto.montaSql(false, "PRODUTO", "EQ");
 		lcProduto.setReadOnly(true);
-		txtCodProduto.setTabelaExterna(lcProduto);
+		txtCodProduto.setTabelaExterna(lcProduto, null);
 		txtCodProduto.setFK(true);
 		txtDescProduto.setListaCampos(lcProduto);
 		
@@ -195,7 +195,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		lcMarca.add(new GuardaCampo(txtDescMarca, "DescMarca","Decrição da marca", ListaCampos.DB_SI, false));
 		lcMarca.montaSql(false, "MARCA", "EQ");
 		lcMarca.setReadOnly(true);
-		txtCodMarca.setTabelaExterna(lcMarca);
+		txtCodMarca.setTabelaExterna(lcMarca, null);
 		txtCodMarca.setFK(true);
 		txtDescMarca.setListaCampos(lcMarca);
 
@@ -206,7 +206,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 				"Decrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, null);
 		txtCodGrup.setFK(true);
 		txtDescGrup.setListaCampos(lcGrup);
 
@@ -215,7 +215,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
-		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+		txtCodPlanoPag.setTabelaExterna(lcPlanoPag, null);
 		txtCodPlanoPag.setFK(true);
 		txtDescPlanoPag.setListaCampos(lcPlanoPag);
 
@@ -224,7 +224,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		lcTabPreco.add(new GuardaCampo(txtDescTab, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
 		lcTabPreco.montaSql(false, "TABPRECO", "VD");
 		lcTabPreco.setReadOnly(true);
-		txtCodTab.setTabelaExterna(lcTabPreco);
+		txtCodTab.setTabelaExterna(lcTabPreco, null);
 		txtCodTab.setFK(true);
 		txtDescTab.setListaCampos(lcTabPreco);
 
@@ -233,7 +233,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		lcClasCli.add(new GuardaCampo(txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false));
 		lcClasCli.montaSql(false, "CLASCLI", "VD");
 		lcClasCli.setReadOnly(true);
-		txtCodClasCli.setTabelaExterna(lcClasCli);
+		txtCodClasCli.setTabelaExterna(lcClasCli, null);
 		txtCodClasCli.setFK(true);
 		txtDescClasCli.setListaCampos(lcClasCli);
 
