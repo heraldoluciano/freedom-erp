@@ -87,7 +87,7 @@ public class FEmail extends FDados {
 		lcConfEmail.add(new GuardaCampo( txtNomeRemet, "NomeRemet", "Nome Remetente", ListaCampos.DB_SI, null, false ));
 		lcConfEmail.montaSql( false, "CONFEMAIL", "TK");
 		lcConfEmail.setReadOnly( true );
-		txtCodConfEmail.setTabelaExterna( lcConfEmail );
+		txtCodConfEmail.setTabelaExterna( lcConfEmail, FConfEmail.class.getCanonicalName() );
 		txtCodConfEmail.setFK( true );
 		txtCodConfEmail.setNomeCampo( "CodConfEmail" );
 	}
