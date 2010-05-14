@@ -92,7 +92,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 		
 		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI,false));
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, null);
 		txtCodGrup.setNomeCampo("CodGrup");
 		txtCodGrup.setFK(true);
 		lcGrup.setReadOnly(true);
@@ -131,7 +131,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 		lcAlmoxGrup.montaSql(false, "ALMOX", "EQ");
 		lcAlmoxGrup.setQueryCommit(false);
 		lcAlmoxGrup.setReadOnly(true);
-		txtCodAlmoxGrup.setTabelaExterna(lcAlmoxGrup);
+		txtCodAlmoxGrup.setTabelaExterna(lcAlmoxGrup, null);
 		txtCodAlmoxGrup.setNomeCampo("CodAlmox");
 		
 		lcAlmoxProd.add(new GuardaCampo(txtCodAlmoxProd, "CodAlmox", "Cód.almox.",
@@ -141,7 +141,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 		lcAlmoxProd.montaSql(false, "ALMOX", "EQ");
 		lcAlmoxProd.setQueryCommit(false);
 		lcAlmoxProd.setReadOnly(true);
-		txtCodAlmoxProd.setTabelaExterna(lcAlmoxProd);
+		txtCodAlmoxProd.setTabelaExterna(lcAlmoxProd, null);
 		txtCodAlmoxProd.setNomeCampo("CodAlmox");
 
         // Fim da aba de consulta de saldo por grupo
@@ -157,7 +157,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 //		lcProd.add(new GuardaCampo( txtSldLProd, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtCodAlmoxProd, "CodAlmox","Cód.Almox.", ListaCampos.DB_FK,txtDescAlmoxProd,false));
 
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, null);
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
 		lcProd.setReadOnly(true);
@@ -243,7 +243,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 			lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod", ListaCampos.DB_PK, false));
 			lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
 			lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_FK, false));
-			txtRefProd.setTabelaExterna(lcProd2);
+			txtRefProd.setTabelaExterna(lcProd2, null);
 			txtRefProd.setNomeCampo("Refprod");
 			txtRefProd.setFK(true);
 			lcProd2.setReadOnly(true);

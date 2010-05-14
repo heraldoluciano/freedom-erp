@@ -161,7 +161,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 		lcCli.montaSql(false, "CLIENTE","VD");    
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
-		txtCodCli.setTabelaExterna(lcCli);
+		txtCodCli.setTabelaExterna(lcCli, null);
 
 		pinCab.adic(new JLabelPad("N. orçamento"),7,0,120,20);
 		pinCab.adic(txtCodOrc,7,20,85,20);

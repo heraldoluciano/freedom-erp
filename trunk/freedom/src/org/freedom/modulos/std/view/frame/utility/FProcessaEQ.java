@@ -95,7 +95,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
         lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, true));
         lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI,false));
         lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI,false));
-        txtCodProd.setTabelaExterna(lcProd);
+        txtCodProd.setTabelaExterna(lcProd, null);
         txtCodProd.setNomeCampo("CodProd");
         txtCodProd.setFK(true);
         lcProd.setReadOnly(true);

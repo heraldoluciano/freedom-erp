@@ -44,6 +44,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 
 public class FBloqCompra extends FFilho implements ActionListener, CarregaListener {
 
@@ -81,7 +82,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
     lcCompra.montaSql(false, "COMPRA", "CP");
     lcCompra.setReadOnly(true);
     lcCompra.addCarregaListener(this);
-    txtCodCompra.setTabelaExterna(lcCompra);
+    txtCodCompra.setTabelaExterna(lcCompra, FCompra.class.getCanonicalName());
     txtCodCompra.setFK(true);
     txtCodCompra.setNomeCampo("CodCompra");
     

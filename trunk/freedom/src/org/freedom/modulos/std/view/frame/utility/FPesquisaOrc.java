@@ -152,7 +152,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, null, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -160,7 +160,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		lcComis.add( new GuardaCampo( txtCodComis, "CodVend", "Cód.comis.", ListaCampos.DB_PK, null, false ) );
 		lcComis.add( new GuardaCampo( txtNomeComis, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, null, false ) );
-		txtCodComis.setTabelaExterna( lcComis );
+		txtCodComis.setTabelaExterna( lcComis, null );
 		txtCodComis.setNomeCampo( "CodVend" );
 		txtCodComis.setFK( true );
 		lcComis.setReadOnly( true );
@@ -168,7 +168,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		lcCaixa.add( new GuardaCampo( txtCodCaixa, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, null, false ) );
 		lcCaixa.add( new GuardaCampo( txtDescCaixa, "DescCaixa", "Descrição do caixa", ListaCampos.DB_SI, null, false ) );
-		txtCodCaixa.setTabelaExterna( lcCaixa );
+		txtCodCaixa.setTabelaExterna( lcCaixa, null );
 		txtCodCaixa.setNomeCampo( "CodCaixa" );
 		txtCodCaixa.setFK( true );
 		lcCaixa.setReadOnly( true );
@@ -176,7 +176,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		lcUsu.add( new GuardaCampo( txtIdUsu, "IDUsu", "id usu.", ListaCampos.DB_PK, null, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome do usuario", ListaCampos.DB_SI, null, false ) );
-		txtIdUsu.setTabelaExterna( lcUsu );
+		txtIdUsu.setTabelaExterna( lcUsu, null );
 		txtIdUsu.setNomeCampo( "CodCli" );
 		txtIdUsu.setFK( true );
 		lcUsu.setReadOnly( true );

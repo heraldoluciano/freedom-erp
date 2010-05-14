@@ -97,7 +97,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
     
     lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, true));
     lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false));
-    txtCodFor.setTabelaExterna(lcFor);
+    txtCodFor.setTabelaExterna(lcFor, null);
     txtCodFor.setNomeCampo("CodFor");
     txtCodFor.setFK(true);
     lcFor.setReadOnly(true);

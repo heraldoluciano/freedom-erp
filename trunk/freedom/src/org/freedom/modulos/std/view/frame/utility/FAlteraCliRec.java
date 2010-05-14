@@ -143,7 +143,7 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ) );				
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setReadOnly( true );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 		
@@ -153,7 +153,7 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
