@@ -44,6 +44,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 
 public class FConta extends FTabDados implements CheckBoxListener, RadioGroupListener {
 
@@ -144,21 +148,21 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.mda.", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, FMoeda.class.getCanonicalName() );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, true ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do plano de contas", ListaCampos.DB_SI, false ) );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setQueryCommit( false );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 
 		lcUsu.add( new GuardaCampo( txtIDUsu, "IDUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome nome do usuário", ListaCampos.DB_SI, false ) );
@@ -167,14 +171,14 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcUsu.setReadOnly( true );
 		txtIDUsu.setFK( true );
 		txtIDUsu.setNomeCampo( "IDUsu" );
-		txtIDUsu.setTabelaExterna( lcUsu );
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
 		
 		lcHist.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHist.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHist.montaSql( false, "HISTPAD", "FN" );
 		lcHist.setQueryCommit( false );
 		lcHist.setReadOnly( true );
-		txtCodHistPad.setTabelaExterna( lcHist );
+		txtCodHistPad.setTabelaExterna( lcHist, FHistPad.class.getCanonicalName() );
 
 		vValsTipo.addElement( "B" );
 		vValsTipo.addElement( "C" );
@@ -259,7 +263,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcRestricoes.setQueryCommit( false );
 		lcRestricoes.montaTab();
 
-		txtNumConta.setTabelaExterna( lcRestricoes );
+		txtNumConta.setTabelaExterna( lcRestricoes, null);
 
 		tbRestricoes.setTamColuna( 80, 0 );
 		tbRestricoes.setTamColuna( 280, 1 );

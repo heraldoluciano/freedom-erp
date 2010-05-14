@@ -138,7 +138,7 @@ public class FNCRetorno extends FDados implements JComboBoxListener {
 		lcTBanco.montaSql( false, "BANCO", "FN" );
 		lcTBanco.setQueryCommit( false );
 		lcTBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcTBanco );
+		txtCodBanco.setTabelaExterna( lcTBanco, FBanco.class.getCanonicalName() );
 
 		lcTCheque.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.Banco", ListaCampos.DB_PK, true ) );
 		lcTCheque.add( new GuardaCampo( txtNcheque, "NCheque", "N.Cheque", ListaCampos.DB_PK, true ) );
@@ -147,7 +147,7 @@ public class FNCRetorno extends FDados implements JComboBoxListener {
 		lcTCheque.montaSql( false, "SCHEQUE", "SG" );
 		lcTCheque.setQueryCommit( false );
 		lcTCheque.setReadOnly( true );
-		txtNcheque.setTabelaExterna( lcTCheque );
+		txtNcheque.setTabelaExterna( lcTCheque, null );
 
 		adicCampo( txtNsaida, 7, 20, 40, 20, "NSAIDA", "N.Saíd.", ListaCampos.DB_PK, null, true );
 		adicCampo( txtCodBanco, 51, 20, 70, 20, "CodBanco", "Cód.Banc.", ListaCampos.DB_PK, true );

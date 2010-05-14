@@ -75,7 +75,7 @@ public class FNCResgate extends FDados implements PostListener {
 		lcTBanco.montaSql( false, "BANCO", "FN" );
 		lcTBanco.setQueryCommit( false );
 		lcTBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcTBanco );
+		txtCodBanco.setTabelaExterna( lcTBanco, FBanco.class.getCanonicalName());
 
 		lcTCheque.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.Banco", ListaCampos.DB_PK, null, true ) );
 		lcTCheque.add( new GuardaCampo( txtNcheque, "NCheque", "N.Cheque", ListaCampos.DB_PK, true ) );
@@ -83,7 +83,7 @@ public class FNCResgate extends FDados implements PostListener {
 		lcTCheque.montaSql( false, "CHEQUE", "SG" );
 		lcTCheque.setQueryCommit( false );
 		lcTCheque.setReadOnly( true );
-		txtNcheque.setTabelaExterna( lcTCheque );
+		txtNcheque.setTabelaExterna( lcTCheque, null );
 
 		adicCampo( txtCodBanco, 7, 20, 100, 20, "CodBanco", "Cód.Banc.", ListaCampos.DB_PK, null, true );
 		adicDescFK( txtBanco, 110, 20, 219, 20, "NomeBanco", "Banco" );

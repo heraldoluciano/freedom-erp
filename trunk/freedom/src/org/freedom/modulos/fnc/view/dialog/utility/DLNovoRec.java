@@ -224,7 +224,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -237,7 +237,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 
@@ -250,7 +250,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		
@@ -263,7 +263,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setFK( true );
 		txtCodCartCob.setNomeCampo( "CodCartCob" );	
 		
@@ -275,7 +275,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );	
 		
@@ -287,10 +287,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setQueryCommit( false );		
 		lcConta.setReadOnly( true );		
-		txtCodConta.setTabelaExterna( lcConta );		
+		txtCodConta.setTabelaExterna( lcConta, null );		
 		txtCodConta.setFK( true );		
 		txtCodConta.setNomeCampo( "NumConta" );
-		txtDescConta.setTabelaExterna( lcConta );
+		txtDescConta.setTabelaExterna( lcConta, null );
 		txtDescConta.setLabel( "Descrição da Conta" );		
 		
 		/***************
@@ -320,10 +320,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcTipoCobItRec.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCobItRec.setQueryCommit( false );
 		lcTipoCobItRec.setReadOnly( true );
-		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec );
+		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec, null );
 		txtCodTipoCobItRec.setFK( true );
 		txtCodTipoCobItRec.setNomeCampo( "CodTipoCob" );
-		txtDescTipoCobItRec.setTabelaExterna( lcTipoCobItRec );
+		txtDescTipoCobItRec.setTabelaExterna( lcTipoCobItRec, null );
 		txtDescTipoCobItRec.setLabel( "Descrição do tipo de cobrança" );
 		
 		/***************
@@ -336,7 +336,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
 		lcCartCobItRec.setQueryCommit( false );
 		lcCartCobItRec.setReadOnly( true );
-		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec, null );
 		txtCodCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtDescCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtDescCartCobItRec.setLabel( "Descrição da carteira de cobrança" );
@@ -350,10 +350,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcBancoItRec.montaSql( false, "BANCO", "FN" );
 		lcBancoItRec.setQueryCommit( false );
 		lcBancoItRec.setReadOnly( true );
-		txtCodBancoItRec.setTabelaExterna( lcBancoItRec );
+		txtCodBancoItRec.setTabelaExterna( lcBancoItRec, null );
 		txtCodBancoItRec.setFK( true );
 		txtCodBancoItRec.setNomeCampo( "CodBanco" );
-		txtDescBancoItRec.setTabelaExterna( lcBancoItRec );
+		txtDescBancoItRec.setTabelaExterna( lcBancoItRec, null );
 		txtDescBancoItRec.setLabel( "Descrição do Banco" );
 
 		/*****************

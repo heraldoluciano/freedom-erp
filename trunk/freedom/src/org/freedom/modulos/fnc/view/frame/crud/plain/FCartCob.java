@@ -87,7 +87,7 @@ public class FCartCob extends FDados implements ActionListener {
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
 		txtNomeBanco.setListaCampos( lcBanco );

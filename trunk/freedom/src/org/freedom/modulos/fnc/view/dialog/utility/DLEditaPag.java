@@ -113,7 +113,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
@@ -122,7 +122,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
@@ -134,10 +134,10 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcCC.setQueryCommit( false );
 		lcCC.setWhereAdic( "NIVELCC=10" );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtAnoCC.setTabelaExterna( lcCC, null );
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 
@@ -149,7 +149,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );

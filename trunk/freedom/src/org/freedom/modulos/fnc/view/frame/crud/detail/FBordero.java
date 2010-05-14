@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 
 /**
@@ -136,7 +137,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 		txtCodConta.setFK( true );
 		
 		lcItReceber.add( new GuardaCampo( txtStatusItRec, "StatusItRec", "Status", ListaCampos.DB_SI, false ) );	
@@ -153,10 +154,10 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcItReceber.montaSql( false, "ITRECEBER IR", "FN" );
 		lcItReceber.setQueryCommit( false );
 		lcItReceber.setReadOnly( true );
-		txtCodRec.setTabelaExterna( lcItReceber );
+		txtCodRec.setTabelaExterna( lcItReceber, null );
 		txtCodRec.setFK( true );
 		txtCodRec.setNomeCampo( "CodRec" );
-		txtNParcItRec.setTabelaExterna( lcItReceber );
+		txtNParcItRec.setTabelaExterna( lcItReceber, null );
 		txtNParcItRec.setFK( true );
 		txtNParcItRec.setNomeCampo( "NParcItRec" );
 	}

@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FManutCli extends FDados implements RadioGroupListener, PostListener, InsertListener, CarregaListener {
 
@@ -113,14 +114,14 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, FCliente.class.getCanonicalName() );
 
 		montaTela();
 

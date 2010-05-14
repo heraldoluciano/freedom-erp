@@ -134,7 +134,7 @@ public class DLBordero extends FDialogo {
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );		
 
@@ -142,7 +142,7 @@ public class DLBordero extends FDialogo {
 		lcContaBordero.add( new GuardaCampo( txtDescContaBordero, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcContaBordero.montaSql( false, "CONTA", "FN" );
 		lcContaBordero.setReadOnly( true );
-		txtCodContaBordero.setTabelaExterna( lcContaBordero );
+		txtCodContaBordero.setTabelaExterna( lcContaBordero, null );
 		txtCodContaBordero.setFK( true );
 		txtCodContaBordero.setNomeCampo( "NumConta" );
 	}
