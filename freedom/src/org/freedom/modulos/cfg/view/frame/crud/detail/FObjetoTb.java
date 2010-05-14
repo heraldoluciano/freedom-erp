@@ -62,7 +62,7 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
 	lcTabela.montaSql(false, "TABELA", "SG");    
 	lcTabela.setQueryCommit(false);
 
-	txtCodTb.setTabelaExterna(lcTabela);
+	txtCodTb.setTabelaExterna(lcTabela, FTabela.class.getCanonicalName() );
     txtCodTb.setNomeCampo("CODTB");    
     
     setListaCampos(lcCampos);

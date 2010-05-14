@@ -95,7 +95,7 @@ public class FAjustaSitOrc extends FDados implements ActionListener, CarregaList
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
 		lcOrc.setQueryCommit( false );
 		lcOrc.setReadOnly( true );
-		txtCodOrc.setTabelaExterna(lcOrc);
+		txtCodOrc.setTabelaExterna(lcOrc, null);
 		txtCodProd.setAtivo( false );
 
 		// FK Produto
@@ -106,7 +106,7 @@ public class FAjustaSitOrc extends FDados implements ActionListener, CarregaList
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, null );
 		
 		adicCampo(txtCodOrc, 7, 20, 70, 20, "CodOrc", "Núm.orç.", ListaCampos.DB_PF, true);
 		adicDescFK( txtDtOrc, 80, 20, 90, 20, "DtOrc", "Dt.emissão");

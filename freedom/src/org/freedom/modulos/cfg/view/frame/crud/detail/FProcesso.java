@@ -40,6 +40,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.dialog.report.DLRProcesso;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FTarefa;
 
 public class FProcesso extends FDetalhe implements ActionListener {
   private static final long serialVersionUID = 1L;
@@ -69,7 +70,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
    lcTarefa.montaSql(false, "TAREFA", "SG");
    lcTarefa.setQueryCommit(false);
    lcTarefa.setReadOnly(true);
-   txtCodTar.setTabelaExterna(lcTarefa);
+   txtCodTar.setTabelaExterna(lcTarefa, FTarefa.class.getCanonicalName());
     
    adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.", ListaCampos.DB_PK, true);
    adicCampo(txtDescProc, 80, 20, 230, 20,"DescProc","Descrição do precesso", ListaCampos.DB_SI, true);
