@@ -134,7 +134,7 @@ public class FRProducao extends FRelatorio {
 		lcProdDE.add( new GuardaCampo( txtRefProdDE, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProdDE.add( new GuardaCampo( txtDescProdDE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdDE.setWhereAdic( "TIPOPROD='F'" );
-		txtCodProdDE.setTabelaExterna( lcProdDE );
+		txtCodProdDE.setTabelaExterna( lcProdDE, null );
 		txtCodProdDE.setNomeCampo( "CodProd" );
 		txtCodProdDE.setFK( true );
 		lcProdDE.setReadOnly( true );
@@ -148,7 +148,7 @@ public class FRProducao extends FRelatorio {
 		lcProdATE.add( new GuardaCampo( txtRefProdATE, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProdATE.add( new GuardaCampo( txtDescProdATE, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdATE.setWhereAdic( "TIPOPROD='F'" );
-		txtCodProdATE.setTabelaExterna( lcProdATE );
+		txtCodProdATE.setTabelaExterna( lcProdATE, null);
 		txtCodProdATE.setNomeCampo( "CodProd" );
 		txtCodProdATE.setFK( true );
 		lcProdATE.setReadOnly( true );
@@ -162,7 +162,7 @@ public class FRProducao extends FRelatorio {
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, null);
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
 				

@@ -98,7 +98,7 @@ public class FRColetas extends FRelatorio {
 		
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
-		txtCodSecao.setTabelaExterna( lcSecao );
+		txtCodSecao.setTabelaExterna( lcSecao, null );
 		txtCodSecao.setNomeCampo( "CodSecao" );
 		txtCodSecao.setFK( true );
 		lcSecao.setReadOnly( true );
@@ -109,7 +109,7 @@ public class FRColetas extends FRelatorio {
 
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );

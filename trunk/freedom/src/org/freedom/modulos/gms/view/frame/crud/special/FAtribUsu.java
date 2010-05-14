@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 
 
 public class FAtribUsu extends FFilho implements  CarregaListener, ActionListener {
@@ -78,7 +79,7 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
     lcUsu.setReadOnly(true);
     txtCodUsu.setFK(true);
     txtCodUsu.setNomeCampo("IDUsu");
-    txtCodUsu.setTabelaExterna(lcUsu);
+    txtCodUsu.setTabelaExterna(lcUsu, FUsuario.class.getCanonicalName());
     
     getTela().add(pinCli,BorderLayout.CENTER);
     

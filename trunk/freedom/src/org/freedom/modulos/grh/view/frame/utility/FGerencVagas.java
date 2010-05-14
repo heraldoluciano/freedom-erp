@@ -252,7 +252,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		lcEmpregador.montaSql( false, "EMPREGADOR", "RH" );
 		lcEmpregador.setQueryCommit( false );
 		lcEmpregador.setReadOnly( true );
-		txtCodEmpr.setTabelaExterna( lcEmpregador );
+		txtCodEmpr.setTabelaExterna( lcEmpregador, null );
 
 		// FK Funcao
 		lcFuncao.add( new GuardaCampo( txtCodFunc, "CodFunc", "Código", ListaCampos.DB_PK, null, false ) );
@@ -260,7 +260,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 		lcFuncao.setQueryCommit( false );
 		lcFuncao.setReadOnly( true );
-		txtCodFunc.setTabelaExterna( lcFuncao );
+		txtCodFunc.setTabelaExterna( lcFuncao, null );
 
 		// Candidatos
 		lcCandidato.add( new GuardaCampo( txtCodCand, "CodCand", "Cód.Cand.", ListaCampos.DB_PK, null, false ) );
@@ -271,7 +271,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		lcCandidato.setQueryCommit( false );
 		lcCandidato.setReadOnly( true );
 
-		txtCodCand.setTabelaExterna( lcCandidato );
+		txtCodCand.setTabelaExterna( lcCandidato, null );
 		txtCodCand.setNomeCampo( "CodCand" );
 		txtCodCand.setPK( true );
 		txtCodCand.setListaCampos( lcCandidato );

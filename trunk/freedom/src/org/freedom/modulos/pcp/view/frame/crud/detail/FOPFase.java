@@ -53,7 +53,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOP;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FRecursos;
 
 public class FOPFase extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener {
 
@@ -136,7 +139,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
 		txtDescProd.setListaCampos(lcProd);
 		
 		adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº.OP", ListaCampos.DB_PK, true);
@@ -160,7 +163,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcFase.montaSql(false, "FASE", "PP");
 		lcFase.setQueryCommit(false);
 		lcFase.setReadOnly(true);
-		txtCodFase.setTabelaExterna(lcFase);
+		txtCodFase.setTabelaExterna(lcFase, FFase.class.getCanonicalName());
 		txtDescFase.setListaCampos(lcFase);
 		
 		lcRec.add(new GuardaCampo(txtCodRec,"CodRecP", "Cód.rec.", ListaCampos.DB_PK, true));
@@ -170,7 +173,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcRec.montaSql(false, "RECURSO", "PP");
 		lcRec.setQueryCommit(false);
 		lcRec.setReadOnly(true);
-		txtCodRec.setTabelaExterna(lcRec);
+		txtCodRec.setTabelaExterna(lcRec, FRecursos.class.getCanonicalName());
 		txtDescRec.setListaCampos(lcRec);
 		
 		setPainel( pinDet, pnDet);

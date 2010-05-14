@@ -82,7 +82,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 

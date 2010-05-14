@@ -61,7 +61,13 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
+import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
+import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
+import org.freedom.modulos.std.view.frame.report.FRegraComiss;
 
 public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxListener, InsertListener, CarregaListener, JComboBoxListener {
 
@@ -192,28 +198,28 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcModNota.montaSql( false, "MODNOTA", "LF" );
 		lcModNota.setQueryCommit( false );
 		lcModNota.setReadOnly( true );
-		txtCodModNota.setTabelaExterna( lcModNota );
+		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName() );
 
 		lcSerie.add( new GuardaCampo( txtCodSerie, "Serie", "Cód.serie", ListaCampos.DB_PK, false ) );
 		lcSerie.add( new GuardaCampo( txtDescSerie, "DocSerie", "Nº. doc", ListaCampos.DB_SI, false ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
-		txtCodSerie.setTabelaExterna( lcSerie );
+		txtCodSerie.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
 
 		lcTab.add( new GuardaCampo( txtCodTab, "CodTab", "Cód.tb.pc.", ListaCampos.DB_PK, false ) );
 		lcTab.add( new GuardaCampo( txtDescTab, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false ) );
 		lcTab.montaSql( false, "TABPRECO", "VD" );
 		lcTab.setQueryCommit( false );
 		lcTab.setReadOnly( true );
-		txtCodTab.setTabelaExterna( lcTab );
+		txtCodTab.setTabelaExterna( lcTab, FTabPreco.class.getCanonicalName() );
 
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov2, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov2, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov2.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov2.setTabelaExterna( lcTipoMov, FTabPreco.class.getCanonicalName() );
 
 		lcUsu.add( new GuardaCampo( txtIDUsu, "IDUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome nome do usuário", ListaCampos.DB_SI, false ) );
@@ -222,7 +228,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcUsu.setReadOnly( true );
 		txtIDUsu.setFK( true );
 		txtIDUsu.setNomeCampo( "IDUsu" );
-		txtIDUsu.setTabelaExterna( lcUsu );
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
 
 		lcRegraComis.add( new GuardaCampo( txtCodRegraComis, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_PK, txtDescRegraComis, false ) );
 		lcRegraComis.add( new GuardaCampo( txtDescRegraComis, "DescRegrComis", "Descrição da regra do comissionado", ListaCampos.DB_SI, false ) );
@@ -231,14 +237,14 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcRegraComis.setReadOnly( true );
 		txtCodRegraComis.setFK( true );
 		txtCodRegraComis.setNomeCampo( "IDUsu" );
-		txtCodRegraComis.setTabelaExterna( lcRegraComis );
+		txtCodRegraComis.setTabelaExterna( lcRegraComis, FRegraComiss.class.getCanonicalName() );
 
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Descrição da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
 		lcTran.setReadOnly( true );
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 
 		cbTipoMov = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 		cbTipoMov.addComboBoxListener( this );
@@ -368,7 +374,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcRestricoes.setQueryCommit( false );
 		lcRestricoes.montaTab();
 
-		txtCodTipoMov.setTabelaExterna( lcRestricoes );
+		txtCodTipoMov.setTabelaExterna( lcRestricoes, FTipoMov.class.getCanonicalName() );
 
 		tbRestricoes.setTamColuna( 80, 0 );
 		tbRestricoes.setTamColuna( 280, 1 );

@@ -65,9 +65,13 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 
 
 public class FSolicitacaoCompra extends FDetalhe implements PostListener,
@@ -188,7 +192,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
 
 		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_PK, false));
@@ -206,7 +210,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
-		txtRefProd.setTabelaExterna(lcProd2);
+		txtRefProd.setTabelaExterna(lcProd2, FProduto.class.getCanonicalName());
 
 		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.",
 				ListaCampos.DB_PK, txtDescAlmox, false));
@@ -216,7 +220,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 		txtDescAlmox.setSoLeitura(true);
-		txtCodAlmox.setTabelaExterna(lcAlmox);
+		txtCodAlmox.setTabelaExterna(lcAlmox, FAlmox.class.getCanonicalName());
 
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
 				false));
@@ -227,8 +231,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
-		txtCodCC.setTabelaExterna(lcCC);
-		txtAnoCC.setTabelaExterna(lcCC);
+		txtCodCC.setTabelaExterna(lcCC, FCentroCusto.class.getCanonicalName());
+		txtAnoCC.setTabelaExterna(lcCC, FCentroCusto.class.getCanonicalName());
 
 		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
 				false));
@@ -239,7 +243,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcUsu.montaSql(false, "USUARIO", "SG");
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
-		txtIDUsu.setTabelaExterna(lcUsu);
+		txtIDUsu.setTabelaExterna(lcUsu, FUsuario.class.getCanonicalName());
 
 		/*lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
 				ListaCampos.DB_PK, true));

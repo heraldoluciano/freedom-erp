@@ -30,6 +30,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
 
 
@@ -143,7 +144,7 @@ public class FContraProva extends FDetalhe {
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		
 		/**************
 		 *     OP     * 
@@ -154,8 +155,8 @@ public class FContraProva extends FDetalhe {
 		txtCodOp.setNomeCampo( "CodOp" );
 		lcOp.setReadOnly( true );
 		lcOp.montaSql( false, "OP", "PP" );
-		txtCodOp.setTabelaExterna( lcOp );
-		txtSeqOp.setTabelaExterna( lcOp );
+		txtCodOp.setTabelaExterna( lcOp, FOP.class.getCanonicalName() );
+		txtSeqOp.setTabelaExterna( lcOp, FOP.class.getCanonicalName() );
 		
 		
 	}

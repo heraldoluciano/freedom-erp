@@ -217,7 +217,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.setWhereAdic( "TIPOPROD='F'" );
-		txtCodProd.setTabelaExterna( lcProd );		
+		txtCodProd.setTabelaExterna( lcProd, null );		
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
@@ -225,7 +225,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );

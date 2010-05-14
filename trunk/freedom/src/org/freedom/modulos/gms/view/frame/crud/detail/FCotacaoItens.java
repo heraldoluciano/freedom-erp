@@ -66,9 +66,12 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 
 public class FCotacaoItens extends FDetalhe implements PostListener,
@@ -190,7 +193,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
 
 		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_PK, false));
@@ -209,7 +212,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
-		txtRefProd.setTabelaExterna(lcProd2);
+		txtRefProd.setTabelaExterna(lcProd2, FProduto.class.getCanonicalName());
 
 		lcProd3.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, false));
@@ -219,7 +222,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd3.montaSql(false, "PRODUTO", "EQ");
 		lcProd3.setReadOnly(true);
-		txtCodProd2.setTabelaExterna(lcProd3);
+		txtCodProd2.setTabelaExterna(lcProd3, FProduto.class.getCanonicalName());
 
 		lcProd4.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência",
 				ListaCampos.DB_PK, false));
@@ -233,7 +236,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcProd4.montaSql(false, "PRODUTO", "EQ");
 		lcProd4.setQueryCommit(false);
 		lcProd4.setReadOnly(true);
-		txtRefProd2.setTabelaExterna(lcProd4);
+		txtRefProd2.setTabelaExterna(lcProd4, FProduto.class.getCanonicalName());
 		
 		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
 				false));
@@ -244,7 +247,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcUsu.montaSql(false, "USUARIO", "SG");
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
-		txtIDUsu.setTabelaExterna(lcUsu);
+		txtIDUsu.setTabelaExterna(lcUsu, FUsuario.class.getCanonicalName());
 
 		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
 				ListaCampos.DB_PK, true));
@@ -253,7 +256,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcUnid.montaSql(false, "UNIDADE", "EQ");
 		lcUnid.setReadOnly(true);
 		lcUnid.setQueryCommit(false);
-		txtCodUnid.setTabelaExterna(lcUnid);		
+		txtCodUnid.setTabelaExterna(lcUnid, FUnidade.class.getCanonicalName());		
 
 		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",
 				ListaCampos.DB_PK, false));
@@ -262,7 +265,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcFor.montaSql(false, "FORNECED", "CP");
 		lcFor.setQueryCommit(false);
 		lcFor.setReadOnly(true);
-		txtCodFor.setTabelaExterna(lcFor);
+		txtCodFor.setTabelaExterna(lcFor, FFornecedor.class.getCanonicalName());
 
 		txtQtdAprovItSol.addFocusListener(this);
 		lcCampos.addPostListener(this);

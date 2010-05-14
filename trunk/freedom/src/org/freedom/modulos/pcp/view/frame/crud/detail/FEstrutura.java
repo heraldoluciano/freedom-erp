@@ -63,7 +63,13 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.dialog.report.DLREstrutura;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoAnalise;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
+import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 
 public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, PostListener {
 
@@ -279,9 +285,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdEst.montaSql( false, "PRODUTO", "EQ" );
 		lcProdEst.setQueryCommit( false );
 		lcProdEst.setReadOnly( true );
-		txtRefProdEst.setTabelaExterna( lcProdEst );
-		txtCodProdEst.setTabelaExterna( lcProdEst );
-		txtSeqEst.setTabelaExterna( lcProdEst );
+		txtRefProdEst.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName());
+		txtCodProdEst.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcProdEst, FProduto.class.getCanonicalName() );
 		txtDescProdEst.setListaCampos( lcProdEst );
 		
 		lcProdItem.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
@@ -292,7 +298,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItem.montaSql( false, "PRODUTO", "EQ" );
 		lcProdItem.setQueryCommit( false );
 		lcProdItem.setReadOnly( true );
-		txtCodProdItem.setTabelaExterna( lcProdItem );
+		txtCodProdItem.setTabelaExterna( lcProdItem, FProduto.class.getCanonicalName() );
 //		txtDescProdItem.setListaCampos( lcDetItens );
 
 		lcProdItemRef.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
@@ -303,7 +309,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItemRef.montaSql( false, "PRODUTO", "EQ" );
 		lcProdItemRef.setQueryCommit( false );
 		lcProdItemRef.setReadOnly( true );
-		txtRefProdItem.setTabelaExterna( lcProdItemRef );
+		txtRefProdItem.setTabelaExterna( lcProdItemRef, FProduto.class.getCanonicalName() );
 //		txtRefProdItem.setListaCampos( lcDetItens );
 		
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
@@ -312,7 +318,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcFase.montaSql( false, "FASE", "PP" );
 		lcFase.setQueryCommit( false );
 		lcFase.setReadOnly( true );
-		txtCodFase.setTabelaExterna( lcFase );
+		txtCodFase.setTabelaExterna( lcFase, FFase.class.getCanonicalName());
 		txtCodFase.setNomeCampo( "codfase" );
 		txtDescFase.setListaCampos( lcFase );
 
@@ -321,7 +327,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcModLote.montaSql( false, "MODLOTE", "EQ" );
 		lcModLote.setQueryCommit( false );
 		lcModLote.setReadOnly( true );
-		txtCodModLote.setTabelaExterna( lcModLote );
+		txtCodModLote.setTabelaExterna( lcModLote, FModLote.class.getCanonicalName() );
 		txtDescModLote.setListaCampos( lcModLote );
 
 		adicCampo( txtCodProdEst, 7, 20, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdEst, true );
@@ -347,7 +353,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcTipoRec.montaSql( false, "TIPOREC", "PP" );
 		lcTipoRec.setQueryCommit( false );
 		lcTipoRec.setReadOnly( true );
-		txtCodTpRec.setTabelaExterna( lcTipoRec );
+		txtCodTpRec.setTabelaExterna( lcTipoRec, FTipoRec.class.getCanonicalName() );
 
 		setPainel( pinDetFases, pnDet );
 		pinDetFases.add( pinDetFasesCampos );
@@ -431,11 +437,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcEstDistrib.setReadOnly( true );
 		lcEstDistrib.setQueryCommit( false );
 		txtCodProdDistrib.setListaCampos( lcEstDistrib );
-		txtCodProdDistrib.setTabelaExterna( lcEstDistrib );
+		txtCodProdDistrib.setTabelaExterna( lcEstDistrib, FEstrutura.class.getCanonicalName() );
 		txtCodProdDistrib.setNomeCampo( "Codprod" );
 		txtCodProdDistrib.setFK( true );
 		txtSeqEstDistrib.setListaCampos( lcEstDistrib );
-		txtSeqEstDistrib.setTabelaExterna( lcEstDistrib );
+		txtSeqEstDistrib.setTabelaExterna( lcEstDistrib, FEstrutura.class.getCanonicalName() );
 		txtSeqEstDistrib.setNomeCampo( "seqest" );
 		txtSeqEstDistrib.setFK( true );
 		txtDescEstDistrib.setListaCampos( lcEstDistrib );
@@ -476,14 +482,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcTpAnalise.setReadOnly( true );
 		lcTpAnalise.setQueryCommit( false );
 		txtCodTpAnalise.setListaCampos( lcTpAnalise );
-		txtCodTpAnalise.setTabelaExterna( lcTpAnalise );
+		txtCodTpAnalise.setTabelaExterna( lcTpAnalise, FTipoAnalise.class.getCanonicalName());
 
 		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
 		lcUnid.add( new GuardaCampo( txtCasasDec, "CasasDec", "Cód.unid.", ListaCampos.DB_SI, true ) );
 		lcUnid.montaSql( false, "UNIDADE", "EQ" );
 		lcUnid.setReadOnly( true );
 		lcUnid.setQueryCommit( false );
-		txtCodUnid.setTabelaExterna( lcUnid );
+		txtCodUnid.setTabelaExterna( lcUnid, FUnidade.class.getCanonicalName() );
 				
 		adicCampo( txtCodEstAnalise, 7, 20, 70, 20, "CODESTANALISE", "Cód.Est.An.", ListaCampos.DB_PK, true );	
 		adicCampo( txtCodTpAnalise, 80, 20, 70, 20, "CodTpAnalise", "Cód.Tp.An", ListaCampos.DB_FK, txtDescTpAnalise, true );

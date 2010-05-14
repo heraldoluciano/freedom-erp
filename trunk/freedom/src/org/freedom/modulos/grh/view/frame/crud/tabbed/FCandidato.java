@@ -46,6 +46,10 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
+import org.freedom.modulos.grh.view.frame.crud.plain.FCaracteristica;
+import org.freedom.modulos.grh.view.frame.crud.plain.FCurso;
+import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -302,14 +306,14 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		lcEstadoCivil.montaSql( false, "ESTCIVIL", "SG" );
 		lcEstadoCivil.setQueryCommit( false );
 		lcEstadoCivil.setReadOnly( true );
-		txtCodEstCivilCand.setTabelaExterna( lcEstadoCivil );
+		txtCodEstCivilCand.setTabelaExterna( lcEstadoCivil, FEstadoCivil.class.getCanonicalName() );
 
 		lcCurso.add( new GuardaCampo( txtCodCursoCand, "CodCurso", "Cód.curso", ListaCampos.DB_PK, txtDescCursoCand, false ) );
 		lcCurso.add( new GuardaCampo( txtDescCursoCand, "DescCurso", "Descrição do curso", ListaCampos.DB_SI, false ) );
 		lcCurso.montaSql( false, "CURSO", "RH" );
 		lcCurso.setReadOnly( true );
 		lcCurso.setQueryCommit( false );
-		txtCodCursoCand.setTabelaExterna( lcCurso );
+		txtCodCursoCand.setTabelaExterna( lcCurso, FCurso.class.getCanonicalName() );
 		txtCodCursoCand.setFK( true );
 		txtCodCursoCand.setListaCampos( lcCurso );
 		txtDescCursoCand.setListaCampos( lcCurso );
@@ -319,7 +323,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		lcCaracteristica.montaSql( false, "Caracteristica", "RH" );
 		lcCaracteristica.setReadOnly( true );
 		lcCaracteristica.setQueryCommit( false );
-		txtCodCaracCand.setTabelaExterna( lcCaracteristica );
+		txtCodCaracCand.setTabelaExterna( lcCaracteristica, FCaracteristica.class.getCanonicalName() );
 		txtCodCaracCand.setFK( true );
 		txtCodCaracCand.setListaCampos( lcCaracteristica );
 		txtDescCaracCand.setListaCampos( lcCaracteristica );
@@ -329,7 +333,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		lcFuncao.montaSql( true, "FUNCAO", "RH" );
 		lcFuncao.setReadOnly( true );
 		lcFuncao.setQueryCommit( false );
-		txtCodFuncaoCand.setTabelaExterna( lcFuncao );
+		txtCodFuncaoCand.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName() );
 		txtCodFuncaoCand.setFK( true );
 		txtCodFuncaoCand.setListaCampos( lcFuncao );
 		txtDescFuncaoCand.setListaCampos( lcFuncao );

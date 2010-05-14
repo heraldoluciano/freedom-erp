@@ -435,7 +435,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -534,7 +534,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcVendaBaixa.montaSql( false, "VENDA", "VD" );
 		lcVendaBaixa.setQueryCommit( false );
 		lcVendaBaixa.setReadOnly( true );
-		txtCodVendaBaixa.setTabelaExterna( lcVendaBaixa );
+		txtCodVendaBaixa.setTabelaExterna( lcVendaBaixa, null );
 		txtCodVendaBaixa.setFK( true );
 		txtCodVendaBaixa.setNomeCampo( "CodVenda" );
 
@@ -545,7 +545,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcCliBaixa.montaSql( false, "CLIENTE", "VD" );
 		lcCliBaixa.setQueryCommit( false );
 		lcCliBaixa.setReadOnly( true );
-		txtCodCliBaixa.setTabelaExterna( lcCliBaixa );
+		txtCodCliBaixa.setTabelaExterna( lcCliBaixa, null );
 		txtCodCliBaixa.setFK( true );
 		txtCodCliBaixa.setNomeCampo( "CodCli" );
 
@@ -554,7 +554,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcBancoBaixa.montaSql( false, "BANCO", "FN" );
 		lcBancoBaixa.setQueryCommit( false );
 		lcBancoBaixa.setReadOnly( true );
-		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa );
+		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa, null );
 		txtCodBancoBaixa.setFK( true );
 		txtCodBancoBaixa.setNomeCampo( "CodBanco" );
 
@@ -571,7 +571,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcRecBaixa.montaSql( false, "RECEBER", "FN" );
 		lcRecBaixa.setQueryCommit( false );
 		lcRecBaixa.setReadOnly( true );
-		txtCodRecBaixa.setTabelaExterna( lcRecBaixa );
+		txtCodRecBaixa.setTabelaExterna( lcRecBaixa, null );
 		txtCodRecBaixa.setFK( true );
 		txtCodRecBaixa.setNomeCampo( "CodRec" );
 
@@ -691,7 +691,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcRecManut.montaSql( false, "RECEBER", "FN" );
 		lcRecManut.setQueryCommit( false );
 		lcRecManut.setReadOnly( true );
-		txtCodRecManut.setTabelaExterna( lcRecManut );
+		txtCodRecManut.setTabelaExterna( lcRecManut, null );
 		txtCodRecManut.setFK( true );
 		txtCodRecManut.setNomeCampo( "CodRec" );
 
@@ -750,7 +750,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcCliFiltro.montaSql( false, "CLIENTE", "VD" );
 		lcCliFiltro.setQueryCommit( false );
 		lcCliFiltro.setReadOnly( true );
-		txtCodCliFiltro.setTabelaExterna( lcCliFiltro );
+		txtCodCliFiltro.setTabelaExterna( lcCliFiltro, null );
 		txtCodCliFiltro.setFK( true );
 		txtCodCliFiltro.setNomeCampo( "CodCli" );
 
@@ -761,7 +761,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcCliManut.montaSql( false, "CLIENTE", "VD" );
 		lcCliManut.setQueryCommit( false );
 		lcCliManut.setReadOnly( true );
-		txtCodCliManut.setTabelaExterna( lcCliManut );
+		txtCodCliManut.setTabelaExterna( lcCliManut, null );
 		txtCodCliManut.setFK( true );
 		txtCodCliManut.setNomeCampo( "CodCli" );
 

@@ -353,7 +353,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 
@@ -436,7 +436,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcCompraBaixa.montaSql( false, "COMPRA", "CP" );
 		lcCompraBaixa.setQueryCommit( false );
 		lcCompraBaixa.setReadOnly( true );
-		txtCodCompraBaixa.setTabelaExterna( lcCompraBaixa );
+		txtCodCompraBaixa.setTabelaExterna( lcCompraBaixa, null );
 		txtCodCompraBaixa.setFK( true );
 		txtCodCompraBaixa.setNomeCampo( "CodCompra" );
 
@@ -446,7 +446,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcForBaixa.montaSql( false, "FORNECED", "CP" );
 		lcForBaixa.setQueryCommit( false );
 		lcForBaixa.setReadOnly( true );
-		txtCodForBaixa.setTabelaExterna( lcForBaixa );
+		txtCodForBaixa.setTabelaExterna( lcForBaixa, null);
 		txtCodForBaixa.setFK( true );
 		txtCodForBaixa.setNomeCampo( "CodFor" );
 
@@ -455,7 +455,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcBancoBaixa.montaSql( false, "BANCO", "FN" );
 		lcBancoBaixa.setQueryCommit( false );
 		lcBancoBaixa.setReadOnly( true );
-		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa );
+		txtCodBancoBaixa.setTabelaExterna( lcBancoBaixa, null );
 		txtCodBancoBaixa.setFK( true );
 		txtCodBancoBaixa.setNomeCampo( "CodBanco" );
 
@@ -473,7 +473,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcPagBaixa.setQueryCommit( false );
 		lcPagBaixa.setReadOnly( true );
 
-		txtCodPagBaixa.setTabelaExterna( lcPagBaixa );
+		txtCodPagBaixa.setTabelaExterna( lcPagBaixa, null );
 		txtCodPagBaixa.setFK( true );
 		txtCodPagBaixa.setNomeCampo( "CodPag" );
 		txtDoc.setAtivo( false );
@@ -634,7 +634,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcForManut.setQueryCommit( false );
 		lcForManut.setReadOnly( true );
 
-		txtCodForManut.setTabelaExterna( lcForManut );
+		txtCodForManut.setTabelaExterna( lcForManut, null );
 		txtCodForManut.setFK( true );
 		txtCodForManut.setNomeCampo( "CodFor" );
 

@@ -31,6 +31,8 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.pcp.view.frame.crud.tabbed.FMetodoAnalitico;
+import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 
 import java.util.Vector;
 
@@ -109,7 +111,7 @@ public class FTipoAnalise extends FDados {
 		lcUnid.setReadOnly( true );
 		lcUnid.setQueryCommit( false );
 		txtCodUnid.setListaCampos( lcUnid );
-		txtCodUnid.setTabelaExterna( lcUnid );
+		txtCodUnid.setTabelaExterna( lcUnid, FUnidade.class.getCanonicalName());
 		
 		/*****************
 		 *    Método     *
@@ -122,7 +124,7 @@ public class FTipoAnalise extends FDados {
 		lcMetodo.setReadOnly( true );
 		lcMetodo.setQueryCommit( false );
 		txtCodMetodo.setListaCampos( lcMetodo );
-		txtCodMetodo.setTabelaExterna( lcMetodo );
+		txtCodMetodo.setTabelaExterna( lcMetodo, FMetodoAnalitico.class.getCanonicalName() );
 	}
 	public void setConexao( DbConnection cn ){
 		

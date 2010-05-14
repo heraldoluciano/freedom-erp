@@ -84,12 +84,16 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pcp.business.object.ModLote;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
 import org.freedom.modulos.pcp.view.dialog.utility.DLDistrib;
 import org.freedom.modulos.pcp.view.dialog.utility.DLObsJust;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 
 
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener {
@@ -370,7 +374,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcModLote.montaSql( false, "MODLOTE", "EQ" );
 		lcModLote.setQueryCommit( false );
 		lcModLote.setReadOnly( true );
-		txtCodModLote.setTabelaExterna( lcModLote );
+		txtCodModLote.setTabelaExterna( lcModLote, FModLote.class.getCanonicalName() );
 
 		lcAlmoxEst.add( new GuardaCampo( txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, txtDescAlmoxEst, false ) );
 		lcAlmoxEst.add( new GuardaCampo( txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
@@ -378,7 +382,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcAlmoxEst.setQueryCommit( false );
 		lcAlmoxEst.setReadOnly( true );
 		txtDescAlmoxEst.setSoLeitura( true );
-		txtCodAlmoxEst.setTabelaExterna( lcAlmoxEst );
+		txtCodAlmoxEst.setTabelaExterna( lcAlmoxEst, FAlmox.class.getCanonicalName() );
 
 		// FK de Lotes
 		lcLoteProdEst.add( new GuardaCampo( txtCodLoteProdEst, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLoteProdEst, false ) );
@@ -387,7 +391,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcLoteProdEst.montaSql( false, "LOTE", "EQ" );
 		lcLoteProdEst.setQueryCommit( false );
 		lcLoteProdEst.setReadOnly( true );
-		txtCodLoteProdEst.setTabelaExterna( lcLoteProdEst );
+		txtCodLoteProdEst.setTabelaExterna( lcLoteProdEst, null );
 
 		// lista campos para o lote do rateio
 		txtLoteRat.setNomeCampo( "CodLote" );
@@ -399,7 +403,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcLoteProdRat.montaSql( false, "LOTE", "EQ" );
 		lcLoteProdRat.setQueryCommit( false );
 		lcLoteProdRat.setReadOnly( true );
-		txtLoteRat.setTabelaExterna( lcLoteProdRat );
+		txtLoteRat.setTabelaExterna( lcLoteProdRat, null  );
 
 		lcTipoMov.add( new GuardaCampo( txtCodTpMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -407,7 +411,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				+ " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) " + ")" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setReadOnly( true );
-		txtCodTpMov.setTabelaExterna( lcTipoMov );
+		txtCodTpMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
 		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_PK, txtDescEst, true ) );
 		lcProdEstCod.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
@@ -422,8 +426,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcProdEstCod.montaSql( false, "ESTRUTURA", "PP" );
 		lcProdEstCod.setQueryCommit( false );
 		lcProdEstCod.setReadOnly( true );
-		txtCodProdEst.setTabelaExterna( lcProdEstCod );
-		txtSeqEst.setTabelaExterna( lcProdEstCod );
+		txtCodProdEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
 		txtCodProdEst.setNomeCampo( "codprod" );
 
 		lcProdEstRef.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true ) );
@@ -439,9 +443,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcProdEstRef.montaSql( false, "ESTRUTURA", "PP" );
 		lcProdEstRef.setQueryCommit( false );
 		lcProdEstRef.setReadOnly( true );
-		txtRefProdEst.setTabelaExterna( lcProdEstRef );
-		txtSeqEst.setTabelaExterna( lcProdEstRef );
-		txtRefProdEst.setNomeCampo( "refprod" );
+		txtRefProdEst.setTabelaExterna( lcProdEstRef, FEstrutura.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcProdEstRef, FEstrutura.class.getCanonicalName());
+		txtRefProdEst.setNomeCampo( "refprod");
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -640,7 +644,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcLoteProdDet.montaSql( false, "LOTE", "EQ" );
 		lcLoteProdDet.setQueryCommit( false );
 		lcLoteProdDet.setReadOnly( true );
-		txtCodLoteProdDet.setTabelaExterna( lcLoteProdDet );
+		txtCodLoteProdDet.setTabelaExterna( lcLoteProdDet, null );
 
 		lcProdDetCod.add( new GuardaCampo( txtCodProdDet, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdDet, true ) );
 		lcProdDetCod.add( new GuardaCampo( txtDescProdDet, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false ) );
@@ -649,7 +653,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcProdDetCod.montaSql( false, "PRODUTO", "EQ" );
 		lcProdDetCod.setQueryCommit( false );
 		lcProdDetCod.setReadOnly( true );
-		txtCodProdDet.setTabelaExterna( lcProdDetCod );
+		txtCodProdDet.setTabelaExterna( lcProdDetCod, FProduto.class.getCanonicalName() );
 		txtCodProdDet.setNomeCampo( "codprod" );
 
 		lcProdDetRef.add( new GuardaCampo( txtRefProdDet, "refprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdDet, true ) );
@@ -659,7 +663,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcProdDetRef.montaSql( false, "PRODUTO", "EQ" );
 		lcProdDetRef.setQueryCommit( false );
 		lcProdDetRef.setReadOnly( true );
-		txtRefProdDet.setTabelaExterna( lcProdDetRef );
+		txtRefProdDet.setTabelaExterna( lcProdDetRef, FProduto.class.getCanonicalName() );
 		txtRefProdDet.setNomeCampo( "refprod" );
 		txtRefProdDet.setFK( true );
 

@@ -157,9 +157,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		lcAcao.add( new GuardaCampo( txaAcao, "ObsAcao", "Obs. ação", ListaCampos.DB_SI, false ) );		
 		lcAcao.montaSql( false, "OPACAOCORRET", "PP" );
 		lcAcao.setQueryCommit( false );
-		txtCodOP.setTabelaExterna( lcAcao );
-		txtSeqOP.setTabelaExterna( lcAcao );
-		txtSeqAC.setTabelaExterna( lcAcao );
+		txtCodOP.setTabelaExterna( lcAcao, null );
+		txtSeqOP.setTabelaExterna( lcAcao, null );
+		txtSeqAC.setTabelaExterna( lcAcao, null );
 		lcAcao.setConexao( con );
 	}
 	

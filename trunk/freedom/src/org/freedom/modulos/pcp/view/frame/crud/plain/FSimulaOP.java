@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 	
 public class FSimulaOP extends FDados implements ActionListener, CarregaListener {
 	private static final long serialVersionUID = 1L;
@@ -80,9 +81,9 @@ public class FSimulaOP extends FDados implements ActionListener, CarregaListener
 	    lcProdEst.montaSql(false, "PRODUTO", "EQ");
 	    lcProdEst.setQueryCommit(false);
 	    lcProdEst.setReadOnly(true);
-	    txtRefProd.setTabelaExterna(lcProdEst);
-	    txtCodProd.setTabelaExterna(lcProdEst);
-	    txtSeqEst.setTabelaExterna(lcProdEst);
+	    txtRefProd.setTabelaExterna(lcProdEst, FProduto.class.getCanonicalName());
+	    txtCodProd.setTabelaExterna(lcProdEst, FProduto.class.getCanonicalName());
+	    txtSeqEst.setTabelaExterna(lcProdEst, FProduto.class.getCanonicalName());
 	    txtDescEst.setListaCampos(lcProdEst);
 	    
 	    txtSeqEst.setRequerido( true );

@@ -43,6 +43,12 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.pdv.FVenda;
+import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -270,7 +276,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		lcTransportadora.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, false ) );
 		lcTransportadora.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
 		lcTransportadora.add( new GuardaCampo( txtCodForTransp, "CodFor", "Cód. fornecedor", ListaCampos.DB_SI, false ) );
-		txtCodTran.setTabelaExterna( lcTransportadora );
+		txtCodTran.setTabelaExterna( lcTransportadora, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
 		txtCodTran.setFK( true );
 		lcTransportadora.montaSql( false, "TRANSP", "VD" );
@@ -281,7 +287,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 *************/		
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		txtCodTipoMov.setFK( true );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -292,7 +298,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 **************************/		
 		lcNat.add( new GuardaCampo( txtCodNat, "CodNat", "Cód.Nat.", ListaCampos.DB_PK, false ) );
 		lcNat.add( new GuardaCampo( txtDescNat, "DescNat", "Descrição da natureza da operação", ListaCampos.DB_SI, false ) );
-		txtCodNat.setTabelaExterna( lcNat );
+		txtCodNat.setTabelaExterna( lcNat, FNatoPer.class.getCanonicalName() );
 		txtCodNat.setNomeCampo( "CodNat" );
 		txtCodNat.setFK( true );
 		lcNat.montaSql( false, "NATOPER", "LF" );
@@ -303,7 +309,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 ***************/		
 		lcRemetente.add( new GuardaCampo( txtCodRemet, "CodUnifCod", "Cód.Rem.", ListaCampos.DB_PK, false ) );
 		lcRemetente.add( new GuardaCampo( txtNomeRemet, "DescUnifCod", "Nome do remetente", ListaCampos.DB_SI, false ) );
-		txtCodRemet.setTabelaExterna( lcRemetente );	
+		txtCodRemet.setTabelaExterna( lcRemetente, null );	
 		txtCodRemet.setNomeCampo( "CodUnifCod" );	
 		txtCodRemet.setFK( true );
 		lcRemetente.montaSql( false, "UNIFCOD", "SG" );
@@ -314,7 +320,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 ******************/		
 		lcDestinatario.add( new GuardaCampo( txtCodDest, "CodUnifCod", "Cód.Dest.", ListaCampos.DB_PK, false ) );
 		lcDestinatario.add( new GuardaCampo( txtNomeDest, "DescUnifCod", "Nome do destinatário", ListaCampos.DB_SI, false ) );
-		txtCodDest.setTabelaExterna( lcDestinatario );
+		txtCodDest.setTabelaExterna( lcDestinatario, null );
 		txtCodDest.setNomeCampo( "CodUnifCod" );
 		txtCodDest.setFK( true );
 		lcDestinatario.montaSql( false, "UNIFCOD", "SG" );
@@ -331,7 +337,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		lcVenda.add( new GuardaCampo( txtDtSaidaVenda, "DtSaidaVenda", "Saída", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_FK, txtRazCli, false ) );
 		txtCodVenda.setListaCampos( lcVenda );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName() );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 		txtCodVenda.setFK( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
@@ -342,7 +348,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 *************/		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
@@ -358,7 +364,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		lcCompra.add( new GuardaCampo( txtDtEntCompra, "DtEntCompra", "Entrada", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for", ListaCampos.DB_FK, txtRazCli, false ) );
 		txtCodCompra.setListaCampos( lcCompra );
-		txtCodCompra.setTabelaExterna( lcCompra );
+		txtCodCompra.setTabelaExterna( lcCompra, FCompra.class.getCanonicalName() );
 		txtCodCompra.setNomeCampo( "CodCompra" );
 		txtCodCompra.setFK( true );
 		lcCompra.montaSql( false, "COMPRA", "CP" );
@@ -369,7 +375,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		 ****************/		
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFornecedor.montaSql( false, "FORNECED", "CP" );

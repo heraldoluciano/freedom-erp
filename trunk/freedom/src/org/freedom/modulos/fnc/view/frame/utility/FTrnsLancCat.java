@@ -143,7 +143,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		lcPlanOrig.setQueryCommit( false );
 		lcPlanOrig.setReadOnly( true );
 		txtCodPlanOrig.setNomeCampo( "CodPlan" );
-		txtCodPlanOrig.setTabelaExterna( lcPlanOrig );
+		txtCodPlanOrig.setTabelaExterna( lcPlanOrig, null );
 		txtCodPlanOrig.setFK( true );
 		txtCodPlanOrig.setRequerido( true );
 		txtCodPlanOrig.setListaCampos( lcPlanOrig );
@@ -162,7 +162,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		lcPlanDest.setQueryCommit( false );
 		lcPlanDest.setReadOnly( true );
 		txtCodPlanDest.setNomeCampo( "CodPlan" );
-		txtCodPlanDest.setTabelaExterna( lcPlanDest );
+		txtCodPlanDest.setTabelaExterna( lcPlanDest, null );
 		txtCodPlanDest.setFK( true );
 		txtCodPlanDest.setRequerido( true );
 		txtCodPlanDest.setListaCampos( lcPlanDest );

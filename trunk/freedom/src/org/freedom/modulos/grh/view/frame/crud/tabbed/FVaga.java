@@ -38,6 +38,10 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.grh.view.frame.crud.plain.FCaracteristica;
+import org.freedom.modulos.grh.view.frame.crud.plain.FCurso;
+import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
+import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
 import java.util.HashMap;
 
@@ -166,14 +170,14 @@ public class FVaga extends FTabDados {
 		lcEmpregador.montaSql( false, "EMPREGADOR", "RH" );
 		lcEmpregador.setQueryCommit( false );
 		lcEmpregador.setReadOnly( true );
-		txtCodEmpr.setTabelaExterna( lcEmpregador );
+		txtCodEmpr.setTabelaExterna( lcEmpregador, FEmpregadores.class.getCanonicalName() );
 
 		lcTurno.add( new GuardaCampo( txtCodTurnoVaga, "CodTurno", "Cód.Turno", ListaCampos.DB_PK, null, false ) );
 		lcTurno.add( new GuardaCampo( txtDescTurnoVaga, "DescTurno", "Descrição do Turno", ListaCampos.DB_SI, false ) );
 		lcTurno.montaSql( false, "TURNO", "RH" );		
 		lcTurno.setQueryCommit( false );
 		lcTurno.setReadOnly( true );
-		txtCodTurnoVaga.setTabelaExterna( lcTurno );
+		txtCodTurnoVaga.setTabelaExterna( lcTurno, FTurnos.class.getCanonicalName() );
 				
 		lcFuncao.add( new GuardaCampo( txtCodFuncaoVaga, "CodFunc", "Cód.função", ListaCampos.DB_PK, null, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncaoVaga, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
@@ -181,14 +185,14 @@ public class FVaga extends FTabDados {
 		lcFuncao.setReadOnly( true );
 		lcFuncao.setQueryCommit( false );
 		txtCodFuncaoVaga.setListaCampos( lcFuncao );
-		txtCodFuncaoVaga.setTabelaExterna( lcFuncao );
+		txtCodFuncaoVaga.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName() );
 		
 		lcCurso.add( new GuardaCampo( txtCodCursoVaga, "CodCurso", "Cód.curso", ListaCampos.DB_PK, txtDescCursoVaga, false ) );
 		lcCurso.add( new GuardaCampo( txtDescCursoVaga, "DescCurso", "Descrição do curso", ListaCampos.DB_SI, false ) );
 		lcCurso.montaSql( false, "CURSO", "RH" );
 		lcCurso.setReadOnly( true );
 		lcCurso.setQueryCommit( false );
-		txtCodCursoVaga.setTabelaExterna( lcCurso );
+		txtCodCursoVaga.setTabelaExterna( lcCurso, FCurso.class.getCanonicalName() );
 		txtCodCursoVaga.setFK( true );
 		txtCodCursoVaga.setListaCampos( lcCurso );
 		txtDescCursoVaga.setListaCampos( lcCurso );
@@ -198,7 +202,7 @@ public class FVaga extends FTabDados {
 		lcCaracteristicaQ.montaSql( false, "Caracteristica", "RH" );
 		lcCaracteristicaQ.setReadOnly( true );
 		lcCaracteristicaQ.setQueryCommit( false );
-		txtCodCaracVagaQ.setTabelaExterna( lcCaracteristicaQ );
+		txtCodCaracVagaQ.setTabelaExterna( lcCaracteristicaQ, FCaracteristica.class.getCanonicalName() );
 		txtCodCaracVagaQ.setFK( true );
 		txtCodCaracVagaQ.setListaCampos( lcCaracteristicaQ );
 		txtDescCaracVagaQ.setListaCampos( lcCaracteristicaQ );
@@ -209,7 +213,7 @@ public class FVaga extends FTabDados {
 		lcCaracteristicaR.setReadOnly( true );
 		lcCaracteristicaR.setQueryCommit( false );
 		txtCodCaracVagaR.setListaCampos( lcCaracteristicaR );
-		txtCodCaracVagaR.setTabelaExterna( lcCaracteristicaR );
+		txtCodCaracVagaR.setTabelaExterna( lcCaracteristicaR, FCaracteristica.class.getCanonicalName() );
 		txtCodCaracVagaR.setFK( true );
 		txtCodCaracVagaR.setListaCampos( lcCaracteristicaR );
 		txtDescCaracVagaR.setListaCampos( lcCaracteristicaR );

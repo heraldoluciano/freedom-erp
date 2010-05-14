@@ -101,7 +101,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -109,7 +109,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodSetor.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
 
@@ -117,7 +117,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null);
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 

@@ -71,9 +71,19 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FOPFase;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, JComboBoxListener {
@@ -321,7 +331,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTpMov.setTabelaExterna( lcTipoMov );
+		txtCodTpMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
 		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('" + Aplicativo.strUsuario + "')) IN " + "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
 				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) " + "OR " + "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND " + "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) " + "OR "
@@ -337,7 +347,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcProd.setWhereAdic( sWhereAdicProd );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
@@ -352,7 +362,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
-		txtRefProd.setTabelaExterna( lcProd2 );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, txtDescAlmox, false ) );
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false ) );
@@ -360,7 +370,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcAlmox.setQueryCommit( false );
 		lcAlmox.setReadOnly( true );
 		txtDescAlmox.setSoLeitura( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
+		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false ) );
@@ -368,8 +378,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcCC.montaSql( false, "CC", "FN" );
 		lcCC.setQueryCommit( false );
 		lcCC.setReadOnly( true );
-		txtCodCC.setTabelaExterna( lcCC );
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
+		txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLote, false ) );
 		lcLote.add( new GuardaCampo( txtDescLote, "VenctoLote", "Dt.vencto.", ListaCampos.DB_SI, false ) );
@@ -379,7 +389,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcLote.montaSql( false, "LOTE", "EQ" );
 		lcLote.setQueryCommit( false );
 		lcLote.setReadOnly( true );
-		txtCodLote.setTabelaExterna( lcLote );
+		txtCodLote.setTabelaExterna( lcLote, null );
 		txtDescLote.setListaCampos( lcLote );
 		txtDescLote.setNomeCampo( "VenctoLote" );
 		txtDescLote.setLabel( "Vencimento" );
@@ -390,21 +400,21 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setQueryCommit( false );
 		lcUsu.setReadOnly( true );
-		txtIDUsu.setTabelaExterna( lcUsu );
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName());
 
 		lcOP.add( new GuardaCampo( txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, false ) );
 		lcOP.add( new GuardaCampo( txtSeqOF, "SeqOF", "Sequencia da fase", ListaCampos.DB_PK, false ) );
 		lcOP.montaSql( false, "OPFASE", "PP" );
 		lcOP.setQueryCommit( false );
 		lcOP.setReadOnly( true );
-		txtCodOP.setTabelaExterna( lcOP );
-		txtSeqOF.setTabelaExterna( lcOP );
+		txtCodOP.setTabelaExterna( lcOP, FOPFase.class.getCanonicalName() );
+		txtSeqOF.setTabelaExterna( lcOP, FOPFase.class.getCanonicalName() );
 
 		lcSeqOP.add( new GuardaCampo( txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false ) );
 		lcSeqOP.setQueryCommit( false );
 		lcSeqOP.setReadOnly( true );
 
-		txtSeqOP.setTabelaExterna( lcSeqOP );
+		txtSeqOP.setTabelaExterna( lcSeqOP, FOP.class.getCanonicalName() );
 		lcSeqOP.montaSql( false, "OP", "PP" );
 
 		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
@@ -412,11 +422,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcUnid.montaSql( false, "UNIDADE", "EQ" );
 		lcUnid.setReadOnly( true );
 		lcUnid.setQueryCommit( false );
-		txtCodUnid.setTabelaExterna( lcUnid );
+		txtCodUnid.setTabelaExterna( lcUnid, FUnidade.class.getCanonicalName() );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -427,14 +437,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcContrato.setReadOnly( true );
 		lcContrato.setQueryCommit( false );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
-		txtCodContr.setTabelaExterna( lcContrato );
+		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
 
 		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.It.Contr.", ListaCampos.DB_PF, false ) );
 		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );		
 		lcItContrato.setReadOnly( true );
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
-		txtCodItContr.setTabelaExterna( lcItContrato );
+		txtCodItContr.setTabelaExterna( lcItContrato, null );
 
 		vValsTipo.addElement( "M" );
 		vValsTipo.addElement( "A" );

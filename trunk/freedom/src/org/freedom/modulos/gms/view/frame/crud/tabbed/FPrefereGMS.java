@@ -34,6 +34,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.detail.FTipoRecMerc;
 
 
 public class FPrefereGMS extends FTabDados {
@@ -107,7 +108,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercRP.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_RECEBIMENTO_PESAGEM.getValue() + "'" );
 		lcTipoRecMercRP.setQueryCommit( false );
 		lcTipoRecMercRP.setReadOnly( true );
-		txtCodTipoRecMercRP.setTabelaExterna( lcTipoRecMercRP );
+		txtCodTipoRecMercRP.setTabelaExterna( lcTipoRecMercRP, FTipoRecMerc.class.getCanonicalName() );
 
 		/***************************************
 		 * Tipo Rec. Mercadoria Coleta    *
@@ -119,7 +120,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_COLETA_DE_MATERIAIS.getValue() + "'" );
 		lcTipoRecMercCM.setQueryCommit( false );
 		lcTipoRecMercCM.setReadOnly( true );
-		txtCodTipoRecMercCM.setTabelaExterna( lcTipoRecMercCM );
+		txtCodTipoRecMercCM.setTabelaExterna( lcTipoRecMercCM, FTipoRecMerc.class.getCanonicalName() );
 
 		/***************************************
 		 * Tipo de movimento de compra    *
@@ -131,7 +132,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoMovCP.setWhereAdic( "ESTIPOMOV='" + TipoMov.ENTRADA.getValue() + "'" );
 		lcTipoMovCP.setQueryCommit( false );
 		lcTipoMovCP.setReadOnly( true );
-		txtCodTipoMovTC.setTabelaExterna( lcTipoMovCP );
+		txtCodTipoMovTC.setTabelaExterna( lcTipoMovCP, FTipoMov.class.getCanonicalName() );
 		
 		/***************************************
 		 * Tipo de recepcao de mercadoria para ordem de sevico    *
@@ -143,7 +144,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercCM.setWhereAdic( "TIPORECMERC='" + TipoRecMerc.TIPO_ENTRADA_CONCERTO.getValue() + "'" );
 		lcTipoRecMercOS.setQueryCommit( false );
 		lcTipoRecMercOS.setReadOnly( true );
-		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS );
+		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS, FTipoRecMerc.class.getCanonicalName() );
 		
 		
 	}

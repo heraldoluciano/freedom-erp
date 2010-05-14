@@ -150,7 +150,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -158,7 +158,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodSetor.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
 
@@ -166,7 +166,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 
@@ -174,7 +174,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 
@@ -182,7 +182,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 
@@ -192,7 +192,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTpCob.setTabelaExterna( lcTipoCob );
+		txtCodTpCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTpCob.setListaCampos( lcTipoCob );
 		txtDescTpCob.setListaCampos( lcTipoCob );
 		txtCodTpCob.setFK( true );
@@ -201,7 +201,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
 

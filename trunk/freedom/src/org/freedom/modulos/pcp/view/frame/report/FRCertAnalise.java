@@ -130,7 +130,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
          lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ));
          lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ));
          lcProd.add( new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fab.prod.",ListaCampos.DB_SI, false ));
-         txtCodProd.setTabelaExterna( lcProd );
+         txtCodProd.setTabelaExterna( lcProd, null );
          txtCodProd.setNomeCampo( "CodProd" );
          txtCodProd.setFK(true);
          lcProd.setReadOnly(true);
@@ -144,7 +144,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
          lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ));
          lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ));
          lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ));
-         txtCodLote.setTabelaExterna(lcLote);
+         txtCodLote.setTabelaExterna(lcLote, null);
          txtCodLote.setNomeCampo("CodLote");
          txtCodLote.setFK(true);
          lcLote.setReadOnly(true);
@@ -159,7 +159,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
          lcPedido.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ));
          lcPedido.add( new GuardaCampo( txtDtEmitPed, "DtEmitVenda", "Dt.Emissão", ListaCampos.DB_FK, false ));
          lcPedido.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.Venda", ListaCampos.DB_SI, false ));
-         txtCodPed.setTabelaExterna( lcPedido );
+         txtCodPed.setTabelaExterna( lcPedido, null );
          txtCodPed.setNomeCampo( "CodVenda" );
          txtCodPed.setFK(true);
          lcPedido.setReadOnly(true);
@@ -171,7 +171,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
           
           lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
           lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_FK, false ) );
-          txtCodCli.setTabelaExterna( lcCliente );
+          txtCodCli.setTabelaExterna( lcCliente, null );
           txtCodCli.setNomeCampo( "CodCli" );
           txtCodCli.setFK(true);
           lcCliente.setReadOnly(true);

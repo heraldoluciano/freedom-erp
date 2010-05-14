@@ -80,14 +80,14 @@ public class FCurso extends FDados {
 		lcNivel.montaSql( false, "NIVELCURSO", "RH" );
 		lcNivel.setQueryCommit( false );
 		lcNivel.setReadOnly( true );
-		txtCodNivel.setTabelaExterna( lcNivel );
+		txtCodNivel.setTabelaExterna( lcNivel, FNivelCurso.class.getCanonicalName() );
 
 		lcArea.add( new GuardaCampo( txtCodArea, "CodArea", "Cód.área", ListaCampos.DB_PK, true ) );
 		lcArea.add( new GuardaCampo( txtDescArea, "DescArea", "Descrição da área", ListaCampos.DB_SI, false ) );
 		lcArea.montaSql( false, "AREA", "RH" );
 		lcArea.setQueryCommit( false );
 		lcArea.setReadOnly( true );
-		txtCodArea.setTabelaExterna( lcArea );
+		txtCodArea.setTabelaExterna( lcArea, FArea.class.getCanonicalName());
 	}
 
 	private void montaTela() {

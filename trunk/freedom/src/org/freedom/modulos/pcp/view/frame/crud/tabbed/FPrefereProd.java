@@ -36,6 +36,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 
 public class FPrefereProd extends FTabDados {
 
@@ -229,7 +230,7 @@ public class FPrefereProd extends FTabDados {
 		lcTipoMov.setWhereAdic( " TIPOMOV='OP' " );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 		txtCodTipoMov.setFK( true );
 		lcCampos.setMensInserir( false );		
 	}

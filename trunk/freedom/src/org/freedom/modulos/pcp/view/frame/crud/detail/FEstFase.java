@@ -34,6 +34,9 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
@@ -90,7 +93,7 @@ public class FEstFase extends FDetalhe {
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
-    txtCodProd.setTabelaExterna(lcProd);
+    txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
     
     adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
     adicDescFK(txtDescProd, 90, 20, 247, 20, "DescProd", "Descrição do produto");
@@ -105,14 +108,14 @@ public class FEstFase extends FDetalhe {
     lcFase.montaSql(false, "FASE", "PP");
     lcFase.setQueryCommit(false);
     lcFase.setReadOnly(true);
-    txtCodFase.setTabelaExterna(lcFase);
+    txtCodFase.setTabelaExterna(lcFase, FFase.class.getCanonicalName());
     
     lcTipoRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_PK, true));
     lcTipoRec.add(new GuardaCampo(txtDescTpRec, "DescTpRec", "Descrição do tipo de recurso", ListaCampos.DB_SI, false));
     lcTipoRec.montaSql(false, "TIPOREC", "PP");
     lcTipoRec.setQueryCommit(false);
     lcTipoRec.setReadOnly(true);
-    txtCodTpRec.setTabelaExterna(lcTipoRec);
+    txtCodTpRec.setTabelaExterna(lcTipoRec, FTipoRec.class.getCanonicalName());
 
     setAltDet(220);
     pinDet = new JPanelPad(590,110);
