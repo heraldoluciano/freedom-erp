@@ -100,14 +100,14 @@ public class FPrefere extends FTabDados {
 		lcAtivCE.montaSql( false, "ATIVIDADE", "TK" );
 		lcAtivCE.setReadOnly( true );
 		lcAtivCE.setQueryCommit( false );
-		txtCodAtivCE.setTabelaExterna( lcAtivCE );
+		txtCodAtivCE.setTabelaExterna( lcAtivCE, null );
 		
 		lcAtivTE.add( new GuardaCampo( txtCodAtivTE, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PK, false ) );
 		lcAtivTE.add( new GuardaCampo( txtDescAtivTE, "DescAtiv", "Descrição da atividade", ListaCampos.DB_SI, false ) );
 		lcAtivTE.montaSql( false, "ATIVIDADE", "TK" );
 		lcAtivTE.setReadOnly( true );
 		lcAtivTE.setQueryCommit( false );
-		txtCodAtivTE.setTabelaExterna( lcAtivTE );
+		txtCodAtivTE.setTabelaExterna( lcAtivTE, null );
 	}
 	
 	public void setConexao( DbConnection cn ) {

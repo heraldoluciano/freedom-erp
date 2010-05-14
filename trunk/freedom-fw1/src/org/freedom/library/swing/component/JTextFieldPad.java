@@ -227,9 +227,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		this.telaexterna = telaexterna;
 	}
 
-	public void setTabelaExterna(ListaCampos lc) {
-		setTabelaExterna(lc, null);
-	}
+//	public void setTabelaExterna(ListaCampos lc) {
+//		setTabelaExterna(lc, null);
+//	}
 
 	@SuppressWarnings("unchecked")
 	public void setTabelaExterna(ListaCampos lc, String telaexterna) {

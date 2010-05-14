@@ -56,7 +56,7 @@ public class FTipoAgenda extends FDialogo {
 		lcCampos.add(new GuardaCampo( txtDescTipoAGD, "DescTipoAGD", "Descrição do tipo de agendamento", ListaCampos.DB_SI,true));
 		lcCampos.montaSql(true, "TIPOAGENDA", "SG");    
 		lcCampos.setReadOnly(false);
-		txtCodTipoAGD.setTabelaExterna(lcCampos);
+		txtCodTipoAGD.setTabelaExterna(lcCampos, null);
 		txtCodTipoAGD.setFK(true);
 		txtCodTipoAGD.setNomeCampo("CodTipoAGD");
 		

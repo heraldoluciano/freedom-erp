@@ -139,7 +139,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		lcMoeda.montaSql( false, "MOEDA", "RP" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 		
 		/***********
 		 * UNIDADE *
@@ -150,7 +150,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		lcUnid.montaSql( false, "UNIDADE", "RP" );
 		lcUnid.setQueryCommit( false );
 		lcUnid.setReadOnly( true );
-		txtCodUnid.setTabelaExterna( lcUnid );
+		txtCodUnid.setTabelaExterna( lcUnid, null );
 		
 		/***********
 		 *  GRUPO  *
@@ -161,7 +161,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		lcGrupo.montaSql( false, "GRUPO", "RP" );
 		lcGrupo.setQueryCommit( false );
 		lcGrupo.setReadOnly( true );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
+		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 	}
 	
 	private void montaTela() {
