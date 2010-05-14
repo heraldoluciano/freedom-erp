@@ -28,6 +28,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
 
 
 public class FItNatoper extends FDetalhe {
@@ -64,7 +65,7 @@ public class FItNatoper extends FDetalhe {
     lcTabICMS.montaSql(false, "TABICMS", "LF");
     lcTabICMS.setQueryCommit(false);
     lcTabICMS.setReadOnly(true);
-    txtUFTabICMS.setTabelaExterna(lcTabICMS);
+    txtUFTabICMS.setTabelaExterna(lcTabICMS, FTabICMS.class.getCanonicalName());
 
 
     setAltDet(60);

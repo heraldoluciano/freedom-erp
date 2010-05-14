@@ -112,7 +112,7 @@ public class DLBaixaComis extends FFDialogo {
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
@@ -121,7 +121,7 @@ public class DLBaixaComis extends FFDialogo {
 		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 

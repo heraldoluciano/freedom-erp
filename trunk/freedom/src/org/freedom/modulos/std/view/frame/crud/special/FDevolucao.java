@@ -48,7 +48,9 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.FWizard;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
+import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaItVenda;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.utility.FCancVenda;
 
 
@@ -167,7 +169,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		lcVenda1a.montaSql( false, "VENDA", "VD" );
 		lcVenda1a.setReadOnly( true );
 		lcVenda1a.setConexao( con );
-		txtCodVenda1a.setTabelaExterna( lcVenda1a );
+		txtCodVenda1a.setTabelaExterna( lcVenda1a, FVenda.class.getCanonicalName() );
 		txtCodVenda1a.setFK( true );
 		txtCodVenda1a.setNomeCampo( "CodVenda" );
 
@@ -236,7 +238,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		lcCli1c.montaSql( false, "CLIENTE", "VD" );
 		lcCli1c.setReadOnly( true );
 		lcCli1c.setConexao( con );
-		txtCodCli1c.setTabelaExterna( lcCli1c );
+		txtCodCli1c.setTabelaExterna( lcCli1c, FCliente.class.getCanonicalName() );
 		txtCodCli1c.setFK( true );
 		txtCodCli1c.setNomeCampo( "CodCli" );
 

@@ -51,7 +51,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.dialog.report.DLRFrete;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FFrete extends FDados implements InsertListener, FocusListener {
 
@@ -120,7 +122,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "NomeTran", "Descrição da transporatadora", ListaCampos.DB_SI, false ) );
 		txtDescTran.setListaCampos( lcTran );
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 		txtCodTran.setFK( true );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
@@ -133,7 +135,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		lcVenda.add( new GuardaCampo( txtSeries, "Serie", "Serie", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false ) );
 		txtDocVenda.setListaCampos( lcVenda );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName());
 		txtCodVenda.setFK( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setQueryCommit( false );

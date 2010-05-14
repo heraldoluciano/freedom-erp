@@ -48,7 +48,7 @@ public class DLCopiaOrc extends FFDialogo {
     lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setReadOnly(true);
-    txtCodCli.setTabelaExterna(lcCli);
+    txtCodCli.setTabelaExterna(lcCli, null);
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
     

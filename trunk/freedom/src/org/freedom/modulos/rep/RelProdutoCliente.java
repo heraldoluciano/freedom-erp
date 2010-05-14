@@ -129,7 +129,7 @@ public class RelProdutoCliente extends FRelatorio {
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
 		txtCodCli.setListaCampos( lcCliente );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setPK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		
@@ -143,7 +143,7 @@ public class RelProdutoCliente extends FRelatorio {
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setListaCampos( lcFornecedor );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 		
@@ -157,7 +157,7 @@ public class RelProdutoCliente extends FRelatorio {
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVendedor );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null);
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		
@@ -172,7 +172,7 @@ public class RelProdutoCliente extends FRelatorio {
 		lcProduto.setQueryCommit( false );		
 		lcProduto.setReadOnly( true );
 		txtCodProd.setListaCampos( lcProduto );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 		txtCodProd.setPK( true );
 		txtCodProd.setNomeCampo( "CodProd" );
 		

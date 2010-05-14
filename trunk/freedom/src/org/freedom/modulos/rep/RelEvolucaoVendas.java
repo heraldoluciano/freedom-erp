@@ -142,7 +142,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
 		txtCodCli.setListaCampos( lcCliente );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setPK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		
@@ -156,7 +156,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setListaCampos( lcFornecedor );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 		
@@ -170,7 +170,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVendedor );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null);
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		
@@ -184,7 +184,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setListaCampos( lcMoeda );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 		txtCodMoeda.setPK( true );
 		txtCodMoeda.setNomeCampo( "CodMoeda" );
 	}

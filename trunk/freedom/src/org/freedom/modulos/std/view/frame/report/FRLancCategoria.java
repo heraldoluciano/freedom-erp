@@ -133,7 +133,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
 		txtSiglaCC.setListaCampos( lcCC );
@@ -146,7 +146,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 		
@@ -158,7 +158,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descrição do planejamento", ListaCampos.DB_SI, false));
 		lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
 		lcPlan.setReadOnly(true);
-		txtCodPlan.setTabelaExterna(lcPlan);
+		txtCodPlan.setTabelaExterna(lcPlan, null);
 		txtCodPlan.setFK(true);
 		txtCodPlan.setNomeCampo("CodPlan");
 	}

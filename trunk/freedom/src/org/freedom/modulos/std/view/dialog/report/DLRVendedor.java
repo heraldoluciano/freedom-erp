@@ -86,7 +86,7 @@ public class DLRVendedor extends FFDialogo {
     lcClComis.montaSql(false, "CLCOMIS", "VD");    
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
-    txtCodClComis.setTabelaExterna(lcClComis);
+    txtCodClComis.setTabelaExterna(lcClComis, null);
     txtCodClComis.setFK(true);
     txtCodClComis.setNomeCampo("CodClComis");
 
@@ -95,7 +95,7 @@ public class DLRVendedor extends FFDialogo {
     lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor",  ListaCampos.DB_SI,false));
     lcSetor.montaSql(false, "SETOR", "VD");
     lcSetor.setReadOnly(true);
-    txtCodSetor.setTabelaExterna(lcSetor);
+    txtCodSetor.setTabelaExterna(lcSetor, null);
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
 
@@ -104,7 +104,7 @@ public class DLRVendedor extends FFDialogo {
     lcFuncao.montaSql(false, "FUNCAO", "RH");    
     lcFuncao.setQueryCommit(false);
     lcFuncao.setReadOnly(true);
-    txtCodFunc.setTabelaExterna(lcFuncao);
+    txtCodFunc.setTabelaExterna(lcFuncao, null);
     txtCodFunc.setFK(true);
     txtCodFunc.setNomeCampo("CodFunc");
 
@@ -114,7 +114,7 @@ public class DLRVendedor extends FFDialogo {
     lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado",  ListaCampos.DB_SI,false));
     lcVendedor.montaSql(false, "VENDEDOR", "VD");
     lcVendedor.setReadOnly(true);
-    txtCodVend.setTabelaExterna(lcVendedor);
+    txtCodVend.setTabelaExterna(lcVendedor, null);
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
     

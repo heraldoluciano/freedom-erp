@@ -156,7 +156,7 @@ public class DLPlanAnal extends FFDialogo {
 		lcHist.montaSql( false, "HISTPAD", "FN" );
 		lcHist.setQueryCommit( false );
 		lcHist.setReadOnly( true );
-		txtCodHistPad.setTabelaExterna( lcHist );
+		txtCodHistPad.setTabelaExterna( lcHist, null );
 		txtCodHistPad.setListaCampos( lcHist );
 		txtCodHistPad.setNomeCampo( "CodHist" );
 		txtCodHistPad.setChave( ListaCampos.DB_PK );

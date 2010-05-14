@@ -194,7 +194,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcPapel.montaSql( false, "PAPEL", "SG" );
 		lcPapel.setQueryCommit( false );
 		lcPapel.setReadOnly( true );
-		txtCodPapel.setTabelaExterna( lcPapel );
+		txtCodPapel.setTabelaExterna( lcPapel, null );
 
 		lcModEtiq.add( new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK, true ) );
 		lcModEtiq.add( new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI, false ) );
@@ -208,7 +208,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		
 		lcModEtiq.setReadOnly( true );
 		lcModEtiq.montaSql( false, "MODETIQUETA", "SG" );
-		txtCodModEtiq.setTabelaExterna( lcModEtiq );
+		txtCodModEtiq.setTabelaExterna( lcModEtiq, null );
 		txtCodModEtiq.setFK( true );
 		txtCodModEtiq.setNomeCampo( "CodModEtiq" );
 
@@ -216,7 +216,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.setReadOnly( true );
 		lcSetor.montaSql( false, "SETOR", "VD" );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodSetor.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
 
@@ -224,7 +224,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcTipo.add( new GuardaCampo( txtDescTipo, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipo.setReadOnly( true );
 		lcTipo.montaSql( false, "TIPOCLI", "VD" );
-		txtCodTipo.setTabelaExterna( lcTipo );
+		txtCodTipo.setTabelaExterna( lcTipo, null );
 		txtCodTipo.setFK( true );
 		txtCodTipo.setNomeCampo( "CodTipoCli" );
 
@@ -232,7 +232,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do Comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.setReadOnly( true );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 
@@ -240,7 +240,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.setReadOnly( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 

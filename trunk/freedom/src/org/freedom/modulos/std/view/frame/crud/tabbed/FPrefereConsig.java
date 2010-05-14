@@ -31,6 +31,8 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 
 
 public class FPrefereConsig extends FTabDados {
@@ -106,7 +108,7 @@ public class FPrefereConsig extends FTabDados {
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 		
 		/****************************
 		 * Tipo de mov. ped. venda  *
@@ -117,7 +119,7 @@ public class FPrefereConsig extends FTabDados {
 		lcTipoMovTv.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovTv.setQueryCommit( false );
 		lcTipoMovTv.setReadOnly( true );
-		txtCodTipoMovTv.setTabelaExterna( lcTipoMovTv );		
+		txtCodTipoMovTv.setTabelaExterna( lcTipoMovTv, FTipoMov.class.getCanonicalName() );		
 		
 		/****************************
 		 *   Tipo de mov. Venda     *
@@ -128,13 +130,13 @@ public class FPrefereConsig extends FTabDados {
 		lcTipoMovTP.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovTP.setQueryCommit( false );
 		lcTipoMovTP.setReadOnly( true );
-		txtCodTipoMovTp.setTabelaExterna( lcTipoMovTP );
+		txtCodTipoMovTp.setTabelaExterna( lcTipoMovTP, FTipoMov.class.getCanonicalName() );
 		
 		/******************************
 		 *   Planejamento Consignacao *
 		 *****************************/
 
-		txtCodPlanConsig.setTabelaExterna( lcPlanConsig );
+		txtCodPlanConsig.setTabelaExterna( lcPlanConsig, FPlanejamento.class.getCanonicalName() );
 		lcPlanConsig.add( new GuardaCampo( txtCodPlanConsig, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlanConsig, false ) );
 		lcPlanConsig.add( new GuardaCampo( txtDescPlanConsig, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
 		lcPlanConsig.setWhereAdic( "TIPOPLAN = 'R'" );
@@ -145,7 +147,7 @@ public class FPrefereConsig extends FTabDados {
 		 *   Planejamento Venda Consignada *
 		 ***********************************/
 
-		txtCodPlanVDConsig.setTabelaExterna( lcPlanVDConsig );
+		txtCodPlanVDConsig.setTabelaExterna( lcPlanVDConsig, FPlanejamento.class.getCanonicalName() );
 		txtCodPlanVDConsig.setFK( true );
 		txtCodPlanVDConsig.setNomeCampo( "CodPlan" );
 		lcPlanVDConsig.add( new GuardaCampo( txtCodPlanVDConsig, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlanVDConsig, false ) );

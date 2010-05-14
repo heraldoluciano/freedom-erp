@@ -109,7 +109,7 @@ public class FImpressora extends FDados {
     lcPapel.montaSql(false, "PAPEL", "SG");    
     lcPapel.setQueryCommit(false);
     lcPapel.setReadOnly(true);
-    txtCodPapel.setTabelaExterna(lcPapel);
+    txtCodPapel.setTabelaExterna(lcPapel, FPapel.class.getCanonicalName());
    
     adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", ListaCampos.DB_PK, true);
     adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, true);

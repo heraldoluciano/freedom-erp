@@ -186,7 +186,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		lcTipoCli.montaSql( false, "TIPOCLI", "RP" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		
 		/********************
 		 *     VENDEDOR     *
@@ -197,7 +197,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		lcVend.montaSql( false, "VENDEDOR", "RP" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 		
 		/**********************
 		 * PLANO DE PAGAMENTO *
@@ -208,7 +208,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		lcPlanoPag.montaSql( false, "PLANOPAG", "RP" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 	}
 	
 	private void montaTela() {

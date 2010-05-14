@@ -68,7 +68,7 @@ public class FRRazaoFin extends FRelatorio {
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setWhereAdic( "NIVELPLAN=6" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null);
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 

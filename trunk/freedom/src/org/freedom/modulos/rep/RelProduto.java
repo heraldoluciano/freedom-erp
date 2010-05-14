@@ -72,7 +72,7 @@ public class RelProduto extends FRelatorio {
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
 		txtCodFor.setListaCampos( lcFor );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 		

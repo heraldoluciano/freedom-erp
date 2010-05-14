@@ -84,7 +84,7 @@ public class FRGiroEstoque extends FRelatorio {
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, null);
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
     

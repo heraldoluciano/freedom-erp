@@ -351,7 +351,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		txtCodPlanoPag.setFK( true );
 
@@ -363,7 +363,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcVendedor.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_FK, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor,null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setAtivo( ! ( (Boolean) param[ 11 ] ).booleanValue() );
@@ -375,7 +375,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descrição da classificação da comissão", ListaCampos.DB_SI, false ) );
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setReadOnly( true );
-		txtCodClComis.setTabelaExterna( lcClComis );
+		txtCodClComis.setTabelaExterna( lcClComis, null );
 		txtCodClComis.setFK( true );
 		txtCodClComis.setNomeCampo( "CodClComis" );
 
@@ -385,7 +385,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
 		txtDescTran.setListaCampos( lcTran );
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, null );
 		txtCodTran.setFK( true );
 		lcTran.montaSql( false, "TRANSP", "VD" );
 		lcTran.setQueryCommit( false );
@@ -451,7 +451,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcTipoCobItRec.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCobItRec.setQueryCommit( false );
 		lcTipoCobItRec.setReadOnly( true );
-		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec );
+		txtCodTipoCobItRec.setTabelaExterna( lcTipoCobItRec, null );
 		txtCodTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtDescTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtCodTipoCobItRec.setFK( true );
@@ -465,7 +465,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcBancoItRec.montaSql( false, "BANCO", "FN" );
 		lcBancoItRec.setQueryCommit( false );
 		lcBancoItRec.setReadOnly( true );
-		txtCodBancoItRec.setTabelaExterna( lcBancoItRec );
+		txtCodBancoItRec.setTabelaExterna( lcBancoItRec, null );
 		txtCodBancoItRec.setListaCampos( lcBancoItRec );
 		txtDescBancoItRec.setListaCampos( lcBancoItRec );
 		txtCodBancoItRec.setFK( true );
@@ -480,7 +480,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
 		lcCartCobItRec.setQueryCommit( false );
 		lcCartCobItRec.setReadOnly( true );
-		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec, null );
 		txtCodCartCobItRec.setListaCampos( lcBancoItRec );
 		txtDescCartCobItRec.setListaCampos( lcBancoItRec );
 		txtCodCartCobItRec.setFK( true );	

@@ -74,7 +74,7 @@ public class FRBalancete extends FRelatorio {
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
@@ -83,7 +83,7 @@ public class FRBalancete extends FRelatorio {
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custos", ListaCampos.DB_SI, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
 		txtSiglaCC.setListaCampos( lcCC );

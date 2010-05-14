@@ -115,7 +115,7 @@ public class FRMovProd extends FRelatorio {
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setReadOnly( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
+		txtCodAlmox.setTabelaExterna( lcAlmox, null );
 		txtCodAlmox.setFK( true );
 		txtCodAlmox.setNomeCampo( "CodAlmox" );
 
@@ -123,7 +123,7 @@ public class FRMovProd extends FRelatorio {
 		lcCodForn.add( new GuardaCampo( txtDescForn, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcCodForn.montaSql( false, "FORNECED", "CP" );
 		lcCodForn.setReadOnly( true );
-		txtCodForn.setTabelaExterna( lcCodForn );
+		txtCodForn.setTabelaExterna( lcCodForn, null );
 		txtCodForn.setFK( true );
 		txtCodForn.setNomeCampo( "CodFor" );
 
@@ -131,14 +131,14 @@ public class FRMovProd extends FRelatorio {
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
 		lcGrupo.setReadOnly( true );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
+		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 		txtCodGrupo.setFK( true );
 		txtCodGrupo.setNomeCampo( "CodGrup" );
 
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ) );
-		txtCodMarca.setTabelaExterna( lcMarca );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
 		txtCodMarca.setNomeCampo( "CodMarca" );
 		txtCodMarca.setFK( true );
 		lcMarca.setReadOnly( true );

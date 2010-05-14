@@ -319,7 +319,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 
 		/************
 		 * VENDEDOR *
@@ -330,7 +330,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcVendedor.montaSql( false, "VENDEDOR", "RP" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 
 		/**********************
 		 * PLANO DE PAGAMENTO *
@@ -341,7 +341,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcPlanoPag.montaSql( false, "PLANOPAG", "RP" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 
 		/*********
 		 * MOEDA *
@@ -352,7 +352,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcMoeda.montaSql( false, "MOEDA", "RP" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 
 		/**************
 		 * FORNECEDOR *
@@ -364,7 +364,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 
 		/******************
 		 * TRANSPORTADORA *
@@ -375,7 +375,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcTransportadora.montaSql( false, "TRANSP", "RP" );
 		lcTransportadora.setQueryCommit( false );
 		lcTransportadora.setReadOnly( true );
-		txtCodTran.setTabelaExterna( lcTransportadora );
+		txtCodTran.setTabelaExterna( lcTransportadora, null );
 
 		/***********
 		 * PRODUTO *
@@ -388,7 +388,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.add( new GuardaCampo( txtPrecoCustoProd, "precocusto", "Preco.Custo", ListaCampos.DB_SI, false));
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
 		lcProduto.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 
 		/**************
 		 * REFERENCIA *
@@ -403,7 +403,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcReferencia.setQueryCommit( false );
 		lcReferencia.setReadOnly( true );
 		txtRefProd.setListaCampos( lcDet );
-		txtRefProd.setTabelaExterna( lcReferencia );
+		txtRefProd.setTabelaExterna( lcReferencia, null );
 		
 		txtRefProd.addKeyListener( this );
 		
@@ -417,7 +417,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedorItem.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedorItem.setQueryCommit( false );
 		lcFornecedorItem.setReadOnly( true );
-		txtCodForItem.setTabelaExterna( lcFornecedorItem );
+		txtCodForItem.setTabelaExterna( lcFornecedorItem, null );
 
 	}
 

@@ -28,6 +28,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
@@ -69,7 +70,7 @@ public class FModGrade extends FDetalhe {
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
-    txtCodProd.setTabelaExterna(lcProd);
+    txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
     
     adicCampo(txtCodModG, 7, 20, 70, 20,"CodModG","Cód.mod.g.", ListaCampos.DB_PK, true);
     adicCampo(txtDescModG, 80, 20, 197, 20,"DescModG","Descrição do modelo de grade", ListaCampos.DB_SI, true);
@@ -91,7 +92,7 @@ public class FModGrade extends FDetalhe {
     lcVarG.montaSql(false, "VARGRADE", "EQ");
     lcVarG.setQueryCommit(false);
     lcVarG.setReadOnly(true);
-    txtCodVarG.setTabelaExterna(lcVarG);
+    txtCodVarG.setTabelaExterna(lcVarG, null);
     
     adicCampo(txtCodItModG, 7, 20, 70, 20,"CodItModG","Item", ListaCampos.DB_PK, true);
     adicCampo(txtCodVarG, 80, 20, 77, 20,"CodVarG","Cód.var.g.", ListaCampos.DB_FK, true);

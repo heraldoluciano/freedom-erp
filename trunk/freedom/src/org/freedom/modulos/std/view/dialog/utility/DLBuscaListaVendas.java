@@ -117,7 +117,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "N doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDtEmitVenda, "DtEmitVenda", "Data emis.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "Valor", ListaCampos.DB_SI, false ) );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setPK( true );		

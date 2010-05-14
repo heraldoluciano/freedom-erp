@@ -62,7 +62,7 @@ public class FRFechaDiario extends FRelatorio {
 		lcCaixa.add( new GuardaCampo( txtDescCaixa, "DescCaixa", "Descrição do caixa", ListaCampos.DB_SI, false ) );
 		lcCaixa.montaSql( false, "CAIXA", "PV" );
 		lcCaixa.setReadOnly( true );
-		txtCodCaixa.setTabelaExterna( lcCaixa );
+		txtCodCaixa.setTabelaExterna( lcCaixa, null );
 		txtCodCaixa.setFK( true );
 		txtCodCaixa.setNomeCampo( "CodCaixa" );
 	}

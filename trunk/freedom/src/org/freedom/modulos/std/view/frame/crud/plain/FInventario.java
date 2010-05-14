@@ -63,6 +63,8 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.dialog.report.DLRInventario;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
@@ -121,7 +123,7 @@ private static final long serialVersionUID = 1L;
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, FProduto.class.getCanonicalName());
 
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, false));
 		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd","Referência do produto", ListaCampos.DB_PK,txtDescProd, false));
@@ -148,7 +150,7 @@ private static final long serialVersionUID = 1L;
 		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 		lcTipoMov.setQueryCommit(false);
 		lcTipoMov.setReadOnly(true);
-		txtCodTipoMov.setTabelaExterna(lcTipoMov);
+		txtCodTipoMov.setTabelaExterna(lcTipoMov, FTipoMov.class.getCanonicalName());
 
 		txtCodLote.setAtivo(false);
 		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",ListaCampos.DB_PK, false));
@@ -161,14 +163,14 @@ private static final long serialVersionUID = 1L;
 		lcLote.setQueryCommit(false);
 		lcLote.setReadOnly(true);
 		lcLote.setAutoLimpaPK(false);
-		txtCodLote.setTabelaExterna(lcLote);
+		txtCodLote.setTabelaExterna(lcLote, null);
 
 		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cód.almox.",ListaCampos.DB_PK, false));
 		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox","Descrição do almoxarifado", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
-		txtCodAlmox.setTabelaExterna(lcAlmox);
+		txtCodAlmox.setTabelaExterna(lcAlmox, FAlmox.class.getCanonicalName());
 
 		lcCampos.addInsertListener(this);
 		lcCampos.addCarregaListener(this);

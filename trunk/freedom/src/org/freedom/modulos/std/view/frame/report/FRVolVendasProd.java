@@ -86,7 +86,7 @@ public class FRVolVendasProd extends FRelatorio {
 	
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -105,13 +105,13 @@ public class FRVolVendasProd extends FRelatorio {
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
 		lcGrupo.setReadOnly( true );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
+		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 		txtCodGrupo.setFK( true );
 		txtCodGrupo.setNomeCampo( "CodGrup" );
 		
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProduto.setReadOnly( true );

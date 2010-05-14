@@ -129,7 +129,7 @@ public class FRInadimplentes extends FRelatorio {
   		lcVend.setReadOnly(true);
   		txtCodVend.setNomeCampo("CodVend");
   		txtCodVend.setFK(true);
-  		txtCodVend.setTabelaExterna(lcVend);
+  		txtCodVend.setTabelaExterna(lcVend, null);
 	}
  
 	public void setConexao(DbConnection cn) {

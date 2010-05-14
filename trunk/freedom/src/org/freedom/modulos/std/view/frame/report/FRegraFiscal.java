@@ -66,7 +66,7 @@ public class FRegraFiscal extends FDetalhe {
 		lcNat.montaSql(false, "NATOPER", "LF");    
 		lcNat.setQueryCommit(false);
 		lcNat.setReadOnly(true);
-		txtCodNat.setTabelaExterna(lcNat);
+		txtCodNat.setTabelaExterna(lcNat, null);
 
 		
 		lcMov.add(new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.",  ListaCampos.DB_PK, false));
@@ -74,7 +74,7 @@ public class FRegraFiscal extends FDetalhe {
 		lcMov.montaSql(false, "TIPOMOV", "EQ");    
 		lcMov.setQueryCommit(false);
 		lcMov.setReadOnly(true);
-		txtCodTipoMov.setTabelaExterna(lcMov);
+		txtCodTipoMov.setTabelaExterna(lcMov,null);
 		
 		vDescCV.addElement("Venda");
 		vDescCV.addElement("Compra");

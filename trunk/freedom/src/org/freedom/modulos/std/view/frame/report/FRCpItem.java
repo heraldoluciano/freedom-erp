@@ -84,7 +84,7 @@ public class FRCpItem extends FRelatorio {
 		
 		lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
 		lcFor.add(new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI,false));
-		txtCodFor.setTabelaExterna(lcFor);
+		txtCodFor.setTabelaExterna(lcFor, null);
 		txtCodFor.setNomeCampo("CodFor");
 		txtCodFor.setFK(true);
 		lcFor.setReadOnly(true);
@@ -92,7 +92,7 @@ public class FRCpItem extends FRelatorio {
 		
 		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.plano.pag.", ListaCampos.DB_PK, false));
 		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
-		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+		txtCodPlanoPag.setTabelaExterna(lcPlanoPag, null);
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		lcPlanoPag.setReadOnly(true);
@@ -100,7 +100,7 @@ public class FRCpItem extends FRelatorio {
 		
 		lcTipoMov.add(new GuardaCampo( txtCodTipoMov , "CodTipoMov", "Cód.Mov.", ListaCampos.DB_PK, false));
 		lcTipoMov.add(new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI,false));
-		txtCodTipoMov.setTabelaExterna(lcTipoMov);
+		txtCodTipoMov.setTabelaExterna(lcTipoMov, null);
 		txtCodTipoMov.setNomeCampo("CodTipoMov");
 		txtCodTipoMov.setFK(true);
 		lcTipoMov.setReadOnly(true);

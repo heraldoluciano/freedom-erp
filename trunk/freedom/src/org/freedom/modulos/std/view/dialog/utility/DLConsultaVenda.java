@@ -130,7 +130,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 		lcVenda.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrVenda, "VlrLiqVenda", "Valor", ListaCampos.DB_SI, false ) );
 
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setListaCampos( lcVenda );
 		txtVlrVenda.setListaCampos( lcVenda );
 		lcVenda.montaSql( false, "VENDA", "VD" );

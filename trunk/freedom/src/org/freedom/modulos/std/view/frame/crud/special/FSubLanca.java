@@ -46,6 +46,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -215,7 +218,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcPlan.setReadOnly( true );
 		lcPlan.setQueryCommit( false );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
-		txtCodPlanSub.setTabelaExterna( lcPlan );
+		txtCodPlanSub.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 		txtDescPlan.setListaCampos( lcPlan );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_PK, txtRazCli, false ) );
@@ -223,7 +226,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcCli.setReadOnly( true );
 		lcCli.setQueryCommit( false );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtRazCli.setListaCampos( lcCli );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, txtDescPlan, false ) );
@@ -231,7 +234,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcFor.setReadOnly( true );
 		lcFor.setQueryCommit( false );
 		lcFor.montaSql( false, "FORNECED", "CP" );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
 		txtRazFor.setListaCampos( lcFor );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, txtDescCC, false ) );
@@ -242,8 +245,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcCC.setQueryCommit( false );
 		lcCC.setWhereAdic( "NIVELCC=10" );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName());
+		txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 		txtDescCC.setListaCampos( lcCC );
 		txtSiglaCC.setListaCampos( lcCC );
 
@@ -251,14 +254,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcContrato.setReadOnly( true );
 		lcContrato.setQueryCommit( false );
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
-		txtCodContr.setTabelaExterna( lcContrato );
+		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
 
 		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );		
 		lcItContrato.setReadOnly( true );
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
-		txtCodItContr.setTabelaExterna( lcItContrato );
+		txtCodItContr.setTabelaExterna( lcItContrato, null );
 		
 		setAltCab( 190 );
 		setListaCampos( lcCampos );

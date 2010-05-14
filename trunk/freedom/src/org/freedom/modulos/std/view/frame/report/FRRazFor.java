@@ -103,7 +103,7 @@ public class FRRazFor extends FRelatorio {
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtCnpjFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );

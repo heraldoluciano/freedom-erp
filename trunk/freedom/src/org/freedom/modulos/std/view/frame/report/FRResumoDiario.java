@@ -131,7 +131,7 @@ public class FRResumoDiario extends FRelatorio {
 		lcVend.setReadOnly( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );

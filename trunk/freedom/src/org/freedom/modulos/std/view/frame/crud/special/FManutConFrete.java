@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -149,7 +150,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		lcFornecedor.montaSql( false, "FORNECED", "CP" );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setPK( true );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setListaCampos( lcFornecedor );
 		txtCodFor.setNomeCampo( "CodFor" );
 

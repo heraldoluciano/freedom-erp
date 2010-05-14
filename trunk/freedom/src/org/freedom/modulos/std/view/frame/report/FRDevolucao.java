@@ -67,7 +67,7 @@ public class FRDevolucao extends FRelatorio {
 		
 		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.plano.pag.", ListaCampos.DB_PK, false));
 		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
-		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+		txtCodPlanoPag.setTabelaExterna(lcPlanoPag, null);
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		lcPlanoPag.setReadOnly(true);

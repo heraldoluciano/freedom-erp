@@ -215,7 +215,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
@@ -231,11 +231,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		lcBanco.setConexao( cn );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 
 		txtCodCompra.setNomeCampo( "CodCompra" );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "N.pedido", ListaCampos.DB_PK, false ) );
 		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V.compra", ListaCampos.DB_SI, false ) );

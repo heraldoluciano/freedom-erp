@@ -42,6 +42,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaObs;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -168,7 +170,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 
 		// Mecanismo de busca de cliente principal
 		lcCliP.add( new GuardaCampo( txtCodPesq, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
@@ -176,7 +178,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcCliP.montaSql( false, "CLIENTE", "VD" );
 		lcCliP.setQueryCommit( false );
 		lcCliP.setReadOnly( true );
-		txtCodPesq.setTabelaExterna( lcCliP );
+		txtCodPesq.setTabelaExterna( lcCliP, FCliente.class.getCanonicalName() );
 
 		// Mecanismo de busca de informações de tipo de crédito
 		lcTipoCred.add( new GuardaCampo( txtCodTpCred, "CodTpCred", "Cód.tp.créd", ListaCampos.DB_PK, false ) );
@@ -185,7 +187,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcTipoCred.montaSql( false, "TIPOCRED", "FN" );
 		lcTipoCred.setQueryCommit( false );
 		lcTipoCred.setReadOnly( true );
-		txtCodTpCred.setTabelaExterna( lcTipoCred );
+		txtCodTpCred.setTabelaExterna( lcTipoCred, FTipoCred.class.getCanonicalName() );
 		txtCodTpCred.setNomeCampo( "CodTpCred" );
 
 		// Mecanismo de busca de informações de tipo de crédito do cliente principal
@@ -195,7 +197,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcTipoCredP.montaSql( false, "TIPOCRED", "FN" );
 		lcTipoCredP.setQueryCommit( false );
 		lcTipoCredP.setReadOnly( true );
-		txtCodTpCredP.setTabelaExterna( lcTipoCredP );
+		txtCodTpCredP.setTabelaExterna( lcTipoCredP, FTipoCred.class.getCanonicalName() );
 		txtCodTpCredP.setNomeCampo( "CodTpCred" );
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
@@ -209,7 +211,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
-		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName() );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 

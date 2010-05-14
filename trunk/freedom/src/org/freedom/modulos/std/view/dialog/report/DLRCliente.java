@@ -156,7 +156,7 @@ public class DLRCliente extends FFDialogo {
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodSetor.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
 
@@ -164,7 +164,7 @@ public class DLRCliente extends FFDialogo {
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
 
@@ -172,7 +172,7 @@ public class DLRCliente extends FFDialogo {
 		lcClasCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
 		lcClasCli.montaSql( false, "CLASCLI", "VD" );
 		lcClasCli.setReadOnly( true );
-		txtCodClasCli.setTabelaExterna( lcClasCli );
+		txtCodClasCli.setTabelaExterna( lcClasCli, null );
 		txtCodClasCli.setFK( true );
 		txtCodClasCli.setNomeCampo( "CodClasCli" );
 
@@ -180,7 +180,7 @@ public class DLRCliente extends FFDialogo {
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 

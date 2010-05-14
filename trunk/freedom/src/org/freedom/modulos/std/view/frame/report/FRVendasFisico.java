@@ -139,7 +139,7 @@ public class FRVendasFisico extends FRelatorio {
 		lcVend.setReadOnly( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
 		adic( lbLinha, 7, 25, 273, 40 );

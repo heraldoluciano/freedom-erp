@@ -10,6 +10,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 public class RPCopiaPed extends FFDialogo {
@@ -32,7 +33,7 @@ public class RPCopiaPed extends FFDialogo {
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "RP" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 

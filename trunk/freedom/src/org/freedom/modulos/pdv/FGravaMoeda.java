@@ -79,7 +79,7 @@ public class FGravaMoeda extends FFDialogo {
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setFK( true );
 		txtCodMoeda.setNomeCampo( "CodMoeda" );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 	}
 	
 	private void montaTela() {

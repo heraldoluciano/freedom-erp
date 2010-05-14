@@ -134,7 +134,7 @@ public class DLRProduto extends FFDialogo {
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setReadOnly( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
+		txtCodAlmox.setTabelaExterna( lcAlmox, null );
 		txtCodAlmox.setFK( true );
 		txtCodAlmox.setNomeCampo( "CodAlmox" );
 
@@ -142,14 +142,14 @@ public class DLRProduto extends FFDialogo {
 		lcCodForn.add( new GuardaCampo( txtDescForn, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false ) );
 		lcCodForn.montaSql( false, "FORNECED", "CP" );
 		lcCodForn.setReadOnly( true );
-		txtCodForn.setTabelaExterna( lcCodForn );
+		txtCodForn.setTabelaExterna( lcCodForn, null );
 		txtCodForn.setFK( true );
 		txtCodForn.setNomeCampo( "CodFor" );
 
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ) );
-		txtCodMarca.setTabelaExterna( lcMarca );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
 		txtCodMarca.setNomeCampo( "CodMarca" );
 		txtCodMarca.setFK( true );
 		lcMarca.setReadOnly( true );

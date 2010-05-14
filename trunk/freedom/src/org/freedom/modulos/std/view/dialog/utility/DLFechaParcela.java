@@ -103,7 +103,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 
@@ -115,7 +115,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		lcBanco.montaSql( false, "BANCO", "FN" );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 
@@ -128,7 +128,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setFK( true );
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 	}

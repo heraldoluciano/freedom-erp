@@ -68,7 +68,13 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.std.view.dialog.report.DLRFornecedor;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoFor;
 
 public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener, ActionListener, CarregaListener {
 
@@ -261,14 +267,14 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcTipoFor.montaSql( false, "TIPOFOR", "CP" );
 		lcTipoFor.setQueryCommit( false );
 		lcTipoFor.setReadOnly( true );
-		txtCodTipoFor.setTabelaExterna( lcTipoFor );
+		txtCodTipoFor.setTabelaExterna( lcTipoFor, FTipoFor.class.getCanonicalName());
 		
 		lcHistorico.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHistorico.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHistorico.montaSql( false, "HISTPAD", "FN" );
 		lcHistorico.setQueryCommit( false );
 		lcHistorico.setReadOnly( true );
-		txtCodHistPad.setTabelaExterna( lcHistorico );
+		txtCodHistPad.setTabelaExterna( lcHistorico, FHistPad.class.getCanonicalName() );
 		
 		
 		/***************
@@ -281,7 +287,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 		
 		/***************
 		 *      UF     *
@@ -294,7 +300,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 
 		/***********************
 		 *      Tipo Fiscal    *
@@ -305,7 +311,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcTipoFiscFor.montaSql( false, "TIPOFISCCLI", "LF" );
 		lcTipoFiscFor.setQueryCommit( false );
 		lcTipoFiscFor.setReadOnly( true );
-		txtCodFiscFor.setTabelaExterna( lcTipoFiscFor );
+		txtCodFiscFor.setTabelaExterna( lcTipoFiscFor, FTipoFisc.class.getCanonicalName() );
 
 		
 		
@@ -321,7 +327,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );		
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
 
 		vPessoaLab.addElement( "Física" );
 		vPessoaLab.addElement( "Jurídica" );
@@ -459,7 +465,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcForxCli.setReadOnly( true );
 		lcForxCli.setQueryCommit( false );
 		txtCodForCli.setListaCampos( lcForxCli );
-		txtCodForCli.setTabelaExterna( lcForxCli );
+		txtCodForCli.setTabelaExterna( lcForxCli, FCliente.class.getCanonicalName() );
 		
 		adic( btBuscaFor, 7, 7, 30, 30 );
 		btBuscaFor.setToolTipText("Buscar fornecedor");

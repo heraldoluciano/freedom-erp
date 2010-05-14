@@ -197,7 +197,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		lcVendedor.setDinWhereAdic( "CODTIPOVEND=#N", txtTipoVend );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setListaCampos( lcVendedor );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );

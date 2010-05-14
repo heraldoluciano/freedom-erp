@@ -38,6 +38,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.std.view.dialog.report.DLRLancaExp;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FLancaExp extends FDados implements ActionListener {
 
@@ -66,7 +67,7 @@ public class FLancaExp extends FDados implements ActionListener {
 		lcTipoExp.montaSql(false, "TIPOEXP", "EQ");   
                 lcTipoExp.setQueryCommit(false);
 		lcTipoExp.setReadOnly(true);
-		txtCodTipoExp.setTabelaExterna(lcTipoExp);
+		txtCodTipoExp.setTabelaExterna(lcTipoExp, FTipoExp.class.getCanonicalName());
 		
 		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
     		lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
@@ -74,7 +75,7 @@ public class FLancaExp extends FDados implements ActionListener {
 		lcCli.montaSql(false, "CLIENTE", "VD");    
                 lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
-		txtCodCli.setTabelaExterna(lcCli);
+		txtCodCli.setTabelaExterna(lcCli, FCliente.class.getCanonicalName());
 		
 		adicCampo(txtCodLExp, 7, 20, 80, 20, "CodLExp", "Cód.exp.", ListaCampos.DB_PK, true);
 		adicCampo(txtQtdExp, 90, 20, 77, 20, "QtdLExp", "Quantidade", ListaCampos.DB_SI, true);

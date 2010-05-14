@@ -90,6 +90,10 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
@@ -102,7 +106,14 @@ import org.freedom.modulos.std.view.dialog.utility.DLBuscaRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaPgto;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLMultiComiss;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
 import org.freedom.modulos.std.view.frame.crud.plain.FLiberaCredito;
+import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
+import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
+import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener  {
@@ -551,7 +562,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName()  );
 
 		// FK Vendedor
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Venda", ListaCampos.DB_PK, false ) );
@@ -563,7 +574,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, FVendedor.class.getCanonicalName() );
 
 		// FK Plano de Pagamento
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false ) );
@@ -572,7 +583,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
 		// FK Série
 		lcSerie.add( new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
@@ -580,7 +591,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
-		txtCodSerie.setTabelaExterna( lcSerie );
+		txtCodSerie.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
 
 		// FK de Lotes
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLote, false ) );
@@ -593,7 +604,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcLote.montaSql( false, "LOTE", "EQ" );
 		lcLote.setQueryCommit( false );
 		lcLote.setReadOnly( true );
-		txtCodLote.setTabelaExterna( lcLote );
+		txtCodLote.setTabelaExterna( lcLote, null );
 		txtDescLote.setListaCampos( lcLote );
 		txtDescLote.setNomeCampo( "VenctoLote" );
 		txtDescLote.setLabel( "Vencimento" );
@@ -607,7 +618,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcFisc.montaSql( false, "CLFISCAL", "LF" );
 		lcFisc.setQueryCommit( false );
 		lcFisc.setReadOnly( true );
-		txtCodFisc.setTabelaExterna( lcFisc );
+		txtCodFisc.setTabelaExterna( lcFisc, FCLFiscal.class.getCanonicalName() );
 		txtDescFisc.setListaCampos( lcFisc );
 
 		// FK de Natureza de Operação (É acionada também quando o listaCampos de Classificação Fiscal é acionado)
@@ -617,7 +628,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcNat.montaSql( false, "NATOPER", "LF" );
 		lcNat.setQueryCommit( false );
 		lcNat.setReadOnly( true );
-		txtCodNat.setTabelaExterna( lcNat );
+		txtCodNat.setTabelaExterna( lcNat, FNatoPer.class.getCanonicalName() );
 		txtDescNat.setListaCampos( lcNat );
 
 		// FK de Almoxarifado
@@ -626,7 +637,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setQueryCommit( false );
 		lcAlmox.setReadOnly( true );
-		txtCodAlmoxItVenda.setTabelaExterna( lcAlmox );
+		txtCodAlmoxItVenda.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
 
 		// FK de Tratamento Tributário (É acionada também quando o listaCampos de Tratamento tributário é acionado)
 
@@ -634,7 +645,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTratTrib.montaSql( false, "TRATTRIB", "LF" );
 		lcTratTrib.setQueryCommit( false );
 		lcTratTrib.setReadOnly( true );
-		txtCodTratTrib.setTabelaExterna( lcTratTrib );
+		txtCodTratTrib.setTabelaExterna( lcTratTrib, FTratTrib.class.getCanonicalName() );
 
 		// ListaCampos de Totais (É acionada pelo listaCampos de Venda)
 
@@ -669,7 +680,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
-		txtCodClComis.setTabelaExterna( lcClComis );
+		txtCodClComis.setTabelaExterna( lcClComis, FCLComis.class.getCanonicalName() );
 
 
 		// lc para vinculo de ítem de venda com ítem de compra
@@ -679,8 +690,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItCompra.montaSql( false, "ITCOMPRA", "CP" );
 		lcItCompra.setQueryCommit( false );
 		lcItCompra.setReadOnly( true );
-		txtCodCompra.setTabelaExterna( lcItCompra );
-		txtCodItCompra.setTabelaExterna( lcItCompra );
+		txtCodCompra.setTabelaExterna( lcItCompra, null );
+		txtCodItCompra.setTabelaExterna( lcItCompra, null );
 
 		// lc para vinculo de ítem de venda com nota de remessa
 
@@ -690,9 +701,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItRemessa.montaSql( false, "ITVENDA", "VD" );
 		lcItRemessa.setQueryCommit( false );
 		lcItRemessa.setReadOnly( true );
-		txtCodVendaRemessa.setTabelaExterna( lcItRemessa );
-		txtCodItVendaRemessa.setTabelaExterna( lcItRemessa );
-		txtTipoVendaRemessa.setTabelaExterna( lcItRemessa );
+		txtCodVendaRemessa.setTabelaExterna( lcItRemessa, null );
+		txtCodItVendaRemessa.setTabelaExterna( lcItRemessa, null );
+		txtTipoVendaRemessa.setTabelaExterna( lcItRemessa, null );
 
 		// Coloca os comentrio nos botões
 
@@ -822,7 +833,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 
 		// FK do produto (*Somente em caso de referências este listaCampos
 		// Trabalha como gatilho para o listaCampos de produtos, assim
@@ -844,7 +855,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
-		txtRefProd.setTabelaExterna( lcProd2 );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
 		// FK Tipo de movimentos
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
@@ -872,7 +883,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
 		lcNumSerie.setQueryCommit( false );
 		lcNumSerie.setReadOnly( true );
-		txtNumSerie.setTabelaExterna( lcNumSerie );
+		txtNumSerie.setTabelaExterna( lcNumSerie, FSerie.class.getCanonicalName() );
 		txtObsSerie.setListaCampos( lcNumSerie );
 		txtObsSerie.setNomeCampo( "ObsSerie" );
 		txtObsSerie.setLabel( "Observações" );
@@ -901,7 +912,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
 		// FK Modelo de nota
 		lcModNota.add( new GuardaCampo( txtCodModNota, "CodModNota", "Cód.mod.nota", ListaCampos.DB_PK, false ) );
@@ -910,7 +921,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcModNota.montaSql( false, "MODNOTA", "LF" );
 		lcModNota.setQueryCommit( false );
 		lcModNota.setReadOnly( true );
-		txtCodModNota.setTabelaExterna( lcModNota );
+		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName());
 
 		lcTipoMov.adicDetalhe( lcModNota );
 

@@ -96,7 +96,7 @@ public class DLImpBoletoRec extends FDialogo {
 		lcModBol.add( new GuardaCampo( txtClassModBol, "ClassModBol", "Classe do modelo", ListaCampos.DB_SI, false ) );
 		lcModBol.setReadOnly( true );
 		lcModBol.montaSql( false, "MODBOLETO", "FN" );
-		txtCodModBol.setTabelaExterna( lcModBol );
+		txtCodModBol.setTabelaExterna( lcModBol, null );
 		txtCodModBol.setFK( true );
 		txtCodModBol.setNomeCampo( "CodModBol" );
 		lcModBol.setConexao( con );

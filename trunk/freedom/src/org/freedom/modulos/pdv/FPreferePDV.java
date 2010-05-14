@@ -87,7 +87,7 @@ public class FPreferePDV extends FTabDados {
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 		txtCodTipoMov.setFK( true );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 
@@ -95,7 +95,7 @@ public class FPreferePDV extends FTabDados {
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente padrão", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 		lcCliente.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -103,13 +103,13 @@ public class FPreferePDV extends FTabDados {
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 
 		lcProdFrete.add( new GuardaCampo( txtCodProdFrete, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdFrete.add( new GuardaCampo( txtDescProdeFrete, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdFrete.montaSql( false, "PRODUTO", "EQ" );
 		lcProdFrete.setReadOnly( true );
-		txtCodProdFrete.setTabelaExterna( lcProdFrete );
+		txtCodProdFrete.setTabelaExterna( lcProdFrete, null );
 
 		setPainel( pinVenda );
 		adicTab( "Venda", pinVenda );

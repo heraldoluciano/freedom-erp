@@ -128,7 +128,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		lcGrupo.montaSql( false, "GRUPO", "RP" );
 		lcGrupo.setQueryCommit( false );
 		lcGrupo.setReadOnly( true );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
+		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 		
 		/*******************
 		 *     UNIDADE     *
@@ -139,7 +139,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		lcUnidade.montaSql( false, "UNIDADE", "RP" );
 		lcUnidade.setQueryCommit( false );
 		lcUnidade.setReadOnly( true ); 
-		txtCodUnid.setTabelaExterna( lcUnidade );
+		txtCodUnid.setTabelaExterna( lcUnidade, null );
 		
 		/*******************
 		 *    FORNECEDOR   *
@@ -150,7 +150,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		
 	}
 	

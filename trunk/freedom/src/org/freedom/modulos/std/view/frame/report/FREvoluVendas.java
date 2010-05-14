@@ -90,7 +90,7 @@ public class FREvoluVendas extends FRelatorio {
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
 
@@ -99,7 +99,7 @@ public class FREvoluVendas extends FRelatorio {
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 

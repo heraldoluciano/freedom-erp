@@ -319,7 +319,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcImp.montaSql( false, "IMPRESSORA", "SG" );
 		lcImp.setQueryCommit( false );
 		lcImp.setReadOnly( true );
-		txtCodImp.setTabelaExterna( lcImp );
+		txtCodImp.setTabelaExterna( lcImp, FImpressora.class.getCanonicalName());
 
 		/********************
 		 *  PAPEL  *
@@ -329,7 +329,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcPapel.montaSql( false, "PAPEL", "SG" );
 		lcPapel.setQueryCommit( false );
 		lcPapel.setReadOnly( true );
-		txtCodPapel.setTabelaExterna( lcPapel );
+		txtCodPapel.setTabelaExterna( lcPapel, FPapel.class.getCanonicalName() );
 			
 	}
 	

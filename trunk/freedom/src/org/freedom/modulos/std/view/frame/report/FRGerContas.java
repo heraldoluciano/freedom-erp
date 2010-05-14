@@ -141,7 +141,7 @@ public class FRGerContas extends FRelatorio  {
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
 	lcGrup1.setReadOnly(true);
-	txtCodGrup1.setTabelaExterna(lcGrup1);
+	txtCodGrup1.setTabelaExterna(lcGrup1, null);
 	txtCodGrup1.setFK(true);
 	txtCodGrup1.setNomeCampo("CodGrup");
 
@@ -149,7 +149,7 @@ public class FRGerContas extends FRelatorio  {
 	lcGrup2.add(new GuardaCampo(txtDescGrup2, "DescGrup","Descrição do grupo", ListaCampos.DB_SI, false));
 	lcGrup2.montaSql(false, "GRUPO", "EQ");
 	lcGrup2.setReadOnly(true);
-	txtCodGrup2.setTabelaExterna(lcGrup2);
+	txtCodGrup2.setTabelaExterna(lcGrup2, null);
 	txtCodGrup2.setFK(true);
 	txtCodGrup2.setNomeCampo("CodGrup");
 
@@ -157,7 +157,7 @@ public class FRGerContas extends FRelatorio  {
     lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
-    txtCodVend.setTabelaExterna(lcVendedor);
+    txtCodVend.setTabelaExterna(lcVendedor, null);
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
     
@@ -165,7 +165,7 @@ public class FRGerContas extends FRelatorio  {
     lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca","Descrição da marca", ListaCampos.DB_SI, false ));
     lcMarca.montaSql(false,"MARCA","EQ");
     lcMarca.setReadOnly(true);
-    txtCodMarca.setTabelaExterna(lcMarca);
+    txtCodMarca.setTabelaExterna(lcMarca, null);
     txtCodMarca.setFK(true);
     txtCodMarca.setNomeCampo("CodMarca");
     
@@ -174,7 +174,7 @@ public class FRGerContas extends FRelatorio  {
     lcTpCli.add(new GuardaCampo( txtSiglaTpCli, "SiglaTipoCli","Sigla", ListaCampos.DB_SI, false ));
     lcTpCli.montaSql(false,"TIPOCLI","VD");
     lcTpCli.setReadOnly(true);
-    txtCodTpCli.setTabelaExterna(lcTpCli);
+    txtCodTpCli.setTabelaExterna(lcTpCli, null);
     txtCodTpCli.setFK(true);
     txtCodTpCli.setNomeCampo("CodTipoCli");
     

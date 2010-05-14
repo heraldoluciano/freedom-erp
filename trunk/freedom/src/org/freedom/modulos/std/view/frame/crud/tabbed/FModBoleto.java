@@ -55,6 +55,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {
 
@@ -201,7 +204,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 		
@@ -213,7 +216,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setListaCampos( lcBanco );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		txtCodBanco.setFK( true );
 		txtNomeBanco.setLabel( "Nome do banco" );
@@ -227,7 +230,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setListaCampos( lcCartCob );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, FCartCob.class.getCanonicalName() );
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		txtCodCartCob.setFK( true );
 		txtDescCartCob.setLabel( "Descrição da carteira de cobrança" );

@@ -55,6 +55,11 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
+import org.freedom.modulos.grh.view.frame.crud.plain.FCodGPS;
 import org.freedom.modulos.std.view.dialog.utility.DLTranspFor;
 
 
@@ -340,7 +345,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 
 		/***************
 		 * UF *
@@ -353,7 +358,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 
 		/***************
 		 * MUNICIPIO *
@@ -367,7 +372,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/***************
 		 * FORNECEDOR *
@@ -379,7 +384,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		lcForneced.montaSql( false, "FORNECED", "CP" );
 		lcForneced.setQueryCommit( false );
 		lcForneced.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcForneced );
+		txtCodFor.setTabelaExterna( lcForneced, FFornecedor.class.getCanonicalName() );
 		
 		/***************
 		 * GPS *
@@ -391,7 +396,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	    lcGPS.montaSql( false, "CODGPS", "RH" );
 	    lcGPS.setQueryCommit( false );
 	    lcGPS.setReadOnly( true );
-		txtCodGPS.setTabelaExterna( lcGPS );
+		txtCodGPS.setTabelaExterna( lcGPS, FCodGPS.class.getCanonicalName() );
 
 		/***************
 		 * BANCO *
@@ -402,7 +407,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 
 	}
 

@@ -74,7 +74,7 @@ public class DLRInventario extends FFDialogo {
     lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false, "GRUPO", "EQ");
     lcGrup.setReadOnly(true);
-    txtCodGrup.setTabelaExterna(lcGrup);
+    txtCodGrup.setTabelaExterna(lcGrup, null);
     txtCodGrup.setFK(true);
     txtCodGrup.setNomeCampo("CodGrup");
     lcGrup.setConexao(cn);
@@ -83,7 +83,7 @@ public class DLRInventario extends FFDialogo {
 	lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 	lcAlmox.montaSql( false, "ALMOX", "EQ" );
 	lcAlmox.setReadOnly(true);
-    txtCodAlmox.setTabelaExterna(lcAlmox);
+    txtCodAlmox.setTabelaExterna(lcAlmox, null);
     txtCodAlmox.setFK(true);
     txtCodAlmox.setNomeCampo("CodAlmox");
     lcAlmox.setConexao(cn);

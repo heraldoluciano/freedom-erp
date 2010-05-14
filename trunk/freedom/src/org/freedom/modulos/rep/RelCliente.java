@@ -106,7 +106,7 @@ public class RelCliente extends FRelatorio {
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
 		txtCodTpCli.setListaCampos( lcTipoCli );
-		txtCodTpCli.setTabelaExterna( lcTipoCli );
+		txtCodTpCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTpCli.setPK( true );
 		txtCodTpCli.setNomeCampo( "CodTipoCli" );
 		
@@ -116,7 +116,7 @@ public class RelCliente extends FRelatorio {
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVend );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 	}

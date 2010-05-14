@@ -107,13 +107,13 @@ public class FRContaEstoque extends FRelatorio {
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, null);
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
 		
 		lcTabPreco.add(new GuardaCampo( txtCodTabPreco, "CodTab", "Cód.tab.pc.", ListaCampos.DB_PK, false));
 		lcTabPreco.add(new GuardaCampo( txtDescTabPreco, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
-		txtCodTabPreco.setTabelaExterna(lcTabPreco);
+		txtCodTabPreco.setTabelaExterna(lcTabPreco, null);
 		txtCodTabPreco.setNomeCampo("CodTab");
 		txtCodTabPreco.setFK(true);
 		lcTabPreco.setReadOnly(true);
@@ -123,7 +123,7 @@ public class FRContaEstoque extends FRelatorio {
 		lcPlanoPag1.add(new GuardaCampo( txtDescPlanoPag1, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag1.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag1.setReadOnly(true);
-		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1);
+		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1, null);
 		txtCodPlanoPag1.setFK(true);
 		txtCodPlanoPag1.setNomeCampo("CodPlanoPag");
 

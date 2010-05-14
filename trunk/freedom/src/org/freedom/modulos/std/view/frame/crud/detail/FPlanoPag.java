@@ -55,7 +55,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.std.view.dialog.report.DLRPlanoPag;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 
 public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListener, PostListener, RadioGroupListener {
 
@@ -187,14 +190,14 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setQueryCommit( false );
 		lcConta.setReadOnly( true );
-		txtNumConta.setTabelaExterna( lcConta );
+		txtNumConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setQueryCommit( false );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName());
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.CC.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do Centro de custo", ListaCampos.DB_SI, false ) );
@@ -203,14 +206,14 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcCC.montaSql( false, "CC", "FN" );
 		lcCC.setQueryCommit( false );
 		lcCC.setReadOnly( true );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 		
 		lcTabJuros.add( new GuardaCampo( txtCodTbJ, "CodTbj", "Cód.tb.jur.", ListaCampos.DB_PK, false ) );
 		lcTabJuros.add( new GuardaCampo( txtDescTbJ, "DescTbJ", "Descrição da tabela de juros", ListaCampos.DB_SI, false ) );
 		lcTabJuros.montaSql( false, "TBJUROS", "FN" );
 		lcTabJuros.setQueryCommit( false );
 		lcTabJuros.setReadOnly( true );
-		txtCodTbJ.setTabelaExterna( lcTabJuros );
+		txtCodTbJ.setTabelaExterna( lcTabJuros, FTabJuros.class.getCanonicalName() );
 		
 
 		setAltCab( 310 );

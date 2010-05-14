@@ -46,6 +46,12 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
+import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
+import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 public class FRListaPreco extends FRelatorio {
 	private static final long serialVersionUID = 1L;
@@ -147,7 +153,7 @@ public class FRListaPreco extends FRelatorio {
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
-		txtCodGrup.setTabelaExterna(lcGrup);
+		txtCodGrup.setTabelaExterna(lcGrup, FGrupoProd.class.getCanonicalName());
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
 
@@ -155,7 +161,7 @@ public class FRListaPreco extends FRelatorio {
 		lcSecao.add(new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da Seção", ListaCampos.DB_SI, false));
 		lcSecao.montaSql(false, "SECAO", "EQ");
 		lcSecao.setReadOnly(true);
-		txtCodSecao.setTabelaExterna(lcSecao);
+		txtCodSecao.setTabelaExterna(lcSecao, null);
 		txtCodSecao.setFK(true);
 		txtCodSecao.setNomeCampo("CodSecao");
 
@@ -163,7 +169,7 @@ public class FRListaPreco extends FRelatorio {
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
 		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
-		txtCodMarca.setTabelaExterna(lcMarca);
+		txtCodMarca.setTabelaExterna(lcMarca, FMarca.class.getCanonicalName());
 		txtCodMarca.setNomeCampo("CodMarca");
 		txtCodMarca.setFK(true);
 		lcMarca.setReadOnly(true);
@@ -172,7 +178,7 @@ public class FRListaPreco extends FRelatorio {
 		lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
 		lcFor.add(new GuardaCampo( txtNomeFor, "NomeFor", "Nome do fornecedor", ListaCampos.DB_SI, false));
 
-		txtCodFor.setTabelaExterna(lcFor);
+		txtCodFor.setTabelaExterna(lcFor, FFornecedor.class.getCanonicalName());
 		txtCodFor.setNomeCampo("CodFor");
 		txtCodFor.setFK(true);
 		lcFor.setReadOnly(true);
@@ -180,7 +186,7 @@ public class FRListaPreco extends FRelatorio {
 
 		lcClassCli.add(new GuardaCampo( txtCodClasCli, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false));
 		lcClassCli.add(new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false));
-		txtCodClasCli.setTabelaExterna(lcClassCli);
+		txtCodClasCli.setTabelaExterna(lcClassCli, FClasCli.class.getCanonicalName());
 		txtCodClasCli.setNomeCampo("CodClasCli");
 		txtCodClasCli.setFK(true);
 		lcClassCli.setReadOnly(true);
@@ -189,7 +195,7 @@ public class FRListaPreco extends FRelatorio {
 				
 		lcTabPreco.add(new GuardaCampo( txtCodTabPreco, "CodTab", "Cód.tab.pc.", ListaCampos.DB_PK, false));
 		lcTabPreco.add(new GuardaCampo( txtDescTabPreco, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
-		txtCodTabPreco.setTabelaExterna(lcTabPreco);
+		txtCodTabPreco.setTabelaExterna(lcTabPreco, FTabPreco.class.getCanonicalName() );
 		txtCodTabPreco.setNomeCampo("CodTab");
 		txtCodTabPreco.setFK(true);
 		lcTabPreco.setReadOnly(true);
@@ -200,7 +206,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag1.add(new GuardaCampo( txtDescPlanoPag1, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag1.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag1.setReadOnly(true);
-		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1);
+		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag1.setFK(true);
 		txtCodPlanoPag1.setNomeCampo("CodPlanoPag");
 
@@ -208,7 +214,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag2.add(new GuardaCampo( txtDescPlanoPag2, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag2.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag2.setReadOnly(true);
-		txtCodPlanoPag2.setTabelaExterna(lcPlanoPag2);
+		txtCodPlanoPag2.setTabelaExterna(lcPlanoPag2, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag2.setFK(true);
 		txtCodPlanoPag2.setNomeCampo("CodPlanoPag");
 
@@ -216,7 +222,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag3.add(new GuardaCampo( txtDescPlanoPag3, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag3.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag3.setReadOnly(true);
-		txtCodPlanoPag3.setTabelaExterna(lcPlanoPag3);
+		txtCodPlanoPag3.setTabelaExterna(lcPlanoPag3, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag3.setFK(true);
 		txtCodPlanoPag3.setNomeCampo("CodPlanoPag");
 
@@ -224,7 +230,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag4.add(new GuardaCampo( txtDescPlanoPag4, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag4.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag4.setReadOnly(true);
-		txtCodPlanoPag4.setTabelaExterna(lcPlanoPag4);
+		txtCodPlanoPag4.setTabelaExterna(lcPlanoPag4, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag4.setFK(true);
 		txtCodPlanoPag4.setNomeCampo("CodPlanoPag");
 
@@ -232,7 +238,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag5.add(new GuardaCampo( txtDescPlanoPag5, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag5.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag5.setReadOnly(true);
-		txtCodPlanoPag5.setTabelaExterna(lcPlanoPag5);
+		txtCodPlanoPag5.setTabelaExterna(lcPlanoPag5, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag5.setFK(true);
 		txtCodPlanoPag5.setNomeCampo("CodPlanoPag");
 
@@ -240,7 +246,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag6.add(new GuardaCampo( txtDescPlanoPag6, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag6.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag6.setReadOnly(true);
-		txtCodPlanoPag6.setTabelaExterna(lcPlanoPag6);
+		txtCodPlanoPag6.setTabelaExterna(lcPlanoPag6, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag6.setFK(true);
 		txtCodPlanoPag6.setNomeCampo("CodPlanoPag");
 
@@ -248,7 +254,7 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag7.add(new GuardaCampo( txtDescPlanoPag7, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag7.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag7.setReadOnly(true);
-		txtCodPlanoPag7.setTabelaExterna(lcPlanoPag7);
+		txtCodPlanoPag7.setTabelaExterna(lcPlanoPag7, FPlanoPag.class.getCanonicalName());
 		txtCodPlanoPag7.setFK(true);
 		txtCodPlanoPag7.setNomeCampo("CodPlanoPag");
 		
