@@ -315,7 +315,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private void montaListaCampos(){
 
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
@@ -323,7 +323,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
 
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, null );
 		txtCodAtend.setFK( true );
 		txtCodAtend.setNomeCampo( "CodAtend" );
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
@@ -331,7 +331,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setReadOnly( true );
 
-		txtCodAtendo.setTabelaExterna( lcAtendimento );
+		txtCodAtendo.setTabelaExterna( lcAtendimento, null );
 		txtCodAtendo.setFK( true );
 		txtCodAtendo.setNomeCampo( "CodAtendo" );
 		lcAtendimento.add( new GuardaCampo( txtCodAtendo, "CodAtendo", "Cód.atendo", ListaCampos.DB_PK, false ));
@@ -350,7 +350,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
 		
-		txtCodChamado.setTabelaExterna( lcChamado );
+		txtCodChamado.setTabelaExterna( lcChamado, null );
 		txtCodChamado.setFK( true );
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );

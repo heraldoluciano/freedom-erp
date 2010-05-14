@@ -137,7 +137,7 @@ public class FBairro extends FDados implements ActionListener {
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 
 		/***************
 		 * UF *
@@ -150,7 +150,7 @@ public class FBairro extends FDados implements ActionListener {
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 
 		/***************
 		 * MUNICIPIO *
@@ -163,7 +163,7 @@ public class FBairro extends FDados implements ActionListener {
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 		
 		
 	}

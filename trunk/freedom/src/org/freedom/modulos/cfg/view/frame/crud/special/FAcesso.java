@@ -95,7 +95,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 		txtCodUsu.setChave(ListaCampos.DB_PK);
 		txtCodUsu.setListaCampos(lcUsuario);
 		txtNomeUsu.setListaCampos(lcUsuario);
-		txtCodUsu.setTabelaExterna( lcUsuario );
+		txtCodUsu.setTabelaExterna( lcUsuario, null );
 		txtCodUsu.setNomeCampo( "idusu" );
 
 		setPanel(pnCliente);

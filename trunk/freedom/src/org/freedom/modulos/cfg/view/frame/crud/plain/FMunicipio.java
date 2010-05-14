@@ -106,7 +106,7 @@ public class FMunicipio extends FDados{
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 		
 		/**********
 		 *   UF   *
@@ -118,7 +118,7 @@ public class FMunicipio extends FDados{
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 		
 	}
 	

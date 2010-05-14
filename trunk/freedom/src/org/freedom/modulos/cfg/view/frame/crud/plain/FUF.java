@@ -115,7 +115,7 @@ public class FUF extends FDados {
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName());
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {

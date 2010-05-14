@@ -116,7 +116,7 @@ public class DLNovoHist extends FFDialogo {
 		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome do contato", ListaCampos.DB_SI, false));
 		lcCont.montaSql(false, "CONTATO", "TK");    
 		lcCont.setReadOnly(true);
-		txtCodCont.setTabelaExterna(lcCont);
+		txtCodCont.setTabelaExterna(lcCont, null);
 		txtCodCont.setFK(true);
 		txtCodCont.setNomeCampo("CodCto");
 		
@@ -124,7 +124,7 @@ public class DLNovoHist extends FFDialogo {
 		lcCli.add(new GuardaCampo( txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 		lcCli.montaSql(false, "CLIENTE", "VD");    
 		lcCli.setReadOnly(true);
-		txtCodCli.setTabelaExterna(lcCli);
+		txtCodCli.setTabelaExterna(lcCli, null);
 		txtCodCli.setFK(true);
 		txtCodCli.setNomeCampo("CodCli");
 		
@@ -132,7 +132,7 @@ public class DLNovoHist extends FFDialogo {
 		lcAtend.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false));
 		lcAtend.montaSql(false, "ATENDENTE", "AT");    
 		lcAtend.setReadOnly(true);
-		txtCodAtend.setTabelaExterna(lcAtend);
+		txtCodAtend.setTabelaExterna(lcAtend, null);
 		txtCodAtend.setFK(true);
 		txtCodAtend.setNomeCampo("CodAtend");
 	

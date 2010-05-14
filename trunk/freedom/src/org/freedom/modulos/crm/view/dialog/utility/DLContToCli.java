@@ -66,7 +66,7 @@ public class DLContToCli extends FFDialogo {
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Razão Social", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
 
@@ -74,7 +74,7 @@ public class DLContToCli extends FFDialogo {
 		lcClasCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descriçao", ListaCampos.DB_SI, false ) );
 		lcClasCli.montaSql( false, "CLASCLI", "VD" );
 		lcClasCli.setReadOnly( true );
-		txtCodClasCli.setTabelaExterna( lcClasCli );
+		txtCodClasCli.setTabelaExterna( lcClasCli, null );
 		txtCodClasCli.setFK( true );
 		txtCodClasCli.setNomeCampo( "CodClasCli" );
 
@@ -82,7 +82,7 @@ public class DLContToCli extends FFDialogo {
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descriçao", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 		txtCodTipoCli.setFK( true );
 		txtCodSetor.setNomeCampo( "CodSetor" );
 		txtCodSetor.setText( "" + iCodSetor );

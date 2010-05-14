@@ -96,7 +96,7 @@ public class DLRCont extends FFDialogo {
     lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição", ListaCampos.DB_SI, false));
     lcSetor.montaSql(false, "SETOR", "VD");
     lcSetor.setReadOnly(true);
-    txtCodSetor.setTabelaExterna(lcSetor);
+    txtCodSetor.setTabelaExterna(lcSetor, null);
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
 
