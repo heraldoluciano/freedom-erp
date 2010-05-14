@@ -247,7 +247,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		lcUsuEmit.add( new GuardaCampo( txtCodAgeEmit, "CodAge", "Cód.age.", ListaCampos.DB_FK, true ) );
 		lcUsuEmit.montaSql( false, "USUARIO", "SG" );
 		lcUsuEmit.setReadOnly( true );
-		txtIdUsuEmit.setTabelaExterna( lcUsuEmit );
+		txtIdUsuEmit.setTabelaExterna( lcUsuEmit, null );
 		txtIdUsuEmit.setFK( true );
 		txtIdUsuEmit.setNomeCampo( "IdUsu" );
 
@@ -256,7 +256,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		lcUsu.add( new GuardaCampo( txtCodAge, "CodAge", "Cód.age.", ListaCampos.DB_FK, true ) );
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setReadOnly( true );
-		txtIdUsu.setTabelaExterna( lcUsu );
+		txtIdUsu.setTabelaExterna( lcUsu, null );
 		txtIdUsu.setFK( true );
 		txtIdUsu.setNomeCampo( "IdUsu" );
 
@@ -265,7 +265,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener, RadioGroup
 		lcAgente.add( new GuardaCampo( txtTipoAge, "TipoAge", "Tipo", ListaCampos.DB_SI, false ) );
 		lcAgente.montaSql( false, "AGENTE", "SG" );
 		lcAgente.setReadOnly( true );
-		txtCodAge.setTabelaExterna( lcAgente );
+		txtCodAge.setTabelaExterna( lcAgente, null );
 		txtCodAge.setFK( true );
 		txtCodAge.setNomeCampo( "CodAge" );
 

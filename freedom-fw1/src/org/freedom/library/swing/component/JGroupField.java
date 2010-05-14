@@ -116,7 +116,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 		lcCampos.montaSql(false, "ITTABELA", "SG");
 		lcCampos.setQueryCommit(false);
 		lcCampos.setReadOnly(true);
-		txtCod.setTabelaExterna(lcCampos);
+		txtCod.setTabelaExterna(lcCampos, null);
 		txtCod.setListaCampos(lcDetalhe);
 		txtCod.setNomeCampo("CodItTb");
 		txtCod.setFK(true);

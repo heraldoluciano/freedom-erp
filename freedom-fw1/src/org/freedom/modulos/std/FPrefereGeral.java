@@ -666,98 +666,98 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, null );
 
 		lcHistRec.add( new GuardaCampo( txtCodHistRec, "CodHist", "Cód.Hist.Rec.", ListaCampos.DB_PK, false ) );
 		lcHistRec.add( new GuardaCampo( txtDescHistRec, "DescHist", "Descrição do histórico", ListaCampos.DB_SI, false ) );
 		lcHistRec.montaSql( false, "HISTPAD", "FN" );
 		lcHistRec.setQueryCommit( false );
 		lcHistRec.setReadOnly( true );
-		txtCodHistRec.setTabelaExterna( lcHistRec );
+		txtCodHistRec.setTabelaExterna( lcHistRec, null );
 
 		lcHistPag.add( new GuardaCampo( txtCodHistPag, "CodHist", "Cód.Hist.Pag.", ListaCampos.DB_PK, false ) );
 		lcHistPag.add( new GuardaCampo( txtDescHistPag, "DescHist", "Descrição do histórico", ListaCampos.DB_SI, false ) );
 		lcHistPag.montaSql( false, "HISTPAD", "FN" );
 		lcHistPag.setQueryCommit( false );
 		lcHistPag.setReadOnly( true );
-		txtCodHistPag.setTabelaExterna( lcHistPag );
+		txtCodHistPag.setTabelaExterna( lcHistPag, null );
 		
 		lcTabJuros.add( new GuardaCampo( txtCodTabJuros, "CodTbj", "Cód.tb.jur.", ListaCampos.DB_PK, false ) );
 		lcTabJuros.add( new GuardaCampo( txtDescTabJuros, "DescTbJ", "Descrição da tabela de juros", ListaCampos.DB_SI, false ) );
 		lcTabJuros.montaSql( false, "TBJUROS", "FN" );
 		lcTabJuros.setQueryCommit( false );
 		lcTabJuros.setReadOnly( true );
-		txtCodTabJuros.setTabelaExterna( lcTabJuros );
+		txtCodTabJuros.setTabelaExterna( lcTabJuros, null );
 
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.montaSql( false, "MARCA", "EQ" );
 		lcMarca.setQueryCommit( false );
 		lcMarca.setReadOnly( true );
-		txtCodMarca.setTabelaExterna( lcMarca );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
 
 		lcGrupo.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
 		lcGrupo.setQueryCommit( false );
 		lcGrupo.setReadOnly( true );
-		txtCodGrup.setTabelaExterna( lcGrupo );
+		txtCodGrup.setTabelaExterna( lcGrupo, null );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 
 		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false ) );
 		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
 		lcTipoFor.montaSql( false, "TIPOFOR", "CP" );
 		lcTipoFor.setQueryCommit( false );
 		lcTipoFor.setReadOnly( true );
-		txtCodTipoFor.setTabelaExterna( lcTipoFor );
+		txtCodTipoFor.setTabelaExterna( lcTipoFor, null );
 
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 		
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, null );
 
 		lcTipoMov2.add( new GuardaCampo( txtCodTipoMov2, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov2.add( new GuardaCampo( txtDescTipoMov2, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov2.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov2.setQueryCommit( false );
 		lcTipoMov2.setReadOnly( true );
-		txtCodTipoMov2.setTabelaExterna( lcTipoMov2 );
+		txtCodTipoMov2.setTabelaExterna( lcTipoMov2, null );
 
 		lcTipoMov3.add( new GuardaCampo( txtCodTipoMov3, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov3.add( new GuardaCampo( txtDescTipoMov3, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov3.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov3.setQueryCommit( false );
 		lcTipoMov3.setReadOnly( true );
-		txtCodTipoMov3.setTabelaExterna( lcTipoMov3 );
+		txtCodTipoMov3.setTabelaExterna( lcTipoMov3, null );
 
 		lcTipoMov4.add( new GuardaCampo( txtCodTipoMov4, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov4.add( new GuardaCampo( txtDescTipoMov4, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov4.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov4.setQueryCommit( false );
 		lcTipoMov4.setReadOnly( true );
-		txtCodTipoMov4.setTabelaExterna( lcTipoMov4 );
+		txtCodTipoMov4.setTabelaExterna( lcTipoMov4, null );
 
 		lcTipoMov5.add( new GuardaCampo( txtCodTipoMov5, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov5.add( new GuardaCampo( txtDescTipoMov5, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov5.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov5.setQueryCommit( false );
 		lcTipoMov5.setReadOnly( true );
-		txtCodTipoMov5.setTabelaExterna( lcTipoMov5 );
+		txtCodTipoMov5.setTabelaExterna( lcTipoMov5, null );
 
 		lcTipoMov6.add( new GuardaCampo( txtCodTipoMov6, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov6.add( new GuardaCampo( txtDescTipoMov6, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -765,7 +765,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov6.setWhereAdic( " ESTIPOMOV='I' " );
 		lcTipoMov6.setQueryCommit( false );
 		lcTipoMov6.setReadOnly( true );
-		txtCodTipoMov6.setTabelaExterna( lcTipoMov6 );
+		txtCodTipoMov6.setTabelaExterna( lcTipoMov6, null );
 
 		lcTipoMov7.add( new GuardaCampo( txtCodTipoMov7, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov7.add( new GuardaCampo( txtDescTipoMov7, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -773,7 +773,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov7.setWhereAdic( " ESTIPOMOV='I' " );
 		lcTipoMov7.setQueryCommit( false );
 		lcTipoMov7.setReadOnly( true );
-		txtCodTipoMov7.setTabelaExterna( lcTipoMov7 );
+		txtCodTipoMov7.setTabelaExterna( lcTipoMov7, null );
 
 		lcTipoMov8.add( new GuardaCampo( txtCodTipoMov8, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov8.add( new GuardaCampo( txtDescTipoMov8, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -781,7 +781,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov8.setWhereAdic( " TIPOMOV='RM' " );
 		lcTipoMov8.setQueryCommit( false );
 		lcTipoMov8.setReadOnly( true );
-		txtCodTipoMov8.setTabelaExterna( lcTipoMov8 );
+		txtCodTipoMov8.setTabelaExterna( lcTipoMov8, null );
 		txtCodTipoMov8.setFK( true );
 		
 		lcTipoMov9.add( new GuardaCampo( txtCodTipoMov9, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
@@ -790,14 +790,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov9.setWhereAdic( " TIPOMOV='CF' " );
 		lcTipoMov9.setQueryCommit( false );
 		lcTipoMov9.setReadOnly( true );
-		txtCodTipoMov9.setTabelaExterna( lcTipoMov9 );
+		txtCodTipoMov9.setTabelaExterna( lcTipoMov9, null );
 		txtCodTipoMov9.setFK( true );
 
 		txtCodTransp.setNomeCampo( "CodTran" );
 		lcTransp.add( new GuardaCampo( txtCodTransp, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTransp.add( new GuardaCampo( txtDescTransp, "RazTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
 		txtDescTransp.setListaCampos( lcTransp );
-		txtCodTransp.setTabelaExterna( lcTransp );
+		txtCodTransp.setTabelaExterna( lcTransp, null );
 		txtCodTransp.setFK( true );
 		lcTransp.montaSql( false, "TRANSP", "VD" );
 		lcTransp.setQueryCommit( false );
@@ -808,7 +808,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
 
@@ -816,7 +816,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanoPag2.add( new GuardaCampo( txtCodPlanoPag2, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag2.add( new GuardaCampo( txtDescPlanoPag2, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
 		lcPlanoPag2.montaSql( false, "PLANOPAG", "FN" );
-		txtCodPlanoPag2.setTabelaExterna( lcPlanoPag2 );
+		txtCodPlanoPag2.setTabelaExterna( lcPlanoPag2, null );
 		txtCodPlanoPag2.setFK( true );
 		lcPlanoPag2.setReadOnly( true );
 		txtDescPlanoPag2.setListaCampos( lcPlanoPag2 );
@@ -826,7 +826,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTabPreco.add( new GuardaCampo( txtDescTab, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false ) );
 		lcTabPreco.montaSql( false, "TABPRECO", "VD" );
 		lcTabPreco.setReadOnly( true );
-		txtCodTab.setTabelaExterna( lcTabPreco );
+		txtCodTab.setTabelaExterna( lcTabPreco, null );
 		txtCodTab.setFK( true );
 		txtDescTab.setListaCampos( lcTabPreco );
 
@@ -835,7 +835,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcCli.add( new GuardaCampo( txtDescCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtDescCli.setListaCampos( lcCli );
 
@@ -844,7 +844,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcClasCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
 		lcClasCli.montaSql( false, "CLASCLI", "VD" );
 		lcClasCli.setReadOnly( true );
-		txtCodClasCli.setTabelaExterna( lcClasCli );
+		txtCodClasCli.setTabelaExterna( lcClasCli, null );
 		txtCodClasCli.setFK( true );
 		txtDescClasCli.setListaCampos( lcClasCli );
 		
@@ -853,14 +853,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcMens.montaSql( false, "MENSAGEM", "LF" );
 		lcMens.setQueryCommit( false );
 		lcMens.setReadOnly( true );
-		txtCodMens.setTabelaExterna( lcMens );
+		txtCodMens.setTabelaExterna( lcMens, null );
 		
 		lcMensGeral.add( new GuardaCampo( txtCodMensGeral, "CodMens", "Cód.Mens.", ListaCampos.DB_PK, null, false ) );
 		lcMensGeral.add( new GuardaCampo( txtDescMensGeral, "Mens", "Mensagem", ListaCampos.DB_SI, null, false ) );
 		lcMensGeral.montaSql( false, "MENSAGEM", "LF" );
 		lcMensGeral.setQueryCommit( false );
 		lcMensGeral.setReadOnly( true );
-		txtCodMensGeral.setTabelaExterna( lcMensGeral );
+		txtCodMensGeral.setTabelaExterna( lcMensGeral, null );
 		
 		lcPlanJR.add( new GuardaCampo( txtCodPlanJR, "CodPlan", "Cód.Plan.JR.", ListaCampos.DB_PK, false ) );
 		lcPlanJR.add( new GuardaCampo( txtDescPlanJR, "DescPlan", "Descrição do Planejamento", ListaCampos.DB_SI, false ) );
@@ -868,7 +868,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanJR.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlanJR.setQueryCommit( false );
 		lcPlanJR.setReadOnly( true );
-		txtCodPlanJR.setTabelaExterna( lcPlanJR );
+		txtCodPlanJR.setTabelaExterna( lcPlanJR, null );
 
 		lcPlanJP.add( new GuardaCampo( txtCodPlanJP, "CodPlan", "Cód.Plan.JP.", ListaCampos.DB_PK, false ) );
 		lcPlanJP.add( new GuardaCampo( txtDescPlanJP, "DescPlan", "Descrição do Planejamento", ListaCampos.DB_SI, false ) );
@@ -876,7 +876,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanJP.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlanJP.setQueryCommit( false );
 		lcPlanJP.setReadOnly( true );
-		txtCodPlanJP.setTabelaExterna( lcPlanJP );
+		txtCodPlanJP.setTabelaExterna( lcPlanJP, null );
 
 		lcPlanDC.add( new GuardaCampo( txtCodPlanDC, "CodPlan", "Cód.Plan.DC.", ListaCampos.DB_PK, false ) );
 		lcPlanDC.add( new GuardaCampo( txtDescPlanDC, "DescPlan", "Descrição do Planejamento", ListaCampos.DB_SI, false ) );
@@ -884,7 +884,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDC.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlanDC.setQueryCommit( false );
 		lcPlanDC.setReadOnly( true );
-		txtCodPlanDC.setTabelaExterna( lcPlanDC );
+		txtCodPlanDC.setTabelaExterna( lcPlanDC, null );
 		
 		lcPlanDR.add( new GuardaCampo( txtCodPlanDR, "CodPlan", "Cód.Plan.DR.", ListaCampos.DB_PK, false ) );
 		lcPlanDR.add( new GuardaCampo( txtDescPlanDR, "DescPlan", "Descrição do Planejamento", ListaCampos.DB_SI, false ) );
@@ -892,7 +892,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDR.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlanDR.setQueryCommit( false );
 		lcPlanDR.setReadOnly( true );
-		txtCodPlanDR.setTabelaExterna( lcPlanDR );
+		txtCodPlanDR.setTabelaExterna( lcPlanDR, null );
 				
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();

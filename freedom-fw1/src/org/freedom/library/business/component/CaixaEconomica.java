@@ -255,8 +255,10 @@ public class CaixaEconomica extends Banco {
 	}
 
 	public String getNossoNumero() {
+		
+		String nn = "";
 
-		String nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 14 );
+		nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 14 );
 		
 		if ( nn.length() > 14 ) {
 			nn = nn.substring( 0, 14 );
@@ -277,7 +279,7 @@ public class CaixaEconomica extends Banco {
 		return rec;
 	}
 
-	public void setRec( long rec ) {
+	public void setRec(long rec) {
 		this.rec = rec;
 	}
 

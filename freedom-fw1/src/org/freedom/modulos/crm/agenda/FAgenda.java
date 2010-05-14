@@ -242,7 +242,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI, false ) );
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setReadOnly( true );
-		txtIdUsu.setTabelaExterna( lcUsu );
+		txtIdUsu.setTabelaExterna( lcUsu, null );
 
 		txtIdUsu.setFK( true );
 		txtIdUsu.setNomeCampo( "IdUsu" );
