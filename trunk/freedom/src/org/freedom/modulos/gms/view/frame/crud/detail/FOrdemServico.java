@@ -985,7 +985,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			}
 			if ( !bValido ) {
 				
-				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), con );
+				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString() );
 				
 				dl.setVisible( true );
 				
