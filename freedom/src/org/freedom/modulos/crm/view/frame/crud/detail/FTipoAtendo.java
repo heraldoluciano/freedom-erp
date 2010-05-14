@@ -93,7 +93,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 		lcSetAt.montaSql(false, "SETOR", "AT");
 		lcSetAt.setQueryCommit(false);
 		lcSetAt.setReadOnly(true);
-		txtCodSetAt.setTabelaExterna(lcSetAt);
+		txtCodSetAt.setTabelaExterna(lcSetAt, FSetorAtend.class.getCanonicalName());
 
 //		lcFluxo.add(new GuardaCampo( txtCodFluxo, "CodFluxo", "Cód.fluxo", ListaCampos.DB_PK, true));
 //		lcFluxo.add(new GuardaCampo( txtDescFluxo, "DescFluxo", "Descrição do fluxo", ListaCampos.DB_SI,false));

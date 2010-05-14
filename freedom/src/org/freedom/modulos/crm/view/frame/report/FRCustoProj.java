@@ -144,7 +144,7 @@ public class FRCustoProj extends FRelatorio {
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -155,7 +155,7 @@ public class FRCustoProj extends FRelatorio {
 		lcContr.montaSql( false, "CONTRATO", "VD" );
 		lcContr.setReadOnly( true );
 		lcContr.setDinWhereAdic( "CODCLI=#N ", txtCodCli );
-		txtCodContr.setTabelaExterna( lcContr );
+		txtCodContr.setTabelaExterna( lcContr, null );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
 		

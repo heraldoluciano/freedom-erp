@@ -38,6 +38,8 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 import java.util.Vector;
 
@@ -202,7 +204,7 @@ public class FContrato extends FDetalhe implements ActionListener{
 		 *  CLIENTE  *
 		 * ***********/
 		
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
@@ -213,7 +215,7 @@ public class FContrato extends FDetalhe implements ActionListener{
 		 *  PRODUTO PRINCIPAL  *
 		 * ********************/
 		
-		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto, FProduto.class.getCanonicalName() );
 		txtCodProd.setFK( true );
 		txtCodProd.setNomeCampo( "CodProd" );
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
@@ -224,7 +226,7 @@ public class FContrato extends FDetalhe implements ActionListener{
 		 *  PRODUTO EXCEDENTE  *
 		 * ********************/
 		
-		txtCodProdPE.setTabelaExterna( lcProdutoex );
+		txtCodProdPE.setTabelaExterna( lcProdutoex, FProduto.class.getCanonicalName() );
 		txtCodProdPE.setFK( true );
 		txtCodProdPE.setNomeCampo( "CodProdPE" );
 		lcProdutoex.add( new GuardaCampo( txtCodProdPE, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );

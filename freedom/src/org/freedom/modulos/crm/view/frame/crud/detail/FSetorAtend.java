@@ -37,6 +37,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.view.dialog.report.DLRSetorAtend;
 
 public class FSetorAtend extends FDetalhe implements ActionListener {
@@ -65,7 +66,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    lcAtend.montaSql(false, "ATENDENTE", "AT");
    lcAtend.setQueryCommit(false);
    lcAtend.setReadOnly(true);
-   txtCodAtend.setTabelaExterna(lcAtend);
+   txtCodAtend.setTabelaExterna(lcAtend, FAtendente.class.getCanonicalName());
     
    adicCampo(txtCodSetAt, 7, 20, 70, 20,"CodSetAt","Cód.setor",ListaCampos.DB_PK,true);
    adicCampo(txtDescSetAt, 80, 20, 250, 20,"DescSetAt","Descrição do setor",ListaCampos.DB_SI,true);

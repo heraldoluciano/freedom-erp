@@ -28,8 +28,10 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -48,8 +50,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener {
 
@@ -194,7 +198,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli,FCliente.class.getCanonicalName() );
 		
 		// FK Tipo de chamado
 		lcTipoChamado.add( new GuardaCampo( txtCodTpChamado, "CodTpChamado", "Cód.Tp.Chamado", ListaCampos.DB_PK, false ) );
@@ -202,11 +206,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcTipoChamado.montaSql( false, "TIPOCHAMADO", "CR" );
 		lcTipoChamado.setQueryCommit( false );
 		lcTipoChamado.setReadOnly( true );
-		txtCodTpChamado.setTabelaExterna( lcTipoChamado );
+		txtCodTpChamado.setTabelaExterna( lcTipoChamado, FTipoChamado.class.getCanonicalName() );
 		txtCodTpChamado.setFK( true );
 
 		// FK para Atendente/Técnico designado
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, FAtendente.class.getCanonicalName() );
 		txtCodAtend.setFK( true );
 		txtCodAtend.setNomeCampo( "CodAtend" );
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );

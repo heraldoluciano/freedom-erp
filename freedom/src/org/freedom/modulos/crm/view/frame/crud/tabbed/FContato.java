@@ -57,9 +57,18 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.crm.view.dialog.report.DLRCont;
 import org.freedom.modulos.crm.view.dialog.utility.DLContToCli;
+import org.freedom.modulos.crm.view.frame.crud.plain.FAtividade;
+import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
+import org.freedom.modulos.crm.view.frame.crud.plain.FTipoCont;
+import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 
 /**
@@ -275,28 +284,28 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
 
 		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, true ) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor.montaSql( false, "SETOR", "VD" );
 		lcSetor.setQueryCommit( false );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
 
 		lcAtivFK.add( new GuardaCampo( txtCodAtiv, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PK, true ) );
 		lcAtivFK.add( new GuardaCampo( txtDescAtiv, "DescAtiv", "Descrição da atividade", ListaCampos.DB_SI, false ) );
 		lcAtivFK.montaSql( false, "ATIVIDADE", "TK" );
 		lcAtivFK.setReadOnly( true );
 		lcAtivFK.setQueryCommit( false );
-		txtCodAtiv.setTabelaExterna( lcAtivFK );
+		txtCodAtiv.setTabelaExterna( lcAtivFK, FAtividade.class.getCanonicalName() );
 
 		lcGrupFK.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grup.", ListaCampos.DB_PK, true ) );
 		lcGrupFK.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrupFK.montaSql( false, "GRUPO", "EQ" );
 		lcGrupFK.setReadOnly( true );
 		lcGrupFK.setQueryCommit( false );
-		txtCodGrup.setTabelaExterna( lcGrupFK );
+		txtCodGrup.setTabelaExterna( lcGrupFK, null );
 
 		/** TIPO CLI */
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
@@ -304,14 +313,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, FTipoCli.class.getCanonicalName() );
 
 		lcOrigCont.add( new GuardaCampo( txtCodOrigCont, "CodOrigCont", "Cód.origem", ListaCampos.DB_PK, true ) );
 		lcOrigCont.add( new GuardaCampo( txtDescOrigCont, "DescOrigCont", "descrição da origem", ListaCampos.DB_SI, false ) );
 		lcOrigCont.montaSql( false, "ORIGCONT", "TK" );
 		lcOrigCont.setQueryCommit( false );
 		lcOrigCont.setReadOnly( true );
-		txtCodOrigCont.setTabelaExterna( lcOrigCont );
+		txtCodOrigCont.setTabelaExterna( lcOrigCont, FOrigContato.class.getCanonicalName() );
 
 		/** MUNICIPIO */
 		lcMunic.setUsaME( false );
@@ -322,7 +331,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/** UF */
 		lcUF.setUsaME( false );
@@ -332,7 +341,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 
 		/** PAIS */
 		lcPais.setUsaME( false );
@@ -341,7 +350,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 		
 		/** TIPO CONT */
 		lcTipoCont.add( new GuardaCampo( txtCodTipoCont, "CodTipoCont", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
@@ -349,7 +358,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcTipoCont.montaSql( false, "TIPOCONT", "TK" );
 		lcTipoCont.setQueryCommit( false );
 		lcTipoCont.setReadOnly( true );
-		txtCodTipoCont.setTabelaExterna( lcTipoCont );
+		txtCodTipoCont.setTabelaExterna( lcTipoCont, FTipoCont.class.getCanonicalName() );
 		
 	}
 	

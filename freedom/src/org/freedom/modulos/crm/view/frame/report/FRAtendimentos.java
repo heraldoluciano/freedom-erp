@@ -35,6 +35,9 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -162,7 +165,7 @@ public class FRAtendimentos extends FRelatorio {
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
@@ -173,13 +176,13 @@ public class FRAtendimentos extends FRelatorio {
 		lcContr.montaSql( false, "CONTRATO", "VD" );
 		lcContr.setReadOnly( true );
 		lcContr.setDinWhereAdic( "CODCLI=#N ", txtCodCli );
-		txtCodContr.setTabelaExterna( lcContr );
+		txtCodContr.setTabelaExterna( lcContr, FContrato.class.getCanonicalName() );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
 		
 		//Atendente
 		
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, FAtendente.class.getCanonicalName() );
 		txtCodAtend.setFK( true );
 		txtCodAtend.setNomeCampo( "CodAtend" );
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );

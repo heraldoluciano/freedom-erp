@@ -31,6 +31,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.crm.view.frame.crud.plain.FEmail;
 
 import javax.swing.JScrollPane;
 
@@ -89,7 +90,7 @@ public class FCampanha extends FTabDados{
 		lcEmailFK.montaSql( false, "EMAIL", "TK" );
 		lcEmailFK.setReadOnly( true );
 		lcEmailFK.setQueryCommit( false );
-		txtCodEmail.setTabelaExterna( lcEmailFK );
+		txtCodEmail.setTabelaExterna( lcEmailFK, FEmail.class.getCanonicalName() );
 	}	
 	
 	private void montaTela(){
