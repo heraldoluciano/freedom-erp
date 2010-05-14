@@ -50,6 +50,12 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtribuicao;
+import org.freedom.modulos.atd.view.frame.crud.plain.FEncaminhador;
+import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FGrauInst;
+import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FConveniado extends FTabDados implements PostListener {
@@ -195,42 +201,42 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcTipoConv.montaSql( false, "TIPOCONV", "AT" );
 		lcTipoConv.setQueryCommit( false );
 		lcTipoConv.setReadOnly( true );
-		txtCodTipoConv.setTabelaExterna( lcTipoConv );
+		txtCodTipoConv.setTabelaExterna( lcTipoConv, FTipoConv.class.getCanonicalName() );
 
 		lcGrauInst.add( new GuardaCampo( txtCodGrauInst, "CodGri", "Cód.gri.", ListaCampos.DB_PK, false ) );
 		lcGrauInst.add( new GuardaCampo( txtDescGrauInst, "DescGri", "Descriçao do grau de instrução", ListaCampos.DB_SI, false ) );
 		lcGrauInst.montaSql( false, "GRAUINST", "SG" );
 		lcGrauInst.setQueryCommit( false );
 		lcGrauInst.setReadOnly( true );
-		txtCodGrauInst.setTabelaExterna( lcGrauInst );
+		txtCodGrauInst.setTabelaExterna( lcGrauInst, FGrauInst.class.getCanonicalName() );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtDescCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 
 		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
 		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false ) );
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setQueryCommit( false );
 		lcAtend.setReadOnly( true );
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, FAtendente.class.getCanonicalName() );
 
 		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
 		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, false ) );
 		lcEnc.montaSql( false, "ENCAMINHADOR", "AT" );
 		lcEnc.setQueryCommit( false );
 		lcEnc.setReadOnly( true );
-		txtCodEnc.setTabelaExterna( lcEnc );
+		txtCodEnc.setTabelaExterna( lcEnc, FEncaminhador.class.getCanonicalName() );
 
 		lcFunc.add( new GuardaCampo( txtCodFunc, "CodFunc", "Cód.funç.", ListaCampos.DB_PK, false ) );
 		lcFunc.add( new GuardaCampo( txtDescFunc, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
 		lcFunc.montaSql( false, "FUNCAO", "RH" );
 		lcFunc.setQueryCommit( false );
 		lcFunc.setReadOnly( true );
-		txtCodFunc.setTabelaExterna( lcFunc );
+		txtCodFunc.setTabelaExterna( lcFunc, FFuncao.class.getCanonicalName() );
 		
 		vVals.add( "" );
 		vVals.add( "M" );
@@ -314,7 +320,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcAtrib.setQueryCommit( false );
 		lcAtrib.setReadOnly( true );
 		txtDescAtrib.setListaCampos( lcAtrib );
-		txtCodAtrib.setTabelaExterna( lcAtrib );
+		txtCodAtrib.setTabelaExterna( lcAtrib, FAtribuicao.class.getCanonicalName());
 
 		adicCampo( txtCodConvAtrib, 7, 20, 80, 20, "SeqConvAtrib", "Nºseq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodAtrib, 90, 20, 77, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_FK, txtDescAtrib, false );

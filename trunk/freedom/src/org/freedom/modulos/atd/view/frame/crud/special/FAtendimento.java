@@ -53,7 +53,9 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.atd.view.dialog.utility.DLNovoAtend;
+import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 public class FAtendimento extends FFilho implements CarregaListener, ActionListener {
@@ -97,7 +99,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	lcConv.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_SI,false));
 	lcConv.montaSql(false, "CONVENIADO", "AT");    
 	lcConv.setReadOnly(true);
-	txtCodConv.setTabelaExterna(lcConv);
+	txtCodConv.setTabelaExterna(lcConv, FConveniado.class.getCanonicalName());
 	txtCodConv.setFK(true);
 	txtCodConv.setNomeCampo("CodConv");
 	txtTelConv.setMascara(JTextFieldPad.MC_FONEDDD);
@@ -107,7 +109,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	lcCli.montaSql(false, "CLIENTE", "VD");    
 	lcCli.setReadOnly(true);
-	txtCodCli.setTabelaExterna(lcCli);
+	txtCodCli.setTabelaExterna(lcCli, FCliente.class.getCanonicalName());
 	txtCodCli.setFK(true);
 	txtCodCli.setNomeCampo("CodCli");
 

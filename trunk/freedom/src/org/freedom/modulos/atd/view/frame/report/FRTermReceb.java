@@ -97,7 +97,7 @@ public class FRTermReceb extends FRelatorio {
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
 //		lcOrc.setQueryCommit( true );
 		lcOrc.setReadOnly( true );
-		txtCodOrc.setTabelaExterna(lcOrc);
+		txtCodOrc.setTabelaExterna(lcOrc, null);
 		txtCodOrc.setFK( true );
 		txtCodOrc.setNomeCampo( "CODORC" );
 		

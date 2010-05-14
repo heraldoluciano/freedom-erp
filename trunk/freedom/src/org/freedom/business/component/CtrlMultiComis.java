@@ -163,7 +163,7 @@ public class CtrlMultiComis implements CarregaListener {
 			lcVend.montaSql( false, "VENDEDOR", "VD" );
 			//lcVend.setQueryCommit( false );
 			lcVend.setReadOnly( true );
-			txtCodvend.setTabelaExterna( lcVend );
+			txtCodvend.setTabelaExterna( lcVend, null );
 			lcVendaComis.addInsertListener( this );
 			lcVend.addEditListener( this );
 			//lcMaster.addPostListener( this );

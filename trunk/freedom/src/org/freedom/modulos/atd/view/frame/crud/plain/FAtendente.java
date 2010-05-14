@@ -42,6 +42,9 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 public class FAtendente extends FDados {
 
@@ -116,28 +119,28 @@ public class FAtendente extends FDados {
 		lcTipoAtend.montaSql( false, "TIPOATEND", "AT" );
 		lcTipoAtend.setQueryCommit( false );
 		lcTipoAtend.setReadOnly( true );
-		txtCodTipoAtend.setTabelaExterna( lcTipoAtend );
+		txtCodTipoAtend.setTabelaExterna( lcTipoAtend, FTipoAtend.class.getCanonicalName());
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
 
 		lcUsu.add( new GuardaCampo( txtIDUsu, "IdUsu", "ID", ListaCampos.DB_PK, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, false ) );
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setQueryCommit( false );
 		lcUsu.setReadOnly( true );
-		txtIDUsu.setTabelaExterna( lcUsu );
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName());
 				
 		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula.", ListaCampos.DB_PK, false ) );
 		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, false ) );
 		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
 		lcEmpregado.setQueryCommit( false );
 		lcEmpregado.setReadOnly( true );
-		txtMatEmpr.setTabelaExterna( lcEmpregado );
+		txtMatEmpr.setTabelaExterna( lcEmpregado, FEmpregado.class.getCanonicalName() );
 
 
 	}

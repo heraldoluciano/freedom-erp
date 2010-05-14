@@ -86,7 +86,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome", ListaCampos.DB_SI, false),"txtCodVendx");
 		lcConv.montaSql(false, "CONVENIADO", "AT");    
 		lcConv.setReadOnly(true);
-		txtCodConv.setTabelaExterna(lcConv);
+		txtCodConv.setTabelaExterna(lcConv, null);
 		txtCodConv.setFK(true);
 		txtCodConv.setNomeCampo("CodConv");
 		
@@ -94,7 +94,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		lcAtend.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false),"txtCodVendx");
 		lcAtend.montaSql(false, "ATENDENTE", "AT");    
 		lcAtend.setReadOnly(true);
-		txtCodAtend.setTabelaExterna(lcAtend);
+		txtCodAtend.setTabelaExterna(lcAtend, null);
 		txtCodAtend.setFK(true);
 		txtCodAtend.setNomeCampo("CodAtend");
 		
