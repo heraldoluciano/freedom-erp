@@ -262,7 +262,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setRequerido( true );
@@ -279,7 +279,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		lcCarteira.montaSql( false, "CARTCOB", "FN" );
 		lcCarteira.setQueryCommit( false );
 		lcCarteira.setReadOnly( true );		
-		txtCodCartCob.setTabelaExterna( lcCarteira );
+		txtCodCartCob.setTabelaExterna( lcCarteira, null );
 		txtCodCartCob.setListaCampos( lcCarteira );
 		txtDescCartCob.setListaCampos( lcCarteira );
 		txtCodCartCob.setFK( true );	

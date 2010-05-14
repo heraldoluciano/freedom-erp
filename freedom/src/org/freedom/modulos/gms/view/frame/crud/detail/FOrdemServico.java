@@ -45,12 +45,16 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
@@ -600,7 +604,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 
-		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc );
+		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
 		txtCodTipoRecMerc.setFK( true );
 
@@ -618,7 +622,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcCli.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
 
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 
@@ -646,7 +650,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		
 		//* Produto referencia
 		
@@ -668,7 +672,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
-		txtRefProd.setTabelaExterna( lcProd2 );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
 		// FK do número de série
 		
@@ -684,7 +688,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
 		lcNumSerie.setQueryCommit( false );
 		lcNumSerie.setReadOnly( true );
-		txtNumSerie.setTabelaExterna( lcNumSerie );
+		txtNumSerie.setTabelaExterna( lcNumSerie, FSerie.class.getCanonicalName() );
 		txtObsSerie.setListaCampos( lcNumSerie );
 		txtObsSerie.setNomeCampo( "ObsSerie" );
 		txtObsSerie.setLabel( "Observações" );
@@ -696,7 +700,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setQueryCommit( false );
 		lcAtendente.setReadOnly( true );
-		txtCodAtend.setTabelaExterna( lcAtendente );
+		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
 		
 		/***************
 		 * PROCESSOS *
@@ -707,7 +711,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProc.add( new GuardaCampo( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc.", ListaCampos.DB_SI, false ) );
 		lcProc.add( new GuardaCampo( txtTipoProcRecMerc, "TipoProcRecMerc", "Tp.Proc.Rec.Merc.", ListaCampos.DB_SI, false ) );
 
-		txtCodProcRecMerc.setTabelaExterna( lcProc );
+		txtCodProcRecMerc.setTabelaExterna( lcProc, null );
 		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc" );
 		txtCodProcRecMerc.setFK( true );
 
@@ -733,7 +737,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS.montaSql( false, "PRODUTO", "EQ" );
 		lcProdItOS.setQueryCommit( false );
 		lcProdItOS.setReadOnly( true );
-		txtCodProdItOS.setTabelaExterna( lcProdItOS );
+		txtCodProdItOS.setTabelaExterna( lcProdItOS, FProduto.class.getCanonicalName() );
 		
 		
 		

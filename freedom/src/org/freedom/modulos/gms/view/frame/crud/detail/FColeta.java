@@ -38,7 +38,12 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 
 public class FColeta extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
@@ -383,7 +388,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 
-		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc );
+		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
 		txtCodTipoRecMerc.setFK( true );
 
@@ -402,7 +407,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
 
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 
@@ -415,7 +420,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcTran.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.add( new GuardaCampo( txtCNPJTran, "CnpjTran", "CNPJ", ListaCampos.DB_SI, false ) );
 
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
 		txtCodTran.setFK( true );
 
@@ -443,7 +448,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		
 		//* Produto referencia
 		
@@ -465,7 +470,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
-		txtRefProd.setTabelaExterna( lcProd2 );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
 		// FK do número de série
 		
@@ -477,7 +482,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
 		lcNumSerie.setQueryCommit( false );
 		lcNumSerie.setReadOnly( true );
-		txtNumSerie.setTabelaExterna( lcNumSerie );
+		txtNumSerie.setTabelaExterna( lcNumSerie, FSerie.class.getCanonicalName() );
 		txtObsSerie.setListaCampos( lcNumSerie );
 		txtObsSerie.setNomeCampo( "ObsSerie" );
 		txtObsSerie.setLabel( "Observações" );
@@ -490,7 +495,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setTabelaExterna( lcVendedor, FVendedor.class.getCanonicalName() );
 		
 		/***************
 		 * PROCESSOS *
@@ -501,8 +506,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcProc.add( new GuardaCampo( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc.", ListaCampos.DB_SI, false ) );
 		lcProc.add( new GuardaCampo( txtTipoProcRecMerc, "TipoProcRecMerc", "Tp.Proc.Rec.Merc.", ListaCampos.DB_SI, false ) );
 
-		txtCodProcRecMerc.setTabelaExterna( lcProc );
-		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc" );
+		txtCodProcRecMerc.setTabelaExterna( lcProc, null );
+		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc");
 		txtCodProcRecMerc.setFK( true );
 
 		lcProc.setReadOnly( true );

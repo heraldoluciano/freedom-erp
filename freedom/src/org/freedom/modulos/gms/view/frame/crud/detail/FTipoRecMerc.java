@@ -45,6 +45,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 
 public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener, CarregaListener {
 
@@ -146,7 +147,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		lcTipoMovCP.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMovCP.setQueryCommit( false );
 		lcTipoMovCP.setReadOnly( true );
-		txtCodTipoMovCP.setTabelaExterna( lcTipoMovCP );
+		txtCodTipoMovCP.setTabelaExterna( lcTipoMovCP, FTipoMov.class.getCanonicalName() );
 		
 	}
 

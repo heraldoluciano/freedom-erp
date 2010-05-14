@@ -90,7 +90,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
@@ -104,7 +104,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ) );
 		lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ) );
 		lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ) );
-		txtLote.setTabelaExterna( lcLote );
+		txtLote.setTabelaExterna( lcLote, null );
 		txtLote.setNomeCampo( "CodLote" );
 		txtLote.setFK( true );
 		lcLote.setReadOnly( true );

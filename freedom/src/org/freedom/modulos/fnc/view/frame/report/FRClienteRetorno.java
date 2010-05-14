@@ -64,7 +64,7 @@ public class FRClienteRetorno extends FRelatorio {
     lcTCliente.montaSql(false, "CLIENTE", "VD");    
     lcTCliente.setQueryCommit(false);
     lcTCliente.setReadOnly(true);
-    txtCodCliente.setTabelaExterna(lcTCliente);
+    txtCodCliente.setTabelaExterna(lcTCliente, null);
     
     JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());

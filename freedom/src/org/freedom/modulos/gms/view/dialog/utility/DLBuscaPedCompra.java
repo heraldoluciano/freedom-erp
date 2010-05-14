@@ -376,7 +376,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "Vlr.Liq.", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, null, false ) );
 
-		txtCodCompra.setTabelaExterna( lcCompra );
+		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setNomeCampo( "CodCompra" );
 		txtCodCompra.setFK( true );
 
@@ -389,7 +389,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		// Lista campos do fornecedor
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.Forn.", ListaCampos.DB_PK, txtRazFor, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null);
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );

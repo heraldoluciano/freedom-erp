@@ -54,6 +54,10 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
+import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
+import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
+import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
 
 public class FEmpregado extends FTabDados implements KeyListener, CarregaListener {
 
@@ -250,21 +254,21 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 		lcFuncao.setQueryCommit( false );
 		lcFuncao.setReadOnly( true );
-		txtCodFuncao.setTabelaExterna( lcFuncao );
+		txtCodFuncao.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName());
 
 		lcTurno.add( new GuardaCampo( txtCodTurno, "CodTurno", "Cód. turno", ListaCampos.DB_PK, true ) );
 		lcTurno.add( new GuardaCampo( txtDescTurno, "DescTurno", "Descrição do turno", ListaCampos.DB_SI, false ) );
 		lcTurno.montaSql( false, "TURNO", "RH" );
 		lcTurno.setQueryCommit( false );
 		lcTurno.setReadOnly( true );
-		txtCodTurno.setTabelaExterna( lcTurno );
+		txtCodTurno.setTabelaExterna( lcTurno, FTurnos.class.getCanonicalName() );
 
 		lcDepto.add( new GuardaCampo( txtCodDepto, "CodDep", "Cód.Depto.", ListaCampos.DB_PK, true ) );
 		lcDepto.add( new GuardaCampo( txtDescDepto, "DescDep", "Descrição do departamento", ListaCampos.DB_SI, false ) );
 		lcDepto.montaSql( false, "DEPTO", "RH" );
 		lcDepto.setQueryCommit( false );
 		lcDepto.setReadOnly( true );
-		txtCodDepto.setTabelaExterna( lcDepto );
+		txtCodDepto.setTabelaExterna( lcDepto, FDepto.class.getCanonicalName() );
 
 		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, txtDescBenef, false ) );
 		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
@@ -272,7 +276,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcBenef.montaSql( false, "BENEFICIO", "RH" );
 		lcBenef.setReadOnly( true );
 		lcBenef.setQueryCommit( false );
-		txtCodBenef.setTabelaExterna( lcBenef );
+		txtCodBenef.setTabelaExterna( lcBenef, FBeneficio.class.getCanonicalName() );
 		txtCodBenef.setFK( true );
 		txtCodBenef.setListaCampos( lcBenef );
 		txtDescBenef.setListaCampos( lcBenef );

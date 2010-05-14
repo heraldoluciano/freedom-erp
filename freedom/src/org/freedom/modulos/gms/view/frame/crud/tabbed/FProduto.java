@@ -75,7 +75,23 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
+import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
+import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FEstrutura;
 import org.freedom.modulos.std.view.dialog.report.DLRProduto;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.plain.FCaixa;
+import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
+import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
+import org.freedom.modulos.std.view.frame.crud.plain.FPrazoEnt;
+import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
+import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 
 public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener, CarregaListener, RadioGroupListener, PostListener {
 
@@ -584,49 +600,49 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
 		lcMoeda.setReadOnly( true );
 		lcMoeda.setQueryCommit( false );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda, FMoeda.class.getCanonicalName() );
 
 		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
 		lcUnid.add( new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
 		lcUnid.montaSql( false, "UNIDADE", "EQ" );
 		lcUnid.setReadOnly( true );
 		lcUnid.setQueryCommit( false );
-		txtCodUnid.setTabelaExterna( lcUnid );
+		txtCodUnid.setTabelaExterna( lcUnid, FUnidade.class.getCanonicalName() );
 
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, true ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.montaSql( false, "MARCA", "EQ" );
 		lcMarca.setReadOnly( true );
 		lcMarca.setQueryCommit( false );
-		txtCodMarca.setTabelaExterna( lcMarca );
+		txtCodMarca.setTabelaExterna( lcMarca, FMarca.class.getCanonicalName());
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
 		lcSecao.montaSql( false, "SECAO", "EQ" );
 		lcSecao.setReadOnly( true );
 		lcSecao.setQueryCommit( false );
-		txtCodSecao.setTabelaExterna( lcSecao );
+		txtCodSecao.setTabelaExterna( lcSecao, FSecaoProd.class.getCanonicalName() );
 		
 		lcFisc.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.c.fisc.", ListaCampos.DB_PK, true ) );
 		lcFisc.add( new GuardaCampo( txtDescFisc, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
 		lcFisc.montaSql( false, "CLFISCAL", "LF" );
 		lcFisc.setReadOnly( true );
 		lcFisc.setQueryCommit( false );
-		txtCodFisc.setTabelaExterna( lcFisc );
+		txtCodFisc.setTabelaExterna( lcFisc, FCLFiscal.class.getCanonicalName());
 
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, true ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrup.montaSql( false, "GRUPO", "EQ" );
 		lcGrup.setReadOnly( true );
 		lcGrup.setQueryCommit( false );
-		txtCodGrup.setTabelaExterna( lcGrup );
+		txtCodGrup.setTabelaExterna( lcGrup, FGrupoProd.class.getCanonicalName() );
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setReadOnly( true );
 		lcAlmox.setQueryCommit( false );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
+		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
 
 		lcPrazoEnt.add( new GuardaCampo( txtPrazoEnt, "CodPE", "Prazo para entrega", ListaCampos.DB_PK, false ) );
 		lcPrazoEnt.add( new GuardaCampo( txtDescPrazoEnt, "DescPE", "Descrição do prazo de entrega", ListaCampos.DB_SI, false ) );
@@ -634,7 +650,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPrazoEnt.montaSql( false, "PRAZOENT", "VD" );
 		lcPrazoEnt.setReadOnly( true );
 		lcPrazoEnt.setQueryCommit( false );
-		txtPrazoEnt.setTabelaExterna( lcPrazoEnt );
+		txtPrazoEnt.setTabelaExterna( lcPrazoEnt, FPrazoEnt.class.getCanonicalName() );
 		
 		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, txtDescProdEst, false ) );
 		lcProdEstCod.add( new GuardaCampo( txtSeqEst, "SeqEst", "Seq.Est.", ListaCampos.DB_PK, txtDescProdEst, false ) );
@@ -644,8 +660,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcProdEstCod.montaSql( false, "ESTRUTURA", "PP" );
 		lcProdEstCod.setQueryCommit( false );
 		lcProdEstCod.setReadOnly( true );
-		txtCodProdEst.setTabelaExterna( lcProdEstCod );
-		txtSeqEst.setTabelaExterna( lcProdEstCod );
+		txtCodProdEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
 		txtCodProdEst.setNomeCampo( "codprodet" );		
 
 		vValsTipo.addElement( "P" );
@@ -945,7 +961,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcClasCliPreco.setQueryCommit( false );
 		lcClasCliPreco.setReadOnly( true );
 		txtDescClasCliPreco.setListaCampos( lcClasCliPreco );
-		txtCodClasCliPreco.setTabelaExterna( lcClasCliPreco );
+		txtCodClasCliPreco.setTabelaExterna( lcClasCliPreco, FClasCli.class.getCanonicalName() );
 
 		lcTabPreco.add( new GuardaCampo( txtCodTabPreco, "CodTab", "Cód.tab.pç.", ListaCampos.DB_PK, true ) );
 		lcTabPreco.add( new GuardaCampo( txtDescTabPreco, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false ) );
@@ -953,7 +969,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcTabPreco.setReadOnly( true );
 		lcTabPreco.setQueryCommit( false );
 		txtDescTabPreco.setListaCampos( lcTabPreco );
-		txtCodTabPreco.setTabelaExterna( lcTabPreco );
+		txtCodTabPreco.setTabelaExterna( lcTabPreco, FTabPreco.class.getCanonicalName() );
 
 		lcPlanoPagPreco.add( new GuardaCampo( txtCodPlanoPagPreco, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, true ) );
 		lcPlanoPagPreco.add( new GuardaCampo( txtDescPlanoPagPreco, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
@@ -961,7 +977,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPlanoPagPreco.setReadOnly( true );
 		lcPlanoPagPreco.setQueryCommit( false );
 		txtDescPlanoPagPreco.setListaCampos( lcPlanoPagPreco );
-		txtCodPlanoPagPreco.setTabelaExterna( lcPlanoPagPreco );
+		txtCodPlanoPagPreco.setTabelaExterna( lcPlanoPagPreco, FPlanoPag.class.getCanonicalName() );
 
 		adicCampo( txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd", "Cód.pç.prod.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodClasCliPreco, 90, 20, 67, 20, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_FK, txtDescClasCliPreco, false );
@@ -1007,7 +1023,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcUnidFat.setReadOnly( true );
 		lcUnidFat.setQueryCommit( false );
 		txtDescUnidFat.setListaCampos( lcUnidFat );
-		txtUnidFat.setTabelaExterna( lcUnidFat );
+		txtUnidFat.setTabelaExterna( lcUnidFat, FUnidade.class.getCanonicalName() );
 
 		JLabelPad sepconv = new JLabelPad();
 		sepconv.setBorder( BorderFactory.createEtchedBorder() );
@@ -1047,7 +1063,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPlan.setReadOnly( true );
 		lcPlan.setQueryCommit( false );
 		txtDescPlan.setListaCampos( lcPlan );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 
 		// lcCC.setUsaME(false);
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.cc.", ListaCampos.DB_PK, true ) );
@@ -1058,8 +1074,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCC.setReadOnly( true );
 		lcCC.setQueryCommit( false );
 		txtDescCC.setListaCampos( lcCC );
-		txtAnoCC.setTabelaExterna( lcCC );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
+		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 
 		// CC Acesso
 		lcCCAcesso.add( new GuardaCampo( txtAnoCCPA, "AnoCC", "Ano.cc.", ListaCampos.DB_PK, true ) );
@@ -1069,8 +1085,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCCAcesso.setReadOnly( true );
 		lcCCAcesso.setQueryCommit( false );
 		txtDescCCPA.setListaCampos( lcCCAcesso );
-		txtAnoCCPA.setTabelaExterna( lcCCAcesso );
-		txtCodCCPA.setTabelaExterna( lcCCAcesso );
+		txtAnoCCPA.setTabelaExterna( lcCCAcesso, FCentroCusto.class.getCanonicalName() );
+		txtCodCCPA.setTabelaExterna( lcCCAcesso, FCentroCusto.class.getCanonicalName() );
 
 		// Caixa
 		lcCaixa.add( new GuardaCampo( txtCodCaixa, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, false ) );
@@ -1079,7 +1095,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCaixa.setReadOnly( true );
 		lcCaixa.setQueryCommit( false );
 		txtDescCaixa.setListaCampos( lcCaixa );
-		txtCodCaixa.setTabelaExterna( lcCaixa );
+		txtCodCaixa.setTabelaExterna( lcCaixa, FCaixa.class.getCanonicalName() );
 
 		setPainel( pinRodProdPlan, pnProdPlan );
 		adicTab( "Planejamento", pnProdPlan );
@@ -1133,7 +1149,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcForFK.setReadOnly( true );
 		lcForFK.setQueryCommit( false );
 		txtCodFor.setListaCampos( lcForFK );
-		txtCodFor.setTabelaExterna( lcForFK );
+		txtCodFor.setTabelaExterna( lcForFK, FFornecedor.class.getCanonicalName() );
 
 		adicCampo( txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_PF, txtDescFor, true );
 		adicDescFK( txtDescFor, 90, 20, 300, 20, "RazFor", "Razão social do fornecedor" );
@@ -1224,7 +1240,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCodAltProd.setQueryInsert( false );
 		lcCodAltProd.setQueryCommit( false );
 
-		txtCodAltProd.setTabelaExterna( lcCodAltProd );
+		txtCodAltProd.setTabelaExterna( lcCodAltProd, null );
 		txtCodAltProd.setEnterSai( false );
 		lcCodAltProd.montaTab();
 		tabCodAltProd.setTamColuna( 150, 0 );
@@ -1285,7 +1301,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcProdAcesso.setQueryInsert( false );
 		lcProdAcesso.setQueryCommit( false );
 
-		txtCodPA.setTabelaExterna( lcProdAcesso );
+		txtCodPA.setTabelaExterna( lcProdAcesso, null );
 		txtCodPA.setEnterSai( false );
 		lcProdAcesso.montaTab();
 		tabCodAcess.setTamColuna( 90, 0 );

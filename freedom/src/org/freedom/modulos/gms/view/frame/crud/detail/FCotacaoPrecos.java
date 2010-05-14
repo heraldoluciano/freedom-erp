@@ -211,7 +211,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, null);
 
 		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_PK, false));
@@ -230,7 +230,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
-		txtRefProd.setTabelaExterna(lcProd2);
+		txtRefProd.setTabelaExterna(lcProd2, null);
 
 		lcProd3.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, false));
@@ -240,7 +240,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd3.montaSql(false, "PRODUTO", "EQ");
 		lcProd3.setReadOnly(true);
-		txtCodProd2.setTabelaExterna(lcProd3);
+		txtCodProd2.setTabelaExterna(lcProd3, null);
 
 		lcProd4.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência",
 				ListaCampos.DB_PK, false));
@@ -254,7 +254,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcProd4.montaSql(false, "PRODUTO", "EQ");
 		lcProd4.setQueryCommit(false);
 		lcProd4.setReadOnly(true);
-		txtRefProd2.setTabelaExterna(lcProd4);
+		txtRefProd2.setTabelaExterna(lcProd4, null);
 		
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
 				false));
@@ -265,8 +265,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
-		txtCodCC.setTabelaExterna(lcCC);
-		txtAnoCC.setTabelaExterna(lcCC);
+		txtCodCC.setTabelaExterna(lcCC, null);
+		txtAnoCC.setTabelaExterna(lcCC, null);
 
 		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
 				false));
@@ -277,7 +277,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcUsu.montaSql(false, "USUARIO", "SG");
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
-		txtIDUsu.setTabelaExterna(lcUsu);
+		txtIDUsu.setTabelaExterna(lcUsu, null);
 
 		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
 				ListaCampos.DB_PK, true));
@@ -286,7 +286,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcUnid.montaSql(false, "UNIDADE", "EQ");
 		lcUnid.setReadOnly(true);
 		lcUnid.setQueryCommit(false);
-		txtCodUnid.setTabelaExterna(lcUnid);		
+		txtCodUnid.setTabelaExterna(lcUnid, null);		
 
 		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",
 				ListaCampos.DB_PK, false));
@@ -295,7 +295,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcFor.montaSql(false, "FORNECED", "CP");
 		lcFor.setQueryCommit(false);
 		lcFor.setReadOnly(true);
-		txtCodFor.setTabelaExterna(lcFor);
+		txtCodFor.setTabelaExterna(lcFor, null);
 
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");

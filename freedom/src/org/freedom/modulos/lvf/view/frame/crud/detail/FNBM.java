@@ -112,7 +112,7 @@ public class FNBM extends FDetalhe implements ActionListener{
 		 * ***********/
 
 		lcNCM.setUsaME( false );
-		txtCodNCM.setTabelaExterna( lcNCM );
+		txtCodNCM.setTabelaExterna( lcNCM, FNCM.class.getCanonicalName() );
 		txtCodNCM.setFK( true );
 		txtCodNCM.setNomeCampo( "CodNCM" );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, true ) );

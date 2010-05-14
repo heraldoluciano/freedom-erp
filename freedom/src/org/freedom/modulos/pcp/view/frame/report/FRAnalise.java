@@ -34,6 +34,8 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -119,7 +121,7 @@ public class FRAnalise extends FRelatorio {
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
@@ -132,7 +134,7 @@ public class FRAnalise extends FRelatorio {
 		lcOP.add( new GuardaCampo( txtCodOP, "CodOP", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcOP.add( new GuardaCampo( txtDataOP, "DtFabrOP", "Data de Fabricação", ListaCampos.DB_SI, false ) );
 		lcOP.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ) );
-		txtCodOP.setTabelaExterna( lcOP );
+		txtCodOP.setTabelaExterna( lcOP, FOP.class.getCanonicalName() );
 		txtCodOP.setNomeCampo( "CodOp" );
 		txtCodOP.setFK( true );
 		lcOP.setReadOnly( true );

@@ -65,6 +65,15 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
+import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
+import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
+import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
 
 public class FCLFiscal extends FDetalhe 
 		implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
@@ -525,7 +534,7 @@ public class FCLFiscal extends FDetalhe
 		lcRegraFiscal.montaSql( false, "REGRAFISCAL", "LF" );
 		lcRegraFiscal.setQueryCommit( false );
 		lcRegraFiscal.setReadOnly( true );
-		txtCodRegra.setTabelaExterna( lcRegraFiscal );
+		txtCodRegra.setTabelaExterna( lcRegraFiscal, FRegraFiscal.class.getCanonicalName() );
 
 		lcNCM.setUsaME( false );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, txtDescNCM, false ) );
@@ -536,7 +545,7 @@ public class FCLFiscal extends FDetalhe
 		lcNCM.montaSql( false, "NCM", "LF" );
 		lcNCM.setQueryCommit( false );
 		lcNCM.setReadOnly( true );
-		txtCodNCM.setTabelaExterna( lcNCM );
+		txtCodNCM.setTabelaExterna( lcNCM, FNCM.class.getCanonicalName() );
 
 		lcNBM.setUsaME( false );
 		lcNBM.add( new GuardaCampo( txtCodNBM, "CodNBM", "Cód.NBM", ListaCampos.DB_PK, txtDescNBM, false ) );
@@ -545,35 +554,35 @@ public class FCLFiscal extends FDetalhe
 		lcNBM.montaSql( false, "NBM", "LF" );
 		lcNBM.setQueryCommit( false );
 		lcNBM.setReadOnly( true );
-		txtCodNBM.setTabelaExterna( lcNBM ); 
+		txtCodNBM.setTabelaExterna( lcNBM, FNBM.class.getCanonicalName()); 
 		
 		lcTratTrib.add( new GuardaCampo( txtCodTratTrib, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_PK, null, true ) );
 		lcTratTrib.add( new GuardaCampo( txtDescTratTrib, "DescTratTrib", "Descrição do tratamento tributario", ListaCampos.DB_SI, null, false ) );
 		lcTratTrib.montaSql( false, "TRATTRIB", "LF" );
 		lcTratTrib.setQueryCommit( false );
 		lcTratTrib.setReadOnly( true );
-		txtCodTratTrib.setTabelaExterna( lcTratTrib );
+		txtCodTratTrib.setTabelaExterna( lcTratTrib, FTratTrib.class.getCanonicalName() );
 
 		lcMens.add( new GuardaCampo( txtCodMens, "CodMens", "Cód.mens.", ListaCampos.DB_PK, null, false ) );
 		lcMens.add( new GuardaCampo( txtDescMens, "Mens", "Mensagem", ListaCampos.DB_SI, null, false ) );
 		lcMens.montaSql( false, "MENSAGEM", "LF" );
 		lcMens.setQueryCommit( false );
 		lcMens.setReadOnly( true );
-		txtCodMens.setTabelaExterna( lcMens );
+		txtCodMens.setTabelaExterna( lcMens, FMensagem.class.getCanonicalName() );
 		
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.Mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov,  FTipoMov.class.getCanonicalName() );
 		
 		lcTipoFiscCli.add( new GuardaCampo( txtCodTipoFisc, "CodFiscCli", "Cód.c.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
 		lcTipoFiscCli.setQueryCommit( false );
 		lcTipoFiscCli.setReadOnly( true );
-		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli );
+		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli, FTipoFisc.class.getCanonicalName() );
 		
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
@@ -582,8 +591,8 @@ public class FCLFiscal extends FDetalhe
 		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
 		lcSitTribCOF.setQueryCommit( false );
 		lcSitTribCOF.setReadOnly( true );
-		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF );
-		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF );
+		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
+		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
 		
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
@@ -592,8 +601,8 @@ public class FCLFiscal extends FDetalhe
 		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos 
 		lcSitTribPIS.setQueryCommit( false );
 		lcSitTribPIS.setReadOnly( true );
-		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS );
-		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS );
+		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
+		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
 		
 		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
@@ -602,8 +611,8 @@ public class FCLFiscal extends FDetalhe
 		lcSitTribIPI.montaSql( false, "SITTRIB  ", "LF" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
 		lcSitTribIPI.setQueryCommit( false );
 		lcSitTribIPI.setReadOnly( true );
-		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI );
-		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI );
+		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
+		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 		
 		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
@@ -611,7 +620,7 @@ public class FCLFiscal extends FDetalhe
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
-		txtCodPais.setTabelaExterna( lcPais );
+		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 
 		lcUF.setUsaME( false );		
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
@@ -620,7 +629,7 @@ public class FCLFiscal extends FDetalhe
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
-		txtSiglaUF.setTabelaExterna( lcUF );
+		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
 		
 		lcServico.setUsaME( false );		
 		lcServico.add( new GuardaCampo( txtCodServ, "CodServ", "Cod.Serviço", ListaCampos.DB_PK, false ) );
@@ -628,7 +637,7 @@ public class FCLFiscal extends FDetalhe
 		lcServico.montaSql( false, "SERVICO", "LF" );
 		lcServico.setQueryCommit( false );
 		lcServico.setReadOnly( true );
-		txtCodServ.setTabelaExterna( lcServico );
+		txtCodServ.setTabelaExterna( lcServico, FServico.class.getCanonicalName() );
 	}
 	
 	private void montaTela() {

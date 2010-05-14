@@ -57,7 +57,7 @@ public class FRecursos extends FDados implements ActionListener {
     lcTpRecp.montaSql(false, "TIPOREC", "PP");    
     lcTpRecp.setQueryCommit(false);
     lcTpRecp.setReadOnly(true);
-    txtCodTpRecp.setTabelaExterna(lcTpRecp);
+    txtCodTpRecp.setTabelaExterna(lcTpRecp, FTipoRec.class.getCanonicalName());
     
     adicCampo(txtCodRecp, 7, 20, 70, 20,"Codrecp","Cód.rec.", ListaCampos.DB_PK, true);
     adicCampo(txtDescRecp, 80, 20, 240, 20,"descrecp","Descrição do recurso", ListaCampos.DB_SI, true);

@@ -174,7 +174,7 @@ public class FConsCompra extends FFilho implements ActionListener{
 		txtCodFor.setFK( true );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 	}
 	         
 	private void montaTabela(){

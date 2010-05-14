@@ -45,10 +45,14 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 
@@ -520,7 +524,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMerc.add( new GuardaCampo( txtDescTipoRecMerc, "DescTipoRecMerc", "Descrição do tipo de recepção de mercadoria", ListaCampos.DB_SI, false ) );
 
-		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc );
+		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
 		txtCodTipoRecMerc.setFK( true );
 
@@ -534,7 +538,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcProdCab.add( new GuardaCampo( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		
 
-		txtCodProdCab.setTabelaExterna( lcProdCab );
+		txtCodProdCab.setTabelaExterna( lcProdCab, FProduto.class.getCanonicalName() );
 		txtCodProdCab.setNomeCampo( "CodProd" );
 		txtCodProdCab.setFK( true );
 
@@ -550,7 +554,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcFor.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 
@@ -563,7 +567,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcTran.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome da transportadora", ListaCampos.DB_SI, false ) );
 		lcTran.add( new GuardaCampo( txtCNPJTran, "CnpjTran", "CNPJ", ListaCampos.DB_SI, false ) );
 
-		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
 		txtCodTran.setNomeCampo( "CodTran" );
 		txtCodTran.setFK( true );
 
@@ -576,7 +580,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcProdDet.add( new GuardaCampo( txtDescProdDet, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdDet.add( new GuardaCampo( txtRefProdDet, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 
-		txtCodProdDet.setTabelaExterna( lcProdDet );
+		txtCodProdDet.setTabelaExterna( lcProdDet, FProduto.class.getCanonicalName() );
 		txtCodProdDet.setNomeCampo( "CodProd" );
 		txtCodProdDet.setFK( true );
 
@@ -595,7 +599,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic );
+		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/***************
 		 * BAIRRO *
@@ -615,7 +619,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcBairro.montaSql( false, "BAIRRO", "SG" );
 		lcBairro.setQueryCommit( false );
 		lcBairro.setReadOnly( true );
-		txtCodBairro.setTabelaExterna( lcBairro );
+		txtCodBairro.setTabelaExterna( lcBairro, FBairro.class.getCanonicalName() );
 
 		/***************
 		 * PROCESSOS *
@@ -626,7 +630,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcProc.add( new GuardaCampo( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc.", ListaCampos.DB_SI, false ) );
 		lcProc.add( new GuardaCampo( txtTipoProcRecMerc, "TipoProcRecMerc", "Tp.Proc.Rec.Merc.", ListaCampos.DB_SI, false ) );
 
-		txtCodProcRecMerc.setTabelaExterna( lcProc );
+		txtCodProcRecMerc.setTabelaExterna( lcProc, null );
 		txtCodProcRecMerc.setNomeCampo( "CodProcRecMerc" );
 		txtCodProcRecMerc.setFK( true );
 

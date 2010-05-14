@@ -89,7 +89,7 @@ public class FREstruturaItem extends FRelatorio {
 		lcProdDE.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProdDE.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdDE.setWhereAdic( "TIPOPROD IN ('F','M') " );
-		txtCodProd.setTabelaExterna( lcProdDE );
+		txtCodProd.setTabelaExterna( lcProdDE, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProdDE.setReadOnly( true );

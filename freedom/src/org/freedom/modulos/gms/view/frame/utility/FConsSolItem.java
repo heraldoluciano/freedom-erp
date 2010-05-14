@@ -116,7 +116,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcAlmox.setReadOnly(true);
 
 		txtDescAlmoxarife.setSoLeitura(true);
-		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
+		txtCodAlmoxarife.setTabelaExterna(lcAlmox, null);
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		
 		txtCodProd.setNomeCampo("CodProd");
@@ -130,7 +130,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 
 		txtDescProd.setSoLeitura(true);
 		txtRefProd.setSoLeitura(true);
-		txtCodProd.setTabelaExterna(lcProd);
+		txtCodProd.setTabelaExterna(lcProd, null);
 		lcProd.montaSql(false, "PRODUTO", "EQ");		
 				
 		txtCodUsu.setNomeCampo("IDUSU");
@@ -142,7 +142,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcUsuario.setReadOnly(true);
 
 		txtNomeUsu.setSoLeitura(true);
-		txtCodUsu.setTabelaExterna(lcUsuario);
+		txtCodUsu.setTabelaExterna(lcUsuario, null);
 		lcUsuario.montaSql(false, "USUARIO", "SG");
 
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false));
@@ -151,7 +151,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcCC.setReadOnly(true);
 		lcCC.setQueryCommit(false);
 		lcCC.montaSql(false, "CC", "FN");
-		txtCodCC.setTabelaExterna(lcCC);
+		txtCodCC.setTabelaExterna(lcCC, null);
 		txtCodCC.setFK(true);
 		txtCodCC.setNomeCampo("CodCC");
 		
