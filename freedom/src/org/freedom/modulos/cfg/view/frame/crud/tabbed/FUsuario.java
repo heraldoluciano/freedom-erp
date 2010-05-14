@@ -67,6 +67,10 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FGrupoUsu;
+import org.freedom.modulos.crm.view.frame.crud.plain.FConfEmail;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 
 public class FUsuario extends FTabDados implements PostListener, DeleteListener, CarregaListener, ChangeListener, InsertListener, ActionListener, CheckBoxListener {
  
@@ -223,7 +227,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcGrup.montaSql( false, "GRPUSU", "SG" );
 		lcGrup.setQueryCommit( false );
 		lcGrup.setReadOnly( true );
-		txtIDGrpUsu.setTabelaExterna( lcGrup );
+		txtIDGrpUsu.setTabelaExterna( lcGrup, FGrupoUsu.class.getCanonicalName() );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.c.c.", ListaCampos.DB_PK, false ) );
@@ -232,9 +236,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcCC.setQueryCommit( false );
 		lcCC.setReadOnly( true );
 
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtAnoCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 		txtAnoCC.setNomeCampo( "anocc" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
 		txtCodCC.setNomeCampo( "codcc" );
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false ) );
@@ -242,14 +246,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
 		lcAlmox.setQueryCommit( false );
 		lcAlmox.setReadOnly( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
+		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
 
 		lcConfEmail.add( new GuardaCampo( txtCodConfEmail, "CodConfEmail", "Cd.Conf.Email", ListaCampos.DB_PK, false ) );
 		lcConfEmail.add( new GuardaCampo( txtNomeRemet, "NomeRemet", "Nome do remetente", ListaCampos.DB_SI, false ) );
 		lcConfEmail.montaSql( false, "CONFEMAIL", "TK" );
 		lcConfEmail.setQueryCommit( false );
 		lcConfEmail.setReadOnly( true );
-		txtCodConfEmail.setTabelaExterna( lcConfEmail );		
+		txtCodConfEmail.setTabelaExterna( lcConfEmail, FConfEmail.class.getCanonicalName() );		
 		
 		
 		adicTab( "Usuario", pinGeral );

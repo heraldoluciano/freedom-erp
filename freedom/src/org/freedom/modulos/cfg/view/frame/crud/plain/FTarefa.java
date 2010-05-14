@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.cfg.view.dialog.report.DLRTarefa;
+import org.freedom.modulos.cfg.view.frame.crud.detail.FObjetoTb;
 
 public class FTarefa extends FDados implements ActionListener {
   private static final long serialVersionUID = 1L;
@@ -79,7 +80,7 @@ public class FTarefa extends FDados implements ActionListener {
 	lcObjeto.montaSql(false, "OBJETO", "SG");
 	lcObjeto.setQueryCommit(false);
 	lcObjeto.setReadOnly(true);
-	txtIDObj.setTabelaExterna(lcObjeto);
+	txtIDObj.setTabelaExterna(lcObjeto, FObjetoTb.class.getCanonicalName());
     
     adicCampo(txtCodTarefa, 7, 20, 50, 20,"CodTarefa","Cód.tar.",ListaCampos.DB_PK,true);
     adicCampo(txtDescTarefa, 60, 20, 250, 20,"DescTarefa","Descrição da tarefa",ListaCampos.DB_FK,true);
