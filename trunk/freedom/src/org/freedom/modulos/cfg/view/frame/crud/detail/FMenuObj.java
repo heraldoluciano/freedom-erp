@@ -62,28 +62,28 @@ public class FMenuObj extends FDetalhe {
     lcMenu.montaSql(false, "MENU", "SG");    
     lcMenu.setQueryCommit(false);
     lcMenu.setReadOnly(true);
-    txtCodMenu.setTabelaExterna(lcMenu);
+    txtCodMenu.setTabelaExterna(lcMenu, FMenuObj.class.getCanonicalName());
     
     lcModu.add(new GuardaCampo( txtCodModu, "CODMODU", "Cód.modu.", ListaCampos.DB_PK, txtDescModu, false));
     lcModu.add(new GuardaCampo( txtDescModu, "DESCMODU", "Descriçao do modulo", ListaCampos.DB_SI, false));
     lcModu.montaSql(false, "MODULO", "SG");    
     lcModu.setQueryCommit(false);
     lcModu.setReadOnly(true);
-    txtCodModu.setTabelaExterna(lcModu);
+    txtCodModu.setTabelaExterna(lcModu, null);
     
     lcSis.add(new GuardaCampo( txtCodSis, "CODSIS", "Cód.sis.", ListaCampos.DB_PK, txtDescSis, false));
     lcSis.add(new GuardaCampo( txtDescSis, "DESCSIS", "Descriçao do sistema", ListaCampos.DB_SI, false));
     lcSis.montaSql(false, "SISTEMA", "SG");    
     lcSis.setQueryCommit(false);
     lcSis.setReadOnly(true);
-    txtCodSis.setTabelaExterna(lcSis);
+    txtCodSis.setTabelaExterna(lcSis, null);
     
     lcObj.add(new GuardaCampo( txtIDObj, "IDOBJ", "Id.obj.", ListaCampos.DB_PK,false));
     lcObj.add(new GuardaCampo( txtDescObj,"DESCOBJ", "Descriçao do objeto", ListaCampos.DB_SI,false));
     lcObj.montaSql(false, "OBJETO", "SG");    
     lcObj.setQueryCommit(false);
     lcObj.setReadOnly(true);
-    txtIDObj.setTabelaExterna(lcObj);
+    txtIDObj.setTabelaExterna(lcObj, FObjetoTb.class.getCanonicalName());
     
     pinCab = new JPanelPad(350,165);
     setAltCab(165);

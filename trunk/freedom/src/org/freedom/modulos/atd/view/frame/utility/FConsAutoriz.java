@@ -167,7 +167,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv", ListaCampos.DB_PK, false ) );
 		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, false ) );
-		txtCodConv.setTabelaExterna( lcConv );
+		txtCodConv.setTabelaExterna( lcConv, null );
 		txtCodConv.setNomeCampo( "CodConv" );
 		txtCodConv.setFK( true );
 		lcConv.setReadOnly( true );
@@ -175,7 +175,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
@@ -183,7 +183,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		lcTipoConv.add( new GuardaCampo( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_PK, false ) );
 		lcTipoConv.add( new GuardaCampo( txtDescTipoConv, "DescTpConv", "Descrição do tipo de conveniado", ListaCampos.DB_SI, false ) );
-		txtCodTpConv.setTabelaExterna( lcTipoConv );
+		txtCodTpConv.setTabelaExterna( lcTipoConv, null );
 		txtCodTpConv.setNomeCampo( "CodTpConv" );
 		txtCodTpConv.setFK( true );
 		lcTipoConv.setReadOnly( true );
@@ -191,7 +191,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
 		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Nome do encaminhador", ListaCampos.DB_SI, false ) );
-		txtCodEnc.setTabelaExterna( lcEnc );
+		txtCodEnc.setTabelaExterna( lcEnc, null );
 		txtCodEnc.setNomeCampo( "CodEnc" );
 		txtCodEnc.setFK( true );
 		lcEnc.setReadOnly( true );
@@ -199,7 +199,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
+		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 		txtCodGrupo.setNomeCampo( "CodEnc" );
 		txtCodGrupo.setFK( true );
 		lcGrupo.setReadOnly( true );

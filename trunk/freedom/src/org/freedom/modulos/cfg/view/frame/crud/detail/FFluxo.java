@@ -65,7 +65,7 @@ public class FFluxo extends FDetalhe implements ActionListener {
    lcProc.montaSql(false, "PROCESSO", "SG");
    lcProc.setQueryCommit(false);
    lcProc.setReadOnly(true);
-   txtCodProc.setTabelaExterna(lcProc);
+   txtCodProc.setTabelaExterna(lcProc, FProcesso.class.getCanonicalName());
     
    adicCampo(txtCodFluxo, 7, 20, 70, 20,"CodFluxo","Cód.fluxo", ListaCampos.DB_PK, true);
    adicCampo(txtDescFluxo, 80, 20, 230, 20,"DescFluxo","Descrição do fluxo", ListaCampos.DB_SI, true);

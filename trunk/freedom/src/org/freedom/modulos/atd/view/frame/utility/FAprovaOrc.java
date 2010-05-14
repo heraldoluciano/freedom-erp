@@ -131,7 +131,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		lcConv.montaSql(false, "CONVENIADO","AT");    
 		lcConv.setQueryCommit(false);
 		lcConv.setReadOnly(true);
-		txtCodConv.setTabelaExterna(lcConv);
+		txtCodConv.setTabelaExterna(lcConv, null);
 
 		pinCab.adic(new JLabelPad("Cód.orç."),7,0,100,20);
 		pinCab.adic(txtCodOrc,7,20,70,20);

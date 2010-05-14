@@ -40,6 +40,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.dialog.report.DLRFluxo;
+import org.freedom.modulos.cfg.view.frame.crud.plain.FTarefa;
 
 public class FTratRet extends FDetalhe implements ActionListener {
   private static final long serialVersionUID = 1L;
@@ -93,7 +94,7 @@ public class FTratRet extends FDetalhe implements ActionListener {
    lcTarefa.montaSql(false, "TAREFA", "SG");
    lcTarefa.setQueryCommit(false);
    lcTarefa.setReadOnly(true);
-   txtCodTar.setTabelaExterna(lcTarefa);
+   txtCodTar.setTabelaExterna(lcTarefa, FTarefa.class.getCanonicalName());
     
    lcItProc.add(new GuardaCampo( txtCodItProc, "SeqItProc", "Item.", ListaCampos.DB_PK, false));
    lcItProc.add(new GuardaCampo( txtCodTar2, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_SI, false));
@@ -101,7 +102,7 @@ public class FTratRet extends FDetalhe implements ActionListener {
    lcItProc.montaSql(false, "ITPROCESSO", "SG");
    lcItProc.setQueryCommit(false);
    lcItProc.setReadOnly(true);
-   txtCodItProc.setTabelaExterna(lcItProc);
+   txtCodItProc.setTabelaExterna(lcItProc, null );
 
    adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.", ListaCampos.DB_PK, true);
    adicCampo(txtCodItem, 80, 20, 37, 20,"SeqItProc","Item", ListaCampos.DB_PK, true);
