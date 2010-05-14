@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 
 import java.util.Vector;
 
@@ -436,7 +437,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		lcBancoSiacc.montaSql( false, "BANCO", "FN" );
 		lcBancoSiacc.setQueryCommit( false );
 		lcBancoSiacc.setReadOnly( true );
-		txtCodBancoSiacc.setTabelaExterna( lcBancoSiacc );
+		txtCodBancoSiacc.setTabelaExterna( lcBancoSiacc, FBanco.class.getCanonicalName() );
 		
 		lcSiacc.setMaster( lcCampos );
 		lcSiacc.setTabela( tabSiacc );
@@ -452,7 +453,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		lcBancoCnab.montaSql( false, "BANCO", "FN" );
 		lcBancoCnab.setQueryCommit( false );
 		lcBancoCnab.setReadOnly( true );
-		txtCodBancoCnab.setTabelaExterna( lcBancoCnab );
+		txtCodBancoCnab.setTabelaExterna( lcBancoCnab, FBanco.class.getCanonicalName() );
 	
 		/**********************
 		 * FNCONTA CONTA CNAB *
@@ -463,7 +464,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	    lcContaCnab.montaSql(false, "CONTA", "FN");    
 	    lcContaCnab.setQueryCommit(false);
 	    lcContaCnab.setReadOnly(true);
-	    txtNumContaCnab.setTabelaExterna(lcContaCnab);
+	    txtNumContaCnab.setTabelaExterna(lcContaCnab, FConta.class.getCanonicalName());
 	    
 	    
 	    /***********************
@@ -475,7 +476,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	    lcContaSiacc.montaSql(false, "CONTA", "FN");    
 	    lcContaSiacc.setQueryCommit(false);
 	    lcContaSiacc.setReadOnly(true);
-	    txtNumContaSiacc.setTabelaExterna(lcContaSiacc);
+	    txtNumContaSiacc.setTabelaExterna(lcContaSiacc, FConta.class.getCanonicalName());
 
 		lcCnab.setMaster( lcCampos );
 		lcCnab.setTabela( tabCnab );

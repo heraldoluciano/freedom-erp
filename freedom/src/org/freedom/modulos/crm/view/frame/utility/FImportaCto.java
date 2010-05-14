@@ -92,7 +92,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 		txtDescTipo.setTipo(JTextFieldPad.TP_STRING,40,0);
 		lcTipoImp.add(new GuardaCampo( txtCodTipo, "CodTpImp", "Cód.tp.imp.", ListaCampos.DB_PK, false),"txtCodProd");
 		lcTipoImp.add(new GuardaCampo( txtDescTipo, "DescTpImp", "Descrição do tipo de importação", ListaCampos.DB_SI, false),"txtCodProd");
-		txtCodTipo.setTabelaExterna(lcTipoImp);
+		txtCodTipo.setTabelaExterna(lcTipoImp, null);
 		txtCodTipo.setNomeCampo("CodProd");
 		txtCodTipo.setFK(true);
 		lcTipoImp.setReadOnly(true);

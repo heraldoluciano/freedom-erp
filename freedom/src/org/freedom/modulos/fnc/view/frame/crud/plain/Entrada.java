@@ -72,7 +72,7 @@ public class Entrada extends FDados implements PostListener {
 		lcTpRecp.montaSql( false, "BANCO", "FN" );
 		lcTpRecp.setQueryCommit( false );
 		lcTpRecp.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcTpRecp );
+		txtCodBanco.setTabelaExterna( lcTpRecp, null );
 
 		adicCampo( txtCodCli, 7, 100, 60, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_SI, false );
 		adicDescFK( txtNomeCli, 70, 100, 312, 20, "NOMECLI", "Nome do Cliente" );

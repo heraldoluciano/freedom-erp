@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.std.view.dialog.report.DLRBanco;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FModBoleto;
 
 public class FBanco extends FDados implements ActionListener, KeyListener {
 
@@ -80,7 +81,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		lcModBol.montaSql( false, "MODBOLETO", "FN" );
 		lcModBol.setQueryCommit( false );
 		lcModBol.setReadOnly( true );
-		txtCodModBol.setTabelaExterna( lcModBol );
+		txtCodModBol.setTabelaExterna( lcModBol, FModBoleto.class.getCanonicalName() );
 
 		adicCampo( txtCodBanco, 7, 20, 70, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeBanco, 80, 20, 280, 20, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, true );

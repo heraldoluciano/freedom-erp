@@ -31,6 +31,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 
 
 public class FPrefereFNC extends FTabDados {
@@ -61,7 +62,7 @@ public class FPrefereFNC extends FTabDados {
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
-		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda,FMoeda.class.getCanonicalName()  );
 
 		// Geral
 

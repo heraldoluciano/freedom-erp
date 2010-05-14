@@ -170,7 +170,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
-		txtCodFor.setTabelaExterna( lcFor );
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 
@@ -179,7 +179,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
-		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
 		txtCodPlanoPag.setFK( true );
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 
@@ -188,7 +188,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		
@@ -200,10 +200,10 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setQueryCommit( false );		
 		lcConta.setReadOnly( true );		
-		txtCodConta.setTabelaExterna( lcConta );		
+		txtCodConta.setTabelaExterna( lcConta, null );		
 		txtCodConta.setFK( true );		
 		txtCodConta.setNomeCampo( "NumConta" );
-		txtDescConta.setTabelaExterna( lcConta );
+		txtDescConta.setTabelaExterna( lcConta, null );
 		txtDescConta.setLabel( "Descrição da Conta" );		
 
 		/***************
@@ -214,7 +214,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		

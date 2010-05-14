@@ -65,6 +65,7 @@ import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffParcela;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 
 public abstract class FRetFBN extends FFilho implements ActionListener, MouseListener, KeyListener {
@@ -132,7 +133,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setRequerido( true );

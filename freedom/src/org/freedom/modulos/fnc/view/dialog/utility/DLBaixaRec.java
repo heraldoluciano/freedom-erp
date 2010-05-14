@@ -126,7 +126,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 
@@ -135,7 +135,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcPlan.setWhereAdic( "TIPOPLAN = 'R' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
@@ -147,10 +147,10 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcCC.setQueryCommit( false );
 		lcCC.setWhereAdic( "NIVELCC=10" );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtAnoCC.setTabelaExterna( lcCC, null );
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 

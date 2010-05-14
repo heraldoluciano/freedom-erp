@@ -156,7 +156,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 
@@ -172,7 +172,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
@@ -181,7 +181,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcBordero.add( new GuardaCampo( txtDescBordero, "ObsBor", "Observação Bordero", ListaCampos.DB_SI, false ) );
 		lcBordero.montaSql( false, "BORDERO", "FN" );
 		lcBordero.setReadOnly( true );
-		txtCodBordero.setTabelaExterna( lcBordero );
+		txtCodBordero.setTabelaExterna( lcBordero, null );
 		txtCodBordero.setFK( true );
 		txtCodBordero.setNomeCampo( "CodBor" );
 		txtCodBordero.setAtivo( false );
@@ -190,7 +190,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcDataBord.add( new GuardaCampo( txtDescBordero, "ObsBor", "Observação Bordero", ListaCampos.DB_SI, false ) );
 		lcDataBord.montaSql( false, "BORDERO", "FN" );
 		lcDataBord.setReadOnly( true );
-		txtDatBordero.setTabelaExterna( lcDataBord );
+		txtDatBordero.setTabelaExterna( lcDataBord, null );
 		txtDatBordero.setFK( true );
 		txtDatBordero.setNomeCampo( "DatBor" );
 		txtDatBordero.setAtivo( false );
@@ -198,7 +198,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcNumConta.add( new GuardaCampo( txtNumConta, "NumConta", "Num.Conta", ListaCampos.DB_PK, false ) );
 		lcNumConta.montaSql( false, "BORDERO", "FN" );
 		lcNumConta.setReadOnly( true );
-		txtNumConta.setTabelaExterna( lcNumConta );
+		txtNumConta.setTabelaExterna( lcNumConta, null );
 		txtNumConta.setFK( true );
 		txtNumConta.setNomeCampo( "numConta" );
 		txtNumConta.setAtivo( false );
@@ -206,7 +206,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcNumContabor.add( new GuardaCampo( txtNumContaBor, "NumContaBor", "Num.ContaBor", ListaCampos.DB_PK, false ) );
 		lcNumContabor.montaSql( false, "BORDERO", "FN" );
 		lcNumContabor.setReadOnly( true );
-		txtNumContaBor.setTabelaExterna( lcNumContabor );
+		txtNumContaBor.setTabelaExterna( lcNumContabor, null );
 		txtNumContaBor.setFK( true );
 		txtNumContaBor.setNomeCampo( "txtNumContaBor" );
 		txtNumContaBor.setAtivo( false );
@@ -215,10 +215,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
-		txtDescConta.setTabelaExterna( lcConta );
+		txtDescConta.setTabelaExterna( lcConta, null );
 		txtDescConta.setLabel( "Descrição da Conta" );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
@@ -226,7 +226,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcPlan.setWhereAdic( "TIPOPLAN = 'R' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
@@ -238,10 +238,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcCC.setQueryCommit( false );
 		lcCC.setWhereAdic( "NIVELCC=10" );
 		lcCC.montaSql( false, "CC", "FN" );
-		txtCodCC.setTabelaExterna( lcCC );
+		txtCodCC.setTabelaExterna( lcCC, null );
 		txtCodCC.setFK( true );
 		txtCodCC.setNomeCampo( "CodCC" );
-		txtAnoCC.setTabelaExterna( lcCC );
+		txtAnoCC.setTabelaExterna( lcCC, null );
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 
@@ -251,7 +251,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
 		lcTipoCob.setQueryCommit( false );
 		lcTipoCob.setReadOnly( true );
-		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
