@@ -154,28 +154,28 @@ public class FPrefereAtend extends FTabDados {
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setQueryCommit( false );
 		lcAtend.setReadOnly( true );
-		txtCodAtend.setTabelaExterna( lcAtend );
+		txtCodAtend.setTabelaExterna( lcAtend, null );
 
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
 
 		lcClas.add( new GuardaCampo( txtCodClas, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false ) );
 		lcClas.add( new GuardaCampo( txtDescClas, "DescClasCli", "Descrição da calssificação do cliente", ListaCampos.DB_SI, false ) );
 		lcClas.montaSql( false, "CLASCLI", "VD" );
 		lcClas.setQueryCommit( false );
 		lcClas.setReadOnly( true );
-		txtCodClas.setTabelaExterna( lcClas );
+		txtCodClas.setTabelaExterna( lcClas, null );
 
 		lcTabAC.add( new GuardaCampo( txtCodTBA, "CodTB", "Cód.tab.", ListaCampos.DB_PK, false ) );
 		lcTabAC.add( new GuardaCampo( txtDescTBA, "DescTB", "Descrição da tabela padrão para aceite", ListaCampos.DB_SI, false ) );
 		lcTabAC.montaSql( false, "TABELA", "SG" );
 		lcTabAC.setQueryCommit( false );
 		lcTabAC.setReadOnly( true );
-		txtCodTBA.setTabelaExterna( lcTabAC );
+		txtCodTBA.setTabelaExterna( lcTabAC, null );
 
 		lcTabITAC.add( new GuardaCampo( txtCodITTBA, "CodITTB", "Cód.it.tab.", ListaCampos.DB_PK, false ) );
 		lcTabITAC.add( new GuardaCampo( txtDescITTBA, "DescITTB", "Descrição da situação para aceite", ListaCampos.DB_SI, false ) );
@@ -183,14 +183,14 @@ public class FPrefereAtend extends FTabDados {
 		lcTabITAC.montaSql( false, "ITTABELA", "SG" );
 		lcTabITAC.setQueryCommit( false );
 		lcTabITAC.setReadOnly( true );
-		txtCodITTBA.setTabelaExterna( lcTabITAC );
+		txtCodITTBA.setTabelaExterna( lcTabITAC, null );
 
 		lcTabAV.add( new GuardaCampo( txtCodTBV, "CodTB", "Cód.tab.", ListaCampos.DB_PK, false ) );
 		lcTabAV.add( new GuardaCampo( txtDescTBV, "DescTB", "Descrição da tabela padrão para aceite", ListaCampos.DB_SI, false ) );
 		lcTabAV.montaSql( false, "TABELA", "SG" );
 		lcTabAV.setQueryCommit( false );
 		lcTabAV.setReadOnly( true );
-		txtCodTBV.setTabelaExterna( lcTabAV );
+		txtCodTBV.setTabelaExterna( lcTabAV, null );
 
 		lcTabITAV.add( new GuardaCampo( txtCodITTBV, "CodITTB", "Cód.it.tab.", ListaCampos.DB_PK, false ) );
 		lcTabITAV.add( new GuardaCampo( txtDescITTBV, "DescITTB", "Descrição da situação para aceite", ListaCampos.DB_SI, false ) );
@@ -198,35 +198,35 @@ public class FPrefereAtend extends FTabDados {
 		lcTabITAV.montaSql( false, "ITTABELA", "SG" );
 		lcTabITAV.setQueryCommit( false );
 		lcTabITAV.setReadOnly( true );
-		txtCodITTBV.setTabelaExterna( lcTabITAV );
+		txtCodITTBV.setTabelaExterna( lcTabITAV, null );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setTabelaExterna( lcVend, null );
 
 		lcTpAtend.add( new GuardaCampo( txtCodTpAtend, "CodTpAtendo", "Cód.tp.atend.", ListaCampos.DB_PK, true ) );
 		lcTpAtend.add( new GuardaCampo( txtDescTpAtend, "DescTpAtendo", "Descrição do tipo de atendimento", ListaCampos.DB_SI, false ) );
 		lcTpAtend.montaSql( false, "TIPOATENDO", "AT" );
 		lcTpAtend.setQueryCommit( false );
 		lcTpAtend.setReadOnly( true );
-		txtCodTpAtend.setTabelaExterna( lcTpAtend );
+		txtCodTpAtend.setTabelaExterna( lcTpAtend, null );
 
 		lcTpAtend2.add( new GuardaCampo( txtCodTpAtend2, "CodTpAtendo", "Cód.tp.atend.", ListaCampos.DB_PK, true ) );
 		lcTpAtend2.add( new GuardaCampo( txtDescTpAtend2, "DescTpAtendo", "Descrição do tipo de atendimento", ListaCampos.DB_SI, false ) );
 		lcTpAtend2.montaSql( false, "TIPOATENDO", "AT" );
 		lcTpAtend2.setQueryCommit( false );
 		lcTpAtend2.setReadOnly( true );
-		txtCodTpAtend2.setTabelaExterna( lcTpAtend2 );
+		txtCodTpAtend2.setTabelaExterna( lcTpAtend2, null );
 
 		lcTpAtend3.add( new GuardaCampo( txtCodTpAtend3, "CodTpAtendo", "Códtp.atend.", ListaCampos.DB_PK, true ) );
 		lcTpAtend3.add( new GuardaCampo( txtDescTpAtend3, "DescTpAtendo", "Descrição do tipo de atendimento", ListaCampos.DB_SI, false ) );
 		lcTpAtend3.montaSql( false, "TIPOATENDO", "AT" );
 		lcTpAtend3.setQueryCommit( false );
 		lcTpAtend3.setReadOnly( true );
-		txtCodTpAtend3.setTabelaExterna( lcTpAtend3 );
+		txtCodTpAtend3.setTabelaExterna( lcTpAtend3, null );
 		
 		// Geral
 
@@ -258,14 +258,14 @@ public class FPrefereAtend extends FTabDados {
 		lcSetor.montaSql( false, "SETOR", "AT" );
 		lcSetor.setQueryCommit( false );
 		lcSetor.setReadOnly( true );
-		txtCodSetor.setTabelaExterna( lcSetor );
+		txtCodSetor.setTabelaExterna( lcSetor, null );
 
 		lcSetor2.add( new GuardaCampo( txtCodSetor2, "CodSetAt", "Cód.setor", ListaCampos.DB_PK, true ) );
 		lcSetor2.add( new GuardaCampo( txtDescSetor2, "DescSetAt", "Descrição do setor", ListaCampos.DB_SI, false ) );
 		lcSetor2.montaSql( false, "SETOR", "AT" );
 		lcSetor2.setQueryCommit( false );
 		lcSetor2.setReadOnly( true );
-		txtCodSetor2.setTabelaExterna( lcSetor2 );
+		txtCodSetor2.setTabelaExterna( lcSetor2, null );
 
 		// Setor:
 
