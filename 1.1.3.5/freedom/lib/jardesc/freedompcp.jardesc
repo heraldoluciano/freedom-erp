@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedompcp.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedompcp.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FConsRmaItem.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FGrupo.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FConsPreco.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FAlmox.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{FPrefere.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FInventario.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FREstoqueMin.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRegraFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCLFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRSaldoLote.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FKardex.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItCLFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProduto.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FConsRMA.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRMovProd.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInvPeps.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FConsulta.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FConsProd.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProcessaEQ.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FRma.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRDemanda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLNovoAgen.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FUnidade.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRVencLote.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMarca.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRConfEstoq.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
+    </selectedElements>
+</jardesc>

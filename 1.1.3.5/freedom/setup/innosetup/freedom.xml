@@ -1,0 +1,119 @@
+<project>
+    <shortName>freedom</shortName>
+    <fullName>Freedom-ERP</fullName>
+    <version>1.1</version>
+    <installerFilename>Assistente de Instalação(Freedom ERP)</installerFilename>
+    <readmeFile></readmeFile>
+    <licenseFile></licenseFile>
+    <wrapLicenseFileText>1</wrapLicenseFileText>
+    <leftImage>/usuarios/leandro/Desktop/header.gif</leftImage>
+    <logoImage>/mnt/windows/opt/eclipse/workspace/site_freedom/images/icon_download.gif</logoImage>
+    <defaultLanguage>pt_BR</defaultLanguage>
+    <allowLanguageSelection>1</allowLanguageSelection>
+    <postInstallationScript></postInstallationScript>
+    <postInstallationScriptArguments></postInstallationScriptArguments>
+    <showPostInstallationScriptResult>0</showPostInstallationScriptResult>
+    <preUninstallationScript></preUninstallationScript>
+    <preUninstallationScriptArguments></preUninstallationScriptArguments>
+    <allowedLanguages></allowedLanguages>
+    <defaultUnixDirectoryPermissions>755</defaultUnixDirectoryPermissions>
+    <defaultUnixFilePermissions>644</defaultUnixFilePermissions>
+    <height>350</height>
+    <outputDirectory>${installbuilder_install_root}/output</outputDirectory>
+    <projectSchemaVersion>1.2</projectSchemaVersion>
+    <requireInstallationByRootUser>0</requireInstallationByRootUser>
+    <saveRelativePaths>0</saveRelativePaths>
+    <startMenuGroupName>Freedom</startMenuGroupName>
+    <style>standard</style>
+    <uninstallerDirectory></uninstallerDirectory>
+    <validatorProgram></validatorProgram>
+    <width>500</width>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <selected>1</selected>
+            <desktopShortcutList/>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux</name>
+                    <platforms>linux</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>/opt/freedom</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Text that will appear on Tooltip</comment>
+                            <exec>/opt/freedom/freedom.ini</exec>
+                            <icon>/opt/freedom/freedom.png</icon>
+                            <name>Freedom</name>
+                            <path>./Desktop</path>
+                            <platforms>linux</platforms>
+                            <windowsExec></windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath></windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                </folder>
+                <folder>
+                    <description>New Folder</description>
+                    <destination>${installdir}/newfolder</destination>
+                    <name>newfolder</name>
+                    <platforms>all</platforms>
+                </folder>
+            </folderList>
+            <startMenuShortcutList>
+                <startMenuShortcut>
+                    <comment>Uninstall ${product_fullname}</comment>
+                    <name>Uninstall ${product_fullname}</name>
+                    <windowsExec>${installdir}/uninstall.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon></windowsIcon>
+                    <windowsPath>${installdir}/</windowsPath>
+                </startMenuShortcut>
+            </startMenuShortcutList>
+        </component>
+    </componentList>
+    <customLanguageFileList/>
+    <fileList/>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <title></title>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value>/opt/freedom</value>
+            <default>${platform_install_prefix}/${product_shortname}-${product_version}</default>
+            <ask>yes</ask>
+            <cliOptionName>prefix</cliOptionName>
+            <leftImage></leftImage>
+            <mustBeWritable>yes</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>40</width>
+        </directoryParameter>
+    </parameterList>
+    <platformOptionsList>
+        <platformOptions>
+            <platform>linux</platform>
+        </platformOptions>
+    </platformOptionsList>
+    <preInstallationActionList/>
+</project>
+
