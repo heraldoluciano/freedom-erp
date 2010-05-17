@@ -176,7 +176,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtQtdItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 13, 0 );
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -2288,7 +2288,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		try {
 			
-			numserie = new NumSerie(this,txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable());
+			numserie = new NumSerie(this, lcDet, txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable());
 		
 			ret = numserie.testaNumSerie();
 			
