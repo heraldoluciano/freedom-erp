@@ -193,6 +193,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	
 	
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
+
+	private JTextAreaPad txaDescItRecMerc = new JTextAreaPad();
 	
 	private JTextAreaPad txaDefeitoItRecMerc = new JTextAreaPad();
 	
@@ -200,7 +202,11 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	
 	private JTextAreaPad txaCondicoesItRecMerc = new JTextAreaPad();
 	
+	private JTextAreaPad txaObsItOS = new JTextAreaPad();
+	
 	private JTextAreaPad txaObsItRecMerc = new JTextAreaPad();
+	
+	private JScrollPane spnDescItRecMerc = new JScrollPane( txaDescItRecMerc );
 	
 	private JScrollPane spnDefeitoItRecMerc = new JScrollPane( txaDefeitoItRecMerc );
 	
@@ -211,6 +217,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JScrollPane spnCondicoesItRecMerc = new JScrollPane( txaCondicoesItRecMerc );
 	
 	private JScrollPane spSuplemento = new JScrollPane( tabItOS );
+	
+	private JScrollPane spnObsItOS = new JScrollPane( txaObsItOS );
 
 	// *** Paineis
 
@@ -223,6 +231,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTabbedPanePad tpnItens = new JTabbedPanePad();
 	
 	private JTabbedPanePad tpnSuplemento = new JTabbedPanePad();
+	
+	private JPanelPad pinDescItRecMerc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pinDefeitoItRecMerc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -335,21 +345,28 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
 
+		pinDescItRecMerc.add( spnDescItRecMerc );
 		pinDefeitoItRecMerc.add( spnDefeitoItRecMerc );
 		pinServicoSolicItRecMerc.add( spnServicoSolicItRecMerc );
 		pinCondicoesRecepcao.add( spnCondicoesItRecMerc );		
 		pinObsItRecMerc.add( spnObsItRecMerc );
 		
 		tpnSuplemento.addTab( "Suplemento", spSuplemento );
-		
+		tpnSuplemento.addTab( "Observações", spnObsItOS );
+				
 		pinDetGrid.add( tpnItens );
 		pinDetGrid.add( tpnSuplemento );
 		
 		tpnItens.addTab( "Itens", spTab );
+		tpnItens.addTab( "Detalh.", pinDescItRecMerc );
 		tpnItens.addTab( "Defeito", pinDefeitoItRecMerc );
 		tpnItens.addTab( "Solicitação", pinServicoSolicItRecMerc );
 		tpnItens.addTab( "Condições", pinCondicoesRecepcao );
-		tpnItens.addTab( "Observações", pinObsItRecMerc );
+		tpnItens.addTab( "Obs.", pinObsItRecMerc );
+		
+		
+		
+		
 
 	}
 
@@ -434,6 +451,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
 
+		adicDBLiv( txaDescItRecMerc, "DescItRecMerc", "Descrição detalhada", false );
+		
 		adicDBLiv( txaDefeitoItRecMerc, "DefeitoItRecMerc", "Defeito informado", false );
 		
 		adicDBLiv( txaCondicoesItRecMerc, "CondicoesItRecMerc", "Condições no recebimento", false );
@@ -460,7 +479,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		setNavegador( navItRecMercItOS );
 
-		pinDet.adic( navItRecMercItOS, 400, 60, 300, 30 );
+		pinDet.adic( navItRecMercItOS, 404, 60, 300, 30 );
 		
 		adicCampo( txtCodItOS, 404, 20, 45, 20, "CodItOS", "Seq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdItOS, 452, 20, 50, 20, "CodProdPD", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdItOS, true );
@@ -469,6 +488,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampoInvisivel( txtRefProdItOS, "RefProdPD","Ref.", ListaCampos.DB_FK, false );
 		
 		adicCampo( txtQtdItOSItOS, 738, 20, 45, 20, "QtdItOS", "Qtd.", ListaCampos.DB_SI, true );
+		
+		adicDBLiv( txaObsItOS, "ObsItOS", "Observações", false );
 		
 		setListaCampos( true, "ITRECMERCITOS", "EQ" );
 		
@@ -549,6 +570,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 				tab.setColunaInvisivel( 12 );
 				tab.setColunaInvisivel( 13 );
 				tab.setColunaInvisivel( 14 );
+				tab.setColunaInvisivel( 15 );
 	
 	}
 	
