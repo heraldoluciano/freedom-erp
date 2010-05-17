@@ -527,12 +527,14 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					ps.setInt( 12, Aplicativo.iCodEmp );
 					ps.setInt( 13, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				}
+				ps.setString( 14, sESFinPlan );
+				ps.setString( 15, sClasFinPlan );
+				
 				if ( ps.executeUpdate() == 0 ) {
 					Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PALNEJAMENTO! ! !" );
 					return;
 				}
-				ps.setString( 14, sESFinPlan );
-				ps.setString( 15, sClasFinPlan );
+				
 				con.commit();
 			} catch ( SQLException e ) {
 				e.printStackTrace();
