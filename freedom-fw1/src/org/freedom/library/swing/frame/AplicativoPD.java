@@ -278,6 +278,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		if ( strUsuario.toUpperCase().equals( "SYSDBA" ) )
 			return true;
 		try {
+			
 			String sTmp = "";
 			String sSQL = "SELECT TPACESSOMU FROM SGACESSOMU WHERE CODEMP = ? " + "AND CODFILIAL = ? " + "AND IDUSU = ? " + "AND CODSIS = ? " + "AND CODMODU = ? " + "AND CODMENU = ?";
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -288,6 +289,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setInt( 5, iCodModuP );
 			ps.setInt( 6, iCodMenuP );
 			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				sTmp = rs.getString( "TPACESSOMU" );
 				if ( sTmp == null )
