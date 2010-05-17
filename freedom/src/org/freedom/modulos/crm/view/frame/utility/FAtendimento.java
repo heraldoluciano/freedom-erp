@@ -75,16 +75,16 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
-	private JPanelPad pinCli = new JPanelPad( );
+	private JPanelPad pinCli = new JPanelPad();
 
 	private JPanelPad pinFiltrosAtend = new JPanelPad( 510, 120 );
-	
+
 	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 120 );
-	
+
 	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 120 );
 
 	private JPanelPad pnAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private JPanelPad pnChm = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinCabCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -98,26 +98,27 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JTablePad tabatd = new JTablePad();
 
 	private JTablePad tabchm = new JTablePad();
-	
-	private JTablePad tabstatus= new JTablePad();
+
+	private JTablePad tabstatus = new JTablePad();
+
+	private JTablePad tabsprioridade = new JTablePad();
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodAtendenteAtendimento = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtNomeAtendenteAtendimento = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodAtendenteChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -153,7 +154,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JTextFieldPad txtDatainiCham = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafimCham = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -181,9 +182,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
-	
+
 	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
-	
+
 	private JButtonPad btAtualizaAtendimentos = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
 	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
@@ -213,19 +214,19 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private Vector<String> vLabsTipo = new Vector<String>();
 
 	private JComboBoxPad cbTipoAtend = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0 );
-	
+
 	private JComboBoxPad cbTpChamado = new JComboBoxPad( null, null, JComboBoxPad.TP_INTEGER, 4, 0 );
-	
-//	private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
+
+	// private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
 	private ListaCampos lcAtendenteAtendimento = new ListaCampos( this, "AE" );
-	
+
 	private ListaCampos lcAtendenteChamado = new ListaCampos( this, "AE" );
-	
+
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
 
 	private ListaCampos lcItRec = new ListaCampos( this );
@@ -237,17 +238,19 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private String tipoatendo = null; // Tipo de atendimento
 
 	private JPanelPad pnBotConv = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
-	
+
 	private JComboBoxPad cbPrioridade = new JComboBoxPad( null, null, JComboBoxPad.TP_INTEGER, 4, 0 );
 
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
-	
+
+	private JScrollPane scpPrioridade = new JScrollPane( tabsprioridade );
+
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, DTCONCLUSAO
 	}
 
 	// Construção padrão para tela de atendimento
-	
+
 	public FAtendimento() {
 
 		super( false );
@@ -264,11 +267,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		adicFiltrosAtend();
 		adicFiltrosChamado();
-		
+
 	}
-	
+
 	private void adicFiltrosAtend() {
-		
+
 		pinFiltrosAtend.setBorder( SwingParams.getPanelLabel( "Filtros de atendimentos", Color.BLUE ) );
 
 		pinFiltrosAtend.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
@@ -279,7 +282,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		pinFiltrosAtend.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
 		pinFiltrosAtend.adic( txtCodAtendenteAtendimento, 153, 20, 70, 20 );
-		
+
 		pinFiltrosAtend.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
 		pinFiltrosAtend.adic( txtNomeAtendenteAtendimento, 226, 20, 180, 20 );
 
@@ -287,7 +290,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinFiltrosAtend.adic( txtCodChamado, 409, 20, 70, 20 );
 		pinFiltrosAtend.adic( new JLabelPad( "Descrição do chamado" ), 481, 0, 230, 20 );
 		pinFiltrosAtend.adic( txtDescChamado, 481, 20, 230, 20 );
-		
+
 		pinFiltrosAtend.adic( new JLabelPad( "Tipo" ), 7, 40, 215, 20 );
 		pinFiltrosAtend.adic( cbTipoAtend, 7, 60, 215, 20 );
 
@@ -296,21 +299,21 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		pinFiltrosAtend.adic( new JLabelPad( "Item" ), 481, 40, 230, 20 );
 		pinFiltrosAtend.adic( cbitContr, 481, 60, 230, 20 );
-		
+
 		pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
 
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
-		
-		JPanelPad pnGridAtd = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-		
+
+		JPanelPad pnGridAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 		JScrollPane scpAtd = new JScrollPane( tabatd );
-		
+
 		pnGridAtd.add( scpAtd, BorderLayout.CENTER );
-		
+
 		pnAtd.add( pnGridAtd, BorderLayout.CENTER );
-		
+
 	}
-	
+
 	private void adicFiltrosChamado() {
 
 		pinFiltrosChamado.setBorder( SwingParams.getPanelLabel( "Filtros de chamados", Color.BLUE ) );
@@ -321,42 +324,35 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinFiltrosChamado.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20 );
 
-		
 		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20 );
 
 		pinFiltrosChamado.adic( new JLabelPad( "Nome do Atendente designado" ), 226, 0, 230, 20 );
 		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 226, 20, 230, 20 );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 7, 40, 215, 20 );
-		pinFiltrosChamado.adic( cbTpChamado, 7, 60, 215, 20 );		
-		
-		pinFiltrosChamado.adic( btAtualizaChamados, 715, 15, 30, 30 );
-		
-//		pinFiltrosChamado.adic( new JLabelPad( "Status" ), 225, 20, 110, 20 );
-//		pinFiltrosChamado.adic( cbStatus, 225, 60, 110, 20 ); 
-		
-		pinFiltrosChamado.adic( new JLabelPad( "Prioridade" ), 226, 40, 110, 20 );
-		pinFiltrosChamado.adic( cbPrioridade, 226, 60, 110, 20 );
+		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 226, 40, 215, 20 );
+		pinFiltrosChamado.adic( cbTpChamado, 226, 60, 215, 20 );
 
-		pinFiltrosChamado.adic( scpStatus, 459, 7, 140, 78 );				
-		
+		pinFiltrosChamado.adic( btAtualizaChamados, 726, 15, 30, 30 );
+
+		pinFiltrosChamado.adic( scpStatus, 459, 7, 130, 77 );
+
+		pinFiltrosChamado.adic( scpPrioridade, 591, 7, 130, 77 );
+
 		pnChm.add( pinFiltrosChamado, BorderLayout.NORTH );
-		
-		JPanelPad pnGridChm = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-		
+
+		JPanelPad pnGridChm = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 		JScrollPane scpChm = new JScrollPane( tabchm );
-		
+
 		pnGridChm.add( scpChm, BorderLayout.CENTER );
-		
+
 		pnChm.add( pnGridChm, BorderLayout.CENTER );
-		
+
 	}
 
-	
-
 	// Construção padrão lançamento de contatos financeiro/cobrança
-	
+
 	public FAtendimento( Integer codcli, Integer codrec, Integer nparcitrec, boolean isUpdate ) {
 
 		super( false );
@@ -382,7 +378,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinCabCli.adic( pinFiltrosTitulo, 8, 175, 744, 116 );
 
 		montaListaCamposFinanc();
-		
+
 		adicCamposFinanc();
 
 		ativaCamposFinanc();
@@ -390,17 +386,17 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		lcCli.carregaDados();
 		lcRec.carregaDados();
 		lcItRec.carregaDados();
-		
+
 		tpnAbas.setEnabled( false );
 
 		calcAtrazo();
 
 	}
-	
+
 	private void adicCamposFinanc() {
-		
+
 		pinFiltrosTitulo.setBorder( SwingParams.getPanelLabel( "Título", Color.BLUE ) );
-		
+
 		pinFiltrosTitulo.adic( new JLabelPad( "Cód.rec" ), 7, 0, 70, 20 );
 		pinFiltrosTitulo.adic( txtCodRec, 7, 20, 70, 20 );
 		pinFiltrosTitulo.adic( new JLabelPad( "Parc." ), 80, 0, 40, 20 );
@@ -425,18 +421,19 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinFiltrosTitulo.adic( txtVlrApagItRec, 229, 60, 110, 20 );
 
 		pnAtd.add( pinFiltrosTitulo, BorderLayout.NORTH );
-		
-		JPanelPad pnGridFinanc = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-		
+
+		JPanelPad pnGridFinanc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 		JScrollPane scpFinanc = new JScrollPane( tabatd );
-		
+
 		pnGridFinanc.add( scpFinanc, BorderLayout.CENTER );
-		
+
 		pnAtd.add( pnGridFinanc, BorderLayout.CENTER );
-		
+
 	}
-	
+
 	private void ativaCamposFinanc() {
+
 		txtCodRec.setAtivo( false );
 		txtNParcItRec.setAtivo( false );
 		txtCodVenda.setAtivo( false );
@@ -449,15 +446,15 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		txtVlrApagItRec.setAtivo( false );
 		txtVlrPagoItRec.setAtivo( false );
 		txtVlrParcItRec.setAtivo( false );
-		
+
 		txtCodRec.setEnabled( false );
 		txtCodCli.setEnabled( false );
 		txtNParcItRec.setEnabled( false );
 
 	}
-	
+
 	private void montaListaCamposFinanc() {
-		
+
 		lcRec.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, false ) );
 		lcRec.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_SI, false ) );
 		lcRec.add( new GuardaCampo( txtDoc, "DocRec", "Doc", ListaCampos.DB_SI, false ) );
@@ -485,7 +482,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		txtCodRec.setTabelaExterna( lcItRec, null );
 		txtCodRec.setFK( true );
 
-		
 	}
 
 	private void calcAtrazo() {
@@ -544,7 +540,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		txtCodAtendo.setFK( true );
 		txtCodAtendo.setNomeCampo( "CodAtendo" );
 
-		// Atendimento para funcionamento 
+		// Atendimento para funcionamento
 		txtCodAtendenteAtendimento.setTabelaExterna( lcAtendenteAtendimento, FAtendente.class.getCanonicalName() );
 		txtCodAtendenteAtendimento.setFK( true );
 		txtCodAtendenteAtendimento.setNomeCampo( "CodAtend" );
@@ -552,7 +548,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		lcAtendenteAtendimento.add( new GuardaCampo( txtNomeAtendenteAtendimento, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
-		
+
 		txtCodAtendenteChamado.setTabelaExterna( lcAtendenteChamado, FAtendente.class.getCanonicalName() );
 		txtCodAtendenteChamado.setFK( true );
 		txtCodAtendenteChamado.setNomeCampo( "CodAtend" );
@@ -597,7 +593,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabatd.setTamColuna( 70, 8 );
 		tabatd.setTamColuna( 70, 9 );
 
-
 		tabatd.setColunaInvisivel( 0 );
 		tabatd.setColunaInvisivel( 1 );
 		tabatd.setColunaInvisivel( 2 );
@@ -607,7 +602,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		tabatd.setRowHeight( 20 );
 	}
-	
+
 	private void montaGridStatus() {
 
 		tabstatus.adicColuna( "" );
@@ -615,44 +610,79 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabstatus.adicColuna( "Status" );
 
 		tabstatus.setTamColuna( 10, 0 );
-		
+
 		tabstatus.setColunaInvisivel( 1 );
-		
+
 		tabstatus.setTamColuna( 100, 2 );
 
 		tabstatus.setRowHeight( 12 );
-		
-		tabstatus.setColunaEditavel( 0, new Boolean(true) );
-		
+
+		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
+
 	}
-	
+
+	private void montaGridPrioridade() {
+
+		tabsprioridade.adicColuna( "" );
+		tabsprioridade.adicColuna( "Cod." );
+		tabsprioridade.adicColuna( "Prioridade" );
+
+		tabsprioridade.setTamColuna( 10, 0 );
+
+		tabsprioridade.setColunaInvisivel( 1 );
+
+		tabsprioridade.setTamColuna( 100, 2 );
+
+		tabsprioridade.setRowHeight( 12 );
+
+		tabsprioridade.setColunaEditavel( 0, new Boolean( true ) );
+
+	}
+
 	private void carregaStatus() {
-		
+
 		Vector<Object> valores = Chamado.getValores();
-		Vector<String> labels = Chamado.getLabels( );
-		
+		Vector<String> labels = Chamado.getLabels();
+
 		Vector<Object> item = null;
-		
-		for(int i = 1 ; i < valores.size(); i++) { // Começa em um para não carregar o item <--Selecione-->
-			
+
+		for ( int i = 1; i < valores.size(); i++ ) { // Começa em um para não carregar o item <--Selecione-->
+
 			item = new Vector<Object>();
-			
-			item.addElement( new Boolean(true) );
+
+			item.addElement( new Boolean( true ) );
 			item.addElement( valores.elementAt( i ) );
 			item.addElement( labels.elementAt( i ) );
-			
-			tabstatus.adicLinha( item );
-			
-		}
-		
 
-		
-			
+			tabstatus.adicLinha( item );
+
+		}
+
 	}
 
+	private void carregaPrioriadade() {
+
+		Vector<Object> valores = Prioridade.getValores();
+		Vector<String> labels = Prioridade.getLabels();
+
+		Vector<Object> item = null;
+
+		for ( int i = 1; i < valores.size(); i++ ) { // Começa em um para não carregar o item <--Selecione-->
+
+			item = new Vector<Object>();
+
+			item.addElement( new Boolean( true ) );
+			item.addElement( valores.elementAt( i ) );
+			item.addElement( labels.elementAt( i ) );
+
+			tabsprioridade.adicLinha( item );
+
+		}
+
+	}
 
 	private void montaGridChamado() {
-		
+
 		tabchm.adicColuna( "Data" );
 		tabchm.adicColuna( "Pri." );
 		tabchm.adicColuna( "Tipo" );
@@ -674,7 +704,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTCONCLUSAO.ordinal() );
-		
+
 		tabchm.setRowHeight( 20 );
 
 	}
@@ -700,7 +730,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tpnAbas.addTab( "Chamados", pnChm );
 
 	}
-	
+
 	private void adicionaFiltroCli() {
 
 		pinCabCli.add( pinCli, BorderLayout.CENTER );
@@ -708,46 +738,46 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		pinCli.adic( new JLabelPad( "Cód.Cli." ), 10, 0, 50, 20 );
 		pinCli.adic( txtCodCli, 10, 20, 50, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Razão social do cliente" ), 63, 0, 200, 20 );
 		pinCli.adic( txtRazCli, 63, 20, 412, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Contato" ), 478, 0, 237, 20 );
 		pinCli.adic( txtContatoCli, 478, 20, 237, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "DDD" ), 10, 40, 50, 20 );
 		pinCli.adic( txtDDDCli, 10, 60, 40, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Telefone" ), 63, 40, 100, 20 );
 		pinCli.adic( txtFoneCli, 63, 60, 100, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "DDD" ), 166, 40, 50, 20 );
 		pinCli.adic( txtDDDFax, 166, 60, 50, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Fax" ), 219, 40, 100, 20 );
 		pinCli.adic( txtFaxCli, 219, 60, 100, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "DDD" ), 322, 40, 50, 20 );
 		pinCli.adic( txtDDDCel, 322, 60, 50, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Celular" ), 375, 40, 100, 20 );
 		pinCli.adic( txtCelCli, 375, 60, 100, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Email" ), 478, 40, 237, 20 );
 		pinCli.adic( txtEmailCli, 478, 60, 237, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Endereço" ), 10, 80, 362, 20 );
 		pinCli.adic( txtEndCli, 10, 100, 362, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Numero" ), 375, 80, 100, 20 );
 		pinCli.adic( txtNumCli, 375, 100, 100, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "Cidade" ), 478, 80, 100, 20 );
 		pinCli.adic( txtCidCli, 478, 100, 169, 20 );
-		
+
 		pinCli.adic( new JLabelPad( "UF" ), 650, 80, 60, 20 );
 		pinCli.adic( txtUfCli, 650, 100, 65, 20 );
-		
+
 	}
 
 	private void adicBotoes() {
@@ -757,7 +787,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pnBotConv.add( btNovo );
 		pnBotConv.add( btExcluir );
 		pnBotConv.add( btImprimir );
-		
+
 	}
 
 	private void montaTela() {
@@ -777,21 +807,23 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		montaGridAtend();
 
 		montaGridChamado();
-		
+
 		montaGridStatus();
 
+		montaGridPrioridade();
+
 		adicBotoes();
-		
+
 		adicRodape();
 
 		adicListeners();
-	
+
 		txtDatainiAtend.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 		txtDatafimAtend.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 
-		txtDatainiCham.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) , Funcoes.getAno( new Date() ) - 1 ) );
+		txtDatainiCham.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ), Funcoes.getAno( new Date() ) - 1 ) );
 		txtDatafimCham.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
-		
+
 		vValsContr.addElement( -1 );
 		vLabsContr.addElement( "<Todos>" );
 		cbContr.setItensGeneric( vLabsContr, vValsContr );
@@ -803,17 +835,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		vValsTipo.addElement( -1 );
 		vLabsTipo.addElement( "<Todos>" );
 		cbTipoAtend.setItensGeneric( vLabsTipo, vValsTipo );
-		
-//		cbStatus.setItens( Chamado.getLabels( ), Chamado.getValores( ) );
-//		cbStatus.setVlrString( (String) Chamado.STATUS_PENDENTE.getValue() );
-		
-		cbPrioridade.setItens( Prioridade.getLabels( ), Prioridade.getValores( ) );
-		
+
 		carregaStatus();
-		
+		carregaPrioriadade();
+
 	}
-	
+
 	private void adicListeners() {
+
 		tpnAbas.addChangeListener( this );
 
 		btNovo.addActionListener( this );
@@ -826,9 +855,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		lcCli.addCarregaListener( this );
 		lcChamado.addCarregaListener( this );
 		lcAtendenteAtendimento.addCarregaListener( this );
-		
+
 		lcAtendenteChamado.addCarregaListener( this );
-		
+
 		txtDatafimAtend.addFocusListener( this );
 		txtDatafimCham.addFocusListener( this );
 
@@ -837,32 +866,32 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		cbTipoAtend.addComboBoxListener( this );
 		txtCodCli.addKeyListener( this );
 		txtCodAtendenteAtendimento.addKeyListener( this );
-		
-//		cbStatus.addComboBoxListener( this );
+
+		// cbStatus.addComboBoxListener( this );
 		cbTpChamado.addComboBoxListener( this );
 		cbPrioridade.addComboBoxListener( this );
-		
+
 		tabatd.addMouseListener( this );
 		tabchm.addMouseListener( this );
 
-
 	}
-	
+
 	private void adicRodape() {
+
 		pnRodCli.setBorder( SwingParams.loweredetched );
-		
+
 		pnRodCli.add( pnBotConv, BorderLayout.WEST );
-		
+
 		btSair.setPreferredSize( new Dimension( 110, 30 ) );
 
 		pnRodCli.add( btSair, BorderLayout.EAST );
-		
+
 		pnCli.add( pnRodCli, BorderLayout.SOUTH );
 	}
-	
+
 	private void visualizaCham() {
-		
-		FChamado chamado = null;    
+
+		FChamado chamado = null;
 
 		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -870,12 +899,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		else {
 			chamado = new FChamado();
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
-		}    	    		 
-		
+		}
+
 		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ), null );
 
 	}
-	
 
 	private void visualizaAtend() {
 
@@ -894,13 +922,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			if ( dl.OK ) {
 				carregaAtendimentos();
 			}
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar campos!" );
 		}
 	}
-	
 
 	private void carregaAtendimentos() {
 
@@ -914,8 +940,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
-			
-			if ( ! (txtCodRec.getVlrInteger() > 0) ) {
+
+			if ( ! ( txtCodRec.getVlrInteger() > 0 ) ) {
 				sql.append( "AND ATEND.DATAATENDO BETWEEN ? AND ?" );
 			}
 
@@ -933,7 +959,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			}
 			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 ) {
 				sql.append( " AND ATEND.CODEMPAE=? AND ATEND.CODFILIALAE=? AND ATEND.CODATEND=? " );
-			}			
+			}
 			if ( txtCodChamado.getVlrInteger() > 0 ) {
 				sql.append( " AND ATEND.CODEMPCH=? AND ATEND.CODFILIALCH=? AND ATEND.CODCHAMADO=? " );
 			}
@@ -951,14 +977,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 				int iparam = 1;
 
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				
+
 				ps.setString( iparam++, tipoatendo );
-				
-				if ( ! (txtCodRec.getVlrInteger() > 0) ) {
+
+				if ( ! ( txtCodRec.getVlrInteger() > 0 ) ) {
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatainiAtend.getVlrDate() ) );
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafimAtend.getVlrDate() ) );
 				}
-				
 
 				if ( txtCodCli.getVlrInteger() > 0 ) {
 					ps.setInt( iparam++, lcCli.getCodEmp() );
@@ -988,7 +1013,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					ps.setInt( iparam++, lcRec.getCodFilial() );
 					ps.setInt( iparam++, txtCodRec.getVlrInteger() );
 					ps.setInt( iparam++, txtNParcItRec.getVlrInteger() );
-				}				
+				}
 				if ( txtCodChamado.getVlrInteger() > 0 ) {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "CHCHAMADO" ) );
@@ -1040,41 +1065,65 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( " and ch.codempcl=? and ch.codfilialcl=? and ch.codcli=? " );
-			}			
-			if ( cbTpChamado.getVlrInteger() > 0 ) { 
+			}
+			if ( cbTpChamado.getVlrInteger() > 0 ) {
 				sql.append( " and ch.codemptc=? and ch.codfilialtc=? and tc.codtpchamado=? " );
 			}
 
-			// Verifica os status selecionados 
-			
+			// Verifica os status selecionados
+
 			boolean primeiro = true;
 
-			for(int i = 0; i< tabstatus.getNumLinhas(); i++ ) {
-				
-				if( (Boolean) tabstatus.getValor( i, 0 )) {
-					
-					if(primeiro) {
-						sql.append( " and ch.status in (" );					
+			for ( int i = 0; i < tabstatus.getNumLinhas(); i++ ) {
+
+				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
+
+					if ( primeiro ) {
+						sql.append( " and ch.status in (" );
 					}
 					else {
-						sql.append( "," );						
+						sql.append( "," );
 					}
-					
+
 					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
-					
+
 					primeiro = false;
 				}
-				
-				if(i==tabstatus.getNumLinhas()-1 && !primeiro) {
-					sql.append( " ) " );		
+
+				if ( i == tabstatus.getNumLinhas() - 1 && !primeiro ) {
+					sql.append( " ) " );
 				}
-				
+
 			}
-			
-			if ( cbPrioridade.getVlrInteger() > 0 ) { 
+
+			boolean prioridade1 = true;
+
+			for ( int i = 0; i < tabsprioridade.getNumLinhas(); i++ ) {
+
+				if ( (Boolean) tabsprioridade.getValor( i, 0 ) ) {
+
+					if ( prioridade1 ) {
+						sql.append( " and ch.prioridade in (" );
+					}
+					else {
+						sql.append( "," );
+					}
+
+					sql.append( "'" + tabsprioridade.getValor( i, 1 ) + "'" );
+
+					prioridade1 = false;
+				}
+
+				if ( i == tabsprioridade.getNumLinhas() - 1 && !primeiro ) {
+					sql.append( " ) " );
+				}
+
+			}
+
+			if ( cbPrioridade.getVlrInteger() > 0 ) {
 				sql.append( " and ch.prioridade=? " );
 			}
-			if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) { 
+			if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) {
 				sql.append( " and ch.codempae=? and ch.codfilialae=? and ch.codatend=? " );
 			}
 
@@ -1095,26 +1144,24 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					ps.setInt( param++, txtCodCli.getVlrInteger() );
 				}
 
-				
 				if ( cbTpChamado.getVlrInteger() > 0 ) {
-				
-					ps.setInt( param++, Aplicativo.iCodEmp ); 
-					ps.setInt( param++, ListaCampos.getMasterFilial( "CRTIPOCHAMADO" ) ); 
+
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "CRTIPOCHAMADO" ) );
 					ps.setInt( param++, cbTpChamado.getVlrInteger() );
-					
+
 				}
 
-				if ( cbPrioridade.getVlrInteger() > 0 ) { 
+				if ( cbPrioridade.getVlrInteger() > 0 ) {
 					ps.setInt( param++, cbPrioridade.getVlrInteger() );
 				}
-				
-				if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) { 
-					ps.setInt( param++, Aplicativo.iCodEmp ); 
-					ps.setInt( param++, ListaCampos.getMasterFilial( "ATATENDENTE" ) ); 
-					ps.setInt( param++, txtCodAtendenteChamado.getVlrInteger() );
-					
-				}
 
+				if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) {
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+					ps.setInt( param++, txtCodAtendenteChamado.getVlrInteger() );
+
+				}
 
 				ResultSet rs = ps.executeQuery();
 
@@ -1160,13 +1207,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			ps.execute();
 			ps.close();
 			con.commit();
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao salvar o atendimento!\n" + err.getMessage(), true, con, err );
 		}
 		carregaAtendimentos();
 	}
-	
 
 	private void novoAtend() {
 
@@ -1196,10 +1241,10 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		carregaAtendimentos();
 	}
-	
+
 	private void novoChamado() {
-			
-		FChamado chamado = null;    
+
+		FChamado chamado = null;
 
 		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1207,12 +1252,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		else {
 			chamado = new FChamado();
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
-		}    	    		 
-		
-		chamado.exec( null, txtCodCli.getVlrInteger() ) ;
+		}
+
+		chamado.exec( null, txtCodCli.getVlrInteger() );
 
 	}
-	
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -1234,8 +1278,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {	}
-	
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -1243,14 +1288,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			dispose();
 		}
 		else if ( evt.getSource() == btNovo ) {
-			if(tpnAbas.getSelectedIndex()==0){ // Aba de Atendimentos selecionada
+			if ( tpnAbas.getSelectedIndex() == 0 ) { // Aba de Atendimentos selecionada
 				novoAtend();
 			}
-			else if(tpnAbas.getSelectedIndex()==1) {
+			else if ( tpnAbas.getSelectedIndex() == 1 ) {
 				novoChamado();
 			}
-		
-		
+
 		}
 		else if ( evt.getSource() == btExcluir ) {
 			excluiAtend();
@@ -1273,12 +1317,12 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}
 	}
 
-	
 	private void montaComboTipoChamado() {
-		cbTpChamado.setAutoSelect( "codtpchamado", "desctpchamado", "crtipochamado" );		
+
+		cbTpChamado.setAutoSelect( "codtpchamado", "desctpchamado", "crtipochamado" );
 		cbTpChamado.carregaValores();
 	}
-	
+
 	private void montaComboTipoAtend() {
 
 		PreparedStatement ps = null;
@@ -1328,12 +1372,12 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		montaComboTipoAtend();
 		montaComboTipoChamado();
-		
+
 		txtCodAtendenteAtendimento.setVlrInteger( Atendimento.buscaAtendente() );
 		txtCodAtendenteChamado.setVlrInteger( Atendimento.buscaAtendente() );
 		lcAtendenteAtendimento.carregaDados();
-		lcAtendenteChamado.carregaDados();		
-		
+		lcAtendenteChamado.carregaDados();
+
 	}
 
 	public void focusGained( FocusEvent arg0 ) {
@@ -1422,34 +1466,31 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		else if ( mevt.getSource() == tabchm && mevt.getClickCount() == 2 ) {
 			visualizaCham();
 		}
-		
-		
-	}
-	
 
+	}
 
 	public void mouseEntered( MouseEvent arg0 ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void mouseExited( MouseEvent arg0 ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void mousePressed( MouseEvent arg0 ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void mouseReleased( MouseEvent arg0 ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
