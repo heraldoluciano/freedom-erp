@@ -239,6 +239,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			try {
 				Class<? extends IFilho> class1 = (Class<? extends IFilho>) Class.forName( telaexterna );
 				this.telaexterna = class1;
+				this.getCaret().setBlinkRate(100);
 			}
 			catch (Exception e) {
 				System.out.println("Tela externa informada, não possui um tipo válido.");
@@ -246,7 +247,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			}
 		}
 	}
-
+	
 	public void setNomeCampo(String nm) {
 		sNomeCampo = nm; 
 	}
@@ -1082,8 +1083,16 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			buscaAdic("alternativo");		
 		}
 		else if (kevt.getKeyCode() == KeyEvent.VK_F6) {// && (bPK || bFK)) {
-			if(telaexterna!=null) {
-				Aplicativo.getInstace().abreTela("", telaexterna );
+			if(telaexterna!=null ) {
+				
+				if(Funcoes.verificaAcessoClasse(telaexterna.getCanonicalName())) {
+					Aplicativo.getInstace().abreTela("", telaexterna );	
+				}
+				else {
+					Funcoes.mensagemInforma(null, "O usuário "+ Aplicativo.strUsuario + " não possuí acesso a tela solicitada ("
+					+ telaexterna.getName() + ").\nSolicite a liberação do acesso ao administrador do sistema." );
+				}
+				
 			}
 		}
 		if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai)) { 
