@@ -41,17 +41,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-import org.freedom.infra.functions.StringFunctions;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JPanelPad;
-import org.freedom.library.swing.dialog.FFDialogo;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FSuporte;
-import org.freedom.library.type.StringDireita;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,6 +52,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
+
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.BorderFactory;
@@ -77,8 +67,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
+
 import org.brazilutils.br.uf.UF;
 import org.brazilutils.br.uf.ie.InscricaoEstadual;
+import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FSuporte;
+import org.freedom.library.type.StringDireita;
 
 public class Funcoes {
 	
@@ -770,10 +771,12 @@ public class Funcoes {
 
 	public static void setBordReq(JComponent comp, boolean bReq) {
 		if (bReq) {
+			
 			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 					.createMatteBorder(1, 1, 1, 1, Color.red), BorderFactory
 					.createEtchedBorder()));
-		} else {
+		} 
+		else {
 			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 					.createMatteBorder(0, 0, 0, 0, Color.darkGray),
 					BorderFactory.createEtchedBorder()));
@@ -3764,6 +3767,51 @@ public class Funcoes {
 		
 		return ret;
 		
+	}
+	
+	public static boolean verificaAcessoClasse(String classe) {
+		boolean ret = false;
+    	StringBuilder sql = new StringBuilder();
+    	ResultSet rs = null;
+    	PreparedStatement ps = null;
+
+		try {
+
+			// Busca os registros de acesso às opções de menu para uma classe especificada (acao menu)
+			// Cujo o tipo de acesso (tpacessomu) seja diferente de 'A' (Sem acesso) qualquer diferente de 'A'
+			// Indica que o usuário tem acesso à classe (futuramente será implementado o acesso combinado CRUD)
+			
+			sql.append("select distinct ");
+			sql.append("mn.acaomenu, am.tpacessomu ");
+			sql.append("from sgmenu mn, sgacessomu am, sgmodulo md ");
+			sql.append("where ");
+			sql.append("mn.codsis=am.codsis and mn.codmodu=am.codmodu and mn.codmenu=am.codmenu ");
+			sql.append("and md.codsis=mn.codsis and md.codmodu=mn.codmodu ");
+			sql.append("and am.codemp=? and am.codfilial=? and am.idusu=? and mn.acaomenu=? ");
+			sql.append("and am.tpacessomu != 'A' ");
+
+			System.out.println("sql para verificação de acesso:" + sql.toString());
+			
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, Aplicativo.strUsuario );
+			ps.setString( 4, classe );
+			
+			rs = ps.executeQuery();
+			
+			if( rs.next() ) {
+				ret = true;
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
 	}
 
 
