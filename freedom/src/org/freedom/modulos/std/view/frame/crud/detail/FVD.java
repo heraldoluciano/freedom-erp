@@ -2,23 +2,23 @@
  * @version 18/10/2004 <BR>
  * @author Setpoint Informática Ltda./Robson Sanches/Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FVD.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *              Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *              modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *              na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *              Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *              sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *              Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *              Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *              de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * O Objetivo desta classe é de proporcionar a implementação do código comum entre as telas de orçamento e de venda
+ *              O Objetivo desta classe é de proporcionar a implementação do código comum entre as telas de orçamento e de venda
  * 
  */
 package org.freedom.modulos.std.view.frame.crud.detail;
@@ -45,7 +45,6 @@ import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLDescontItVenda;
 import org.freedom.modulos.std.view.frame.utility.FObsCliVend;
 
-
 public abstract class FVD extends FDetalhe {
 
 	/**
@@ -56,7 +55,7 @@ public abstract class FVD extends FDetalhe {
 	protected int casasDec = Aplicativo.casasDec;
 
 	protected int casasDecFin = Aplicativo.casasDecFin;
-	
+
 	/**
 	 * indica se pode recalcular os itens. ajuda a evitar updates desnecessarios ou erroneos.
 	 */
@@ -95,7 +94,7 @@ public abstract class FVD extends FDetalhe {
 
 		super();
 	}
-	
+
 	private NumSerie numserie = null; // Variavel para classe de controle de numeros de serie de produtos.
 
 	/**
@@ -112,7 +111,7 @@ public abstract class FVD extends FDetalhe {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int[] iParans;
-		
+
 		try {
 
 			ps = con.prepareStatement( sSQL );
@@ -149,7 +148,7 @@ public abstract class FVD extends FDetalhe {
 			ps = null;
 			rs = null;
 		}
-		
+
 		return retorno;
 	}
 
@@ -166,18 +165,18 @@ public abstract class FVD extends FDetalhe {
 		ResultSet rs = null;
 		String sRet = "";
 		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?" + " AND CODEMP=? AND CODFILIAL=?";
-		
+
 		try {
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, iCodProd );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				sRet = rs.getString( "DescCompProd" );
 			}
-			
+
 			rs.close();
 			ps.close();
 
@@ -187,7 +186,7 @@ public abstract class FVD extends FDetalhe {
 			Funcoes.mensagemErro( this, "Erro ao buscar descrição completa!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		
+
 		return sRet != null ? sRet : "";
 	}
 
@@ -205,11 +204,11 @@ public abstract class FVD extends FDetalhe {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Integer retorno = new Integer( 0 );
-		
+
 		try {
 			ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			
+
 			if ( sTabela.equals( "VDVENDA" ) ) {
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 				ps.setString( 3, "VD" );
@@ -218,17 +217,17 @@ public abstract class FVD extends FDetalhe {
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				ps.setString( 3, "OC" );
 			}
-			
+
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			retorno = new Integer( rs.getString( 1 ) );
-			
+
 			rs.close();
 			ps.close();
 
 			con.commit();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao confirmar número do pedido!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -253,37 +252,37 @@ public abstract class FVD extends FDetalhe {
 	protected int testaCodLote( String lote, int codProd ) {
 
 		int ret = DLLote.LOTE_INVALIDO;
-		
+
 		String sSQL = "SELECT (VENCTOLOTE - cast('today' as date)) DIASVENCIMENTO, COALESCE(DIASAVISOLOTE,0) DIASAVISOLOTE FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?" + " AND CODEMP=? AND CODFILIAL=?";
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL );
 			ps.setString( 1, lote );
 			ps.setInt( 2, codProd );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "EQLOTE" ) );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 
 				Integer diasvencimento = rs.getInt( "DIASVENCIMENTO" );
 				Integer diasavisolote = rs.getInt( "DIASAVISOLOTE" );
-				
-				if(diasavisolote>0) {
-					
-					if(diasvencimento<=diasavisolote) {
+
+				if ( diasavisolote > 0 ) {
+
+					if ( diasvencimento <= diasavisolote ) {
 						ret = diasvencimento;
 					}
-					else {				
+					else {
 						ret = DLLote.LOTE_VALIDO;
 					}
-					
+
 				}
-				else {				
+				else {
 					ret = DLLote.LOTE_VALIDO;
 				}
 
@@ -293,13 +292,11 @@ public abstract class FVD extends FDetalhe {
 			ps.close();
 
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
+		} finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -324,14 +321,11 @@ public abstract class FVD extends FDetalhe {
 		String sCampoCusto = null;
 		String sVerifProd = null;
 		String sSQL = null;
-		
+
 		try {
-			
-			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD " + 
-				   "FROM SGPREFERE1 P1, EQPRODUTO PD " + 
-				   "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " + 
-				   "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
-			
+
+			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD " + "FROM SGPREFERE1 P1, EQPRODUTO PD " + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " + "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -357,11 +351,8 @@ public abstract class FVD extends FDetalhe {
 				}
 			}
 
-			sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " 
-				+  "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " 
-				+  "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " 
-				+  "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? " 
-				+  "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " + "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " + "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? "
+					+ "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -377,13 +368,13 @@ public abstract class FVD extends FDetalhe {
 			ps.setInt( 11, ( (Integer) args[ 0 ] ).intValue() );
 			ps.setBigDecimal( 12, (BigDecimal) args[ 2 ] );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				if ( rs.getInt( 1 ) == 1 ) {
 					bRet = true;
 				}
 			}
-			
+
 			rs.close();
 			ps.close();
 
@@ -391,6 +382,10 @@ public abstract class FVD extends FDetalhe {
 
 			if ( !bRet && sVerifProd.equals( "S" ) ) {
 				bRet = senhaBaixoCusto( getParansPass() );
+			}
+
+			if ( !bRet && sVerifProd.equals( "L" ) ) {
+				bRet = true;
 			}
 
 		} catch ( SQLException err ) {
@@ -417,7 +412,7 @@ public abstract class FVD extends FDetalhe {
 	protected void calcVlrItem( String tabela, boolean alteraTodos ) {
 
 		if ( alteraTodos ) {
-			
+
 			String sSQLSelect = null;
 			String sSQLUpdate = null;
 			PreparedStatement ps = null;
@@ -437,7 +432,7 @@ public abstract class FVD extends FDetalhe {
 			BigDecimal bdDescProd = null;
 			BigDecimal bdPercDescProd = null;
 			int[] iParans;
-			
+
 			try {
 
 				iParans = getParansPreco();
@@ -511,8 +506,6 @@ public abstract class FVD extends FDetalhe {
 
 				calcVlrItem( null, false );
 
-				
-
 				con.commit();
 
 			} catch ( SQLException err ) {
@@ -541,7 +534,7 @@ public abstract class FVD extends FDetalhe {
 				bdPercDescProd = null;
 				iParans = null;
 			}
-			
+
 		}
 		else {
 			setParansPreco( buscaPreco( getParansPreco() ) );
@@ -593,9 +586,9 @@ public abstract class FVD extends FDetalhe {
 		if ( iCodProd == 0 ) {
 			return;
 		}
-		
+
 		String sDesc = txaObsIt.getVlrString();
-		
+
 		if ( sDesc.equals( "" ) ) {
 			sDesc = buscaDescComp( iCodProd );
 		}
@@ -606,14 +599,14 @@ public abstract class FVD extends FDetalhe {
 		DLBuscaDescProd obs = new DLBuscaDescProd( sDesc );
 		obs.setConexao( con );
 		obs.setVisible( true );
-		
+
 		if ( obs.OK ) {
 			txaObsIt.setVlrString( obs.getTexto() );
 			lcDet.edit();
 		}
-		
+
 		obs.dispose();
-		
+
 	}
 
 	/**
@@ -629,7 +622,7 @@ public abstract class FVD extends FDetalhe {
 	public void mostraObsCli( int iCodCli, Point location, Dimension dimencao ) {
 
 		String sObsCli = getObsCli( iCodCli );
-		
+
 		if ( !sObsCli.equals( "" ) ) {
 			FObsCliVend.showVend( (int) location.getX(), (int) location.getY(), (int) dimencao.getWidth(), (int) dimencao.getHeight(), sObsCli );
 		}
@@ -650,11 +643,11 @@ public abstract class FVD extends FDetalhe {
 		ResultSet rs = null;
 		String sSQLselect = null;
 		String sSQLupdate = null;
-		
+
 		try {
-		
+
 			try {
-				
+
 				if ( sTabela.equals( "VDVENDA" ) ) {
 					sSQLselect = "SELECT OBSVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
 					sSQLupdate = "UPDATE VDVENDA SET OBSVENDA=? WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
@@ -669,7 +662,7 @@ public abstract class FVD extends FDetalhe {
 				ps.setInt( 2, ListaCampos.getMasterFilial( sTabela ) );
 				ps.setInt( 3, iCod );
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
 					obs = new FObservacao( ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
 				}
@@ -686,11 +679,11 @@ public abstract class FVD extends FDetalhe {
 				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + err.getMessage(), true, con, err );
 			}
 			if ( obs != null ) {
-				
+
 				obs.setVisible( true );
-				
+
 				if ( obs.OK ) {
-					
+
 					try {
 						ps = con.prepareStatement( sSQLupdate );
 						ps.setString( 1, obs.getTexto() );
@@ -702,16 +695,16 @@ public abstract class FVD extends FDetalhe {
 						ps.close();
 
 						con.commit();
-						
+
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao inserir observação no orçamento!\n" + err.getMessage(), true, con, err );
 					}
 				}
-				
+
 				obs.dispose();
-				
+
 			}
-			
+
 		} finally {
 			ps = null;
 			rs = null;
@@ -734,12 +727,12 @@ public abstract class FVD extends FDetalhe {
 
 		FPassword fpw = new FPassword( this, FPassword.BAIXO_CUSTO, args, null, con );
 		fpw.execShow();
-		
+
 		if ( fpw.OK ) {
 			setLog( fpw.getLog() );
 			retorno = true;
 		}
-		
+
 		fpw.dispose();
 
 		return retorno;
@@ -758,7 +751,7 @@ public abstract class FVD extends FDetalhe {
 		int iFim = 0;
 
 		try {
-			
+
 			sObsDesc = ( (JTextFieldPad) param.elementAt( 0 ) ).getVlrString();
 
 			DLDescontItVenda dl = new DLDescontItVenda( this, ( (JTextFieldPad) param.elementAt( 1 ) ).doubleValue(), parseDescs( sObsDesc ) );
@@ -774,13 +767,13 @@ public abstract class FVD extends FDetalhe {
 				else {
 					sObsDesc = dl.getObs() + " \n";
 				}
-				
+
 				( (JTextFieldPad) param.elementAt( 0 ) ).setVlrString( sObsDesc );
-				
+
 			}
 
 			dl.dispose();
-			
+
 		} finally {
 			param = null;
 			sObsDesc = null;
@@ -801,20 +794,20 @@ public abstract class FVD extends FDetalhe {
 		String sObs = arg0;
 		int iFim = sObs.indexOf( '\n' );
 		int iPos = 0;
-		
+
 		if ( iFim > 0 ) {
-			
+
 			sObs = sObs.substring( 0, iFim );
-			
+
 			if ( sObs.indexOf( "Desc.: " ) == 0 ) {
-				
+
 				sObs = sObs.substring( 7 );
 				iPos = sObs.indexOf( '+' );
-				
+
 				for ( int i = 0; ( iPos > 0 ) && ( i < 5 ); i++ ) {
-					
+
 					sRet[ i ] = sObs.substring( 0, iPos - 1 );
-					
+
 					if ( iPos != iFim ) {
 						sObs = sObs.substring( iPos + 1 );
 					}
@@ -824,15 +817,15 @@ public abstract class FVD extends FDetalhe {
 					if ( ( iPos = sObs.indexOf( '+' ) ) == -1 ) {
 						iPos = iFim = sObs.length();
 					}
-					
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		return sRet;
-		
+
 	}
 
 	/**
@@ -850,35 +843,27 @@ public abstract class FVD extends FDetalhe {
 		ResultSet rs = null;
 		String sSQL = null;
 		String sCodLote = null;
-		
+
 		try {
-			
-			sSQL = "SELECT MIN(L.CODLOTE) " + 
-				   "FROM EQLOTE L " + 
-				   "WHERE L.CODPROD=? AND L.CODFILIAL=? " + 
-				   ( testar ? "AND L.SLDLIQLOTE>0 " : "" ) + 
-				   "AND L.CODEMP=? AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " + 
-				   "FROM EQLOTE LS " + 
-				   "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " +
-				   "AND LS.CODEMP=L.CODEMP " + 
-				   ( testar ? "AND LS.SLDLIQLOTE>0 " : "" ) + 
-				   "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
-			
+
+			sSQL = "SELECT MIN(L.CODLOTE) " + "FROM EQLOTE L " + "WHERE L.CODPROD=? AND L.CODFILIAL=? " + ( testar ? "AND L.SLDLIQLOTE>0 " : "" ) + "AND L.CODEMP=? AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " + "FROM EQLOTE LS " + "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL "
+					+ "AND LS.CODEMP=L.CODEMP " + ( testar ? "AND LS.SLDLIQLOTE>0 " : "" ) + "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, iCodProd );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				sCodLote = rs.getString( 1 ) != null ? rs.getString( 1 ) : "";
 			}
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar lote!\n" + err );
@@ -904,15 +889,15 @@ public abstract class FVD extends FDetalhe {
 		String sSQL = "SELECT OBSCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setInt( 3, iCodCli );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				if ( rs.getString( "OBSCLI" ) != null ) {
 					sRetorno = rs.getString( "OBSCLI" ).trim();
@@ -923,14 +908,14 @@ public abstract class FVD extends FDetalhe {
 			ps.close();
 
 			con.commit();
-			
+
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro carregando observações do cliente.\n" + e.getMessage() );
 		} finally {
 			rs = null;
 			ps = null;
 		}
-		
+
 		return sRetorno;
 	}
 
@@ -954,28 +939,23 @@ public abstract class FVD extends FDetalhe {
 
 		return recalculaPreco;
 	}
-	
-	protected boolean testaNumSerie(Integer codvenda, Integer coditvenda, Integer codprod, String descprod, String strnumserie, boolean unico) {
-		
+
+	protected boolean testaNumSerie( Integer codvenda, Integer coditvenda, Integer codprod, String descprod, String strnumserie, boolean unico ) {
+
 		boolean ret = false;
-		
+
 		try {
-			
-			numserie = new NumSerie(this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico);
-		
+
+			numserie = new NumSerie( this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico );
+
 			ret = numserie.testaNumSerie();
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
-		
+
 	}
-	
-
-
-	
 
 }
