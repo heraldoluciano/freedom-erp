@@ -24,7 +24,7 @@ public class NumSerie {
 	private boolean unico = false;
 	private Component corig = null;
 	
-	public NumSerie(Component corig, Integer cod, Integer itcod, Integer codprod, String descprod, String numserie, boolean unico) {
+	public NumSerie(Component corig, ListaCampos lcDet, Integer cod, Integer itcod, Integer codprod, String descprod, String numserie, boolean unico) {
 		setCod( cod );
 		setItcod( itcod );
 		setCodprod( codprod );
@@ -32,6 +32,7 @@ public class NumSerie {
 		setNumserie( numserie );
 		setUnico( unico );
 		setCorig( corig );
+		setLcDet( lcDet );
 	}
 	
 	
