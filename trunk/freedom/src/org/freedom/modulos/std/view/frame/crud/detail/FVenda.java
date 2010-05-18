@@ -3386,7 +3386,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					setAltDet( 140 );
 						
 //					lbCodLote.setVisible( true );
-					txtCodLote.setVisible( true );
+//					txtCodLote.setVisible( true );
 						
 					lbNumSerie.setVisible( true );
 					txtNumSerie.setVisible( true );
@@ -3399,7 +3399,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					setAltDet( 100 );
 						
 //					lbCodLote.setVisible( false );
-					txtCodLote.setVisible( false );
+//					txtCodLote.setVisible( false );
 						
 					lbNumSerie.setVisible( false );
 					txtNumSerie.setVisible( false );
