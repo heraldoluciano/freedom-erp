@@ -114,7 +114,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JTextFieldFK txtSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -249,7 +249,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		txtPlacaTran.setUpperCase( true );
 		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
 
-		txtCodMun.setAtivo( false );
+		txtCodMunic.setAtivo( false );
 
 		vValsFrete.addElement( "C" );
 		vValsFrete.addElement( "F" );
@@ -331,7 +331,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		adicCampo( txtCodPais, 320, 140, 28, 20, "CodPais", "País", ListaCampos.DB_SI, false );
 		adicCampo( txtSiglaUF, 351, 140, 23, 20, "SiglaUF", "UF", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
 
 		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
@@ -552,7 +552,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 
 		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setNomeCampo( "CodFor" );
@@ -592,14 +592,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		 **************/
 
 		lcMunic.setUsaME( false );
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/***************
 		 * BAIRRO *
@@ -607,14 +607,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcBairro.setUsaME( false );
 		lcBairro.add( new GuardaCampo( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true ) );
-		lcBairro.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Munic", ListaCampos.DB_PK, true ) );
+		lcBairro.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Munic", ListaCampos.DB_PK, true ) );
 		lcBairro.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "Sigla.UF", ListaCampos.DB_PK, false ) );
 		lcBairro.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_PK, false ) );
 		lcBairro.add( new GuardaCampo( txtNomeBairro, "NomeBairro", "Nome do Bairro", ListaCampos.DB_SI, false ) );
 
 		lcBairro.setDinWhereAdic( "CODPAIS = #N", txtCodPais );
 		lcBairro.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
-		lcBairro.setDinWhereAdic( "CODMUNIC = #S", txtCodMun );
+		lcBairro.setDinWhereAdic( "CODMUNIC = #S", txtCodMunic );
 
 		lcBairro.montaSql( false, "BAIRRO", "SG" );
 		lcBairro.setQueryCommit( false );
@@ -657,7 +657,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 				bairro.setCodPais( txtCodPais.getVlrInteger() );
 				bairro.setSiglaUF( txtSiglaUF.getVlrString() );
-				bairro.setCodMunic( txtCodMun.getVlrString() );
+				bairro.setCodMunic( txtCodMunic.getVlrString() );
 
 				Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", bairro, con );
 
@@ -1133,7 +1133,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			ps.setInt( 1, txtCodPais.getVlrInteger() );
 			ps.setString( 2, txtSiglaUF.getVlrString() );
-			ps.setString( 3, txtCodMun.getVlrString() );
+			ps.setString( 3, txtCodMunic.getVlrString() );
 
 			ResultSet rs = ps.executeQuery();
 

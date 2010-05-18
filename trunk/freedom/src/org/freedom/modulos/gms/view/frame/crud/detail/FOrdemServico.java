@@ -95,7 +95,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private JTextFieldFK txtSiglaUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -312,7 +312,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private void configuraCampos() {
 
-		txtCodMun.setAtivo( false );
+		txtCodMunic.setAtivo( false );
 
 		RecMerc.atualizaStatus( (String) RecMerc.STATUS_NAO_SALVO.getValue(), lbStatus );
 
@@ -641,7 +641,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcCli.add( new GuardaCampo( txtCNPJCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
 
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
