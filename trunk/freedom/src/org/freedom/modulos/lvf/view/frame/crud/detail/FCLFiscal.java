@@ -204,6 +204,8 @@ public class FCLFiscal extends FDetalhe
 
 	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 	
+	private JTextFieldPad txtAliqIIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
 	private JTextFieldPad txtVlrIpiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 	
 	private JTextFieldPad txtCodSitTribPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -852,12 +854,14 @@ public class FCLFiscal extends FDetalhe
 		
 		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI, null, false );
 		
-//		
-//		// **********  ABA II  **/
-//				
-//		tpnGeral.addTab( "II", panelII );
-//		setPainel( panelIICampos );
+		
+		// **********  ABA II  **/
+				
+		tpnGeral.addTab( "Imposto de importação", panelII );
+		setPainel( panelIICampos );
 //		tpnGeral.setEnabledAt( 8, false );
+		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
+		
 //			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
