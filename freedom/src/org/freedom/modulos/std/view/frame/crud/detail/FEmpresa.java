@@ -130,7 +130,7 @@ public class FEmpresa extends FDetalhe{
 	
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
 	
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -221,7 +221,7 @@ public class FEmpresa extends FDetalhe{
 		adicDescFK( txtNomeUF, 293, 300, 186, 20, "NomeUF", "Nome UF" );
 
 		
-		adicCampo( txtCodMun, 7, 340, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
+		adicCampo( txtCodMunic, 7, 340, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 60, 340, 177, 20, "NomeMunic", "Nome do municipio" );			
 		
 		setListaCampos( true, "FILIAL", "SG" );
@@ -274,13 +274,13 @@ public class FEmpresa extends FDetalhe{
 		 **************/
 		
 		lcMunic.setUsaME( false );		
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );	
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );	
 		
 		/***************
 		 *    PAÍS     *
