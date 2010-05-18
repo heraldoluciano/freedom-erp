@@ -373,7 +373,7 @@ public class FCLFiscal extends FDetalhe
 		txtVlrCsUnidTrib.setAtivo( false );
 		txtAliqCSocialFisc.setAtivo( true );
 		txtVlrIiUnidTrib.setAtivo( false );
-		txtAliqIiFisc.setAtivo( false );
+//		txtAliqIiFisc.setAtivo( false );
 				
 		//Adicionando Listeners
 				
