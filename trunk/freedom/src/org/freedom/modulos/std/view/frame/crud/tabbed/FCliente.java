@@ -396,7 +396,7 @@ public class FCliente extends FTabDados
 
 	private JTextFieldFK txtDescPaisCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -406,11 +406,11 @@ public class FCliente extends FTabDados
 	
 	private JTextFieldFK txtDDDMunEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 	
-	private JTextFieldPad txtCodMunEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunicEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMunEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldPad txtCodMunCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunicCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMunCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -743,14 +743,14 @@ public class FCliente extends FTabDados
 		 **************/
 		
 		lcMunic.setUsaME( false );		
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *      UF     *
@@ -770,14 +770,14 @@ public class FCliente extends FTabDados
 		 ******************/
 		
 		lcMunicEnt.setUsaME( false );		
-		lcMunicEnt.add( new GuardaCampo( txtCodMunEnt, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
+		lcMunicEnt.add( new GuardaCampo( txtCodMunicEnt, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
 		lcMunicEnt.add( new GuardaCampo( txtDescMunEnt, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunicEnt.add( new GuardaCampo( txtDDDMunEnt, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
 		lcMunicEnt.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUFEnt );
 		lcMunicEnt.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicEnt.setQueryCommit( false );
 		lcMunicEnt.setReadOnly( true );
-		txtCodMunEnt.setTabelaExterna( lcMunicEnt, FMunicipio.class.getCanonicalName() );		
+		txtCodMunicEnt.setTabelaExterna( lcMunicEnt, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *   UF ENT    *
@@ -797,14 +797,14 @@ public class FCliente extends FTabDados
 		 ******************/
 		
 		lcMunicCob.setUsaME( false );		
-		lcMunicCob.add( new GuardaCampo( txtCodMunCob, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
+		lcMunicCob.add( new GuardaCampo( txtCodMunicCob, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
 		lcMunicCob.add( new GuardaCampo( txtDescMunCob, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunicCob.add( new GuardaCampo( txtDDDMunCob, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );		
 		lcMunicCob.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUFCob );
 		lcMunicCob.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicCob.setQueryCommit( false );
 		lcMunicCob.setReadOnly( true );
-		txtCodMunCob.setTabelaExterna( lcMunicCob, FMunicipio.class.getCanonicalName() );		
+		txtCodMunicCob.setTabelaExterna( lcMunicCob, FMunicipio.class.getCanonicalName() );		
 
 		/***************
 		 *   UF COB    *
@@ -909,7 +909,7 @@ public class FCliente extends FTabDados
 			adicCampo( txtSiglaUF, 300, 460, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
 			adicDescFK( txtNomeUF, 353, 460, 162, 20, "NomeUF", "Nome UF" );
 			
-			adicCampo( txtCodMun, 7, 500, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
+			adicCampo( txtCodMunic, 7, 500, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
 			adicDescFK( txtDescMun, 80, 500, 217, 20, "NomeMunic", "Nome do municipio" );			
 			
 		}
@@ -977,7 +977,7 @@ public class FCliente extends FTabDados
 			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
 			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
-			adicCampo( txtCodMunEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
+			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
 			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
 			
 		}
@@ -1018,7 +1018,7 @@ public class FCliente extends FTabDados
 			adicDescFK( txtDescPaisCob, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFCob, 7, 180, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
 			adicDescFK( txtNomeUFCob, 80, 180, 290, 20, "NomeUFCob", "Nome UF" );
-			adicCampo( txtCodMunCob, 7, 220, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
+			adicCampo( txtCodMunicCob, 7, 220, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
 			adicDescFK( txtDescMunCob, 80, 220, 290, 20, "NomeMunicCob", "Nome do municipio" );
 			
 		}
@@ -4011,7 +4011,7 @@ public class FCliente extends FTabDados
 			if ( (Boolean)bPref.get( "USAIBGECLI" )) {				
 				txtCodPaisEnt.setVlrInteger( txtCodPais.getVlrInteger() );
 				txtSiglaUFEnt.setVlrString( txtSiglaUF.getVlrString() );
-				txtCodMunEnt.setVlrString( txtCodMun.getVlrString() );
+				txtCodMunicEnt.setVlrString( txtCodMunic.getVlrString() );
 				lcPaisEnt.carregaDados();
 				lcUFEnt.carregaDados(); 
 				lcMunicEnt.carregaDados();				 				
@@ -4039,7 +4039,7 @@ public class FCliente extends FTabDados
 				
 				txtCodPaisCob.setVlrInteger( txtCodPais.getVlrInteger() );
 				txtSiglaUFCob.setVlrString( txtSiglaUF.getVlrString() );
-				txtCodMunCob.setVlrString( txtCodMun.getVlrString() );
+				txtCodMunicCob.setVlrString( txtCodMunic.getVlrString() );
 				lcPaisCob.carregaDados(); 
 				lcUFCob.carregaDados(); 
 				lcMunicCob.carregaDados();				
@@ -4406,7 +4406,7 @@ public class FCliente extends FTabDados
 			txtUFCli.setEnabled( false );
 			txtCodPais.setEnabled( false );
 			txtSiglaUF.setEnabled( false );
-			txtCodMun.setEnabled( false );		
+			txtCodMunic.setEnabled( false );		
 			txtDDDCli.setEnabled( false );
 			txtDDDFaxCli.setEnabled( false );
 			txtDDDCelCli.setEnabled( false );
@@ -4428,7 +4428,7 @@ public class FCliente extends FTabDados
 								txtUFCli.setVlrString( endereco.getSiglauf() ) ;
 								txtCodPais.setVlrInteger( endereco.getCodpais() );
 								txtSiglaUF.setVlrString( endereco.getSiglauf() );
-								txtCodMun.setVlrString( endereco.getCodmunic() );
+								txtCodMunic.setVlrString( endereco.getCodmunic() );
 								
 								lcPais.carregaDados();
 								lcUF.carregaDados();
@@ -4448,7 +4448,7 @@ public class FCliente extends FTabDados
 								txtUFCli.setEnabled( true );
 								txtCodPais.setEnabled( true );
 								txtSiglaUF.setEnabled( true );
-								txtCodMun.setEnabled( true );		
+								txtCodMunic.setEnabled( true );		
 								txtDDDCli.setEnabled( true );
 								txtDDDFaxCli.setEnabled( true );
 								txtDDDCelCli.setEnabled( true );
