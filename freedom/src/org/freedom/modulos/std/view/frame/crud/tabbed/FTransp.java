@@ -139,7 +139,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 	
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -263,7 +263,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			adicDescFK( txtDescPais, 85, 340, 464, 20, "DescPais", "Nome do país" );
 			adicCampo( txtSiglaUF, 7, 380, 75, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
 			adicDescFK( txtNomeUF, 85, 380, 464, 20, "NomeUF", "Nome UF" );
-			adicCampo( txtCodMun, 7, 420, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+			adicCampo( txtCodMunic, 7, 420, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
 			adicDescFK( txtDescMun, 85, 420, 464, 20, "NomeMunic", "Nome do municipio" );
 
 		}
@@ -365,14 +365,14 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		 **************/
 
 		lcMunic.setUsaME( false );
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );		
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/***************
 		 * FORNECEDOR *
@@ -641,7 +641,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			
 			txtCodPais.setEnabled( false );
 			txtSiglaUF.setEnabled( false );
-			txtCodMun.setEnabled( false );
+			txtCodMunic.setEnabled( false );
 			txtDDDFoneTran.setEnabled( false );
 			txtDDDFaxTran.setEnabled( false );
 			txtDDDCelTran.setEnabled( false );
@@ -665,7 +665,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 						
 						txtCodPais.setVlrInteger( endereco.getCodpais() );
 						txtSiglaUF.setVlrString( endereco.getSiglauf() );
-						txtCodMun.setVlrString( endereco.getCodmunic() );
+						txtCodMunic.setVlrString( endereco.getCodmunic() );
 
 						lcPais.carregaDados();
 						lcUF.carregaDados();
@@ -684,7 +684,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 						txtUFTran.setEnabled( true );
 						txtCodPais.setEnabled( true );
 						txtSiglaUF.setEnabled( true );
-						txtCodMun.setEnabled( true );		
+						txtCodMunic.setEnabled( true );		
 						txtDDDFoneTran.setEnabled( true );
 						txtDDDFaxTran.setEnabled( true );
 						txtDDDCelTran.setEnabled( true );

@@ -228,7 +228,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
 	
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -320,14 +320,14 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		 **************/
 		
 		lcMunic.setUsaME( false );		
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
 
 		vPessoaLab.addElement( "Física" );
 		vPessoaLab.addElement( "Jurídica" );
@@ -391,7 +391,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			adicDescFK( txtDescPais, 90, 460, 379, 20, "DescPais", "Nome do país" );
 			adicCampo( txtSiglaUF, 7, 500, 80, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
 			adicDescFK( txtNomeUF, 90, 500, 379, 20, "NomeUF", "Nome UF" );
-			adicCampo( txtCodMun, 7, 540, 80, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+			adicCampo( txtCodMunic, 7, 540, 80, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
 			adicDescFK( txtDescMun, 90, 540, 379, 20, "NomeMunic", "Nome do municipio" );			
 								
 		}
@@ -1147,7 +1147,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			txtUFFor.setEnabled( false );
 			txtCodPais.setEnabled( false );
 			txtSiglaUF.setEnabled( false );
-			txtCodMun.setEnabled( false );
+			txtCodMunic.setEnabled( false );
 			txtDDDFoneFor.setEnabled( false );
 			txtDDDFaxFor.setEnabled( false );
 			txtDDDCelFor.setEnabled( false );
@@ -1170,7 +1170,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 						txtUFFor.setVlrString( endereco.getSiglauf() );
 						txtCodPais.setVlrInteger( endereco.getCodpais() );
 						txtSiglaUF.setVlrString( endereco.getSiglauf() );
-						txtCodMun.setVlrString( endereco.getCodmunic() );
+						txtCodMunic.setVlrString( endereco.getCodmunic() );
 
 						lcPais.carregaDados();
 						lcUF.carregaDados();
@@ -1189,7 +1189,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 						txtUFFor.setEnabled( true );
 						txtCodPais.setEnabled( true );
 						txtSiglaUF.setEnabled( true );
-						txtCodMun.setEnabled( true );
+						txtCodMunic.setEnabled( true );
 						txtDDDFoneFor.setEnabled( true );
 						txtDDDFaxFor.setEnabled( true );
 						txtDDDCelFor.setEnabled( true );
