@@ -62,7 +62,7 @@ public final class StringFunctions {
 	public static String clearStringOld(String str) {
 		
 		String sResult = "";
-		String sCaracs = "=<>- .,;/\\?";
+		String sCaracs = "=<>-.,;/\\?";
 		
 		if (str != null) {
 			for (int i = 0; i < str.length(); i++) {
