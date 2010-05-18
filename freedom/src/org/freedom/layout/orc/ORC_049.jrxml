@@ -121,7 +121,7 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 			</band>
 		</title>
 		<pageHeader>
-			<band height="158"  isSplitAllowed="true" >
+			<band height="152"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -187,7 +187,7 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="16"
+						y="10"
 						width="0"
 						height="142"
 						forecolor="#010101"
@@ -316,7 +316,7 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="157"
+						y="151"
 						width="535"
 						height="0"
 						forecolor="#010101"
@@ -848,7 +848,7 @@ $F{CEPCLI}.substring(5)
 				<line direction="TopDown">
 					<reportElement
 						x="534"
-						y="17"
+						y="12"
 						width="0"
 						height="140"
 						forecolor="#010101"
@@ -858,7 +858,7 @@ $F{CEPCLI}.substring(5)
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="4"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnHeader>
 		<detail>
@@ -866,7 +866,7 @@ $F{CEPCLI}.substring(5)
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
-						y="1"
+						y="0"
 						width="531"
 						height="47"
 						key="subreport-2"/>
