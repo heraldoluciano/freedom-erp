@@ -47,7 +47,7 @@ public class FMunicipio extends FDados{
 
 	private static final long serialVersionUID = 1L;
 	
-	private JTextFieldPad txtCodMunicipio = new JTextFieldPad( JTextFieldPad.TP_STRING, 5, 0 );
+	private JTextFieldPad txtCodMunicipio = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 	
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
