@@ -42,7 +42,6 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.fnc.business.component.Juros;
@@ -82,12 +81,9 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 
 	private void montaListaCampos() {
 
-		FDados fDados = new FDados();
-
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
-		fDados.adicCampoInvisivel( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false );
 
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
