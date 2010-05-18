@@ -5,15 +5,15 @@
 		 name="OS_PD"
 		 columnCount="1"
 		 printOrder="Vertical"
-		 orientation="Landscape"
+		 orientation="Portrait"
 		 pageWidth="595"
-		 pageHeight="421"
+		 pageHeight="842"
 		 columnWidth="535"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
 		 topMargin="20"
-		 bottomMargin="20"
+		 bottomMargin="421"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -114,54 +114,12 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="26"  isSplitAllowed="true" >
-				<line direction="BottomUp">
-					<reportElement
-						mode="Opaque"
-						x="1"
-						y="3"
-						width="534"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="53"
-						y="6"
-						width="59"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOT}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="3"
-						y="6"
-						width="50"
-						height="11"
-						forecolor="#010101"
-						backcolor="#FFFFFF"
-						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Total :]]></text>
-				</staticText>
+			<band height="6"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="22"
+						y="1"
 						width="534"
 						height="0"
 						forecolor="#000000"
@@ -194,7 +152,7 @@ and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc an
 				<subreport  isUsingCache="true">
 					<reportElement
 						mode="Opaque"
-						x="3"
+						x="2"
 						y="4"
 						width="532"
 						height="58"
@@ -782,7 +740,7 @@ $P{CEPFILIAL}.trim().substring(0,5)
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Descrição do produto]]></text>
+				<text><![CDATA[Descrição do equipamento]]></text>
 				</staticText>
 				<rectangle radius="0" >
 					<reportElement
@@ -1010,10 +968,22 @@ $P{CEPFILIAL}.trim().substring(0,5)
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="19"
+						width="535"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="33"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="29"
@@ -1049,7 +1019,7 @@ $P{CEPFILIAL}.trim().substring(0,5)
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="28"
+						y="24"
 						width="535"
 						height="0"
 						forecolor="#000000"
