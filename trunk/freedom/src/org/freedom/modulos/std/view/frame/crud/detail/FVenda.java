@@ -51,11 +51,14 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -98,9 +101,9 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
-import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaPgto;
@@ -290,9 +293,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtStrDescItVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtBaseICMSItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtVlrBaseICMSItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
-	private JTextFieldPad txtBaseICMSBrutItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtVlrBaseICMSBrutItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtAliqFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, casasDecFin );
 
@@ -806,7 +809,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		// Desativa as os TextFields para que os usuários não possam mexer
 		// ALTERADO PARA BUSCA DO PREEFERENCIAS.
-		txtBaseICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
+		txtVlrBaseICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
 		txtPercICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
 		txtVlrICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
 
@@ -1048,8 +1051,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtCodAlmoxItVenda, 230, 60, 47, 20, "codalmox", "Cod.ax", ListaCampos.DB_FK, false );
 		// colocar aqui o campo de saldo
 		adicDescFK( txtSldLiqProd, 280, 60, 67, 20, "SldLiqProd", "Saldo" );
-		adicCampo( txtBaseICMSItVenda, 350, 60, 67, 20, "VlrBaseICMSItVenda", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtBaseICMSBrutItVenda, "VlrBaseICMSBrutItVenda", "B. ICMS S/Red.", ListaCampos.DB_SI, false );		
+		adicCampo( txtVlrBaseICMSItVenda, 350, 60, 67, 20, "VlrBaseICMSItVenda", "B. ICMS", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrBaseICMSBrutItVenda, "VlrBaseICMSBrutItVenda", "B. ICMS S/Red.", ListaCampos.DB_SI, false );		
 		adicCampo( txtPercICMSItVenda, 420, 60, 57, 20, "PercICMSItVenda", "% ICMS", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrICMSItVenda, 480, 60, 67, 20, "VlrICMSItVenda", "V. ICMS", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI", ListaCampos.DB_SI, false );
@@ -1938,34 +1941,41 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private void calcImpostos( boolean bBuscaBase ) {
 
-		float fRed = 0;
-		float fVlrProd = 0;
-		float fBaseIPI = 0;
-		float fBaseICMS = 0;
-		float fBaseICMSBrut = 0; // Base do ICMS sem redução
-		float fICMS = 0;
-		float fIPI = 0;
+		BigDecimal zero = new BigDecimal(0);
+		BigDecimal vlrprod = zero;
+		BigDecimal percredicmsitvenda = zero;
+		BigDecimal vlrbaseipiitvenda = zero;
+		BigDecimal vlrbaseicmsitvenda = zero;
+		BigDecimal vlrbaseicmsitvendabrut = zero;
+		BigDecimal vlricmsitvenda = zero;
+		BigDecimal vlripiitvenda = zero;
 		String tpredicmsfisc = null;
+		BigDecimal cem = new BigDecimal(100);
+		BigDecimal percicmsitvenda = null;
+		BigDecimal percipiitvenda = null;
 
 		try {
 
+			percicmsitvenda = txtPercICMSItVenda.getVlrBigDecimal().divide( cem );
+			percipiitvenda = txtAliqIPIItVenda.getVlrBigDecimal() != null ? txtAliqIPIItVenda.getVlrBigDecimal().divide( cem ) : zero;
 			tpredicmsfisc = txtTpRedIcmsFisc.getVlrString();
-			fRed = txtRedFisc.getVlrBigDecimal() != null ? txtRedFisc.floatValue() : 0;
-			fVlrProd = calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ).floatValue();
+			percredicmsitvenda = txtRedFisc.getVlrBigDecimal() !=null ? txtRedFisc.getVlrBigDecimal() : zero;
+			
+			vlrprod = calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal());
 
 			if ( !bBuscaBase ) {
-				fBaseICMS = txtBaseICMSItVenda.floatValue();
-				fBaseICMSBrut = txtBaseICMSBrutItVenda.floatValue();
+				vlrbaseicmsitvenda = txtVlrBaseICMSItVenda.getVlrBigDecimal();
+				vlrbaseicmsitvendabrut = txtVlrBaseICMSBrutItVenda.getVlrBigDecimal();
 			}
 
 			if ( txtTipoFisc.getText().trim().equals( "II" ) ) {
 
-				txtPercICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+				txtPercICMSItVenda.setVlrBigDecimal( zero );
+				txtVlrICMSItVenda.setVlrBigDecimal( zero );
 
 				if ( bBuscaBase ) {
-					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtVlrBaseICMSItVenda.setVlrBigDecimal( zero );
+					txtVlrBaseICMSBrutItVenda.setVlrBigDecimal( zero );
 				}
 
 				defineUltimoCampo();
@@ -1976,12 +1986,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			else if ( txtTipoFisc.getText().trim().equals( "FF" ) && (txtTipoST.getText().trim().equals( "SI" ))) { 
 
-				txtPercICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+				txtPercICMSItVenda.setVlrBigDecimal( zero );
+				txtVlrICMSItVenda.setVlrBigDecimal( zero );
 
 				if ( bBuscaBase ) {
-					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtVlrBaseICMSItVenda.setVlrBigDecimal( zero );
+					txtVlrBaseICMSBrutItVenda.setVlrBigDecimal( zero );
 				}
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
@@ -2011,12 +2021,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else if ( txtTipoFisc.getText().trim().equals( "NN" ) ) {
 
-				txtPercICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+				txtPercICMSItVenda.setVlrBigDecimal( zero );
+				txtVlrICMSItVenda.setVlrBigDecimal( zero );
 
 				if ( bBuscaBase ) {
-					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
-					txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
+					txtVlrBaseICMSItVenda.setVlrBigDecimal( zero );
+					txtVlrBaseICMSBrutItVenda.setVlrBigDecimal( zero );
 				}
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
@@ -2045,40 +2055,43 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					|| ( txtTipoFisc.getText().trim().equals( "FF" )) 
 					|| ( ( (txtTipoFisc.getText().trim().equals( "FF" )) &&  txtTipoST.getText().trim().equals( "SU" ))) ) {
 
-				if ( fVlrProd > 0 ) {
+				if ( vlrprod.floatValue() > 0 ) {
 
 					if ( bBuscaBase ) {
 						if ( "B".equals( tpredicmsfisc ) ) {
-							fBaseICMS = Funcoes.arredFloat( fVlrProd - fVlrProd * fRed / 100, casasDecFin );
+							BigDecimal vlrreducao = vlrprod.multiply( percredicmsitvenda ).divide( cem ); 
+							vlrbaseicmsitvenda = vlrprod.subtract( vlrreducao ) ;  							
 						}
 						else {
-							fBaseICMS = Funcoes.arredFloat( fVlrProd, casasDecFin );
+							vlrbaseicmsitvenda = vlrprod.setScale( casasDecFin, BigDecimal.ROUND_UP );
 						}
 
-						fBaseICMSBrut =  Funcoes.arredFloat( fVlrProd, casasDecFin );
+						vlrbaseicmsitvendabrut = vlrprod.setScale( casasDecFin, BigDecimal.ROUND_UP );
 
 					}
 
-					fBaseIPI = fVlrProd;
+					vlrbaseipiitvenda = vlrprod.setScale( casasDecFin, BigDecimal.ROUND_UP );
 
-					if ( ( "V".equals( tpredicmsfisc ) ) && ( fRed > 0 ) ) {
-						fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
-						fICMS -= Funcoes.arredFloat( fICMS * fRed / 100, casasDecFin );
+					if ( ( "V".equals( tpredicmsfisc ) ) && ( percredicmsitvenda.floatValue() > 0 ) ) {
+						vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda );
+						BigDecimal vlrreducao = vlricmsitvenda.multiply( percredicmsitvenda ).divide( cem ); 
+						vlricmsitvenda = vlricmsitvenda.subtract( vlrreducao );
+						
 					}
 					else {
-						fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
+						vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda );
 					}
-					fIPI = Funcoes.arredFloat( fBaseIPI * txtAliqIPIItVenda.floatValue() / 100, casasDecFin );
+					vlripiitvenda = vlrbaseipiitvenda.multiply( percipiitvenda.divide( cem ) );
 
 				}
 
-				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( fICMS ) );
-				txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMS ) );
-				txtBaseICMSBrutItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMSBrut ) );
+				txtVlrICMSItVenda.setVlrBigDecimal( vlricmsitvenda );
+				txtVlrBaseICMSItVenda.setVlrBigDecimal( vlrbaseicmsitvenda );
+				txtVlrBaseICMSBrutItVenda.setVlrBigDecimal( vlrbaseicmsitvendabrut );
 
-				txtVlrIPIItVenda.setVlrBigDecimal( new BigDecimal( fIPI ) );
-				txtBaseIPIItVenda.setVlrBigDecimal( new BigDecimal( fBaseIPI ) );
-				txtAliqIPIItVenda.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
+				txtVlrIPIItVenda.setVlrBigDecimal( vlripiitvenda );
+				txtBaseIPIItVenda.setVlrBigDecimal( vlrbaseipiitvenda );
+				txtAliqIPIItVenda.setVlrBigDecimal( percipiitvenda );
 
 				if ( txtVlrIPIItVenda.getAtivo() ) {
 					txtUltCamp = txtVlrIPIItVenda;
@@ -2108,8 +2121,23 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			txtVlrLiqItVenda.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ) );
 
-		} catch ( Exception e ) {
+		}
+		catch ( Exception e ) {
 			e.printStackTrace();
+		}
+		finally {
+			zero = null;
+			vlrprod = null;
+			percredicmsitvenda = null;
+			vlrbaseipiitvenda = null;
+			vlrbaseicmsitvenda = null;
+			vlrbaseicmsitvendabrut = null;
+			vlricmsitvenda = null;
+			vlripiitvenda = null;
+			tpredicmsfisc = null;
+			cem = null;
+			percicmsitvenda = null;
+			percipiitvenda = null;
 		}
 
 	}
@@ -3559,7 +3587,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( kevt.getSource() == txtCodNat ) {// Talvez este possa ser
 				// o ultimo campo por
 				// isso o teste.
-				if ( !txtBaseICMSItVenda.getAtivo() ) {
+				if ( !txtVlrBaseICMSItVenda.getAtivo() ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 						lcDet.post();
 						lcDet.limpaCampos( true );
