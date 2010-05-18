@@ -150,7 +150,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="VLREXTENSO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Extenso.extenso($F{VLRPARCITREC}.doubleValue(),"real", "reais", "centavo", "centavos")]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.library.functions.Extenso.extenso($F{VLRPARCITREC}.doubleValue(),"real", "reais", "centavo", "centavos")]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
