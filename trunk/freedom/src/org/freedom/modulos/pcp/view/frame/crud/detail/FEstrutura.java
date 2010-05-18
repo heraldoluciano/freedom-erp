@@ -78,14 +78,24 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private int casasDec = Aplicativo.casasDec;
 
-	private JPanelPad pinCab = new JPanelPad();
+	
+	
+	private JPanelPad pinCab = new JPanelPad( new BorderLayout());
+	
+	private JPanelPad pinCabCampos = new JPanelPad();
+	
+	private JPanelPad pinCabObservacao = new JPanelPad( new GridLayout( 1, 1 ) );
+	
 
+	
 	private JPanelPad pinDetFases = new JPanelPad( new GridLayout( 2, 1 ) );
 
 	private JPanelPad pinDetFasesCampos = new JPanelPad();
 
 	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
 
+	
+	
 	private JPanelPad pinDetItens = new JPanelPad( 590, 110 );
 	
 	private JPanelPad pinDetEstrAnalise = new JPanelPad( 590, 110 );
@@ -188,6 +198,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 
+	private JTextAreaPad txaObservacao = new JTextAreaPad();
+
 	private JTablePad tabItens = new JTablePad();
 	
 	private JTablePad tabEstru = new JTablePad();
@@ -205,6 +217,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JScrollPane spEstru = new JScrollPane( tabEstru );
 
 	private JScrollPane spnModoPreparo = new JScrollPane( txaModoPreparo );
+
+	private JScrollPane spnObservacao = new JScrollPane( txaObservacao );
 
 	private ListaCampos lcProdEst = new ListaCampos( this, "" );
 
@@ -236,8 +250,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	public FEstrutura() {
 
 		setTitulo( "Estrutura de produtos" );
-		setAtribos( 50, 20, 670, 550 );
-		setAltCab( 170 );
+		setAtribos( 50, 20, 670, 650 );
+		setAltCab( 250 );
 
 	}
 	
@@ -249,7 +263,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		tpnAbas.addTab( "Itens X Fase", spItens );
 		tpnAbas.addTab( "Controle de qualidade", spQuali );
 		tpnAbas.addTab( "Distribuição X Fase", spDist );
-		
 
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
@@ -269,10 +282,18 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDet.adicDetalhe( lcDetEstrAnalise );
 
 //		txtQtdMat.addKeyListener( this );
+
+		pinCabCampos.setPreferredSize( new Dimension( 500, 130) );
 		
-		pinCab = new JPanelPad( 500, 90 );
-		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
+		pinCab.add( pinCabCampos, BorderLayout.NORTH );
+		pinCab.add( pinCabObservacao, BorderLayout.CENTER );
+		setPainel( pinCabCampos );
+						
+//		pinCabCampos = new JPanelPad( 500, 90 );
+//		setPainel( pinCab, pnCliCab );
+		
+		setListaCampos( lcCampos );
 		lcCampos.addPostListener( this );
 		lcProdEst.setUsaME( false );
 		lcProdEst.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
@@ -342,7 +363,18 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFK( txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote" );
 		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
 		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
+		
+		setPainel( pinCabObservacao );
+		GridLayout go = (GridLayout)pinCabObservacao.getLayout();
+		go.setHgap( 10 );
+		go.setVgap( 10 );
 
+		pinCabObservacao.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Observação" ) );
+		adicDBLiv( txaObservacao, "Observacao", "Observação", false );
+		pinCabObservacao.add( spnObservacao );
+		
+		
+		
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
 
@@ -377,8 +409,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		gi.setHgap( 10 );
 		gi.setVgap( 10 );
 
-		pinDetFasesInstrucao.setBorder( BorderFactory.createTitledBorder( 
-				BorderFactory.createEtchedBorder(), "Instruções" ) );
+		pinDetFasesInstrucao.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Instruções" ) );
 		adicDBLiv( txaModoPreparo, "Instrucoes", "Instruções", false );
 		pinDetFasesInstrucao.add( spnModoPreparo );
 
