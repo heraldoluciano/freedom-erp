@@ -41,6 +41,7 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.lvf.business.component.CalcImpostos;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLDescontItVenda;
 import org.freedom.modulos.std.view.frame.utility.FObsCliVend;
@@ -55,6 +56,8 @@ public abstract class FVD extends FDetalhe {
 	protected int casasDec = Aplicativo.casasDec;
 
 	protected int casasDecFin = Aplicativo.casasDecFin;
+	
+	protected CalcImpostos impostos = new CalcImpostos();
 
 	/**
 	 * indica se pode recalcular os itens. ajuda a evitar updates desnecessarios ou erroneos.
@@ -488,7 +491,7 @@ public abstract class FVD extends FDetalhe {
 							bdDescProd = vDescProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 						}
 
-						bdVlrLiqProd = calcVlrTotalProd( bdVlrBrutoProd, bdDescProd );
+						bdVlrLiqProd = impostos.calcVlrTotalProd( bdVlrBrutoProd, bdDescProd );
 
 						ps2 = con.prepareStatement( sSQLUpdate );
 						ps2.setBigDecimal( 1, bdBuscaPreco );// preço do produto
@@ -556,20 +559,6 @@ public abstract class FVD extends FDetalhe {
 		return bdRetorno;
 	}
 
-	/**
-	 * Calcula o valor total do produto
-	 * 
-	 * @param arg0
-	 *            valor do produto
-	 * @param arg1
-	 *            desconto
-	 * @return valor total do produto
-	 */
-	protected BigDecimal calcVlrTotalProd( BigDecimal arg0, BigDecimal arg1 ) {
-
-		BigDecimal bdRetorno = arg0.subtract( arg1 ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
-		return bdRetorno;
-	}
 
 	/**
 	 * mostra uma FObsevacao contendo a descrição completa do produto, quando clicado duas vezes sobre o JTextFieldFK do item.
