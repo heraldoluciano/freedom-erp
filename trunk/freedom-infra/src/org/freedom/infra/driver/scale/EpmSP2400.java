@@ -85,7 +85,7 @@ public class EpmSP2400 extends AbstractScale  {
 //			}
 
 			while (reading) {
-				Thread.sleep( TIMEOUT_ACK );
+				Thread.sleep( 5000 );
 			}
 			
 			
@@ -145,67 +145,72 @@ public class EpmSP2400 extends AbstractScale  {
 			
 			System.out.println("Leitura:" + str);
 			
-			str = str.trim();
-			
 			// pega os ultimos 56 caracteres do buffer
-			if(str.length()>56) {
-				str = str.substring(str.length()-56);
-			}
+			//if(str.length()>=56) {
+				//str = str.substring(str.length()-56);
+			//}
 
+			//str = StringFunctions.alltrim(str);
+			
+			System.out.println("Limpo..:" + str);
+			
 			int posicaobranca = str.indexOf( "    " );
 			
+			System.out.println("Posicao branca:"+posicaobranca);
+			
 			if(posicaobranca<24 && posicaobranca>-1) {
+				
 				str = str.substring( posicaobranca+4 );
-				str = StringFunctions.alltrim( str );
-			
-			
-			//str = str.trim();
-			
-			if(str.length()>=24) {
 				
-				str = str.substring( 0, 24 );
+				System.out.println("Limpo.2.:" + str);
+//				str = StringFunctions.alltrim( str );
+			
+				//str = str.trim();
 				
-				String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
-				
-				if("//:".equals( validador )) {
+				if(str.length()>=24) {
 					
-					System.out.println("CARACTER MALDITO:" + ((int) str.charAt(23)) );
-										
-					System.out.println("Finalizou leitura!");
+					str = str.substring( 0, 24 );
 					
-					System.out.println("String Limpa:" + str);
+					String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
 					
-					strweight = str.substring( 0,  07 );
+					if("//:".equals( validador )) {
+						
+						System.out.println("CARACTER MALDITO:" + ((int) str.charAt(23)) );
+											
+						System.out.println("Finalizou leitura!");
+						
+						System.out.println("String Limpa:" + str);
+						
+						strweight = str.substring( 0,  07 );
+						
+						System.out.println("peso lido: " + strweight);
+						
+						strdate = str.substring( 9,  17 );
+						
+						System.out.println("data lida: " + strdate);
+						
+						strtime = str.substring( 17, str.length()-1 );
+						
+						System.out.println("hora lida antes: " + strtime);
+						
+						setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
+						setDate( ConversionFunctions.strDate6digToDate( strdate ) );
+						setTime( ConversionFunctions.strTimetoTime( strtime ) );
+	
+						System.out.println("Setou o peso:" + getWeight());
+						System.out.println("Setou a data:" + getDate());
+						System.out.println("Setou a hora:" + getTime());					
+						
+						// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
+						
+						buffer = null;
+	
+					}
+					else {				
+						System.out.println("String nao validada: " + str);
+					}
 					
-					System.out.println("peso lido: " + strweight);
-					
-					strdate = str.substring( 9,  17 );
-					
-					System.out.println("data lida: " + strdate);
-					
-					strtime = str.substring( 17, str.length()-1 );
-					
-					System.out.println("hora lida antes: " + strtime);
-					
-					setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
-					setDate( ConversionFunctions.strDate6digToDate( strdate ) );
-					setTime( ConversionFunctions.strTimetoTime( strtime ) );
-
-					System.out.println("Setou o peso:" + getWeight());
-					System.out.println("Setou a data:" + getDate());
-					System.out.println("Setou a hora:" + getTime());					
-					
-					// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
-					
-					reading = false;
-					buffer = null;
-
 				}
-				else {				
-					System.out.println("String nao validada: " + str);
-				}
-				
-			}
 				
 			}
 			
@@ -216,11 +221,14 @@ public class EpmSP2400 extends AbstractScale  {
 		}
 	}
 	
-	public void serialEvent( final SerialPortEvent event ) {
+	public synchronized void serialEvent( final SerialPortEvent event ) {
 
 		byte[] result = null;
 		byte[] bufferTmp = null;
 		byte[] tmp = null;
+		byte[] peso01 = null;
+		byte[] peso02 = null;
+		byte[] peso03 = null;
 		
 		InputStream input = null;
 
@@ -228,9 +236,19 @@ public class EpmSP2400 extends AbstractScale  {
 
 		try {
 			
+			reading = true;  // Coloca o flag em estado de leitura
+			
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
+				
+				Thread.sleep(250);
+				peso01 = lepeso( input );
 
-				result = new byte[ input.available() ];
+				Thread.sleep(250);
+				peso02 = lepeso( input );
+
+				Thread.sleep(250);
+				peso03 = lepeso( input );
+				
 //				result = new byte[ 256 ];
 
 				int nodeBytes = 0;
@@ -249,7 +267,6 @@ public class EpmSP2400 extends AbstractScale  {
 						bufferTmp = result;
 					} 
 					else {
-						isRead = true;
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + result.length ];
 
@@ -261,14 +278,40 @@ public class EpmSP2400 extends AbstractScale  {
 							}
 						}
 					}  
+
+					isRead = true;
 					
 					buffer = bufferTmp;
-					parseString( new String(buffer) );					
+					
+					if (buffer.length>=56) {
+						parseString( new String(buffer) );
+						buffer = null;
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace() ;// TODO: handle exception
+		} catch ( IOException e ) {
+			e.printStackTrace();
+		} finally {
+			reading = false;
+		}
+	}
+	
+	private byte[] lepeso(InputStream input) {
+		byte[] result = null ;
+		int nodeBytes = 0;
+		try {
+			result = new byte[ input.available() ];
+			if ( result != null ) { 
+				while ( input.available() > 0 ) {
+					nodeBytes = input.read( result );	
 				}
 			}
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	private void setWeight( BigDecimal weight ) {
@@ -281,6 +324,5 @@ public class EpmSP2400 extends AbstractScale  {
 		
 		return weight;
 	}
-	
 
 }
