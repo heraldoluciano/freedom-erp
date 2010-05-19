@@ -727,6 +727,10 @@ public class Funcoes {
 		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,Exception err) {
+		mensagemErro(frame, sMensagem,bEnviar,Aplicativo.getInstace().getConexao(),err);
+	}
+	
 	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,DbConnection con,Exception err) {		
 		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 		if(bEnviar);
