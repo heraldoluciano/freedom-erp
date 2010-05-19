@@ -60,7 +60,7 @@ public class EpmSP2400 extends AbstractScale  {
 		}
 	}
 
-	protected synchronized void readReturn() {
+	protected void readReturn() {
 
 		try {
 
@@ -86,9 +86,12 @@ public class EpmSP2400 extends AbstractScale  {
 
 			while (reading) {
 				
-				Thread.sleep( 10000 );
+				Thread.sleep( 250 );
+				
 				
 			}
+			
+			stopRead();
 
 
 			/*			if(buffer!=null) {
@@ -221,14 +224,14 @@ public class EpmSP2400 extends AbstractScale  {
 		}
 	}
 
-	public synchronized void serialEvent( final SerialPortEvent event ) {
+	public void serialEvent( SerialPortEvent event ) {
 
 		byte[] result = null;
 		byte[] bufferTmp = null;
 		byte[] tmp = null;
 
 		InputStream input = null;
-
+		
 		input = CtrlPort.getInstance().getInput();
 
 		try {
@@ -268,13 +271,18 @@ public class EpmSP2400 extends AbstractScale  {
 					}  
 
 					buffer = bufferTmp;
-					parseString( new String(buffer) );					
+					
+				    parseString( new String(buffer) );
+				    
 				}
 			}
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
 		finally {
+			if (!reading) {
+				event = null;
+			}
 //			reading = false;
 		}
 	}
