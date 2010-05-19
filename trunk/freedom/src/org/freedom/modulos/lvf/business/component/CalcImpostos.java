@@ -23,7 +23,7 @@ public class CalcImpostos {
 	
 	public static final String TIPO_ST_ICMS_SUBSTITUTO = "SU";
 	
-	public static final String TIPO_RED_ICMS_BASE = "B";
+	public static final String TIPO_RED_ICMS_BASE = "B"; 
 	
 	public static final String TIPO_RED_ICMS_VALOR = "V";
 	
