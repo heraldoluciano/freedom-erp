@@ -399,8 +399,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private BigDecimal fatluc = new BigDecimal (1);
 	
-	BigDecimal cem = new BigDecimal(100);
-
+	private BigDecimal cem = new BigDecimal(100);
+	
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
 		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, 
@@ -1177,7 +1177,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 
 	private void calcTot() {
-		txtVlrLiqItOrc.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItOrc.getVlrBigDecimal(), txtVlrDescItOrc.getVlrBigDecimal() ) );
+		txtVlrLiqItOrc.setVlrBigDecimal( impostos.calcVlrTotalProd( txtVlrProdItOrc.getVlrBigDecimal(), txtVlrDescItOrc.getVlrBigDecimal() ) );
 	}
 
 	private void calcVlrProd() {
