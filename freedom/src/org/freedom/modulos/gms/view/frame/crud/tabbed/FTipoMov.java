@@ -449,7 +449,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	public void valorAlterado( JComboBoxEvent evt ) {
 		
 		if ( evt.getComboBoxPad() == cbTipoMov ) {
-			if("CP".equals(cbTipoMov.getVlrString()) || "PC".equals(cbTipoMov.getVlrString())) {
+			if( TipoMov.TM_COMPRA.getValue().equals(cbTipoMov.getVlrString()) ||
+			    TipoMov.TM_PEDIDO_COMPRA.getValue().equals( cbTipoMov.getVlrString()) ||
+			    TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( cbTipoMov.getVlrString())	) {
+				
 				cbEmitNFCPMov.setEnabled( true );
 			}
 			else {
