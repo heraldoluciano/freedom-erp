@@ -16,8 +16,9 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.business.object"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.business.component"/>
     </selectedElements>
 </jardesc>
