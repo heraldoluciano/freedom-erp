@@ -2002,15 +2002,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				// É o último se o custo/serie e lote não estiver habilitado.
 				if ( !habilitaCusto  && ("N".equals(txtSerieProd.getVlrString()) || txtQtdItCompra.getVlrBigDecimal().floatValue()>1 ) && "N".equals(txtCLoteProd.getVlrString()) ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-						lcDet.post();
-						lcDet.limpaCampos( true );
-						lcDet.setState( ListaCampos.LCS_NONE );
-						if ( comref ) {
-							txtRefProd.requestFocus();
-						}
-						else {
-							txtCodProd.requestFocus();
-						}
+						postaNovoItem();
 					}
 					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 						lcDet.post();
@@ -2046,15 +2038,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				// É o último se estiver habilitado.
 				if ( txtNumSerie.isEditable() ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-						lcDet.post();
-						lcDet.limpaCampos( true );
-						lcDet.setState( ListaCampos.LCS_NONE );
-						if ( comref ) {
-							txtRefProd.requestFocus();
-						}
-						else {
-							txtCodProd.requestFocus();
-						}
+						postaNovoItem();
 					}
 					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 						lcDet.post();
@@ -2064,17 +2048,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			else if ( kevt.getSource() == txtCustoItCompra ) {
 				// É o último se estiver habilitado.
-				if ( habilitaCusto ) {
+				if ( habilitaCusto && !ehImportacao() ) {
 					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-						lcDet.post();
-						lcDet.limpaCampos( true );
-						lcDet.setState( ListaCampos.LCS_NONE );
-						if ( comref ) {
-							txtRefProd.requestFocus();
-						}
-						else {
-							txtCodProd.requestFocus();
-						}
+						postaNovoItem();
 					}
 					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 						lcDet.post();
@@ -2092,6 +2068,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					calcIpi( false );
 				}
 			}
+			else if(kevt.getSource() == txtDescDI && ehImportacao() ) {
+				postaNovoItem();
+			}
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F4 ) {
 			btFechaCompra.doClick();
@@ -2101,6 +2080,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 
 		super.keyPressed( kevt );
+	}
+	
+	private void postaNovoItem() {
+		lcDet.post();
+		lcDet.limpaCampos( true );
+		lcDet.setState( ListaCampos.LCS_NONE );
+		if ( comref ) {
+			txtRefProd.requestFocus();
+		}
+		else {
+			txtCodProd.requestFocus();
+		}
+
+	}
+	
+	private boolean ehImportacao() {
+		return TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString());
 	}
 
 	public void keyReleased( KeyEvent kevt ) {
@@ -2139,7 +2135,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
 			if ( "S".equals( txtCLoteProd.getVlrString() ) || "S".equals( txtSerieProd.getVlrString() ) || 
-					TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() )	) {
+					ehImportacao() ) {
 				
 				redimensionaDet( 140 );
 				
@@ -2781,7 +2777,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		try {
 			
 			impostos.setCodprod( txtCodProd.getVlrInteger() );
-			impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
+			impostos.setTipotransacao( CalcImpostos.TRANSACAO_ENTRADA );
 			impostos.setCoddestinatario( txtCodFor.getVlrInteger() );
 			impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
 			
