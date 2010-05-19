@@ -19,6 +19,7 @@ public class TipoMov implements java.io.Serializable {
 	public static final Constant TM_TRANSFERENCIA_ENTRADA = new Constant("Transferência", "TR");
 	public static final Constant TM_CONHECIMENTO_FRETE_COMPRA = new Constant("Conhecimento de frete", "CF");
 	public static final Constant TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA = new Constant("Nota fiscal complementar", "CO");
+	public static final Constant TM_NOTA_FISCAL_IMPORTACAO = new Constant("Nota fiscal de importação", "DI");
 	
 	//Tipo de movimento de saída
 	
@@ -63,7 +64,8 @@ public class TipoMov implements java.io.Serializable {
 			ret.add( TM_DEVOLUCAO_VENDA.getName() );
 			ret.add( TM_DEVOLUCAO_REMESSA.getName() );
 			ret.add( TM_CONHECIMENTO_FRETE_COMPRA.getName() );
-			ret.add( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getName() );			
+			ret.add( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getName() );
+			ret.add( TM_NOTA_FISCAL_IMPORTACAO.getName() );		
 		
 		}
 		else if ( SAIDA.getValue().equals( tipo ) ) {
@@ -109,6 +111,7 @@ public class TipoMov implements java.io.Serializable {
 			ret.add( TM_DEVOLUCAO_REMESSA.getValue() );
 			ret.add( TM_CONHECIMENTO_FRETE_COMPRA.getValue() );
 			ret.add( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getValue() );
+			ret.add( TM_NOTA_FISCAL_IMPORTACAO.getValue() );
 
 		}
 		else if ( SAIDA.getValue().equals( tipo ) ) {
