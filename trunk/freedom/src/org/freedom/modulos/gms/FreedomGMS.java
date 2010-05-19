@@ -291,11 +291,11 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao(-1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false,null);
 		
 		addOpcao(-1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
-			addOpcao(700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000,1, true, FControleServicos.class);
-			addOpcao(700000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000,1, true, FOrdemServico.class);
-			addSeparador(700000000);
-			addOpcao(700000000, TP_OPCAO_ITEM, "Tipo de atendente", "Tipo de atendente", 'T', 600300000,1, true, FTipoAtend.class);
-			addOpcao(700000000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'd', 600400000,1, true, FAtendente.class);
+			addOpcao(700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 700100000,1, true, FControleServicos.class);
+			addOpcao(700000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 700200000,1, true, FOrdemServico.class);
+			addSeparador(700000000); 
+			addOpcao(700000000, TP_OPCAO_ITEM, "Tipo de atendente", "Tipo de atendente", 'T', 700300000,1, true, FTipoAtend.class);
+			addOpcao(700000000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'd', 700400000,1, true, FAtendente.class);
 		
 				addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
@@ -318,8 +318,8 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
 				addBotao("btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FControleRecMerc.class);
 
-				addBotao("btServico.png", "Ordem de Serviço", "Ordem de Serviço", 600200000, FOrdemServico.class );
-				addBotao("btPainelServico.png", "Painel de Controle de Serviços", "Painel de Controle de Serviços", 600100000, FControleServicos.class);
+				addBotao("btServico.png", "Ordem de Serviço", "Ordem de Serviço", 700200000, FOrdemServico.class );
+				addBotao("btPainelServico.png", "Painel de Controle de Serviços", "Painel de Controle de Serviços", 700100000, FControleServicos.class);
 		
 				
 		
