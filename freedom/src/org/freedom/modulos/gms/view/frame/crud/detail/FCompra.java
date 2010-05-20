@@ -951,7 +951,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		// Visíveis apenas na importação
 				
 		lbNAdicao = adicCampo( txtNAdicao, 550, 100, 50, 20, "nadicao", "N.Adição", ListaCampos.DB_SI, false );
-		lbSeqAdic = adicCampo( txtSeqAdic, 603, 100, 70, 20, "seqadic", "Seq.Adicão", ListaCampos.DB_SI, false );
+		lbSeqAdic = adicCampo( txtSeqAdic, 603, 100, 70, 20, "seqadic", "Seq.Adição", ListaCampos.DB_SI, false );
 		lbDescDI = adicCampo( txtDescDI, 676, 100, 70, 20, "descdi", "Vlr.Desc.DI", ListaCampos.DB_SI, false );
 		
 		lbNAdicao.setVisible( false );
