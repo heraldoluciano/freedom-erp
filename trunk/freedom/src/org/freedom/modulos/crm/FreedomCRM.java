@@ -65,6 +65,8 @@ import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.crm.view.frame.utility.FEnviaMail;
 import org.freedom.modulos.crm.view.frame.utility.FGerencCampanhas;
 import org.freedom.modulos.crm.view.frame.utility.FImportaCto;
+import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
+import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
@@ -202,7 +204,11 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 500100000, 1, true, FContrato.class );
 		addOpcao(500000000, TP_OPCAO_MENU, "Listagens", "", 'L',	500200000, 1, false,null);
 		addOpcao(500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u',	500201000, 2, true, FRCustoProj.class);
-
+		
+		addOpcao(-1, TP_OPCAO_MENU, "Serviços", "", 'S', 600000000, 0, false, null );
+		addOpcao(700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000,1, true, FControleServicos.class);
+		addOpcao(700000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000,1, true, FOrdemServico.class);
+		
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100104000, FCliente.class );		
 		addBotao( "btAtendimentos.gif", "Atendimentos", "Atendimentos", 300100000,FAtendimento.class);
 		addBotao( "btChamado.png", "Chamados", "Chamados", 300200000,FChamado.class);
