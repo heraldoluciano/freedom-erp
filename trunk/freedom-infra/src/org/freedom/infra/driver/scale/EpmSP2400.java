@@ -1,6 +1,5 @@
 package org.freedom.infra.driver.scale;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -12,9 +11,6 @@ import javax.comm.SerialPortEvent;
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.comm.Serial;
 import org.freedom.infra.functions.ConversionFunctions;
-import org.freedom.infra.functions.StringFunctions;
-
-import com.sun.comm.LinuxSerial;
 
 public class EpmSP2400 extends AbstractScale  {
 
