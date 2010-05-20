@@ -1950,34 +1950,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( txtCodNat.getAtivo() ) {
 			txtUltCamp = txtCodNat;
-		}
-		else if ( txtPercComItVenda.getAtivo() ) {
-			txtUltCamp = txtPercComItVenda;
-		}
-		else {
-			txtUltCamp = txtVlrComisItVenda;
-		}
-		if ( txtVlrIPIItVenda.getAtivo() ) {
-			txtUltCamp = txtVlrIPIItVenda;
-		}
-		else if ( txtPercIPIItVenda.getAtivo() ) {
-			txtUltCamp = txtPercIPIItVenda;
-		}
-		else if ( txtVlrICMSItVenda.getAtivo() ) {
-			txtUltCamp = txtVlrICMSItVenda;
-		}
-		else if ( txtPercICMSItVenda.getAtivo() ) {
-			txtUltCamp = txtPercICMSItVenda;
-		}
-		else if ( txtCodNat.getAtivo() ) {
-			txtUltCamp = txtCodNat;
-		}
-		else if ( txtCodNat.getAtivo() ) {
-			txtUltCamp = txtCodNat;
-		}
-		else if ( txtPercComItVenda.getAtivo() ) {
-			txtUltCamp = txtPercComItVenda;
-		}
+		}		
 		else if ( txtVlrIPIItVenda.getAtivo() ) {
 			txtUltCamp = txtVlrIPIItVenda;
 		}
@@ -1992,6 +1965,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( txtCodNat.getAtivo() ) {
 			txtUltCamp = txtCodNat;
+		}
+		else if ( txtCodNat.getAtivo() ) {
+			txtUltCamp = txtCodNat;
+		}
+		else if ( txtVlrIPIItVenda.getAtivo() ) {
+			txtUltCamp = txtVlrIPIItVenda;
+		}
+		else if ( txtPercIPIItVenda.getAtivo() ) {
+			txtUltCamp = txtPercIPIItVenda;
+		}
+		else if ( txtVlrICMSItVenda.getAtivo() ) {
+			txtUltCamp = txtVlrICMSItVenda;
+		}
+		else if ( txtPercICMSItVenda.getAtivo() ) {
+			txtUltCamp = txtPercICMSItVenda;
 		}
 		else if ( txtCodNat.getAtivo() ) {
 			txtUltCamp = txtCodNat;
@@ -3147,8 +3135,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				pass.dispose();
 			}
 			// Regra para verificação de numero de série quando a quantidade é única
-			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItVenda.getVlrBigDecimal().floatValue()==1  ) {
-				if ( !testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), true) ) {
+			if ( txtSerieProd.getVlrString().equals( "S" ) ) {
+				if ( !testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable()) ) {
 					pevt.cancela();
 				}
 			}
