@@ -14,6 +14,8 @@ import org.freedom.infra.comm.Serial;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 
+import com.sun.comm.LinuxSerial;
+
 public class EpmSP2400 extends AbstractScale  {
 
 	private BigDecimal weight = null;
@@ -24,7 +26,11 @@ public class EpmSP2400 extends AbstractScale  {
 
 	public static final String NOME_BAL = "Rodoviária EPM SP-2400";
 
-	private boolean reading = true; // Indica se ainda está lendo o buffer.
+	private volatile boolean reading = true; // Indica se ainda está lendo o buffer.
+
+	private volatile boolean available = false;
+	
+//	private volatile boolean validstring = false;
 
 	public void initialize( Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity ) {
 
@@ -42,8 +48,6 @@ public class EpmSP2400 extends AbstractScale  {
 
 		readReturn();
 
-
-
 	}
 
 	public String getName() {
@@ -60,62 +64,107 @@ public class EpmSP2400 extends AbstractScale  {
 		}
 	}
 
-	protected void readReturn() {
+	protected synchronized void readReturn() {
+
+		byte[] result = null;
+		byte[] bufferTmp = null;
+		byte[] tmp = null;
+
+		InputStream input = CtrlPort.getInstance().getInput();
+
 
 		try {
 
-
-			//			SerialPort  porta = Serial.getInstance().getSerialPort();
-			//			porta.addEventListener(this);
-
-			//			porta.removeEventListener();
-
-			//			porta.notifyOnDataAvailable( true );
-
-
-
-			//			porta.addEventListener( this );
-
-
-			//			SerialPort  porta = Serial.getInstance().getSerialPort();
-
-			//			if(porta !=null) {
-			//				porta.removeEventListener();
-			//				porta.addEventListener(this);
-			//			}
+			available = false;
 
 			while (reading) {
-				
+
 				Thread.sleep( 250 );
-				
-				
+				//Thread.currentThread().join(100);
+
+				if (available) { 
+
+					/*Thread[] threads = new Thread[10];
+					int count = Thread.enumerate(threads);
+					for (Thread thread: threads) {
+						if (thread!=null && thread.getClass().getName().indexOf("Serial")>-1) {
+							System.out.println(thread.getClass().getName());
+							System.out.println(thread.getClass().getCanonicalName());
+							thread.join(1000);
+							
+						}
+					}*/
+					
+					System.out.println("Tamanho buffer:"+input.available());
+
+					while (input.available()<56) {
+						Thread.sleep(100);
+						System.out.println("Tamanho buffer:"+input.available());
+					}
+					
+					
+					result = new byte[ input.available() ];
+					//				result = new byte[ 256 ];
+
+					int nodeBytes = 0;
+
+					if ( result != null ) { 
+
+						while ( input.available() > 0 ) {
+
+							nodeBytes = input.read( result );	
+
+						}
+
+						System.out.println("tamanho da cadeia de leitura:" + nodeBytes);
+
+						if ( buffer == null ) {
+							bufferTmp = result;
+						} 
+						else {
+							isRead = true;
+							tmp = buffer;
+							bufferTmp = new byte[ tmp.length + result.length ];
+
+							for ( int i = 0; i < bufferTmp.length; i++ ) {
+								if ( i < tmp.length ) {
+									bufferTmp[ i ] = tmp[ i ];
+								} else {
+									bufferTmp[ i ] = result[ i - tmp.length ];
+								}
+							}
+						}  
+
+						buffer = bufferTmp;
+
+						parseString( new String(buffer) );
+
+					}
+
+				}
+
 			}
-			
-			stopRead();
-
-
-			/*			if(buffer!=null) {
-
-				String reading = new String( buffer );			
-
-				System.out.println(reading);
-
-				parseString(reading);				
-
-			}
-			else {
-				System.out.println("Buffer is null!");
-			}*/			
-
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		finally {
+//			Thread[] threads = new Thread[10];
+//			int count = Thread.enumerate(threads);
+//			for (Thread thread: threads) {
+//				if (thread!=null && thread.getClass().getName().indexOf("Serial")>-1) {
+//					System.out.println(thread.getClass().getName());
+//					System.out.println(thread.getClass().getCanonicalName());
+//					thread.suspend();
+//					
+//				}
+//			}
+			//stopRead();
 			CtrlPort.getInstance().disablePort();
 		}
 
 	}
+
 
 	public void setDate(Date date) {
 
@@ -202,9 +251,10 @@ public class EpmSP2400 extends AbstractScale  {
 							System.out.println("Setou a hora:" + getTime());					
 
 							// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
-							
 
 							reading = false; // Parar a leitura se leitura estiver OK
+							
+							//Thread.currentThread().interrupt();
 							
 						}
 						else {				
@@ -226,64 +276,10 @@ public class EpmSP2400 extends AbstractScale  {
 
 	public void serialEvent( SerialPortEvent event ) {
 
-		byte[] result = null;
-		byte[] bufferTmp = null;
-		byte[] tmp = null;
 
-		InputStream input = null;
-		
-		input = CtrlPort.getInstance().getInput();
+		if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
+			available = true;
 
-		try {
-
-			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
-
-				result = new byte[ input.available() ];
-				//				result = new byte[ 256 ];
-
-				int nodeBytes = 0;
-
-				if ( result != null ) { 
-
-					while ( input.available() > 0 ) {
-
-						nodeBytes = input.read( result );	
-
-					}
-
-					System.out.println("tamanho da cadeia de leitura:" + nodeBytes);
-
-					if ( buffer == null ) {
-						bufferTmp = result;
-					} 
-					else {
-						isRead = true;
-						tmp = buffer;
-						bufferTmp = new byte[ tmp.length + result.length ];
-
-						for ( int i = 0; i < bufferTmp.length; i++ ) {
-							if ( i < tmp.length ) {
-								bufferTmp[ i ] = tmp[ i ];
-							} else {
-								bufferTmp[ i ] = result[ i - tmp.length ];
-							}
-						}
-					}  
-
-					buffer = bufferTmp;
-					
-				    parseString( new String(buffer) );
-				    
-				}
-			}
-		} catch ( IOException e ) {
-			e.printStackTrace();
-		}
-		finally {
-			if (!reading) {
-				event = null;
-			}
-//			reading = false;
 		}
 	}
 
