@@ -206,8 +206,8 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u',	500201000, 2, true, FRCustoProj.class);
 		
 		addOpcao(-1, TP_OPCAO_MENU, "Serviços", "", 'S', 600000000, 0, false, null );
-		addOpcao(700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000,1, true, FControleServicos.class);
-		addOpcao(700000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000,1, true, FOrdemServico.class);
+		addOpcao(600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000,1, true, FControleServicos.class);
+		addOpcao(600000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000,1, true, FOrdemServico.class);
 		
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100104000, FCliente.class );		
 		addBotao( "btAtendimentos.gif", "Atendimentos", "Atendimentos", 300100000,FAtendimento.class);
