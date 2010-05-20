@@ -12,12 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -46,8 +43,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
-import org.freedom.modulos.fnc.business.component.ValidadeOrdemServico;
-import org.freedom.modulos.gms.DLBuscaSerie;
+import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
@@ -420,7 +416,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicDescFK( txtDescProd, 113, 20, 230, 20, "DescProd", "Descrição do Produto" );
 		adicCampo( txtQtdItOS, 346, 20, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
-		txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
+//		txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
 		lbNumSerie = adicCampo( txtNumSerie, 7, 60, 103, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 113, 60, 80, 20, "DtFabricSerie", "Fabricação" );
@@ -582,8 +578,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcCampos.addCarregaListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
+		lcDet.addInsertListener( this );
 		lcCli.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
+		lcNumSerie.addCarregaListener( this );
 
 		lcProd.addCarregaListener( this );
 		lcProd2.addCarregaListener( this );
@@ -685,7 +683,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcNumSerie.add( new GuardaCampo( txtDtFabricSerie, "dtfabricserie", "Fabricação", ListaCampos.DB_SI, false ) );
 		lcNumSerie.add( new GuardaCampo( txtDtValidSerie, "dtvalidserie", "Validade", ListaCampos.DB_SI, false ) );
 
-		// lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
+		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
+		
 		lcNumSerie.setAutoLimpaPK( false );
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
 		lcNumSerie.setQueryCommit( false );
@@ -884,7 +883,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		if ( ( e.getSource() == txtQtdItOS ) ) {
 			habilitaSerie();
 		}
-
+		
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
@@ -897,6 +896,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 		}
 		else if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
+			
 			if ( "S".equals( txtSerieProd.getVlrString() ) ) {
 
 				lbNumSerie.setVisible( true );
@@ -910,7 +910,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 				habilitaSerie();
 
-			}
+			}				
 			else {
 
 				lbNumSerie.setVisible( false );
@@ -926,6 +926,9 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
 			// lcItRecMercItOS.carregaItens();
+		}
+		else if( cevt.getListaCampos() == lcNumSerie && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+			verificaGarantia();				
 		}
 
 	}
@@ -1036,14 +1039,12 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	public void beforePost( PostEvent pevt ) {
 
-		ValidadeOrdemServico validade = new ValidadeOrdemServico();
+//		ValidadeOrdemServico validade = new ValidadeOrdemServico();
 
-		if ( validade.retornaValidade( txtDtFabricSerie.getVlrDate(), txtDtValidSerie.getVlrDate(), true, lcNumSerie.getStatus() != ListaCampos.LCS_EDIT ) == true && lbDtFabricSerie != null ) {
+//		if ( validade.retornaValidade( txtDtFabricSerie.getVlrDate(), txtDtValidSerie.getVlrDate(), true, lcNumSerie.getStatus() != ListaCampos.LCS_EDIT ) == true && lbDtFabricSerie != null ) {
 
-			cbGarantia.setVlrString( "S" );
-		}
-
-		super.beforePost( pevt );
+//			cbGarantia.setVlrString( "S" );
+//		}
 
 		if ( pevt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
@@ -1065,13 +1066,15 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 					pevt.cancela();
 				}
 			}
-
-		}
+			
+		} 
 	}
 
+	private void verificaGarantia() {
+		cbGarantia.setVlrString( NumSerie.isGarantia( txtDtEnt.getVlrDate(), txtDtValidSerie.getVlrDate()) ? "S" : "N" );
+	}
+	
 	public void afterPost( PostEvent pevt ) {
-
-		super.beforePost( pevt );
 
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( novo ) {
@@ -1116,53 +1119,34 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 				}
-				/*
-				 * else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) { lcCampos.post(); txtCodItRecMerc.requestFocus(); }
-				 */
 			}
-
-			if ( ( kevt.getSource() == txtQtdItOS || kevt.getSource() == txtNumSerie ) && ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
-
-				if ( "S".equals( txtSerieProd.getVlrString() ) && kevt.getSource() == txtNumSerie ) {
-
-					lcDet.post();
-
-					lcDet.limpaCampos( true );
-
-					lcDet.setState( ListaCampos.LCS_NONE );
-
-					if ( comRef() ) {
-						txtRefProd.requestFocus();
-					}
-					else {
-						txtCodProd.requestFocus();
-					}
-
-				}
-				else if ( !"S".equals( txtSerieProd.getVlrString() ) && kevt.getSource() == txtQtdItOS ) {
-
-					lcDet.post();
-
-					lcDet.limpaCampos( true );
-
-					lcDet.setState( ListaCampos.LCS_NONE );
-
-					if ( comRef() ) {
-						txtRefProd.requestFocus();
-					}
-					else {
-						txtCodProd.requestFocus();
-					}
-
-				}
+			else if ( kevt.getSource() == txtQtdItOS && "N".equals( txtSerieProd.getVlrString() ) || ( kevt.getSource() == txtNumSerie && txtQtdItOS.getVlrBigDecimal().floatValue()==1  ) ) {		
+				
+				postaItOS();
+				
 			}
 
 		}
 
-		// super.keyPressed( kevt );
-
 	}
 
+	private void postaItOS() {
+
+		lcDet.post();
+
+		lcDet.limpaCampos( true );
+
+		lcDet.setState( ListaCampos.LCS_NONE );
+
+		if ( comRef() ) {
+			txtRefProd.requestFocus();
+		}
+		else {
+			txtCodProd.requestFocus();
+		}
+
+	}
+	
 	private void buscaAtendente() {
 
 		PreparedStatement ps = null;
