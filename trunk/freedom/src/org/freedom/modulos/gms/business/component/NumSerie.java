@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.freedom.library.functions.Funcoes;
@@ -149,6 +150,21 @@ public class NumSerie {
 		}
 		
 		dl.dispose();
+	}
+	
+	public static boolean isGarantia( Date validade, Date entrada ) {
+
+		if ( validade != null && entrada != null ) {
+
+			if ( Funcoes.getNumDias( validade, entrada ) >= 0 ) {
+
+				return true;
+			}
+
+		}
+
+		return false;
+
 	}
 
 
