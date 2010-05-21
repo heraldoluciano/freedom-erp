@@ -39,6 +39,8 @@ public class FNivelCurso extends FDados {
 	public FNivelCurso() {
 
 		super();
+		
+		nav.setNavigation( true );
 		setTitulo( "Cadastro de níveis de cursos" );
 		setAtribos( 50, 50, 380, 135 );
 		

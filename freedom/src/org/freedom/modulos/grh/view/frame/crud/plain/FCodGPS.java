@@ -48,6 +48,8 @@ public class FCodGPS extends FDados implements ActionListener {
 	public FCodGPS() {
 
 		super();
+		
+		nav.setNavigation( true );
 		setTitulo( "Cadastro de Códigos de Pagamento de GPS" );
 		setAtribos( 50, 50, 410, 165 );
 

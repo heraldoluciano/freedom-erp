@@ -58,6 +58,8 @@ public class FArea extends FDados {
 	}
 
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		adicCampo( txtCodArea, 7, 20, 70, 20, "CodArea", "Cód.area", ListaCampos.DB_PK, true );
 		adicCampo( txtDescArea, 80, 20, 250, 20, "DescArea", "Descrição da area", ListaCampos.DB_SI, true );
