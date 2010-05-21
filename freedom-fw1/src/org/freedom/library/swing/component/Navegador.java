@@ -58,6 +58,8 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   public boolean bDet = false;
   boolean navigationOnly = false;
   boolean[] podeVer = new boolean[9];
+  private boolean navigation = false;
+  
   public Navegador (boolean nav) {
     bDet = nav; 
     
@@ -80,6 +82,9 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   }
   
   public void setNavigation(boolean nav) {
+	  
+	  navigation = nav;
+	  
     removeAll();
 
   	if (nav) {
@@ -105,7 +110,8 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
         btAnt.addActionListener(this);
         btProx.addActionListener(this);
         btUlt.addActionListener(this);
-      } else {
+      } 
+  	else {
         setLayout(new GridLayout( 1, 5));
         setPreferredSize(new Dimension(150, 30));
             
@@ -169,6 +175,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     lcNav = lc;    
   }
   public void keyPressed(KeyEvent kevt) {
+
 //    Funcoes.mensagemInforma( null, "keyPressed");
     if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;
     if ((btAnt != null) & (btProx != null) & (Ctrl == false)) {    
@@ -187,11 +194,12 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
       }
     }
   }
+  
   public void visivel(String sVal,boolean bVal) {
     if (navigationOnly)
         return;
     int ind = 0;
-    if (bDet) {
+    if (bDet || navigation) {
       if (sVal.compareTo("NEW") == 0) ind = 4;
       else if (sVal.compareTo("DELETE") == 0) ind = 5;
       else if (sVal.compareTo("EDIT") == 0) ind = 6;
@@ -214,10 +222,12 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
       getComponent(ind).setEnabled(bVal);
     }
   }
+  
   public void setAtivo(int ind, boolean b) {
     podeVer[ind] = b;
     getComponent(ind).setEnabled(b);
   }
+  
   public void keyReleased(KeyEvent kevt) {
 //    Funcoes.mensagemInforma( null, "keyRelease");
     if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = false;
@@ -225,6 +235,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   public void keyTyped(KeyEvent kevt) {
 //    Funcoes.mensagemInforma( null, "keyTyped");
   }
+  
   public void actionPerformed(ActionEvent evt) {
     if (lcNav != null) {
       if (evt.getSource() == btNovo) {
@@ -242,7 +253,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
       else if (evt.getSource() == btCancelar) {
          lcNav.cancel(true);
       }
-      if (bDet) {     	
+      if (bDet || navigation) {     	
         if (evt.getSource() == btPrim) {
            lcNav.first();
         }
