@@ -620,8 +620,9 @@ public class FCliente extends FTabDados
 	
 	
 	public FCliente() {
-
+		
 		super();
+		
 		setTitulo( "Cadastro de Clientes" );
 		setAtribos( 50, 20, 545, 650 );
 
@@ -641,6 +642,8 @@ public class FCliente extends FTabDados
 	}
 
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		adicTab( "Cliente", pinCli );
 		
@@ -1498,6 +1501,8 @@ public class FCliente extends FTabDados
 		lcCampos.addCarregaListener( this );
 		tbObsData.addTabelaSelListener( this );		
 		lcMunic.addCarregaListener( this );
+		
+		
 
 	}
 	
@@ -4507,7 +4512,7 @@ public class FCliente extends FTabDados
 		if ( lcSetor != null ) {
 			lcSetor.setConexao( con );
 		}
-	
+		
 	}
 
 }

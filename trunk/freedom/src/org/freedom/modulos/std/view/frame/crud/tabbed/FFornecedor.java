@@ -255,6 +255,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	}
 
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		btFirefox.setToolTipText( "Acessar Site" );
 		
