@@ -103,6 +103,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	public FDados() {
 		this(true);
 	}
+	
 	public FDados(boolean comScroll) {
 		super(comScroll);
 		btImp.setVisible(false);
