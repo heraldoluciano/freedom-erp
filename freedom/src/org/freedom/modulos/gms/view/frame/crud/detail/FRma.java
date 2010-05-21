@@ -310,6 +310,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		setTitulo( "RMA" );
 		setAtribos( 15, 10, 772, 580 );
 		
+		nav.setNavigation( true );
+		
 		lcItContrato.setMaster( lcContrato );
 		
 		pnMaster.remove( 2 );

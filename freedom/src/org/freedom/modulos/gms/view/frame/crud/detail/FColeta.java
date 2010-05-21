@@ -209,6 +209,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	}
 
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		pnMaster.remove( spTab );
 		pnMaster.add( pinDetGrid, BorderLayout.CENTER );
