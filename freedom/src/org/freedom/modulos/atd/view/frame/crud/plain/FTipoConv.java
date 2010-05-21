@@ -53,6 +53,7 @@ public class FTipoConv extends FDados implements ActionListener {
 	public FTipoConv() {
 
 		super();
+		nav.setNavigation( true );
 		setTitulo( "Cadastro de Tipo de Conveniados" );
 		setAtribos( 50, 50, 370, 160 );
 		adicCampo( txtCodTipoConv, 7, 20, 80, 20, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_PK, true );
