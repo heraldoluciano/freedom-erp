@@ -1,0 +1,12 @@
+processo para assinar e verificar o JAR
+---
+keytool -genkey -keystore keystore -alias key
+keytool -selfcert -keystore keystore -alias key
+keytool -list-keystore keystore
+jarsigner -keystore keystore Freedom-1.1.0.2.jar key
+jarsigner -verify Freedom-1.1.0.2.jar
+
+----
+
+senha usada no repositório keystore: setpoint
+senha usada no alias myself: sana8523
