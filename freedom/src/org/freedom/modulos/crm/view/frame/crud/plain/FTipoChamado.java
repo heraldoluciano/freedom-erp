@@ -38,6 +38,8 @@ public class FTipoChamado extends FDados implements ActionListener {
 		
 		super();
 		
+		nav.setNavigation( true );
+		
 		setTitulo("Cadastro de Tipo de Chamados");
 		setAtribos( 50, 50, 380, 145);
 		

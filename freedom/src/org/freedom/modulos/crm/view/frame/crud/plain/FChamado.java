@@ -124,6 +124,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	public FChamado() {
 
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Cadastro de chamados" );
 		setAtribos( 50, 50, 640, 540 );
 		montaListaCampos();
