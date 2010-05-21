@@ -111,6 +111,9 @@ public class FAtendente extends FDados {
 	public FAtendente() {
 
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Cadastro de Atendentes" );
 		setAtribos( 50, 20, 490, 490 );
 

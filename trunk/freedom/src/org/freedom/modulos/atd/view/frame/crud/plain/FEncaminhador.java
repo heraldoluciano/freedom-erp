@@ -47,6 +47,9 @@ public class FEncaminhador extends FDados implements PostListener {
 	
 	public FEncaminhador () {
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo("Cadastro de Encaminhador");
 		setAtribos( 50, 50, 400, 250);
 		
