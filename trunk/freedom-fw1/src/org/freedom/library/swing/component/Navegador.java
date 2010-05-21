@@ -19,15 +19,17 @@
  */
 
 package org.freedom.library.swing.component;
-import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-
-import org.freedom.library.persistence.ListaCampos;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
+import org.freedom.library.persistence.ListaCampos;
 public class Navegador extends JPanel implements ActionListener, KeyListener {
 
   private static final long serialVersionUID = 1L;
@@ -244,7 +246,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
         if (evt.getSource() == btPrim) {
            lcNav.first();
         }
-        else if (evt.getSource() == btAnt) {
+        else if (evt.getSource() == btAnt) {        	
           lcNav.prior();
         }
         else if (evt.getSource() == btProx) {
