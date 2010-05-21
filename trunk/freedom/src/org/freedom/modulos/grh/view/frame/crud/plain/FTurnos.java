@@ -67,6 +67,8 @@ public class FTurnos extends FDados implements ActionListener {
 	public FTurnos() {
 
 		super();
+		
+		nav.setNavigation( true );
 		setTitulo( "Cadastro de Turnos" );
 		setAtribos( 50, 50, 440, 250 );
 

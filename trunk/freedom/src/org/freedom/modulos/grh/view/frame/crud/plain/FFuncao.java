@@ -63,6 +63,8 @@ public class FFuncao extends FDados implements ActionListener {
 	}
 	
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		adicCampo( txtCodFunc, 7, 20, 70, 20, "CodFunc", "Cód.func.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescFunc, 80, 20, 250, 20, "DescFunc", "Descrição da função", ListaCampos.DB_SI, true );

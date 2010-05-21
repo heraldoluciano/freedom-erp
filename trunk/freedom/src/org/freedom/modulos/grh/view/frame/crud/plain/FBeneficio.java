@@ -48,6 +48,8 @@ public class FBeneficio extends FDados implements ActionListener {
 	}
 
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		adicCampo( txtCodBenef, 7, 20, 70, 20, "CodBenef", "Cód.benef.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescBenef, 80, 20, 260, 20, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, true );

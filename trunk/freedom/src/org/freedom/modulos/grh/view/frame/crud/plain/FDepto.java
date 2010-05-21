@@ -62,6 +62,8 @@ public class FDepto extends FDados implements ActionListener {
 	}
 	
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		adicCampo( txtCodDepto, 7, 20, 70, 20, "CodDep", "Cód.dep.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescDepto, 80, 20, 240, 20, "DescDep", "Descrição do departamento", ListaCampos.DB_SI, true );
