@@ -174,6 +174,9 @@ public class FVendedor extends FTabDados implements PostListener {
 	public FVendedor() {
 
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Cadastro de comissionados" );
 		setAtribos( 50, 10, 440, 590 );
 
