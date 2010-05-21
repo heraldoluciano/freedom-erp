@@ -496,6 +496,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
 	
+	private boolean NF_EMITIDA = false; 
+	
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, 
 		NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND,
@@ -1502,11 +1504,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 			
-			impostos.setCodnat( txtCodNat.getVlrString() );
-			impostos.setUftransacao( txtEstCli.getVlrString() );
+			if(!NF_EMITIDA) {
 			
-			impostos.calcAliqFisc( txtAliqFisc.getVlrBigDecimal() );
-			txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
+				impostos.setCodnat( txtCodNat.getVlrString() );
+				impostos.setUftransacao( txtEstCli.getVlrString() );
+			
+				impostos.calcAliqFisc( txtAliqFisc.getVlrBigDecimal() );
+				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
+			}
 			
 		}
 		catch (Exception e) {
@@ -3302,21 +3307,31 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
 				lbStatus.setText( "  CANCELADA" );
+				
+				NF_EMITIDA = true;
+				
 				lbStatus.setBackground( Color.RED );
 				lbStatus.setVisible( true );
 			}
 			else if ( getVendaBloqueada() ) {
 				lbStatus.setText( "  BLOQUEADA" );
+				
+				NF_EMITIDA = true;
+				
 				lbStatus.setBackground( Color.BLUE );
 				lbStatus.setVisible( true );
 			}
 			else if ( txtStatusVenda.getVlrString().trim().length() > 0 && ( txtStatusVenda.getVlrString().trim().equals( "V2" ) || txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
 				lbStatus.setText( "  NF EMITIDA" );
+				
+				NF_EMITIDA = true;
+				
 				lbStatus.setBackground( new Color( 45, 190, 60 ) );
 				lbStatus.setVisible( true );
 			}
 			else {
 				lbStatus.setVisible( false );
+				NF_EMITIDA = false;
 			}
 
 
@@ -3515,46 +3530,47 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void calcImpostos(boolean buscabase) {
-		
-		setCalcImpostos( buscabase );
-		getCalcImpostos();
+		if(!NF_EMITIDA) {
+			setCalcImpostos( buscabase );
+			getCalcImpostos();
+		}
 		
 	}
 	
 	private void getTratTrib() {
 
 		try {
-			
-			impostos.setCodprod( txtCodProd.getVlrInteger() );
-			impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
-			impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
-			impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
-			
-			impostos.calcTratTrib();
-			
-			txtOrigFisc.setVlrString( impostos.getOrigfisc() );
-			txtCodTratTrib.setVlrString( impostos.getCodtrattrib() );
-			txtRedFisc.setVlrBigDecimal( impostos.getRedfisc() );
-			txtTipoFisc.setVlrString( impostos.getTipofisc() );
-			txtTipoST.setVlrString( impostos.getTipost() );
-			txtCodMens.setVlrInteger( impostos.getCodmens() );
-			txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
-			txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
-			txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
-			txtMargemVlAgr.setVlrBigDecimal( impostos.getMargemvlragr() );
-
-			// Carregando campos para gravação do item de classificação selecionado
-
-			if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
-				txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
-				txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
-				txtCodFiscIf.setVlrString( impostos.getCodfisc() );
-				txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
-			}						
-			
-		}
+			if(!NF_EMITIDA) {	
+				impostos.setCodprod( txtCodProd.getVlrInteger() );
+				impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
+				impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
+				impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
+				
+				impostos.calcTratTrib();
+				
+				txtOrigFisc.setVlrString( impostos.getOrigfisc() );
+				txtCodTratTrib.setVlrString( impostos.getCodtrattrib() );
+				txtRedFisc.setVlrBigDecimal( impostos.getRedfisc() );
+				txtTipoFisc.setVlrString( impostos.getTipofisc() );
+				txtTipoST.setVlrString( impostos.getTipost() );
+				txtCodMens.setVlrInteger( impostos.getCodmens() );
+				txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
+				txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
+				txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
+				txtMargemVlAgr.setVlrBigDecimal( impostos.getMargemvlragr() );
+	
+				// Carregando campos para gravação do item de classificação selecionado
+	
+				if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
+					txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
+					txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
+					txtCodFiscIf.setVlrString( impostos.getCodfisc() );
+					txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
+				}
+			}
+		}		
 		catch (Exception e) {
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 		
 	}
@@ -3579,20 +3595,23 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private void getCalcImpostos( ) {
 
-		try {
+		try { 
+			
+			if(!NF_EMITIDA) {
 		
-			txtVlrBaseICMSItVendaBrut.setVlrBigDecimal( impostos.getVlrbaseicmsitbrut() );
-			txtVlrBaseICMSItVenda.setVlrBigDecimal( impostos.getVlrbaseicmsit() );
-			txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
-			txtVlrICMSItVenda.setVlrBigDecimal( impostos.getVlricmsit() );
+				txtVlrBaseICMSItVendaBrut.setVlrBigDecimal( impostos.getVlrbaseicmsitbrut() );
+				txtVlrBaseICMSItVenda.setVlrBigDecimal( impostos.getVlrbaseicmsit() );
+				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
+				txtVlrICMSItVenda.setVlrBigDecimal( impostos.getVlricmsit() );
 
-			txtBaseIPIItVenda.setVlrBigDecimal( impostos.getVlrbaseipiit() );
-			txtPercIPIItVenda.setVlrBigDecimal( impostos.getAliqipifisc() );
-			txtVlrIPIItVenda.setVlrBigDecimal( impostos.getVlripiit() );
+				txtBaseIPIItVenda.setVlrBigDecimal( impostos.getVlrbaseipiit() );
+				txtPercIPIItVenda.setVlrBigDecimal( impostos.getAliqipifisc() );
+				txtVlrIPIItVenda.setVlrBigDecimal( impostos.getVlripiit() );
 		
-			txtVlrLiqItVenda.setVlrBigDecimal( impostos.getVlrliqit() );
+				txtVlrLiqItVenda.setVlrBigDecimal( impostos.getVlrliqit() );
 		
-			defineUltimoCampo();
+				defineUltimoCampo();
+			}
 			
 		}
 		catch (Exception e) {
@@ -3611,7 +3630,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else {
 				calcDescIt();
 				calcVlrProd();
+
 				calcImpostos( true );
+				
 				txtVlrDescItVenda.setAtivo( false );
 			}
 		}

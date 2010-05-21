@@ -935,7 +935,7 @@ public abstract class FVD extends FDetalhe {
 
 		try {
 
-			numserie = new NumSerie( this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico );
+			numserie = new NumSerie(this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico);
 
 			ret = numserie.testaNumSerie();
 
