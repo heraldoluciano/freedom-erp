@@ -187,6 +187,9 @@ public class FConveniado extends FTabDados implements PostListener {
 	public FConveniado() {
 
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Cadastro de Conveniados" );
 		setAtribos( 50, 10, 530, 450 );
 
