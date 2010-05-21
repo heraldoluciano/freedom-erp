@@ -284,6 +284,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	public FOrdemServico() {
 
 		super();
+		
+		nav.setNavigation( true );
 
 		setTitulo( "Ordem de Serviço" );
 		this.setTitle( "teste" );

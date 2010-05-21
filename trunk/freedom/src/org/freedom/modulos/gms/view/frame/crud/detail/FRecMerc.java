@@ -220,6 +220,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		setTitulo( "Recepção de mercadorias" );
 		setAtribos( 50, 50, 653, 480 );
 
+		nav.setNavigation( true );
+		
 		configuraCampos();
 		carregaPlugin();
 		criaTabelas();
@@ -237,7 +239,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	public FRecMerc( boolean novo ) {
 
 		super();
-
+		
 		this.novo = novo;
 
 		montaTela();

@@ -150,9 +150,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
     String sSitItExp;
 
 	public FSolicitacaoCompra() {
+		
 		setTitulo("Solicitação de Compra");
 		setAtribos(15, 10, 763, 580);
 
+		nav.setNavigation( true );
+		
 		pnMaster.remove(2);
 		pnGImp.removeAll();
 		pnGImp.setLayout(new GridLayout(1, 3));

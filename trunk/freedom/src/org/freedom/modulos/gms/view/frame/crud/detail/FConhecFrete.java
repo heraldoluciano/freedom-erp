@@ -201,6 +201,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	
 
 	public FConhecFrete() {
+		
+		nav.setNavigation( true );
 
 		setTitulo( "Conhecimento de frete" );
 		setAltCab( 350 );
