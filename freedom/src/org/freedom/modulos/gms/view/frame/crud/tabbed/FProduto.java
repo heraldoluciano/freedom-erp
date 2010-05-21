@@ -550,6 +550,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	public FProduto() {
 
 		super();
+		
+		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Produtos" );
 		setAtribos( 30, 10, 685, 650 );
