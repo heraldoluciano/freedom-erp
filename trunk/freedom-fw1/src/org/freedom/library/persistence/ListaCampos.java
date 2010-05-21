@@ -118,6 +118,15 @@ public class ListaCampos extends Container implements PostListener,
 	/**
 	 * Constante de erro do interbase quando a integridade é quebrada.
 	 */
+	
+	public static final int PRIMEIRO_REGISTRO = 0;
+	
+	public static final int ULTIMO_REGISTRO = 9;
+	
+	public static final int PROXIMO_REGISTRO = 1;
+	
+	public static final int ANTERIOR_REGISTRO = -1;
+	
 	public static int FB_FK_INVALIDA = 335544466;
 
 	private int lcState = LCS_NONE;
@@ -131,7 +140,7 @@ public class ListaCampos extends Container implements PostListener,
 	private PreparedStatement sqlLC = null;
 
 	private PreparedStatement sqlItens = null;
-
+	
 	private ResultSet rsMax = null;
 
 	private ResultSet rsLC = null;
@@ -1648,7 +1657,7 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	public void first() {
-		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
+		if ((bDetalhe) && (tab != null) && (tab.getNumLinhas() > 0)) {
 			tab.setLinhaSel(0);
 			try {
 				carregaItem(0);
@@ -1657,11 +1666,87 @@ public class ListaCampos extends Container implements PostListener,
 				new ExceptionCarregaDados("Erro ao carregar primeiro item");
 			}
 		}
+		// Metodo utilizado para carregar o ultimo registro sem utilização de ponteiro.
+		else if(!bDetalhe) {
+			
+			carregaRegistro(PRIMEIRO_REGISTRO);
+			
+		}
+		
 	}
 
+	private void carregaRegistro( int registro ) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		GuardaCampo campopk = null;
+		
+		try {
+
+			campopk = getCamposPK().elementAt(0);
+			
+			if( ANTERIOR_REGISTRO == registro || ULTIMO_REGISTRO == registro) {
+			
+				sql.append("select max(");
+				
+			}
+			else if( PROXIMO_REGISTRO == registro || PRIMEIRO_REGISTRO == registro ) {
+				
+				sql.append("select min(");
+				
+			}
+			
+			sql.append(campopk.getNomeCampo());			
+			sql.append(") from ");			
+			sql.append(getNomeTabela());			
+			sql.append(" where codemp=? and codfilial=? ");
+						
+			if( ANTERIOR_REGISTRO == registro) {			
+				sql.append( " and " ); 
+				sql.append(campopk.getNomeCampo());				
+				sql.append(" < ? ");				
+			}
+			else if( PROXIMO_REGISTRO == registro ) {
+				sql.append( " and " );				
+				sql.append(campopk.getNomeCampo());				
+				sql.append(" > ? ");				
+			}
+			
+			ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt( 1, getCodEmp());
+			ps.setInt( 2, getCodFilial());
+			
+			if( ANTERIOR_REGISTRO == registro || PROXIMO_REGISTRO == registro ){			
+				ps.setInt( 3, getVlrIntegerPK());
+			}
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				int reg = rs.getInt(1);
+				
+				if(reg>0) {				
+					setVlrIntegerPK(reg);
+					carregaDados();
+				}
+				else {
+					System.out.println("Não existe o registro solicitado!");					
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void prior() {
+		
 		int iLin = 0;
-		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
+		
+		if ((bDetalhe) && (tab != null) && (tab.getNumLinhas() > 0)) {
 			iLin = getNumLinha();
 			if (iLin > 0) {
 				tab.setLinhaSel(iLin - 1);
@@ -1673,8 +1758,44 @@ public class ListaCampos extends Container implements PostListener,
 				}
 			}
 		}
+		// Metodo utilizado para carregar o registro anterior sem utilização de ponteiro.
+		else if(!bDetalhe) {
+			
+			carregaRegistro(ANTERIOR_REGISTRO);
+			
+		}
 	}
 
+	private void setVlrIntegerPK(Integer vlr){
+
+		// Ainda não está preparado para Chave Composta!!!
+		
+		try {		
+			getCamposPK().elementAt(0).setVlrInteger(vlr);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private Integer getVlrIntegerPK(){
+		
+		// Ainda não está preparado para Chave Composta!!!
+		
+		Integer ret = null;
+		
+		try {		
+			ret = getCamposPK().elementAt(0).getVlrInteger();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return ret;
+		
+	}
+	
 	public void next() {
 		int iLin = 0;
 		int iNumLinhas = 0;
@@ -1693,10 +1814,16 @@ public class ListaCampos extends Container implements PostListener,
 				}
 			}
 		}
+		// Metodo utilizado para carregar o registro posterior sem utilização de ponteiro.
+		else if(!bDetalhe) {
+			
+			carregaRegistro(PROXIMO_REGISTRO);
+			
+		}
 	}
 
 	public void last() {
-		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
+		if ((bDetalhe) && (tab != null) && (tab.getNumLinhas() > 0)) {
 			tab.setLinhaSel(tab.getNumLinhas() - 1);
 			try {
 				carregaItem(tab.getNumLinhas() - 1);
@@ -1704,6 +1831,12 @@ public class ListaCampos extends Container implements PostListener,
 			catch (Exception e) {
 				new ExceptionCarregaDados("Erro ao carregar ultimo item");
 			}
+		}
+		// Metodo utilizado para carregar o ultimo registro sem utilização de ponteiro.
+		else if(!bDetalhe) {
+			
+			carregaRegistro(ULTIMO_REGISTRO);
+			
 		}
 	}
 
