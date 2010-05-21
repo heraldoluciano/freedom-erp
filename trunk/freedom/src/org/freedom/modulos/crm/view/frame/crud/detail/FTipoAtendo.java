@@ -73,6 +73,8 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 
 	public FTipoAtendo () {
 	
+		nav.setNavigation( true );
+		
 		setTitulo("Tipo de Atendimento");
 		setAtribos( 50, 50, 370, 340);
 

@@ -113,6 +113,9 @@ public class FContrato extends FDetalhe implements ActionListener{
 	public FContrato() {
 
 		setTitulo( "Contratos" );
+		
+		nav.setNavigation( true );
+		
 		setAltCab( 180 );
 		setAtribos( 50, 50, 715, 550 );
 		pinCab = new JPanelPad( 500, 50 );
