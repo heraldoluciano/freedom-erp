@@ -112,6 +112,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	public FFrete() {
 
 		super( false );
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Lançamento de Fretes" );
 		setAtribos( 50, 50, 390, 360 );
 
