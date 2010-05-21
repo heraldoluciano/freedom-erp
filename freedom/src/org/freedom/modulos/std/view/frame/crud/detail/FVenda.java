@@ -516,6 +516,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	// Função criada para montar a tela conforme a preferência do usuário:
 	// com ou sem Referência de PK;
 	private void montaTela() {
+		
+		nav.setNavigation( true );
 
 		oPrefs = prefs(); // Carrega as preferências
 

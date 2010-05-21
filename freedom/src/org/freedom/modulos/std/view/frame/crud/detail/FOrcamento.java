@@ -416,6 +416,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public FOrcamento() {
 				
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Orçamento" );
 		setAtribos( 50, 50, 769, 460 );
 
