@@ -231,6 +231,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	public FContato() {
 
 		super();
+		
+		nav.setNavigation( true );
+		
 		setTitulo( "Cadastro de Contatos" );
 		setAtribos( 50, 10, 530, 640 );
 
