@@ -337,14 +337,17 @@ public class FRPagar extends FRelatorio {
 			sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
 		} else {
 			//Valor pago 
-			sql.append( "(SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( "(COALESCE((SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG");
-			sql.append( " AND L.NPARCITPAG=IT.NPARCITPAG AND L.DATALANCA<=?) VLRPAGOITPAG, ");
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?),0)*-1) VLRPAGOITPAG, ");
 			//Valor a pagar 
-			sql.append( "IT.VLRPARCITPAG-(SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( "COALESCE(IT.VLRPARCITPAG,0)+COALESCE((SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG");
-			sql.append( " AND L.NPARCITPAG=IT.NPARCITPAG AND L.DATALANCA<=?) VLRAPAGITPAG");
-			
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?),0) VLRAPAGITPAG,");
+			//Data de pagamento
+			sql.append( "(SELECT MAX(L.DATALANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG");
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?) DTPAGOITPAG ");		
 		}
 		sql.append( ", (SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
@@ -378,12 +381,12 @@ public class FRPagar extends FRelatorio {
 				sql.append( "( IT.STATUSITPAG IN (?,?) OR " );
 				sql.append( "(NOT EXISTS ( SELECT * FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG");
-				sql.append( " AND L.NPARCITPAG=IT.NPARCITPAG AND L.DATALANCA<=? ) ) )");
+				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=? ) ) )");
 			} else if ("P".equals( sFiltroPag )) {
 				sql.append( "( IT.STATUSITPAG IN (?,?) OR " );
 				sql.append( "(EXISTS ( SELECT * FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG");
-				sql.append( " AND L.NPARCITPAG=IT.NPARCITPAG AND L.DATALANCA<=? ) ) )");
+				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=? ) ) )");
 			} else if ("A".equals( sFiltroPag )) {
 				sql.append( "IT.STATUSITPAG IN (?,?)");
 			}
@@ -424,7 +427,11 @@ public class FRPagar extends FRelatorio {
 			System.out.println( sql.toString() );
 			
 			ps = con.prepareStatement( sql.toString() );
-			
+			if (bcorrecao) {
+				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+			}
 			ps.setDate( paramsql ++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( paramsql ++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			if ( sFiltroPag.equals( "N" ) ) {
@@ -452,7 +459,6 @@ public class FRPagar extends FRelatorio {
 				ps.setInt( paramsql++, lcBanco.getCodEmp() );
 				ps.setInt( paramsql++, lcBanco.getCodFilial() );
 				ps.setInt( paramsql++, txtCodBanco.getVlrInteger() );
-
 			}
 			
 			if(txtCodTipoCob.getVlrInteger()>0) {
@@ -494,7 +500,8 @@ public class FRPagar extends FRelatorio {
 		
 		ResultSet rs = getResultSet();
 
-		sCab += "   Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString();
+		sCab += "  Periodo de: " + txtDataini.getVlrString() + "  Até:  " + 
+			txtDatafim.getVlrString()+ "  Correção p/: "+txtDatacor.getVlrString();
 		
 		
 		if(txtCodBanco.getVlrString().length()>0) {
