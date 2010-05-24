@@ -2238,7 +2238,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( cevt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();// Carrega os Totais
 			if( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ){
-				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos			
+				if(lcDet.getStatus()!=ListaCampos.LCS_INSERT) {
+					lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
+				}
 				atualizaLucratividade();
 			}
 		}
