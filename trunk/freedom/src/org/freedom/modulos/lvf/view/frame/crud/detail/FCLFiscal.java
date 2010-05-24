@@ -189,7 +189,7 @@ public class FCLFiscal extends FDetalhe
 	private JTextFieldFK txtDescFiscCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtRedFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );		
-
+	
 	private JTextFieldPad txtAliqFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
@@ -291,6 +291,8 @@ public class FCLFiscal extends FDetalhe
 	private JComboBoxPad cbModBCICMSST = null;
 	
 	private JCheckBoxPad cbRedBaseST = new JCheckBoxPad( "Red. base Subst.", "S", "N" );
+	
+	private JCheckBoxPad cbRedBaseFrete = new JCheckBoxPad( "Red. base Frete", "S", "N" );
 	
 	private JRadioGroup<String, String> rgNoUF = null;
 	
@@ -777,6 +779,8 @@ public class FCLFiscal extends FDetalhe
 		
 		adicDB( cbRedBaseST, 615, 140, 180, 20, "redbasest", "", false );
 		
+		adicDB( cbRedBaseFrete, 615, 160, 180, 20, "redbasefrete", "", false );
+		
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );		
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
@@ -803,7 +807,7 @@ public class FCLFiscal extends FDetalhe
 		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, true );	
 		adicCampo( txtVlrPisUnidTrib, 90, 60, 99, 20, "VlrPisUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 		
 		// **********  ABA COFINS  **/
@@ -815,7 +819,7 @@ public class FCLFiscal extends FDetalhe
 		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
 	
-		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, true );	
 		adicCampo( txtVlrCofUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 
 		// **********  ABA FUNRURAL  **/
@@ -844,7 +848,7 @@ public class FCLFiscal extends FDetalhe
 		tpnGeral.addTab( "IR", panelIR );
 		setPainel( panelIRCampos );
 		
-		adicCampo( txtAliqIrFisc, 7, 20, 80, 20, "AliqIrFisc", "Aliq. IR", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtAliqIrFisc, 7, 20, 80, 20, "AliqIrFisc", "Aliq. IR", ListaCampos.DB_SI, true );	
 
 		
 //		**********  ABA CONTRIBUIÇÃO SOCIAL  **/
@@ -852,7 +856,7 @@ public class FCLFiscal extends FDetalhe
 		tpnGeral.addTab( "Contribuição Social", panelCSocial );
 		setPainel( panelCSocialCampos );
 		
-		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI,  true );
 		
 		
 		// **********  ABA II  **/
