@@ -1512,7 +1512,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				impostos.setUftransacao( txtEstCli.getVlrString() );
 			
 				impostos.calcAliqFisc( txtAliqFisc.getVlrBigDecimal() );
-				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
+				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc()!=null ? impostos.getAliqfisc() : new BigDecimal(0)  );
 			}
 			
 		}
@@ -3555,7 +3555,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtRedFisc.setVlrBigDecimal( impostos.getRedfisc() );
 				txtTipoFisc.setVlrString( impostos.getTipofisc() );
 				txtTipoST.setVlrString( impostos.getTipost() );
-				txtCodMens.setVlrInteger( impostos.getCodmens() );
+				
+				if(impostos.getCodmens()>0) {
+					txtCodMens.setVlrInteger( impostos.getCodmens());
+				}
+				
 				txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
 				txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
 				txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
@@ -3563,7 +3567,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 				// Carregando campos para gravação do item de classificação selecionado
 	
+
 				if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
+
 					txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
 					txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
 					txtCodFiscIf.setVlrString( impostos.getCodfisc() );
