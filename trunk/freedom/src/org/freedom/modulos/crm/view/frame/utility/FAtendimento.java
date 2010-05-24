@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
@@ -649,10 +650,19 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		for ( int i = 1; i < valores.size(); i++ ) { // Começa em um para não carregar o item <--Selecione-->
 
 			item = new Vector<Object>();
-
-			item.addElement( new Boolean( true ) );
-			item.addElement( valores.elementAt( i ) );
-			item.addElement( labels.elementAt( i ) );
+			
+			String valor = valores.elementAt( i ).toString();
+			String label = labels.elementAt( i );
+			
+			if(Chamado.STATUS_CONCLUIDO.getValue().equals( valor )) {
+				item.addElement( new Boolean( false ) );
+			}
+			else {
+				item.addElement( new Boolean( true ) );
+			}
+			
+			item.addElement( valor );
+			item.addElement( label );
 
 			tabstatus.adicLinha( item );
 
@@ -697,7 +707,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabchm.setTamColuna( 60, GridChamado.DTCHAMADO.ordinal() );
 		tabchm.setTamColuna( 30, GridChamado.PRIORIDADE.ordinal() );
 		tabchm.setTamColuna( 100, GridChamado.DESCTPCHAMADO.ordinal() );
-		tabchm.setTamColuna( 50, GridChamado.CODCHAMADO.ordinal() );
+		tabchm.setTamColuna( 40, GridChamado.CODCHAMADO.ordinal() );
 		tabchm.setTamColuna( 250, GridChamado.DESCCHAMADO.ordinal() );
 		tabchm.setTamColuna( 80, GridChamado.SOLICITANTE.ordinal() );
 		tabchm.setTamColuna( 25, GridChamado.STATUS.ordinal() );
@@ -1194,33 +1204,29 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private void excluiAtend() {
 
-		if ( tabatd.getLinhaSel() == -1 ) {
-			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
-			return;
+		if(Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" )==JOptionPane.YES_OPTION) {
+		
+			if ( tabatd.getLinhaSel() == -1 ) {
+				Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
+				return;
+			}
+			try {
+				String sSQL = "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?";
+				PreparedStatement ps = con.prepareStatement( sSQL );
+				ps.setString( 1, "" + vCodAtends.elementAt( tabatd.getLinhaSel() ) );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+				ps.execute();
+				ps.close();
+				con.commit();
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao salvar o atendimento!\n" + err.getMessage(), true, con, err );
+			}
+			carregaAtendimentos();
 		}
-		try {
-			String sSQL = "DELETE FROM ATATENDIMENTO WHERE CODATENDO=? AND CODEMP=? AND CODFILIAL=?";
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setString( 1, "" + vCodAtends.elementAt( tabatd.getLinhaSel() ) );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-			ps.execute();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao salvar o atendimento!\n" + err.getMessage(), true, con, err );
-		}
-		carregaAtendimentos();
 	}
 
 	private void novoAtend() {
-
-		if ( txtCodCli.getVlrInteger().intValue() == 0 ) {
-
-			Funcoes.mensagemInforma( this, "Não há nenhum cliente selecionado!" );
-			txtCodCli.requestFocus();
-			return;
-		}
 
 		Object ORets[];
 
