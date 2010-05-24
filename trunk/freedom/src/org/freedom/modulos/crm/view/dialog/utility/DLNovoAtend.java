@@ -102,6 +102,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	private JTextFieldPad txtSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
+	
+	private JTextAreaPad txaObsInterno = new JTextAreaPad();
 
 	private Vector<Integer> vValsTipo = new Vector<Integer>();
 
@@ -161,7 +163,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private JPanelPad pnCampos = new JPanelPad( 500, 190 );
 	
-	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 1, 1 ) );
+	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 	
 	private String tipoatendo = null;
 	
@@ -232,8 +234,14 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 		pnTela.add( pnTxa, BorderLayout.CENTER );
 
-		pnTxa.setBorder( BorderFactory.createTitledBorder( "Detalhamento do atendimento" ) );
-		pnTxa.add( new JScrollPane( txaDescAtend ) );
+		JScrollPane spnDetalhamento = new JScrollPane( txaDescAtend );
+		JScrollPane spnObsInterno = new JScrollPane( txaObsInterno );
+		
+		spnDetalhamento.setBorder( BorderFactory.createTitledBorder( "Detalhamento" ) );
+		spnObsInterno.setBorder( BorderFactory.createTitledBorder( "Observações internas" ) );
+		
+		pnTxa.add( spnDetalhamento );
+		pnTxa.add( spnObsInterno );
 
 		txaDescAtend.setBorder( BorderFactory.createEtchedBorder( Color.RED, null ) );
 
@@ -292,6 +300,9 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		if ( iCodCli > 0 ) {
 			txtCodCli.setAtivo( false );
 		}
+		else {
+			txtCodCli.setRequerido( true );
+		}
 
 		btRun.addActionListener( this );
 
@@ -347,6 +358,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtendimento.add( new GuardaCampo( txtContr, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ));				
 		lcAtendimento.add( new GuardaCampo( txtitContr, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ));
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ));				
+		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ));
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
 		
@@ -559,7 +571,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -601,7 +613,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		}
 		else {
 			ps.setNull( 19, Types.INTEGER ); // Código do contas a receber
-			ps.setInt( 20, Types.INTEGER ); // Código do ítem do contas a receber
+			ps.setNull( 20, Types.INTEGER ); // Código do ítem do contas a receber
 		}
 		
 		if ( txtCodChamado.getVlrInteger()>0 ) {
@@ -614,7 +626,9 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 			ps.setNull( 22, Types.INTEGER );
 			ps.setNull( 23, Types.INTEGER );			
 		}		
-
+		
+		ps.setString( 24, txaObsInterno.getVlrString() );
+		
 		ps.execute();
 		ps.close();
 
@@ -639,7 +653,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
 		
-		sql.append( "a.statusatendo=? ");
+		sql.append( "a.statusatendo=?, a.obsinterno=? ");
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 					
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -689,9 +703,11 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		
 		ps.setString( 20, cbStatus.getVlrString() );
 		
-		ps.setInt( 21, Aplicativo.iCodEmp );
-		ps.setInt( 22, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
-		ps.setInt( 23, txtCodAtendo.getVlrInteger() );
+		ps.setString( 21, txaObsInterno.getVlrString() );
+		
+		ps.setInt( 22, Aplicativo.iCodEmp );
+		ps.setInt( 23, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
+		ps.setInt( 24, txtCodAtendo.getVlrInteger() );
 		
 		ps.executeUpdate();
 
