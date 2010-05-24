@@ -235,7 +235,7 @@ public class CalcImpostos {
 
 		try {
 
-			sql.append( "select percicms from lfbuscaicmssp( ?, ?, ?, ? )" );
+			sql.append( "select coalesce(percicms,0) aliqfisc from lfbuscaicmssp( ?, ?, ?, ? )" );
 			
 			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 			
@@ -247,7 +247,7 @@ public class CalcImpostos {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				setAliqfisc( rs.getBigDecimal( 1 ) ) ;
+				setAliqfisc( rs.getBigDecimal( "aliqfisc" ) ) ;
 			}
 
 			rs.close();
@@ -272,7 +272,7 @@ public class CalcImpostos {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append( "select origfisc,codtrattrib,coalesce(redfisc,0) redfisc,tipofisc,codmens,");
-		sql.append( "aliqfisc,coalesce(aliqipifisc,0) aliqipifisc,tpredicmsfisc,tipost,coalesce(margemvlagr,0) margemvlagr," );
+		sql.append( "coalesce(aliqfisc,0) aliqfisc,coalesce(aliqipifisc,0) aliqipifisc,tpredicmsfisc,tipost,coalesce(margemvlagr,0) margemvlagr," );
 		sql.append( "codempif,codfilialif,codfisc,coditfisc " );
 		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?)" );				
 
