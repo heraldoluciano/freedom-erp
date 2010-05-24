@@ -526,9 +526,13 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 		Vector<Vector<?>> agentes = getAgentes();
 
-		eventDataList.addAll( carregaTabAgd( agentes, calendarpanel.getValues(), tabAgd, ( "S".equals( cbTodos.getVlrString() ) ), con, this, rgPeriodo.getVlrString(), "S".equals( cbPendentes
+		List<Event> eventos = carregaTabAgd( agentes, calendarpanel.getValues(), tabAgd, ( "S".equals( cbTodos.getVlrString() ) ), con, this, rgPeriodo.getVlrString(), "S".equals( cbPendentes
 				.getVlrString() ), "S".equals( cbCancelados.getVlrString() ), "S".equals( cbConcluidos.getVlrString() ), "S".equals( cbBaixa.getVlrString() ), "S".equals( cbMedia.getVlrString() ),
-				"S".equals( cbAlta.getVlrString() ) ) );
+				"S".equals( cbAlta.getVlrString() ),iCodAge );
+
+		if(eventos!=null) {		
+			eventDataList.addAll( eventos );
+		}
 
 		/*
 		 * if ( "S".equals( cbTodos.getVlrString() ) ) { montaPanelUsu(); } else { tabUsu.limpa(); }
@@ -587,7 +591,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	}
 
 	public static List<Event> carregaTabAgd( final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
-			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta ) {
+			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta, int icodage ) {
 		List<Event> eventos = new ArrayList<Event>();
 
 		ImageIcon prioridade = null;
@@ -596,8 +600,12 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 
 		try {
 
-			ResultSet rs = consultaAgenda( agentes, datas, tabAgd, todos, con, cOrig, sPeriodo, pendentes, cancelados, concluidos, pbaixa, pmedia, palta );
-
+			ResultSet rs = consultaAgenda( agentes, datas, tabAgd, todos, con, cOrig, sPeriodo, pendentes, cancelados, concluidos, pbaixa, pmedia, palta, icodage );
+			
+			if(rs==null) {
+				return null;
+			}
+			
 			for ( int i = 0; rs.next(); i++ ) {
 
 				switch ( rs.getInt( "PriorAgd" ) ) {
@@ -1469,7 +1477,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	}
 
 	private static ResultSet consultaAgenda( final Vector<Vector<?>> agentes, final Object[] datas, final JTablePad tabAgd, final boolean todos, final DbConnection con, final Component cOrig,
-			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta ) {
+			final String sPeriodo, boolean pendentes, boolean cancelados, boolean concluidos, boolean pbaixa, boolean pmedia, boolean palta, int icodage ) {
 		ResultSet rs = null;
 //		List<Event> eventos = new ArrayList<Event>();
 
@@ -1479,6 +1487,15 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		String scodages = Funcoes.vectorToString( vcodage, "," );
 		String stipoage = "'" + Funcoes.vectorToString( vtipoage, "','" ) + "'";
 
+		boolean selagendapropria = false;
+		
+		for(int i=0; i<vcodage.size(); i++) {
+			if( icodage == ((Integer) vcodage.elementAt(i)).intValue() ) {
+				selagendapropria = true;
+				break;
+			}
+		}
+		
 		if ( scodages.length() > 0 ) {
 
 			tabAgd.limpa();
@@ -1512,10 +1529,14 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			sSQL.append( " AND U.CODAGE=A.CODAGE AND U.TIPOAGE=A.TIPOAGE " );
 
 			if ( todos ) {
-				sSQL.append( " AND (( A.CAAGD='PU') OR ( A.CODAGE IN (" + scodages + ") AND A.TIPOAGE IN (" + stipoage + ") )) " );
+				sSQL.append( " AND ((( A.CAAGD='PU') AND ( A.CODAGE IN (" + scodages + ") AND A.TIPOAGE IN (" + stipoage + ") )) " );
 			}
 			else {
-				sSQL.append( " AND A.CODAGE IN (" + scodages + ") AND A.TIPOAGE IN (" + stipoage + ") " );
+				sSQL.append( " AND ((A.CAAGD='PU' AND A.CODAGE IN (" + scodages + ") AND A.TIPOAGE IN (" + stipoage + ")) " );
+			}
+			
+			if(selagendapropria) {
+				sSQL.append(" OR (A.CODAGE=" + icodage + ") ) " );
 			}
 
 			Vector<String> vfiltros = new Vector<String>();
@@ -1532,7 +1553,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			String sfiltros = Funcoes.vectorToString( vfiltros, "," );
 
 			if ( ( sfiltros != null ) && ( !"".equals( sfiltros ) ) ) {
-				sSQL.append( " AND A.SITAGD IN (" + sfiltros + ")" );
+				sSQL.append( " AND A.SITAGD IN (" + sfiltros + ") " );
 			}
 
 			if ( !"T".equals( sPeriodo ) ) {
@@ -1553,7 +1574,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 			String sprioridade = Funcoes.vectorToString( vprioridade, "," );
 
 			if ( ( sprioridade != null ) && ( !"".equals( sprioridade ) ) ) {
-				sSQL.append( " AND A.PRIORAGD IN (" + sprioridade + ")" );
+				sSQL.append( " AND A.PRIORAGD IN (" + sprioridade + ") " );
 			}
 
 			sSQL.append( " ORDER BY A.DTAINIAGD DESC,A.HRINIAGD DESC,A.DTAFIMAGD DESC,A.HRFIMAGD DESC " );
@@ -1571,6 +1592,10 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 				e.printStackTrace();
 			}
 		}
+		else {
+			tabAgd.limpa();
+			rs = null;
+		}
 		return rs;
 	}
 
@@ -1578,7 +1603,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 		Vector<Vector<?>> agentes = getAgentes();
 		ResultSet rs = consultaAgenda( agentes, calendarpanel.getValues(), tabAgd, ( "S".equals( cbTodos.getVlrString() ) ), con, this, rgPeriodo.getVlrString(), "S".equals( cbPendentes
 				.getVlrString() ), "S".equals( cbCancelados.getVlrString() ), "S".equals( cbConcluidos.getVlrString() ), "S".equals( cbBaixa.getVlrString() ), "S".equals( cbMedia.getVlrString() ),
-				"S".equals( cbAlta.getVlrString() ) );
+				"S".equals( cbAlta.getVlrString() ), iCodAge );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/agenda.jasper", "Agenda", null, rs, null, this );
 
