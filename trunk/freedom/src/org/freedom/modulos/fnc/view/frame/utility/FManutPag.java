@@ -1159,7 +1159,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG,IT.CODTIPOCOB," );
 				sSQL.append( "(SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
 				sSQL.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB) AS DESCTIPOCOB, " );
-				sSQL.append( "IT.VLRDEVITPAG, IT.VLRCANCITPAG " );
+				sSQL.append( "IT.VLRDEVITPAG, coalesce(IT.VLRCANCITPAG,0) VLRCANCITPAG " );
 				sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR " );
 				sSQL.append( sWhereManut );
@@ -1227,7 +1227,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrDevItPag" ) ), i, 14 );
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrAdicItPag" ) ), i, 15 );
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrApagItPag" ) ), i, 16 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrApagItPag" ) ), i, 17 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRCANCITPAG" ) ), i, 17 );
 						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 18 );
 						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 19 );
 						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 20 );
