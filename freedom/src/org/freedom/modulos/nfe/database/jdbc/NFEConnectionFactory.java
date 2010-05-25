@@ -326,15 +326,16 @@ public class NFEConnectionFactory implements NFEListener {
 
 	public void afterRunSend( NFEEvent e ) {
 	
-		AbstractNFEFactory nfe = e.getNfefactory();
+		AbstractNFEFactory nfefactory = e.getNfefactory();
 		
-		if ( nfe.getListInconsistency().size() > 0 ) {
-			DLInconsistency inconsistency = new DLInconsistency( nfe.getListInconsistency() );
-			inconsistency.setVisible( true );
+		if ( nfefactory.getListInconsistency().size() > 0 ) {
+			DLInconsistency inconsistency = new DLInconsistency( nfefactory.getListInconsistency() );
+			inconsistency.setVisible( true );			
 		}
 		else {
-			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso." );
+			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE()	);
 		}
 	}
 
 }
+
