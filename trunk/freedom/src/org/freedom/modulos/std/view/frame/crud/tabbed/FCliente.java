@@ -498,7 +498,7 @@ public class FCliente extends FTabDados
 	
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 	
-	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.Rural", "S", "N" );
+	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Rural", "S", "N" );
 	
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
@@ -624,7 +624,7 @@ public class FCliente extends FTabDados
 		super();
 		
 		setTitulo( "Cadastro de Clientes" );
-		setAtribos( 50, 20, 545, 650 );
+		setAtribos( 50, 20, 545, 670 );
 
 		lcCliFor.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCliFor );
