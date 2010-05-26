@@ -25,6 +25,8 @@
 package org.freedom.modulos.gms.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,6 +77,7 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
@@ -507,7 +510,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Navegador navCodAcess = new Navegador( true );
 
-	private JButtonPad btDuplicar = new JButtonPad( "duplicar", Icone.novo( "btDuplicar.png" ) );
+	private JButtonPad btCopiar = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 
 	private JButtonPad btCodBar = new JButtonPad( "", Icone.novo( "btCodBar.gif" ) );
 
@@ -543,9 +546,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private ListaCampos lcProdEstCod = new ListaCampos( this, "ET" );
 
-	private JLabelPad separador1 = new JLabelPad();
+	private JLabelPad separador_atividade = new JLabelPad();
 
-	private JLabelPad separador2 = new JLabelPad();
+	private JLabelPad separador_exigencia = new JLabelPad();
+	
+	private JLabelPad separador_adicional = new JLabelPad();
+	
+	private JLabelPad separador_radios = new JLabelPad();
 
 	public FProduto() {
 
@@ -601,7 +608,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		setPainel( pinGeral );
 		adicTab( "Geral", pinGeral );
 
-		btDuplicar.setToolTipText( "Duplicar produto" );
+		btCopiar.setToolTipText( "Copiar produto" );
 
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód. moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
@@ -688,7 +695,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vLabsTipo.addElement( "Patrimônio" );
 		vLabsTipo.addElement( "Consumo" );
 
-		rgTipo = new JRadioGroup<String, String>( 6, 1, vLabsTipo, vValsTipo );
+		rgTipo = new JRadioGroup<String, String>( 7, 1, vLabsTipo, vValsTipo );
 		rgTipo.setVlrString( "P" );
 
 		vValsCV.addElement( "C" );
@@ -749,11 +756,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vLabsBCusto.addElement( "Bloqueado" );
 		vLabsBCusto.addElement( "Senha" );
 		vLabsBCusto.addElement( "Liberado" );
-		rgAbaixCust = new JRadioGroup<String, String>( 1, 3, vLabsBCusto, vValsBCusto );
+		rgAbaixCust = new JRadioGroup<String, String>( 3, 1, vLabsBCusto, vValsBCusto );
 		rgAbaixCust.setVlrString( "N" );
 		rgAbaixCust.addRadioGroupListener( this );
 
-		cbRMA = new JCheckBoxPad( "Permite", "S", "N" );
+		cbRMA = new JCheckBoxPad( "Sim", "S", "N" );
 		cbRMA.setVlrString( "S" );
 
 		cbAdicPDV = new JCheckBoxPad( "Tela adicional", "S", "N" );
@@ -819,7 +826,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtDescProd, 153, 20, 384, 20, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true );
 
-		adicDB( rgTipo, 540, 20, 200, 140, "TipoProd", "Tipo:", true );
+		adicDB( rgTipo, 540, 20, 115, 140, "TipoProd", "Tipo:", true );
 
 		adicCampo( txtDescAuxProd, 7, 60, 530, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
 
@@ -871,68 +878,84 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adic( txtSldLiqAlmox, 570, 220, 76, 20 );
 
 		JPanelPad pnControles = new JPanelPad();
-		pnControles.setBorder( BorderFactory.createEtchedBorder() );
+		pnControles.setBorder( SwingParams.getPanelLabel( "Controles", Color.BLUE ) ) ;
 
-		adic( pnControles, 7, 245, 710, 100 );
+		adic( pnControles, 7, 245, 650, 110 );
 
-		separador1.setBorder( BorderFactory.createEtchedBorder() );
-		separador2.setBorder( BorderFactory.createEtchedBorder() );
+		separador_atividade.setBorder( BorderFactory.createEtchedBorder() );
+		separador_exigencia.setBorder( BorderFactory.createEtchedBorder() );
+		separador_adicional.setBorder( BorderFactory.createEtchedBorder() );
+		separador_radios.setBorder( BorderFactory.createEtchedBorder() );
 
 		setPainel( pnControles );
 
-		adicDB( cbAtivo, 10, 23, 50, 20, "AtivoProd", "Ativo", true );
+		// Atividade
+		
+		adicDB( cbAtivo, 10, 15, 50, 20, "AtivoProd", "Ativo", true );
+		adicDB( cbRMA, 7, 60, 50, 20, "RMAProd", "RMA", true );
+		
+		pnControles.adic( separador_atividade, 60, 6, 2, 75 );
 
-		pnControles.adic( separador1, 60, 6, 2, 37 );
+		// Exigencias
+		adicDB( cbLote, 70, 15, 58, 20, "CLoteProd", "Lote", true );
+		adicDB( cbSerie, 140, 15, 60, 20, "SerieProd", "Nro. Série", true );
 
-		adicDB( cbLote, 70, 23, 58, 20, "CLoteProd", "Lote", true );
+		adicDB( cbReceita, 70, 60, 60, 20, "UsaReceitaProd", "Receita", true );		
+		adicDB( cbGuiaTraf, 140, 60, 90, 20, "GuiaTrafProd", "Guia de tráfego", true );
 
-		adicDB( cbSerie, 132, 23, 60, 20, "SerieProd", "Nro. Série", true );
+		pnControles.adic( separador_exigencia, 240, 6, 2, 75 );
 
-		adicDB( cbReceita, 198, 23, 60, 20, "UsaReceitaProd", "Receita", true );
-
-		adicDB( cbGuiaTraf, 255, 23, 90, 20, "GuiaTrafProd", "Guia de tráfego", true );
-
-		pnControles.adic( separador2, 350, 6, 2, 37 );
-
-		adicDB( rgAbaixCust, 360, 23, 280, 40, "VERIFPROD", "Abaixo custo:", true );
-
-		adicDB( cbRMA, 7, 70, 70, 20, "RMAProd", "RMA", true );
-
-		adicDB( cbAdicPDV, 80, 70, 110, 20, "UsaTelaAdicPDV", "PDV", true );
-
+		// PDV	
+		adicDB( cbAdicPDV, 250, 20, 110, 20, "UsaTelaAdicPDV", "PDV", true );
+		
+		pnControles.adic( separador_radios, 390, 6, 2, 75 );
+		
+		// Radios
+		
+		adicDB( rgCV, 398, 15, 115, 65, "CVProd", "Cadastro para:", true );
+		adicDB( rgAbaixCust, 520, 15, 115, 65, "VERIFPROD", "Abaixo custo:", true );
+		
 		setPainel( pinGeral );
 
-		adicCampo( txtCodAlmox, 7, 360, 80, 20, "CodAlmox", "Cód. almox.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescAlmox, 90, 360, 170, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodAlmox, 7, 380, 80, 20, "CodAlmox", "Cód. almox.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox, 90, 378, 170, 20, "DescAlmox", "Descrição do almoxarifado" );
 
-		adicCampo( txtCodSecao, 263, 360, 80, 20, "CodSecao", "Cód. seção", ListaCampos.DB_FK, txtDescSecao, false );
-		adicDescFK( txtDescSecao, 346, 360, 190, 20, "DescSecao", "Descrição da seção" );
+		adicCampo( txtCodSecao, 263, 380, 80, 20, "CodSecao", "Cód. seção", ListaCampos.DB_FK, txtDescSecao, false );
+		adicDescFK( txtDescSecao, 346, 380, 303, 20, "DescSecao", "Descrição da seção" );
 
-		adicCampo( txtCodGrup, 7, 400, 80, 20, "CodGrup", "Cód. grupo", ListaCampos.DB_FK, txtDescGrup, true );
-		adicDescFK( txtDescGrup, 90, 400, 170, 20, "DescGrup", "Descrição do grupo" );
+		adicCampo( txtCodGrup, 7, 420, 80, 20, "CodGrup", "Cód. grupo", ListaCampos.DB_FK, txtDescGrup, true );
+		adicDescFK( txtDescGrup, 90, 420, 170, 20, "DescGrup", "Descrição do grupo" );
 
-		adicCampo( txtCodFisc, 263, 400, 80, 20, "CodFisc", "Cód. fiscal", ListaCampos.DB_FK, txtDescFisc, true );
-		adicDescFK( txtDescFisc, 346, 400, 190, 20, "DescFisc", "Descrição da classificação fiscal" );
+		adicCampo( txtCodFisc, 263, 420, 80, 20, "CodFisc", "Cód. fiscal", ListaCampos.DB_FK, txtDescFisc, true );
+		adicDescFK( txtDescFisc, 346, 420, 303, 20, "DescFisc", "Descrição da classificação fiscal" );
 
-		adicCampo( txtCodUnid, 7, 440, 80, 20, "CodUnid", "Cód. unidade", ListaCampos.DB_FK, txtDescUnid, true );
-		adicDescFK( txtDescUnid, 90, 440, 170, 20, "DescUnid", "Descrição da unidade" );
+		adicCampo( txtCodUnid, 7, 460, 80, 20, "CodUnid", "Cód. unidade", ListaCampos.DB_FK, txtDescUnid, true );
+		adicDescFK( txtDescUnid, 90, 460, 170, 20, "DescUnid", "Descrição da unidade" );
 
-		adicCampo( txtCodMarca, 263, 440, 80, 20, "CodMarca", "Cód. marca", ListaCampos.DB_FK, txtDescMarca, true );
-		adicDescFK( txtDescMarca, 346, 440, 190, 20, "DescMarca", "Descrição da marca" );
+		adicCampo( txtCodMarca, 263, 460, 80, 20, "CodMarca", "Cód. marca", ListaCampos.DB_FK, txtDescMarca, true );
+		adicDescFK( txtDescMarca, 346, 460, 303, 20, "DescMarca", "Descrição da marca" );
 
-		adicCampo( txtCodMoeda, 7, 480, 80, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescMoeda, 90, 480, 170, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCodMoeda, 7, 500, 80, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMoeda, 90, 500, 170, 20, "SingMoeda", "Descrição da moeda" );
 
-		adicCampo( txtPrazoEnt, 263, 480, 80, 20, "CodPE", "Cód.p/entrega", ListaCampos.DB_FK, txtDescGrup, false );
-		adicDescFK( txtDescPrazoEnt, 346, 480, 190, 20, "DescPE", "Descrição do prazo de entrega" );
-		adicDescFK( txtDias, 7, 520, 110, 20, "DiasPE", "Dias p/entrega" );
+		adicCampo( txtPrazoEnt, 263, 500, 80, 20, "CodPE", "Cód.p/entrega", ListaCampos.DB_FK, txtDescGrup, false );
+		adicDescFK( txtDescPrazoEnt, 346, 500, 190, 20, "DescPE", "Descrição do prazo de entrega" );
+		adicDescFK( txtDias, 539, 500, 110, 20, "DiasPE", "Dias p/entrega" );
 
-		adicDB( rgCV, 540, 370, 110, 100, "CVProd", "Cadastro para:", true );
+	//	adic( btDuplicar, 540, 500, 110, 30 );
 
-		adic( btDuplicar, 540, 500, 110, 30 );
+		//pnRod.add( btDuplicar );
+//		btCopiar.setPreferredSize( new Dimension(30,30) );
 
+		btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
+
+
+		pnImp.add(btCopiar);
+		
+		
 		// Decrição completa
 
+		
 		adicTab( "Descrição completa", pnDesc );
 		adicDBLiv( txaDescComp, "DescCompProd", "Descrição completa", false );
 		pnDesc.add( spnDesc );
@@ -1323,7 +1346,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		tabCodAcess.setTamColuna( 80, 4 );
 
 		txtCodProd.requestFocus();
-		btDuplicar.addActionListener( this );
+		btCopiar.addActionListener( this );
 
 	}
 
@@ -1791,7 +1814,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		else if ( evt.getSource() == btDuplicar ) {
+		else if ( evt.getSource() == btCopiar ) {
 			duplicar();
 		}
 		if ( evt.getSource() == btCodBar ) {
