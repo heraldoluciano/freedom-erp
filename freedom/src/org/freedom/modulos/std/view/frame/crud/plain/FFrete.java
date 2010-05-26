@@ -174,8 +174,11 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		setPainel( panelIcms );
 		
 		adicDB( cbAdicICMSFrete, 7, 0, 300, 30, "AdicFreteBaseICM", "",  true );
-		adicCampo( txtPercIcmsFreteVD, 7, 50, 90, 20, "AliqICMSFreteVD", "% icms", ListaCampos.DB_SI, false );
+//		adicCampo( txtPercIcmsFreteVD, 7, 50, 90, 20, "AliqICMSFreteVD", "% icms", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIcmsFreteVD, 100, 50, 150, 20, "VlrIcmsFreteVD", "Valor do icms do frete", ListaCampos.DB_SI, false );
+
+		txtVlrIcmsFreteVD.setNaoEditavel( true );
+		txtPercIcmsFreteVD.setNaoEditavel( true );
 		
 		txtPlacaFreteVD.setStrMascara( "###-####" );
 
@@ -375,11 +378,11 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	
 	private void calculaIcmsFrete() {
 		
-		if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) {
+	/*	if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) {
 			BigDecimal icms = 
 				txtVlrFreteVD.getVlrBigDecimal().divide( new BigDecimal( "100.00" ) ).multiply( txtPercIcmsFreteVD.getVlrBigDecimal() );
 			txtVlrIcmsFreteVD.setVlrBigDecimal( icms );
-		}
+		}*/
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -395,7 +398,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	}
 
 	public void keyPressed( KeyEvent e ) {
-
+/*
 		if ( e.getKeyCode() == KeyEvent.VK_ENTER && 
 				e.getSource() == txtPercIcmsFreteVD && 
 					txtVlrFreteVD.getVlrBigDecimal() != null && 
@@ -404,7 +407,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		}
 		else {
 			super.keyPressed( e );
-		}
+		}*/
+		
+		super.keyPressed( e );
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
