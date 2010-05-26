@@ -18,7 +18,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ * Tela para lançamento de contas a pagar.
  */
 
 package org.freedom.modulos.fnc.view.dialog.utility;
@@ -26,9 +26,20 @@ package org.freedom.modulos.fnc.view.dialog.utility;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JScrollPane;
+
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
@@ -44,20 +55,8 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.JScrollPane;
-
-import org.freedom.acao.PostEvent;
-import org.freedom.acao.PostListener;
-
-
-public class DLNovoPag extends FFDialogo implements PostListener {
+public class DLNovoPag extends FFDialogo implements PostListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -143,13 +142,14 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 
 		super( cOrig );
 		this.owner = cOrig; 
-		setTitulo( "Novo" );
-		setAtribos( 600, 320 );
+		setTitulo( "Novo título para pagamento" );
+		setAtribos( 600, 450 );
 
 		montaListaCampos();
 		montaTela();
 		
 		lcPagar.addPostListener( this );
+		tabPag.addMouseListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -246,7 +246,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		txtDtVencItPag.setListaCampos( lcItPagar );	
 		
 		lcItPagar.montaTab();
-		tabPag.addMouseListener( new HandlerMouseListenerPagamento() );
+//		tabPag.addMouseListener( new HandlerMouseListenerPagamento() );
 		
 		c.add( pnPag );
 
@@ -368,7 +368,9 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		}
 	}
 
-	public void afterPost( PostEvent e ) { }
+	public void afterPost( PostEvent e ) {
+		
+	}
 
 	public void actionPerformed( ActionEvent e ) {
 
@@ -447,8 +449,48 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		}
 		return retorno;
 	} 
-
 	
+	private void alteraPag() {
+		
+		lcItPagar.edit();
+						
+		DLFechaPag dl = new DLFechaPag( owner, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );
+		dl.setVisible( true );
+		
+		try {
+		
+			if ( dl.OK ) {
+				
+				txtVlrParcItPag.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
+				txtDtVencItPag.setVlrDate( (Date) dl.getValores()[ 1 ] );
+				lcItPagar.post();								
+				
+				// Atualiza lcPagar
+				
+				if ( lcPagar.getStatus() == ListaCampos.LCS_EDIT ) {									
+					lcPagar.post(); // Caso o lcPagar estaja como edit executa o post que atualiza
+				}
+				else {								
+					lcPagar.carregaDados(); // Caso não, atualiza
+				}
+				dl.dispose(); 
+			}
+			else {								
+				dl.dispose();
+				lcItPagar.cancel( false );
+			}							
+			dl.dispose();
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao atualizar parcelas.\n" + e.getMessage() );
+			lcItPagar.cancel( true );
+			lcPagar.cancel( true );
+		}
+		
+	}
+
+/*	
 	private class HandlerMouseListenerPagamento extends MouseAdapter {
 		
 		public void mouseClicked( MouseEvent mevt ) {
@@ -484,5 +526,40 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 				dl.dispose();
 			}
 		}
+	}
+
+*/
+	
+	public void mouseClicked( MouseEvent mevt ) {
+
+		if(mevt.getSource() == tabPag) {
+			if ( ( mevt.getClickCount() == 2 ) & ( tabPag.getLinhaSel() >= 0 ) ) {					
+				alteraPag();
+			}
+		}		
+	}
+
+	public void mouseEntered( MouseEvent e ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent e ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
