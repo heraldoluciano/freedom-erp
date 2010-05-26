@@ -28,8 +28,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
@@ -59,7 +60,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 
 
-public class DLNovoRec extends FFDialogo implements CarregaListener, PostListener, FocusListener {
+public class DLNovoRec extends FFDialogo implements CarregaListener, PostListener, FocusListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -173,8 +174,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 		super( cOrig );
 		this.owner = cOrig;
-		setTitulo( "Novo" );
-		setAtribos( 600, 350 );
+		
+		setTitulo( "Novo título para recebimento" );
+		setAtribos( 600, 450 );
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -190,26 +192,24 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		montaTela();
 
 		lcItReceber.montaTab();
-		tabRec.setTamColuna( 70, 4 );
-		tabRec.setTamColuna( 200, 5 );
-		tabRec.setTamColuna( 70, 6 );
-		tabRec.setTamColuna( 250, 7 );
-		tabRec.setTamColuna( 70, 8 );
-		tabRec.setTamColuna( 250, 9 );
 
-		// Adiciona o mouse listener para que possa editar os itens.
-		tabRec.addMouseListener( new MouseAdapter() {
-			public void mouseClicked( MouseEvent mevt ) {
-				if ( ( mevt.getClickCount() == 2 ) & ( tabRec.getLinhaSel() >= 0 ) ) {					
-					alteraRec();
-				}
-			}
-		} );
-
+		tabRec.setTamColuna( 40, 0 ); // Número da parcela
+		tabRec.setTamColuna( 60, 1 ); // Valor total da parcela
+		tabRec.setTamColuna( 65, 2 ); // Vencimento
+		tabRec.setTamColuna( 65, 3 ); // Data prevista
+		tabRec.setTamColuna( 60, 4 ); // Valor do desconto
+		tabRec.setTamColuna( 40, 5 ); // Cód. tipo de cobrança
+		tabRec.setTamColuna( 100, 6 ); // Descrição do tipo de cobrança.
+		tabRec.setTamColuna( 40, 7 ); // Código do banco.
+		tabRec.setTamColuna( 100, 8 ); // Descrição do nome do banco
+		tabRec.setTamColuna( 40, 9 ); // Código da carteira de cobrança.
+		tabRec.setTamColuna( 100, 10 ); // Descrição da carteira de cobranaça.
+		
 		lcReceber.addPostListener( this );
 		lcTipoCob.addCarregaListener( this );
-		//lcCli.addCarregaListener( this );
+
 		txtCodTipoCob.addFocusListener( this );
+		tabRec.addMouseListener( this );
 	
 	}
 	
@@ -489,8 +489,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	
 	private void alteraRec() {
 		
-//		lcReceber.carregaDados();
-//		lcItReceber.carregaDados();
 		lcItReceber.edit();
 		
 		DLFechaParcela dl = new DLFechaParcela( this, con ); 
@@ -739,5 +737,38 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcReceber.insert( true );
 		
 		prefere = getPrefere();
+	}
+
+	public void mouseClicked( MouseEvent mevt ) {
+
+		if(mevt.getSource() == tabRec) {
+			if ( ( mevt.getClickCount() == 2 ) & ( tabRec.getLinhaSel() >= 0 ) ) {					
+				alteraRec();
+			}
+		}		
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
