@@ -137,7 +137,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JTextFieldFK txtVlrIcmsFreteVD = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+//	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtCodAuxV = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -538,7 +538,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( txtMarcaFreteVD, "MarcaFreteVD", "Marca", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( cbAdicFrete, "AdicFreteVD", "frete na nota", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( cbAdicICMSFrete, "AdicFreteBaseICM", "frete no icms", ListaCampos.DB_SI, true ) );
-		lcFreteVD.add( new GuardaCampo( txtPercIcmsFreteVD, "AliqICMSFreteVD", "aliquota", ListaCampos.DB_SI, false ) );
+//		lcFreteVD.add( new GuardaCampo( txtPercIcmsFreteVD, "AliqICMSFreteVD", "aliquota", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtVlrIcmsFreteVD, "VlrIcmsFreteVD", "valor icms", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtCodTran, "codtran", "Cód.Transp.", ListaCampos.DB_FK, false ) );
 		
@@ -556,7 +556,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtConhecFreteVD.setListaCampos( lcFreteVD );
 		cbAdicFrete.setListaCampos( lcFreteVD );
 		cbAdicICMSFrete.setListaCampos( lcFreteVD );
-		txtPercIcmsFreteVD.setListaCampos( lcFreteVD );
+//		txtPercIcmsFreteVD.setListaCampos( lcFreteVD );
 		txtVlrIcmsFreteVD.setListaCampos( lcFreteVD );
 		txtPlacaFreteVD.setStrMascara("###-####");	
 		
@@ -776,7 +776,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( (Boolean) oPrefs[3] ) {
 			adic( cbAdicICMSFrete, 7, 220, 300, 20 );
 			adic( new JLabelPad( "% icms" ), 7, 240, 70, 20 );
-			adic( txtPercIcmsFreteVD, 7, 260, 70, 20 );
+//			adic( txtPercIcmsFreteVD, 7, 260, 70, 20 );
 			adic( new JLabelPad( "Valor do icms" ), 80, 240, 90, 20 );
 			adic( txtVlrIcmsFreteVD, 80, 260, 90, 20 );
 		}
@@ -1517,13 +1517,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		return sRetorno;
 	}
 	
-	private void calculaIcmsFrete() {
+/*	private void calculaIcmsFrete() {
 		if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) {
 			BigDecimal icms = 
 				txtVlrFreteVD.getVlrBigDecimal().divide( new BigDecimal( "100.00" ) ).multiply( txtPercIcmsFreteVD.getVlrBigDecimal() );
 			txtVlrIcmsFreteVD.setVlrBigDecimal( icms );
 		}
-	}
+	}*/
 	
 	private void gerarConhecimentoFrete() {
 		
@@ -1577,9 +1577,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtVlrAdicVenda.setAtivo( false );
 			}
 		}
-		else if ( fevt.getSource() == txtVlrFreteVD ) {
+/*		else if ( fevt.getSource() == txtVlrFreteVD ) {
 			calculaIcmsFrete();
-		}
+		}*/
 	}
 
 	public void focusGained( FocusEvent fevt ) { }
@@ -1638,13 +1638,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				cbReEmiteNota.setVlrString( "N" );
 			}
 		}
-		else if ( evt.getCheckBox() == cbAdicICMSFrete ) {
-			txtPercIcmsFreteVD.setEditable( "S".equals( cbAdicICMSFrete.getVlrString() ) );
-			if ( "N".equals( cbAdicICMSFrete.getVlrString() ) ) {
-				txtPercIcmsFreteVD.setVlrString( "" );
-				txtVlrIcmsFreteVD.setVlrString( "" );
-			}
-		}
+//		else if ( evt.getCheckBox() == cbAdicICMSFrete ) {
+//			txtPercIcmsFreteVD.setEditable( "S".equals( cbAdicICMSFrete.getVlrString() ) );
+//			if ( "N".equals( cbAdicICMSFrete.getVlrString() ) ) {
+//				txtPercIcmsFreteVD.setVlrString( "" );
+//				txtVlrIcmsFreteVD.setVlrString( "" );
+//			}
+//		}
 		if( evt.getCheckBox() == cbEmiteRecibo || evt.getCheckBox() == cbEmiteBoleto ){
 			if( cbEmiteRecibo.getVlrString().equals( "S" ) || cbEmiteBoleto.getVlrString().equals( "S" )){
 				txtCodModBol.setRequerido( true );
@@ -1670,15 +1670,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	@Override
     public void keyPressed( KeyEvent e ) {
-		if ( e.getKeyCode() == KeyEvent.VK_ENTER && 
-				e.getSource() == txtPercIcmsFreteVD && 
-					txtVlrFreteVD.getVlrBigDecimal() != null && 
+/*		if ( e.getKeyCode() == KeyEvent.VK_ENTER && 
+				e.getSource() == txtPercIcmsFreteVD && txtVlrFreteVD.getVlrBigDecimal() != null && 
 						txtVlrFreteVD.getVlrBigDecimal().floatValue() > 0 ) {
 			calculaIcmsFrete();
 		}
 		else {
 			super.keyPressed( e );
 		}
+*/
     }
 
 	public void afterCarrega( CarregaEvent cevt ) {
