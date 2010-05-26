@@ -218,8 +218,8 @@ public class FRPontoEqui extends FRelatorio {
 		BigDecimal bdCF = getFIN("CF");
 		BigDecimal bdLO = bd03.subtract(bdCF);
 		BigDecimal bdPE = new BigDecimal("0");
-		if (!bdCF.equals(new BigDecimal("0")))	   
-			bdPE = (bd03.divide(bdCF,6)).multiply(bd01);
+		if (!bd01.equals(new BigDecimal("0")))	   
+			bdPE = bdCF.divide(bd03.divide(bd01,6),6);
 		BigDecimal bdI = getFIN("I");
 		BigDecimal bdRF = getFIN("RF");
 		BigDecimal bdDF = getFIN("DF");
@@ -277,7 +277,7 @@ public class FRPontoEqui extends FRelatorio {
 			impAux( imp, "| 05 | Lucro operacional (03-04):", 
 					bdLO.toString(), 
 					bdLO.multiply( new BigDecimal(100) ).divide( bdRec, 6 ).toString() );			
-			impAux( imp, "| 06 | Ponto de equilibrio ((03/04)*01):", 
+			impAux( imp, "| 06 | Ponto de equilibrio (04/(03/01)):", 
 					bdPE.toString(), 
 					bdPE.multiply( new BigDecimal(100) ).divide( bdRec, 6 ).toString() );			
 			impAux( imp, "| 07 | Investimentos (I):", 
