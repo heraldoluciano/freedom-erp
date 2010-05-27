@@ -3676,7 +3676,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( txtVlrComisItVenda.getAtivo() ) {
 				txtPercComItVenda.setAtivo( false );
 			}
-			calcComisIt();
+			calcComisIt(); 
 			calcVlrProd();
 			calcImpostos( true );
 		}
