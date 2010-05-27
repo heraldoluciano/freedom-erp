@@ -3586,6 +3586,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void setCalcImpostos( boolean buscabase ) {
 		
 		try {
+			
+			getTratTrib();
+			getICMS();
 
 			impostos.setBuscabase( buscabase );			
 			impostos.setVlrprod( txtVlrProdItVenda.getVlrBigDecimal() );		
