@@ -121,7 +121,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strBanco = "";
 
 	public static String strDriver = "";
-
+	
 	public static String tefSend = "";
 
 	public static String tefRequest = "";

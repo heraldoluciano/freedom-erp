@@ -90,7 +90,8 @@ public class FSobre extends FFDialogo {
 
 		try {
 			
-			Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());			
+			Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());	
+			
 			sVersao = Funcoes.dateToStrDataHora( datacompilacao ) ;
 			
 		} 
