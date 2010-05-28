@@ -81,7 +81,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	private JTextFieldPad txtQtdHorasPrev = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 4, Aplicativo.casasDec );
 
-	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+//	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	
