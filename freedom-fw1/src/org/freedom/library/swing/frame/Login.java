@@ -119,7 +119,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		pnCampos.adic( lbUsuario, 7, 0, 180, 20 );
 		pnCampos.adic( txtUsuario, 7, 20, 180, 20);
 
-		JLabelPad lbSenha = new JLabelPad ("Senha: ");
+		JLabelPad lbSenha = new JLabelPad ("Senha");
 		lbSenha.setForeground(new Color(49,49,89));
 
 		pnCampos.adic( lbSenha,190,0,100,20);
