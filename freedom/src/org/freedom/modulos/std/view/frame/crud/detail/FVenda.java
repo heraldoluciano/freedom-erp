@@ -101,6 +101,7 @@ import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
@@ -503,7 +504,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND,
 		IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA,
 		USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, 
-		VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO
+		VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN
 	}
 
 	public FVenda() {
@@ -1022,8 +1023,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItVenda, 7, 20, 30, 20, "CodItVenda", "Item", ListaCampos.DB_PK, true );
+		 
 		if ( (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
+			
+			if ( (Boolean) oPrefs[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] ) {
+				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
+			}
+			
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, true );
 			adic( new JLabelPad( "Referência" ), 40, 0, 70, 20 );
@@ -1033,6 +1040,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
+			
+			if ( (Boolean) oPrefs[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] ) {
+				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
+			}
+
 			adicCampo( txtCodProd, 40, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 		}
 
@@ -2895,7 +2907,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " );
 			sSQL.append( "TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA, USALAYOUTPED, " );
 			sSQL.append( "ICMSVENDA, MULTICOMIS, TIPOPREFCRED, TIPOCLASSPED, VENDAPATRIM, VISUALIZALUCR, " );
-			sSQL.append( "INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTOLUC " );
+			sSQL.append( "INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTOLUC, BUSCACODPRODGEN " );
 
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 
@@ -2941,6 +2953,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
 				retorno[ POS_PREFS.INFVDREMESSA.ordinal() ] = "S".equals( rs.getString( "INFVDREMESSA" ) );
 				retorno[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" ) ;
+				retorno[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals(rs.getString( "BUSCACODPRODGEN" )) ;
 
 
 			}
@@ -3141,8 +3154,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				pass.dispose();
 			}
-			// Regra para verificação de numero de série quando a quantidade é única
-			if ( txtSerieProd.getVlrString().equals( "S" ) ) {
+
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtNumSerie.isEditable() ) {
 				if ( !testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable()) ) {
 					pevt.cancela();
 				}
@@ -3153,6 +3166,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtTipoVenda.setVlrString( "V" );
 	}
 
+	
 	public void afterPost( PostEvent pevt ) {
 
 		lcVenda2.carregaDados(); // Carrega os Totais
@@ -3162,6 +3176,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov2.setText( "N" );
 			}
 		}
+		if (pevt.getListaCampos() == lcDet) { 
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItVenda.getVlrBigDecimal().floatValue()>1  ) {
+				testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable()) ;								
+			}			
+		}
+		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {

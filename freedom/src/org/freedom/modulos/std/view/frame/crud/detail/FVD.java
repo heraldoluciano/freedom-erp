@@ -41,6 +41,7 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLDescontItVenda;
@@ -98,7 +99,7 @@ public abstract class FVD extends FDetalhe {
 		super();
 	}
 
-	private NumSerie numserie = null; // Variavel para classe de controle de numeros de serie de produtos.
+	protected NumSerie numserie = null; // Variavel para classe de controle de numeros de serie de produtos.
 
 	/**
 	 * Busca o preço do produto com a procedure VDBUSCAPRECOSP.
@@ -937,7 +938,7 @@ public abstract class FVD extends FDetalhe {
 
 			numserie = new NumSerie(this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico);
 
-			ret = numserie.testaNumSerie();
+			ret = numserie.testaNumSerie(DLSerieGrid.TIPO_VENDA);
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
