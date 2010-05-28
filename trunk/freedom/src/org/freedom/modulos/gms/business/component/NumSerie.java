@@ -48,7 +48,7 @@ public class NumSerie {
 		this.unico = unico;
 	}
 
-	public boolean testaNumSerie() {
+	public boolean testaNumSerie(int tipo) {
 
 		boolean bRetorno = false;
 		boolean bValido = false;
@@ -104,7 +104,7 @@ public class NumSerie {
 		// Tela para cadastramento da série para quantidade maior que 1
 		else {
 			
-			abreDlSerieMuitiplos();
+			abreDlSerieMuitiplos(tipo);
 			
 		}
 		
@@ -124,14 +124,16 @@ public class NumSerie {
 		this.numserie = numserie;
 	}
 
-	private void abreDlSerieMuitiplos() {
+	private void abreDlSerieMuitiplos(int tipo) {
 		
 		DLSerieGrid dl = new DLSerieGrid();
 		dl.setCodemp( Aplicativo.iCodEmp );
 		dl.setCodfilial( getLcDet().getCodFilial() );
 		
-		dl.setCodcompra( getCod() );
-		dl.setCoditcompra( getItcod() );
+		dl.setCod( getCod() );
+		dl.setCodit( getItcod() );
+		dl.setTipo( tipo );
+		
 		
 		dl.setCodemppd( Aplicativo.iCodEmp );
 		dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
