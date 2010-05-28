@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedompcp.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -14,8 +14,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.business.object"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.dialog.utility"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.dialog.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.tabbed"/>
