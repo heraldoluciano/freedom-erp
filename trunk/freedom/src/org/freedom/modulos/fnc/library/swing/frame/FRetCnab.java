@@ -403,6 +403,7 @@ public class FRetCnab extends FRetFBN {
 						String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
 					
 						String[] mensagem = getDetRetorno( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
+						
 						if ( mensagem != null ) {
 							Funcoes.mensagemInforma( this, mensagem[0] );
 						}
@@ -507,9 +508,16 @@ public class FRetCnab extends FRetFBN {
 		if ( reg3T != null ) {
 									
 			String docrec = reg3T.getIdentTitEmp().trim();
-			String tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();			
-			chave[0] = Integer.parseInt( tmp.substring( 0, tmp.length()-2 ) );
-			chave[1] = Integer.parseInt( tmp.substring( tmp.length()-2 ) );
+			String tmp = "";
+			
+			try {
+				tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();
+				chave[0] = Integer.parseInt( tmp.substring( 0, tmp.length()-2 ) );
+				chave[1] = Integer.parseInt( tmp.substring( tmp.length()-2 ) );
+			}
+			catch (Exception e) {
+				Funcoes.mensagemInforma( null, "Não existe identificação do titulo no arquivo de retorno!" );
+			}			
 			
 		}
 		
