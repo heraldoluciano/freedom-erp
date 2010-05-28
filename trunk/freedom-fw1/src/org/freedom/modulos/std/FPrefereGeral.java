@@ -460,7 +460,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbVerifAltParVenda = new JCheckBoxPad( "Verificar usuario para alterar parcelas.", "S", "N" );
 
-	private final JCheckBoxPad cbUsaBuscGenProd = new JCheckBoxPad( "Busca generica do código do produto.", "S", "N" );
+	private final JCheckBoxPad cbUsaBuscGenProd = new JCheckBoxPad( "Busca genérica do código do produto.", "S", "N" );
 
 	private final JCheckBoxPad cbFilBuscGenProd1 = new JCheckBoxPad( "Código do produto.", "S", "N" );
 
