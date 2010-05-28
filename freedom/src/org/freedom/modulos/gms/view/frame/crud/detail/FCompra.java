@@ -88,6 +88,7 @@ import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.dialog.utility.DLBuscaPedCompra;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
+import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
@@ -2348,7 +2349,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			numserie = new NumSerie(this, lcDet, txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable());
 		
-			ret = numserie.testaNumSerie();
+			ret = numserie.testaNumSerie(DLSerieGrid.TIPO_COMPRA);
 			
 		}
 		catch (Exception e) {
