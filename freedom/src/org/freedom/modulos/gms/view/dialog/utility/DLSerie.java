@@ -31,9 +31,11 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
@@ -41,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 
 
 public class DLSerie extends FFDialogo {
@@ -72,6 +75,8 @@ public class DLSerie extends FFDialogo {
 	private JTextAreaPad txaObsSerie = new JTextAreaPad();
 	
 	private JScrollPane spnObsSerie = new JScrollPane( txaObsSerie );
+	
+	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
 
 	private boolean novo = true;
 	
@@ -88,6 +93,8 @@ public class DLSerie extends FFDialogo {
 		super( orig );
 		
 		setConexao( Aplicativo.getInstace().con );
+		lcNumSerie.setConexao( ( Aplicativo.getInstace().con ) );
+		
 		setTitulo( "Série" );
 		setAtribos( 380, 300 );
 
@@ -118,8 +125,31 @@ public class DLSerie extends FFDialogo {
 		txtDescProd.setVlrString( descprod );
 
 		txtNumSerie.requestFocus();
+		
+		montaListaCampos();
+		
+		
 	}
 
+	private void montaListaCampos() {
+		
+		lcNumSerie.add( new GuardaCampo( txtNumSerie, "NumSerie", "Num.Série", ListaCampos.DB_PK, false ) );
+		lcNumSerie.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcNumSerie.add( new GuardaCampo( txaObsSerie, "ObsSerie", "Observações", ListaCampos.DB_SI, false ) );
+		lcNumSerie.add( new GuardaCampo( txtDtFabricSerie, "dtfabricserie", "Data fabricação", ListaCampos.DB_SI, false ) );
+		lcNumSerie.add( new GuardaCampo( txtDtValidSerie, "dtvalidserie", "Data validade", ListaCampos.DB_SI, false ) );
+		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
+		lcNumSerie.setAutoLimpaPK( false );
+		lcNumSerie.montaSql( false, "SERIE", "EQ" );
+		lcNumSerie.setQueryCommit( false );
+		lcNumSerie.setReadOnly( true );
+		txtNumSerie.setTabelaExterna( lcNumSerie, FSerie.class.getCanonicalName() );
+		txtNumSerie.setFK( true );
+		txaObsSerie.setListaCampos( lcNumSerie );
+		
+
+	}
+	
 	public void setNumSerie(String numserie) {
 		txtNumSerie.setVlrString( numserie );
 	}
@@ -222,7 +252,11 @@ public class DLSerie extends FFDialogo {
 		} 
 		catch ( SQLException err ) {
 			if ( err.getErrorCode() == ListaCampos.FB_PK_DUPLA ) {
-				Funcoes.mensagemErro( this, "Este número de série já existe!" );
+				 
+				if(Funcoes.mensagemConfirma( null, "Este número de série já existe!\nDeseja continuar?" )==JOptionPane.YES_OPTION) {
+					bRet = true;
+				}
+				
 			}
 			else {
 				Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela EQSERIE!\n" + err.getMessage(), true, con, err );

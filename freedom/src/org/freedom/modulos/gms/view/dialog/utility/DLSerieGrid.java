@@ -44,6 +44,12 @@ import org.freedom.library.swing.dialog.FFDialogo;
  */
 public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelListener {
 
+	public static int TIPO_COMPRA = 0;
+
+	public static int TIPO_VENDA = 1;
+	
+	public static int TIPO_RECMERC = 3;
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -58,10 +64,10 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 	
 	private Integer codfilial;
 	
-	private Integer codcompra;
+	private Integer codit;
 	
-	private Integer coditcompra;
-	
+	private Integer cod;
+
 	private Integer codemppd;
 	
 	private Integer codfilialpd;
@@ -69,6 +75,10 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 	private Integer codprod;
 	
 	private String descprod;
+	
+	private int tipo;
+	
+	
 			
 	private enum ITENS {
 		SEQITSERIE, NUMSERIE, STATUS, DTFABRICSERIE, DTVALIDSERIE;
@@ -122,23 +132,50 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 
 	}
 	
-	private void carregaSeriesCompra() {
+	private void carregaSeries() {
 		
 		try {
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select cs.seqitserie, se.numserie, se.dtfabricserie, se.dtvalidserie " );
-			sql.append( "from cpitcompraserie cs left outer join eqserie se on ");
-			sql.append( "se.codemp=cs.codemppd and se.codfilial=cs.codfilialpd and se.codprod=cs.codprod and se.numserie=cs.numserie " );
-			sql.append( "where cs.codemp=? and cs.codfilial=? and cs.codcompra=? and cs.coditcompra=? " );
-			sql.append( "order by cs.codcompra, cs.coditcompra, cs.seqitserie " );
+
+			sql.append( "select t1.seqitserie, se.numserie, se.dtfabricserie, se.dtvalidserie " );
+			
+			if( tipo == TIPO_COMPRA ) {			
+
+				sql.append( ", t1.codcompra, t1.coditcompra, t1.seqitserie from cpitcompraserie t1 "); 
+			
+			}
+			else if( tipo == TIPO_VENDA ) {
+				sql.append( ", t1.codvenda, t1.coditvenda, t1.seqitserie from vditvendaserie t1 ");
+			}
+			else if( tipo == TIPO_RECMERC ) {
+
+				sql.append( ", t1.codrecmerc, t1.coditrecmerc, t1.seqitserie from eqitrecmercserie t1 ");
+				
+			}
+
+			sql.append( "left outer join eqserie se on ");
+			sql.append( "se.codemp=t1.codemppd and se.codfilial=t1.codfilialpd and se.codprod=t1.codprod and se.numserie=t1.numserie " );
+			sql.append( "where t1.codemp=? and t1.codfilial=? "); 
+						
+			if( tipo == TIPO_COMPRA ) {
+				sql.append( "and t1.codcompra=? and t1.coditcompra=? " );	
+			}
+			else if( tipo == TIPO_VENDA ) { 
+				sql.append( "and t1.codvenda=? and t1.coditvenda=? and t1.tipovenda='V'" );
+			}
+			else if( tipo == TIPO_RECMERC ) {
+				sql.append( "and t1.codrecmerc=? and t1.coditrecmerc=? " );						
+			}					
+								
+			sql.append( "order by 5, 6, 1 " );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, getCodemp() );
 			ps.setInt( 2, getCodfilial() );
-			ps.setInt( 3, getCodcompra() );
-			ps.setInt( 4, getCoditcompra() );
+			ps.setInt( 3, getCod() );
+			ps.setInt( 4, getCodit() );
 
 			ResultSet rs = ps.executeQuery();
 			
@@ -154,58 +191,89 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTVALIDSERIE.toString() )), row, ITENS.DTVALIDSERIE.ordinal() );
 					
 				row++;
-			}
+			} 
 			
 			con.commit();
 			
 		} catch ( SQLException e ) {
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar nota de remessa.\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( this, "Erro ao buscar series." + e.getMessage(), true, con, e );
 		}
 	}
 	
-	private void carregaSeriesRecMerc() {
+	private void atualizaSeries() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
 		
 		try {
+			sql.append( "update "); 
 			
-			StringBuilder sql = new StringBuilder();
-			sql.append( "select cs.seqitserie, se.numserie, se.dtfabricserie, se.dtvalidserie " );
-			sql.append( "from cpitcompraserie cs left outer join eqserie se on ");
-			sql.append( "se.codemp=cs.codemppd and se.codfilial=cs.codfilialpd and se.codprod=cs.codprod and se.numserie=cs.numserie " );
-			sql.append( "where cs.codemp=? and cs.codfilial=? and cs.codcompra=? and cs.coditcompra=? " );
-			sql.append( "order by cs.codcompra, cs.coditcompra, cs.seqitserie " );
+			if( tipo == TIPO_COMPRA ) {
+				sql.append( "cpitcompraserie set ");
+			}
+			else if( tipo == TIPO_VENDA ) {
+				sql.append( "vditvendaserie set ");				
+			}
+			else if( tipo == TIPO_RECMERC ) {
+				sql.append( "eqitrecmercserie set ");
+			}
 			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			sql.append( " codemppd=?, codfilialpd=?, codprod=?, numserie=? " );
+			sql.append( " where codemp=? and codfilial=? and ");
 			
-			ps.setInt( 1, getCodemp() );
-			ps.setInt( 2, getCodfilial() );
-			ps.setInt( 3, getCodcompra() );
-			ps.setInt( 4, getCoditcompra() );
+			if( tipo == TIPO_COMPRA ) {
+				sql.append( " codcompra=? and coditcompra=? ");
+			}
+			else if( tipo == TIPO_VENDA ) {
+				sql.append( " codvenda=? and coditvenda=? and tipovenda='V' ");
+			}
+			else if( tipo == TIPO_RECMERC) {
+				sql.append( " codrecmerc=? and coditrecmerc=? ");
+			}
 
-			ResultSet rs = ps.executeQuery();
 			
-			tabItens.limpa();
+			sql.append( " and seqitserie=? " );
 			
-			int row = 0;
-			while ( rs.next() ) {
+			int i = 0;
+			
+			System.out.println("SQL:" + sql.toString());
+			
+			while (i < tabItens.getNumLinhas()) {
 				
-				tabItens.adicLinha();
-				tabItens.setValor( rs.getInt( ITENS.SEQITSERIE.toString() ), row, ITENS.SEQITSERIE.ordinal() );
-				tabItens.setValor( rs.getString( ITENS.NUMSERIE.toString() ), row, ITENS.NUMSERIE.ordinal() );
-				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTFABRICSERIE.toString() )), row, ITENS.DTFABRICSERIE.ordinal() );
-				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTVALIDSERIE.toString() )), row, ITENS.DTVALIDSERIE.ordinal() );
+				ps = con.prepareStatement( sql.toString() );
+				
+				if( "".equals( (String) tabItens.getValor( i, ITENS.NUMSERIE.ordinal() ) )) {
+					i++;
+					return;
+				}
+				
+				ps.setInt( 1, getCodemppd() );
+				ps.setInt( 2, getCodfilialpd() );
+				ps.setInt( 3, getCodprod());
+				
+				ps.setString( 4, (String) tabItens.getValor( i, ITENS.NUMSERIE.ordinal() ) );
+				
+				ps.setInt( 5, getCodemp() );
+				ps.setInt( 6, getCodfilial() );
+				ps.setInt( 7, getCod() );
+				ps.setInt( 8, getCodit() );
+				ps.setInt( 9, (Integer) tabItens.getValor( i, ITENS.SEQITSERIE.ordinal() ) );
 					
-				row++;
+				ps.executeUpdate();
+				
+				i++;				
 			}
 			
 			con.commit();
-			
-		} catch ( SQLException e ) {
+			 
+		}				
+		catch (Exception e) {
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar nota de remessa.\n" + e.getMessage(), true, con, e );
 		}
+		
 	}
-
+	
 	@Override
 	public void actionPerformed( ActionEvent e ) { 
 
@@ -262,27 +330,27 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 	}
 
 	
-	public Integer getCodcompra() {
+	public Integer getCod() {
 	
-		return codcompra;
+		return cod;
 	}
 
 	
-	public void setCodcompra( Integer codcompra ) {
+	public void setCod( Integer cod ) {
 	
-		this.codcompra = codcompra;
+		this.cod = cod;
 	}
 
 	
-	public Integer getCoditcompra() {
+	public Integer getCodit() {
 	
-		return coditcompra;
+		return codit;
 	}
 
 	
-	public void setCoditcompra( Integer coditcompra ) {
+	public void setCodit( Integer codit ) {
 	
-		this.coditcompra = coditcompra;
+		this.codit = codit;
 	}
 	
 	
@@ -344,62 +412,19 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 
 	public void ok() {
 		
-		atualizaCpItCompraSerie();	
+		atualizaSeries();	
 				
 		super.ok();
 	}
 	
-	private void atualizaCpItCompraSerie() {
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		
-		try {
-			sql.append( "update cpitcompraserie set codemppd=?, codfilialpd=?, codprod=?, numserie=? " );
-			sql.append( "where codemp=? and codfilial=? and codcompra=? and coditcompra=? and seqitserie=? " );
-			
-			int i = 0;
-			
-			while (i < tabItens.getNumLinhas()) {
-				
-				ps = con.prepareStatement( sql.toString() );
-				
-				if( "".equals( (String) tabItens.getValor( i, ITENS.NUMSERIE.ordinal() ) )) {
-					i++;
-					return;
-				}
-				
-				ps.setInt( 1, getCodemppd() );
-				ps.setInt( 2, getCodfilialpd() );
-				ps.setInt( 3, getCodprod());
-				
-				ps.setString( 4, (String) tabItens.getValor( i, ITENS.NUMSERIE.ordinal() ) );
-				
-				ps.setInt( 5, getCodemp() );
-				ps.setInt( 6, getCodfilial() );
-				ps.setInt( 7, getCodcompra() );
-				ps.setInt( 8, getCoditcompra() );
-				ps.setInt( 9, (Integer) tabItens.getValor( i, ITENS.SEQITSERIE.ordinal() ) );
-					
-				ps.executeUpdate();
-				
-				i++;				
-			}
-			
-			con.commit();
-			 
-		}				
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+	
 	
     public void setConexao(DbConnection cn) {
     	
     	super.setConexao( cn );
     	
     	setTitulo( "Números de série para o produto " + getDescprod() + " desta compra." );
-    	carregaSeriesCompra();
+    	carregaSeries();
     	
     }
     
@@ -476,6 +501,20 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	
+	public int getTipo() {
+	
+		return tipo;
+	}
+
+
+	
+	public void setTipo( int tipo ) {
+	
+		this.tipo = tipo;
 	}
 
 }
