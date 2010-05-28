@@ -78,6 +78,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOPFase;
 import org.freedom.modulos.std.DLBuscaEstoq;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
@@ -553,14 +554,27 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		setNavegador( navRod );
 
 		adicCampo( txtCodItRma, 7, 20, 30, 20, "CodItRma", "Item", ListaCampos.DB_PK, true );
+		
 		if ( comRef() ) {
+			
 			adicCampo( txtRefProd, 40, 20, 87, 20, "RefProd", "Referência", ListaCampos.DB_FK, txtDescProd, true );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false );
+
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
+			
+			if ( buscaGen() ) {
+				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
+			}
+
 			txtQtdItRma.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmox, lcProd2, con, "qtditrma" ) );
 		}
 		else {
 			adicCampo( txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+			
+			if ( buscaGen() ) {
+				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
+			}
+			
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false );
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 			txtQtdItRma.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmox, lcProd, con, "qtditrma" ) );
@@ -871,7 +885,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		HashMap<String, Object> ret = new HashMap<String, Object>();
 		
-		String sSQL = "SELECT USAREFPROD, LANCARMACONTR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		String sSQL = "SELECT USAREFPROD, LANCARMACONTR, BUSCACODPRODGEN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -885,6 +899,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			if ( rs.next() ) {
 				ret.put( "COMREF", rs.getString( "UsaRefProd" ) );
 				ret.put( "LANCARMACONTR", rs.getString( "LANCARMACONTR" ) );
+				ret.put( "BUSCACODPRODGEN", "S".equals(rs.getString( "BUSCACODPRODGEN" )) );
+				
 			}
 			
 			con.commit();
@@ -1328,6 +1344,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	private boolean comRef() {
 		return "S".equals( prefere.get( "COMREF" ));
 	}
+	
+	private boolean buscaGen() {
+		return (Boolean) prefere.get( "BUSCACODPRODGEN" );
+	}
+
 
 	public void keyTyped( KeyEvent kevt ) {
 
