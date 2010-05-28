@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -62,6 +63,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.business.object.StatusRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
@@ -82,7 +84,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// *** Paineis tela
 	
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	private JPanelPad panelMaster = new JPanelPad( 700, 60 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 120 );
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
 	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );	
@@ -121,12 +123,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JCheckBoxPad cbEtapa5 =  new JCheckBoxPad( "Faturado", "S", "N" );
 	private JCheckBoxPad cbEtapa6 =  new JCheckBoxPad( "entregue", "S", "N" );
 	
-	// ** Legenda
-	
-	private ImageIcon imgPesagem1 = Icone.novo( "blAzul1_18x18.png" );
-	private ImageIcon imgDescarregamento = Icone.novo( "blAzul2_18x18.png" );
-	private ImageIcon imgPesagem2 = Icone.novo( "blAzul3_18x18.png" );
-	private ImageIcon imgColuna = Icone.novo( "blAzul1_18x18.png" );
+	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
 	
 	// *** Listacampos
 
@@ -139,6 +136,11 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 //	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+	
+	private JTablePad tabstatus = new JTablePad();
+	
+	private JScrollPane scpStatus = new JScrollPane( tabstatus );
+	
 		
 	// Enums
 	
@@ -151,7 +153,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		super( false );
 		
 		setTitulo( "Painel de controle de serviços", this.getClass().getName() );
-		setAtribos( 20, 20, 740, 400 );
+		setAtribos( 10, 10, 740, 600 );
 		
     	int x = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getWidth()-getWidth())/2;
     	int y = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getHeight()-getHeight())/2;
@@ -189,6 +191,59 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		
 	}
 
+	private void montaGridStatus() {
+
+		tabstatus.adicColuna( "" ); // Selecao
+		tabstatus.adicColuna( "Cod." ); // Codigo
+		tabstatus.adicColuna( "" ); // Imagem
+		tabstatus.adicColuna( "Status" ); // Descrição
+
+		tabstatus.setTamColuna( 10, 0 );
+		
+		tabstatus.setColunaInvisivel( 1 );
+
+		tabstatus.setTamColuna( 10, 2 );
+		tabstatus.setTamColuna( 100, 3 );
+
+		tabstatus.setRowHeight( 12 );
+
+		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
+
+	}
+	
+	private void carregaStatus() {
+
+		Vector<Object> valores = StatusRecMerc.getValores();
+		Vector<String> labels = StatusRecMerc.getLabels();
+//		Vector<ImageIcon> icones = new Vector<ImageIcon>();
+
+		Vector<Object> item = null;
+
+		for ( int i = 0; i < valores.size(); i++ ) { 
+
+			item = new Vector<Object>();
+			
+			String valor = valores.elementAt( i ).toString();
+			String label = labels.elementAt( i );
+			ImageIcon icon = StatusRecMerc.getImagem( valor, StatusRecMerc.IMG_TAMANHO_P );
+			
+			if(StatusRecMerc.OS_FINALIZADA.getValue().equals( valor )) {
+				item.addElement( new Boolean( false ) );
+			}
+			else {
+				item.addElement( new Boolean( true ) );
+			}
+			
+			item.addElement( valor );
+			item.addElement( icon );
+			item.addElement( label );
+
+			tabstatus.adicLinha( item );
+
+		}
+
+	}
+	
 	private void montaTela() {
 		
 		getTela().add( panelGeral, BorderLayout.CENTER );
@@ -196,12 +251,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		
 		// ***** Cabeçalho
 		
-		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
-		panelFiltros.adic( cbEtapa1, 95, 0, 100, 20 );
-		panelFiltros.adic( cbEtapa2, 193, 0, 140, 20 );
-		panelFiltros.adic( cbEtapa3, 335, 0, 100, 20 );
+//		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
+//		panelFiltros.adic( cbEtapa1, 95, 0, 100, 20 );
+//		panelFiltros.adic( cbEtapa2, 193, 0, 140, 20 );
+//		panelFiltros.adic( cbEtapa3, 335, 0, 100, 20 );
 		
-		panelMaster.adic( panelFiltros, 4, 0, 450, 52 );
+		panelFiltros.adic( scpStatus, 0, 0, 140, 77 );
+		
+		panelMaster.adic( panelFiltros, 4, 0, 450, 110 );
 
 		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
 		
@@ -229,23 +286,23 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = SwingParams.getFontpadmed(); 
 		
-		JLabelPad labelPesagem1 = new JLabelPad( "Pesagem 1" );
-		labelPesagem1.setForeground( statusColor );
-		labelPesagem1.setFont( statusFont );
+//		JLabelPad labelPesagem1 = new JLabelPad( "Pesagem 1" );
+//		labelPesagem1.setForeground( statusColor );
+//		labelPesagem1.setFont( statusFont );
 //		panelLegenda.adic( new JLabelPad( imgPesagem1 ), 60, 5, 18, 18 );
-		panelLegenda.adic( labelPesagem1, 84, 7, 80, 15 );
+//		panelLegenda.adic( labelPesagem1, 84, 7, 80, 15 );
 		
-		JLabelPad labelDescarregamento = new JLabelPad( "Descarregamento" );
-		labelDescarregamento.setForeground( statusColor );
-		labelDescarregamento.setFont( statusFont );
+//		JLabelPad labelDescarregamento = new JLabelPad( "Descarregamento" );
+//		labelDescarregamento.setForeground( statusColor );
+//		labelDescarregamento.setFont( statusFont );
 //		panelLegenda.adic( new JLabelPad( imgDescarregamento ), 164, 5, 18, 18 );
-		panelLegenda.adic( labelDescarregamento, 188, 7, 100, 15 );
+//		panelLegenda.adic( labelDescarregamento, 188, 7, 100, 15 );
 		
-		JLabelPad faturadas = new JLabelPad( "Pesagem 2" );
-		faturadas.setForeground( statusColor );
-		faturadas.setFont( statusFont );
+//		JLabelPad faturadas = new JLabelPad( "Pesagem 2" );
+//		faturadas.setForeground( statusColor );
+//		faturadas.setFont( statusFont );
 //		panelLegenda.adic( new JLabelPad( imgPesagem2 ), 294, 5, 18, 18 );		
-		panelLegenda.adic( faturadas, 318, 7, 100, 15 );
+//		panelLegenda.adic( faturadas, 318, 7, 100, 15 );
 		
 		panelLegenda.setBorder( null );		
 		
@@ -260,6 +317,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		panelSouth.add( panelNavegador, BorderLayout.WEST);
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );		
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST);
+		
+		montaGridStatus();
+		carregaStatus();
 				
 	}
 	
@@ -307,33 +367,28 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 			StringBuffer status = new StringBuffer("");
 
-			
-			if("S".equals(cbEtapa0.getVlrString())) {
-				status.append( " 'PE' ");
-			}
-			if("S".equals(cbEtapa1.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'E1' " );
-			}
-			if("S".equals(cbEtapa2.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'E2' " );
-			}
-			if("S".equals(cbEtapa3.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'FN' " );
-			}
+			boolean primeiro = true;
 
-			if ( status.length() > 0 ) {
-				sql.append( " and rm.status in (" );
-				sql.append( status );
-				sql.append( ") ");
+			for ( int i = 0; i < tabstatus.getNumLinhas(); i++ ) {
+
+				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
+
+					if ( primeiro ) {
+						sql.append( " and rm.status in (" );
+					}
+					else {
+						sql.append( "," );
+					}
+
+					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
+
+					primeiro = false;
+				}
+
+				if ( i == tabstatus.getNumLinhas() - 1 && !primeiro ) {
+					sql.append( " ) " );
+				}
+
 			}
 		
 			System.out.println("SQL:" + sql.toString());
@@ -355,16 +410,21 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				
 				tabDet.adicLinha();
 				
-
-				if ( "PE".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgPesagem1;
+				if ( StatusRecMerc.OS_PENDENTE.getValue().equals( rs.getString( "status" ) ) ) {
+					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
 				}
-				else if ( "EP".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgDescarregamento;
+				else if ( StatusRecMerc.OS_ANALISE.getValue().equals( rs.getString( "status" ) ) ) {
+					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
 				}
-				else if ( "FN".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgPesagem2;
-				}				
+				else if ( StatusRecMerc.OS_ANDAMENTO.getValue().equals( rs.getString( "status" ) ) ) {
+					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
+				}
+				else if ( StatusRecMerc.OS_PRONTO.getValue().equals( rs.getString( "status" ) ) ) {
+					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
+				}
+				else if ( StatusRecMerc.OS_FINALIZADA.getValue().equals( rs.getString( "status" ) ) ) {
+					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
+				}
 				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				tabDet.setValor( rs.getString( "status" ), row, DETALHAMENTO.STATUSTXT.ordinal() );
