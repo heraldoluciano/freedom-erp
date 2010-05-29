@@ -208,6 +208,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JTextFieldPad txtDirNfeLin = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
+	private JTextFieldPad txtDtVenctoNfe = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0) ;
+	
+	private JTextFieldPad txtKeyLicNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0) ;
+	
 	private JTextFieldPad txtDescClassCp = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
 	private JTextFieldPad txtObs01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
@@ -1376,13 +1380,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder( SwingParams.getPanelLabel("Parâmetros", Color.BLUE) );
 		setPainel( pinNFe );
-		adic( pnNFeParam, 380, 5, 395, 225 );
+		adic( pnNFeParam, 380, 5, 395, 295 );
 		
 		setPainel(pnNFeParam);
 		
 		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false );
 		adicDB(rgFormatoDANFE, 7, 75, 370, 30, "FormatoDanfe", "Formato da DANFE", false );
-		adicDB(rgProcEmiNFE, 7, 130, 370, 60, "ProcEmiNfe", "Processo de emissão", false );
+		adicDB(rgProcEmiNFE, 7, 130, 370, 50, "ProcEmiNfe", "Processo de emissão", false );
+		adicDB(txtDtVenctoNfe, 7, 202, 100, 20, "DtVenctoNfe", "Vencimento NFE", false);
+		adicDB(txtKeyLicNfe, 7, 242, 370, 20, "KeyLicNfe", "Chave de licenciamento NFE", false);
+		
 			
 						
 		/*****************
