@@ -81,7 +81,7 @@ public class NFSaida extends NF {
 			sql.append( "AND V.CODVEND=VEND.CODVEND AND V.CODEMPVD=VEND.CODEMP AND V.CODFILIALVD=VEND.CODFILIAL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? " );
 			sql.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
-			sql.append( "AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL " );
+			sql.append( "AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL AND P1.CODEMP=F.CODEMP " );
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ( (Integer) parans.elementAt( 0 ) ).intValue() );
 			ps.setInt( 2, ( (Integer) parans.elementAt( 1 ) ).intValue() );
