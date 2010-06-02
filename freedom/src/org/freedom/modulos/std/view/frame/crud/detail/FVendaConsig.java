@@ -823,8 +823,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 //				tabReceber.setValor( rs.getString( "razcli" ), row, ETabReceber.RAZCLI.ordinal() );
 //				tabReceber.setValor( rs.getInt( "codplanopag" ), row, ETabReceber.CODPLANOPAG.ordinal() );
 //				tabReceber.setValor( rs.getString( "descplanopag" ), row, ETabReceber.DESCPLANOPAG.ordinal() );
-//				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtvencitrec" ) ), row, ETabReceber.VENCIMENTO.ordinal() );
-//				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtpagoitrec" ) ), row, ETabReceber.PAGAMENTO.ordinal() );
+//				tabReceber.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "dtvencitrec" ) ), row, ETabReceber.VENCIMENTO.ordinal() );
+//				tabReceber.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "dtpagoitrec" ) ), row, ETabReceber.PAGAMENTO.ordinal() );
 //				tabReceber.setValor( rs.getBigDecimal( "vlrparcitrec" ), row, ETabReceber.VLRPARCELA.ordinal() );
 //				tabReceber.setValor( rs.getBigDecimal( "vlrpagoitrec" ), row, ETabReceber.VLRPAGO.ordinal() );
 //				tabReceber.setValor( rs.getBigDecimal( "vlrdescitrec" ), row, ETabReceber.VLRDESCONTO.ordinal() );
