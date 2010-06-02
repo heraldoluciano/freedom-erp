@@ -155,11 +155,11 @@ public class FRDiario extends FRelatorio {
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|" );
 				}
-				if (!Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")).equals(sDatahist)) {
+				if (!StringFunctions.sqlDateToStrDate(rs.getDate("DataHistTK")).equals(sDatahist)) {
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|    Dia: " + Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")));
+					imp.say(imp.pRow(), 0, "|    Dia: " + StringFunctions.sqlDateToStrDate(rs.getDate("DataHistTK")));
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + StringFunctions.replicate("-",133) + "|");
@@ -186,7 +186,7 @@ public class FRDiario extends FRelatorio {
 				
 				imp.say(imp.pRow(), 135, "|");
 				
-				sDatahist = Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK"));				
+				sDatahist = StringFunctions.sqlDateToStrDate(rs.getDate("DataHistTK"));				
 			}
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + StringFunctions.replicate("-",133) + "+" );
