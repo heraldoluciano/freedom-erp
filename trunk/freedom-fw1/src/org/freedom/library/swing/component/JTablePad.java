@@ -261,12 +261,16 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 	public void setValor( Object obj, int lin, int col ) {
 
-		if ( obj == null )
-			obj = "";
+		if ( obj == null ) {
+			if(obj instanceof String) {		
+				obj = "";
+			} 
+		}
 		if ( ( lin < ContaLinhas ) & ( col < ContaColunas ) ) {
 			modelo.setValueAt( obj, lin, col );
 		}
 	}
+	
 
 	public Object getValor( int lin, int col ) {
 
@@ -647,11 +651,11 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		public void limpa() {
 			dataVector.removeAllElements();
 			vcoresb = new Vector<Color>();
-			vcoresf = new Vector<Color>();
-			try {
+			vcoresf = new Vector<Color>();	
+			try { 
 				fireTableRowsDeleted( 0, dataVector.size() );
 			}
-			catch (Exception e) {
+			catch (Exception e) { 
 				e.printStackTrace();
 			}
 		}
