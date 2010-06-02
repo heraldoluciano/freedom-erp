@@ -289,13 +289,13 @@ public class FRInadimplentes extends FRelatorio {
 	        
     		imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	        imp.say(imp.pRow()+0,0,"|");
-	        imp.say(imp.pRow()+0,2,Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"))+"");
+	        imp.say(imp.pRow()+0,2,StringFunctions.sqlDateToStrDate(rs.getDate("DtVencItRec"))+"");
 	        imp.say(imp.pRow()+0,13,"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrparcItRec")));
 	        imp.say(imp.pRow()+0,27,"|"+(Funcoes.copy(rs.getString(9),0,1).equals("P") ? Funcoes.copy(rs.getString("CodVenda"),0,8) : Funcoes.copy(rs.getString("DocRec"),0,8))+
 	             "/"+Funcoes.copy(rs.getString("NParcItRec"),0,2));
 	        imp.say(imp.pRow()+0,39,"|"+Funcoes.copy(rs.getString("Codrec"),0,8));
 	        imp.say(imp.pRow()+0,48,"|"+Funcoes.copy(rs.getString("Codvenda"),0,8));
-	        imp.say(imp.pRow()+0,57,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DtItRec")));
+	        imp.say(imp.pRow()+0,57,"|"+StringFunctions.sqlDateToStrDate(rs.getDate("DtItRec")));
 	        imp.say(imp.pRow()+0,68,"|"+Funcoes.copy(rs.getString("CodCli"),0,8)
 	            +"-"+Funcoes.copy(rs.getString("RazCli"),0,40));
 	        imp.say(imp.pRow()+0,119,"|"+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+

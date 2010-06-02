@@ -330,7 +330,7 @@ public class FRCpProd extends FRelatorio {
 				imp.say( 97, "|" );
 				imp.say( 99, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( total ) ) );
 				imp.say( 112, "|" );
-				imp.say( 114, Funcoes.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) );
+				imp.say( 114, StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) );
 				imp.say( 125, "|" );
 				imp.say( 127, rs.getString( "DOCCOMPRA" ) );
 				imp.say( 135, "|" );

@@ -366,7 +366,7 @@ public class FRVendasGeral extends FRelatorio {
 
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 				if ( !rs.getString( "dtsaidavenda" ).equals( sDatasaidavenda ) )
-					imp.say( imp.pRow(), 0, "|" + Funcoes.sqlDateToStrDate( rs.getDate( "dtsaidavenda" ) ) );
+					imp.say( imp.pRow(), 0, "|" + StringFunctions.sqlDateToStrDate( rs.getDate( "dtsaidavenda" ) ) );
 				else imp.say( imp.pRow(), 0, "|" );
 
 				if ( Funcoes.copy( rs.getString( "statusvenda" ), 0, 1 ) == "P" )

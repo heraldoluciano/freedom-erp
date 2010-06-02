@@ -393,7 +393,7 @@ public class FRMediaItem extends FRelatorio {
 				imp.say(imp.pRow() + 0, 16, "  "+ Funcoes.copy(rs.getString("DescProd"), 0, 40) + " ");
 				imp.say(imp.pRow() + 0, 59, "| "+ Funcoes.strDecimalToStrCurrency(8, 0, rs.getString("SldProd")) + " ");
 				if (rs.getDate("DTULTCPPROD") != null) {
-					imp.say(imp.pRow() + 0, 70, "| "+ Funcoes.sqlDateToStrDate(rs.getDate("DTULTCPPROD")) + " ");
+					imp.say(imp.pRow() + 0, 70, "| "+ StringFunctions.sqlDateToStrDate(rs.getDate("DTULTCPPROD")) + " ");
 				} else {
 					imp.say(imp.pRow() + 0, 70, "|            ");
 				}

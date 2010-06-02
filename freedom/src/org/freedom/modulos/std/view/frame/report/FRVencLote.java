@@ -240,7 +240,7 @@ public class FRVencLote extends FRelatorio {
 				imp.say( imp.pRow(), 0, "| " + ( sCodProd.equals( "REFPROD" ) ? rs.getString( "REFPROD" ) : Funcoes.alinhaDir( rs.getInt( "CODPROD" ), 13 ) ) );
 				imp.say( imp.pRow(), 16, "| " + rs.getString( "DESCPROD" ) );
 				imp.say( imp.pRow(), 69, "| " + rs.getString( "CODLOTE" ) );
-				imp.say( imp.pRow(), 85, "| " + Funcoes.sqlDateToStrDate( rs.getDate( "VENCTOLOTE" ) ) );
+				imp.say( imp.pRow(), 85, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "VENCTOLOTE" ) ) );
 				imp.say( imp.pRow(), 98, "| " + Funcoes.strDecimalToStrCurrency( 15, 1, rs.getString( "SLDLIQLOTE" ) ) );
 				imp.say( imp.pRow(), 135, "|" );
 

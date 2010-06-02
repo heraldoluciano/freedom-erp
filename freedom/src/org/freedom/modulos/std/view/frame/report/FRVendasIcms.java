@@ -142,7 +142,7 @@ public class FRVendasIcms extends FRelatorio {
 				}
 
 				imp.say( imp.pRow() + 1, 0, imp.normal() );
-				imp.say( imp.pRow(), 0, "| " + Funcoes.sqlDateToStrDate( rs.getDate( 1 ) ) );
+				imp.say( imp.pRow(), 0, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( 1 ) ) );
 				imp.say( imp.pRow(), 15, "| " + Funcoes.copy( rs.getString( 2 ), 0, 1 ) );
 				imp.say( imp.pRow(), 22, "| " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 3 ) ) + "| " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 4 ) ) + "| " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( 5 ) ) );
 				imp.say( imp.pRow(), 79, "|" );

@@ -330,8 +330,8 @@ public class FRVendasCFOP extends FRelatorio {
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "| " + Funcoes.copy( rs.getString( "DocVenda" ), 0, 10 ) );
-				imp.say( 14, "| " + Funcoes.sqlDateToStrDate( rs.getDate( "DtEmitVenda" ) ) );
-				imp.say( 27, "| " + Funcoes.sqlDateToStrDate( rs.getDate( "DtSaidaVenda" ) ) );
+				imp.say( 14, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DtEmitVenda" ) ) );
+				imp.say( 27, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DtSaidaVenda" ) ) );
 				imp.say( 40, "| " + rs.getInt( "CodVenda" ) );
 				imp.say( 50, "| " + rs.getInt( "CodCli" ) );
 				imp.say( 61, "| " + Funcoes.copy( rs.getString( "RazCli" ), 0, 50 ) );

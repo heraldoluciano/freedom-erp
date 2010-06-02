@@ -345,7 +345,7 @@ public class FRExtrato extends FRelatorio {
 				}
 
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "| " + Funcoes.sqlDateToStrDate( rs.getDate( "DataSL" ) ) );
+				imp.say( 0, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DataSL" ) ) );
 				imp.say( 14, "| " + Funcoes.copy( rs.getString( "HistBLanca" ), 0, 50 ) );
 				imp.say( 69, "| " + Funcoes.alinhaDir( rs.getString( "DocLanca" ), 10 ) );
 				imp.say( 82, "|" );
