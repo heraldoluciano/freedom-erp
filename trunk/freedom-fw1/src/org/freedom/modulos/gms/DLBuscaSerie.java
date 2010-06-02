@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -141,8 +142,8 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 				
 				tab.adicLinha( new Object[] {
 						rs.getString("numserie"),
-						rs.getDate("dtfabricserie") != null ? Funcoes.sqlDateToStrDate( rs.getDate("dtfabricserie")) : "",
-						rs.getDate("dtvalidserie") != null ? Funcoes.sqlDateToStrDate( rs.getDate("dtvalidserie")) : "",
+						rs.getDate("dtfabricserie") != null ? StringFunctions.sqlDateToStrDate( rs.getDate("dtfabricserie")) : "",
+						rs.getDate("dtvalidserie") != null ? StringFunctions.sqlDateToStrDate( rs.getDate("dtvalidserie")) : "",
 						rs.getString("obsserie") != null ? rs.getString("obsserie").trim() : "" 
 				}
 				);
