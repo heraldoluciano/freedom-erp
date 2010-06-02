@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Main-Class: org.freedom.modulos.std.FreedomSTD
-Signature-Version: 1.2.2.0 Build 00001 (02/06/2010)
+Signature-Version: 1.2.2.1-beta build 00001 (02/06/2010)
 Class-path: *
-
+ 
 Name: org/freedom
 Specification-Title: FreedomERP 
 Specification-Version: 1.2.2.0 
