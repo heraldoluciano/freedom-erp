@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -216,7 +217,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
       	vCodAtends.add(""+rs.getString("CodAtendo"));
 		tabConv.setValor(rs.getString("DocAtendo"),i,0);
 		tabConv.setValor(rs.getString("StatusAtendo"),i,1);
-      	tabConv.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataAtendo")),i,2);
+      	tabConv.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DataAtendo")),i,2);
       	tabConv.setValor(rs.getString("DescTpAtendo"),i,3);
 		tabConv.setValor(rs.getString("NomeAtend"),i,4);
 		tabConv.setValor(rs.getString("HoraAtendo"),i,5);
