@@ -388,8 +388,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 				}
 
 				tab.setValor( rs.getString( 10 ), iLin, 4 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtOrc" ) ), iLin, 6 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtVencOrc" ) ), iLin, 7 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtOrc" ) ), iLin, 6 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencOrc" ) ), iLin, 7 );
 				tab.setValor( rs.getString( 9 ) != null ? Funcoes.setMascara( rs.getString( 9 ), "(####)####-####" ) : "", iLin, 9 );
 				tab.setValor( rs.getString( 18 ) != null ? rs.getString( 18 ) : "", iLin, 5 );
 				iLin++;

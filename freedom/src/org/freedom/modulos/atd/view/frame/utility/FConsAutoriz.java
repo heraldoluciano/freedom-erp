@@ -428,9 +428,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			while ( rs.next() ) {
 				tab.adicLinha();
 				tab.setValor( String.valueOf( rs.getInt( 1 ) ), iLin, 0 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 2 ) ), iLin, 1 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 3 ) ), iLin, 2 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 4 ) ), iLin, 3 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 2 ) ), iLin, 1 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 3 ) ), iLin, 2 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 4 ) ), iLin, 3 );
 				tab.setValor( rs.getString( 5 ) != null ? rs.getString( 5 ) : "", iLin, 4 );
 				tab.setValor( String.valueOf( rs.getInt( 6 ) ), iLin, 5 );
 				tab.setValor( rs.getString( 7 ) != null ? rs.getString( 7 ) : "", iLin, 6 );
