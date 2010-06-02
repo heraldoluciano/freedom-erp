@@ -94,7 +94,7 @@ public class PVNCACongelados extends Leiaute {
 									"RAZCLI").trim()
 									+ " - " + rs.getInt("CODCLI") : ""));
 					imp.say(102, "Data: "
-							+ Funcoes.sqlDateToStrDate(rs
+							+ StringFunctions.sqlDateToStrDate(rs
 									.getDate("DTEMITVENDA")));
 					imp.say(121, "Hora: " + sHora);
 					imp.say(135, " |");
