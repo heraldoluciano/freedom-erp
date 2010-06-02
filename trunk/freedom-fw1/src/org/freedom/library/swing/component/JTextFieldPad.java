@@ -1089,7 +1089,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 					Aplicativo.getInstace().abreTela("", telaexterna );	
 				}
 				else {
-					Funcoes.mensagemInforma(null, "O usuário "+ Aplicativo.strUsuario + " não possuí acesso a tela solicitada ("
+					Funcoes.mensagemInforma(null, "O usuário "+ Aplicativo.strUsuario + " não possui acesso a tela solicitada ("
 					+ telaexterna.getName() + ").\nSolicite a liberação do acesso ao administrador do sistema." );
 				}
 				
