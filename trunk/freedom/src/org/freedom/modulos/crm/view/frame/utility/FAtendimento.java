@@ -662,6 +662,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			if(Chamado.STATUS_CONCLUIDO.getValue().equals( valor )) {
 				item.addElement( new Boolean( false ) );
 			}
+			else if(Chamado.STATUS_CANCELADO.getValue().equals( valor )) {
+				item.addElement( new Boolean( false ) );
+			}
 			else {
 				item.addElement( new Boolean( true ) );
 			}
