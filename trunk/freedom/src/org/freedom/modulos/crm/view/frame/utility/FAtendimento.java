@@ -29,14 +29,19 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.functions.FuncoesCRM;
@@ -1042,8 +1047,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					tabatd.setValor( rs.getString( "CodAtendo" ), i, 0 );
 					tabatd.setValor( rs.getString( "DocAtendo" ), i, 1 );
 					tabatd.setValor( rs.getString( "StatusAtendo" ), i, 2 );
-					tabatd.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataAtendo" ) ), i, 3 );
-					tabatd.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataAtendoFin" ) ), i, 4 );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataAtendo" ) ), i, 3 );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataAtendoFin" ) ), i, 4 );
 					tabatd.setValor( rs.getString( "OBSATENDO" ), i, 5 );
 					tabatd.setValor( rs.getInt( "CODATEND" ), i, 6 );
 					tabatd.setValor( rs.getString( "NomeAtend" ), i, 7 );
@@ -1177,24 +1182,39 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 				tabchm.limpa();
 
+				int row = 0;
+				
 				for ( int i = 0; rs.next(); i++ ) {
 					tabchm.adicLinha();
 
-					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
+					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.PRIORIDADE.name() ), i, GridChamado.PRIORIDADE.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
 					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
-					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
-					tabchm.setValor( Funcoes.sqlDateToStrDate( rs.getDate( GridChamado.DTCONCLUSAO.name() ) ), i, GridChamado.DTCONCLUSAO.ordinal() );
+					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
+					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTCONCLUSAO.name() ) ), i, GridChamado.DTCONCLUSAO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
-
-				}
+ 
+					row++;
+					
+				} 
+				
 				rs.close();
 				ps.close();
-
+								
+				// Permitindo reordenação
+				if(row>0) {
+					RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabchm.getModel());    
+				
+					   tabchm.setRowSorter(sorter);				   
+				}
+				else {
+					tabchm.setRowSorter( null );
+				}
+				
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar tabela de chamados!\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
