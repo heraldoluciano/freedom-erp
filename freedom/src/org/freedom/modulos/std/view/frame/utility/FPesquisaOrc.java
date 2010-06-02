@@ -465,8 +465,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 				tab.setValor( rs.getString( 14 ) == null ? "-" : rs.getString( 14 ) + "", iLin, 3 );
 				tab.setValor( rs.getInt( 5 ) + "", iLin, 4 );
 				tab.setValor( rs.getString( 6 ) != null ? rs.getString( 6 ) : "", iLin, 5 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 3 ) ), iLin, 6 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 4 ) ), iLin, 7 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 3 ) ), iLin, 6 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 4 ) ), iLin, 7 );
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( 12 ) != null ? rs.getString( 12 ) : "" ), iLin, 9 );
 				tab.setValor( rs.getString( 9 ) != null ? rs.getString( 9 ) : "", iLin, 8 );
 				tab.setValor( rs.getString( 10 ) != null ? rs.getString( 10 ) : "", iLin, 10 );

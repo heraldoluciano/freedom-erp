@@ -212,12 +212,12 @@ public class ImprimeOrc extends ImprimeLayout {
 			drawTexto( StringFunctions.strZero( "" + iCodOrc, 8 ), 70, iY );
 			setFonte( fnCabEmp );
 			drawTexto( "Data de emissão: ", 200, iY );
-			drawTexto( Funcoes.sqlDateToStrDate( rs.getDate( "DtOrc" ) ), 300, iY );
+			drawTexto( StringFunctions.sqlDateToStrDate( rs.getDate( "DtOrc" ) ), 300, iY );
 
 			setFonte( fnCabEmp );
 			drawTexto( "Validade: ", 380, iY );
 			if ( pref[ 1 ] )
-				drawTexto( Funcoes.sqlDateToStrDate( rs.getDate( "DtVencOrc" ) ), 480, iY );
+				drawTexto( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencOrc" ) ), 480, iY );
 			else {
 				Date dtOrc = rs.getDate( "DtOrc" );
 				Date dtVal = rs.getDate( "DtVencOrc" );

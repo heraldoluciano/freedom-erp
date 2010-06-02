@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -322,8 +323,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 				while ( rs.next() ) {
 					tab1.adicLinha();
 
-					tab1.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 1 ) ), iTotCompras, 0 );
-					tab1.setValor( Funcoes.sqlDateToStrDate( rs.getDate( 2 ) ), iTotCompras, 1 );
+					tab1.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 1 ) ), iTotCompras, 0 );
+					tab1.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 2 ) ), iTotCompras, 1 );
 					tab1.setValor( ( rs.getString( 3 ) != null ? rs.getString( 3 ) : "" ), iTotCompras, 2 );
 					tab1.setValor( "" + rs.getInt( 4 ), iTotCompras, 3 );
 					tab1.setValor( ( rs.getString( 5 ) != null ? rs.getString( 5 ) : "" ), iTotCompras, 4 );
@@ -441,8 +442,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 				while ( rs2.next() ) {
 					tab2.adicLinha();
-					tab2.setValor( Funcoes.sqlDateToStrDate( rs2.getDate( "DTEMITVENDA" ) ), iTotVendas, EColSaida.DTEMIT.ordinal() );
-					tab2.setValor( Funcoes.sqlDateToStrDate( rs2.getDate( "DTSAIDAVENDA" ) ), iTotVendas, EColSaida.DTSAIDA.ordinal() );
+					tab2.setValor( StringFunctions.sqlDateToStrDate( rs2.getDate( "DTEMITVENDA" ) ), iTotVendas, EColSaida.DTEMIT.ordinal() );
+					tab2.setValor( StringFunctions.sqlDateToStrDate( rs2.getDate( "DTSAIDAVENDA" ) ), iTotVendas, EColSaida.DTSAIDA.ordinal() );
 					tab2.setValor( rs2.getString( "CODNAT" ) != null ? rs2.getString( "CODNAT" ) : "", iTotVendas, EColSaida.NATOPER.ordinal() );
 					tab2.setValor( "" + rs2.getInt( "CODCLI" ), iTotVendas, EColSaida.CODEMIT.ordinal() );
 					tab2.setValor( rs2.getString( "UFCLI" ) != null ? rs2.getString( "UFCLI" ) : "", iTotVendas, EColSaida.UF.ordinal() );
@@ -785,7 +786,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 				dl.tab.setValor( "" + rsChec.getInt( 1 ), iTotErros, 0 );
 				dl.tab.setValor( rsChec.getString( 2 ), iTotErros, 1 );
 				dl.tab.setValor( "" + rsChec.getInt( 3 ), iTotErros, 2 );
-				dl.tab.setValor( Funcoes.sqlDateToStrDate( rsChec.getDate( 4 ) ), iTotErros, 3 );
+				dl.tab.setValor( StringFunctions.sqlDateToStrDate( rsChec.getDate( 4 ) ), iTotErros, 3 );
 				dl.tab.setValor( "Numeração de NF. repetida", iTotErros, 4 );
 				iTotErros++;
 			}
