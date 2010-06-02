@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -242,7 +244,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
       for (int i=0; rs.next(); i++) {
         tab.adicLinha();
         tab.setValor(rs.getString("CodLanca"),i,0);
-        tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataSubLanca")),i,1);
+        tab.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DataSubLanca")),i,1);
         tab.setValor(rs.getString("TransfLanca") != null ? rs.getString("TransfLanca") : "",i,2);
         if (rs.getString("TransfLanca").trim().equals("S")) {
           tab.setValor(rs.getString(8) != null ? rs.getString(8) : "",i,4);
@@ -333,7 +335,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 	  
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-        lbDataSaldoVal.setText(Funcoes.sqlDateToStrDate(rs.getDate("DataSl")));
+        lbDataSaldoVal.setText(StringFunctions.sqlDateToStrDate(rs.getDate("DataSl")));
         lbVlrSaldoVal.setText(Funcoes.strDecimalToStrCurrency(10,2,rs.getString("SaldoSl")));
         lbAtualSaldoVal.setText("SIM");
       }

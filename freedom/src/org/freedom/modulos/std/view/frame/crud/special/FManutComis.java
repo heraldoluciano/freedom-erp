@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -397,7 +398,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				}
 				else if ( rs.getString( "StatusComi" ).equals( "CP" ) ) {
 					tab.setValor( new Boolean( true ), i, 0 );
-					tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtPagtoComi" ) ), i, 10 );
+					tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagtoComi" ) ), i, 10 );
 					bVlrTotPago = bVlrTotPago.add( new BigDecimal( rs.getString( "VlrComi" ) ) );
 				}
 				/* # IMPLEMENTAR # */
@@ -409,8 +410,8 @@ public class FManutComis extends FFilho implements ActionListener {
 				tab.setValor( rs.getString( "NParcItRec" ), i, 5 );
 				tab.setValor( rs.getString( "TipoComi" ) != null ? rs.getString( "TipoComi" ) : "", i, 6 );
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, "" + ( rs.getBigDecimal( "VlrComi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ), i, 7 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "Datacomi" ) ), i, 8 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, 9 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "Datacomi" ) ), i, 8 );
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, 9 );
 				bVlrTot = bVlrTot.add( ( new BigDecimal( rs.getString( "VlrComi" ) ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
 			}
 			txtTotComi.setVlrBigDecimal( bVlrTot );
