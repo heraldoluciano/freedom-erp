@@ -41,6 +41,7 @@ import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -290,7 +291,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 				for ( int i = 0; i < tab.getNumColunas(); i++ ) {
 					sNomeCampoX = ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getNomeCampo();
 					if ( ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getTipo() == JTextFieldPad.TP_DATE ) {
-						sVal = rsF2.getString( sNomeCampoX ) != null ? Funcoes.sqlDateToStrDate( rsF2.getDate( sNomeCampoX ) ) : "";
+						sVal = rsF2.getString( sNomeCampoX ) != null ? StringFunctions.sqlDateToStrDate( rsF2.getDate( sNomeCampoX ) ) : "";
 					}
 					else {
 						sVal = rsF2.getString( sNomeCampoX ) != null ? rsF2.getString( sNomeCampoX ) : "";
