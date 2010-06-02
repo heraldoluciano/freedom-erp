@@ -28,7 +28,6 @@ package org.freedom.modulos.std.view.frame.crud.detail;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -86,6 +85,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FEncaminhador;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
@@ -453,7 +453,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		rgTipoFrete = new JRadioGroup<String, String>( 1, 21, vLabsTF, vValsTF );
 
 		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
 		lbStatus.setOpaque( true );
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setVisible( false );

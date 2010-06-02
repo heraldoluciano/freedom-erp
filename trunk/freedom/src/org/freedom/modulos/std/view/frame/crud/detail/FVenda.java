@@ -30,7 +30,6 @@ package org.freedom.modulos.std.view.frame.crud.detail;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -92,6 +91,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -800,7 +800,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
 
@@ -2997,7 +2997,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		try {
 
 			lbStatus.setForeground( Color.WHITE );
-			lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 			lbStatus.setOpaque( true );
 			lbStatus.setVisible( false );
 
