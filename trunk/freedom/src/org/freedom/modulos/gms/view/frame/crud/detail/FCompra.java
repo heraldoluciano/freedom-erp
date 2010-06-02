@@ -31,7 +31,6 @@ package org.freedom.modulos.gms.view.frame.crud.detail;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,9 +48,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -82,6 +84,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
@@ -481,7 +484,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
-		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true );
+		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Documento", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
@@ -565,6 +568,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcTipoMov.add( new GuardaCampo( txtEmitCompra, "EmitNFCpMov", "Emite NF", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true ) );
+		lcTipoMov.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_FK, false ) );
 		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
 				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -573,7 +577,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
 		lcSerie.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_PK, false ) );
-		lcSerie.add( new GuardaCampo( txtDocSerie, "DocSerie", "Doc", ListaCampos.DB_SI, false ) );
+		lcSerie.add( new GuardaCampo( txtDocSerie, "DocSerie", "Documento", ListaCampos.DB_SI, false ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
@@ -768,7 +772,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setOpaque( true );
 		lbStatus.setText( "NÃO SALVO" );
@@ -2296,6 +2300,29 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			lbStatus.setBackground( Color.ORANGE );
 			lbStatus.setVisible( true );
 		}
+		else if ( statuscompra.equals( "EP" )) {
+			lbStatus.setText( "ENTREGUE PARCIAL" );
+			lbStatus.setBackground( Color.BLUE );
+			lbStatus.setVisible( true );
+		}
+		else if ( statuscompra.equals( "ET" )) {
+			lbStatus.setText( "ENTREGUE TOTAL" );
+			lbStatus.setBackground( new Color( 45, 190, 60 ) );
+			lbStatus.setVisible( true );
+		}
+		else if ( "".equals( statuscompra ) || statuscompra==null) {
+			lbStatus.setForeground( Color.WHITE );
+			lbStatus.setBackground( Color.BLACK );	
+			lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+			lbStatus.setOpaque( true );
+			lbStatus.setText( "NÃO SALVO" );
+		}
+		else { 
+			lbStatus.setText( statuscompra );
+			lbStatus.setBackground( Color.DARK_GRAY );
+			lbStatus.setVisible( true );			
+		}
+		
 
 	}
 
