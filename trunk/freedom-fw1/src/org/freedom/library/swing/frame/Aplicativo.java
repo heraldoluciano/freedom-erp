@@ -221,12 +221,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	
 	protected void setEquipeSis() {
 		
-		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Sergio Murilo - Suporte / Testes" );
-		vEquipeSis.add( "Alexandre Marcondes - Programação" );
-		vEquipeSis.add( "Fernando Oliveira - Programação" );
-		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );		
+		vEquipeSis.add( "Robson Sanchez: Supervisão/Analise" );
+		vEquipeSis.add( "Anderson Sanchez: Supervisão/Desenvolvimento" );
+		vEquipeSis.add( "Luiz Frederico: Suporte/Testes" );
+		vEquipeSis.add( "Sergio Murilo: Suporte/Testes" );
+		vEquipeSis.add( "Alan Alexandre Oliveira: Desenvolvimento" );
+		vEquipeSis.add( "Alexandre Marcondes: Desenvolvimento" );
+		vEquipeSis.add( "Fernando Oliveira: Desenvolvimento" );
+		vEquipeSis.add( "Moyzes Braz: Arte gráfica" );		
 		
 	}
 	
@@ -446,14 +448,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		telaPrincipal.setVisible( true );
 
-//        System.out.println(UIManager.getDefaults().size()+ " propriedades definidas !");  
-//        Enumeration keys = UIManager.getDefaults().keys();  
-//        Enumeration elements = UIManager.getDefaults().elements();
-        
-//        while (keys.hasMoreElements()) {  
-//            System.out.println(keys.nextElement().toString() + " - " + elements.nextElement().toString());  
-//        }  
-        
 	}
 
 	public void adicTelaBotao( JButtonPad bt ) {
@@ -552,7 +546,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public void abreTela(String titulo, Class<? extends IFilho> telaClass) {
 		String name = telaClass.getName();
-	//	Class<? extends IFilho> telaClass = null;
 		if ( !telaPrincipal.temTela( name ) ) {
 			try {
 				Object obj = telaClass.newInstance();

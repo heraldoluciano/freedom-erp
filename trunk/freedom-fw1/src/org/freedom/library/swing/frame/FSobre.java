@@ -27,9 +27,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -43,6 +41,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.util.SwingParams;
 
 public class FSobre extends FFDialogo {
 
@@ -72,27 +71,30 @@ public class FSobre extends FFDialogo {
 	
 	private JLabelPad labelSistema = new JLabelPad();
 	
-	private Font font = new Font( "Verdana", Font.BOLD + Font.ITALIC, 13 );
-
+	private Font font = SwingParams.getFontboldmed();
+	
 	public FSobre() {
 
 		super( Aplicativo.telaPrincipal );
+		
 		setTitulo( "Sobre" );
-		setAtribos( 312, 330 );
+		setAtribos( 330, 300 );
+		
 		setToFrameLayout();
+		
 		btMemoria.addActionListener( this );
 		c.add( tpnSobre, BorderLayout.CENTER );
 		tpnSobre.addTab( "Sobre", pnSobre );
 
 		JLabelPad lbImg = new JLabelPad( img );
 		lbImg.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-		String sVersao = "";
+		String sdatacompilacao = "";
 
 		try {
 			
 			Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());	
 			
-			sVersao = Funcoes.dateToStrDataHora( datacompilacao ) ;
+			sdatacompilacao = Funcoes.dateToStrDataHora( datacompilacao ) ;
 			
 		} 
 		catch ( Exception err ) {
@@ -100,14 +102,36 @@ public class FSobre extends FFDialogo {
 		}
 
 		pnSobre.add( lbImg, BorderLayout.NORTH );
-		pnSobre.add( new JLabelPad( "<HTML><BR> Data de compilação: " + sVersao + "<BR> " + Aplicativo.getMantenedor() + "<BR>" + ( new GregorianCalendar().get( Calendar.YEAR ) ) + "<BR></HTML>" ), BorderLayout.CENTER );
+		
+		StringBuilder htmlversao = new StringBuilder();
+		htmlversao.append("<HTML>");
+		
+		htmlversao.append("<BR>");
+		htmlversao.append(" Versão: ");
+		
+		htmlversao.append( SystemFunctions.getVersion(this.getClass()) );
+		
+		htmlversao.append("</BR>");	
+
+		htmlversao.append("<BR>");
+		htmlversao.append(" Compilação: ");	
+		
+		htmlversao.append( sdatacompilacao );
+		
+		htmlversao.append("</BR>");	
+
+		htmlversao.append("</HTML>");
+		 
+		JLabelPad pnversao = new JLabelPad(htmlversao.toString());
+		
+		pnSobre.add(pnversao, BorderLayout.CENTER);
 		
 		tpnSobre.addTab( "Equipe", pnEquipe );
 		
 		StringBuffer sHtmlEquipe = new StringBuffer();
 		
 		sHtmlEquipe.append( "<HTML>" );
-		sHtmlEquipe.append( "<TABLE width='280' border=\"1\">" );
+		sHtmlEquipe.append( "<TABLE width='300' border=\"1\">" );
 		
 		Vector<String> equipesis = Aplicativo.getEquipeSis();
 		
@@ -150,7 +174,7 @@ public class FSobre extends FFDialogo {
 		
 		buf.append( "<HTML>" );
 		
-		buf.append( "<TABLE width='290' border=\"1\"><CENTER>" );
+		buf.append( "<TABLE width='300' border=\"1\"><CENTER>" );
 		buf.append( "<TR>" );
 		buf.append( "<TD>Memória maxima:</TD>" );
 		buf.append( "<TD>" + lMemMaxima + " MB" + "</TD>" );

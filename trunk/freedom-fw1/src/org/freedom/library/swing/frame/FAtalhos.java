@@ -25,49 +25,65 @@ import java.awt.BorderLayout;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.util.SwingParams;
 
 public class FAtalhos extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
-  private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  public FAtalhos () {
-  	super(Aplicativo.telaPrincipal);
-    setTitulo("Atalhos");
-	setAtribos(380,580);
+	private JPanelPad pnAtalhos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	
-	setToFrameLayout();
+	public FAtalhos () {
+		
+		super(Aplicativo.telaPrincipal);
+		setTitulo("Atalhos");
+		setAtribos(380,550);
 
-	c.add(pnEquipe);
-	pnEquipe.add(new JLabelPad ("<HTML><BODY>" +
-			"<UL>"+
-        "<LI><STRONG>CTRL + N</STRONG> - <EM>Novo Registro</EM>"+
-        "<LI><STRONG>CTRL + S</STRONG> - <EM>Gravar Alterações</EM>"+
-        "<LI><STRONG>CTRL + D</STRONG> - <EM>Apagar Registro</EM>"+
-        "<LI><STRONG>CTRL + E</STRONG> - <EM>Editar</EM>"+
-        "<LI><STRONG>CTRL + W</STRONG> - <EM>Cancelar Alterações</EM>"+
-        "<LI><STRONG>CTRL + P</STRONG> - <EM>Imprimir Registro</EM>"+
-        "<LI><STRONG>CTRL + R</STRONG> - <EM>Visualizar Impressão</EM>"+
-        "<LI><STRONG>CTRL + O</STRONG> - <EM>Observações</EM>" +
-        "<LI><STRONG>CTRL + I</STRONG> - <EM>Imprimir</EM>" +
-        "<LI><STRONG>CTRL + P</STRONG> - <EM>Previsão de Impressão</EM>" +
-        "<LI><STRONG>TAB</STRONG> - <EM>Vai para o próximo campo</EM>"+
-        "<LI><STRONG>SHIFT + TAB</STRONG> - <EM>Volta para o campo anterior</EM>"+
-        "<LI><STRONG>SHIFT + F4</STRONG> - <EM>Fecha a Tela</EM>"+
-        "<LI><STRONG>BARRA DE ESPAÇOS</STRONG> - <EM>Aperta um botão</EM>"+
-        "<LI><STRONG>CTRL + PAGE UP</STRONG> - <EM>Vai para o Primeiro Registro</EM>" +
-        "<LI><STRONG>PAGE UP</STRONG> - <EM>Vai para o Registro Anterior</EM>" +
-        "<LI><STRONG>PAGE DOWN</STRONG> - <EM>Vai para o Próximo Registro</EM>" +
-        "<LI><STRONG>CTRL + PAGE DOWN</STRONG> - <EM>vai para o Último Registro</EM>" +
-        "<LI><STRONG>F1</STRONG> - <EM>Atalhos</EM>" +
-        "<LI><STRONG>F2</STRONG> - <EM>Procurar</EM>" +
-        "<LI><STRONG>F3</STRONG> - <EM>Procurar similar</EM>" +
-        "<LI><STRONG>F4</STRONG> - <EM>Completar o Orçamento</EM>" +
-        "<LI><STRONG>F4</STRONG> - <EM>Fechar a Compra</EM>" +
-		"<LI><STRONG>F4</STRONG> - <EM>Fechar a Venda</EM>" +
-		"<LI><STRONG>F5</STRONG> - <EM>Consulta pagamentos</EM>" +
-        "<LI><STRONG>ESC</STRONG> - <EM>Sair da Tela</EM>" +
-        "</UL>" +
-        "</BODY>" +
-        "</HTML>"));
-  }
+		setToFrameLayout();
+
+		c.add(pnAtalhos);
+		
+		JLabelPad lbAtalhos = new JLabelPad();
+		StringBuilder atalhos = new StringBuilder();
+		
+		atalhos.append("<HTML><BODY>");
+		atalhos.append("<UL>");
+		atalhos.append("<LI><STRONG>CTRL + N</STRONG> - <EM>Novo Registro</EM>");
+		atalhos.append("<LI><STRONG>CTRL + S</STRONG> - <EM>Gravar Alterações</EM>");
+		atalhos.append("<LI><STRONG>CTRL + D</STRONG> - <EM>Apagar Registro</EM>");
+		atalhos.append("<LI><STRONG>CTRL + E</STRONG> - <EM>Editar</EM>");
+		atalhos.append("<LI><STRONG>CTRL + W</STRONG> - <EM>Cancelar Alterações</EM>");
+		atalhos.append("<LI><STRONG>CTRL + P</STRONG> - <EM>Imprimir Registro</EM>");
+		atalhos.append("<LI><STRONG>CTRL + R</STRONG> - <EM>Visualizar Impressão</EM>");
+		atalhos.append("<LI><STRONG>CTRL + O</STRONG> - <EM>Observações</EM>");
+		atalhos.append("<LI><STRONG>CTRL + I</STRONG> - <EM>Imprimir</EM>");
+		atalhos.append("<LI><STRONG>CTRL + P</STRONG> - <EM>Previsão de Impressão</EM>");
+		atalhos.append("<LI><STRONG>TAB</STRONG> - <EM>Vai para o próximo campo</EM>");
+		atalhos.append("<LI><STRONG>SHIFT + TAB</STRONG> - <EM>Volta para o campo anterior</EM>");
+		atalhos.append("<LI><STRONG>SHIFT + F4</STRONG> - <EM>Fecha a Tela</EM>");
+		atalhos.append("<LI><STRONG>BARRA DE ESPAÇOS</STRONG> - <EM>Aperta um botão</EM>");
+		atalhos.append("<LI><STRONG>CTRL + PAGE UP</STRONG> - <EM>Vai para o Primeiro Registro</EM>");
+		atalhos.append("<LI><STRONG>PAGE UP</STRONG> - <EM>Vai para o Registro Anterior</EM>");
+		atalhos.append("<LI><STRONG>PAGE DOWN</STRONG> - <EM>Vai para o Próximo Registro</EM>");
+		atalhos.append("<LI><STRONG>CTRL + PAGE DOWN</STRONG> - <EM>vai para o Último Registro</EM>");
+		atalhos.append("<LI><STRONG>F1</STRONG> - <EM>Atalhos</EM>");
+		atalhos.append("<LI><STRONG>F2</STRONG> - <EM>Procurar</EM>");
+		atalhos.append("<LI><STRONG>F3</STRONG> - <EM>Procurar similar</EM>");
+		atalhos.append("<LI><STRONG>F4</STRONG> - <EM>Completar o Orçamento</EM>");
+		atalhos.append("<LI><STRONG>F4</STRONG> - <EM>Fechar a Compra</EM>");
+		atalhos.append("<LI><STRONG>F4</STRONG> - <EM>Fechar a Venda</EM>");
+		atalhos.append("<LI><STRONG>F5</STRONG> - <EM>Consulta pagamentos</EM>");
+		atalhos.append("<LI><STRONG>F6</STRONG> - <EM>Abre tela de cadastro</EM>");
+		atalhos.append("<LI><STRONG>ESC</STRONG> - <EM>Sair da Tela</EM>");
+		atalhos.append("</UL>");
+		atalhos.append("</BODY>");
+		atalhos.append("</HTML>");
+		
+		lbAtalhos.setText( atalhos.toString() );
+		lbAtalhos.setFont( SwingParams.getFontbold() );
+		
+		pnAtalhos.add(lbAtalhos);
+		
+		
+		
+	}
 }    
