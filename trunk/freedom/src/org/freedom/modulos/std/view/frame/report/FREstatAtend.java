@@ -154,7 +154,7 @@ public class FREstatAtend extends FRelatorio {
       
          while ( rs.next() ) {
               
-           if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) & (bFimDia)) {
+           if ((!StringFunctions.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) & (bFimDia)) {
            	imp.impCab(136, false);
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",134)+"|");
@@ -209,8 +209,8 @@ public class FREstatAtend extends FRelatorio {
          
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
-          if (!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) {
-             imp.say(imp.pRow()+0,3,Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")));
+          if (!StringFunctions.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) {
+             imp.say(imp.pRow()+0,3,StringFunctions.sqlDateToStrDate(rs.getDate("dtemitvenda")));
           }
 
           imp.say(imp.pRow()+0,17,
@@ -242,7 +242,7 @@ public class FREstatAtend extends FRelatorio {
           }
          
           bFimDia = true;
-          sDtemitvenda = Funcoes.sqlDateToStrDate(rs.getDate("Dtemitvenda"));
+          sDtemitvenda = StringFunctions.sqlDateToStrDate(rs.getDate("Dtemitvenda"));
          
        }
 
@@ -310,7 +310,7 @@ public class FREstatAtend extends FRelatorio {
       			
       		}
       	
-      		imp.say(imp.pRow()+iLinha,iCol,"|  "+ Funcoes.sqlDateToStrDate(rs.getDate(1)));
+      		imp.say(imp.pRow()+iLinha,iCol,"|  "+ StringFunctions.sqlDateToStrDate(rs.getDate(1)));
       		imp.say(imp.pRow()+0,iCol+14," "+ Funcoes.strDecimalToStrCurrency(15,2,""+rs.getString(2)));
       		if (iCol==0) {
       			iLinha = 0;

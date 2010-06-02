@@ -232,7 +232,7 @@ public class FRImpServ extends FRelatorio {
 						imp.say(  0, "|" + StringFunctions.strZero(rs.getString("CodVenda"), 7));
 						imp.say( 10, "|" + StringFunctions.strZero(rs.getString("DocVenda"), 7));
 						imp.say( 19, "|" + Funcoes.copy(rs.getString("Serie"), 4));
-						imp.say( 23, "|" + Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+						imp.say( 23, "|" + StringFunctions.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 						imp.say( 35, "|" + Funcoes.copy(rs.getInt("CodCli") + "-" + rs.getString("RazCli"), 24));
 						imp.say( 60, "|" + Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrBaseIssVenda")));
 						imp.say( 71, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrIssVenda")));

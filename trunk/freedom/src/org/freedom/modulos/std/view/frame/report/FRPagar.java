@@ -273,13 +273,13 @@ public class FRPagar extends FRelatorio {
 			vLinhas.addElement( "Vencimento;Duplicata;Pedido;Data da compra;Fornecedor;Parcela;Atraso;Observação" );
 
 			while ( rs.next() ) {
-				sVencto = rs.getString( "DTVENCITPAG" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ) : "";
+				sVencto = rs.getString( "DTVENCITPAG" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ) : "";
 				sDocPag = rs.getString( "DOCPAG" ) != null ? rs.getString( "DOCPAG" ).trim() : "";
 				sNParcPag = rs.getString( "NPARCPAG" ) != null ? rs.getString( "NPARCPAG" ).trim() : "";
 				sPedido = rs.getString( "CODCOMPRA" ) != null ? rs.getString( "CODCOMPRA" ).trim() : "";
 				sDuplic = sDocPag + "/" + sNParcPag;
 				sForneced = rs.getString( "RAZFOR" ) != null ? rs.getString( "RAZFOR" ).trim() : "";
-				sDtCompra = rs.getString( "DTEMITCOMPRA" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) : "";
+				sDtCompra = rs.getString( "DTEMITCOMPRA" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) : "";
 				sObs = rs.getString( "OBSITPAG" ) != null ? rs.getString( "OBSITPAG" ).trim() : "";
 				sAtraso = String.valueOf( Funcoes.getNumDias( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITPAG" ) ), new Date() ) );
 				sLinha = sVencto + ";" + sDuplic + ";" + sPedido + ";" + sDtCompra + ";" + sForneced + ";" + sNParcPag + ";" + sAtraso + ";" + sObs;
@@ -577,7 +577,7 @@ public class FRPagar extends FRelatorio {
 
 				}
 
-				if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ).equals( sDtVencItPag ) ) & ( bFimDia ) ) {
+				if ( ( !StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ).equals( sDtVencItPag ) ) & ( bFimDia ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
@@ -603,13 +603,13 @@ public class FRPagar extends FRelatorio {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 
-				if ( !Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ).equals( sDtVencItPag ) )
-					imp.say( 3, Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ) );
+				if ( !StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ).equals( sDtVencItPag ) )
+					imp.say( 3, StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ) );
 
 				imp.say( 14, "| " 
 						+ Funcoes.copy( rs.getString( "CodFor" ), 0, 6 ) + "-" + Funcoes.copy( rs.getString( "RazFor" ), 0, 33 ) + " |" );
 
-				sDtPago = Funcoes.copy( rs.getString( "DtPagoItPag" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ) : " ", 0, 10 );
+				sDtPago = Funcoes.copy( rs.getString( "DtPagoItPag" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ) : " ", 0, 10 );
 
 				imp.say( 61, 
 						( Funcoes.copy( rs.getString( 10 ), 0, 1 ).equals( "P" ) 
@@ -639,7 +639,7 @@ public class FRPagar extends FRelatorio {
 				}
 
 				bFimDia = true;
-				sDtVencItPag = Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) );
+				sDtVencItPag = StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) );
 
 			}
 

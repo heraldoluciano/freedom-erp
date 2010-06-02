@@ -413,9 +413,9 @@ public class FRVendasDet extends FRelatorio {
 					imp.say( 25, "Doc: " );
 					imp.say( 30, StringFunctions.strZero( rs.getString( "DocVenda" ), 8 ) );
 					imp.say( 45, "Emissão: " );
-					imp.say( 53, Funcoes.sqlDateToStrDate( rs.getDate( "DtEmitVenda" ) ) );
+					imp.say( 53, StringFunctions.sqlDateToStrDate( rs.getDate( "DtEmitVenda" ) ) );
 					imp.say( 68, "Saida: " );
-					imp.say( 75, Funcoes.sqlDateToStrDate( rs.getDate( "DtSaidaVenda" ) ) );
+					imp.say( 75, StringFunctions.sqlDateToStrDate( rs.getDate( "DtSaidaVenda" ) ) );
 					imp.say( 90, "Plano Pagto.: " );
 					imp.say( 104, Funcoes.copy( rs.getString( "DescPlanoPag" ), 30 ) );
 					imp.say( 135, "|" );

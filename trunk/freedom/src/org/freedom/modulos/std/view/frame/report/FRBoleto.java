@@ -512,9 +512,9 @@ public class FRBoleto extends FRelatorio {
 					sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );	
 				}
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
+					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", StringFunctions.sqlDateToStrDate( dCampo ) );
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null ) {
-					sTxa = sTxa.replaceAll( "\\[DATADOC_]", Funcoes.sqlDateToStrDate( dCampo ) );
+					sTxa = sTxa.replaceAll( "\\[DATADOC_]", StringFunctions.sqlDateToStrDate( dCampo ) );
 					sTxa = sTxa.replaceAll( "\\[DIA_E]", StringFunctions.strZero( String.valueOf( Funcoes.getDiaMes( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
 					sTxa = sTxa.replaceAll( "\\[MES_E]", StringFunctions.strZero( Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ), 2 ) );
 					sTxa = sTxa.replaceAll( "\\[ANO_E]", StringFunctions.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );

@@ -291,7 +291,7 @@ public class FRComprasFor extends FRelatorio {
 				}
 				
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "| " + Funcoes.sqlDateToStrDate( rs.getDate( "DtEmitCompra" ) ) );
+				imp.say( 0, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DtEmitCompra" ) ) );
 				imp.say( 14, "| " + Funcoes.copy( rs.getString( "CodCompra" ), 0, 8 ) );
 				imp.say( 26, "| " + Funcoes.copy( rs.getString( "DocCompra" ), 0, 8 ) );
 				imp.say( 38, "| " + Funcoes.copy( rs.getString( sCodProd ), 0, 13 ) );

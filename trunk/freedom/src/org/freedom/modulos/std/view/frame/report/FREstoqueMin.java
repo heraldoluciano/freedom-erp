@@ -247,7 +247,7 @@ public class FREstoqueMin extends FRelatorio {
          imp.say(imp.pRow(),0,"| "+Funcoes.copy(rs.getString("Codgrup"),0,14)+
              "| "+Funcoes.copy(rs.getString("Refprod"),0,13)+
              "| "+Funcoes.copy(rs.getString("Descprod"),0,34)+
-             "| "+(rs.getDate("DtUltCpProd") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtUltCpProd")) : "          ")+
+             "| "+(rs.getDate("DtUltCpProd") != null ? StringFunctions.sqlDateToStrDate(rs.getDate("DtUltCpProd")) : "          ")+
              "| "+Funcoes.strDecimalToStrCurrency(6,0,rs.getString("sldliqprod"))+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,rs.getString("qtdminprod"))+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,rs.getString(7))+

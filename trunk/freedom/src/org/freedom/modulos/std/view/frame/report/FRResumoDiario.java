@@ -337,7 +337,7 @@ public class FRResumoDiario extends FRelatorio {
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" + sLinhaFina + "|" );
 					}
-					if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) & ( bFimDia ) ) {
+					if ( ( !StringFunctions.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) & ( bFimDia ) ) {
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" + sLinhaFina + "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -353,8 +353,8 @@ public class FRResumoDiario extends FRelatorio {
 					}
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
-					if ( !Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) {
-						imp.say( 3, Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ) );
+					if ( !StringFunctions.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) {
+						imp.say( 3, StringFunctions.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ) );
 					}
 
 					imp.say( 17, rs.getString( "StatusVenda" ).substring( 0, 1 ).equals( "P" ) ? "P-" + Funcoes.copy( rs.getString( "codvenda" ), 0, 6 ) : "V-" + Funcoes.copy( rs.getString( "docvenda" ), 0, 6 ) );
@@ -376,7 +376,7 @@ public class FRResumoDiario extends FRelatorio {
 					}
 
 					bFimDia = true;
-					sDtemitvenda = Funcoes.sqlDateToStrDate( rs.getDate( "Dtemitvenda" ) );
+					sDtemitvenda = StringFunctions.sqlDateToStrDate( rs.getDate( "Dtemitvenda" ) );
 
 				}
 
@@ -434,7 +434,7 @@ public class FRResumoDiario extends FRelatorio {
 					}
 
 					imp.pulaLinha( iLinha, imp.comprimido() );
-					imp.say( iCol, "|  " + Funcoes.sqlDateToStrDate( rs.getDate( 1 ) ) );
+					imp.say( iCol, "|  " + StringFunctions.sqlDateToStrDate( rs.getDate( 1 ) ) );
 					imp.say( iCol + 14, " " + Funcoes.strDecimalToStrCurrency( 15, 2, "" + rs.getString( 2 ) ) );
 
 					if ( iCol == 0 ) {
