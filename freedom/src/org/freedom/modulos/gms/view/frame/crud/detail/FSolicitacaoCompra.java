@@ -823,7 +823,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 							+ (rs.getString("DESCCC") != null ? rs.getString("DESCCC").trim()
 									: ""));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
-					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
+					imp.say(imp.pRow() + 0, 123, StringFunctions.sqlDateToStrDate(rs
 							.getDate("DTINS")));
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -831,7 +831,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
-					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
+					imp.say(imp.pRow() + 0, 123, StringFunctions.sqlDateToStrDate(rs
 							.getDate("DTAAPROVSOL")));
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());

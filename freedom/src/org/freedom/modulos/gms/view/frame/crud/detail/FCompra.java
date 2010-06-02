@@ -61,6 +61,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.business.component.NFEntrada;
 import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Layout;
@@ -1576,7 +1577,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 4, rs.getString( "CodFor" ) + " - " + rs.getString( "RazFor" ) );
 					imp.say( imp.pRow() + 0, 76, rs.getString( "CpfFor" ) != null ? Funcoes.setMascara( rs.getString( "CpfFor" ), "###.###.###-##" ) : Funcoes.setMascara( rs.getString( "CnpjFor" ), "##.###.###/####-##" ) );
-					imp.say( imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate( rs.getDate( "DtEmitCompra" ) ) );
+					imp.say( imp.pRow() + 0, 100, StringFunctions.sqlDateToStrDate( rs.getDate( "DtEmitCompra" ) ) );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 4, "[ Endereco ]" );
 					imp.say( imp.pRow() + 0, 55, "[ Bairro ]" );
@@ -1586,7 +1587,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					imp.say( imp.pRow() + 0, 4, rs.getString( "EndFor" ) );
 					imp.say( imp.pRow() + 0, 55, rs.getString( "BairFor" ) );
 					imp.say( imp.pRow() + 0, 86, Funcoes.setMascara( rs.getString( "CepFor" ), "#####-###" ) );
-					imp.say( imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate( rs.getDate( "DtEntCompra" ) ) );
+					imp.say( imp.pRow() + 0, 100, StringFunctions.sqlDateToStrDate( rs.getDate( "DtEntCompra" ) ) );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 4, "[ Municipio ]" );
 					imp.say( imp.pRow() + 0, 39, "[ UF ]" );

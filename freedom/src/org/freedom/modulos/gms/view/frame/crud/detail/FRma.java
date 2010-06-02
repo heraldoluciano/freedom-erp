@@ -1163,7 +1163,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 38, ( rs.getString( "CODCC" ) != null ? rs.getString( "CODCC" ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 62, "-" + ( rs.getString( "DESCCC" ) != null ? rs.getString( "DESCCC" ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 113, "- Data : " );
-					imp.say( imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate( rs.getDate( "DTINS" ) ) );
+					imp.say( imp.pRow() + 0, 123, StringFunctions.sqlDateToStrDate( rs.getDate( "DTINS" ) ) );
 					imp.say( imp.pRow() + 0, 136, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
@@ -1173,7 +1173,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 38, ( rs.getString( 29 ) != null ? rs.getString( 29 ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 62, "-" + ( rs.getString( 30 ) != null ? rs.getString( 30 ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 113, "- Data : " );
-					imp.say( imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate( rs.getDate( "DTAAPROVRMA" ) ) );
+					imp.say( imp.pRow() + 0, 123, StringFunctions.sqlDateToStrDate( rs.getDate( "DTAAPROVRMA" ) ) );
 					imp.say( imp.pRow() + 0, 136, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
@@ -1183,7 +1183,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 38, ( rs.getString( 31 ) != null ? rs.getString( 31 ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 62, "-" + ( rs.getString( 32 ) != null ? rs.getString( 32 ).trim() : "" ) );
 					imp.say( imp.pRow() + 0, 113, "- Data : " );
-					imp.say( imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate( rs.getDate( "DTAEXPRMA" ) ) );
+					imp.say( imp.pRow() + 0, 123, StringFunctions.sqlDateToStrDate( rs.getDate( "DTAEXPRMA" ) ) );
 					imp.say( imp.pRow() + 0, 136, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
