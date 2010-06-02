@@ -35,6 +35,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 	
 	private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	
+	private JTextFieldPad txtEmitNota = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	
 	private JTextFieldPad txtTipoMov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
@@ -120,6 +122,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtSerie, "serie", "serie", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtEmitNota, "EmitNfCpMov", "emit.nota", ListaCampos.DB_SI, false ) );
+		
 		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
 				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -207,8 +211,8 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 
 		if ( cevt.getListaCampos() == lcSerie ) {		
 			try {
-				// Set for um pedido de compra deve gerar o nro do documento automaticamente;
-				if(TipoMov.TM_PEDIDO_COMPRA.getValue().equals( txtTipoMov.getVlrString() )) {				
+				// Set for um pedido de compra deve gerar o nro do documento automaticamente e bloquear os campos ;
+				if( TipoMov.TM_PEDIDO_COMPRA.getValue().equals( txtTipoMov.getVlrString() ) && "S".equals( txtEmitNota.getVlrString() )) {				
 					
 					SeqSerie ss = new SeqSerie( txtSerie.getVlrString() );					
 					txtDoc.setVlrInteger( ss.getDocserie()+1 );
