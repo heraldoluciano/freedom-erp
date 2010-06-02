@@ -25,6 +25,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -146,13 +148,13 @@ public class DLConsultaPgto extends FFDialogo {
       ResultSet rs = ps.executeQuery();
       for (int i=0; rs.next(); i++) {
         tabConsulta.adicLinha();
-        tabConsulta.setValor((rs.getDate("DtVencItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")) : ""),i,0);
+        tabConsulta.setValor((rs.getDate("DtVencItRec") != null ? StringFunctions.sqlDateToStrDate(rs.getDate("DtVencItRec")) : ""),i,0);
         tabConsulta.setValor((rs.getString("Serie") != null ? rs.getString("Serie") : ""),i,1);
         tabConsulta.setValor((rs.getString("DocRec") != null ? rs.getString("DocRec") : ""),i,2);
         tabConsulta.setValor(""+rs.getInt("CodVenda"),i,3);
-        tabConsulta.setValor((rs.getDate("DataRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DataRec")) : ""),i,4);
+        tabConsulta.setValor((rs.getDate("DataRec") != null ? StringFunctions.sqlDateToStrDate(rs.getDate("DataRec")) : ""),i,4);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItRec")),i,5);
-        tabConsulta.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,6);
+        tabConsulta.setValor((rs.getDate("DtPagoItRec") != null ? StringFunctions.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,6);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,7);
         tabConsulta.setValor(rs.getString(9),i,8);
         tabConsulta.setValor(rs.getString("ObsRec") != null ? rs.getString("ObsRec") : "",i,9);
