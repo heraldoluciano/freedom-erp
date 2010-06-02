@@ -150,7 +150,7 @@ public class FichaMedida extends LeiauteGR {
 			setFonte(new Font("Arial",Font.BOLD,10));
 			drawTexto("Data de Nascimento:",5,iY);
 			setFonte(new Font("Arial",Font.PLAIN,8));
-			drawTexto(Funcoes.sqlDateToStrDate(rs.getDate("DtNascConv")),130,iY);
+			drawTexto(StringFunctions.sqlDateToStrDate(rs.getDate("DtNascConv")),130,iY);
 
 			setFonte(new Font("Arial",Font.BOLD,10));
 			drawTexto("Cod. Produto: _________________",285,iY);
