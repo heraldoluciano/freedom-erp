@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JPanelPad;
@@ -187,8 +188,8 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 				tabItens.adicLinha();
 				tabItens.setValor( rs.getInt( ITENS.SEQITSERIE.toString() ), row, ITENS.SEQITSERIE.ordinal() );
 				tabItens.setValor( rs.getString( ITENS.NUMSERIE.toString() ), row, ITENS.NUMSERIE.ordinal() );
-				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTFABRICSERIE.toString() )), row, ITENS.DTFABRICSERIE.ordinal() );
-				tabItens.setValor( Funcoes.sqlDateToStrDate( rs.getDate( ITENS.DTVALIDSERIE.toString() )), row, ITENS.DTVALIDSERIE.ordinal() );
+				tabItens.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( ITENS.DTFABRICSERIE.toString() )), row, ITENS.DTFABRICSERIE.ordinal() );
+				tabItens.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( ITENS.DTVALIDSERIE.toString() )), row, ITENS.DTVALIDSERIE.ordinal() );
 					
 				row++;
 			} 
