@@ -19,6 +19,8 @@
 
 package org.freedom.layout.op;
 import java.awt.Font;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -98,8 +100,8 @@ public class OPApr extends LeiauteGR {
 //		  sQtd       = (rs.getString(9)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(9)):"");
 		  dbQtd      = (rs.getString(9)!=null?new Double(Funcoes.strDecimalToBigDecimal(3,rs.getString(9)).doubleValue()):dbQtd);
 		  sQtd       = dbQtd.toString();
-		  sDtFabrica = (rs.getDate(8) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(8)) : ""); 
-		  sDtValidade= (rs.getDate(10) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(10)) : "");
+		  sDtFabrica = (rs.getDate(8) !=null ? StringFunctions.sqlDateToStrDate(rs.getDate(8)) : ""); 
+		  sDtValidade= (rs.getDate(10) !=null ? StringFunctions.sqlDateToStrDate(rs.getDate(10)) : "");
 		  sLote  = (rs.getString(19)!=null?rs.getString(19).trim():"");
 		  montaCabEmp(con);
 		  montaCab();		   	        		  
