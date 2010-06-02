@@ -377,8 +377,7 @@ public class FConsSol extends FFilho implements ActionListener {
 
 				tab.setValor(imgColuna, iLin, 0);
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
-				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
-						.sqlDateToStrDate(rs.getDate(3))
+				tab.setValor(rs.getString(3) == null ? "-" : StringFunctions.sqlDateToStrDate(rs.getDate(3))
 						+ "", iLin, 2);
 				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
 						iLin, 3);				
