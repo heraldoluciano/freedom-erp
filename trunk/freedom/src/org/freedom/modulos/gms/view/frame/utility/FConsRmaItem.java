@@ -472,9 +472,9 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(15) == null ? "" : rs.getString(15) + "",iLin, 4);//Cod OP
 				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 5);//SitAprov
 				tab.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 6);//SitExp
-				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
-				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 11);//Dt Exp
+				tab.setValor(rs.getString(8) == null ? "" : StringFunctions.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
+				tab.setValor(rs.getString(9) == null ? "" : StringFunctions.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
+				tab.setValor(rs.getString(10) == null ? "" : StringFunctions.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 11);//Dt Exp
 				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 8);//Qtd Req
 				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 10);//Qtd Aprov
 				tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 12);//Qdt Exp
