@@ -56,6 +56,7 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.business.exceptions.ExceptionCarregaItem;
@@ -1065,7 +1066,7 @@ public class ListaCampos extends Container implements PostListener,
 							tab.setValor(new Integer(rsItens.getInt(iCol + 1)),iLin, iCol);
 						}
 						else if (iTipos[iCol] == JTextFieldPad.TP_DATE) {
-							tab.setValor(Funcoes.sqlDateToStrDate(rsItens.getDate(iCol + 1)), iLin, iCol);
+							tab.setValor(StringFunctions.sqlDateToStrDate(rsItens.getDate(iCol + 1)), iLin, iCol);
 						}
 						else if (iTipos[iCol] == JTextFieldPad.TP_TIME) {
 							tab.setValor(Funcoes.sqlTimeToStrTime(rsItens.getTime(iCol + 1)), iLin, iCol);
@@ -1933,7 +1934,7 @@ public class ListaCampos extends Container implements PostListener,
 									comp.setVlrDouble(new Double(rsLC.getDouble(comp.getNomeCampo())));
 								} 
 								else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
-									comp.setVlrString(Funcoes.sqlDateToStrDate(rsLC.getDate(comp.getNomeCampo())));
+									comp.setVlrString(StringFunctions.sqlDateToStrDate(rsLC.getDate(comp.getNomeCampo())));
 								} 
 								else if (comp.getTipo() == JTextFieldPad.TP_TIME) {comp.setVlrString(Funcoes.sqlTimeToStrTime(rsLC.getTime(comp.getNomeCampo())));
 								}
