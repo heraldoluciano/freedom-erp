@@ -83,7 +83,7 @@ public class NFBuzzi extends Leiaute {
 					if (bFat) {
 						if (rsRec.next()) {
 							sDuplics[i] = sNumNota + "/" + rsRec.getInt("NPARCITREC");
-							sVencs[i] = Funcoes.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
+							sVencs[i] = StringFunctions.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
 							sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,rsRec.getString("VlrParcItRec"));
 						} else {
 							bFat = false;
@@ -116,12 +116,12 @@ public class NFBuzzi extends Leiaute {
 					imp.pulaLinha(3, imp.comprimido());
 					imp.say(  6, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
 					imp.say( 90, rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
-					imp.say(125, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.say(125, StringFunctions.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  6, Funcoes.copy(rs.getString("EndCli"),0,50).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
 					imp.say( 76, rs.getString("BairCli")!=null ? Funcoes.copy(rs.getString("BairCli"),0,15) : "");
 					imp.say(106, Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
-					imp.say(125, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.say(125, StringFunctions.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  6, rs.getString("CidCli"));
 					imp.say( 50, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));

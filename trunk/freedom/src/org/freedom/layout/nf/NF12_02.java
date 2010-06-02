@@ -73,7 +73,7 @@ public class NF12_02 extends Leiaute {
 								sVencs[i] = "A VISTA";
 							}
 							else {
-								sVencs[i] = Funcoes.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
+								sVencs[i] = StringFunctions.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
 							}
 							sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,rsRec.getString("VlrParcItRec"));
 						}
@@ -108,13 +108,13 @@ public class NF12_02 extends Leiaute {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
 					imp.say(imp.pRow()+0,81,rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
-					imp.say(imp.pRow()+0,122,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.say(imp.pRow()+0,122,StringFunctions.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 					
 					imp.say(imp.pRow()+2,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndCli"),0,50).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
 					imp.say(imp.pRow()+0,68,rs.getString("BairCli")!=null ? Funcoes.copy(rs.getString("BairCli"),0,15) : "");
 					imp.say(imp.pRow()+0,90,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
-					imp.say(imp.pRow()+0,122,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.say(imp.pRow()+0,122,StringFunctions.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
 					
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,10,rs.getString("CidCli"));

@@ -54,7 +54,7 @@ public class NFMcraftSvco extends Leiaute {
 								
 				if (bFat) {
 					if (rsRec.next()) {
-						sVencs[i] = Funcoes.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
+						sVencs[i] = StringFunctions.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
 						sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,rsRec.getString("VlrParcItRec"));
 					}
 					else {
@@ -95,7 +95,7 @@ public class NFMcraftSvco extends Leiaute {
 				//	imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
-					imp.say(imp.pRow()+0,109,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.say(imp.pRow()+0,109,StringFunctions.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 
 					
 					imp.say(imp.pRow()+1,0,"");
@@ -140,7 +140,7 @@ public class NFMcraftSvco extends Leiaute {
 //					imp.say(imp.pRow()+1,0,"");
 //					imp.say(imp.pRow()+1,0,""+imp.comprimido());				
 
-				//	imp.say(imp.pRow()+0,126,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+				//	imp.say(imp.pRow()+0,126,StringFunctions.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
 //					imp.say(imp.pRow()+1,0,"");
 //					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					
