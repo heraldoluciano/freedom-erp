@@ -36,6 +36,7 @@ import java.sql.SQLException;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -163,7 +164,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
                      "(CODEMP,CODFILIAL,CODEMPPN,CODFILIALPN,CODPLAN,DATASL,PREVSL,SALDOSL)"+
     	             " VALUES (?,?,?,?,?,?,?,?)";
     	try {
-    		state("Processano plan: "+sCodPlan+"...dia: "+Funcoes.sqlDateToStrDate(dData));
+    		state("Processano plan: "+sCodPlan+"...dia: "+StringFunctions.sqlDateToStrDate(dData));
     		PreparedStatement ps = con.prepareStatement(sSQL);
     		ps.setInt(1,Aplicativo.iCodEmp);
     		ps.setInt(2,iFilialSaldo);

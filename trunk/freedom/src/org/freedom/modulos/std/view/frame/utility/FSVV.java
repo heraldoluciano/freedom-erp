@@ -426,7 +426,7 @@ public class FSVV extends FFilho implements ActionListener {
 				tab.setValor(verifErro('A',sTipoMov,sIdent+"[Tipo Movimento]",null),i,0);
 				tab.setValor(Funcoes.copy(rs.getString("Serie"),3).trim(),i,1);
 				tab.setValor(Funcoes.copy(rs.getString("DocVenda"),8).trim(),i,2);
-				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")).replaceAll("/",""),i,3);
+				tab.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DtEmitVenda")).replaceAll("/",""),i,3);
 				tab.setValor(verifErro('A',rs.getString("CodFornVend"),sIdent+"[C. Vendedor]",sTipoMov),i,4);
 				sSufixo = "";
 				dtIniLote = null;

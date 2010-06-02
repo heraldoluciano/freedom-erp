@@ -239,7 +239,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 	                        int iLinha = 0;
 	                        while (rs.next()) {
 	                                tab.adicLinha();
-	                                tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTMOVPROD")),iLinha,0);
+	                                tab.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DTMOVPROD")),iLinha,0);
 	                                tab.setValor(rs.getString("TIPOMOV") ,iLinha,1);
 	                                tab.setValor(Funcoes.setMascara(rs.getString("CODNAT"),"#.###"),iLinha,2);
 	                                tab.setValor(new StringDireita(rs.getInt("DOCMOVPROD")+""),iLinha,3);

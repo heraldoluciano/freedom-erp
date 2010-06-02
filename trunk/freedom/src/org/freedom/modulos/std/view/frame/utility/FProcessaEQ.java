@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.ProcessoSec;
 import org.freedom.library.functions.Funcoes;
@@ -446,7 +448,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     	try {
     	    sSQL =  "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
     	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    		state(sProd+"Processando dia: "+Funcoes.sqlDateToStrDate(rs.getDate(19))+" Doc: ["+rs.getInt(20)+"]");
+    		state(sProd+"Processando dia: "+StringFunctions.sqlDateToStrDate(rs.getDate(19))+" Doc: ["+rs.getInt(20)+"]");
     		ps = con.prepareStatement(sSQL);
     		sCIV = rs.getString("TIPOPROC"); // tipo COMPRA, INVENTARIO, VENDA
     		ps.setString(paramProc.IUD.ordinal(),"I");

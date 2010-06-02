@@ -471,7 +471,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				tabVendas.setValor(rs.getString("RAZCLI"),i,3);
 				tabVendas.setValor(new Integer(rs.getInt( "CODITVENDA")),i,4);
 				
-				tabVendas.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")),i,5);				
+				tabVendas.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DTEMITVENDA")),i,5);				
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITVENDA")),i,6);
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITVENDA")),i,7);
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRDESCITVENDA")),i,8);			
@@ -520,7 +520,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 					tabCompras.setValor(rs.getString("DOCCOMPRA"),i,1);
 					tabCompras.setValor(rs.getString("RAZFOR"),i,2);
 					tabCompras.setValor(rs.getString("CODITCOMPRA"),i,3);
-					tabCompras.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTENTCOMPRA")),i,4);
+					tabCompras.setValor(StringFunctions.sqlDateToStrDate(rs.getDate("DTENTCOMPRA")),i,4);
 					
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITCOMPRA")),i,5);
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITCOMPRA")),i,6);
