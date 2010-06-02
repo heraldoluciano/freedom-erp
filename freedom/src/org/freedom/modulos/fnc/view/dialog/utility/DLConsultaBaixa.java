@@ -27,6 +27,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -135,7 +137,7 @@ public class DLConsultaBaixa extends FFDialogo {
 			
 			while(rs.next()) {
 				tabConsulta.adicLinha();
-				tabConsulta.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataSubLanca" ) ), i, 0 );
+				tabConsulta.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSubLanca" ) ), i, 0 );
 				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( "VlrSubLanca" ) ), i, 1 );
 				tabConsulta.setValor( rs.getString( "HistSubLanca" ), i, 2 );
 				
