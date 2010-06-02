@@ -3794,7 +3794,7 @@ public class Funcoes {
 			
 			rs = ps.executeQuery();
 			
-			if( rs.next() ) {
+			if( rs.next() || "SYSDBA".equals( Aplicativo.strUsuario.toUpperCase() ) ) {
 				ret = true;
 			}
 			
