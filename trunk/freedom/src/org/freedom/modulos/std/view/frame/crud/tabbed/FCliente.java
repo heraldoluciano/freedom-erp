@@ -1767,7 +1767,7 @@ public class FCliente extends FTabDados
 				tabHist.setValor( rs.getString( "TipoHistTK" ), iLinha, 2 );
 				tabHist.setValor( rs.getString( "CodCto" ), iLinha, 3 );
 				tabHist.setValor( rs.getString( "CodAtend" ), iLinha, 4 );
-				tabHist.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), iLinha, 5 );
+				tabHist.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), iLinha, 5 );
 				tabHist.setValor( rs.getString( "DescHistTK" ), iLinha, 6 );
 				tabHist.setValor( rs.getString( "NomeAtend" ), iLinha, 7 );
 				tabHist.setValor( rs.getString( "HoraHistTK" ), iLinha, 8 );
