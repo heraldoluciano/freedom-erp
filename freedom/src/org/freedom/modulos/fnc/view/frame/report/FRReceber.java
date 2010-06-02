@@ -647,7 +647,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
-				if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) 
+				if ( ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) 
 						&& ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
@@ -670,14 +670,14 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				imp.say( 0, "|" );
 
 				if ( ( !"V".equals( rgOrdem.getVlrString() ) ) 
-						|| ( !Funcoes.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) ) {
-					imp.say( 3, Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItRec" ) ) );
+						|| ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) ) {
+					imp.say( 3, StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItRec" ) ) );
 				}
 
 				imp.say( 14, "| " + Funcoes.copy( rs.getString( "CodCli" ), 0, 6 ) + "-" + Funcoes.copy( rs.getString( "RazCli" ), 0, 33 ) + " |" );
 
 				if ( rs.getString( "DtPagoItRec" ) != null ) {
-					sDtPago = Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) );
+					sDtPago = StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) );
 				}
 				else {
 					sDtPago = " ";
@@ -713,7 +713,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				}
 
 				bFimDia = true;
-				sDtTotal = Funcoes.sqlDateToStrDate( rs.getDate( sCampoTotal ) );
+				sDtTotal = StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) );
 			}
 
 			if ( ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
