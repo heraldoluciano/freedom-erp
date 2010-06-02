@@ -874,7 +874,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				tabRMA.setValor( rs.getString( "CODPROD" ) == null ? "" : rs.getString( "CODPROD" ) + "", iLin, 2 );// CodProd
 				tabRMA.setValor( rs.getString( "DESCPROD" ) == null ? "" : rs.getString( "DESCPROD" ).trim() + "", iLin, 3 );// DescProd
-				tabRMA.setValor( rs.getString( "DTINS" ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( "DTINS" ) ) + "", iLin, 4 );// Dt Req
+				tabRMA.setValor( rs.getString( "DTINS" ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( "DTINS" ) ) + "", iLin, 4 );// Dt Req
 				tabRMA.setValor( rs.getString( "QTDITRMA" ) == null ? "" : rs.getString( "QTDITRMA" ) + "", iLin, 5 );// Qtd Req
 				tabRMA.setValor( rs.getString( "QTDEXPITRMA" ) == null ? "" : rs.getString( "QTDEXPITRMA" ) + "", iLin, 6 );// Qdt Exp
 				tabRMA.setValor( rs.getString( "SLDPROD" ) == null ? "" : rs.getString( "SLDPROD" ) + "", iLin, 7 );// Saldo Prod
