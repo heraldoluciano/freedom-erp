@@ -22,6 +22,8 @@ package org.freedom.layout.orc;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -265,7 +267,7 @@ public class LaudoAprSus extends LeiauteGR {
 		drawRetangulo(290,194,100,24);
 		drawTexto("Dta. Nasc.",294,202);
 		setFonte(fnConteudo);
-		drawTexto(rs.getDate("DtNascConv") !=null ? Funcoes.sqlDateToStrDate(rs.getDate("DtNascConv")) : "",294,212);		
+		drawTexto(rs.getDate("DtNascConv") !=null ? StringFunctions.sqlDateToStrDate(rs.getDate("DtNascConv")) : "",294,212);		
 		
 		setFonte(fnSubTitulo);
 		drawRetangulo(395,194,5,24,AL_CDIR);
