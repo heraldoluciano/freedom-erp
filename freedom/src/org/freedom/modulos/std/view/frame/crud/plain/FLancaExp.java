@@ -166,9 +166,9 @@ public class FLancaExp extends FDados implements ActionListener {
 				imp.say(imp.pRow()+0,7,"|"+Funcoes.copy(rs.getString("NomeVend"),0,30));
 				imp.say(imp.pRow()+0,38,"|"+rs.getString("CodCli"));
 				imp.say(imp.pRow()+0,49,"|"+Funcoes.copy(rs.getString("RazCli"),0,30));
-				imp.say(imp.pRow()+0,81,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DtLExp")));
+				imp.say(imp.pRow()+0,81,"|"+StringFunctions.sqlDateToStrDate(rs.getDate("DtLExp")));
 				imp.say(imp.pRow()+0,93,"|"+Funcoes.copy(rs.getString("DescTipoExp"),0,30));
-				imp.say(imp.pRow()+0,125,"|"+(rs.getDate("DtRetLExp") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtRetLExp")) : ""));
+				imp.say(imp.pRow()+0,125,"|"+(rs.getDate("DtRetLExp") != null ? StringFunctions.sqlDateToStrDate(rs.getDate("DtRetLExp")) : ""));
 				imp.say(imp.pRow()+0,136,"|");
 				if (imp.pRow()>=linPag) {
 					imp.incPags();
