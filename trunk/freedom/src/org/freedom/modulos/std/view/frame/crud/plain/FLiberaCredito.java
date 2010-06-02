@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -365,13 +367,13 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 			for ( int i = 0; rs.next(); i++ ) {
 				tab.adicLinha();
 				tab.setValor( rs.getString( "CODCLI" ), i, 0 );
-				tab.setValor( ( rs.getDate( "DtVencItRec" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtVencItRec" ) ) : "" ), i, 1 );
+				tab.setValor( ( rs.getDate( "DtVencItRec" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItRec" ) ) : "" ), i, 1 );
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItRec" ) ), i, 2 );
 				tab.setValor( ( rs.getString( "Serie" ) != null ? rs.getString( "Serie" ) : "" ), i, 3 );
 				tab.setValor( ( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) : "" ), i, 4 );
 				tab.setValor( String.valueOf( rs.getInt( "CodVenda" ) ), i, 5 );
-				tab.setValor( ( rs.getDate( "DataRec" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DataRec" ) ) : "" ), i, 6 );
-				tab.setValor( ( rs.getDate( "DtPagoItRec" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, 7 );
+				tab.setValor( ( rs.getDate( "DataRec" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DataRec" ) ) : "" ), i, 6 );
+				tab.setValor( ( rs.getDate( "DtPagoItRec" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, 7 );
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrPagoItRec" ) ), i, 8 );
 				tab.setValor( rs.getString( 9 ), i, 9 );
 				tab.setValor( rs.getString( "ObsRec" ) != null ? rs.getString( "ObsRec" ) : "", i, 10 );
