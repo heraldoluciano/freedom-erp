@@ -46,6 +46,7 @@ import javax.swing.event.ChangeListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -384,7 +385,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 				tabCont.setValor( rs.getString( "CodHistTK" ), i, 0 );
 				tabCont.setValor( rs.getString( "SitHistTK" ), i, 1 );
 				tabCont.setValor( rs.getString( "TipoHistTK" ), i, 2 );
-				tabCont.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), i, 3 );
+				tabCont.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), i, 3 );
 				tabCont.setValor( rs.getString( "DescHistTK" ), i, 4 );
 				tabCont.setValor( rs.getString( "NomeAtend" ), i, 5 );
 				tabCont.setValor( rs.getString( "HoraHistTK" ), i, 6 );
@@ -419,7 +420,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 				tabCli.setValor( rs.getString( "CodHistTK" ), i, 0 );
 				tabCli.setValor( rs.getString( "SitHistTK" ), i, 1 );
 				tabCli.setValor( rs.getString( "TipoHistTK" ), i, 2 );
-				tabCli.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), i, 3 );
+				tabCli.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataHistTK" ) ), i, 3 );
 				tabCli.setValor( rs.getString( "DescHistTK" ), i, 4 );
 				tabCli.setValor( rs.getString( "NomeAtend" ), i, 5 );
 				tabCli.setValor( rs.getString( "HoraHistTK" ), i, 6 );
