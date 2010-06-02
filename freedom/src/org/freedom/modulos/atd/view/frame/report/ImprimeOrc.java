@@ -178,7 +178,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabEmp);
 		drawTexto("Data de emissão: ",275,iY); 
 		setFonte(fnCabEmpNeg);
-		drawTexto(Funcoes.sqlDateToStrDate(rs.getDate("DtOrc")),350,iY);
+		drawTexto(StringFunctions.sqlDateToStrDate(rs.getDate("DtOrc")),350,iY);
 		setFonte(fnCabEmpNeg);
 		drawTexto(StringFunctions.strZero(""+(rs.getInt(4)),8),190,iY);
 		
@@ -187,7 +187,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabEmp);
 		drawTexto("Data de validade: ",440,iY); 
 		setFonte(fnCabEmpNeg);
-		drawTexto(Funcoes.sqlDateToStrDate(rs.getDate("DtVencOrc")),515,iY);
+		drawTexto(StringFunctions.sqlDateToStrDate(rs.getDate("DtVencOrc")),515,iY);
 
 		iY += 5;
 
