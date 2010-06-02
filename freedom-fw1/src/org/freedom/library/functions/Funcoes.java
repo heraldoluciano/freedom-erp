@@ -1883,17 +1883,6 @@ public class Funcoes {
 		return vRetorno;
 	}
 
-	public static String sqlDateToStrDate(java.sql.Date d) {
-		if (d == null)
-			return "";
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(d);
-		int iDia = cal.get(Calendar.DAY_OF_MONTH);
-		int iMes = cal.get(Calendar.MONTH) + 1;
-		int iAno = cal.get(Calendar.YEAR);
-		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno;
-	}
-
 	public static String sqlTimeToStrTime(java.sql.Time t) {
 		if (t == null)
 			return "";
