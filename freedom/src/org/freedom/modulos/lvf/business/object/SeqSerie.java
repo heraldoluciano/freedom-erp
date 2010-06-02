@@ -53,6 +53,9 @@ public class SeqSerie {
 			if (rs.next()) {
 				setDocserie( rs.getInt( "docserie" ) );
 			} 
+			else {
+				setDocserie( 0 );
+			}
 
 			con.commit();
 			
