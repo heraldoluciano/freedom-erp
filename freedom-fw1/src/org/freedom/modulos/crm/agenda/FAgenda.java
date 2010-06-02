@@ -701,7 +701,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 				tabAgd.setValor( situacao, i, 1 );
 				tabAgd.setValor( prioridade, i, 2 );
 				tabAgd.setValor( assunto, i, 3 );
-				tabAgd.setValor( Funcoes.sqlDateToStrDate( dtini ), i, 4 );
+				tabAgd.setValor( StringFunctions.sqlDateToStrDate( dtini ), i, 4 );
 				tabAgd.setValor( horaini.toString(), i, 5 );
 				tabAgd.setValor( horafim.toString(), i, 6 );
 				tabAgd.setValor( rs.getString( "HrFimAgd" ), i, 7 );
@@ -959,9 +959,9 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 				calFim.setTime( rs.getTime( "HRFIMAGD" ) );
 
 				String codage = rs.getString( "CODAGE" );
-				String dtainiagd = Funcoes.sqlDateToStrDate( rs.getDate( "DTAINIAGD" ) );
+				String dtainiagd = StringFunctions.sqlDateToStrDate( rs.getDate( "DTAINIAGD" ) );
 				String hiniagd = StringFunctions.strZero( "" + calIni.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + StringFunctions.strZero( "" + calIni.get( java.util.Calendar.MINUTE ), 2 );
-				String dtafimagd = Funcoes.sqlDateToStrDate( rs.getDate( "DTAFIMAGD" ) );
+				String dtafimagd = StringFunctions.sqlDateToStrDate( rs.getDate( "DTAFIMAGD" ) );
 				String hfimagd = StringFunctions.strZero( "" + calFim.get( java.util.Calendar.HOUR_OF_DAY ), 2 ) + ":" + StringFunctions.strZero( "" + calFim.get( java.util.Calendar.MINUTE ), 2 );
 				String assuntoagd = rs.getString( "ASSUNTOAGD" );
 				String descagd = rs.getString( "DESCAGD" );
