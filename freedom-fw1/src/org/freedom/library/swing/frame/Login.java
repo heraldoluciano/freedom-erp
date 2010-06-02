@@ -102,12 +102,6 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		pnSplash.add(lbImg, BorderLayout.CENTER);
 		pnMaster.setBorder(new BevelBorder(BevelBorder.RAISED)); 
 		
-//		pnSplash.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-//		pnCampos.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-//		pnVersao.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-//		pnCampos.setBorder(BorderFactory.createEmptyBorder());
-//		pnCampos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-//		pnCampos.setBorder(BorderFactory.createBevelBorder(EtchedBorder.RAISED, new Color(200,200,200), Color.LIGHT_GRAY));
 		pnCampos.setBackground(new Color(228,228,228));
 		pnCampos.setBorder(BorderFactory.createLineBorder(new Color(200,200,200)));
 		pnVersao.setBorder(BorderFactory.createEmptyBorder());
@@ -143,7 +137,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		lbVersao.setFont(SwingParams.getFontpadmed());
 		lbVersao.setForeground(Color.DARK_GRAY);
 		
-		pnVersao.adic( lbVersao, 0, 0, 200, 20);
+		pnVersao.adic( lbVersao, 0, 0, 300, 20);
 		
 		setVisible(true);
 		
