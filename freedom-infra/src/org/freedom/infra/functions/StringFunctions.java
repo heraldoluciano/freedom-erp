@@ -27,6 +27,9 @@
 
 package org.freedom.infra.functions;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 
 
 public final class StringFunctions {
@@ -52,6 +55,38 @@ public final class StringFunctions {
 		text = ltrim(text.trim());
 		
 		return text;
+		
+	}
+	
+	public static String sqlDateToStrDate(java.sql.Date d) {
+		
+		String ret = "";
+		GregorianCalendar cal = new GregorianCalendar();
+		
+		int iDia = cal.get(Calendar.DAY_OF_MONTH);
+		int iMes = cal.get(Calendar.MONTH) + 1;
+		int iAno = cal.get(Calendar.YEAR);
+		
+		if (d == null) {
+			return ret;
+		}
+		
+		try {
+		
+			cal.setTime(d);
+			
+			iDia = cal.get(Calendar.DAY_OF_MONTH);
+			iMes = cal.get(Calendar.MONTH) + 1;
+			iAno = cal.get(Calendar.YEAR);
+		
+			ret = StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno;
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
 		
 	}
 	 
