@@ -220,6 +220,9 @@ public class FreedomCRM extends AplicativoPD {
 		addBotao( "btOrcamento.png", "Orçamentos", "Orçamento", 400200000, FOrcamento.class );
 		addBotao( "btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
 		
+		addBotao("btServico.png", "Ordem de Serviço", "Ordem de Serviço", 600200000, FOrdemServico.class );
+		addBotao("btPainelServico.png", "Painel de Controle de Serviços", "Painel de Controle de Serviços", 600100000, FControleServicos.class);
+		
 		ajustaMenu();
 		
 		nomemodulo = "CRM";		
