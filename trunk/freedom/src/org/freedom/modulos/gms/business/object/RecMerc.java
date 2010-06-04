@@ -18,6 +18,8 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
+import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
+import org.freedom.modulos.std.business.component.Orcamento;
 
 public class RecMerc implements java.io.Serializable {
 
@@ -58,6 +60,10 @@ public class RecMerc implements java.io.Serializable {
 	private Integer ticket = null;
 
 	private Integer codfor = null;
+	
+	private Integer codcli = null;
+	
+	private Integer codvend = null;
 
 	private Integer codtipomov = null;
 
@@ -72,6 +78,10 @@ public class RecMerc implements java.io.Serializable {
 	private String tipofrete = null;
 	
 	private Integer codcompra = null;
+	
+	private Integer codorc = null;
+	
+	private Object[] oPrefs = null;
 
 
 	public RecMerc(Component orig, Integer ticket, DbConnection con) {
@@ -93,7 +103,11 @@ public class RecMerc implements java.io.Serializable {
 		buscaRenda();
 
 	}
-
+	
+	private void geraPrefereOrc() {
+		oPrefs = Orcamento.getPrefere();
+	}
+	
 	public static void atualizaStatus( String status, JLabelPad lbstatus ) {
 
 		lbstatus.setForeground( Color.WHITE );
@@ -358,8 +372,111 @@ public class RecMerc implements java.io.Serializable {
 		setCodcompra( codcompra );
 
 	}
+	
+	private void geraCodOrc() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codorc = 1;
+
+		try {
+
+			sql.append( "select coalesce(max(codorc),0) + 1 from vdorcamento " );  
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				codorc = rs.getInt( 1 );
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		setCodorc( codorc );
+
+	}
+	
+	private void geraCodVend() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codorc = 1;
+
+		try {
+
+			sql.append( "select codvend from vdcliente " );  
+			sql.append( "where codemp=? and codfilial=? and codcli=?" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, getCodcli() );
+			
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				codvend = rs.getInt( 1 );
+			}
+			
+			if(codvend==null) {
+				getCodVendTela();
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		setCodvend( codvend );
+
+	}
+	
+	private void geraCodTipoMov() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codorc = 1;
+
+		try {
+
+			sql.append( "select codtipomov2 from sgprefere1 " );  
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				codtipomov = rs.getInt( 1 );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		setCodtipomov( codtipomov );
+
+	}
+	
+	
 
 	private void CarregaRecMerc() {
+		
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -370,6 +487,8 @@ public class RecMerc implements java.io.Serializable {
 		try {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
+			sql.append( ", rm.codcli " );
+
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
 			
@@ -401,6 +520,7 @@ public class RecMerc implements java.io.Serializable {
 				setDocserie( rs.getInt( "docserie" ) );
 				setTipofrete( rs.getString( "tipofrete" ) );
 				setCodfor( rs.getInt( "codfor" ) );
+				setCodcli( rs.getInt( "codcli" ) );
 			} 
 
 			con.commit();
@@ -494,6 +614,97 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 	
+	public Integer geraOrcamento() {
+
+		StringBuilder sql = new StringBuilder();
+
+		Integer ticket = null;
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		String unid = null;
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+
+		try {
+
+			geraCodOrc();
+			
+			geraCodVend();
+			
+			geraCodTipoMov();
+			
+			if(oPrefs==null) {
+				geraPrefereOrc();
+			}
+			
+			codplanopag = getPlanoPag();
+			
+			if(codplanopag == null) {
+				return null;
+			}			
+
+			sql.append( "insert into vdorcamento (");
+			sql.append( "codemp, codfilial, tipoorc, codorc, ");
+			sql.append( "dtorc, dtvencorc, codemppg, codfilialpg, codplanopag, " );
+			sql.append( "codempcl, codfilialcl, codcli, " );
+			sql.append( "codempvd, codfilialvd, codvend, " );
+			sql.append( "codemptm, codfilialtm, codtipomov, " );
+			sql.append( "statusorc " );
+			
+
+			sql.append( ") values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
+			
+
+			ps = con.prepareStatement( sql.toString() );
+
+			int param = 1;
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setString( param++, "O" );
+			ps.setInt( param++, getCodorc() );
+
+			ps.setDate( param++, Funcoes.dateToSQLDate( new Date()) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( Orcamento.getVencimento( (Integer) oPrefs[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) ) );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
+			ps.setInt( param++, codplanopag );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( param++, getCodcli() );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setInt( param++, getCodvend() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( param++, getCodtipomov() );
+			
+			ps.setString( param++, Orcamento.STATUS_ABERTO.getValue().toString() );
+			
+			ps.execute();
+			
+			con.commit();
+			ps.close();
+			
+			geraItemOrc( getCodorc() );
+			
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar orçamento!", true, con, e);
+			setCodcompra( null );
+			e.printStackTrace();
+		}
+		
+		return getCodcompra();
+
+	}
+	
 	public Integer geraItemCompra(Integer codcompra) {
 
 		StringBuilder sql = new StringBuilder();
@@ -546,6 +757,44 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 	
+	public Integer geraItemOrc(Integer codorc) {
+
+		StringBuilder sql = new StringBuilder();
+
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+
+		try {
+
+	
+			sql.append( "execute procedure vdadicitorcrecmercsp(?,?,?,?,?,?)" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );					
+			ps.setInt( 3, getTicket());
+			
+			ps.setInt( 4, Aplicativo.iCodEmp);
+			ps.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( 6, getCodorc() );
+
+			
+			ps.execute();
+			ps.close();
+
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao gerar itens de orçamento!", true, con, e);
+			setCodorc( null );
+			e.printStackTrace();
+		}
+		
+		return getCodorc();
+
+	}
+	
+	
 	private Integer getPlanoPag() {
 
 		Integer codplanopag = null;
@@ -569,6 +818,28 @@ public class RecMerc implements java.io.Serializable {
 			e.printStackTrace();
 		}
 		return codplanopag;
+	}
+
+	private void getCodVendTela() {
+
+		try {
+
+			DLInfoVendedor dl = new DLInfoVendedor(getOrig(), con);
+			dl.setConexao( con );
+			dl.setVisible(true);
+
+			if (dl.OK) {
+				setCodvend( dl.getValor() );
+				dl.dispose();
+			} 
+			else {
+				dl.dispose();
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -677,6 +948,42 @@ public class RecMerc implements java.io.Serializable {
 	public void setCodcompra( Integer codcompra ) {
 	
 		this.codcompra = codcompra;
+	}
+
+	
+	public Integer getCodorc() {
+	
+		return codorc;
+	}
+
+	
+	public void setCodorc( Integer codorc ) {
+	
+		this.codorc = codorc;
+	}
+
+	
+	public Integer getCodcli() {
+	
+		return codcli;
+	}
+
+	
+	public void setCodcli( Integer codcli ) {
+	
+		this.codcli = codcli;
+	}
+
+	
+	public Integer getCodvend() {
+	
+		return codvend;
+	}
+
+	
+	public void setCodvend( Integer codvend ) {
+	
+		this.codvend = codvend;
 	}
 
 
