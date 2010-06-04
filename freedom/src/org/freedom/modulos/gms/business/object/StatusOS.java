@@ -7,14 +7,24 @@ import javax.swing.ImageIcon;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.pojos.Constant;
 
-public class StatusRecMerc implements java.io.Serializable {
+public class StatusOS implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static final Constant OS_PENDENTE = new Constant("Pendente", "PE"); 
+	public static final Constant OS_PENDENTE = new Constant("Pendente", "PE");
+	
 	public static final Constant OS_ANALISE = new Constant("Em analise", "AN");
+	
+	public static final Constant OS_ORCAMENTO = new Constant("Em orçamento", "EO");
+	
+	public static final Constant OS_APROVADA = new Constant("Aprovada", "OA");
+	
+	public static final Constant OS_CANCELADA = new Constant("Cancelada", "CA");
+	
 	public static final Constant OS_ANDAMENTO = new Constant("Em andamento", "EA");
+	
 	public static final Constant OS_PRONTO = new Constant("Pronto", "PT");
+	
 	public static final Constant OS_FINALIZADA = new Constant("Finalizada", "FN");
 	
 	public static String IMG_TAMANHO_M = "16x16";
@@ -31,10 +41,15 @@ public class StatusRecMerc implements java.io.Serializable {
 		
 		ImageIcon IMG_OS_ANALISE = Icone.novo( "os_em_analise_" + tamanho + ".png" );
 		
-		ImageIcon IMG_OS_PRONTO = Icone.novo( "os_pronta_" + tamanho + ".png" );
+		ImageIcon IMG_OS_PRONTO = Icone.novo( "os_pronta_" + tamanho + ".png" );  
 		
 		ImageIcon IMG_OS_FINALIZADA = Icone.novo( "os_finalizada_" + tamanho + ".png" );
-
+		
+		ImageIcon IMG_OS_ORCAMENTO = Icone.novo( "os_orcamento_" + tamanho + ".png" );
+		
+		ImageIcon IMG_OS_APROVADA = Icone.novo( "os_aprovada_" + tamanho + ".png" );
+		
+		ImageIcon IMG_OS_CANCELADA = Icone.novo( "os_cancelada_" + tamanho + ".png" );
 		
 		try {
 			
@@ -43,6 +58,15 @@ public class StatusRecMerc implements java.io.Serializable {
 			}
 			else if(status.equals( OS_ANALISE.getValue() )) {			
 				return IMG_OS_ANALISE;
+			}
+			else if(status.equals( OS_ORCAMENTO.getValue() )) {			
+				return IMG_OS_ORCAMENTO;
+			}
+			else if(status.equals( OS_APROVADA.getValue() )) {			
+				return IMG_OS_APROVADA;
+			}
+			else if(status.equals( OS_CANCELADA.getValue() )) {			
+				return IMG_OS_CANCELADA;
 			}
 			else if(status.equals( OS_ANDAMENTO.getValue() )) {			
 				return IMG_OS_ANDAMENTO;	
@@ -68,6 +92,9 @@ public class StatusRecMerc implements java.io.Serializable {
 		
 		ret.add( OS_PENDENTE.getName() );
 		ret.add( OS_ANALISE.getName() );
+		ret.add( OS_ORCAMENTO.getName() );
+		ret.add( OS_APROVADA.getName() );
+		ret.add( OS_CANCELADA.getName() );
 		ret.add( OS_ANDAMENTO.getName() );
 		ret.add( OS_PRONTO.getName() );
 		ret.add( OS_FINALIZADA.getName() );
@@ -82,6 +109,9 @@ public class StatusRecMerc implements java.io.Serializable {
 		
 		ret.add( OS_PENDENTE.getValue() );
 		ret.add( OS_ANALISE.getValue() );
+		ret.add( OS_ORCAMENTO.getValue() );
+		ret.add( OS_APROVADA.getValue() );		
+		ret.add( OS_CANCELADA.getValue() );
 		ret.add( OS_ANDAMENTO.getValue() );
 		ret.add( OS_PRONTO.getValue() );
 		ret.add( OS_FINALIZADA.getValue() );
