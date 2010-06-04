@@ -1061,19 +1061,19 @@ public class FCliente extends FTabDados
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
 		
-		
-		
 		// Adicionar botão para agrupamento de clientes
 
 		btGrpCli.setToolTipText( "Clientes agrupados" );
 		btGrpCli.setPreferredSize( new Dimension( 38, 26 ) );
-		pnImp.add( btGrpCli );
 
 		btMapa.setToolTipText( "Exibição de mapa" );
 		btMapa.setPreferredSize( new Dimension( 38, 26 ) );
-		pnImp.add( btMapa );
 		
-		// adic(btGrpCli,330,215,25,25);
+		pnGImp.add( btMapa );
+		pnGImp.add( btGrpCli);
+
+		pnGImp.setPreferredSize(new Dimension( 150, 26 ));		
+		
 		btGrpCli.addActionListener( this );
 
 		adicTab( "Observações", pnObs1 );
