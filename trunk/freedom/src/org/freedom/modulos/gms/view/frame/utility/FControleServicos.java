@@ -63,10 +63,11 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
-import org.freedom.modulos.gms.business.object.StatusRecMerc;
+import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 
 /**
@@ -79,25 +80,35 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 public class FControleServicos extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;	
+	
 	private static final Color GREEN = new Color( 45, 190, 64 );
 
 	// *** Paineis tela
 	
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private JPanelPad panelMaster = new JPanelPad( 700, 120 );
+	
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
+	
 	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );	
-	private JPanelPad panelLegenda = new JPanelPad();	
+	
 	private JPanelPad panelNavegador = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
 	private JPanelPad panelFiltros = new JPanelPad("Filtros", Color.BLUE);
 	
 	// *** Paineis Detalhamento
 	
 	private JPanelPad panelDet = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );		
+	
 	private JPanelPad panelTabDet = new JPanelPad( 700, 0 );
+	
 	private JPanelPad panelGridDet = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
 	private JPanelPad panelTabDetItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
 	private JTablePad tabDet = null;
 	
 	// *** Labels
@@ -131,11 +142,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 //	private ListaCampos lcProd = new ListaCampos( this );
 
 	// *** Botões
-	private JButtonPad btRecarregar = new JButtonPad( "Recarregar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
 //	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
 	
 	private JTablePad tabstatus = new JTablePad();
 	
@@ -180,11 +192,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	
 	private void montaListeners() {
 		
-		btRecarregar.addActionListener( this );
+		btAtualiza.addActionListener( this );
 		btNovo.addActionListener( this );
 
 		btEditar.addActionListener( this );
 		btCompra.addActionListener( this );
+		btOrcamento.addActionListener( this );
 		
 		tabDet.addTabelaSelListener( this );	
 		tabDet.addMouseListener( this );	
@@ -213,8 +226,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	
 	private void carregaStatus() {
 
-		Vector<Object> valores = StatusRecMerc.getValores();
-		Vector<String> labels = StatusRecMerc.getLabels();
+		Vector<Object> valores = StatusOS.getValores();
+		Vector<String> labels = StatusOS.getLabels();
 //		Vector<ImageIcon> icones = new Vector<ImageIcon>();
 
 		Vector<Object> item = null;
@@ -225,9 +238,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
-			ImageIcon icon = StatusRecMerc.getImagem( valor, StatusRecMerc.IMG_TAMANHO_P );
+			ImageIcon icon = StatusOS.getImagem( valor, StatusOS.IMG_TAMANHO_P );
 			
-			if(StatusRecMerc.OS_FINALIZADA.getValue().equals( valor )) {
+			if(StatusOS.OS_FINALIZADA.getValue().equals( valor )) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -251,16 +264,16 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		
 		// ***** Cabeçalho
 		
-//		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
-//		panelFiltros.adic( cbEtapa1, 95, 0, 100, 20 );
-//		panelFiltros.adic( cbEtapa2, 193, 0, 140, 20 );
-//		panelFiltros.adic( cbEtapa3, 335, 0, 100, 20 );
+		panelMaster.adic( panelFiltros, 4, 0, 720, 95 );
 		
-		panelFiltros.adic( scpStatus, 0, 0, 140, 77 );
+		panelFiltros.adic( scpStatus, 400, 0, 150, 65 );
+		panelFiltros.adic( btAtualiza, 600, 0, 30, 60 );
 		
-		panelMaster.adic( panelFiltros, 4, 0, 450, 110 );
+		
 
-		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
+
+		
+//		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
 		
 //		***** Abas
 		
@@ -286,36 +299,16 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = SwingParams.getFontpadmed(); 
 		
-//		JLabelPad labelPesagem1 = new JLabelPad( "Pesagem 1" );
-//		labelPesagem1.setForeground( statusColor );
-//		labelPesagem1.setFont( statusFont );
-//		panelLegenda.adic( new JLabelPad( imgPesagem1 ), 60, 5, 18, 18 );
-//		panelLegenda.adic( labelPesagem1, 84, 7, 80, 15 );
-		
-//		JLabelPad labelDescarregamento = new JLabelPad( "Descarregamento" );
-//		labelDescarregamento.setForeground( statusColor );
-//		labelDescarregamento.setFont( statusFont );
-//		panelLegenda.adic( new JLabelPad( imgDescarregamento ), 164, 5, 18, 18 );
-//		panelLegenda.adic( labelDescarregamento, 188, 7, 100, 15 );
-		
-//		JLabelPad faturadas = new JLabelPad( "Pesagem 2" );
-//		faturadas.setForeground( statusColor );
-//		faturadas.setFont( statusFont );
-//		panelLegenda.adic( new JLabelPad( imgPesagem2 ), 294, 5, 18, 18 );		
-//		panelLegenda.adic( faturadas, 318, 7, 100, 15 );
-		
-		panelLegenda.setBorder( null );		
-		
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 
 		panelNavegador.add( btNovo );
-//		panelNavegador.add( btExcluir );
 		panelNavegador.add( btEditar );
 		panelNavegador.add( btCompra );
+		panelNavegador.add( btOrcamento );
 		
 		panelSouth.add( panelNavegador, BorderLayout.WEST);
-		panelSouth.add( panelLegenda, BorderLayout.CENTER );		
+
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST);
 		
 		montaGridStatus();
@@ -410,22 +403,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				
 				tabDet.adicLinha();
 				
-				if ( StatusRecMerc.OS_PENDENTE.getValue().equals( rs.getString( "status" ) ) ) {
-					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
-				}
-				else if ( StatusRecMerc.OS_ANALISE.getValue().equals( rs.getString( "status" ) ) ) {
-					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
-				}
-				else if ( StatusRecMerc.OS_ANDAMENTO.getValue().equals( rs.getString( "status" ) ) ) {
-					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
-				}
-				else if ( StatusRecMerc.OS_PRONTO.getValue().equals( rs.getString( "status" ) ) ) {
-					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
-				}
-				else if ( StatusRecMerc.OS_FINALIZADA.getValue().equals( rs.getString( "status" ) ) ) {
-					imgColuna = StatusRecMerc.getImagem( rs.getString( "status" ), StatusRecMerc.IMG_TAMANHO_M );
-				}
-				
+				imgColuna = StatusOS.getImagem( rs.getString( "status" ), StatusOS.IMG_TAMANHO_M );
+
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				tabDet.setValor( rs.getString( "status" ), row, DETALHAMENTO.STATUSTXT.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
@@ -458,7 +437,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	
 	public void actionPerformed( ActionEvent e ) {
 
-		if ( e.getSource() == btRecarregar ) {
+		if ( e.getSource() == btAtualiza ) {
 			montaGrid();
 		}
 		else if ( e.getSource() == btNovo ) {
@@ -470,6 +449,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		else if( e.getSource() == btCompra ) {
 			geraCompra();
 		}
+		else if( e.getSource() == btOrcamento ) {
+			geraOrcamento();
+		}
+
 		
 		
 
@@ -553,8 +536,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	public void keyPressed( KeyEvent e ) {
 		
-		if ( e.getSource() == btRecarregar && e.getKeyCode() == KeyEvent.VK_ENTER ) {
-			btRecarregar.doClick();
+		if ( e.getSource() == btAtualiza && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btAtualiza.doClick();
 		}
 	}
 
@@ -651,6 +634,17 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		
 	}
 	
+	private void abreorcamento(Integer codorc){
+		
+		if ( fPrim.temTela( "Orçamento" ) == false ) {
+			FOrcamento tela = new FOrcamento();
+			fPrim.criatela( "Orçamento", tela, con );
+			tela.exec( codorc );
+		}
+		
+	}
+
+	
 	private void geraCompra() {
 		
 		StringBuilder sql = new StringBuilder();
@@ -672,7 +666,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 				recmerc = new RecMerc(this, ticket, con);
 				
-				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )) {
+				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
 					
 					if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
 
@@ -687,7 +681,58 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					
 				}
 				else {
-					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
+					Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda está pendente de analise!" );
+				}
+				
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void geraOrcamento() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		Integer ticket = null;
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		String unid = null;
+		PreparedStatement ps = null;
+		
+		RecMerc recmerc = null;
+		
+		try {
+			
+			if(tabDet.getLinhaSel()>-1) {
+
+				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+			
+				recmerc = new RecMerc(this, ticket, con);
+				
+				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
+					
+					if(Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+
+						Integer codorc = recmerc.geraOrcamento();
+					
+						if( codorc!=null && codorc>0 ) {
+						
+							abreorcamento(codorc);
+						
+						}
+					}
+					
+				}
+				else {
+					Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda não foi finalizado!" );
 				}
 				
 			}
