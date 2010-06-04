@@ -74,15 +74,17 @@ public class FFilho extends JInternalFrame implements InternalFrameListener, IFi
     protected Border br = BorderFactory.createEtchedBorder();
     
     protected JPanelPad pnPrincipal = new JPanelPad(JPanelPad.TP_JPANEL);
-    protected JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
-    protected JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
-    protected JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
-    protected JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//    public JScrollPane spCliente = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//    public JScrollPane spCliente = new JScrollPane(pnCliente, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    //private JPanelPad pnSp = new JPanelPad() 
-    //protected JScrollPane spFilho = new JScrollPane();
+    protected JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
+    
+//    protected JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
+    
+    protected JPanelPad pnRodape = new JPanelPad(new BorderLayout());
+    
+    public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
+
+    protected JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
     protected JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
     public String strTemp = "";
@@ -122,14 +124,6 @@ public class FFilho extends JInternalFrame implements InternalFrameListener, IFi
             c.add(pnPrincipal, BorderLayout.CENTER);
         }
 
-        //spCliente.setLayout();
-        //spCliente.add(pnCliente);
-        
-        //spCliente.setVisible(false);
-        //ativaScroll();
-        //rootPane.setAutoscrolls(true);
-        //setAutoscrolls(true);
-        
     }
 	public void doDefaultCloseAction() {
 		// este método e reconstruido para evitar o fechamento da janela,

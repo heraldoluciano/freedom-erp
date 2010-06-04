@@ -23,6 +23,7 @@
 package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -87,6 +88,7 @@ public class FDetalhe extends FDados {
 	public FDetalhe( boolean scroll ) {
 
 		super( scroll );
+				
 		pnRodape.remove( nav );
 		pnRodape.add( navRod, BorderLayout.WEST );
 
@@ -98,6 +100,9 @@ public class FDetalhe extends FDados {
 		// Agora irá construir o FDetalhe
 		nav.setName( "Mestre" );
 		navRod.setName( "Detalhe" );
+		
+		navRod.setBackground(Color.RED);
+		
 		pnNavCab.add( nav, BorderLayout.WEST );
 
 		pnBordNavCab.setPreferredSize( new Dimension( 500, 30 ) );
@@ -106,11 +111,13 @@ public class FDetalhe extends FDados {
 
 		pnCab.add( pnCliCab, BorderLayout.CENTER );
 		pnCab.add( pnBordNavCab, BorderLayout.SOUTH );
-
+		
 		pnBordCab.setPreferredSize( new Dimension( 500, 100 ) );
 		pnBordCab.setBorder( br );
 		pnBordCab.add( pnCab );
 
+//		pnBordDet.setBackground(Color.RED);
+		
 		pnBordDet.setPreferredSize( new Dimension( 500, 50 ) );
 		pnBordDet.setBorder( br );
 		pnBordDet.add( pnDet );
