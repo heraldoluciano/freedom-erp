@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,31 +61,51 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.dialog.DLInfo;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
+
 	private static final long serialVersionUID = 1L;
 
 	public PreparedStatement atualiza = null;
-	public PreparedStatement insere = null;
-	public PreparedStatement deleta = null;
-	public ListaCampos lcCampos = new ListaCampos(this); 
-	public ListaCampos lcSeq = null;
-	private GridLayout glImp = new GridLayout( 1, 3); 
-	private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
-	public Navegador nav = new Navegador(false); 
-	public Navegador navSeq = new Navegador(false); 
-	public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
-	public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
-	public JPanelPad pinDados = new JPanelPad();
-	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-	public JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
-	public JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
-	public JButtonPad btInfo = new JButtonPad( Icone.novo("btInfo.png"));
-	public JComponent primeiroCompo = null;
-	boolean Shift = false;
-	boolean Ctrl = false;
-	boolean setArea = true;
-	boolean bMostrar = false;	
-	private DLInfo dlinfo = null;
 	
+	public PreparedStatement insere = null;
+	
+	public PreparedStatement deleta = null;
+	
+	public ListaCampos lcCampos = new ListaCampos(this); 
+	
+	public ListaCampos lcSeq = null;
+	
+	private GridLayout glImp = new GridLayout( 1, 6 ); 
+	
+	public Navegador nav = new Navegador(false); 
+	
+	public Navegador navSeq = new Navegador(false);
+	
+	public JPanelPad pnImp = new JPanelPad(new BorderLayout());
+	
+	public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
+
+	public JPanelPad pinDados = new JPanelPad();
+
+	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	
+	public JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
+	
+	public JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
+	
+	public JButtonPad btInfo = new JButtonPad( Icone.novo("btInfo.png"));
+	
+	public JComponent primeiroCompo = null;
+	
+	boolean Shift = false;
+	
+	boolean Ctrl = false;
+	
+	boolean setArea = true;
+	
+	boolean bMostrar = false;	
+	
+	private DLInfo dlinfo = null;
+		
 	private JTextFieldFK txtDtins = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtHins = new JTextFieldFK( JTextFieldPad.TP_TIME, 8, 0 );
@@ -98,7 +117,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	private JTextFieldPad txtHAlt = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 	
 	private JTextFieldPad txtUsuAlt = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
 	
 	public FDados() {
 		this(true);
@@ -118,13 +136,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
 		btInfo.setToolTipText("Informações sobre o registro");
 
-		pnImp.setLayout(flImp);
 		pnGImp.setLayout(glImp);
-		pnGImp.setPreferredSize(new Dimension( 80, 26));
+		pnGImp.setPreferredSize(new Dimension( 120, 26 ));
+
 		pnGImp.add(btImp);
 		pnGImp.add(btPrevimp);
 		pnGImp.add(btInfo);
-		pnImp.add(pnGImp);
+		
+		pnImp.add(pnGImp, BorderLayout.WEST);
 
 		btSair.addActionListener(this);
 		btInfo.addActionListener(this);		
@@ -140,7 +159,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 
 		pnRodape.add( btSair, BorderLayout.EAST);      
 		pnRodape.add( nav, BorderLayout.WEST);
+		
 		pnRodape.add( pnImp, BorderLayout.CENTER);
+		
 		c.add(pnBordRod, BorderLayout.SOUTH);
 		
 		txtDtins.setSoLeitura(true);
