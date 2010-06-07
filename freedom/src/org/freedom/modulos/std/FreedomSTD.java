@@ -70,7 +70,11 @@ import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
+import org.freedom.modulos.lvf.view.frame.report.FRIcms;
+import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRIcmsNcm;
+import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
+import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
 import org.freedom.modulos.std.view.frame.crud.detail.FEmpresa;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
@@ -160,7 +164,6 @@ import org.freedom.modulos.std.view.frame.report.FRMovProd;
 import org.freedom.modulos.std.view.frame.report.FRMovProdCont;
 import org.freedom.modulos.std.view.frame.report.FROrcamento;
 import org.freedom.modulos.std.view.frame.report.FRPagar;
-import org.freedom.modulos.std.view.frame.report.FRPisCofins;
 import org.freedom.modulos.std.view.frame.report.FRPontoEqui;
 import org.freedom.modulos.std.view.frame.report.FRProdGrup;
 import org.freedom.modulos.std.view.frame.report.FRRazCli;
@@ -179,8 +182,6 @@ import org.freedom.modulos.std.view.frame.report.FRVendasCliProd;
 import org.freedom.modulos.std.view.frame.report.FRVendasDet;
 import org.freedom.modulos.std.view.frame.report.FRVendasFisico;
 import org.freedom.modulos.std.view.frame.report.FRVendasGeral;
-import org.freedom.modulos.std.view.frame.report.FRVendasIcms;
-import org.freedom.modulos.std.view.frame.report.FRVendasIpi;
 import org.freedom.modulos.std.view.frame.report.FRVendasItem;
 import org.freedom.modulos.std.view.frame.report.FRVendasPlanoPag;
 import org.freedom.modulos.std.view.frame.report.FRVendasVend;
@@ -481,12 +482,13 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 800000000 );
 						
 			addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800600000, 1, false, null );
-				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS sobre vendas", "Icms Vendas e Compras", 'I', 800601000, 2, true, FRVendasIcms.class );
-				addOpcao( 800600000, TP_OPCAO_ITEM, "IPI sobre vendas", "Ipi Vendas e Compras", 'I', 800605000, 2, true, FRVendasIpi.class);
-				addOpcao( 800600000, TP_OPCAO_ITEM, "Impostos sobre serviços", "Impostos sobre serviços", 'S', 800602000, 2, true, FRImpServ.class );
-				addOpcao( 800600000, TP_OPCAO_ITEM, "Pis e cofins", "Pis e cofins", 'P', 800603000, 2, true, FRPisCofins.class );
+				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS", "ICMS", 'I', 800601000, 2, true, FRIcms.class );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM", 'N', 800604000, 2, true, FRIcmsNcm.class );
-			
+				addOpcao( 800600000, TP_OPCAO_ITEM, "IPI", "IPI", 'P', 800605000, 2, true, FRIpi.class);
+				addOpcao( 800600000, TP_OPCAO_ITEM, "ISS", "ISS", 'S', 800602000, 2, true, FRImpServ.class );
+				addOpcao( 800600000, TP_OPCAO_ITEM, "PIS/COFINS", "Mov. PIS/COFINS", 'P', 800603000, 2, true, FRPisCofins.class );
+				addOpcao( 800600000, TP_OPCAO_ITEM, "Mov. PIS/COFINS", "Mov. PIS/COFINS", 'P', 800606000, 2, true, FRMovPisCofins.class );
+				
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );						
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
 		addBotao( "btOrcamento.png", "Orçamento", "Orçamento", 300600000, FOrcamento.class );
