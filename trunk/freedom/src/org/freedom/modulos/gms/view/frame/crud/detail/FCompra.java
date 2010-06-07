@@ -2223,7 +2223,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				getICMS();
 			}
 		}
-		else if ( cevt.getListaCampos() == lcTipoMov ) {
+		else if ( cevt.getListaCampos() == lcTipoMov ) { 
 			
 			txtCalcTrib.setVlrString( txtEmitCompra.getVlrString() );
 			
@@ -2859,9 +2859,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 	
 	private void calcImpostos(boolean buscabase) {
-		
-		setCalcImpostos( buscabase );
-		getCalcImpostos();
+		if( "S".equals(txtCalcTrib.getVlrString()) ){
+			setCalcImpostos( buscabase );
+			getCalcImpostos();
+		}
 		
 	}
 	
