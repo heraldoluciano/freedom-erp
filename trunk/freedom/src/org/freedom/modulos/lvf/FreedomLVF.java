@@ -30,7 +30,11 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
+import org.freedom.modulos.lvf.view.frame.report.FRIcms;
 import org.freedom.modulos.lvf.view.frame.report.FRIcmsNcm;
+import org.freedom.modulos.lvf.view.frame.report.FRIpi;
+import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
+import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
 import org.freedom.modulos.lvf.view.frame.report.FRRegitroEntrada;
 import org.freedom.modulos.lvf.view.frame.report.FRRegitroSaida;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
@@ -49,8 +53,6 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRImpServ;
-import org.freedom.modulos.std.view.frame.report.FRPisCofins;
-import org.freedom.modulos.std.view.frame.report.FRVendasIcms;
 import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
 import org.freedom.modulos.std.view.frame.utility.FGeraFiscal;
 
@@ -91,11 +93,14 @@ public class FreedomLVF extends AplicativoPD {
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Tabela de Alíquotas", "Tabela de alíquotas", 'T', 200400000, 1, true, FTabICMS.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Mensagens", "Mensagens", 'M', 200500000, 1, true, FMensagem.class );
 			addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200600000, 1, false, null );
-			addOpcao( 200600000, TP_OPCAO_ITEM, "ICMS sobre vendas", "Icms Vendas e Compras", 'I', 200601000, 2, true, FRVendasIcms.class );
-			addOpcao( 200600000, TP_OPCAO_ITEM, "Impostos sobre serviços", "Impostos sobre serviços", 'S', 200602000, 2, true, FRImpServ.class );
-			addOpcao( 200600000, TP_OPCAO_ITEM, "Pis e cofins", "Pis e cofins", 'P', 200603000, 2, true, FRPisCofins.class );
-			addOpcao( 200600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM", 'N', 200604000, 2, true, FRIcmsNcm.class );
-			
+				addOpcao( 200600000, TP_OPCAO_ITEM, "ICMS", "ICMS", 'I', 200601000, 2, true, FRIcms.class );
+				addOpcao( 200600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM/CFOP", 'N', 200604000, 2, true, FRIcmsNcm.class );
+				addOpcao( 200600000, TP_OPCAO_ITEM, "IPI", "IPI", 'P', 200606000, 2, true, FRIpi.class);
+				addOpcao( 200600000, TP_OPCAO_ITEM, "Impostos sobre serviços", "Impostos sobre serviços", 'S', 200602000, 2, true, FRImpServ.class );
+				addOpcao( 800600000, TP_OPCAO_ITEM, "PIS/COFINS", "Mov. PIS/COFINS", 'P', 200605000, 2, true, FRPisCofins.class );
+				addOpcao( 200600000, TP_OPCAO_ITEM, "Movimentação com PIS e COFINS", "Movimentação com PIS e COFINS", 'P', 200603000, 2, true, FRMovPisCofins.class );
+				
+				
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 300000000, 0, false, null );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Registro de Entrada", "Registro de Entrada", 'E', 300100000, 1, true, FRRegitroEntrada.class );
 		
