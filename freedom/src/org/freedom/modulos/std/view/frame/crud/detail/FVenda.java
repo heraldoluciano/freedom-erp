@@ -1370,18 +1370,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		try {
 
 			ps = con.prepareStatement( sSQL );
+			
 			ps.setInt( 1, Aplicativo.iCodFilial );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, lcProd.getCodFilial() );
-			ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
+			
+			ps.setInt( 2, lcProd.getCodEmp() );
+			ps.setInt( 3, lcProd.getCodFilial() );			
+			ps.setInt( 4, txtCodProd.getVlrInteger() );
+			
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, lcCli.getCodFilial() );
-			ps.setInt( 7, txtCodCli.getVlrInteger().intValue() );
+			ps.setInt( 7, txtCodCli.getVlrInteger() );
+			
 			ps.setNull( 8, Types.INTEGER );
 			ps.setNull( 9, Types.INTEGER );
 			ps.setNull( 10, Types.INTEGER );
+			
 			ps.setInt( 11, lcTipoMov.getCodFilial() );
-			ps.setInt( 12, txtCodTipoMov.getVlrInteger().intValue() );
+			ps.setInt( 12, txtCodTipoMov.getVlrInteger() );
+			
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
