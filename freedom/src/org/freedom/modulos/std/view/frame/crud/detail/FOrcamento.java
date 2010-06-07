@@ -883,8 +883,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampo( txtPercDescItOrc, 517, 20, 60, 20, "PercDescItOrc", "% desc.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrDescItOrc, 580, 20, 60, 20, "VlrDescItOrc", "Vlr. desc.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtPercComisItOrc, 643, 20, 60, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrComisItOrc, 706, 20, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
+		adicCampo( txtPercComisItOrc, 643, 20, 60, 20, "PercComisItOrc", "% comis.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrComisItOrc, 706, 20, 57, 20, "VlrComisItOrc", "Vlr.comis.", ListaCampos.DB_SI, false );
 
 		
 		adicCampoInvisivel( txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto", ListaCampos.DB_SI, false );
@@ -899,8 +899,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampo( txtVlrLiqItOrc, 109, 60, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );		
 		
  		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
-		adicDescFK( txtDescAlmoxItOrc, 454, 60, 202, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDescFK( txtSldLiqProd, 660, 60, 80, 20, "SldLiqProd", "Saldo" );
+		adicDescFK( txtDescAlmoxItOrc, 454, 60, 249, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtSldLiqProd, 706, 60, 57, 20, "SldLiqProd", "Saldo" );
 			
 		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
@@ -1217,10 +1217,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 	
-	private void calcComis() {
+	private void carregaPercComis() {
 
 
 		if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+				
 				BigDecimal perccomisvend = txtPercComVend.getVlrBigDecimal();
 				BigDecimal perccomisprod = txtPercComProd.getVlrBigDecimal();
 				BigDecimal perccomisitem = new BigDecimal(0);
@@ -1236,6 +1237,26 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				    vlrcomisitem = vlrliqitem.multiply( perccomisitem );
 				    
 				    txtPercComisItOrc.setVlrBigDecimal( perccomisitem.multiply( cem ) );
+				    txtVlrComisItOrc.setVlrBigDecimal( vlrcomisitem );
+				    
+				}		
+		}
+	}
+	
+	private void calcComis() {
+
+
+		if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+				
+				BigDecimal perccomisitem = txtPercComisItOrc.getVlrBigDecimal();
+				BigDecimal vlrcomisitem = new BigDecimal(0);
+				BigDecimal vlrliqitem = txtVlrLiqItOrc.getVlrBigDecimal();
+				
+				if( perccomisitem!=null && perccomisitem.floatValue()>0 ) {
+										
+				    vlrcomisitem = vlrliqitem.multiply( perccomisitem.divide( cem ) );
+				    
+//				    txtPercComisItOrc.setVlrBigDecimal( perccomisitem.multiply( cem ) );
 				    txtVlrComisItOrc.setVlrBigDecimal( vlrcomisitem );
 				    
 				}		
@@ -1952,11 +1973,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			calcTot();
 			calcComis();
 		}
-		else if ( (fevt.getSource() == txtVlrLiqItOrc) && ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()==0 ) ) {
+//		else if ( (fevt.getSource() == txtVlrLiqItOrc) && ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()==0 ) ) {
+		else if ( (fevt.getSource() == txtVlrLiqItOrc) ) {
 
-			if ( (lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ]) ) {
+			if ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ]) ) {
 				
+				//if ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()>0 ) {				
 				calcDesconto();
+				//}
 				
 				lcDet.post();
 				lcDet.limpaCampos( true );
@@ -2138,8 +2162,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				else {
 					txtCodLote.setAtivo( false );
 				}
-				calcVlrItem( null, false );
+				calcVlrItem( null, false );		
+				carregaPercComis();
 			}
+			else if( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+				carregaPercComis();
+			}
+				
 			lcAlmox.carregaDados();
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
