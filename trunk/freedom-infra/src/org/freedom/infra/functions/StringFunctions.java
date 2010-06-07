@@ -110,6 +110,10 @@ public final class StringFunctions {
 	
 	public static String clearString(String str, String strnew) {
 		
+		if(str==null) {
+			return "";
+		}
+		
 		StringBuilder validstring = new StringBuilder();
 		
 		validstring.append( str.replaceAll( "\\W", strnew ) ); 
