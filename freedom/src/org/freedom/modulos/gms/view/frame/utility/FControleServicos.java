@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -49,6 +50,7 @@ import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -61,6 +63,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.business.object.StatusOS;
@@ -68,6 +71,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 
 /**
@@ -118,7 +122,41 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// *** Geral
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtCodAtendente = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeAtendente = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtDDDCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtFoneCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
+
+	private JTextFieldFK txtDDDFax = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtFaxCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
+
+	private JTextFieldFK txtDDDCel = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtCelCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
+
+	private JTextFieldFK txtEmailCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldFK txtContatoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldFK txtEndCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldFK txtCidCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+
+	private JTextFieldFK txtUfCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+
+	private JTextFieldFK txtNumCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
+
 	
 	// *** Campos
 
@@ -144,7 +182,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// *** Botões
 	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
-//	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
@@ -152,6 +189,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JTablePad tabstatus = new JTablePad();
 	
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
+	
+	private ListaCampos lcAtendente = new ListaCampos( this, "AE" );
+	
+	private ListaCampos lcCli = new ListaCampos( this );
 	
 		
 	// Enums
@@ -171,23 +212,62 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
     	int y = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getHeight()-getHeight())/2;
     	
     	setLocation( x, y );
+    	
+    	setValoresPadrao();
 		
 		montaListaCampos();
+		
 		criaTabelas();
+		
 		montaTela();				
+		
 		montaListeners();
-		carregaValoresPadrao();
 	
 	}
 
-	private void carregaValoresPadrao() {
-		cbEtapa0.setVlrString( "S" );
-		cbEtapa1.setVlrString( "S" );
-		cbEtapa2.setVlrString( "S" );
-	}
-	
 	private void montaListaCampos() {
 		
+		// Atendimento para funcionamento
+		txtCodAtendente.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
+		txtCodAtendente.setFK( true );
+		txtCodAtendente.setNomeCampo( "CodAtend" );
+		lcAtendente.add( new GuardaCampo( txtCodAtendente, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendente.add( new GuardaCampo( txtNomeAtendente, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
+		lcAtendente.setReadOnly( true );
+		
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDDDFax, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtFaxCli, "FaxCli", "Fax", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDDDCel, "DDDCelCli", "DDD", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCelCli, "CelCli", "Fax", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtContatoCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEndCli, "EndCli", "Endereço", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCidCli, "CidCli", "Cidade", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtUfCli, "UFCli", "UF", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNumCli, "NumCli", "Número", ListaCampos.DB_SI, false ) );
+		lcCli.setWhereAdic( "ATIVOCLI='S'" );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
+		lcCli.setReadOnly( true );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
+		txtCodCli.setFK( true );
+		txtCodCli.setNomeCampo( "CodCli" );
+
+		
+		
+	}
+	
+	private void setValoresPadrao() {
+		
+		txtDataini.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
+		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
+
 	}
 	
 	private void montaListeners() {
@@ -264,16 +344,31 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		
 		// ***** Cabeçalho
 		
-		panelMaster.adic( panelFiltros, 4, 0, 720, 95 );
+		panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
 		
-		panelFiltros.adic( scpStatus, 400, 0, 150, 65 );
-		panelFiltros.adic( btAtualiza, 600, 0, 30, 60 );
+		panelFiltros.adic( scpStatus, 517, 0, 150, 82 );
+		panelFiltros.adic( btAtualiza, 670, 0, 30, 81 );
 		
-		
+		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
+		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
 
+		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
+		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
+		panelFiltros.adic( txtCodAtendente, 153, 20, 70, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
+		panelFiltros.adic( txtNomeAtendente, 226, 20, 270, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Cód.Cli." ), 153, 40, 70, 20 );
+		panelFiltros.adic( txtCodCli, 153, 60, 70, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Razão social do cliente" ), 226, 40, 180, 20 );
+		panelFiltros.adic( txtRazCli, 226, 60, 270, 20 );
 
 		
-//		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
+//		panelMaster.adic( btRecarregar, 595, 8, 123, 42 ); 
 		
 //		***** Abas
 		
@@ -339,8 +434,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPORECMERC.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
-		tabDet.setTamColuna( 40, DETALHAMENTO.CODCLI.ordinal() );		
-		tabDet.setTamColuna( 400, DETALHAMENTO.NOMECLI.ordinal() );
+		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );		
+		tabDet.setTamColuna( 450, DETALHAMENTO.NOMECLI.ordinal() );
 		
 		//tabDet.setColunaInvisivel( 2 );
 		
@@ -357,6 +452,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			sql.append( "from eqrecmerc rm, vdcliente cl ");
 			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
+			sql.append( "and rm.dtins between ? and ? " );
 			
 			StringBuffer status = new StringBuffer("");
 
@@ -383,6 +479,16 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				}
 
 			}
+			
+			if(txtCodAtendente.getVlrInteger()>0) {
+				sql.append( " and rm.codempar=? and rm.codfilialar=? and rm.codatendrec=? "  );
+			}
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				sql.append( " and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? "  );
+			}
+			
+			sql.append( " order by rm.dtins desc, rm.hins desc " );
 		
 			System.out.println("SQL:" + sql.toString());
 			
@@ -392,6 +498,20 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ));
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ));
+			
+			if(txtCodAtendente.getVlrInteger()>0) { 
+				ps.setInt( iparam++, lcAtendente.getCodEmp() );
+				ps.setInt( iparam++, lcAtendente.getCodFilial() );
+				ps.setInt( iparam++, txtCodAtendente.getVlrInteger() );
+			}
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				ps.setInt( iparam++, lcCli.getCodEmp() );
+				ps.setInt( iparam++, lcCli.getCodFilial() );
+				ps.setInt( iparam++, txtCodCli.getVlrInteger() );				
+			}
 			
 			ResultSet rs = ps.executeQuery();		
 			
@@ -452,9 +572,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		else if( e.getSource() == btOrcamento ) {
 			geraOrcamento();
 		}
-
-		
-		
 
 	}
 
@@ -559,7 +676,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 		super.setConexao( cn );
 		montaGrid();
-//		lcCliente.setConexao( con );
+		lcAtendente.setConexao( cn );
+		lcCli.setConexao( con );
 //		lcProd.setConexao( con );
 		
 	}
