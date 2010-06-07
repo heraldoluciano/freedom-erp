@@ -412,7 +412,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		nav.setNavigation( true );
 		
 		setTitulo( "Orçamento" );
-		setAtribos( 50, 50, 769, 460 );
+		setAtribos( 50, 50, 790, 460 );
 
 		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
 		txtDescProd.addMouseListener( new MouseAdapter() {
@@ -450,7 +450,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setVisible( false );
 		
-		txtPercComisItOrc.setEditable( false );
+		
+//		txtPercComisItOrc.setEditable( false );
 		txtVlrComisItOrc.setEditable( false );
 		txtVlrIPIItOrc.setEditable( false );
 		
@@ -472,6 +473,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrLiqItOrc.addFocusListener( this );
 		txtQtdItOrc.addFocusListener( this );
 		txtPrecoItOrc.addFocusListener( this );
+		txtPercComisItOrc.addFocusListener( this );
 
 		lcCampos.addCarregaListener( this );
 		lcProd2.addCarregaListener( this );
@@ -872,29 +874,34 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtCodAlmoxItOrc.setAtivo( false );
 
 		adicDescFK( txtDescProd, 110, 20, (((Boolean) oPrefs[Orcamento.PrefOrc.USALOTEORC.ordinal()]) ? 187 : 277 ), 20, "DescProd", "Descrição do produto" );
+		
 		if ( (Boolean)oPrefs[Orcamento.PrefOrc.USALOTEORC.ordinal()] ) {
 			adicCampo( txtCodLote, 300, 20, 88, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		}
 		adicCampo( txtQtdItOrc, 391, 20, 60, 20, "QtdItOrc", "Qtd.", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoItOrc, 454, 20, 80, 20, "PrecoItOrc", "Preço", ListaCampos.DB_SI, true );
-		adicCampo( txtPercDescItOrc, 537, 20, 47, 20, "PercDescItOrc", "% desc.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrDescItOrc, 587, 20, 70, 20, "VlrDescItOrc", "Valor desc.", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoItOrc, 454, 20, 60, 20, "PrecoItOrc", "Preço", ListaCampos.DB_SI, true );
+		adicCampo( txtPercDescItOrc, 517, 20, 60, 20, "PercDescItOrc", "% desc.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDescItOrc, 580, 20, 60, 20, "VlrDescItOrc", "Vlr. desc.", ListaCampos.DB_SI, false );
+
+		adicCampo( txtPercComisItOrc, 643, 20, 60, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrComisItOrc, 706, 20, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
+
+		
 		adicCampoInvisivel( txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStrDescItOrc, "StrDescItOrc", "Descontos", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLiqItOrc, 660, 20, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );
+
+		
+//		if ( "S".equals(oPrefs[Orcamento.PrefOrc.CONTRIBIPI.ordinal()].toString()) ) {
+		adic( new JLabelPad("Vlr. IPI"), 7, 40, 99 , 20);
+		adic( txtVlrIPIItOrc, 7, 60, 99, 20);			
+//		}
+
+		adicCampo( txtVlrLiqItOrc, 109, 60, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );		
 		
  		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
 		adicDescFK( txtDescAlmoxItOrc, 454, 60, 202, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicDescFK( txtSldLiqProd, 660, 60, 80, 20, "SldLiqProd", "Saldo" );
-	
-		adicCampo( txtPercComisItOrc, 7, 60, 40, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrComisItOrc, 50, 60, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
-		
-		if ( "S".equals(oPrefs[Orcamento.PrefOrc.CONTRIBIPI.ordinal()].toString()) ) {
-			adic( new JLabelPad("Vlr. IPI"), 110, 40, 75 , 20);
-			adic( txtVlrIPIItOrc, 110, 60, 75, 20);			
-		}
-		
+			
 		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
@@ -1939,7 +1946,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				txtCodItOrc.requestFocus();
 			}
 		}
-		else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || ( fevt.getSource() == txtVlrDescItOrc )  || ( fevt.getSource() == txtPercDescItOrc ) ) {
+		else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || ( fevt.getSource() == txtVlrDescItOrc )  || ( fevt.getSource() == txtPercDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc)) {
 			calcDescIt();
 			calcVlrProd();
 			calcTot();
