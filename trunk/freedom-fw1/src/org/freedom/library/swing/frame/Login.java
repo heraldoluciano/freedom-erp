@@ -130,7 +130,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		pnVersao.setPreferredSize(new Dimension(10, 20));
 	
 		
-		versao = SystemFunctions.getVersion(this.getClass());
+		versao = SystemFunctions.getVersionSis(this.getClass());
 		
 		lbVersao.setText("  Versão: " + versao ) ;
 		
