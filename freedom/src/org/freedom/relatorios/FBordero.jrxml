@@ -42,6 +42,7 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<parameter name="CNPJFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT CL.CPFCLI,CL.CNPJCLI,CL.FONECLI, B.CODBOR, B.NUMCONTA, C.DESCCONTA, B.NUMCONTABOR, C2.DESCCONTA DESCCONTABOR, B.DTBOR, B.OBSBOR,
 IB.CODREC, IB.NPARCITREC, R.CODCLI, CL.RAZCLI, IR.VLRITREC, IR.DTVENCITREC, DOCREC, C2.NUMCONTA, C.AGENCIACONTA
 FROM FNBORDERO B, FNITBORDERO IB, FNCONTA C, FNCONTA C2,
@@ -323,7 +324,7 @@ ORDER BY IB.NPARCITREC]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="477"
-						y="21"
+						y="22"
 						width="56"
 						height="12"
 						key="textField-4"/>
@@ -371,20 +372,20 @@ ORDER BY IB.NPARCITREC]]></queryString>
 						key="staticText-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Para Crédito]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="3"
-						y="22"
+						y="24"
 						width="40"
-						height="14"
+						height="13"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Banco:]]></text>
 				</staticText>
@@ -393,24 +394,24 @@ ORDER BY IB.NPARCITREC]]></queryString>
 						x="3"
 						y="42"
 						width="51"
-						height="14"
+						height="13"
 						key="staticText-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Agência:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="3"
-						y="58"
+						y="60"
 						width="51"
-						height="14"
+						height="13"
 						key="staticText-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[C/C:]]></text>
 				</staticText>
@@ -430,15 +431,15 @@ ORDER BY IB.NPARCITREC]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="77"
+						y="78"
 						width="66"
 						height="14"
 						key="staticText-23"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Favoreceido:]]></text>
+				<text><![CDATA[Favorecido:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -446,7 +447,7 @@ ORDER BY IB.NPARCITREC]]></queryString>
 						x="82"
 						y="78"
 						width="320"
-						height="15"
+						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa-1"/>
@@ -459,68 +460,79 @@ ORDER BY IB.NPARCITREC]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="100"
+						y="98"
 						width="71"
-						height="15"
+						height="13"
 						key="staticText-24"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[CPF ou CNPJ:]]></text>
+				<text><![CDATA[CNPJ:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
-						y="58"
+						y="60"
 						width="100"
-						height="14"
+						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMCONTA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
-						y="39"
+						y="42"
 						width="100"
-						height="16"
+						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{AGENCIACONTA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
-						y="21"
+						y="24"
 						width="169"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCCONTA}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
+						mode="Opaque"
 						x="82"
-						y="97"
-						width="111"
-						height="18"
-						key="staticText-26"/>
+						y="98"
+						width="320"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[03.879.829/0001-02]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CNPJFILIAL}.substring(0,2)
++"."
++$P{CNPJFILIAL}.substring(2,5)
++"."
++$P{CNPJFILIAL}.substring(5,8)
++"/"
++$P{CNPJFILIAL}.substring(8,12)
++"-"
++$P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -555,7 +567,7 @@ ORDER BY IB.NPARCITREC]]></queryString>
 					<reportElement
 						x="35"
 						y="64"
-						width="60"
+						width="73"
 						height="12"
 						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -567,9 +579,9 @@ ORDER BY IB.NPARCITREC]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="58"
+						x="74"
 						y="95"
-						width="263"
+						width="247"
 						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -614,9 +626,9 @@ ORDER BY IB.NPARCITREC]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="10"
+						x="6"
 						y="40"
-						width="522"
+						width="526"
 						height="14"
 						key="staticText-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -629,7 +641,7 @@ ORDER BY IB.NPARCITREC]]></queryString>
 					<reportElement
 						x="6"
 						y="95"
-						width="48"
+						width="64"
 						height="21"
 						key="staticText-25"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -756,7 +768,7 @@ ORDER BY IB.NPARCITREC]]></queryString>
 					</textElement>
 				<text><![CDATA[/]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
 						y="0"
@@ -765,11 +777,19 @@ ORDER BY IB.NPARCITREC]]></queryString>
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Bottom">
-						<font/>
+						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CPF_CNPJ}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CPF_CNPJ}.substring(0,2)
++"."
++$V{CPF_CNPJ}.substring(2,5)
++"."
++$V{CPF_CNPJ}.substring(5,8)
++"/"
++$V{CPF_CNPJ}.substring(8,12)
++"-"
++$V{CPF_CNPJ}.substring(12)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="354"
 						y="0"
