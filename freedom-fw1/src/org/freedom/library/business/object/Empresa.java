@@ -62,7 +62,7 @@ public class Empresa {
 				razemp = rs.getString("RAZEMP"); 
 				
 				hValores.put("RAZEMP",razemp);
-				
+				 
 				hValores.put("FONEFILIAL",rs.getString("FONEFILIAL"));
 				hValores.put("FAXFILIAL",rs.getString("FAXFILIAL"));
 				hValores.put("ENDFILIAL",rs.getString("ENDFILIAL"));
