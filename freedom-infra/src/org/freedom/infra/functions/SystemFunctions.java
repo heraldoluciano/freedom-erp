@@ -75,7 +75,7 @@ public class SystemFunctions {
 	
 	public static String getVersionDB(DbConnection con) {
 		
-		String ret="indefinida";
+		String ret="Indefinida";
 		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null; 
 		PreparedStatement ps = null;
