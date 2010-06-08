@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class SystemFunctions {
 
@@ -46,7 +50,7 @@ public class SystemFunctions {
 	    return lastModified;  
 	}
 	
-	public static String getVersion(Class<?> clazz) {
+	public static String getVersionSis(Class<?> clazz) {
 		String versao = "";
 		
 		try {
@@ -67,6 +71,35 @@ public class SystemFunctions {
 		
 		return versao;
 		
+	}
+	
+	public static String getVersionDB(DbConnection con) {
+		
+		String ret="indefinida";
+		StringBuilder sql = new StringBuilder();
+		ResultSet rs = null; 
+		PreparedStatement ps = null;
+		try {
+			
+			sql.append("select versao from sgretversao");
+
+			ps = con.prepareStatement( sql.toString() );
+
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				ret = rs.getString("versao");
+			}
+			
+			ps.close();
+			rs.close();
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	
