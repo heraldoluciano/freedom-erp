@@ -1160,8 +1160,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sSQL = null;
 		}
 	}
-/*
-	private void calcImpostos( boolean bCalcBase ) {
+
+	private void calcICMSOld( boolean bCalcBase ) {
 
 		String tpredicmfisc = txtTpRedIcmsFisc.getVlrString();
 		float fRed = txtRedFisc.floatValue();
@@ -1189,15 +1189,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 		txtVlrICMSItCompra.setVlrBigDecimal( new BigDecimal( fICMS ) );
+		
 		if ( bCalcBase ) {
 			txtVlrBaseICMSItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseICMS ) ) );
 			txtVlrBaseIPIItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseIPI ) ) );
 		}
 		txtVlrLiqItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fVlrProd ) ) );
-		txtAliqIPIItCompra.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
+		txtPercIPIItCompra.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
 
 	}
-*/
+
 	
 	private void calcIpi( boolean vlr ) {
 
@@ -2859,9 +2860,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 	
 	private void calcImpostos(boolean buscabase) {
+		
 		if( "S".equals(txtCalcTrib.getVlrString()) ){
 			setCalcImpostos( buscabase );
 			getCalcImpostos();
+		}
+		else {
+			calcICMSOld( buscabase );
 		}
 		
 	}
