@@ -109,7 +109,7 @@ public class FSobre extends FFDialogo {
 		htmlversao.append("<BR>");
 		htmlversao.append(" Versão: ");
 		
-		htmlversao.append( SystemFunctions.getVersion(this.getClass()) );
+		htmlversao.append( SystemFunctions.getVersionSis(this.getClass()) );
 		
 		htmlversao.append("</BR>");	
 
