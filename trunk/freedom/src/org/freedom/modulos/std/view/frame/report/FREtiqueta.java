@@ -148,6 +148,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JComboBoxPad cbAtivoCli = null;
 	
+	private JComboBoxPad cbOrdem = null;
+	
 	private JRadioGroup<String, Object> cbComissionados = null;
 	
 	private String tabelabd = null;
@@ -175,8 +177,17 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		cbAtivoCli = new JComboBoxPad( lAtivo, vAtivo, JComboBoxPad.TP_INTEGER, 5, 0 );
 
-		 Vector<String> vLabs1 = new Vector<String>();
-		 Vector<String> vVals1 = new Vector<String>();
+		Vector<String> lOrdem = new Vector<String>();
+		Vector<String> vOrdem = new Vector<String>();
+		lOrdem.addElement( "Razão social" );
+		lOrdem.addElement( "Endereço, número" );
+		vOrdem.addElement( "RAZCLI" );
+		vOrdem.addElement( "ENDCLI, NUMCLI" );
+
+		cbOrdem = new JComboBoxPad( lOrdem, vOrdem, JComboBoxPad.TP_INTEGER, 5, 0 );
+		
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 		
 		vLabs1.addElement("Comissionado");
  		vLabs1.addElement("Cliente"); 
@@ -250,7 +261,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		pinCab.adic( txtDescModEtiq, 90, 25, 260, 20 );
 
 		pinCab.adic( new JLabelPad( "Status" ), 370, 5, 100, 20 );
-		pinCab.adic( cbAtivoCli, 370, 25, 135, 25 );
+		pinCab.adic( cbAtivoCli, 370, 25, 135, 20 );
 		
 		pinCab.adic( new JLabelPad("Cidade"), 370, 85, 100, 20 );
 		pinCab.adic( txtCidadeCli, 370, 105, 100, 20 );
@@ -265,6 +276,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		pinCab.adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 45, 280, 20 );
 		pinCab.adic( txtDescTipo, 90, 65, 260, 20 );
 
+		pinCab.adic( new JLabelPad( "Ordem" ), 370, 45, 200, 20 );
+		pinCab.adic( cbOrdem, 370, 65, 200, 20 );
+		
 		pinCab.adic( new JLabelPad( "Cód.setor" ), 7, 85, 280, 20 );
 		pinCab.adic( txtCodSetor, 7, 105, 80, 20 );
 		pinCab.adic( new JLabelPad( "Descrição do setor" ), 90, 85, 280, 20 );
@@ -531,7 +545,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					sSQL.append( "SELECT C.CODCLI, C.RAZCLI, C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.UFCLI, C.CIDCLI, C.CEPCLI  " );
 					sSQL.append( "FROM VDCLIENTE C, VDETIQCLI E " );
 					sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND E.CODEMP=C.CODEMP AND E.CODFILIAL=C.CODFILIAL AND " );
-					sSQL.append( "E.CODCLI=C.CODCLI AND E.NRCONEXAO=? ORDER BY C.RAZCLI" );
+					sSQL.append( "E.CODCLI=C.CODCLI AND E.NRCONEXAO=? ORDER BY " );
+					sSQL.append( cbOrdem.getVlrString());
 					
 					try {
 						
@@ -654,8 +669,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 				}
 				if ( !txtCodTipo.getVlrString().equals( "" ) ) {
 					sWhere += " AND CODTIPOCLI=" + txtCodTipo.getVlrInteger().intValue();
-					sWhere += " AND CODEMPTC=" + Aplicativo.iCodEmp;
-					sWhere += " AND CODFILIALTC=" + lcTipo.getCodFilial();
+					sWhere += " AND CODEMPTI=" + Aplicativo.iCodEmp;
+					sWhere += " AND CODFILIALTI=" + lcTipo.getCodFilial();
 				}
 				if ( !txtCodCli.getVlrString().equals( "" ) ) {
 					sWhere += " AND CODCLI=" + txtCodCli.getVlrInteger().intValue();
@@ -717,7 +732,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 				}
 
 				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + "," + objEtiq.getPK() + " FROM " + 
-				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY 2";
+				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY "+cbOrdem.getVlrString();
 				System.out.println("***" + sSQL);
 			} catch ( Exception e ) {
 				e.printStackTrace();
