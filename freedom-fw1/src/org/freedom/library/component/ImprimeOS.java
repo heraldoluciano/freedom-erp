@@ -645,8 +645,12 @@ public class ImprimeOS implements ActionListener {
 	}
 
 	public String getEject() {
-
-		return "" + ( (char) 12 ) + ( (char) 13 );
+		if (getImpEject()) {
+			return "" + ( (char) 12 ) + ( (char) 13 );
+		} else {
+			return "";
+		}
+		
 	}
 
 	public void eject() {
