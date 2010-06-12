@@ -592,7 +592,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					return;
 				}
 				imp = new ImprimeOS( "", con );
-				imp.setImpEject( true );
+				imp.setImpEject( false );
 				imp.verifLinPag();
 				imp.setTitulo( "Etiquetas" );
 
