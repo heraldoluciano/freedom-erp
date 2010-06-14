@@ -55,6 +55,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -176,7 +177,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
+	
 	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtESTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -188,6 +189,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtSiglaUFCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -499,6 +502,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private boolean NF_EMITIDA = false; 
 	
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, 
 		NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND,
@@ -538,7 +543,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tpnCab.addTab( "Comissão", pinCabComis );
 
 		btBuscaOrc.setPreferredSize( new Dimension( 170, 0 ) );
-		pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
+//		pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
 		pnGImp.removeAll(); // Remove os botões de impressão para adicionar logo embaixo
@@ -564,6 +569,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtSiglaUFCli, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );		
+		
 		txtNomeCli.setSize( 197, 20 );
 		lcCli.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
@@ -799,11 +806,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		this.addKeyListener( this );
 
 
-		lbStatus.setForeground( Color.WHITE );
+/*		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( SwingParams.getFontboldmed() );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
-
+*/
 		setImprimir( true );
 
 		txtVlrLiqItVenda.setAtivo( false );
@@ -939,20 +946,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setListaCampos( lcCampos );
 		setAltCab( 160 );
 		setPainel( pinCabVenda );
-		adicCampo( txtCodVenda, 7, 20, 90, 20, "CodVenda", "Nro. Pedido", ListaCampos.DB_PK, true );
-		adicCampo( txtCodTipoMov, 100, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 180, 20, 197, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtCodVenda, 7, 20, 80, 20, "CodVenda", "Nro. Pedido", ListaCampos.DB_PK, true );
+		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 170, 20, 207, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtCodSerie, 380, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, false );
 		adicCampo( txtDocVenda, 460, 20, 77, 20, "DocVenda", "Nro. Doc.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data da emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda", "Data da saída", ListaCampos.DB_SI, true );
+		
 		adicCampo( txtCodCli, 7, 60, 80, 20, "CodCli", "Cód. cli.", ListaCampos.DB_FK, txtDescCli, true );
-		adicDescFK( txtDescCli, 90, 60, 197, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pag." );
-		adicCampo( txtPedCliVenda, 570, 60, 75, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
+		adicDescFK( txtDescCli, 90, 60, 264, 20, "RazCli", "Razão social do cliente" );
+		adicDescFK( txtSiglaUFCli, 357, 60, 20, 20, "SiglaUF", "UF" );
+		
+		adicCampo( txtCodPlanoPag, 380, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 460, 60, 178, 20, "DescPlanoPag", "Descrição do plano de pag." );
+		adicCampo( txtPedCliVenda, 640, 60, 97, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
+
 		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_SI, true );
-		adic( lbStatus, 649, 60, 95, 20 );
+//		adic( lbStatus, 649, 60, 95, 20 );
 
 		setPainel( pinCabComis );
 
@@ -1151,6 +1162,27 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			adicPainelLucr();
 		}
 
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 150, 30 ) );
+		navEast.tiraBorda();
+		
+		navEast.adic( lbStatus, 26, 3, 110, 20 );
+		
+		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );		
+		
+		pnAdicionalCab.add( btBuscaOrc );
+		pnAdicionalCab.setBackground( Color.BLUE );
+
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setBackground( Color.BLACK );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setOpaque( true );
+		lbStatus.setText( "NÃO SALVO" );
+
+		
+		pnAdicionalCab.add( navEast );
+		
 	}
 
 	private synchronized void focusIni() {
@@ -2998,18 +3030,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}	
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {
-
-		try {
-
-			lbStatus.setForeground( Color.WHITE );
-			lbStatus.setOpaque( true );
-			lbStatus.setVisible( false );
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
+	public void beforeInsert( InsertEvent ievt ) { }
 
 	public void afterInsert( InsertEvent ievt ) {
 
@@ -3342,35 +3363,66 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					setReCalcPreco( true );
 				}
 			}
+			
+			// ***** Verificação do status
+			
+			nav.setActionDefault();
+			navRod.setActionDefault(); 
+			String statusvenda = txtStatusVenda.getVlrString().trim();
 
 			if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
-				lbStatus.setText( "  CANCELADA" );
-				
 				NF_EMITIDA = true;
 				
+				lbStatus.setText( "CANCELADA" );
 				lbStatus.setBackground( Color.RED );
-				lbStatus.setVisible( true );
+				
 			}
 			else if ( getVendaBloqueada() ) {
-				lbStatus.setText( "  BLOQUEADA" );
-				
 				NF_EMITIDA = true;
 				
+				lbStatus.setText( "BLOQUEADA" );
 				lbStatus.setBackground( Color.BLUE );
-				lbStatus.setVisible( true );
+				nav.setReadOnly( true );
+				navRod.setReadOnly( true );
+				
 			}
 			else if ( txtStatusVenda.getVlrString().trim().length() > 0 && ( txtStatusVenda.getVlrString().trim().equals( "V2" ) || txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
-				lbStatus.setText( "  NF EMITIDA" );
-				
 				NF_EMITIDA = true;
+				lbStatus.setText( "EMITIDA" );
 				
 				lbStatus.setBackground( new Color( 45, 190, 60 ) );
-				lbStatus.setVisible( true );
 			}
-			else {
-				lbStatus.setVisible( false );
+			else if ( statusvenda.length() > 0 && ( statusvenda.equals( "P2" ) || statusvenda.equals( "P3" ) ) ) {
+				lbStatus.setText( "EM ABERTO" );
+				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
 			}
+			else if ( statusvenda.equals( "P1" )) {
+				lbStatus.setText( "PENDENTE" );
+				lbStatus.setBackground( Color.ORANGE );
+				NF_EMITIDA = false;
+
+			}
+			else if ( "".equals( statusvenda ) || statusvenda==null) {
+				lbStatus.setForeground( Color.WHITE );
+				lbStatus.setBackground( Color.BLACK );	
+				lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+				lbStatus.setOpaque( true );
+				lbStatus.setText( "NÃO SALVO" );
+				NF_EMITIDA = false;
+			}
+			else { 
+				lbStatus.setText( statusvenda );
+				lbStatus.setBackground( Color.DARK_GRAY );
+				lbStatus.setVisible( true );	
+				NF_EMITIDA = false;
+			}
+			
+			
+			
+			
+			
+			
 
 
 		} catch ( Exception e ) {
@@ -3656,7 +3708,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtVlrIPIItVenda.setVlrBigDecimal( impostos.getVlripiit() );
 		
 				txtVlrLiqItVenda.setVlrBigDecimal( impostos.getVlrliqit() );
-		
+				txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
+				
 				defineUltimoCampo();
 			}
 			
