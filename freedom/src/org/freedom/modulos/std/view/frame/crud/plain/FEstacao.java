@@ -37,6 +37,7 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.infra.driver.scale.Bci10000;
 import org.freedom.infra.driver.scale.EpmSP2400;
 import org.freedom.infra.driver.scale.FilizolaBP15;
 import org.freedom.infra.functions.SystemFunctions;
@@ -215,10 +216,12 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabDriversBal.addElement( "<Selecione um modelo>" );
 		vLabDriversBal.addElement( FilizolaBP15.NOME_BAL );
 		vLabDriversBal.addElement( EpmSP2400.NOME_BAL );
+		vLabDriversBal.addElement( Bci10000.NOME_BAL );
 		
 		vValDriversBal.addElement( "" );
 		vValDriversBal.addElement( FilizolaBP15.class.toString().substring( 6 ) );
 		vValDriversBal.addElement( EpmSP2400.class.toString().substring( 6 ) );
+		vValDriversBal.addElement( Bci10000.class.toString().substring( 6 ) );
 
 		vLabPortasBal.addElement( "<Selecione uma porta>" );
 		
