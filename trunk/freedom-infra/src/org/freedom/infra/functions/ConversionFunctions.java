@@ -46,7 +46,16 @@ public final class ConversionFunctions {
 		}
 		return retorno;
 	}
-
+ 
+	public static String dateToStrTime(Date dVal) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(dVal);
+		int iHora = cal.get(Calendar.HOUR_OF_DAY);
+		int iMinuto = cal.get(Calendar.MINUTE);
+		int iSegundo = cal.get(Calendar.SECOND);
+		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":" + StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
+	}
+	
 	public static BigDecimal stringCurrencyToBigDecimal( String strvalue ) {
 		
 		BigDecimal retvalue = new BigDecimal("0");
