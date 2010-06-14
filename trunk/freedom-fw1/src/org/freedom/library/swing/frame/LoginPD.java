@@ -49,45 +49,44 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		DbConnection conRet = null;
 
 		if (conLogin == null)
-			return null;
+			return null; 
 		
 		// Compara a versão do banco com a versão do aplicativo;
 		
 		String versaosis = SystemFunctions.getVersionSis(this.getClass());
 		String versaobd = SystemFunctions.getVersionDB(conLogin);
 		
-		if(versaosis.compareTo(versaobd)==0) {			
-		
+		if( (versaosis.compareTo(versaobd)==0) || (!( "S".equals(Aplicativo.getParameter( "validaversao" )))) ) {			
+			 
 			if (bAdmin) {
 				if (adicConFilial(conLogin)) {
 					conRet = conLogin;
 				}
 			} 
-			else {
+			
  
-				sql.append( "SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU FROM SGGRPUSU G, SGUSUARIO U " );
-				sql.append( "WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG AND " );
-				sql.append( "G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=? " );
-	
-				ps = conLogin.prepareStatement( sql.toString() );
-				ps.setString(1,txtUsuario.getVlrString().trim().toLowerCase());
-				rs = ps.executeQuery();
-	
-				if (rs.next()) {					
-					System.out.println("IDGRUP = "+rs.getString("IDGRPUSU")); 
-					props.put("sql_role_name", rs.getString("IDGRPUSU"));
-	
-					if("N".equals( rs.getString( "ATIVOUSU" ) )) {
-						throw new Exception("O usuário " + rs.getString( "IDUSU" ) + " está inativo!");
-					}
-	
-					rs.close();
-					ps.close();
-					conLogin.close();
-					conRet = new DbConnection(strBanco, props);
-					adicConFilial(conRet);
-	
+			sql.append( "SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU FROM SGGRPUSU G, SGUSUARIO U " );
+			sql.append( "WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG AND " );
+			sql.append( "G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=? " );
+
+			ps = conLogin.prepareStatement( sql.toString() );
+			ps.setString(1,txtUsuario.getVlrString().trim().toLowerCase());
+			rs = ps.executeQuery();
+
+			if (rs.next()) {					
+				System.out.println("IDGRUP = "+rs.getString("IDGRPUSU")); 
+				props.put("sql_role_name", rs.getString("IDGRPUSU"));
+
+				if("N".equals( rs.getString( "ATIVOUSU" ) )) {
+					throw new Exception("O usuário " + rs.getString( "IDUSU" ) + " está inativo!");
 				}
+
+				rs.close();
+				ps.close();
+				conLogin.close();
+				conRet = new DbConnection(strBanco, props);
+				adicConFilial(conRet);
+	
 			}
 		}
 		else {
@@ -96,6 +95,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		}
 
 		return conRet;
+		
 	}		  
 
 	protected boolean execConexao(String sUsu, String sSenha) {
