@@ -169,7 +169,7 @@ public class Bci10000 extends AbstractScale  {
 		String strdate = "";
 		String strtime = "";
 
-		try {
+		try { 
 
 			System.out.println("Leitura:" + str);
 
