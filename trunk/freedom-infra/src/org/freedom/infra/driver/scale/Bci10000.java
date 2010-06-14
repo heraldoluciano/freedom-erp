@@ -50,7 +50,7 @@ public class Bci10000 extends AbstractScale  {
 		return NOME_BAL;
 	}
 
-	public void stopRead() {
+	public void stopReadx() {
 		try {
 			SerialPort  porta = Serial.getInstance().getSerialPort();	
 			porta.removeEventListener();
@@ -80,10 +80,10 @@ public class Bci10000 extends AbstractScale  {
 
 				if (available) { 
 
-					System.out.println("Tamanho buffer:"+input.available());
+//					System.out.println("Tamanho buffer:"+input.available());
 
-					while (input.available()<56) {
-						Thread.sleep(100);
+					while (input.available()<46) {
+						Thread.sleep(200);
 						System.out.println("Tamanho buffer:"+input.available());
 					}
 					
@@ -134,7 +134,8 @@ public class Bci10000 extends AbstractScale  {
 			e.printStackTrace();
 		}
 		finally {
-			CtrlPort.getInstance().disablePort();
+			// Testes para verificar se adianta desabilitar a porta 
+//			CtrlPort.getInstance().disablePort();
 		}
 
 	}
@@ -166,81 +167,68 @@ public class Bci10000 extends AbstractScale  {
 	private synchronized void parseString(String str) {
 
 		String strweight = "";
-		String strdate = "";
-		String strtime = "";
 
 		try { 
 
 			System.out.println("Leitura:" + str);
 
-			//str = str.trim();
+			//str = str.trim(); 
 
 			// pega os ultimos 56 caracteres do buffer
 			if(str.length()>20) {
-				buffer = null;
-				//str = str.substring(str.length()-56);
-				int posicaobranca = str.indexOf( "    " );
-
-				if(posicaobranca<24 && posicaobranca>-1) {
-					str = str.substring( posicaobranca+4 );
-					System.out.println("str-sub:"+str);
-					//str = StringFunctions.alltrim( str );
-
-					//str = str.trim();
-
-					if(str.length()>=24) {
-
-						str = str.substring( 0, 24 );
-						System.out.println("str-avaliada:"+str);
-
-//						String validador = str.substring( 11, 12 )  + str.substring( 14, 15 ) + str.substring( 19, 20 );
-						Boolean validador = true;
-//						System.out.println("str-validador:"+validador);
-
-//						if("//:".equals( validador )) {
-						if(validador) {
-
-							System.out.println("CARACTER MALDITO:" + ((int) str.charAt(23)) );
-
-							System.out.println("Finalizou leitura!");
-
-							System.out.println("String Limpa:" + str);
-
-							strweight = str.substring( 0,  07 );
-
-							System.out.println("peso lido: " + strweight);
-
-							strdate = str.substring( 9,  17 );
-
-							System.out.println("data lida: " + strdate);
-
-							strtime = str.substring( 17, str.length()-1 );
-
-							System.out.println("hora lida antes: " + strtime);
-
-							setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
-							setDate( ConversionFunctions.strDate6digToDate( strdate ) );
-							setTime( ConversionFunctions.strTimetoTime( strtime ) );
-
-							System.out.println("Setou o peso:" + getWeight());
-							System.out.println("Setou a data:" + getDate());
-							System.out.println("Setou a hora:" + getTime());					
-
-							// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
-
-							reading = false; // Parar a leitura se leitura estiver OK
-							
-							//Thread.currentThread().interrupt();
-							
+				
+				System.out.println("***Entrou no parse!");
+				
+				int i = 0;
+				int charref = -1;
+				while(str.length()>i) {
+					charref = (int) str.charAt(i);
+					System.out.print("char lido:" + charref);
+					// Localiza o caractere de referência (145) e captura os carateres correspondentes ao peso 
+					if( charref == 230) {
+						 
+						System.out.println("Terminador na posicao:" + i );
+						
+						if(str.length()>= ( i + 8 )) {
+							str = str.substring(i + 2, i + 8);						
 						}
-						else {				
-							System.out.println("String nao validada: " + str);
+						else {
+							str = str.substring(i + 2);							
 						}
-
+						
+						break;
 					}
+					
+					i++;
+				} 
+				
+				System.out.println("strlimpa:" + str);
+				
+				strweight = str;
+				
+				buffer = null;
 
-				}
+				System.out.println("Finalizou leitura!");
 
+				System.out.println("peso lido: " + str);
+
+				// Porta deve ser desabilitada para finalizar a leitura dos pesos da balança.
+
+				reading = false; // Parar a leitura se leitura estiver OK
+							
+				//Thread.currentThread().interrupt();
+							
+				setWeight( ConversionFunctions.stringToBigDecimal( strweight ) );
+				Date datahora = new Date();
+				setDate( datahora );
+				
+				setTime( ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora)) );
+ 
+				
+				
+			}
+			else {
+				System.out.println("***Sring menor que 20!");
 			}
 
 
