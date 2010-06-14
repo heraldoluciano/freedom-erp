@@ -81,6 +81,42 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     setNavigation(nav);
   }
   
+  public void setReadOnly(boolean read_only) {
+	  
+	  try {
+		  
+		  btNovo.setEnabled( !read_only );
+		  btSalvar.setEnabled( !read_only );
+		  btEditar.setEnabled( !read_only );
+		  btCancelar.setEnabled( !read_only );
+		  btExcluir.setEnabled( !read_only );
+		  
+	  }
+	  catch (Exception e) {
+		  e.printStackTrace();
+	}
+	  
+  }
+  
+  
+  public void setActionDefault() {
+	  
+	  try {
+		  
+		  btNovo.setEnabled(true);
+		  btSalvar.setEnabled(false);
+		  btEditar.setEnabled( true );
+		  btCancelar.setEnabled(false);
+		  btExcluir.setEnabled(true);
+		  
+	  }
+	  catch (Exception e) {
+		  e.printStackTrace();
+	}
+	  
+  }
+  
+  
   public void setNavigation(boolean nav) {
 	  
 	  navigation = nav;
