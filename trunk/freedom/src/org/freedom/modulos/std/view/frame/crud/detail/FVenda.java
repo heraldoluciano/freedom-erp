@@ -3146,6 +3146,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				if ( (Boolean) oPrefs[ POS_PREFS.INFVDREMESSA.ordinal() ] && ! "VR".equals( txtTipoMov.getVlrString() )  ) {
 					abreBuscaRemessa();				
 				}
+				
+				if ( ! (txtCodItFisc.getVlrInteger()>0) ) {
+					if ( Funcoes.mensagemConfirma( this, 
+							  "Este ítem apresenta problemas nas regras de tributação.\n"
+							+ "É possível que esse ítem não seja impresso na nota fiscal!\n"
+							+ "Deseja continuar?\n" ) != 0 ) {
+						pevt.cancela();
+						return;
+					}	
+				}
+
 
 				calcDescIt();
 				calcComisIt();
