@@ -1745,8 +1745,11 @@ public class FCliente extends FTabDados
 
 		try {
 			
-			sSql.append( "SELECT H.CODHISTTK,H.SITHISTTK,H.TIPOHISTTK,H.DATAHISTTK,H.DESCHISTTK," );
-			sSql.append( "H.CODCTO,H.CODATEND,A.NOMEATEND,H.HORAHISTTK " + "FROM TKHISTORICO H, ATATENDENTE A " );
+			sSql.append( "select h.codhisttk, coalesce(h.sithisttk,'') sithisttk, coalesce(h.tipohisttk,'') tipohisttk,");
+			sSql.append( "coalesce(h.datahisttk,cast('today' as date)) datahisttk, coalesce(h.deschisttk,'') deschisttk," );
+			sSql.append( "coalesce(h.codcto,'') codcto, coalesce(h.codatend,'') codatend, coalesce(a.nomeatend,'') nomeatend,");
+			sSql.append( "coalesce(h.horahisttk,'') horahisttk "); 
+			sSql.append( "FROM TKHISTORICO H, ATATENDENTE A " );
 			sSql.append( "WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=? " );
 			sSql.append( "AND A.CODATEND=H.CODATEND AND A.CODEMP=H.CODEMPAE AND A.CODFILIAL=H.CODFILIALAE " );
 			sSql.append( "ORDER BY H.DATAHISTTK DESC,H.HORAHISTTK DESC,H.CODHISTTK" );
