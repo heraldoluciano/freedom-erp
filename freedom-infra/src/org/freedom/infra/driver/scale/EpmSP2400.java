@@ -161,6 +161,9 @@ public class EpmSP2400 extends AbstractScale  {
 
 	}
 
+	public void run(){};
+	
+	public void parseString(){};
 
 	public void setDate(Date date) {
 
