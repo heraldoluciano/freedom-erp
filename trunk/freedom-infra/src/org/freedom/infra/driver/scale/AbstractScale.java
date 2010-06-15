@@ -1,7 +1,6 @@
 package org.freedom.infra.driver.scale;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.EventListener;
 import java.util.HashMap;
 
-import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
 
 import org.freedom.infra.comm.AbstractPort;
@@ -18,7 +16,7 @@ import org.freedom.infra.comm.SerialParams;
 
 
 
-public abstract class AbstractScale implements SerialPortEventListener {
+public abstract class AbstractScale implements SerialPortEventListener, Runnable {
 
 	protected SerialParams serialParams = new SerialParams();
 	
@@ -50,9 +48,15 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	
 	public static final String MESSAGE_NEGATIVE_VALUE = "Escale return a negative value, try again!";
 	
+	public static StringBuilder scalebuffer = new StringBuilder();
 	
+	protected boolean IS_BUFFERIZED = false;
 	
 	public Integer com = null;
+	
+	public boolean isBufferized() {
+		return IS_BUFFERIZED;
+	}
 	
 	private HashMap<Integer, String> log = new HashMap<Integer, String>();
 	
@@ -95,7 +99,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 	}
 	
 	public abstract String getName();
-	
+	/*
 	public void serialEvent( final SerialPortEvent event ) {
 
 		byte[] result = null;
@@ -138,7 +142,7 @@ public abstract class AbstractScale implements SerialPortEventListener {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 	private void writeOutput( final byte[] CMD ) {
 		
 		try {
@@ -214,8 +218,9 @@ public abstract class AbstractScale implements SerialPortEventListener {
 		return buffer;
 	}
 	
+	public abstract void run();
 	
-	
+	public abstract void parseString(); 	
 
 	
 }
