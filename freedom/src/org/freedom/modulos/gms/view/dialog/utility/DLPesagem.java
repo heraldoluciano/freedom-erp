@@ -202,7 +202,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		System.out.println("mensagem:" + msg);
 		
 	}
-	
+		
 	private synchronized void buscaPeso() {
 		
 		try {
@@ -212,10 +212,18 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				setMensagem( "Inicializando balança...", Color.BLUE, null, false );
 				
 				balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
+				// Usar thred apenas para balanca bci.
 				
-				//Thread.sleep( 550);
+				if(balanca.isBufferized()) {				
+					Thread t = new Thread(balanca); 
+					t.start();
+				
+					Thread.sleep(1000);
+				}
 				
 				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false );
+				
+				balanca.parseString();
 				
 				Date data = balanca.getDate();
 				Time hora = balanca.getTime();
@@ -265,7 +273,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				}
 				
 				//balanca.inactivePort();
-				balanca = null;
+				//balanca = null;
+				
 				
 			}
 			else {
