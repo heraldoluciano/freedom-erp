@@ -33,7 +33,7 @@ public final class Bci10000 extends AbstractScale {
 
 	// private volatile boolean validstring = false;
 
-	public synchronized void initialize(Integer com, Integer timeout, Integer baudrate,
+	public void initialize(Integer com, Integer timeout, Integer baudrate,
 			Integer databits, Integer stopbits, Integer parity) {
 
 		this.com = com;
@@ -47,8 +47,12 @@ public final class Bci10000 extends AbstractScale {
 		activePort(this);
 
 		reading = true;
+		
+		IS_BUFFERIZED = true;
+		
 
-		readReturn();
+//		readReturn();
+	
 
 	}
 
@@ -65,7 +69,7 @@ public final class Bci10000 extends AbstractScale {
 		}
 	}
 
-	protected synchronized void readReturn() {
+	protected void readReturn() {
 
 		byte[] result = null;
 		byte[] bufferTmp = null;
@@ -78,19 +82,19 @@ public final class Bci10000 extends AbstractScale {
 			available = false;
 
 			while (reading) {
-
-				Thread.sleep(1000);
+  
+				Thread.sleep(250);
 				// Thread.currentThread().join(100);
 
 				if (available) {
 
 					// System.out.println("Tamanho buffer:"+input.available());
-					while (input.available() < 16) {
- 						Thread.sleep(100);
+//					while (input.available() < 16) {
+// 						Thread.sleep(100);
 //						Thread.currentThread().join(100);
 //						
-						System.out.println("Tamanho buffer:" + input.available());
-					}
+//						System.out.println("Tamanho buffer:" + input.available());
+//					}
 
 					result = new byte[input.available()];
 					// result = new byte[ 256 ];
@@ -105,7 +109,7 @@ public final class Bci10000 extends AbstractScale {
 
 						}
 
-						System.out.println("tamanho da cadeia de leitura:" + nodeBytes);
+	//					System.out.println("tamanho da cadeia de leitura:" + nodeBytes);
 
 						if (buffer == null) {
 							bufferTmp = result;
@@ -122,74 +126,21 @@ public final class Bci10000 extends AbstractScale {
 								}
 							}
 						}
-
-						buffer = bufferTmp;
-
-						try {
-							String str = new String(buffer);
-							System.out.println("Leitura:" + str);
-
-							// str = str.trim();
-
-							// pega os ultimos 56 caracteres do buffer
-							if (str.length() > 56) {
-
-								System.out.println("***Entrou no parse!");
-
-								int i = 0;
-								int charref = -1;
-								while (str.length() > i) {
-									charref = (byte) str.charAt(i);
-									System.out.println("char lido:" + charref);
-									// Localiza o caractere de referência (145) e captura os
-									// carateres correspondentes ao peso
-									if (charref == STX) {
-
-										System.out.println("STX na posicao:" + i);
-
-										if (str.length() >= (i + 10)) {
-											str = str.substring(i + 4, i + 10);
-										} else {
-											str = str.substring(i + 4);
-										}
-
-										break;
-									}
-
-									i++;
-								}
-
-								System.out.println("strlimpa:" + str);
-
-//								strweight = str;
-
-								buffer = null;
-
-								System.out.println("Finalizou leitura!");
-
-								System.out.println("peso lido: " + str);
-
-								// Porta deve ser desabilitada para finalizar a leitura dos
-								// pesos da balança.
-
-								reading = false; // Parar a leitura se leitura estiver OK
-
-								//Thread.currentThread().interrupt();
-
-								setWeight(ConversionFunctions.stringToBigDecimal(str));
-								Date datahora = new Date();
-								setDate(datahora); 
-
-								setTime(ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora)));
-
-							} 
-							else {
-								System.out.println("***Sring menor que 20!");
+						if(bufferTmp.length==18) {
+							System.out.println("incluindo buffer:"+new String(bufferTmp));
+							
+							if(AbstractScale.scalebuffer.length()>180) {
+								//Limpando o buffer
+								AbstractScale.scalebuffer.delete(0, AbstractScale.scalebuffer.length());
+								System.out.println("Limpou o buffer");
 							}
-
-						} catch (Exception e) {
-							e.printStackTrace();
+							
+							AbstractScale.scalebuffer.append(new String(bufferTmp));
 						}
+						else {
+							System.out.println("buffer descartado:"+new String(bufferTmp));
+						}
+						
 
 					}
 
@@ -200,8 +151,8 @@ public final class Bci10000 extends AbstractScale {
 			e.printStackTrace();
 		} finally {
 			// Testes para verificar se adianta desabilitar a porta
-			stopRead();
-			CtrlPort.getInstance().disablePort();
+			//stopRead();
+			//CtrlPort.getInstance().disablePort();
 		}
 
 	}
@@ -227,10 +178,10 @@ public final class Bci10000 extends AbstractScale {
 
 		return time;
 	}
-/*
-	private synchronized void parseString(String str) {
 
-		String strweight = "";
+	public void parseString() {
+
+		String str = new String(AbstractScale.scalebuffer.toString());
 
 		try {
 
@@ -239,7 +190,7 @@ public final class Bci10000 extends AbstractScale {
 			// str = str.trim();
 
 			// pega os ultimos 56 caracteres do buffer
-			if (str.length() > 56) {
+			if (str.length() > 18) {
 
 				System.out.println("***Entrou no parse!");
 
@@ -254,10 +205,10 @@ public final class Bci10000 extends AbstractScale {
 
 						System.out.println("STX na posicao:" + i);
 
-						if (str.length() >= (i + 8)) {
-							str = str.substring(i + 2, i + 8);
+						if (str.length() >= (i + 10)) {
+							str = str.substring(i + 4, i + 10);
 						} else {
-							str = str.substring(i + 2);
+							str = str.substring(i + 4);
 						}
 
 						break;
@@ -268,10 +219,6 @@ public final class Bci10000 extends AbstractScale {
 
 				System.out.println("strlimpa:" + str);
 
-				strweight = str;
-
-				buffer = null;
-
 				System.out.println("Finalizou leitura!");
 
 				System.out.println("peso lido: " + str);
@@ -279,11 +226,11 @@ public final class Bci10000 extends AbstractScale {
 				// Porta deve ser desabilitada para finalizar a leitura dos
 				// pesos da balança.
 
-				reading = false; // Parar a leitura se leitura estiver OK
+//				reading = false; // Parar a leitura se leitura estiver OK
 
 				// Thread.currentThread().interrupt();
 
-				setWeight(ConversionFunctions.stringToBigDecimal(strweight));
+				setWeight(ConversionFunctions.stringToBigDecimal(str));
 				Date datahora = new Date();
 				setDate(datahora);
 
@@ -291,14 +238,14 @@ public final class Bci10000 extends AbstractScale {
 						.dateToStrTime(datahora)));
 
 			} else {
-				System.out.println("***Sring menor que 20!");
+				System.out.println("***Buffer menor que o esperado (18)!");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-*/
+
 	public void serialEvent( SerialPortEvent event ) {
 
 
@@ -323,6 +270,11 @@ public final class Bci10000 extends AbstractScale {
 	public BigDecimal getWeight() {
 
 		return weight;
+	}
+ 
+	public void run() {
+		// TODO Auto-generated method stub
+		readReturn();
 	}
 
 }
