@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.comm.SerialPortEvent;
+
 import org.freedom.infra.functions.StringFunctions;
 
 public class FilizolaBP15 extends AbstractScale  {
@@ -143,6 +145,15 @@ public class FilizolaBP15 extends AbstractScale  {
 		
 		return weight;
 	}
+
+	public void serialEvent(SerialPortEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void run() {};
+	
+	public void parseString(){};
 	
 	
 	
