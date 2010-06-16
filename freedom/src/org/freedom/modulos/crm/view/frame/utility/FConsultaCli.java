@@ -381,8 +381,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.STATUSVENDA, V.CODPLANOPAG," );
-			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, V.VLRPRODVENDA, V.VLRDESCVENDA," );
-			sql.append( "V.VLRADICVENDA, V.VLRFRETEVENDA, V.VLRLIQVENDA, V.TIPOVENDA " );
+			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, coalesce(V.VLRPRODVENDA,0) VLRPRODVENDA, coalesce(V.VLRDESCVENDA,0) VLRDESCVENDA," );
+			sql.append( "coalesce(V.VLRADICVENDA,0) VLRADICVENDA , coalesce(V.VLRFRETEVENDA,0) VLRFRETEVENDA, coalesce(V.VLRLIQVENDA,0) VLRLIQVENDA, V.TIPOVENDA " );
 			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
 			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
@@ -510,10 +510,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 			
 			if(row>0) {
-				//Selecionando primeiro do grid e carregando itens
+				//  Selecionando primeiro do grid e carregando itens
 				
-				tabVendas.setLinhaSel( 0 );
-				buscaItensVenda( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
+					tabVendas.setLinhaSel( 0 );
+					buscaItensVenda( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
 			}
 			
 			rs.close();
@@ -531,8 +531,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT I.CODITVENDA, I.CODPROD, P.DESCPROD, I.CODLOTE, " );
-			sql.append( "I.QTDITVENDA, I.PRECOITVENDA, I.VLRDESCITVENDA, I.VLRFRETEITVENDA, I.VLRLIQITVENDA " );
+			sql.append( "SELECT I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') codlote, " );
+			sql.append( "coalesce(I.QTDITVENDA,0) qtditvenda, coalesce(I.PRECOITVENDA,0) precoitvenda, coalesce(I.VLRDESCITVENDA,0) vlrdescitvenda, coalesce(I.VLRFRETEITVENDA,0) vlrfreteitvenda, coalesce(I.VLRLIQITVENDA,0) vlrliqitvenda " );
 			sql.append( "FROM VDITVENDA I, EQPRODUTO P " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODVENDA=? AND I.TIPOVENDA=? AND " );
 			sql.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
@@ -575,7 +575,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEITVENDA" ) ), row, ITEMVENDAS.FRETE.ordinal() );
 				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ), row, ITEMVENDAS.TOTAL.ordinal() );
 				tabItensVendas.setValor( tipovenda, row, ITEMVENDAS.TIPOVENDA.ordinal());
-				
+			
 				row++;
 			}
 			
