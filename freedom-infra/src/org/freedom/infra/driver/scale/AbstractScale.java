@@ -1,6 +1,7 @@
 package org.freedom.infra.driver.scale;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.EventListener;
 import java.util.HashMap;
 
+import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
 
 import org.freedom.infra.comm.AbstractPort;
@@ -54,6 +56,7 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 	
 	public Integer com = null;
 	
+
 	public boolean isBufferized() {
 		return IS_BUFFERIZED;
 	}
@@ -99,7 +102,7 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 	}
 	
 	public abstract String getName();
-	/*
+	
 	public void serialEvent( final SerialPortEvent event ) {
 
 		byte[] result = null;
@@ -142,7 +145,7 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 			e.printStackTrace();
 		}
 	}
-	*/
+	
 	private void writeOutput( final byte[] CMD ) {
 		
 		try {
@@ -220,7 +223,6 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 	
 	public abstract void run();
 	
-	public abstract void parseString(); 	
-
+	public abstract void parseString(); 
 	
 }
