@@ -79,8 +79,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     btCancelar.addActionListener(this);
 
     setNavigation(nav);
-  }
+  } 
   
+  // Feature não deve ser utilizada pois causa problemas na edição do registro 
+  // após status ser alterado par aditavel novamente (verificar futuramente)
   public void setReadOnly(boolean read_only) {
 	  
 	  try {
