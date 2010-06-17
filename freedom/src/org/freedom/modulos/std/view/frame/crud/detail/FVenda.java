@@ -531,6 +531,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			numComissionados = getNumComissionados();		
 		}
 
+		txtTipoVenda.setVlrString( "V" );
+		
 		pnCliCab.add( tpnCab );
 
 		pinCabVenda.setFirstFocus( txtCodVenda );
@@ -666,7 +668,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// ListaCampos de Totais (É acionada pelo listaCampos de Venda)
 
 		lcVenda2.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
-		//		lcVenda2.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
+//		lcVenda2.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
 		lcVenda2.add( new GuardaCampo( txtVlrFreteVenda, "VlrFreteVenda", "Vlr. frete", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrComisVenda, "VlrComisVenda", "Vlr. comis.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtMedComisVenda, "PercMComisVenda", "Med. comis.", ListaCampos.DB_SI, false ) );
@@ -962,7 +964,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicDescFK( txtDescPlanoPag, 460, 60, 178, 20, "DescPlanoPag", "Descrição do plano de pag." );
 		adicCampo( txtPedCliVenda, 640, 60, 97, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
 
-		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_PK, true );
 //		adic( lbStatus, 649, 60, 95, 20 );
 
 		setPainel( pinCabComis );
@@ -3366,8 +3368,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			// ***** Verificação do status
 			
-			nav.setActionDefault();
-			navRod.setActionDefault(); 
+			// Desabilitada a feature devido a problema na edição do registro após setar para readonly.
+//			nav.setActionDefault();
+//			navRod.setActionDefault();
+			
 			String statusvenda = txtStatusVenda.getVlrString().trim();
 
 			if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
@@ -3382,8 +3386,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				lbStatus.setText( "BLOQUEADA" );
 				lbStatus.setBackground( Color.BLUE );
-				nav.setReadOnly( true );
-				navRod.setReadOnly( true );
+				// Desabilitada a feature devido a problema na edição do registro após setar para readonly.
+//				nav.setReadOnly( true );
+//				navRod.setReadOnly( true );
 				
 			}
 			else if ( txtStatusVenda.getVlrString().trim().length() > 0 && ( txtStatusVenda.getVlrString().trim().equals( "V2" ) || txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
