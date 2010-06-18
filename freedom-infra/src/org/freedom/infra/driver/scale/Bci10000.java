@@ -189,13 +189,14 @@ public final class Bci10000 extends AbstractScale {
 
 			// str = str.trim();
 
-			// pega os ultimos 56 caracteres do buffer
+			// pega os ultimos 18 caracteres do buffer
 			if (str.length() > 18) {
 
 				System.out.println("***Entrou no parse!");
 
 				int i = 0;
 				int charref = -1;
+				
 				while (str.length() > i) {
 					charref = (byte) str.charAt(i);
 					System.out.println("char lido:" + charref);
@@ -205,9 +206,10 @@ public final class Bci10000 extends AbstractScale {
 
 						System.out.println("STX na posicao:" + i);
 
-						if (str.length() >= (i + 10)) {
-							str = str.substring(i + 4, i + 10);
-						} else {
+						if (str.length() >= (i + 9)) {
+							str = str.substring(i + 4, i + 9);
+						} 
+						else {
 							str = str.substring(i + 4);
 						}
 
