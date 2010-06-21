@@ -347,6 +347,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabitcompra.setTamColuna( 190, ITCOMPRA.DESCPROD.ordinal() );
 		tabitcompra.setTamColuna( 40, ITCOMPRA.QTDITCOMPRA.ordinal() );
 		tabitcompra.setTamColuna( 60, ITCOMPRA.PRECOITCOMPRA.ordinal() );
+		tabitcompra.setColunaEditavel( ITCOMPRA.PRECOITCOMPRA.ordinal(), true );
 		tabitcompra.setTamColuna( 60, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
 		tabitcompra.setTamColuna( 60, ITCOMPRA.VLRLIQITCOMPRA.ordinal() );
 
