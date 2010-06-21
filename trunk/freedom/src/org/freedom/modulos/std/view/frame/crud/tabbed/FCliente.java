@@ -264,6 +264,10 @@ public class FCliente extends FTabDados
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodCnae = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+
+	private JTextFieldFK txtDescCnae = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+	
 	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtInscCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -554,6 +558,8 @@ public class FCliente extends FTabDados
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
 
+	private ListaCampos lcCnae = new ListaCampos( this, "" );
+	
 	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
 
 	private ListaCampos lcVend = new ListaCampos( this, "VD" );
@@ -624,7 +630,7 @@ public class FCliente extends FTabDados
 		super();
 		
 		setTitulo( "Cadastro de Clientes" );
-		setAtribos( 50, 20, 545, 670 );
+		setAtribos( 50, 20, 545, 710 );
 
 		lcCliFor.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCliFor );
@@ -657,6 +663,14 @@ public class FCliente extends FTabDados
 		lcTipoCli.setReadOnly( true );
 		txtCodTipoCli.setTabelaExterna( lcTipoCli, FTipoCli.class.getCanonicalName() );
 
+		lcCnae.setUsaME( false );
+		lcCnae.add( new GuardaCampo( txtCodCnae, "CodCnae", "Cód.CNAE", ListaCampos.DB_PK, true ) );
+		lcCnae.add( new GuardaCampo( txtDescCnae, "DescCnae", "Descrição da atividade principal (CNAE)", ListaCampos.DB_SI, false ) );
+		lcCnae.montaSql( false, "CNAE", "SG" );
+		lcCnae.setQueryCommit( false );
+		lcCnae.setReadOnly( true );
+		txtCodCnae.setTabelaExterna( lcCnae, null );
+		
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
@@ -872,56 +886,61 @@ public class FCliente extends FTabDados
 		
 		adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
-		adicCampo( txtCnpjCli, 7, 180, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtInscCli, 130, 180, 107, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtCpfCli, 240, 180, 120, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtRgCli, 363, 180, 80, 20, "RgCli", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtSSPCli, 446, 180, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );	
-		adicCampo( txtCepCli, 7, 220, 90, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
-		adic( btBuscaEnd, 100, 220, 20, 20 );
-		adicCampo( txtEndCli, 125, 220, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumCli, 443, 220, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCli, 7, 260, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );		
-		adicCampo( txtComplCli, 210, 260, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtSuframaCli, 379, 260, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );		
+
+		adicCampo( txtCodCnae, 7, 180, 80, 20, "CodCnae", "Cód.CNAE", ListaCampos.DB_FK, txtDescCnae, false );
+		adicDescFK( txtDescCnae, 90, 180, 325, 20, "DescCnae", "Descrição da atividade principal (CNAE)" );
+
+		
+		adicCampo( txtCnpjCli, 7, 220, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtInscCli, 130, 220, 107, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfCli, 240, 220, 120, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtRgCli, 363, 220, 80, 20, "RgCli", "RG", ListaCampos.DB_SI, false );
+		adicCampo( txtSSPCli, 446, 220, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );	
+		adicCampo( txtCepCli, 7, 260, 90, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
+		adic( btBuscaEnd, 100, 260, 20, 20 );
+		adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairCli, 7, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtComplCli, 210, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );		
  
-		adicCampo( txtDDDCli, 7, 300, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCli, 50, 300, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtRamalCli, 150, 300, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtRamalCli, 150, 340, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );
 
-		adicCampo( txtDDDFaxCli, 225, 300, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCli, 268, 300, 107, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFaxCli, 225, 340, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxCli, 268, 340, 107, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false );
 
-		adicCampo( txtDDDCelCli, 378, 300, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtCelCli, 421, 300, 95, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDCelCli, 378, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtCelCli, 421, 340, 95, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
 
-		adicCampo( txtIncraCli, 313, 340, 203, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteCli, 7, 340, 280, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
-		adic( btFirefox, 290, 340, 20, 20 );
-		adicCampo( txtEmailCli, 7, 380, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtContCli, 256, 380, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
+		adicCampo( txtIncraCli, 313, 380, 203, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteCli, 7, 380, 280, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
+		adic( btFirefox, 290, 380, 20, 20 );
+		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
+		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
 
 				
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
 
-			adicCampo( txtEmailNfeCli, 7, 420, 509, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
+			adicCampo( txtEmailNfeCli, 7, 460, 509, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
 			
-			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );
+			adicCampo( txtCodPais, 7, 500, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
+			adicDescFK( txtDescPais, 80, 500, 217, 20, "NomePais", "Nome do país" );
 			
-			adicCampo( txtSiglaUF, 300, 460, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
-			adicDescFK( txtNomeUF, 353, 460, 162, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtSiglaUF, 300, 500, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
+			adicDescFK( txtNomeUF, 353, 500, 162, 20, "NomeUF", "Nome UF" );
 			
-			adicCampo( txtCodMunic, 7, 500, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
-			adicDescFK( txtDescMun, 80, 500, 217, 20, "NomeMunic", "Nome do municipio" );			
+			adicCampo( txtCodMunic, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
+			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );			
 			
 		}
 		else{
 			
-			adicCampo( txtCodPais, 7, 420, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 420, 217, 20, "NomePais", "Nome do país" );			
-			adicCampo( txtCidCli, 300, 420, 162, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCli, 465, 420, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );			
+			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
+			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );			
+			adicCampo( txtCidCli, 300, 460, 162, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
+			adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );			
 		}
 	
 		if ( (Boolean)bPref.get( "BUSCACEP" )) {
@@ -4487,6 +4506,7 @@ public class FCliente extends FTabDados
 		montaTela();
 	
 		lcTipoCli.setConexao( cn );
+		lcCnae.setConexao( cn );
 		lcTipoFiscCli.setConexao( cn );
 		lcClas.setConexao( cn );
 		lcVend.setConexao( cn );
