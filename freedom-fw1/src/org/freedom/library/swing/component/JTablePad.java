@@ -261,16 +261,12 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 	public void setValor( Object obj, int lin, int col ) {
 
-		if ( obj == null ) {
-			if(obj instanceof String) {		
-				obj = "";
-			} 
-		}
+		if ( obj == null )
+			obj = "";
 		if ( ( lin < ContaLinhas ) & ( col < ContaColunas ) ) {
 			modelo.setValueAt( obj, lin, col );
 		}
-	}
-	
+	}	
 
 	public Object getValor( int lin, int col ) {
 
