@@ -23,6 +23,10 @@ public final class Bci10000 extends AbstractScale {
 	public static final byte STX = 2;
 	
 	public static final byte ETX = 3;
+	
+	private static final int TAMANHO_STR_PESO = 9;
+	
+	private static final int TAMANHO_STR_TOTAL = 18;
 
 	public static final String NOME_BAL = "Rodoviária BCI 10000";
 
@@ -84,36 +88,23 @@ public final class Bci10000 extends AbstractScale {
 			while (reading) {
   
 				Thread.sleep(250);
-				// Thread.currentThread().join(100);
 
 				if (available) {
 
-					// System.out.println("Tamanho buffer:"+input.available());
-//					while (input.available() < 16) {
-// 						Thread.sleep(100);
-//						Thread.currentThread().join(100);
-//						
-//						System.out.println("Tamanho buffer:" + input.available());
-//					}
-
 					result = new byte[input.available()];
-					// result = new byte[ 256 ];
-
-					int nodeBytes = 0;
 
 					if (result != null) {
 
 						while (input.available() > 0) {
 
-							nodeBytes = input.read(result);
+							input.read(result);
 
 						}
 
-	//					System.out.println("tamanho da cadeia de leitura:" + nodeBytes);
-
 						if (buffer == null) {
 							bufferTmp = result;
-						} else {
+						} 
+						else {
 							isRead = true;
 							tmp = buffer;
 							bufferTmp = new byte[tmp.length + result.length];
@@ -147,13 +138,10 @@ public final class Bci10000 extends AbstractScale {
 				}
 
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// Testes para verificar se adianta desabilitar a porta
-			//stopRead();
-			//CtrlPort.getInstance().disablePort();
-		}
+		} 
 
 	}
 
@@ -190,7 +178,7 @@ public final class Bci10000 extends AbstractScale {
 			// str = str.trim();
 
 			// pega os ultimos 18 caracteres do buffer
-			if (str.length() > 18) {
+			if (str.length() > TAMANHO_STR_TOTAL) {
 
 				System.out.println("***Entrou no parse!");
 
@@ -200,14 +188,14 @@ public final class Bci10000 extends AbstractScale {
 				while (str.length() > i) {
 					charref = (byte) str.charAt(i);
 					System.out.println("char lido:" + charref);
-					// Localiza o caractere de referência (145) e captura os
+					// Localiza o caractere de referência Start Text (STX 2) e captura os
 					// carateres correspondentes ao peso
 					if (charref == STX) {
 
 						System.out.println("STX na posicao:" + i);
 
-						if (str.length() >= (i + 9)) {
-							str = str.substring(i + 4, i + 9);
+						if (str.length() >= (i + TAMANHO_STR_PESO)) {
+							str = str.substring(i + 4, i + TAMANHO_STR_PESO);
 						} 
 						else {
 							str = str.substring(i + 4);
@@ -280,3 +268,4 @@ public final class Bci10000 extends AbstractScale {
 	}
 
 }
+
