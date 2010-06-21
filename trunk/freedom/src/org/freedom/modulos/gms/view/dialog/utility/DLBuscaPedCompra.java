@@ -626,7 +626,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						
 						try {
 							
-							sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?)";
+							sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?)";
 							ps2 = con.prepareStatement( sSQL );
 							ps2.setInt( 1, Aplicativo.iCodEmp );
 							ps2.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
@@ -638,6 +638,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps2.setString( 8, (String) tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ) );
 							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString())));
 							ps2.setFloat( 10, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString())));
+							ps2.setFloat( 11, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString())));
 
 							ps2.execute();
 							ps2.close();
@@ -656,7 +657,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 						}
 	
 					}
-				
+				 
 				}
 				
 				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
