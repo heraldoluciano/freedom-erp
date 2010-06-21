@@ -28,6 +28,8 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -48,9 +50,9 @@ import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -64,6 +66,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 
 /**
@@ -81,7 +84,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// *** Paineis tela
 	
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	private JPanelPad panelMaster = new JPanelPad( 700, 60 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 120 );
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
 	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );	
@@ -103,38 +106,35 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		
 	// *** Geral
 
-	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtFoneFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
+	private JTextFieldFK txtCelFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
+	private JTextFieldFK txtContatoFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	// *** Campos
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-//	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	// ** Checkbox
-	
-	private JCheckBoxPad cbEtapa0 =  new JCheckBoxPad( "Pendentes", "S", "N" );
-	private JCheckBoxPad cbEtapa1 =  new JCheckBoxPad( "Pesagem 1", "S", "N" );
-	private JCheckBoxPad cbEtapa2 =  new JCheckBoxPad( "Descarregamento", "S", "N" );
-	private JCheckBoxPad cbEtapa3 =  new JCheckBoxPad( "Pesagem 2", "S", "N" );
-	
-	// ** Legenda
-	
-	private ImageIcon imgPesagem1 = Icone.novo( "blAzul1_18x18.png" );
-	private ImageIcon imgDescarregamento = Icone.novo( "blAzul2_18x18.png" );
-	private ImageIcon imgPesagem2 = Icone.novo( "blAzul3_18x18.png" );
-	private ImageIcon imgColuna = null;
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	
 	// *** Listacampos
 
-//	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
-//	private ListaCampos lcProd = new ListaCampos( this );
+	private ListaCampos lcForneced = new ListaCampos( this );
 
 	// *** Botões
-	private JButtonPad btRecarregar = new JButtonPad( "Recarregar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
 //	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+	
+	private JTablePad tabstatus = new JTablePad();
+	
+	private JScrollPane scpStatus = new JScrollPane( tabstatus );
+	
+	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
+
 		
 	// Enums
 	
@@ -153,28 +153,98 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
     	int y = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getHeight()-getHeight())/2;
     	
     	setLocation( x, y );
-		
+    	setValoresPadrao();
 		montaListaCampos();
 		criaTabelas();
 		montaTela();				
 		montaListeners();
-		carregaValoresPadrao();
+
+	}
 	
+
+	private void setValoresPadrao() {
+		
+		txtDataini.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
+		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
+
 	}
 
-	private void carregaValoresPadrao() {
-		cbEtapa0.setVlrString( "S" );
-		cbEtapa1.setVlrString( "S" );
-		cbEtapa2.setVlrString( "S" );
+	private void carregaStatus() {
+
+		Vector<Object> valores = RecMerc.getValores();
+		Vector<String> labels = RecMerc.getLabels();
+		Vector<ImageIcon> icones = new Vector<ImageIcon>();
+
+		Vector<Object> item = null;
+
+		for ( int i = 0; i < valores.size(); i++ ) { 
+
+			item = new Vector<Object>();
+			
+			String valor = valores.elementAt( i ).toString();
+			String label = labels.elementAt( i );
+			ImageIcon icon = RecMerc.getImagem( valor, RecMerc.IMG_TAMANHO_P );
+			
+			if(RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( valor ) || 
+			   RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( valor )) {
+				item.addElement( new Boolean( false ) );
+			}
+			else {
+				item.addElement( new Boolean( true ) );
+			}
+			
+			item.addElement( valor );
+			item.addElement( icon );
+			item.addElement( label );
+
+			tabstatus.adicLinha( item );
+
+		}
+
+	}
+	
+	
+	private void montaGridStatus() {
+
+		tabstatus.adicColuna( "" ); // Selecao
+		tabstatus.adicColuna( "Cod." ); // Codigo
+		tabstatus.adicColuna( "" ); // Imagem
+		tabstatus.adicColuna( "Status" ); // Descrição
+
+		tabstatus.setTamColuna( 10, 0 );
+		
+		tabstatus.setColunaInvisivel( 1 );
+
+		tabstatus.setTamColuna( 10, 2 );
+		tabstatus.setTamColuna( 100, 3 );
+
+		tabstatus.setRowHeight( 12 );
+
+		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
+
 	}
 	
 	private void montaListaCampos() {
+		
+		lcForneced.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcForneced.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForneced.add( new GuardaCampo( txtNomeFor, "NomeFor", "Nome do fornecedor", ListaCampos.DB_SI, false ) );
+		lcForneced.add( new GuardaCampo( txtContatoFor, "ContFor", "Contato", ListaCampos.DB_SI, false ) );
+		lcForneced.add( new GuardaCampo( txtFoneFor, "FoneFor", "Telefone", ListaCampos.DB_SI, false ) );
+
+		lcForneced.setWhereAdic( "ATIVOFOR='S'" );
+		lcForneced.montaSql( false, "FORNECED", "CP" );
+		lcForneced.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcForneced, FFornecedor.class.getCanonicalName() );
+		txtCodFor.setFK( true );
+		txtCodFor.setNomeCampo( "CodFor" );
+
 		
 	}
 	
 	private void montaListeners() {
 		
-		btRecarregar.addActionListener( this );
+		btAtualiza.addActionListener( this );
 		btNovo.addActionListener( this );
 
 		btEditar.addActionListener( this );
@@ -192,14 +262,24 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		
 		// ***** Cabeçalho
 		
-		panelFiltros.adic( cbEtapa0, 2, 0, 90, 20 );
-		panelFiltros.adic( cbEtapa1, 95, 0, 100, 20 );
-		panelFiltros.adic( cbEtapa2, 193, 0, 140, 20 );
-		panelFiltros.adic( cbEtapa3, 335, 0, 100, 20 );
-		
-		panelMaster.adic( panelFiltros, 4, 0, 450, 52 );
+		panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
 
-		panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
+		panelFiltros.adic( scpStatus, 517, 0, 150, 82 );
+		panelFiltros.adic( btAtualiza, 670, 0, 30, 81 );
+		
+		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
+		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
+
+		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
+		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Cód.For." ), 153, 0, 70, 20 );
+		panelFiltros.adic( txtCodFor, 153, 20, 70, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Razão social do fornecedor" ), 226, 0, 180, 20 );
+		panelFiltros.adic( txtRazFor, 226, 20, 270, 20 );
+		
+		
 		
 //		***** Abas
 		
@@ -225,24 +305,6 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = SwingParams.getFontpadmed(); 
 		
-		JLabelPad labelPesagem1 = new JLabelPad( "Pesagem 1" );
-		labelPesagem1.setForeground( statusColor );
-		labelPesagem1.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgPesagem1 ), 60, 5, 18, 18 );
-		panelLegenda.adic( labelPesagem1, 84, 7, 80, 15 );
-		
-		JLabelPad labelDescarregamento = new JLabelPad( "Descarregamento" );
-		labelDescarregamento.setForeground( statusColor );
-		labelDescarregamento.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgDescarregamento ), 164, 5, 18, 18 );
-		panelLegenda.adic( labelDescarregamento, 188, 7, 100, 15 );
-		
-		JLabelPad faturadas = new JLabelPad( "Pesagem 2" );
-		faturadas.setForeground( statusColor );
-		faturadas.setFont( statusFont );
-		panelLegenda.adic( new JLabelPad( imgPesagem2 ), 294, 5, 18, 18 );		
-		panelLegenda.adic( faturadas, 318, 7, 100, 15 );
-		
 		panelLegenda.setBorder( null );		
 		
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
@@ -256,6 +318,10 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		panelSouth.add( panelNavegador, BorderLayout.WEST);
 		panelSouth.add( panelLegenda, BorderLayout.CENTER );		
 		panelSouth.add( adicBotaoSair(), BorderLayout.EAST);
+		
+		montaGridStatus();
+		carregaStatus();
+
 				
 	}
 	
@@ -302,37 +368,44 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			sql.append( "from eqrecmerc rm, vdtransp tr ");
 			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
+			sql.append( "and rm.dtins between ? and ? " );
 			
 			StringBuffer status = new StringBuffer("");
 
-			
-			if("S".equals(cbEtapa0.getVlrString())) {
-				status.append( " 'PE' ");
-			}
-			if("S".equals(cbEtapa1.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'E1' " );
-			}
-			if("S".equals(cbEtapa2.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'E2' " );
-			}
-			if("S".equals(cbEtapa3.getVlrString())) {
-				if ( status.length() > 0 ) {
-					status.append( "," );
-				}
-				status.append( " 'FN' " );
-			}
+			boolean primeiro = true;
 
+			for ( int i = 0; i < tabstatus.getNumLinhas(); i++ ) {
+
+				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
+
+					if ( primeiro ) {
+						sql.append( " and rm.status in (" );
+					}
+					else {
+						sql.append( "," );
+					}
+
+					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
+
+					primeiro = false;
+				}
+
+				if ( i == tabstatus.getNumLinhas() - 1 && !primeiro ) {
+					sql.append( " ) " );
+				}
+
+			}
+			
 			if ( status.length() > 0 ) {
 				sql.append( " and rm.status in (" );
 				sql.append( status );
 				sql.append( ") ");
 			}
+			
+			if(txtCodFor.getVlrInteger()>0) {
+				sql.append( " and rm.codempfr=? and rm.codfilialfr=? and rm.codfor=? "  );
+			}
+
 		
 			System.out.println("SQL:" + sql.toString());
 			
@@ -342,6 +415,14 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ));
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ));
+			
+			if(txtCodFor.getVlrInteger()>0) {
+				ps.setInt( iparam++, lcForneced.getCodEmp() );
+				ps.setInt( iparam++, lcForneced.getCodFilial() );
+				ps.setInt( iparam++, txtCodFor.getVlrInteger() );				
+			}
 			
 			ResultSet rs = ps.executeQuery();		
 			
@@ -353,16 +434,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				
 				tabDet.adicLinha();
 				
-
-				if ( "PE".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgPesagem1;
-				}
-				else if ( "EP".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgDescarregamento;
-				}
-				else if ( "FN".equals( rs.getString( "status" ) ) ) {
-					imgColuna = imgPesagem2;
-				}				
+				imgColuna = RecMerc.getImagem( rs.getString( "status" ), RecMerc.IMG_TAMANHO_M );
 				
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
 				tabDet.setValor( rs.getString( "status" ), row, DETALHAMENTO.STATUSTXT.ordinal() );
@@ -397,7 +469,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	
 	public void actionPerformed( ActionEvent e ) {
 
-		if ( e.getSource() == btRecarregar ) {
+		if ( e.getSource() == btAtualiza ) {
 			montaGrid();
 		}
 		else if ( e.getSource() == btNovo ) {
@@ -492,8 +564,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 	public void keyPressed( KeyEvent e ) {
 		
-		if ( e.getSource() == btRecarregar && e.getKeyCode() == KeyEvent.VK_ENTER ) {
-			btRecarregar.doClick();
+		if ( e.getSource() == btAtualiza && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btAtualiza.doClick();
 		}
 	}
 
@@ -505,9 +577,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 	public void afterCarrega( CarregaEvent e ) {
 
-//		if ( lcProd == e.getListaCampos() || lcCliente == e.getListaCampos() ) {
-			montaGrid();
-//		}
+		montaGrid();
 		
 	}
 
@@ -515,8 +585,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		super.setConexao( cn );
 		montaGrid();
-//		lcCliente.setConexao( con );
-//		lcProd.setConexao( con );
+		lcForneced.setConexao( con );
+
 		
 	}
 
