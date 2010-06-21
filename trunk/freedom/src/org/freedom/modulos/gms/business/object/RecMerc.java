@@ -8,9 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
@@ -35,22 +38,30 @@ public class RecMerc implements java.io.Serializable {
 
 	public static final Color COR_PENDENTE = Color.ORANGE;
 
-	public static final Constant STATUS_PESAGEM_1 = new Constant("Pesagem 1", "E1");
+	public static final Constant STATUS_PESAGEM_1 = new Constant("1a Pesagem", "E1");
 
 	public static final Color COR_PESAGEM_1 = Color.BLUE;
 
-	public static final Constant STATUS_PESAGEM_2 = new Constant("Pesagem 1", "E2");
+	public static final Constant STATUS_DESCARREGAMENTO = new Constant("Descarregamento", "E2");
 
-	public static final Color COR_PESAGEM_2 = Color.BLUE;
+	public static final Color COR_DESCARREGAMENTO = Color.BLUE;
 
 	public static final Constant STATUS_RECEBIMENTO_FINALIZADO = new Constant("Finalizado", "FN");
 
 	public static final Color COR_RECEBIMENTO_FINALIZADO = new Color( 45, 190, 60 );
 
+	public static final Constant STATUS_PEDIDO_COMPRA_EMITIDO = new Constant("Pedido emitido", "PC");
+	
+	public static final Color COR_PEDIDO_COMPRA_EMITIDO = new Color( 45, 190, 60 );
+
 	public static final Constant STATUS_NOTA_ENTRADA_EMITIDA = new Constant("Nota emitida", "NE");
-
-	public static final Color COR_NOTA_ENTRADA_EMITIDA = Color.RED;
-
+	
+	public static final Color COR_NOTA_ENTRADA_EMITIDA = new Color( 45, 190, 60 );
+	
+	public static String IMG_TAMANHO_M = "16x16";
+	
+	public static String IMG_TAMANHO_P = "10x10";
+	
 	private HashMap<String, Object> primeirapesagem = null;
 
 	private HashMap<String, Object> segundapesagem = null;
@@ -83,7 +94,53 @@ public class RecMerc implements java.io.Serializable {
 	
 	private Object[] oPrefs = null;
 
+	public static ImageIcon getImagem(String status, String tamanho) {
+		
+		ImageIcon img = null;
+		
+		ImageIcon IMG_PENDENTE = Icone.novo( "blAzul0_" + tamanho + ".png" );
 
+		ImageIcon IMG_PESAGEM1 = Icone.novo( "blAzul1_" + tamanho + ".png" );	
+		
+		ImageIcon IMG_DESCARREGAMENTO = Icone.novo( "blAzul2_" + tamanho + ".png" );
+		
+		ImageIcon IMG_FINALIZADO = Icone.novo( "os_pronta_" + tamanho + ".png" );  
+		
+		ImageIcon IMG_PEDIDO = Icone.novo( "os_orcamento_" + tamanho + ".png" );
+		
+		ImageIcon IMG_NOTA = Icone.novo( "os_finalizada_" + tamanho + ".png" );
+		
+		
+		try {
+			
+			if(status.equals( STATUS_PENDENTE.getValue() )) {				
+				return IMG_PENDENTE;
+			}
+			else if(status.equals( STATUS_PESAGEM_1.getValue() )) {			
+				return IMG_PESAGEM1;
+			}
+			else if(status.equals( STATUS_DESCARREGAMENTO.getValue() )) {			
+				return IMG_DESCARREGAMENTO;
+			}
+			else if(status.equals( STATUS_RECEBIMENTO_FINALIZADO.getValue() )) {			
+				return IMG_FINALIZADO;
+			}
+			else if(status.equals( STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {			
+				return IMG_PEDIDO;
+			}
+			else if(status.equals( STATUS_NOTA_ENTRADA_EMITIDA.getValue() )) {			
+				return IMG_NOTA;	
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return img;
+	}
+
+	
 	public RecMerc(Component orig, Integer ticket, DbConnection con) {
 
 		setTicket( ticket );
@@ -127,13 +184,17 @@ public class RecMerc implements java.io.Serializable {
 			lbstatus.setText( STATUS_PESAGEM_1.getName() );
 			lbstatus.setBackground( COR_PESAGEM_1 );
 		}
-		else if ( STATUS_PESAGEM_2.getValue().equals( status )) {
-			lbstatus.setText( STATUS_PESAGEM_2.getName() );
-			lbstatus.setBackground( COR_PESAGEM_2 );
+		else if ( STATUS_DESCARREGAMENTO.getValue().equals( status )) {
+			lbstatus.setText( STATUS_DESCARREGAMENTO.getName() );
+			lbstatus.setBackground( COR_DESCARREGAMENTO );
 		}
 		else if ( STATUS_RECEBIMENTO_FINALIZADO.getValue().equals( status )) {
 			lbstatus.setText( STATUS_RECEBIMENTO_FINALIZADO.getName() );
 			lbstatus.setBackground( COR_RECEBIMENTO_FINALIZADO );
+		}
+		else if ( STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( status )) {
+			lbstatus.setText( STATUS_PEDIDO_COMPRA_EMITIDO.getName() );
+			lbstatus.setBackground( COR_PEDIDO_COMPRA_EMITIDO );
 		}
 		else if ( STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( status )) {
 			lbstatus.setText( STATUS_NOTA_ENTRADA_EMITIDA.getName() );
@@ -141,6 +202,36 @@ public class RecMerc implements java.io.Serializable {
 		}
 
 	}	
+	
+	public static Vector<String> getLabels( ) {
+
+		Vector<String> ret = new Vector<String>();
+		
+		ret.add( STATUS_PENDENTE.getName() );
+		ret.add( STATUS_PESAGEM_1.getName() );
+		ret.add( STATUS_DESCARREGAMENTO.getName() );
+		ret.add( STATUS_RECEBIMENTO_FINALIZADO.getName() );
+		ret.add( STATUS_PEDIDO_COMPRA_EMITIDO.getName() );
+		ret.add( STATUS_NOTA_ENTRADA_EMITIDA.getName() );
+		
+		return ret;
+		
+	}
+	
+	public static Vector<Object> getValores( ) {
+		
+		Vector<Object> ret = new Vector<Object>();
+		
+		ret.add( STATUS_PENDENTE.getValue() );
+		ret.add( STATUS_PESAGEM_1.getValue() );
+		ret.add( STATUS_DESCARREGAMENTO.getValue() );
+		ret.add( STATUS_RECEBIMENTO_FINALIZADO.getValue() );
+		ret.add( STATUS_PEDIDO_COMPRA_EMITIDO.getValue() );
+		ret.add( STATUS_NOTA_ENTRADA_EMITIDA.getValue() );
+		
+		return ret;
+
+	}
 
 	private void buscaPrimeiraPesagem() {
 
