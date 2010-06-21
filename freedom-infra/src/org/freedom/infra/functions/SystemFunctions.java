@@ -1,6 +1,8 @@
 package org.freedom.infra.functions;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -102,5 +104,35 @@ public class SystemFunctions {
 		return ret;
 	}
 
+	public static String getTxtFile( String path, String file ) {
+
+		String ret = "";
+		int size = 0;
+		char c = (char) 0;
+
+		try {
+			
+			File fArq = new File( path + file );
+			FileReader frArq = new FileReader( fArq );
+		
+			try {
+							
+				size = (int) fArq.length();
+				
+				for ( int i = 0; i < size; i++ ) {
+					c = (char) frArq.read();
+					ret += c;
+				}				
+			} 
+			catch ( IOException err ) {
+				err.printStackTrace();
+				System.exit( 0 );
+			}
+		} catch ( FileNotFoundException err ) {
+			err.printStackTrace();
+			System.exit( 0 );
+		}
+		return ret;
+	}
 	
 }
