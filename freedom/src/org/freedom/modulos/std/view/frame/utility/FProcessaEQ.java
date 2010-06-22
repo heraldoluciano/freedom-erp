@@ -359,19 +359,19 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 //             	    System.out.println(sSQL);
              	    ps = con.prepareStatement(sSQL);
              	    ps.setInt(paramCons.CODEMPIV.ordinal(),Aplicativo.iCodEmp);
-             	    ps.setInt(paramCons.CODFILIALIV.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODFILIALIV.ordinal(),ListaCampos.getMasterFilial("EQINVPROD"));
              	    ps.setInt(paramCons.CODPRODIV.ordinal(),iCodProd);
              	    ps.setInt(paramCons.CODEMPCP.ordinal(),Aplicativo.iCodEmp);
-             	    ps.setInt(paramCons.CODFILIALCP.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODFILIALCP.ordinal(),ListaCampos.getMasterFilial("CPCOMPRA"));
              	    ps.setInt(paramCons.CODPRODCP.ordinal(),iCodProd);
              	    ps.setInt(paramCons.CODEMPOP.ordinal(),Aplicativo.iCodEmp);
-             	    ps.setInt(paramCons.CODFILIALOP.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODFILIALOP.ordinal(),ListaCampos.getMasterFilial("PPOP"));
              	    ps.setInt(paramCons.CODPRODOP.ordinal(),iCodProd);
              	    ps.setInt(paramCons.CODEMPRM.ordinal(),Aplicativo.iCodEmp);
-             	    ps.setInt(paramCons.CODFILIALRM.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODFILIALRM.ordinal(),ListaCampos.getMasterFilial("EQRMA"));
              	    ps.setInt(paramCons.CODPRODRM.ordinal(),iCodProd);
              	    ps.setInt(paramCons.CODEMPVD.ordinal(),Aplicativo.iCodEmp);
-             	    ps.setInt(paramCons.CODFILIALVD.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODFILIALVD.ordinal(),ListaCampos.getMasterFilial("VDVENDA"));
              	    ps.setInt(paramCons.CODPRODVD.ordinal(),iCodProd);
              	    rs = ps.executeQuery();
              	    bOK = true;
@@ -557,6 +557,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			ps.setDouble(paramProc.PRECOMOVPROD.ordinal(),dePrecoMovprod); // PrecoMovProd
 			ps.setDouble(paramProc.CODEMPAX.ordinal(),rs.getInt("CODEMPAX")); // Codempax
 			ps.setDouble(paramProc.CODFILIALAX.ordinal(),rs.getInt("CODFILIALAX")); // Codfilialax
+			
 			ps.setDouble(paramProc.CODALMOX.ordinal(),rs.getInt("CODALMOX")); // Codalmox
 			
     		ps.executeUpdate();
