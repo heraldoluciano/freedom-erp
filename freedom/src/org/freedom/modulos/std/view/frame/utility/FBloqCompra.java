@@ -166,9 +166,9 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
             sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?)";
             ps = con.prepareStatement(sSQL);
             ps.setInt(1,Aplicativo.iCodEmp);
-            ps.setInt(2,ListaCampos.getMasterFilial("VDCOMPRA"));
+            ps.setInt(2,ListaCampos.getMasterFilial("CPCOMPRA"));
             ps.setInt(3,iCodCompra);
-            ps.setString(4,sBloqCompra);
+            ps.setString(4,sBloqCompra); 
             ps.executeUpdate();
             ps.close();
             con.commit();
