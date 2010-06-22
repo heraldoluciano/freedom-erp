@@ -23,9 +23,10 @@
 package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.Date;
 import java.util.Vector;
 
@@ -58,7 +59,7 @@ public class FSobre extends FFDialogo {
 	
 	private JPanelPad pnNotas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private ImageIcon img = Icone.novo( "freedom_real_520x358.png" );
+	private ImageIcon img = Icone.novo( "freedom_real_500x450.png" );
 
 	private long lMemLivre;
 
@@ -84,11 +85,6 @@ public class FSobre extends FFDialogo {
 	private JPanelPad pnRodapeNotas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	private JScrollPane spRodapeNotas = new JScrollPane(lbRodapeNotas);
 	
-	private JLabelPad lbImgSobre = new JLabelPad( img );
-	private JLabelPad lbImgEquipe = new JLabelPad( img );
-	private JLabelPad lbImgSistema = new JLabelPad( img );
-	private JLabelPad lbImgNotas = new JLabelPad( img );
-	
 	private Font font = SwingParams.getFontboldmed();
 	
 	public FSobre() {
@@ -96,12 +92,12 @@ public class FSobre extends FFDialogo {
 		super( Aplicativo.telaPrincipal );
 		
 		setTitulo( "Sobre" );
-		setAtribos( 520, 520 );
+		setAtribos(900, 550 );
 		
 		setToFrameLayout();
 		adicListeners();
 		setFonteLabels();
-		setImagensLabels();
+		setColorPanels();
 		 
 		pnRodape.add(btReciclarMemoria);
 
@@ -115,7 +111,6 @@ public class FSobre extends FFDialogo {
 		
 		tpnSobre.addTab( "Sobre", pnSobre );
 		
-		pnSobre.add( lbImgSobre, BorderLayout.NORTH );
 		pnSobre.add(spRodapeVersao, BorderLayout.CENTER);
 		
 		lbRodapeVersao.setText(getHtmlVersao());
@@ -128,7 +123,6 @@ public class FSobre extends FFDialogo {
 
 		tpnSobre.addTab( "Equipe", pnEquipe );
 
-		pnEquipe.add(lbImgEquipe, BorderLayout.NORTH);
 		pnEquipe.add(pnRodapeEquipe, BorderLayout.CENTER);
 		
 		lbRodapeEquipe.setText(getHtmlEquipe());
@@ -141,7 +135,6 @@ public class FSobre extends FFDialogo {
 
 		tpnSobre.addTab( "Sistema", pnSistema );
 
-		pnSistema.add(lbImgSistema, BorderLayout.NORTH);
 		pnSistema.add(pnRodapeSistema, BorderLayout.CENTER);
 
 		lbRodapeSistema.setText(getHtmlSistema());
@@ -154,7 +147,6 @@ public class FSobre extends FFDialogo {
 
 		tpnSobre.addTab( "Notas da versão", pnNotas );
 		
-		pnNotas.add(lbImgNotas, BorderLayout.NORTH);
 		pnNotas.add(pnRodapeNotas, BorderLayout.CENTER);
 		
 		lbRodapeNotas.setText(getHtmlNotas());
@@ -167,13 +159,73 @@ public class FSobre extends FFDialogo {
 		
 	}
 	
-	private void setImagensLabels() {
+	private void setColorPanels() {
 		
-		lbImgSobre.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-		lbImgEquipe.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-		lbImgSistema.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-		lbImgNotas.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-
+	   	/******************************************
+		 *  
+		 *  ABA SOBRE 
+		 *  
+		 * ****************************************/
+		
+		pnSobre.setBackground(Color.BLACK);
+		lbRodapeVersao.setForeground(Color.WHITE);
+		lbRodapeVersao.setBackground(Color.BLACK);		
+		
+		spRodapeVersao.setBorder(null);		
+		lbRodapeVersao.setOpaque(true);
+		lbRodapeVersao.setIcon(img);
+				
+		pnRodapeVersao.add(spRodapeVersao, BorderLayout.CENTER);
+		
+	   	/******************************************
+		 *  
+		 *  ABA EQUIPE
+		 *  
+		 * ****************************************/
+		
+		pnEquipe.setBackground(Color.BLACK);
+		lbRodapeEquipe.setForeground(Color.WHITE);
+		lbRodapeEquipe.setBackground(Color.BLACK);		
+		
+		spRodapeEquipe.setBorder(null);		
+		lbRodapeEquipe.setOpaque(true);
+		lbRodapeEquipe.setIcon(img);
+				
+		pnRodapeEquipe.add(spRodapeEquipe, BorderLayout.CENTER);
+				
+	   	/******************************************
+		 *  
+		 *  ABA SISTEMA
+		 *  
+		 * ****************************************/
+		
+		pnSistema.setBackground(Color.BLACK);
+		lbRodapeSistema.setForeground(Color.WHITE);
+		lbRodapeSistema.setBackground(Color.BLACK);		
+		
+		spRodapeSistema.setBorder(null);		
+		lbRodapeSistema.setOpaque(true);
+		lbRodapeSistema.setIcon(img);
+				
+		pnRodapeSistema.add(spRodapeSistema, BorderLayout.CENTER);
+		
+	   	/******************************************
+		 *  
+		 *  ABA NOTAS DA VERSAO
+		 *  
+		 * ****************************************/
+		
+		pnNotas.setBackground(Color.BLACK);
+		lbRodapeNotas.setForeground(Color.WHITE);
+		lbRodapeNotas.setBackground(Color.BLACK);		
+		
+		spRodapeNotas.setBorder(null);		
+		lbRodapeNotas.setOpaque(true);
+			
+		pnRodapeNotas.add(spRodapeNotas, BorderLayout.CENTER);
+		
+		
+		
 	}
 	
 	private void setFonteLabels() {
@@ -190,7 +242,7 @@ public class FSobre extends FFDialogo {
 		StringBuffer html = new StringBuffer();
 		
 		html.append( "<HTML>" );
-		html.append( "<table style=\"width: 500;\" border=\"1\">");
+		html.append( "<table style=\"width: 370;\" border=\"0\">");
 		
 		Vector<String> equipesis = Aplicativo.getEquipeSis();
 		
@@ -211,13 +263,19 @@ public class FSobre extends FFDialogo {
 		String ret = "";
 		try {
 			
+			String path = "/org/freedom/doc/release_notes/";
+			
+			String file = SystemFunctions.getVersionSis(this.getClass()) + ".html";
+			
+			URL url = FSobre.class.getResource(path + file);
+			
 			ret = "<html>" 
-				+ SystemFunctions.getTxtFile("/home/anderson/workspace/freedom/doc/atualiza/v1.2.2.4_v1.2.2.5/", "release_notes.html")
+				+ SystemFunctions.getTxtFile(url)
 				+ "</html>";
 			
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		
 		return ret;
@@ -239,7 +297,7 @@ public class FSobre extends FFDialogo {
 			sdatacompilacao = Funcoes.dateToStrDataHora( datacompilacao ) ;
 
 			html.append("<HTML>");
-			html.append("<table style=\"width: 500;\" border=\"0\">");
+			html.append("<table style=\"width: 370;\" border=\"0\">");
 			html.append("<tr>");
 			html.append("<td>");
 					
@@ -301,7 +359,7 @@ public class FSobre extends FFDialogo {
 			
 			html.append( "<HTML>" );
 			
-			html.append( "<table style=\"width: 500;\" border=\"1\">");
+			html.append( "<table style=\"width: 370;\" border=\"0\">");
 			html.append( "<TR>" );
 			html.append( "<TD>Memória maxima:</TD>" );
 			html.append( "<TD>" + lMemMaxima + " MB" + "</TD>" );
