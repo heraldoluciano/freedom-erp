@@ -961,7 +961,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			vNumContas.clear();
 			vCodPlans.clear();
 			vCodCCs.clear();
-			vCodPed.clear();
+			vCodPed.clear(); 
 			tabBaixa.limpa();
 			
 			sSQL.append( "SELECT IT.DTVENCITPAG,IT.STATUSITPAG,P.CODPAG,IT.DOCLANCAITPAG, " );
@@ -972,7 +972,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			sSQL.append( "(SELECT PL.DESCPLAN FROM FNPLANEJAMENTO PL " );
 			sSQL.append( "WHERE PL.CODPLAN=IT.CODPLAN AND PL.CODEMP=IT.CODEMPPN AND PL.CODFILIAL=IT.CODFILIALPN), IT.CODCC, " );
 			sSQL.append( "(SELECT CC.DESCCC FROM FNCC CC " );
-			sSQL.append( "WHERE CC.CODCC=IT.CODCC AND CC.CODEMP=IT.CODEMPCC AND CC.CODFILIAL=IT.CODFILIALCC), " );
+			sSQL.append( "WHERE CC.CODCC=IT.CODCC AND CC.CODEMP=IT.CODEMPCC AND CC.CODFILIAL=IT.CODFILIALCC AND CC.ANOCC=IT.ANOCC), " );
 			sSQL.append( "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG,IT.DTITPAG, IT.VLRCANCITPAG " );
 			sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P " );
 			sSQL.append( "WHERE P.CODPAG=? AND P.CODEMP=? AND P.CODFILIAL=? " );
@@ -983,6 +983,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			ps.setInt( 1, txtCodPagBaixa.getVlrInteger().intValue() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			
+			System.out.println("SQL grid baixa:" + sSQL.toString());
 			
 			rs = ps.executeQuery();
 			
