@@ -130,7 +130,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 				"AND AF.CODALMOX=A.CODALMOX AND AF.CODEMPAF=? AND AF.CODFILIALAF=?))";
 			
 		
-		try {
+		try { 
 			ps = con.prepareStatement(sSQL);
 			
 			ps.setInt(1,lcProd.getCodEmp());
@@ -138,10 +138,10 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 			ps.setInt(3,(lcProd.getCampo("codprod").getVlrInteger()).intValue());
 			ps.setInt(4,(lcProd.getCampo("codprod").getVlrInteger()).intValue());
 			ps.setInt(5,Aplicativo.iCodEmp);
-			ps.setInt(6,Aplicativo.iCodFilial);
+			ps.setInt(6,ListaCampos.getMasterFilial("EQALMOX"));
 			ps.setInt(7,Aplicativo.iCodEmp);
-			ps.setInt(8,Aplicativo.iCodFilial);
-			
+			ps.setInt(8,ListaCampos.getMasterFilial("EQALMOXFILIAL"));
+			 
 			tab.limpa();
 			
 			rs = ps.executeQuery();
