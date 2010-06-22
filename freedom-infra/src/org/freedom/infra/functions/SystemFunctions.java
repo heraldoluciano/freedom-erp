@@ -104,7 +104,7 @@ public class SystemFunctions {
 		return ret;
 	}
 
-	public static String getTxtFile( String path, String file ) {
+	public static String getTxtFile( URL url ) {
 
 		String ret = "";
 		int size = 0;
@@ -112,7 +112,7 @@ public class SystemFunctions {
 
 		try {
 			
-			File fArq = new File( path + file );
+			File fArq = new File( url.getFile() );
 			FileReader frArq = new FileReader( fArq );
 		
 			try {
@@ -130,7 +130,7 @@ public class SystemFunctions {
 			}
 		} catch ( FileNotFoundException err ) {
 			err.printStackTrace();
-			System.exit( 0 );
+			//System.exit( 0 );
 		}
 		return ret;
 	}
