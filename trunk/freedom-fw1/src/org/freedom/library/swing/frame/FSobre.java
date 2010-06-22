@@ -23,7 +23,6 @@
 package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -69,21 +68,26 @@ public class FSobre extends FFDialogo {
 
 	private long lMemMaxima;
 
-	private JLabelPad lbVersao = new JLabelPad();
+	private JLabelPad 	lbRodapeVersao = new JLabelPad();
+	private JPanelPad 	pnRodapeVersao = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );	
+	private JScrollPane spRodapeVersao = new JScrollPane(lbRodapeVersao);
 	
-	private JScrollPane spVersao = new JScrollPane(lbVersao);
+	private JLabelPad 	lbRodapeEquipe = new JLabelPad();
+	private JPanelPad 	pnRodapeEquipe = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JScrollPane spRodapeEquipe = new JScrollPane(lbRodapeEquipe);
 	
-	private JLabelPad lbEquipe = new JLabelPad();
+	private JLabelPad	lbRodapeSistema = new JLabelPad();
+	private JPanelPad	pnRodapeSistema = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JScrollPane spRodapeSistema = new JScrollPane(lbRodapeSistema);
 	
-	private JScrollPane spEquipe = new JScrollPane(lbEquipe);
-		
-	private JLabelPad lbSistema = new JLabelPad();
+	private JLabelPad lbRodapeNotas = new JLabelPad();
+	private JPanelPad pnRodapeNotas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JScrollPane spRodapeNotas = new JScrollPane(lbRodapeNotas);
 	
-	private JScrollPane spSistema = new JScrollPane(lbSistema);
-	
-	private JLabelPad lbNotas = new JLabelPad();
-	
-	private JScrollPane spNotas = new JScrollPane(lbNotas);
+	private JLabelPad lbImgSobre = new JLabelPad( img );
+	private JLabelPad lbImgEquipe = new JLabelPad( img );
+	private JLabelPad lbImgSistema = new JLabelPad( img );
+	private JLabelPad lbImgNotas = new JLabelPad( img );
 	
 	private Font font = SwingParams.getFontboldmed();
 	
@@ -96,92 +100,64 @@ public class FSobre extends FFDialogo {
 		
 		setToFrameLayout();
 		adicListeners();
+		setFonteLabels();
+		setImagensLabels();
+		 
+		pnRodape.add(btReciclarMemoria);
 
 		c.add( tpnSobre, BorderLayout.CENTER );
 
-		// Aba Sobre
+    	/******************************************
+		 *  
+		 *  ABA SOBRE 
+		 *  
+		 * ****************************************/
 		
 		tpnSobre.addTab( "Sobre", pnSobre );
 		
-		pnSobre.setBackground(Color.BLACK);
-		lbVersao.setForeground(Color.WHITE);
-		lbVersao.setFont( font );
-
-		pnSistema.setBackground(Color.BLACK);
-		lbSistema.setForeground(Color.WHITE);
-		lbSistema.setFont( font );
-
-		pnEquipe.setBackground(Color.BLACK);
-		lbEquipe.setForeground(Color.WHITE);
-		lbEquipe.setFont( font );
-		
-		pnNotas.setBackground(Color.BLACK);
-		lbNotas.setForeground(Color.WHITE);
-		lbNotas.setFont( font );
-
-		JLabelPad lbImgSobre = new JLabelPad( img );
-		lbImgSobre.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-
-		JLabelPad lbImgEquipe = new JLabelPad( img );
-		lbImgEquipe.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-
-		JLabelPad lbImgSistema = new JLabelPad( img );
-		lbImgSistema.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-
-		JLabelPad lbImgNotas = new JLabelPad( img );
-		lbImgNotas.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
-		
 		pnSobre.add( lbImgSobre, BorderLayout.NORTH );
+		pnSobre.add(spRodapeVersao, BorderLayout.CENTER);
 		
-		lbVersao.setText(getHtmlVersao());
-		lbVersao.setFont(SwingParams.getFontboldmed());
+		lbRodapeVersao.setText(getHtmlVersao());
 
-		pnSobre.add(spVersao, BorderLayout.CENTER);
-		
-		// Fim Aba Sobre
-		
-		
-		// Aba Equipe
-
-		
-		lbEquipe.setText(getHtmlEquipe());
-		lbEquipe.setFont( font );
+    	/******************************************
+		 *  
+		 *  ABA EQUIPE 
+		 *  
+		 * ****************************************/
 
 		tpnSobre.addTab( "Equipe", pnEquipe );
-		
+
 		pnEquipe.add(lbImgEquipe, BorderLayout.NORTH);
-		pnEquipe.add(spEquipe, BorderLayout.CENTER);
+		pnEquipe.add(pnRodapeEquipe, BorderLayout.CENTER);
 		
-		// Fim Aba Equipe
-		
-		// Aba Sistema (Mémória)
-		
-		lbSistema.setText(getHtmlSistema());
-		
+		lbRodapeEquipe.setText(getHtmlEquipe());
+
+    	/******************************************
+		 *  
+		 *  ABA SISTEMA 
+		 *  
+		 * ****************************************/
+
 		tpnSobre.addTab( "Sistema", pnSistema );
 
-		lbSistema.setFont( font );
-		
 		pnSistema.add(lbImgSistema, BorderLayout.NORTH);
-		pnSistema.add(spSistema, BorderLayout.CENTER);
-		
-		pnRodape.add(btReciclarMemoria);
- 		
-		// Fim Aba Sistema
+		pnSistema.add(pnRodapeSistema, BorderLayout.CENTER);
 
-		// Aba de notas da versão
+		lbRodapeSistema.setText(getHtmlSistema());
 		
+    	/******************************************
+		 *  
+		 *  ABA NOTAS DA VERSÃO 
+		 *  
+		 * ****************************************/
+
 		tpnSobre.addTab( "Notas da versão", pnNotas );
 		
 		pnNotas.add(lbImgNotas, BorderLayout.NORTH);
-		pnNotas.add(spNotas, BorderLayout.CENTER);
+		pnNotas.add(pnRodapeNotas, BorderLayout.CENTER);
 		
-		String release_notes = SystemFunctions.getTxtFile("/home/anderson/workspace/freedom/doc/atualiza/v1.2.2.4_v1.2.2.5/", "release_notes.html");
-		
-		lbNotas.setText("<html>" + release_notes + "</html>");
-		lbNotas.setFont(new Font(SwingParams.FONT_PAD, SwingParams.FONT_STYLE_PAD, SwingParams.FONT_SIZE_MIN + 1));
-		
-		// Fim Aba Notas da versão
+		lbRodapeNotas.setText(getHtmlNotas());
 		
 	}
 	
@@ -189,6 +165,24 @@ public class FSobre extends FFDialogo {
 		
 		btReciclarMemoria.addActionListener( this );
 		
+	}
+	
+	private void setImagensLabels() {
+		
+		lbImgSobre.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
+		lbImgEquipe.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
+		lbImgSistema.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
+		lbImgNotas.setPreferredSize( new Dimension( img.getIconWidth(), img.getIconHeight() ) );
+
+	}
+	
+	private void setFonteLabels() {
+		
+		lbRodapeVersao.setFont( font );
+		lbRodapeSistema.setFont( font );		
+		lbRodapeEquipe.setFont( font );				
+		lbRodapeNotas.setFont(new Font(SwingParams.FONT_PAD, SwingParams.FONT_STYLE_PAD, SwingParams.FONT_SIZE_MIN + 1));
+
 	}
 	
 	private String getHtmlEquipe() {
@@ -212,6 +206,25 @@ public class FSobre extends FFDialogo {
 		return html.toString();
 
 	}
+	
+	private String getHtmlNotas() {
+		String ret = "";
+		try {
+			
+			ret = "<html>" 
+				+ SystemFunctions.getTxtFile("/home/anderson/workspace/freedom/doc/atualiza/v1.2.2.4_v1.2.2.5/", "release_notes.html")
+				+ "</html>";
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	
 	
 	private String getHtmlVersao() {
 		String ret = "";
@@ -267,7 +280,7 @@ public class FSobre extends FFDialogo {
 		try {
 			Runtime.getRuntime().gc();
 			System.gc();
-			lbSistema.setText(getHtmlSistema());
+			lbRodapeSistema.setText(getHtmlSistema());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
