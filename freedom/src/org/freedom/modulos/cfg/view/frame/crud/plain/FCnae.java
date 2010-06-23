@@ -62,11 +62,11 @@ public class FCnae extends FDados implements ActionListener {
 		lcCampos.setUsaME( false );
 
 		adicCampo( txtCodCnae, 7, 20, 70, 20, "CodCnae", "Cód.Cnae", ListaCampos.DB_PK, true );
-		adicCampo( txtDescCnae, 80, 20, 177, 20, "DescCnae", "Descrição do Cnae", ListaCampos.DB_SI, true );
-		adicCampo( txtSecCnae, 260, 20, 40, 20, "SecCnae", "Seção", ListaCampos.DB_SI, false );
-		adicCampo( txtDivCnae, 303, 20, 40, 20, "DivCnae", "Divisão", ListaCampos.DB_SI, false );
-		adicCampo( txtGrupCnae, 345, 20, 40, 20, "GrupCnae", "Grupo", ListaCampos.DB_SI, false );
-		adicCampo( txtDtrevCnae, 7, 60, 70, 20, "DtRevCnae", "Dt.Revisão", ListaCampos.DB_SI, false );
+		adicCampo( txtDescCnae, 80, 20, 280, 20, "DescCnae", "Descrição do Cnae", ListaCampos.DB_SI, true );
+		adicCampo( txtSecCnae, 7, 60, 50, 20, "SecCnae", "Seção", ListaCampos.DB_SI, false );
+		adicCampo( txtDivCnae, 60, 60, 60, 20, "DivCnae", "Divisão", ListaCampos.DB_SI, false );
+		adicCampo( txtGrupCnae, 125, 60, 60, 20, "GrupCnae", "Grupo", ListaCampos.DB_SI, false );
+		adicCampo( txtDtrevCnae, 190, 60, 90, 20, "DtRevCnae", "Dt.Revisão", ListaCampos.DB_SI, false );
 				
 		setListaCampos( true, "CNAE", "SG" );
 		
