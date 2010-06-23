@@ -792,7 +792,7 @@ public class RecMerc implements java.io.Serializable {
 			e.printStackTrace();
 		}
 		
-		return getCodcompra();
+		return getCodorc();
 
 	}
 	
