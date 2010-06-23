@@ -14,14 +14,15 @@
         <file path="/freedom-ecf/totem.ini"/>
         <file path="/freedom-ecf/teste_win.txt"/>
         <file path="/freedom/lib/freedomatd.jar"/>
-        <file path="/freedom-ecf/jCliSiTefI.dll"/>
         <file path="/freedom-ecf/.pmd"/>
-        <file path="/freedom-ecf/.classpath"/>
-        <file path="/freedom-ecf/.project"/>
         <file path="/freedom-ecf/CliSiTef32I.dll"/>
-        <file path="/freedom-ecf/CliSiTef32.dll"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom-ecf/src"/>
         <file path="/freedom-ecf/libseppemv.dll"/>
         <file path="/freedom-ecf/clisitef.ini"/>
+        <file path="/freedom-ecf/jCliSiTefI.dll"/>
+        <file path="/freedom-ecf/.classpath"/>
+        <file path="/freedom-ecf/.project"/>
+        <file path="/freedom-ecf/CliSiTef32.dll"/>
     </selectedElements>
 </jardesc>

@@ -11,11 +11,12 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.crud"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain"/>
     </selectedElements>
 </jardesc>

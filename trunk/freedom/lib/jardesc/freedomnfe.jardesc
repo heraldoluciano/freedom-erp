@@ -13,8 +13,9 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.control"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.event"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.database.jdbc"/>
         <javaElement handleIdentifier="=freedom-nfe/src"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.database.jdbc"/>
     </selectedElements>
 </jardesc>
