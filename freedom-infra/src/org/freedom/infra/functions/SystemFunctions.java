@@ -109,10 +109,41 @@ public class SystemFunctions {
 		String ret = "";
 		int size = 0;
 		char c = (char) 0;
-
+ 
 		try {
-			
+			System.out.println("carregando arquivo: " + url.toString());
 			File fArq = new File( url.getFile() );
+			FileReader frArq = new FileReader( fArq );
+		
+			try {
+							
+				size = (int) fArq.length();
+				
+				for ( int i = 0; i < size; i++ ) {
+					c = (char) frArq.read();
+					ret += c;
+				}				
+			} 
+			catch ( IOException err ) {
+				err.printStackTrace();
+				System.exit( 0 );
+			}
+		} catch ( FileNotFoundException err ) {
+			err.printStackTrace();
+			//System.exit( 0 );
+		}
+		return ret;
+	}
+	
+	public static String getTxtFile( String url ) {
+
+		String ret = "";
+		int size = 0;
+		char c = (char) 0;
+ 
+		try {
+			System.out.println("carregando arquivo: " + url.toString());
+			File fArq = new File( url );
 			FileReader frArq = new FileReader( fArq );
 		
 			try {
