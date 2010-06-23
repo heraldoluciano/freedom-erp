@@ -3,7 +3,17 @@
    Page size: 4096. Cache pages: 75 (300 Kb). Read-only: False. */
 SET SQL DIALECT 3;
 
-CONNECT '/opt/firebird/dados/desenv/1.2.2.3/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
-
 SET AUTODDL ON;
+
+/* Alter Procedure... */
+/* Alter (SGRETVERSAO) */
+SET TERM ^ ;
+
+ALTER PROCEDURE SGRETVERSAO RETURNS(VERSAO VARCHAR(30))
+ AS
+begin
+    versao = '1.2.2.4 (18/06/2010)';
+    suspend;
+end
+^
 
