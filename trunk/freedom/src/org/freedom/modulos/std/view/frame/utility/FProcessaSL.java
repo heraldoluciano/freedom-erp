@@ -94,10 +94,12 @@ public class FProcessaSL extends FFilho implements ActionListener {
     }
     private void processar() {
        boolean bOK = false;
-       String sSQL = "DELETE FROM FNSALDOLANCA";
+       String sSQL = "DELETE FROM FNSALDOLANCA WHERE CODEMP=? AND CODFILIAL=?"; // alteração aqui
        try {
        	 state("Excluindo base atual de saldos...");
        	 PreparedStatement ps = con.prepareStatement(sSQL);
+       	 ps.setInt(1, Aplicativo.iCodEmp);
+       	 ps.setInt( 2, ListaCampos.getMasterFilial( "FNSALDOLANCA" ) );
        	 ps.executeUpdate();
        	 ps.close();
        	 state("Base excluida...");
@@ -109,7 +111,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
        }
        if (bOK) {
        	 bOK = false;
-         sSQL = "SELECT CODPLAN,DATASUBLANCA,SUM(VLRSUBLANCA) FROM "+
+         sSQL = "SELECT CODPLAN,DATASUBLANCA,SUM(VLRSUBLANCA) VLRSUBLANCA FROM "+
          "FNSUBLANCA WHERE CODEMP=? AND CODFILIAL=? GROUP BY CODPLAN,DATASUBLANCA "+
          "ORDER BY CODPLAN,DATASUBLANCA";
          try {
@@ -124,14 +126,21 @@ public class FProcessaSL extends FFilho implements ActionListener {
        	   int iFilialPlan = ListaCampos.getMasterFilial("FNPLANEJAMENTO");
        	   int iFilialSaldo = ListaCampos.getMasterFilial("FNSALDOSL");
        	   while (rs.next() && bOK) {
-       	   	  if (sPlanAnt.equals(rs.getString("CodPlan"))) {
-       	   	  	dSaldo += rs.getDouble(3);
+          	   if ("1010100000004".equals( rs.getString("CodPlan") )) {
+           		   System.out.println("Debug");
+           	   }
+       		   if (sPlanAnt.equals(rs.getString("CodPlan"))) {
+       	   	  	dSaldo += rs.getDouble("VLRSUBLANCA");
        	   	  }
        	   	  else
-       	   	  	dSaldo = rs.getDouble(3);
+       	   	  	dSaldo = rs.getDouble("VLRSUBLANCA");
        	 	  bOK = insereSaldo(iFilialSaldo,iFilialPlan,rs.getString("CodPlan"),rs.getDate("DataSubLanca"),dSaldo);
        	 	  sPlanAnt = rs.getString("CodPlan");
-       	   }
+          	   if ("1010100000004".equals( sPlanAnt )) {
+           		   System.out.println("Debug");
+           	   }
+           }
+
        	   ps.close();
        	   state("Aguardando gravação final...");
          }
@@ -144,7 +153,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
        try {
          if (bOK) {
        		con.commit();
-       	   	state("Registros precessados com sucesso!");
+       	   	state("Registros processados com sucesso!");
           }
          else { 
        	   state("Registros antigos restaurados!");
