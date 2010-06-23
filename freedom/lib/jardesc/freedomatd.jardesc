@@ -15,9 +15,10 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.report"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.tabbed"/>
     </selectedElements>
 </jardesc>

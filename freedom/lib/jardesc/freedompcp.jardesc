@@ -19,6 +19,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.dialog.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.utility"/>
     </selectedElements>
 </jardesc>

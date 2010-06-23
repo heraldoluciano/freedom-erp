@@ -17,6 +17,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.graphics"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.webservice"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.col"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.object"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.udf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
