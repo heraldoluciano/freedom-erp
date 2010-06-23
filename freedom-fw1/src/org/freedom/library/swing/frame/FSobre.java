@@ -26,7 +26,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Vector;
 
@@ -261,28 +261,44 @@ public class FSobre extends FFDialogo {
 	
 	private String getHtmlNotas() {
 		String ret = "";
+		String file = "";
+		String versao = "";
+		String extensao = ".html";
+		
 		try {
 			
-			String path = "/org/freedom/doc/release_notes/";
 			
-			String file = SystemFunctions.getVersionSis(this.getClass()) + ".html";
+			versao = SystemFunctions.getVersionSis(this.getClass());
 			
-			URL url = FSobre.class.getResource(path + file);
+			if("Indefinida".equals(versao)) {
+				file = versao + extensao;
+			}
+			else {
+				file = versao.substring(0,7) + extensao ;
+			}
 			
-			ret = "<html>" 
-				+ SystemFunctions.getTxtFile(url)
-				+ "</html>";
+			InputStream is = this.getClass().getResourceAsStream( "/org/freedom/doc/release_notes/" + file ) ;
 			
-		}
+			byte buf[] = new byte[ is.available() ];
+		
+			StringBuffer notas = new StringBuffer();
+			
+			while(is.read(buf)>0){
+				notas.append(new String(buf));				
+			}
+				
+			ret = "<html>" + notas + "</html>";			
+
+		} 
 		catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
+			ret = "<html>" + "Não foi possível localizar as notas da versão.\n" + file + "</html>";
+
 		}
 		
 		return ret;
 		
 	}
-	
-	
 	
 	private String getHtmlVersao() {
 		String ret = "";
