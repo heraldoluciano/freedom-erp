@@ -198,7 +198,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 	
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI; 
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC; 
 	}
 	
 	public FControleServicos() {
@@ -427,6 +427,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.adicColuna( "Hora" );
 		tabDet.adicColuna( "Cod.Cli." );
 		tabDet.adicColuna( "Cliente" );
+		tabDet.adicColuna( "Orc." );
 				
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -435,7 +436,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );		
-		tabDet.setTamColuna( 450, DETALHAMENTO.NOMECLI.ordinal() );
+		tabDet.setTamColuna( 400, DETALHAMENTO.NOMECLI.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODORC.ordinal() );
 		
 		//tabDet.setColunaInvisivel( 2 );
 		
@@ -448,8 +450,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select ");
-			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.codcli, cl.nomecli ");			
+			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.codcli, cl.nomecli, ");			
+			
+			sql.append( "(select first 1 ros.codorc from EQITRECMERCITOSITORC ros ");
+			sql.append( "where ros.codemp=rm.codemp and ros.codfilial=rm.codfilial and ros.ticket=rm.ticket");
+			sql.append( ") codorc " );
+			
 			sql.append( "from eqrecmerc rm, vdcliente cl ");
+			
 			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
@@ -533,6 +541,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCLI.toString().trim() ), row, DETALHAMENTO.CODCLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
 				
 				row++;
 				
@@ -831,28 +840,41 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			
 			if(tabDet.getLinhaSel()>-1) {
 
-				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-			
-				recmerc = new RecMerc(this, ticket, con);
+				String codorcgrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() ).toString();
 				
-				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
-					
-					if(Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+				// Se já nao houver orçamento .. deve gerar...
+				if( "".equals( codorcgrid ) || null == codorcgrid ) {
 
-						Integer codorc = recmerc.geraOrcamento();
+					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+				
+					recmerc = new RecMerc(this, ticket, con);
 					
-						if( codorc!=null && codorc>0 ) {
+					if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
 						
-							abreorcamento(codorc);
+						if(Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+	
+							Integer codorc = recmerc.geraOrcamento();
 						
+							if( codorc!=null && codorc>0 ) {
+							
+								abreorcamento(codorc);
+							
+							}
 						}
+						
+					}
+					else {
+						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda não foi finalizado!" );
 					}
 					
 				}
 				else {
-					Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda não foi finalizado!" );
+					// Se já existir um orçamento deve abri-lo
+					
+					abreorcamento( Integer.parseInt( codorcgrid ));
+					
 				}
-				
+
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
