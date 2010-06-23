@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Vector;
 
@@ -151,6 +152,11 @@ public class FSobre extends FFDialogo {
 		
 		lbRodapeNotas.setText(getHtmlNotas());
 		
+//		String textoHtml = new String("<html><p align='center' >" + "á é í ó ç ã ê Ü" + "</p></html>", Charset.forName("ISO-8859-1") );  
+		
+		
+		//lbRodapeNotas.setText();  
+		
 	}
 	
 	private void adicListeners() {
@@ -224,8 +230,6 @@ public class FSobre extends FFDialogo {
 			
 		pnRodapeNotas.add(spRodapeNotas, BorderLayout.CENTER);
 		
-		
-		
 	}
 	
 	private void setFonteLabels() {
@@ -281,10 +285,10 @@ public class FSobre extends FFDialogo {
 			
 			byte buf[] = new byte[ is.available() ];
 		
-			StringBuffer notas = new StringBuffer();
+			StringBuffer notas = new StringBuffer(); 
 			
-			while(is.read(buf)>0){
-				notas.append(new String(buf));				
+			while(is.read(buf)>0){ 
+				notas.append(new String(buf, Charset.forName("ISO-8859-1")));				
 			}
 				
 			ret = "<html>" + notas + "</html>";			
