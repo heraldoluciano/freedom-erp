@@ -456,7 +456,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 			tabVendas.limpa();
 			PreparedStatement ps = con.prepareStatement(sSQL2);
 			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
+			
+			//Alterado o parâmetro do ListaCampos.getMasterFilial de "EQPRODUTO" para "VDVENDA"
+			//pois não se trata de uma tabela compartilhada entre filiais, gerando como retorno o ID da filial
+			//que está em uso, sendo usado na clausula where da instrução de pesquisa dos registros de compra e venda
+			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			
 			ps.setInt(3,txtCodProd.getVlrInteger().intValue());
 			ps.setDate(4,Funcoes.dateToSQLDate(txtDtVdIni.getVlrDate()));
 			ps.setDate(5,Funcoes.dateToSQLDate(txtDtVdFim.getVlrDate()));
@@ -507,7 +512,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				tabCompras.limpa();
 				PreparedStatement ps = con.prepareStatement(sSQL3);
 				ps.setInt(1,Aplicativo.iCodEmp);
-				ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
+				ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
 				ps.setInt(3,txtCodProd.getVlrInteger().intValue());
 				ps.setDate(4,Funcoes.dateToSQLDate(txtDtCpIni.getVlrDate()));
 				ps.setDate(5,Funcoes.dateToSQLDate(txtDtCpFim.getVlrDate()));
