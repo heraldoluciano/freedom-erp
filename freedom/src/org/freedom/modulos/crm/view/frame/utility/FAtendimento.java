@@ -36,6 +36,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
@@ -58,6 +60,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.component.Atendimento;
@@ -1069,17 +1072,18 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}
 	}
 
-	private void carregaChamados() {
-
+	private ResultSet executaQueryChamados() {
+		
+		
+		ResultSet rs = null;
+		
 		StringBuilder sql = new StringBuilder();
-
-		if ( carregagrid ) {
-
-			sql.append( "select ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, " );
-			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado " );
-			sql.append( "from crchamado ch, crtipochamado tc " );
-			sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado " );
-			sql.append( "and ch.codemp=? and ch.codfilial=? and dtchamado between ? and ? " );
+		
+		sql.append( "select ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, " );
+		sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado " );
+		sql.append( "from crchamado ch, crtipochamado tc " );
+		sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado " );
+		sql.append( "and ch.codemp=? and ch.codfilial=? and dtchamado between ? and ? " );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( " and ch.codempcl=? and ch.codfilialcl=? and ch.codcli=? " );
@@ -1181,7 +1185,26 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 				}
 
-				ResultSet rs = ps.executeQuery();
+				rs = ps.executeQuery();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return rs;
+				
+		
+	}
+	
+	private void carregaChamados() {
+
+		StringBuilder sql = new StringBuilder();
+
+		if ( carregagrid ) {
+
+			try {
+			
+				ResultSet rs = executaQueryChamados();
 
 				tabchm.limpa();
 
@@ -1206,7 +1229,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 				} 
 				
 				rs.close();
-				ps.close();
 								
 				// Permitindo reordenação
 				if(row>0) {
@@ -1329,14 +1351,23 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			excluiAtend();
 		}
 		else if ( evt.getSource() == btImprimir ) {
-			try {
-				FRAtendimentos tela = FRAtendimentos.class.newInstance();
-				tela.setParametros( txtCodCli.getVlrInteger(), txtDatainiAtend.getVlrDate(), txtDatafimAtend.getVlrDate() );
-				Aplicativo.telaPrincipal.criatela( "", tela, con );
 
-			} catch ( Exception e ) {
-				e.printStackTrace();
+			if ( tpnAbas.getSelectedIndex() == 0 ) { // Aba de Atendimentos selecionada
+				try {
+					FRAtendimentos tela = FRAtendimentos.class.newInstance();
+					tela.setParametros( txtCodCli.getVlrInteger(), txtDatainiAtend.getVlrDate(), txtDatafimAtend.getVlrDate() );
+					Aplicativo.telaPrincipal.criatela( "", tela, con );
+
+				} catch ( Exception e ) {
+					e.printStackTrace();
+				}
 			}
+			else if ( tpnAbas.getSelectedIndex() == 1 ) {
+
+				imprimiGraficoChamado( executaQueryChamados(), true );
+				
+			}
+			
 		}
 		else if ( evt.getSource() == btAtualizaChamados ) {
 			carregaChamados();
@@ -1352,6 +1383,40 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		cbTpChamado.carregaValores();
 	}
 
+	private void imprimiGraficoChamado( final ResultSet rs, final boolean bVisualizar ) {
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/"); 
+		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
+		hParam.put( "DTINI", txtDatainiCham.getVlrDate());
+		hParam.put( "DTFIM", txtDatafimCham.getVlrDate());
+				
+		if(txtCodCli.getVlrInteger().intValue()>0) {
+			hParam.put( "CLIENTE", txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
+		}
+		else {
+			hParam.put( "CLIENTE", "DIVERSOS" );	
+		}
+
+		dlGr = new FPrinterJob( "relatorios/chamados.jasper", "RELATÓRIO DE CHAMADOS", "", rs, hParam,this );
+		
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				err.printStackTrace();
+			}
+		}
+	}
+	
 	private void montaComboTipoAtend() {
 
 		PreparedStatement ps = null;
