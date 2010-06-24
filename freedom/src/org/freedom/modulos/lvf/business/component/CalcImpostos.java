@@ -317,7 +317,7 @@ public class CalcImpostos {
 				setAliqfisc( rs.getBigDecimal( "aliqfisc" ) );
 				setAliqipifisc( rs.getBigDecimal( "aliqipifisc" ) );
 				setTpredicmsfisc( rs.getString( "tpredicmsfisc" ) );
-				setMargemvlragr( margemvlragr );
+				setMargemvlragr( rs.getBigDecimal( "margemvlagr" ) );
 				
 				if ( rs.getInt( "coditfisc" ) > 0 ) {
 					setCodempif( rs.getInt( "codempif" ) );
