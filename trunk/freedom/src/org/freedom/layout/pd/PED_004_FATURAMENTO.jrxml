@@ -223,9 +223,9 @@ AND V.CODVENDA=$P{CODVENDA} AND V.TIPOVENDA=$P{TIPOVENDA}]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="207"
+						x="173"
 						y="3"
-						width="111"
+						width="145"
 						height="14"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>

@@ -59,11 +59,9 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["/home/frederico/workspace/freedom/src/org/freedom/layout/pd/"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA
-AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA) nroitens,
-(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) CODLOTE,
+	<queryString><![CDATA[SELECT (SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) CODLOTE,
 (SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE,
-V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI,V.DTEMITVENDA,C.ENDCLI,C.NUMCLI,
+V.CODVENDA,'' DESCSETOR, '' DESCCLCOMIS, 0.0 PERCMCOMISVENDA, V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI,V.DTEMITVENDA,C.ENDCLI,C.NUMCLI,
 C.COMPLCLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI,C.UFCLI,C.FONECLI,
 C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT,
 C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID,
@@ -98,6 +96,9 @@ ORDER BY P.CODMARCA,P.DESCPROD]]></queryString>
 	<field name="CODLOTE" class="java.lang.String"/>
 	<field name="VENCTOLOTE" class="java.sql.Date"/>
 	<field name="CODVENDA" class="java.lang.Integer"/>
+	<field name="DESCSETOR" class="java.lang.String"/>
+	<field name="DESCCLCOMIS" class="java.lang.String"/>
+	<field name="PERCMCOMISVENDA" class="java.math.BigDecimal"/>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
@@ -334,7 +335,8 @@ ORDER BY P.CODMARCA,P.DESCPROD]]></queryString>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECLI}.trim().substring(0,4)+"-"+
+				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{DDDCLI} + ") " +
+$F{FONECLI}.trim().substring(0,4)+"-"+
 $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -388,14 +390,26 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="75"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="1"
 						y="2"
 						width="538"
-						height="26"
+						height="65"
 						key="subreport-1"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="TIPOVENDA">
+						<subreportParameterExpression><![CDATA[$P{TIPOVENDA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODVENDA">
+						<subreportParameterExpression><![CDATA[$P{CODVENDA}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "PED_004_FATURAMENTO.jasper"]]></subreportExpression>
 				</subreport>
@@ -737,7 +751,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 						backcolor="#FFFFFF"
 						key="Empresa"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
@@ -757,13 +771,13 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="470"
-						y="24"
-						width="68"
+						x="484"
+						y="48"
+						width="50"
 						height="11"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTSAIDAVENDA}]]></textFieldExpression>
@@ -780,7 +794,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 						key="Empresa-1"
 						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENDFILIAL}.trim() + ", " 
@@ -793,8 +807,8 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="442"
-						y="24"
+						x="456"
+						y="48"
 						width="27"
 						height="11"
 						key="staticText-55"/>
@@ -808,7 +822,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 					<reportElement
 						x="187"
 						y="38"
-						width="147"
+						width="116"
 						height="21"
 						key="textField-47"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -819,7 +833,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="342"
+						x="311"
 						y="38"
 						width="70"
 						height="21"
@@ -832,9 +846,9 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="419"
+						x="386"
 						y="38"
-						width="120"
+						width="68"
 						height="21"
 						key="textField-53"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1043,20 +1057,20 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 			<band height="156"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="141"
+						x="83"
 						y="49"
-						width="57"
+						width="58"
 						height="11"
 						key="staticText-39"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Peso Líquido]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="144"
+						x="84"
 						y="65"
 						width="50"
 						height="13"
@@ -1069,21 +1083,21 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="211"
+						x="145"
 						y="49"
 						width="52"
 						height="11"
 						key="staticText-48"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Peso Bruto]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="212"
-						y="66"
+						x="145"
+						y="65"
 						width="50"
 						height="13"
 						key="textField-41"/>
@@ -1093,18 +1107,18 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PESOBRUTVD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="10"
-						y="50"
+						y="56"
 						width="55"
-						height="30"
+						height="21"
 						key="textField-43"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica" size="18" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDFRETEVD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDFRETEVD}.floatValue()>0?$F{QTDFRETEVD}:null]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1140,14 +1154,14 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="77"
-						y="73"
+						x="10"
+						y="48"
 						width="40"
-						height="11"
+						height="8"
 						key="staticText-66"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[volumes]]></text>
 				</staticText>
@@ -1175,16 +1189,16 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="134"
+						x="81"
 						y="47"
-						width="136"
+						width="120"
 						height="1"
 						key="line-108"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="134"
+						x="81"
 						y="47"
 						width="1"
 						height="36"
@@ -1193,7 +1207,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="269"
+						x="200"
 						y="48"
 						width="1"
 						height="36"
@@ -1202,7 +1216,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="205"
+						x="143"
 						y="48"
 						width="1"
 						height="36"
@@ -1211,18 +1225,18 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="134"
+						x="81"
 						y="63"
-						width="136"
+						width="119"
 						height="1"
 						key="line-112"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="134"
+						x="81"
 						y="83"
-						width="136"
+						width="119"
 						height="1"
 						key="line-113"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -1442,7 +1456,7 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="205"
 						y="48"
 						width="1"
 						height="36"
@@ -1451,53 +1465,105 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="205"
 						y="47"
-						width="67"
+						width="63"
 						height="1"
 						key="line-139"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="205"
 						y="83"
-						width="67"
+						width="63"
 						height="1"
 						key="line-140"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="359"
+						x="268"
 						y="47"
 						width="1"
-						height="36"
+						height="37"
 						key="line-141"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="301"
+						x="207"
 						y="49"
-						width="52"
+						width="57"
 						height="11"
 						key="staticText-76"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Tipo Frete]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="293"
+						x="205"
 						y="63"
-						width="67"
+						width="63"
 						height="1"
 						key="line-142"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="208"
+						y="66"
+						width="56"
+						height="13"
+						key="textField-61"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="10" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPOFRETE}.equals("F")?"FOB":"CIF"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="104"
+						width="99"
+						height="12"
+						key="textField-62"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCSETOR}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="105"
+						y="104"
+						width="98"
+						height="12"
+						key="textField-63"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCCLCOMIS}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="207"
+						y="104"
+						width="50"
+						height="12"
+						key="textField-64"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PERCMCOMISVENDA}]]></textFieldExpression>
+				</textField>
 			</band>
 		</lastPageFooter>
 		<summary>
