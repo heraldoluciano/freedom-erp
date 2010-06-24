@@ -591,24 +591,6 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 						key="line-125"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="275"
-						y="31"
-						width="1"
-						height="15"
-						key="line-126"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="337"
-						y="32"
-						width="1"
-						height="15"
-						key="line-127"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -1003,6 +985,24 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="1"
+						width="0"
+						height="12"
+						key="line-126"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="337"
+						y="0"
+						width="1"
+						height="13"
+						key="line-127"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="280"
@@ -1438,6 +1438,64 @@ $F{FONECLI}.substring(4,8)]]></textFieldExpression>
 						width="1"
 						height="36"
 						key="line-137"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="293"
+						y="48"
+						width="1"
+						height="36"
+						key="line-138"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="293"
+						y="47"
+						width="67"
+						height="1"
+						key="line-139"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="293"
+						y="83"
+						width="67"
+						height="1"
+						key="line-140"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="359"
+						y="47"
+						width="1"
+						height="36"
+						key="line-141"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="301"
+						y="49"
+						width="52"
+						height="11"
+						key="staticText-76"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Tipo Frete]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="293"
+						y="63"
+						width="67"
+						height="1"
+						key="line-142"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
