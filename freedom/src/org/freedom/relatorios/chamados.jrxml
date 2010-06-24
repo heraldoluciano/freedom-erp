@@ -57,8 +57,7 @@
 	<queryString><![CDATA[select ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante,
 ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado
 from crchamado ch, crtipochamado tc
-where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado
-]]></queryString>
+where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado]]></queryString>
 
 	<field name="DTCHAMADO" class="java.sql.Date"/>
 	<field name="PRIORIDADE" class="java.lang.Integer"/>
@@ -356,7 +355,7 @@ where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DESCCONTR} + " - " + $P{CLIENTE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CLIENTE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
