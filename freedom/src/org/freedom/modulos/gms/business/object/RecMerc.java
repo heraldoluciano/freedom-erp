@@ -857,7 +857,6 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-	
 			sql.append( "execute procedure vdadicitorcrecmercsp(?,?,?,?,?,?)" );
 
 			ps = con.prepareStatement( sql.toString() );
