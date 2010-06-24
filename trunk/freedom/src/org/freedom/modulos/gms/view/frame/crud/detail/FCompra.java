@@ -214,8 +214,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtRedFisc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
@@ -445,6 +443,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private NumSerie numserie = null;
 	
 	private CalcImpostos impostos = new CalcImpostos();
+	
+	private JTextFieldPad txtCodEmpIf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtCodFilialIf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private JTextFieldFK txtCodFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtCodFiscIf = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldPad txtCodItFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+
 
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
@@ -956,6 +966,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicCampo( txtCustoItCompra, 676, 60, 67, 20, "CustoItCompra", "Custo", ListaCampos.DB_SI, false );
 
+		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false);  
+		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false); 
+		adicCampoInvisivel( txtCodFiscIf, "codfisc", "codfisc" , ListaCampos.DB_SI, false);
+		adicCampoInvisivel( txtCodItFisc, "coditfisc", "coditfisc" , ListaCampos.DB_SI, false);
+		
+		
 		// Visíveis apenas na importação
 				
 		lbNAdicao = adicCampo( txtNAdicao, 550, 100, 50, 20, "nadicao", "N.Adição", ListaCampos.DB_SI, false );
@@ -2828,12 +2844,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			// Carregando campos para gravação do item de classificação selecionado
 
-//			if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
-//				txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
-//				txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
-//				txtCodFiscIf.setVlrString( impostos.getCodfisc() );
-//				txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
-//			}						
+			if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
+				txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
+				txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
+				txtCodFiscIf.setVlrString( impostos.getCodfisc() );
+				txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
+			}						
 			
 		}
 		catch (Exception e) {
