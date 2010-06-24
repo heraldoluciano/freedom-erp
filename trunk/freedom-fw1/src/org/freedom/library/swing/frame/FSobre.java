@@ -92,7 +92,7 @@ public class FSobre extends FFDialogo {
 
 		super( Aplicativo.telaPrincipal );
 		
-		setTitulo( "Sobre" );
+		setTitulo( "Freedom-ERP" );
 		setAtribos(900, 550 );
 		
 		setToFrameLayout();
@@ -221,15 +221,13 @@ public class FSobre extends FFDialogo {
 		 *  
 		 * ****************************************/
 		
-		pnNotas.setBackground(Color.BLACK);
+		pnNotas.setBackground(Color.LIGHT_GRAY);
 		lbRodapeNotas.setForeground(Color.WHITE);
-		lbRodapeNotas.setBackground(Color.BLACK);		
+		lbRodapeNotas.setBackground(Color.LIGHT_GRAY);		
 		
 		spRodapeNotas.setBorder(null);		
-		lbRodapeNotas.setOpaque(true);
 			
 		pnRodapeNotas.add(spRodapeNotas, BorderLayout.CENTER);
-		
 	}
 	
 	private void setFonteLabels() {
