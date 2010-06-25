@@ -26,7 +26,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
@@ -66,9 +68,10 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.component.Atendimento;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
-import org.freedom.modulos.crm.view.dialog.utility.DLNovoAtend;
+import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
+import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 /**
@@ -201,7 +204,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
-
+	
+	private ImageIcon chamado_em_atendimento = Icone.novo( "chamado_em_atendimento.png" );
+	
+	private ImageIcon chamado_parado = Icone.novo( "cl_branco.png" );
+	
 	private Vector<String> vCodAtends = new Vector<String>();
 
 	private Vector<String> vCodChamados = new Vector<String>();
@@ -253,9 +260,11 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
 
 	private JScrollPane scpPrioridade = new JScrollPane( tabsprioridade );
+	
+	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
 
 	public enum GridChamado {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, DTCONCLUSAO
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, DTCONCLUSAO, EM_ATENDIMENTO
 	}
 
 	// Construção padrão para tela de atendimento
@@ -616,14 +625,17 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		tabstatus.adicColuna( "" );
 		tabstatus.adicColuna( "Cod." );
+		tabstatus.adicColuna( "" ); // Imagem
 		tabstatus.adicColuna( "Status" );
 
 		tabstatus.setTamColuna( 10, 0 );
 
 		tabstatus.setColunaInvisivel( 1 );
 
-		tabstatus.setTamColuna( 100, 2 );
+		tabstatus.setTamColuna( 10, 2 );
 
+		tabstatus.setTamColuna( 90, 3 );
+		
 		tabstatus.setRowHeight( 12 );
 
 		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
@@ -661,11 +673,12 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
+			ImageIcon icon = Chamado.getImagem( valor, StatusOS.IMG_TAMANHO_P );
 			
-			if(Chamado.STATUS_CONCLUIDO.getValue().equals( valor )) {
+			if(Chamado.CHAMADO_CONCLUIDO.getValue().equals( valor )) {
 				item.addElement( new Boolean( false ) );
 			}
-			else if(Chamado.STATUS_CANCELADO.getValue().equals( valor )) {
+			else if(Chamado.CHAMADO_CANCELADO.getValue().equals( valor )) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -673,6 +686,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 			}
 			
 			item.addElement( valor );
+			item.addElement( icon );
 			item.addElement( label );
 
 			tabstatus.adicLinha( item );
@@ -680,7 +694,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}
 
 	}
-
+	
 	private void carregaPrioriadade() {
 
 		Vector<Object> valores = Prioridade.getValores();
@@ -714,17 +728,19 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabchm.adicColuna( "Qtd.Prev." );
 		tabchm.adicColuna( "Dt.Prev." );
 		tabchm.adicColuna( "Dt.Concl." );
+		tabchm.adicColuna( "" );
 
 		tabchm.setTamColuna( 60, GridChamado.DTCHAMADO.ordinal() );
 		tabchm.setTamColuna( 30, GridChamado.PRIORIDADE.ordinal() );
 		tabchm.setTamColuna( 100, GridChamado.DESCTPCHAMADO.ordinal() );
 		tabchm.setTamColuna( 40, GridChamado.CODCHAMADO.ordinal() );
-		tabchm.setTamColuna( 250, GridChamado.DESCCHAMADO.ordinal() );
+		tabchm.setTamColuna( 230, GridChamado.DESCCHAMADO.ordinal() );
 		tabchm.setTamColuna( 80, GridChamado.SOLICITANTE.ordinal() );
 		tabchm.setTamColuna( 25, GridChamado.STATUS.ordinal() );
 		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTPREVISAO.ordinal() );
 		tabchm.setTamColuna( 60, GridChamado.DTCONCLUSAO.ordinal() );
+		tabchm.setTamColuna( 20, GridChamado.EM_ATENDIMENTO.ordinal() );
 
 		tabchm.setRowHeight( 20 );
 
@@ -928,7 +944,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private void visualizaAtend() {
 
-		DLNovoAtend dl = null;
+		DLAtendimento dl = null;
 		String codatendo = (String) tabatd.getValor( tabatd.getLinhaSel(), 0 ).toString();
 		String codatend = (String) tabatd.getValor( tabatd.getLinhaSel(), 6 ).toString();
 		int icodAtend = Integer.parseInt( codatend );
@@ -936,7 +952,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), 10 );
 
 		try {
-			dl = new DLNovoAtend( txtCodCli.getVlrInteger(), this, true, con, icodAtendo, icodAtend, tipoatendo, codchamado );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger(), this, true, con, icodAtendo, icodAtend, tipoatendo, codchamado );
 			dl.setVisible( true );
 			dl.dispose();
 
@@ -1080,7 +1096,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "select ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, " );
-		sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado " );
+		sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento " );
 		sql.append( "from crchamado ch, crtipochamado tc " );
 		sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado " );
 		sql.append( "and ch.codemp=? and ch.codfilial=? and dtchamado between ? and ? " );
@@ -1218,11 +1234,22 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
-					tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
+//					tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
+					imgColuna = Chamado.getImagem( rs.getString( "status" ), Chamado.IMG_TAMANHO_M );
+					tabchm.setValor( imgColuna, row, GridChamado.STATUS.ordinal() ); 
 					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTCONCLUSAO.name() ) ), i, GridChamado.DTCONCLUSAO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
+					
+					//Se chamado estiver em atendimento
+					
+					if(rs.getString( "ematendimento" ).equals( "S" )) {					
+						tabchm.setValor( chamado_em_atendimento , i, GridChamado.EM_ATENDIMENTO.ordinal() );
+					}
+					else {
+						tabchm.setValor( "" , i, GridChamado.EM_ATENDIMENTO.ordinal() );
+					}
  
 					row++;
 					
@@ -1275,13 +1302,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 		Object ORets[];
 
-		DLNovoAtend dl = null;
+		DLAtendimento dl = null;
 
 		if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-			dl = new DLNovoAtend( txtCodCli.getVlrInteger().intValue(), this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger() );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger() );
 		}
 		else {
-			dl = new DLNovoAtend( txtCodCli.getVlrInteger().intValue(), this, con, false, tipoatendo );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), this, con, false, tipoatendo );
 		}
 
 		dl.setVisible( true );
