@@ -262,7 +262,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	private JScrollPane scpPrioridade = new JScrollPane( tabsprioridade );
 	
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
-
+	
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, DTCONCLUSAO, EM_ATENDIMENTO
 	}
