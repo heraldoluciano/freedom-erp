@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SpinnerDateModel;
@@ -173,6 +174,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private Integer codrec = null;
 	
 	private Integer nparcitrec = null;
+	
+	private Integer codchamado_ant = null;
 		
 	public DLAtendimento( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, Integer codchamado ) {
 
@@ -841,7 +844,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 				}				
 			}			
 			
-			sinalizaChamado( true );
+			sinalizaChamado( false, txtCodChamado.getVlrInteger() );
 			
 			super.actionPerformed( evt );		
 			
@@ -850,7 +853,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			iniciaContagem();
 		}		
 		else if( evt.getSource() == btCancel ){
-			sinalizaChamado( false );
+			sinalizaChamado( false, txtCodChamado.getVlrInteger() );
 			dispose();
 		}
 		else {
@@ -926,27 +929,31 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 	}
 
-	private void sinalizaChamado(boolean em_atendimento) {
+	private void sinalizaChamado(boolean em_atendimento, Integer codchamado) {
 		
 		StringBuilder sql = new StringBuilder();
 		
 		try {
 			
-			sql.append( "update crchamado set ematendimento=? ");
-			sql.append( "where codemp=? and codfilial=? and codchamado=? ");
-						
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			if(codchamado!=null) {
 			
-			
-			ps.setString( 1, em_atendimento ? "S" : "N" );
-			
-			ps.setInt( 2, lcChamado.getCodEmp() );
-			ps.setInt( 3,  lcChamado.getCodFilial());
-			ps.setInt( 4,  txtCodChamado.getVlrInteger());
-			
-			ps.executeUpdate();
-
-			con.commit();
+				sql.append( "update crchamado set ematendimento=? ");
+				sql.append( "where codemp=? and codfilial=? and codchamado=? ");
+							
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				
+				
+				ps.setString( 1, em_atendimento ? "S" : "N" );
+				
+				ps.setInt( 2, lcChamado.getCodEmp() );
+				ps.setInt( 3, lcChamado.getCodFilial());
+	
+				ps.setInt( 4, codchamado );
+				
+				ps.executeUpdate();
+	
+				con.commit();
+			}
 											
 		}
 		catch (Exception e) {
@@ -956,17 +963,25 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	
 	public void afterCarrega( CarregaEvent cevt ) {
 		
-		if(!update && cevt.getListaCampos()==lcChamado) {
+		if(cevt.getListaCampos()==lcChamado) {
 			
-			sinalizaChamado( true );
-			
+			sinalizaChamado( true, txtCodChamado.getVlrInteger() );
+
+			// Guardando o chamado sinalizado 
+			codchamado_ant = txtCodChamado.getVlrInteger();
+	
 		}
 		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		// TODO Auto-generated method stub
+		if(cevt.getListaCampos()==lcChamado) {
+			
+			sinalizaChamado( false, codchamado_ant );
+
+	
+		}
 		
 	}
 	
