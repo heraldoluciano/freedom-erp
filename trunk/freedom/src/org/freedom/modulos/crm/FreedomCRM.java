@@ -244,7 +244,7 @@ public class FreedomCRM extends AplicativoPD {
 
 	  public void actionPerformed(ActionEvent evt) {  
 		    if (evt.getSource() == miAtendimento) {		    	
-		    	DLAtendimento dl = new DLAtendimento(0,telaPrincipal,false,con,0,0,"A",null);
+		    	DLAtendimento dl = new DLAtendimento(0,null,telaPrincipal,false,con,0,0,"A");
 				dl.setVisible( true );				
 				dl.dispose();			    	
 		    }
