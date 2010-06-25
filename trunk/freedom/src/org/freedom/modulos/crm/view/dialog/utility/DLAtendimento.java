@@ -36,6 +36,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JSpinner.DateEditor;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
@@ -61,7 +64,7 @@ import org.freedom.modulos.crm.business.component.Atendimento;
  * @version 10/10/2009 - Alex Rodrigues
  * @version 23/04/2010 - Anderson Sanchez
  */
-public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyListener{
+public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyListener, CarregaListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -171,7 +174,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private Integer nparcitrec = null;
 		
-	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, Integer codchamado ) {
+	public DLAtendimento( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, Integer codchamado ) {
 
 		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
 
@@ -199,7 +202,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		}
 	}
 
-	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
+	public DLAtendimento( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
 
 		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
 
@@ -208,7 +211,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 	}
 
-	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
+	public DLAtendimento( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
 
 		super( cOrig );
 
@@ -294,6 +297,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		btMedida.addActionListener( this );
 		cbTipo.addComboBoxListener( this );
 		cbContr.addComboBoxListener( this );
+		
+		lcChamado.addCarregaListener( this );
 
 		txtCodCli.setVlrInteger( new Integer( iCodCli ) );
 
@@ -715,6 +720,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 								 	
 	}
 	
+	
+	
 	private void iniciaContagem() {
 	
 		if ( !contando ) {
@@ -833,12 +840,17 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 					return;
 				}				
 			}			
-			super.actionPerformed( evt );			
+			
+			sinalizaChamado( true );
+			
+			super.actionPerformed( evt );		
+			
 		}
 		else if ( evt.getSource() == btRun ) {
 			iniciaContagem();
 		}		
 		else if( evt.getSource() == btCancel ){
+			sinalizaChamado( false );
 			dispose();
 		}
 		else {
@@ -911,6 +923,50 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		sVal[ 11 ] = txtCodChamado.getVlrInteger();
 
 		return sVal;
+		
+	}
+
+	private void sinalizaChamado(boolean em_atendimento) {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		try {
+			
+			sql.append( "update crchamado set ematendimento=? ");
+			sql.append( "where codemp=? and codfilial=? and codchamado=? ");
+						
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			
+			
+			ps.setString( 1, em_atendimento ? "S" : "N" );
+			
+			ps.setInt( 2, lcChamado.getCodEmp() );
+			ps.setInt( 3,  lcChamado.getCodFilial());
+			ps.setInt( 4,  txtCodChamado.getVlrInteger());
+			
+			ps.executeUpdate();
+
+			con.commit();
+											
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+		if(!update && cevt.getListaCampos()==lcChamado) {
+			
+			sinalizaChamado( true );
+			
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
 		
 	}
 	
