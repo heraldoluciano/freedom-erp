@@ -273,7 +273,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			}
 		}
 		else if ( evt.getComboBoxPad() == cbStatus ) {
-			if(cbStatus.getVlrString().equals( Chamado.STATUS_CONCLUIDO.getValue() ) && txtDtConclusao.getVlrDate()==null ) {
+			if(cbStatus.getVlrString().equals( Chamado.CHAMADO_CONCLUIDO.getValue() ) && txtDtConclusao.getVlrDate()==null ) {
 				txtDtConclusao.setVlrDate( new Date() );
 				txtDtConclusao.setEditable( true );
 			}
