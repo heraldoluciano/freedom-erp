@@ -177,9 +177,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	
 	private Integer codchamado_ant = null;
 		
-	public DLAtendimento( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, Integer codchamado ) {
+	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
 
-		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
+		this( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo );
 
 		update = isUpdate;
 
@@ -205,16 +205,16 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		}
 	}
 
-	public DLAtendimento( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
 
-		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
+		this( codcli, codchamado,  cOrig, conn, isUpdate, tipoatendo );
 
 		this.codrec = codrec;
 		this.nparcitrec = nparcitrec;
 
 	}
 
-	public DLAtendimento( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
 
 		super( cOrig );
 
@@ -303,13 +303,22 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		lcChamado.addCarregaListener( this );
 
-		txtCodCli.setVlrInteger( new Integer( iCodCli ) );
+		txtCodCli.setVlrInteger( codcli );
+		
+		txtCodChamado.setVlrInteger( codchamado );
 
-		if ( iCodCli > 0 ) {
+		if ( codcli > 0 ) {
 			txtCodCli.setAtivo( false );
 		}
 		else {
 			txtCodCli.setRequerido( true );
+		}
+		
+		if ( codchamado != null ) {
+			txtCodChamado.setAtivo( false );
+		}
+		else {
+			txtCodChamado.setRequerido( true );
 		}
 
 		btRun.addActionListener( this );
@@ -901,9 +910,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
+
 		lcCli.setConexao( cn );
 		lcCli.carregaDados();
+		
 		lcChamado.setConexao( cn );
+		lcChamado.carregaDados();
 		
 		sPrefs = getPref();	
 	}
