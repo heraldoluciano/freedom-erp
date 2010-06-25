@@ -1248,7 +1248,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 						tabchm.setValor( chamado_em_atendimento , i, GridChamado.EM_ATENDIMENTO.ordinal() );
 					}
 					else {
-						tabchm.setValor( "" , i, GridChamado.EM_ATENDIMENTO.ordinal() );
+						tabchm.setValor( chamado_parado , i, GridChamado.EM_ATENDIMENTO.ordinal() );
 					}
  
 					row++;
