@@ -41,7 +41,7 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.plain.FTipoAtend;
 import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
-import org.freedom.modulos.crm.view.dialog.utility.DLNovoAtend;
+import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.crm.view.frame.crud.detail.FSetorAtend;
 import org.freedom.modulos.crm.view.frame.crud.detail.FTipoAtendo;
@@ -244,7 +244,7 @@ public class FreedomCRM extends AplicativoPD {
 
 	  public void actionPerformed(ActionEvent evt) {  
 		    if (evt.getSource() == miAtendimento) {		    	
-		    	DLNovoAtend dl = new DLNovoAtend(0,telaPrincipal,false,con,0,0,"A",null);
+		    	DLAtendimento dl = new DLAtendimento(0,telaPrincipal,false,con,0,0,"A",null);
 				dl.setVisible( true );				
 				dl.dispose();			    	
 		    }
