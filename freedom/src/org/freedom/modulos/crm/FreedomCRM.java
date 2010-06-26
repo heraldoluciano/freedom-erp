@@ -60,7 +60,7 @@ import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
 import org.freedom.modulos.crm.view.frame.report.FRCustoProj;
 import org.freedom.modulos.crm.view.frame.report.FRDiario;
-import org.freedom.modulos.crm.view.frame.utility.FAtendimento;
+import org.freedom.modulos.crm.view.frame.utility.FCRM;
 import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.crm.view.frame.utility.FEnviaMail;
 import org.freedom.modulos.crm.view.frame.utility.FGerencCampanhas;
@@ -147,7 +147,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(200300000, TP_OPCAO_ITEM, "Relatório diário","Relatório diário", 'R', 200301000, 1, true, FRDiario.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false,null);
-		addOpcao(300000000, TP_OPCAO_ITEM, "Atendimentos", "Atendimentos", 'A',	300100000, 1, true, FAtendimento.class);
+		addOpcao(300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'A',	300100000, 1, true, FCRM.class);
 		addSeparador( 300000000 );
 		addOpcao(300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A',	300200000, 1, true, FChamado.class);
 		
@@ -210,7 +210,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao(600000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000,1, true, FOrdemServico.class);
 		
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100104000, FCliente.class );		
-		addBotao( "btAtendimentos.gif", "Atendimentos", "Atendimentos", 300100000,FAtendimento.class);
+		addBotao( "btAtendimentos.gif", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 300100000,FCRM.class);
 		addBotao( "btChamado.png", "Chamados", "Chamados", 300200000,FChamado.class);
 		addBotao( "btCampanha.gif", "Campanhas", "Campanhas", 100110020,FCampanha.class);
 		addBotao( "btEmail.gif", "Email", "Email", 100110020,FEmail.class);
