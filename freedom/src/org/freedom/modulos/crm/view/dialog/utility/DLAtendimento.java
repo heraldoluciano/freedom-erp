@@ -49,6 +49,7 @@ import org.freedom.library.functions.FuncoesCRM;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -165,7 +166,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	
 	private JPanelPad pnTela = new JPanelPad( new BorderLayout() );
 	
-	private JPanelPad pnCampos = new JPanelPad( 500, 190 );
+	private JPanelPad pnCampos = new JPanelPad( 500, 220 );
 	
 	private JPanelPad pnTxa = new JPanelPad( new GridLayout( 2, 1 ) );
 	
@@ -176,6 +177,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private Integer nparcitrec = null;
 	
 	private Integer codchamado_ant = null;
+	
+	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad("Conclui chamado?","S","N");
 		
 	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
 
@@ -291,6 +294,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		adic( txtDataAtendimentoFin, 433, 150, 70, 20 );
 		adic( txtHorafim, 506, 150, 53, 20 );
 		adic( btRun, 559, 150, 19, 19 );
+		
+		adic( cbConcluiChamado, 7, 180, 200, 20);
 	
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
@@ -316,9 +321,6 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		if ( codchamado != null ) {
 			txtCodChamado.setAtivo( false );
-		}
-		else {
-			txtCodChamado.setRequerido( true );
 		}
 
 		btRun.addActionListener( this );
@@ -588,7 +590,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -646,6 +648,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		ps.setString( 24, txaObsInterno.getVlrString() );
 		
+		ps.setString( 25, cbConcluiChamado.getVlrString() );
+		
 		ps.execute();
 		ps.close();
 
@@ -659,18 +663,13 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "update atatendimento a set  " );
 		
 		sql.append( "a.codatend=?, a.dataatendo=?, a.dataatendofin=?, " );
-		
 		sql.append( "a.horaatendo=?, a.horaatendofin=?, a.obsatendo=?, " );
-		
 		sql.append( "a.codempto=?, a.codfilialto=?, a.codtpatendo=?, " );
-		
 		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
-		
 		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
-		
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
-		
-		sql.append( "a.statusatendo=?, a.obsinterno=? ");
+		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=? ");
+
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 					
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -722,9 +721,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		
 		ps.setString( 21, txaObsInterno.getVlrString() );
 		
-		ps.setInt( 22, Aplicativo.iCodEmp );
-		ps.setInt( 23, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
-		ps.setInt( 24, txtCodAtendo.getVlrInteger() );
+		ps.setString( 22, cbConcluiChamado.getVlrString() );
+		
+		ps.setInt( 23, Aplicativo.iCodEmp );
+		ps.setInt( 24, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
+		ps.setInt( 25, txtCodAtendo.getVlrInteger() );
 		
 		ps.executeUpdate();
 
