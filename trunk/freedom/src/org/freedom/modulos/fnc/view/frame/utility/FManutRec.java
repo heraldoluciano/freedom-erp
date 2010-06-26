@@ -73,7 +73,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.crm.view.frame.utility.FAtendimento;
+import org.freedom.modulos.crm.view.frame.utility.FCRM;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixa;
@@ -2424,10 +2424,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 
-			FAtendimento tela = null;
+			FCRM tela = null;
 
 			if ( fPrim.temTela( "Atendimento" ) ) {
-				tela = (FAtendimento) fPrim.getTela( "org.freedom.modulos.crm.FAtendimento" );
+				tela = (FCRM) fPrim.getTela( "org.freedom.modulos.crm.FAtendimento" );
 				if ( tela != null ) {
 					tela.show();
 				}
@@ -2436,7 +2436,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				Integer codcli = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODCLI.ordinal() ) );
 				Integer codrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
 				Integer nparcitrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ) );
-				tela = new FAtendimento( codcli, codrec, nparcitrec, true );
+				tela = new FCRM( codcli, codrec, nparcitrec, true );
 				fPrim.criatela( "Atendimento", tela, con );
 			}
 		} catch ( Exception e ) {
