@@ -552,7 +552,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else {
 	
 			adicCampo( txtCodProdItOS, 40, 20, 70, 20, "CodProdPD", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdItOS, true );
-			adicCampoInvisivel( txtRefProdItOS, "RefProd", "Referência", ListaCampos.DB_SI, false );
+			adicCampoInvisivel( txtRefProdItOS, "RefProdPD", "Referência", ListaCampos.DB_SI, false );
 			
 		}
 		
