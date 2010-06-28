@@ -284,7 +284,8 @@ public class FSobre extends FFDialogo {
 				notas.append(new String(buf, Charset.forName("ISO-8859-1")));				
 			}
 				
-			ret = "<html>" + notas + "</html>";			
+			ret = "<html>" + notas + "</html>";		 
+//			ret = notas.toString();
 
 		} 
 		catch (Exception e) {
