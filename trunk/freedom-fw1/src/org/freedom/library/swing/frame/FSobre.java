@@ -152,11 +152,6 @@ public class FSobre extends FFDialogo {
 		
 		lbRodapeNotas.setText(getHtmlNotas());
 		
-//		String textoHtml = new String("<html><p align='center' >" + "á é í ó ç ã ê Ü" + "</p></html>", Charset.forName("ISO-8859-1") );  
-		
-		
-		//lbRodapeNotas.setText();  
-		
 	}
 	
 	private void adicListeners() {
@@ -222,7 +217,7 @@ public class FSobre extends FFDialogo {
 		 * ****************************************/
 		
 		pnNotas.setBackground(Color.LIGHT_GRAY);
-		lbRodapeNotas.setForeground(Color.WHITE);
+		lbRodapeNotas.setForeground(Color.BLACK);
 		lbRodapeNotas.setBackground(Color.LIGHT_GRAY);		
 		
 		spRodapeNotas.setBorder(null);		
