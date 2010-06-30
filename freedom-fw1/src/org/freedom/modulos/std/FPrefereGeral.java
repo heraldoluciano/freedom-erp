@@ -492,6 +492,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbConsCPFCli = new JCheckBoxPad( "Validar CPF do cliente.", "S", "N", true );
 
+	private final JCheckBoxPad cbConsCPFFor = new JCheckBoxPad( "Validar CPF do fornecedor.", "S", "N", true );
+	
 	private final JCheckBoxPad cbConsIECli = new JCheckBoxPad( "Validar IE do cliente.", "S", "N", true );
 	
 	private final JCheckBoxPad cbConsIECliFisica = new JCheckBoxPad( "Validar IE para clientes pessoa física.", "S", "N" );
@@ -988,12 +990,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel( pinGeral );
 		adicTab( "Geral", pinGeral );
 		
-		adic( pinCentrosdecustoGeral, 7, 10, 170, 110 );		
-		adic( pinCasasDecGeral, 180, 10, 167, 110 );
-		adic( pinValidacoesGeral, 350, 10, 340, 110 );
+		adic( pinCentrosdecustoGeral, 7, 10, 170, 125 );		
+		adic( pinCasasDecGeral, 180, 10, 167, 125 );
+		adic( pinValidacoesGeral, 350, 10, 340, 125 );
 		
-		adic( pinOpcoesGeral, 7, 130, 340, 150 ); 
-		adic( pinConsistenciasGeral, 350, 130, 340, 150 );		
+		adic( pinOpcoesGeral, 7, 140, 340, 150 ); 
+		adic( pinConsistenciasGeral, 350, 140, 340, 150 );		
 				
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel( "Centro de custo", Color.BLUE ));
 		pinCasasDecGeral.setBorder( SwingParams.getPanelLabel( "Casas decimais", Color.BLUE ));
@@ -1033,6 +1035,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbConsIECliFisica, 7, 20, 400, 20, "ConsisteIEPF", "", true );
 		adicDB( cbConsIEFor, 7, 40, 400, 20, "ConsisteIEFor", "", true );
 		adicDB( cbConsCPFCli, 7, 60, 400, 20, "ConsistCPFCli", "", true );
+		adicDB( cbConsCPFFor, 7, 80, 400, 20, "ConsisteCPFFor", "", true );
 		
 		
 		// Venda
