@@ -75,7 +75,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int MC_TIME_MINUTO = 116;
 	public static final int MC_TIME_SEGUNDO = 117;
 	public static final int MC_PLACA = 118;
+	public static final int MC_INSS = 119;
 	public static final String mascplaca = "###-####";
+	public static final String mascinss = "#.###.###.###-#";
 	
 	public static final String PR_TEXTO = "texto"; 
 	private EditListener editLis = this;
@@ -306,6 +308,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		} else if (iMascara == MC_PLACA) {
 			sMasc = mascplaca;
 			iTamanho = 8;
+		}
+		else if(iMascara == MC_INSS) {
+			sMasc = mascinss;
+			iTamanho = 15;
 		}
 		
 
