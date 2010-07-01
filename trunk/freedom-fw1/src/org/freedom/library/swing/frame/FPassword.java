@@ -70,6 +70,11 @@ public class FPassword extends FFDialogo {
      */
     public static final int VENDA_IMOBLIZIADO = 5;
 
+    /**
+     * Permissão para digitacao do peso nas telas de pesagem.
+     */
+    public static final int LIBERA_CAMPO_PESAGEM = 6;
+    
 	private JTextFieldPad txtUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JPasswordFieldPad txtPass = new JPasswordFieldPad( 10 );
@@ -152,7 +157,10 @@ public class FPassword extends FFDialogo {
                 break;    
             case VENDA_IMOBLIZIADO :
                 ret = getVendaImobilizado();
-                break;    
+                break;
+            case LIBERA_CAMPO_PESAGEM :
+                ret = getLiberaCampoPesagem();
+                break;                    
 			default :
 				break;
 		}
@@ -199,6 +207,12 @@ public class FPassword extends FFDialogo {
         
         return getPermissao( LIBERA_CRED );
     }
+
+    private boolean getLiberaCampoPesagem(){
+        
+        return getPermissao( LIBERA_CAMPO_PESAGEM);
+    }
+
     
     private boolean getVendaImobilizado(){
         
@@ -212,7 +226,7 @@ public class FPassword extends FFDialogo {
 		Properties props = null;
 		String sIDUsu = null;
 		StringBuffer sSQL = new StringBuffer();
-		boolean[] permissoes = new boolean[ 6 ];
+		boolean[] permissoes = new boolean[ 7 ];
 		
 		try {
 			
@@ -229,7 +243,7 @@ public class FPassword extends FFDialogo {
 			
 			DriverManager.getConnection( Aplicativo.strBanco, props ).close();
 
-			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA, LIBERACREDUSU, VENDAPATRIMUSU " );
+			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA, LIBERACREDUSU, VENDAPATRIMUSU, LIBERACAMPOPESAGEM " );
 			sSQL.append( "FROM SGUSUARIO " );
 			sSQL.append( "WHERE IDUSU=? AND CODEMP=? AND CODFILIAL=?" );
 			
@@ -248,6 +262,7 @@ public class FPassword extends FFDialogo {
 				permissoes[ 3 ] = "S".equals( rs.getString( 4 ) );
                 permissoes[ 4 ] = "S".equals( rs.getString( 5 ) );
                 permissoes[ 5 ] = "S".equals( rs.getString( 6 ) );
+                permissoes[ 6 ] = "S".equals( rs.getString( 7 ) );
                 
 			}
 			
