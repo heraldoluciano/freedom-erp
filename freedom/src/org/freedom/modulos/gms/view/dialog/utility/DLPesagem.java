@@ -31,6 +31,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -58,16 +59,17 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
-public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener  {
+public class DLPesagem extends FFDialogo implements CarregaListener, FocusListener, SerialPortEventListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtPeso1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 0 );
 	
-	private JTextFieldPad txtPeso2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtPeso2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 0 );
 
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
@@ -132,7 +134,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		
 //		mensagem.setBackground( Color.RED );
 		
-		setMensagem( "Iniciando parâmetros...", Color.BLUE, null, false );
+		setMensagem( "Iniciando parâmetros...", Color.BLUE, null, false, null );
 		
 //		pnMensagens.add( mensagem, BorderLayout.WEST );
 		
@@ -162,10 +164,15 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	private void adicListeners() {
 		
 		btRefazer.addActionListener( this );
+		btRefazer.setText( "Nova captura - (F12)" );
+		txtPeso1.addKeyListener( this );
+		txtPeso2.addKeyListener( this );
+		btRefazer.addKeyListener( this );
+		addKeyListener( this );
 		
 	}
 	
-	private void setMensagem(String msg, Color cortexto, Color corpainel, boolean refazer) {
+	private void setMensagem(String msg, Color cortexto, Color corpainel, boolean refazer, String titulobotao) {
 		
 		if( cortexto!=null ) {
 			mensagem.setForeground( cortexto );
@@ -190,9 +197,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 			pnGrid.add( btRefazer );
 			pnGrid.add( btCancel );
 			
+			btRefazer.setVisible( true );
+			
 		}
 		else {
 			pnGrid.removeAll();
+			
+			btRefazer.setVisible( false );
 			
 			pnGrid.add( btOK );
 			pnGrid.add( btCancel );
@@ -200,6 +211,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		}
 		
 		System.out.println("mensagem:" + msg);
+		if(titulobotao!=null) {
+			btRefazer.setText( "2a pesagem" );
+		}
 		
 	}
 		
@@ -208,8 +222,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		try {
 			
 			if(balanca!=null) { 
+//			if(true) {
 				
-				setMensagem( "Inicializando balança...", Color.BLUE, null, false );
+				setMensagem( "Inicializando balança...", Color.BLUE, null, false, null );
 				
 				balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
 				// Usar thred apenas para balanca bci.
@@ -221,7 +236,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					Thread.sleep(1000);
 				}
 				
-				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false );
+				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false, null );
 				
 				balanca.parseString();
 				
@@ -231,9 +246,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 				
 				// Valore incluídos para testes
-				//data = new Date();
-				//hora = new Time(new Date().getTime());
-				//peso = new BigDecimal(650);
+				//Date data = new Date();
+				//Time hora = new Time(new Date().getTime());
+				//BigDecimal peso = new BigDecimal(650);
 				
 				
 				if(peso != null) {
@@ -246,14 +261,14 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					
 				}
 				else {
-					setMensagem( "Peso inválido na pesagem!", Color.WHITE, Color.RED, true );
+					setMensagem( "Peso inválido na pesagem!", Color.WHITE, Color.RED, true, "Refazer" );
 					return;
 				}				
 				if(data != null) {
 					txtData.setVlrDate( data );
 				}
 				else {
-					setMensagem( "Data inválida na pesagem!", Color.ORANGE, null, false );
+					setMensagem( "Data inválida na pesagem!", Color.ORANGE, null, false, "Refazer" );
 					return;
 				}
 				
@@ -261,15 +276,15 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 					txtHora.setVlrTime( hora );
 				}
 				else {
-					setMensagem( "Hora inválida na pesagem!", Color.ORANGE, null, false );
+					setMensagem( "Hora inválida na pesagem!", Color.ORANGE, null, false, "Refazer" );
 					return;
 				}
 				
 				if(txtPeso1.getVlrBigDecimal().floatValue()>0 && txtPeso2.getVlrBigDecimal().floatValue()==0 && tipoprocrecmerc.equals( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() )){
-					setMensagem( "Aguardando segunda pesagem...", Color.WHITE, Color.orange, true );
+					setMensagem( "Aguardando segunda pesagem...", Color.WHITE, Color.orange, true, "2a. Pesagem" );
 				}
 				else {
-					setMensagem( "Pesagem realizada com sucesso!", Color.WHITE, new Color(0,128,0), false );	
+					setMensagem( "Pesagem realizada com sucesso!", Color.WHITE, new Color(0,128,0), false, null );	
 				}
 				
 				//balanca.inactivePort();
@@ -278,7 +293,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 			}
 			else {
-				setMensagem( "Balança não inicializada!", Color.WHITE, Color.RED, true );
+				setMensagem( "Balança não inicializada!", Color.WHITE, Color.RED, true, "Refazer" );
 			}
 			
 		}
@@ -322,7 +337,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				
 			}
 			else {
-				setMensagem( "Balança não localizada!", Color.RED, null, false );
+				setMensagem( "Balança não localizada!", Color.RED, null, false, null);
 			}
 
 			
@@ -347,13 +362,13 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 			balanca = classbalanca.newInstance();
 			
-			setMensagem( "Balança " + balanca.getName(), Color.BLUE, null, false );				
+			setMensagem( "Balança " + balanca.getName(), Color.BLUE, null, false, null );				
 			
 			buscaPeso();
 				
 		}
 		catch (Exception e) {
-			setMensagem( "Erro ao instanciar driver... ", Color.RED, null, false );
+			setMensagem( "Erro ao instanciar driver... ", Color.RED, null, false, null );
 			e.printStackTrace();		
 		}
 		
@@ -368,6 +383,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		// Liberado para testes
 //		txtPeso1.setAtivo( balanca==null );
 //		txtPeso2.setAtivo( balanca==null );
+	
+		txtPeso1.setEditable( false );
+		txtPeso2.setEditable( false );
 		
 		txtPeso1.setFont( SwingParams.getFontboldextra(20) );
 		txtPeso2.setFont( SwingParams.getFontboldextra(20) );
@@ -398,6 +416,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 				super.actionPerformed( evt );			
 		}
 		else if (evt.getSource() == btRefazer) {
+			System.out.println("Acionado o botão refazer...");
 			instanciaBalanca();
 		}
 		else {
@@ -574,6 +593,36 @@ private void abrePorta() {
 		ajustaCampos();
 	
 	}
+	
+    public void keyPressed(KeyEvent kevt) {
+    	
+		if(kevt.getKeyCode() == KeyEvent.VK_F12) {
+			if(btRefazer.isVisible()){
+				btRefazer.doClick();
+			}
+		}
+		if(kevt.getKeyCode() == KeyEvent.VK_F11) {
+			
+			liberaCampo( true );
+		}
+	//	((Component)kevt.getSource()).addKeyListener( this );
+		super.keyPressed( kevt );
+    }
+    
+    private void liberaCampo(boolean libera){
+    	
+    	FPassword fpw = new FPassword( this, FPassword.LIBERA_CAMPO_PESAGEM, null, con );
+		fpw.execShow();					
+		if ( fpw.OK ) {					
+	    	txtPeso1.setEditable( libera );
+	    	txtPeso2.setEditable( libera );
+	    	txtData.setEditable( libera );
+	    	txtHora.setEditable( libera );
+		}					
+		fpw.dispose();
+    	
+    }
+
 	
 
 }
