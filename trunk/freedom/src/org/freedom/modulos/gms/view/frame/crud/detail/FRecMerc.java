@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,7 +56,7 @@ import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
-public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
+public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
 	// *** Constantes
 
@@ -389,6 +391,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adic( sepdet, 315, 4, 2, 52 );
 
 		adic( btPesagem, 575, 5, 50, 50 );
+		btPesagem.setToolTipText( "Realiza pesagem - (F12)" );
 		pinDetGrid.setBackground( Color.RED );
 
 	}
@@ -1364,6 +1367,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			}
 		}
 
+	}
+	public void keyPressed(KeyEvent kevt) {
+		
+		if(kevt.getKeyCode() == KeyEvent.VK_F12) {
+			btPesagem.doClick();
+		}
+		
 	}
 
 }
