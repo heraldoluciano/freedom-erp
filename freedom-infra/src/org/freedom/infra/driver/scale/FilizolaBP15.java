@@ -46,7 +46,7 @@ public class FilizolaBP15 extends AbstractScale  {
 		
 		activePort(null);
 	
-		sendCmd( command, 100 );
+		sendCmd( command, 7 );
 		
 		readReturn();	
 		
