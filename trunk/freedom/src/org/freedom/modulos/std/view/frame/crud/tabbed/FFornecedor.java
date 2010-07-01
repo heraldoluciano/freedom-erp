@@ -429,6 +429,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			btBuscaEnd.setEnabled( false );
 		}
 		
+		lcCampos.setValidarcpf( (Boolean) prefs.get( "CONSISTECPFFOR" ) );
+		
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		
@@ -500,6 +502,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adic( txtcpfForCli, 315, 100, 158, 20 );
 		
 		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
+		txtCpfFor.setMascara(  JTextFieldPad.MC_CPF );
 		txtCnpjForCli.setMascara(  JTextFieldPad.MC_CNPJ );
 	
 		btImp.addActionListener( this );
@@ -1224,7 +1227,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			retorno.put( "CNPJFOROBRIG", new Boolean(true));
 			retorno.put( "INSCESTFOROBRIG", new Boolean(true));
 		
-			sSQL.append( "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR, CODTIPOCLI, USAIBGEFOR, BUSCACEP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR, CONSISTECPFFOR, CODTIPOCLI, USAIBGEFOR, BUSCACEP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			
 			try {
 				
@@ -1241,6 +1244,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 					retorno.put( "CODTIPOCLI", rs.getInt( "CODTIPOCLI" ) );
 					retorno.put( "USAIBGEFOR", new Boolean( "S".equals( rs.getString( "USAIBGEFOR" ))));
 					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
+					retorno.put( "CONSISTECPFFOR", new Boolean( "S".equals( rs.getString( "CONSISTECPFFOR" ))));
 					
 				}
 			
