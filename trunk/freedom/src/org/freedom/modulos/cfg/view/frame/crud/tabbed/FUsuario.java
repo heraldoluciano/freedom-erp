@@ -112,6 +112,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	
 	private JCheckBoxPad cbVisualizaLucr = new JCheckBoxPad( "Visualizar Lucratividade", "S", "N" );
 	
+	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
+	
 	private JList lsDisp = new JList();
 
 	private JList lsEmp = new JList();
@@ -285,7 +287,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adic( spnEmp, 247, 260, 195, 100 );
 
 		adicTab( "Acesso", pinAcesso );
-		pinAcesso.adic( pnPermissoes, 3, 0 , 440, 150 );
+		pinAcesso.adic( pnPermissoes, 3, 0 , 440, 170 );
 		pnPermissoes.setBorder( BorderFactory.createTitledBorder( "Permissões" ) );
 		
 		setPainel( pnPermissoes );
@@ -302,10 +304,12 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( cbVendaImobilizado, 200, 60, 200, 20, "VENDAPATRIMUSU", "", false );
 		adicDB( cbRMAOutCC, 200, 80, 200, 20, "RMAOUTCC", "", false );
 		adicDB( cbVisualizaLucr, 200, 100, 200, 20, "VISUALIZALUCR", "", false );
+		
+		adicDB( cbLiberaCampoPesagem, 200, 120, 200, 20, "LIBERACAMPOPESAGEM", "", false );
 				
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		pinAcesso.adic( pnAprovacoes, 3, 155 , 440, 180 );
+		pinAcesso.adic( pnAprovacoes, 3, 175 , 440, 180 );
 		pnAprovacoes.setBorder( BorderFactory.createTitledBorder( "Aprovações" ) );
 
 		setPainel(pnAprovacoes);
