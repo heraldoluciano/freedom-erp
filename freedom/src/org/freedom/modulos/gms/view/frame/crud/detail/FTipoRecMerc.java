@@ -45,6 +45,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 
 public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxListener, CarregaListener {
@@ -64,8 +65,14 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 	private JTextFieldPad txtCodTipoMovCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescTipoMovCP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtCodProdPD = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescProdPD = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
+	
+	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
 
 	private JPanelPad pinCab = new JPanelPad();
 
@@ -102,6 +109,10 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		
 		adicCampo( txtCodTipoMovCP, 7, 60, 70, 20, "codtipomovcp", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovCP, false );
 		adicDescFK( txtDescTipoMovCP, 80, 60, 267, 20, "DescTipoMov", "Descrição do tipo de movimento para compra" );
+
+		adicCampo( txtCodProdPD, 350, 60, 50, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescTipoMovCP, false );
+		adicDescFK( txtDescProdPD, 403, 60, 120, 20, "DescProd", "Descrição do produto padrão" );
+
 		
 		txtCodTipoMovCP.setNomeCampo( "codtipomov" );
 		
@@ -150,6 +161,14 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 		lcTipoMovCP.setQueryCommit( false );
 		lcTipoMovCP.setReadOnly( true );
 		txtCodTipoMovCP.setTabelaExterna( lcTipoMovCP, FTipoMov.class.getCanonicalName() );
+
+		lcProduto.add( new GuardaCampo( txtCodProdPD, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProdPD, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+		lcProduto.setQueryCommit( false );
+		lcProduto.setReadOnly( true );
+		txtCodProdPD.setTabelaExterna( lcProduto, FProduto.class.getCanonicalName() );
+
 		
 	}
 
@@ -165,6 +184,7 @@ public class FTipoRecMerc extends FDetalhe implements ActionListener, JComboBoxL
 	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		lcTipoMovCP.setConexao( cn );
+		lcProduto.setConexao( cn );
 
 	}
 
