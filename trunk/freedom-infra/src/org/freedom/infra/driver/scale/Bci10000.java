@@ -24,7 +24,7 @@ public final class Bci10000 extends AbstractScale {
 	
 	public static final byte ETX = 3;
 	
-	private static final int TAMANHO_STR_PESO = 9;
+	private static final int TAMANHO_STR_PESO = 10;
 	
 	private static final int TAMANHO_STR_TOTAL = 18;
 
