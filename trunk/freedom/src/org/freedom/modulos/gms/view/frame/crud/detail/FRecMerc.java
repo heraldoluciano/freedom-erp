@@ -94,6 +94,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private JTextFieldFK txtDescProdCab = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodProdPadrao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -511,7 +513,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcMunic.addCarregaListener( this );
 		lcFor.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
-
+		lcTipoRecMerc.addCarregaListener( this );
+		
 		btAdicBairro.addActionListener( this );
 		btPesagem.addActionListener( this );
 		btImp.addActionListener( this );
@@ -525,7 +528,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMerc.add( new GuardaCampo( txtDescTipoRecMerc, "DescTipoRecMerc", "Descrição do tipo de recepção de mercadoria", ListaCampos.DB_SI, false ) );
-
+		lcTipoRecMerc.add( new GuardaCampo( txtCodProdPadrao, "Codprod", "Cód.Prod.", ListaCampos.DB_SI, false ) );
+		
 		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
 		txtCodTipoRecMerc.setFK( true );
@@ -782,7 +786,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				System.out.println( "Erro ao buscar pesagens!" );
 			}
 
-			imp.pulaLinha( 7, imp.comprimido() );
+			imp.pulaLinha( 0, imp.comprimido() );
 
 			imp.say( imp.pRow(), 70, txtDescMun.getVlrString().trim() );
 
@@ -1192,7 +1196,21 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
+			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao 
+			if( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
+				carregaSequencia(1);
+			}
+			// Se ja tiver sido realizada a pesagem 2 deve carregar a proxima sequencia
+			else if (txtStatus.getVlrString().equals( RecMerc.STATUS_DESCARREGAMENTO.getValue() )) {
+				carregaSequencia(2);
+			}
+			
+			
 		}
+		else if ( cevt.getListaCampos() == lcTipoRecMerc ) {
+			carregaProdutoPadrao();
+		}
+
 		else if ( cevt.getListaCampos() == lcDet ) {
 
 			limpaAmostra();
@@ -1213,7 +1231,34 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 
 	}
-
+	
+	// Futuramente deve ser implementado para buscar automaticamente o
+	// coditrecmerc a partir do status e do tipo de processo.
+	private void carregaSequencia(Integer proximos) {
+		try {
+			
+			for(int i=0;i<proximos;i++) {
+				lcDet.next();
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void carregaProdutoPadrao() {
+		try {
+			if(txtCodProdPadrao.getVlrInteger()>0 && (!(txtCodProdCab.getVlrInteger()>0)) ) {
+				txtCodProdCab.setVlrInteger( txtCodProdPadrao.getVlrInteger() );
+				lcProdCab.carregaDados();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		// TODO Auto-generated method stub
