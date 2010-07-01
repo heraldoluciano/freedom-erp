@@ -83,6 +83,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	private JTextFieldPad txtInscTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
+	private JTextFieldPad txtNroPisTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private JTextFieldFK txtDDDMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 	
 	private JTextFieldPad txtBairTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -293,6 +295,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		
 		adicCampo( txtNroDependTran, 135, 60, 125, 20, "NroDependTran", "Nro. de dependentes", ListaCampos.DB_SI, false );
 		
+		adicCampo( txtNroPisTran, 263, 60, 250, 20, "NroPisTran", "Cód.INSS/PIS/PASEP", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCodGPS, 7, 100, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );		
 		adicDescFK( txtDescGPS, 85, 100, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
 
@@ -330,6 +334,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		txtFaxTran.setMascara( JTextFieldPad.MC_FONE );
 		txtCelTran.setMascara( JTextFieldPad.MC_FONE );
 		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
+		txtNroPisTran.setMascara( JTextFieldPad.MC_INSS );
 
 	}
 
