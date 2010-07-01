@@ -35,11 +35,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.RowSorter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -158,7 +155,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		criaTabelas();
 		montaTela();				
 		montaListeners();
-
+		adicToolTips();
+		
 	}
 	
 
@@ -242,6 +240,13 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		
 	}
 	
+	private void adicToolTips() {
+		btAtualiza.setToolTipText( "Executa pesquisa - (F5)" );
+		btEditar.setToolTipText( "Abre recepção de mercadorias - (ENTER/SPACE)" );
+		btNovo.setToolTipText( "Nova recepção - (F12)" );
+		btCompra.setToolTipText( "Gerar pedido de compra - (F11)" );		
+	}
+	
 	private void montaListeners() {
 		
 		btAtualiza.addActionListener( this );
@@ -251,7 +256,11 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		btCompra.addActionListener( this );
 		
 		tabDet.addTabelaSelListener( this );	
-		tabDet.addMouseListener( this );	
+		tabDet.addMouseListener( this );
+		tabDet.addKeyListener( this );
+		
+		this.addKeyListener( this );
+		
 		
 	}
 
@@ -449,15 +458,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				row++;
 				
 			}
-
-			// Permitindo reordenação
 			
-			if(row>0) {
-				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabDet.getModel());    
-				tabDet.setRowSorter(sorter);				   
-			}
-			else {
-				tabDet.setRowSorter( null );
+			if(tabDet.getRowCount()>0) {
+				tabDet.setLinhaSel( 0 );
 			}
 			
 		} 
@@ -567,6 +570,28 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		if ( e.getSource() == btAtualiza && e.getKeyCode() == KeyEvent.VK_ENTER ) {
 			btAtualiza.doClick();
 		}
+		else if(e.getSource() == tabDet) {
+			if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+				btEditar.doClick();
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				btEditar.doClick();
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_F5) {
+				btAtualiza.doClick();
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_F12) {
+				btNovo.doClick();
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_F11) {
+				btCompra.doClick();
+			}
+		}
+
+		
+
+		
+		
 	}
 
 	public void keyReleased( KeyEvent e ) { }
