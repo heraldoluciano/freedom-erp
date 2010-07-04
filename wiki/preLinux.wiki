@@ -76,6 +76,11 @@ saida algo como: *NPTL 2.10.1*
   # Instalando a dependência libstdc++5 para o Firebird.
 {{{
 wget http://ftp.br.debian.org/debian/pool/main/g/gcc-3.3/libstdc++5_3.3.6-18_i386.deb
+
+p/ 64 bits:
+
+wget http://ftp.br.debian.org/debian/pool/main/g/gcc-3.3/libstdc++5_3.3.6-18_amd64.deb
+ 
 sudo dpkg -i libstdc++5_3.3.6-18_i386.deb
 }}}
   # Instalando o Firebird Super Server v1.5.6 (Último da Serie 1.5).
