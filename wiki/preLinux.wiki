@@ -52,7 +52,7 @@ outras distribuições e o tutorial completo http://www.guiadohardware.net/tutor
 instale todos os .deb
 
 
-
+ou:
 ==Instalação do Firebird Super Server v1.5.6 (Último da Serie 1.5). com NPTL==
 
 ===O que é o NPTL?===
@@ -66,7 +66,6 @@ The Native POSIX Thread Library (NPTL) is a software feature that enables the Li
 
 Facil:
 
-[http://ufpr.dl.sourceforge.net/project/firebird/firebird-linux-i386/1.5.6-Release/FirebirdSS-1.5.6.5026-0.nptl.i686.tar.gz]
 
 {{{
 getconf GNU_LIBPTHREAD_VERSION
