@@ -111,6 +111,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 	
 	private JButtonPad btRefazer = new JButtonPad( "Refazer", Icone.novo( "btsoliccp.gif" ) );
 	
+	private boolean contingencia = false;
+	
 	public DLPesagem( Component cOrig, String tipoprocrecmerc ) {
 
 		super( cOrig );
@@ -222,34 +224,45 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 		try {
 			
 			if(balanca!=null) { 
-//			if(true) {
-				
+
 				setMensagem( "Inicializando balança...", Color.BLUE, null, false, null );
 				
-				balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
-				// Usar thred apenas para balanca bci.
+				Date data = null;
+				Time hora = null;
+				BigDecimal peso = null;
 				
-				if(balanca.isBufferized()) {				
-					Thread t = new Thread(balanca); 
-					t.start();
+				if(!contingencia) {
 				
-					Thread.sleep(1000);
+					balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
+					// Usar thred apenas para balanca bci.
+					
+					if(balanca.isBufferized()) {				
+						Thread t = new Thread(balanca); 
+						t.start();
+					
+						Thread.sleep(1000);
+					}
+					
+					setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false, null );
+					
+					balanca.parseString();
+				
+				
+					data = balanca.getDate();
+					hora = balanca.getTime();
+					peso = balanca.getWeight();
+				
 				}
-				
-				setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false, null );
-				
-				balanca.parseString();
-				
-				Date data = balanca.getDate();
-				Time hora = balanca.getTime();
-				BigDecimal peso = balanca.getWeight();
-				
-				
-				// Valore incluídos para testes
-				//Date data = new Date();
-				//Time hora = new Time(new Date().getTime());
-				//BigDecimal peso = new BigDecimal(650);
-				
+				// Modo de contingencia ativado
+				else { 
+					
+					balanca.inactivePort();
+					
+					data = new Date();
+			    	hora = new Time(new Date().getTime());
+					peso = new BigDecimal(0);
+
+				}
 				
 				if(peso != null) {
 					if(txtPeso1.getVlrBigDecimal().floatValue()>0 && tipoprocrecmerc.equals( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() )){
@@ -612,13 +625,18 @@ private void abrePorta() {
     private void liberaCampo(boolean libera){
     	
     	FPassword fpw = new FPassword( this, FPassword.LIBERA_CAMPO_PESAGEM, null, con );
-		fpw.execShow();					
+		fpw.execShow();		
+		
 		if ( fpw.OK ) {					
 	    	txtPeso1.setEditable( libera );
 	    	txtPeso2.setEditable( libera );
 	    	txtData.setEditable( libera );
 	    	txtHora.setEditable( libera );
-		}					
+	    	
+	    	contingencia = true; 
+	    	
+		}			
+		
 		fpw.dispose();
     	
     }
