@@ -614,7 +614,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JRadioGroup<String, String> rgProcEmiNFE = null;
 	
-	private JRadioGroup<String, String> rgTipoCustoLuc = null;
+	private JRadioGroup<String, String> rgTipoCustoLuc = null; 
+	
+	private JCheckBoxPad cbInfAdicProdNFE = new JCheckBoxPad( "Adiciona descrição completa do produto na NFE.", "S", "N" );
 	
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
@@ -1392,7 +1394,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgProcEmiNFE, 7, 130, 370, 50, "ProcEmiNfe", "Processo de emissão", false );
 		adicDB(txtDtVenctoNfe, 7, 202, 100, 20, "DtVenctoNfe", "Vencimento NFE", false);
 		adicDB(txtKeyLicNfe, 7, 242, 370, 20, "KeyLicNfe", "Chave de licenciamento NFE", false);
+
+		JPanelPad pnNFeOpcoes = new JPanelPad();
+		pnNFeOpcoes.setBorder( SwingParams.getPanelLabel("Opções", Color.BLUE) );
 		
+		setPainel( pinNFe );
+		adic( pnNFeOpcoes, 7, 298, 370, 100 );
+
+		setPainel( pnNFeOpcoes );
+		
+		adicDB(cbInfAdicProdNFE, 7,5,370,30, "InfAdProdNfe", "", false);
 			
 						
 		/*****************
