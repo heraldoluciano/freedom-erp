@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.freedom.infra.functions.SystemFunctions;
+
 public abstract class Contabil {
 
 	public static final String FREEDOM_CONTABIL = "01";
@@ -21,6 +23,8 @@ public abstract class Contabil {
 	protected static final int DATE = 2;
 	
 	protected static final String RETURN = String.valueOf((char)13) + String.valueOf((char)10);
+	
+	protected static final String SEPDIR = (SystemFunctions.getOS()==SystemFunctions.OS_LINUX?"/":"\\");  
 
 	public static final String SET_SIZE_ROWS = "SET_SIZE_ROWS";
 

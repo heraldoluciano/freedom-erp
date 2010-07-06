@@ -30,8 +30,7 @@ public class EbsContabil extends Contabil {
 	private List<String> readrowsSaida = new ArrayList<String>();
 	
 	private List<String> readrowsItem = new ArrayList<String>();
-	
-	
+
 	public EbsContabil() {
 		
 		super();
@@ -39,7 +38,7 @@ public class EbsContabil extends Contabil {
 	}
 
 	@Override
-	public void createFile( File filecontabil ) throws Exception {	
+	public void createFile( File filecontabil ) throws Exception {
 		
 		sizeMax = readrows.size() + readrowsSaida.size() + readrowsItem.size();
 		
@@ -51,7 +50,7 @@ public class EbsContabil extends Contabil {
 
 		progressInRows = 1;
 		
-		File entradas = new File( filecontabil.getPath() + "\\NOTAENT.TXT" );
+		File entradas = new File( filecontabil.getPath() + SEPDIR + "NOTAENT.TXT" );
 		entradas.createNewFile();
 
 		FileWriter fwEntradas = new FileWriter( entradas );
@@ -69,7 +68,7 @@ public class EbsContabil extends Contabil {
 
 		fwEntradas.close();
 		
-		File saidas = new File( filecontabil.getPath() + "\\NOTASAI.TXT" );
+		File saidas = new File( filecontabil.getPath() + SEPDIR + "NOTASAI.TXT" );
 		saidas.createNewFile();
 
 		FileWriter fwSaidas = new FileWriter( saidas );
@@ -87,7 +86,7 @@ public class EbsContabil extends Contabil {
 
 		fwSaidas.close();
 		
-		File itens = new File( filecontabil.getPath() + "\\ITEM.TXT" );
+		File itens = new File( filecontabil.getPath() + SEPDIR + "ITEM.TXT" );
 		itens.createNewFile();
 
 		FileWriter fwItens = new FileWriter( itens );
