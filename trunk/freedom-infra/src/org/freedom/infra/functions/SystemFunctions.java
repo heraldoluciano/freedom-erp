@@ -8,9 +8,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import javax.swing.JOptionPane;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 
@@ -165,5 +168,60 @@ public class SystemFunctions {
 		}
 		return ret;
 	}
+	
+	 public static Vector<String> getIniFile( String sNomeArq ) {
+
+			Vector<String> vRetorno = new Vector<String>();
+			String sTemp = "";
+			int iTam = 0;
+			char c = (char) 0;
+			try {
+				File fArq = new File( sNomeArq );
+				FileReader frArq = new FileReader( fArq );
+				try {
+					iTam = (int) fArq.length();
+					for ( int i = 0; i < iTam; i++ ) {
+						c = (char) frArq.read();
+						if ( c == (char) 10 ) {
+							vRetorno.addElement( sTemp );
+							sTemp = "";
+						}
+						else if ( c == (char) 13 ) {
+							if ( i == iTam ) {
+								vRetorno.addElement( sTemp );
+								sTemp = "";
+							}
+							else {
+								c = (char) frArq.read();
+								i++;
+								if ( c == (char) 10 ) {
+									vRetorno.addElement( sTemp );
+									sTemp = "";
+								}
+								else {
+									vRetorno.addElement( sTemp );
+									sTemp = "";
+									sTemp += c;
+								}
+							}
+						}
+						else {
+							sTemp += c;
+						}
+					}
+				} 
+				catch ( IOException err ) {					
+					JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n", "Erro", JOptionPane.ERROR_MESSAGE);
+					System.exit( 0 );
+				}
+			} 
+			catch ( FileNotFoundException err ) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n"+ err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);				
+				System.exit( 0 );
+			}
+			return vRetorno;
+		}
+	 
+	 
 	
 }
