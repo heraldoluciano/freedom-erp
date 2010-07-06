@@ -653,15 +653,25 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		JMenuBar menuBar = telaPrincipal.bar;
 		
-		for ( int i = 0; i < menuBar.getMenuCount(); i++ ) {
-			
-			if ( !upMenuDB( menuBar.getMenu( i ), new JMenuPad() ) ) {
-				break;
+		try {
+		
+			for ( int i = 0; i < menuBar.getMenuCount(); i++ ) {
+				
+				if ( !upMenuDB( menuBar.getMenu( i ), new JMenuPad() ) ) {
+					break;
+				}
+				
+				buscaMenuItem( menuBar.getMenu( i ) );
+				
 			}
-			
-			buscaMenuItem( menuBar.getMenu( i ) );
-			
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Funcoes.mensagemErro(null, "Erro ao atualizar menus!\n" + e.getMessage());
+		}
+			
+		Funcoes.mensagemInforma(null, "Menus atualizados com sucesso!");
+		
 	}
 
 	private void buscaMenuItem( JMenu men ) {
