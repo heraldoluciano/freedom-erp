@@ -53,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Empresa;
 import org.freedom.library.business.object.Tab;
@@ -277,7 +278,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			sNomeArqIni = "freedom.ini";
 		sArqIni = sNomeArqIni;
 		sArqINI = System.getProperty( "ARQINI" ) != null ? System.getProperty( "ARQINI" ) : sNomeArqIni;
-		vArqINI = getArqINI( sArqINI );
+		vArqINI = SystemFunctions.getIniFile( sArqINI );
 
 		try {
 			strLookAndFeel = getParameter( "lookandfeel" );
@@ -855,19 +856,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public abstract void getMultiAlmox();
 
 	public DbConnection conexaoIB( String strDriverP, String strBancoP ) {
-
-		/*try {
-			Class.forName( strDriverP );
-		} catch ( java.lang.ClassNotFoundException e ) {
-			Funcoes.mensagemErro( null, "[internal]:Driver nao foi encontrado: " + e.getMessage() );
-			return null;
-		}*/
-
-		try {
-			
-			//conIB = DriverManager.getDbConnection( strBancoP, strUsuario, strSenha );
+		try {			
 			conIB = new DbConnection(strDriverP, strBancoP, strUsuario, strSenha);
-		} catch ( java.sql.SQLException e ) {
+		} 
+		catch ( java.sql.SQLException e ) {
 			if ( e.getErrorCode() == 335544472 )
 				return null;
 			Funcoes.mensagemErro( null, "[internal]:Não foi possível estabelecer conexão com o banco de dados.\n" + e.getMessage() );
@@ -971,67 +963,22 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return sRetorno;
 	}
 
-	public static Vector<String> getArqINI( String sNomeArq ) {
-
-		Vector<String> vRetorno = new Vector<String>();
-		String sTemp = "";
-		int iTam = 0;
-		char c = (char) 0;
-		try {
-			File fArq = new File( sNomeArq );
-			FileReader frArq = new FileReader( fArq );
-			try {
-				iTam = (int) fArq.length();
-				for ( int i = 0; i < iTam; i++ ) {
-					c = (char) frArq.read();
-					if ( c == (char) 10 ) {
-						vRetorno.addElement( sTemp );
-						sTemp = "";
-					}
-					else if ( c == (char) 13 ) {
-						if ( i == iTam ) {
-							vRetorno.addElement( sTemp );
-							sTemp = "";
-						}
-						else {
-							c = (char) frArq.read();
-							i++;
-							if ( c == (char) 10 ) {
-								vRetorno.addElement( sTemp );
-								sTemp = "";
-							}
-							else {
-								vRetorno.addElement( sTemp );
-								sTemp = "";
-								sTemp += c;
-							}
-						}
-					}
-					else {
-						sTemp += c;
-					}
-				}
-			} catch ( IOException err ) {
-				Funcoes.mensagemErro( null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage() );
-				System.exit( 0 );
-			}
-		} catch ( FileNotFoundException err ) {
-			Funcoes.mensagemErro( null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage() );
-			System.exit( 0 );
-		}
-		return vRetorno;
+	public static String getValorSecao( String sSecao, String sParam) {
+		
+		return getValorSecao(sSecao, sParam, vArqINI);		
+		
 	}
-
-	public static String getValorSecao( String sSecao, String sParam ) {
+	
+	public static String getValorSecao( String sSecao, String sParam, Vector<String> vArq ) {
 
 		String sLinha = "";
 		String sLabel = "";
 		int iLocal = 0;
-		for ( int i = 0; i < vArqINI.size(); i++ ) {
-			sLinha = vArqINI.elementAt( i ).trim();
+		for ( int i = 0; i < vArq.size(); i++ ) {
+			sLinha = vArq.elementAt( i ).trim();
 			if ( sLinha.indexOf( sSecao ) > 0 ) {
-				for ( int i2 = i + 1; i2 < vArqINI.size(); i2++ ) {
-					sLinha = vArqINI.elementAt( i2 );
+				for ( int i2 = i + 1; i2 < vArq.size(); i2++ ) {
+					sLinha = vArq.elementAt( i2 );
 					if ( sLinha.indexOf( '[' ) > 0 ) {
 						break;
 					}
@@ -1049,8 +996,12 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public static String getParameter( String sParam ) {
+		return getValorSecao( "parametros", sParam);
+	}
+	
+	public static String getParameter( String sParam, Vector<String> vArq ) {
 
-		return getValorSecao( "parametros", sParam );
+		return getValorSecao( "parametros", sParam, vArq );
 	}
 
 	public static void killProg( int iTerm, String sMess ) {
