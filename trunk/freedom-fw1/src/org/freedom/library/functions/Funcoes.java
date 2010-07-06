@@ -119,7 +119,7 @@ public class Funcoes {
     	}
     	return retorno;
     }
-
+    
     public static StringDireita bdToStr(BigDecimal vlr) {
     	return bdToStr(vlr, Aplicativo.casasDecFin);
     }
