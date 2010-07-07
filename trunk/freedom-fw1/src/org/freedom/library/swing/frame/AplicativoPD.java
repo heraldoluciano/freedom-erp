@@ -175,6 +175,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		}
 
 		con = conexao();
+		
 		if ( con == null ) {
 			System.exit( 1 );
 		}

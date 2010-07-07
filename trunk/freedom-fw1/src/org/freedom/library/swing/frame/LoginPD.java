@@ -99,16 +99,16 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 	}		  
 
 	protected boolean execConexao(String sUsu, String sSenha) {
+		
 		nfe = Aplicativo.getParameter( "nfe" );
-		if ("S".equalsIgnoreCase( nfe )) {
-			strBanconfe = Aplicativo.getParameter( "banconfe" );
-		}
-		strBanco = Aplicativo.getParameter("banco");
-		strDriver = Aplicativo.getParameter("driver");
-
+		
+		strBanco = Aplicativo.getParameter("banco");		
+		strDriver = Aplicativo.getParameter("driver");	
+		
 		try {
 			Class.forName(strDriver);
-		} catch (java.lang.ClassNotFoundException e) {
+		} 
+		catch (java.lang.ClassNotFoundException e) {
 			Funcoes.mensagemErro( this,"Driver nao foi encontrado:\n"+strDriver+"\n"+e.getMessage ());
 			return false;
 		}
@@ -127,6 +127,31 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			e.printStackTrace();
 			return false;
 		}
+		
+		
+		if ("S".equalsIgnoreCase( nfe )) {
+
+			strBanconfe = Aplicativo.getParameter( "banconfe" );
+			
+			try {
+				props.put("user", sUsu);
+				props.put("password", sSenha);
+				conNFE = new DbConnection(strBanconfe, props);
+				conNFE.setAutoCommit(false);
+			} 
+			catch (java.sql.SQLException e) {
+				if (e.getErrorCode() == 335544472 || e.getErrorCode() == 335544345)
+					Funcoes.mensagemErro( this, "Nome do usuário ou senha inválidos ! ! !");
+				else                                                                             
+					Funcoes.mensagemErro( this,"Não foi possível estabelecer conexão com o banco de dados nfe.\n"+e.getMessage());
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		
+		
+		
 		txtUsuario.setAtivo(false);
 		txpSenha.setEditable(false);
 		return true;

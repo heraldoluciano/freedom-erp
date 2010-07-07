@@ -78,6 +78,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int casasDecFin = 2;
 
 	public DbConnection con = null; // Variavel de conexao com o banco de dados
+	
+	public DbConnection con_nfe = null; // Variavel de conexao com o banco de dados de nfe
 
 	public static FPrincipal telaPrincipal = null;
 
@@ -271,6 +273,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public DbConnection getConexao() {
 		return con;
 	}
+	
+	public DbConnection getConexaoNFE() {
+		return con_nfe;
+	}
+
 
 	public static void setLookAndFeel( String sNomeArqIni ) {
 
@@ -838,6 +845,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			iCodFilialPad = lgBanco.getFilialPad();
 			try {
 				conRetorno = lgBanco.getConection();
+				con_nfe = lgBanco.conNFE;
 			}
 			catch (Exception e) {
 				Funcoes.mensagemErro( null, "Erro de conexão!\n" + e.getMessage() );
