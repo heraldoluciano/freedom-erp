@@ -59,6 +59,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	protected String sUsuAnt = "";
 	protected int iFilialMz = 0;
 	protected DbConnection conLogin = null;
+	protected DbConnection conNFE = null; 
 	protected JLabelPad lbInstrucoes = new JLabelPad("");
 	protected Properties props = new Properties();
 	public boolean bAdmin = false;
