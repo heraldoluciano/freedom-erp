@@ -56,7 +56,7 @@
 	<parameter name="CLIENTE" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo,
 a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, 
-a.statusatendo
+a.statusatendo, '' descchamado, 0 codchamado
 from  atatendimento a, atatendente atd, attipoatendo t where
 atd.codemp=a.codempae and atd.codfilial=a.codfilialae
 and t.codemp=a.codempto and t.codfilial=a.codfilial and t.codtpatendo=a.codtpatendo
@@ -64,17 +64,19 @@ and atd.codatend=a.codatend and a.codcli=8
 and a.codempct=3 and a.codfilialct=1 and a.codcontr=3
 and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 
-	<field name="CODTPATENDO" class="java.lang.Long"/>
-	<field name="CODATEND" class="java.lang.Long"/>
+	<field name="CODTPATENDO" class="java.lang.Integer"/>
+	<field name="CODATEND" class="java.lang.Integer"/>
 	<field name="DATAATENDO" class="java.sql.Date"/>
 	<field name="DATAATENDOFIN" class="java.sql.Date"/>
-	<field name="CODATENDO" class="java.lang.Long"/>
+	<field name="CODATENDO" class="java.lang.Integer"/>
 	<field name="HORAATENDO" class="java.sql.Time"/>
 	<field name="HORAATENDOFIN" class="java.sql.Time"/>
 	<field name="OBSATENDO" class="java.lang.String"/>
 	<field name="NOMEATEND" class="java.lang.String"/>
 	<field name="DESCTPATENDO" class="java.lang.String"/>
 	<field name="STATUSATENDO" class="java.lang.String"/>
+	<field name="DESCCHAMADO" class="java.lang.String"/>
+	<field name="CODCHAMADO" class="java.lang.Integer"/>
 
 	<variable name="TOTALHORAS" class="java.sql.Time" resetType="Report" calculation="Sum">
 	</variable>
@@ -471,7 +473,11 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSATENDO}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[null!=$F{DESCCHAMADO} 
+? 
+("Chamado: " + $F{CODCHAMADO} + "-" + $F{DESCCHAMADO} + "\n" + " Atendimento: " + $F{OBSATENDO}.trim() )
+:
+$F{OBSATENDO}.trim()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
