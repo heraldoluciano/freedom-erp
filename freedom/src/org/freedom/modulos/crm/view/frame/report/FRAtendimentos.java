@@ -205,9 +205,16 @@ public class FRAtendimentos extends FRelatorio {
 			return;
 		}
 				
-		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, " );
+		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
 		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, cl.razcli, a.statusatendo " );
-		sql.append( "from  atatendimento a, atatendente atd , attipoatendo t, vdcliente cl where " );
+		sql.append( "from  atatendente atd , attipoatendo t, vdcliente cl, atatendimento a ");
+		
+		sql.append( "left outer join crchamado ch on " );
+		
+		sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
+		
+		sql.append( "where " );
+		
 		sql.append( "atd.codemp=a.codempae and atd.codfilial=a.codfilialae " );
 		sql.append( "and t.codemp=a.codempto and t.codfilial=a.codfilial and t.codtpatendo=a.codtpatendo " );
 		sql.append( "and cl.codemp=a.codempcl and cl.codfilial=a.codfilialcl and cl.codcli=a.codcli " );
@@ -228,6 +235,8 @@ public class FRAtendimentos extends FRelatorio {
 		}
 
 		sql.append(" order by a.dataatendo, a.horaatendo ");
+		
+		System.out.println("SQL:" + sql.toString());
 		
 		try {
 			
