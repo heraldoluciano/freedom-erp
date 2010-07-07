@@ -793,7 +793,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
 
 		/***************
-		 * PROCESSOS *
+		 * PROCESSOS   *
 		 ***************/
 
 		lcProc.add( new GuardaCampo( txtCodProcRecMerc, "CodProcRecMerc", "Cód.Proc.", ListaCampos.DB_PK, false ) );
