@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomatd.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomatd.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd.view.frame.crud.tabbed"/>
+    </selectedElements>
+</jardesc>
