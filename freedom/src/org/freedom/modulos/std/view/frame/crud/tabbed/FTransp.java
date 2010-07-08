@@ -211,6 +211,8 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		adicTab( "Geral", panelGeral );
 		setPainel( panelGeral );
+		
+		nav.setNavigation( true );
 
 		adicCampo( txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, true );
 		
@@ -418,6 +420,11 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 	public void beforePost( PostEvent pevt ) {
 
+		if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
+			txtUFTran.setVlrString( txtSiglaUF.getVlrString() );
+		}
+
+		
 		if ( ( "".equals( txtCnpjTran.getVlrString().trim() ) ) && ! "A".equals(rgTipoTransp.getVlrString())) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
@@ -444,12 +451,14 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 				txtUFTran.requestFocus();
 			}
 		}
-		else if ( ( !"".equals( txtInscTran.getVlrString().trim() ) ) && ( !Funcoes.vIE( txtInscTran.getText(), txtUFTran.getText() ) ) ) {
+		else if ( ( !"".equals( txtInscTran.getVlrString().trim() ) ) && ( !Funcoes.validaIE( txtInscTran.getText(), txtUFTran.getText() ) ) ) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
 			txtInscTran.requestFocus();
 		}
-		txtInscTran.setVlrString( Funcoes.sIEValida );
+		
+		txtInscTran.setVlrString( Funcoes.formataIE( txtInscTran.getVlrString(), txtUFTran.getVlrString() ) );
+		
 	}
 
 	public void afterPost( PostEvent pevt ) {
