@@ -818,8 +818,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 						imp.say( imp.pRow() + 0, 7, Funcoes.setMascara( rs.getString( "CnpjFor" ), "##.###.###/####-##" ) );
 						imp.say( imp.pRow() + 0, 49, "IE:" );
 						if ( !rs.getString( "InscFor" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFFor" ) != null ) {
-							Funcoes.vIE( rs.getString( "InscFor" ), rs.getString( "UFFor" ) );
-							imp.say( imp.pRow() + 0, 54, Funcoes.sIEValida );
+//							Funcoes.validaIE( rs.getString( "InscFor" ), rs.getString( "UFFor" ) );
+							imp.say( imp.pRow() + 0, 54, Funcoes.formataIE( rs.getString( "InscFor" ), rs.getString( "UFFor" ) ) );
 						}
 					}
 					else {
@@ -1022,20 +1022,27 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	public void beforePost( PostEvent pevt ) {
 
-		if ( rgPessoa.getVlrString().equals( "F" ) )
+		if ( rgPessoa.getVlrString().equals( "F" ) ) {
 			return;
+		}
 		else if ( ( txtCnpjFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "CNPJFOROBRIG" ))) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 			txtCnpjFor.requestFocus();
 			return;
 		}
-		else if ( ( txtInscFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "INSCESTFOROBRIG" )) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
+		else if ( ( "".equals( txtInscFor.getVlrString() )) && ( (Boolean)prefs.get( "INSCESTFOROBRIG" )) ) {
+
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
 				pevt.cancela();
+			}
+			
 			txtInscFor.setVlrString( "ISENTO" );
+			
 			txtInscFor.requestFocus();
+			
 			return;
+			
 		}
 		else if ( txtInscFor.getVlrString().trim().equalsIgnoreCase( "ISENTO" ) ) {
 			return;
@@ -1052,7 +1059,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			}
 		}
 		else if ( (Boolean)prefs.get( "CONSISTEIEFOR" ) ) { 
-			if ( ! Funcoes.vIE( txtInscFor.getText(), txtUFFor.getText() ) ) {
+			if ( ! Funcoes.validaIE( txtInscFor.getText(), txtUFFor.getText() ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
 				txtInscFor.requestFocus();
@@ -1060,7 +1067,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			}
 
 			if ( ! txtInscFor.getText().trim().equals( "" ) ) {
-				txtInscFor.setVlrString( Funcoes.sIEValida );
+//				txtInscFor.setVlrString( Funcoes.sIEValida );
+				txtInscFor.setVlrString( Funcoes.formataIE( txtInscFor.getVlrString(), txtUFFor.getVlrString() ) );
 			}
 		}
 	}
