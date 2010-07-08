@@ -3539,8 +3539,8 @@ public class FCliente extends FTabDados
 					imp.say( 7, Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );
 					imp.say( 50, "IE:" );
 					if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCli" ) != null ) {
-						Funcoes.vIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
-						imp.say( 55, Funcoes.sIEValida );
+					//	Funcoes.validaIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
+						imp.say( 55, Funcoes.formataIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) ) );
 					}
 				}
 				else {
@@ -4313,10 +4313,11 @@ public class FCliente extends FTabDados
 	}
 
 	public void beforePost( PostEvent pevt ) {
-
-		if ( (Boolean)bPref.get( "CONSISTEIEPF" ) ) {
+		
+		if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) ) {
 			
 			String sUF = "";
+			
 			if ( (Boolean)bPref.get( "USAIBGECLI" )) {						
 				 sUF = txtSiglaUF.getText();
 			}
@@ -4324,7 +4325,7 @@ public class FCliente extends FTabDados
 				 sUF = txtUFCli.getText();
 			}
 						
-			if ( ! Funcoes.vIE( txtInscCli.getText(), sUF ) ) {
+			if ( ! Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
 				if ( ! txtInscCli.getText().trim().equals( "" ) ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
@@ -4333,9 +4334,15 @@ public class FCliente extends FTabDados
 				}
 			}
 
-			if ( ! txtInscCli.getText().trim().equals( "" ) ) {
-				txtInscCli.setVlrString( Funcoes.sIEValida );
+			if ( ( ! "".equals( txtInscCli.getVlrString() )) && (!"ISENTO".equals( txtInscCli.getText().trim())) ) {
+				txtInscCli.setVlrString( Funcoes.formataIE(txtInscCli.getVlrString(), sUF ) );
 			}
+			else if  ( "".equals( txtInscCli.getVlrString() ) ) {
+				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
+					txtInscCli.setVlrString( "ISENTO" );
+				}
+			}
+			
 		}
 		
 		if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
@@ -4346,15 +4353,6 @@ public class FCliente extends FTabDados
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 			txtCnpjCli.requestFocus();
-			return;
-		}
-
-		if ( ( txtInscCli.getText().trim().length() < 1 ) && ( (Boolean)bPref.get( "CLIMESMOCNPJ" ) ) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
-				txtInscCli.setVlrString( "ISENTO" );
-			}
-			pevt.cancela();
-			txtInscCli.requestFocus();
 			return;
 		}
 
@@ -4386,8 +4384,9 @@ public class FCliente extends FTabDados
 				return;
 			}
 		}
-		if ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) {
-			
+		
+		/*	
+		 if ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) { 
 			String sUF = "";
 			if ( (Boolean)bPref.get( "USAIBGECLI" )) {		
 				
@@ -4409,7 +4408,7 @@ public class FCliente extends FTabDados
 			if ( ! txtInscCli.getText().trim().equals( "" ) ) {
 				txtInscCli.setVlrString( Funcoes.sIEValida );
 			}
-		}
+		}*/
 	}
 
 	public void afterPost( PostEvent pevt ) {
