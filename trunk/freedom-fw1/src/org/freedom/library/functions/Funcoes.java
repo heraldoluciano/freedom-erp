@@ -68,8 +68,10 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
-import org.brazilutils.br.uf.UF;
-import org.brazilutils.br.uf.ie.InscricaoEstadual;
+//import org.brazilutils.br.uf.UF;
+//import org.brazilutils.br.uf.ie.InscricaoEstadual;
+
+
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
@@ -81,9 +83,12 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FSuporte;
 import org.freedom.library.type.StringDireita;
 
+import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
+import br.gov.sp.fazenda.dsge.brazilutils.uf.ie.InscricaoEstadual;
+
 public class Funcoes {
 	
-	public static String sIEValida = "";
+	public static final String sIEValida = "ISENTO";
 
 	private static JDialog dlErro = null;
 	
@@ -2309,7 +2314,7 @@ public class Funcoes {
 		return bRetorno;
 	}
 
-	public static boolean vIE(String sIE, String sEstado) {
+	public static boolean validaIE(String sIE, String sEstado) {
 		boolean bRetorno = false;
 		sEstado.toUpperCase();
 		UF uf = UF.valueOf( sEstado );
@@ -2321,7 +2326,7 @@ public class Funcoes {
 			InscricaoEstadual ie = uf.getInscricaoEstadual();    
 			ie.setNumber(sIE);
 			bRetorno = ie.isValid();
-			testaCasoIE( sIE, ie );
+//			testaCasoIE( sIE, ie );
 		}
 		catch (Exception e) {
 			Funcoes.mensagemErro( null, "Erro ao validar a inscrição estadual!\n" + e.getMessage() );
@@ -2330,11 +2335,32 @@ public class Funcoes {
 		return bRetorno;
 	}
 	
-	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
-	//	String mascara = IE.getMask();
-		sIEValida = setMascara( StringFunctions.clearString( sIE ), IE.getMask());		
-		return true;
+	public static String formataIE(String sIE, String estado) {
+		String ret = "";
+		
+		try {
+			
+			UF uf = UF.valueOf( estado );
+			
+			InscricaoEstadual IE = uf.getInscricaoEstadual();
+			
+			String mascara = IE.getMask();
+			
+			return setMascara( StringFunctions.clearString( sIE ), mascara);
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;		
 	}
+	
+//	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
+	//	String mascara = IE.getMask();
+//		sIEValida = setMascara( StringFunctions.clearString( sIE ), IE.getMask());		
+//		return true;
+//	}
 	
 	/*
 	private static int[] carregaPosDV(Vector<String> vXIE) {
