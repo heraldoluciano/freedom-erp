@@ -660,8 +660,8 @@ public class FVendedor extends FTabDados implements PostListener {
 			Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
 			txtUFVend.requestFocus();
 		}
-		else if ( Funcoes.vIE( txtInscVend.getText(), txtUFVend.getText() ) )
-			txtInscVend.setVlrString( Funcoes.sIEValida );
+		else if ( Funcoes.validaIE( txtInscVend.getText(), txtUFVend.getText() ) )
+			txtInscVend.setVlrString( Funcoes.formataIE( txtInscVend.getText(), txtUFVend.getText() ) );
 		else {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
