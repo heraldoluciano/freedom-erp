@@ -760,8 +760,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 						imp.say( imp.pRow(), 7, Funcoes.setMascara( rs.getString( "CnpjCto" ), "##.###.###/####-##" ) );
 						imp.say( imp.pRow(), 50, "IE:" );
 						if ( !rs.getString( "InscCto" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCto" ) != null ) {
-							Funcoes.vIE( rs.getString( "InscCto" ), rs.getString( "UFCto" ) );
-							imp.say( imp.pRow(), 55, Funcoes.sIEValida );
+//							Funcoes.validaIE( rs.getString( "InscCto" ), rs.getString( "UFCto" ) );
+							imp.say( imp.pRow(), 55, Funcoes.formataIE( rs.getString( "InscCto" ), rs.getString( "UFCto" ) ) );
 						}
 						imp.say( imp.pRow(), 135, "|" );
 					}
@@ -911,7 +911,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 					Funcoes.mensagemInforma( this, "Este CNPJ ja está cadastrado!" );
 					txtCnpjCont.requestFocus();
 				}
-				else if ( !Funcoes.vIE( txtInscCont.getVlrString(), txtUFCont.getVlrString() ) ) {
+				else if ( !Funcoes.validaIE( txtInscCont.getVlrString(), txtUFCont.getVlrString() ) ) {
 					e.cancela();
 					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
 					txtInscCont.requestFocus();
