@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/swingx.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-ws.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart.jar"/>
-	<classpathentry kind="lib" path="lib/brazilutils.jar"/>
 	<classpathentry kind="lib" path="lib/jasperreports.jar"/>
 	<classpathentry kind="lib" path="lib/bizcal.jar"/>
 	<classpathentry kind="lib" path="lib/santec.jar"/>
@@ -20,5 +19,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-infra"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/dsgebrazilutils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
