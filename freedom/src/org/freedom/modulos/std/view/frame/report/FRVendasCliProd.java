@@ -230,7 +230,7 @@ public class FRVendasCliProd extends FRelatorio {
 			else {
 				ps.setNull( 7, Types.INTEGER );
 				ps.setNull( 8, Types.INTEGER );
-				ps.setNull( 9, Types.INTEGER );			
+				ps.setNull( 9, Types.INTEGER );								
 			}
 			
 			rs = ps.executeQuery();
