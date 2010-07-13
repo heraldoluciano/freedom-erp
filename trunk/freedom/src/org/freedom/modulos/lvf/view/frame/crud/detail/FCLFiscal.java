@@ -147,6 +147,10 @@ public class FCLFiscal extends FDetalhe
 	private JTextFieldPad txtCodRegra = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescRegra = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtCodRegraIt = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtDescRegraIt = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -307,6 +311,8 @@ public class FCLFiscal extends FDetalhe
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
 	
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
+	
+	private ListaCampos lcRegraFiscalIt = new ListaCampos( this, "RA" );
 	
 	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
 
@@ -531,7 +537,8 @@ public class FCLFiscal extends FDetalhe
 	}
 
 	private void montaListaCampos() {
-		
+
+		// Regra fiscal padrão no cabeçalho
 		lcRegraFiscal.setUsaME( true );
 		lcRegraFiscal.add( new GuardaCampo( txtCodRegra, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, true ) );
 		lcRegraFiscal.add( new GuardaCampo( txtDescRegra, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false ) );
@@ -540,6 +547,16 @@ public class FCLFiscal extends FDetalhe
 		lcRegraFiscal.setReadOnly( true );
 		txtCodRegra.setTabelaExterna( lcRegraFiscal, FRegraFiscal.class.getCanonicalName() );
 
+		// Regra fiscal específica no item
+		lcRegraFiscalIt.setUsaME( true );
+		lcRegraFiscalIt.add( new GuardaCampo( txtCodRegraIt, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, false ) );
+		lcRegraFiscalIt.add( new GuardaCampo( txtDescRegraIt, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false ) );
+		lcRegraFiscalIt.montaSql( false, "REGRAFISCAL", "LF" );
+		lcRegraFiscalIt.setQueryCommit( false );
+		lcRegraFiscalIt.setReadOnly( true );
+		txtCodRegraIt.setTabelaExterna( lcRegraFiscalIt, FRegraFiscal.class.getCanonicalName() );
+		
+		
 		lcNCM.setUsaME( false );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, txtDescNCM, false ) );
 		lcNCM.add( new GuardaCampo( txtDescNCM, "DescNCM", "Descrição da nomenclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
@@ -722,7 +739,7 @@ public class FCLFiscal extends FDetalhe
 		tpnGeral.addTab( "Variantes", panelVariantes );
 
 		setPainel( panelVariantesCampos );
-		setAltDet( 230 );
+		setAltDet( 250 );
 
 		setListaCampos( lcDet );
 		setNavegador( navRod );
@@ -747,6 +764,9 @@ public class FCLFiscal extends FDetalhe
 		adicDescFK( txtDescPais, 80, 140, 227, 20, "NomePais", "Nome do país" );
 		adicCampo( txtSiglaUF, 310, 140, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
 		adicDescFK( txtNomeUF, 383, 140, 238, 20, "NomeUF", "Nome UF" );
+		
+		adicCampo( txtCodRegraIt, 7, 180, 70, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegraIt, false );
+		adicDescFK( txtDescRegraIt, 80, 180, 227, 20, "DescRegra", "Descrição da regra fiscal" );		
 		
 		adic( btCopiarVariante, 630, 135, 100, 30 );
 
@@ -1135,6 +1155,7 @@ public class FCLFiscal extends FDetalhe
 		super.setConexao( con );
 		
 		lcRegraFiscal.setConexao( con );
+		lcRegraFiscalIt.setConexao( con );
 		lcNBM.setConexao( con );
 		lcNCM.setConexao( con );
 		lcTratTrib.setConexao( con );
