@@ -30,12 +30,21 @@ package org.freedom.infra.functions;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
 
 
 public final class ConversionFunctions {
@@ -207,6 +216,36 @@ public final class ConversionFunctions {
 
 		return time;		
 
+	}
+	
+	public static String XMLDocumentToString(Document doc) {
+		String ret = null;
+		
+		try {
+		
+		// Pegando o XML e transformando em String.
+
+		//set up a transformer
+		TransformerFactory transfac = TransformerFactory.newInstance();
+		Transformer trans = transfac.newTransformer();
+		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+
+		//create string from xml tree
+		StringWriter sw = new StringWriter();
+		StreamResult result = new StreamResult(sw);
+		DOMSource source = new DOMSource(doc);
+		trans.transform(source, result);
+		ret = sw.toString();
+	
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
 	}
 
 
