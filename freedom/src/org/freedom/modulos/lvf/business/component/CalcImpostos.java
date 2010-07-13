@@ -274,7 +274,7 @@ public class CalcImpostos {
 		sql.append( "select origfisc,codtrattrib,coalesce(redfisc,0) redfisc,tipofisc,codmens,");
 		sql.append( "coalesce(aliqfisc,0) aliqfisc,coalesce(aliqipifisc,0) aliqipifisc,tpredicmsfisc,tipost,coalesce(margemvlagr,0) margemvlagr," );
 		sql.append( "codempif,codfilialif,codfisc,coditfisc " );
-		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?)" );				
+		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );				
 
 		try {
 
@@ -301,6 +301,20 @@ public class CalcImpostos {
 			ps.setInt( 9, getCodtipomov() );
 			ps.setString( 10, getTipotransacao() );
 			ps.setNull( 11, Types.CHAR );
+			
+			if(getCoditfisc()!=null) {
+				ps.setInt( 12, getCodempif() );
+				ps.setInt( 13, getCodfilialif() );
+				ps.setString( 14, getCodfisc() );
+				ps.setInt( 15, getCoditfisc() );
+			}
+			else {
+				ps.setNull( 12, Types.INTEGER );
+				ps.setNull( 13, Types.INTEGER );
+				ps.setNull( 14, Types.CHAR );
+				ps.setNull( 15, Types.INTEGER );				
+			}
+			
 
 			rs = ps.executeQuery();
 
