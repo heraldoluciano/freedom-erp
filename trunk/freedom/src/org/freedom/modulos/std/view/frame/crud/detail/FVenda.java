@@ -1399,7 +1399,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 
@@ -1422,6 +1422,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setInt( 11, lcTipoMov.getCodFilial() );
 			ps.setInt( 12, txtCodTipoMov.getVlrInteger() );
 			
+			// Incluido parametro com o código do item fiscal
+			if( null == txtCodItFisc.getVlrInteger() || txtCodItFisc.getVlrInteger()<=0 ) {
+				ps.setNull( 13, Types.INTEGER );
+			}
+			else {
+				ps.setInt( 13, txtCodItFisc.getVlrInteger() );
+			}
+			
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -1443,116 +1451,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL = null;
 		}
 	}
-
-	/*
-	
-	private void getTratTrib() { 
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuffer sql = new StringBuffer();
-
-		sql.append( "select origfisc,codtrattrib,redfisc,tipofisc,codmens,aliqfisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr," );
-		sql.append( "codempif,codfilialif,codfisc,coditfisc " );
-		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?,?,?)" );				
-
-		try {
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, lcProd.getCodFilial() );
-			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, lcCli.getCodFilial() );
-			ps.setInt( 6, txtCodCli.getVlrInteger().intValue() );
-			ps.setInt( 7, Aplicativo.iCodEmp );
-			ps.setInt( 8, Aplicativo.iCodFilial );
-			ps.setInt( 9, txtCodTipoMov.getVlrInteger() );
-			ps.setString( 10, "VD" );
-			ps.setNull( 11, Types.CHAR );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				txtOrigFisc.setVlrString( rs.getString( "origfisc" ) );
-				txtCodTratTrib.setVlrString( rs.getString( "codtrattrib" ) );
-				txtRedFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "redfisc" ) != null ? rs.getString( "redfisc" ) : "0" ) );
-				txtTipoFisc.setVlrString( rs.getString( "tipofisc" ) );
-				txtTipoST.setVlrString( rs.getString( "tipost" ) );
-				txtCodMens.setVlrString( rs.getString( "codmens" ) );
-				txtAliqFisc.setVlrString( rs.getString( "aliqfisc" ) );
-				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "aliqipifisc" ) != null ? rs.getString( "aliqipifisc" ) : "0" ) );
-				txtTpRedIcmsFisc.setVlrString( rs.getString( "tpredicmsfisc" ) );
-				txtMargemVlAgr.setVlrBigDecimal( rs.getBigDecimal( "margemvlagr" )!= null ? rs.getBigDecimal( "margemvlagr" ) : new BigDecimal(0) );
-
-				// Carregando campos para gravação do item de classificação selecionado
-
-				if ( rs.getInt( "coditfisc" ) > 0 ) {
-					txtCodEmpIf.setVlrInteger( rs.getInt( "codempif" ) );
-					txtCodFilialIf.setVlrInteger( rs.getInt( "codfilialif" ) );
-					txtCodFiscIf.setVlrString( rs.getString( "codfisc" ) );
-					txtCodItFisc.setVlrInteger( rs.getInt( "coditfisc" ) );
-				}					
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar tratamento tributário!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
-		}
-
-	}
-
-	private void getICMS() {
-
-		if ( txtAliqFisc.floatValue() > 0 ) {
-			txtPercICMSItVenda.setVlrBigDecimal( txtAliqFisc.getVlrBigDecimal() );
-			return; // Ele cai fora porque se existe um valor no CLFISCAL ele nem busca a Aliq. por Natureza da operaçao.
-		}
-
-		String sSQL = "SELECT PERCICMS FROM LFBUSCAICMSSP(?,?,?,?)";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			ps = con.prepareStatement( sSQL );
-			ps.setString( 1, txtCodNat.getVlrString() );
-			ps.setString( 2, txtEstCli.getVlrString() );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, Aplicativo.iCodFilialMz );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				txtPercICMSItVenda.setVlrBigDecimal( new BigDecimal( rs.getString( 1 ) ) );
-			}
-
-			calcImpostos( true );
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar percentual de ICMS!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-	}
-
-*/
 
 	private void getICMS() {
 
