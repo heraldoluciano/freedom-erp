@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -58,13 +59,13 @@ public class NFEConnectionFactory implements NFEListener {
 
 	private StringBuilder messagesError = new StringBuilder();
 	
-	private Integer tpNF = AbstractNFEFactory.TP_NF_OUT;
+	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
 	
 	public NFEConnectionFactory( final DbConnection conFreedom ) {
 		this(conFreedom, null);
 	}
 	
-	public NFEConnectionFactory( final DbConnection conFreedom, Integer TP_NF ) {
+	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF ) {
 
 		this.con = conFreedom;
 		
@@ -114,13 +115,13 @@ public class NFEConnectionFactory implements NFEListener {
 		return conNFE;
 	}
 	
-	public void setTpNF( Integer tpNF ) {
+	public void setTpNF( Constant tpNF ) {
 		this.tpNF = tpNF;
 	}
 	
-	public Integer getTpNF() {
+	public Constant getTpNF() {
 		return tpNF;
-	}
+	} 
 
 	public void setConNFE( DbConnection conNFE ) {
 		this.conNFE = conNFE;
