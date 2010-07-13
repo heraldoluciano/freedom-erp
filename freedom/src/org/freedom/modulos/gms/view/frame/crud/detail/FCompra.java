@@ -1340,7 +1340,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	 */
 	private void getCFOP() {
 
-		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodFilial );
@@ -1355,6 +1355,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ps.setInt( 10, txtCodFor.getVlrInteger().intValue() );
 			ps.setInt( 11, lcTipoMov.getCodFilial() );
 			ps.setInt( 12, txtCodTipoMov.getVlrInteger().intValue() );
+			
+			// Incluido parametro com o código do item fiscal
+			if( null == txtCodItFisc.getVlrInteger() || txtCodItFisc.getVlrInteger()<=0 ) {
+				ps.setNull( 13, Types.INTEGER );
+			}
+			else {
+				ps.setInt( 13, txtCodItFisc.getVlrInteger() );
+			}
+			
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				txtCodNat.setVlrString( rs.getString( "CODNAT" ) );
