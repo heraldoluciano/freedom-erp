@@ -34,20 +34,14 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -58,6 +52,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.SMTPAuthenticator;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.EmailBean;
 import org.freedom.library.functions.Funcoes;
@@ -582,7 +577,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 						props.put( "mail.smtp.auth", "true" );
 						props.put( "mail.smtp.socketFactory.class", "javax.net.SocketFactory" );
 						props.put( "mail.smtp.quitwait", "false" );
-						authenticator = new SMTPAuthenticator( email.getUsuario().trim(), email.getSenha().trim() );
+						authenticator = new SMTPAuthenticator( email.getUsuario().trim(), email.getSenha().trim() ); 
 					}
 					if ( "S".equals( email.getSsl() ) ) {
 						props.put( "mail.smtp.starttls.enable", "true" );
@@ -595,7 +590,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 						
 						tabCont.setValor( imgEnviando, row, Columns.PROGRESS );
 
-						MimeMessage msg = getMessage( session, email );
+						MimeMessage msg = EmailBean.getMessage( session, email );
 						msg.setContent( email.getCorpo(), email.getFormato() );
 						
 						if ( msg != null ) {
@@ -653,46 +648,6 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE3!\n" + err.getMessage(), true, con, err );
 		}
 		return ret;
-	}
-
-	private MimeMessage getMessage( final Session session, EmailBean email ) throws Exception {
-
-		MimeMessage msg = null;
-		try {
-			InternetAddress from[] = { new InternetAddress( email.getDe().trim() ) };
-			InternetAddress resp[] = { new InternetAddress( email.getEmailResp().trim() ) };
-			msg = new MimeMessage( session );
-			msg.setFrom( from[ 0 ] );
-			msg.setReplyTo( resp );
-
-			InternetAddress[] address = null;
-
-			address = new InternetAddress[] { new InternetAddress( email.getPara().trim() ) };
-
-			msg.setRecipients( Message.RecipientType.TO, address );
-			msg.setSubject( email.getAssunto().trim() );
-
-			MimeBodyPart mbp = new MimeBodyPart();
-
-			mbp.setContent( email.getCorpo().trim(), email.getFormato() );
-			mbp.setHeader( "MIME-Version", "1.0" );
-			mbp.setHeader( "Content-Type", email.getFormato() + ";charset=\"" + email.getCharset() + "\"" );
-
-			MimeMultipart content = new MimeMultipart( "alternative" );
-			content.addBodyPart( mbp );
-
-			msg.setContent( content );
-
-			msg.setHeader( "MIME-Version", "1.0" );
-			msg.setHeader( "Content-Type", content.getContentType() );
-			msg.setHeader( "X-Mailer", "Java-Mailer" );
-
-			msg.setSentDate( Calendar.getInstance().getTime() );
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-		return msg;
 	}
 
 	private void carregaCampFiltro() {
@@ -1001,23 +956,5 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		private final static int EMAIL = 7;
 		private final static int PROGRESS = 8;
 	}
-
-	class SMTPAuthenticator extends Authenticator {
-
-		private final String username;
-
-		private final String password;
-
-		SMTPAuthenticator( String username, String password ) {
-
-			this.username = username;
-			this.password = password;
-		}
-
-		public PasswordAuthentication getPasswordAuthentication() {
-
-			return new PasswordAuthentication( username, password );
-		}
-	}
-
+	
 }
