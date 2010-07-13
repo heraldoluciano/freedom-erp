@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.modules.nfe.bean.AbstractNFEKey;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.event.NFEEvent;
@@ -36,10 +37,6 @@ public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
 	
-	public static final Integer TP_NF_IN = 0;
-	
-	public static final Integer TP_NF_OUT = 1;
-
 	private DbConnection conSys = null;
 
 	private DbConnection conNFE = null;
@@ -50,7 +47,11 @@ public abstract class AbstractNFEFactory {
 
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
 	
-	private Integer tpNF = TP_NF_OUT;
+	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
+	
+	public static final Constant TP_NF_IN = new Constant( "Entrada", new Integer(0) );
+	
+	public static final Constant TP_NF_OUT = new Constant( "Saida", new Integer(1) ); 
 
 	public enum SYSTEM {
 		FREEDOM
@@ -109,11 +110,11 @@ public abstract class AbstractNFEFactory {
 		return listInconsistency;
 	}
 	
-	public void setTpNF( Integer tpNF) {
+	public void setTpNF( Constant tpNF) {
 		this.tpNF = tpNF;
 	}
 	
-	public Integer getTpNF() {
+	public Constant getTpNF() { 
 		return tpNF;
 	}
 
