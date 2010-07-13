@@ -66,6 +66,10 @@ public class FRVendasCliProd extends FRelatorio {
 	private JTextFieldPad txtCodComiss = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private Vector<String> vLabs = new Vector<String>();
 
@@ -76,12 +80,14 @@ public class FRVendasCliProd extends FRelatorio {
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
+	
+	private ListaCampos lcTipoCli = new ListaCampos( this );
 
 	public FRVendasCliProd() {
 
 		super( false );
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 355, 290 );
+		setAtribos( 50, 50, 355, 320 );
 
 		montaRadioGrupo();
 		montaListaCampos();
@@ -116,6 +122,15 @@ public class FRVendasCliProd extends FRelatorio {
 		txtCodComiss.setFK( true );
 		lcComiss.setReadOnly( true );
 		lcComiss.montaSql( false, "VENDEDOR", "VD" );
+		
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
+		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
+		txtCodTipoCli.setFK( true );
+		lcTipoCli.setReadOnly( true );
+		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		
 	}
 
 	private void montaTela() {
@@ -129,18 +144,32 @@ public class FRVendasCliProd extends FRelatorio {
 		adic( lbLinha, 7, 15, 320, 45 );
 
 		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 30, 40, 20 );
+		
+		
 		adic( txtDataini, 57, 30, 100, 20 );
+		
+		
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
-		adic( new JLabelPad( "Cód.Cli" ), 7, 70, 90, 20 );
-		adic( txtCodCli, 7, 90, 90, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 100, 70, 227, 20 );
-		adic( txtRazCli, 100, 90, 227, 20 );
-		adic( new JLabelPad( "Cód.Comiss." ), 7, 110, 90, 20 );
-		adic( txtCodComiss, 7, 130, 90, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 100, 110, 227, 20 );
-		adic( txtNomeComiss, 100, 130, 227, 20 );
-		adic( rgTipo, 7, 170, 320, 30 );
+		
+		adic( new JLabelPad( "Cód.Tp.Cliente" ), 7, 70, 90, 20 );
+		adic( txtCodTipoCli, 7, 90, 90, 20 );		
+		adic( new JLabelPad( "Descrição do tipo de cliente" ), 100, 70, 227, 20 );
+		adic( txtDescTipoCli, 100, 90, 227, 20 );
+		
+		adic( new JLabelPad( "Cód.Cliente" ), 7, 110, 90, 20 );
+		adic( txtCodCli, 7, 130, 90, 20 );		
+		adic( new JLabelPad( "Razão social do cliente" ), 100, 110, 227, 20 );
+		adic( txtRazCli, 100, 130, 227, 20 );
+		
+		
+		adic( new JLabelPad( "Cód.Comiss." ), 7, 150, 90, 20 );
+		adic( txtCodComiss, 7, 170, 90, 20 );
+		
+		adic( new JLabelPad( "Nome do comissionado" ), 100, 150, 227, 20 );		
+		adic( txtNomeComiss, 100, 170, 227, 20 );
+		
+		adic( rgTipo, 7, 210, 320, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -164,40 +193,11 @@ public class FRVendasCliProd extends FRelatorio {
 
 		sCab.append( "de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
-/*		if ( txtRazCli.getVlrString().trim().length() > 0 ) {
-			sWhereCli.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
-		}
-		if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
-			sWhereComiss.append( " AND V.CODEMPVD=" + Aplicativo.iCodEmp );
-			sWhereComiss.append( " AND V.CODFILIALVD=" + ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			sWhereComiss.append( " AND V.CODVEND=" + txtCodComiss.getVlrInteger() );
-		}*/
-
 		try {
-/*
-			sSQL.append( "SELECT C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD, " );
-			sSQL.append( "MAX(V.DTEMITVENDA) DTEMITVENDA, MAX(V.DOCVENDA) DOCVENDA, " );
-			sSQL.append( "MAX(V.SERIE) SERIE, " );
-			sSQL.append( "MAX (IV.VLRLIQITVENDA/(CASE WHEN IV.QTDITVENDA=0 THEN 1 ELSE IV.QTDITVENDA END)) PRECOVENDA " );
-			sSQL.append( "FROM VDCLIENTE C, VDVENDA V, VDITVENDA IV, EQPRODUTO P " );
-			sSQL.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=? AND C.CODFILIAL=? AND " );
-			sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
-			sSQL.append( "IV.TIPOVENDA=V.TIPOVENDA AND IV.CODVENDA=V.CODVENDA AND " );
-			sSQL.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
-			sSQL.append( "P.CODPROD=IV.CODPROD AND " );
-			sSQL.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
-			sSQL.append( sWhereCli );
-			sSQL.append( sWhereComiss );
-			sSQL.append( " GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD " );
-*/
 
 			sSQL.append("select razcli_ret razcli, codcli_ret codcli, descprod_ret descprod, codprod_ret codprod, ");
 			sSQL.append("dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda ");
-			sSQL.append("from vdretultvdcliprod (?,?,?,?,?,?) ");
-//			sSQL.append("order by 1");
-						
-//			System.out.println("SQL_REL:" + sSQL.toString());
+			sSQL.append("from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) ");
 						
 			ps = con.prepareStatement( sSQL.toString() );
 
@@ -221,6 +221,17 @@ public class FRVendasCliProd extends FRelatorio {
 				
 			ps.setDate( 5, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 6, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+
+			if ( txtDescTipoCli.getVlrString().trim().length() > 0 ) {
+				ps.setInt( 7, lcTipoCli.getCodEmp() );
+				ps.setInt( 8, lcTipoCli.getCodFilial() );
+				ps.setInt( 9, txtCodTipoCli.getVlrInteger() );			
+			}
+			else {
+				ps.setNull( 7, Types.INTEGER );
+				ps.setNull( 8, Types.INTEGER );
+				ps.setNull( 9, Types.INTEGER );			
+			}
 			
 			rs = ps.executeQuery();
 
@@ -369,7 +380,9 @@ public class FRVendasCliProd extends FRelatorio {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcCli.setConexao( con );
-		lcComiss.setConexao( con );
+		lcCli.setConexao( cn );
+		lcComiss.setConexao( cn );
+		lcTipoCli.setConexao( cn );
+		
 	}
 }
