@@ -22,7 +22,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.swing.JOptionPane;
- 
+
 import org.freedom.infra.model.jdbc.DbConnection;
 
 public class SystemFunctions {
@@ -306,5 +306,8 @@ public class SystemFunctions {
 		return ret;
 		
 	}
+	
+
+	
 
 }
