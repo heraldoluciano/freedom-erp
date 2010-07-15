@@ -49,21 +49,20 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		DbConnection conRet = null;
 
 		if (conLogin == null)
-			return null; 
+			return null;  
 		
 		// Compara a versão do banco com a versão do aplicativo;
 		
 		String versaosis = SystemFunctions.getVersionSis(this.getClass());
 		String versaobd = SystemFunctions.getVersionDB(conLogin);
 		
-		if( (versaosis.compareTo(versaobd)==0) || (!( "S".equals(Aplicativo.getParameter( "validaversao" )))) ) {			
-			 
+		if( (versaosis.compareTo(versaobd)==0) || (( "N".equals(Aplicativo.getParameter( "validaversao" ).trim()))) ) {			
+			  
 			if (bAdmin) {
-				if (adicConFilial(conLogin)) {
-					conRet = conLogin;
+				if (adicConFilial(conLogin)) { 
+					conRet = conLogin; 
 				}
-			} 
-			
+			} 			
  
 			sql.append( "SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU FROM SGGRPUSU G, SGUSUARIO U " );
 			sql.append( "WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG AND " );
