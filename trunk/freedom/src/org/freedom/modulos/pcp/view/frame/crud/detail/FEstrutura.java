@@ -746,7 +746,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 					
 					imp.say( imp.pRow() + 0, 0, "| " + rs.getString( "SEQITEST" ) );
 					if(comRef()) {
-						imp.say( imp.pRow() + 0, 8, "| " + rs.getString( "REFPRODPD" ).trim() );
+						imp.say( imp.pRow() + 0, 8, "| " + (rs.getString( "REFPRODPD" )==null ? "" : rs.getString( "REFPRODPD" ).trim()) );
 					}
 					else {
 						imp.say( imp.pRow() + 0, 8, "| " + rs.getString( "CODPRODPD" ) );
