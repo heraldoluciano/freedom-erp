@@ -664,7 +664,7 @@ public class FCliente extends FTabDados
 		txtCodTipoCli.setTabelaExterna( lcTipoCli, FTipoCli.class.getCanonicalName() );
 
 		lcCnae.setUsaME( false );
-		lcCnae.add( new GuardaCampo( txtCodCnae, "CodCnae", "Cód.CNAE", ListaCampos.DB_PK, true ) );
+		lcCnae.add( new GuardaCampo( txtCodCnae, "CodCnae", "Cód.CNAE", ListaCampos.DB_PK, false ) );
 		lcCnae.add( new GuardaCampo( txtDescCnae, "DescCnae", "Descrição da atividade principal (CNAE)", ListaCampos.DB_SI, false ) );
 		lcCnae.montaSql( false, "CNAE", "SG" );
 		lcCnae.setQueryCommit( false );
