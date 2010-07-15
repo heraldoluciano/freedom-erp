@@ -73,7 +73,7 @@ import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
 public class FCotacaoPrecos extends FDetalhe implements PostListener,
-		CarregaListener, FocusListener, ActionListener, InsertListener {
+CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
@@ -125,7 +125,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,40, 0);
 	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
-   	private JTextFieldPad txtVlrFreteItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtVlrFreteItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
 	private JTextFieldPad txtPercIpiItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, casasDec);
 	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
 	private JTextFieldPad txtVlrBaseIpiItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
@@ -147,7 +147,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcFor = new ListaCampos(this, "FR");
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
 	private ListaCampos lcUnid = new ListaCampos(this, "UD");
-	
+
 	String sSitItSol = txtSituacaoIt.getVlrString();
 	String sOrdSol = "";
 	Integer anoCC = null;
@@ -164,9 +164,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	Vector<String> vMotivoCan = new Vector<String>();
 	Vector<String> vPrecCan = new Vector<String>();
 	Vector<String> vQtdCan = new Vector<String>();
-    String sSitSol;
-    String sSitItAprov;
-    String sSitItExp;
+	String sSitSol;
+	String sSitItAprov;
+	String sSitItExp;
 
 	public FCotacaoPrecos() {
 		setTitulo("Cotação de Preços");
@@ -182,21 +182,21 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
 		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
-				+ Aplicativo.strUsuario
-				+ "')) IN "
-				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
-				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "
-				+ "OR "
-				+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
-				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "
-				+ "OR "
-				+ "((SELECT ALMOXARIFE FROM sgretinfousu('"
-				+ Aplicativo.strUsuario
-				+ "'))='S') "
-				+ "OR "
-				+ "((SELECT APROVARMA FROM sgretinfousu('"
-				+ Aplicativo.strUsuario
-				+ "'))='TD') " + ") ";
+			+ Aplicativo.strUsuario
+			+ "')) IN "
+			+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "
+			+ "OR "
+			+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "
+			+ "OR "
+			+ "((SELECT ALMOXARIFE FROM sgretinfousu('"
+			+ Aplicativo.strUsuario
+			+ "'))='S') "
+			+ "OR "
+			+ "((SELECT APROVARMA FROM sgretinfousu('"
+			+ Aplicativo.strUsuario
+			+ "'))='TD') " + ") ";
 
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, false));
@@ -255,7 +255,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcProd4.setQueryCommit(false);
 		lcProd4.setReadOnly(true);
 		txtRefProd2.setTabelaExterna(lcProd4, null);
-		
+
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
 				false));
 		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,
@@ -331,7 +331,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
 				true);
 		adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC",
-				"Descrição do centro de custos");
+		"Descrição do centro de custos");
 
 		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Sit.Sol.",
 				ListaCampos.DB_SI, false);
@@ -403,14 +403,14 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcDet.setTabela(tabCot);
 		lcDet.setNavegador(navCot);
 		navCot.setListaCampos(lcDet);
-	
+
 		lcDet.setPodeExc(false);
 		lcDet.setPodeIns(false);
 		txtCodItSolicitacao.setEditable(false);
 		txtCodProd.setEditable(false);
 		txtRefProd.setEditable(false);
 		txtQtdItAprovado.setEditable(false);
-	
+
 		adicCampo(txtCodItSolicitacao, 7, 60, 30, 20, "CodItSol", "Item",ListaCampos.DB_PK, true);
 		if (comRef()) {
 			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
@@ -422,11 +422,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false);
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd.getWhereAdic()));
 		}
-	
+
 		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd","Descrição do produto");
 		adicDB(rgPriod, 635, 177, 100, 50, "PriorItSol", "Prioridade:", true);
 		rgPriod.setEnabled(false);
-	
+
 		adicCampo(txtQtdItAprovado, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",ListaCampos.DB_SI, false);
 		adic(btProduto, 435, 45, 105, 35);
 		btProduto.setEnabled(false);
@@ -437,7 +437,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
 		lcDet.setQueryInsert(false);
 		lcDet.montaTab();
-	
+
 		tabCot.setTamColuna(30, 0);
 		tabCot.setTamColuna(80, 1);
 		tabCot.setTamColuna(230, 2);
@@ -449,7 +449,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tabCot.setTamColuna(70, 8);
 		tabCot.setTamColuna(70, 9);
 		tabCot.setTamColuna(70, 10);
-	
+
 		nav.setName("Mestre");
 		navCot.setNavigationOnly();
 		navCot.setName("Detalhe 1");
@@ -461,20 +461,20 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		pnNavCot.add(nav);
 		pnNavCab.add(pnNavCot, BorderLayout.WEST);
 		pinCab.adic(spTabCot, 7, 87, 620, 140);
-	
+
 		setListaCampos(lcCotacao);
 		setPainel(pinDet, pnDet);
 		setNavegador(navRod);
 		navRod.setListaCampos(lcCotacao);
 		lcCotacao.setNavegador(navRod);
 		lcCotacao.setTabela(tab);
-	
+
 		txtQtdItAprovado.setNaoEditavel(true);
 		txtDtCot.setSoLeitura(true);
 
 		txtRefProd2.setSoLeitura(true);
 		txtCodProd2.setSoLeitura(true);
-		
+
 		adicCampo(txtCodCot, 7, 20, 77, 20, "CodCot", "Cód.Cot.",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
@@ -491,7 +491,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampo(txtCodFor, 187, 20, 77, 20, "CodFor", "Cod.For.",
 				ListaCampos.DB_FK, txtDescFor, false);
 		adicDescFK(txtDescFor, 267, 20, 197, 20, "RazFor",
-				"Razão social do fornecedor");
+		"Razão social do fornecedor");
 		adicCampo(txtQtdCot, 467, 20, 57, 20, "QtdCot", "Qtd.Cot.",
 				ListaCampos.DB_SI, false);
 		adic(txtDescUnid, 527, 20, 100, 20);		
@@ -515,7 +515,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false);
 		adicCampo(txtVlrIpiItCompra, 547, 60, 87, 20, "VlrIpiItCompra", "Val.IPI.It.",
 				ListaCampos.DB_SI, false);
-		
+
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
 
@@ -547,9 +547,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 	private void buscaInfoUsuAtual() {
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU "
-				+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+			+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+
 		try {
 
 			ps = con.prepareStatement(sSQL);
@@ -565,10 +566,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 						if (sAprova.equals("TD"))
 							bAprovaCab = true;
 						else if ((txtCodCC.getVlrString().trim().equals(rs.getString(
-								"CODCC").trim()))
-								&& (lcCC.getCodEmp() == rs.getInt("CODEMPCC"))
-								&& (lcCC.getCodFilial() == rs.getInt("CODFILIALCC"))
-								&& (sAprova.equals("CC"))) {
+						"CODCC").trim()))
+						&& (lcCC.getCodEmp() == rs.getInt("CODEMPCC"))
+						&& (lcCC.getCodFilial() == rs.getInt("CODFILIALCC"))
+						&& (sAprova.equals("CC"))) {
 							bAprovaCab = true;
 						} else {
 							bAprovaCab = false;
@@ -653,9 +654,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		buscaInfoUsuAtual();
 
 		sSitSol = txtStatusSolicitacao.getVlrString();
-        sSitItAprov = txtSituacaoItAprov.getVlrString();
-        sSitItExp = txtSituacaoItComp.getVlrString();
-        sSitItSol = txtSituacaoIt.getVlrString();
+		sSitItAprov = txtSituacaoItAprov.getVlrString();
+		sSitItExp = txtSituacaoItComp.getVlrString();
+		sSitItSol = txtSituacaoIt.getVlrString();
 
 		boolean bStatusTravaTudo = (sSitItExp.equals("AF") ||(sSitSol.equals("CF"))||
 				sSitSol.equals("EF") || sSitItExp.equals("EF") || sSitItSol.equals("CA") || sSitItExp.equals("CA"));
@@ -669,7 +670,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				txtCodProd2.setVlrString(txtCodProd.getVlrString());
 				lcProd3.carregaDados();
 			}
-			
+
 			if (sSitItExp.equals("CA")) {
 				desabCampos(true);
 				btMotivoCancelaItem.setEnabled(true);
@@ -715,7 +716,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		if ((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2)) {
 			txtCodUnid.atualizaFK();
 		}
-		
+
 		if (cevt.getListaCampos() == lcDet) {
 			if (txtQtdItAprovado.isEditable()) {
 				if (txtQtdAprovCot.getVlrDouble().compareTo(new Double(0)) <= 0)
@@ -794,7 +795,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			tela.exec(iCodOrc);
 		}
 	}	
-	
+
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btProduto)
 			abreProd();
@@ -809,7 +810,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		} else if (evt.getSource() == btCancelaItem) {
 			lcCotacao.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes.mensagemConfirma(null,
-					"Deseja cancelar ítem da compra?") == JOptionPane.YES_OPTION) {
+			"Deseja cancelar ítem da compra?") == JOptionPane.YES_OPTION) {
 				if (dialogObsDet()) {
 					txtSituacaoItComp.setVlrString("CA");
 					lcCotacao.post();
@@ -819,9 +820,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		else if (evt.getSource() == btAprovaSol) {
 			if (Funcoes.mensagemConfirma(
-							null,
-							"Deseja Aprovar todos os ítens da compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
-									+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
+					null,
+					"Deseja Aprovar todos os ítens da compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
+					+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
 				;
 				lcCampos.setState(ListaCampos.LCS_EDIT);
 				txtStatusSolicitacao.setVlrString("CT");
@@ -832,7 +833,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					.mensagemConfirma(
 							null,
 							"Deseja finalizar o processo de aprovação da compra?\n Após este procedimento a compra não poderá mais ser alterada\n"
-									+ "e estará disponível para expedição da nota fiscal!") == JOptionPane.OK_OPTION) {
+							+ "e estará disponível para expedição da nota fiscal!") == JOptionPane.OK_OPTION) {
 				;
 				lcCampos.setState(ListaCampos.LCS_EDIT);
 				txtStatusSolicitacao.setVlrString("CF");
@@ -843,7 +844,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					.mensagemConfirma(
 							null,
 							"Deseja cotar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem cotadas"
-									+ " estará cotando as quantidades aprovadas!") == JOptionPane.OK_OPTION) {
+							+ " estará cotando as quantidades aprovadas!") == JOptionPane.OK_OPTION) {
 				;
 				lcCampos.setState(ListaCampos.LCS_EDIT);
 				txtStatusSolicitacao.setVlrString("EF");
@@ -869,39 +870,39 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		imp.setTitulo("Relatório de Cotação de Preços");
 
 		String sSQL = "SELECT  (SELECT COUNT(IT.CODITSOL) FROM CPITSOLICITACAO IT "
-				+ " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL),"
-				+ "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
-				+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL,"
-				+ "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL,"
-				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
-				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,"
-				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
-				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U "
-				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC "
-				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),"
-				+ " I.MOTIVOCANCITSOL, I.CODPROD, "
-				+ " C.DTCOT, C.IDUSUCOT, C.CODEMPFR, C.CODFILIALFR, C.CODFOR, "
-				+ " C.QTDCOT, C.QTDAPROVCOT, C.PRECOCOT, "
-				+ " C.SITCOMPITSOL AS SITCOMPITCOT, "
-				+ " C.SITAPROVITSOL AS SITAPROVITCOT, "
-				+ " C.SITITSOL AS SITITCOT, "
-				+ " C.MOTIVOCANCCOT, C.MOTIVOCOTABAIXO, "
-				+ " F.RAZFOR, F.NOMEFOR, F.PESSOAFOR, F.CNPJFOR, F.INSCFOR, "
-				+ " F.CPFFOR, F.RGFOR, F.FONEFOR, F.FAXFOR, F.CELFOR, "
-				+ " F.EMAILFOR, F.OBSFOR "
-				+ " FROM CPCOTACAO C, CPSOLICITACAO R, CPITSOLICITACAO I, "
-				+ "    EQALMOX A, FNCC CC, EQPRODUTO P, CPFORNECED F "
-				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=?"
-				+ " AND C.CODEMP=R.CODEMP AND C.CODFILIAL=R.CODFILIAL AND C.CODSOL=R.CODSOL "
-				+ " AND C.SITAPROVITSOL <> 'NA' AND C.SITITSOL <> 'CA' "
-				+ " AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' "
-				+ " AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR "
-				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL"
-				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
-				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
-				+ " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC"
-				+ " AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX "
-				+ " ORDER BY R.CODSOL,P." + dl.getValor() + ";";
+			+ " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL),"
+			+ "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
+			+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL,"
+			+ "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL,"
+			+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
+			+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,"
+			+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
+			+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U "
+			+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC "
+			+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),"
+			+ " I.MOTIVOCANCITSOL, I.CODPROD, "
+			+ " C.DTCOT, C.IDUSUCOT, C.CODEMPFR, C.CODFILIALFR, C.CODFOR, "
+			+ " C.QTDCOT, C.QTDAPROVCOT, C.PRECOCOT, "
+			+ " C.SITCOMPITSOL AS SITCOMPITCOT, "
+			+ " C.SITAPROVITSOL AS SITAPROVITCOT, "
+			+ " C.SITITSOL AS SITITCOT, "
+			+ " C.MOTIVOCANCCOT, C.MOTIVOCOTABAIXO, "
+			+ " F.RAZFOR, F.NOMEFOR, F.PESSOAFOR, F.CNPJFOR, F.INSCFOR, "
+			+ " F.CPFFOR, F.RGFOR, F.FONEFOR, F.FAXFOR, F.CELFOR, "
+			+ " F.EMAILFOR, F.OBSFOR "
+			+ " FROM CPCOTACAO C, CPSOLICITACAO R, CPITSOLICITACAO I, "
+			+ "    EQALMOX A, FNCC CC, EQPRODUTO P, CPFORNECED F "
+			+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=?"
+			+ " AND C.CODEMP=R.CODEMP AND C.CODFILIAL=R.CODFILIAL AND C.CODSOL=R.CODSOL "
+			+ " AND C.SITAPROVITSOL <> 'NA' AND C.SITITSOL <> 'CA' "
+			+ " AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' "
+			+ " AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR "
+			+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL"
+			+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
+			+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
+			+ " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC"
+			+ " AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX "
+			+ " ORDER BY R.CODSOL,P." + dl.getValor() + ";";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -918,7 +919,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			imp.limpaPags();
 
 			int codItSol = 0;
-			
+
 			while (rs.next()) {
 				if (imp.pRow() >= (linPag - 1)) {
 					imp.incPags();
@@ -957,7 +958,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 136, "|");
 
 				}
-				
+
 				if (rs.getInt("CODITSOL") != codItSol)
 				{
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -981,10 +982,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 136, "|");
-					
+
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					
+
 					codItSol = rs.getInt("CODITSOL");
 					imp.say(imp.pRow() + 0, 2, rs.getString("CODITSOL"));
 					imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
@@ -993,11 +994,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITSOL"));
 					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITSOL"));
 					imp.say(imp.pRow() + 0, 136, "|");
-					
+
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 136, "|");					
-					
+
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) FORNECEDOR(ES)");
@@ -1018,7 +1019,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 136, "|");
 				}
-				
+
 				if ((rs.getString("SITITCOT").equals("CA"))
 						|| (rs.getString("SITAPROVITCOT").equals("NA"))) {
 					vProdCan.addElement(rs.getString("NOMEFOR"));
@@ -1029,7 +1030,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 							.getString("MOTIVOCANCCOT") : "");
 					cont++;
 				}
-				
+
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 1, imp.comprimido() + "|");
 				imp.say(imp.pRow() + 0, 2, rs.getString("CODFOR"));
@@ -1132,7 +1133,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			if (txtQtdAprovCot.getVlrDouble().doubleValue() > txtQtdCot
 					.getVlrDouble().doubleValue()) {
 				Funcoes.mensagemInforma(null,
-						"Quantidade aprovada maior que a cotada!");
+				"Quantidade aprovada maior que a cotada!");
 				pevt.getListaCampos().cancelPost();
 			}
 			if (txtSituacaoIt.getVlrString().equals("")) {
@@ -1175,7 +1176,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				txtCodProd2.setVlrString(txtCodProd.getVlrString());
 				lcProd3.carregaDados();
 			}
-			
+
 			txtQtdAprovCot.setVlrDouble(new Double(0.0));
 		}
 	}
@@ -1204,7 +1205,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage());
+					+ err.getMessage());
 		}
 
 		return iRet;
