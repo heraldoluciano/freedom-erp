@@ -129,7 +129,7 @@ public class DLREstrutura extends FFDialogo {
 			  orderby += "IT.REFPRODPD, E.SEQEST, IT.CODFASE";  
 		  }
 		  else {
-			  orderby += "DESCPRODPD, E.SEQEST, IT.CODFASE";
+			  orderby += "PI.DESCPROD, E.SEQEST, IT.CODFASE";
 		  }
 
 		  
