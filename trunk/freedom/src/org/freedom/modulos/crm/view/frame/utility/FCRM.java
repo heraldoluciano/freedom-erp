@@ -265,6 +265,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
 
 	private JCheckBoxPad cbEmAtendimento = new JCheckBoxPad("Só em atendimento?","S","N");
+	
+	private boolean financeiro = false;
 
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, 
@@ -392,6 +394,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		setConexao( Aplicativo.getInstace().getConexao() );
 
 		montaListaCamposAtend();
+		
 
 		montaTela();
 
@@ -412,9 +415,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcRec.carregaDados();
 		lcItRec.carregaDados();
 
+		tpnAbas.setSelectedIndex( 1 );
+		
 		tpnAbas.setEnabled( false );
 
 		calcAtrazo();
+		
+		financeiro = true;
 
 	}
 
@@ -1004,7 +1011,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( cbTipoAtend.getVlrInteger() > 0 ) {
 				sql.append( " AND ATEND.CODEMPTO=? AND ATEND.CODFILIALTO=? AND ATEND.CODTPATENDO=? " );
 			}
-			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 ) {
+			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && (! financeiro ) ) {
 				sql.append( " AND ATEND.CODEMPAE=? AND ATEND.CODFILIALAE=? AND ATEND.CODATEND=? " );
 			}
 			if ( txtCodChamado.getVlrInteger() > 0 ) {
@@ -1050,7 +1057,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
 					ps.setInt( iparam++, cbTipoAtend.getVlrInteger() );
 				}
-				if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 ) {
+				if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && (! financeiro ) ) {
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodEmp() );
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodFilial() );
 					ps.setInt( iparam++, txtCodAtendenteAtendimento.getVlrInteger() );
@@ -1547,8 +1554,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		txtCodAtendenteAtendimento.setVlrInteger( Atendimento.buscaAtendente() );
 		txtCodAtendenteChamado.setVlrInteger( Atendimento.buscaAtendente() );
-		lcAtendenteAtendimento.carregaDados();
-		lcAtendenteChamado.carregaDados();
+
+//		lcAtendenteAtendimento.carregaDados();
+//		lcAtendenteChamado.carregaDados();
 
 	}
 
