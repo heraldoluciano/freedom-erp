@@ -72,23 +72,20 @@ import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
 
-public class FCotacaoPrecos extends FDetalhe implements PostListener,
-CarregaListener, FocusListener, ActionListener, InsertListener {
+public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 	private int casasDecFin = Aplicativo.casasDecFin;
-	private JPanelPad pinCab = new JPanelPad(740, 242);
-	private JPanelPad pinBotCab = new JPanelPad(104, 92);
-	private JPanelPad pinBotDet = new JPanelPad(104, 63);
+	private JPanelPad pinCab = new JPanelPad(750, 242);
+	private JPanelPad pinBotCab = new JPanelPad();
+	private JPanelPad pinBotDet = new JPanelPad();
 	private JPanelPad pinLb = new JPanelPad();
-
 	private JLabelPad lSitItSol = null;
 	private JPanelPad pinDet = new JPanelPad();
-	private JButtonPad btProduto = new JButtonPad("Produto", Icone.novo("btProduto2.gif"));
-	private JButtonPad btAprovaSol = new JButtonPad("Aprovar", Icone.novo("btTudo.gif"));
-	private JButtonPad btFinAprovSol = new JButtonPad("Finaliz. aprov.", Icone.novo("btFechaVenda.gif"));
-	private JButtonPad btCompra = new JButtonPad("Comprar", Icone.novo("btMedida.gif"));
+	private JButtonPad btAprovar = new JButtonPad("Aprovar", Icone.novo("btTudo.gif"));
+	private JButtonPad btFinalizar = new JButtonPad("Finalizar", Icone.novo("btFechaVenda.gif"));
+	private JButtonPad btComprar = new JButtonPad("Comprar", Icone.novo("btMedida.gif"));
 	private JButtonPad btCancelaItem = new JButtonPad("Cancelar", Icone.novo("btRetorno.gif"));
 	private JButtonPad btMotivoCancelaItem = new JButtonPad("Mot.Can", Icone.novo("btObs.gif"));
 	private JButtonPad btMotivoAbaixo = new JButtonPad("Mot.Abaixo", Icone.novo("btObs.gif"));
@@ -115,7 +112,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 	private JTextFieldPad txtCodCot = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
 	private JTextFieldPad txtDtCot = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtIdUsuCot = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldFK txtCodUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 20, 0);
 	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 60, 0);			
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
@@ -147,30 +144,29 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 	private ListaCampos lcFor = new ListaCampos(this, "FR");
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
 	private ListaCampos lcUnid = new ListaCampos(this, "UD");
-
-	String sSitItSol = txtSituacaoIt.getVlrString();
-	String sOrdSol = "";
-	Integer anoCC = null;
-	Integer iCodTpMov = null;
-	String codCC = null;
-	boolean bAprovaParcial = false;
-	String SitSol = "";
+	private String sSitItSol = txtSituacaoIt.getVlrString();
+	private String sOrdSol = "";
+	private Integer anoCC = null;
+	private Integer iCodTpMov = null;
+	private String codCC = null;
+	private boolean bAprovaParcial = false;
+	private String SitSol = "";
 	boolean[] bPrefs = null;
 	boolean bAprovaCab = false;
 	boolean bCotacao = false;
-	int cont = 0;
-	Vector<String> vItem = new Vector<String>();
-	Vector<String> vProdCan = new Vector<String>();
-	Vector<String> vMotivoCan = new Vector<String>();
-	Vector<String> vPrecCan = new Vector<String>();
-	Vector<String> vQtdCan = new Vector<String>();
-	String sSitSol;
-	String sSitItAprov;
-	String sSitItExp;
+	private int cont = 0;
+	private Vector<String> vItem = new Vector<String>();
+	private Vector<String> vProdCan = new Vector<String>();
+	private Vector<String> vMotivoCan = new Vector<String>();
+	private Vector<String> vPrecCan = new Vector<String>();
+	private Vector<String> vQtdCan = new Vector<String>();
+	private String sSitSol;
+	private String sSitItAprov;
+	private String sSitItExp;
 
 	public FCotacaoPrecos() {
 		setTitulo("Cotação de Preços");
-		setAtribos(15, 10, 763, 580);
+		setAtribos(15, 10, 780, 580);
 
 		pnMaster.remove(2);
 		pnGImp.removeAll();
@@ -198,33 +194,24 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 			+ Aplicativo.strUsuario
 			+ "'))='TD') " + ") ";
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
-				ListaCampos.DB_SI, true));		
-		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));						
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true));		
+		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, txtDescUnid, false));						
+		
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd, null);
 
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
-				ListaCampos.DB_SI, true));		
-		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));		
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true));		
+		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_SI, txtDescUnid, false));		
 
-		txtRefProd.setNomeCampo("RefProd");
+		txtRefProd.setNomeCampo("RefProd"); 
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic(sWhereAdicProd);
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
@@ -232,22 +219,16 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2, null);
 
-		lcProd3.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd3.add(new GuardaCampo(txtDescProd2, "DescProd", "Descrição do produto",
-				ListaCampos.DB_SI, false));
-		lcProd3.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
+		lcProd3.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+		lcProd3.add(new GuardaCampo(txtDescProd2, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd3.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência", ListaCampos.DB_SI, false));
 		lcProd3.montaSql(false, "PRODUTO", "EQ");
 		lcProd3.setReadOnly(true);
 		txtCodProd2.setTabelaExterna(lcProd3, null);
 
-		lcProd4.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência",
-				ListaCampos.DB_PK, false));
-		lcProd4.add(new GuardaCampo(txtDescProd2, "DescProd", "Descrição",
-				ListaCampos.DB_SI, false));
-		lcProd4.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.rod.",
-				ListaCampos.DB_SI, false));
+		lcProd4.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência", ListaCampos.DB_PK, false));
+		lcProd4.add(new GuardaCampo(txtDescProd2, "DescProd", "Descrição", ListaCampos.DB_SI, false));
+		lcProd4.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false));
 
 		txtRefProd2.setNomeCampo("RefProd");
 		txtRefProd2.setListaCampos(lcCotacao);
@@ -256,33 +237,27 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		lcProd4.setReadOnly(true);
 		txtRefProd2.setTabelaExterna(lcProd4, null);
 
-		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtDescCC, "DescCC",
-				"Descrição do centro de custo", ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Código do centro de custos", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descrição do C.Custo", ListaCampos.DB_SI, false));
+
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
 		txtCodCC.setTabelaExterna(lcCC, null);
 		txtAnoCC.setTabelaExterna(lcCC, null);
 
-		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
-				false));
-		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário",
-				ListaCampos.DB_SI, false));
-		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário",
-				ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Usuário", ListaCampos.DB_PK, false));
+		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário", ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário", ListaCampos.DB_SI, false));
+
 		lcUsu.montaSql(false, "USUARIO", "SG");
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu, null);
 
-		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
-				ListaCampos.DB_PK, true));
-		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid",
-				"Unidade", ListaCampos.DB_SI, false));
+		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, false));
+		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid", "Unidade", ListaCampos.DB_SI, false));
 		lcUnid.montaSql(false, "UNIDADE", "EQ");
 		lcUnid.setReadOnly(true);
 		lcUnid.setQueryCommit(false);
@@ -326,8 +301,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 				"Data da Sol.", ListaCampos.DB_SI, true);
 
 		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do c.c.");
-		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK,
-				txtDescCC, true);
+		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true);
 		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
 				true);
 		adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC",
@@ -363,28 +337,29 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		lcCampos.addInsertListener(this);
 		lcUsu.addCarregaListener(this);
 
-		btProduto.setToolTipText("Ver a descrição do produto.");
-		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
-		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
-		btCompra.setToolTipText("Comprar todos os ítens.");
+		//		btProduto.setToolTipText("Ver a descrição do produto.");
+		btAprovar.setToolTipText("Aprovar todos os ítens.");
+		btFinalizar.setToolTipText("Finaliza Aprovação.");
+		btComprar.setToolTipText("Comprar todos os ítens.");
 		btCancelaItem.setToolTipText("Cancelar ítem.");
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
 		btMotivoAbaixo.setToolTipText("Motivo do número de cotações baixo.");
 
-		pinCab.adic(pinBotCab, 630, 1, 114, 99);
-		pinBotCab.adic(btAprovaSol, 0, 0, 110, 30);
-		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
-		pinBotCab.adic(btCompra, 0, 62, 110, 30);
+		pinCab.adic(pinBotCab, 630, 1, 125, 99);
 
-		btProduto.addActionListener(this);
+		pinBotCab.adic(btAprovar, 0, 0, 120, 30);
+		pinBotCab.adic(btFinalizar, 0, 31, 120, 30);
+		pinBotCab.adic(btComprar, 0, 62, 120, 30);
+
+		//		btProduto.addActionListener(this);
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-		btAprovaSol.addActionListener(this);
+		btAprovar.addActionListener(this);
 		btCancelaItem.addActionListener(this);
-		btCompra.addActionListener(this);
+		btComprar.addActionListener(this);
 		btMotivoCancelaItem.addActionListener(this);
 		btMotivoAbaixo.addActionListener(this);
-		btFinAprovSol.addActionListener(this);
+		btFinalizar.addActionListener(this);
 
 		pinDet = new JPanelPad(740, 100);
 		setPainel(pinDet, pnDet);
@@ -396,7 +371,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 	}
 
 	private void montaDetalhe() {
-		setAltDet(100);
+		setAltDet(140);
 		setListaCampos(lcDet);
 		setPainel(pinCab, pnCliCab);
 		setNavegador(navCot);
@@ -412,6 +387,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		txtQtdItAprovado.setEditable(false);
 
 		adicCampo(txtCodItSolicitacao, 7, 60, 30, 20, "CodItSol", "Item",ListaCampos.DB_PK, true);
+
 		if (comRef()) {
 			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,false);
@@ -424,12 +400,14 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		}
 
 		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd","Descrição do produto");
-		adicDB(rgPriod, 635, 177, 100, 50, "PriorItSol", "Prioridade:", true);
+		adic(txtCodUnid, 435, 60, 50, 20);
+		
+		adicDB(rgPriod, 635, 147, 110, 50, "PriorItSol", "Prioridade:", true);
 		rgPriod.setEnabled(false);
 
 		adicCampo(txtQtdItAprovado, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",ListaCampos.DB_SI, false);
-		adic(btProduto, 435, 45, 105, 35);
-		btProduto.setEnabled(false);
+		//		adic(btProduto, 435, 45, 105, 35);
+		//		btProduto.setEnabled(false);
 
 		adicCampoInvisivel(txtSituacaoCompItAprov, "SitCompItSol", "Sit.Comp.It.Sol.",ListaCampos.DB_SI, false);
 
@@ -439,9 +417,11 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		lcDet.montaTab();
 
 		tabCot.setTamColuna(30, 0);
-		tabCot.setTamColuna(80, 1);
-		tabCot.setTamColuna(230, 2);
-		tabCot.setTamColuna(70, 3);
+		tabCot.setTamColuna(60, 1);
+		tabCot.setTamColuna(200, 2);
+		
+		tabCot.setColunaInvisivel( 3 );
+
 		tabCot.setTamColuna(70, 4);
 		tabCot.setTamColuna(70, 5);
 		tabCot.setTamColuna(70, 6);
@@ -475,64 +455,47 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		txtRefProd2.setSoLeitura(true);
 		txtCodProd2.setSoLeitura(true);
 
-		adicCampo(txtCodCot, 7, 20, 77, 20, "CodCot", "Cód.Cot.",
-				ListaCampos.DB_PK, true);
-		if (comRef()) {
-			adic(txtRefProd2, 187, 60, 87, 20);
-		} else {
-			adic(txtCodProd2, 187, 60, 87, 20);
-		}		
-		adicDescFK(txtDescProd2, 277, 60, 302, 20, "DescProd",
-		"Descrição do produto");
-		adicCampo(txtDtCot, 87, 20, 97, 20, "DtCot", "Dt.Cot.", ListaCampos.DB_SI,
-				false);
-		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.", ListaCampos.DB_SI,
-				false);
-		adicCampo(txtCodFor, 187, 20, 77, 20, "CodFor", "Cod.For.",
-				ListaCampos.DB_FK, txtDescFor, false);
-		adicDescFK(txtDescFor, 267, 20, 197, 20, "RazFor",
-		"Razão social do fornecedor");
-		adicCampo(txtQtdCot, 467, 20, 57, 20, "QtdCot", "Qtd.Cot.",
-				ListaCampos.DB_SI, false);
-		adic(txtDescUnid, 527, 20, 100, 20);		
-		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrFreteItCompra, 187, 60, 87, 20, "VlrFreteItCompra", "Val.Frete.It.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtPercIpiItCompra, 277, 60, 87, 20, "PercIpiItCompra", "Perc.IPI.It.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrLiqItCompra, 367, 60, 87, 20, "VlrLiqItCompra", "Val.Liq.It.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrBaseIpiItCompra, 457, 60, 87, 20, "VlrBaseIpiItCompra", "Val.Base.IPI.It.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrIpiItCompra, 547, 60, 87, 20, "VlrIpiItCompra", "Val.IPI.It.",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtCodCot, 7, 20, 47, 20, "CodCot", "Cód.Cot.", ListaCampos.DB_PK, true);
+		
+		adicCampo(txtDtCot, 57, 20, 70, 20, "DtCot", "Data", ListaCampos.DB_SI, false);
+		
+		adicCampo(txtCodFor, 130, 20, 57, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, txtDescFor, false);		
+		adicDescFK(txtDescFor, 190, 20, 197, 20, "RazFor", "Razão social do fornecedor");
+		
+		adicCampo(txtQtdCot, 390, 20, 87, 20, "QtdCot", "Qtd.Cot.", ListaCampos.DB_SI, false);
+//		adic(txtCodUnid, 557, 20, 50, 20);		
+		
+		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.", ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preço", ListaCampos.DB_SI, false);
+		
+		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usuário", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.", ListaCampos.DB_SI, false);
+
+		adicCampo(txtVlrFreteItCompra, 7, 100, 87, 20, "VlrFreteItCompra", "Val.Frete.It.", ListaCampos.DB_SI, false);
+		adicCampo(txtPercIpiItCompra, 97, 100, 87, 20, "PercIpiItCompra", "Perc.IPI.It.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItCompra, 187, 100, 87, 20, "VlrLiqItCompra", "Val.Liq.It.", 	ListaCampos.DB_SI, false);
+		adicCampo(txtVlrBaseIpiItCompra, 277, 100, 87, 20, "VlrBaseIpiItCompra", "Val.Base.IPI.It.",	ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIpiItCompra, 367, 100, 87, 20, "VlrIpiItCompra", "Val.IPI.It.", ListaCampos.DB_SI, false);
 
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
 
-		tab.setTamColuna(30, 0);
-		tab.setTamColuna(80, 1);
-		tab.setTamColuna(230, 2);
-		tab.setTamColuna(70, 3);
+		tab.setTamColuna(40, 0);
+		tab.setTamColuna(60, 1);
+		tab.setTamColuna(60, 2);
+		tab.setTamColuna(200, 3);
 		tab.setTamColuna(70, 4);
 		tab.setTamColuna(70, 5);
 		tab.setTamColuna(70, 6);
 		tab.setTamColuna(70, 7);
-		tab.setTamColuna(70, 8);
-		tab.setTamColuna(70, 9);
-		tab.setTamColuna(70, 10);
-		tab.setTamColuna(70, 11);
-		tab.setTamColuna(70, 12);
-		tab.setTamColuna(70, 13);
+		tab.setTamColuna(50, 8);
+		tab.setTamColuna(50, 9);
+		tab.setTamColuna(50, 10);
+		tab.setTamColuna(50, 11);
+		tab.setTamColuna(50, 12);
+		tab.setTamColuna(50, 13);
 
 		btMotivoAbaixo.setEnabled(false);
 
@@ -604,38 +567,47 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 		}
 		if (pevt.getListaCampos() == lcDet) {
 			lcCampos.carregaDados();
-		}
+		} 
 	}
 
 	private void desabCampos(boolean bHab) {
+
 		txtCodProd.setNaoEditavel(bHab);
 		txtQtdCot.setNaoEditavel(bHab);
 		txtPrecoCot.setNaoEditavel(bHab);
 		txtCodFor.setNaoEditavel(bHab);
 		txtQtdAprovCot.setNaoEditavel(bHab);
 		rgPriod.setAtivo(!bHab);
+
 	}
 
 	private void desabAprov(boolean bHab) {
+
 		if (txtStatusSolicitacao.getVlrString().equals("AT")) {
-			btAprovaSol.setEnabled(false);
+
+			btAprovar.setEnabled(false);
+
 			if (!txtStatusSolicitacao.getVlrString().equals("AF"))
-				btFinAprovSol.setEnabled(true);
+				btFinalizar.setEnabled(true);
 			else {
-				btFinAprovSol.setEnabled(false);
+				btFinalizar.setEnabled(false);
 			}
-		} else {
-			btAprovaSol.setEnabled(!bHab);
+
+		} 
+		else {
+			btAprovar.setEnabled(!bHab);
 		}
+
 		btMotivoCancelaItem.setEnabled(txtSituacaoItAprov.getVlrString().equals("CA"));
 
-		btFinAprovSol.setEnabled(!bHab);
+		btFinalizar.setEnabled(!bHab);
 		btCancelaItem.setEnabled(!bHab);
-		txtQtdAprovCot.setEnabled(btAprovaSol.isEnabled());
+		txtQtdAprovCot.setEnabled(btAprovar.isEnabled());
+
 	}
 
 	private void desabCot(boolean bHab) {
-		btCompra.setEnabled(!bHab);
+		btComprar.setEnabled(!bHab);
 	}
 
 	public void carregaWhereAdic() {
@@ -675,7 +647,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 				desabCampos(true);
 				btMotivoCancelaItem.setEnabled(true);
 			}
-			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
+			//			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
 		if (!txtIDUsu.getVlrString().equals(Aplicativo.strUsuario) && !bCotacao
@@ -797,8 +769,8 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 	}	
 
 	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btProduto)
-			abreProd();
+		//		if (evt.getSource() == btProduto)
+		//			abreProd();
 		if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)
@@ -818,7 +790,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 			}
 		}
 
-		else if (evt.getSource() == btAprovaSol) {
+		else if (evt.getSource() == btAprovar) {
 			if (Funcoes.mensagemConfirma(
 					null,
 					"Deseja Aprovar todos os ítens da compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
@@ -828,7 +800,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 				txtStatusSolicitacao.setVlrString("CT");
 				lcCampos.post();
 			}
-		} else if (evt.getSource() == btFinAprovSol) {
+		} else if (evt.getSource() == btFinalizar) {
 			if (Funcoes
 					.mensagemConfirma(
 							null,
@@ -839,7 +811,7 @@ CarregaListener, FocusListener, ActionListener, InsertListener {
 				txtStatusSolicitacao.setVlrString("CF");
 				lcCampos.post();
 			}
-		} else if (evt.getSource() == btCompra) {
+		} else if (evt.getSource() == btComprar) {
 			if (Funcoes
 					.mensagemConfirma(
 							null,
