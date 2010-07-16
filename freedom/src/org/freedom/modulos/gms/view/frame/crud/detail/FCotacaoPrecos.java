@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -371,7 +372,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	}
 
 	private void montaDetalhe() {
-		setAltDet(140);
+		setAltDet(100);
 		setListaCampos(lcDet);
 		setPainel(pinCab, pnCliCab);
 		setNavegador(navCot);
@@ -457,28 +458,33 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		adicCampo(txtCodCot, 7, 20, 47, 20, "CodCot", "Cód.Cot.", ListaCampos.DB_PK, true);
 		
-		adicCampo(txtDtCot, 57, 20, 70, 20, "DtCot", "Data", ListaCampos.DB_SI, false);
+		adicCampo(txtDtCot, 57, 20, 67, 20, "DtCot", "Data", ListaCampos.DB_SI, false);
 		
-		adicCampo(txtCodFor, 130, 20, 57, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, txtDescFor, false);		
-		adicDescFK(txtDescFor, 190, 20, 197, 20, "RazFor", "Razão social do fornecedor");
+		adicCampo(txtCodFor, 127, 20, 57, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, txtDescFor, false);		
+		adicDescFK(txtDescFor, 187, 20, 200, 20, "RazFor", "Razão social do fornecedor");
 		
-		adicCampo(txtQtdCot, 390, 20, 87, 20, "QtdCot", "Qtd.Cot.", ListaCampos.DB_SI, false);
-//		adic(txtCodUnid, 557, 20, 50, 20);		
+		adicCampo(txtQtdCot, 390, 20, 87, 20, "QtdCot", "Qtd.Cotada", ListaCampos.DB_SI, false);
+		adicCampo(txtQtdAprovCot, 480, 20, 87, 20, "QtdAprovCot", "Qtd.Aprovada", ListaCampos.DB_SI, false);
+
+		adicCampo(txtPrecoCot, 7, 60, 87, 20, "PrecoCot", "Preço", ListaCampos.DB_SI, false);
+
+		adicCampo(txtVlrFreteItCompra, 97, 60, 87, 20, "VlrFreteItCompra", "Val.Frete.It.", ListaCampos.DB_SI, false);
 		
-		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.", ListaCampos.DB_SI, false);
-		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preço", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrBaseIpiItCompra, 187, 60, 87, 20, "VlrBaseIpiItCompra", "Val.Base.IPI.It.",	ListaCampos.DB_SI, false);
+		
+		adicCampo(txtPercIpiItCompra, 277, 60, 87, 20, "PercIpiItCompra", "Perc.IPI.It.", ListaCampos.DB_SI, false);		
+		
+		
+		adicCampo(txtVlrIpiItCompra, 367, 60, 87, 20, "VlrIpiItCompra", "Val.IPI.It.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItCompra, 457, 60, 87, 20, "VlrLiqItCompra", "Val.Liq.It.", 	ListaCampos.DB_SI, true);
 		
 		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usuário", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.", ListaCampos.DB_SI, false);
 
-		adicCampo(txtVlrFreteItCompra, 7, 100, 87, 20, "VlrFreteItCompra", "Val.Frete.It.", ListaCampos.DB_SI, false);
-		adicCampo(txtPercIpiItCompra, 97, 100, 87, 20, "PercIpiItCompra", "Perc.IPI.It.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrLiqItCompra, 187, 100, 87, 20, "VlrLiqItCompra", "Val.Liq.It.", 	ListaCampos.DB_SI, false);
-		adicCampo(txtVlrBaseIpiItCompra, 277, 100, 87, 20, "VlrBaseIpiItCompra", "Val.Base.IPI.It.",	ListaCampos.DB_SI, false);
-		adicCampo(txtVlrIpiItCompra, 367, 100, 87, 20, "VlrIpiItCompra", "Val.IPI.It.", ListaCampos.DB_SI, false);
-
+		
+		
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
 
@@ -508,6 +514,33 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		pinDet.adic(pinLb, 630, 66, 114, 24);
 	}
 
+	private void calcValorLiquido() {
+		BigDecimal vlripi = new BigDecimal( 0 );
+		BigDecimal vlrfrete = new BigDecimal( 0 );		
+		BigDecimal vlrpreco =  new BigDecimal( 0 );
+		BigDecimal vlrliqitcot = new BigDecimal( 0 );
+		BigDecimal qtditcot = new BigDecimal(0);
+		
+		try {
+		
+			vlripi = txtVlrIpiItCompra.getVlrBigDecimal();
+			vlrfrete = txtVlrFreteItCompra.getVlrBigDecimal();
+			vlrpreco = txtPrecoCot.getVlrBigDecimal();
+			qtditcot = txtQtdCot.getVlrBigDecimal();
+			
+			vlrliqitcot = qtditcot.multiply( vlrpreco );
+			
+			vlrliqitcot = vlrliqitcot.add( vlripi );
+			vlrliqitcot = vlrliqitcot.add( vlrfrete );
+			
+			txtVlrLiqItCompra.setVlrBigDecimal( vlrliqitcot );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void buscaInfoUsuAtual() {
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU "
 			+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
