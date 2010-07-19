@@ -52,6 +52,8 @@ public abstract class AbstractNFEFactory {
 	public static final Constant TP_NF_IN = new Constant( "Entrada", new Integer(0) );
 	
 	public static final Constant TP_NF_OUT = new Constant( "Saida", new Integer(1) ); 
+	
+	public static final Constant TP_NF_BOTH = new Constant( "Ambos", new Integer(3) );
 
 	public enum SYSTEM {
 		FREEDOM
