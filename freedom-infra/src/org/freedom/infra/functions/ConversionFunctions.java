@@ -46,16 +46,15 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-
 public final class ConversionFunctions {
 
 	public static BigDecimal stringToBigDecimal(Object vlr) {
 		BigDecimal retorno = null;
-		if (vlr==null) {
+		if (vlr == null) {
 			retorno = new BigDecimal(0);
 		}
 		else {
-			retorno = stringCurrencyToBigDecimal( vlr.toString() );
+			retorno = stringCurrencyToBigDecimal(vlr.toString());
 		}
 		return retorno;
 	}
@@ -68,35 +67,33 @@ public final class ConversionFunctions {
 		int iSegundo = cal.get(Calendar.SECOND);
 		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":" + StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
 	}
-	
-	public static File blobToFile(String FileName,Blob blob) {
-		
-//		byte[] result = null;
+
+	public static File blobToFile(String FileName, Blob blob) {
+
 		File file = null;
 		InputStream input = null;
 
 		try {
-			
-			input = blob.getBinaryStream();			              
-			file = new File( FileName ); 
-			FileOutputStream  outStream  = new FileOutputStream(file); 
-						 
-//			result = new byte[input.available()];
-			int     length  = -1; 
-			int     size    = input.available(); 
-			byte[]  buffer  = new byte[size]; 
-			
-			//Queimando o arquivo  no disco
-			
-			while ((length = input.read(buffer)) != -1) { 
-					outStream.write(buffer, 0, length); 
-					outStream.flush(); 
-			} 
 
-			input.close(); 
-			outStream.close(); 
+			input = blob.getBinaryStream();
+			file = new File(FileName);
+			FileOutputStream outStream = new FileOutputStream(file);
+
+			int length = -1;
+			int size = input.available();
+			byte[] buffer = new byte[size];
+
+			// Queimando o arquivo no disco
+
+			while ((length = input.read(buffer)) != -1) {
+				outStream.write(buffer, 0, length);
+				outStream.flush();
+			}
+
+			input.close();
+			outStream.close();
 		}
-		catch (Exception e) {			
+		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro geração do arquivo para conversão.");
 		}
@@ -105,7 +102,7 @@ public final class ConversionFunctions {
 
 	}
 
-	public static BigDecimal stringCurrencyToBigDecimal( String strvalue ) {
+	public static BigDecimal stringCurrencyToBigDecimal(String strvalue) {
 
 		BigDecimal retvalue = new BigDecimal("0");
 
@@ -118,7 +115,7 @@ public final class ConversionFunctions {
 			int pospoint = strvalue.indexOf('.');
 
 			if (pospoint > -1) {
-				strvalue  = strvalue.substring(0, pospoint) + strvalue.substring(pospoint + 1);
+				strvalue = strvalue.substring(0, pospoint) + strvalue.substring(pospoint + 1);
 			}
 
 			char[] charvalue = strvalue.toCharArray();
@@ -129,48 +126,48 @@ public final class ConversionFunctions {
 				charvalue[iPos] = '.';
 			}
 
-			strvalue  = new String( charvalue );
+			strvalue = new String(charvalue);
 
-			retvalue = new BigDecimal( strvalue.trim() );
+			retvalue = new BigDecimal(strvalue.trim());
 
-		} 
+		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return retvalue;
 	}
 
-	public static Date strDate6digToDate( String strdate ) {
+	public static Date strDate6digToDate(String strdate) {
 
 		GregorianCalendar cal = new GregorianCalendar();
 
-		if ( strdate .trim().length() == 8 ) {
+		if (strdate.trim().length() == 8) {
 
-			strdate  = strdate .trim();
+			strdate = strdate.trim();
 
 			try {
 
-				int day = Integer.parseInt(strdate .substring(0, 2));
+				int day = Integer.parseInt(strdate.substring(0, 2));
 
-				int mounth = Integer.parseInt(strdate .substring(3, 5)) - 1;
+				int mounth = Integer.parseInt(strdate.substring(3, 5)) - 1;
 
-				int year = Integer.parseInt(strdate .substring(6));
+				int year = Integer.parseInt(strdate.substring(6));
 
 				cal = (GregorianCalendar) GregorianCalendar.getInstance();
 
-				String milenio = ( cal.get(Calendar.YEAR) + "" ).substring( 0, 2 ) ;
+				String milenio = (cal.get(Calendar.YEAR) + "").substring(0, 2);
 
-				year = Integer.parseInt( milenio + year );
+				year = Integer.parseInt(milenio + year);
 
 				cal = new GregorianCalendar(year, mounth, day);
 
-			} 
+			}
 			catch (Exception err) {
 				err.printStackTrace();
 				cal = null;
 			}
 
-		} 
+		}
 		else {
 			cal = null;
 		}
@@ -190,22 +187,22 @@ public final class ConversionFunctions {
 
 			strtime = StringFunctions.clearString(strtime);
 
-			int hours = Integer.parseInt( strtime.substring(0, 2) );
-			int minutes = Integer.parseInt( strtime.substring(2,4));
+			int hours = Integer.parseInt(strtime.substring(0, 2));
+			int minutes = Integer.parseInt(strtime.substring(2, 4));
 			int seconds = 0;
 
-			if( strtime.length() > 4 ) {
+			if (strtime.length() > 4) {
 
-				seconds = Integer.parseInt( strtime.substring(4));
+				seconds = Integer.parseInt(strtime.substring(4));
 
 			}
 
 			Calendar cal = new GregorianCalendar();
 			cal = Calendar.getInstance();
 
-			cal.set( Calendar.HOUR_OF_DAY, hours );
-			cal.set( Calendar.MINUTE, minutes );
-			cal.set( Calendar.SECOND, seconds );
+			cal.set(Calendar.HOUR_OF_DAY, hours);
+			cal.set(Calendar.MINUTE, minutes);
+			cal.set(Calendar.SECOND, seconds);
 
 			time = new Time(cal.getTimeInMillis());
 
@@ -214,40 +211,37 @@ public final class ConversionFunctions {
 			e.printStackTrace();
 		}
 
-		return time;		
+		return time;
 
 	}
-	
+
 	public static String XMLDocumentToString(Document doc) {
 		String ret = null;
-		
+
 		try {
-		
-		// Pegando o XML e transformando em String.
 
-		//set up a transformer
-		TransformerFactory transfac = TransformerFactory.newInstance();
-		Transformer trans = transfac.newTransformer();
-		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		trans.setOutputProperty(OutputKeys.INDENT, "yes");
+			// Pegando o XML e transformando em String.
 
+			// set up a transformer
+			TransformerFactory transfac = TransformerFactory.newInstance();
+			Transformer trans = transfac.newTransformer();
+			trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		//create string from xml tree
-		StringWriter sw = new StringWriter();
-		StreamResult result = new StreamResult(sw);
-		DOMSource source = new DOMSource(doc);
-		trans.transform(source, result);
-		ret = sw.toString();
-	
+			// create string from xml tree
+			StringWriter sw = new StringWriter();
+			StreamResult result = new StreamResult(sw);
+			DOMSource source = new DOMSource(doc);
+			trans.transform(source, result);
+			ret = sw.toString();
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
-		
+
 	}
 
-
 }
-
