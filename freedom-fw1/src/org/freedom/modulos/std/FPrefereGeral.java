@@ -595,6 +595,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcClasCli = new ListaCampos( this, "CE" );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
+	private ListaCampos lcEmailNF = new ListaCampos( this, "NF" );
 
 	private ListaCampos lcPDV = new ListaCampos( this, "" );
 
@@ -621,6 +623,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JPanelPad pnOpcoesOrc = new JPanelPad();
+	
+	private JTextFieldPad txtCodEmailNF = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+
+	private JTextFieldFK txtDescEmailNF = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
 
 	public FPrefereGeral() {
 
@@ -901,7 +908,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDR.setQueryCommit( false );
 		lcPlanDR.setReadOnly( true );
 		txtCodPlanDR.setTabelaExterna( lcPlanDR, null );
-				
+		
+		// Email NFE
+		lcEmailNF.add(new GuardaCampo(txtCodEmailNF, "CodEmail", "Cód.Email", ListaCampos.DB_PK, null, false));
+		lcEmailNF.add(new GuardaCampo(txtDescEmailNF, "DescEmail", "Descrição do Email", ListaCampos.DB_SI, null, false));
+		lcEmailNF.montaSql(false, "EMAIL", "TK");
+		lcEmailNF.setQueryCommit(false);
+		lcEmailNF.setReadOnly(true);		
+		txtCodEmailNF.setTabelaExterna(lcEmailNF, null );
+		txtCodEmailNF.setNomeCampo("CodEmail");
+		
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 		vLabs.addElement( "Custo MPM" );
@@ -1399,12 +1415,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		pnNFeOpcoes.setBorder( SwingParams.getPanelLabel("Opções", Color.BLUE) );
 		
 		setPainel( pinNFe );
-		adic( pnNFeOpcoes, 7, 298, 370, 100 );
+		adic( pnNFeOpcoes, 7, 298, 370, 120 );
 
 		setPainel( pnNFeOpcoes );
+
+		adicDB(cbInfAdicProdNFE, 7,0,370,30, "InfAdProdNfe", "", false);
 		
-		adicDB(cbInfAdicProdNFE, 7,5,370,30, "InfAdProdNfe", "", false);
-			
+		adicCampo( txtCodEmailNF, 7, 55, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false );
+		adicDescFK( txtDescEmailNF, 70, 55, 250, 20, "DescEmail", "Descrição do email padrão" );
+		txtCodEmailNF.setNomeCampo("CodEmail");	
+		
 						
 		/*****************
 		 * Recursos *
@@ -1687,6 +1707,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanJP.setConexao( cn );
 		lcPlanDC.setConexao( cn );
 		lcPlanDR.setConexao( cn );		
+		lcEmailNF.setConexao( cn );
 		
 		lcCampos.carregaDados();
 		
