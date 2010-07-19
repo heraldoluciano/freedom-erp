@@ -235,22 +235,54 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
     
     private void trocarDocCompra() {
         
-        StringBuilder sUpdate = new StringBuilder();
+        StringBuilder sUpdate1 = new StringBuilder();
+        StringBuilder sUpdate2 = new StringBuilder();
+        StringBuilder sUpdate3 = new StringBuilder();
+        
         PreparedStatement ps = null;
-          
-        sUpdate.append( "update cpcompra cp set cp.doccompra=? where codemp=? and codfilial=? and codcompra=?" );
+        
+        sUpdate1.append( "update cpcompra cp set cp.emmanut='S' where codemp=? and codfilial=? and codcompra=?" );
+        sUpdate2.append( "update cpcompra cp set cp.doccompra=? where codemp=? and codfilial=? and codcompra=?" );
+        sUpdate3.append( "update cpcompra cp set cp.emmanut='N' where codemp=? and codfilial=? and codcompra=?" );
         
         try {
+
+        	// Mudando registro para emmanut (Manutenção)
+            ps = con.prepareStatement( sUpdate1.toString() );
+
+            ps.setInt( 1, Aplicativo.iCodEmp );
+            ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+            ps.setInt( 3, txtCodCompra.getVlrInteger() );
+
+            ps.executeUpdate();
             
-            ps = con.prepareStatement( sUpdate.toString() );
+        	// Alterando o numero do documento            
+            
+            ps = con.prepareStatement( sUpdate2.toString() );
             ps.setInt( 1, txtDocCompra.getVlrInteger() );
             ps.setInt( 2, Aplicativo.iCodEmp );
             ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
             ps.setInt( 4, txtCodCompra.getVlrInteger() );
+            
+            int nroreg = ps.executeUpdate();
+            
+        	// Tirando o registro de manutenção
+            ps = con.prepareStatement( sUpdate3.toString() );
+
+            ps.setInt( 1, Aplicativo.iCodEmp );
+            ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+            ps.setInt( 3, txtCodCompra.getVlrInteger() );
+
             ps.executeUpdate();
             
             con.commit();
-            Funcoes.mensagemInforma( this, "N° do documento alterado com sucesso!" );
+            
+            if(nroreg>0) {
+            	Funcoes.mensagemInforma( this, "N° do documento alterado com sucesso!" );
+            }
+            else {
+            	Funcoes.mensagemInforma( this, "Nenhum documento foi alterado!" );
+            }
             
             
         } catch ( SQLException  e ) {
