@@ -36,7 +36,7 @@ import org.freedom.modules.nfe.event.NFEListener;
 public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
-	
+
 	private DbConnection conSys = null;
 
 	private DbConnection conNFE = null;
@@ -46,26 +46,27 @@ public abstract class AbstractNFEFactory {
 	private List<NFEInconsistency> listInconsistency;
 
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
-	
+
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
-	
-	public static final Constant TP_NF_IN = new Constant( "Entrada", new Integer(0) );
-	
-	public static final Constant TP_NF_OUT = new Constant( "Saida", new Integer(1) ); 
-	
-	public static final Constant TP_NF_BOTH = new Constant( "Ambos", new Integer(3) );
+
+	public static final Constant TP_NF_IN = new Constant("Entrada", new Integer(0));
+
+	public static final Constant TP_NF_OUT = new Constant("Saida", new Integer(1));
+
+	public static final Constant TP_NF_BOTH = new Constant("Ambos", new Integer(3));
 
 	public enum SYSTEM {
 		FREEDOM
-	};	
+	};
 
-	public AbstractNFEFactory() { }
+	public AbstractNFEFactory() {
+	}
 
 	public boolean isValid() {
 		return valid;
 	}
 
-	public void setValid( boolean valid ) {
+	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
 
@@ -73,7 +74,7 @@ public abstract class AbstractNFEFactory {
 		return conSys;
 	}
 
-	public void setConSys( DbConnection conSys ) {
+	public void setConSys(DbConnection conSys) {
 		this.conSys = conSys;
 	}
 
@@ -81,11 +82,11 @@ public abstract class AbstractNFEFactory {
 		return conNFE;
 	}
 
-	public void setConNFE( DbConnection conNFE ) {
+	public void setConNFE(DbConnection conNFE) {
 		this.conNFE = conNFE;
 	}
 
-	public void setKey( AbstractNFEKey key ) {
+	public void setKey(AbstractNFEKey key) {
 		this.key = key;
 	}
 
@@ -93,100 +94,100 @@ public abstract class AbstractNFEFactory {
 		return key;
 	}
 
-	public void addInconsistency( String description, String correctiveAction ) {
-		this.addInconsistency( new NFEInconsistency( NFEInconsistency.TypeInconsistency.ERROR, description, correctiveAction ) );
+	public void addInconsistency(String description, String correctiveAction) {
+		this.addInconsistency(new NFEInconsistency(NFEInconsistency.TypeInconsistency.ERROR, description, correctiveAction));
 	}
 
-	public void addInconsistency( NFEInconsistency inconsistency ) {
-		if ( inconsistency != null ) {
-			listInconsistency.add( inconsistency );
+	public void addInconsistency(NFEInconsistency inconsistency) {
+		if (inconsistency != null) {
+			listInconsistency.add(inconsistency);
 		}
 	}
 
 	public List<NFEInconsistency> getListInconsistency() {
-		
-		if ( this.listInconsistency == null ) {
+
+		if (this.listInconsistency == null) {
 			this.listInconsistency = new ArrayList<NFEInconsistency>();
 		}
-		
+
 		return listInconsistency;
 	}
-	
-	public void setTpNF( Constant tpNF) {
+
+	public void setTpNF(Constant tpNF) {
 		this.tpNF = tpNF;
 	}
-	
-	public Constant getTpNF() { 
+
+	public Constant getTpNF() {
 		return tpNF;
 	}
 
-	public void setListInconsistency( List<NFEInconsistency> listInconsistency ) {
+	public void setListInconsistency(List<NFEInconsistency> listInconsistency) {
 		this.listInconsistency = listInconsistency;
 	}
 
-	public synchronized void addNFEListener( NFEListener event ) {
-		this.listEvent.add( event );
+	public synchronized void addNFEListener(NFEListener event) {
+		this.listEvent.add(event);
 	}
 
-	public void removeNFEListener( NFEListener event ) {
-		this.listEvent.remove( event );
+	public void removeNFEListener(NFEListener event) {
+		this.listEvent.remove(event);
 	}
-	
+
 	protected abstract void validSend();
-	
+
 	protected abstract void runSend();
 
 	public void post() {
-		
+
 		fireBeforeValidSend();
-		
+
 		validSend();
-		
+
 		fireAfterValidSend();
-		
-		if ( isValid() ) {
+
+		if (isValid()) {
 
 			fireBeforeRunSend();
-			
+
 			runSend();
-			
-			fireAfterRunSend();	
+
+			fireAfterRunSend();
 		}
 	}
 
 	private void fireBeforeValidSend() {
-		
-		NFEEvent event = new NFEEvent( this );
-		
-		for ( NFEListener obj : listEvent ) {
-			obj.beforeValidSend( event );
+
+		NFEEvent event = new NFEEvent(this);
+
+		for (NFEListener obj : listEvent) {
+			obj.beforeValidSend(event);
 		}
 	}
 
 	private void fireAfterValidSend() {
-		
-		NFEEvent event = new NFEEvent( this );
-		
-		for ( NFEListener obj : listEvent ) {
-			obj.afterValidSend( event );
+
+		NFEEvent event = new NFEEvent(this);
+
+		for (NFEListener obj : listEvent) {
+			obj.afterValidSend(event);
 		}
 	}
 
 	private void fireBeforeRunSend() {
-		
-		NFEEvent event = new NFEEvent( this );
-		
-		for ( NFEListener obj : listEvent ) {
-			obj.beforeValidSend( event );
+
+		NFEEvent event = new NFEEvent(this);
+
+		for (NFEListener obj : listEvent) {
+			obj.beforeValidSend(event);
 		}
 	}
 
 	private void fireAfterRunSend() {
-		
-		NFEEvent event = new NFEEvent( this );
-		
-		for ( NFEListener obj : listEvent ) {
-			obj.afterRunSend( event );
+
+		NFEEvent event = new NFEEvent(this);
+
+		for (NFEListener obj : listEvent) {
+			obj.afterRunSend(event);
 		}
 	}
 }
