@@ -40,54 +40,56 @@ import org.freedom.plugin.AbstractBackground;
 
 public class FPrincipal2 extends FPrincipal implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private AbstractBackground fundo = null;
-	
+
 	public FPrincipal2(AbstractBackground fundo, String sImgFundo) {
 		super(null, sImgFundo);
 		this.fundo = fundo;
 	}
 
 	public void inicializaTela() {
-		setBgColor(new Color(255,255,255)); 
-	    addLinks(Icone.novo("lgSTP2.jpg"), Icone.novo("lgFreedom2.jpg"));
+		setBgColor(new Color(255, 255, 255));
+		addLinks(Icone.novo("lgSTP2.jpg"), Icone.novo("lgFreedom2.jpg"));
 		adicBotoes();
 		adicAgenda();
 	}
-	
-	public void setConexao( DbConnection con ) {
-		super.setConexao( con );
-		fundo.setConexao( con );
-		addFundo( fundo );
+
+	public void setConexao(DbConnection con) {
+		super.setConexao(con);
+		fundo.setConexao(con);
+		addFundo(fundo);
 	}
 
-	public void remConFilial(){ 	
+	public void remConFilial() {
 		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP";
 		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-//			ps.setInt( 1, Aplicativo.iCodEmp );
-//			ps.setInt( 2, Aplicativo.iCodFilialPad );
-//			ps.setString( 3, Aplicativo.strUsuario );
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			// ps.setInt( 1, Aplicativo.iCodEmp );
+			// ps.setInt( 2, Aplicativo.iCodFilialPad );
+			// ps.setString( 3, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro(null, "Erro ao remover filial ativa no banco!\n" + err.getMessage() );
 		}
-	}	
-	
+		catch (SQLException err) {
+			Funcoes.mensagemErro(null, "Erro ao remover filial ativa no banco!\n" + err.getMessage());
+		}
+	}
+
 	public void fecharJanela() {
-		if ( con != null ) {
+		if (con != null) {
 			try {
 				remConFilial();
-				con.close();				
-			} 
-			catch ( java.sql.SQLException e ) {
+				con.close();
+			}
+			catch (java.sql.SQLException e) {
 				System.out.println("Não foi possível fechar a conexao com o banco de dados!");
-//				Funcoes.mensagemErro(null, "Não foi possível fechar a conexao com o banco de dados!" );
+				// Funcoes.mensagemErro(null,
+				// "Não foi possível fechar a conexao com o banco de dados!" );
 			}
 		}
-		System.exit( 0 );
+		System.exit(0);
 	}
-		
+
 }

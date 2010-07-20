@@ -68,43 +68,45 @@ public class JButtonPad extends JButton {
 		return titulo;
 	}
 
-	//private int iCodNiv = 0;
+	// private int iCodNiv = 0;
 
 	public JButtonPad(Icon icon) {
-        this(null, icon);
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-	
-    public JButtonPad(String text, Icon icon) {
-        // Create the model
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        setModel(new DefaultButtonModel());
-        // initialize
-        init(text, icon);
-    }
-	
+		this(null, icon);
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	public JButtonPad(String text, Icon icon) {
+		// Create the model
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		setModel(new DefaultButtonModel());
+		// initialize
+		init(text, icon);
+	}
+
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
-	 *  
+	 * 
 	 */
 
 	public JButtonPad() {
 		this(0, 0, 0, null, "");
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
-	
+
 	public JButtonPad(String texto) {
 		this(0, 0, 0, null, texto);
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
-	
 
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
 	 * Construtor que ja ajusta os paramatros basicos do JButtonPad.
-	 * @param tela Tela que receberá o botão.
-	 * @param titulo Título do botão.
-	 *  
+	 * 
+	 * @param tela
+	 *            Tela que receberá o botão.
+	 * @param titulo
+	 *            Título do botão.
+	 * 
 	 */
 
 	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo) {
@@ -112,41 +114,42 @@ public class JButtonPad extends JButton {
 		this(iCodSistema, iCodModulo, iCodItem, tela, titulo, true);
 
 	}
-	
+
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
 	 * Construtor que ja ajusta os paramatros basicos do JButtonPad.
-	 * @param tela Tela que receberá o botão.
-	 * @param titulo Título do botão.
-	 *  
+	 * 
+	 * @param tela
+	 *            Tela que receberá o botão.
+	 * @param titulo
+	 *            Título do botão.
+	 * 
 	 */
 	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo, boolean blabelbotao) {
-		
+
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;
-		
+
 		this.tela = tela;
 		this.titulo = titulo;
-		
-		if(titulo!=null && !"".equals(titulo) && getIcon()==null && blabelbotao) {
+
+		if (titulo != null && !"".equals(titulo) && getIcon() == null && blabelbotao) {
 			this.setText(titulo);
 		}
-		
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		//iCodNiv = iCodNivel;
 
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		// iCodNiv = iCodNivel;
 
 	}
-
 
 	/**
 	 * Ajusta o código do sistema. <BR>
 	 * 
-	 * @param iCod -
-	 *            Código do sistema.
+	 * @param iCod
+	 *            - Código do sistema.
 	 * @see #getCodSistema
-	 *  
+	 * 
 	 */
 
 	public void setCodSistema(int iCod) {
@@ -158,7 +161,7 @@ public class JButtonPad extends JButton {
 	 * 
 	 * @return Código do sistema ou zero se o código não foi definido.
 	 * @see #setCodSistema
-	 *  
+	 * 
 	 */
 
 	public int getCodSistema() {
@@ -168,10 +171,10 @@ public class JButtonPad extends JButton {
 	/**
 	 * Ajusta o código do módulo do sistema. <BR>
 	 * 
-	 * @param iCod -
-	 *            Código do módulo.
+	 * @param iCod
+	 *            - Código do módulo.
 	 * @see #getCodModulo
-	 *  
+	 * 
 	 */
 
 	public void setCodModulo(int iCod) {
@@ -183,7 +186,7 @@ public class JButtonPad extends JButton {
 	 * 
 	 * @return Código do módulo ou zero se o código não foi definido.
 	 * @see #setCodModulo
-	 *  
+	 * 
 	 */
 
 	public int getCodModulo() {
@@ -202,12 +205,12 @@ public class JButtonPad extends JButton {
 	 * submenu1: 26 <BR>
 	 * submenu2: 03 <BR>
 	 * submenu3: 17 <BR>
-	 * item: 8 <BR> 
+	 * item: 8 <BR>
 	 * 
-	 * @param iItem -
-	 *            Código do item.
+	 * @param iItem
+	 *            - Código do item.
 	 * @see #getCodItem
-	 *  
+	 * 
 	 */
 
 	public void setCodItem(int iCod) {
@@ -219,7 +222,7 @@ public class JButtonPad extends JButton {
 	 * 
 	 * @return Código do item ou zero se o código não foi definido.
 	 * @see #setCodItem
-	 *  
+	 * 
 	 */
 
 	public int getCodItem() {

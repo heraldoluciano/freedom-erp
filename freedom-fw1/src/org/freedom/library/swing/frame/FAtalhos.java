@@ -30,21 +30,21 @@ import org.freedom.library.swing.util.SwingParams;
 public class FAtalhos extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pnAtalhos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	
-	public FAtalhos () {
-		
+	private JPanelPad pnAtalhos = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+
+	public FAtalhos() {
+
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Atalhos");
-		setAtribos(380,550);
+		setAtribos(380, 550);
 
 		setToFrameLayout();
 
 		c.add(pnAtalhos);
-		
+
 		JLabelPad lbAtalhos = new JLabelPad();
 		StringBuilder atalhos = new StringBuilder();
-		
+
 		atalhos.append("<HTML><BODY>");
 		atalhos.append("<UL>");
 		atalhos.append("<LI><STRONG>CTRL + N</STRONG> - <EM>Novo Registro</EM>");
@@ -77,13 +77,11 @@ public class FAtalhos extends FFDialogo {
 		atalhos.append("</UL>");
 		atalhos.append("</BODY>");
 		atalhos.append("</HTML>");
-		
-		lbAtalhos.setText( atalhos.toString() );
-		lbAtalhos.setFont( SwingParams.getFontbold() );
-		
+
+		lbAtalhos.setText(atalhos.toString());
+		lbAtalhos.setFont(SwingParams.getFontbold());
+
 		pnAtalhos.add(lbAtalhos);
-		
-		
-		
+
 	}
-}    
+}

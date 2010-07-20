@@ -53,7 +53,7 @@ public abstract class Etiqueta {
 	private Vector<String> vMascarasAdic = new Vector<String>();
 
 	private String sTexto = "";
-	
+
 	protected String PK = null;
 
 	protected String nometabela = null;
@@ -62,14 +62,14 @@ public abstract class Etiqueta {
 
 	}
 
-	public void adicOpcao( String sLabel, String sValor, String sCampo, Integer iTam, String sMascara, String sLabelColuna ) {
+	public void adicOpcao(String sLabel, String sValor, String sCampo, Integer iTam, String sMascara, String sLabelColuna) {
 
-		vLabels.addElement( sLabel );
-		vValores.addElement( sValor );
-		vCampos.addElement( sCampo );
-		vTams.addElement( iTam );
-		vMascaras.addElement( sMascara );
-		vLabelsColunas.addElement( sLabelColuna );
+		vLabels.addElement(sLabel);
+		vValores.addElement(sValor);
+		vCampos.addElement(sCampo);
+		vTams.addElement(iTam);
+		vMascaras.addElement(sMascara);
+		vLabelsColunas.addElement(sLabelColuna);
 	}
 
 	/**
@@ -162,26 +162,27 @@ public abstract class Etiqueta {
 		return vLabelsColunasAdic;
 	}
 
-	public void setTexto( String sTexto ) {
+	public void setTexto(String sTexto) {
 
 		this.sTexto = sTexto;
 		getAdic();
 	}
-	
+
 	public String getNometabela() {
 		return nometabela;
 	}
 
 	protected void setNometabela(String nometabela) {
-		this.nometabela = nometabela;		
+		this.nometabela = nometabela;
 	}
 
 	public int getNumLinEtiq() {
 
 		int iRet = 0;
 		try {
-			iRet = Funcoes.stringToVector( sTexto ).size();
-		} catch ( Exception e ) {
+			iRet = Funcoes.stringToVector(sTexto).size();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return iRet;
@@ -196,24 +197,23 @@ public abstract class Etiqueta {
 		vValoresAdic = new Vector<String>();
 		vLabelsColunasAdic = new Vector<String>();
 
-		for ( int i2 = 0; vValores.size() > i2; i2++ ) {
-			if ( ( sTexto.indexOf( vValores.elementAt( i2 ).toString() ) ) > ( -1 ) ) {
-				vCamposAdic.addElement( vCampos.elementAt( i2 ).toString() );
-				vTamsAdic.addElement( vTams.elementAt( i2 ).toString() );
-				vLabelsAdic.addElement( vLabels.elementAt( i2 ).toString() );
-				vMascarasAdic.addElement( vMascaras.elementAt( i2 ) == null ? null : vMascaras.elementAt( i2 ).toString() );
-				vValoresAdic.addElement( vValores.elementAt( i2 ).toString() );
-				vLabelsColunasAdic.addElement( vLabelsColunas.elementAt( i2 ).toString() );
+		for (int i2 = 0; vValores.size() > i2; i2++) {
+			if (( sTexto.indexOf(vValores.elementAt(i2).toString()) ) > ( -1 )) {
+				vCamposAdic.addElement(vCampos.elementAt(i2).toString());
+				vTamsAdic.addElement(vTams.elementAt(i2).toString());
+				vLabelsAdic.addElement(vLabels.elementAt(i2).toString());
+				vMascarasAdic.addElement(vMascaras.elementAt(i2) == null ? null : vMascaras.elementAt(i2).toString());
+				vValoresAdic.addElement(vValores.elementAt(i2).toString());
+				vLabelsColunasAdic.addElement(vLabelsColunas.elementAt(i2).toString());
 			}
 		}
 
 	}
-	
+
 	public String getPK() {
 		return PK;
 	}
-	
+
 	public abstract void setPK();
-	
-	
+
 }

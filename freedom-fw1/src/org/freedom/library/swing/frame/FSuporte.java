@@ -65,28 +65,28 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
-
 /**
  * @author robson
  * 
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ *         To change the template for this generated type comment go to
+ *         Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FSuporte extends FFDialogo implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-//	private JTextFieldPad txtEmail = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
-	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	// private JTextFieldPad txtEmail = new
+	// JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 	private JButtonPad btBuscaArq = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
 	private JButtonPad btEnviar = new JButtonPad(Icone.novo("btEnviarMail.gif"));
 	private JTextAreaPad txaMen = new JTextAreaPad();
 	private JScrollPane spnMen = new JScrollPane(txaMen);
-//	private JPanelPad pinGeral = new JPanelPad(0, 135);
+	// private JPanelPad pinGeral = new JPanelPad(0, 135);
 	private JPanelPad pinArq = new JPanelPad(0, 50);
 	private JPanelPad pinRod = new JPanelPad(0, 0);
-	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,	new BorderLayout());
+	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 	private JProgressBar pbAnd = new JProgressBar();
 	private JLabelPad lbStatus = new JLabelPad("Pronto.");
 	String sSMTP = null;
@@ -112,9 +112,9 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		vLabs.add("Arquivo no corpo.");
 
 		lbStatus.setBorder(BorderFactory.createEtchedBorder());
-		
+
 		c.setLayout(new BorderLayout());
-//		c.add(pinGeral, BorderLayout.NORTH);
+		// c.add(pinGeral, BorderLayout.NORTH);
 		c.add(pnCenter, BorderLayout.CENTER);
 		c.add(pinRod, BorderLayout.SOUTH);
 
@@ -124,7 +124,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pnCenter.add(spnMen, BorderLayout.CENTER);
 		pnCenter.add(lbStatus, BorderLayout.SOUTH);
 
-		txtAssunto.setVlrString("Pedido de suporte - "+Aplicativo.sNomeFilial.trim()+" - "+Aplicativo.strUsuario);
+		txtAssunto.setVlrString("Pedido de suporte - " + Aplicativo.sNomeFilial.trim() + " - " + Aplicativo.strUsuario);
 		pinArq.adic(new JLabelPad("Anexe um arquivo, caso necessário."), 7, 0, 250, 20);
 		pinArq.adic(txtArqMen, 7, 20, 313, 20);
 		pinArq.adic(btBuscaArq, 320, 20, 20, 20);
@@ -138,30 +138,32 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		btBuscaArq.addActionListener(this);
 		btEnviar.addActionListener(this);
 	}
-	public void setMensagem(String sMensagem){
+
+	public void setMensagem(String sMensagem) {
 		txaMen.setVlrString(sMensagem);
 	}
-	
-	private String buscaEmailFilial(){
-	    String sRet = "";
-	    ResultSet rs = null;
-	    PreparedStatement ps = null;
-	    String sSQL = "SELECT EMAILFILIAL FROM SGFILIAL FL WHERE CODEMP=? AND CODFILIAL=?";
-	    try {
+
+	private String buscaEmailFilial() {
+		String sRet = "";
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sSQL = "SELECT EMAILFILIAL FROM SGFILIAL FL WHERE CODEMP=? AND CODFILIAL=?";
+		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			rs = ps.executeQuery();			
-		    while(rs.next()){
-		        sRet = rs.getString(1);
-		    }
-	    }
-	    catch(SQLException e){
-	        e.printStackTrace();
-	    }
-	    
-	    return sRet;
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				sRet = rs.getString(1);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return sRet;
 	}
+
 	private String buscaArq() {
 		String sRetorno = "";
 		JFileChooser fcImagem = new JFileChooser();
@@ -179,25 +181,20 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			ResultSet rs = ps.executeQuery();
-		
+
 			if (rs.next()) {
-				sSMTP = rs.getString("SMTPMail") != null ? rs.getString(
-						"SMTPMail").trim() : null;
-				sUser = rs.getString("UserMail") != null ? rs.getString(
-						"UserMail").trim() : null;
-				sPass = rs.getString("PassMail") != null ? rs.getString(
-						"PassMail").trim() : null;
+				sSMTP = rs.getString("SMTPMail") != null ? rs.getString("SMTPMail").trim() : null;
+				sUser = rs.getString("UserMail") != null ? rs.getString("UserMail").trim() : null;
+				sPass = rs.getString("PassMail") != null ? rs.getString("PassMail").trim() : null;
 			}
 			if (sSMTP == null) {
 				Funcoes.mensagemInforma(null, "Não foi cadastrado o servidor de SMTP!\nUtilize a tela de preferências gerais para configurar.");
-			} 
+			}
 			else
 				bRet = true;
-		} 
+		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao buscar o as informações de SMTP!\n"
-							+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro ao buscar o as informações de SMTP!\n" + err.getMessage());
 			err.printStackTrace();
 		}
 		return bRet;
@@ -205,25 +202,24 @@ public class FSuporte extends FFDialogo implements ActionListener {
 
 	private boolean verifCab() {
 		boolean bRet = false;
-/*		if (txtEmail == null) {
-			Funcoes.mensagemInforma(this,
-					"Não foi preenchido o campo 'E-Mail:'!");
-		}
-*/
+		/*
+		 * if (txtEmail == null) { Funcoes.mensagemInforma(this,
+		 * "Não foi preenchido o campo 'E-Mail:'!"); }
+		 */
 		if (txtDe == null) {
 			Funcoes.mensagemInforma(this, "Não foi preenchido o campo 'De:'!");
-		} else if (txtAssunto == null) {
-			Funcoes.mensagemInforma(this,
-					"Não foi preenchido o campo 'Assunto:'!");
-		} else
+		}
+		else if (txtAssunto == null) {
+			Funcoes.mensagemInforma(this, "Não foi preenchido o campo 'Assunto:'!");
+		}
+		else
 			bRet = true;
 		return bRet;
 	}
 
 	private boolean verifCorpo() {
 		boolean bRet = false;
-		if (txaMen.getVlrString().equals("")
-				&& txtArqMen.getVlrString().equals(""))
+		if (txaMen.getVlrString().equals("") && txtArqMen.getVlrString().equals(""))
 			Funcoes.mensagemInforma(this, "Nada a ser enviado!");
 		else
 			bRet = true;
@@ -265,17 +261,17 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pbAnd.setValue(++iConta);
 	}
 
-	private void mandaMail(String sTo,Session se) {
-		state("Preparando envio para: '"+sTo+"'");
+	private void mandaMail(String sTo, Session se) {
+		state("Preparando envio para: '" + sTo + "'");
 		try {
 
 			txtDe.setVlrString(buscaEmailFilial());
-			
+
 			MimeMessage mes = new MimeMessage(se);
 			mes.setFrom(new InternetAddress(txtDe.getVlrString()));
 			mes.setSubject(txtAssunto.getVlrString());
 			mes.setSentDate(new Date());
-			mes.addRecipient(RecipientType.TO,new InternetAddress(sTo));
+			mes.addRecipient(RecipientType.TO, new InternetAddress(sTo));
 
 			BodyPart parte = new MimeBodyPart();
 
@@ -285,101 +281,79 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			multipart.addBodyPart(parte);
 
 			String sTextoAdic = "";
-			
-			try {				
+
+			try {
 
 				Date datacompilacao = SystemFunctions.getClassDateCompilation(this.getClass());
-				sTextoAdic += "Versão:"+Funcoes.dateToStrDataHora( datacompilacao )+"\n";
-				
+				sTextoAdic += "Versão:" + Funcoes.dateToStrDataHora(datacompilacao) + "\n";
+
 			}
-			catch(Exception e){
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			sTextoAdic += "\nMensagem:\n"+txaMen.getVlrString();
-			parte.setText(sTextoAdic);			
-			
+			sTextoAdic += "\nMensagem:\n" + txaMen.getVlrString();
+			parte.setText(sTextoAdic);
+
 			if (fArq != null) {
 				parte = new MimeBodyPart();
 				FileDataSource orig = new FileDataSource(fArq);
 				parte.setDataHandler(new DataHandler(orig));
 				parte.setFileName(fArq.getName());
-//				parte.setDisposition(rgTipo.getVlrString().equals("A") ? Part.ATTACHMENT : Part.INLINE);
+				// parte.setDisposition(rgTipo.getVlrString().equals("A") ?
+				// Part.ATTACHMENT : Part.INLINE);
 
 				parte.setDisposition(Part.ATTACHMENT);
-				
-				multipart.addBodyPart(parte);
-			}
-			mes.setContent(multipart);		
-			state("Enviando dados...");
-			Transport.send(mes);
-			state("Envio OK...");
-		}
-		catch (MessagingException err) {
-			Funcoes.mensagemErro(this,"Erro ao enviar mensagem para: "+sTo+"\n"+err.getMessage());
-			err.getStackTrace();
-			state("Aguardando reenvio.");
-		}
-	}
 
-	/*
-	private void mandaMail(String sTo, Session se) {
-		state("Preparando envio para: '" + sTo + "'");
-		try {
-			MimeMessage mes = new MimeMessage(se);
-			txtDe.setVlrString(buscaEmailFilial());
-			if(txtDe.getVlrString()==null) {
-			    new Exception("Não foi possível enviar mensagem!\nCadestre um email válido para a filial.");
-			}
-			mes.setFrom(new InternetAddress(txtDe.getVlrString()));
-			mes.setSubject(txtAssunto.getVlrString());
-			mes.setSentDate(new Date());
-			try {
-				mes.addRecipient(RecipientType.TO, new InternetAddress(sTo,"suporte"));
-			}
-			catch(UnsupportedEncodingException e){
-				e.printStackTrace();
-			}
-			BodyPart parte = new MimeBodyPart();
-			
-			String sTextoAdic = "Novo pedido de suporte da empresa:"+Aplicativo.sNomeFilial+"\n"; 
-			sTextoAdic += "Usuário:"+Aplicativo.strUsuario + "\n";
-			sTextoAdic += "Sistema:"+Aplicativo.getNomeSis() + "\n";
-			sTextoAdic += "Módulo:"+Aplicativo.nomemodulo + "\n";
-			
-		    try {
-			    URL uPath = getClass().getResource("FSuporte.class");
-		        JarURLConnection juc = (JarURLConnection)uPath.openConnection();
-		        sTextoAdic += "Versão:"+Funcoes.dateToStrDataHora(new Date(juc.getJarEntry().getTime()))+"\n";
-		    }
-		    catch(Exception e){
-		        e.printStackTrace();
-		    }
-		    sTextoAdic += "\nMensagem:\n"+txaMen.getVlrString();
-			parte.setText(sTextoAdic);
-
-			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(parte);
-
-			if (fArq != null) {
-				parte = new MimeBodyPart(); 
-				FileDataSource orig = new FileDataSource(fArq);
-				parte.setDataHandler(new DataHandler(orig));
-				parte.setFileName(fArq.getName());
-				parte.setDisposition(Part.ATTACHMENT);
 				multipart.addBodyPart(parte);
 			}
 			mes.setContent(multipart);
 			state("Enviando dados...");
 			Transport.send(mes);
 			state("Envio OK...");
-		} catch (MessagingException err) {
-			Funcoes.mensagemErro(this, "Erro ao enviar mensagem para: " + sTo
-					+ "\n" + err.getMessage());
+		}
+		catch (MessagingException err) {
+			Funcoes.mensagemErro(this, "Erro ao enviar mensagem para: " + sTo + "\n" + err.getMessage());
 			err.getStackTrace();
 			state("Aguardando reenvio.");
 		}
 	}
-*/
+
+	/*
+	 * private void mandaMail(String sTo, Session se) {
+	 * state("Preparando envio para: '" + sTo + "'"); try { MimeMessage mes =
+	 * new MimeMessage(se); txtDe.setVlrString(buscaEmailFilial());
+	 * if(txtDe.getVlrString()==null) { newException(
+	 * "Não foi possível enviar mensagem!\nCadestre um email válido para a filial."
+	 * ); } mes.setFrom(new InternetAddress(txtDe.getVlrString()));
+	 * mes.setSubject(txtAssunto.getVlrString()); mes.setSentDate(new Date());
+	 * try { mes.addRecipient(RecipientType.TO, new
+	 * InternetAddress(sTo,"suporte")); } catch(UnsupportedEncodingException e){
+	 * e.printStackTrace(); } BodyPart parte = new MimeBodyPart();
+	 * 
+	 * String sTextoAdic =
+	 * "Novo pedido de suporte da empresa:"+Aplicativo.sNomeFilial+"\n";
+	 * sTextoAdic += "Usuário:"+Aplicativo.strUsuario + "\n"; sTextoAdic +=
+	 * "Sistema:"+Aplicativo.getNomeSis() + "\n"; sTextoAdic +=
+	 * "Módulo:"+Aplicativo.nomemodulo + "\n";
+	 * 
+	 * try { URL uPath = getClass().getResource("FSuporte.class");
+	 * JarURLConnection juc = (JarURLConnection)uPath.openConnection();
+	 * sTextoAdic += "Versão:"+Funcoes.dateToStrDataHora(new
+	 * Date(juc.getJarEntry().getTime()))+"\n"; } catch(Exception e){
+	 * e.printStackTrace(); } sTextoAdic +=
+	 * "\nMensagem:\n"+txaMen.getVlrString(); parte.setText(sTextoAdic);
+	 * 
+	 * Multipart multipart = new MimeMultipart(); multipart.addBodyPart(parte);
+	 * 
+	 * if (fArq != null) { parte = new MimeBodyPart(); FileDataSource orig = new
+	 * FileDataSource(fArq); parte.setDataHandler(new DataHandler(orig));
+	 * parte.setFileName(fArq.getName()); parte.setDisposition(Part.ATTACHMENT);
+	 * multipart.addBodyPart(parte); } mes.setContent(multipart);
+	 * state("Enviando dados..."); Transport.send(mes); state("Envio OK..."); }
+	 * catch (MessagingException err) { Funcoes.mensagemErro(this,
+	 * "Erro ao enviar mensagem para: " + sTo + "\n" + err.getMessage());
+	 * err.getStackTrace(); state("Aguardando reenvio."); } }
+	 */
 	public void actionPerformed(ActionEvent evt) {
 		String sArq = "";
 		if (evt.getSource() == btBuscaArq) {
@@ -387,7 +361,8 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			if (!sArq.equals("")) {
 				txtArqMen.setText(sArq);
 			}
-		} else if (evt.getSource() == btEnviar) {
+		}
+		else if (evt.getSource() == btEnviar) {
 			ProcessoSec pSec = new ProcessoSec(500, new Processo() {
 				public void run() {
 					lbStatus.updateUI();

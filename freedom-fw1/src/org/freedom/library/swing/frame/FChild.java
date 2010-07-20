@@ -22,8 +22,9 @@ public class FChild extends JInternalFrame {
 	private JScrollPane jScrollPane = null;
 	private JPanel jPanel1 = null;
 	private JTextFieldPad jTextField01 = null;
+
 	/**
-	 * This method initializes 
+	 * This method initializes
 	 * 
 	 */
 	public FChild() {
@@ -36,16 +37,16 @@ public class FChild extends JInternalFrame {
 	 * 
 	 */
 	private void initialize() {
-        this.setSize(new Dimension(491, 195));
-        this.setContentPane(getJContentPane());
-        this.setTitle("FChild");
-			
+		this.setSize(new Dimension(491, 195));
+		this.setContentPane(getJContentPane());
+		this.setTitle("FChild");
+
 	}
 
 	/**
-	 * This method initializes jContentPane	
-	 * 	
-	 * @return javax.swing.JPanel	
+	 * This method initializes jContentPane
+	 * 
+	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
@@ -58,9 +59,9 @@ public class FChild extends JInternalFrame {
 	}
 
 	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
+	 * This method initializes jPanel
+	 * 
+	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJPanel() {
 		if (jPanel == null) {
@@ -72,9 +73,9 @@ public class FChild extends JInternalFrame {
 	}
 
 	/**
-	 * This method initializes jScrollPane	
-	 * 	
-	 * @return javax.swing.JScrollPane	
+	 * This method initializes jScrollPane
+	 * 
+	 * @return javax.swing.JScrollPane
 	 */
 	private JScrollPane getJScrollPane() {
 		if (jScrollPane == null) {
@@ -85,9 +86,9 @@ public class FChild extends JInternalFrame {
 	}
 
 	/**
-	 * This method initializes jPanel1	
-	 * 	
-	 * @return javax.swing.JPanel	
+	 * This method initializes jPanel1
+	 * 
+	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJPanel1() {
 		if (jPanel1 == null) {
@@ -99,9 +100,9 @@ public class FChild extends JInternalFrame {
 	}
 
 	/**
-	 * This method initializes jTextField01	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes jTextField01
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextFieldPad getJTextField01() {
 		if (jTextField01 == null) {
@@ -111,4 +112,4 @@ public class FChild extends JInternalFrame {
 		return jTextField01;
 	}
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+} // @jve:decl-index=0:visual-constraint="10,10"

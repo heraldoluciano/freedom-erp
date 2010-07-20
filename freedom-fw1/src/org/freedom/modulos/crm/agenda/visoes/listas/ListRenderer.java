@@ -41,55 +41,56 @@ public class ListRenderer extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 
 	private ListModel model;
-	
+
 	private Border newDayBorder = BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK);
 
 	private Border border;
-	
+
 	public ListRenderer(ListModel listModel) {
 		this.model = listModel;
 		this.setFont(new Font("Arial", Font.PLAIN, 12));
 	}
 
 	public Component getTableCellRendererComponent(JTable p_Table, Object value, boolean p_IsSelected, boolean hasFocus, int p_Row, int p_Column) {
-		Event e = model.getEvent(p_Row); 
+		Event e = model.getEvent(p_Row);
 		Color c = Color.WHITE;
 		try {
-			c = e.getColor();		
-			c = new Color(c.getRed(),c.getGreen(),c.getBlue(),60);
+			c = e.getColor();
+			c = new Color(c.getRed(), c.getGreen(), c.getBlue(), 60);
 			if (e.getStart().before(new Date()))
-				c = new Color(230,230,230);
-			
-			if (! DateUtil.isSameDay(e.getStart(), model.getEvent(p_Row-1).getStart()))
-					border = newDayBorder;
-			else 
-					border = null;
-		} catch (Exception ee) {
+				c = new Color(230, 230, 230);
+
+			if (!DateUtil.isSameDay(e.getStart(), model.getEvent(p_Row - 1).getStart()))
+				border = newDayBorder;
+			else
+				border = null;
+		}
+		catch (Exception ee) {
 			border = null;
 		}
-		
+
 		switch (p_Column) {
 		case 0:
 			this.setVerticalAlignment(JLabel.TOP);
 			this.setHorizontalAlignment(JLabel.LEFT);
-			this.setText((String) value);
+			this.setText(( String ) value);
 			this.setIcon(null);
 			break;
 		case 1:
 			this.setVerticalAlignment(JLabel.CENTER);
 			this.setHorizontalAlignment(JLabel.CENTER);
 			this.setText(null);
-			this.setIcon((ImageIcon) value);
+			this.setIcon(( ImageIcon ) value);
 			break;
 		default:
 			this.setVerticalAlignment(JLabel.TOP);
 			this.setHorizontalAlignment(JLabel.LEFT);
-			this.setText((String) value);
+			this.setText(( String ) value);
 			this.setIcon(null);
-		    if (p_Table.getRowHeight(p_Row) < this.getPreferredSize().height) {
-		    	p_Table.setRowHeight(p_Row, this.getPreferredSize().height + 4);
-		    }
-		    break;
+			if (p_Table.getRowHeight(p_Row) < this.getPreferredSize().height) {
+				p_Table.setRowHeight(p_Row, this.getPreferredSize().height + 4);
+			}
+			break;
 		}
 
 		if (p_IsSelected)
@@ -99,7 +100,5 @@ public class ListRenderer extends DefaultTableCellRenderer {
 		this.setBorder(border);
 		return this;
 	}
-	
-	
 
 }

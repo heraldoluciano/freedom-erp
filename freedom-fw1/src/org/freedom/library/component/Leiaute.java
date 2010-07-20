@@ -19,18 +19,20 @@
  */
 
 package org.freedom.library.component;
+
 import java.sql.ResultSet;
 
 public class Leiaute extends Object {
-	public boolean bEntrada = false; 
-	
-	public Leiaute() { }
-	
-	public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
-		return imprimir(rs,rsRec,imp);
+	public boolean bEntrada = false;
+
+	public Leiaute() {
 	}
-	
-	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
+
+	public boolean imprimir(ResultSet rs, ResultSet rsRec, ResultSet rsInfoAdic, ImprimeOS imp) {
+		return imprimir(rs, rsRec, imp);
+	}
+
+	public boolean imprimir(ResultSet rs, ResultSet rsRec, ImprimeOS imp) {
 		return false;
 	}
 }

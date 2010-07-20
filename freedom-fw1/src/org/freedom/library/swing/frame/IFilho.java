@@ -29,29 +29,28 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionSetConexao;
 import org.freedom.library.swing.component.JPanelPad;
 
-
 public interface IFilho {
-    public abstract void setTitulo(String tit, String name);
+	public abstract void setTitulo(String tit, String name);
 
-    public abstract void setAtribos(int Esq, int Topo, int Larg, int Alt);
+	public abstract void setAtribos(int Esq, int Topo, int Larg, int Alt);
 
-    public abstract void setTela(Container c);
+	public abstract void setTela(Container c);
 
-    public abstract Container getTela();
-    
-    public abstract JPanelPad adicBotaoSair();
+	public abstract Container getTela();
 
-    public abstract void setFirstFocus(Component firstFocus);
+	public abstract JPanelPad adicBotaoSair();
 
-    public abstract void firstFocus();
- 
-    public abstract void setConexao(DbConnection cn) throws ExceptionSetConexao ;
+	public abstract void setFirstFocus(Component firstFocus);
 
-    public abstract void execShow();
+	public abstract void firstFocus();
 
-    public abstract boolean getInitFirstFocus();
+	public abstract void setConexao(DbConnection cn) throws ExceptionSetConexao;
 
-    public abstract void setInitFirstFocus(boolean initFirstFocus);
+	public abstract void execShow();
 
-    public abstract void setTelaPrim(FPrincipal fP);
+	public abstract boolean getInitFirstFocus();
+
+	public abstract void setInitFirstFocus(boolean initFirstFocus);
+
+	public abstract void setTelaPrim(FPrincipal fP);
 }

@@ -78,8 +78,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int casasDecFin = 2;
 
 	public DbConnection con = null; // Variavel de conexao com o banco de dados
-	
-	public DbConnection con_nfe = null; // Variavel de conexao com o banco de dados de nfe
+
+	public DbConnection con_nfe = null; // Variavel de conexao com o banco de
+	// dados de nfe
 
 	public static FPrincipal telaPrincipal = null;
 
@@ -104,7 +105,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strSplash = "";
 
 	public static String strLookAndFeel = "";
-	
+
 	public static String strTamanhoFonte = "";
 
 	public static int iCodEmp = 0;
@@ -124,7 +125,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strBanco = "";
 
 	public static String strDriver = "";
-	
+
 	public static String tefSend = "";
 
 	public static String tefRequest = "";
@@ -137,11 +138,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static Vector<String> vArqINI = null;
 
-	public String[][][] sConfig = new String[ 0 ][ 0 ][ 0 ];
+	public String[][][] sConfig = new String[0][0][0];
 
-	public JPanelPad pinBotoes = new JPanelPad( 30, 30 );
-	
-//	public ReflectionPanel pinBotoes = new ReflectionPanel(30,30);
+	public JPanelPad pinBotoes = new JPanelPad(30, 30);
+
+	// public ReflectionPanel pinBotoes = new ReflectionPanel(30,30);
 
 	public int iXPanel = 0;
 
@@ -159,7 +160,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected String sSplashImg = "";
 
-	protected JButtonPad btAtualMenu = new JButtonPad( Icone.novo( "btAtualMenu.gif" ) );
+	protected JButtonPad btAtualMenu = new JButtonPad(Icone.novo("btAtualMenu.gif"));
 
 	protected Vector<JMenuItem> vOpcoes = null;
 
@@ -196,257 +197,256 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	protected Class<? extends Login> cLoginExec = null;
 
 	public static boolean bSuporte = true;
-	
+
 	private static EmailBean emailbean = null;
-	
+
 	private static Aplicativo instance = null;
-	
+
 	public PopupMenu pm = new PopupMenu();
-	
 
 	public Aplicativo() {
 
-		Locale.setDefault( new Locale( "pt", "BR" ) );
-		
+		Locale.setDefault(new Locale("pt", "BR"));
+
 		instance = this;
-		
+
 		setEquipeSis();
-		
-		setEmailSuporte( "suporte@stpinf.com" );
-		setNomeSis( "Freedom-ERP" );
-		setMantenedor( "Setpoint Informática Ltda.");
-		
+
+		setEmailSuporte("suporte@stpinf.com");
+		setNomeSis("Freedom-ERP");
+		setMantenedor("Setpoint Informática Ltda.");
+
 	}
-	
+
 	public static Vector<String> getEquipeSis() {
 		return vEquipeSis;
 	}
-	
+
 	protected void setEquipeSis() {
-		
-		vEquipeSis.add( "Robson Sanchez: Supervisão/Analise" );
-		vEquipeSis.add( "Anderson Sanchez: Supervisão/Desenvolvimento" );
-		vEquipeSis.add( "Luiz Frederico: Suporte/Testes" );
-		vEquipeSis.add( "Sergio Murilo: Suporte/Testes" );
-		vEquipeSis.add( "Alan Alexandre Oliveira: Desenvolvimento" );
-		vEquipeSis.add( "Alexandre Marcondes: Desenvolvimento" );
-		vEquipeSis.add( "Fernando Oliveira: Desenvolvimento" );
-		vEquipeSis.add( "Moyzes Braz: Arte gráfica" );		
-		
+
+		vEquipeSis.add("Robson Sanchez: Supervisão/Analise");
+		vEquipeSis.add("Anderson Sanchez: Supervisão/Desenvolvimento");
+		vEquipeSis.add("Luiz Frederico: Suporte/Testes");
+		vEquipeSis.add("Sergio Murilo: Suporte/Testes");
+		vEquipeSis.add("Alan Alexandre Oliveira: Desenvolvimento");
+		vEquipeSis.add("Alexandre Marcondes: Desenvolvimento");
+		vEquipeSis.add("Fernando Oliveira: Desenvolvimento");
+		vEquipeSis.add("Moyzes Braz: Arte gráfica");
+
 	}
-	
-	protected void setEmailSuporte( String emailsuporte) {
+
+	protected void setEmailSuporte(String emailsuporte) {
 		Aplicativo.emailsuporte = emailsuporte;
 	}
-	
-	protected void setNomeSis( String nomesis) {
-		Aplicativo.nomesis = nomesis;	
+
+	protected void setNomeSis(String nomesis) {
+		Aplicativo.nomesis = nomesis;
 	}
-	
-	protected void setMantenedor( String mantenedor) {
-		Aplicativo.mantenedor = mantenedor;	
+
+	protected void setMantenedor(String mantenedor) {
+		Aplicativo.mantenedor = mantenedor;
 	}
 
 	public static String getNomeSis() {
 		return nomesis;
 	}
-	
+
 	public static String getEmailSuporte() {
 		return emailsuporte;
 	}
 
-	
 	public static String getMantenedor() {
 		return mantenedor;
 	}
-	
-	
+
 	public static Aplicativo getInstace() {
 		return instance;
 	}
-	
+
 	public DbConnection getConIB() {
 
 		return conIB;
 	}
-	
+
 	public DbConnection getConexao() {
 		return con;
 	}
-	
+
 	public DbConnection getConexaoNFE() {
 		return con_nfe;
 	}
 
+	public static void setLookAndFeel(String sNomeArqIni) {
 
-	public static void setLookAndFeel( String sNomeArqIni ) {
-
-		if ( sNomeArqIni == null )
+		if (sNomeArqIni == null)
 			sNomeArqIni = "freedom.ini";
 		sArqIni = sNomeArqIni;
-		sArqINI = System.getProperty( "ARQINI" ) != null ? System.getProperty( "ARQINI" ) : sNomeArqIni;
-		vArqINI = SystemFunctions.getIniFile( sArqINI );
+		sArqINI = System.getProperty("ARQINI") != null ? System.getProperty("ARQINI") : sNomeArqIni;
+		vArqINI = SystemFunctions.getIniFile(sArqINI);
 
 		try {
-			strLookAndFeel = getParameter( "lookandfeel" );
-			strTamanhoFonte = getParameter( "tamanhofonte" );
-			
-			if ( !strLookAndFeel.equals( "" ) ) {
-				UIManager.setLookAndFeel( strLookAndFeel );
+			strLookAndFeel = getParameter("lookandfeel");
+			strTamanhoFonte = getParameter("tamanhofonte");
+
+			if (!strLookAndFeel.equals("")) {
+				UIManager.setLookAndFeel(strLookAndFeel);
 			}
 			else {
-				
-				if(!"".equals(strTamanhoFonte)) {
+
+				if (!"".equals(strTamanhoFonte)) {
 					SwingParams.TAMANHO_FONTE = Integer.parseInt(strTamanhoFonte);
-				}				
-				
+				}
+
 				UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
-		        UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
-		        UIManager.put("Label.font", SwingParams.getFontbold());
-		        UIManager.put("Button.font", SwingParams.getFontbold());
-		        UIManager.put("TextField.font", SwingParams.getFontpad());
-		        UIManager.put("Spinner.font", SwingParams.getFontpad());
-		        UIManager.put("CheckBox.font", SwingParams.getFontbold());
-		        UIManager.put("Menu.font", SwingParams.getFontbold());		        
-		        UIManager.put("TitledBorder.font", SwingParams.getFontbold());
-		        UIManager.put("ComboBox.font", SwingParams.getFontpad());		        
-		        UIManager.put("TabbedPane.font", SwingParams.getFontbold());
-		        UIManager.put("MenuItem.font", SwingParams.getFontbold());		        
-		        UIManager.put("PasswordField.font", SwingParams.getFontboldmax());		        
-		        UIManager.put("PasswordField.foreground", Color.RED );		        
-		        UIManager.put("RadioButton.font", SwingParams.getFontbold());		        
-		        UIManager.put("TextArea.font", SwingParams.getFontpad());		        
-		        UIManager.put("TableHeader.font", SwingParams.getFontboldmed());		        
-		        UIManager.put("Table.font", SwingParams.getFontpadmed());
+				UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
+				UIManager.put("Label.font", SwingParams.getFontbold());
+				UIManager.put("Button.font", SwingParams.getFontbold());
+				UIManager.put("TextField.font", SwingParams.getFontpad());
+				UIManager.put("Spinner.font", SwingParams.getFontpad());
+				UIManager.put("CheckBox.font", SwingParams.getFontbold());
+				UIManager.put("Menu.font", SwingParams.getFontbold());
+				UIManager.put("TitledBorder.font", SwingParams.getFontbold());
+				UIManager.put("ComboBox.font", SwingParams.getFontpad());
+				UIManager.put("TabbedPane.font", SwingParams.getFontbold());
+				UIManager.put("MenuItem.font", SwingParams.getFontbold());
+				UIManager.put("PasswordField.font", SwingParams.getFontboldmax());
+				UIManager.put("PasswordField.foreground", Color.RED);
+				UIManager.put("RadioButton.font", SwingParams.getFontbold());
+				UIManager.put("TextArea.font", SwingParams.getFontpad());
+				UIManager.put("TableHeader.font", SwingParams.getFontboldmed());
+				UIManager.put("Table.font", SwingParams.getFontpadmed());
 
 			}
-	        
-		} 
-		catch ( Exception err ) {
+
+		}
+		catch (Exception err) {
 			err.printStackTrace();
 		}
-		
-		
-		
+
 	}
 
 	public abstract void setaSysdba();
 
 	public abstract void setaInfoTela();
 
-	public JMenuItem getOpcao( int iOpcao ) {
+	public JMenuItem getOpcao(int iOpcao) {
 
 		JMenuItem miRetorno = null;
 		JMenuItem miTemp = null;
 		int iCodMenu = -1;
 		try {
-			for ( int i = 0; i < vOpcoes.size(); i++ ) {
-				miTemp = vOpcoes.elementAt( i );
-				if ( miTemp != null ) {
-					if ( miTemp instanceof JMenuPad )
-						iCodMenu = ( (JMenuPad) miTemp ).getCodMenu();
-					else if ( miTemp instanceof JMenuItemPad )
-						iCodMenu = ( (JMenuItemPad) miTemp ).getCodItem();
-					if ( iCodMenu == iOpcao ) {
+			for (int i = 0; i < vOpcoes.size(); i++) {
+				miTemp = vOpcoes.elementAt(i);
+				if (miTemp != null) {
+					if (miTemp instanceof JMenuPad)
+						iCodMenu = ( ( JMenuPad ) miTemp ).getCodMenu();
+					else if (miTemp instanceof JMenuItemPad)
+						iCodMenu = ( ( JMenuItemPad ) miTemp ).getCodItem();
+					if (iCodMenu == iOpcao) {
 						miRetorno = miTemp;
 						break;
 					}
 				}
 			}
-		} catch ( Exception e ) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return miRetorno;
 	}
 
-	protected void ligaLog( String sArq ) {
+	protected void ligaLog(String sArq) {
 
-		File fArq = new File( sArq );
+		File fArq = new File(sArq);
 		try {
-			if ( !fArq.exists() )
+			if (!fArq.exists())
 				fArq.createNewFile();
-			FileOutputStream foArq = new FileOutputStream( fArq, true );
-			System.setErr( new PrintStream( foArq ) );
-		} catch ( Exception err ) {
+			FileOutputStream foArq = new FileOutputStream(fArq, true);
+			System.setErr(new PrintStream(foArq));
+		}
+		catch (Exception err) {
 			err.printStackTrace();
 		}
 	}
 
-	public void addOpcao( int iSuperMenu, int iTipo, String sCaption, String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class<? extends IFilho> tela ) {
+	public void addOpcao(int iSuperMenu, int iTipo, String sCaption, String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class<? extends IFilho> tela) {
 
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
 		try {
-			if ( iTipo == TP_OPCAO_MENU ) {
-				mOpcao = ( new JMenuPad( iCodSis, iCodModu, iOpcao, iNivel ) );
+			if (iTipo == TP_OPCAO_MENU) {
+				mOpcao = ( new JMenuPad(iCodSis, iCodModu, iOpcao, iNivel) );
 			}
-			else if ( iTipo == TP_OPCAO_ITEM ) {
-				mOpcao = ( new JMenuItemPad( iCodSis, iCodModu, iOpcao, iNivel, tela, titulo ) );
+			else if (iTipo == TP_OPCAO_ITEM) {
+				mOpcao = ( new JMenuItemPad(iCodSis, iCodModu, iOpcao, iNivel, tela, titulo) );
 			}
-			mOpcao.setText( sCaption );
-			mOpcao.setMnemonic( cAtalho );
+			mOpcao.setText(sCaption);
+			mOpcao.setMnemonic(cAtalho);
 
-			if ( bExec )
-				mOpcao.addActionListener( this );
-			if ( iSuperMenu == -1 ) {
-				telaPrincipal.adicMenu( (JMenuPad) mOpcao );
+			if (bExec)
+				mOpcao.addActionListener(this);
+			if (iSuperMenu == -1) {
+				telaPrincipal.adicMenu(( JMenuPad ) mOpcao);
 			}
 			else {
-				mpMaster = (JMenuPad) getOpcao( iSuperMenu );
-				if ( mpMaster != null ) {
-					if ( bExec )
-						( (JMenuItemPad) mOpcao ).setEnabled( verifAcesso( iCodSis, iCodModu, iOpcao ) );
-					mpMaster.add( mOpcao );
+				mpMaster = ( JMenuPad ) getOpcao(iSuperMenu);
+				if (mpMaster != null) {
+					if (bExec)
+						( ( JMenuItemPad ) mOpcao ).setEnabled(verifAcesso(iCodSis, iCodModu, iOpcao));
+					mpMaster.add(mOpcao);
 				}
 			}
-			vOpcoes.addElement( mOpcao );
-		} catch ( Exception e ) {
-			Funcoes.mensagemInforma( null, e.getMessage() );
+			vOpcoes.addElement(mOpcao);
+		}
+		catch (Exception e) {
+			Funcoes.mensagemInforma(null, e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
-	public void addSeparador( int iSuperMenu ) {
+	public void addSeparador(int iSuperMenu) {
 
 		Object oSuper = null;
 		try {
 			try {
-				oSuper = getOpcao( iSuperMenu );
-				if ( oSuper != null ) {
-					if ( oSuper instanceof JMenu ) {
-						( (JMenu) oSuper ).addSeparator();
+				oSuper = getOpcao(iSuperMenu);
+				if (oSuper != null) {
+					if (oSuper instanceof JMenu) {
+						( ( JMenu ) oSuper ).addSeparator();
 					}
 				}
-			} catch ( Exception e ) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-		} finally {
+		}
+		finally {
 			oSuper = null;
 		}
 
 	}
 
-	public JButtonPad addBotao( String sImagem, String sToolTip, String titulo, int iCodMenu, Class<? extends IFilho> tela ) {
+	public JButtonPad addBotao(String sImagem, String sToolTip, String titulo, int iCodMenu, Class<? extends IFilho> tela) {
 
 		JButtonPad btOpcao = null;
 		try {
-			
-			btOpcao = new JButtonPad( iCodSis, iCodModu, iCodMenu, tela, titulo, false );
-			
-			btOpcao.setIcon( Icone.novo( sImagem ) );
-			
+
+			btOpcao = new JButtonPad(iCodSis, iCodModu, iCodMenu, tela, titulo, false);
+
+			btOpcao.setIcon(Icone.novo(sImagem));
+
 			btOpcao.setContentAreaFilled(false);
 			btOpcao.setBorderPainted(false);
-			
-			if ( sToolTip != null ) {
-				btOpcao.setToolTipText( sToolTip );
+
+			if (sToolTip != null) {
+				btOpcao.setToolTipText(sToolTip);
 
 			}
-			vBotoes.add( btOpcao );
-			adicTelaBotao( btOpcao );
+			vBotoes.add(btOpcao);
+			adicTelaBotao(btOpcao);
 			return btOpcao;
-		} 
-		catch ( Exception e ) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -454,94 +454,91 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public void show() {
 
-		telaPrincipal.setVisible( true );
+		telaPrincipal.setVisible(true);
 
 	}
 
-	public void adicTelaBotao( JButtonPad bt ) {
-		
+	public void adicTelaBotao(JButtonPad bt) {
+
 		pinBotoes.setBorder(null);
-		
-		bt.setEnabled( verifAcesso( bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem() ) );
 
-		pinBotoes.adic( bt, iXPanel, 0, 30, 30 );
-		
-		bt.addActionListener( this );
+		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem()));
+
+		pinBotoes.adic(bt, iXPanel, 0, 30, 30);
+
+		bt.addActionListener(this);
 		iXPanel += 30;
-		
+
 	}
-	
+
 	protected abstract void buscaInfoUsuAtual();
 
-	public abstract boolean verifAcesso( int iCodSisP, int iCodModuP, int iCodMenuP );
+	public abstract boolean verifAcesso(int iCodSisP, int iCodModuP, int iCodMenuP);
 
-	public void adicTelaMenu( JMenuPad menu, JMenuItemPad item ) {
+	public void adicTelaMenu(JMenuPad menu, JMenuItemPad item) {
 
-		item.setEnabled( verifAcesso( item.getCodSistema(), item.getCodModulo(), item.getCodItem() ) );
-		menu.add( item );
-		item.addActionListener( this );
+		item.setEnabled(verifAcesso(item.getCodSistema(), item.getCodModulo(), item.getCodItem()));
+		menu.add(item);
+		item.addActionListener(this);
 	}
 
-	public void actionPerformed( ActionEvent evt ) {
+	public void actionPerformed(ActionEvent evt) {
 		Object oTemp = evt.getSource();
 		int iCodMenu = -1;
-		if ( oTemp != null ) {
-			if ( oTemp instanceof JButtonPad ) {
-				if ( ( (JButtonPad) oTemp ) == btAtualMenu ) {
+		if (oTemp != null) {
+			if (oTemp instanceof JButtonPad) {
+				if (( ( JButtonPad ) oTemp ) == btAtualMenu) {
 					atualizaMenus();
 				}
 				else {
-					iCodMenu = ( (JButtonPad) oTemp ).getCodItem();
+					iCodMenu = ( ( JButtonPad ) oTemp ).getCodItem();
 				}
 			}
-			else if ( oTemp instanceof JMenuItemPad && !( ( (JMenuItem) oTemp ).getText().equals( "Sair" ) )
-					&& !( ( (JMenuItem) oTemp ).getText().equals( "Sobre" ) )
-					&& !( ( (JMenuItem) oTemp ).getText().equals( "Atalhos" ) )
-					&& !( ( (JMenuItem) oTemp ).getText().equals( "Suporte" ) )
-			) {
-				iCodMenu = ( (JMenuItemPad) oTemp ).getCodItem();
+			else if (oTemp instanceof JMenuItemPad && !( ( ( JMenuItem ) oTemp ).getText().equals("Sair") ) && !( ( ( JMenuItem ) oTemp ).getText().equals("Sobre") )
+					&& !( ( ( JMenuItem ) oTemp ).getText().equals("Atalhos") ) && !( ( ( JMenuItem ) oTemp ).getText().equals("Suporte") )) {
+				iCodMenu = ( ( JMenuItemPad ) oTemp ).getCodItem();
 			}
-			else if ( oTemp instanceof JMenuPad && !( ( (JMenuItem) oTemp ).getText().equals( "Sobre" ) )) {
-				iCodMenu = ( (JMenuPad) oTemp ).getCodMenu();
+			else if (oTemp instanceof JMenuPad && !( ( ( JMenuItem ) oTemp ).getText().equals("Sobre") )) {
+				iCodMenu = ( ( JMenuPad ) oTemp ).getCodMenu();
 			}
-			else if ( oTemp instanceof JMenuItemPad ) {
-				if ( ( (JMenuItem) oTemp ).getText().equals( "Sair" ) ) {
+			else if (oTemp instanceof JMenuItemPad) {
+				if (( ( JMenuItem ) oTemp ).getText().equals("Sair")) {
 					telaPrincipal.fecharJanela();
 				}
-				else if ( ( (JMenuItem) oTemp ).getText().equals( "Sobre" ) ) {
+				else if (( ( JMenuItem ) oTemp ).getText().equals("Sobre")) {
 					FSobre tela = new FSobre();
-					tela.setVisible( true );
+					tela.setVisible(true);
 					tela.dispose();
 				}
-				else if ( ( (JMenuItem) oTemp ).getText().equals( "Atalhos" ) ) {
+				else if (( ( JMenuItem ) oTemp ).getText().equals("Atalhos")) {
 					FAtalhos tela = new FAtalhos();
-					tela.setVisible( true );
+					tela.setVisible(true);
 					tela.dispose();
 				}
-				else if ( ( (JMenuItem) oTemp ).getText().equals( "Suporte" ) ) {
+				else if (( ( JMenuItem ) oTemp ).getText().equals("Suporte")) {
 					FSuporte tela = new FSuporte();
-					tela.setConexao( con );
-					tela.setVisible( true );
+					tela.setConexao(con);
+					tela.setVisible(true);
 					tela.dispose();
 				}
 			}
-			if ( iCodMenu != -1 ) {
+			if (iCodMenu != -1) {
 				Class<? extends IFilho> telaClass = null;
 				String titulo = "";
-				if ( oTemp instanceof JMenuItemPad ) {
-					telaClass = ( (JMenuItemPad) oTemp ).getTela();
-					if ( telaClass != null ) {
-						titulo = ( (JMenuItemPad) oTemp ).getTitulo();
+				if (oTemp instanceof JMenuItemPad) {
+					telaClass = ( ( JMenuItemPad ) oTemp ).getTela();
+					if (telaClass != null) {
+						titulo = ( ( JMenuItemPad ) oTemp ).getTitulo();
 					}
 				}
-				else if ( oTemp instanceof JButtonPad ) {
-					telaClass = ( (JButtonPad) oTemp ).getTela();
-					if ( telaClass != null ) {
-						titulo = ( (JButtonPad) oTemp ).getTitulo();
+				else if (oTemp instanceof JButtonPad) {
+					telaClass = ( ( JButtonPad ) oTemp ).getTela();
+					if (telaClass != null) {
+						titulo = ( ( JButtonPad ) oTemp ).getTitulo();
 					}
 				}
-				if ( telaClass != null ) {
-					
+				if (telaClass != null) {
+
 					abreTela(titulo, telaClass);
 
 				}
@@ -550,170 +547,165 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 
 	}
- 
 
 	public void abreTela(String titulo, Class<? extends IFilho> telaClass) {
 		String name = telaClass.getName();
-		if ( !telaPrincipal.temTela( name ) ) {
+		if (!telaPrincipal.temTela(name)) {
 			try {
 				Object obj = telaClass.newInstance();
-				if ( obj instanceof FFDialogo ) {
-					FFDialogo tela = (FFDialogo) obj;
-				
-					Class<?> partypes[] = new Class[ 2 ];
-					partypes[ 0 ] = DbConnection.class;
-					partypes[ 1 ] = DbConnection.class;
+				if (obj instanceof FFDialogo) {
+					FFDialogo tela = ( FFDialogo ) obj;
+
+					Class<?> partypes[] = new Class[2];
+					partypes[0] = DbConnection.class;
+					partypes[1] = DbConnection.class;
 					Method meth = null;
 					try {
-						meth = telaClass.getMethod( "setConexao", partypes );
-					} catch ( NoSuchMethodException e ) {
+						meth = telaClass.getMethod("setConexao", partypes);
+					}
+					catch (NoSuchMethodException e) {
 					}
 
-					telaPrincipal.criatela( titulo, tela, con );
-					tela.setTelaPrim( telaPrincipal );
+					telaPrincipal.criatela(titulo, tela, con);
+					tela.setTelaPrim(telaPrincipal);
 
-					if ( meth != null ) {
-						Object arglist[] = new Object[ 2 ];
-						arglist[ 0 ] = con;
-						arglist[ 1 ] = conIB;
-						meth.invoke( obj, arglist );
-						
-						
+					if (meth != null) {
+						Object arglist[] = new Object[2];
+						arglist[0] = con;
+						arglist[1] = conIB;
+						meth.invoke(obj, arglist);
+
 					}
 				}
-				else if ( obj instanceof FFilho ) {
-					FFilho tela = (FFilho) obj;
+				else if (obj instanceof FFilho) {
+					FFilho tela = ( FFilho ) obj;
 
-					Class<?> partypes[] = new Class[ 2 ];
-					partypes[ 0 ] = DbConnection.class;
-					partypes[ 1 ] = DbConnection.class;
+					Class<?> partypes[] = new Class[2];
+					partypes[0] = DbConnection.class;
+					partypes[1] = DbConnection.class;
 					Method meth = null;
 					try {
-						meth = telaClass.getMethod( "setConexao", partypes );
-					} catch ( NoSuchMethodException e ) {
+						meth = telaClass.getMethod("setConexao", partypes);
+					}
+					catch (NoSuchMethodException e) {
 					}
 
-					telaPrincipal.criatela( titulo, tela, con );
-					tela.setTelaPrim( telaPrincipal );
+					telaPrincipal.criatela(titulo, tela, con);
+					tela.setTelaPrim(telaPrincipal);
 
-					if ( meth != null ) {
-						Object arglist[] = new Object[ 2 ];
-						arglist[ 0 ] = con;
-						arglist[ 1 ] = conIB;
-						meth.invoke( obj, arglist );
+					if (meth != null) {
+						Object arglist[] = new Object[2];
+						arglist[0] = con;
+						arglist[1] = conIB;
+						meth.invoke(obj, arglist);
 					}
 				}
-				else if ( obj instanceof FDialogo ) {
-					FDialogo tela = (FDialogo) obj;
+				else if (obj instanceof FDialogo) {
+					FDialogo tela = ( FDialogo ) obj;
 
-					Class<?> partypes[] = new Class[ 2 ];
-					partypes[ 0 ] = DbConnection.class;
-					partypes[ 1 ] = DbConnection.class;
+					Class<?> partypes[] = new Class[2];
+					partypes[0] = DbConnection.class;
+					partypes[1] = DbConnection.class;
 					Method meth = null;
 					try {
-						meth = telaClass.getMethod( "setConexao", partypes );
-					} catch ( NoSuchMethodException e ) {
+						meth = telaClass.getMethod("setConexao", partypes);
+					}
+					catch (NoSuchMethodException e) {
 					}
 
-					telaPrincipal.criatela( titulo, tela, con );
+					telaPrincipal.criatela(titulo, tela, con);
 
-					if ( meth != null ) {
-						Object arglist[] = new Object[ 2 ];
-						arglist[ 0 ] = con;
-						arglist[ 1 ] = conIB;
-						meth.invoke( obj, arglist );
+					if (meth != null) {
+						Object arglist[] = new Object[2];
+						arglist[0] = con;
+						arglist[1] = conIB;
+						meth.invoke(obj, arglist);
 					}
 				}
 				else {
-					Funcoes.mensagemInforma( framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada." );
+					Funcoes.mensagemInforma(framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada.");
 				}
 				obj = null;
 			}
-			catch ( NullPointerException err) {
-				
+			catch (NullPointerException err) {
+
 				StackTraceElement ste = err.getStackTrace()[0];
-				
+
 				int linha = ste.getLineNumber();
 				String classe = ste.getClassName();
 				String metodo = ste.getMethodName();
-				
-				Funcoes.mensagemErro( framePrinc, "Erro de ponteiro nulo ao abrir a tela!\n" 
-						+ "Classe:" + classe + "\n" 
-						+ "Metodo:" + metodo + "\n"
-						+ "Linha:" + linha 						
-						, true, con, err );
+
+				Funcoes.mensagemErro(framePrinc, "Erro de ponteiro nulo ao abrir a tela!\n" + "Classe:" + classe + "\n" + "Metodo:" + metodo + "\n" + "Linha:" + linha, true, con, err);
 
 				err.printStackTrace();
 			}
-			catch ( Exception err ) {
-				Funcoes.mensagemErro( framePrinc, err.getMessage(), true, con, err );
+			catch (Exception err) {
+				Funcoes.mensagemErro(framePrinc, err.getMessage(), true, con, err);
 
 				err.printStackTrace();
 			}
-			
-			
+
 		}
 	}
-	
-	
+
 	public void atualizaMenus() {
 
 		JMenuBar menuBar = telaPrincipal.bar;
-		
+
 		try {
-		
-			for ( int i = 0; i < menuBar.getMenuCount(); i++ ) {
-				
-				if ( !upMenuDB( menuBar.getMenu( i ), new JMenuPad() ) ) {
+
+			for (int i = 0; i < menuBar.getMenuCount(); i++) {
+
+				if (!upMenuDB(menuBar.getMenu(i), new JMenuPad())) {
 					break;
 				}
-				
-				buscaMenuItem( menuBar.getMenu( i ) );
-				
+
+				buscaMenuItem(menuBar.getMenu(i));
+
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			Funcoes.mensagemErro(null, "Erro ao atualizar menus!\n" + e.getMessage());
 		}
-			
+
 		Funcoes.mensagemInforma(null, "Menus atualizados com sucesso!");
-		
+
 	}
 
-	private void buscaMenuItem( JMenu men ) {
+	private void buscaMenuItem(JMenu men) {
 
-		for ( int i = 0; i < men.getItemCount(); i++ ) {
-			JMenuItem it = men.getItem( i );
-			if ( it instanceof JMenuPad ) {
-				if ( !upMenuDB( it, (JMenuPad) men ) )
+		for (int i = 0; i < men.getItemCount(); i++) {
+			JMenuItem it = men.getItem(i);
+			if (it instanceof JMenuPad) {
+				if (!upMenuDB(it, ( JMenuPad ) men))
 					break;
-				buscaMenuItem( (JMenu) it );
+				buscaMenuItem(( JMenu ) it);
 			}
-			else if ( it instanceof JMenuItemPad ) {
-				if ( !upMenuDB( (JMenuItemPad) it, (JMenuPad) men ) )
+			else if (it instanceof JMenuItemPad) {
+				if (!upMenuDB(( JMenuItemPad ) it, ( JMenuPad ) men))
 					break;
 			}
 		}
 	}
 
-	private boolean upMenuDB( JMenuItem men, JMenuPad menPai ) {
+	private boolean upMenuDB(JMenuItem men, JMenuPad menPai) {
 
 		boolean bRet = false;
 		Class<? extends IFilho> tela = null;
 		String sNomeMenu = null;
 		String sAcaoMenu = null;
 		int iCodMenu = 0;
-		
+
 		try {
-			if ( men instanceof JMenuItemPad ) {
-				iCodMenu = ( (JMenuItemPad) men ).getCodItem();
-				tela = ( (JMenuItemPad) men ).getTela();
+			if (men instanceof JMenuItemPad) {
+				iCodMenu = ( ( JMenuItemPad ) men ).getCodItem();
+				tela = ( ( JMenuItemPad ) men ).getTela();
 			}
-			else if ( men instanceof JMenuPad ) {
-				iCodMenu = ( (JMenuPad) men ).getCodMenu();
+			else if (men instanceof JMenuPad) {
+				iCodMenu = ( ( JMenuPad ) men ).getCodMenu();
 			}
-			if ( tela != null ) {
+			if (tela != null) {
 				sNomeMenu = tela.getName();
 				sAcaoMenu = tela.getName();
 			}
@@ -721,36 +713,38 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				sNomeMenu = "" + iCodMenu;
 				sAcaoMenu = "" + iCodMenu;
 			}
-			if ( iCodMenu != 0 ) {
-				PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)" );
-				ps.setInt( 1, this.iCodSis );
-				ps.setString( 2, this.sDescSis );
-				ps.setInt( 3, this.iCodModu );
-				ps.setString( 4, Funcoes.copy( this.sDescModu, 50 ) );
-				ps.setInt( 5, iCodMenu );
-				ps.setString( 6, men.getText() );
-				ps.setString( 7, sNomeMenu );
-				ps.setString( 8, sAcaoMenu );
+			if (iCodMenu != 0) {
+				PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
+				ps.setInt(1, this.iCodSis);
+				ps.setString(2, this.sDescSis);
+				ps.setInt(3, this.iCodModu);
+				ps.setString(4, Funcoes.copy(this.sDescModu, 50));
+				ps.setInt(5, iCodMenu);
+				ps.setString(6, men.getText());
+				ps.setString(7, sNomeMenu);
+				ps.setString(8, sAcaoMenu);
 
-				if ( menPai.getCodMenu() == 0 ) {
-					ps.setNull( 9, java.sql.Types.INTEGER );
-					ps.setNull( 10, java.sql.Types.INTEGER );
-					ps.setNull( 11, java.sql.Types.INTEGER );
+				if (menPai.getCodMenu() == 0) {
+					ps.setNull(9, java.sql.Types.INTEGER);
+					ps.setNull(10, java.sql.Types.INTEGER);
+					ps.setNull(11, java.sql.Types.INTEGER);
 				}
 				else {
-					ps.setInt( 9, menPai.getCodModulo() );
-					ps.setInt( 10, menPai.getCodModulo() );
-					ps.setInt( 11, menPai.getCodMenu() );
+					ps.setInt(9, menPai.getCodModulo());
+					ps.setInt(10, menPai.getCodModulo());
+					ps.setInt(11, menPai.getCodMenu());
 				}
 				ps.execute();
 				ps.close();
 				con.commit();
 			}
 			bRet = true;
-		} catch ( SQLException err ) {
-			Funcoes.mensagemInforma( telaPrincipal, "Não foi possível atualizar a base de menus!\n" + err + "\n" + this.iCodSis + "," + this.sDescSis + "\n" + this.iCodModu + "," + this.sDescModu + "\n" + "acao: " + sAcaoMenu + "\n" + "nome:" + sNomeMenu + "\n" + iCodMenu + "," + men.getText()
-					+ "\n" + "," + menPai.getCodMenu() );
-		} finally {
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemInforma(telaPrincipal, "Não foi possível atualizar a base de menus!\n" + err + "\n" + this.iCodSis + "," + this.sDescSis + "\n" + this.iCodModu + "," + this.sDescModu
+					+ "\n" + "acao: " + sAcaoMenu + "\n" + "nome:" + sNomeMenu + "\n" + iCodMenu + "," + men.getText() + "\n" + "," + menPai.getCodMenu());
+		}
+		finally {
 			tela = null;
 			sNomeMenu = null;
 			sAcaoMenu = null;
@@ -759,51 +753,51 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return bRet;
 	}
 
-	public void adicTelaMenu( JButtonPad bt ) {
+	public void adicTelaMenu(JButtonPad bt) {
 
 		iXPanel += 30;
-		bt.setEnabled( verifAcesso( bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem() ) );
-		pinBotoes.adic( bt, iXPanel, 0, 30, 30 );
-		bt.addActionListener( this );
+		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem()));
+		pinBotoes.adic(bt, iXPanel, 0, 30, 30);
+		bt.addActionListener(this);
 	}
 
 	public void ajustaMenu() {
 
-		pinBotoes.setPreferredSize( new Dimension( iXPanel + 4, 30 ) );
-		Object oMenu = getOpcao( 100000000 );
+		pinBotoes.setPreferredSize(new Dimension(iXPanel + 4, 30));
+		Object oMenu = getOpcao(100000000);
 		JMenuItem miSair = null;
-		if ( oMenu != null ) {
-			if ( oMenu instanceof JMenuPad ) {
-				miSair = new JMenuItemPad( "Sair", 'r' );
-				miSair.addActionListener( this );
-				( (JMenuPad) oMenu ).addSeparator();
-				( (JMenuPad) oMenu ).add( miSair );
+		if (oMenu != null) {
+			if (oMenu instanceof JMenuPad) {
+				miSair = new JMenuItemPad("Sair", 'r');
+				miSair.addActionListener(this);
+				( ( JMenuPad ) oMenu ).addSeparator();
+				( ( JMenuPad ) oMenu ).add(miSair);
 			}
 		}
-		JMenuPad mAjuda = new JMenuPad( "Ajuda" );
-		JMenuItem miSobre = new JMenuItemPad( "Sobre" );
-		
-		miSobre.addActionListener( this );
+		JMenuPad mAjuda = new JMenuPad("Ajuda");
+		JMenuItem miSobre = new JMenuItemPad("Sobre");
 
-		mAjuda.add( miSobre );
-		JMenuItem miAtalhos = new JMenuItemPad( "Atalhos" );
-		miAtalhos.addActionListener( this );
-		mAjuda.add( miAtalhos );
+		miSobre.addActionListener(this);
 
-		if ( bSuporte ) {
+		mAjuda.add(miSobre);
+		JMenuItem miAtalhos = new JMenuItemPad("Atalhos");
+		miAtalhos.addActionListener(this);
+		mAjuda.add(miAtalhos);
+
+		if (bSuporte) {
 			mAjuda.addSeparator();
-			JMenuItem miSuporte = new JMenuItemPad( "Suporte" );
-			miSuporte.addActionListener( this );
-			mAjuda.add( miSuporte );
+			JMenuItem miSuporte = new JMenuItemPad("Suporte");
+			miSuporte.addActionListener(this);
+			mAjuda.add(miSuporte);
 		}
 
-		telaPrincipal.bar.add( mAjuda );
+		telaPrincipal.bar.add(mAjuda);
 
 	}
 
 	public abstract void iniConexao();
 
-	public void setSplashName( String sImg ) {
+	public void setSplashName(String sImg) {
 
 		sSplashImg = sImg;
 	}
@@ -818,7 +812,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		Object retorno = null;
 		try {
 			retorno = cLoginExec.newInstance();
-		} catch ( Exception e ) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return retorno;
@@ -828,17 +823,17 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		String sVals[];
 		DbConnection conRetorno = null;
-		strBanco = getParameter( "banco" );
-		strDriver = getParameter( "driver" );
+		strBanco = getParameter("banco");
+		strDriver = getParameter("driver");
 
-		if ( strUsuario.equals( "" ) && strSenha.equals( "" ) ) {
-			Login lgBanco = (Login) criaLogin();
-			lgBanco.execLogin( strBanco, strDriver, sSplashImg, iNumEst );
-			if ( !lgBanco.OK )
-				System.exit( 0 );
+		if (strUsuario.equals("") && strSenha.equals("")) {
+			Login lgBanco = ( Login ) criaLogin();
+			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
+			if (!lgBanco.OK)
+				System.exit(0);
 			sVals = lgBanco.getStrVals();
-			strUsuario = sVals[ 0 ];
-			strSenha = sVals[ 1 ];
+			strUsuario = sVals[0];
+			strSenha = sVals[1];
 			iCodFilial = lgBanco.getFilial();
 			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
@@ -848,16 +843,16 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				con_nfe = lgBanco.conNFE;
 			}
 			catch (Exception e) {
-				Funcoes.mensagemErro( null, "Erro de conexão!\n" + e.getMessage() );
+				Funcoes.mensagemErro(null, "Erro de conexão!\n" + e.getMessage());
 				e.printStackTrace();
 			}
 			lgBanco.dispose();
 		}
 
-		if ( strUsuario.length() == 0 ) {
+		if (strUsuario.length() == 0) {
 			return null;
 		}
-		else if ( strSenha.length() == 0 ) {
+		else if (strSenha.length() == 0) {
 			return null;
 		}
 
@@ -868,19 +863,19 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public abstract boolean getModoDemo();
 
 	public abstract String getDescEst();
-	
+
 	public abstract void validaPrefere();
 
 	public abstract void getMultiAlmox();
 
-	public DbConnection conexaoIB( String strDriverP, String strBancoP ) {
-		try {			
+	public DbConnection conexaoIB(String strDriverP, String strBancoP) {
+		try {
 			conIB = new DbConnection(strDriverP, strBancoP, strUsuario, strSenha);
-		} 
-		catch ( java.sql.SQLException e ) {
-			if ( e.getErrorCode() == 335544472 )
+		}
+		catch (java.sql.SQLException e) {
+			if (e.getErrorCode() == 335544472)
 				return null;
-			Funcoes.mensagemErro( null, "[internal]:Não foi possível estabelecer conexão com o banco de dados.\n" + e.getMessage() );
+			Funcoes.mensagemErro(null, "[internal]:Não foi possível estabelecer conexão com o banco de dados.\n" + e.getMessage());
 			return null;
 		}
 		return conIB;
@@ -900,111 +895,113 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		int i = 0;
 		int iContaCampo = 0;
 		int iMaxCampo = 0;
-		char c = (char) 0;
+		char c = ( char ) 0;
 		File fArq = null;
 		FileReader frArq = null;
 		try {
-			fArq = new File( sArqIni );
-			frArq = new FileReader( fArq );
-			iTam = (int) fArq.length();
+			fArq = new File(sArqIni);
+			frArq = new FileReader(fArq);
+			iTam = ( int ) fArq.length();
 			try {
-				while ( i < iTam ) {
+				while (i < iTam) {
 					// Vector vValSessao = null;
-					if ( c != (char) 10 )
-						c = (char) frArq.read();
+					if (c != ( char ) 10)
+						c = ( char ) frArq.read();
 					// System.out.println("N. Char SES:"+(new
 					// Character(c)).hashCode()+"\n");
-					if ( ( !bLeSessao ) & ( !bLeCampo ) & ( c == '[' ) ) {
+					if (( !bLeSessao ) & ( !bLeCampo ) & ( c == '[' )) {
 						bLeSessao = true;
 					}
-					else if ( ( c == ']' ) & ( bLeSessao ) ) {
+					else if (( c == ']' ) & ( bLeSessao )) {
 						vValSessao = new Vector();
 						bLeSessao = false;
-						vValSessao.addElement( new String( sTmp ) );
-						vSessao.addElement( vValSessao );
+						vValSessao.addElement(new String(sTmp));
+						vSessao.addElement(vValSessao);
 						// System.out.println("Sessao: "+sTmp);
 						sTmp = "";
 						iContaCampo = 0;
 					}
-					else if ( bLeSessao ) {
+					else if (bLeSessao) {
 						sTmp += c;
 					}
-					else if ( !bLeSessao ) {
+					else if (!bLeSessao) {
 						bLeCampo = true;
-						while ( i < iTam ) {
-							c = (char) frArq.read();
+						while (i < iTam) {
+							c = ( char ) frArq.read();
 							// System.out.println("N. Char CAM:"+(new
 							// Character(c)).hashCode()+(bLeCampo ? " OK" : "
 							// NO"));
-							if ( ( c == (char) 10 ) & ( bLeCampo ) ) {
+							if (( c == ( char ) 10 ) & ( bLeCampo )) {
 								bLeCampo = false;
-								vValCampo.addElement( new String( sTmp ) );
-								vValSessao.addElement( vValCampo );
+								vValCampo.addElement(new String(sTmp));
+								vValSessao.addElement(vValCampo);
 								// System.out.println("Valor: "+sTmp);
 								sTmp = "";
 								iContaCampo++;
 								break;
 							}
-							else if ( ( c == '=' ) & ( bLeCampo ) ) {
-								vValCampo.addElement( sTmp );
-								System.out.println( "Campo: " + sTmp );
+							else if (( c == '=' ) & ( bLeCampo )) {
+								vValCampo.addElement(sTmp);
+								System.out.println("Campo: " + sTmp);
 								sTmp = "";
 							}
-							else if ( bLeCampo ) {
+							else if (bLeCampo) {
 								sTmp += c;
 							}
 							i++;
 						}
-						if ( iContaCampo > iMaxCampo ) {
+						if (iContaCampo > iMaxCampo) {
 							iMaxCampo = iContaCampo;
 						}
 					}
 					i++;
 				}
-			} catch ( IOException err ) {
-				Funcoes.mensagemErro( null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage() );
-				System.exit( 0 );
 			}
-		} catch ( FileNotFoundException err ) {
-			Funcoes.mensagemErro( null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage() );
-			System.exit( 0 );
+			catch (IOException err) {
+				Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
+				System.exit(0);
+			}
 		}
-		Funcoes.mensagemErro( null, "TESTE: " + vSessao.size() + " ~ " + iMaxCampo );
-		String[][][] sRetorno = new String[ vSessao.size() ][ iMaxCampo ][ 2 ];
-		for ( int iS = 0; iS < ( vSessao.size() ); iS++ ) {
-			sRetorno[ iS ][ 0 ][ 0 ] = (String) vSessao.elementAt( iS ).elementAt( 0 );
-			for ( int iC = 1; iC < iMaxCampo; iC++ ) {
-				sRetorno[ iS ][ iC ][ 0 ] = (String) ( (Vector) vSessao.elementAt( iS ).elementAt( iC ) ).elementAt( 0 );
-				sRetorno[ iS ][ iC ][ 1 ] = (String) ( (Vector) vSessao.elementAt( iS ).elementAt( iC ) ).elementAt( 1 );
+		catch (FileNotFoundException err) {
+			Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
+			System.exit(0);
+		}
+		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ " + iMaxCampo);
+		String[][][] sRetorno = new String[vSessao.size()][iMaxCampo][2];
+		for (int iS = 0; iS < ( vSessao.size() ); iS++) {
+			sRetorno[iS][0][0] = ( String ) vSessao.elementAt(iS).elementAt(0);
+			for (int iC = 1; iC < iMaxCampo; iC++) {
+				sRetorno[iS][iC][0] = ( String ) ( ( Vector ) vSessao.elementAt(iS).elementAt(iC) ).elementAt(0);
+				sRetorno[iS][iC][1] = ( String ) ( ( Vector ) vSessao.elementAt(iS).elementAt(iC) ).elementAt(1);
 			}
 		}
 		return sRetorno;
 	}
 
-	public static String getValorSecao( String sSecao, String sParam) {
-		
-		return getValorSecao(sSecao, sParam, vArqINI);		
-		
+	public static String getValorSecao(String sSecao, String sParam) {
+
+		return getValorSecao(sSecao, sParam, vArqINI);
+
 	}
-	
-	public static String getValorSecao( String sSecao, String sParam, Vector<String> vArq ) {
+
+	public static String getValorSecao(String sSecao, String sParam, Vector<String> vArq) {
 
 		String sLinha = "";
 		String sLabel = "";
 		int iLocal = 0;
-		for ( int i = 0; i < vArq.size(); i++ ) {
-			sLinha = vArq.elementAt( i ).trim();
-			if ( sLinha.indexOf( sSecao ) > 0 ) {
-				for ( int i2 = i + 1; i2 < vArq.size(); i2++ ) {
-					sLinha = vArq.elementAt( i2 );
-					if ( sLinha.indexOf( '[' ) > 0 ) {
+		for (int i = 0; i < vArq.size(); i++) {
+			sLinha = vArq.elementAt(i).trim();
+			if (sLinha.indexOf(sSecao) > 0) {
+				for (int i2 = i + 1; i2 < vArq.size(); i2++) {
+					sLinha = vArq.elementAt(i2);
+					if (sLinha.indexOf('[') > 0) {
 						break;
 					}
-					else if ( sLinha.indexOf( '=' ) > 0 ) {
-						iLocal = sLinha.indexOf( '=' );
-						sLabel = sLinha.substring( 0, iLocal ).trim();
-						if ( sLabel.equals( sParam.trim() ) ) {
-							return sLinha.substring( iLocal + 1 );
+					else if (sLinha.indexOf('=') > 0) {
+						iLocal = sLinha.indexOf('=');
+						sLabel = sLinha.substring(0, iLocal).trim();
+						if (sLabel.equals(sParam.trim())) {
+							return sLinha.substring(iLocal + 1);
 						}
 					}
 				}
@@ -1013,46 +1010,46 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return "";
 	}
 
-	public static String getParameter( String sParam ) {
-		return getValorSecao( "parametros", sParam);
-	}
-	
-	public static String getParameter( String sParam, Vector<String> vArq ) {
-
-		return getValorSecao( "parametros", sParam, vArq );
+	public static String getParameter(String sParam) {
+		return getValorSecao("parametros", sParam);
 	}
 
-	public static void killProg( int iTerm, String sMess ) {
+	public static String getParameter(String sParam, Vector<String> vArq) {
 
-		Funcoes.mensagemErro( null, sMess );
-		System.exit( iTerm );
+		return getValorSecao("parametros", sParam, vArq);
+	}
+
+	public static void killProg(int iTerm, String sMess) {
+
+		Funcoes.mensagemErro(null, sMess);
+		System.exit(iTerm);
 	}
 
 	protected abstract void carregaCasasDec();
 
-	public void keyReleased( KeyEvent kevt ) {
+	public void keyReleased(KeyEvent kevt) {
 
-		if ( kevt.getKeyCode() == KeyEvent.VK_CONTROL )
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
 			bCtrl = false;
 	}
 
-	public void keyTyped( KeyEvent kevt ) {
+	public void keyTyped(KeyEvent kevt) {
 
 	}
-	
-	public static void setEmailBean( final EmailBean mail ) {
+
+	public static void setEmailBean(final EmailBean mail) {
 		emailbean = mail;
 	}
-	
+
 	public static EmailBean getEmailBean() {
 		EmailBean clone = null;
-		if(emailbean!=null)
-			 clone = emailbean.getClone();
+		if (emailbean != null)
+			clone = emailbean.getClone();
 		return clone;
 	}
-	
+
 	public abstract void createEmailBean();
-	
-	public abstract void updateEmailBean( EmailBean email );
+
+	public abstract void updateEmailBean(EmailBean email);
 
 }

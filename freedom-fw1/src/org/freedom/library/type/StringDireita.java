@@ -22,14 +22,17 @@ package org.freedom.library.type;
 
 public class StringDireita implements Comparable<String> {
 	private String sTexto = "";
-	public StringDireita( String sTexto) {
-		if (sTexto!=null)
-		  this.sTexto = sTexto.trim();
+
+	public StringDireita(String sTexto) {
+		if (sTexto != null)
+			this.sTexto = sTexto.trim();
 	}
+
 	public String toString() {
 		return sTexto;
 	}
-	public int compareTo( String arg0 ) {
-		return sTexto.compareTo( arg0.toString() );
+
+	public int compareTo(String arg0) {
+		return sTexto.compareTo(arg0.toString());
 	}
 }

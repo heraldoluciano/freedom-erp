@@ -1,7 +1,7 @@
 package org.freedom.library.business.exceptions;
 
 public class ExceptionSetConexao extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public ExceptionSetConexao() {
@@ -19,5 +19,5 @@ public class ExceptionSetConexao extends Exception {
 	public ExceptionSetConexao(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

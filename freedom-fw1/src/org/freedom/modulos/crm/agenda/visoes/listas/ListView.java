@@ -57,9 +57,9 @@ public class ListView extends CalendarView implements MouseListener {
 
 	public ListView(CalendarViewConfig desc, ListViewPanel parent) throws Exception {
 		super(desc);
-		
+
 		showEvents = new ArrayList<Event>();
-		
+
 		this.parent = parent;
 		this.panel = new JPanel();
 		this.panel.setOpaque(false);
@@ -90,7 +90,7 @@ public class ListView extends CalendarView implements MouseListener {
 		panel.add(jsp, BorderLayout.CENTER);
 
 		setDate(new Date());
-		
+
 	}
 
 	@Override
@@ -103,31 +103,30 @@ public class ListView extends CalendarView implements MouseListener {
 		return null;
 	}
 
-//	@SuppressWarnings("unchecked")
+	// @SuppressWarnings("unchecked")
 	@Override
 	public void refresh0() throws Exception {
 		if (broker != null) {
-			List<Event> events= broker.getEvents(null);
-			if (! showDeparted) {
+			List<Event> events = broker.getEvents(null);
+			if (!showDeparted) {
 				Date start = this.date;
 				Date end = DateUtil.getDiffDay(start, showDays);
 				parent.setTitle(start, end);
 				showEvents.clear();
 				for (Iterator<Event> iter = events.iterator(); iter.hasNext();) {
 					Event ev = iter.next();
-					if (ev.getStart().after(start)  && ev.getStart().before(end)) {
+					if (ev.getStart().after(start) && ev.getStart().before(end)) {
 						showEvents.add(ev);
 					}
 				}
-			} else {
+			}
+			else {
 				showEvents = events;
 			}
 
 			this.listModel.setEvents(showEvents);
 		}
 	}
-
-
 
 	/**
 	 * @return the showDeparted
@@ -137,13 +136,15 @@ public class ListView extends CalendarView implements MouseListener {
 	}
 
 	/**
-	 * @param showDeparted the showDeparted to set
+	 * @param showDeparted
+	 *            the showDeparted to set
 	 */
 	public void setShowDeparted(boolean showDeparted) {
 		this.showDeparted = showDeparted;
 		try {
 			refresh0();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 	}
 
@@ -155,13 +156,15 @@ public class ListView extends CalendarView implements MouseListener {
 	}
 
 	/**
-	 * @param showDays the showDays to set
+	 * @param showDays
+	 *            the showDays to set
 	 */
 	public void setShowDays(int showDays) {
 		this.showDays = showDays;
 		try {
 			refresh0();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 	}
 
@@ -171,18 +174,14 @@ public class ListView extends CalendarView implements MouseListener {
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND,0 );
-		this.date  = c.getTime();
+		c.set(Calendar.MILLISECOND, 0);
+		this.date = c.getTime();
 		try {
 			refresh0();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 	}
-
-
-
-
-
 
 	public void mouseClicked(MouseEvent e) {
 		/* ====================================================== */
@@ -192,13 +191,17 @@ public class ListView extends CalendarView implements MouseListener {
 		/* ====================================================== */
 	}
 
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
 
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
 
 	public List<Event> getEvents() {
 		return showEvents;

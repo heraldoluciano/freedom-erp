@@ -41,7 +41,7 @@ public class ListModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Event> events = new ArrayList<Event>();
-	
+
 	private DateFormat dateTime = new SimpleDateFormat("dd.MM.yy HH:mm", Translatrix.getLocale());
 	private DateFormat date = new SimpleDateFormat("EEE dd.MM.yy", Translatrix.getLocale());
 	private DateFormat time = new SimpleDateFormat("HH:mm", Translatrix.getLocale());
@@ -49,35 +49,18 @@ public class ListModel extends AbstractTableModel {
 	 * static logger for this class
 	 */
 	private static Logger logger = Logger.getLogger(ListModel.class.getName());
-	
-	private static String[] columnNames = {
-		"",
-		"Sit",
-		"Prioridade",
-		"Data ini.",
-		"Hora ini.",
-		"Data fin.",
-		"Hora fin.",
-		"Assunto"
-	};
-	
-	private static Class<?>[] columnClasses = {
-		String.class,
-		ImageIcon.class,
-		String.class,
-		String.class,
-		String.class,
-		String.class,
-		String.class
-	};
-	
+
+	private static String[] columnNames = { "", "Sit", "Prioridade", "Data ini.", "Hora ini.", "Data fin.", "Hora fin.", "Assunto" };
+
+	private static Class<?>[] columnClasses = { String.class, ImageIcon.class, String.class, String.class, String.class, String.class, String.class };
+
 	public ListModel() {
 	}
 
 	public int getColumnCount() {
 		return columnNames.length;
 	}
-	
+
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return columnClasses[columnIndex];
@@ -93,41 +76,41 @@ public class ListModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		
+
 		Event e = events.get(rowIndex);
-		if (e == null) 
+		if (e == null)
 			return null;
-		
+
 		switch (columnIndex) {
 		case 0:
 			String str = "";
 			try {
-					if (DateUtil.isSameDay(e.getStart(), e.getEnd())) {
-						String d = date.format(e.getStart());
-						d = d.substring(0,1).toUpperCase() + d.substring(1);
-						str = "<html><b>" + d + "</b><br>" + time.format(e.getStart()) + " - " + time.format(e.getEnd());
-					} else {
-						str = "<html><b>" + dateTime.format(e.getStart()) + "</b><br>" + dateTime.format(e.getEnd());
-					}
-					
-				} catch (Exception e1) {
-					logger.log(Level.WARNING, "listmodel dateformating creation failed", e);
+				if (DateUtil.isSameDay(e.getStart(), e.getEnd())) {
+					String d = date.format(e.getStart());
+					d = d.substring(0, 1).toUpperCase() + d.substring(1);
+					str = "<html><b>" + d + "</b><br>" + time.format(e.getStart()) + " - " + time.format(e.getEnd());
 				}
+				else {
+					str = "<html><b>" + dateTime.format(e.getStart()) + "</b><br>" + dateTime.format(e.getEnd());
+				}
+
+			}
+			catch (Exception e1) {
+				logger.log(Level.WARNING, "listmodel dateformating creation failed", e);
+			}
 			return str;
 		case 1:
 			return e.getIcon();
 		case 2:
 			return e.get(NamedCalendar.CALENDAR_NAME);
 		case 3:
-			return "<html><b>" 
-				+ (e.getSummary()!=null?e.getSummary():"") 
-				+ "</b><br>" + (e.getDescription()!=null?e.getDescription():"");
+			return "<html><b>" + ( e.getSummary() != null ? e.getSummary() : "" ) + "</b><br>" + ( e.getDescription() != null ? e.getDescription() : "" );
 		default:
 			break;
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void setEvents(List events) {
 		this.events = new ArrayList<Event>(events);
@@ -139,4 +122,3 @@ public class ListModel extends AbstractTableModel {
 	}
 
 }
-

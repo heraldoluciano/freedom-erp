@@ -7,26 +7,26 @@ public abstract class AbstractControle {
 
 	private Map<String, Object> objects;
 
-	public void addAttribute( String name, Object obj ) {
+	public void addAttribute(String name, Object obj) {
 
-		if ( objects == null ) {
+		if (objects == null) {
 			objects = new HashMap<String, Object>();
 		}
-		
-		objects.put( name, obj );
+
+		objects.put(name, obj);
 	}
 
-	public Object getAttribute( String name ) {
+	public Object getAttribute(String name) {
 
 		Object ret = null;
-		
-		if ( objects != null ) {
-			ret = objects.get( name );
+
+		if (objects != null) {
+			ret = objects.get(name);
 		}
-		
+
 		return ret;
 	}
-	
+
 	public abstract void inicializa();
 
 }

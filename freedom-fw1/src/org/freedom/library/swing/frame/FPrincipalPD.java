@@ -35,22 +35,21 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 
 	private static final long serialVersionUID = 1L;
 
-	public FPrincipalPD( String sDirImagem, String sImgFundo ) {
+	public FPrincipalPD(String sDirImagem, String sImgFundo) {
 
-		this( sDirImagem, sImgFundo, null, null, null, null, null );
+		this(sDirImagem, sImgFundo, null, null, null, null, null);
 	}
 
-	public FPrincipalPD( String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp, Color bgcolor, String urlempresa, String urlsistema ) {
-		
-		super( sDirImagem, sImgFundo, sImgLogoSis, sImgLogoEmp, bgcolor, urlempresa, urlsistema );
+	public FPrincipalPD(String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp, Color bgcolor, String urlempresa, String urlsistema) {
+
+		super(sDirImagem, sImgFundo, sImgLogoSis, sImgLogoEmp, bgcolor, urlempresa, urlsistema);
 
 	}
 
-	
 	public void inicializaTela() {
 		addFundo();
-		addLinks( Icone.novo( imgLogoEmp ) , Icone.novo( imgLogoSis ));		
-		setBgColor( padrao );
+		addLinks(Icone.novo(imgLogoEmp), Icone.novo(imgLogoSis));
+		setBgColor(padrao);
 		adicBotoes();
 
 	}
@@ -59,29 +58,32 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 
 		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP";
 		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-//			ps.setInt( 1, Aplicativo.iCodEmp );
-//			ps.setInt( 2, Aplicativo.iCodFilialPad );
-//			ps.setString( 3, Aplicativo.strUsuario );
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			// ps.setInt( 1, Aplicativo.iCodEmp );
+			// ps.setInt( 2, Aplicativo.iCodFilialPad );
+			// ps.setString( 3, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao remover filial ativa no banco!\n" + err.getMessage() );
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(null, "Erro ao remover filial ativa no banco!\n" + err.getMessage());
 		}
 	}
 
 	public void fecharJanela() {
 
-		if ( con != null ) {
+		if (con != null) {
 			try {
 				remConFilial();
 				con.close();
-			} catch ( java.sql.SQLException e ) {
+			}
+			catch (java.sql.SQLException e) {
 				System.out.println("Não foi possível fechar a conexao com o banco de dados!");
-//				Funcoes.mensagemErro( null, "Não foi possível fechar a conexao com o banco de dados!" );
+				// Funcoes.mensagemErro( null,
+				// "Não foi possível fechar a conexao com o banco de dados!" );
 			}
 		}
-		System.exit( 0 );
+		System.exit(0);
 	}
 }

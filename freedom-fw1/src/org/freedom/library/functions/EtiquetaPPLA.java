@@ -37,11 +37,11 @@ public class EtiquetaPPLA {
 	private Command horizontal_multiplier = Command.HORIZONTAL_MULTIPLIER_DEFAULT;
 
 	private Command vertical_multiplier = Command.VERTICAL_MULTIPLIER_DEFAULT;
-	
+
 	private Command barcode_type = Command.BARCODE_A;
-	
+
 	private Command barcode_b_w = Command.BARCODE_WIDE_BAR_DEFAULT;
-	
+
 	private Command barcode_b_f = Command.BARCODE_FINE_BAR_DEFAULT;
 
 	/**
@@ -55,7 +55,7 @@ public class EtiquetaPPLA {
 	 */
 	private StringBuilder getCommand() {
 
-		if ( this.command == null ) {
+		if (this.command == null) {
 
 			this.command = new StringBuilder();
 		}
@@ -68,7 +68,7 @@ public class EtiquetaPPLA {
 		return font;
 	}
 
-	public void setFont( Command font ) {
+	public void setFont(Command font) {
 
 		this.font = font;
 	}
@@ -78,14 +78,14 @@ public class EtiquetaPPLA {
 		return horizontal_multiplier;
 	}
 
-	public void setHorizontal_multiplier( Command horizontal_multiplier ) {
+	public void setHorizontal_multiplier(Command horizontal_multiplier) {
 
 		this.horizontal_multiplier = horizontal_multiplier;
 	}
 
-	public void setHorizontal_multiplier( int horizontal_multiplier ) {
+	public void setHorizontal_multiplier(int horizontal_multiplier) {
 
-		this.horizontal_multiplier = new Command( horizontal_multiplier );
+		this.horizontal_multiplier = new Command(horizontal_multiplier);
 	}
 
 	public Command getOrdinance() {
@@ -93,7 +93,7 @@ public class EtiquetaPPLA {
 		return ordinance;
 	}
 
-	public void setOrdinance( Command ordinance ) {
+	public void setOrdinance(Command ordinance) {
 
 		this.ordinance = ordinance;
 	}
@@ -103,7 +103,7 @@ public class EtiquetaPPLA {
 		return subtype_font;
 	}
 
-	public void setSubtype_font( Command subtype_font ) {
+	public void setSubtype_font(Command subtype_font) {
 
 		this.subtype_font = subtype_font;
 	}
@@ -113,48 +113,48 @@ public class EtiquetaPPLA {
 		return vertical_multiplier;
 	}
 
-	public void setVertical_multiplier( Command vertical_multiplier ) {
+	public void setVertical_multiplier(Command vertical_multiplier) {
 
 		this.vertical_multiplier = vertical_multiplier;
 	}
-	
+
 	public Command getBarcode_b_f() {
-	
+
 		return barcode_b_f;
 	}
-	
-	public void setBarcode_b_f( Command barcode_b_f ) {
-	
+
+	public void setBarcode_b_f(Command barcode_b_f) {
+
 		this.barcode_b_f = barcode_b_f;
 	}
-	
-	public void setBarcode_b_f( int barcode_b_f ) {
-	
-		this.barcode_b_f = new Command( barcode_b_f );
+
+	public void setBarcode_b_f(int barcode_b_f) {
+
+		this.barcode_b_f = new Command(barcode_b_f);
 	}
-	
+
 	public Command getBarcode_b_w() {
-	
+
 		return barcode_b_w;
 	}
-	
-	public void setBarcode_b_w( Command barcode_b_l ) {
-	
+
+	public void setBarcode_b_w(Command barcode_b_l) {
+
 		this.barcode_b_w = barcode_b_l;
 	}
-	
-	public void setBarcode_b_w( int barcode_b_l ) {
-	
-		this.barcode_b_w = new Command( barcode_b_l );
+
+	public void setBarcode_b_w(int barcode_b_l) {
+
+		this.barcode_b_w = new Command(barcode_b_l);
 	}
-	
+
 	public Command getBarcode_type() {
-	
+
 		return barcode_type;
 	}
-	
-	public void setBarcode_type( Command barcode_type ) {
-	
+
+	public void setBarcode_type(Command barcode_type) {
+
 		this.barcode_type = barcode_type;
 	}
 
@@ -167,9 +167,9 @@ public class EtiquetaPPLA {
 	 * 
 	 * @see org.freedom.functions.EtiquetaPPLA.Command
 	 */
-	public void addCommand( Command arg ) {
+	public void addCommand(Command arg) {
 
-		getCommand().append( arg.getCommand() );
+		getCommand().append(arg.getCommand());
 	}
 
 	/**
@@ -178,9 +178,9 @@ public class EtiquetaPPLA {
 	 * @param arg
 	 *            Comando.
 	 */
-	public void addCommand( Object arg ) {
+	public void addCommand(Object arg) {
 
-		getCommand().append( arg );
+		getCommand().append(arg);
 	}
 
 	/**
@@ -188,21 +188,18 @@ public class EtiquetaPPLA {
 	 */
 	public void open() {
 
-		addCommand( STX );
-		addCommand( L );
-		addCommand( CR );
+		addCommand(STX);
+		addCommand(L);
+		addCommand(CR);
 	}
 
 	/**
 	 * Armazena no buffer de comandos o comando de escrita de texto<br>
-	 * formatando o comando com parametros previamente definidos<br> 
-	 * <br> 
-	 * <li>Ordinance</li>
-	 * <li>Font</li>
-	 * <li>Horizontal multiplier </li>
-	 * <li>Vertical multiplier</li>
-	 * <li>Subtype font</li>
-	 * <br><br>
+	 * formatando o comando com parametros previamente definidos<br>
+	 * <br>
+	 * <li>Ordinance</li> <li>Font</li> <li>Horizontal multiplier</li> <li>
+	 * Vertical multiplier</li> <li>Subtype font</li> <br>
+	 * <br>
 	 * e os passados por parametro na assinatura do metodo.<br>
 	 * 
 	 * @param y
@@ -212,26 +209,27 @@ public class EtiquetaPPLA {
 	 * @param texto
 	 *            texto
 	 */
-	public void appendString( int y, int x, String texto ) {
+	public void appendString(int y, int x, String texto) {
 
-		addCommand( getOrdinance() );
-		addCommand( getFont() );
-		addCommand( getHorizontal_multiplier() );
-		addCommand( getVertical_multiplier() );
-		addCommand( charToStrZero( getSubtype_font().getCommand(), 3 ) );
-		addCommand( intToStrZero( y ) );
-		addCommand( intToStrZero( x ) );
-		addCommand( texto );		
-		addCommand( CR );
+		addCommand(getOrdinance());
+		addCommand(getFont());
+		addCommand(getHorizontal_multiplier());
+		addCommand(getVertical_multiplier());
+		addCommand(charToStrZero(getSubtype_font().getCommand(), 3));
+		addCommand(intToStrZero(y));
+		addCommand(intToStrZero(x));
+		addCommand(texto);
+		addCommand(CR);
 	}
 
 	/**
-	 * * Armazena no buffer de comandos o comando de impressão de código de barras<br>
+	 * * Armazena no buffer de comandos o comando de impressão de código de
+	 * barras<br>
 	 * formatando o comando com parametros previamente definidos<br>
-	 * <br> 
-	 * - Ordinance<br> 
-	 * - Barcode type<br> 
-	 * - Barcode wide bar<br> 
+	 * <br>
+	 * - Ordinance<br>
+	 * - Barcode type<br>
+	 * - Barcode wide bar<br>
 	 * - Barcode fine bar<br>
 	 * <br>
 	 * e os passados por parametro na assinatura do metodo.<br>
@@ -245,29 +243,29 @@ public class EtiquetaPPLA {
 	 * @param dados
 	 *            dados para o código.
 	 */
-	public void appendBarCode( int altura, int y, int x, String dados ) {
+	public void appendBarCode(int altura, int y, int x, String dados) {
 
-		addCommand( getOrdinance() );
-		addCommand( getBarcode_type() );
-		addCommand( getBarcode_b_w() );
-		addCommand( getBarcode_b_f() );
-		addCommand( intToStrZero( altura, 3 ) );
-		addCommand( intToStrZero( y ) );
-		addCommand( intToStrZero( x ) );
-		addCommand( dados );
+		addCommand(getOrdinance());
+		addCommand(getBarcode_type());
+		addCommand(getBarcode_b_w());
+		addCommand(getBarcode_b_f());
+		addCommand(intToStrZero(altura, 3));
+		addCommand(intToStrZero(y));
+		addCommand(intToStrZero(x));
+		addCommand(dados);
 		close();
 	}
-	
-	public void appendCopy( int repeticoes ) {
 
-		if ( repeticoes > 0 ) {
-			addCommand( STX );
-			addCommand( E );
-			addCommand( intToStrZero( repeticoes - 1 , 3 ) );
-			addCommand( CR );
-			addCommand( STX );
-			addCommand( G );
-			addCommand( CR );
+	public void appendCopy(int repeticoes) {
+
+		if (repeticoes > 0) {
+			addCommand(STX);
+			addCommand(E);
+			addCommand(intToStrZero(repeticoes - 1, 3));
+			addCommand(CR);
+			addCommand(STX);
+			addCommand(G);
+			addCommand(CR);
 		}
 	}
 
@@ -276,8 +274,8 @@ public class EtiquetaPPLA {
 	 */
 	public void close() {
 
-		addCommand( E );
-		addCommand( CR );
+		addCommand(E);
+		addCommand(CR);
 	}
 
 	/**
@@ -298,9 +296,9 @@ public class EtiquetaPPLA {
 	 * 
 	 * @see org.freedom.funcoes.EtiquetaPPLA@intToStrZero( int, int )
 	 */
-	private String intToStrZero( final int arg ) {
+	private String intToStrZero(final int arg) {
 
-		return intToStrZero( arg, 4 );
+		return intToStrZero(arg, 4);
 	}
 
 	/**
@@ -313,17 +311,17 @@ public class EtiquetaPPLA {
 	 *            tamanho do retorno.
 	 * @return String formatada com zeros a esquerda.
 	 */
-	private String intToStrZero( final int arg, final int size ) {
+	private String intToStrZero(final int arg, final int size) {
 
-		String value = String.valueOf( arg );
+		String value = String.valueOf(arg);
 		StringBuffer buffer = new StringBuffer();
 		int strsize = size - value.length();
 
-		for ( int i = 0; i < strsize; i++ ) {
-			buffer.append( 0 );
+		for (int i = 0; i < strsize; i++) {
+			buffer.append(0);
 		}
 
-		buffer.append( arg );
+		buffer.append(arg);
 
 		return buffer.toString();
 	}
@@ -338,17 +336,17 @@ public class EtiquetaPPLA {
 	 *            tamanho do retorno.
 	 * @return String formatada com zeros a esquerda.
 	 */
-	private String charToStrZero( final char arg, final int size ) {
+	private String charToStrZero(final char arg, final int size) {
 
-		String value = String.valueOf( arg );
+		String value = String.valueOf(arg);
 		StringBuffer buffer = new StringBuffer();
 		int strsize = size - value.length();
 
-		for ( int i = 0; i < strsize; i++ ) {
-			buffer.append( 0 );
+		for (int i = 0; i < strsize; i++) {
+			buffer.append(0);
 		}
 
-		buffer.append( arg );
+		buffer.append(arg);
 
 		return buffer.toString();
 	}

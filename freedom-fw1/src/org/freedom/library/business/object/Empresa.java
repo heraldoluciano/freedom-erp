@@ -36,107 +36,104 @@ public class Empresa {
 	private HashMap<String, Object> hValores = new HashMap<String, Object>();
 	private String razemp = "";
 
-	public Empresa(DbConnection con){
+	public Empresa(DbConnection con) {
 		carregaObjeto(con);
 	}
 
-	private void carregaObjeto(DbConnection con){
+	private void carregaObjeto(DbConnection con) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
 
-
-		sql.append( "SELECT E.RAZEMP,F.FONEFILIAL,F.FAXFILIAL,F.EMAILFILIAL,E.FOTOEMP,F.ENDFILIAL,F.NUMFILIAL,F.BAIRFILIAL,F.CEPFILIAL,F.SIGLAUF,F.DDDFILIAL,CNPJFILIAL,INSCFILIAL, " );
-		sql.append( "(SELECT M.NOMEMUNIC FROM SGMUNICIPIO M WHERE M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC) AS CIDFILIAL " );
-		sql.append( "FROM SGEMPRESA E, SGFILIAL F " ); 
-		sql.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND E.CODEMP=F.CODEMP");
+		sql.append("SELECT E.RAZEMP,F.FONEFILIAL,F.FAXFILIAL,F.EMAILFILIAL,E.FOTOEMP,F.ENDFILIAL,F.NUMFILIAL,F.BAIRFILIAL,F.CEPFILIAL,F.SIGLAUF,F.DDDFILIAL,CNPJFILIAL,INSCFILIAL, ");
+		sql.append("(SELECT M.NOMEMUNIC FROM SGMUNICIPIO M WHERE M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC) AS CIDFILIAL ");
+		sql.append("FROM SGEMPRESA E, SGFILIAL F ");
+		sql.append("WHERE F.CODEMP=? AND F.CODFILIAL=? AND E.CODEMP=F.CODEMP");
 
 		try {
 			ps = con.prepareStatement(sql.toString());
-			ps.setInt( 1, Aplicativo.iCodEmp);
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 
-			if(rs.next()){
-				
-				razemp = rs.getString("RAZEMP"); 
-				
-				hValores.put("RAZEMP",razemp);
-				 
-				hValores.put("FONEFILIAL",rs.getString("FONEFILIAL"));
-				hValores.put("FAXFILIAL",rs.getString("FAXFILIAL"));
-				hValores.put("ENDFILIAL",rs.getString("ENDFILIAL"));
-				hValores.put("NUMFILIAL",rs.getString("NUMFILIAL"));
-				hValores.put("CIDFILIAL",rs.getString("CIDFILIAL"));
-				hValores.put("BAIRFILIAL",rs.getString("BAIRFILIAL"));
-				hValores.put("UFFILIAL",rs.getString("SIGLAUF"));
-				hValores.put("DDDFILIAL",rs.getString("DDDFILIAL"));
-				hValores.put("CNPJFILIAL",rs.getString("CNPJFILIAL"));
-				hValores.put("INSCFILIAL",rs.getString("INSCFILIAL"));
-				hValores.put("CEPFILIAL",rs.getString("CEPFILIAL"));
-				hValores.put("EMAILFILIAL",rs.getString("EMAILFILIAL"));
+			if (rs.next()) {
 
-				hValores.put("RODAPE",rs.getString("ENDFILIAL")!=null ? ( rs.getString("ENDFILIAL").trim() + ", " 
-						+(rs.getString("NUMFILIAL")==null?"":rs.getString("NUMFILIAL").trim() + "-") 
-						+(rs.getString("BAIRFILIAL")==null?"":rs.getString("BAIRFILIAL").trim() + " - ") 
-						+(rs.getString("CIDFILIAL")==null?"":rs.getString("CIDFILIAL").trim() + "-") 
-						+(rs.getString("SIGLAUF")==null?"":rs.getString("SIGLAUF").trim()+" - ") 
-						+(rs.getString("CEPFILIAL")==null?"":"CEP "+rs.getString("CEPFILIAL").trim()) ) : ""  );
+				razemp = rs.getString("RAZEMP");
+
+				hValores.put("RAZEMP", razemp);
+
+				hValores.put("FONEFILIAL", rs.getString("FONEFILIAL"));
+				hValores.put("FAXFILIAL", rs.getString("FAXFILIAL"));
+				hValores.put("ENDFILIAL", rs.getString("ENDFILIAL"));
+				hValores.put("NUMFILIAL", rs.getString("NUMFILIAL"));
+				hValores.put("CIDFILIAL", rs.getString("CIDFILIAL"));
+				hValores.put("BAIRFILIAL", rs.getString("BAIRFILIAL"));
+				hValores.put("UFFILIAL", rs.getString("SIGLAUF"));
+				hValores.put("DDDFILIAL", rs.getString("DDDFILIAL"));
+				hValores.put("CNPJFILIAL", rs.getString("CNPJFILIAL"));
+				hValores.put("INSCFILIAL", rs.getString("INSCFILIAL"));
+				hValores.put("CEPFILIAL", rs.getString("CEPFILIAL"));
+				hValores.put("EMAILFILIAL", rs.getString("EMAILFILIAL"));
+
+				hValores.put("RODAPE",
+						rs.getString("ENDFILIAL") != null ? ( rs.getString("ENDFILIAL").trim() + ", " + ( rs.getString("NUMFILIAL") == null ? "" : rs.getString("NUMFILIAL").trim() + "-" )
+								+ ( rs.getString("BAIRFILIAL") == null ? "" : rs.getString("BAIRFILIAL").trim() + " - " )
+								+ ( rs.getString("CIDFILIAL") == null ? "" : rs.getString("CIDFILIAL").trim() + "-" )
+								+ ( rs.getString("SIGLAUF") == null ? "" : rs.getString("SIGLAUF").trim() + " - " ) + ( rs.getString("CEPFILIAL") == null ? "" : "CEP "
+								+ rs.getString("CEPFILIAL").trim() ) ) : "");
 
 				Blob bVal = rs.getBlob("FOTOEMP");
 
 				if (bVal != null) {
 					try {
-						hValores.put("LOGOEMP",new ImageIcon(bVal.getBytes( 1, (int) bVal.length() )).getImage());
-					}  		  		
-					catch(Exception err) {
-						Funcoes.mensagemErro(null,"Erro ao recuperar dados!\n"+err.getMessage());
+						hValores.put("LOGOEMP", new ImageIcon(bVal.getBytes(1, ( int ) bVal.length())).getImage());
+					}
+					catch (Exception err) {
+						Funcoes.mensagemErro(null, "Erro ao recuperar dados!\n" + err.getMessage());
 						err.printStackTrace();
-					}  		  		
+					}
 				}
-				else{
-					hValores.put("LOGOEMP",null);
+				else {
+					hValores.put("LOGOEMP", null);
 				}
 
-			}    
+			}
 		}
-		catch(Exception err){
+		catch (Exception err) {
 			err.printStackTrace();
 		}
 	}
 
-	public HashMap<String, Object> getAll(){
+	public HashMap<String, Object> getAll() {
 		return hValores;
 	}
 
 	public String toString() {
 		return razemp;
 	}
-	
+
 	public String getEndereco() {
-		return (String) hValores.get( "ENDFILIAL" ); 
+		return ( String ) hValores.get("ENDFILIAL");
 	}
-	
+
 	public String getNumFilial() {
-		return (String) hValores.get( "NUMFILIAL" ); 
+		return ( String ) hValores.get("NUMFILIAL");
 	}
-	
+
 	public String getCidFilial() {
-		return (String) hValores.get( "CIDFILIAL" ); 
+		return ( String ) hValores.get("CIDFILIAL");
 	}
-	
+
 	public String getUFFilial() {
-		return (String) hValores.get( "UFFILIAL" ); 
+		return ( String ) hValores.get("UFFILIAL");
 	}
 
 	public String getBairFilial() {
-		return (String) hValores.get( "BAIRFILIAL" ); 
+		return ( String ) hValores.get("BAIRFILIAL");
 	}
-	
+
 	public String getEnderecoCompleto() {
-		return (String) hValores.get( "RODAPE" ); 
+		return ( String ) hValores.get("RODAPE");
 	}
-
-
 
 }

@@ -19,6 +19,7 @@
  */
 
 package org.freedom.library.component;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.component.ImprimeLayout;
 
@@ -28,8 +29,12 @@ import java.util.Vector;
 public abstract class LeiauteGR extends ImprimeLayout {
 
 	private static final long serialVersionUID = 1L;
-	public LeiauteGR() {} 
-	public abstract void setParam(Vector<?> vParam);  
+
+	public LeiauteGR() {
+	}
+
+	public abstract void setParam(Vector<?> vParam);
+
 	public abstract void setConexao(DbConnection cn);
 
 }

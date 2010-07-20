@@ -1,7 +1,7 @@
 package org.freedom.library.business.exceptions;
 
 public class ExceptionCnab extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public ExceptionCnab() {
@@ -19,5 +19,5 @@ public class ExceptionCnab extends Exception {
 	public ExceptionCnab(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

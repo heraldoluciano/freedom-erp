@@ -19,6 +19,7 @@
  */
 
 package org.freedom.library.swing.frame;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,10 +43,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 
 public class Calc extends FFilho implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
-	
-	private GridBagConstraints gbConst = new GridBagConstraints();        
+
+	private GridBagConstraints gbConst = new GridBagConstraints();
 	private GridBagLayout gbCalc = new GridBagLayout();
-	private JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);
+	private JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 5);
 	private JTextAreaPad txaCalc = new JTextAreaPad();
 	private JButtonPad btPerc = new JButtonPad("%");
 	private JButtonPad btRaiz = new JButtonPad("Raiz");
@@ -74,16 +75,16 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	private JButtonPad btPot = new JButtonPad("x^x");
 	private JButtonPad btAlt = new JButtonPad("+/-");
 	private JButtonPad btBac = new JButtonPad("Back");
-	private JLabelPad lbMemo = new JLabelPad(" "); 
+	private JLabelPad lbMemo = new JLabelPad(" ");
 	private JPanelPad pnTeclas = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas1 = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas2 = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas3 = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas4 = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas5 = new JPanelPad(JPanelPad.TP_JPANEL);
-	private JPanelPad pnTeclas6 = new JPanelPad(JPanelPad.TP_JPANEL); 
+	private JPanelPad pnTeclas6 = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnTeclas7 = new JPanelPad(JPanelPad.TP_JPANEL);
-	private GridLayout glTeclas = new GridLayout( 1, 4);
+	private GridLayout glTeclas = new GridLayout(1, 4);
 	private String dg = "";
 	double ret = 0;
 	double men = 0;
@@ -105,26 +106,26 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	boolean Ctrl = false;
 	boolean Esc = false;
 	int esp = 32;
-	
+
 	public Calc() {
-		
+
 		super(false);
-		
+
 		Container c = getContentPane();
 
 		txaCalc.setEditable(false);
 		txtRes.setEditable(false);
 
 		txtRes.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		txaCalc.setFont(new Font( "fixed", Font.BOLD, 14));		
-		
-		txtRes.setFont(new Font( "Arial", Font.BOLD, 20));
-		
-		lbMemo.setFont(new Font( "Arial", Font.BOLD, 20));
-		
+
+		txaCalc.setFont(new Font("fixed", Font.BOLD, 14));
+
+		txtRes.setFont(new Font("Arial", Font.BOLD, 20));
+
+		lbMemo.setFont(new Font("Arial", Font.BOLD, 20));
+
 		JScrollPane pnCalc = new JScrollPane(txaCalc);
-		pnCalc.setPreferredSize(new Dimension( 50, 130));
+		pnCalc.setPreferredSize(new Dimension(50, 130));
 
 		gbConst.fill = GridBagConstraints.BOTH;
 		gbConst.gridx = 0;
@@ -132,7 +133,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		gbConst.gridheight = 1;
 		gbConst.gridwidth = 1;
 		gbCalc.setConstraints(pnCalc, gbConst);
-		
+
 		c.add(pnCalc);
 
 		gbConst.fill = GridBagConstraints.BOTH;
@@ -141,10 +142,10 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		gbConst.gridheight = 1;
 		gbConst.gridwidth = 1;
 		gbCalc.setConstraints(txtRes, gbConst);
-		
+
 		c.add(txtRes);
 
-		pnTeclas.setLayout(new GridLayout(7,1));
+		pnTeclas.setLayout(new GridLayout(7, 1));
 		pnTeclas1.setLayout(glTeclas);
 		pnTeclas1.add(lbMemo);
 		btBac.addActionListener(this);
@@ -157,7 +158,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btPot.addKeyListener(this);
 		pnTeclas1.add(btPot);
 		pnTeclas.add(pnTeclas1);
-		
+
 		pnTeclas2.setLayout(glTeclas);
 		btPerc.addActionListener(this);
 		btPerc.addKeyListener(this);
@@ -172,7 +173,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btCE.addKeyListener(this);
 		pnTeclas2.add(btCE);
 		pnTeclas.add(pnTeclas2);
-		
+
 		pnTeclas3.setLayout(glTeclas);
 		btMC.addActionListener(this);
 		btMC.addKeyListener(this);
@@ -187,7 +188,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btMmais.addKeyListener(this);
 		pnTeclas3.add(btMmais);
 		pnTeclas.add(pnTeclas3);
-		
+
 		pnTeclas4.setLayout(glTeclas);
 		bt7.addActionListener(this);
 		bt7.addKeyListener(this);
@@ -202,7 +203,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btDiv.addKeyListener(this);
 		pnTeclas4.add(btDiv);
 		pnTeclas.add(pnTeclas4);
-		
+
 		pnTeclas5.setLayout(glTeclas);
 		bt4.addActionListener(this);
 		bt4.addKeyListener(this);
@@ -217,7 +218,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btVez.addKeyListener(this);
 		pnTeclas5.add(btVez);
 		pnTeclas.add(pnTeclas5);
-		
+
 		pnTeclas6.setLayout(glTeclas);
 		bt1.addActionListener(this);
 		bt1.addKeyListener(this);
@@ -232,7 +233,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btMenos.addKeyListener(this);
 		pnTeclas6.add(btMenos);
 		pnTeclas.add(pnTeclas6);
-		
+
 		pnTeclas7.setLayout(glTeclas);
 		bt0.addActionListener(this);
 		bt0.addKeyListener(this);
@@ -247,7 +248,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		btMais.addKeyListener(this);
 		pnTeclas7.add(btMais);
 		pnTeclas.add(pnTeclas7);
-		
+
 		gbConst.fill = GridBagConstraints.BOTH;
 		gbConst.gridx = 0;
 		gbConst.gridy = 2;
@@ -255,187 +256,280 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		gbConst.gridwidth = 1;
 		gbConst.weightx = 1;
 		gbConst.weighty = 1;
-		gbCalc.setConstraints(pnTeclas, gbConst);			
-		
+		gbCalc.setConstraints(pnTeclas, gbConst);
+
 		c.add(pnTeclas);
 
 		c.setLayout(gbCalc);
 
 		addKeyListener(this);
 
-		setResizable(false);  
-		
+		setResizable(false);
+
 		setTitulo("Calculadora", this.getClass().getName());
-		setAtribos( 50, 50, 310, 390);
-		
+		setAtribos(50, 50, 310, 390);
+
 	}
 
-	public void actionPerformed(ActionEvent evt) { 
-		((JButtonPad)evt.getSource()).requestFocus();		
+	public void actionPerformed(ActionEvent evt) {
+		( ( JButtonPad ) evt.getSource() ).requestFocus();
 		calcular(evt.getActionCommand());
 	}
-	
-	public void keyPressed( KeyEvent kevt) {
-		
-		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;  	
-		if(kevt.getKeyCode() == KeyEvent.VK_ESCAPE) btC.doClick();
-		if(kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE) btBac.doClick();  	
-		else if (kevt.getKeyCode() == KeyEvent.VK_ENTER) btIgual.doClick();  	
+
+	public void keyPressed(KeyEvent kevt) {
+
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+			Ctrl = true;
+		if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
+			btC.doClick();
+		if (kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+			btBac.doClick();
+		else if (kevt.getKeyCode() == KeyEvent.VK_ENTER)
+			btIgual.doClick();
 		if (Ctrl) {
-			if ((kevt.getKeyCode() == KeyEvent.VK_PLUS) || (kevt.getKeyCode() == 107)) 
+			if (( kevt.getKeyCode() == KeyEvent.VK_PLUS ) || ( kevt.getKeyCode() == 107 ))
 				btMmais.doClick();
-			else if ((kevt.getKeyCode() == KeyEvent.VK_MINUS) || (kevt.getKeyCode() == 109)) 
+			else if (( kevt.getKeyCode() == KeyEvent.VK_MINUS ) || ( kevt.getKeyCode() == 109 ))
 				btMmenos.doClick();
-			else if (kevt.getKeyCode() == KeyEvent.VK_ENTER) btMR.doClick();
-			else if ((kevt.getKeyCode() == KeyEvent.VK_C) || kevt.getKeyCode() == 67) btMC.doClick();
-			else if (kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE) btCE.doClick();
-			else if (kevt.getKeyCode() == KeyEvent.VK_ALT) btAlt.doClick();
-			else if ((kevt.getKeyCode() == 80) || (kevt.getKeyCode() == KeyEvent.VK_P)) 
+			else if (kevt.getKeyCode() == KeyEvent.VK_ENTER)
+				btMR.doClick();
+			else if (( kevt.getKeyCode() == KeyEvent.VK_C ) || kevt.getKeyCode() == 67)
+				btMC.doClick();
+			else if (kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+				btCE.doClick();
+			else if (kevt.getKeyCode() == KeyEvent.VK_ALT)
+				btAlt.doClick();
+			else if (( kevt.getKeyCode() == 80 ) || ( kevt.getKeyCode() == KeyEvent.VK_P ))
 				btPot.doClick();
 		}
-		
+
 	}
-	
-	public void keyReleased( KeyEvent kevt) {
-		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true; 
+
+	public void keyReleased(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+			Ctrl = true;
 	}
-	
-	public void keyTyped( KeyEvent kevt ) {		
-		if (kevt.getKeyChar() == '0') 
+
+	public void keyTyped(KeyEvent kevt) {
+		if (kevt.getKeyChar() == '0')
 			bt0.doClick();
-		else if (kevt.getKeyChar() == '1') 
+		else if (kevt.getKeyChar() == '1')
 			bt1.doClick();
-		else if (kevt.getKeyChar() == '2') 
+		else if (kevt.getKeyChar() == '2')
 			bt2.doClick();
-		else if (kevt.getKeyChar() == '3') 
+		else if (kevt.getKeyChar() == '3')
 			bt3.doClick();
-		else if (kevt.getKeyChar() == '4') 
+		else if (kevt.getKeyChar() == '4')
 			bt4.doClick();
-		else if (kevt.getKeyChar() == '5') 
+		else if (kevt.getKeyChar() == '5')
 			bt5.doClick();
-		else if (kevt.getKeyChar() == '6') 
+		else if (kevt.getKeyChar() == '6')
 			bt6.doClick();
-		else if (kevt.getKeyChar() == '7') 
+		else if (kevt.getKeyChar() == '7')
 			bt7.doClick();
-		else if (kevt.getKeyChar() == '8') 
+		else if (kevt.getKeyChar() == '8')
 			bt8.doClick();
-		else if (kevt.getKeyChar() == '9') 
+		else if (kevt.getKeyChar() == '9')
 			bt9.doClick();
-		else if (kevt.getKeyChar() == '/') 
+		else if (kevt.getKeyChar() == '/')
 			btDiv.doClick();
-		else if (kevt.getKeyChar() == '*') 
+		else if (kevt.getKeyChar() == '*')
 			btVez.doClick();
-		else if (kevt.getKeyChar() == '-') 
+		else if (kevt.getKeyChar() == '-')
 			btMenos.doClick();
-		else if (kevt.getKeyChar() == '+') 
+		else if (kevt.getKeyChar() == '+')
 			btMais.doClick();
-		else if (kevt.getKeyChar() == '=') 
+		else if (kevt.getKeyChar() == '=')
 			btIgual.doClick();
-		else if (kevt.getKeyChar() == '.') 
+		else if (kevt.getKeyChar() == '.')
 			btPonto.doClick();
-		else if (kevt.getKeyChar() == ',') 
+		else if (kevt.getKeyChar() == ',')
 			btPonto.doClick();
-		else if ((kevt.getKeyChar() == 'r') || (kevt.getKeyChar() == 'R')) 
+		else if (( kevt.getKeyChar() == 'r' ) || ( kevt.getKeyChar() == 'R' ))
 			btRaiz.doClick();
-		else if ((kevt.getKeyChar() == 'p') || (kevt.getKeyChar() == 'P')) 
+		else if (( kevt.getKeyChar() == 'p' ) || ( kevt.getKeyChar() == 'P' ))
 			btPerc.doClick();
 	}
 
 	public void calcular(String lb) {
 		String s = "";
 		dg = lb;
-		if (num == "0.0") num = "";
-		if (dg == "1") num += 1;
-		else if (dg == "2") num += 2;
-		else if (dg == "3") num += 3;
-		else if (dg == "4") num += 4;
-		else if (dg == "5") num += 5;
-		else if (dg == "6") num += 6;
-		else if (dg == "7") num += 7;
-		else if (dg == "8") num += 8;
-		else if (dg == "9") num += 9;
-		else if (dg == "0") num += 0;
-		else if (dg == ".") { 
-			if(num.indexOf(".")==-1)
+		if (num == "0.0")
+			num = "";
+		if (dg == "1")
+			num += 1;
+		else if (dg == "2")
+			num += 2;
+		else if (dg == "3")
+			num += 3;
+		else if (dg == "4")
+			num += 4;
+		else if (dg == "5")
+			num += 5;
+		else if (dg == "6")
+			num += 6;
+		else if (dg == "7")
+			num += 7;
+		else if (dg == "8")
+			num += 8;
+		else if (dg == "9")
+			num += 9;
+		else if (dg == "0")
+			num += 0;
+		else if (dg == ".") {
+			if (num.indexOf(".") == -1)
 				num += ".";
 		}
-		else if (dg == "Back") { if (num.length() > 0) num = num.substring( 0, num.length() - 1); }                       
-		else if (dg == "CE") num = "0.0";
-		else if (dg == "M+") 
-			if (num.length() > 0) memo += Double.parseDouble(num); 
-			else memo += res;
-		else if (dg == "M-") 
-			if (num.length() > 0) memo -= Double.parseDouble(num); 
-			else memo -= res;
-		else if (dg == "MR") { 
-			num = ""+memo;    
-			res = 0;
-			txaCalc.setText(txaCalc.getText()+"\n"+alinha("--memo--")+"\n"+alinha(num)+"\n");
-		} 
-		else if (dg == "MC") memo = 0;
-		else if (dg == "Raiz") {
-			if (num.length() > 0) num = ""+Math.sqrt(Double.parseDouble(num));  
-			else num = ""+Math.sqrt(res);  
-			res = 0;
-			txaCalc.setText(txaCalc.getText()+"\n"+alinha("--raiz--")+"\n"+alinha(num)+"\n");
+		else if (dg == "Back") {
+			if (num.length() > 0)
+				num = num.substring(0, num.length() - 1);
 		}
-		else if (dg == "+/-") 
-			if (num.length() > 0) 
-				if (Double.parseDouble(num) < 0) 
-					num = num.substring( 1, num.length());
-				else 
+		else if (dg == "CE")
+			num = "0.0";
+		else if (dg == "M+")
+			if (num.length() > 0)
+				memo += Double.parseDouble(num);
+			else
+				memo += res;
+		else if (dg == "M-")
+			if (num.length() > 0)
+				memo -= Double.parseDouble(num);
+			else
+				memo -= res;
+		else if (dg == "MR") {
+			num = "" + memo;
+			res = 0;
+			txaCalc.setText(txaCalc.getText() + "\n" + alinha("--memo--") + "\n" + alinha(num) + "\n");
+		}
+		else if (dg == "MC")
+			memo = 0;
+		else if (dg == "Raiz") {
+			if (num.length() > 0)
+				num = "" + Math.sqrt(Double.parseDouble(num));
+			else
+				num = "" + Math.sqrt(res);
+			res = 0;
+			txaCalc.setText(txaCalc.getText() + "\n" + alinha("--raiz--") + "\n" + alinha(num) + "\n");
+		}
+		else if (dg == "+/-")
+			if (num.length() > 0)
+				if (Double.parseDouble(num) < 0)
+					num = num.substring(1, num.length());
+				else
 					num = "-" + num;
-			else 
-				res *= (-1); 
+			else
+				res *= ( -1 );
 		else if (dg.length() > 0) {
-			if (num.length() == 0) num = "0.0";
+			if (num.length() == 0)
+				num = "0.0";
 			calc = true;
 			reg(true);
 		}
-		if (dg == "+") soma = true;
-		else if (dg == "-") sub = true;
-		else if (dg == "*") mult = true;
-		else if (dg == "÷") div = true;
-		else if (dg == "x^x") pot = true;
-		else if (dg == "=") vi = true;
-		else if (dg == "C") limpar();
+		if (dg == "+")
+			soma = true;
+		else if (dg == "-")
+			sub = true;
+		else if (dg == "*")
+			mult = true;
+		else if (dg == "÷")
+			div = true;
+		else if (dg == "x^x")
+			pot = true;
+		else if (dg == "=")
+			vi = true;
+		else if (dg == "C")
+			limpar();
 		else if (dg == "%") {
 			if (res == 0) {
 				Funcoes.mensagemErro(this, "Não é possível obter percentagem de \"0\" !");
 				limpar();
 			}
 			else {
-				num = ""+(res / 100) * Double.parseDouble(num); 
+				num = "" + ( res / 100 ) * Double.parseDouble(num);
 			}
 		}
 		s = num;
 		if (calc) {
 			ret = Double.parseDouble(num);
-			if (res == 0) res = ret;
-			if (somar) { res = men + ret; somar = false; reg(true, null);} 
-			else if (subtrair) { res = men - ret; subtrair = false; reg(true, null);} 
-			else if (multiplicar) { res = men * ret; multiplicar = false; reg(true, null);} 
-			else if (dividir) { res = men / ret; dividir = false; reg(true, null);} 
-			else if (potencia) { res = pot( men, ret); potencia = false; reg(true, null);
-			} 
+			if (res == 0)
+				res = ret;
+			if (somar) {
+				res = men + ret;
+				somar = false;
+				reg(true, null);
+			}
+			else if (subtrair) {
+				res = men - ret;
+				subtrair = false;
+				reg(true, null);
+			}
+			else if (multiplicar) {
+				res = men * ret;
+				multiplicar = false;
+				reg(true, null);
+			}
+			else if (dividir) {
+				res = men / ret;
+				dividir = false;
+				reg(true, null);
+			}
+			else if (potencia) {
+				res = pot(men, ret);
+				potencia = false;
+				reg(true, null);
+			}
 			calc = false;
-			if (soma) { men = res; somar = true; soma = false; vi = true; reg(false, "+"); }
-			else if (sub) { men = res; subtrair = true; sub = false; vi = true; reg(false, "-"); }
-			else if (mult) { men = res; multiplicar = true; mult = false; vi = true; reg(false, "*"); }
-			else if (div) { 
-				if ( res == 0 ) {
-					Funcoes.mensagemInforma( this, "Não é possível dividir \"0\" !");
+			if (soma) {
+				men = res;
+				somar = true;
+				soma = false;
+				vi = true;
+				reg(false, "+");
+			}
+			else if (sub) {
+				men = res;
+				subtrair = true;
+				sub = false;
+				vi = true;
+				reg(false, "-");
+			}
+			else if (mult) {
+				men = res;
+				multiplicar = true;
+				mult = false;
+				vi = true;
+				reg(false, "*");
+			}
+			else if (div) {
+				if (res == 0) {
+					Funcoes.mensagemInforma(this, "Não é possível dividir \"0\" !");
 					limpar();
-				} 
+				}
 				else {
-					men = res; dividir = true; div = false; vi = true; reg(false, "÷"); 
+					men = res;
+					dividir = true;
+					div = false;
+					vi = true;
+					reg(false, "÷");
 				}
 			}
-			else if (pot) { men = res; potencia = true; pot = false; vi = true; reg(false, "^"); }
+			else if (pot) {
+				men = res;
+				potencia = true;
+				pot = false;
+				vi = true;
+				reg(false, "^");
+			}
 		}
-		if (vi) { num = ""; s = ""+res; } 
+		if (vi) {
+			num = "";
+			s = "" + res;
+		}
 		vi = false;
-		if (memo != 0) lbMemo.setText(" M "); else lbMemo.setText("   ");
+		if (memo != 0)
+			lbMemo.setText(" M ");
+		else
+			lbMemo.setText("   ");
 		txtRes.setVlrString(s);
 
 	}
@@ -455,35 +549,45 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		res = 0;
 		men = 0;
 		ret = 0;
-		reg(false, "\n\n"+alinha("Clear!!")+"\n");
+		reg(false, "\n\n" + alinha("Clear!!") + "\n");
 	}
+
 	public double pot(double num, double ele) {
-		double ret = num; 
-		if ( ele > 0) for (int i = 1; i != ele; i++) ret = ret * num;
-		else if ( ele == 0) ret = 1;
-		else if ( ele < 0) ret = (1 / (num * (num * ele)));
-		return ret;  
+		double ret = num;
+		if (ele > 0)
+			for (int i = 1; i != ele; i++)
+				ret = ret * num;
+		else if (ele == 0)
+			ret = 1;
+		else if (ele < 0)
+			ret = ( 1 / ( num * ( num * ele ) ) );
+		return ret;
 	}
+
 	public void reg(boolean tot, String val) {
-		if (tot) {  
-			txaCalc.setText(txaCalc.getText()+"\n"+alinha("--------")+"\n"+alinha(""+res));
+		if (tot) {
+			txaCalc.setText(txaCalc.getText() + "\n" + alinha("--------") + "\n" + alinha("" + res));
 		}
-		else txaCalc.setText(txaCalc.getText()+" "+val+"\n");
+		else
+			txaCalc.setText(txaCalc.getText() + " " + val + "\n");
 	}
+
 	public void reg(boolean reg) {
-		if (reg & num != "0.0") 
-			txaCalc.setText(txaCalc.getText()+alinha(num));
+		if (reg & num != "0.0")
+			txaCalc.setText(txaCalc.getText() + alinha(num));
 	}
+
 	public String alinha(String s) {
 		String ret = "";
 		ret = replica(" ", esp - s.length()) + s;
 		return ret;
-	}    
+	}
+
 	public String replica(String c, int vez) {
 		String ret = c;
-		for (int i = 1; i != vez; i++) ret = ret + c;
+		for (int i = 1; i != vez; i++)
+			ret = ret + c;
 		return ret;
 	}
-	
-} 
 
+}

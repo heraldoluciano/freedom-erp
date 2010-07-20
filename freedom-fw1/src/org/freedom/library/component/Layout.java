@@ -22,17 +22,20 @@ package org.freedom.library.component;
 
 import org.freedom.library.business.component.NF;
 import org.freedom.library.swing.frame.Aplicativo;
+
 public class Layout extends Object {
-	//public boolean bEntrada = false;
+	// public boolean bEntrada = false;
 	protected TabVector cab = null;
 	protected TabVector itens = null;
 	protected TabVector parc = null;
 	protected TabVector adic = null;
 	protected TabVector frete = null;
-    protected int casasDec = Aplicativo.casasDec;
-    protected int casasDecFin = Aplicativo.casasDecFin;
-  
-public Layout() { }
+	protected int casasDec = Aplicativo.casasDec;
+	protected int casasDecFin = Aplicativo.casasDecFin;
+
+	public Layout() {
+	}
+
 	public boolean imprimir(NF nf, ImprimeOS imp) {
 		cab = nf.getTabVector(NF.T_CAB);
 		itens = nf.getTabVector(NF.T_ITENS);
@@ -42,5 +45,5 @@ public Layout() { }
 		casasDec = nf.getCasasDec();
 		return false;
 	}
-	
+
 }

@@ -46,36 +46,36 @@ public class FTabDados extends FDados implements KeyListener {
 	boolean ind = true;
 
 	public FTabDados() {
-		
+
 		this(true);
-		
+
 		setInitFirstFocus(false);
 		setTitulo("Formulário de tabulação", this.getClass().getName());
 		setAtribos(50, 50, 350, 300);
-		
+
 		pnCliente.remove(pinDados);
 		tpn.addKeyListener(this);
 		addKeyListener(this);
-		
+
 	}
 
 	public FTabDados(boolean comScroll) {
-		
+
 		super(comScroll);
-		
+
 	}
-	
+
 	public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
-		tpn.add(tit, pn);		
+		tpn.add(tit, pn);
 		pn.addKeyListener(this);
 		pnCliente.add(tpn, BorderLayout.CENTER);
 		return tpn;
-		
+
 	}
 
 	public void removeTab(String tit, JPanelPad pn) {
 		int i = -1;
-		if ((i = tpn.indexOfTab(tit)) > -1) {
+		if (( i = tpn.indexOfTab(tit) ) > -1) {
 			tpn.removeTabAt(i);
 			pn.removeKeyListener(this);
 			pnCliente.add(tpn, BorderLayout.CENTER);
@@ -85,7 +85,7 @@ public class FTabDados extends FDados implements KeyListener {
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
 			Ctrl = true;
-		if ((Ctrl) & (kevt.getKeyCode() == KeyEvent.VK_TAB)) {
+		if (( Ctrl ) & ( kevt.getKeyCode() == KeyEvent.VK_TAB )) {
 			if (tpn.getSelectedIndex() < tpn.getTabCount() - 1)
 				tpn.setSelectedIndex(tpn.getSelectedIndex() + 1);
 			else
@@ -101,7 +101,7 @@ public class FTabDados extends FDados implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent kevt) {
-		if ((Ctrl) & (kevt.getKeyChar() == '\t')) {
+		if (( Ctrl ) & ( kevt.getKeyChar() == '\t' )) {
 			if (tpn.getSelectedIndex() < tpn.getTabCount() - 1)
 				tpn.setSelectedIndex(tpn.getSelectedIndex() + 1);
 			else
@@ -109,10 +109,11 @@ public class FTabDados extends FDados implements KeyListener {
 		}
 		super.keyTyped(kevt);
 	}
+
 	public void show() {
 		primShow = false;
 		super.show();
 		ajustaScroll();
-		//this.pnCliente.setBounds(0,0,100,100);
+		// this.pnCliente.setBounds(0,0,100,100);
 	}
 }

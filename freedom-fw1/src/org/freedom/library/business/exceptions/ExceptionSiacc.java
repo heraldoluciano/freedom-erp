@@ -1,7 +1,7 @@
 package org.freedom.library.business.exceptions;
 
 public class ExceptionSiacc extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public ExceptionSiacc() {
@@ -19,5 +19,5 @@ public class ExceptionSiacc extends Exception {
 	public ExceptionSiacc(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

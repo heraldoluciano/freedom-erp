@@ -53,15 +53,15 @@ public abstract class ModeloLote {
 
 	private Vector<String> vMascaras = new Vector<String>();
 
-	public static final String VLR_CODPROD 	 = "#CODPROD#";
+	public static final String VLR_CODPROD = "#CODPROD#";
 
-	public static final String VLR_DIA 		 = "#DIA#";
+	public static final String VLR_DIA = "#DIA#";
 
-	public static final String VLR_MES 		 = "#MES#";
+	public static final String VLR_MES = "#MES#";
 
-	public static final String VLR_ANO 		 = "#ANO#";
+	public static final String VLR_ANO = "#ANO#";
 
-	public static final String VLR_NPRODDIA  = "#NPRODDIA#";
+	public static final String VLR_NPRODDIA = "#NPRODDIA#";
 
 	public static final String VLR_LOTEPRINC = "#LOTEPRINC#";
 
@@ -71,11 +71,11 @@ public abstract class ModeloLote {
 
 	}
 
-	public void adicOpcao( String sLabel, String sValor, Integer iTam ) {
+	public void adicOpcao(String sLabel, String sValor, Integer iTam) {
 
-		vLabels.addElement( sLabel );
-		vValores.addElement( sValor );
-		vTams.addElement( iTam );
+		vLabels.addElement(sLabel);
+		vValores.addElement(sValor);
+		vTams.addElement(iTam);
 	}
 
 	public Vector<String> getLabels() {
@@ -110,9 +110,9 @@ public abstract class ModeloLote {
 		return vLabelsColunas;
 	}
 
-	public void setTexto( String sTexto ) {
+	public void setTexto(String sTexto) {
 
-		if ( sTexto != null ) {
+		if (sTexto != null) {
 			this.sTexto = sTexto;
 		}
 		getAdic();
@@ -124,106 +124,105 @@ public abstract class ModeloLote {
 		vLabelsAdic = new Vector<String>();
 		vValoresAdic = new Vector<String>();
 
-		for ( int i2 = 0; vValores.size() > i2; i2++ ) {
-			if ( ( sTexto.indexOf( vValores.elementAt( i2 ).toString() ) ) > ( -1 ) ) {
-				vTamsAdic.addElement( vTams.elementAt( i2 ).toString() );
-				vLabelsAdic.addElement( vLabels.elementAt( i2 ).toString() );
-				vValoresAdic.addElement( vValores.elementAt( i2 ).toString() );
+		for (int i2 = 0; vValores.size() > i2; i2++) {
+			if (( sTexto.indexOf(vValores.elementAt(i2).toString()) ) > ( -1 )) {
+				vTamsAdic.addElement(vTams.elementAt(i2).toString());
+				vLabelsAdic.addElement(vLabels.elementAt(i2).toString());
+				vValoresAdic.addElement(vValores.elementAt(i2).toString());
 			}
 		}
 	}
-	
-	public String getLote( final Integer iCodProd, final Date dData, final DbConnection con ) {
-		return getLote( iCodProd, dData, con, null );
+
+	public String getLote(final Integer iCodProd, final Date dData, final DbConnection con) {
+		return getLote(iCodProd, dData, con, null);
 	}
 
-	public String getLote( final Integer iCodProd, final Date dData, final DbConnection con, final String lotePrincipal ) {
+	public String getLote(final Integer iCodProd, final Date dData, final DbConnection con, final String lotePrincipal) {
 
 		String sRetorno = sTexto;
 		GregorianCalendar cal = new GregorianCalendar();
 
 		try {
 
-			cal.setTime( dData );
+			cal.setTime(dData);
 			Vector<String> vValAdic = getValoresAdic();
 
-			if ( sRetorno != null ) {
+			if (sRetorno != null) {
 
-				for ( int i = 0; vValAdic.size() > i; i++ ) {
+				for (int i = 0; vValAdic.size() > i; i++) {
 
-					String sValAdic = vValoresAdic.elementAt( i ).toString();
-					String sFragmento = sRetorno.substring( sRetorno.indexOf( "[" + sValAdic ) );
+					String sValAdic = vValoresAdic.elementAt(i).toString();
+					String sFragmento = sRetorno.substring(sRetorno.indexOf("[" + sValAdic));
 					String sCampo = "";
-					sFragmento = sFragmento.substring( 0, ( "\\" + sFragmento ).indexOf( "]" ) );
+					sFragmento = sFragmento.substring(0, ( "\\" + sFragmento ).indexOf("]"));
 
-					int iTamAdic = Funcoes.contaChar( sFragmento, '-' );
+					int iTamAdic = Funcoes.contaChar(sFragmento, '-');
 
-					if ( sValAdic.equals( VLR_CODPROD ) ) {
-						
-						sCampo = String.valueOf( iCodProd );
-						if ( sCampo.length() < iTamAdic ) {
-							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
+					if (sValAdic.equals(VLR_CODPROD)) {
+
+						sCampo = String.valueOf(iCodProd);
+						if (sCampo.length() < iTamAdic) {
+							sCampo = StringFunctions.strZero(sCampo, iTamAdic);
 						}
-						else if ( sCampo.length() > iTamAdic ) {
-							sCampo = sCampo.substring( 0, iTamAdic );
-						}
-					}
-					else if ( sValAdic.equals( VLR_DIA ) ) {
-						
-						sCampo = String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) );
-						if ( sCampo.length() < iTamAdic ) {
-							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
-						}
-						else if ( sCampo.length() > iTamAdic ) {
-							sCampo = sCampo.substring( 0, iTamAdic );
+						else if (sCampo.length() > iTamAdic) {
+							sCampo = sCampo.substring(0, iTamAdic);
 						}
 					}
-					else if ( sValAdic.equals( VLR_MES ) ) {
-						
-						sCampo = String.valueOf( cal.get( Calendar.MONTH ) + 1 );
-						if ( sCampo.length() < iTamAdic ) {
-							sCampo = StringFunctions.strZero( sCampo, iTamAdic );
+					else if (sValAdic.equals(VLR_DIA)) {
+
+						sCampo = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+						if (sCampo.length() < iTamAdic) {
+							sCampo = StringFunctions.strZero(sCampo, iTamAdic);
 						}
-						else if ( sCampo.length() > iTamAdic ) {
-							sCampo = sCampo.substring( 0, iTamAdic );
-						}
-					}
-					else if ( sValAdic.equals( VLR_ANO ) ) {
-						
-						sCampo = String.valueOf( cal.get( Calendar.YEAR ) );
-						if ( sCampo.length() > iTamAdic ) {
-							sCampo = sCampo.substring( sCampo.length() - iTamAdic );
+						else if (sCampo.length() > iTamAdic) {
+							sCampo = sCampo.substring(0, iTamAdic);
 						}
 					}
-					else if ( sValAdic.equals( VLR_NPRODDIA ) ) {
-						
+					else if (sValAdic.equals(VLR_MES)) {
+
+						sCampo = String.valueOf(cal.get(Calendar.MONTH) + 1);
+						if (sCampo.length() < iTamAdic) {
+							sCampo = StringFunctions.strZero(sCampo, iTamAdic);
+						}
+						else if (sCampo.length() > iTamAdic) {
+							sCampo = sCampo.substring(0, iTamAdic);
+						}
+					}
+					else if (sValAdic.equals(VLR_ANO)) {
+
+						sCampo = String.valueOf(cal.get(Calendar.YEAR));
+						if (sCampo.length() > iTamAdic) {
+							sCampo = sCampo.substring(sCampo.length() - iTamAdic);
+						}
+					}
+					else if (sValAdic.equals(VLR_NPRODDIA)) {
+
 						try {
-							String sSQL = "SELECT coalesce(count(1)+1,1) from ppop op "
-										+ "where op.codemppd=? and op.codfilialpd=? and op.codprod=? and op.dtfabrop = ?";
-							PreparedStatement ps = con.prepareStatement( sSQL );
-							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-							ps.setInt( 3, iCodProd );
-							ps.setDate( 4, Funcoes.dateToSQLDate( dData ) );
+							String sSQL = "SELECT coalesce(count(1)+1,1) from ppop op " + "where op.codemppd=? and op.codfilialpd=? and op.codprod=? and op.dtfabrop = ?";
+							PreparedStatement ps = con.prepareStatement(sSQL);
+							ps.setInt(1, Aplicativo.iCodEmp);
+							ps.setInt(2, ListaCampos.getMasterFilial("PPOP"));
+							ps.setInt(3, iCodProd);
+							ps.setDate(4, Funcoes.dateToSQLDate(dData));
 							ResultSet rs = ps.executeQuery();
-							if ( rs.next() ) {
-								sCampo = rs.getString( 1 );
+							if (rs.next()) {
+								sCampo = rs.getString(1);
 							}
 						}
-						catch ( Exception err ) {
+						catch (Exception err) {
 							err.printStackTrace();
 						}
 					}
-					else if ( sValAdic.equals( VLR_LOTEPRINC ) && lotePrincipal != null ) {
-						
+					else if (sValAdic.equals(VLR_LOTEPRINC) && lotePrincipal != null) {
+
 						sCampo = lotePrincipal;
 					}
-					
-					sRetorno = sRetorno.replaceAll( "\\" + sFragmento, sCampo );
+
+					sRetorno = sRetorno.replaceAll("\\" + sFragmento, sCampo);
 				}
 			}
 		}
-		catch ( Exception err ) {
+		catch (Exception err) {
 			err.printStackTrace();
 		}
 

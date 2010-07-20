@@ -7,163 +7,154 @@ public abstract class Banco {
 	public final static String BANCO_DO_BRASIL = "001";
 
 	public final static String CAIXA_ECONOMICA = "104";
-	
-	public final static String BRADESCO = "237";
-	
-//	private static String codBar = "";
 
-	public abstract String geraCodBar( final String codbanco, 
-			                           final String codmoeda, 
-			                           final String dvbanco, 
-			                           final Long fatvenc, 
-			                           final BigDecimal vlrtitulo, 
-			                           final String convenio, 
-			                           final Long rec, 
-			                           final Long nparc, 
-			                           final String agencia, 
-			                           final String conta, 
-			                           final String carteira, 
-			                           final String modalidade );
+	public final static String BRADESCO = "237";
+
+	// private static String codBar = "";
+
+	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, final Long rec,
+			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade);
 
 	public abstract String geraCodBar();
 
-	public abstract String geraLinhaDig( final String codbar, final Long fatvenc, final BigDecimal vlrtitulo );
+	public abstract String geraLinhaDig(final String codbar, final Long fatvenc, final BigDecimal vlrtitulo);
 
-	public abstract String geraNossoNumero( final String modalidade, final String convenio, final Long rec, final Long nparc );
+	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc);
 
-	public abstract String geraNossoNumero( final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito );
+	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito);
 
-	public abstract String geraNossoNumero( final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco );
+	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco);
 
-	public abstract String[] getCodSig( String codigo );
+	public abstract String[] getCodSig(String codigo);
 
-	public abstract String getNumCli( String modalidade, String convenio, Long rec, Long nparc );
+	public abstract String getNumCli(String modalidade, String convenio, Long rec, Long nparc);
 
-	public abstract String digVerif( final String codigo, final int modulo );
+	public abstract String digVerif(final String codigo, final int modulo);
 
-	public abstract String digVerif( final String codigo, final int modulo, final boolean digx );
+	public abstract String digVerif(final String codigo, final int modulo, final boolean digx);
 
-	public static String geraVlrtitulo( final BigDecimal vlrtitulo ) {
-	
+	public static String geraVlrtitulo(final BigDecimal vlrtitulo) {
+
 		String retorno = null;
-		retorno = transValor( vlrtitulo, 10, 2, true );
+		retorno = transValor(vlrtitulo, 10, 2, true);
 		return retorno;
 	}
 
-	public static String geraConvenio( final String convenio ) {
-	
+	public static String geraConvenio(final String convenio) {
+
 		final StringBuffer retorno = new StringBuffer();
 		final String bufConvenio;
-		
-		if ( convenio == null ) {
+
+		if (convenio == null) {
 			bufConvenio = "000000";
 		}
-		else if ( convenio.length() >= 7 ) {
-			bufConvenio = convenio.substring( convenio.length() - 7 );
+		else if (convenio.length() >= 7) {
+			bufConvenio = convenio.substring(convenio.length() - 7);
 		}
-		else if ( convenio.length() == 6 ) {
-			bufConvenio = convenio.substring( convenio.length() - 6 );
+		else if (convenio.length() == 6) {
+			bufConvenio = convenio.substring(convenio.length() - 6);
 		}
 		else {
 			bufConvenio = convenio;
 		}
-		
-		if ( bufConvenio.length() <= 4 ) {
-			retorno.append( strZero( bufConvenio, 4 ) );
+
+		if (bufConvenio.length() <= 4) {
+			retorno.append(strZero(bufConvenio, 4));
 		}
 		else {
-			retorno.append( strZero( bufConvenio, 6 ) );
+			retorno.append(strZero(bufConvenio, 6));
 		}
-		
+
 		return retorno.toString();
 	}
 
-	public static String getNumCli( Long rec, Long nparc, int tam ) {
+	public static String getNumCli(Long rec, Long nparc, int tam) {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		if ( rec == null ) {
-			retorno.append( strZero( "0", tam - 2 ) );
+		if (rec == null) {
+			retorno.append(strZero("0", tam - 2));
 		}
-		else if ( rec.toString().length() > tam - 2 ) {
+		else if (rec.toString().length() > tam - 2) {
 			// Remover caracteres a mais da esquerda para direita
-			retorno.append( rec.toString().substring( rec.toString().length() - ( tam - 2 ) ) );
+			retorno.append(rec.toString().substring(rec.toString().length() - ( tam - 2 )));
 		}
 		else {
-			retorno.append( strZero( rec.toString(), tam - 2 ) );
+			retorno.append(strZero(rec.toString(), tam - 2));
 		}
-		
-		if ( nparc == null ) {
-			retorno.append( "00" );
+
+		if (nparc == null) {
+			retorno.append("00");
 		}
 		else {
-			retorno.append( strZero( nparc.toString(), 2 ) );
+			retorno.append(strZero(nparc.toString(), 2));
 		}
 
 		return retorno.toString();
 	}
-	public static String strZero( String val, int zeros ) {
-		
+
+	public static String strZero(String val, int zeros) {
+
 		String retorno = val;
 
-		if ( val == null ) {
+		if (val == null) {
 			return retorno;
 		}
-		retorno = replicate( "0", zeros - val.trim().length() );
+		retorno = replicate("0", zeros - val.trim().length());
 		retorno += val.trim();
 
 		return retorno;
 	}
 
-	public static String replicate( String texto, int Quant ) {
+	public static String replicate(String texto, int Quant) {
 
 		StringBuffer sRetorno = new StringBuffer();
-		sRetorno.append( "" );
-		for ( int i = 0; i < Quant; i++ ) {
-			sRetorno.append( texto );
+		sRetorno.append("");
+		for (int i = 0; i < Quant; i++) {
+			sRetorno.append(texto);
 		}
 		return sRetorno.toString();
 	}
 
-	public static String transValor( final BigDecimal valor, int tam, int dec, boolean zerosEsq ) {
+	public static String transValor(final BigDecimal valor, int tam, int dec, boolean zerosEsq) {
 
 		final String vlrcalc;
 		String vlrdec = "";
-		if ( valor == null ) {
-			vlrcalc = new BigDecimal( "0" ).toString();
+		if (valor == null) {
+			vlrcalc = new BigDecimal("0").toString();
 		}
 		else {
 			vlrcalc = valor.toString();
 		}
 		String retorno = vlrcalc;
-		for ( int i = 0; i < vlrcalc.length(); i++ ) {
-			if ( ( vlrcalc.substring( i, i + 1 ).equals( "." ) ) || ( vlrcalc.substring( i, i + 1 ).equals( "," ) ) ) {
-				retorno = vlrcalc.substring( 0, i );
-				vlrdec = vlrcalc.substring( i + 1, vlrcalc.length() );
-				if ( vlrdec.length() < dec ) {
-					vlrdec += replicate( "0", dec - vlrdec.length() );
+		for (int i = 0; i < vlrcalc.length(); i++) {
+			if (( vlrcalc.substring(i, i + 1).equals(".") ) || ( vlrcalc.substring(i, i + 1).equals(",") )) {
+				retorno = vlrcalc.substring(0, i);
+				vlrdec = vlrcalc.substring(i + 1, vlrcalc.length());
+				if (vlrdec.length() < dec) {
+					vlrdec += replicate("0", dec - vlrdec.length());
 				}
-				else if ( vlrdec.length() > dec ) {
-					vlrdec = vlrdec.substring( 0, dec );
+				else if (vlrdec.length() > dec) {
+					vlrdec = vlrdec.substring(0, dec);
 				}
 				break;
 			}
 		}
-		if ( ( vlrdec.trim().equals( "" ) ) & ( dec > 0 ) ) {
-			vlrdec = replicate( "0", dec );
+		if (( vlrdec.trim().equals("") ) & ( dec > 0 )) {
+			vlrdec = replicate("0", dec);
 		}
-		if ( retorno.length() > ( tam - dec ) ) {
-			retorno = retorno.substring( retorno.length() - ( tam - dec ) - 1, ( tam - dec ) );
+		if (retorno.length() > ( tam - dec )) {
+			retorno = retorno.substring(retorno.length() - ( tam - dec ) - 1, ( tam - dec ));
 		}
-		if ( zerosEsq ) {
-			if ( retorno.length() < ( tam - dec ) ) {
-				retorno = replicate( "0", ( tam - dec ) - retorno.length() ) + retorno;
+		if (zerosEsq) {
+			if (retorno.length() < ( tam - dec )) {
+				retorno = replicate("0", ( tam - dec ) - retorno.length()) + retorno;
 			}
 		}
 		return retorno + vlrdec;
 	}
 
-	public String getDigitoCampo( String campo, int mult ) {
+	public String getDigitoCampo(String campo, int mult) {
 
 		// Esta rotina faz o calcula 212121
 
@@ -171,11 +162,11 @@ public abstract class Banco {
 		int multiplicacao = 0;
 		int soma_campo = 0;
 
-		for ( int i = 0; i < campo.length(); i++ ) {
-			multiplicacao = Integer.parseInt( campo.substring( i, 1 + i ) ) * multiplicador;
+		for (int i = 0; i < campo.length(); i++) {
+			multiplicacao = Integer.parseInt(campo.substring(i, 1 + i)) * multiplicador;
 
-			if ( multiplicacao >= 10 ) {
-				multiplicacao = Integer.parseInt( String.valueOf( multiplicacao ).substring( 0, 1 ) ) + Integer.parseInt( String.valueOf( multiplicacao ).substring( 1 ) );
+			if (multiplicacao >= 10) {
+				multiplicacao = Integer.parseInt(String.valueOf(multiplicacao).substring(0, 1)) + Integer.parseInt(String.valueOf(multiplicacao).substring(1));
 			}
 
 			soma_campo = soma_campo + multiplicacao;
@@ -187,11 +178,11 @@ public abstract class Banco {
 		}
 		int dac = 10 - ( soma_campo % 10 );
 
-		if ( dac == 10 ) {
+		if (dac == 10) {
 			dac = 0;
 		}
 
-		campo = campo + String.valueOf( dac );
+		campo = campo + String.valueOf(dac);
 
 		return campo;
 	}
@@ -204,7 +195,7 @@ public abstract class Banco {
 		return null;
 	}
 
-	public String getModulo11( String campo, int type ) {
+	public String getModulo11(String campo, int type) {
 
 		// Modulo 11 - 234567 (type = 7)
 		// Modulo 11 - 23456789 (type = 9)
@@ -213,26 +204,27 @@ public abstract class Banco {
 		int multiplicacao = 0;
 		int soma_campo = 0;
 
-		for ( int i = campo.length(); i > 0; i-- ) {
-			multiplicacao = Integer.parseInt( campo.substring( i - 1, i ) ) * multiplicador;
+		for (int i = campo.length(); i > 0; i--) {
+			multiplicacao = Integer.parseInt(campo.substring(i - 1, i)) * multiplicador;
 
 			soma_campo = soma_campo + multiplicacao;
 
 			multiplicador++;
-			if ( multiplicador > 7 && type == 7 )
+			if (multiplicador > 7 && type == 7)
 				multiplicador = 2;
-			else if ( multiplicador > 9 && type == 9 )
+			else if (multiplicador > 9 && type == 9)
 				multiplicador = 2;
 		}
 
 		int dac = 11 - ( soma_campo % 11 );
 
-		// codigo anterior... alterado segundo manual da caixa else if ((dac == 0 || dac == 1 || dac > 9) && type == 9)
-		if ( dac > 9 ) {
+		// codigo anterior... alterado segundo manual da caixa else if ((dac ==
+		// 0 || dac == 1 || dac > 9) && type == 9)
+		if (dac > 9) {
 			dac = 0;
 		}
 
-		return ( (Integer) dac ).toString();
+		return ( ( Integer ) dac ).toString();
 	}
 
 	public String getSiglaCarteiraBanco() {
