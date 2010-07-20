@@ -9,7 +9,7 @@ import org.freedom.infra.functions.SystemFunctions;
 public abstract class AbstractPort {
 
 	protected static int sistema = -1;
-	
+
 	public static final int OS_NONE = -1;
 
 	public static final int OS_LINUX = 0;
@@ -78,7 +78,7 @@ public abstract class AbstractPort {
 	public static final int LPT18 = 57;
 	public static final int LPT19 = 58;
 	public static final int LPT20 = 59;
-	
+
 	public static final int LPT_USB1 = 60;
 	public static final int LPT_USB2 = 61;
 	public static final int LPT_USB3 = 62;
@@ -99,7 +99,7 @@ public abstract class AbstractPort {
 	public static final int LPT_USB18 = 77;
 	public static final int LPT_USB19 = 78;
 	public static final int LPT_USB20 = 79;
-	
+
 	public static final int MIN_COM = COM1;
 	public static final int MAX_COM = COM20;
 	public static final int MIN_COM_USB = COM_USB1;
@@ -110,12 +110,12 @@ public abstract class AbstractPort {
 	public static final int MAX_LPT_USB = LPT_USB20;
 
 	private boolean actived = false;
-	
+
 	private InputStream input = null;
 
 	private OutputStream output = null;
 
-	public void setActived( boolean actived ) {
+	public void setActived(boolean actived) {
 
 		this.actived = actived;
 	}
@@ -124,45 +124,47 @@ public abstract class AbstractPort {
 
 		return actived;
 	}
-	
+
 	public InputStream getInput() {
-		
+
 		return input;
 	}
 
-	public void setInput( InputStream inp ) {
-	
+	public void setInput(InputStream inp) {
+
 		this.input = inp;
 	}
 
-	
 	public OutputStream getOutput() {
-	
+
 		return output;
 	}
 
-	
-	public void setOutput( OutputStream out ) {
-	
+	public void setOutput(OutputStream out) {
+
 		this.output = out;
 	}
 
-	public static int convPorta( String com ) {
+	public static int convPorta(String com) {
 
 		int porta = COM1;
 		int portaParcial = 0;
-		final String[] portas = {"COM_USB", "LPT_USB", "COM", "LPT"};
-		
-		if ( com != null ) {
-			for (int i=0; i<portas.length; i++) {
-				if (com.length()>portas[i].length()) {
-					if (com.substring( 0, portas[i].length() ).equalsIgnoreCase( portas[i] )) {
-						portaParcial = Integer.parseInt( com.substring( portas[i].length() ) );
-						if (i==0) porta = MIN_COM_USB;
-						else if (i==1) porta = MIN_LPT_USB;
-						else if (i==2) porta = MIN_COM;
-						else porta = MIN_LPT;
-						porta = porta + portaParcial - 1 ;
+		final String[] portas = { "COM_USB", "LPT_USB", "COM", "LPT" };
+
+		if (com != null) {
+			for (int i = 0; i < portas.length; i++) {
+				if (com.length() > portas[i].length()) {
+					if (com.substring(0, portas[i].length()).equalsIgnoreCase(portas[i])) {
+						portaParcial = Integer.parseInt(com.substring(portas[i].length()));
+						if (i == 0)
+							porta = MIN_COM_USB;
+						else if (i == 1)
+							porta = MIN_LPT_USB;
+						else if (i == 2)
+							porta = MIN_COM;
+						else
+							porta = MIN_LPT;
+						porta = porta + portaParcial - 1;
 						break;
 					}
 				}
@@ -170,49 +172,51 @@ public abstract class AbstractPort {
 		}
 		return porta;
 	}
-	
-	abstract boolean activePort(final int portn, final SerialParams serialParams, final EventListener event );
+
+	abstract boolean activePort(final int portn, final SerialParams serialParams, final EventListener event);
 
 	abstract void disablePort();
-	
-	public static boolean isSerial( final int portn ) {
+
+	public static boolean isSerial(final int portn) {
 		boolean result = false;
-		if ( (portn >= MIN_COM && portn <= MAX_COM ) || (portn >= MIN_COM_USB && portn <= MAX_COM_USB) )
+		if (( portn >= MIN_COM && portn <= MAX_COM ) || ( portn >= MIN_COM_USB && portn <= MAX_COM_USB ))
 			result = true;
 		return result;
 	}
-	
-	public static String convPort( final int portn ) {
+
+	public static String convPort(final int portn) {
 
 		final StringBuffer porta = new StringBuffer();
 
-		if ( SystemFunctions.getOS() == OS_WINDOWS ) {
-			if (portn<=MAX_COM) {
-			   porta.append( "COM" );
-			   porta.append( portn + 1 );
-			}  else if ( (portn>=MIN_LPT) && (portn<=MAX_LPT) ) {
-				   porta.append( "LPT" );
-				   porta.append( portn - MIN_LPT + 1 );
+		if (SystemFunctions.getOS() == OS_WINDOWS) {
+			if (portn <= MAX_COM) {
+				porta.append("COM");
+				porta.append(portn + 1);
 			}
-		} else {
-			if (portn<=MAX_COM) {
+			else if (( portn >= MIN_LPT ) && ( portn <= MAX_LPT )) {
+				porta.append("LPT");
+				porta.append(portn - MIN_LPT + 1);
+			}
+		}
+		else {
+			if (portn <= MAX_COM) {
 				porta.append("/dev/ttyS");
 				porta.append(portn);
 			}
-			else if ( (portn>=MIN_COM_USB) && (portn<=MAX_COM_USB ) ) {
-				porta.append( "/dev/ttyUSB" );
-				porta.append( portn - MIN_COM_USB);
+			else if (( portn >= MIN_COM_USB ) && ( portn <= MAX_COM_USB )) {
+				porta.append("/dev/ttyUSB");
+				porta.append(portn - MIN_COM_USB);
 			}
-			else if ( (portn>=MIN_LPT) && (portn<=MAX_LPT ) ) {
-				porta.append( "/dev/lp" );
-				porta.append( portn - MIN_LPT);
+			else if (( portn >= MIN_LPT ) && ( portn <= MAX_LPT )) {
+				porta.append("/dev/lp");
+				porta.append(portn - MIN_LPT);
 			}
-			else if ( (portn>=MIN_LPT_USB) && (portn<=MAX_LPT_USB ) ) {
-				porta.append( "/dev/usb/lp" );
-				porta.append( portn - MIN_LPT_USB);
+			else if (( portn >= MIN_LPT_USB ) && ( portn <= MAX_LPT_USB )) {
+				porta.append("/dev/usb/lp");
+				porta.append(portn - MIN_LPT_USB);
 			}
-		} 
+		}
 		return porta.toString();
 	}
-	
+
 }

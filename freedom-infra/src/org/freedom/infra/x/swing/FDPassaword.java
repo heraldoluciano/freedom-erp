@@ -5,26 +5,24 @@ import javax.swing.JPasswordField;
 import org.freedom.infra.beans.Component;
 import org.freedom.infra.beans.Field;
 
-
 public class FDPassaword extends JPasswordField implements Component {
 
 	private static final long serialVersionUID = 1l;
-	
-	private final Field field;	
-	
+
+	private final Field field;
 
 	public FDPassaword() {
 
-		this( null );
+		this(null);
 	}
 
-	public FDPassaword( String text ) {
+	public FDPassaword(String text) {
 
 		super();
-		
+
 		field = new Field();
-		
-		setText( text );
+
+		setText(text);
 	}
 
 	public Field getField() {
@@ -35,13 +33,13 @@ public class FDPassaword extends JPasswordField implements Component {
 		return field.getValue();
 	}
 
-	public void setValue( Object obj ) {		
-		field.setValue( obj );
-		super.setText( obj == null ? "" : field.toString() );
+	public void setValue(Object obj) {
+		field.setValue(obj);
+		super.setText(obj == null ? "" : field.toString());
 	}
 
 	@Override
-	public void setText( String t ) {
-		setValue( t );
+	public void setText(String t) {
+		setValue(t);
 	}
 }

@@ -1,8 +1,6 @@
-
 package org.freedom.infra.model.jpa;
 
 import java.io.Serializable;
-
 
 public class Key implements Serializable {
 
@@ -15,12 +13,11 @@ public class Key implements Serializable {
 	private Object[] keys = null;
 
 	private String internalKey = null;
-	
 
-	public Key( Object... keys ) {
+	public Key(Object... keys) {
 
 		super();
-		setKeys( keys );
+		setKeys(keys);
 	}
 
 	public Object[] getKeys() {
@@ -28,20 +25,20 @@ public class Key implements Serializable {
 		return keys;
 	}
 
-	public void setKeys( Object[] keys ) {
+	public void setKeys(Object[] keys) {
 
 		this.keys = keys;
-		setInternalKey( encodeKey( keys ) );
+		setInternalKey(encodeKey(keys));
 	}
 
-	public String encodeKey( Object[] values ) {
+	public String encodeKey(Object[] values) {
 
 		String encode = null;
-		if ( values != null ) {
+		if (values != null) {
 			StringBuilder buffer = new StringBuilder();
-			for ( Object value : values ) {
-				buffer.append( value.toString() );
-				buffer.append( " " );
+			for (Object value : values) {
+				buffer.append(value.toString());
+				buffer.append(" ");
 			}
 			encode = buffer.toString();
 		}
@@ -51,7 +48,7 @@ public class Key implements Serializable {
 	public int hashCode() {
 
 		int hashCode = 0;
-		if ((keys != null) && (internalKey != null)) {
+		if (( keys != null ) && ( internalKey != null )) {
 			hashCode = internalKey.hashCode();
 		}
 		return hashCode;
@@ -61,11 +58,11 @@ public class Key implements Serializable {
 		return internalKey;
 	}
 
-	public void setInternalKey( String internalKey ) {
+	public void setInternalKey(String internalKey) {
 		this.internalKey = internalKey;
 	}
 
-	public boolean equals( Object o ) {
-		return ((o instanceof Key) && (internalKey.equals(((Key)o).getInternalKey())));
+	public boolean equals(Object o) {
+		return ( ( o instanceof Key ) && ( internalKey.equals(( ( Key ) o ).getInternalKey()) ) );
 	}
 }

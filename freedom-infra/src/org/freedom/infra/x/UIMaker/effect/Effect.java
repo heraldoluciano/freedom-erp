@@ -5,18 +5,17 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-
 public interface Effect extends ActionListener {
 
 	void doStart();
-	
+
 	void doStop();
-	
-	void addComponent( JComponent component );
-	
-	void removeComponent( int indexComponent );
-	
-	void removeComponent( JComponent component );
-	
+
+	void addComponent(JComponent component);
+
+	void removeComponent(int indexComponent);
+
+	void removeComponent(JComponent component);
+
 	List<JComponent> getComponents();
 }

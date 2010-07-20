@@ -85,7 +85,7 @@ public final class ConversionFunctions {
 
 			// Queimando o arquivo no disco
 
-			while ((length = input.read(buffer)) != -1) {
+			while (( length = input.read(buffer) ) != -1) {
 				outStream.write(buffer, 0, length);
 				outStream.flush();
 			}
@@ -153,9 +153,9 @@ public final class ConversionFunctions {
 
 				int year = Integer.parseInt(strdate.substring(6));
 
-				cal = (GregorianCalendar) GregorianCalendar.getInstance();
+				cal = ( GregorianCalendar ) GregorianCalendar.getInstance();
 
-				String milenio = (cal.get(Calendar.YEAR) + "").substring(0, 2);
+				String milenio = ( cal.get(Calendar.YEAR) + "" ).substring(0, 2);
 
 				year = Integer.parseInt(milenio + year);
 

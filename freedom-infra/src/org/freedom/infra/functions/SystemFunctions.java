@@ -31,7 +31,6 @@ public class SystemFunctions {
 
 	public static final int OS_WINDOWS = 1;
 
-
 	/**
 	 * 
 	 * @return A name of operational system.<BR>
@@ -40,12 +39,12 @@ public class SystemFunctions {
 
 		int ret = -1;
 
-		final String system = System.getProperty( "os.name" ).toLowerCase();
+		final String system = System.getProperty("os.name").toLowerCase();
 
-		if ( system.indexOf( "linux" ) > -1 ) {
+		if (system.indexOf("linux") > -1) {
 			ret = OS_LINUX;
-		} 
-		else if ( system.indexOf( "windows" ) > -1 ) {
+		}
+		else if (system.indexOf("windows") > -1) {
 			ret = OS_WINDOWS;
 		}
 
@@ -53,14 +52,14 @@ public class SystemFunctions {
 
 	}
 
-	public static java.util.Date getClassDateCompilation(Class<?> clazz) throws IOException {  
-		String className = clazz.getName();  
-		className = className.replaceAll("\\.", "/");  
-		className = "/" + className + ".class";  
+	public static java.util.Date getClassDateCompilation(Class<?> clazz) throws IOException {
+		String className = clazz.getName();
+		className = className.replaceAll("\\.", "/");
+		className = "/" + className + ".class";
 		URL url = Class.class.getResource(className);
-		URLConnection urlConnection = url.openConnection();  
-		java.util.Date lastModified = new java.util.Date(urlConnection.getLastModified());  
-		return lastModified;  
+		URLConnection urlConnection = url.openConnection();
+		java.util.Date lastModified = new java.util.Date(urlConnection.getLastModified());
+		return lastModified;
 	}
 
 	public static String getVersionSis(Class<?> clazz) {
@@ -68,14 +67,14 @@ public class SystemFunctions {
 
 		try {
 
-			File file =  new File ( clazz.getProtectionDomain().getCodeSource().getLocation().toURI());			 
+			File file = new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
 			JarFile jarfile = new JarFile(file.getAbsolutePath());
 
 			Manifest manifest = jarfile.getManifest();
 
 			Attributes att = manifest.getMainAttributes();
 
-			versao = att.getValue("Signature-Version");			
+			versao = att.getValue("Signature-Version");
 
 		}
 		catch (Exception e) {
@@ -88,19 +87,19 @@ public class SystemFunctions {
 
 	public static String getVersionDB(DbConnection con) {
 
-		String ret="Indefinida";
+		String ret = "Indefinida";
 		StringBuilder sql = new StringBuilder();
-		ResultSet rs = null; 
+		ResultSet rs = null;
 		PreparedStatement ps = null;
 		try {
 
 			sql.append("select versao from sgretversao");
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = con.prepareStatement(sql.toString());
 
 			rs = ps.executeQuery();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				ret = rs.getString("versao");
 			}
 
@@ -115,99 +114,101 @@ public class SystemFunctions {
 		return ret;
 	}
 
-	public static String getTxtFile( URL url ) {
+	public static String getTxtFile(URL url) {
 
 		String ret = "";
 		int size = 0;
-		char c = (char) 0;
+		char c = ( char ) 0;
 
 		try {
 			System.out.println("carregando arquivo: " + url.toString());
-			File fArq = new File( url.getFile() );
-			FileReader frArq = new FileReader( fArq );
+			File fArq = new File(url.getFile());
+			FileReader frArq = new FileReader(fArq);
 
 			try {
 
-				size = (int) fArq.length();
+				size = ( int ) fArq.length();
 
-				for ( int i = 0; i < size; i++ ) {
-					c = (char) frArq.read();
+				for (int i = 0; i < size; i++) {
+					c = ( char ) frArq.read();
 					ret += c;
-				}				
-			} 
-			catch ( IOException err ) {
-				err.printStackTrace();
-				System.exit( 0 );
+				}
 			}
-		} catch ( FileNotFoundException err ) {
+			catch (IOException err) {
+				err.printStackTrace();
+				System.exit(0);
+			}
+		}
+		catch (FileNotFoundException err) {
 			err.printStackTrace();
-			//System.exit( 0 );
+			// System.exit( 0 );
 		}
 		return ret;
 	}
 
-	public static String getTxtFile( String url ) {
+	public static String getTxtFile(String url) {
 
 		String ret = "";
 		int size = 0;
-		char c = (char) 0;
+		char c = ( char ) 0;
 
 		try {
 			System.out.println("carregando arquivo: " + url.toString());
-			File fArq = new File( url );
-			FileReader frArq = new FileReader( fArq );
+			File fArq = new File(url);
+			FileReader frArq = new FileReader(fArq);
 
 			try {
 
-				size = (int) fArq.length();
+				size = ( int ) fArq.length();
 
-				for ( int i = 0; i < size; i++ ) {
-					c = (char) frArq.read();
+				for (int i = 0; i < size; i++) {
+					c = ( char ) frArq.read();
 					ret += c;
-				}				
-			} 
-			catch ( IOException err ) {
-				err.printStackTrace();
-				System.exit( 0 );
+				}
 			}
-		} catch ( FileNotFoundException err ) {
+			catch (IOException err) {
+				err.printStackTrace();
+				System.exit(0);
+			}
+		}
+		catch (FileNotFoundException err) {
 			err.printStackTrace();
-			//System.exit( 0 );
+			// System.exit( 0 );
 		}
 		return ret;
 	}
 
-	public static Vector<String> getIniFile( String sNomeArq ) {
+	public static Vector<String> getIniFile(String sNomeArq) {
 
 		Vector<String> vRetorno = new Vector<String>();
 		String sTemp = "";
 		int iTam = 0;
-		char c = (char) 0;
+		char c = ( char ) 0;
 		try {
-			File fArq = new File( sNomeArq );
-			FileReader frArq = new FileReader( fArq );
+			File fArq = new File(sNomeArq);
+			FileReader frArq = new FileReader(fArq);
 			try {
-				iTam = (int) fArq.length();
-				for ( int i = 0; i < iTam; i++ ) {
-					c = (char) frArq.read();
-					if ( c == (char) 10 ) {
-						vRetorno.addElement( sTemp );
+				iTam = ( int ) fArq.length();
+				for (int i = 0; i < iTam; i++) {
+					c = ( char ) frArq.read();
+					if (c == ( char ) 10) {
+						vRetorno.addElement(sTemp);
 						sTemp = "";
 					}
-					else if ( c == (char) 13 ) {
-						if ( i == iTam ) {
-							vRetorno.addElement( sTemp );
+					else if (c == ( char ) 13) {
+						if (i == iTam) {
+							vRetorno.addElement(sTemp);
 							sTemp = "";
 						}
 						else {
-							c = (char) frArq.read();
+							c = ( char ) frArq.read();
 							i++;
-							if ( c == (char) 10 ) {
-								vRetorno.addElement( sTemp );
+							if (c == ( char ) 10) {
+								vRetorno.addElement(sTemp);
 								sTemp = "";
 							}
 							else {
-								vRetorno.addElement( sTemp );
+								vRetorno.addElement(sTemp);
 								sTemp = "";
 								sTemp += c;
 							}
@@ -217,15 +218,15 @@ public class SystemFunctions {
 						sTemp += c;
 					}
 				}
-			} 
-			catch ( IOException err ) {					
-				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n", "Erro", JOptionPane.ERROR_MESSAGE);
-				System.exit( 0 );
 			}
-		} 
-		catch ( FileNotFoundException err ) {
-			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n"+ err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);				
-			System.exit( 0 );
+			catch (IOException err) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n", "Erro", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
+			}
+		}
+		catch (FileNotFoundException err) {
+			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 		return vRetorno;
 	}
@@ -244,30 +245,30 @@ public class SystemFunctions {
 			ZipFile zipfile = new ZipFile(zip);
 			Enumeration<?> e = zipfile.entries();
 
-			while(e.hasMoreElements()) {
+			while (e.hasMoreElements()) {
 
-				entry = (ZipEntry) e.nextElement();
-				System.out.println("Extracting: " +entry);
-				
-				is = new BufferedInputStream (zipfile.getInputStream(entry));
-				
+				entry = ( ZipEntry ) e.nextElement();
+				System.out.println("Extracting: " + entry);
+
+				is = new BufferedInputStream(zipfile.getInputStream(entry));
+
 				int count;
-				
+
 				byte data[] = new byte[BUFFER];
-				
+
 				FileOutputStream fos = new FileOutputStream(entry.getName());
 				dest = new BufferedOutputStream(fos, BUFFER);
-				
-				while ((count = is.read(data, 0, BUFFER)) != -1) {
+
+				while (( count = is.read(data, 0, BUFFER) ) != -1) {
 					dest.write(data, 0, count);
 				}
 
 				ret.add(new File(entry.getName()));
-				
+
 				dest.flush();
 				dest.close();
 				is.close();
-				
+
 			}
 
 		}
@@ -276,38 +277,35 @@ public class SystemFunctions {
 		}
 		return ret;
 	}
-	
-	public static File writeFileString(String sFileName, String content) {
-		
-		File ret = null;
-		
-		try { 
 
-			ret = new File( sFileName );
-			
+	public static File writeFileString(String sFileName, String content) {
+
+		File ret = null;
+
+		try {
+
+			ret = new File(sFileName);
+
 			ret.createNewFile();
 
-			FileWriter fw = new FileWriter( ret );
-			BufferedWriter bw = new BufferedWriter( fw );
+			FileWriter fw = new FileWriter(ret);
+			BufferedWriter bw = new BufferedWriter(fw);
 
-			bw.write( content );
-		
+			bw.write(content);
+
 			bw.flush();
 			bw.close();
-			
-		} 
-		catch ( IOException ioError ) {
+
+		}
+		catch (IOException ioError) {
 			ioError.printStackTrace();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return ret;
-		
-	}
-	
 
-	
+		return ret;
+
+	}
 
 }

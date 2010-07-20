@@ -21,11 +21,11 @@ public final class Bci10000 extends AbstractScale {
 	private Time time = null;
 
 	public static final byte STX = 2;
-	
+
 	public static final byte ETX = 3;
-	
+
 	private static final int TAMANHO_STR_PESO = 10;
-	
+
 	private static final int TAMANHO_STR_TOTAL = 18;
 
 	public static final String NOME_BAL = "Rodoviária BCI 10000";
@@ -37,8 +37,7 @@ public final class Bci10000 extends AbstractScale {
 
 	// private volatile boolean validstring = false;
 
-	public void initialize(Integer com, Integer timeout, Integer baudrate,
-			Integer databits, Integer stopbits, Integer parity) {
+	public void initialize(Integer com, Integer timeout, Integer baudrate, Integer databits, Integer stopbits, Integer parity) {
 
 		this.com = com;
 
@@ -51,12 +50,10 @@ public final class Bci10000 extends AbstractScale {
 		activePort(this);
 
 		reading = true;
-		
-		IS_BUFFERIZED = true;
-		
 
-//		readReturn();
-	
+		IS_BUFFERIZED = true;
+
+		// readReturn();
 
 	}
 
@@ -68,7 +65,8 @@ public final class Bci10000 extends AbstractScale {
 		try {
 			SerialPort porta = Serial.getInstance().getSerialPort();
 			porta.removeEventListener();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -86,7 +84,7 @@ public final class Bci10000 extends AbstractScale {
 			available = false;
 
 			while (reading) {
-  
+
 				Thread.sleep(250);
 
 				if (available) {
@@ -103,7 +101,7 @@ public final class Bci10000 extends AbstractScale {
 
 						if (buffer == null) {
 							bufferTmp = result;
-						} 
+						}
 						else {
 							isRead = true;
 							tmp = buffer;
@@ -112,36 +110,36 @@ public final class Bci10000 extends AbstractScale {
 							for (int i = 0; i < bufferTmp.length; i++) {
 								if (i < tmp.length) {
 									bufferTmp[i] = tmp[i];
-								} else {
+								}
+								else {
 									bufferTmp[i] = result[i - tmp.length];
 								}
 							}
 						}
-						if(bufferTmp.length==18) {
-							System.out.println("incluindo buffer:"+new String(bufferTmp));
-							
-							if(AbstractScale.scalebuffer.length()>180) {
-								//Limpando o buffer
+						if (bufferTmp.length == 18) {
+							System.out.println("incluindo buffer:" + new String(bufferTmp));
+
+							if (AbstractScale.scalebuffer.length() > 180) {
+								// Limpando o buffer
 								AbstractScale.scalebuffer.delete(0, AbstractScale.scalebuffer.length());
 								System.out.println("Limpou o buffer");
 							}
-							
+
 							AbstractScale.scalebuffer.append(new String(bufferTmp));
 						}
 						else {
-							System.out.println("buffer descartado:"+new String(bufferTmp));
+							System.out.println("buffer descartado:" + new String(bufferTmp));
 						}
-						
 
 					}
 
 				}
 
 			}
-		} 
+		}
 		catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 
 	}
 
@@ -184,19 +182,20 @@ public final class Bci10000 extends AbstractScale {
 
 				int i = 0;
 				int charref = -1;
-				
+
 				while (str.length() > i) {
-					charref = (byte) str.charAt(i);
+					charref = ( byte ) str.charAt(i);
 					System.out.println("char lido:" + charref);
-					// Localiza o caractere de referência Start Text (STX 2) e captura os
+					// Localiza o caractere de referência Start Text (STX 2) e
+					// captura os
 					// carateres correspondentes ao peso
 					if (charref == STX) {
 
 						System.out.println("STX na posicao:" + i);
 
-						if (str.length() >= (i + TAMANHO_STR_PESO)) {
+						if (str.length() >= ( i + TAMANHO_STR_PESO )) {
 							str = str.substring(i + 4, i + TAMANHO_STR_PESO);
-						} 
+						}
 						else {
 							str = str.substring(i + 4);
 						}
@@ -216,7 +215,7 @@ public final class Bci10000 extends AbstractScale {
 				// Porta deve ser desabilitada para finalizar a leitura dos
 				// pesos da balança.
 
-//				reading = false; // Parar a leitura se leitura estiver OK
+				// reading = false; // Parar a leitura se leitura estiver OK
 
 				// Thread.currentThread().interrupt();
 
@@ -224,31 +223,31 @@ public final class Bci10000 extends AbstractScale {
 				Date datahora = new Date();
 				setDate(datahora);
 
-				setTime(ConversionFunctions.strTimetoTime(ConversionFunctions
-						.dateToStrTime(datahora)));
+				setTime(ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora)));
 
-			} else {
+			}
+			else {
 				System.out.println("***Buffer menor que o esperado (18)!");
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void serialEvent( SerialPortEvent event ) {
+	public void serialEvent(SerialPortEvent event) {
 
-
-		if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
+		if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			available = true;
 
 		}
 		else {
-			
+
 			System.out.println("evento:" + event.getEventType());
-			available =false;
+			available = false;
 		}
-		
+
 	}
 
 	private void setWeight(BigDecimal weight) {
@@ -261,11 +260,10 @@ public final class Bci10000 extends AbstractScale {
 
 		return weight;
 	}
- 
+
 	public void run() {
 		// TODO Auto-generated method stub
 		readReturn();
 	}
 
 }
-

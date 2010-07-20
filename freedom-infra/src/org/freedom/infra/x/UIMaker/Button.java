@@ -5,9 +5,8 @@ import javax.swing.Icon;
 
 import org.freedom.infra.x.swing.FDButton;
 
-
 public class Button extends FDButton {
-	
+
 	private static final long serialVersionUID = 1l;
 
 	public Button() {
@@ -15,53 +14,53 @@ public class Button extends FDButton {
 		init();
 	}
 
-	public Button( Icon icon ) {
-		super( icon );
+	public Button(Icon icon) {
+		super(icon);
 		init();
 	}
 
-	public Button( String text ) {
-		super( text );
+	public Button(String text) {
+		super(text);
 		init();
 	}
 
-	public Button( Action a ) {
-		super( a );
+	public Button(Action a) {
+		super(a);
 		init();
 	}
 
-	public Button( String text, Icon icon ) {
-		super( text, icon );
+	public Button(String text, Icon icon) {
+		super(text, icon);
 		init();
 	}
-	
+
 	private void init() {
-	
-		setContentAreaFilled( false );  
-		setFocusPainted( false );  
+
+		setContentAreaFilled(false);
+		setFocusPainted(false);
 	}
 
 	@Override
-	public void setDisabledIcon( Icon disabledIcon ) {
-		super.setDisabledIcon( disabledIcon );
-		if ( isBorderPainted() ) {
-			setBorderPainted( false );
+	public void setDisabledIcon(Icon disabledIcon) {
+		super.setDisabledIcon(disabledIcon);
+		if (isBorderPainted()) {
+			setBorderPainted(false);
 		}
 	}
 
 	@Override
-	public void setIcon( Icon defaultIcon ) {
-		super.setIcon( defaultIcon );
-		if ( isBorderPainted() ) {
-			setBorderPainted( false );
+	public void setIcon(Icon defaultIcon) {
+		super.setIcon(defaultIcon);
+		if (isBorderPainted()) {
+			setBorderPainted(false);
 		}
 	}
 
 	@Override
-	public void setPressedIcon( Icon pressedIcon ) {
-		super.setPressedIcon( pressedIcon );
-		if ( isBorderPainted() && getIcon() != null ) {
-			setBorderPainted( false );
+	public void setPressedIcon(Icon pressedIcon) {
+		super.setPressedIcon(pressedIcon);
+		if (isBorderPainted() && getIcon() != null) {
+			setBorderPainted(false);
 		}
 	}
 

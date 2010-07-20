@@ -6,14 +6,13 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-
 public abstract class EffectStandard implements Effect {
-	
+
 	protected final List<JComponent> components = new ArrayList<JComponent>();
 
-	public void addComponent( JComponent component ) {
-		if ( component != null ) {
-			components.add( component );
+	public void addComponent(JComponent component) {
+		if (component != null) {
+			components.add(component);
 		}
 	}
 
@@ -21,19 +20,19 @@ public abstract class EffectStandard implements Effect {
 		return components;
 	}
 
-	public void removeComponent( int indexComponent ) {
-		components.remove( indexComponent );
+	public void removeComponent(int indexComponent) {
+		components.remove(indexComponent);
 	}
 
-	public void removeComponent( JComponent component ) {
-		components.remove( component );
+	public void removeComponent(JComponent component) {
+		components.remove(component);
 	}
 
 	public void clear() {
 		components.clear();
 	}
 
-	public void actionPerformed( ActionEvent e ) {	
+	public void actionPerformed(ActionEvent e) {
 	}
 
 	@Override
