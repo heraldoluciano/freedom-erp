@@ -35,11 +35,10 @@ public class PrinterMemory {
 	private BigDecimal trocoCupom = new BigDecimal( "0.00" );
 
 	// Flags
-
 	private boolean flagCupomIniciado = false;
 
 	private boolean flagFechamentoCupomIniciado = false;
-	
+
 	private boolean flagRelatorioGerencial = false;
 
 	public PrinterMemory() {
@@ -48,62 +47,77 @@ public class PrinterMemory {
 	}
 
 	public String getEmpresa() {
+
 		return empresa;
 	}
 
 	public void setEmpresa( String empresa ) {
+
 		this.empresa = empresa;
 	}
 
 	public String getEndereco() {
+
 		return endereco;
 	}
 
 	public void setEndereco( String endereco ) {
+
 		this.endereco = endereco;
 	}
 
 	public String getCidade() {
+
 		return cidade;
 	}
 
 	public void setCidade( String cidade ) {
+
 		this.cidade = cidade;
 	}
 
 	public String getTelefone() {
+
 		return telefone;
 	}
 
 	public void setTelefone( String telefone ) {
+
 		this.telefone = telefone;
 	}
 
 	public int getLinhasFim() {
+
 		return linhasFim;
 	}
 
 	public void setLinhasFim( int lineEnd ) {
+
 		this.linhasFim = lineEnd;
 	}
 
 	public String getUnidadeMedida() {
+
 		return unidadeMedida;
 	}
 
 	public void setUnidadeMedida( String unidadeMedida ) {
+
 		this.unidadeMedida = unidadeMedida;
 	}
 
 	public String getSimboloMoeda() {
+
 		return simboloMoeda;
 	}
 
 	public void setSimboloMoeda( String simboloMoeda ) {
+
 		this.simboloMoeda = simboloMoeda;
 	}
 
 	public int lengthMeiosPagamentos() {
+
 		return meiosPagamentos.length;
 	}
 
@@ -127,14 +141,12 @@ public class PrinterMemory {
 	}
 
 	public String getAliquotas() {
-		
+
 		DecimalFormat df = new DecimalFormat( "00.00" );
 		String aliquotas = "";
-		
 		for ( float aliquota : this.aliquotas ) {
 			aliquotas += df.format( aliquota ).replace( ".", "" ).replace( ",", "" );
 		}
-		
 		return aliquotas;
 	}
 
@@ -156,85 +168,102 @@ public class PrinterMemory {
 		}
 		return indice;
 	}
-	
-	public String getDescricaoFormaPagamento( int indice ) {		
+
+	public String getDescricaoFormaPagamento( int indice ) {
+
 		return ( indice > -1 && indice < 16 ) ? meiosPagamentos[ indice ] : null;
 	}
 
 	public int getContatorItens() {
+
 		return contatorItens;
 	}
 
 	public int rolaContatorItens() {
+
 		return this.contatorItens++;
 	}
 
 	public void addSubTotalCupom( BigDecimal subTotalCupom ) {
+
 		if ( subTotalCupom != null ) {
 			this.subTotalCupom = this.subTotalCupom.add( subTotalCupom );
 		}
 	}
 
 	public void subtractSubTotalCupom( BigDecimal subTotalCupom ) {
+
 		if ( subTotalCupom != null ) {
 			this.subTotalCupom = this.subTotalCupom.subtract( subTotalCupom );
 		}
 	}
 
 	public BigDecimal getSubTotalCupom() {
+
 		return subTotalCupom;
 	}
-	
+
 	public void addPagoCupom( BigDecimal pagoCupom ) {
+
 		if ( pagoCupom != null ) {
 			this.pagoCupom = this.pagoCupom.add( pagoCupom );
 		}
 	}
 
 	public void subtractPagoCupom( BigDecimal pagoCupom ) {
+
 		if ( pagoCupom != null ) {
 			this.pagoCupom = this.pagoCupom.subtract( pagoCupom );
 		}
 	}
 
 	public BigDecimal getTrocoCupom() {
+
 		return trocoCupom;
 	}
 
 	public boolean cupomIniciado() {
+
 		return flagCupomIniciado;
 	}
 
 	public boolean fechamentoCupomIniciado() {
+
 		return flagFechamentoCupomIniciado;
 	}
 
 	public boolean relatorioGerencialAberto() {
+
 		return flagRelatorioGerencial;
 	}
-	
+
 	public void abreCupom() {
+
 		this.contatorItens = 1;
 		this.subTotalCupom = new BigDecimal( "0.00" );
 		this.pagoCupom = new BigDecimal( "0.00" );
 		this.trocoCupom = new BigDecimal( "0.00" );
 		flagCupomIniciado = true;
 	}
-	
+
 	public void iniciarFechamentoCupom() {
+
 		flagFechamentoCupomIniciado = true;
 	}
-	
+
 	public void terminaFechamentoCupom() {
+
 		flagFechamentoCupomIniciado = false;
 		trocoCupom = pagoCupom.subtract( subTotalCupom );
 	}
-	
+
 	public void abreRelatorioGerencial() {
+
 		flagRelatorioGerencial = true;
 	}
-	
+
 	public void fechaRelatorioGerencial() {
+
 		flagRelatorioGerencial = false;
 	}
 }

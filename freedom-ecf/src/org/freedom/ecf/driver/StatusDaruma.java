@@ -247,7 +247,7 @@ public class StatusDaruma implements Status {
 	public static final StatusDaruma DARUMA_STATUS_S10_B0_0 = new StatusDaruma( 21000, RELEVANC_MESSAGE, "Clichê do proprietário Ok." );
 
 	public static final StatusDaruma DARUMA_STATUS_S10_B0_1 = new StatusDaruma( 21001, RELEVANC_MESSAGE, "Clichê do prorietário danificado." );
-	
+
 	private static final List<StatusDaruma> statusList = new ArrayList<StatusDaruma>();
 
 	private String message;
@@ -255,10 +255,7 @@ public class StatusDaruma implements Status {
 	private int code;
 
 	private int relevanc;
-	
-	
 	static {
-		
 		statusList.add( DARUMA_ERROR_01 );
 		statusList.add( DARUMA_ERROR_02 );
 		statusList.add( DARUMA_ERROR_03 );
@@ -381,21 +378,18 @@ public class StatusDaruma implements Status {
 		statusList.add( DARUMA_STATUS_S10_B0_0 );
 		statusList.add( DARUMA_STATUS_S10_B0_1 );
 	}
-	
+
 	public static StatusDaruma getStatusDaruma( int code ) {
-		
+
 		StatusDaruma statusDaruma = null;
-		
 		for ( StatusDaruma sd : statusList ) {
 			if ( sd.getCode() == code ) {
 				statusDaruma = sd;
 				break;
 			}
 		}
-		
 		return statusDaruma;
 	}
-	
 
 	public StatusDaruma( int code, int relevanc, String message ) {
 

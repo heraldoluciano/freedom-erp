@@ -22,23 +22,22 @@ import org.freedom.infra.functions.SystemFunctions;
  * @version 05/04/2006 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)AbstractECFDriver.java <BR>
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)AbstractECFDriver.java <BR>
  * 
- *                            Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
- *                            versão 2.1, Fevereiro de 1999 <BR>
- *                            A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- *                            Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
- *                            o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
- *                            Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
- *                            <BR>
+ *         Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
+ *         versão 2.1, Fevereiro de 1999 <BR>
+ *         A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ *         Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
+ *         o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
+ *         Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
+ * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  *         criada: 05/04/2006. <BR>
- *         <BR>
+ * <BR>
  */
-
 public abstract class AbstractECFDriver implements SerialPortEventListener, ParallelPortEventListener {
 
 	protected static int TIMEOUT_READ = 30000;
@@ -52,7 +51,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public static final byte NAK = 21;
 
 	public static final byte ESC = 27;
-	
+
 	public static final byte GS = 29;
 
 	public static final int TIMEOUT_ACK = 500;
@@ -166,13 +165,13 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public static final char V_DEPARTAMENTOS = 34;
 
 	public static final char V_TIPO_IMP = 253;
-	
+
 	public static final String SUPRIMENTO = "SU";
-	
+
 	public static final String SANGRIA = "SA";
-	
+
 	public static int DUAS_CASAS_DECIMAIS = 2;
-	
+
 	public static int TRES_CASAS_DECIMAIS = 3;
 
 	private static byte[] bytesLidos = new byte[ 3 ];
@@ -180,29 +179,32 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	private static byte[] buffer = null;
 
 	private static boolean leuEvento = false;
-	
+
 	private boolean outputWrite;
-	
+
 	protected AbstractLayout objLayoutNFiscal = null;
 
 	protected String porta;
 
 	protected SerialPort portaSerial = null;
-	
+
 	protected SerialParams serialParams = new SerialParams();
-	
+
 	protected boolean fiscal = true;
 
 	public AbstractECFDriver() {
+
 		Locale.setDefault( new Locale( "pt", "BR" ) );
 	}
-	
+
 	public void setLayoutNFiscal( final AbstractLayout layoutNFiscal ) {
+
 		objLayoutNFiscal = layoutNFiscal;
 	}
 
 	public void setLayoutNFiscal( final String layoutNFiscal ) {
-		if (layoutNFiscal!=null) {
+
+		if ( layoutNFiscal != null ) {
 			try {
 				Class<?> layoutClass = Class.forName( layoutNFiscal );
 				try {
@@ -213,42 +215,39 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 				}
 				catch ( IllegalAccessException e ) {
 					e.printStackTrace();
-				}				
+				}
 			}
 			catch ( ClassNotFoundException e ) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	public byte[] adicBytes( final byte[] variavel, final byte[] incremental ) {
 
 		byte[] result = new byte[ variavel.length + incremental.length ];
-
 		for ( int i = 0; i < result.length; i++ ) {
 			if ( i < variavel.length ) {
 				result[ i ] = variavel[ i ];
-			} else {
+			}
+			else {
 				result[ i ] = incremental[ i - variavel.length ];
 			}
 		}
-
 		return result;
-
 	}
 
-	public boolean activePort( final String portstr) {
-		return activePort( AbstractPort.convPorta( portstr ));
+	public boolean activePort( final String portstr ) {
+
+		return activePort( AbstractPort.convPorta( portstr ) );
 	}
-	
+
 	public boolean activePort( final int com ) {
 
 		boolean result = CtrlPort.getInstance().isActive();
-
 		if ( !result ) {
 			result = CtrlPort.getInstance().activePort( com, serialParams, this );
 		}
-
 		return result;
 	}
 
@@ -261,40 +260,34 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public byte[] getBytesLidos() {
 
 		final byte[] result = new byte[ bytesLidos.length ];
-
 		System.arraycopy( bytesLidos, 0, result, 0, result.length );
-
 		return result;
 	}
 
 	public void parallelEvent( ParallelPortEvent event ) {
+
 		byte[] result = null;
 		byte[] bufferTmp = null;
 		byte[] tmp = null;
 		InputStream input = null;
-
 		input = CtrlPort.getInstance().getInput();
-
 		try {
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
-
 				result = new byte[ input.available() ];
-
 				if ( result != null ) {
-
 					input.read( result );
-
 					if ( buffer == null ) {
 						bufferTmp = result;
-					} else {
+					}
+					else {
 						leuEvento = true;
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + result.length ];
-
 						for ( int i = 0; i < bufferTmp.length; i++ ) {
 							if ( i < tmp.length ) {
 								bufferTmp[ i ] = tmp[ i ];
-							} else {
+							}
+							else {
 								bufferTmp[ i ] = result[ i - tmp.length ];
 							}
 						}
@@ -302,41 +295,36 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 					buffer = bufferTmp;
 				}
 			}
-		} catch ( IOException e ) {
+		}
+		catch ( IOException e ) {
 			e.printStackTrace();
 		}
-		
 	}
-	
+
 	public void serialEvent( final SerialPortEvent event ) {
 
 		byte[] result = null;
 		byte[] bufferTmp = null;
 		byte[] tmp = null;
 		InputStream input = null;
-
 		input = CtrlPort.getInstance().getInput();
-
 		try {
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
-
 				result = new byte[ input.available() ];
-
 				if ( result != null ) {
-
 					input.read( result );
-
 					if ( buffer == null ) {
 						bufferTmp = result;
-					} else {
+					}
+					else {
 						leuEvento = true;
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + result.length ];
-
 						for ( int i = 0; i < bufferTmp.length; i++ ) {
 							if ( i < tmp.length ) {
 								bufferTmp[ i ] = tmp[ i ];
-							} else {
+							}
+							else {
 								bufferTmp[ i ] = result[ i - tmp.length ];
 							}
 						}
@@ -344,17 +332,17 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 					buffer = bufferTmp;
 				}
 			}
-		} catch ( IOException e ) {
+		}
+		catch ( IOException e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public byte[] enviaCmd( final byte[] CMD) {
-		
-	    return enviaCmd(CMD, 0);
-	    
+	public byte[] enviaCmd( final byte[] CMD ) {
+
+		return enviaCmd( CMD, 0 );
 	}
-	
+
 	public byte[] enviaCmd( final byte[] CMD, final int tamEsperado ) {
 
 		return enviaCmd( CMD, CtrlPort.getInstance().getPortnsel(), tamEsperado );
@@ -367,105 +355,93 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 		boolean isserial = AbstractPort.isSerial( com );
 		leuEvento = false;
 		buffer = null;
-
 		if ( activePort( com ) ) {
-
 			try {
-
 				tempo = System.currentTimeMillis();
 				outputWrite = false;
-				
 				Thread tee = new Thread( new Runnable() {
+
 					public void run() {
+
 						writeOutput( CMD );
-					}				
-				});
-				
+					}
+				} );
 				tee.start();
 				tee.join( TIMEOUT_READ );
-				
 				if ( !outputWrite ) {
 					tee.interrupt();
 					return null;
 				}
-
 				if ( isserial ) {
 					do {
 						Thread.sleep( TIMEOUT_ACK );
 						tempoAtual = System.currentTimeMillis();
-					} while ( (tempoAtual - tempo) < (TIMEOUT_READ) 
-								&& (buffer == null || buffer.length < tamresult || !leuEvento ) );
+					} while ( ( tempoAtual - tempo ) < ( TIMEOUT_READ ) && ( buffer == null || buffer.length < tamresult || !leuEvento ) );
 				}
-
-			} catch ( InterruptedException e ) {
+			}
+			catch ( InterruptedException e ) {
 				e.printStackTrace();
 			}
 		}
-
 		return buffer;
 	}
-	
+
 	private void writeOutput( final byte[] CMD ) {
-		
+
 		try {
 			final OutputStream output = CtrlPort.getInstance().getOutput();
 			output.flush();
-			output.write( CMD );		
+			output.write( CMD );
 			closeOutput();
 		}
 		catch ( IOException e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void closeOutput() {
-		
+
 		try {
-			final OutputStream output = CtrlPort.getInstance().getOutput();			
-			output.close();	
+			final OutputStream output = CtrlPort.getInstance().getOutput();
+			output.close();
 			outputWrite = true;
 		}
 		catch ( IOException e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String parseParam( final String param, final int tamanho, final boolean terminador ) {
 
 		final StringBuffer tmp = new StringBuffer();
-
 		if ( param != null ) {
-			
 			if ( terminador ) {
 				String stmp = param;
 				if ( stmp.length() >= tamanho ) {
 					stmp = ( stmp.substring( 0, param.length() - 2 ) );
 				}
-				tmp.append( stmp + (AbstractPort.OS_LINUX == SystemFunctions.getOS() ? (char) 13 : (char) 10) );
-				//tmp.append( (char) 10 + stmp + (char) 10 );
+				tmp.append( stmp + ( AbstractPort.OS_LINUX == SystemFunctions.getOS() ? (char) 13 : (char) 10 ) );
+				// tmp.append( (char) 10 + stmp + (char) 10 );
 			}
 			else {
 				tmp.append( parseParam( param, tamanho ) );
 			}
 		}
-
 		return tmp.toString();
-
 	}
 
-	public String parseParam( final String param, final int tamanho ) {		
+	public String parseParam( final String param, final int tamanho ) {
 
 		final StringBuffer tmp = new StringBuffer();
-		
 		if ( param != null ) {
 			if ( tamanho < param.length() ) {
 				tmp.append( param.substring( 0, tamanho ) );
-			} else {
+			}
+			else {
 				tmp.append( param );
 				tmp.append( replicate( " ", tamanho - param.length() ) );
 			}
 		}
-
 		return tmp.toString();
 	}
 
@@ -487,63 +463,54 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public String parseParam( final Date param ) {
 
 		final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
-
 		return sdf.format( param ).trim();
 	}
 
 	public String replicate( final String texto, final int quant ) {
 
 		final StringBuffer sresult = new StringBuffer();
-
 		for ( int i = 0; i < quant; i++ ) {
 			sresult.append( texto );
 		}
-
 		return sresult.toString();
 	}
 
 	public String floatToString( final float param, final int tamanho, final int casasdec ) {
 
 		final StringBuffer str = new StringBuffer();
-
 		final char[] strTochar = String.valueOf( param ).toCharArray();
 		final int index = String.valueOf( param ).indexOf( "." );
-		
-		for ( int i=0; i < index; i++ ) {
+		for ( int i = 0; i < index; i++ ) {
 			str.append( strTochar[ i ] );
 		}
-		for ( int i=0; i < casasdec; i++ ) {
+		for ( int i = 0; i < casasdec; i++ ) {
 			if ( ( index + i ) + 1 < strTochar.length ) {
 				str.append( strTochar[ ( index + i ) + 1 ] );
 			}
 			else {
 				str.append( 0 );
 			}
-		}		
-
+		}
 		return strZero( str.toString(), tamanho );
 	}
 
 	public String strZero( final String val, final int zeros ) {
 
 		String str = val;
-
 		if ( str == null ) {
 			str = "";
 		}
-
 		final StringBuffer sresult = new StringBuffer();
-
 		sresult.append( replicate( "0", zeros - str.trim().length() ) );
 		sresult.append( str.trim() );
-
 		return sresult.toString();
 	}
 
 	public boolean isFiscal() {
+
 		return fiscal;
 	}
-	
+
 	public abstract byte[] preparaCmd( byte[] CMD );
 
 	public abstract STResult executaCmd( byte[] CMD, int tamresult );
@@ -597,7 +564,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public abstract String resultSubTotal();// 29
 
 	public abstract String resultNumeroCupom();// 30
-	
+
 	public abstract boolean resultDocumentoAberto();
 
 	public abstract STResult cancelaItemGenerico( int item );// 31
@@ -613,8 +580,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public abstract STResult nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
 	public abstract STResult vendaItemTresCasas( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 56
-	
-	public abstract STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
+
+	public abstract STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ); // 57
 
 	public abstract STResult programaMoedaSingular( String nomeSingular );// 58
 
@@ -623,9 +590,9 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public abstract STResult programarEspacoEntreLinhas( int espaco );// 60
 
 	public abstract STResult programarLinhasEntreCupons( int espaco );// 61
-	
+
 	public abstract String resultStatusCheque();// 62 48
-	
+
 	public abstract STResult cancelaImpressaoCheque();// 62 49
 
 	public abstract STResult programaUnidadeMedida( String descUnid );// 62 51
@@ -657,6 +624,4 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public abstract STResult efetuaFormaPagamento( String indice, float valor, String descForma );// 72
 
 	public abstract STResult estornoFormaPagamento( String descOrigem, String descDestino, float valor );// 74
-	
-
 }

@@ -8,19 +8,19 @@ import java.util.Date;
  * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
  * Classe: @(#)ECFBematech.java <BR>
- *                      <BR>
- *                      Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
- *                      versão 2.1, Fevereiro de 1999 <BR>
- *                      A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- *                      Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
- *                      o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
- *                      Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
- *                      <BR>
+ * <BR>
+ * Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
+ * <BR>
+ * 
  * @author Setpoint Informática Ltda. Robson Sanchez/Alex Rodrigues <BR>
  * @version 1.0.0 - 05/04/2006 <BR>
- *          <BR>
+ * <BR>
  */
-
 public class ECFBematech extends AbstractECFDriver {
 
 	/**
@@ -28,7 +28,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 */
 	public ECFBematech() {
 
-		super(); 
+		super();
 	}
 
 	/**
@@ -84,22 +84,17 @@ public class ECFBematech extends AbstractECFDriver {
 		final byte NBL = (byte) ( tam % 256 );
 		final byte NBH = (byte) ( tam / 256 );
 		byte[] result = new byte[ 5 + tamCMD ];
-
 		result[ 0 ] = STX;
 		result[ 1 ] = NBL;
 		result[ 2 ] = NBH;
-
 		for ( int i = 0; i < tamCMD; i++ ) {
 			soma += CMD[ i ];
 			result[ i + 3 ] = CMD[ i ];
 		}
-
 		CSL = (byte) ( soma % 256 );
 		CSH = (byte) ( soma / 256 );
-
 		result[ result.length - 2 ] = CSL;
 		result[ result.length - 1 ] = CSH;
-
 		return result;
 	}
 
@@ -118,10 +113,8 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] result = null;
 		byte[] cmd = null;
-
 		cmd = preparaCmd( CMD );
 		result = enviaCmd( cmd, tamresult );
-
 		return checkResult( result );
 	}
 
@@ -135,27 +128,20 @@ public class ECFBematech extends AbstractECFDriver {
 	private String bcdToAsc( final byte[] bcdParam ) {
 
 		final StringBuffer result = new StringBuffer();
-
 		int bcd = 0;
 		byte byteBH = 0;
 		byte byteBL = 0;
-
 		for ( int i = 0; i < bcdParam.length; i++ ) {
-
 			bcd = bcdParam[ i ];
-
 			// Ajuste dos bytes para o padrão de cálculo (o java trabalha com bytes de -128 a 127)
 			if ( bcd < 0 ) {
 				bcd += 256;
 			}
-
 			byteBH = (byte) ( bcd / 16 );
 			byteBL = (byte) ( bcd % 16 );
-
 			result.append( byteBH );
 			result.append( byteBL );
 		}
-
 		return result.toString();
 	}
 
@@ -180,24 +166,19 @@ public class ECFBematech extends AbstractECFDriver {
 		byte ack = 0;
 		byte st1 = 0;
 		byte st2 = 0;
-
 		if ( bytes != null ) {
-
 			ack = bytes[ 0 ];
-
 			if ( bytes.length > 3 ) {
-
 				st1 = bytes[ bytes.length - 2 ];
 				st2 = bytes[ bytes.length - 1 ];
-
 				final byte[] bytesLidos = new byte[ bytes.length - 3 ];
 				System.arraycopy( bytes, 1, bytesLidos, 0, bytesLidos.length );
 				setBytesLidos( bytesLidos );
 			}
-
 			if ( ack == ACK && st1 == 0 && st2 == 0 ) {
 				result = STResult.getInstanceOk();
-			} else {
+			}
+			else {
 				result.addAll( checkST1( st1 ) );
 				result.addAll( checkST2( st2 ) );
 			}
@@ -205,7 +186,6 @@ public class ECFBematech extends AbstractECFDriver {
 		else {
 			result = STResult.getInstanceNotComunication();
 		}
-
 		return result;
 	}
 
@@ -219,45 +199,42 @@ public class ECFBematech extends AbstractECFDriver {
 
 		int st1 = ST1;
 		STResult result = new STResult();
-
 		// compatibilização do valor de byte de result.
 		if ( st1 < 0 ) {
 			st1 += 128;
 		}
-
 		if ( st1 > 127 ) {
 			st1 -= 128;
-			result.add( StatusBematech.BEMA_FIM_DE_PAPEL );  
+			result.add( StatusBematech.BEMA_FIM_DE_PAPEL );
 		}
 		if ( st1 > 63 ) {
 			st1 -= 64;
-			result.add( StatusBematech.BEMA_POUCO_PAPEL );  
+			result.add( StatusBematech.BEMA_POUCO_PAPEL );
 		}
 		if ( st1 > 31 ) {
 			st1 -= 32;
-			result.add( StatusBematech.BEMA_RELOGIO_ERROR );  
+			result.add( StatusBematech.BEMA_RELOGIO_ERROR );
 		}
 		if ( st1 > 15 ) {
 			st1 -= 16;
-			result.add( StatusBematech.BEMA_IMPRESSORA_EM_ERRO );  
+			result.add( StatusBematech.BEMA_IMPRESSORA_EM_ERRO );
 		}
 		if ( st1 > 7 ) {
 			st1 -= 8;
-			result.add( StatusBematech.BEMA_NO_ESC );  
+			result.add( StatusBematech.BEMA_NO_ESC );
 		}
 		if ( st1 > 3 ) {
 			st1 -= 4;
-			result.add( StatusBematech.BEMA_NO_COMMAND );  
+			result.add( StatusBematech.BEMA_NO_COMMAND );
 		}
 		if ( st1 > 1 ) {
 			st1 -= 2;
-			result.add( StatusBematech.BEMA_CUPOM_FISCAL_ABERTO );  
+			result.add( StatusBematech.BEMA_CUPOM_FISCAL_ABERTO );
 		}
 		if ( st1 > 0 ) {
 			st1 -= 1;
-			result.add( StatusBematech.BEMA_NU_PARAMS_INVALIDO );  
+			result.add( StatusBematech.BEMA_NU_PARAMS_INVALIDO );
 		}
-
 		return result;
 	}
 
@@ -271,45 +248,42 @@ public class ECFBematech extends AbstractECFDriver {
 
 		int st2 = ST2;
 		STResult result = new STResult();
-
 		// compatibilização do valor de byte de result.
 		if ( st2 < 0 ) {
 			st2 += 128;
 		}
-		
 		if ( st2 > 127 ) {
 			st2 -= 128;
-			result.add( StatusBematech.BEMA_TP_PARAM_INVALIDO ); 
+			result.add( StatusBematech.BEMA_TP_PARAM_INVALIDO );
 		}
 		if ( st2 > 63 ) {
 			st2 -= 64;
-			result.add( StatusBematech.BEMA_OUT_OF_MEMORY ); 
+			result.add( StatusBematech.BEMA_OUT_OF_MEMORY );
 		}
 		if ( st2 > 31 ) {
 			st2 -= 32;
-			result.add( StatusBematech.BEMA_MEMORY_ERROR ); 
+			result.add( StatusBematech.BEMA_MEMORY_ERROR );
 		}
 		if ( st2 > 15 ) {
 			st2 -= 16;
-			result.add( StatusBematech.BEMA_NO_ALIQUOTA ); 
+			result.add( StatusBematech.BEMA_NO_ALIQUOTA );
 		}
 		if ( st2 > 7 ) {
 			st2 -= 8;
-			result.add( StatusBematech.BEMA_OUT_OF_ALIQUOTA ); 
+			result.add( StatusBematech.BEMA_OUT_OF_ALIQUOTA );
 		}
 		if ( st2 > 3 ) {
 			st2 -= 4;
-			result.add( StatusBematech.BEMA_NO_ACESESS_CANCELAMENTO ); 
+			result.add( StatusBematech.BEMA_NO_ACESESS_CANCELAMENTO );
 		}
 		if ( st2 > 1 ) {
 			st2 -= 2;
-			result.add( StatusBematech.BEMA_NO_CNPJ_IE ); 
+			result.add( StatusBematech.BEMA_NO_CNPJ_IE );
 		}
 		if ( st2 > 0 ) {
 			st2 -= 1;
-			result.add( StatusBematech.BEMA_COMMAND_NO_EXECUTE ); 
+			result.add( StatusBematech.BEMA_COMMAND_NO_EXECUTE );
 		}
-
 		return result;
 	}
 
@@ -325,19 +299,16 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult alteraSimboloMoeda( final String simbolo ) {
 
 		byte[] CMD = { ESC, 1 };
-		
 		final int tamanho = 2;
 		String tmp = simbolo.trim();
-		
 		if ( tamanho < tmp.length() ) {
 			tmp = tmp.substring( 0, tamanho );
-		} else {
+		}
+		else {
 			tmp = replicate( " ", tamanho - tmp.length() );
 			tmp += simbolo;
 		}
-		
 		CMD = adicBytes( CMD, tmp.getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -357,17 +328,12 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
 		byte[] CMD = { ESC, 7 };
-
 		final StringBuffer buf = new StringBuffer();
-		
 		buf.append( parseParam( aliq, 4, false ) );
-
 		if ( ISS == opt ) {
 			buf.append( opt );
 		}
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -381,12 +347,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaHorarioVerao() {
 
 		final byte[] CMD = { ESC, 18 };
-
 		return executaCmd( CMD, 3 );
 	}
-	
+
 	public boolean isHorarioVerao() {
-		
+
 		boolean returnOfAction = false;
 		String flags = resultVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
 		int iflag = Integer.parseInt( flags );
@@ -407,9 +372,8 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		if ( iflag > 3 ) {
 			iflag -= 4;
-			returnOfAction = true;				
+			returnOfAction = true;
 		}
-		
 		return returnOfAction;
 	}
 
@@ -428,14 +392,10 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
 
 		byte[] CMD = { ESC, 40 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( indice, 2 ) );
 		buf.append( parseParam( desc, 19, false ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -446,7 +406,8 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * Exemplo:<br>
 	 * <br>
-	 * <p style="background=#eeffee"> // para definir Arredondamento.<br>
+	 * <p style="background=#eeffee">
+	 * // para definir Arredondamento.<br>
 	 * programaTruncamentoArredondamento( '1' );<br>
 	 * </p>
 	 * <br>
@@ -459,9 +420,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaTruncamentoArredondamento( final char opt ) {
 
 		byte[] CMD = { ESC, 39 };
-
 		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -479,9 +438,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programarEspacoEntreLinhas( final int espaco ) {
 
 		byte[] CMD = { ESC, 60 };
-
 		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -499,9 +456,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programarLinhasEntreCupons( final int espaco ) {
 
 		byte[] CMD = { ESC, 61 };
-
 		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -523,14 +478,10 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult nomeiaDepartamento( final int index, final String descricao ) {
 
 		byte[] CMD = { ESC, 65 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( index, 2 ) );
 		buf.append( parseParam( descricao, 20, false ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -542,7 +493,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult aberturaDeCupom() {
 
 		final byte[] CMD = { ESC, 0 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -558,7 +508,6 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] CMD = { ESC, 0 };
 		CMD = adicBytes( CMD, parseParam( cnpj, 29, false ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -571,7 +520,8 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * Exemplo:<br>
 	 * <br>
-	 * <p style="background=#000000"> // para definir a unidade de medida para o próximo item.<br>
+	 * <p style="background=#000000">
+	 * // para definir a unidade de medida para o próximo item.<br>
 	 * programaUnidadeMedida( "Kg" );// Kilograma<br>
 	 * </p>
 	 * <br>
@@ -584,9 +534,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaUnidadeMedida( final String descUnid ) {
 
 		byte[] CMD = { ESC, 62, 51 };
-
 		CMD = adicBytes( CMD, parseParam( descUnid, 2, false ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -603,9 +551,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult aumentaDescItem( final String descricao ) {
 
 		byte[] CMD = { ESC, 62, 52 };
-
 		CMD = adicBytes( CMD, parseParam( descricao, 200 ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -635,9 +581,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult vendaItem( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 9 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( codProd, 13 ) );
 		buf.append( parseParam( descProd, 29 ) );
 		buf.append( parseParam( aliquota, 2 ) );
@@ -654,9 +598,7 @@ public class ECFBematech extends AbstractECFDriver {
 		else if ( tpdesc == DESCONTO_PERC ) {
 			buf.append( parseParam( desconto, 4, 0 ) );
 		}
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -686,9 +628,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 56 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( codProd, 13 ) );
 		buf.append( parseParam( descProd, 29 ) );
 		buf.append( parseParam( aliquota, 2 ) );
@@ -698,18 +638,14 @@ public class ECFBematech extends AbstractECFDriver {
 		else if ( tpqtd == QTD_INTEIRO ) {
 			buf.append( parseParam( qtd, 4, 0 ) );
 		}
-		
 		buf.append( parseParam( valor, 8, 3 ) );
-		
 		if ( tpdesc == DESCONTO_VALOR ) {
 			buf.append( parseParam( desconto, 8, 2 ) );
 		}
 		else if ( tpdesc == DESCONTO_PERC ) {
 			buf.append( parseParam( desconto, 4, 0 ) );
 		}
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -741,9 +677,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
 
 		byte[] CMD = { ESC, 63 };
-
 		final StringBuffer buf = new StringBuffer( 312 );
-
 		buf.append( parseParam( sitTrib, 2, false ) );
 		buf.append( parseParam( valor, 9, 3 ) );
 		buf.append( parseParam( qtd, 7, 3 ) );
@@ -754,9 +688,7 @@ public class ECFBematech extends AbstractECFDriver {
 		buf.append( parseParam( unidade, 2, false ) );
 		buf.append( parseParam( codProd + (char) 0, 49, false ) );
 		buf.append( parseParam( descProd + (char) 0, 200, false ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -769,7 +701,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult cancelaItemAnterior() {
 
 		final byte[] CMD = { ESC, 13 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -786,9 +717,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult cancelaItemGenerico( final int item ) {
 
 		byte[] CMD = { ESC, 31 };
-
 		CMD = adicBytes( CMD, parseParam( item, 4 ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -807,20 +736,14 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult iniciaFechamentoCupom( final char opt, final float valor ) {
 
 		byte[] CMD = { ESC, 32 };
-
 		int tamanho = 14;
-
 		if ( opt == ACRECIMO_PERC || opt == DESCONTO_PERC ) {
 			tamanho = 4;
 		}
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( opt ) );
 		buf.append( parseParam( valor, tamanho, 2 ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -842,15 +765,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
 
 		byte[] CMD = { ESC, 72 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( indice, 2 ) );
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( descForma, 80, true ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -868,7 +787,6 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] CMD = { ESC, 34, ESC };
 		CMD = adicBytes( CMD, parseParam( mensagem, 492, true ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -882,7 +800,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult cancelaCupom() {
 
 		final byte[] CMD = { ESC, 14 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -902,11 +819,8 @@ public class ECFBematech extends AbstractECFDriver {
 	public String programaFormaPagamento( final String descricao ) {
 
 		byte[] CMD = { ESC, 71 };
-
 		CMD = adicBytes( CMD, parseParam( descricao, 16 ).getBytes() );
-
 		executaCmd( CMD, 4 );
-
 		return new String( getBytesLidos() );
 	}
 
@@ -928,15 +842,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult estornoFormaPagamento( final String descOrigem, final String descDestino, final float valor ) {
 
 		byte[] CMD = { ESC, 74 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( descOrigem, 16, false ) );
 		buf.append( parseParam( descDestino, 16, false ) );
 		buf.append( parseParam( valor, 14, 2 ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -948,7 +858,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult reducaoZ() {
 
 		final byte[] CMD = { ESC, 5 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -960,7 +869,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult leituraX() {
 
 		final byte[] CMD = { ESC, 6 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -979,15 +887,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
 
 		byte[] CMD = { ESC, 8 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( dataIni ) );
 		buf.append( parseParam( dataFim ) );
 		buf.append( tipo );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1006,15 +910,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
 
 		byte[] CMD = { ESC, 8 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( ini, 6 ) );
 		buf.append( parseParam( fim, 6 ) );
 		buf.append( tipo );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1026,7 +926,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult leituraXSerial() {
 
 		final byte[] CMD = { ESC, 69 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1044,9 +943,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult relatorioGerencial( final String texto ) {
 
 		byte[] CMD = { ESC, 20 };
-
 		CMD = adicBytes( CMD, parseParam( texto, 620, true ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1059,7 +956,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult fechamentoRelatorioGerencial() {
 
 		final byte[] CMD = { ESC, 21 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1084,15 +980,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
 		byte[] CMD = { ESC, 25 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( opt, 2 ) );
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( formaPag, 16 ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1118,15 +1010,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
 
 		byte[] CMD = { ESC, 66 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( formaPag, 16, false ) );
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( doc, 6 ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1145,9 +1033,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult usaComprovanteNFiscalVinculado( final String texto ) {
 
 		byte[] CMD = { ESC, 67 };
-
 		CMD = adicBytes( CMD, parseParam( texto, 620, false ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1162,7 +1048,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult autenticacaoDeDocumento() {
 
 		final byte[] CMD = { ESC, 16 };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1179,14 +1064,11 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaCaracterParaAutenticacao( final int[] caracteres ) {
 
 		byte[] CMD = { ESC, 64 };
-
 		byte[] bytes = new byte[ caracteres.length ];
 		for ( int i = 0; i < caracteres.length; i++ ) {
-			bytes[ i ] = (byte) (caracteres[ i ]-128);
+			bytes[ i ] = (byte) ( caracteres[ i ] - 128 );
 		}
 		CMD = adicBytes( CMD, bytes );
-
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1202,7 +1084,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult acionaGavetaDinheiro( final int time ) {
 
 		final byte[] CMD = { ESC, 22, (byte) time };
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1217,9 +1098,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultEstadoGavetaDinheiro() {
 
 		final byte[] CMD = { ESC, 23 };
-
 		executaCmd( CMD, 4 );
-
 		return bcdToAsc( getBytesLidos() );
 	}
 
@@ -1232,9 +1111,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public String getStatus() {
 
 		final byte[] CMD = { ESC, 19 };
-
-		STResult stresult = executaCmd( CMD, 3 );	
-
+		STResult stresult = executaCmd( CMD, 3 );
 		return stresult.getMessages();
 	}
 
@@ -1246,11 +1123,8 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultAliquotas() {
 
 		final byte[] CMD = { ESC, 26 };
-
 		executaCmd( CMD, 36 );
-		
 		final String aliquotas = bcdToAsc( getBytesLidos() );
-
 		return aliquotas.substring( aliquotas.length() - 64 );
 	}
 
@@ -1272,24 +1146,18 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultTotalizadoresParciais() {
 
 		final byte[] CMD = { ESC, 27 };
-
 		executaCmd( CMD, 222 );
-
 		final int[] tam = { 224, 14, 14, 14, 126, 14, 14, 18 };
 		final String totalizadores = bcdToAsc( getBytesLidos() );
 		final StringBuffer result = new StringBuffer();
 		int index = 0;
-
 		for ( int i = 0; i < tam.length; i++ ) {
-
 			if ( i > 0 ) {
 				result.append( ',' );
 			}
-
 			result.append( totalizadores.substring( index, ( index + tam[ i ] ) ) );
 			index += tam[ i ];
 		}
-
 		return result.toString();
 	}
 
@@ -1301,7 +1169,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultSubTotal() {
 
 		final byte[] CMD = { ESC, 29 };
-
 		executaCmd( CMD, 10 );
 		return bcdToAsc( getBytesLidos() );
 	}
@@ -1315,16 +1182,13 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultNumeroCupom() {
 
 		final byte[] CMD = { ESC, 30 };
-
 		executaCmd( CMD, 6 );
-
 		return bcdToAsc( getBytesLidos() );
 	}
-	
+
 	public boolean resultDocumentoAberto() {
-		
+
 		String status = getStatus();
-			
 		return status.indexOf( StatusBematech.BEMA_CUPOM_FISCAL_ABERTO.getMessage() ) > -1;
 	}
 
@@ -1502,7 +1366,8 @@ public class ECFBematech extends AbstractECFDriver {
 	 * <td>Formas de Pagamento</td>
 	 * <td></td>
 	 * </tr>
-	 * </table> <br>
+	 * </table>
+	 * <br>
 	 * Para mais informações consulte a documentação da impressora.<br>
 	 * <br>
 	 * 
@@ -1518,21 +1383,16 @@ public class ECFBematech extends AbstractECFDriver {
 		 * o tamanho dos bytes de result varia conforme o parametro.
 		 */
 		executaCmd( CMD, 0 );
-
 		String result = "";
-
-		if ( var == V_NUM_SERIE 
-				|| var == V_CNPJ_IE 
-					|| var == V_CLICHE 
-						|| var == V_MOEDA
-							|| var == V_DEPARTAMENTOS ) {
+		if ( var == V_NUM_SERIE || var == V_CNPJ_IE || var == V_CLICHE || var == V_MOEDA || var == V_DEPARTAMENTOS ) {
 			result = new String( getBytesLidos() );
-		} else if ( var == V_DT_ULT_REDUCAO ) {
+		}
+		else if ( var == V_DT_ULT_REDUCAO ) {
 			result = bcdToAsc( getBytesLidos() ).substring( 0, 6 );
-		} else {
+		}
+		else {
 			result = bcdToAsc( getBytesLidos() );
 		}
-
 		return result;
 	}
 
@@ -1545,9 +1405,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultEstadoPapel() {
 
 		final byte[] CMD = { ESC, 62, 54 };
-
 		executaCmd( CMD, 5 );
-
 		return bcdToAsc( getBytesLidos() );
 	}
 
@@ -1559,9 +1417,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultUltimaReducao() {
 
 		final byte[] CMD = { ESC, 62, 55 };
-
 		executaCmd( CMD, 308 );
-
 		return bcdToAsc( getBytesLidos() );
 	}
 
@@ -1577,13 +1433,9 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaMoedaSingular( final String nomeSingular ) {
 
 		byte[] CMD = { ESC, 58 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( nomeSingular, 19, false ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1599,13 +1451,9 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult programaMoedaPlural( final String nomePlurar ) {
 
 		byte[] CMD = { ESC, 59 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( nomePlurar, 19, false ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1618,9 +1466,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public String resultStatusCheque() {
 
 		byte[] CMD = { ESC, 62, 48 };
-		
 		executaCmd( CMD, 3 );
-
 		return bcdToAsc( getBytesLidos() );
 	}
 
@@ -1632,7 +1478,6 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult cancelaImpressaoCheque() {
 
 		byte[] CMD = { ESC, 62, 49 };
-		
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1658,22 +1503,16 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
 
 		byte[] CMD = { ESC, 57 };
-
 		final StringBuffer buf = new StringBuffer();
-
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( favorecido, 45, false ) );
 		buf.append( parseParam( localidade, 27, false ) );
 		buf.append( parseParam( dia, 2 ) );
 		buf.append( parseParam( mes, 2 ) );
 		buf.append( parseParam( ano, 4 ) );
-
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
 		final byte[] posicoes = { 55, 10, 1, 6, 18, 50, 54, 71, 2, 5, 8, 10, 12, 0 };
-
 		CMD = adicBytes( CMD, posicoes );
-
 		return executaCmd( CMD, 3 );
 	}
 
@@ -1682,18 +1521,15 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 19 };
 		byte[] result = new byte[ 1 ];
 		CMD = preparaCmd( CMD );
-
 		while ( result.length < 2 ) {
-
 			// depois que entra do laço e ocorre algum erro no envio do comando
 			// a condição de result == null valida o laço
 			// tornando ele um laço infinito...
-
 			result = enviaCmd( CMD, 3 );
-
 			try {
 				Thread.sleep( 100 );
-			} catch ( InterruptedException e ) {
+			}
+			catch ( InterruptedException e ) {
 			}
 		}
 	}
@@ -1701,16 +1537,13 @@ public class ECFBematech extends AbstractECFDriver {
 	public STResult habilitaCupomAdicional( final char opt ) {
 
 		byte[] CMD = { ESC, 68 };
-
 		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
-
 		return executaCmd( CMD, 3 );
 	}
 
 	public STResult resetErro() {
 
 		final byte[] CMD = { ESC, 70 };
-
 		return executaCmd( CMD, 3 );
 	}
 }

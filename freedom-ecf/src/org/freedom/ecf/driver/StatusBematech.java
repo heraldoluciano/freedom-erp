@@ -58,7 +58,6 @@ public class StatusBematech implements Status {
 	private int code;
 
 	private int relevanc;
-	
 
 	public StatusBematech( int code, int relevanc, String message ) {
 
@@ -68,17 +67,17 @@ public class StatusBematech implements Status {
 	}
 
 	public void setCode( int code ) {
-	
+
 		this.code = code;
 	}
-	
+
 	public int getCode() {
 
 		return code;
 	}
 
 	public void setMessage( String message ) {
-	
+
 		this.message = message;
 	}
 
@@ -88,7 +87,7 @@ public class StatusBematech implements Status {
 	}
 
 	public void setRelevanc( int relevanc ) {
-	
+
 		this.relevanc = relevanc;
 	}
 

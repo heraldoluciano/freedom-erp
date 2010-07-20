@@ -14,51 +14,43 @@ import javax.swing.Timer;
 import org.freedom.ecf.driver.AbstractECFDriver;
 
 public class LayoutDemonstration extends AbstractLayout implements ActionListener {
-	
+
 	private Timer timerRelatorioGerencial = new Timer( 2000, this );
-	
-	
-	public LayoutDemonstration() { 
+
+	public LayoutDemonstration() {
+
 		super();
 	}
-	
+
 	public void loadMemory( File file ) {
-		
+
 	}
-	
+
 	private void printHead() {
-		
+
 		printCenter( memory.getEmpresa() );
-		
 		println( memory.getEndereco() );
-		
 		print( memory.getCidade() );
-		printRight( memory.getTelefone() );	
-		
+		printRight( memory.getTelefone() );
 		SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
 		Date date = Calendar.getInstance().getTime();
 		print( df.format( date ) );
 		df = new SimpleDateFormat( "HH:mm:ss" );
 		printRight( df.format( date ) );
-		
 		printline();
 	}
-	
-	private void printFooter() {	
-		
+
+	private void printFooter() {
+
 		println();
-		
 		printline();
-		
 		SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
 		Date date = Calendar.getInstance().getTime();
 		print( df.format( date ) );
 		df = new SimpleDateFormat( "HH:mm:ss" );
 		printRight( df.format( date ) );
-		
 		printline( "=" );
-		
-		for ( int i=0; i < memory.getLinhasFim(); i++) {
+		for ( int i = 0; i < memory.getLinhasFim(); i++ ) {
 			println();
 		}
 	}
@@ -71,25 +63,29 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 			}
 		}
 	}
-	
+
 	private String exit( String texto ) {
-		System.out.print( "\n" + texto );		
+
+		System.out.print( "\n" + texto );
 		return texto;
 	}
-	
+
 	@Override
 	public String resultAliquotas() {
+
 		return memory.getAliquotas();
 	}
 
 	@Override
 	public String programaFormaPagamento( String descricao ) {
+
 		return formatZero( memory.programaFormaPagamento( descricao ), 2 );
 	}
-	
+
 	@Override
 	public String alteraSimboloMoeda( String simbolo ) {
-		if ( simbolo != null) {
+
+		if ( simbolo != null ) {
 			memory.setSimboloMoeda( simbolo.substring( 0, 4 ) );
 		}
 		return simbolo;
@@ -97,6 +93,7 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 
 	@Override
 	public String aberturaDeCupom() {
+
 		return aberturaDeCupom( null );
 	}
 
@@ -104,7 +101,6 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 	public String aberturaDeCupom( String cnpj ) {
 
 		printHead();
-		
 		if ( cnpj != null ) {
 			println();
 			print( "Cliente: " );
@@ -112,21 +108,18 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 			println();
 			println();
 		}
-		
 		printCenter( "CUPOM NAO FISCAL" );
 		println( "ITEM   CODIGO             DESCRICAO" );
-		          
 		print( "      QTDxUNITARIO" );
 		printRight( "VALOR(" + memory.getSimboloMoeda() + ") " );
 		printline( false );
-		
 		memory.abreCupom();
-		
 		return exit( printBuffer() );
 	}
 
 	@Override
 	public String programaUnidadeMedida( String unidadeMedida ) {
+
 		memory.setUnidadeMedida( formatString( unidadeMedida, 2 ) );
 		return memory.getUnidadeMedida();
 	}
@@ -145,9 +138,7 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 		print( "x" );
 		print( formatDecimal( valor, 2 ) );
 		printRight( formatCurrency( valor * qtd ), false );
-		
 		memory.addSubTotalCupom( new BigDecimal( valor * qtd ) );
-				
 		return exit( printBuffer() );
 	}
 
@@ -156,7 +147,6 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 
 		BigDecimal acrescimo = null;
 		BigDecimal desconto = null;
-		
 		if ( valor > 0 ) {
 			switch ( opt ) {
 			case AbstractECFDriver.ACRECIMO_PERC:
@@ -175,10 +165,9 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 				break;
 			}
 		}
-		
 		if ( acrescimo != null ) {
 			printRight( formatStringRigth( repeat( "-", 20 ), siseLine ) );
-			printRight( formatCurrency( memory.getSubTotalCupom() ) );		
+			printRight( formatCurrency( memory.getSubTotalCupom() ) );
 			print( "acréscimo" );
 			printRight( formatCurrency( acrescimo ) );
 			memory.addSubTotalCupom( acrescimo );
@@ -188,48 +177,38 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 			printRight( formatCurrency( desconto ) );
 			memory.subtractSubTotalCupom( desconto );
 		}
-
 		printRight( formatStringRigth( repeat( "-", 20 ), siseLine ) );
 		print( "TOTAL" );
-		printRight( formatCurrency( memory.getSubTotalCupom() ), false );		
-		
+		printRight( formatCurrency( memory.getSubTotalCupom() ), false );
 		memory.iniciarFechamentoCupom();
-
 		return exit( printBuffer() );
 	}
 
 	@Override
 	public String efetuaFormaPagamento( String indice, float valor, String descForma ) {
-		
-		if ( ! memory.fechamentoCupomIniciado() ) {
+
+		if ( !memory.fechamentoCupomIniciado() ) {
 			iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_PERC, 0 );
 		}
-		
 		print( memory.getDescricaoFormaPagamento( Integer.parseInt( indice ) ) );
-		printRight( formatCurrency( valor ), false );	
-		
+		printRight( formatCurrency( valor ), false );
 		memory.addPagoCupom( new BigDecimal( valor ) );
-
 		return exit( printBuffer() );
 	}
 
 	@Override
 	public String finalizaFechamentoCupom( String mensagem ) {
-		
+
 		memory.terminaFechamentoCupom();
-		
 		if ( memory.getTrocoCupom().floatValue() > 0 ) {
 			print( "troco" );
-			printRight( formatCurrency( memory.getTrocoCupom() ), false );	
+			printRight( formatCurrency( memory.getTrocoCupom() ), false );
 		}
-		
 		if ( mensagem != null && mensagem.trim().length() > 0 ) {
-    		printline();
-    		print( formatString( mensagem, siseLine ) );
+			printline();
+			print( formatString( mensagem, siseLine ) );
 		}
-		
 		printFooter();
-
 		return exit( printBuffer() );
 	}
 
@@ -237,7 +216,6 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 	public String comprovanteNFiscalNVinculado( String opt, float valor, String formaPag ) {
 
 		printHead();
-		
 		printCenter( "COMPROVANTE NAO FISCAL" );
 		printCenter( "nao e documento fiscal" );
 		println();
@@ -246,14 +224,12 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 		}
 		else if ( AbstractECFDriver.SANGRIA.equals( opt ) ) {
 			print( "SANGRIA: " );
-		}	
+		}
 		else {
 			print( formaPag + ": " );
-		}		
+		}
 		printRight( formatCurrency( new BigDecimal( valor ) ) );
-		
 		printFooter();
-		
 		return exit( printBuffer() );
 	}
 
@@ -264,29 +240,25 @@ public class LayoutDemonstration extends AbstractLayout implements ActionListene
 			print( texto );
 		}
 		else {
-			printHead();			
+			printHead();
 			printCenter( "Relatorio Gerencial" );
 			printCenter( "Nao  e  documento  fiscal" );
-			println();					
-			print( texto );			
-
+			println();
+			print( texto );
 			memory.abreRelatorioGerencial();
 			timerRelatorioGerencial.start();
 		}
-		
 		return exit( printBuffer() );
 	}
 
 	@Override
 	public String fechamentoRelatorioGerencial() {
-		
-		if ( memory.relatorioGerencialAberto() ) {			
-			printFooter();			
 
+		if ( memory.relatorioGerencialAberto() ) {
+			printFooter();
 			memory.fechaRelatorioGerencial();
 			timerRelatorioGerencial.stop();
 		}
-		
 		return exit( printBuffer() );
 	}
 }
