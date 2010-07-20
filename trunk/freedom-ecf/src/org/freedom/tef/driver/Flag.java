@@ -24,35 +24,35 @@ import java.util.Map;
 
 import org.freedom.tef.driver.text.TextTef;
 
-
 public class Flag {
 
 	private static Map<String, Class<TextTef>> textTefFlagsMap = null;
-	
+
 	private static boolean loadTextTefFlagsMaps = false;
-	
+
 	/**
-	 *  
-	 * @return Mapa de [ Nome de Bandeira ] X [ Classe de funções TEF ]. 
+	 * 
+	 * @return Mapa de [ Nome de Bandeira ] X [ Classe de funções TEF ].
 	 */
-	public static Map<String, Class<TextTef>> getTextTefFlagsMap() {	
-		
+	public static Map<String, Class<TextTef>> getTextTefFlagsMap() {
+
 		if ( textTefFlagsMap == null ) {
 			textTefFlagsMap = new HashMap<String, Class<TextTef>>();
 		}
-		
 		return textTefFlagsMap;
 	}
-	
+
 	/**
 	 * 
-	 * @return Retorna se os mapas foram carregados. 
+	 * @return Retorna se os mapas foram carregados.
 	 */
-	public static boolean isLoadTextTefFlagsMaps() {	
+	public static boolean isLoadTextTefFlagsMaps() {
+
 		return loadTextTefFlagsMaps;
 	}
-	
-	public static void setLoadTextTefFlagsMaps( final boolean loadTextTefFlagsMaps ) {	
+
+	public static void setLoadTextTefFlagsMaps( final boolean loadTextTefFlagsMaps ) {
+
 		Flag.loadTextTefFlagsMaps = loadTextTefFlagsMaps;
 	}
 
@@ -60,28 +60,29 @@ public class Flag {
 	 * Sobrecarrega {@link #loadParametrosOfInitiation(File)} <br>
 	 * para facilitar chamada utilizando o caminho para o arquivo de inicialização.<br>
 	 * 
-	 * @param fileParametrosOfInitiation Caminho para arquivo de inicialização.
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param fileParametrosOfInitiation
+	 *            Caminho para arquivo de inicialização.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	public static void loadParametrosOfInitiation( final String fileParametrosOfInitiation ) 
-		throws Exception {
-		
+	public static void loadParametrosOfInitiation( final String fileParametrosOfInitiation ) throws Exception {
+
 		loadParametrosOfInitiation( new File( fileParametrosOfInitiation ) );
 	}
-	
+
 	/**
 	 * Carrega o arquivo de inicialização para mapeamento das bandeiras.
 	 * 
-	 * @param fileParametrosOfInitiation Arquivo para leitura do mapeamento. 
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param fileParametrosOfInitiation
+	 *            Arquivo para leitura do mapeamento.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	public static void loadParametrosOfInitiation( final File fileParametrosOfInitiation )
-		throws Exception {
-		
-		if ( fileParametrosOfInitiation == null || ! fileParametrosOfInitiation.exists() ) {
+	public static void loadParametrosOfInitiation( final File fileParametrosOfInitiation ) throws Exception {
+
+		if ( fileParametrosOfInitiation == null || !fileParametrosOfInitiation.exists() ) {
 			throw new NullPointerException( "Arquivo de mapeamento de bandeiras não especificado!" );
 		}
-		
 		loadTextTefFlagsMap( fileParametrosOfInitiation );
 	}
 
@@ -89,28 +90,24 @@ public class Flag {
 	 * Le o arquivo de mapeamento das bandeiras e guarda em um java.util.Map<String,Class<TextTef>> <br>
 	 * que proverá as classes para instanciar os objetos de funções TEF conforme a Bandeira.
 	 * 
-	 * @param fileParametrosOfInitiation Arquivo para leitura do mapeamento. 
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param fileParametrosOfInitiation
+	 *            Arquivo para leitura do mapeamento.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	private static void loadTextTefFlagsMap( final File fileParametrosOfInitiation ) throws Exception {
-		
+
 		setLoadTextTefFlagsMaps( false );
-		
 		FileReader reader = new FileReader( fileParametrosOfInitiation );
 		BufferedReader buffered = new BufferedReader( reader );
-		
 		if ( buffered != null ) {
-			
 			String line = "";
 			String name = null;
-			String sclass = null; 
+			String sclass = null;
 			int is = -1;
-
 			while ( ( line = buffered.readLine() ) != null ) {
-				
 				line = line.trim();
-				
 				if ( line.length() == 0 ) {
 					continue;
 				}
@@ -120,20 +117,18 @@ public class Flag {
 				else if ( line.length() > 1 && ( '/' == line.charAt( 0 ) && '/' == line.charAt( 1 ) ) ) {
 					continue;
 				}
-				
 				is = line.indexOf( '=' );
-				
-				if ( is > -1 ) {					
+				if ( is > -1 ) {
 					name = line.substring( 0, is );
-					sclass = line.substring( is + 1 );					
+					sclass = line.substring( is + 1 );
 					try {
 						getTextTefFlagsMap().put( name, (Class<TextTef>) Class.forName( sclass ) );
-					} catch ( ClassNotFoundException e ) {
+					}
+					catch ( ClassNotFoundException e ) {
 						System.out.println( "[  ERROR  ] " + e.getMessage() );
 					}
 				}
 			}
-			
 			setLoadTextTefFlagsMaps( getTextTefFlagsMap().size() > 0 );
 		}
 	}

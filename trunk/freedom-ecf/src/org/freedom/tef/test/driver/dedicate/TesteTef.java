@@ -45,25 +45,20 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 
 	private JButton continuar = null;
 
-	//private DedicatedTef tef;
-	
+	// private DedicatedTef tef;
 	private ControllerTef tef;
-	
+
 	private List<String> bufferTef = new ArrayList<String>();
 
-
-	public TesteTef() throws Exception  {
+	public TesteTef() throws Exception {
 
 		super();
-		
-		//System.setProperty( ManagerIni.FILE_INIT_DEFAULT, "totem.ini" );
-		//tef = DedicatedTef.getInstance( this );
+		// System.setProperty( ManagerIni.FILE_INIT_DEFAULT, "totem.ini" );
+		// tef = DedicatedTef.getInstance( this );
 		tef = ControllerTef.getControllerDedicatedTef( "totem.ini", this );
-		
 		initialize();
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
-		setLocationRelativeTo( this );		
-		
+		setLocationRelativeTo( this );
 		continuar.setVisible( false );
 	}
 
@@ -73,7 +68,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 		this.setContentPane( getJContentPane() );
 		this.setTitle( "JFrame" );
 	}
-	
+
 	private JPanel getJContentPane() {
 
 		if ( jContentPane == null ) {
@@ -122,7 +117,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 	}
 
 	private JButton getVerifica_pinpad() {
-	
+
 		if ( verifica_pinpad == null ) {
 			verifica_pinpad = new JButton( "verifica pinpad" );
 			verifica_pinpad.setBounds( new Rectangle( 10, 190, 170, 30 ) );
@@ -132,7 +127,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 	}
 
 	private JButton getLer_cartao() {
-	
+
 		if ( ler_cartao == null ) {
 			ler_cartao = new JButton( "ler cartão" );
 			ler_cartao.setBounds( new Rectangle( 10, 230, 170, 30 ) );
@@ -142,7 +137,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 	}
 
 	private JButton getConfirma_pinpad() {
-	
+
 		if ( confirma_pinpad == null ) {
 			confirma_pinpad = new JButton( "confirmar" );
 			confirma_pinpad.setBounds( new Rectangle( 10, 270, 170, 30 ) );
@@ -152,7 +147,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 	}
 
 	private JButton getContinuar() {
-	
+
 		if ( continuar == null ) {
 			continuar = new JButton( "Clique para continuar." );
 			continuar.setBounds( new Rectangle( 10, 190, 470, 110 ) );
@@ -160,99 +155,93 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 		}
 		return continuar;
 	}
-	
+
 	public synchronized boolean actionTef( ControllerTefEvent e ) {
-		
+
 		boolean action = false;
-	
-		checking : {
+		checking: {
 			if ( e.getSource() == tef ) {
-			
-    			action = true;
-    			
-    			if ( e.getAction() == DedicatedAction.ERRO ) {
-    				operador.setBackground( Color.RED );
-    				cliente.setBackground( Color.RED );
-    				operador.setText( e.getMessage() );
-    				cliente.setText( e.getMessage() );
-    				return false;
-    			}
-    			else if ( e.getAction() == DedicatedAction.WARNING ) {
-    				operador.setText( e.getMessage() );
-    				cliente.setText( e.getMessage() );
-    			}
-    			else if ( e.getAction() == DedicatedAction.ARMAZENAR ) {
-    				System.out.println( "Armazenando... " + tef.getTypeField() + " | " + e.getMessage() );
-    				if ( tef.getTypeField() == TypeFields.VOUCHER_TEF.code() ) {
-    					bufferTef.add( e.getMessage() );
-    					break checking;
-    				}
-    			}
-    			else if ( e.getAction() == DedicatedAction.CHECK_TICKET ) {
-    				action = bufferTef.size() > 0;
-    				break checking;
-    			}
-    			else if ( e.getAction() == DedicatedAction.PRINT_TICKET ) {
-    				break checking;
-    			}
-    			
-    			
-    			if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
-    				operador.setText( e.getMessage() );
-    			}
-    			else if ( e.getAction() == DedicatedAction.MENSAGEM_CLIENTE ) {
-    				cliente.setText( e.getMessage() );		
-    			}
-    			else if ( e.getAction() == DedicatedAction.MENSAGEM_TODOS ) {
-    				operador.setText( e.getMessage() );
-    				cliente.setText( e.getMessage() );	
-    			}
-    			else if ( e.getAction() == DedicatedAction.CABECALHO_MENU ) {
-    				cabecalho.setText( e.getMessage() );
-    			}
-    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_OPERADOR ) {
-    				operador.setText( "" );				
-    			}
-    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_CLIENTE ) {
-    				operador.setText( "" );				
-    			}
-    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_TODOS ) {
-    				operador.setText( "" );
-    				cliente.setText( "" );				
-    			}
-    			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO_MENU ) {
-    				cabecalho.setText( "" );				
-    			}
-    			else if ( e.getAction() == DedicatedAction.CABECALHO ) {
-    				setTitle( e.getMessage() );								
-    			}
-    			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO ) {
-    				setTitle( "" );
-    			}
-    			else if ( e.getAction() == DedicatedAction.RETORNAR_CONFIRMACAO ) {
-    				System.out.println( "RETORNAR CONFIRMAÇÃO !" );
-    			}
-    			else if ( e.getAction() == DedicatedAction.MOSTRAR_MENU ) {
-    				System.out.println( "MOSTRAR MENU !" );
-    			}
-    			else if ( e.getAction() == DedicatedAction.AGUADAR_TECLA_OPERADOR ) {
-    				operador.setText( "" );
-    				cliente.setText( "" );
-    				esperar( true );
-    				return false;
-    			}
-    			else {
-    				System.out.println( "\nComando " + e.getAction().code() + " " + e.getMessage() );
-    				//action = e.getAction().code()==23;
-    			}
+				action = true;
+				if ( e.getAction() == DedicatedAction.ERRO ) {
+					operador.setBackground( Color.RED );
+					cliente.setBackground( Color.RED );
+					operador.setText( e.getMessage() );
+					cliente.setText( e.getMessage() );
+					return false;
+				}
+				else if ( e.getAction() == DedicatedAction.WARNING ) {
+					operador.setText( e.getMessage() );
+					cliente.setText( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.ARMAZENAR ) {
+					System.out.println( "Armazenando... " + tef.getTypeField() + " | " + e.getMessage() );
+					if ( tef.getTypeField() == TypeFields.VOUCHER_TEF.code() ) {
+						bufferTef.add( e.getMessage() );
+						break checking;
+					}
+				}
+				else if ( e.getAction() == DedicatedAction.CHECK_TICKET ) {
+					action = bufferTef.size() > 0;
+					break checking;
+				}
+				else if ( e.getAction() == DedicatedAction.PRINT_TICKET ) {
+					break checking;
+				}
+				if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
+					operador.setText( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.MENSAGEM_CLIENTE ) {
+					cliente.setText( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.MENSAGEM_TODOS ) {
+					operador.setText( e.getMessage() );
+					cliente.setText( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.CABECALHO_MENU ) {
+					cabecalho.setText( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_OPERADOR ) {
+					operador.setText( "" );
+				}
+				else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_CLIENTE ) {
+					operador.setText( "" );
+				}
+				else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_TODOS ) {
+					operador.setText( "" );
+					cliente.setText( "" );
+				}
+				else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO_MENU ) {
+					cabecalho.setText( "" );
+				}
+				else if ( e.getAction() == DedicatedAction.CABECALHO ) {
+					setTitle( e.getMessage() );
+				}
+				else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO ) {
+					setTitle( "" );
+				}
+				else if ( e.getAction() == DedicatedAction.RETORNAR_CONFIRMACAO ) {
+					System.out.println( "RETORNAR CONFIRMAÇÃO !" );
+				}
+				else if ( e.getAction() == DedicatedAction.MOSTRAR_MENU ) {
+					System.out.println( "MOSTRAR MENU !" );
+				}
+				else if ( e.getAction() == DedicatedAction.AGUADAR_TECLA_OPERADOR ) {
+					operador.setText( "" );
+					cliente.setText( "" );
+					esperar( true );
+					return false;
+				}
+				else {
+					System.out.println( "\nComando " + e.getAction().code() + " " + e.getMessage() );
+					// action = e.getAction().code()==23;
+				}
 			}
-		}	
-		
+		}
 		return action;
 	}
-	
+
 	private void esperar( boolean arg ) {
-		
+
 		continuar.setVisible( arg );
 		action.setVisible( !arg );
 		ler_cartao.setVisible( !arg );
@@ -260,22 +249,20 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 		confirma_pinpad.setVisible( !arg );
 	}
 
-	public void actionPerformed( final ActionEvent e ) {		
+	public void actionPerformed( final ActionEvent e ) {
 
 		cabecalho.setText( "" );
 		operador.setText( "" );
-		cliente.setText( "" );	
-
+		cliente.setText( "" );
 		operador.setBackground( Color.BLACK );
 		cliente.setBackground( Color.BLACK );
-		
 		Thread th = new Thread( new Runnable() {
+
 			public void run() {
+
 				if ( e.getSource() == action ) {
 					bufferTef.clear();
-					tef.requestSale( 123456, 
-									 new BigDecimal( "15.748" ),
-							         "Teste" );
+					tef.requestSale( 123456, new BigDecimal( "15.748" ), "Teste" );
 				}
 				else if ( e.getSource() == verifica_pinpad ) {
 					if ( tef.checkPinPad() ) {
@@ -283,18 +270,16 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 					}
 				}
 				else if ( e.getSource() == ler_cartao ) {
-					tef.readCard( "  Sesc  Parana  " +
-								  " passe o cartão " );
+					tef.readCard( "  Sesc  Parana  " + " passe o cartão " );
 				}
 				else if ( e.getSource() == confirma_pinpad ) {
-					if ( tef.readYesNoCard( "  Sesc  Parana  " +
-							                "   Confirma ?   " ) ) {
+					if ( tef.readYesNoCard( "  Sesc  Parana  " + "   Confirma ?   " ) ) {
 						operador.setText( "Confirmado !" );
-						cliente.setText( "Confirmado !" );	
+						cliente.setText( "Confirmado !" );
 					}
 					else {
 						operador.setText( "NÃO Confirmado !" );
-						cliente.setText( "NÃO Confirmado !" );	
+						cliente.setText( "NÃO Confirmado !" );
 					}
 				}
 				else if ( e.getSource() == continuar ) {
@@ -303,7 +288,7 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 				}
 			}
 		} );
-		th.start();	
+		th.start();
 	}
 
 	public static void main( String[] args ) {

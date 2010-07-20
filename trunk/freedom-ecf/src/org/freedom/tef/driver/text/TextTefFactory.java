@@ -24,25 +24,25 @@ import java.io.File;
 
 import org.freedom.tef.driver.Flag;
 
-
 public final class TextTefFactory {
-	
+
 	/**
 	 * Sobrecarrega {@link #createTextTef(TextTefProperties, String, File)} <br>
 	 * Deve ser efetuado o mapeamento das Flags anteriormente. <br>
 	 * 
 	 * @see #createTextTef(TextTefProperties, String, File)
 	 * 
-	 * @param textTefProperties          Parametros para a classe de função TEF.
-	 * @param flagName		             Bandeira
-	 * @return                           Classe de funções TEF especifica da Bandeira.
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param textTefProperties
+	 *            Parametros para a classe de função TEF.
+	 * @param flagName
+	 *            Bandeira
+	 * @return Classe de funções TEF especifica da Bandeira.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	public static TextTef createTextTef( final TextTefProperties textTefProperties,
-                            	         final String flagName ) 
-		throws Exception {
-		
-		return createTextTef( textTefProperties, flagName, (File)null );
+	public static TextTef createTextTef( final TextTefProperties textTefProperties, final String flagName ) throws Exception {
+
+		return createTextTef( textTefProperties, flagName, (File) null );
 	}
 
 	/**
@@ -50,57 +50,57 @@ public final class TextTefFactory {
 	 * 
 	 * @see #createTextTef(TextTefProperties, String, File)
 	 * 
-	 * @param textTefProperties          Parametros para a classe de função TEF.
-	 * @param flagName 			         Bandeira
-	 * @param fileParametrosOfInitiation Caminho para o arquivo para iniciação do mapa de Bandeiras X Classe de função TEF,<br>
-	 *                                   caso ainda não se tenha mapeado.
-	 * @return                           Classe de funções TEF especifica da Bandeira.
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param textTefProperties
+	 *            Parametros para a classe de função TEF.
+	 * @param flagName
+	 *            Bandeira
+	 * @param fileParametrosOfInitiation
+	 *            Caminho para o arquivo para iniciação do mapa de Bandeiras X Classe de função TEF,<br>
+	 *            caso ainda não se tenha mapeado.
+	 * @return Classe de funções TEF especifica da Bandeira.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	public static TextTef createTextTef( final TextTefProperties textTefProperties,
-                            	         final String flagName,
-                            	         final String fileParametrosOfInitiation ) 
-		throws Exception {
-		
+	public static TextTef createTextTef( final TextTefProperties textTefProperties, final String flagName, final String fileParametrosOfInitiation ) throws Exception {
+
 		return createTextTef( textTefProperties, flagName, new File( fileParametrosOfInitiation ) );
 	}
 
 	/**
 	 * Cria um objeto de funções TEF especifico para a Bandeira.
 	 * 
-	 * @param textTefProperties          Parametros para a classe de função TEF.
-	 * @param flagName		             Bandeira
-	 * @param fileParametrosOfInitiation Arquivo para iniciação do mapa de Bandeiras X Classe de função TEF,<br>
-	 *                                   caso ainda não se tenha mapeado.
-	 * @return                           Classe de funções TEF especifica da Bandeira.
-	 * @throws Exception                 Repassa qualquer exceção para possibilitar tratamento pela aplicação.
+	 * @param textTefProperties
+	 *            Parametros para a classe de função TEF.
+	 * @param flagName
+	 *            Bandeira
+	 * @param fileParametrosOfInitiation
+	 *            Arquivo para iniciação do mapa de Bandeiras X Classe de função TEF,<br>
+	 *            caso ainda não se tenha mapeado.
+	 * @return Classe de funções TEF especifica da Bandeira.
+	 * @throws Exception
+	 *             Repassa qualquer exceção para possibilitar tratamento pela aplicação.
 	 */
-	public static TextTef createTextTef( final TextTefProperties textTefProperties,
-								         final String flagName,
-								         final File fileParametrosOfInitiation ) 
-		throws Exception {
-				
+	public static TextTef createTextTef( final TextTefProperties textTefProperties, final String flagName, final File fileParametrosOfInitiation ) throws Exception {
+
 		TextTef textTef = null;
-		
-		if ( ! Flag.isLoadTextTefFlagsMaps() ) {
+		if ( !Flag.isLoadTextTefFlagsMaps() ) {
 			// Não é necessário tratar fileParametrosOfInitiation,
 			// pois Flag.loadParametrosOfInitiation já o faz.
 			Flag.loadParametrosOfInitiation( fileParametrosOfInitiation );
 		}
-		
 		Class<TextTef> classTextTef = Flag.getTextTefFlagsMap().get( flagName );
-		
 		if ( classTextTef != null ) {
-		
 			try {
 				textTef = classTextTef.newInstance();
 				if ( textTef != null ) {
 					textTef.initializeTextTef( textTefProperties );
 				}
-			} catch ( ClassCastException e ) {
+			}
+			catch ( ClassCastException e ) {
 				System.out.println( "[  ERROR  ] " + e.getMessage() );
 				Flag.getTextTefFlagsMap().remove( flagName );
-			} catch ( Exception e ) {
+			}
+			catch ( Exception e ) {
 				System.out.println( "[  ERROR  ] " + e.getMessage() );
 				throw new Exception( "Não foi possivél criar objeto para TEF!\n" + e.getMessage(), e );
 			}
@@ -108,7 +108,6 @@ public final class TextTefFactory {
 		else {
 			throw new Exception( "Classe do objeto para TEF para a bandeira " + flagName + " não encontrada!" );
 		}
-		
 		return textTef;
 	}
 }
