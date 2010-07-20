@@ -2,23 +2,23 @@
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Marco Antonio Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRUltimaVenda <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                   Comentários sobre a classe...
  * 
  */
 
@@ -85,11 +85,11 @@ public class FRUltimaVenda extends FRelatorio {
 	private Vector<String> vLabsFin = new Vector<String>();
 
 	private Vector<String> vValsFin = new Vector<String>();
-	
+
 	private JRadioGroup<?, ?> rgTipo = null;
-	
+
 	private Vector<String> vLabs1 = new Vector<String>();
-	
+
 	private Vector<String> vVals1 = new Vector<String>();
 
 	private Vector<?> vObs = null;
@@ -115,7 +115,7 @@ public class FRUltimaVenda extends FRelatorio {
 		lcVend.setReadOnly( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
-		txtCodVend.setTabelaExterna( lcVend, null);
+		txtCodVend.setTabelaExterna( lcVend, null );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -133,7 +133,7 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFat.addElement( "S" );
 		vValsFat.addElement( "N" );
 		vValsFat.addElement( "A" );
-		
+
 		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabsFat, vValsFat );
 		rgFaturados.setVlrString( "S" );
 
@@ -143,18 +143,18 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFin.addElement( "S" );
 		vValsFin.addElement( "N" );
 		vValsFin.addElement( "A" );
-		
+
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
 
-		vLabs1.addElement("Texto");
-		vLabs1.addElement("Grafico");
-		vVals1.addElement("T");
-		vVals1.addElement("G");
-		   
-		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
-		rgTipo.setVlrString("T");
-		    
+		vLabs1.addElement( "Texto" );
+		vLabs1.addElement( "Grafico" );
+		vVals1.addElement( "T" );
+		vVals1.addElement( "G" );
+
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "T" );
+
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 120, 20 );
 		adic( new JLabelPad( "De:" ), 7, 27, 30, 20 );
 		adic( txtDataini, 37, 27, 90, 20 );
@@ -202,7 +202,6 @@ public class FRUltimaVenda extends FRelatorio {
 		String sCab = "";
 		String sCab1 = "";
 		String sTmp = null;
-		
 
 		if ( txtCodCli.getText().trim().length() > 0 ) {
 			if ( cbListaFilial.getVlrString().equals( "S" ) )
@@ -244,23 +243,12 @@ public class FRUltimaVenda extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(VD.STATUSVENDA,1,1)='C' ";
 
-		
+		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, " + "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA " + "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM " + "WHERE C.CODFILIAL=? AND C.CODEMP=? "
+				+ "AND C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL AND C.CODFILIAL=VD.CODFILIALCL " + "AND VD.DTEMITVENDA BETWEEN ? AND ? " + "AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV " + sWhere + sWhere1 + sWhere2 + sWhere3
+				+ "GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
 
-			
-		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, " 
-			+ "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA " 
-			+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM " 
-			+ "WHERE C.CODFILIAL=? AND C.CODEMP=? "
-			+ "AND C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL AND C.CODFILIAL=VD.CODFILIALCL " 
-			+ "AND VD.DTEMITVENDA BETWEEN ? AND ? " 
-			+ "AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV " 
-			+ sWhere + sWhere1 + sWhere2 + sWhere3
-			+ "GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
-
-		
-			
 		try {
-			
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -268,32 +256,31 @@ public class FRUltimaVenda extends FRelatorio {
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
 
-		} 
-		catch ( Exception e ) {
-				
-			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage());
+		} catch ( Exception e ) {
+
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
-		if("T".equals( rgTipo.getVlrString())){
-			
+		if ( "T".equals( rgTipo.getVlrString() ) ) {
+
 			imprimeTexto( rs, bVisualizar, sCab );
 		}
-		else{
-			
-			imprimeGrafico( rs, bVisualizar, sCab ); 
+		else {
+
+			imprimeGrafico( rs, bVisualizar, sCab );
 		}
 	}
-	
-	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
-		
+
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		BigDecimal bTotalVd = null;
 		ImprimeOS imp = null;
 		int linPag = 0;
-		//String sCab = "";
+		// String sCab = "";
 		String sCab1 = "";
-		
+
 		try {
 
 			imp = new ImprimeOS( "", con );
@@ -301,28 +288,28 @@ public class FRUltimaVenda extends FRelatorio {
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Ultimas Vendas" );
 			imp.addSubTitulo( "ULTIMAS VENDAS  -   PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
-			
-			if ( sCab.length() > 0 ){
-				
+
+			if ( sCab.length() > 0 ) {
+
 				imp.addSubTitulo( sCab );
-				
+
 			}
-			
-			if ( sCab1.equals( " - FINANCEIRO" ) || sCab1.equals( " - NAO FINANCEIRO" ) ){
-				
+
+			if ( sCab1.equals( " - FINANCEIRO" ) || sCab1.equals( " - NAO FINANCEIRO" ) ) {
+
 				imp.addSubTitulo( sCab1.substring( 3, sCab1.length() ) );
-				
+
 			}
-			else{
-				
+			else {
+
 				imp.addSubTitulo( sCab1 );
-				
+
 			}
-			
+
 			imp.limpaPags();
 
 			bTotalVd = new BigDecimal( "0" );
-			
+
 			while ( rs.next() ) {
 
 				if ( imp.pRow() >= linPag ) {
@@ -409,41 +396,42 @@ public class FRUltimaVenda extends FRelatorio {
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta ao relatório de vendas!\n" + err.getMessage(), true, con, err );
-		} 
+		}
 
-		if ( bVisualizar ){
-			
+		if ( bVisualizar ) {
+
 			imp.preview( this );
 		}
-		else{
-			
+		else {
+
 			imp.print();
 		}
-			
+
 	}
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
-		
+
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ));
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		hParam.put( "FILTROS", sCab );
-		
+
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/UltVendasPorCliente.jasper", "Vendas Geral", null, rs, hParam, this );
-		
+
 		if ( bVisualizar ) {
-			
+
 			dlGr.setVisible( true );
-		
+
 		}
-		else {		
-			try {				
-			
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
-			
-			} catch ( Exception err ) {					
-			
-					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Últimas Vendas por cliente!\n" + err.getMessage(), true, con, err );
+		else {
+			try {
+
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+
+			} catch ( Exception err ) {
+
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Últimas Vendas por cliente!\n" + err.getMessage(), true, con, err );
 			}
 		}
 	}

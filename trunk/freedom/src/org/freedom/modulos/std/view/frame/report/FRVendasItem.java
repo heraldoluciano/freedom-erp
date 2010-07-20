@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasItem.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  * 
  */
 
@@ -119,7 +119,7 @@ public class FRVendasItem extends FRelatorio {
 		vVals.addElement( "T" );
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
-		
+
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
 
@@ -131,7 +131,7 @@ public class FRVendasItem extends FRelatorio {
 		vVals1.addElement( "A" );
 		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
-		
+
 		Vector<String> vLabs2 = new Vector<String>();
 		Vector<String> vVals2 = new Vector<String>();
 
@@ -143,17 +143,17 @@ public class FRVendasItem extends FRelatorio {
 		vVals2.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
-		
+
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
-		
+
 		vLabs3.addElement( "Código" );
 		vLabs3.addElement( "Descrição" );
 		vVals3.addElement( "C" );
 		vVals3.addElement( "D" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
 		rgOrdem.setVlrString( "D" );
-		
+
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		txtCodGrup.setTabelaExterna( lcGrup, null );
@@ -173,7 +173,7 @@ public class FRVendasItem extends FRelatorio {
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodVend.setTabelaExterna( lcVend, null);
+		txtCodVend.setTabelaExterna( lcVend, null );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
 		lcVend.setReadOnly( true );
@@ -197,26 +197,26 @@ public class FRVendasItem extends FRelatorio {
 		adic( new JLabelPad( "De:" ), 15, 40, 30, 20 );
 		adic( txtDataini, 45, 40, 90, 20 );
 		adic( new JLabelPad( "Até:" ), 145, 40, 30, 20 );
-		adic( txtDatafim, 180, 40, 90, 20 );		
+		adic( txtDatafim, 180, 40, 90, 20 );
 		adic( new JLabelPad( "Ordenado por:" ), 295, 5, 180, 20 );
 		adic( rgOrdem, 295, 25, 273, 30 );
-		adic( rgTipo, 295, 65, 273, 30 );		
+		adic( rgTipo, 295, 65, 273, 30 );
 		adic( new JLabelPad( "Cód.comiss." ), 7, 100, 200, 20 );
 		adic( txtCodVend, 7, 120, 70, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 80, 100, 200, 20 );
-		adic( txtDescVend, 80, 120, 200, 20 );		
+		adic( txtDescVend, 80, 120, 200, 20 );
 		adic( new JLabelPad( "Cód.grupo" ), 295, 100, 200, 20 );
 		adic( txtCodGrup, 295, 120, 70, 20 );
 		adic( new JLabelPad( "Descrição do grupo" ), 368, 100, 200, 20 );
-		adic( txtDescGrup, 368, 120, 200, 20 );		
+		adic( txtDescGrup, 368, 120, 200, 20 );
 		adic( new JLabelPad( "Cód.cli." ), 7, 140, 200, 20 );
 		adic( txtCodCli, 7, 160, 70, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 80, 140, 200, 20 );
-		adic( txtRazCli, 80, 160, 200, 20 );		
+		adic( txtRazCli, 80, 160, 200, 20 );
 		adic( new JLabelPad( "Cód.marca" ), 295, 140, 200, 20 );
 		adic( txtCodMarca, 295, 160, 70, 20 );
 		adic( new JLabelPad( "Descrição da marca" ), 368, 140, 200, 20 );
-		adic( txtDescMarca, 368, 160, 200, 20 );			
+		adic( txtDescMarca, 368, 160, 200, 20 );
 		adic( rgFaturados, 7, 200, 125, 70 );
 		adic( rgFinanceiro, 157, 200, 125, 70 );
 		adic( cbListaFilial, 295, 205, 250, 20 );
@@ -277,7 +277,7 @@ public class FRVendasItem extends FRelatorio {
 				}
 				sCab.append( "CLIENTE: " + txtRazCli.getText().trim() );
 			}
-	
+
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 				sCab2.append( "FATURADO" );
@@ -292,7 +292,7 @@ public class FRVendasItem extends FRelatorio {
 			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
 			}
-	
+
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				if ( sCab2.length() > 0 ) {
@@ -310,11 +310,11 @@ public class FRVendasItem extends FRelatorio {
 			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 			}
-	
+
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
-			
+
 			if ( sOrdem.equals( "C" ) ) {
 				sOrdem = comref ? "P.REFPROD" : "P.CODPROD";
 				sOrdenado = "\nORDENADO POR " + ( comref ? "REFERENCIA" : "CODIGO" );
@@ -323,9 +323,9 @@ public class FRVendasItem extends FRelatorio {
 				sOrdem = "P.DESCPROD";
 				sOrdenado = "\nORDENADO POR DESCRICAO";
 			}
-	
+
 			sCab2.append( sOrdenado );
-	
+
 			if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getText().trim().length() > 0 ) ) {
 				sSQL.append( "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
 				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P " );
@@ -334,14 +334,14 @@ public class FRVendasItem extends FRelatorio {
 				sSQL.append( sWhere1 );
 				sSQL.append( sWhere2 );
 				sSQL.append( sWhere3 );
-				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " ); 
+				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 				sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
-				sSQL.append( "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL " ); 
+				sSQL.append( "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL " );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 				sSQL.append( "AND V.FLAG IN " );
-				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) ); 
+				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 				sSQL.append( " GROUP BY " );
-				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) ); 
+				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) );
 				sSQL.append( "P.DESCPROD,P.CODUNID " );
 				sSQL.append( "ORDER BY " + sOrdem );
 				listaFilial = true;
@@ -360,7 +360,7 @@ public class FRVendasItem extends FRelatorio {
 				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 				sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
 				sSQL.append( "GROUP BY " );
-				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) ); 
+				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) );
 				sSQL.append( "P.DESCPROD,P.CODUNID " );
 				sSQL.append( "ORDER BY " + sOrdem );
 			}
@@ -373,19 +373,19 @@ public class FRVendasItem extends FRelatorio {
 			ps.setDate( paran++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( paran++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			
+
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
 				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString() + "\n" + sCab2.toString(), 130 ), comref );
 			}
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-		}catch ( Exception err ) {
+		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
 		} finally {
@@ -393,27 +393,27 @@ public class FRVendasItem extends FRelatorio {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@ SuppressWarnings ( "unchecked" )
 	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab, final boolean bComRef ) {
 
 		String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		String sLinhaLarga = StringFunctions.replicate( "=", 133 );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
-		BigDecimal bdQtd = new BigDecimal("0");
-		BigDecimal bdVlr = new BigDecimal("0");
-		
+		BigDecimal bdQtd = new BigDecimal( "0" );
+		BigDecimal bdVlr = new BigDecimal( "0" );
+
 		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Vendas por ítem" );
 			imp.addSubTitulo( "RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
-			
-			for ( int i=0; i < cab.size(); i++ ) {
+
+			for ( int i = 0; i < cab.size(); i++ ) {
 				imp.addSubTitulo( (String) cab.elementAt( i ) );
 			}
-			
+
 			while ( rs.next() ) {
 				if ( imp.pRow() == linPag ) {
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -448,7 +448,7 @@ public class FRVendasItem extends FRelatorio {
 				imp.say( 99, "|" );
 				imp.say( 100, Funcoes.strDecimalToStrCurrency( 20, 2, rs.getString( 6 ) ) );
 				imp.say( 135, "|" );
-				
+
 				bdQtd = bdQtd.add( rs.getBigDecimal( 5 ) );
 				bdVlr = bdVlr.add( rs.getBigDecimal( 6 ) );
 			}
@@ -474,8 +474,8 @@ public class FRVendasItem extends FRelatorio {
 			else {
 				imp.print();
 			}
-			
-		}catch ( Exception err ) {
+
+		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
 		}
@@ -485,7 +485,7 @@ public class FRVendasItem extends FRelatorio {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
-		
+
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasItem.jasper", "Vendas por Item", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
@@ -499,23 +499,23 @@ public class FRVendasItem extends FRelatorio {
 			}
 		}
 	}
-	
+
 	private boolean comRef() {
 
 		boolean bRetorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
 			ps = con.prepareStatement( "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				bRetorno = "S".equals( rs.getString( "UsaRefProd" ) );
 			}
-			
+
 			rs.close();
 			ps.close();
 			con.commit();

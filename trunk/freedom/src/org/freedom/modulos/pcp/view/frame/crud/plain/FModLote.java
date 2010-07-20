@@ -1,22 +1,23 @@
 /**
  * @version 04/02/2004 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FModEtiqueta.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Tela para cadastro dos modelos padrões para geração automatica de lotes.
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FModEtiqueta.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Tela para cadastro dos modelos padrões para geração automatica de lotes.
  * 
  */
 
@@ -75,10 +76,9 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private Vector<?> vVals = new Vector<Object>();
 
 	private ModLote objModLote = new ModLote();
-	
 
 	public FModLote() {
-		
+
 		super();
 		setTitulo( "Modelos de lote" );
 		setAtribos( 20, 100, 430, 200 );
@@ -119,26 +119,26 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	private void adicionaCampo() {
-		
+
 		int iTam = Integer.parseInt( vTamanhos.elementAt( cbCampos.getSelectedIndex() ).toString() );
 		txaModLote.insert( "[" + cbCampos.getVlrString() + StringFunctions.replicate( "-", iTam ) + "]", txaModLote.getCaretPosition() );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-		
+
 		ImprimeOS imp = new ImprimeOS( "", con );
 		objModLote.setTexto( txaModLote.getVlrString() );
 		imp.verifLinPag();
 		imp.setTitulo( "Teste de Modelo de Lote" );
 		imp.limpaPags();
 		String sTexto = "É necessário selecionar um modelo de lote válido!";
-		
+
 		if ( objModLote.getLote( new Integer( 30 ), new Date(), con ) != null ) {
 			sTexto = objModLote.getLote( new Integer( 30 ), new Date(), con );
 		}
-	
+
 		imp.say( imp.pRow() + 1, 0, sTexto );
-	
+
 		imp.eject();
 		imp.fechaGravacao();
 		if ( bVisualizar ) {
@@ -150,38 +150,39 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
+
 		if ( evt.getComboBoxPad() == cbCampos ) {
 			adicionaCampo();
 		}
 	}
 
 	public void beforePost( PostEvent pevt ) {
-		
+
 		int iMax = 13;
 		objModLote.setTexto( txaModLote.getVlrString() );// carrega o texto criado para o objeto
 		Vector<?> vTemp = new Vector<Object>();
 		String sTexto = txaModLote.getVlrString();
 		String sTmp = sTexto;
-	
+
 		vTemp = objModLote.getValoresAdic();
-	
+
 		for ( int i = 0; vTemp.size() > i; i++ ) {
 			sTmp = sTmp.replaceAll( "\\" + vTemp.elementAt( i ).toString(), "" );
 			sTmp = sTmp.replaceAll( "\\[", "" );
 			sTmp = sTmp.replaceAll( "\\]", "" );
 		}
-	
+
 		int iTam = sTmp.length();
-	
+
 		if ( iTam > iMax ) {
 			pevt.cancela();
-			Funcoes.mensagemErro( this, "Texto muito grande para o lote (" + iTam + " caracteres).\n "
-					+ "O código do lote deve conter no máximo 13 caracteres." );
+			Funcoes.mensagemErro( this, "Texto muito grande para o lote (" + iTam + " caracteres).\n " + "O código do lote deve conter no máximo 13 caracteres." );
 		}
-	
+
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
+
 		if ( evt.getSource() == btAdic ) {
 			adicionaCampo();
 		}
@@ -195,6 +196,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 	}
 }

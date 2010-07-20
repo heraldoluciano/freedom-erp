@@ -1,23 +1,23 @@
 /**
  * @version 31/03/2008 <BR>
  * 
- * Projeto: Freedom <BR>
+ *          Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *          Pacote: org.freedom.modulos.std <BR>
+ *          Classe:
  * @(#)FGerencVagas.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Gerenciamento de vagas.
+ *                       Gerenciamento de vagas.
  * 
  */
 
@@ -297,9 +297,9 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		txtPretensaoSalCand.setBackground( new Color( 240, 240, 240 ) );
 		txtPretensaoSalCand.setBorder( null );
 
-/*		txtFaixaSalFimCand.setForeground( new Color( 255, 0, 0 ) );
-		txtFaixaSalFimCand.setBackground( new Color( 240, 240, 240 ) );
-		txtFaixaSalFimCand.setBorder( null );*/
+		/*
+		 * txtFaixaSalFimCand.setForeground( new Color( 255, 0, 0 ) ); txtFaixaSalFimCand.setBackground( new Color( 240, 240, 240 ) ); txtFaixaSalFimCand.setBorder( null );
+		 */
 
 		status.put( "DI", "Disponivel" );
 		status.put( "EN", "Encaminhado" );
@@ -712,7 +712,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 			// ps.setInt(4,txtCodFunc.getVlrInteger().intValue());
 
 			if ( cbFaixaSalarialCand.getVlrBoolean() ) {
-//				ps.setDouble( 5, txtFaixaSalIniCand.getVlrDouble() );
+				// ps.setDouble( 5, txtFaixaSalIniCand.getVlrDouble() );
 				ps.setDouble( 4, txtPretensaoSalCand.getVlrDouble() );
 			}
 
@@ -797,19 +797,18 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 	public void valorAlterado( TabelaEditEvent evt ) {
 
 		/*
-		 * if ((tabCand.getColunaEditada()<2)) {
-		 *  }
+		 * if ((tabCand.getColunaEditada()<2)) { }
 		 */
 	}
 
 	private void encaminhar() {
 
 		try {
-			
+
 			String tipo = "C";
 			JTablePad tab = tabCand;
 			String mensagem1 = "Confirma o encaminhamento do(s) candidato(s) para a vaga?";
-			
+
 			if ( tpn.getSelectedIndex() == 1 ) {
 				tipo = "V";
 				tab = tabVagas;
@@ -853,11 +852,11 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 						con.commit();
 					}
 				}
-				
-				String mensagem2 = encaminhados > 0 ? ( (encaminhados>1 ? encaminhados + " candidatos encaminhados" : "candidato encaminhado") + " com sucesso!" ) : ( "Nenhum candidato foi encaminhado para vaga! " );
-				
+
+				String mensagem2 = encaminhados > 0 ? ( ( encaminhados > 1 ? encaminhados + " candidatos encaminhados" : "candidato encaminhado" ) + " com sucesso!" ) : ( "Nenhum candidato foi encaminhado para vaga! " );
+
 				if ( "C".equals( tipo ) ) {
-					mensagem2 = encaminhados > 0 ? ( "Candidato encaminhado à " + encaminhados + "vaga" + (encaminhados>1 ? "s" : "") ) : ( "Candidato não encaminhado." );
+					mensagem2 = encaminhados > 0 ? ( "Candidato encaminhado à " + encaminhados + "vaga" + ( encaminhados > 1 ? "s" : "" ) ) : ( "Candidato não encaminhado." );
 				}
 
 				Funcoes.mensagemInforma( this, mensagem2 );
@@ -880,11 +879,11 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		int efetivados = 0;
 
 		try {
-			
+
 			String tipo = "C";
 			JTablePad tab = tabCand;
 			String mensagem1 = "Confirma o efetivaçao do(s) candidato(s) para a vaga?";
-			
+
 			if ( tpn.getSelectedIndex() == 1 ) {
 				tipo = "V";
 				tab = tabVagas;
@@ -923,14 +922,14 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				}
 
 				if ( efetivados > 0 ) {
-					
+
 					String mensagem2 = "C".equals( tipo ) ? "Deseja marcar essa vaga como preenchida?" : "Deseja marcar essa vaga(s) como preenchida?";
 
 					if ( Funcoes.mensagemConfirma( this, mensagem2 ) == JOptionPane.YES_NO_OPTION ) {
 
 						sql2.append( "UPDATE RHVAGA SET STVAGA='PR' " );
 						sql2.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVAGA=? " );
-						
+
 						if ( "C".equals( tipo ) ) {
 							ps2 = con.prepareStatement( sql2.toString() );
 							ps2.setInt( 1, Aplicativo.iCodEmp );
@@ -952,15 +951,15 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 								ps2.executeUpdate();
 								ps2.close();
 								con.commit();
-							}							
+							}
 						}
 					}
 				}
-				
-				String mensagem2 = efetivados > 0 ? ( (efetivados>1 ? efetivados + " candidatos efetivado" : "candidato efetivado") + " com sucesso!" ) : ( "Nenhum candidato foi efetivado para vaga! " );
-				
+
+				String mensagem2 = efetivados > 0 ? ( ( efetivados > 1 ? efetivados + " candidatos efetivado" : "candidato efetivado" ) + " com sucesso!" ) : ( "Nenhum candidato foi efetivado para vaga! " );
+
 				if ( "C".equals( tipo ) ) {
-					mensagem2 = efetivados > 0 ? ( "Candidato efetivado à " + efetivados + "vaga" + (efetivados>1 ? "s" : "") ) : ( "Candidato não efetivado." );
+					mensagem2 = efetivados > 0 ? ( "Candidato efetivado à " + efetivados + "vaga" + ( efetivados > 1 ? "s" : "" ) ) : ( "Candidato não efetivado." );
 				}
 
 				Funcoes.mensagemInforma( this, mensagem2 );

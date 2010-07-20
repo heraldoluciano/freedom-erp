@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.grh <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.grh <BR>
+ *         Classe:
  * @(#)FEmpregado.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de empregados.
+ *                     Tela de cadastro de empregados.
  * 
  */
 
@@ -146,17 +146,17 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
 	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
-	
+
 	private final JTextFieldPad txtCustoHoraTrab = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-//	private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
-	
+	// private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
+
 	private JTextAreaPad txaObsSal = new JTextAreaPad();
-	
+
 	private JScrollPane spnTxa = new JScrollPane( txaObsSal );
-	
+
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -216,7 +216,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcEmpSal.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcEmpSal );
 		lcEmpSal.setTabela( tabSal );
-		
+
 		lcEmpBenef.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcEmpBenef );
 		lcEmpBenef.setTabela( tabBenef );
@@ -254,7 +254,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 		lcFuncao.setQueryCommit( false );
 		lcFuncao.setReadOnly( true );
-		txtCodFuncao.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName());
+		txtCodFuncao.setTabelaExterna( lcFuncao, FFuncao.class.getCanonicalName() );
 
 		lcTurno.add( new GuardaCampo( txtCodTurno, "CodTurno", "Cód. turno", ListaCampos.DB_PK, true ) );
 		lcTurno.add( new GuardaCampo( txtDescTurno, "DescTurno", "Descrição do turno", ListaCampos.DB_SI, false ) );
@@ -311,7 +311,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		cbSexo = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_STRING, 2, 0 );
 
 		/***********
-		 * Geral   *
+		 * Geral *
 		 ***********/
 
 		adicTab( "Geral", panelEmpregados );
@@ -388,11 +388,11 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		panelSalario.add( spnTabSal, BorderLayout.CENTER );
 
 		adicCampoInvisivel( txtSeqSal, "SeqSal", "Seq.", ListaCampos.DB_PK, false );
-		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );	
+		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
 		adicCampo( txtCustoHoraTrab, 100, 20, 90, 20, "CustoHoraTrab", "Custo h.trab.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtVigor, 193, 20, 77, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
-		
-//		adicCampo( txtObsSal, 193, 20, 280, 20, "ObsSal", "Observação", ListaCampos.DB_SI, false );
+
+		// adicCampo( txtObsSal, 193, 20, 280, 20, "ObsSal", "Observação", ListaCampos.DB_SI, false );
 		adicDB( txaObsSal, 276, 20, 210, 73, "ObsSal", "Observação", false );
 		pinSal.adic( navSal, 0, 70, 270, 25 );
 		setListaCampos( true, "EMPREGADOSAL", "RH" );
@@ -400,14 +400,12 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcEmpSal.setQueryCommit( false );
 		lcEmpSal.montaTab();
 
-		tabSal.setTamColuna( 30,0 );
-		tabSal.setTamColuna( 70,1 );
-		tabSal.setTamColuna( 70,2 );
-		tabSal.setTamColuna( 70,3 );
-		tabSal.setTamColuna( 245,4 );
-		
-		
-		
+		tabSal.setTamColuna( 30, 0 );
+		tabSal.setTamColuna( 70, 1 );
+		tabSal.setTamColuna( 70, 2 );
+		tabSal.setTamColuna( 70, 3 );
+		tabSal.setTamColuna( 245, 4 );
+
 		/**************
 		 * Benefícios *
 		 **************/
@@ -432,9 +430,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 		tabBenef.setTamColuna( 335, 1 );
 		tabBenef.setTamColuna( 100, 2 );
-		
 
-		
 	}
 
 	public void setConexao( DbConnection cn ) {

@@ -39,7 +39,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
@@ -100,40 +99,35 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
-					"WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " +
-			"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+			ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " + "WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " + "CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
 			ps.setString( 1, txtSerie.getVlrString() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "LFSERIE") );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "LFSERIE" ) );
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-            rs = con.executeQuery( ps );
-            if (rs.next()) {
-    			ps = con.prepareStatement( "UPDATE LFSEQSERIE SET DOCSERIE=? " +
-    					"WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " +
-    					"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
-    			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
-    			ps.setString( 2, txtSerie.getVlrString() );
-    			ps.setInt( 3, Aplicativo.iCodEmp );
-    			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
-    			ps.setInt( 5, Aplicativo.iCodEmp );
-    			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-    			ps.executeUpdate();
-            } else {
-    			ps = con.prepareStatement( "INSERT INTO LFSEQSERIE (" +
-    					"DOCSERIE, SERIE, CODEMP, CODFILIAL, CODEMPSS, CODFILIALSS, SEQSERIE, ATIVSERIE) " +
-    					"VALUES (?,?,?,?,?,?,?,?)");
-    			ps.setInt( 1, txtReset.getVlrInteger().intValue() );
-    			ps.setString( 2, txtSerie.getVlrString() );
-    			ps.setInt( 3, Aplicativo.iCodEmp );
-    			ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE") );
-    			ps.setInt( 5, Aplicativo.iCodEmp );
-    			ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-    			ps.setInt( 7, 1 );
-    			ps.setString( 8, "S" );
-    			ps.executeUpdate();
-            }
+			rs = con.executeQuery( ps );
+			if ( rs.next() ) {
+				ps = con.prepareStatement( "UPDATE LFSEQSERIE SET DOCSERIE=? " + "WHERE SERIE=? AND CODEMP=? AND CODFILIAL=? AND " + "CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+				ps.setInt( 1, txtReset.getVlrInteger().intValue() );
+				ps.setString( 2, txtSerie.getVlrString() );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE" ) );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+				ps.executeUpdate();
+			}
+			else {
+				ps = con.prepareStatement( "INSERT INTO LFSEQSERIE (" + "DOCSERIE, SERIE, CODEMP, CODFILIAL, CODEMPSS, CODFILIALSS, SEQSERIE, ATIVSERIE) " + "VALUES (?,?,?,?,?,?,?,?)" );
+				ps.setInt( 1, txtReset.getVlrInteger().intValue() );
+				ps.setString( 2, txtSerie.getVlrString() );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "LFSERIE" ) );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+				ps.setInt( 7, 1 );
+				ps.setString( 8, "S" );
+				ps.executeUpdate();
+			}
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao gravar o número inicial!\n" + err.getMessage(), true, con, err );
@@ -157,34 +151,32 @@ public class FSerie extends FDados implements ActionListener, CarregaListener {
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if (cevt.getListaCampos()==lcCampos) {
+		if ( cevt.getListaCampos() == lcCampos ) {
 			try {
-			  PreparedStatement ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " +
-			  		"WHERE CODEMP=? AND CODFILIAL=? AND SERIE=? AND " +
-			  		"CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
-			  ps.setInt( 1, Aplicativo.iCodEmp );
-			  ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );
-			  ps.setString( 3, txtSerie.getVlrString() );
-			  ps.setInt( 4, Aplicativo.iCodEmp );
-			  ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-			  ResultSet rs = ps.executeQuery();
-			  if (rs.next()) {
-				  txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
-			  } else {
-				  txtDocSerie.setVlrInteger( 0 );
-			  }
-				  
-			  con.commit();
-			} catch (Exception e) {
-		    	e.printStackTrace();
-		    }
-			
+				PreparedStatement ps = con.prepareStatement( "SELECT DOCSERIE FROM LFSEQSERIE " + "WHERE CODEMP=? AND CODFILIAL=? AND SERIE=? AND " + "CODEMPSS=? AND CODFILIALSS=? AND ATIVSERIE='S'" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );
+				ps.setString( 3, txtSerie.getVlrString() );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+				ResultSet rs = ps.executeQuery();
+				if ( rs.next() ) {
+					txtDocSerie.setVlrInteger( rs.getInt( "DOCSERIE" ) );
+				}
+				else {
+					txtDocSerie.setVlrInteger( 0 );
+				}
+
+				con.commit();
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+
 		}
-		
+
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		
 	}
 }

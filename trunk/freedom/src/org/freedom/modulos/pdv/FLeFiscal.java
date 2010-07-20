@@ -2,23 +2,23 @@
  * @version 17/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FLeFiscal.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -200,36 +200,31 @@ public class FLeFiscal extends FTabDados {
 	private final ListaCampos lcCaixa = new ListaCampos( this, "" );
 
 	private final ControllerECF ecf;
-	
+
 	private boolean moduloPDV = false;
-	
 
 	public FLeFiscal() {
 
 		super();
 		setTitulo( "Leitura de memória fiscal" );
 		setAtribos( 60, 60, 540, 470 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-		
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		montaListaCampos();
 		montaTela();
 		montaTabela();
-		
+
 		moduloPDV = Aplicativo.nomemodulo.equals( "Ponto de Venda" );
 
 		btExec.addActionListener( this );
-		
+
 		btExec.setVisible( moduloPDV );
-		
-		txtPrimCupom.setAtivo( ! moduloPDV );
-		txtRed.setAtivo( ! moduloPDV );
+
+		txtPrimCupom.setAtivo( !moduloPDV );
+		txtRed.setAtivo( !moduloPDV );
 	}
-	
+
 	private void montaListaCampos() {
 
 		lcCaixa.add( new GuardaCampo( txtNumTermX, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, true ) );
@@ -239,7 +234,7 @@ public class FLeFiscal extends FTabDados {
 		lcCaixa.setReadOnly( true );
 		txtNumTermX.setTabelaExterna( lcCaixa, null );
 	}
-	
+
 	private void montaTela() {
 
 		pnCliente.add( pinCab, BorderLayout.NORTH );
@@ -281,10 +276,10 @@ public class FLeFiscal extends FTabDados {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		JLabelPad lbContadores = new JLabelPad( "Contadores:", SwingConstants.CENTER );
 		lbContadores.setOpaque( true );
-		
+
 		adic( lbContadores, 15, 125, 100, 15 );
 		adic( lbLinha, 7, 130, 500, 2 );
 
@@ -296,10 +291,10 @@ public class FLeFiscal extends FTabDados {
 
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		JLabelPad lbContadores2 = new JLabelPad( "Totalizadores:", SwingConstants.CENTER );
 		lbContadores2.setOpaque( true );
-		
+
 		adic( lbContadores2, 15, 195, 100, 15 );
 		adic( lbLinha2, 7, 200, 500, 2 );
 
@@ -404,29 +399,29 @@ public class FLeFiscal extends FTabDados {
 		tab.setTamColuna( 80, 14 );
 		tab.setTamColuna( 100, 15 );
 	}
-	
+
 	private void loadAll() {
-		
+
 		if ( moduloPDV ) {
-			
+
 			loadAliquotas();
 			loadContadores();
 			loadTotalizadoresFiscais();
 			loadTotalizadoresNaoFiscais();
-			loadTotalizadores();	
+			loadTotalizadores();
 		}
 	}
 
 	private void loadAliquotas() {
 
 		if ( moduloPDV ) {
-			
+
 			List<String> aliquotas = ecf.getAliquotas();
-	
+
 			String aliquota = null;
 			JTextFieldPad field = null;
 			int index = 1;
-			
+
 			for ( String str : aliquotas ) {
 				aliquota = str.substring( 0, 2 ) + "." + str.substring( 2 );
 				field = lcCampos.getCampo( "Aliq" + StringFunctions.strZero( String.valueOf( index ), 2 ) );
@@ -441,14 +436,14 @@ public class FLeFiscal extends FTabDados {
 	private void loadContadores() {
 
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT FIRST 1 DOCVENDA AS PRIMEIRO FROM VDVENDA " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
 			sql.append( "CODEMPCX=? AND CODFILIALCX=? AND CODCAIXA=? AND " );
 			sql.append( "DTEMITVENDA=? AND TIPOVENDA='E' " );
 			sql.append( "ORDER BY DOCVENDA" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -456,7 +451,7 @@ public class FLeFiscal extends FTabDados {
 			ps.setInt( 4, Aplicativo.iCodFilial );
 			ps.setInt( 5, AplicativoPDV.iCodCaixa );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataX.getVlrDate() ) );
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -465,17 +460,17 @@ public class FLeFiscal extends FTabDados {
 			else {
 				txtPrimCupom.setVlrInteger( 0 );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			sql = new StringBuilder();
 			sql.append( "SELECT FIRST 1 DOCVENDA AS ULTIMO FROM VDVENDA " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
 			sql.append( "CODEMPCX=? AND CODFILIALCX=? AND CODCAIXA=? AND " );
 			sql.append( "DTEMITVENDA=? AND TIPOVENDA='E' " );
 			sql.append( "ORDER BY CODVENDA DESC" );
-			
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -483,7 +478,7 @@ public class FLeFiscal extends FTabDados {
 			ps.setInt( 4, Aplicativo.iCodFilial );
 			ps.setInt( 5, AplicativoPDV.iCodCaixa );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataX.getVlrDate() ) );
-			
+
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -492,19 +487,19 @@ public class FLeFiscal extends FTabDados {
 			else {
 				txtUltCupom.setVlrInteger( 0 );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar primeiro cupom!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		if ( moduloPDV ) {
-				
+
 			txtRed.setVlrInteger( ecf.getNumeroReducoesZ() );
 			txtCanc.setVlrInteger( ecf.getNumeroCancelamentos() );
 			txtSequencia.setVlrInteger( ecf.getNumeroDocumento() );
@@ -512,9 +507,9 @@ public class FLeFiscal extends FTabDados {
 	}
 
 	private void loadTotalizadores() {
-		
+
 		if ( moduloPDV ) {
-				
+
 			txtTSuprimento.setVlrBigDecimal( ecf.getTotalSuprimento() );
 			txtTSangria.setVlrBigDecimal( ecf.getTotalSangria() );
 			txtVlrCanc.setVlrBigDecimal( ecf.getTotalCancelamentos() );
@@ -523,16 +518,16 @@ public class FLeFiscal extends FTabDados {
 			txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
 		}
 	}
-	
+
 	private void loadTotalizadoresFiscais() {
-		
+
 		if ( moduloPDV ) {
-				
+
 			List<BigDecimal> totalizadores = ecf.getTotalizadoresFiscais();
-			
+
 			JTextFieldPad field = null;
 			int index = 1;
-			
+
 			for ( BigDecimal totalizador : totalizadores ) {
 				field = lcCampos.getCampo( "TT" + StringFunctions.strZero( String.valueOf( index ), 2 ) );
 				if ( field != null ) {
@@ -544,14 +539,14 @@ public class FLeFiscal extends FTabDados {
 	}
 
 	private void loadTotalizadoresNaoFiscais() {
-		
+
 		if ( moduloPDV ) {
-				
+
 			List<BigDecimal> totalizadores = ecf.getTotalizadoresNaoFiscais();
-			
+
 			JTextFieldPad field = null;
 			int index = 1;
-			
+
 			for ( BigDecimal totalizador : totalizadores ) {
 				field = lcCampos.getCampo( "TN" + index );
 				if ( field != null ) {
@@ -559,7 +554,7 @@ public class FLeFiscal extends FTabDados {
 				}
 				index++;
 			}
-			
+
 			txtVlrIsento.setVlrBigDecimal( ecf.getTotalIsensao() );
 			txtVlrNI.setVlrBigDecimal( ecf.getTotalNaoInsidencia() );
 			txtVlrSubst.setVlrBigDecimal( ecf.getTotalSubstituicao() );
@@ -571,23 +566,23 @@ public class FLeFiscal extends FTabDados {
 		if ( moduloPDV && evt.getSource() == btExec ) {
 			loadAll();
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
 	public boolean getReducaoZ( Date data, int codCaixa ) {
 
-		if ( ! moduloPDV ) {
+		if ( !moduloPDV ) {
 			return false;
 		}
-		
+
 		try {
 
 			lcCampos.insert( false );
 			txtDataX.setVlrDate( data );
 			txtNumTermX.setVlrInteger( new Integer( codCaixa ) );
 			lcCaixa.carregaDados();
-			
+
 			loadAll();
 
 		} catch ( Exception e ) {
@@ -598,16 +593,16 @@ public class FLeFiscal extends FTabDados {
 
 		return true;
 	}
-	
+
 	public boolean salvaReducaoZ() {
-		
-		return moduloPDV ? lcCampos.post() : false;		
+
+		return moduloPDV ? lcCampos.post() : false;
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		lcCampos.setConexao( cn );
 		lcCaixa.setConexao( cn );
 	}

@@ -2,23 +2,23 @@
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FContComis.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  * 
  */
 
@@ -91,11 +91,11 @@ public class FManutConFrete extends FFilho implements ActionListener {
 	private JTextFieldPad txtTotalPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
 	private JCheckBoxPad cbPendentes = new JCheckBoxPad( "Pendentes", "S", "N" );
-	
+
 	private JCheckBoxPad cbEmPagamento = new JCheckBoxPad( "Em pagamento", "S", "N" );
-	
+
 	private JCheckBoxPad cbPagos = new JCheckBoxPad( "Pagas", "S", "N" );
-	
+
 	private JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
 
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
@@ -107,7 +107,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 	private JButtonPad btExcluirPagamentos = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
-	
+
 	private ImageIcon imgPendente = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgEmPagamento = Icone.novo( "clPagoParcial.gif" );
@@ -121,27 +121,25 @@ public class FManutConFrete extends FFilho implements ActionListener {
 	private JScrollPane spnTab = new JScrollPane( tab );
 
 	private ListaCampos lcFornecedor = new ListaCampos( this );
-	
+
 	private BigDecimal valorSelecionados = new BigDecimal( "0.00" );
-	
+
 	private BigDecimal valorPendente = new BigDecimal( "0.00" );
-	
+
 	private BigDecimal valorEmPagamento = new BigDecimal( "0.00" );
-	
+
 	private BigDecimal valorPago = new BigDecimal( "0.00" );
-	
+
 	private HandlerSelecaoGrid handlerSelecaoGrid = null;
-	
-	
+
 	private enum EManutencaoFrete {
 		SEL, STATUS, CODIGO, DOCUMENTO, DOC_VENDAS, EMISSAO, PAGAMENTO, CODTRANS, RAZTRANS, CODREMT, DESCREMT, CODDEST, DESCDEST, VLRFRETE, VLRMERCADORIAS, VOLUMES;
 	}
-	
 
 	public FManutConFrete() {
 
 		super( false );
-		
+
 		setTitulo( "Controle de Conhecimento de Frete" );
 		setAtribos( 50, 50, 740, 430 );
 
@@ -162,15 +160,15 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		btGerarPagamentos.addActionListener( this );
 		btExcluirPagamentos.addActionListener( this );
 		btSair.addActionListener( this );
-		
+
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDataFim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataIni.setVlrDate( cPeriodo.getTime() );
-		
+
 		cbPendentes.setVlrString( "S" );
-		cbEmPagamento.setVlrString( "N" );	
-		cbPagos.setVlrString( "N" );		
+		cbEmPagamento.setVlrString( "N" );
+		cbPagos.setVlrString( "N" );
 	}
 
 	private void montaTela() {
@@ -196,7 +194,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		pinTop.adic( txtDataIni, 17, 30, 100, 20 );
 		pinTop.adic( new JLabel( "à", SwingConstants.CENTER ), 117, 30, 30, 20 );
 		pinTop.adic( txtDataFim, 147, 30, 100, 20 );
-		
+
 		pinTop.adic( new JLabelPad( "Cód.for." ), 270, 10, 80, 20 );
 		pinTop.adic( txtCodFor, 270, 30, 90, 20 );
 		pinTop.adic( new JLabelPad( "Razão social do fornecedor" ), 363, 10, 300, 20 );
@@ -208,17 +206,17 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		pinTop.adic( cbPendentes, 25, 75, 90, 20 );
 		pinTop.adic( cbEmPagamento, 130, 75, 120, 20 );
 		pinTop.adic( cbPagos, 270, 75, 65, 20 );
-		
+
 		pinTop.adic( btPesquisar, 580, 70, 120, 30 );
-		
+
 		JPanelPad pinCentro = new JPanelPad( new BorderLayout() );
 		JPanelPad pinCentroBotoes = new JPanelPad( 45, 200 );
 
-		pinCentroBotoes.adic( btSelecionarTodos, 5, 5, 30, 30  );
-		pinCentroBotoes.adic( btSelecionarNenhum, 5, 40, 30, 30  );
-		
+		pinCentroBotoes.adic( btSelecionarTodos, 5, 5, 30, 30 );
+		pinCentroBotoes.adic( btSelecionarNenhum, 5, 40, 30, 30 );
+
 		pinCentro.add( spnTab, BorderLayout.CENTER );
-		pinCentro.add( pinCentroBotoes, BorderLayout.EAST );	
+		pinCentro.add( pinCentroBotoes, BorderLayout.EAST );
 
 		JPanelPad pinRod = new JPanelPad( new BorderLayout() );
 		JPanelPad pinRodBotoes = new JPanelPad( 90, 50 );
@@ -226,8 +224,8 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		JPanelPad pinRodSair = new JPanelPad( new FlowLayout( FlowLayout.RIGHT, 10, 10 ) );
 
 		pinRodBotoes.tiraBorda();
-		pinRodBotoes.adic( btGerarPagamentos, 10, 10, 30, 30  );
-		pinRodBotoes.adic( btExcluirPagamentos, 50, 10, 30, 30  );		
+		pinRodBotoes.adic( btGerarPagamentos, 10, 10, 30, 30 );
+		pinRodBotoes.adic( btExcluirPagamentos, 50, 10, 30, 30 );
 
 		pinRodStatus.tiraBorda();
 		pinRodStatus.adic( new JLabelPad( "Selecionados" ), 7, 0, 80, 20 );
@@ -238,19 +236,19 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		pinRodStatus.adic( txtTotalEmPagamento, 173, 20, 90, 20 );
 		pinRodStatus.adic( new JLabelPad( "Pago" ), 266, 0, 80, 20 );
 		pinRodStatus.adic( txtTotalPago, 266, 20, 80, 20 );
-		
+
 		pinRodStatus.adic( new JLabelPad( imgPendente ), 360, 0, 20, 20 );
 		JLabelPad pendentes = new JLabelPad( "pendentes" );
 		pendentes.setForeground( new Color( 111, 106, 177 ) );
 		pendentes.setFont( new Font( "Tomoha", Font.PLAIN, 11 ) );
 		pinRodStatus.adic( pendentes, 380, 0, 200, 20 );
-		
+
 		pinRodStatus.adic( new JLabelPad( imgEmPagamento ), 360, 15, 20, 20 );
 		JLabelPad emPagamento = new JLabelPad( "em processo de pagamento" );
 		emPagamento.setForeground( new Color( 111, 106, 177 ) );
 		emPagamento.setFont( new Font( "Tomoha", Font.PLAIN, 11 ) );
 		pinRodStatus.adic( emPagamento, 380, 15, 200, 20 );
-		
+
 		pinRodStatus.adic( new JLabelPad( imgPago ), 360, 30, 20, 20 );
 		JLabelPad pago = new JLabelPad( "pago" );
 		pago.setForeground( new Color( 111, 106, 177 ) );
@@ -261,12 +259,12 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		txtTotalPendente.setAtivo( false );
 		txtTotalEmPagamento.setAtivo( false );
 		txtTotalPago.setAtivo( false );
-		
+
 		pinRodSair.add( btSair );
-		
+
 		pinRod.add( pinRodBotoes, BorderLayout.WEST );
 		pinRod.add( pinRodStatus, BorderLayout.CENTER );
-		pinRod.add( pinRodSair, BorderLayout.EAST );		
+		pinRod.add( pinRodSair, BorderLayout.EAST );
 
 		c.add( pinTop, BorderLayout.NORTH );
 		c.add( pinCentro, BorderLayout.CENTER );
@@ -287,7 +285,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		tab.adicColuna( "Descrição do destinatário" ); // 12
 		tab.adicColuna( "Vlr. Frete" ); // 13
 		tab.adicColuna( "Vlr. Mercadorias" ); // 14
-		tab.adicColuna( "Volumes" ); // 15		 
+		tab.adicColuna( "Volumes" ); // 15
 
 		tab.setTamColuna( 20, EManutencaoFrete.SEL.ordinal() );
 		tab.setTamColuna( 20, EManutencaoFrete.STATUS.ordinal() );
@@ -307,9 +305,9 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		tab.setTamColuna( 80, EManutencaoFrete.VOLUMES.ordinal() );
 		tab.setColunaEditavel( 0, true );
 	}
-	
+
 	private void montarGrid( boolean avisaSobreNaoTer ) {
-		
+
 		tab.limpa();
 		valorSelecionados = new BigDecimal( "0.00" );
 		valorPendente = new BigDecimal( "0.00" );
@@ -320,19 +318,17 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		txtTotalPendente.setVlrBigDecimal( valorPendente );
 		txtTotalEmPagamento.setVlrBigDecimal( valorEmPagamento );
 		txtTotalPago.setVlrBigDecimal( valorPago );
-		
+
 		if ( txtCodFor.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione o fornecedor!" );
 			txtCodFor.requestFocus();
 			return;
 		}
-		if ( "N".equals( cbPendentes.getVlrString() ) &&
-			 "N".equals( cbEmPagamento.getVlrString() ) &&
-			 "N".equals( cbPagos.getVlrString() ) ) {
+		if ( "N".equals( cbPendentes.getVlrString() ) && "N".equals( cbEmPagamento.getVlrString() ) && "N".equals( cbPagos.getVlrString() ) ) {
 			Funcoes.mensagemInforma( this, "Selecione as opções de filtro!" );
 			return;
 		}
-		
+
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select" );
 		sql.append( " cf.codfrete, cf.docfrete, cf.dtemitfrete, cf.codtran, t.raztran," );
@@ -354,13 +350,13 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		sql.append( " t.codemp=cf.codemptm and t.codfilial=cf.codfilialtm and t.codtran=cf.codtran and" );
 		sql.append( " rm.codemp=cf.codempre and rm.codfilial=cf.codfilialre and rm.codunifcod=cf.codremet and" );
 		sql.append( " ds.codemp=cf.codempde and ds.codfilial=cf.codfilialde and ds.codunifcod=cf.coddestinat and" );
-		
+
 		StringBuilder where = new StringBuilder();
 		if ( "S".equals( cbPendentes.getVlrString() ) ) {
 			where.append( " cf.codpag is null" );
 		}
 		if ( "S".equals( cbPagos.getVlrString() ) ) {
-			if ( where.length()>0 ) {
+			if ( where.length() > 0 ) {
 				where.append( " or" );
 			}
 			where.append( " (select p.codpag from FNPAGAR p" );
@@ -372,7 +368,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 			where.append( "   ip1.statusitpag='PP')) is not null " );
 		}
 		if ( "S".equals( cbEmPagamento.getVlrString() ) ) {
-			if ( where.length()>0 ) {
+			if ( where.length() > 0 ) {
 				where.append( " or" );
 			}
 			where.append( " (cf.codpag is not null and" );
@@ -384,26 +380,26 @@ public class FManutConFrete extends FFilho implements ActionListener {
 			where.append( "   where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag and" );
 			where.append( "   ip1.statusitpag='PP')) is null) " );
 		}
-		
-		sql.append( where.length()>0 ? ( "(" + where.toString() + ")" ) : "" );
+
+		sql.append( where.length() > 0 ? ( "(" + where.toString() + ")" ) : "" );
 		sql.append( " order by cf.dtemitfrete, cf.codfrete" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFTRE" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataIni.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
 			ps.setInt( 5, txtCodFor.getVlrInteger() );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			int row = 0;
 			for ( ; rs.next(); row++ ) {
-				
+
 				tab.adicLinha();
-				
+
 				if ( rs.getBigDecimal( "pago" ) != null ) {
 					imgColuna = imgPago;
 					valorPago = valorPago.add( rs.getBigDecimal( "pago" ) );
@@ -416,7 +412,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 					imgColuna = imgPendente;
 					valorPendente = valorPendente.add( rs.getBigDecimal( "vlrfrete" ) );
 				}
-				
+
 				tab.setValor( new Boolean( false ), row, EManutencaoFrete.SEL.ordinal() );
 				tab.setValor( imgColuna, row, EManutencaoFrete.STATUS.ordinal() );
 				tab.setValor( rs.getInt( "codfrete" ), row, EManutencaoFrete.CODIGO.ordinal() );
@@ -432,12 +428,12 @@ public class FManutConFrete extends FFilho implements ActionListener {
 				tab.setValor( rs.getBigDecimal( "vlrfrete" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ), row, EManutencaoFrete.VLRFRETE.ordinal() );
 				tab.setValor( rs.getBigDecimal( "vlrmercadoria" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ), row, EManutencaoFrete.VLRMERCADORIAS.ordinal() );
 				tab.setValor( rs.getBigDecimal( "qtdfrete" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ), row, EManutencaoFrete.VOLUMES.ordinal() );
-				
+
 				if ( handlerSelecaoGrid == null ) {
 					tab.getCellEditor( row, 0 ).addCellEditorListener( handlerSelecaoGrid = new HandlerSelecaoGrid() );
 				}
 			}
-			
+
 			if ( row == 0 && avisaSobreNaoTer ) {
 				Funcoes.mensagemInforma( this, "Nenhum conhecimento de frete encontrado." );
 			}
@@ -445,239 +441,237 @@ public class FManutConFrete extends FFilho implements ActionListener {
 			txtTotalPendente.setVlrBigDecimal( valorPendente );
 			txtTotalEmPagamento.setVlrBigDecimal( valorEmPagamento );
 			txtTotalPago.setVlrBigDecimal( valorPago );
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			carregaDocumentosVendas();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar conhecimentos de frete", true, con, e );
-		}		
+		}
 	}
-	
+
 	private void carregaDocumentosVendas() {
-		
+
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select v.docvenda from vdvenda v, lffretevenda fv, lffrete cf " );
 		sql.append( "where v.codemp=fv.codemp and v.codfilial=fv.codfilial and v.tipovenda=fv.tipovenda and v.codvenda=fv.codvenda and " );
 		sql.append( "cf.codemp=fv.codemp and cf.codfilial=fv.codfilial and cf.codfrete=fv.codfrete and " );
 		sql.append( "cf.codemp=? and cf.codfilial=? and cf.codfrete=? " );
 		sql.append( "order by fv.codvenda" );
-		
+
 		try {
-			
-			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
-				
+
+			for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
+
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "LFFTRE" ) );
 				ps.setInt( 3, (Integer) tab.getValor( row, EManutencaoFrete.CODIGO.ordinal() ) );
-				
+
 				ResultSet rs = ps.executeQuery();
 				StringBuilder vendas = new StringBuilder();
-				
+
 				while ( rs.next() ) {
 					if ( vendas.length() > 0 ) {
-						vendas.append( "," );						
+						vendas.append( "," );
 					}
 					vendas.append( rs.getString( "docvenda" ) );
 				}
-				
+
 				tab.setValor( vendas, row, EManutencaoFrete.DOC_VENDAS.ordinal() );
-			
-	    		rs.close();
-	    		ps.close();
-	    		
-    			con.commit();
+
+				rs.close();
+				ps.close();
+
+				con.commit();
 			}
-    		
-    	} catch ( SQLException e ) {
-    		e.printStackTrace();
-    		Funcoes.mensagemErro( this, "Erro ao carregar conhecimentos de frete", true, con, e );
-    	}		
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar conhecimentos de frete", true, con, e );
+		}
 	}
-	
-	private void selecionaTodos() {	
+
+	private void selecionaTodos() {
+
 		for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
 			tab.setValor( new Boolean( true ), row, 0 );
 		}
 		calcValorSelecionado();
-	}	
+	}
 
-	private void selecionaNenhum() {	
+	private void selecionaNenhum() {
+
 		for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
 			tab.setValor( new Boolean( false ), row, 0 );
 		}
 		calcValorSelecionado();
 	}
-	
+
 	private void calcValorSelecionado() {
+
 		valorSelecionados = new BigDecimal( "0.00" );
 		for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
-			if ( (Boolean)tab.getValor( row, 0 ) ) {
-				valorSelecionados = valorSelecionados.add( (BigDecimal)tab.getValor( row, EManutencaoFrete.VLRFRETE.ordinal() ) );
+			if ( (Boolean) tab.getValor( row, 0 ) ) {
+				valorSelecionados = valorSelecionados.add( (BigDecimal) tab.getValor( row, EManutencaoFrete.VLRFRETE.ordinal() ) );
 			}
 		}
 		txtValorSelecionados.setVlrBigDecimal( valorSelecionados );
 	}
-	
+
 	private void gerarPagamentos() {
-		
+
 		if ( valorSelecionados.doubleValue() > 0.00 ) {
-			
+
 			DLNovoPag dl = new DLNovoPag( this );
 			dl.setConexao( con );
-			
-			Object[] values = new Object[8];
-			
-			values[0] = txtCodFor.getVlrInteger();
-			values[1] = null; // plano de pagamento
-			values[2] = null; // banco
-			values[3] = null; // tipo de cobrança
-			values[4] = txtValorSelecionados.getVlrBigDecimal(); 
-			values[5] = new Date();
-			values[6] = null; // documento
-			values[7] = "PAGAMENTO REFERENTE A CONHECIMENTO DE FRETES.";
-			
-			dl.setValues( values );			
+
+			Object[] values = new Object[ 8 ];
+
+			values[ 0 ] = txtCodFor.getVlrInteger();
+			values[ 1 ] = null; // plano de pagamento
+			values[ 2 ] = null; // banco
+			values[ 3 ] = null; // tipo de cobrança
+			values[ 4 ] = txtValorSelecionados.getVlrBigDecimal();
+			values[ 5 ] = new Date();
+			values[ 6 ] = null; // documento
+			values[ 7 ] = "PAGAMENTO REFERENTE A CONHECIMENTO DE FRETES.";
+
+			dl.setValues( values );
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
-				
+
 				int codigoPagamento = dl.getCodigoPagamento();
-				
+
 				if ( codigoPagamento > 0 ) {
-					
+
 					StringBuilder conhecimentos = new StringBuilder();
-					
-					for ( int row = 0; row < tab.getNumLinhas(); row++ ) {						
-						if ( (Boolean)tab.getValor( row, 0 ) ) {							
+
+					for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
+						if ( (Boolean) tab.getValor( row, 0 ) ) {
 							if ( conhecimentos.length() > 0 ) {
 								conhecimentos.append( "," );
-							}							
-							conhecimentos.append( (Integer)tab.getValor( row, EManutencaoFrete.CODIGO.ordinal() ) );
+							}
+							conhecimentos.append( (Integer) tab.getValor( row, EManutencaoFrete.CODIGO.ordinal() ) );
 						}
 					}
-					
+
 					StringBuilder sql = new StringBuilder();
 					sql.append( "update LFFRETE set codemppa=?, codfilialpa=?, codpag=? " );
 					sql.append( "where codemp=? and codfilial=? and " );
 					sql.append( "codfrete in (" + conhecimentos.toString() + ")" );
-					
+
 					try {
-						
+
 						PreparedStatement ps = con.prepareStatement( sql.toString() );
 						ps.setInt( 1, Aplicativo.iCodEmp );
 						ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 						ps.setInt( 3, codigoPagamento );
 						ps.setInt( 4, Aplicativo.iCodEmp );
 						ps.setInt( 5, ListaCampos.getMasterFilial( "LFFRETE" ) );
-						
+
 						ps.executeUpdate();
 						ps.close();
-						
+
 						con.commit();
-						
+
 						Funcoes.mensagemInforma( this, "Registro de pagamento criado para os conhecimentos de fretes selecionados." );
-						
+
 					} catch ( SQLException e ) {
 						e.printStackTrace();
 						Funcoes.mensagemErro( this, "Erro ao atualizar conhecimentos de frete", true, con, e );
-					}		
-					
+					}
+
 					montarGrid( false );
 				}
 			}
-			
+
 			dl.dispose();
 		}
 		else {
 			Funcoes.mensagemInforma( this, "Selecione na listagem, os conhecimentos de fretes desejados." );
 		}
 	}
-	
+
 	private void excluirPagamentos() {
-		
-		Set<Integer> pagamentosSet = new HashSet<Integer>();;
-		
-		for ( int row = 0; row < tab.getNumLinhas(); row++ ) {						
-			if ( (Boolean)tab.getValor( row, 0 ) &&
-				 !imgPago.equals(tab.getValor( row, 1 )) &&
-				 ((Integer)tab.getValor( row, EManutencaoFrete.PAGAMENTO.ordinal() )) > 0 ) {
-				pagamentosSet.add( (Integer)tab.getValor( row, EManutencaoFrete.PAGAMENTO.ordinal() ) );
+
+		Set<Integer> pagamentosSet = new HashSet<Integer>();
+		;
+
+		for ( int row = 0; row < tab.getNumLinhas(); row++ ) {
+			if ( (Boolean) tab.getValor( row, 0 ) && !imgPago.equals( tab.getValor( row, 1 ) ) && ( (Integer) tab.getValor( row, EManutencaoFrete.PAGAMENTO.ordinal() ) ) > 0 ) {
+				pagamentosSet.add( (Integer) tab.getValor( row, EManutencaoFrete.PAGAMENTO.ordinal() ) );
 			}
 		}
-		
+
 		if ( pagamentosSet.size() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione os conhecimento de frete para desfazer registro de pagamento." );
 			return;
 		}
-		
-		Funcoes.mensagemInforma( this, "ATENÇÃO!\n" +
-				                       "Os pagamentos com parcelas pagas não poderam ser desfeitos \n" +
-				                       "antes do estorno destes pagamentos." );
-		
+
+		Funcoes.mensagemInforma( this, "ATENÇÃO!\n" + "Os pagamentos com parcelas pagas não poderam ser desfeitos \n" + "antes do estorno destes pagamentos." );
+
 		StringBuilder msg = new StringBuilder();
 		StringBuilder pagamentos = new StringBuilder();
 		Object[] tmp = pagamentosSet.toArray();
-		
-		for ( int i=0; i < tmp.length; i++ ) {
+
+		for ( int i = 0; i < tmp.length; i++ ) {
 			if ( i > 0 ) {
-				msg.append( "," );	
-				pagamentos.append( "," );				
+				msg.append( "," );
+				pagamentos.append( "," );
 			}
-			if ( (i%10) == 0 ) {
-				msg.append( "\n" );	
+			if ( ( i % 10 ) == 0 ) {
+				msg.append( "\n" );
 			}
 			msg.append( String.valueOf( tmp[ i ] ) );
 			pagamentos.append( String.valueOf( tmp[ i ] ) );
 		}
-		
-		Funcoes.mensagemInforma( this, "Seram excluidos os pagamentos:" + msg.toString() + "\n" +
-				                       "e todos os conhecimentos vinculados a estes ficaram pendentes." );
-		
-		
+
+		Funcoes.mensagemInforma( this, "Seram excluidos os pagamentos:" + msg.toString() + "\n" + "e todos os conhecimentos vinculados a estes ficaram pendentes." );
+
 		StringBuilder update = new StringBuilder();
 		update.append( "update LFFRETE cf set cf.codemppa=null, cf.codfilialpa=null, cf.codpag=null " );
 		update.append( "where cf.codemp=? and cf.codfilial=? and " );
 		update.append( "cf.codpag in (" + pagamentos.toString() + ") and " );
 		update.append( "not exists (select p.statusitpag from FNITPAGAR p " );
 		update.append( "		    where p.codemp=cf.codemppa and p.codfilial=cf.codfilialpa and p.codpag=cf.codpag and p.statusitpag<>'P1' ) " );
-		
+
 		StringBuilder delete = new StringBuilder();
 		delete.append( "delete from FNPAGAR p " );
 		delete.append( "where p.codemp=? and p.codfilial=? and " );
 		delete.append( "p.codpag in (" + pagamentos.toString() + ") and " );
 		delete.append( "not exists (select i.statusitpag from FNITPAGAR i " );
 		delete.append( "		     where i.codemp=p.codemp and i.codfilial=p.codfilial and i.codpag=p.codpag and i.statusitpag<>'P1' ) " );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( update.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-			
-			ps.executeUpdate();			
-			
+
+			ps.executeUpdate();
+
 			ps = con.prepareStatement( delete.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-			
+
 			ps.executeUpdate();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao atualizar excluir registros de pagamento.\n" + e.getMessage(), true, con, e );
-		}		
-		
+		}
+
 		montarGrid( false );
-		
+
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -705,15 +699,20 @@ public class FManutConFrete extends FFilho implements ActionListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
-		lcFornecedor.setConexao( cn );		
-		
+
+		lcFornecedor.setConexao( cn );
+
 	}
-	
+
 	private class HandlerSelecaoGrid implements CellEditorListener {
-		public void editingCanceled( ChangeEvent e ) { }
+
+		public void editingCanceled( ChangeEvent e ) {
+
+		}
+
 		public void editingStopped( ChangeEvent e ) {
+
 			calcValorSelecionado();
-		}					
+		}
 	}
 }

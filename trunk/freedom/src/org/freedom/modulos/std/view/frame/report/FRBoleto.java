@@ -1,27 +1,27 @@
 /**
  * @version 19/12/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FRBoleto.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Comentários sobre a classe...
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FRBoleto.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Comentários sobre a classe...
  * 
  */
 
 package org.freedom.modulos.std.view.frame.report;
-
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
@@ -69,6 +69,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 import sun.awt.image.ToolkitImage;
+
 public class FRBoleto extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -82,27 +83,27 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldFK txtClassModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	public JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	public JTextFieldPad txtCodVenda2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldFK txtTipoVenda2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	public JTextFieldFK txtDocVenda2 = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDataVenda2 = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodCli2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtRazCli2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtParc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -118,15 +119,15 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldPad txtCodTpCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtImpInst = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	// private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
@@ -134,19 +135,19 @@ public class FRBoleto extends FRelatorio {
 	private ListaCampos lcModBol = new ListaCampos( this );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
-	
+
 	private ListaCampos lcVenda2 = new ListaCampos( this );
 
 	private ListaCampos lcCli = new ListaCampos( this );
-	
+
 	private ListaCampos lcCli2 = new ListaCampos( this );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
 	private ListaCampos lcTipoCob = new ListaCampos( this );
-	
+
 	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-	
+
 	private ListaCampos lcTipoMov = new ListaCampos( this );
 
 	private JInternalFrame fExt = null;
@@ -160,21 +161,20 @@ public class FRBoleto extends FRelatorio {
 	private boolean bNomeConv = false;
 
 	private boolean bObsOrc = false;
-	
+
 	private boolean bAltParcela = false;
-	
+
 	private JTablePad tbBoletos = new JTablePad();
-	
+
 	private JScrollPane scrol = new JScrollPane( tbBoletos );
-	
+
 	private JPanelPad pnCampos = new JPanelPad();
-	
+
 	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
-	
-	private JButtonPad btGerar = new JButtonPad("Montar boletos", Icone.novo( "btGerar.gif" ) );
-	
+
+	private JButtonPad btGerar = new JButtonPad( "Montar boletos", Icone.novo( "btGerar.gif" ) );
+
 	private Checkbox cbTab = new Checkbox();
-	
 
 	public FRBoleto() {
 
@@ -226,14 +226,14 @@ public class FRBoleto extends FRelatorio {
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
-		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false) );
-		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ));
+		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false ) );
+		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ) );
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
-		
+
 		/***********
 		 * CLIENTE *
 		 ***********/
@@ -243,9 +243,9 @@ public class FRBoleto extends FRelatorio {
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		txtCodCli.setTabelaExterna( lcCli, null );
-		
+
 		/************
-		 * VENDA 2  *
+		 * VENDA 2 *
 		 ************/
 
 		lcVenda2.add( new GuardaCampo( txtCodVenda2, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
@@ -258,7 +258,7 @@ public class FRBoleto extends FRelatorio {
 		txtCodVenda2.setTabelaExterna( lcVenda2, null );
 		txtCodVenda2.setFK( true );
 		txtCodVenda2.setNomeCampo( "CodVenda" );
-		
+
 		/*************
 		 * CLIENTE 2 *
 		 *************/
@@ -294,11 +294,11 @@ public class FRBoleto extends FRelatorio {
 		txtCodTpCob.setPK( true );
 		txtCodTpCob.setNomeCampo( "CodTipoCob" );
 		txtCodTpCob.setListaCampos( lcTipoCob );
-		
+
 		/************************
 		 * CARTEIRA DE COBRANÇA *
 		 ************************/
-		
+
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
 		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
@@ -306,16 +306,16 @@ public class FRBoleto extends FRelatorio {
 		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
-		lcCartCob.setReadOnly( true );		
+		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setTabelaExterna( lcCartCob, null );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
-		
+
 		/************************
-		 *  TIPO DE MOVIMENTO   *
+		 * TIPO DE MOVIMENTO *
 		 ************************/
-		
+
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -327,11 +327,11 @@ public class FRBoleto extends FRelatorio {
 	}
 
 	private void montaTela() {
-		
+
 		pnCampos.setPreferredSize( new Dimension( 200, 350 ) );
 		pnCliente.add( pnCampos, BorderLayout.NORTH );
 		setPainel( pnCampos );
-		
+
 		adic( new JLabelPad( "Cód.mod." ), 7, 0, 300, 20 );
 		adic( txtCodModBol, 7, 20, 80, 20 );
 		adic( new JLabelPad( "Descrição do modelo" ), 90, 0, 300, 20 );
@@ -344,7 +344,7 @@ public class FRBoleto extends FRelatorio {
 		adic( txtDataVenda, 190, 60, 97, 20 );
 		adic( new JLabelPad( "Cliente" ), 290, 40, 230, 20 );
 		adic( txtRazCli, 290, 60, 230, 20 );
-		adic( new JLabelPad("Pedido até"), 7, 80, 80, 20 );
+		adic( new JLabelPad( "Pedido até" ), 7, 80, 80, 20 );
 		adic( txtCodVenda2, 7, 100, 80, 20 );
 		adic( new JLabelPad( "Doc." ), 90, 80, 97, 20 );
 		adic( txtDocVenda2, 90, 100, 97, 20 );
@@ -362,7 +362,7 @@ public class FRBoleto extends FRelatorio {
 		adic( txtCodTpCob, 7, 180, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 430, 20 );
 		adic( txtDescTpCob, 90, 180, 430, 20 );
-		adic( new JLabelPad("Cód.Tipo.Mov"), 7, 240, 150, 20 );
+		adic( new JLabelPad( "Cód.Tipo.Mov" ), 7, 240, 150, 20 );
 		adic( txtCodTipoMov, 7, 263, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de movimento" ), 90, 240, 430, 20 );
 		adic( txtDescTipoMov, 90, 263, 430, 20 );
@@ -370,10 +370,10 @@ public class FRBoleto extends FRelatorio {
 		adic( txtCodCartCob, 7, 220, 80, 20 );
 		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 200, 430, 20 );
 		adic( txtDescCartCob, 90, 220, 430, 20 );
-		
+
 		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		
+
 		adic( periodo, 25, 295, 150, 20 );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
@@ -381,41 +381,40 @@ public class FRBoleto extends FRelatorio {
 		adic( txtDtIni, 25, 315, 110, 20 );
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 315, 40, 20 );
 		adic( txtDtFim, 175, 315, 110, 20 );
-		
+
 		adic( btGerar, 370, 305, 150, 30 );
-		 
+
 		pnCliente.add( pnTabela, BorderLayout.CENTER );
 		setPainel( pnTabela );
-		
+
 		pnTabela.add( scrol, BorderLayout.CENTER );
-		
+
 		tbBoletos.adicColuna( " " );
 		tbBoletos.adicColuna( "Pedido" );
 		tbBoletos.adicColuna( "Dt. emissão" );
 		tbBoletos.adicColuna( "Dt. vencimento" );
 		tbBoletos.adicColuna( "Razão social do cliente" );
 		tbBoletos.adicColuna( "Valor" );
-		
+
 		tbBoletos.setTamColuna( 5, 0 );
 		tbBoletos.setTamColuna( 90, 2 );
 		tbBoletos.setTamColuna( 90, 3 );
 		tbBoletos.setTamColuna( 165, 4 );
 		tbBoletos.setTamColuna( 100, 5 );
-		
+
 	}
 
-	private String aplicaTxtObs(String sTxa, final String sCampo, String sValor) {
-		
+	private String aplicaTxtObs( String sTxa, final String sCampo, String sValor ) {
+
 		String retorno = "";
 		String sParam1 = "";
 		String sParam2 = "";
-		Integer iNumLinObs = new Integer(0);
-		Integer iNumColObs = new Integer(0);
+		Integer iNumLinObs = new Integer( 0 );
+		Integer iNumColObs = new Integer( 0 );
 		List<String> lObs = null;
-		
-		
+
 		int iposini = sTxa.indexOf( sCampo );
-		
+
 		if ( iposini > -1 ) {
 			sParam1 = sTxa.substring( iposini + 8, iposini + 11 );
 			sParam2 = sTxa.substring( iposini + 12, iposini + 15 );
@@ -423,20 +422,18 @@ public class FRBoleto extends FRelatorio {
 			iNumLinObs = new Integer( sParam1 ).intValue();
 			iNumColObs = new Integer( sParam2 ).intValue();
 		}
-		
-		
-		if(sValor!=null) {
+
+		if ( sValor != null ) {
 
 			try {
-			
+
 				lObs = (List<String>) Funcoes.stringToVector( sValor, "\n" );
-	
+
 				if ( lObs.size() >= iNumLinObs ) {
 					try {
-						lObs = lObs.subList( iNumLinObs-1, iNumLinObs );
-					}
-					catch (Exception e) {
-//						VERIFICAR ERRO COM URGENCIA E TRATÁ-LO;
+						lObs = lObs.subList( iNumLinObs - 1, iNumLinObs );
+					} catch ( Exception e ) {
+						// VERIFICAR ERRO COM URGENCIA E TRATÁ-LO;
 					}
 				}
 				else {
@@ -444,10 +441,10 @@ public class FRBoleto extends FRelatorio {
 						lObs.add( "" );
 					}
 				}
-	
+
 				String sLinhaObs;
 				String sLinhasObs = "";
-			
+
 				for ( int i = 0; i < lObs.size(); i++ ) {
 					sLinhaObs = lObs.get( i ).toString();
 					sLinhaObs = sLinhaObs.length() > iNumColObs ? sLinhaObs.substring( 0, iNumColObs ) : sLinhaObs;
@@ -458,20 +455,19 @@ public class FRBoleto extends FRelatorio {
 						sLinhasObs = sLinhasObs + "\n" + sLinhaObs;
 					}
 				}
-			
+
 				retorno = sTxa.replaceAll( "\\" + sCampo + sParam1 + "_" + sParam2 + "]", sLinhasObs );
-			}
-			catch (Exception e) {
+			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
 		}
 		else {
 			retorno = sTxa.replaceAll( "\\" + sCampo + sParam1 + "_" + sParam2 + "]", "" );
-//			retorno = sTxa; 
+			// retorno = sTxa;
 		}
 		return retorno;
 	}
-	
+
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
 
 		Date dCampo = null;
@@ -488,7 +484,7 @@ public class FRBoleto extends FRelatorio {
 			dCampo = null;
 			String sObsOrc;
 			String sObsVen;
-			List< String > lObsOrc;
+			List<String> lObsOrc;
 			int iNumLinObs = 0;
 			int iNumColObs = 0;
 
@@ -496,20 +492,20 @@ public class FRBoleto extends FRelatorio {
 			// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
 
 			if ( sTxa != null ) {
-				
+
 				if ( ( sCampo = rs.getString( "CODORC" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_CODORC_]", sCampo );
 
 				if ( ( sCampo = rs.getString( "NOMECONV" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_____________________NOMECONV___________________]", sCampo );
-				
+
 				sParam1 = "";
 				sParam2 = "";
-				
-				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );	
-								
-				while (sTxa.indexOf( "[OBSVEN_" )>-1) {
-					sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );	
+
+				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );
+
+				while ( sTxa.indexOf( "[OBSVEN_" ) > -1 ) {
+					sTxa = aplicaTxtObs( sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );
 				}
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", StringFunctions.sqlDateToStrDate( dCampo ) );
@@ -558,7 +554,7 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 31 ) );
 				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[NUMERO]", Funcoes.copy( sCampo, 0, 10 ) );
-				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null ){
+				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null ) {
 					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", Funcoes.copy( sCampo, 0, 12 ) );
 				}
 				else {
@@ -568,7 +564,6 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "BairCob" ) ) != null || ( sCampo = rs.getString( "BairCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[___________BAIRRO___________]", Funcoes.copy( sCampo, 0, 12 ) );
 
-				
 				if ( ( sCampo = rs.getString( "CepCob" ) ) != null || ( sCampo = rs.getString( "CepCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[__CEP__]", Funcoes.setMascara( sCampo, "#####-###" ) );
 				if ( ( sCampo = rs.getString( "CidCob" ) ) != null || ( sCampo = rs.getString( "CidCli" ) ) != null )
@@ -596,8 +591,6 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "NomeVend4" ) ) != null || ( sCampo = rs.getString( "NomeVend4" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO4_______]", Funcoes.copy( sCampo, 0, 30 ) );
 
-				
-				
 				// Aplicar campos especiais de dados:
 
 				int iPos = 0;
@@ -644,7 +637,7 @@ public class FRBoleto extends FRelatorio {
 
 			sRet = sRet.replaceAll( "\\<LP\\>.*].*\\<_LP\\>", "" );
 			sRet = sRet.replaceAll( "\\<[_]*LP\\>", "" );
-			sRet = sRet.replaceAll( "\\<EJECT\\>", ""+((char)12)+((char)13) ); 
+			sRet = sRet.replaceAll( "\\<EJECT\\>", "" + ( (char) 12 ) + ( (char) 13 ) );
 
 			// Tirando campos não setados:
 
@@ -658,9 +651,8 @@ public class FRBoleto extends FRelatorio {
 
 			m.appendTail( sb );
 			sRet = sb.toString();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
@@ -694,7 +686,7 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			con.commit(); 
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -712,28 +704,29 @@ public class FRBoleto extends FRelatorio {
 		String retorno = null;
 
 		if ( "N".equals( preImpModbol ) ) {
-			if (classModBol.indexOf( '/',0 )==-1) {
+			if ( classModBol.indexOf( '/', 0 ) == -1 ) {
 				retorno = "layout/bol/" + classModBol;
-			} else {
+			}
+			else {
 				retorno = classModBol;
 			}
 		}
 		return retorno;
 
 	}
-	
+
 	private int getCodrec( final int codvenda, final String tipovenda ) {
-		
+
 		int codrec = 0;
-		
+
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "SELECT CODREC FROM FNRECEBER " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
 			sql.append( "CODEMPVA=? AND CODFILIALVA=? AND CODVENDA=? AND TIPOVENDA=?" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
@@ -741,65 +734,63 @@ public class FRBoleto extends FRelatorio {
 			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 5, codvenda );
 			ps.setString( 6, tipovenda );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
+
 				codrec = rs.getInt( "CODREC" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-		}
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
-		
+
 		return codrec;
 	}
-	
+
 	private void getAtualizaParcela() {
-		
+
 		try {
-			
+
 			String sql = "SELECT ATBANCOIMPBOL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-			
+
 			PreparedStatement ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
+
 				bAltParcela = "S".equalsIgnoreCase( rs.getString( "ATBANCOIMPBOL" ) );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-		}
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private boolean atualizaParcela( final int codrec, final Integer codparc, final String codbanco, final String codcartcob ) {
-		
+
 		boolean ret = true;
 		boolean bcart = false;
 		int iparam = 1;
-		
+
 		if ( bAltParcela && ( codbanco != null && codbanco.trim().length() > 0 ) && codrec > 0 ) {
-			
+
 			try {
-				
-				bcart = ( codcartcob != null && codcartcob.trim().length() > 0 ) ;
-				
+
+				bcart = ( codcartcob != null && codcartcob.trim().length() > 0 );
+
 				StringBuilder sql = new StringBuilder();
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
@@ -860,35 +851,34 @@ public class FRBoleto extends FRelatorio {
 				}
 				ps.executeUpdate();
 				ps.close();
-				
+
 				con.commit();
-			}
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao atualizar paracela(s)!\n" + e.getMessage() );
 				ret = false;
 			}
 		}
-		
+
 		return ret;
 	}
 
-	private HashMap< String, Object > getParametros() {
+	private HashMap<String, Object> getParametros() {
 
-		HashMap< String, Object > parametros = new HashMap< String, Object >();
-		Empresa empresa = new Empresa(con);
+		HashMap<String, Object> parametros = new HashMap<String, Object>();
+		Empresa empresa = new Empresa( con );
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
-		
-		if (Aplicativo.empresa!=null) {
-			parametros.put( "RAZEMP" , empresa.getAll().get( "RAZEMP" ) );
+
+		if ( Aplicativo.empresa != null ) {
+			parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 			ToolkitImage logoemp = (ToolkitImage) empresa.getAll().get( "LOGOEMP" );
-			if (logoemp!=null) {
-				parametros.put( "LOGOEMP" , logoemp );
+			if ( logoemp != null ) {
+				parametros.put( "LOGOEMP", logoemp );
 			}
 		}
-		//parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
+		// parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 
 		return parametros;
 	}
@@ -897,14 +887,14 @@ public class FRBoleto extends FRelatorio {
 
 		lsParcelas = lsParcParam;
 	}
-	
-	private ResultSet execQuery( String sWhereGrid ){
-		
+
+	private ResultSet execQuery( String sWhereGrid ) {
+
 		ResultSet rsRetorno = null;
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder sWhere = new StringBuilder();
 		final int codvenda = txtCodVenda.getVlrInteger().intValue();
- 		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
+		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
@@ -912,22 +902,22 @@ public class FRBoleto extends FRelatorio {
 		ImprimeOS imp = null;
 		PreparedStatement ps = null;
 		int param = 1;
-		
-		if( !sWhereGrid.equals( "" )){
-			
+
+		if ( !sWhereGrid.equals( "" ) ) {
+
 			String sWhereBol = getBoletos();
 		}
-		
+
 		sWhere.append( "MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND " );
-		
-		if( codvenda != 0 && codvenda2 != 0 ){
-		    sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA BETWEEN ? AND ? " );
+
+		if ( codvenda != 0 && codvenda2 != 0 ) {
+			sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA BETWEEN ? AND ? " );
 		}
-		
+
 		if ( codvenda != 0 && codvenda2 == 0 ) {
 			sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
 		}
-		else if (codvenda == 0 && codvenda2 == 0 ){
+		else if ( codvenda == 0 && codvenda2 == 0 ) {
 			sWhere.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 		}
 		if ( !"".equals( codbanco ) ) {
@@ -939,12 +929,12 @@ public class FRBoleto extends FRelatorio {
 		if ( nparc != 0 ) {
 			sWhere.append( "AND ITR.NPARCITREC=? " );
 		}
-		if( codTipoMov != 0 ){
+		if ( codTipoMov != 0 ) {
 			sWhere.append( "AND V.CODEMPTM=? AND V.CODFILIALTM=? AND V.CODTIPOMOV=? " );
-		}	
-		
-		//sWhere.append( "AND R.CODVENDA IN " + "( " + sWhereBol.toString() + " )" );
-					
+		}
+
+		// sWhere.append( "AND R.CODVENDA IN " + "( " + sWhereBol.toString() + " )" );
+
 		if ( ( lsParcelas != null ) && ( lsParcelas.size() > 0 ) ) {
 			sWhere.append( "AND ITR.NPARCITREC IN (" );
 			for ( int i = 0; i < lsParcelas.size(); i++ ) {
@@ -960,7 +950,7 @@ public class FRBoleto extends FRelatorio {
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
 
-		sSQL.append( "SELECT V.CODVENDA,V.OBSVENDA,(SELECT COUNT(*) FROM FNITRECEBER ITR2 ");
+		sSQL.append( "SELECT V.CODVENDA,V.OBSVENDA,(SELECT COUNT(*) FROM FNITRECEBER ITR2 " );
 		sSQL.append( "WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, " );
 		sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC, " );
 		sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,  " );
@@ -974,8 +964,8 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, " );
 		sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
 		sSQL.append( " F.RAZFILIAL,  F.ENDFILIAL, F.NUMFILIAL, F.BAIRFILIAL, F.CIDFILIAL, F.CEPFILIAL, F.FONEFILIAL, F.FAXFILIAL, " );
-		sSQL.append( "F.CNPJFILIAL, F.INSCFILIAL, F.WWWFILIAL, F.EMAILFILIAL," );		
-		 
+		sSQL.append( "F.CNPJFILIAL, F.INSCFILIAL, F.WWWFILIAL, F.EMAILFILIAL," );
+
 		sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, IM.NUMCONTA, " );
 		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, IM.DVCONVCOB , R.VLRAPAGREC, VD.NOMEVEND, " );
 
@@ -995,42 +985,40 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
 		sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ITR.DESCPONT, ");
-		
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ITR.DESCPONT, " );
+
+		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
+		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
+		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
 		sSQL.append( "AND VC.seqvc=1 ) AS NOMEVEND1," );
 
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
+		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
+		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
 		sSQL.append( "AND VC.seqvc=2 ) AS NOMEVEND2," );
-		
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+
+		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
+		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
+		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
 		sSQL.append( "AND VC.seqvc=3 ) AS NOMEVEND3," );
 
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
+		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
+		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
 		sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4 " );
 
-		
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
-		sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, ");
-		sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V ");
-				
-		
+		sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, " );
+		sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V " );
+
 		sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
-		sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND ");
+		sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
 		sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
 		sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND " );
-		sSQL.append( "IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL AND ");
+		sSQL.append( "IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL AND " );
 		sSQL.append( "IM.CODEMPBO=ITR.CODEMPBO AND IM.CODFILIALBO=ITR.CODFILIALBO AND IM.CODBANCO=ITR.CODBANCO AND " );
 		sSQL.append( "IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB AND " );
 		sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.TIPOVENDA=V.TIPOVENDA AND " );
@@ -1038,22 +1026,22 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND " );
 		sSQL.append( "IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND " );
 		sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
-		sSQL.append( "ITR.STATUSITREC IN ('R1','RL') ");
+		sSQL.append( "ITR.STATUSITREC IN ('R1','RL') " );
 		sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
 		sSQL.append( "CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA AND " );
-		
+
 		sSQL.append( sWhere );
 		sSQL.append( sWhereGrid );
-		sSQL.append( " order by v.codvenda");		
-		
+		sSQL.append( " order by v.codvenda" );
+
 		try {
-			
+
 			String strDebug = sSQL.toString();
 
-			System.out.println("QUERY PARA DEBUG:" + strDebug);
-			
+			System.out.println( "QUERY PARA DEBUG:" + strDebug );
+
 			ps = con.prepareStatement( sSQL.toString() );
-			
+
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
 			strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
@@ -1066,25 +1054,25 @@ public class FRBoleto extends FRelatorio {
 
 			strDebug = strDebug.replaceFirst( "\\?", txtCodModBol.getVlrInteger().intValue() + "" );
 
-			if( codvenda != 0 && codvenda2 != 0 ){
-			    
-			    ps.setInt( param++, Aplicativo.iCodEmp );
+			if ( codvenda != 0 && codvenda2 != 0 ) {
 
-			    strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
+				ps.setInt( param++, Aplicativo.iCodEmp );
 
-			    ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
 
-			    strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "" );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 
-			    ps.setInt( param++, txtCodVenda.getVlrInteger().intValue() );
+				strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "" );
 
-			    strDebug = strDebug.replaceFirst( "\\?", txtCodVenda.getVlrInteger().intValue() + "" );
-			    
-			    ps.setInt( param++, txtCodVenda2.getVlrInteger().intValue() );
+				ps.setInt( param++, txtCodVenda.getVlrInteger().intValue() );
 
-			    strDebug = strDebug.replaceFirst( "\\?", txtCodVenda2.getVlrInteger().intValue() + "" );
+				strDebug = strDebug.replaceFirst( "\\?", txtCodVenda.getVlrInteger().intValue() + "" );
+
+				ps.setInt( param++, txtCodVenda2.getVlrInteger().intValue() );
+
+				strDebug = strDebug.replaceFirst( "\\?", txtCodVenda2.getVlrInteger().intValue() + "" );
 			}
-			
+
 			if ( codvenda != 0 && codvenda2 == 0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
 
@@ -1099,7 +1087,7 @@ public class FRBoleto extends FRelatorio {
 				strDebug = strDebug.replaceFirst( "\\?", txtCodVenda.getVlrInteger().intValue() + "" );
 
 			}
-			else if( codvenda == 0 && codvenda2 == 0 ){
+			else if ( codvenda == 0 && codvenda2 == 0 ) {
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 
 				strDebug = strDebug.replaceFirst( "\\?", Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) + "" );
@@ -1141,9 +1129,9 @@ public class FRBoleto extends FRelatorio {
 				ps.setInt( param++, nparc );
 				strDebug = strDebug.replaceFirst( "\\?", nparc + "" );
 			}
-			
-			if ( codTipoMov  != 0 ) {
-				
+
+			if ( codTipoMov != 0 ) {
+
 				ps.setInt( param++, Aplicativo.iCodEmp );
 
 				strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
@@ -1157,38 +1145,37 @@ public class FRBoleto extends FRelatorio {
 				strDebug = strDebug.replaceFirst( "\\?", codTipoMov + "" );
 
 			}
-			
+
 			rsRetorno = ps.executeQuery();
 			System.out.println( "SQL: " + strDebug );
-			
+
 		} catch ( SQLException e ) {
-			
+
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar dados \n" + e.getMessage() );
 		}
-		
+
 		return rsRetorno;
 	}
-	private void montaGrid(){
-		
-		
-		
-		if( "".equals( txtCodModBol.getVlrString() )){
-			
+
+	private void montaGrid() {
+
+		if ( "".equals( txtCodModBol.getVlrString() ) ) {
+
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
 			txtCodModBol.requestFocus();
 			return;
 		}
 
 		atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
-		
+
 		ResultSet rs = execQuery( "" );
 		tbBoletos.setColunaEditavel( 0, true );
-				
+
 		try {
-									
-			for( int i=0; rs.next(); i++ ){
-				
+
+			for ( int i = 0; rs.next(); i++ ) {
+
 				tbBoletos.adicLinha();
 				tbBoletos.setValor( true, i, 0 );
 				tbBoletos.setValor( rs.getInt( "CodVenda" ), i, 1 );
@@ -1196,77 +1183,77 @@ public class FRBoleto extends FRelatorio {
 				tbBoletos.setValor( Funcoes.dateToSQLDate( rs.getDate( "DtVencItRec" ) ), i, 3 );
 				tbBoletos.setValor( rs.getString( "RazCli" ), i, 4 );
 				tbBoletos.setValor( rs.getBigDecimal( "VlrParcItRec" ), i, 5 );
-				
+
 			}
-					
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar tabela!\n" + e.getMessage() );
 		}
 	}
-	
-	private String getBoletos(){
-		
+
+	private String getBoletos() {
+
 		int numLinhas = tbBoletos.getNumLinhas();
-		int numLinhasSel = 0; 
-		String[] sValores = null ;
+		int numLinhasSel = 0;
+		String[] sValores = null;
 		Vector<String> vValores = new Vector<String>();
 		String sRet = "";
-		
-		try {
-		
-			for( int i=0; i<numLinhas; i++ ){
-				
-				if( tbBoletos.getValor( i, 0 ).equals( true )){
-					
-					vValores.add( tbBoletos.getValor( i, 1 ).toString() );
-					
-				}
-			}	
-			sRet = Funcoes.vectorToString( vValores,",");
 
-		}
-		catch (Exception e) {
+		try {
+
+			for ( int i = 0; i < numLinhas; i++ ) {
+
+				if ( tbBoletos.getValor( i, 0 ).equals( true ) ) {
+
+					vValores.add( tbBoletos.getValor( i, 1 ).toString() );
+
+				}
+			}
+			sRet = Funcoes.vectorToString( vValores, "," );
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return sRet;
 	}
 
-	private int verificaSel( Component comp ){
-		
+	private int verificaSel( Component comp ) {
+
 		int count = 0;
-		
-		for( int i=0; i<tbBoletos.getNumLinhas(); i++ ){
-			
-			if( tbBoletos.getValor( i, 0 ).equals( true ) ){
-				
+
+		for ( int i = 0; i < tbBoletos.getNumLinhas(); i++ ) {
+
+			if ( tbBoletos.getValor( i, 0 ).equals( true ) ) {
+
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
-	
-	public void imprimir ( boolean bVisualizar ) {
-		imprimir(bVisualizar, null);
+
+	public void imprimir( boolean bVisualizar ) {
+
+		imprimir( bVisualizar, null );
 	}
-	
+
 	public void imprimir( boolean bVisualizar, JInternalFrame orig ) {
-		
-		if( verificaSel( this ) == 0 ){
+
+		if ( verificaSel( this ) == 0 ) {
 			Funcoes.mensagemInforma( this, "Não existem boletos selecionados para impressão!" );
 			return;
 		}
 
- 		final int codvenda = txtCodVenda.getVlrInteger().intValue();
- 		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
+		final int codvenda = txtCodVenda.getVlrInteger().intValue();
+		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
 		final int codTipoMov = txtCodTipoMov.getVlrInteger().intValue();
 		String sBoletos = getBoletos();
 		String sWhere = " AND V.CODVENDA IN ( " + sBoletos + " )";
-		
+
 		if ( txtCodModBol.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
 			txtCodModBol.requestFocus();
@@ -1281,16 +1268,16 @@ public class FRBoleto extends FRelatorio {
 		try {
 			lcModBol.carregaDados();
 			ResultSet rs = execQuery( sWhere );
-			
+
 			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
-			
+
 			if ( classe == null ) {
 				imprimeTexto( bVisualizar, rs );
 			}
 			else {
 				imprimeGrafico( bVisualizar, rs, classe, orig );
 			}
-			
+
 			rs.close();
 
 			con.commit();
@@ -1348,18 +1335,17 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 
-	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig  ) {
+	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig ) {
 
-		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig==null?this:orig );
-		
+		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig == null ? this : orig );
+
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
 		else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} 
-			catch ( Exception err ) {
+			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro ao tentar imprimir boleto!" + err.getMessage(), true, con, err );
 			}
 		}
@@ -1378,21 +1364,21 @@ public class FRBoleto extends FRelatorio {
 		lcTipoMov.setConexao( cn );
 		lcCartCob.setConexao( con );
 		sInfoMoeda = getMoeda();
-		
-		
+
 		getAtualizaParcela();
 	}
-	
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		super.actionPerformed( evt );
-		
-		if( evt.getSource() == btGerar ){
+
+		if ( evt.getSource() == btGerar ) {
 			gerar();
 		}
 	}
-	
+
 	public void gerar() {
+
 		tbBoletos.limpa();
 		montaGrid();
 	}

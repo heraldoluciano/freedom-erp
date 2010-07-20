@@ -2,23 +2,23 @@
  * @version 25/07/2005 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FLeituraX.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para impressão de leitura X
+ *                    Tela para impressão de leitura X
  * 
  */
 
@@ -43,48 +43,43 @@ public class FLeituraX extends FFDialogo implements ActionListener {
 
 	private final JLayeredPane pn = new JLayeredPane();
 
-	private final ControllerECF ecf; 
-	
+	private final ControllerECF ecf;
 
 	public FLeituraX() {
 
 		super();
-		
+
 		setAtribos( 400, 200 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-				
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		StringBuffer texto = new StringBuffer();
 		texto.append( "<HTML>" );
 		texto.append( "Impressão de leitura X.<BR><BR>" );
 		texto.append( "Pressione [ OK ] para confirmar a impressão.<BR>" );
 		texto.append( "Pressione [ CANCELAR ] para sair!<BR>" );
 		texto.append( "</HTML>" );
-		
+
 		JLabelPad label = new JLabelPad( texto.toString() );
 		label.setFont( new Font( "Arial", Font.PLAIN, 14 ) );
 		label.setForeground( Color.BLUE );
 		label.setBounds( 40, 10, 300, 100 );
-		
+
 		pn.add( label );
 
 		c.add( pn );
-		
+
 		eUltimo();
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btOK ) {
-			if ( ! ecf.leituraX() ) {
+			if ( !ecf.leituraX() ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 			}
 		}
-	
+
 		super.actionPerformed( evt );
 	}
 }

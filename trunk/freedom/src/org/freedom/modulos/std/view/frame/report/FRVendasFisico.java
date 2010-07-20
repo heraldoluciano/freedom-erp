@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasFisico.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                         Comentários sobre a classe...
  * 
  */
 
@@ -160,28 +160,29 @@ public class FRVendasFisico extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-	
+
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-	
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
-    	
-		/** @version 24/01/2008 <BR>
-    	 * "Inicialização de variáveis com valor branco" - Implementação realizada por 
-    	 * @author Pedro Henrique (pedro.enrique.contech@gmail.com) <BR>
-    	 * Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)    	
-    	 */
-		
+
+		/**
+		 * @version 24/01/2008 <BR>
+		 *          "Inicialização de variáveis com valor branco" - Implementação realizada por
+		 * @author Pedro Henrique (pedro.enrique.contech@gmail.com) <BR>
+		 *         Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)
+		 */
+
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
-		
+
 		try {
 
 			if ( "S".equals( rgFaturados.getVlrString() ) ) {
@@ -216,11 +217,11 @@ public class FRVendasFisico extends FRelatorio {
 			else if ( "A".equals( rgFinanceiro.getVlrString() ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 			}
-		 
+
 			if ( "N".equals( cbVendaCanc.getVlrString() ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
-			
+
 			if ( txtCodVend.getText().trim().length() > 0 ) {
 				sWhere.append( " AND V.CODVEND=" );
 				sWhere.append( txtCodVend.getText().trim() );
@@ -235,115 +236,105 @@ public class FRVendasFisico extends FRelatorio {
 				sCab.append( txtCodVend.getVlrString() );
 				sCab.append( " - " );
 				sCab.append( txtDescVend.getText().trim() );
-			}		
-	
+			}
+
 			sSQL.append( "SELECT SUBSTRING(P.CODGRUP FROM 1 FOR 4) as GRUPO," );
 			sSQL.append( "P.CODEMP, P.CODFILIAL, P.CODPROD,P.REFPROD,P.DESCPROD,G.DESCGRUP, " );
-					
-//			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMPAX,P.CODFILIALAX,P.CODALMOX)) AS CUSTOMPMPROD ");
-			
-			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null)) AS CUSTOMPMPROD ");
 
-			sSQL.append( ",IT.CODITVENDA," ); 
-			sSQL.append( "SUM(IT.QTDITVENDA) QTDITVENDA,SUM(IT.VLRDESCITVENDA) VLRDESCITVENDA,SUM(IT.VLRLIQITVENDA) VLRLIQITVENDA " ); 
+			// sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMPAX,P.CODFILIALAX,P.CODALMOX)) AS CUSTOMPMPROD ");
+
+			sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null)) AS CUSTOMPMPROD " );
+
+			sSQL.append( ",IT.CODITVENDA," );
+			sSQL.append( "SUM(IT.QTDITVENDA) QTDITVENDA,SUM(IT.VLRDESCITVENDA) VLRDESCITVENDA,SUM(IT.VLRLIQITVENDA) VLRLIQITVENDA " );
 			sSQL.append( "FROM VDVENDA V,VDITVENDA IT,EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM " );
-			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND IT.CODEMP=? AND IT.CODFILIAL=? " ); 
+			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND IT.CODEMP=? AND IT.CODFILIAL=? " );
 			sSQL.append( "AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.CODVENDA=IT.CODVENDA AND V.TIPOVENDA=IT.TIPOVENDA " );
 			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 			sSQL.append( "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " );
 			sSQL.append( "AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND G.CODGRUP=P.CODGRUP " );
-			
+
 			sSQL.append( sWhere );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
-			
+
 			sSQL.append( "AND IT.QTDITVENDA > 0 " );
-			sSQL.append( "AND (V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ") " ); 
+			sSQL.append( "AND (V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ") " );
 			sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
 			sSQL.append( "GROUP BY 1, P.CODEMP, P.CODFILIAL, P.CODPROD, P.REFPROD, P.DESCPROD, G.DESCGRUP, IT.CODITVENDA, P.CUSTOMPMPROD  " );
 			sSQL.append( "ORDER BY 1," );
 			sSQL.append( "C".equals( rgOrdem.getVlrString() ) ? comRef() ? "P.REFPROD" : "P.CODPROD" : "P.DESCPROD" );
-	
+
 			ps = con.prepareStatement( sSQL.toString() );
 
 			int iparam = 1;
-			
-//			ps.setInt( 1, Aplicativo.iCodEmp );
-//			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
 
-			
+			// ps.setInt( 1, Aplicativo.iCodEmp );
+			// ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
 				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString(), 130 ) );
 			}
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab.toString() );
 			}
-			
+
 			rs.close();
 			ps.close();
-	
+
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta ao relatório de vendas fisico!" + err.getMessage() );
-		} 
-		finally {
+		} finally {
 			System.gc();
 		}
 	}
 
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab ) {
-		
+
 		String sCodGrup = null;
 		String sGrup = null;
 		final String sLinhaFina = StringFunctions.replicate( "-", 133 );
 		final String sLinhaDupla = StringFunctions.replicate( "=", 133 );
 		ImprimeOS imp = null;
 		int linPag = 0;
-	
+
 		try {
-	
+
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório Fisco de Vendas" );
 			imp.addSubTitulo( "RELATORIO FISICO DE VENDAS   -   PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
-			for ( int i=0; i < cab.size(); i++) {
+			for ( int i = 0; i < cab.size(); i++ ) {
 				imp.addSubTitulo( (String) cab.elementAt( i ) );
 			}
-			
-		 /* 1  GRUPO
-		    2  CODPROD
-		    3  REFPROD 
-		    4  DESCPROD 
-		    5  DESCGRUP 
-		    6  CUSTOMPMPROD 
-		    7  CODITVENDA," ); 
-			8  SUM(IT.QTDITVENDA) QTDITVENDA
-			9  SUM(IT.VLRDESCITVENDA) VLRDESCITVENDA
-			10 SUM(IT.VLRLIQITVENDA) VLRLIQITVENDA */
+
+			/*
+			 * 1 GRUPO 2 CODPROD 3 REFPROD 4 DESCPROD 5 DESCGRUP 6 CUSTOMPMPROD 7 CODITVENDA," ); 8 SUM(IT.QTDITVENDA) QTDITVENDA 9 SUM(IT.VLRDESCITVENDA) VLRDESCITVENDA 10 SUM(IT.VLRLIQITVENDA) VLRLIQITVENDA
+			 */
 
 			BigDecimal bQtdVenda = new BigDecimal( "0" );
 			BigDecimal bDescVenda = new BigDecimal( "0" );
 			BigDecimal bVlrUnitVenda = new BigDecimal( "0" );
-			BigDecimal bVlrTotVenda = new BigDecimal( "0" );			
+			BigDecimal bVlrTotVenda = new BigDecimal( "0" );
 			BigDecimal bVlrUnitCusto = new BigDecimal( "0" );
 			BigDecimal bVlrTotCusto = new BigDecimal( "0" );
 			BigDecimal bVlrUnitLucro = new BigDecimal( "0" );
 			BigDecimal bVlrTotLucro = new BigDecimal( "0" );
 			BigDecimal bMargem = new BigDecimal( "0" );
-			
+
 			BigDecimal bTotalVendaGrupo = new BigDecimal( "0" );
 			BigDecimal bTotalCustoGrupo = new BigDecimal( "0" );
 			BigDecimal bTotalDescGrupo = new BigDecimal( "0" );
@@ -355,16 +346,16 @@ public class FRVendasFisico extends FRelatorio {
 			BigDecimal bTotalDesc = new BigDecimal( "0" );
 			BigDecimal bTotalLucro = new BigDecimal( "0" );
 			BigDecimal bMargemTotal = new BigDecimal( "0" );
-				
+
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "+" + sLinhaFina + "+" );
 					imp.incPags();
 					imp.eject();
 				}
-				
+
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
@@ -400,16 +391,17 @@ public class FRVendasFisico extends FRelatorio {
 					imp.say( 128, "Margem" );
 					imp.say( 135, "|" );
 				}
-				
-				imp.pulaLinha( 1, imp.comprimido() );
-				
-				if ( sCodGrup == null || ! sCodGrup.equals( rs.getString( 1 ) ) ) {
 
-					if ( sCodGrup != null && ! sCodGrup.equals( rs.getString( 1 ) ) ) {
-												
+				imp.pulaLinha( 1, imp.comprimido() );
+
+				if ( sCodGrup == null || !sCodGrup.equals( rs.getString( 1 ) ) ) {
+
+					if ( sCodGrup != null && !sCodGrup.equals( rs.getString( 1 ) ) ) {
+
 						if ( bTotalVendaGrupo.floatValue() > 0 ) {
-							bMargemGrupo =new BigDecimal( bTotalLucroGrupo.floatValue() / ( bTotalVendaGrupo.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-						} else {
+							bMargemGrupo = new BigDecimal( bTotalLucroGrupo.floatValue() / ( bTotalVendaGrupo.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+						}
+						else {
 							bMargemGrupo = new BigDecimal( "100" );
 						}
 
@@ -418,28 +410,28 @@ public class FRVendasFisico extends FRelatorio {
 						imp.say( 0, "|" );
 						imp.say( 15, "|" );
 						imp.say( 23, "Totais do Grupo :" );
-						imp.say( 46, "|VENDA");
+						imp.say( 46, "|VENDA" );
 						imp.say( 65, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalVendaGrupo ) ) );
 						imp.say( 79, "|CUSTO" );
-						imp.say( 89, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalCustoGrupo ) ) );						
+						imp.say( 89, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalCustoGrupo ) ) );
 						imp.say( 103, "|LUCRO" );
 						imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( bTotalLucroGrupo ) ) );
 						imp.say( 121, "MARGEN" );
 						imp.say( 128, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( bMargemGrupo ) ) );
-						imp.say( 134, "%|" );												
+						imp.say( 134, "%|" );
 						imp.pulaLinha( 1, imp.comprimido() );
 
 						bTotalVenda = bTotalVenda.add( bTotalVendaGrupo );
 						bTotalCusto = bTotalCusto.add( bTotalCustoGrupo );
 						bTotalDesc = bTotalDesc.add( bTotalDescGrupo );
 						bTotalLucro = bTotalLucro.add( bTotalLucroGrupo );
-						
+
 						bTotalVendaGrupo = new BigDecimal( "0" );
 						bTotalCustoGrupo = new BigDecimal( "0" );
 						bTotalDescGrupo = new BigDecimal( "0" );
-						bTotalLucroGrupo = new BigDecimal( "0" );						
+						bTotalLucroGrupo = new BigDecimal( "0" );
 					}
-					
+
 					sCodGrup = rs.getString( 1 );
 
 					sGrup = "GRUPO: " + sCodGrup + " - " + rs.getString( "DescGrup" );
@@ -453,22 +445,23 @@ public class FRVendasFisico extends FRelatorio {
 					imp.say( 0, "|" + sLinhaFina + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 				}
-	
+
 				bQtdVenda = rs.getBigDecimal( 10 ) != null ? rs.getBigDecimal( 10 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
 				bDescVenda = rs.getBigDecimal( 11 ) != null ? rs.getBigDecimal( 11 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
-				bVlrTotVenda = rs.getBigDecimal( 12 ) != null ? rs.getBigDecimal( 12 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );				
+				bVlrTotVenda = rs.getBigDecimal( 12 ) != null ? rs.getBigDecimal( 12 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
 				bVlrUnitVenda = bVlrTotVenda.divide( bQtdVenda, 2, BigDecimal.ROUND_HALF_UP );
 				bVlrUnitCusto = rs.getBigDecimal( 8 ) != null ? rs.getBigDecimal( 8 ).setScale( 2, BigDecimal.ROUND_HALF_UP ) : new BigDecimal( "0" );
 				bVlrTotCusto = bVlrUnitCusto.multiply( bQtdVenda ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 				bVlrUnitLucro = bVlrUnitVenda.subtract( bVlrUnitCusto ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 				bVlrTotLucro = bVlrTotVenda.subtract( bVlrTotCusto ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-				
+
 				if ( bVlrTotVenda.floatValue() > 0 ) {
-					bMargem =new BigDecimal( bVlrTotLucro.floatValue() / ( bVlrTotVenda.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-				} else {
+					bMargem = new BigDecimal( bVlrTotLucro.floatValue() / ( bVlrTotVenda.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+				}
+				else {
 					bMargem = new BigDecimal( "100" );
 				}
-				
+
 				imp.say( 0, "|" );
 				imp.say( 2, rs.getString( 3 ) + "|" );
 				imp.say( 16, Funcoes.copy( rs.getString( "DescProd" ), 0, 30 ) + "|" );
@@ -481,16 +474,17 @@ public class FRVendasFisico extends FRelatorio {
 				imp.say( 115, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrTotLucro ) ) );
 				imp.say( 128, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( bMargem ) ) );
 				imp.say( 134, "%|" );
-	
+
 				bTotalVendaGrupo = bTotalVendaGrupo.add( bVlrTotVenda );
 				bTotalCustoGrupo = bTotalCustoGrupo.add( bVlrTotCusto );
 				bTotalDescGrupo = bTotalDescGrupo.add( bDescVenda );
 				bTotalLucroGrupo = bTotalLucroGrupo.add( bVlrTotLucro );
 			}
-			
+
 			if ( bTotalVendaGrupo.floatValue() > 0 ) {
-				bMargemGrupo =new BigDecimal( bTotalLucroGrupo.floatValue() / ( bTotalVendaGrupo.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-			} else {
+				bMargemGrupo = new BigDecimal( bTotalLucroGrupo.floatValue() / ( bTotalVendaGrupo.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+			}
+			else {
 				bMargemGrupo = new BigDecimal( "100" );
 			}
 
@@ -500,27 +494,28 @@ public class FRVendasFisico extends FRelatorio {
 			imp.say( 0, "|" );
 			imp.say( 15, "|" );
 			imp.say( 23, "Totais do Grupo :" );
-			imp.say( 46, "|VENDA");
+			imp.say( 46, "|VENDA" );
 			imp.say( 65, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalVendaGrupo ) ) );
 			imp.say( 79, "|CUSTO" );
-			imp.say( 89, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalCustoGrupo ) ) );						
+			imp.say( 89, Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( bTotalCustoGrupo ) ) );
 			imp.say( 103, "|LUCRO" );
 			imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( bTotalLucroGrupo ) ) );
 			imp.say( 121, "MARGEN" );
 			imp.say( 128, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( bMargemGrupo ) ) );
-			imp.say( 134, "%|" );					
+			imp.say( 134, "%|" );
 
 			bTotalVenda = bTotalVenda.add( bTotalVendaGrupo );
 			bTotalCusto = bTotalCusto.add( bTotalCustoGrupo );
 			bTotalDesc = bTotalDesc.add( bTotalDescGrupo );
 			bTotalLucro = bTotalLucro.add( bTotalLucroGrupo );
-			
+
 			if ( bTotalVenda.floatValue() > 0 ) {
-				bMargemTotal =new BigDecimal( bTotalLucro.floatValue() / ( bTotalVenda.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-			} else {
+				bMargemTotal = new BigDecimal( bTotalLucro.floatValue() / ( bTotalVenda.floatValue() / 100 ) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+			}
+			else {
 				bMargemTotal = new BigDecimal( "100" );
 			}
-	
+
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + sLinhaDupla + "+" );
 			imp.pulaLinha( 1, imp.comprimido() );
@@ -533,7 +528,7 @@ public class FRVendasFisico extends FRelatorio {
 			imp.say( 64, "LUCRO ESTIMADO: " + Funcoes.strDecimalToStrCurrency( 16, 2, String.valueOf( bTotalLucro ) ) );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "|" );	
+			imp.say( 0, "|" );
 			imp.say( 30, "CUSTO TOTAL:    " + Funcoes.strDecimalToStrCurrency( 16, 2, String.valueOf( bTotalCusto ) ) );
 			imp.say( 64, "MARGEM MEDIA:   " + Funcoes.strDecimalToStrCurrency( 16, 2, String.valueOf( bMargemTotal ) ) + "%" );
 			imp.say( 135, "|" );
@@ -543,10 +538,10 @@ public class FRVendasFisico extends FRelatorio {
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + sLinhaDupla + "+" );
-	
+
 			imp.eject();
 			imp.fechaGravacao();
-			
+
 			if ( bVisualizar ) {
 				imp.preview( this );
 			}
@@ -558,13 +553,13 @@ public class FRVendasFisico extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro consulta ao relatório de vendas fisico!" + err.getMessage() );
 		}
 	}
-	
+
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
-	
+
 		FPrinterJob dlGr = null;
-	
+
 		dlGr = new FPrinterJob( "relatorios/VendasFisico.jasper", "Vendas Fisico - resumido", sCab, rs, null, this );
-		
+
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
@@ -578,7 +573,7 @@ public class FRVendasFisico extends FRelatorio {
 	}
 
 	private boolean comRef() {
-	
+
 		boolean bRetorno = false;
 		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;

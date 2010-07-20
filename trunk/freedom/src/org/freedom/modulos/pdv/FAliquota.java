@@ -2,23 +2,23 @@
  * @version 17/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FAliquota.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -63,38 +63,33 @@ public class FAliquota extends FFDialogo {
 	private final JScrollPane spnTab = new JScrollPane( tab );
 
 	private final ControllerECF ecf;
-	
+
 	private List<String> aliquotas;
-	
+
 	private int sizeAliquotas;
-	
 
 	public FAliquota() {
 
 		setTitulo( "Ajusta aliquotas" );
 		setAtribos( 100, 150, 395, 195 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-		
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		montaTela();
-		
+
 		setToFrameLayout();
-		
+
 		carregaTabela();
 	}
-		
+
 	private void montaTela() {
-		
+
 		btInsere.setPreferredSize( new Dimension( 30, 30 ) );
 		btInsere.setToolTipText( "Insere alíquota" );
 		btInsere.addActionListener( this );
 
 		setPanel( pnCli );
-		
+
 		pnCli.add( spnTab, BorderLayout.CENTER );
 		pnCli.add( pinCab, BorderLayout.NORTH );
 
@@ -111,15 +106,15 @@ public class FAliquota extends FFDialogo {
 		tab.setTamColuna( 95, 1 );
 		tab.setTamColuna( 95, 2 );
 		tab.setTamColuna( 95, 3 );
-		
-		tab.setFont( new Font( "Arial", Font.PLAIN, 12 ) );		
+
+		tab.setFont( new Font( "Arial", Font.PLAIN, 12 ) );
 	}
 
 	private void insereAliquota() {
 
 		DecimalFormat df = new DecimalFormat( "00.00" );
 		String strAliquota = df.format( txtAliquota.getVlrBigDecimal().doubleValue() ).replaceAll( ",", "" );
-		
+
 		if ( aliquotas.contains( strAliquota ) ) {
 			Funcoes.mensagemErro( this, "Alíquota já foi cadastrada!" );
 		}
@@ -128,61 +123,57 @@ public class FAliquota extends FFDialogo {
 				Funcoes.mensagemErro( this, "Quantidade maxima de aliquotas já foi atingida!" );
 			}
 			else {
-				if ( ! ecf.programaAliquota( txtAliquota.getVlrBigDecimal(), AbstractECFDriver.ICMS ) ) {
+				if ( !ecf.programaAliquota( txtAliquota.getVlrBigDecimal(), AbstractECFDriver.ICMS ) ) {
 					Funcoes.mensagemErro( this, ecf.getMessageLog() );
-				}					
+				}
 				carregaTabela();
 			}
 		}
 	}
 
 	private void carregaTabela() {
-		
+
 		aliquotas = ecf.getAliquotas();
-		
+
 		tab.limpa();
 		sizeAliquotas = 0;
-		
+
 		String aliq = null;
 		DecimalFormat df = new DecimalFormat( "00.00" );
-		
+
 		int row = 0;
 		int col = 0;
 		int size = aliquotas.size();
 		int oldRow = -1;
-		
+
 		float aliquota = 0.0f;
-		
-		for ( int i=0; i < size; i++ ) {
-			
+
+		for ( int i = 0; i < size; i++ ) {
+
 			aliquota = new Float( aliquotas.get( i ) ).floatValue();
-			
+
 			if ( aliquota > 0.0f ) {
-				
+
 				if ( row != oldRow ) {
 					tab.adicLinha();
 					oldRow = row;
 				}
-				
-				aliq = 
-					"T" + 
-					StringFunctions.strZero( String.valueOf( i + 1 ), 2 ) + 
-					" = " + 
-					df.format( aliquota / 100 ) + " %";
-				
+
+				aliq = "T" + StringFunctions.strZero( String.valueOf( i + 1 ), 2 ) + " = " + df.format( aliquota / 100 ) + " %";
+
 				tab.setValor( aliq, row, col++ );
-				
-				if ( col == 4 ) {					
+
+				if ( col == 4 ) {
 					col = 0;
-					row++;	
-				}		
-				
+					row++;
+				}
+
 				sizeAliquotas++;
 			}
 		}
 	}
 
-	@Override
+	@ Override
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btInsere ) {

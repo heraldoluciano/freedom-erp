@@ -2,23 +2,23 @@
  * @version 03/01/2005 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.atd <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.atd <BR>
+ *         Classe:
  * @(#)FConveniado.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -59,7 +59,7 @@ import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FConveniado extends FTabDados implements PostListener {
- 
+
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinGeral = new JPanelPad( 650, 520 );
@@ -93,7 +93,7 @@ public class FConveniado extends FTabDados implements PostListener {
 	private JTextFieldPad txtCepConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtDddConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtFoneConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
 	private JTextFieldPad txtCelConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
@@ -171,7 +171,7 @@ public class FConveniado extends FTabDados implements PostListener {
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcEnc = new ListaCampos( this, "EC" );
-	
+
 	private ListaCampos lcFunc = new ListaCampos( this, "FC" );
 
 	private Vector<String> vVals = new Vector<String>();
@@ -187,9 +187,9 @@ public class FConveniado extends FTabDados implements PostListener {
 	public FConveniado() {
 
 		super();
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Cadastro de Conveniados" );
 		setAtribos( 50, 10, 530, 450 );
 
@@ -240,7 +240,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcFunc.setQueryCommit( false );
 		lcFunc.setReadOnly( true );
 		txtCodFunc.setTabelaExterna( lcFunc, FFuncao.class.getCanonicalName() );
-		
+
 		vVals.add( "" );
 		vVals.add( "M" );
 		vVals.add( "F" );
@@ -266,9 +266,9 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtBairConv, 7, 140, 120, 20, "BairConv", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCidConv, 130, 140, 117, 20, "CidConv", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtUFConv, 250, 140, 37, 20, "UFConv", "UF", ListaCampos.DB_SI, false );
-		adicCampo( txtDddConv,290,140,25,20,"DddConv","DDD", ListaCampos.DB_SI,false);
+		adicCampo( txtDddConv, 290, 140, 25, 20, "DddConv", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneConv, 318, 140, 90, 20, "FoneConv", "Telefone", ListaCampos.DB_SI, false );
-	    adicCampo( txtFaxConv, 410, 140, 90, 20, "Faxconv", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxConv, 410, 140, 90, 20, "Faxconv", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtCelConv, 7, 180, 90, 20, "CelConv", "Cel", ListaCampos.DB_SI, false );
 		adicCampo( txtCodGrauInst, 100, 180, 97, 20, "CodGri", "Cód.gr.inst.", ListaCampos.DB_FK, txtDescGrauInst, false );
 		adicDescFK( txtDescGrauInst, 200, 180, 300, 20, "DescGri", "Descrição do grau de instrução" );
@@ -280,8 +280,8 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtCNSConv, 190, 300, 137, 20, "CnsConv", "CNS-Sus", ListaCampos.DB_SI, false );
 		adicCampo( txtNVia, 330, 300, 47, 20, "NRVIACONV", "Nº Via", ListaCampos.DB_SI, false );
 		adicCampo( txtICard, 380, 300, 120, 20, "ICARDCONV", "Matricula", ListaCampos.DB_SI, false );
-		
-		//txtRgConv.setMascara( JTextFieldPad.MC_RG );
+
+		// txtRgConv.setMascara( JTextFieldPad.MC_RG );
 		txtCPFConv.setMascara( JTextFieldPad.MC_CPF );
 		txtCepConv.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneConv.setMascara( JTextFieldPad.MC_FONE );
@@ -323,7 +323,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcAtrib.setQueryCommit( false );
 		lcAtrib.setReadOnly( true );
 		txtDescAtrib.setListaCampos( lcAtrib );
-		txtCodAtrib.setTabelaExterna( lcAtrib, FAtribuicao.class.getCanonicalName());
+		txtCodAtrib.setTabelaExterna( lcAtrib, FAtribuicao.class.getCanonicalName() );
 
 		adicCampo( txtCodConvAtrib, 7, 20, 80, 20, "SeqConvAtrib", "Nºseq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodAtrib, 90, 20, 77, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_FK, txtDescAtrib, false );
@@ -387,7 +387,7 @@ public class FConveniado extends FTabDados implements PostListener {
 				tela.setConveniado( this );
 				tela.lcCampos.cancel( false );
 				tela.lcCampos.insert( true );
-				tela.setVlrConveniado( txtNomeConv.getVlrString(), txtNomeConv.getVlrString(), txtEndConv.getVlrString(), txtNumConv.getVlrInteger(), txtComplConv.getVlrString(), txtBairConv.getVlrString(), txtCidConv.getVlrString(),txtCepConv.getVlrString(), txtUFConv.getVlrString(), txtRgConv
+				tela.setVlrConveniado( txtNomeConv.getVlrString(), txtNomeConv.getVlrString(), txtEndConv.getVlrString(), txtNumConv.getVlrInteger(), txtComplConv.getVlrString(), txtBairConv.getVlrString(), txtCidConv.getVlrString(), txtCepConv.getVlrString(), txtUFConv.getVlrString(), txtRgConv
 						.getVlrString(), txtCPFConv.getVlrString(), txtFoneConv.getVlrString(), txtFaxConv.getVlrString(), txtEmailConv.getVlrString(), iCodTipoCli, iCodClasCli );
 
 			}

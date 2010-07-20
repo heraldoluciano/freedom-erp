@@ -2,23 +2,23 @@
  * @version 25/02/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FManutRec.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de fechamento de venda no PDV.
+ *                    Tela de fechamento de venda no PDV.
  * 
  */
 
@@ -159,17 +159,16 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 	private ImageIcon imgPagoParcial = Icone.novo( "clPagoParcial.gif" );
 
 	private ImageIcon imgNaoVencido = Icone.novo( "clNaoVencido.gif" );
-	
+
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 0, 4 ) );
 
 	private ImageIcon imgColuna = null;
 
 	private int anoBase;
-	
+
 	private boolean carregavel = true;
-	
+
 	private boolean porCliente = false;
-	
 
 	public FManutRec() {
 
@@ -177,27 +176,23 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		setTitulo( "Receber" );
 		setAtribos( 792, 480 );
 
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
 
 		montaListaCampos();
 		montaTela();
 		montaTabela();
-		
+
 		btCarregaBaixas.addActionListener( this );
 		btBaixa.addActionListener( this );
 		btApaga.addActionListener( this );
-		
+
 		txtCodRecBaixa.addKeyListener( this );
 		txtCodCliBaixa.addKeyListener( this );
 		tabBaixa.addKeyListener( this );
-		
+
 		lcRecBaixa.addCarregaListener( this );
 		lcCliBaixa.addCarregaListener( this );
-		
+
 		tabBaixa.addTabelaSelListener( this );
 	}
 
@@ -273,7 +268,6 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		pnLegenda.add( new JLabelPad( "Pago", imgPago, SwingConstants.CENTER ) );
 		pnLegenda.add( new JLabelPad( "À vencer", imgNaoVencido, SwingConstants.CENTER ) );
 
-		
 		pnBtOk.add( btOK );
 		pnBtCancel.add( btCancel );
 
@@ -288,7 +282,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		txtTotAbertoBaixa.setAtivo( false );
 		txtTotPagoBaixa.setAtivo( false );
 		txtJurosBaixa.setAtivo( false );
-		
+
 		btApaga.setToolTipText( "Limpar consulta." );
 
 		pinBotoesBaixa.adic( btBaixa, 3, 10, 30, 30 );
@@ -302,7 +296,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		pinBaixa.adic( txtSerie, 213, 20, 50, 20 );
 		pinBaixa.adic( new JLabelPad( "Pedido" ), 266, 0, 100, 20 );
 		pinBaixa.adic( txtCodVendaBaixa, 266, 20, 100, 20 );
-		
+
 		pinBaixa.adic( new JLabelPad( "Cód.cli." ), 7, 40, 100, 20 );
 		pinBaixa.adic( txtCodCliBaixa, 7, 60, 100, 20 );
 		pinBaixa.adic( new JLabelPad( "Descrição do cliente" ), 110, 40, 256, 20 );
@@ -311,7 +305,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		pinBaixa.adic( txtCodBancoBaixa, 369, 60, 100, 20 );
 		pinBaixa.adic( new JLabelPad( "Descrição do banco" ), 471, 40, 256, 20 );
 		pinBaixa.adic( txtDescBancoBaixa, 471, 60, 256, 20 );
-		
+
 		pinBaixa.adic( new JLabelPad( "Data de emissão" ), 7, 80, 100, 20 );
 		pinBaixa.adic( txtDtEmisBaixa, 7, 100, 120, 20 );
 		pinBaixa.adic( new JLabelPad( "Total a pagar" ), 130, 80, 97, 20 );
@@ -323,7 +317,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		pinBaixa.adic( new JLabelPad( "Juros" ), 440, 80, 80, 20 );
 		pinBaixa.adic( txtJurosBaixa, 440, 100, 90, 20 );
 	}
-	
+
 	private void montaTabela() {
 
 		tabBaixa.adicColuna( "" );// 0
@@ -368,8 +362,8 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 	}
 
 	private void limpaConsulta() {
-		
-		carregavel = true;	
+
+		carregavel = true;
 
 		txtDoc.setVlrString( "" );
 		txtSerie.setVlrString( "" );
@@ -398,20 +392,20 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 	}
 
 	private boolean carregaGridBaixa() {
-		
-		if ( ! carregavel ) {
+
+		if ( !carregavel ) {
 			return false;
 		}
-		
+
 		boolean actionReturn = false;
-		
+
 		float bdVlrAReceber = 0.0f;
 		float bdVlrPago = 0.0f;
 
 		try {
 
-			tabBaixa.limpa();			
-			
+			tabBaixa.limpa();
+
 			StringBuffer sSQL = new StringBuffer();
 			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC," );
 			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC," );
@@ -443,15 +437,13 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			ps.setInt( 1, porCliente ? txtCodCliBaixa.getVlrInteger() : txtCodRecBaixa.getVlrInteger() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			for ( int i = 0; rs.next(); i++ ) {
-							
+
 				if ( txtCodVendaBaixa.getVlrInteger() == 0 && !porCliente ) {
-					Funcoes.mensagemInforma( this, 
-							"Este recebimento não é originário de uma venda\n" +
-							"e não poderá ser recebido por este modulo." );
+					Funcoes.mensagemInforma( this, "Este recebimento não é originário de uma venda\n" + "e não poderá ser recebido por este modulo." );
 					limpaConsulta();
 					return false;
 				}
@@ -491,23 +483,23 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 				tabBaixa.setValor( rs.getString( "DESCCC" ) != null ? rs.getString( "DESCCC" ) : "", i, EColTabBaixa.DESCCC.ordinal() );
 				tabBaixa.setValor( rs.getInt( "NPARCITREC" ), i, EColTabBaixa.NPARCITREC.ordinal() );
 				tabBaixa.setValor( rs.getString( "OBSITREC" ) != null ? rs.getString( "OBSITREC" ) : "", i, EColTabBaixa.OBS.ordinal() );
-				
+
 				txtCodBancoBaixa.setVlrString( rs.getString( "CODBANCO" ) );
 			}
-			
+
 			lcBancoBaixa.carregaDados();
-			
-			if ( porCliente && tabBaixa.getNumLinhas() == 0 ) { 
+
+			if ( porCliente && tabBaixa.getNumLinhas() == 0 ) {
 				Funcoes.mensagemInforma( this, "Não há pagamentos pendentes para este cliente!" );
 				limpaConsulta();
 				return false;
 			}
-			else if ( tabBaixa.getNumLinhas() == 0 ) {				
+			else if ( tabBaixa.getNumLinhas() == 0 ) {
 				rs.close();
 				ps.close();
 
 				con.commit();
-				
+
 				sSQL = new StringBuffer();
 				sSQL.append( "SELECT IR.STATUSITREC, IR.VLRAPAGITREC " );
 				sSQL.append( "FROM FNITRECEBER IR,FNRECEBER R " );
@@ -519,26 +511,25 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 				ps.setInt( 1, porCliente ? txtCodCliBaixa.getVlrInteger() : txtCodRecBaixa.getVlrInteger() );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-				
+
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
-					if ( "RP".equals( rs.getString( "STATUSITREC" ) ) && 
-							0.0f == ( rs.getBigDecimal( "VLRAPAGITREC" ) != null ? rs.getBigDecimal( "VLRAPAGITREC" ).floatValue() : 1f ) ) {
+					if ( "RP".equals( rs.getString( "STATUSITREC" ) ) && 0.0f == ( rs.getBigDecimal( "VLRAPAGITREC" ) != null ? rs.getBigDecimal( "VLRAPAGITREC" ).floatValue() : 1f ) ) {
 						Funcoes.mensagemInforma( this, "Parcela já foi paga!" );
 						limpaConsulta();
 						return false;
 					}
-				}						
+				}
 			}
-			
+
 			rs.close();
 			ps.close();
 
 			con.commit();
-			
+
 			actionReturn = tabBaixa.getNumLinhas() > 0;
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela de baixa!\n" + err.getMessage(), true, con, err );
@@ -577,30 +568,30 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 			baixaRecBean.setCliente( txtCodCliBaixa.getVlrInteger() );
 			baixaRecBean.setRazaoSocialCliente( txtRazCliBaixa.getVlrString() );
-			baixaRecBean.setConta( (String)tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
-			baixaRecBean.setPlanejamento( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
-			baixaRecBean.setDocumento( (String)tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
+			baixaRecBean.setConta( (String) tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
+			baixaRecBean.setPlanejamento( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
+			baixaRecBean.setDocumento( (String) tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
 			baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
 			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
 			baixaRecBean.setValorParcela( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ) );
 			baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
 			baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
 			baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
-			baixaRecBean.setCentroCusto( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
+			baixaRecBean.setCentroCusto( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
 
 			if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
 				baixaRecBean.setDataPagamento( new Date() );
 				baixaRecBean.setValorPago( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
 			else {
-				baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
+				baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
 				baixaRecBean.setValorPago( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
-			if ( "".equals( ((String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim()) ) {
+			if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
 				baixaRecBean.setObservacao( "RECEBIMENTO REF. AO PED.: " + txtCodVendaBaixa.getVlrString() );
 			}
 			else {
-				baixaRecBean.setObservacao( (String)tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
+				baixaRecBean.setObservacao( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
 			}
 
 			dl.setValores( baixaRecBean );
@@ -653,31 +644,31 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 					ps.executeUpdate();
 
 					con.commit();
-										
+
 					if ( ecf.suprimento( baixaRecBean.getValorPago(), "Recebimento" ) ) {
-// validar aqui se autentica documento... no lugar do true ai de baixo...
-//						if ( true ) {
-//							if ( ! ecf.autenticarDocumento() ) {
-//								Funcoes.mensagemErro( this, ecf.getMessageLog() );
-//							}
-//						}
+						// validar aqui se autentica documento... no lugar do true ai de baixo...
+						// if ( true ) {
+						// if ( ! ecf.autenticarDocumento() ) {
+						// Funcoes.mensagemErro( this, ecf.getMessageLog() );
+						// }
+						// }
 					}
 					else {
 						Funcoes.mensagemErro( this, ecf.getMessageLog() );
 					}
-					
+
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
 					err.printStackTrace();
 				}
-				
+
 			}
 
 			dl.dispose();
 			carregaGridBaixa();
 		}
 	}
-	
+
 	private int getAnoBaseCC() {
 
 		int anobase = 0;
@@ -695,17 +686,19 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} 
+		}
 
 		return anobase;
 	}
 
-	public void beforeCarrega( CarregaEvent e ) { }
+	public void beforeCarrega( CarregaEvent e ) {
+
+	}
 
 	public void afterCarrega( CarregaEvent e ) {
-		
+
 		if ( e.getListaCampos() == lcRecBaixa || e.getListaCampos() == lcCliBaixa ) {
-			
+
 		}
 	}
 
@@ -721,7 +714,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		super.actionPerformed( evt );
 	}
 
-    public void keyPressed( KeyEvent e ) {
+	public void keyPressed( KeyEvent e ) {
 
 		if ( e.getKeyCode() == KeyEvent.VK_ENTER ) {
 			if ( e.getSource() == tabBaixa ) {
@@ -733,13 +726,13 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 				if ( tabBaixa.getNumLinhas() == 0 ) {
 					porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
 					if ( carregaGridBaixa() ) {
-						txtCodRecBaixa.setSoLeitura( true );	
+						txtCodRecBaixa.setSoLeitura( true );
 						txtCodCliBaixa.setSoLeitura( true );
 						tabBaixa.requestFocus();
 					}
 					else {
 						limpaConsulta();
-					}				
+					}
 				}
 			}
 		}
@@ -754,62 +747,59 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 		if ( e.getTabela() == tabBaixa ) {
 			if ( tabBaixa.getNumLinhas() > 0 ) {
-				carregavel = false;				
+				carregavel = false;
 				txtCodRecBaixa.setVlrInteger( (Integer) tabBaixa.getValueAt( tabBaixa.getLinhaSel(), EColTabBaixa.CODREC.ordinal() ) );
-				lcRecBaixa.carregaDados();				
+				lcRecBaixa.carregaDados();
 				carregavel = true;
 			}
 		}
 	}
-	
+
 	public void setVisible( boolean arg0 ) {
-		
+
 		if ( FreedomPDV.bECFTerm ) {
-	
+
 			if ( arg0 ) {
-				
+
 				int result = FreedomPDV.abreCaixa( con, ecf );
-	
+
 				if ( result == -1 ) {
 					FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
 				}
 				else if ( result == 3 ) {
 					dispose();
 				}
-				else { 
+				else {
 					if ( AplicativoPDV.caixaAberto( con ) || FreedomPDV.pegaValorINI( con ) ) {
 						super.setVisible( arg0 );
 					}
 					else {
-						super.setVisible( ! arg0 );
+						super.setVisible( !arg0 );
 					}
 				}
 			}
-			else {			
+			else {
 				super.setVisible( arg0 );
-			}			
+			}
 		}
 		else {
-			FreedomPDV.killProg( 1, 
-					"Esta estação de trabalho não é um PDV!\n" +
-					"Verifique o cadastro desta estação de trabalho através do modulo Standard." );
+			FreedomPDV.killProg( 1, "Esta estação de trabalho não é um PDV!\n" + "Verifique o cadastro desta estação de trabalho através do modulo Standard." );
 		}
 	}
 
 	public void setConexao( DbConnection cn ) {
-	
+
 		super.setConexao( cn );
 		lcCliBaixa.setConexao( cn );
 		lcVendaBaixa.setConexao( cn );
 		lcBancoBaixa.setConexao( cn );
 		lcRecBaixa.setConexao( cn );
-		
+
 		anoBase = getAnoBaseCC();
 	}
 
 	private enum EColTabBaixa {
-		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, CODVENDA, VLRPARC, DTPAGTO, VLRPAGO, 
-		VLRDESC, VLRJUROS, VLRAPAG, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, OBS
+		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, CODVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRAPAG, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, OBS
 	}
 
 }

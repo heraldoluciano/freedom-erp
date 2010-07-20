@@ -2,23 +2,23 @@
  * @version 17/07/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pcp <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pcp <BR>
+ *         Classe:
  * @(#)DLContrQualidade.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                           Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                           modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                           na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                           Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                           sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                           Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                           Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                           de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                           Comentários sobre a classe...
  */
 package org.freedom.modulos.pcp.view.dialog.utility;
 
@@ -242,11 +242,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.setTamColuna( 70, EcolPPOPCQ.CODUNID.ordinal() );
 
 		tabControl.addMouseListener( this );
-		
+
 		tabControl.setColunaInvisivel( 8 );
 		tabControl.setColunaInvisivel( 9 );
 		tabControl.setColunaInvisivel( EcolPPOPCQ.CODUNID.ordinal() );
-		
+
 	}
 
 	public void carregaTabela( int iCodop, int iSeqop ) {
@@ -342,9 +342,9 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			BigDecimal bVlrMax = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
 			BigDecimal bVlrAfer = tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() );
 			String sUnidade = (String) tabControl.getValor( iLinha, EcolPPOPCQ.CODUNID.ordinal() );
-			
+
 			String status = "PE";
-			
+
 			if ( imgPendente.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
 				status = "PE";
 			}
@@ -357,7 +357,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			else if ( imgCorrigidas.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
 				status = "AP";
 			}
-			
+
 			String sAfer = (String) tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() );
 			String sTipo = (String) tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 
@@ -452,9 +452,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	private void acaoCorretiva( int linhaSel ) {
 
 		Object[] keys = new Object[ 8 ];
-		Integer ac = (Integer)
-			(linhaSel >= 0 && tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) != null ? tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) : 0 );
-		
+		Integer ac = (Integer) ( linhaSel >= 0 && tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) != null ? tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) : 0 );
+
 		keys[ DLAcaoCorretiva.EAc.CODOP.ordinal() ] = txtCodOP.getVlrInteger();
 		keys[ DLAcaoCorretiva.EAc.SEQOP.ordinal() ] = txtSeqOP.getVlrInteger();
 		keys[ DLAcaoCorretiva.EAc.SEQOPAC.ordinal() ] = ac;
@@ -463,14 +462,14 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		keys[ DLAcaoCorretiva.EAc.SEQEST.ordinal() ] = txtSeqEst.getVlrInteger();
 		keys[ DLAcaoCorretiva.EAc.DESCEST.ordinal() ] = txtDescEst.getVlrString();
 
-		if ( ac > 0 ) {			
+		if ( ac > 0 ) {
 			DLAcaoCorretiva dl = new DLAcaoCorretiva( con, keys );
 			dl.setVisible( true );
 			if ( dl.OK ) {
 				ok();
 			}
 		}
-		else {			
+		else {
 			DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
 			dl.setVisible( true );
 			if ( dl.OK ) {
@@ -504,17 +503,25 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( mevt.getClickCount() == 2 ) {
-			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 ) {				
+			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 ) {
 				alteraQual( imgPendente.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) );
 			}
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+	}
 }

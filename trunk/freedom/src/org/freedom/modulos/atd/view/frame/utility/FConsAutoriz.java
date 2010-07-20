@@ -2,23 +2,23 @@
  * @version 30/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.atd <BR>
- * cbConveniado Classe:
+ *         Pacote: org.freedom.modulos.atd <BR>
+ *         cbConveniado Classe:
  * @(#)FConsAutoriz.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Formulário de consulta de orçamento.
+ *                       Formulário de consulta de orçamento.
  * 
  */
 
@@ -158,11 +158,11 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		vVals1.addElement( "G" );
 		rgTipo = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		rgTipo.setVlrString( "G" );
-		
+
 		montaListaCampos();
 		montaTela();
 	}
-	
+
 	private void montaListaCampos() {
 
 		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv", ListaCampos.DB_PK, false ) );
@@ -205,7 +205,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lcGrupo.setReadOnly( true );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
 	}
-	
+
 	private void montaTela() {
 
 		getTela().add( pnCli, BorderLayout.CENTER );
@@ -237,7 +237,6 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		pinCab.adic( txtCodGrupo, 7, 180, 70, 20 );
 		pinCab.adic( new JLabelPad( "Descrição do grupo de produtos" ), 80, 160, 250, 20 );
 		pinCab.adic( txtDescGrupo, 80, 180, 294, 20 );
-		
 
 		pinCab.adic( new JLabelPad( "Período:" ), 380, 0, 90, 20 );
 		pinCab.adic( txtDtIni, 380, 20, 87, 20 );
@@ -246,10 +245,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		pinCab.adic( new JLabelPad( "Cidade" ), 380, 40, 50, 20 );
 		pinCab.adic( txtCid, 380, 60, 200, 20 );
-		
+
 		pinCab.adic( btBusca, 440, 90, 140, 30 );
 		pinCab.adic( btPrevimp, 440, 130, 140, 30 );
-		
 
 		JLabelPad lbBorda = new JLabelPad();
 		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
@@ -308,7 +306,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		btPrevimp.addActionListener( this );
 
 		tab.addMouseListener( new MouseAdapter() {
+
 			public void mouseClicked( MouseEvent mevt ) {
+
 				if ( mevt.getSource() == tab && mevt.getClickCount() == 2 )
 					abreOrc();
 			}
@@ -362,7 +362,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			}
 			status.append( "'OV'" );
 		}
-		
+
 		if ( status.length() > 0 ) {
 			sWhere += " AND O.STATUSORC IN (" + status.toString() + ") ";
 		}
@@ -377,41 +377,26 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		if ( bCli )
 			sWhere += " AND O.CODCLI=? AND O.CODEMPCV=O.CODEMP AND CODFILIALCV=O.CODFILIAL ";
 		if ( bEnc )
-			sWhere += " AND O.CODCONV=C.CODCONV AND O.CODEMPCV=C.CODEMP AND O.CODFILIALCV=C.CODFILIAL " 
-				+ "AND C.CODENC=" + txtCodEnc.getVlrString() + " AND C.CODEMPEC=O.CODEMP AND C.CODFILIALEC=" + lcEnc.getCodFilial() + "";
+			sWhere += " AND O.CODCONV=C.CODCONV AND O.CODEMPCV=C.CODEMP AND O.CODFILIALCV=C.CODFILIAL " + "AND C.CODENC=" + txtCodEnc.getVlrString() + " AND C.CODEMPEC=O.CODEMP AND C.CODFILIALEC=" + lcEnc.getCodFilial() + "";
 
 		if ( !txtCid.getVlrString().equals( "" ) )
 			sWhere += " AND C.CIDCONV  = '" + txtCid.getVlrString() + "'";
 
 		if ( !txtCodTpConv.getVlrString().trim().equals( "" ) ) {
-			sWhere += "AND EXISTS(SELECT T2.CODTPCONV FROM ATTIPOCONV T2, ATCONVENIADO C2 WHERE " 
-				+ "T2.CODEMP=C2.CODEMPTC AND T2.CODFILIAL=C2.CODFILIALTC AND T2.CODTPCONV=C2.CODTPCONV AND " 
-				+ "C2.CODEMP=O.CODEMPCV AND C2.CODFILIAL=O.CODFILIALCV AND C2.CODCONV=O.CODCONV AND " 
-				+ "T2.CODEMP=" + Aplicativo.iCodEmp + " AND T2.CODFILIAL=" + ListaCampos.getMasterFilial( "ATTIPOCONV" ) 
-				+ " AND " + "T2.CODTPCONV=" + txtCodTpConv.getVlrString().trim() + " ) ";
+			sWhere += "AND EXISTS(SELECT T2.CODTPCONV FROM ATTIPOCONV T2, ATCONVENIADO C2 WHERE " + "T2.CODEMP=C2.CODEMPTC AND T2.CODFILIAL=C2.CODFILIALTC AND T2.CODTPCONV=C2.CODTPCONV AND " + "C2.CODEMP=O.CODEMPCV AND C2.CODFILIAL=O.CODFILIALCV AND C2.CODCONV=O.CODCONV AND " + "T2.CODEMP="
+					+ Aplicativo.iCodEmp + " AND T2.CODFILIAL=" + ListaCampos.getMasterFilial( "ATTIPOCONV" ) + " AND " + "T2.CODTPCONV=" + txtCodTpConv.getVlrString().trim() + " ) ";
 		}
-		
+
 		if ( !txtCodGrupo.getVlrString().trim().equals( "" ) ) {
-			sWhere += "AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND G.CODGRUP=P.CODGRUP " 
-				+ "AND G.CODGRUP LIKE '" + txtCodTpConv.getVlrString().trim() + "%' ";
+			sWhere += "AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND G.CODGRUP=P.CODGRUP " + "AND G.CODGRUP LIKE '" + txtCodTpConv.getVlrString().trim() + "%' ";
 		}
 		try {
 
-			sSQL = "SELECT  O.CODORC,O.DTORC,O.DTVENCORC,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," 
-					+ "O.CODCONV,C.NOMECONV,c.endconv,C.NUMCONV, C.BAIRCONV, c.cidconv, C.DDDCONV, C.FONECONV , " 
-					+ "IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc,     "
-					+ "(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC WHERE EC.CODENC=C.CODENC AND " 
-					+ "EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) " 
-					+ "FROM VDORCAMENTO O,VDCLIENTE CL," 
-					+ "ATCONVENIADO C, EQPRODUTO P, VDITORCAMENTO IT " 
-					+ ( !txtCodGrupo.getVlrString().trim().equals( "" ) ? ", EQGRUPO G " : "" )
-					+ "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' "
-					+ "AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL " 
-					+ "AND IT.TIPOORC=O.TIPOORC AND CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL " 
-					+ "AND CL.CODCLI=O.CODCLI  AND C.CODEMP=O.CODEMPCV AND C.CODFILIAL=O.CODFILIALCV "
-					+ "AND O.CODCONV=C.CODCONV " 
-					+ "AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " 
-					+ sWhere + " ORDER BY O.CODORC";
+			sSQL = "SELECT  O.CODORC,O.DTORC,O.DTVENCORC,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," + "O.CODCONV,C.NOMECONV,c.endconv,C.NUMCONV, C.BAIRCONV, c.cidconv, C.DDDCONV, C.FONECONV , " + "IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc,     "
+					+ "(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC WHERE EC.CODENC=C.CODENC AND " + "EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) " + "FROM VDORCAMENTO O,VDCLIENTE CL," + "ATCONVENIADO C, EQPRODUTO P, VDITORCAMENTO IT "
+					+ ( !txtCodGrupo.getVlrString().trim().equals( "" ) ? ", EQGRUPO G " : "" ) + "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' " + "AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
+					+ "AND IT.TIPOORC=O.TIPOORC AND CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL " + "AND CL.CODCLI=O.CODCLI  AND C.CODEMP=O.CODEMPCV AND C.CODFILIAL=O.CODFILIALCV " + "AND O.CODCONV=C.CODCONV "
+					+ "AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " + sWhere + " ORDER BY O.CODORC";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );

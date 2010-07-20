@@ -186,9 +186,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	public FTipoMov() {
 
 		super();
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Cadastro de Tipos de Movimento" );
 		setAtribos( 50, 40, 720, 490 );
 
@@ -258,11 +258,11 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		vLabsES.addElement( TipoMov.ENTRADA.getName() );
 		vLabsES.addElement( TipoMov.SAIDA.getName() );
 		vLabsES.addElement( TipoMov.INVENTARIO.getName() );
-		
+
 		vValsES.addElement( (String) TipoMov.ENTRADA.getValue() );
 		vValsES.addElement( (String) TipoMov.SAIDA.getValue() );
 		vValsES.addElement( (String) TipoMov.INVENTARIO.getValue() );
-		
+
 		rgESTipoMov = new JRadioGroup<String, String>( 1, 3, vLabsES, vValsES );
 		rgESTipoMov.addRadioGroupListener( this );
 
@@ -300,7 +300,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicCampo( txtCodRegraComis, 7, 265, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescRegraComis, 90, 265, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
 		adicCampo( txtCodTran, 7, 305, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescTran, 90, 305, 250, 20, "DescTran", "Descrição da transportadora" ); 
+		adicDescFK( txtDescTran, 90, 305, 250, 20, "DescTran", "Descrição da transportadora" );
 
 		separador1.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separador1, 350, 4, 2, 380 );
@@ -309,7 +309,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		adicCampo( txtEspecieTipomov, 7, 60, 80, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
 		adicDB( cbTipoMov, 90, 60, 250, 24, "TipoMov", "Tipo de movimento", true );
-		
+
 		adic( pnRegrasGeral, 360, 64, 250, 70 );
 
 		setPainel( pnRegrasGeral );
@@ -416,9 +416,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private void montaCbTipoMov( String ES ) {
 
 		cbTipoMov.limpa();
-		
+
 		cbTipoMov.setItens( TipoMov.getLabels( ES ), TipoMov.getValores( ES ) );
-		
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -444,29 +444,26 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		else {
 			rgTipoFrete.setAtivo( false );
 		}
-		
+
 		montaCbTipoMov( rgESTipoMov.getVlrString() );
 
 	}
-	
+
 	public void valorAlterado( JComboBoxEvent evt ) {
-		
+
 		if ( evt.getComboBoxPad() == cbTipoMov ) {
-			if( TipoMov.TM_COMPRA.getValue().equals(cbTipoMov.getVlrString()) ||
-			    TipoMov.TM_PEDIDO_COMPRA.getValue().equals( cbTipoMov.getVlrString()) ||
-			    TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( cbTipoMov.getVlrString()) || 
-			    TipoMov.TM_DEVOLUCAO_REMESSA.getValue().equals( cbTipoMov.getVlrString())) {
-				
+			if ( TipoMov.TM_COMPRA.getValue().equals( cbTipoMov.getVlrString() ) || TipoMov.TM_PEDIDO_COMPRA.getValue().equals( cbTipoMov.getVlrString() ) || TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( cbTipoMov.getVlrString() )
+					|| TipoMov.TM_DEVOLUCAO_REMESSA.getValue().equals( cbTipoMov.getVlrString() ) ) {
+
 				cbEmitNFCPMov.setEnabled( true );
 			}
 			else {
 				cbEmitNFCPMov.setVlrString( "N" );
-				cbEmitNFCPMov.setEnabled( false );				
-			}			
+				cbEmitNFCPMov.setEnabled( false );
+			}
 		}
-		
-	}
 
+	}
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
@@ -493,7 +490,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 				cbMComisTipoMov.setSelected( false );
 				cbMComisTipoMov.setEnabled( false );
 			}
-		}		
+		}
 
 	}
 
@@ -528,11 +525,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			rs.close();
 			ps.close();
 			con.commit();
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
+		} finally {
 			rs = null;
 			ps = null;
 		}
@@ -541,18 +536,18 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if(cevt.getListaCampos()==lcCampos) {
-					
-	  		if("CP".equals(cbTipoMov.getVlrString()) || "PC".equals(cbTipoMov.getVlrString())) {
+		if ( cevt.getListaCampos() == lcCampos ) {
+
+			if ( "CP".equals( cbTipoMov.getVlrString() ) || "PC".equals( cbTipoMov.getVlrString() ) ) {
 				cbEmitNFCPMov.setEnabled( true );
 			}
 			else {
 				cbEmitNFCPMov.setVlrString( "N" );
-				cbEmitNFCPMov.setEnabled( false );				
+				cbEmitNFCPMov.setEnabled( false );
 			}
-			
+
 		}
-		
+
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {

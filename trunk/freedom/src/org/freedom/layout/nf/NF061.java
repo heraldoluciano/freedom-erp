@@ -7,13 +7,13 @@
  *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -136,7 +136,7 @@ public class NF061 extends Layout {
 						imp.say( 87, "X" );
 					}
 
-//					imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
+					// imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 6, sNat[ 0 ] );
@@ -165,36 +165,36 @@ public class NF061 extends Layout {
 					// Imprime dados da fatura
 
 					imp.pulaLinha( 3, imp.comprimido() );
-					//imp.say( 6, sDuplics[ 0 ] );
+					// imp.say( 6, sDuplics[ 0 ] );
 					imp.say( 20, sVals[ 0 ] );
 					imp.say( 46, sVencs[ 0 ] );
-//					imp.say( 50, sDuplics[ 1 ] );
+					// imp.say( 50, sDuplics[ 1 ] );
 					imp.say( 63, sVals[ 1 ] );
 					imp.say( 85, sVencs[ 1 ] );
-//					imp.say( 94, sDuplics[ 2 ] );
+					// imp.say( 94, sDuplics[ 2 ] );
 					imp.say( 99, sVals[ 2 ] );
 					imp.say( 122, sVencs[ 2 ] );
 					imp.pulaLinha( 1, imp.comprimido() );
-//					imp.say( 4, sDuplics[ 3 ] );
+					// imp.say( 4, sDuplics[ 3 ] );
 					imp.say( 20, sVals[ 3 ] );
 					imp.say( 46, sVencs[ 3 ] );
-//					imp.say( 50, sDuplics[ 4 ] );
+					// imp.say( 50, sDuplics[ 4 ] );
 					imp.say( 63, sVals[ 4 ] );
 					imp.say( 85, sVencs[ 4 ] );
-//					imp.say( 94, sDuplics[ 5 ] );
+					// imp.say( 94, sDuplics[ 5 ] );
 					imp.say( 99, sVals[ 5 ] );
 					imp.say( 122, sVencs[ 5 ] );
 					imp.pulaLinha( 1, imp.comprimido() );
-//					imp.say( 4, sDuplics[ 6 ] );
+					// imp.say( 4, sDuplics[ 6 ] );
 					imp.say( 20, sVals[ 6 ] );
 					imp.say( 46, sVencs[ 6 ] );
-//					imp.say( 50, sDuplics[ 7 ] );
+					// imp.say( 50, sDuplics[ 7 ] );
 					imp.say( 63, sVals[ 7 ] );
 					imp.say( 85, sVencs[ 7 ] );
-//					imp.say( 94, sDuplics[ 8 ] );
+					// imp.say( 94, sDuplics[ 8 ] );
 					imp.say( 99, sVals[ 8 ] );
 					imp.say( 122, sVencs[ 8 ] );
-					//imp.pulaLinha( 0, imp.comprimido() );
+					// imp.pulaLinha( 0, imp.comprimido() );
 
 					// Fim dos dados da fatura
 
@@ -249,7 +249,7 @@ public class NF061 extends Layout {
 					else {
 						imp.say( 4, itens.getString( NF.C_REFPROD ) );
 						imp.say( 12, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 48 ) );
-						//imp.say( 68, sSigla );
+						// imp.say( 68, sSigla );
 						imp.say( 75, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 						imp.say( 83, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 						imp.say( 86, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
@@ -275,11 +275,9 @@ public class NF061 extends Layout {
 				if ( ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) || ( iProdImp == MAXPROD ) || ( imp.pRow() == MAXLINE ) ) {
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						/*if ( cab.getFloat( NF.C_VLRDESCITPED ) > 0.0f ) {
-							// Imprime o desconto
-							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( 8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCITPED ) ) ) );
-						}*/
+						/*
+						 * if ( cab.getFloat( NF.C_VLRDESCITPED ) > 0.0f ) { // Imprime o desconto imp.pulaLinha( 1, imp.comprimido() ); imp.say( 8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCITPED ) ) ) ); }
+						 */
 						if ( vServico.size() > 0 && indexServ < vServico.size() ) {
 							imp.pulaLinha( 30 - imp.pRow(), imp.comprimido() );
 						}
@@ -333,7 +331,7 @@ public class NF061 extends Layout {
 
 						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 					}
-					
+
 					imp.pulaLinha( 1, "" );
 
 					// Imprime totais
@@ -344,7 +342,7 @@ public class NF061 extends Layout {
 					}
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-//						imp.pulaLinha( 40 - imp.pRow(), imp.comprimido() );
+						// imp.pulaLinha( 40 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 20, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
 
@@ -446,7 +444,7 @@ public class NF061 extends Layout {
 					else {
 						vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 40 );
 					}
- 
+
 					sizeObs = vSigla.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
@@ -454,9 +452,9 @@ public class NF061 extends Layout {
 					for ( int i = 0; i < 7; i++ ) {
 						if ( aux < sizeObs ) {
 							imp.pulaLinha( 2, imp.comprimido() );
-							/*if ( vSigla.size() > 0 && indexSigla < vSigla.size() && !complementar ) {
-								imp.say( 6, vSigla.elementAt( indexSigla++ ) );
-							}*/
+							/*
+							 * if ( vSigla.size() > 0 && indexSigla < vSigla.size() && !complementar ) { imp.say( 6, vSigla.elementAt( indexSigla++ ) ); }
+							 */
 							if ( vObsVenda.size() > 0 && indexObs < vObsVenda.size() ) {
 								imp.say( 4, Funcoes.copy( (String) vObsVenda.elementAt( indexObs++ ), 60 ) );
 							}
@@ -471,7 +469,7 @@ public class NF061 extends Layout {
 					// Imprime canhoto
 
 					imp.pulaLinha( 4, imp.comprimido() );
-					//imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
+					// imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );

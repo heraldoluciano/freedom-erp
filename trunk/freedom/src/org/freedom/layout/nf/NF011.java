@@ -2,22 +2,22 @@
  * @version 10/12/2003 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: leiautes <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: leiautes <BR>
+ *         Classe:
  * @(#)NF011.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Layout da nota fiscal para a empresa Mathias e Buzzi.
+ *                Layout da nota fiscal para a empresa Mathias e Buzzi.
  */
 package org.freedom.layout.nf;
 
@@ -65,26 +65,24 @@ public class NF011 extends Layout {
 
 			vClfisc.addElement( "" );
 
-			sHora = StringFunctions.strZero( String.valueOf( cHora.get( Calendar.HOUR_OF_DAY ) ), 2 ) + ":" + 
-					StringFunctions.strZero( String.valueOf( cHora.get( Calendar.MINUTE ) ), 2 ) + ":" + 
-					StringFunctions.strZero( String.valueOf( cHora.get( Calendar.SECOND ) ), 2 );
+			sHora = StringFunctions.strZero( String.valueOf( cHora.get( Calendar.HOUR_OF_DAY ) ), 2 ) + ":" + StringFunctions.strZero( String.valueOf( cHora.get( Calendar.MINUTE ) ), 2 ) + ":" + StringFunctions.strZero( String.valueOf( cHora.get( Calendar.SECOND ) ), 2 );
 
 			if ( cab.next() ) {
-			
+
 				sNumNota = StringFunctions.strZero( String.valueOf( cab.getInt( NF.C_DOC ) ), 6 );
 				vMatObs = Funcoes.strToVectorSilabas( cab.getString( NF.C_OBSPED ), 70 );
 			}
 			else {
-			
+
 				sNumNota = StringFunctions.strZero( String.valueOf( iNumNota ), 6 );
 			}
 
 			while ( itens.next() ) {
 
 				for ( int i = 0; i < 6; i++ ) {
-					
+
 					if ( parc.next() ) {
-						
+
 						sVencs[ i ] = Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) );
 						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getBigDecimal( NF.C_VLRPARC ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
 					}
@@ -96,18 +94,18 @@ public class NF011 extends Layout {
 				}
 
 				sNat[ 0 ] = itens.getString( NF.C_DESCNAT );
-				sNat[ 1 ] = Funcoes.setMascara( itens.getString( NF.C_CODNAT ), "#.##" );				
+				sNat[ 1 ] = Funcoes.setMascara( itens.getString( NF.C_CODNAT ), "#.##" );
 
 				if ( imp.pRow() == 0 ) {
 
 					imp.pulaLinha( 2, imp.comprimido() );
 
 					if ( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
-					
+
 						imp.say( 102, "X" );
 					}
 					else {
-					
+
 						imp.say( 88, "X" );
 					}
 
@@ -148,27 +146,24 @@ public class NF011 extends Layout {
 
 				}
 
-				if ( ! "S".equals( itens.getString( NF.C_TIPOPROD ) ) && iProd < MAXPROD ) {
-					
+				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) && iProd < MAXPROD ) {
+
 					imp.pulaLinha( 1, imp.comprimido() );
-					
+
 					imp.say( 6, String.valueOf( itens.getInt( NF.C_CODPROD ) ) );
 
-					vDesc = Funcoes.strToVectorSilabas( 
-							( "".equals( itens.getString( NF.C_OBSITPED ) ) ? itens.getString( NF.C_DESCPROD ).trim() : itens.getString( NF.C_OBSITPED ).trim() ) 
-								+ itens.getString( NF.C_CODLOTE ), 46 );
+					vDesc = Funcoes.strToVectorSilabas( ( "".equals( itens.getString( NF.C_OBSITPED ) ) ? itens.getString( NF.C_DESCPROD ).trim() : itens.getString( NF.C_OBSITPED ).trim() ) + itens.getString( NF.C_CODLOTE ), 46 );
 
 					for ( int i = 0; ( i < ( MAXPROD - iProd ) ) && ( vDesc.size() > i ); i++ ) {
-						
+
 						sDesc = vDesc.elementAt( i ).toString();
 
 						if ( i > 0 ) {
-							
+
 							imp.pulaLinha( 1, imp.comprimido() );
 							iProd++;
 						}
-						
-						
+
 						imp.say( 16, sDesc );
 					}
 
@@ -182,20 +177,19 @@ public class NF011 extends Layout {
 							if ( vClfisc.elementAt( i ) != null ) {
 
 								if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
-									
+
 									bjatem = true;
 									sSigla = String.valueOf( (char) ( 64 + i ) );
 								}
 								else {
-								
+
 									bjatem = false;
 								}
 							}
 						}
 
-						
-						if ( ! bjatem ) {
-							
+						if ( !bjatem ) {
+
 							vClfisc.addElement( sCodfisc );
 							sSigla = String.valueOf( (char) ( 63 + vClfisc.size() ) );
 							vSigla.addElement( sSigla + " = " + sCodfisc );
@@ -203,11 +197,11 @@ public class NF011 extends Layout {
 					}
 
 					if ( iProd < MAXPROD ) {
-						
+
 						imp.say( 66, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 						imp.say( 73, sSigla );
-						
-						imp.say( 76, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
+
+						imp.say( 76, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 						imp.say( 79, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) );
 						imp.say( 89, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( itens.getBigDecimal( NF.C_QTDITPED ), 2, BigDecimal.ROUND_HALF_UP ) ) ) );
 						imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRLIQITPED ) ) ) );
@@ -216,8 +210,8 @@ public class NF011 extends Layout {
 					}
 				}
 
-				if ( ! bTotalizou ) {
-					
+				if ( !bTotalizou ) {
+
 					frete.next();
 
 					vValores.addElement( String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSPED ) ) );// 0
@@ -260,11 +254,11 @@ public class NF011 extends Layout {
 					vValores.addElement( String.valueOf( cab.getInt( NF.C_CODVEND ) ) );// 25
 
 					if ( cab.getString( NF.C_NOMEVEND ) == null ) {
-					
+
 						vValores.addElement( StringFunctions.replicate( " ", 25 ) );// 26
 					}
 					else {
-						
+
 						vValores.addElement( cab.getString( NF.C_NOMEVEND ) + StringFunctions.replicate( " ", 25 - cab.getString( NF.C_NOMEVEND ).length() ) );
 					}
 
@@ -274,49 +268,45 @@ public class NF011 extends Layout {
 
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 16, "CLASSIFICACAO FISCAL" );
-			
+
 			int pos = 1;
 
 			for ( int i = 0; i < vSigla.size(); i++ ) {
-				
+
 				if ( pos == 1 ) {
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 16, vSigla.elementAt( i ) );
 					pos = 2;
 				}
 				else {
-					
+
 					imp.say( 35, vSigla.elementAt( i ) );
 					pos = 1;
 					iProd++;
 				}
 			}
-		
-			if( cab.getBigDecimal( NF.C_VLRDESCITPED ).doubleValue() > 0 ){
-				
+
+			if ( cab.getBigDecimal( NF.C_VLRDESCITPED ).doubleValue() > 0 ) {
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 16, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRDESCITPED ) ) ) );
 			}
-				
+
 			if ( vMatObs != null ) {
 
 				imp.pulaLinha( ( 45 - vMatObs.size() ) - imp.pRow(), imp.comprimido() );
-				
+
 				for ( int i = 0; i < vMatObs.size(); i++ ) {
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 10, (String) vMatObs.elementAt( i ) );
 				}
 			}
-/*
-			imp.pulaLinha( 43 - imp.pRow(), imp.comprimido() );
-			imp.say( 10, "PRORROGADO O PRAZO DE VALIDADE DA EMISSÃO DAS NOTAS FISCAIS PARA 18 MESES." );
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 10, "DE ACORDO COM O DECRETO N. 5502 DE 10 DE OUTUBRO DE 2005," );
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 10, "COM VIGENCIA A PARTIR DE 1 DE SETEMBRO DE 2005." );
-*/
+			/*
+			 * imp.pulaLinha( 43 - imp.pRow(), imp.comprimido() ); imp.say( 10, "PRORROGADO O PRAZO DE VALIDADE DA EMISSÃO DAS NOTAS FISCAIS PARA 18 MESES." ); imp.pulaLinha( 1, imp.comprimido() ); imp.say( 10, "DE ACORDO COM O DECRETO N. 5502 DE 10 DE OUTUBRO DE 2005," ); imp.pulaLinha( 1,
+			 * imp.comprimido() ); imp.say( 10, "COM VIGENCIA A PARTIR DE 1 DE SETEMBRO DE 2005." );
+			 */
 			impTotais( imp, vValores );
 
 			imp.fechaGravacao();
@@ -324,17 +314,17 @@ public class NF011 extends Layout {
 			retorno = true;
 
 			if ( iProd >= MAXPROD ) {
-			
+
 				Funcoes.mensagemInforma( null, "Podem haver erros na impressão da nota fiscal.\n" + "Produtos ultrapassam " + MAXPROD + " linhas!" );
 			}
 
 		} catch ( Exception err ) {
-			
+
 			err.printStackTrace();
 			Funcoes.mensagemErro( null, "Erro ao montar Nota Fiscal!\n" + err.getMessage() );
 			retorno = false;
 		} finally {
-			
+
 			sCodfisc = null;
 			sSigla = null;
 			sHora = null;
@@ -375,7 +365,7 @@ public class NF011 extends Layout {
 			imp.say( 103, vValores.elementAt( 10 ) != null ? vValores.elementAt( 10 ).toString() : "" );
 
 			if ( !vValores.elementAt( 11 ).toString().equals( "C" ) ) {
-			
+
 				imp.say( 118, Funcoes.setMascara( vValores.elementAt( 13 ) != null ? vValores.elementAt( 13 ).toString() : "", "##.###.###/####-##" ) );
 			}
 
@@ -395,16 +385,16 @@ public class NF011 extends Layout {
 			vObs = Funcoes.quebraLinha( Funcoes.stringToVector( sMensAdic ), 37 );
 
 			for ( int i = 0; i < vObs.size(); i++ ) {
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 4, vObs.elementAt( i ).toString() );
 
 				if ( i == 0 ) {
-				
+
 					imp.say( 45, "Vendedor: " + ( vValores.elementAt( 25 ) != null ? vValores.elementAt( 25 ).toString() : "" ) );
 				}
 				if ( i == 1 ) {
-				
+
 					imp.say( 45, vValores.elementAt( 26 ) != null ? vValores.elementAt( 26 ).toString().substring( 0, 20 ) : "" );
 				}
 			}
@@ -416,11 +406,11 @@ public class NF011 extends Layout {
 			imp.setPrc( 0, 0 );
 
 		} catch ( Exception e ) {
-			
+
 			e.printStackTrace();
 			Funcoes.mensagemErro( null, "Erro ao imprimir totais.\n" + e.getMessage() );
 		} finally {
-			
+
 			vObs = null;
 		}
 	}

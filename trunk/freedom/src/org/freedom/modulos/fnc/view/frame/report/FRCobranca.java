@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRReceber.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -89,7 +89,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
-//	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+	// private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -241,19 +241,19 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 		adic( new JLabelPad( "Periodo:" ), 7, 0, 80, 20 );
 		adic( lbLinha, 7, 20, 247, 40 );
-		
+
 		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 30, 30, 20 );
 		adic( txtDataini, 47, 30, 80, 20 );
-		
+
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 127, 30, 30, 20 );
 		adic( txtDatafim, 157, 30, 80, 20 );
 
 		adic( new JLabelPad( "Modo:" ), 257, 0, 170, 20 );
-		adic( rgTipoRel, 257, 20, 160, 90 );		
+		adic( rgTipoRel, 257, 20, 160, 90 );
 
 		adic( cbObs, 420, 15, 180, 20 );
 		adic( cbImpTotDia, 420, 40, 180, 20 );
-//		adic( cbParPar, 420, 65, 250, 20 );			
+		// adic( cbParPar, 420, 65, 250, 20 );
 
 		adic( new JLabelPad( "Primeira ordem:" ), 7, 110, 390, 20 );
 		adic( rgOrdem, 7, 130, 410, 30 );
@@ -290,7 +290,6 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		adic( txtCodTipoCli, 7, 360, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 340, 210, 20 );
 		adic( txtDescTipoCli, 90, 360, 210, 20 );
-
 
 	}
 
@@ -337,7 +336,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 			sTitRel1 = "PAGAMENTO";
 
 			sCampoOrdem = "IT.DTPAGOITREC";
-			
+
 			sCampoTotal = "DTPAGOITREC";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
@@ -401,15 +400,12 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim();
 		}
 
-
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, C.NOMECLI, C.DDDCLI, C.FONECLI, " );
 
-
 		sSQL.append( "IT.VLRPARCITREC, " );
-			sSQL.append( "IT.VLRPAGOITREC, " );
-			sSQL.append( "IT.VLRAPAGITREC, " );
-			sSQL.append( "IT.DTPAGOITREC, " );
-
+		sSQL.append( "IT.VLRPAGOITREC, " );
+		sSQL.append( "IT.VLRAPAGITREC, " );
+		sSQL.append( "IT.DTPAGOITREC, " );
 
 		sSQL.append( "R.DOCREC, IT.OBSITREC, " );
 		sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
@@ -488,10 +484,9 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 				ps.setInt( iParans++, txtCodTipoCli.getVlrInteger() );
 			}
 
-
 			rs = ps.executeQuery();
 
-			String sCab = " Período de " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString() ;
+			String sCab = " Período de " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString();
 
 			imprimirGrafico( bVisualizar, rs, sCab );
 
@@ -499,11 +494,10 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 			ps.close();
 			con.commit();
 
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contas a receber!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		}		
+		}
 	}
 
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
@@ -515,9 +509,9 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNPAGAR" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
-		
+
 		Juros calcjuros = new Juros();
-		
+
 		hParam.put( "CALCJUROS", calcjuros );
 
 		dlGr = new FPrinterJob( "layout/rel/REL_COB_01.jasper", "Relatório de cobrança", sCab, rs, hParam, this );
@@ -529,7 +523,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do relatório de cobrança!" + err.getMessage(), true, con, err );				
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de cobrança!" + err.getMessage(), true, con, err );
 			}
 		}
 	}

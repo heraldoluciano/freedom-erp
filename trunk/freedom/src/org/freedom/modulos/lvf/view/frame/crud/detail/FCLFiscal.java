@@ -2,23 +2,23 @@
  * @version 05/03/2009 <BR>
  * @author Setpoint Informática Ltda / Anderson Sanchez.
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FVendaConsig.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Cadastro de classificações fiscais e suas exceções <BR>
+ *                       Cadastro de classificações fiscais e suas exceções <BR>
  * 
  */
 
@@ -75,8 +75,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
 import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
 
-public class FCLFiscal extends FDetalhe 
-		implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
+public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,9 +84,9 @@ public class FCLFiscal extends FDetalhe
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 
 	private JPanelPad panelGeral = new JPanelPad( 500, 80 );
-		
+
 	private JPanelPad panelServico = new JPanelPad( 500, 60 );
-	
+
 	private JPanelPad pnServico = new JPanelPad( new BorderLayout() );
 
 	private JPanelPad panelVariantesCampos = new JPanelPad( 500, 80 );
@@ -95,51 +94,51 @@ public class FCLFiscal extends FDetalhe
 	private JPanelPad panelVariantes = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelICMS = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelICMSCampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelIPI = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelIPICampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelPIS = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelPISCampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelCOFINS = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelCOFINSCampos = new JPanelPad( 500, 80 );
 
 	private JPanelPad panelFUNRURAL = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelFUNRURALCampos = new JPanelPad( 500, 80 );
 
 	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelISSCampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelIR = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelIRCampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelCSocial = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelCSocialCampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelII = new JPanelPad( new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelIICampos = new JPanelPad( 500, 80 );
-	
+
 	private JPanelPad panelNomeComum = new JPanelPad( new BorderLayout() );
-	
+
 	private JPanelPad panelNomeComumNCM = new JPanelPad( new BorderLayout() );
-	
+
 	private JPanelPad panelNomeComumNCMCampos = new JPanelPad( 500, 60 );
-	
+
 	private JSplitPane panelNomeComumNCMDescricoes = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
-	
+
 	private JPanelPad panelNomeComumNBM = new JPanelPad( 500, 60 );
-	
+
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtDescFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
@@ -151,7 +150,7 @@ public class FCLFiscal extends FDetalhe
 	private JTextFieldPad txtCodRegraIt = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescRegraIt = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescTratTrib = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
@@ -162,158 +161,158 @@ public class FCLFiscal extends FDetalhe
 
 	private JTextFieldPad txtCodNBM = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
-	private JTextFieldFK txtDescNBM = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );		
+	private JTextFieldFK txtDescNBM = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtCodNCM = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldFK txtDescNCM = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtExTIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldPad txtCodServ = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
-	
-	private JTextAreaPad txaDescServ =  new JTextAreaPad( 500 );
-	
+
+	private JTextFieldPad txtCodServ = new JTextFieldPad( JTextFieldPad.TP_STRING, 5, 0 );
+
+	private JTextAreaPad txaDescServ = new JTextAreaPad( 500 );
+
 	private JTextAreaPad txaDescExTIPI = new JTextAreaPad( 1000 );
-	
+
 	private JScrollPane spDescExTIPI = new JScrollPane( txaDescExTIPI );
 
 	private JTextAreaPad txaDescNCM = new JTextAreaPad( 2000 );
-	
+
 	private JScrollPane spDescNCM = new JScrollPane( txaDescNCM );
-	
+
 	private JTextFieldPad txtCodItClFiscal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 2 );
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtCodTipoFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescFiscCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
-	private JTextFieldPad txtRedFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );		
-	
+
+	private JTextFieldPad txtRedFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+
 	private JTextFieldPad txtAliqFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtAliqFiscIntra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-		
+
 	private JTextFieldPad txtCodSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribIPI = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 
 	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-	
+
 	private JTextFieldPad txtAliqIIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtVlrIpiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-	
+
 	private JTextFieldPad txtCodSitTribPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribPIS = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqPisFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
-	private JTextFieldPad txtVlrPisUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );	
-	
+
+	private JTextFieldPad txtVlrPisUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+
 	private JTextFieldPad txtCodSitTribCOF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribCOF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribCOF = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqCofinsFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtAliqFunRuralFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtVlrCofUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtCodSitTribISS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribISS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribISS = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqIssFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtVlrIssUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-	
+
 	private JTextFieldPad txtCodSitTribIR = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribIR = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribIR = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqIrFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtVlrIrUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
-	
+
 	private JTextFieldPad txtCodSitTribCS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribCS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribCs = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqCSocialFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JTextFieldPad txtVlrCsUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtCodSitTribII = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtImpSitTribII = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribII = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
-	
+
 	private JTextFieldPad txtAliqIiFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
-	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );	
-	
+
+	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+
 	private JCheckBoxPad cbGeralFisc = new JCheckBoxPad( "Regra geral?", "S", "N" );
-	
+
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
-	
+
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
 	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-	
+
 	private JComboBoxPad cbOrig = null;
-	
+
 	private JComboBoxPad cbTpCalcIPI = null;
-	
+
 	private JComboBoxPad cbModBCICMS = null;
-	
+
 	private JComboBoxPad cbModBCICMSST = null;
-	
+
 	private JCheckBoxPad cbRedBaseST = new JCheckBoxPad( "Red. base Subst.", "S", "N" );
-	
+
 	private JCheckBoxPad cbRedBaseFrete = new JCheckBoxPad( "Red. base Frete", "S", "N" );
-	
+
 	private JRadioGroup<String, String> rgNoUF = null;
-	
+
 	private JRadioGroup<String, String> rgTipo = null;
-	
+
 	private JRadioGroup<String, String> rgTipoFisc = null;
-	
+
 	private JRadioGroup<String, String> rgTipoST = null;
-	
+
 	private JRadioGroup<String, String> rgTpRedIcmsFisc = null;
-	
+
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
-	
+
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
-	
+
 	private ListaCampos lcRegraFiscalIt = new ListaCampos( this, "RA" );
-	
+
 	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
 
 	private ListaCampos lcMens = new ListaCampos( this, "ME" );
@@ -321,24 +320,23 @@ public class FCLFiscal extends FDetalhe
 	private ListaCampos lcNCM = new ListaCampos( this );
 
 	private ListaCampos lcNBM = new ListaCampos( this );
-	
+
 	private ListaCampos lcUF = new ListaCampos( this );
-	
+
 	private ListaCampos lcServico = new ListaCampos( this );
-	
+
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
-	
+
 	private ListaCampos lcPais = new ListaCampos( this, "" );
-	
+
 	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
-	
+
 	private ListaCampos lcSitTribIPI = new ListaCampos( this, "SI" );
-		
+
 	private ListaCampos lcSitTribPIS = new ListaCampos( this, "SP" );
 
 	private ListaCampos lcSitTribCOF = new ListaCampos( this, "SC" );
 
-	
 	public FCLFiscal() {
 
 		super( false );
@@ -349,21 +347,21 @@ public class FCLFiscal extends FDetalhe
 		montaListaCampos();
 		montaTela();
 
-		adicListeners();		
+		adicListeners();
 	}
-	
+
 	private void adicListeners() {
 
 		// Adicionando valores padrão
-		
+
 		rgTipoFisc.setVlrString( "TT" );
 		rgTipoST.setVlrString( "SI" );
 		rgTpRedIcmsFisc.setVlrString( "B" );
-		
+
 		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
-//		rgTpRedIcmsFisc.setAtivo( false );
+		// rgTpRedIcmsFisc.setAtivo( false );
 		txtRedFisc.setAtivo( false );
 		rgTipoFisc.setAtivo( false );
 		txaDescServ.setAtivo( false );
@@ -373,7 +371,7 @@ public class FCLFiscal extends FDetalhe
 		txtAliqPisFisc.setAtivo( false );
 		txtVlrCofUnidTrib.setAtivo( false );
 		txtAliqCofinsFisc.setAtivo( false );
-		
+
 		txtVlrIssUnidTrib.setAtivo( false );
 		txtAliqIssFisc.setAtivo( false );
 		txtVlrIrUnidTrib.setAtivo( false );
@@ -381,36 +379,36 @@ public class FCLFiscal extends FDetalhe
 		txtVlrCsUnidTrib.setAtivo( false );
 		txtAliqCSocialFisc.setAtivo( true );
 		txtVlrIiUnidTrib.setAtivo( false );
-//		txtAliqIiFisc.setAtivo( false );
-				
-		//Adicionando Listeners
-				
-		lcCampos.addCarregaListener( this );		
-		lcCampos.addInsertListener( this );		
+		// txtAliqIiFisc.setAtivo( false );
+
+		// Adicionando Listeners
+
+		lcCampos.addCarregaListener( this );
+		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
 		lcTratTrib.addCarregaListener( this );
 		lcSitTribPIS.addCarregaListener( this );
 		lcSitTribCOF.addCarregaListener( this );
-		
+
 		lcDet.addInsertListener( this );
-		
+
 		btCopiarVariante.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-		
-		rgTipoFisc.addRadioGroupListener( this );		
+
+		rgTipoFisc.addRadioGroupListener( this );
 		rgTipoST.addRadioGroupListener( this );
 
 		tpnGeral.addChangeListener( this );
-		tpnPrincipal.addChangeListener( this );		
+		tpnPrincipal.addChangeListener( this );
 	}
 
 	private void montaCombos() {
-		
+
 		/** Origem da mercadoria */
-		
-		Vector<String> vLabsOrig = new Vector<String>();		
-		Vector<String> vValsOrig = new Vector<String>();		
+
+		Vector<String> vLabsOrig = new Vector<String>();
+		Vector<String> vValsOrig = new Vector<String>();
 		vLabsOrig.addElement( "<--Selecione-->" );
 		vLabsOrig.addElement( "Nacional" );
 		vLabsOrig.addElement( "Estrangeira - Importação direta" );
@@ -419,54 +417,54 @@ public class FCLFiscal extends FDetalhe
 		vValsOrig.addElement( "0" );
 		vValsOrig.addElement( "1" );
 		vValsOrig.addElement( "2" );
-	
+
 		cbOrig = new JComboBoxPad( vLabsOrig, vValsOrig, JComboBoxPad.TP_STRING, 1, 0 );
-		
+
 		/** Destino da mercadoria */
 
 		Vector<String> vNoUFLabs = new Vector<String>();
-		Vector<String> vNoUFVals = new Vector<String>();		
+		Vector<String> vNoUFVals = new Vector<String>();
 		vNoUFLabs.addElement( "Dentro do Estado" );
-		vNoUFLabs.addElement( "Fora do Estado" );				
+		vNoUFLabs.addElement( "Fora do Estado" );
 		vNoUFVals.addElement( "S" );
 		vNoUFVals.addElement( "N" );
-		
+
 		rgNoUF = new JRadioGroup<String, String>( 2, 1, vNoUFLabs, vNoUFVals );
 		rgNoUF.setVlrString( "S" );
-		
+
 		/** Tipo */
 
 		Vector<String> vTipoLabs = new Vector<String>();
-		Vector<String> vTipoVals = new Vector<String>();		
+		Vector<String> vTipoVals = new Vector<String>();
 		vTipoLabs.addElement( "Venda" );
-		vTipoLabs.addElement( "Compra" );				
+		vTipoLabs.addElement( "Compra" );
 		vTipoVals.addElement( "VD" );
 		vTipoVals.addElement( "CP" );
-		
+
 		rgTipo = new JRadioGroup<String, String>( 2, 1, vTipoLabs, vTipoVals );
 		rgTipo.setVlrString( "VD" );
-		
+
 		rgTipo.addRadioGroupListener( this );
-		
+
 		/** Tipo do ICMS */
-	
+
 		Vector<String> vTipoIcmsVals = new Vector<String>();
-		Vector<String> vTipoIcmsLabs = new Vector<String>();		
-		
+		Vector<String> vTipoIcmsLabs = new Vector<String>();
+
 		vTipoIcmsLabs.addElement( "Isento" );
 		vTipoIcmsLabs.addElement( "Subst. Trib." );
 		vTipoIcmsLabs.addElement( "Não inside" );
 		vTipoIcmsLabs.addElement( "Trib. Integral" );
-		
+
 		vTipoIcmsVals.addElement( "II" );
 		vTipoIcmsVals.addElement( "FF" );
 		vTipoIcmsVals.addElement( "NN" );
 		vTipoIcmsVals.addElement( "TT" );
-		
+
 		rgTipoFisc = new JRadioGroup<String, String>( 2, 2, vTipoIcmsLabs, vTipoIcmsVals );
-		
+
 		/** Tipo de substituição tributária */
-		
+
 		Vector<String> vSTLabs = new Vector<String>();
 		vSTLabs.addElement( "Substituto" );
 		vSTLabs.addElement( "Substituído" );
@@ -474,7 +472,7 @@ public class FCLFiscal extends FDetalhe
 		vSTVals.addElement( "SU" );
 		vSTVals.addElement( "SI" );
 		rgTipoST = new JRadioGroup<String, String>( 2, 1, vSTLabs, vSTVals );
-	
+
 		Vector<String> vTpRedIcmsFiscLabs = new Vector<String>();
 		vTpRedIcmsFiscLabs.addElement( "Base ICMS" );
 		vTpRedIcmsFiscLabs.addElement( "Valor ICMS" );
@@ -482,57 +480,56 @@ public class FCLFiscal extends FDetalhe
 		vTpRedIcmsFiscVals.addElement( "B" );
 		vTpRedIcmsFiscVals.addElement( "V" );
 		rgTpRedIcmsFisc = new JRadioGroup<String, String>( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );
-	
+
 		/** Modalidade de determinação da BC do ICMS */
-		
-		Vector<String> vLabsModBCICMS = new Vector<String>();		
-		Vector<Integer> vValsModBCICMS = new Vector<Integer>();		
+
+		Vector<String> vLabsModBCICMS = new Vector<String>();
+		Vector<Integer> vValsModBCICMS = new Vector<Integer>();
 		vLabsModBCICMS.addElement( "0-Margem Valor Agregado (%)" );
 		vLabsModBCICMS.addElement( "1-Pauta (valor)" );
 		vLabsModBCICMS.addElement( "2-Preço Tabelado Máx.(valor)" );
 		vLabsModBCICMS.addElement( "3-Valor da Operação" );
-		vValsModBCICMS.addElement( new Integer(0) );
-		vValsModBCICMS.addElement( new Integer(1) );
-		vValsModBCICMS.addElement( new Integer(2) );
-		vValsModBCICMS.addElement( new Integer(3) );
-		
+		vValsModBCICMS.addElement( new Integer( 0 ) );
+		vValsModBCICMS.addElement( new Integer( 1 ) );
+		vValsModBCICMS.addElement( new Integer( 2 ) );
+		vValsModBCICMS.addElement( new Integer( 3 ) );
+
 		cbModBCICMS = new JComboBoxPad( vLabsModBCICMS, vValsModBCICMS, JComboBoxPad.TP_INTEGER, 1, 0 );
-		cbModBCICMS.setVlrInteger( new Integer(3) );
-	
+		cbModBCICMS.setVlrInteger( new Integer( 3 ) );
+
 		/** Modalidade de determinação da BC do ICMS de Substituição tributária */
-		
-		Vector<String> vLabsModBCICMSST = new Vector<String>();		
-		Vector<Integer> vValsModBCICMSST = new Vector<Integer>();		
+
+		Vector<String> vLabsModBCICMSST = new Vector<String>();
+		Vector<Integer> vValsModBCICMSST = new Vector<Integer>();
 		vLabsModBCICMSST.addElement( "0-Preço tabelado ou máx. sugerido" );
 		vLabsModBCICMSST.addElement( "1-Lista Negativa (valor)" );
 		vLabsModBCICMSST.addElement( "2-Lista Positiva (valor)" );
 		vLabsModBCICMSST.addElement( "3-Lista Neutra (valor)" );
 		vLabsModBCICMSST.addElement( "4-Margem valor agregado (%)" );
-		vLabsModBCICMSST.addElement( "5-Pauta (valor)" );	
-		vValsModBCICMSST.addElement( new Integer(0) );
-		vValsModBCICMSST.addElement( new Integer(1) );
-		vValsModBCICMSST.addElement( new Integer(2) );
-		vValsModBCICMSST.addElement( new Integer(3) );
-		vValsModBCICMSST.addElement( new Integer(4) );
-		vValsModBCICMSST.addElement( new Integer(5) );
-		
-		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMSST, vValsModBCICMSST, JComboBoxPad.TP_INTEGER, 1, 0 );		
-		cbModBCICMSST.setVlrInteger( new Integer(4) );
+		vLabsModBCICMSST.addElement( "5-Pauta (valor)" );
+		vValsModBCICMSST.addElement( new Integer( 0 ) );
+		vValsModBCICMSST.addElement( new Integer( 1 ) );
+		vValsModBCICMSST.addElement( new Integer( 2 ) );
+		vValsModBCICMSST.addElement( new Integer( 3 ) );
+		vValsModBCICMSST.addElement( new Integer( 4 ) );
+		vValsModBCICMSST.addElement( new Integer( 5 ) );
 
-		
+		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMSST, vValsModBCICMSST, JComboBoxPad.TP_INTEGER, 1, 0 );
+		cbModBCICMSST.setVlrInteger( new Integer( 4 ) );
+
 		/** Tipo de cálculo do IPI */
-		
-		Vector<String> vLabsTpCalcIPI = new Vector<String>();		
-		Vector<String> vValsTpCalcIPI = new Vector<String>();		
+
+		Vector<String> vLabsTpCalcIPI = new Vector<String>();
+		Vector<String> vValsTpCalcIPI = new Vector<String>();
 		vLabsTpCalcIPI.addElement( "<--Selecione-->" );
 		vLabsTpCalcIPI.addElement( "Percentual" );
 		vLabsTpCalcIPI.addElement( "Em valor" );
 		vValsTpCalcIPI.addElement( "" );
 		vValsTpCalcIPI.addElement( "P" );
 		vValsTpCalcIPI.addElement( "V" );
-	
+
 		cbTpCalcIPI = new JComboBoxPad( vLabsTpCalcIPI, vValsTpCalcIPI, JComboBoxPad.TP_STRING, 1, 0 );
-		
+
 		cbTpCalcIPI.addComboBoxListener( this );
 	}
 
@@ -555,8 +552,7 @@ public class FCLFiscal extends FDetalhe
 		lcRegraFiscalIt.setQueryCommit( false );
 		lcRegraFiscalIt.setReadOnly( true );
 		txtCodRegraIt.setTabelaExterna( lcRegraFiscalIt, FRegraFiscal.class.getCanonicalName() );
-		
-		
+
 		lcNCM.setUsaME( false );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, txtDescNCM, false ) );
 		lcNCM.add( new GuardaCampo( txtDescNCM, "DescNCM", "Descrição da nomenclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
@@ -575,8 +571,8 @@ public class FCLFiscal extends FDetalhe
 		lcNBM.montaSql( false, "NBM", "LF" );
 		lcNBM.setQueryCommit( false );
 		lcNBM.setReadOnly( true );
-		txtCodNBM.setTabelaExterna( lcNBM, FNBM.class.getCanonicalName()); 
-		
+		txtCodNBM.setTabelaExterna( lcNBM, FNBM.class.getCanonicalName() );
+
 		lcTratTrib.add( new GuardaCampo( txtCodTratTrib, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_PK, null, true ) );
 		lcTratTrib.add( new GuardaCampo( txtDescTratTrib, "DescTratTrib", "Descrição do tratamento tributario", ListaCampos.DB_SI, null, false ) );
 		lcTratTrib.montaSql( false, "TRATTRIB", "LF" );
@@ -590,21 +586,21 @@ public class FCLFiscal extends FDetalhe
 		lcMens.setQueryCommit( false );
 		lcMens.setReadOnly( true );
 		txtCodMens.setTabelaExterna( lcMens, FMensagem.class.getCanonicalName() );
-		
+
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.Mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
-		txtCodTipoMov.setTabelaExterna( lcTipoMov,  FTipoMov.class.getCanonicalName() );
-		
+		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
+
 		lcTipoFiscCli.add( new GuardaCampo( txtCodTipoFisc, "CodFiscCli", "Cód.c.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
 		lcTipoFiscCli.setQueryCommit( false );
 		lcTipoFiscCli.setReadOnly( true );
 		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli, FTipoFisc.class.getCanonicalName() );
-		
+
 		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
 		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -614,17 +610,17 @@ public class FCLFiscal extends FDetalhe
 		lcSitTribCOF.setReadOnly( true );
 		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF, FSitTrib.class.getCanonicalName() );
-		
+
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
-		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos 
+		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
 		lcSitTribPIS.setQueryCommit( false );
 		lcSitTribPIS.setReadOnly( true );
 		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS, FSitTrib.class.getCanonicalName() );
-		
+
 		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
 		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
@@ -634,7 +630,7 @@ public class FCLFiscal extends FDetalhe
 		lcSitTribIPI.setReadOnly( true );
 		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
-		
+
 		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
 		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
@@ -643,7 +639,7 @@ public class FCLFiscal extends FDetalhe
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
 
-		lcUF.setUsaME( false );		
+		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
 		lcUF.setDinWhereAdic( "CODPAIS = #N", txtCodPais );
@@ -651,8 +647,8 @@ public class FCLFiscal extends FDetalhe
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
-		
-		lcServico.setUsaME( false );		
+
+		lcServico.setUsaME( false );
 		lcServico.add( new GuardaCampo( txtCodServ, "CodServ", "Cod.Serviço", ListaCampos.DB_PK, false ) );
 		lcServico.add( new GuardaCampo( txaDescServ, "DescServ", "Descrição do Serviço", ListaCampos.DB_SI, false ) );
 		lcServico.montaSql( false, "SERVICO", "LF" );
@@ -660,13 +656,12 @@ public class FCLFiscal extends FDetalhe
 		lcServico.setReadOnly( true );
 		txtCodServ.setTabelaExterna( lcServico, FServico.class.getCanonicalName() );
 	}
-	
+
 	private void montaTela() {
 
 		pnPrincipal.add( tpnPrincipal );
 
 		lcDet.setMaster( lcCampos );
-
 
 		// ********** Início aba Geral **********
 
@@ -677,63 +672,63 @@ public class FCLFiscal extends FDetalhe
 		setAltCab( 130 );
 
 		setListaCampos( lcCampos );
-		
+
 		adicCampo( txtCodFisc, 7, 20, 100, 20, "CodFisc", "Cód.class.fiscal", ListaCampos.DB_PK, true );
-		adicCampo( txtDescFisc, 110, 20, 595, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, true );		
+		adicCampo( txtDescFisc, 110, 20, 595, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, true );
 		adicCampo( txtCodRegra, 7, 60, 100, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
-		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );		
-		
+		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );
+
 		// ********** Aba Nomenclatura Comum **********
 
 		tpnPrincipal.addTab( "Nomenclatura Comum", panelNomeComum );
-		
+
 		panelNomeComum.add( panelNomeComumNCM, BorderLayout.CENTER );
-		
+
 		panelNomeComumNCM.add( panelNomeComumNCMCampos, BorderLayout.NORTH );
 		panelNomeComumNCM.add( panelNomeComumNCMDescricoes, BorderLayout.CENTER );
-		
+
 		panelNomeComumNCMDescricoes.setTopComponent( spDescNCM );
 		panelNomeComumNCMDescricoes.setBottomComponent( spDescExTIPI );
 		panelNomeComumNCMDescricoes.setDividerLocation( 220 );
 		panelNomeComumNCMDescricoes.setDividerSize( 3 );
 		panelNomeComumNCMDescricoes.setBorder( BorderFactory.createEmptyBorder() );
-		
+
 		panelNomeComum.add( panelNomeComumNBM, BorderLayout.SOUTH );
-		
-		spDescNCM.setBorder( BorderFactory.createTitledBorder( "Descrição completa da nomenclatura comum do Mercosul" ) );		
-		spDescExTIPI.setBorder( BorderFactory.createTitledBorder( "Texto auxíliar para exceções" ) );		
+
+		spDescNCM.setBorder( BorderFactory.createTitledBorder( "Descrição completa da nomenclatura comum do Mercosul" ) );
+		spDescExTIPI.setBorder( BorderFactory.createTitledBorder( "Texto auxíliar para exceções" ) );
 		txaDescNCM.setBorder( BorderFactory.createEtchedBorder() );
 		txaDescExTIPI.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		setPainel( panelNomeComumNCMCampos );
-		
+
 		adicCampo( txtCodNCM, 7, 20, 100, 20, "CodNCM", "Cód.NCM", ListaCampos.DB_FK, txtDescNCM, false );
-		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomenclatura comum do Mercosul" );	
-		adicCampo( txtExTIPI, 433, 20, 47, 20, "ExTIPI", "Cód.ex.", ListaCampos.DB_SI, null, false );	
-		
+		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomenclatura comum do Mercosul" );
+		adicCampo( txtExTIPI, 433, 20, 47, 20, "ExTIPI", "Cód.ex.", ListaCampos.DB_SI, null, false );
+
 		setPainel( panelNomeComumNBM );
-		
+
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
-		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );		
+		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );
 
 		// *******************************
-		
-		// ********** Aba Serviço ********** 
+
+		// ********** Aba Serviço **********
 
 		tpnPrincipal.addTab( "Definição do serviço", pnServico );
-		pnServico.add( panelServico,  BorderLayout.CENTER ); 
-		
+		pnServico.add( panelServico, BorderLayout.CENTER );
+
 		setPainel( panelServico );
-		
+
 		adicCampo( txtCodServ, 7, 20, 70, 20, "CodServ", "Cód.Serv.", ListaCampos.DB_FK, false );
-		adic( txaDescServ, 80, 20, 650, 100, "Descrição do serviço" );	
-		
-		// *******************************		
-		
+		adic( txaDescServ, 80, 20, 650, 100, "Descrição do serviço" );
+
+		// *******************************
+
 		setListaCampos( true, "CLFISCAL", "LF" );
 		lcCampos.setQueryInsert( false );
 
-		// **********  ABA VARIANTES  **/
+		// ********** ABA VARIANTES **/
 
 		pnDet.add( tpnGeral );
 		tpnGeral.addTab( "Variantes", panelVariantes );
@@ -743,7 +738,7 @@ public class FCLFiscal extends FDetalhe
 
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-				
+
 		adicCampoInvisivel( txtCodItClFiscal, "CodItFisc", "Item", ListaCampos.DB_PK, true );
 
 		adicCampo( txtCodTipoFisc, 7, 20, 70, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
@@ -751,33 +746,32 @@ public class FCLFiscal extends FDetalhe
 
 		adicCampo( txtCodTipoMov, 7, 60, 70, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov, 80, 60, 388, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		
+
 		adicCampo( txtCodMens, 7, 100, 70, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
 		adicDescFK( txtDescMens, 80, 100, 388, 20, "Mens", "Mensagem" );
 
 		adicDB( rgNoUF, 471, 20, 150, 60, "NoUFItFisc", "Destino da mercadoria", true );
 		adicDB( rgTipo, 631, 20, 100, 60, "TipoUsoItFisc", "Uso para", true );
-		
-		adicDB( cbGeralFisc, 471,100,150,20, "GeralFisc", "Padrão", true );
-		
+
+		adicDB( cbGeralFisc, 471, 100, 150, 20, "GeralFisc", "Padrão", true );
+
 		adicCampo( txtCodPais, 7, 140, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
 		adicDescFK( txtDescPais, 80, 140, 227, 20, "NomePais", "Nome do país" );
 		adicCampo( txtSiglaUF, 310, 140, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
 		adicDescFK( txtNomeUF, 383, 140, 238, 20, "NomeUF", "Nome UF" );
-		
+
 		adicCampo( txtCodRegraIt, 7, 180, 70, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegraIt, false );
-		adicDescFK( txtDescRegraIt, 80, 180, 227, 20, "DescRegra", "Descrição da regra fiscal" );		
-		
+		adicDescFK( txtDescRegraIt, 80, 180, 227, 20, "DescRegra", "Descrição da regra fiscal" );
+
 		adic( btCopiarVariante, 630, 135, 100, 30 );
 
-		// **********  ABA ICMS  **/
+		// ********** ABA ICMS **/
 
 		tpnGeral.addTab( "ICMS", panelICMS );
-		
+
 		setPainel( panelICMSCampos );
-		
-		
-		// **********  Inclusão dos campos  **/		
+
+		// ********** Inclusão dos campos **/
 
 		adicCampo( txtCodTratTrib, 7, 20, 50, 20, "CodTratTrib", "Cód.trat.", ListaCampos.DB_FK, txtDescTratTrib, true );
 		adicDescFK( txtDescTratTrib, 60, 20, 200, 20, "DescTratTrib", "Descrição da tratamento tributário" );
@@ -785,115 +779,111 @@ public class FCLFiscal extends FDetalhe
 		adicDB( cbOrig, 7, 60, 253, 25, "OrigFisc", "Origem", true );
 		adicDB( cbModBCICMS, 7, 110, 253, 25, "ModBcIcms", "Modalidade da base de cálculo ", true );
 		adicDB( cbModBCICMSST, 7, 160, 253, 25, "ModBcIcmsST", "Modalidade da base de cálculo ST", true );
-		
+
 		JLabelPad separacao = new JLabelPad();
 		separacao.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separacao, 272, 7, 2, 180 );
-		
-		adicDB( rgTipoFisc, 283, 20, 220, 70, "TipoFisc", "Situação do ICMS:", true );		
+
+		adicDB( rgTipoFisc, 283, 20, 220, 70, "TipoFisc", "Situação do ICMS:", true );
 		adicDB( rgTipoST, 506, 20, 110, 70, "TipoST", "Tipo de Sub.Trib.", true );
 		adicDB( rgTpRedIcmsFisc, 619, 20, 110, 70, "tpredicmsfisc", "Tipo de Redução", false );
-		
-		adicCampo( txtMargemVlAgr, 506, 110, 110, 20, "MargemVlAgr", "% Vlr.Agregado" , ListaCampos.DB_SI,  false );
+
+		adicCampo( txtMargemVlAgr, 506, 110, 110, 20, "MargemVlAgr", "% Vlr.Agregado", ListaCampos.DB_SI, false );
 		adicCampo( txtRedFisc, 619, 110, 110, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false );
-		
+
 		adicDB( cbRedBaseST, 615, 140, 180, 20, "redbasest", "", false );
-		
+
 		adicDB( cbRedBaseFrete, 615, 160, 180, 20, "redbasefrete", "", false );
-		
-		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );		
+
+		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
-		
 
-		// **********  ABA IPI  **/
-		
+		// ********** ABA IPI **/
+
 		tpnGeral.addTab( "IPI", panelIPI );
 		setPainel( panelIPICampos );
-		
+
 		adicCampo( txtCodSitTribIPI, 7, 20, 80, 20, "CodSitTribIPI", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
+		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 		adicDB( cbTpCalcIPI, 7, 60, 200, 20, "TpCalcIPI", "Tipo de cálculo", false );
-				
+
 		adicCampo( txtAliqIPIFisc, 7, 100, 98, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIpiUnidTrib, 108, 100, 99, 20, "VlrIPIUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
-		
-		// **********  ABA PIS  **/
-						
+
+		// ********** ABA PIS **/
+
 		tpnGeral.addTab( "PIS", panelPIS );
 		setPainel( panelPISCampos );
-		
+
 		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, true );	
+		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
+		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, true );
 		adicCampo( txtVlrPisUnidTrib, 90, 60, 99, 20, "VlrPisUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
-		
-		// **********  ABA COFINS  **/
-				
+
+		// ********** ABA COFINS **/
+
 		tpnGeral.addTab( "COFINS", panelCOFINS );
 		setPainel( panelCOFINSCampos );
-		
-		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );	
+
+		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );
 		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-	
-		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, true );	
+		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
+
+		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, true );
 		adicCampo( txtVlrCofUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 
-		// **********  ABA FUNRURAL  **/
+		// ********** ABA FUNRURAL **/
 
 		tpnGeral.addTab( "FUNRURAL", panelFUNRURAL );
 		setPainel( panelFUNRURALCampos );
-		
-		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, false );	
-		
-		 
-//		// **********  ABA ISS  **/
-//				
-//		tpnGeral.addTab( "ISS", panelISS );
-//		setPainel( panelISSCampos );
-//		tpnGeral.setEnabledAt( 5, false );
-//		
-//		adicCampo( txtCodSitTribISS, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_SI, txtDescSitTribISS, false );	
-//		adicCampoInvisivel( txtImpSitTribISS, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
-//		adicDescFK( txtDescSitTribISS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-//	
-//		adicCampo( txtAliqIssFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );	
-//		adicCampo( txtVlrIssUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
-//		
-		// **********  ABA IR  **/
-				
+
+		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, false );
+
+		// // ********** ABA ISS **/
+		//				
+		// tpnGeral.addTab( "ISS", panelISS );
+		// setPainel( panelISSCampos );
+		// tpnGeral.setEnabledAt( 5, false );
+		//		
+		// adicCampo( txtCodSitTribISS, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_SI, txtDescSitTribISS, false );
+		// adicCampoInvisivel( txtImpSitTribISS, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
+		// adicDescFK( txtDescSitTribISS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
+		//	
+		// adicCampo( txtAliqIssFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );
+		// adicCampo( txtVlrIssUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
+		//		
+		// ********** ABA IR **/
+
 		tpnGeral.addTab( "IR", panelIR );
 		setPainel( panelIRCampos );
-		
-		adicCampo( txtAliqIrFisc, 7, 20, 80, 20, "AliqIrFisc", "Aliq. IR", ListaCampos.DB_SI, true );	
 
-		
-//		**********  ABA CONTRIBUIÇÃO SOCIAL  **/
-//				
+		adicCampo( txtAliqIrFisc, 7, 20, 80, 20, "AliqIrFisc", "Aliq. IR", ListaCampos.DB_SI, true );
+
+		// ********** ABA CONTRIBUIÇÃO SOCIAL **/
+		//				
 		tpnGeral.addTab( "Contribuição Social", panelCSocial );
 		setPainel( panelCSocialCampos );
-		
-		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI,  true );
-		
-		
-		// **********  ABA II  **/
-				
+
+		adicCampo( txtAliqCSocialFisc, 7, 20, 80, 20, "AliqCSocialFisc", "Aliq. C.Social", ListaCampos.DB_SI, true );
+
+		// ********** ABA II **/
+
 		tpnGeral.addTab( "Imposto de importação", panelII );
 		setPainel( panelIICampos );
-//		tpnGeral.setEnabledAt( 8, false );
+		// tpnGeral.setEnabledAt( 8, false );
 		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
-		
-//			
+
+		//			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
-		
+
 		montaTab();
 
 		tab.setTamColuna( 30, 0 ); // Ítem
-		tab.setColunaInvisivel( 1 ); //Cod. fisc. cli
+		tab.setColunaInvisivel( 1 ); // Cod. fisc. cli
 		tab.setTamColuna( 150, 2 ); // Desc fisc. cli
 		tab.setTamColuna( 30, 3 ); // cod. tipomov
 		tab.setTamColuna( 150, 4 ); // desc. tipomo
@@ -920,28 +910,28 @@ public class FCLFiscal extends FDetalhe
 		tab.setColunaInvisivel( 25 ); // % Imposto COFINS
 		tab.setColunaInvisivel( 26 ); // % Desc. Sit. Trib. COFINS
 		tab.setTamColuna( 50, 27 ); // % Aliq. COFINS
-		
+
 		panelVariantes.add( panelVariantesCampos );
 		panelICMS.add( panelICMSCampos );
 		panelIPI.add( panelIPICampos );
 		panelPIS.add( panelPISCampos );
-		panelCOFINS.add( panelCOFINSCampos );	
-		panelISS.add( panelISSCampos );	
-		panelIR.add( panelIRCampos );	
-		panelCSocial.add( panelCSocialCampos );	
-		panelII.add( panelIICampos );		
+		panelCOFINS.add( panelCOFINSCampos );
+		panelISS.add( panelISSCampos );
+		panelIR.add( panelIRCampos );
+		panelCSocial.add( panelCSocialCampos );
+		panelII.add( panelIICampos );
 		panelFUNRURAL.add( panelFUNRURALCampos );
 	}
-	
+
 	private void copiarVariante() {
-		
+
 		if ( txtCodItClFiscal.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione o item a ser copiado" );
 			return;
 		}
-		
+
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
 			sql.append( "INSERT INTO LFITCLFISCAL ( CODEMP, CODFILIAL, CODFISC, " );
 			sql.append( "CODITFISC, ORIGFISC, CODEMPTT, CODFILIALTT, TIPOFISC, TPREDICMSFISC, REDFISC, " );
@@ -953,7 +943,7 @@ public class FCLFiscal extends FDetalhe
 			sql.append( "CODFILIALSI, CODSITTRIBIPI, IMPSITTRIBIPI, TPCALCIPI, VLRIPIUNIDTRIB, MODBCICMS, " );
 			sql.append( "MODBCICMSST, CODPAIS, SIGLAUF, VLRPISUNIDTRIB, VLRCOFUNIDTRIB) " );
 			sql.append( "SELECT CODEMP, CODFILIAL, CODFISC, " );
-			sql.append( "(SELECT MAX(CODITFISC)+1 FROM LFITCLFISCAL WHERE CODEMP=I.CODEMP AND CODFILIAL=I.CODFILIAL AND CODFISC=I.CODFISC), " ); 
+			sql.append( "(SELECT MAX(CODITFISC)+1 FROM LFITCLFISCAL WHERE CODEMP=I.CODEMP AND CODFILIAL=I.CODFILIAL AND CODFISC=I.CODFISC), " );
 			sql.append( "ORIGFISC, CODEMPTT, CODFILIALTT, TIPOFISC, TPREDICMSFISC, REDFISC, " );
 			sql.append( "CODTRATTRIB, NOUFITFISC, CODEMPFC, CODFILIALFC, CODFISCCLI, ALIQFISC, ALIQLFISC, " );
 			sql.append( "ALIQIPIFISC, ALIQPISFISC, ALIQCOFINSFISC, CODEMPME, CODFILIALME, CODMENS, " );
@@ -964,30 +954,30 @@ public class FCLFiscal extends FDetalhe
 			sql.append( "MODBCICMSST, CODPAIS, SIGLAUF, VLRPISUNIDTRIB, VLRCOFUNIDTRIB " );
 			sql.append( "FROM LFITCLFISCAL I " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODFISC=? AND I.CODITFISC=? " );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFITCLFISCAL" ) );
 			ps.setString( 3, txtCodFisc.getVlrString() );
 			ps.setInt( 4, txtCodItClFiscal.getVlrInteger() );
-			
+
 			ps.executeUpdate();
-			
+
 			con.commit();
-			
+
 			Funcoes.mensagemInforma( this, "Item copiado com sucesso." );
 
 			lcCampos.carregaDados();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao copiar item!\n" + e.getMessage(), true, con, e );			
+			Funcoes.mensagemErro( this, "Erro ao copiar item!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 	}
-	
+
 	public void actionPerformed( ActionEvent e ) {
-		
+
 		if ( e.getSource() == btCopiarVariante ) {
 			copiarVariante();
 		}
@@ -997,35 +987,50 @@ public class FCLFiscal extends FDetalhe
 	}
 
 	public void mouseClicked( MouseEvent e ) {
-		if ( e.getClickCount() == 2 ) { }
+
+		if ( e.getClickCount() == 2 ) {
+		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
 
-	public void stateChanged( ChangeEvent e ) {	}
+	public void mousePressed( MouseEvent e ) {
 
-	public void beforeCarrega( CarregaEvent e ) { }
+	}
 
-	public void afterCarrega( CarregaEvent e ) { 
-		//System.out.println("Regrafiscal filial "+ ListaCampos.getMasterFilial("LFREGRAFISCAL"));
+	public void mouseReleased( MouseEvent e ) {
+
+	}
+
+	public void stateChanged( ChangeEvent e ) {
+
+	}
+
+	public void beforeCarrega( CarregaEvent e ) {
+
+	}
+
+	public void afterCarrega( CarregaEvent e ) {
+
+		// System.out.println("Regrafiscal filial "+ ListaCampos.getMasterFilial("LFREGRAFISCAL"));
 		if ( e.getListaCampos() == lcCampos ) {
 			// aba de serviços
-			//tpnGeral.setEnabledAt( 5, txtCodServ.getVlrInteger() > 0 );
+			// tpnGeral.setEnabledAt( 5, txtCodServ.getVlrInteger() > 0 );
 			tpnGeral.setSelectedIndex( 0 );
 		}
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
-			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString()) ||  "00".equals( txtCodTratTrib.getVlrString()) ) {
+			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) || "00".equals( txtCodTratTrib.getVlrString() ) ) {
 				rgTpRedIcmsFisc.setAtivo( true );
 				cbRedBaseST.setEnabled( true );
 				txtRedFisc.setAtivo( true );
-				if("70".equals( txtCodTratTrib.getVlrString() )) {
+				if ( "70".equals( txtCodTratTrib.getVlrString() ) ) {
 					rgTipoFisc.setVlrString( "FF" );
 				}
 				else {
@@ -1040,7 +1045,7 @@ public class FCLFiscal extends FDetalhe
 				txtRedFisc.setAtivo( false );
 
 				// Substituição tributária
-				if ( "10".equals( txtCodTratTrib.getVlrString()) || "70".equals( txtCodTratTrib.getVlrString()) ) {
+				if ( "10".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
 					rgTipoST.setAtivo( true );
 					rgTipoFisc.setVlrString( "FF" );
 				}
@@ -1090,12 +1095,16 @@ public class FCLFiscal extends FDetalhe
 		}
 	}
 
-	public void beforeInsert( InsertEvent e ) { }
+	public void beforeInsert( InsertEvent e ) {
 
-	public void afterInsert( InsertEvent e ) { }
+	}
+
+	public void afterInsert( InsertEvent e ) {
+
+	}
 
 	public void beforePost( PostEvent e ) {
-		
+
 		if ( e.getListaCampos() == lcCampos ) {
 			if ( txtCodNCM.getVlrString().trim().length() > 0 && txtCodNBM.getVlrString().trim().length() == 0 ) {
 				lcCampos.cancelPost();
@@ -1103,12 +1112,12 @@ public class FCLFiscal extends FDetalhe
 				txtCodNBM.requestFocus();
 			}
 		}
-		
+
 		super.beforePost( e );
 	}
 
 	public void valorAlterado( RadioGroupEvent e ) {
-		
+
 		if ( e.getSource() == rgTipoFisc ) {
 			if ( "FF".equals( rgTipoFisc.getVlrString() ) ) { // Caso seja substituição tributária
 				rgTipoST.setAtivo( true );
@@ -1130,10 +1139,10 @@ public class FCLFiscal extends FDetalhe
 			}
 		}
 		else if ( e.getSource() == rgTipo ) {
-			//tpnGeral.setEnabledAt( 8, "CP".equals( rgTipo.getVlrString() ) );
+			// tpnGeral.setEnabledAt( 8, "CP".equals( rgTipo.getVlrString() ) );
 		}
 	}
-	
+
 	public void valorAlterado( JComboBoxEvent evt ) {
 
 		if ( evt.getComboBoxPad() == cbTpCalcIPI ) {
@@ -1147,13 +1156,13 @@ public class FCLFiscal extends FDetalhe
 				txtVlrIpiUnidTrib.setAtivo( false );
 				txtAliqIPIFisc.setAtivo( true );
 			}
-		}		
+		}
 	}
 
 	public void setConexao( DbConnection con ) {
-	
+
 		super.setConexao( con );
-		
+
 		lcRegraFiscal.setConexao( con );
 		lcRegraFiscalIt.setConexao( con );
 		lcNBM.setConexao( con );
@@ -1170,5 +1179,4 @@ public class FCLFiscal extends FDetalhe
 		lcServico.setConexao( con );
 	}
 
-	
 }

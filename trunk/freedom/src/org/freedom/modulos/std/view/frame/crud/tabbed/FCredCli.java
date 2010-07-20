@@ -2,23 +2,23 @@
  * @version 21/11/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: freedom <BR>
+ *         Projeto: freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FCredCli.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela ficha cadastral e crédito de cliente.
+ *                   Tela ficha cadastral e crédito de cliente.
  * 
  */
 
@@ -53,7 +53,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
-
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -1276,11 +1275,11 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 	private void setaFoco() {
 
 		if ( bAchou ) {
-			
+
 			txtRazCli.requestFocus( true );
 		}
 		else {
-			
+
 			txtCodCli.requestFocus( false );
 		}
 	}
@@ -1364,10 +1363,10 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( txtDtIniTr.getVlrString().equals( "" ) ) {
-			
+
 			txtDtIniTr.setVlrDate( new Date() );
 		}
-		
+
 		buscaAdicionais();
 		setaFoco();
 	}
@@ -1377,7 +1376,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		
+
 		Vector<String> vDesc = new Vector<String>();
 		Vector<Integer> vCod = new Vector<Integer>();
 
@@ -1393,21 +1392,21 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGTABELA" ) );
 
 			rs = ps.executeQuery();
-			
+
 			int i = 0;
-			
+
 			vCod.addElement( new Integer( 0 ) );
 			vDesc.addElement( "<--Selecione-->" );
-			
+
 			while ( rs.next() ) {
-				
+
 				vCod.addElement( new Integer( rs.getInt( 2 ) ) );
 				vDesc.addElement( rs.getString( 3 ) );
-				
+
 				if ( i == 0 ) {
 					txtCodTb.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 				}
-				
+
 				i++;
 			}
 
@@ -1418,7 +1417,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -1453,9 +1452,9 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 			ps.setInt( 3, txtCodCli.getVlrInteger().intValue() );
 
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-			
+
 				bFisTipoCli = "S".equals( rs.getString( 1 ) );
 				bJurTipoCli = "S".equals( rs.getString( 2 ) );
 				bFilTipoCli = "S".equals( rs.getString( 4 ) );
@@ -1471,13 +1470,13 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 				bAchou = true;
 			}
 			else {
-				
+
 				bAchou = false;
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();

@@ -2,23 +2,23 @@
  * @version 25/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.atd <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.atd <BR>
+ *         Classe:
  * @(#)FPrefereAtend.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                        Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                        modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                        na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                        Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                        sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                        Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                        Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                        de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                        Comentários sobre a classe...
  * 
  */
 
@@ -33,7 +33,6 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FTabDados;
 
-
 public class FPrefereAtend extends FTabDados {
 
 	private static final long serialVersionUID = 1L;
@@ -45,7 +44,7 @@ public class FPrefereAtend extends FTabDados {
 	private JPanelPad pinSetor = null;
 
 	private JPanelPad pinConv = null;
-	
+
 	private JPanelPad pinTermRec = null;
 
 	private JPanelPad pinOrc = null;
@@ -125,15 +124,14 @@ public class FPrefereAtend extends FTabDados {
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextAreaPad txaCabTermR01 = new JTextAreaPad();
-	
+
 	private JTextAreaPad txaCabTermR02 = new JTextAreaPad();
-	
+
 	private JTextAreaPad txaRodTermR = new JTextAreaPad();
-	
-	//private JScrollPane spnObs = new JScrollPane( txaObs )
-	
+
+	// private JScrollPane spnObs = new JScrollPane( txaObs )
 
 	private ListaCampos lcTabITAV = new ListaCampos( this, "TV" );
 
@@ -227,7 +225,7 @@ public class FPrefereAtend extends FTabDados {
 		lcTpAtend3.setQueryCommit( false );
 		lcTpAtend3.setReadOnly( true );
 		txtCodTpAtend3.setTabelaExterna( lcTpAtend3, null );
-		
+
 		// Geral
 
 		pinGeral = new JPanelPad( 330, 350 );
@@ -238,7 +236,7 @@ public class FPrefereAtend extends FTabDados {
 		adicCampo( txtClassMedida, 7, 65, 200, 20, "ClassMedida", "Classe p/ ficha de medida", ListaCampos.DB_SI, false );
 
 		// Tipo de atendimento
-		
+
 		pinTipo = new JPanelPad( 330, 350 );
 		setPainel( pinTipo );
 		adicTab( "Tipos de atendimento", pinTipo );
@@ -251,7 +249,6 @@ public class FPrefereAtend extends FTabDados {
 
 		txtCodTpAtend2.setNomeCampo( "CodTpAtendo" );
 		txtCodTpAtend3.setNomeCampo( "CodTpAtendo" );
-		
 
 		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetAt", "Cód.setor", ListaCampos.DB_PK, true ) );
 		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetAt", "Descrição do setor", ListaCampos.DB_SI, false ) );
@@ -278,7 +275,7 @@ public class FPrefereAtend extends FTabDados {
 		adicDescFK( txtDescSetor2, 90, 65, 230, 20, "DescSetAt", "Setor de orçamento." );
 
 		// Conveniado
-		
+
 		pinConv = new JPanelPad( 330, 350 );
 		setPainel( pinConv );
 		adicTab( "Conveniado", pinConv );
@@ -288,7 +285,7 @@ public class FPrefereAtend extends FTabDados {
 		adicDescFK( txtDescClas, 90, 65, 230, 20, "DescClasCli", "Descrição da classificação do cliente." );
 
 		// Orçamento
-				
+
 		pinOrc = new JPanelPad( 330, 350 );
 		setPainel( pinOrc );
 		adicTab( "Orçamento", pinOrc );
@@ -302,17 +299,16 @@ public class FPrefereAtend extends FTabDados {
 		adicDescFK( txtDescITTBV, 90, 150, 230, 20, "DescITTB", "Descrição da situação para aceite." );
 		adicCampo( txtCodVend, 7, 195, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 90, 195, 230, 20, "NomeVend", "Nome do comissionado padrão" );
-		
+
 		// Termos de recebimentos
-		
+
 		pinTermRec = new JPanelPad( 330, 350 );
 		setPainel( pinTermRec );
 		adicTab( "Termo de Recebimento", pinTermRec );
-		
-		adicDBLiv( txaCabTermR01,7, 25, 300, 70, "CabTermR01", "Cabterm 01", false );
-		adicDBLiv( txaCabTermR02,7, 115, 300, 70, "CabTermR02", "Cabterm 02", false );
-		adicDBLiv( txaRodTermR,7, 205, 300, 70 ,"RodTermR", "Rodapé ", false );
-		
+
+		adicDBLiv( txaCabTermR01, 7, 25, 300, 70, "CabTermR01", "Cabterm 01", false );
+		adicDBLiv( txaCabTermR02, 7, 115, 300, 70, "CabTermR02", "Cabterm 02", false );
+		adicDBLiv( txaRodTermR, 7, 205, 300, 70, "RodTermR", "Rodapé ", false );
 
 		setListaCampos( false, "PREFERE2", "SG" );
 

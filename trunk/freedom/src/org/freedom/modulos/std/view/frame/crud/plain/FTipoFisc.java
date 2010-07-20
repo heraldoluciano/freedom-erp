@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FTipoFiscCli.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  * 
  */
 
@@ -50,7 +50,7 @@ public class FTipoFisc extends FDados implements ActionListener {
 	private JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JCheckBoxPad cbIPIimp = new JCheckBoxPad( "Imp.IPI", "S", "N" );
 
 	private JCheckBoxPad cbIPIcalc = new JCheckBoxPad( "Calc.IPI", "S", "N" );
@@ -76,15 +76,15 @@ public class FTipoFisc extends FDados implements ActionListener {
 	private JCheckBoxPad cbISScalc = new JCheckBoxPad( "Calc.ISS", "S", "N" );
 
 	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "Imp.ICMS", "S", "N" );
-	
-	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N");
+
+	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N" );
 
 	public FTipoFisc() {
 
 		super();
 		setTitulo( "Tipos Fiscais" );
 		setAtribos( 50, 50, 350, 330 );
-		
+
 		adicCampo( txtCod, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtDesc, 90, 20, 230, 20, "DescFiscCli", "Descrição fiscal do cliente", ListaCampos.DB_SI, true );
 		adicDB( cbIPIimp, 7, 60, 70, 20, "IMPIPITF", "", false );
@@ -101,13 +101,13 @@ public class FTipoFisc extends FDados implements ActionListener {
 		adicDB( cbISScalc, 205, 140, 100, 20, "CALCISSTF", "", false );
 		adicDB( cbICMSimp, 7, 175, 100, 20, "IMPICMSTF", "", false );
 		adicDB( cbICMScalc, 7, 195, 100, 20, "CALCICMSTF", "", false );
-		
+
 		setListaCampos( true, "TIPOFISCCLI", "LF" );
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		
+
 		setImprimir( true );
 	}
 

@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FVendedor.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de comissionados (vendedores).
+ *                    Tela de cadastro de comissionados (vendedores).
  * 
  */
 
@@ -63,7 +63,6 @@ import org.freedom.modulos.std.view.dialog.report.DLRVendedor;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoVend;
-
 
 public class FVendedor extends FTabDados implements PostListener {
 
@@ -130,7 +129,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldPad txtCodFunc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodTipoVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -146,11 +145,11 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
@@ -162,21 +161,21 @@ public class FVendedor extends FTabDados implements PostListener {
 	private ListaCampos lcClComis = new ListaCampos( this, "CM" );
 
 	private ListaCampos lcFuncao = new ListaCampos( this, "FU" );
-	
+
 	private ListaCampos lcTipoComis = new ListaCampos( this, "TV" );
-	
-	private ListaCampos lcConta = new ListaCampos( this, "CA" );	
-	
+
+	private ListaCampos lcConta = new ListaCampos( this, "CA" );
+
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
-	
+
 	private Map<String, Object> bPref = null;
 
 	public FVendedor() {
 
 		super();
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Cadastro de comissionados" );
 		setAtribos( 50, 10, 440, 590 );
 
@@ -198,14 +197,13 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcFuncao.setReadOnly( true );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 
-		
 		lcClComis.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, true ) );
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descriçao da classificação da comissão", ListaCampos.DB_SI, false ) );
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis, FCLComis.class.getCanonicalName() );
-		
+
 		lcTipoComis.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.comis.", ListaCampos.DB_PK, txtDescTipoVend, true ) );
 		lcTipoComis.add( new GuardaCampo( txtDescTipoVend, "DescTipoVend", "Descrição tipo de venda", ListaCampos.DB_SI, false ) );
 
@@ -215,7 +213,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcTipoComis.setQueryCommit( false );
 		lcTipoComis.setReadOnly( true );
 		lcTipoComis.montaSql( false, "TIPOVEND", "VD" );
-		
+
 		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "num.Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descriçao da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
@@ -223,9 +221,9 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcConta.setReadOnly( true );
 		txtNumConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 	}
-	
-	private void montaTela(){
-		
+
+	private void montaTela() {
+
 		setPainel( pinComiss );
 		adicTab( "Comissionado", pinComiss );
 		adicCampo( txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.Comiss.", ListaCampos.DB_PK, true );
@@ -263,17 +261,17 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
 		adicCampo( txtNumConta, 7, 460, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 110, 460, 262, 20, "DescConta", "Descrição da conta" );
-		
-		if ( (Boolean)bPref.get( "BUSCACEP" )) {
+
+		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
 		}
 		else {
 			btBuscaEnd.setEnabled( false );
 		}
-		
+
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
-		
+
 		txtCpfVend.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjVend.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepVend.setMascara( JTextFieldPad.MC_CEP );
@@ -288,17 +286,16 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicTab( "Observações", pnObs );
 		adicDBLiv( txaObs, "ObsVend", "Observações", false );
 		pnObs.add( spnObs );
-		
+
 		setPainel( pinAss );
 		adicTab( "Assinatura", pinAss );
 		adicDB( imgAssOrc, 15, 30, 340, 85, "ImgAssVend", "Assinatura ( 340 pixel X 85 pixel )", true );
-		
+
 		setListaCampos( true, "VENDEDOR", "VD" );
 		lcCampos.setQueryInsert( false );
-		
+
 		setImprimir( true );
-		
-		
+
 	}
 
 	private void montaSetor() {
@@ -315,7 +312,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
 
 		setPainel( pinComiss );
-		
+
 		adicCampo( txtCodSetor, 7, 500, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
 		adicDescFK( txtDescSetor, 110, 500, 262, 20, "DescSetor", "Descrição do setor" );
 		lcSetor.setConexao( con );
@@ -350,39 +347,39 @@ public class FVendedor extends FTabDados implements PostListener {
 		return bRet;
 
 	}
-	
+
 	private Map<String, Object> getPrefere() {
 
 		Map<String, Object> retorno = new HashMap<String, Object>();
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			sSQL.append( "SELECT BUSCACEP " );
 			sSQL.append( "FROM SGPREFERE1 P  " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 
 			try {
-			
+
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-				
+
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
-					
-					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) )  );					
+
+					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
 				}
-				
+
 				rs.close();
 				ps.close();
-				
+
 				con.commit();
 			} catch ( SQLException err ) {
-				
+
 				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
@@ -393,71 +390,68 @@ public class FVendedor extends FTabDados implements PostListener {
 		}
 		return retorno;
 	}
-	
+
 	private void buscaEndereco() {
 
-		if( ! "".equals( txtCepVend.getVlrString() ) ) {
-		
+		if ( !"".equals( txtCepVend.getVlrString() ) ) {
+
 			txtEndVend.setEnabled( false );
 			txtComplVend.setEnabled( false );
 			txtBairVend.setEnabled( false );
 			txtCidVend.setEnabled( false );
 			txtUFVend.setEnabled( false );
-			//txtCodPais.setEnabled( false );
-			//txtSiglaUF.setEnabled( false );
-			//txtCodMun.setEnabled( false );		
+			// txtCodPais.setEnabled( false );
+			// txtSiglaUF.setEnabled( false );
+			// txtCodMun.setEnabled( false );
 			txtDDDFoneVend.setEnabled( false );
 			txtDDDFaxVend.setEnabled( false );
 			txtDDDCelVend.setEnabled( false );
-			
-			Thread th = new Thread(
-					new Runnable() {
-				        public void run() {
-				        	try {
-					    		WSCep cep = new WSCep();
-								cep.setCon( con );
-								cep.setCep( txtCepVend.getVlrString() );
-								cep.busca();
-								Endereco endereco = cep.getEndereco();
-							
-								txtEndVend.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
-								txtComplVend.setVlrString( endereco.getComplemento() );
-								txtBairVend.setVlrString( endereco.getBairro() ) ;
-								txtCidVend.setVlrString( endereco.getCidade() ) ;
-								txtUFVend.setVlrString( endereco.getSiglauf() ) ;
-								//txtCodPais.setVlrInteger( endereco.getCodpais() );
-								//txtSiglaUF.setVlrString( endereco.getSiglauf() );
-								//txtCodMun.setVlrString( endereco.getCodmunic() );
-								
-								//lcPais.carregaDados();
-								//lcUF.carregaDados();
-								//lcMunic.carregaDados();
-								
-								txtNumVend.requestFocus();
-				        	}
-				        	catch (Exception e) {
-				        		Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
-							}
-				        	finally {
-								txtEndVend.setEnabled( true );
-								txtComplVend.setEnabled( true );
-								txtBairVend.setEnabled( true );
-								txtCidVend.setEnabled( true );
-								txtUFVend.setEnabled( true );
-								//txtCodPais.setEnabled( true );
-								//txtSiglaUF.setEnabled( true );
-								//txtCodMun.setEnabled( true );		
-								txtDDDFoneVend.setEnabled( true );
-								txtDDDFaxVend.setEnabled( true );
-								txtDDDCelVend.setEnabled( true );
-				        	}
-				        }
+
+			Thread th = new Thread( new Runnable() {
+
+				public void run() {
+
+					try {
+						WSCep cep = new WSCep();
+						cep.setCon( con );
+						cep.setCep( txtCepVend.getVlrString() );
+						cep.busca();
+						Endereco endereco = cep.getEndereco();
+
+						txtEndVend.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
+						txtComplVend.setVlrString( endereco.getComplemento() );
+						txtBairVend.setVlrString( endereco.getBairro() );
+						txtCidVend.setVlrString( endereco.getCidade() );
+						txtUFVend.setVlrString( endereco.getSiglauf() );
+						// txtCodPais.setVlrInteger( endereco.getCodpais() );
+						// txtSiglaUF.setVlrString( endereco.getSiglauf() );
+						// txtCodMun.setVlrString( endereco.getCodmunic() );
+
+						// lcPais.carregaDados();
+						// lcUF.carregaDados();
+						// lcMunic.carregaDados();
+
+						txtNumVend.requestFocus();
+					} catch ( Exception e ) {
+						Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+					} finally {
+						txtEndVend.setEnabled( true );
+						txtComplVend.setEnabled( true );
+						txtBairVend.setEnabled( true );
+						txtCidVend.setEnabled( true );
+						txtUFVend.setEnabled( true );
+						// txtCodPais.setEnabled( true );
+						// txtSiglaUF.setEnabled( true );
+						// txtCodMun.setEnabled( true );
+						txtDDDFoneVend.setEnabled( true );
+						txtDDDFaxVend.setEnabled( true );
+						txtDDDCelVend.setEnabled( true );
 					}
-			);
+				}
+			} );
 			try {
 				th.start();
-			}
-			catch(Exception err) {
+			} catch ( Exception err ) {
 				Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
 				txtCepVend.requestFocus();
 			}
@@ -466,7 +460,7 @@ public class FVendedor extends FTabDados implements PostListener {
 			Funcoes.mensagemInforma( null, "Digite um CEP para busca!" );
 			txtCepVend.requestFocus();
 		}
-		
+
 	}
 
 	private void imprimir( boolean bVisualizar ) {
@@ -474,7 +468,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = "";
-		String sWhere = "";  
+		String sWhere = "";
 		String sValores[] = null;
 		int linPag = 0;
 		int iContaReg = 0;
@@ -617,9 +611,9 @@ public class FVendedor extends FTabDados implements PostListener {
 
 		super.setConexao( cn );
 		bPref = getPrefere();
-		
+
 		montaTela();
-		
+
 		if ( ehSetorVend() )
 			montaSetor();
 		lcClComis.setConexao( cn );
@@ -637,13 +631,11 @@ public class FVendedor extends FTabDados implements PostListener {
 		}
 		else if ( evt.getSource() == btImp )
 			imprimir( false );
-		else if (evt.getSource() == btBuscaEnd ){
+		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();
 		}
 		super.actionPerformed( evt );
 	}
-	
-	
 
 	public void beforePost( PostEvent pevt ) {
 

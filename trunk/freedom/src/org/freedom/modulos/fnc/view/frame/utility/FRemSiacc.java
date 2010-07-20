@@ -2,23 +2,23 @@
  * @version 07/2007 <BR>
  * @author Setpoint Informática Ltda. / Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRemSiacc.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de remessa de arquivo de SIACC.
+ *                    Tela de remessa de arquivo de SIACC.
  * 
  */
 
@@ -61,8 +61,8 @@ public class FRemSiacc extends FRemFBN {
 		File fileSiacc = null;
 		FileWriter fw = null;
 		BufferedWriter bw = null;
-		HashSet< SiaccUtil.StuffCli > hsCli = new HashSet< SiaccUtil.StuffCli >();
-		HashSet< SiaccUtil.StuffRec > hsRec = new HashSet< SiaccUtil.StuffRec >();
+		HashSet<SiaccUtil.StuffCli> hsCli = new HashSet<SiaccUtil.StuffCli>();
+		HashSet<SiaccUtil.StuffRec> hsRec = new HashSet<SiaccUtil.StuffRec>();
 
 		if ( consisteExporta( hsCli, hsRec, true ) ) {
 
@@ -108,21 +108,21 @@ public class FRemSiacc extends FRemFBN {
 		return retorno;
 	}
 
-	private void atualizaSitremessaExp( HashSet< SiaccUtil.StuffCli > hsCli, HashSet< SiaccUtil.StuffRec > hsRec ) {
+	private void atualizaSitremessaExp( HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		setSitremessa( hsRec, "01" );
 		persisteDados( hsCli, hsRec );
 		updatePrefere();
 	}
 
-	private void setSitremessa( HashSet< SiaccUtil.StuffRec > hsRec, final String sit ) {
+	private void setSitremessa( HashSet<SiaccUtil.StuffRec> hsRec, final String sit ) {
 
 		for ( SiaccUtil.StuffRec sr : hsRec ) {
 			sr.setSitremessa( sit );
 		}
 	}
 
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet< SiaccUtil.StuffCli > hsCli, HashSet< SiaccUtil.StuffRec > hsRec ) {
+	private boolean gravaRemessa( final BufferedWriter bw, HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		boolean retorno = false;
 		Integer numReg = new Integer( 0 );
@@ -130,7 +130,7 @@ public class FRemSiacc extends FRemFBN {
 
 		try {
 
-			ArrayList< SiaccUtil.Reg > list = new ArrayList< SiaccUtil.Reg >();
+			ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
 			list.add( new SiaccUtil().new RegA( '1', prefs, numReg++ ) );
 			int numAgenda = 1;
 			BigDecimal vlrtotal = new BigDecimal( 0 );
@@ -139,22 +139,9 @@ public class FRemSiacc extends FRemFBN {
 			// Implementar no futuro (Registro de clientes não podem ser enviados com Registro E)
 
 			/*
-             * for ( SiaccUtil.StuffCli c : hsCli ) { 
-             * if ( "B".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) { 
-             * list.add( new SiaccUtil().new RegB( 'B', c ) ) ; numReg++; 
-             * } 
-             * } 
-             * for ( SiaccUtil.StuffCli c : hsCli ) {
-             * if ( "C".equals( c.getArgs()[SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) { 
-             * list.add( new SiaccUtil().new RegC( 'C', c, numReg++ ) ); 
-             * } 
-             * } 
-             * for ( SiaccUtil.StuffCli c : hsCli ) { 
-             * if ( "D".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) { 
-             * list.add( new SiaccUtil().new RegD( 'D', c, numReg++ ) ); 
-             * } 
-             * }
-             */
+			 * for ( SiaccUtil.StuffCli c : hsCli ) { if ( "B".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) { list.add( new SiaccUtil().new RegB( 'B', c ) ) ; numReg++; } } for ( SiaccUtil.StuffCli c : hsCli ) { if ( "C".equals( c.getArgs()[SiaccUtil.EColcli.TIPOREMCLI.ordinal()
+			 * ] ) ) { list.add( new SiaccUtil().new RegC( 'C', c, numReg++ ) ); } } for ( SiaccUtil.StuffCli c : hsCli ) { if ( "D".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) { list.add( new SiaccUtil().new RegD( 'D', c, numReg++ ) ); } }
+			 */
 			for ( SiaccUtil.StuffRec r : hsRec ) {
 				// if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
 				e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
@@ -225,7 +212,7 @@ public class FRemSiacc extends FRemFBN {
 
 			rs = ps.executeQuery();
 
-			HashMap< String, Object > hParam = new HashMap< String, Object >();
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con );
@@ -249,22 +236,17 @@ public class FRemSiacc extends FRemFBN {
 		}
 	}
 
-	@Override
+	@ Override
 	public void mouseClicked( MouseEvent e ) {
 
 		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
 
 			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
 
-				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
-						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
 			}
-			completaTabela( tab.getLinhaSel(), 
-					(Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
+			completaTabela( tab.getLinhaSel(), (Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), (String) tab.getValor(
+					tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
 		}
 	}
 }

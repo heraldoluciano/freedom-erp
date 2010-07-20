@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.grh <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.grh <BR>
+ *         Classe:
  * @(#)FTurnos.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                  Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                  modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                  na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                  Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                  sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                  Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                  Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                  de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de turnos
+ *                  Tela de cadastro de turnos
  * 
  */
 
@@ -62,12 +62,11 @@ public class FTurnos extends FDados implements ActionListener {
 	private final Vector<String> vTipoTurnoVal = new Vector<String>();
 
 	private JRadioGroup<String, String> rgTipoTurno = null;
-	
 
 	public FTurnos() {
 
 		super();
-		
+
 		nav.setNavigation( true );
 		setTitulo( "Cadastro de Turnos" );
 		setAtribos( 50, 50, 440, 250 );
@@ -84,15 +83,15 @@ public class FTurnos extends FDados implements ActionListener {
 		vTipoTurnoVal.addElement( "E" );
 		rgTipoTurno = new JRadioGroup<String, String>( 3, 2, vTipoTurnoLab, vTipoTurnoVal );
 		rgTipoTurno.setVlrString( "N" );
-		
+
 		montaTela();
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
 		setImprimir( true );
 	}
-	
+
 	private void montaTela() {
 
 		adicCampo( txtCodTurno, 7, 20, 80, 20, "CodTurno", "Cód.turno", ListaCampos.DB_PK, true );
@@ -103,7 +102,7 @@ public class FTurnos extends FDados implements ActionListener {
 		adicCampo( txtHFimIntTurno, 213, 60, 100, 20, "HFimIntTurno", "Fim do intervalo", ListaCampos.DB_SI, true );
 		adicCampo( txtHFimTurno, 316, 60, 100, 20, "HFimTurno", "fim do turno", ListaCampos.DB_SI, true );
 		adicDB( rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:", true );
-		
+
 		setListaCampos( true, "TURNO", "RH" );
 		lcCampos.setQueryInsert( false );
 	}
@@ -116,12 +115,12 @@ public class FTurnos extends FDados implements ActionListener {
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-		
+
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 

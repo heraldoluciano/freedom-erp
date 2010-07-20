@@ -2,23 +2,23 @@
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freeedom <BR>
+ *         Projeto: Freeedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRListaProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatório de produtos.
+ *                      Relatório de produtos.
  * 
  */
 
@@ -49,7 +49,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 public class FRMovProd extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -75,7 +75,7 @@ public class FRMovProd extends FRelatorio {
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JCheckBoxPad cbAgrupar = new JCheckBoxPad( "Agrupar por fornecedor", "S", "N" );
 
 	private JRadioGroup<String, String> rgOrdem = null;
@@ -96,7 +96,7 @@ public class FRMovProd extends FRelatorio {
 
 		setTitulo( "Relatório de Produtos" );
 		setAtribos( 50, 50, 480, 500 );
-	
+
 		montaListaCampos();
 		montaRadioGrups();
 		montaTela();
@@ -110,7 +110,7 @@ public class FRMovProd extends FRelatorio {
 	}
 
 	private void montaListaCampos() {
-		
+
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false ) );
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 		lcAlmox.montaSql( false, "ALMOX", "EQ" );
@@ -142,14 +142,14 @@ public class FRMovProd extends FRelatorio {
 		txtCodMarca.setNomeCampo( "CodMarca" );
 		txtCodMarca.setFK( true );
 		lcMarca.setReadOnly( true );
-		lcMarca.montaSql( false, "MARCA", "EQ" );		
+		lcMarca.montaSql( false, "MARCA", "EQ" );
 	}
-	
+
 	private void montaRadioGrups() {
-		
+
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
-		
+
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
@@ -159,7 +159,7 @@ public class FRMovProd extends FRelatorio {
 
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
-		
+
 		vLabs1.addElement( "Ativos" );
 		vLabs1.addElement( "Inativos" );
 		vLabs1.addElement( "Todos" );
@@ -168,7 +168,7 @@ public class FRMovProd extends FRelatorio {
 		vVals1.addElement( "T" );
 		rgAtivoProd = new JRadioGroup<String, String>( 2, 2, vLabs1, vVals1 );
 		rgAtivoProd.setVlrString( "A" );
-		
+
 		Vector<String> vLabs2 = new Vector<String>();
 		Vector<String> vVals2 = new Vector<String>();
 
@@ -190,14 +190,14 @@ public class FRMovProd extends FRelatorio {
 		rgProduto = new JRadioGroup<String, String>( 4, 2, vLabs2, vVals2 );
 		rgProduto.setVlrString( "P" );
 	}
-	
+
 	private void montaTela() {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 80, 20 );
 		adic( lbLinha, 7, 25, 230, 35 );
 		adic( new JLabelPad( "De:" ), 17, 32, 25, 20 );
@@ -242,7 +242,7 @@ public class FRMovProd extends FRelatorio {
 	public String[] getValores() {
 
 		String[] sRetorno = new String[ 11 ];
-		
+
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
 			sRetorno[ 0 ] = "1";
 		}
@@ -260,12 +260,12 @@ public class FRMovProd extends FRelatorio {
 		sRetorno[ 8 ] = rgProduto.getVlrString();
 		sRetorno[ 9 ] = txtCodMarca.getVlrString();
 		sRetorno[ 10 ] = txtDescMarca.getText();
-		
+
 		return sRetorno;
 	}
-	
+
 	private void carregaFiltros( String[] valores, StringBuilder where, Vector<String> filtros ) {
-		
+
 		if ( valores[ 1 ].trim().length() > 0 ) {
 			where.append( " AND DESCPROD>='" + valores[ 1 ] + "'" );
 			filtros.add( "PRODUTOS MAIORES QUE " + valores[ 1 ].trim() );
@@ -292,7 +292,7 @@ public class FRMovProd extends FRelatorio {
 		if ( valores[ 9 ].length() > 0 ) {
 			where.append( " AND CODMARCA = '" + valores[ 9 ] + "'" );
 			filtros.add( "MARCA: " + valores[ 10 ] );
-		}		
+		}
 		if ( valores[ 8 ].equals( "P" ) ) {
 			where.append( " AND TIPOPROD='P'" );
 			filtros.add( "TIPO PRODUTOS" );
@@ -330,9 +330,9 @@ public class FRMovProd extends FRelatorio {
 			where.append( " AND PD.CODGRUP LIKE '" + txtCodGrupo.getVlrString() + "%'" );
 		}
 	}
-	
-	private void montaSQL( String[] valores, StringBuilder sql, StringBuilder  where ) {
-		
+
+	private void montaSQL( String[] valores, StringBuilder sql, StringBuilder where ) {
+
 		if ( cbAgrupar.getVlrString().equals( "S" ) ) {// Para agrupamento por fornecedores
 			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'N',PF.CODFOR, " );
 			sql.append( "(SELECT F.RAZFOR FROM CPFORNECED F WHERE F.CODFOR=PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL),PF.REFPRODFOR " );
@@ -340,31 +340,31 @@ public class FRMovProd extends FRelatorio {
 			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " );
 			sql.append( "AND NOT EXISTS(SELECT * FROM EQMOVPROD MV WHERE MV.CODEMPPD=PD.CODEMP " );
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
-			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" ); 
-			sql.append( where ); 
+			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" );
+			sql.append( where );
 			sql.append( " UNION ALL " );
-			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S',PF.CODFOR, " ); 
+			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S',PF.CODFOR, " );
 			sql.append( "(SELECT F.RAZFOR FROM CPFORNECED F WHERE F.CODFOR=PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL),PF.REFPRODFOR " );
-			sql.append( "FROM EQPRODUTO PD LEFT OUTER JOIN CPPRODFOR PF ON (PD.CODPROD = PF.CODPROD AND PD.CODEMP = PF.CODEMP) " + "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " ); 
+			sql.append( "FROM EQPRODUTO PD LEFT OUTER JOIN CPPRODFOR PF ON (PD.CODPROD = PF.CODPROD AND PD.CODEMP = PF.CODEMP) " + "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " );
 			sql.append( "AND EXISTS(SELECT * FROM EQMOVPROD MV WHERE MV.CODEMPPD=PD.CODEMP " );
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
-			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" ); 
-			sql.append( where ); 
+			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" );
+			sql.append( where );
 			sql.append( " ORDER BY 9," );
 			sql.append( valores[ 0 ] );
 		}
 		else {
-			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'N','' " ); 
-			sql.append( "FROM EQPRODUTO PD " ); 
+			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'N','' " );
+			sql.append( "FROM EQPRODUTO PD " );
 			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " );
 			sql.append( "AND NOT EXISTS(SELECT * FROM EQMOVPROD MV WHERE MV.CODEMPPD=PD.CODEMP " );
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
-			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" ); 
+			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" );
 			sql.append( where );
 			sql.append( " UNION ALL " );
-			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S','' " ); 
-			sql.append( "FROM EQPRODUTO PD " ); 
-			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " ); 
+			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S','' " );
+			sql.append( "FROM EQPRODUTO PD " );
+			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " );
 			sql.append( "AND EXISTS(SELECT * FROM EQMOVPROD MV WHERE MV.CODEMPPD=PD.CODEMP " );
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
 			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD=PD.CODPROD AND PF.CODEMP=PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" );
@@ -379,7 +379,7 @@ public class FRMovProd extends FRelatorio {
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] valores = getValores();
 		StringBuilder sql = new StringBuilder();
-		StringBuilder  where = new StringBuilder();
+		StringBuilder where = new StringBuilder();
 		Vector<String> filtros = new Vector<String>();
 		String sTipo = "";
 		int linPag = imp.verifLinPag() - 1;
@@ -389,19 +389,19 @@ public class FRMovProd extends FRelatorio {
 
 			carregaFiltros( valores, where, filtros );
 			montaSQL( valores, sql, where );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "PDPRODUTO" ) );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			imp.limpaPags();
 			imp.setTitulo( "Relatório de Produtos" );
 			imp.montaCab();
-			
+
 			boolean bImpNulo = true;
 			boolean bPulouPagina = false;
 			String sCodFor = "";
@@ -539,7 +539,7 @@ public class FRMovProd extends FRelatorio {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao monta relátorio!\n" + err.getMessage(), true, con, err );
 		}
-		
+
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
@@ -549,7 +549,7 @@ public class FRMovProd extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {
-	
+
 		super.setConexao( cn );
 		lcAlmox.setConexao( cn );
 		lcCodForn.setConexao( cn );

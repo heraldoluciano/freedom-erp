@@ -16,7 +16,7 @@ public class CnabUtil extends FbnUtil {
 
 		public abstract void parseLine( String line ) throws ExceptionCnab;
 
-		public abstract String getLine(String padraocnab) throws ExceptionCnab;
+		public abstract String getLine( String padraocnab ) throws ExceptionCnab;
 
 		public String format( Object obj, ETipo tipo, int tam, int dec ) {
 
@@ -49,19 +49,19 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		public static final String CNAB_240 = "240";
-		
+
 		public static final String CNAB_400 = "400";
-		
+
 		protected final String LITERAL_REM = "REMESSA";
-		
+
 		protected final String LITERAL_SERV = "COBRANCA";
-		
+
 		protected final String LITERAL_SISTEMA = "MX";
-		
+
 		protected final String DATA_06 = "DDMMAA";
-		
+
 		protected final String DATA_08 = "DDMMAAAA";
-		
+
 	}
 
 	public class RegHeader extends Reg {
@@ -73,7 +73,7 @@ public class CnabUtil extends FbnUtil {
 		private int registroHeader;
 
 		private int tipoInscEmp;
-		
+
 		private String razEmp;
 
 		private String cpfCnpjEmp;
@@ -114,7 +114,7 @@ public class CnabUtil extends FbnUtil {
 		private String tipoServico;
 
 		private String ocorrencias;
-		
+
 		public RegHeader() {
 
 			setLoteServico( "0000" );
@@ -122,11 +122,11 @@ public class CnabUtil extends FbnUtil {
 			setTipoOperacao( 1 );
 			setVersaoLayout( "030" );
 		}
-		
-		public RegHeader( String line) throws ExceptionCnab {
-			
+
+		public RegHeader( String line ) throws ExceptionCnab {
+
 			this();
-			parseLine( line  );
+			parseLine( line );
 		}
 
 		public String getAgencia() {
@@ -181,7 +181,7 @@ public class CnabUtil extends FbnUtil {
 		/**
 		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
 		 * 
-		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp(int tipoInscEmp )
 		 */
 		public String getCpfCnpjEmp() {
 
@@ -394,14 +394,14 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
 
-				if(padraocnab.equals( CNAB_240 )) {
-				
+				if ( padraocnab.equals( CNAB_240 ) ) {
+
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( getLoteServico() );
 					line.append( getRegistroHeader() );
@@ -433,30 +433,29 @@ public class CnabUtil extends FbnUtil {
 					line.append( (char) 13 );
 					line.append( (char) 10 );
 				}
-				else if(padraocnab.equals( CNAB_400 )) {
-					
+				else if ( padraocnab.equals( CNAB_400 ) ) {
+
 					line.append( getRegistroHeader() ); // Posição 001 a 001 - Identificação do Registro
 					line.append( "1" ); // Posição 002 a 002 - Identificação do Arquvo de remessa
-					line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa 
-					line.append( "01" ); //Posição 010 a 011 - Código do serviço (01)
-					line.append( format( LITERAL_SERV, ETipo.X, 15,0 ));// Posição 012 a 026 - Literal Serviço
-					line.append( StringFunctions.strZero( getCodConvBanco(),20 ) );// Posição 027 a 046 - Código da Empresa
+					line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa
+					line.append( "01" ); // Posição 010 a 011 - Código do serviço (01)
+					line.append( format( LITERAL_SERV, ETipo.X, 15, 0 ) );// Posição 012 a 026 - Literal Serviço
+					line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
 					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
-					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação 
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação
 					line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
-					line.append( dateToString( getDataGeracao(),DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo 
+					line.append( dateToString( getDataGeracao(), DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo
 					line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
 					line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
 					line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
 					line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
-					line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um 
+					line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um
 					line.append( (char) 13 );
 					line.append( (char) 10 );
-					
+
 				}
-				
-			} 
-			catch ( Exception e ) {
+
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro Header.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -472,7 +471,7 @@ public class CnabUtil extends FbnUtil {
 					throw new ExceptionCnab( "CNAB registro Header.\nLinha nula." );
 				}
 				else {
-					if(line.length()<400) { // Padrão CNAB 240
+					if ( line.length() < 400 ) { // Padrão CNAB 240
 						setCodBanco( line.substring( 0, 3 ) );
 						setLoteServico( line.substring( 3, 7 ) );
 						setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
@@ -498,29 +497,28 @@ public class CnabUtil extends FbnUtil {
 						setTipoServico( line.substring( 228, 230 ) );
 						setOcorrencias( line.substring( 230 ) );
 					}
-					else { //Padrão CNAB 400
-						System.out.println("LENDO CNAB 400...");
-						
-						//Identificador de retorno
-						if("2".equals(line.substring( 1,2 ))) {
-							
-							setRegistroHeader( new Integer(line.substring( 0,1 )).intValue() );
+					else { // Padrão CNAB 400
+						System.out.println( "LENDO CNAB 400..." );
+
+						// Identificador de retorno
+						if ( "2".equals( line.substring( 1, 2 ) ) ) {
+
+							setRegistroHeader( new Integer( line.substring( 0, 1 ) ).intValue() );
 							setTipoOperacao( 2 );
 							setCodConvBanco( line.substring( 26, 46 ) );
-							setRazEmp( line.substring( 46, 76 ));
-							setCodBanco( line.substring( 76,79 ));
+							setRazEmp( line.substring( 46, 76 ) );
+							setCodBanco( line.substring( 76, 79 ) );
 							setNomeBanco( line.substring( 79, 94 ) );
-							setDataGeracao( stringDDMMAAToDate( line.substring( 94, 100 ).trim() )  );
-							setSequenciaArq( Integer.parseInt( line.substring(394,400)) );
+							setDataGeracao( stringDDMMAAToDate( line.substring( 94, 100 ).trim() ) );
+							setSequenciaArq( Integer.parseInt( line.substring( 394, 400 ) ) );
 
-							
 						}
 						else {
 							Funcoes.mensagemInforma( null, "Arquivo informado não representa um arquivo de retorno válido no padrão CNAB 400!" );
 						}
-						
+
 					}
-					
+
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro Header.\nErro ao ler registro.\n" + e.getMessage() );
@@ -569,7 +567,7 @@ public class CnabUtil extends FbnUtil {
 		private int nrRemRet;
 
 		private Date dataRemRet;
-		
+
 		private Date dataCred;
 
 		public Reg1() {
@@ -579,15 +577,13 @@ public class CnabUtil extends FbnUtil {
 			setVersaoLayout( "020" );
 		}
 
-		
 		public Date getDataCred() {
-		
+
 			return dataCred;
 		}
 
-		
 		public void setDataCred( Date dataCred ) {
-		
+
 			this.dataCred = dataCred;
 		}
 
@@ -615,7 +611,7 @@ public class CnabUtil extends FbnUtil {
 		/**
 		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
 		 * 
-		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp(int tipoInscEmp )
 		 */
 		public void setCpfCnpjEmp( final String cnpjEmp ) {
 
@@ -831,8 +827,6 @@ public class CnabUtil extends FbnUtil {
 			return tipoServico;
 		}
 
-
-		
 		/**
 		 * Indica o tipo de serviço que o lote contém.<br>
 		 * 01 - Cobrança.<br>
@@ -867,12 +861,12 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
-			
+		public String getLine( String padraocnab ) throws ExceptionCnab {
+
 			StringBuilder line = new StringBuilder();
 
 			try {
-				if(padraocnab.equals( CNAB_240 )) {
+				if ( padraocnab.equals( CNAB_240 ) ) {
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
 					line.append( getRegistroHeader() );
@@ -893,16 +887,14 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getMsg1(), ETipo.X, 40, 0 ) );
 					line.append( format( getMsg2(), ETipo.X, 40, 0 ) );
 					line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) );
-					line.append( dateToString( getDataRemRet(),null ) );
-					line.append( dateToString( getDataCred(),null ) );
+					line.append( dateToString( getDataRemRet(), null ) );
+					line.append( dateToString( getDataCred(), null ) );
 					line.append( StringFunctions.replicate( " ", 33 ) );
 					line.append( (char) 13 );
 					line.append( (char) 10 );
 				}
-				
-				
-			} 
-			catch ( Exception e ) {
+
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -1057,11 +1049,11 @@ public class CnabUtil extends FbnUtil {
 			this.seqLote = seqLote;
 		}
 
-		public String getLineReg3(String padraocnab) throws ExceptionCnab {
+		public String getLineReg3( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
-			try {	
+			try {
 				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
 				line.append( getRegistroDetalhe() );
@@ -1069,8 +1061,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( getSegmento() );
 				line.append( ' ' );
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -1650,12 +1641,12 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
-				line.append( super.getLineReg3(padraocnab) );
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
 				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
 				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
@@ -1668,7 +1659,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) );
 				line.append( format( getIdentDist(), ETipo.$9, 1, 0 ) );
 				line.append( format( getDocCobranca(), ETipo.X, 15, 0 ) );
-				line.append( dateToString( getDtVencTitulo(),null ) );
+				line.append( dateToString( getDtVencTitulo(), null ) );
 				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) );
 				line.append( format( getAgenciaCob(), ETipo.$9, 5, 0 ) );
 				line.append( format( getDigAgenciaCob(), ETipo.$9, 1, 0 ) );
@@ -1682,7 +1673,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( dateToString( getDtDesc(), null ) );
 				line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVlrIOF(), ETipo.$9, 15, 2 ) );
-				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) ); 
+				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) );
 				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
 				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) );
 				line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) );
@@ -1693,8 +1684,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( " " );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3 segmento P.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -1849,7 +1839,7 @@ public class CnabUtil extends FbnUtil {
 		/**
 		 * Inscrição. Conforme o tipo da inscrição.<br>
 		 * 
-		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg3Q#setTipoInscAva( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg3Q#setTipoInscAva(int tipoInscEmp )
 		 */
 		public void setCpfCnpjAva( final String cpfCnpjAva ) {
 
@@ -1864,7 +1854,7 @@ public class CnabUtil extends FbnUtil {
 		/**
 		 * Inscrição. Conforme o tipo da inscrição.<br>
 		 * 
-		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg3Q#setTipoInscCli( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg3Q#setTipoInscCli(int tipoInscEmp )
 		 */
 		public void setCpfCnpjCli( final String cpfCnpjCli ) {
 
@@ -1965,13 +1955,13 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
-				
-				line.append( super.getLineReg3(padraocnab) );
+
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );
 				line.append( format( getCpfCnpjCli(), ETipo.$9, 15, 0 ) );
 				line.append( format( getRazCli(), ETipo.X, 40, 0 ) );
@@ -1988,7 +1978,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( StringFunctions.replicate( " ", 8 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
-			
+
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3 segmento Q.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
@@ -2285,12 +2275,12 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
-				line.append( super.getLineReg3(padraocnab) );
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getCodDesc2(), ETipo.$9, 1, 0 ) );
 				line.append( dateToString( getDataDesc2(), null ) );
 				line.append( format( getVlrPercConced2(), ETipo.$9, 15, 2 ) );
@@ -2309,8 +2299,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getCodOcorrSacado(), ETipo.$9, 8, 0 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3 segmento R.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -2528,13 +2517,13 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
 
-				line.append( super.getLineReg3(padraocnab) );
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getTipoImpressao(), ETipo.$9, 1, 0 ) );
 
 				if ( getTipoImpressao() == 1 || getTipoImpressao() == 2 ) {
@@ -2556,9 +2545,8 @@ public class CnabUtil extends FbnUtil {
 
 				line.append( (char) 13 );
 				line.append( (char) 10 );
-				
-			} 
-			catch ( Exception e ) {
+
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3 segmento S.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -2898,13 +2886,13 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
-				
-				line.append( super.getLineReg3(padraocnab) );
+
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
 				line.append( format( getDigAgencia(), ETipo.$9, 1, 0 ) );
 				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
@@ -2930,8 +2918,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -3000,7 +2987,7 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrOutrasDesp;
 
 		private BigDecimal vlrOutrosCred;
-		
+
 		private BigDecimal vlrOcorrSac;
 
 		private Date dataOcorr;
@@ -3197,13 +3184,13 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
 
-				line.append( super.getLineReg3(padraocnab) );
+				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getVlrJurosMulta(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVlrDesc(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVrlAbatCancel(), ETipo.$9, 15, 2 ) );
@@ -3482,7 +3469,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
@@ -3560,7 +3547,7 @@ public class CnabUtil extends FbnUtil {
 		private int qtdRegistros;
 
 		private int qtdConsilacoes;
-		
+
 		private int seqregistro;
 
 		public RegTrailer() {
@@ -3569,15 +3556,13 @@ public class CnabUtil extends FbnUtil {
 			setRegistroTrailer( "9" );
 		}
 
-		
 		public int getSeqregistro() {
-		
+
 			return seqregistro;
 		}
 
-		
 		public void setSeqregistro( int seqregistro ) {
-		
+
 			this.seqregistro = seqregistro;
 		}
 
@@ -3642,13 +3627,13 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
+		public String getLine( String padraocnab ) throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 
 			try {
-				if(padraocnab.equals( CNAB_240 )) {
-								
+				if ( padraocnab.equals( CNAB_240 ) ) {
+
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
 					line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
@@ -3660,14 +3645,13 @@ public class CnabUtil extends FbnUtil {
 					line.append( (char) 13 );
 					line.append( (char) 10 );
 				}
-				else if(padraocnab.equals( CNAB_400 )) {
+				else if ( padraocnab.equals( CNAB_400 ) ) {
 					line.append( StringFunctions.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
 					line.append( StringFunctions.replicate( " ", 393 ) ); // Posição 002 a 394 - Branco
 					line.append( format( seqregistro, ETipo.$9, 6, 0 ) ); // Posição 395 a 400 - Nro Sequancial do ultimo registro
 				}
-				
-			} 
-			catch ( Exception e ) {
+
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro trailer.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 
@@ -3701,164 +3685,189 @@ public class CnabUtil extends FbnUtil {
 			}
 		}
 	}
-	
+
 	public class Receber {
-		
+
 		private int codrec;
-		
+
 		private int nrparcrec;
-		
+
 		private String docrec;
-		
+
 		private BigDecimal valor;
-		
+
 		private BigDecimal valorApagar;
-		
+
 		private Date emissao;
-		
+
 		private Date vencimento;
-		
+
 		private String conta;
-		
+
 		private String planejamento;
-		
+
 		private String centrocusto;
-		
+
 		private String code;
-		
+
 		private int codcliente;
-		
+
 		private String razcliente;
-		
-		
-		public Receber() {}
-		
-		public Receber( int arg0, int arg1 ) { 
-			
+
+		public Receber() {
+
+		}
+
+		public Receber( int arg0, int arg1 ) {
+
 			setCodrec( arg0 );
 			setNrparcrec( arg1 );
 		}
-		
+
 		public Receber( String arg ) {
-			
+
 			this.code = arg;
 			decode();
 		}
-		
-		public int getCodrec() {		
+
+		public int getCodrec() {
+
 			return codrec;
 		}
-		
-		public void setCodrec( int codrec ) {		
+
+		public void setCodrec( int codrec ) {
+
 			this.codrec = codrec;
 		}
-		
-		public int getNrparcrec() {		
+
+		public int getNrparcrec() {
+
 			return nrparcrec;
 		}
-		
-		public void setNrparcrec( int nrparcrec ) {		
+
+		public void setNrparcrec( int nrparcrec ) {
+
 			this.nrparcrec = nrparcrec;
-		}		
-		
-		public String getConta() {		
+		}
+
+		public String getConta() {
+
 			return conta;
 		}
-		
-		public void setConta( String conta ) {		
+
+		public void setConta( String conta ) {
+
 			this.conta = conta;
 		}
-		
-		public String getDocrec() {		
+
+		public String getDocrec() {
+
 			return docrec;
 		}
-		
-		public void setDocrec( String docrec ) {		
+
+		public void setDocrec( String docrec ) {
+
 			this.docrec = docrec;
 		}
-		
-		public Date getEmissao() {		
+
+		public Date getEmissao() {
+
 			return emissao;
 		}
-	
-		public void setEmissao( Date emissao ) {		
+
+		public void setEmissao( Date emissao ) {
+
 			this.emissao = emissao;
 		}
-		
-		public String getPlanejamento() {		
+
+		public String getPlanejamento() {
+
 			return planejamento;
 		}
-		
-		public void setPlanejamento( String planejamento ) {		
+
+		public void setPlanejamento( String planejamento ) {
+
 			this.planejamento = planejamento;
-		}		
-		
-		public String getCentrocusto() {		
+		}
+
+		public String getCentrocusto() {
+
 			return centrocusto;
 		}
-		
-		public void setCentrocusto( String centrocusto ) {		
+
+		public void setCentrocusto( String centrocusto ) {
+
 			this.centrocusto = centrocusto;
 		}
 
-		public BigDecimal getValor() {		
+		public BigDecimal getValor() {
+
 			return valor;
 		}
-		
-		public void setValor( BigDecimal valor ) {		
+
+		public void setValor( BigDecimal valor ) {
+
 			this.valor = valor;
 		}
 
-		public BigDecimal getValorApagar() {		
+		public BigDecimal getValorApagar() {
+
 			return valorApagar;
 		}
-		
-		public void setValorApagar( BigDecimal valorApagar ) {		
+
+		public void setValorApagar( BigDecimal valorApagar ) {
+
 			this.valorApagar = valorApagar;
 		}
-		
-		public Date getVencimento() {		
+
+		public Date getVencimento() {
+
 			return vencimento;
 		}
-		
+
 		public void setVencimento( Date vencimento ) {
+
 			this.vencimento = vencimento;
 		}
-		
-		public int getCodcliente() {		
+
+		public int getCodcliente() {
+
 			return codcliente;
 		}
-		
-		public void setCodcliente( int codcliente ) {		
+
+		public void setCodcliente( int codcliente ) {
+
 			this.codcliente = codcliente;
 		}
-		
-		public String getRazcliente() {		
+
+		public String getRazcliente() {
+
 			return razcliente;
 		}
-		
-		public void setRazcliente( String razcliente ) {		
+
+		public void setRazcliente( String razcliente ) {
+
 			this.razcliente = razcliente;
 		}
 
 		public String encode() {
-			
-			this.code = StringFunctions.strZero( String.valueOf( getCodrec() ), 10 ) 
-						+ StringFunctions.strZero( String.valueOf( getNrparcrec() ), 3 );
-			
+
+			this.code = StringFunctions.strZero( String.valueOf( getCodrec() ), 10 ) + StringFunctions.strZero( String.valueOf( getNrparcrec() ), 3 );
+
 			return this.code;
 		}
-		
+
 		public void decode() {
-			
+
 			if ( code != null && code.trim().length() > 10 ) {
-				
+
 				setCodrec( Integer.parseInt( code.substring( 0, 10 ) ) );
 				setNrparcrec( Integer.parseInt( code.substring( 10 ) ) );
 			}
 		}
-		
+
 		public String toString() {
+
 			return encode();
 		}
 	}
@@ -3871,7 +3880,7 @@ public class CnabUtil extends FbnUtil {
 	 * @return java.lang.String em formato DDMMAAAA.
 	 * @throws Exception
 	 */
-	public static String dateToString( final Date arg , String formato) throws ExceptionCnab {
+	public static String dateToString( final Date arg, String formato ) throws ExceptionCnab {
 
 		String retorno = null;
 
@@ -3879,16 +3888,14 @@ public class CnabUtil extends FbnUtil {
 			if ( arg != null ) {
 
 				int[] args = Funcoes.decodeDate( arg );
-				retorno = StringFunctions.strZero( 
-						String.valueOf( args[ 2 ] ), 2 ) + 
-						StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 ) ;
-						
-						if( "DDMMAAAA".equals(formato) || formato==null ) {						
-							retorno = retorno + StringFunctions.strZero( String.valueOf( args[ 0 ] ), 4 );
-						}
-						else if("DDMMAA".equals(formato)) {
-							retorno = retorno + String.valueOf( args[ 0 ] ).substring( 2 );
-						}
+				retorno = StringFunctions.strZero( String.valueOf( args[ 2 ] ), 2 ) + StringFunctions.strZero( String.valueOf( args[ 1 ] ), 2 );
+
+				if ( "DDMMAAAA".equals( formato ) || formato == null ) {
+					retorno = retorno + StringFunctions.strZero( String.valueOf( args[ 0 ] ), 4 );
+				}
+				else if ( "DDMMAA".equals( formato ) ) {
+					retorno = retorno + String.valueOf( args[ 0 ] ).substring( 2 );
+				}
 			}
 			else {
 				retorno = "00000000";
@@ -3920,7 +3927,7 @@ public class CnabUtil extends FbnUtil {
 				int ano = Integer.parseInt( arg.substring( 0, 4 ) );
 
 				if ( dia > 0 && mes > 0 && ano > 0 ) {
-					retorno = Funcoes.encodeDate( ano, mes, dia );					
+					retorno = Funcoes.encodeDate( ano, mes, dia );
 				}
 			}
 		} catch ( NumberFormatException e ) {
@@ -3950,7 +3957,7 @@ public class CnabUtil extends FbnUtil {
 				int ano = Integer.parseInt( arg.substring( 4 ) );
 
 				if ( dia > 0 && mes > 0 && ano > 0 ) {
-					retorno = Funcoes.encodeDate( ano, mes, dia );					
+					retorno = Funcoes.encodeDate( ano, mes, dia );
 				}
 			}
 		} catch ( NumberFormatException e ) {
@@ -3959,27 +3966,27 @@ public class CnabUtil extends FbnUtil {
 
 		return retorno;
 	}
-	
+
 	public static Date stringDDMMAAToDate( final String arg ) throws ExceptionCnab {
 
 		Date retorno = null;
 		Calendar cl = new GregorianCalendar();
 
 		try {
-			
+
 			cl = Calendar.getInstance();
-			
+
 			if ( arg != null && arg.trim().length() > 5 ) {
 
 				int dia = Integer.parseInt( arg.substring( 0, 2 ) );
 				int mes = Integer.parseInt( arg.substring( 2, 4 ) );
-				
+
 				String anoatu = cl.get( Calendar.YEAR ) + "";
-				
-				int ano = Integer.parseInt(anoatu.substring( 0,2 ) +  arg.substring( 4 )) ;
+
+				int ano = Integer.parseInt( anoatu.substring( 0, 2 ) + arg.substring( 4 ) );
 
 				if ( dia > 0 && mes > 0 && ano > 0 ) {
-					retorno = Funcoes.encodeDate( ano, mes, dia );					
+					retorno = Funcoes.encodeDate( ano, mes, dia );
 				}
 			}
 		} catch ( NumberFormatException e ) {
@@ -3988,7 +3995,6 @@ public class CnabUtil extends FbnUtil {
 
 		return retorno;
 	}
-
 
 	/**
 	 * Converte para java.math.BigDecimal um String de inteiros sem ponto ou virgula.
@@ -4006,14 +4012,14 @@ public class CnabUtil extends FbnUtil {
 			if ( arg != null ) {
 				StringBuilder value = new StringBuilder();
 				char chars[] = arg.trim().toCharArray();
-				if ( chars.length >= 3 ){
-					int indexDecimal = (chars.length-1) - 2;				
+				if ( chars.length >= 3 ) {
+					int indexDecimal = ( chars.length - 1 ) - 2;
 					for ( int i = 0; i < chars.length; i++ ) {
-						value.append( chars[i] );
+						value.append( chars[ i ] );
 						if ( i == indexDecimal ) {
 							value.append( '.' );
 						}
-					}				
+					}
 					bdReturn = new BigDecimal( value.toString() );
 				}
 			}
@@ -4027,85 +4033,85 @@ public class CnabUtil extends FbnUtil {
 	// yyy
 
 	public class RegT400 extends Reg {
-	
+
 		private String codBanco;
-	
+
 		private int loteServico;
-	
+
 		private int registroHeader;
-	
+
 		private String tipoOperacao;
-	
+
 		private String tipoServico;
-	
+
 		private String formaLancamento;
-	
+
 		private String versaoLayout;
-	
+
 		private int tipoInscEmp;
-	
+
 		private String cpfCnpjEmp;
-	
+
 		private String codConvBanco;
-	
-		private String agencia; 
-	
+
+		private String agencia;
+
 		private String digAgencia;
-	
+
 		private String conta;
-	
+
 		private String digConta;
-	
+
 		private String digAgConta;
-	
+
 		private String razEmp;
-	
+
 		private String msg1;
-	
+
 		private String msg2;
-	
+
 		private int nrRemRet;
-	
+
 		private Date dataRemRet;
-	
+
 		private Date dataCred;
-		
+
 		private int codCarteira;
-		
+
 		private String identTitulo;
-		
+
 		private String identTitEmp;
-		
+
 		private BigDecimal vlrPercMulta;
-		
+
 		private String digNossoNumero;
-		
+
 		private int codMovimento;
-		
+
 		private String docCobranca;
-		
+
 		private Date dtVencTitulo;
-		
+
 		private BigDecimal vlrTitulo;
-		
+
 		private int especieTit;
-		
+
 		private Date dtEmitTit;
-		
+
 		private int codJuros;
-		
+
 		private BigDecimal vlrJurosTaxa;
-		
-		private Date dtDesc;	
-		
+
+		private Date dtDesc;
+
 		private BigDecimal vlrDesc;
-		
+
 		private BigDecimal vlrIOF;
-		
+
 		private BigDecimal vlrAbatimento;
-		
+
 		private int tipoInscCli;
-		
+
 		private String cpfCnpjCli;
 
 		private String razCli;
@@ -4115,11 +4121,11 @@ public class CnabUtil extends FbnUtil {
 		private String bairCli;
 
 		private String cepCli;
-		
+
 		private int seqregistro;
-		
+
 		private String codRejeicoes;
-		
+
 		private BigDecimal vlrJurosMulta;
 
 		private BigDecimal vrlAbatCancel;
@@ -4131,208 +4137,208 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrOutrasDesp;
 
 		private BigDecimal vlrOutrosCred;
-		
+
 		private BigDecimal vlrOcorrSac;
-		
+
 		private int identEmitBol = 2;
-		
+
 		public String getCpfCnpjCli() {
-		
+
 			return cpfCnpjCli;
 		}
-		
+
 		public String getIdentTitEmp() {
-		
+
 			return identTitEmp;
 		}
 
 		public void setIdentTitEmp( String identTitEmp ) {
-		
+
 			this.identTitEmp = identTitEmp;
 		}
 
 		public BigDecimal getVlrJurosMulta() {
-		
+
 			return vlrJurosMulta;
 		}
 
 		public void setVlrJurosMulta( BigDecimal vlrJurosMulta ) {
-		
+
 			this.vlrJurosMulta = vlrJurosMulta;
 		}
 
 		public BigDecimal getVrlAbatCancel() {
-		
+
 			return vrlAbatCancel;
 		}
 
 		public void setVrlAbatCancel( BigDecimal vrlAbatCancel ) {
-		
+
 			this.vrlAbatCancel = vrlAbatCancel;
 		}
 
 		public BigDecimal getVlrPago() {
-		
+
 			return vlrPago;
 		}
 
 		public void setVlrPago( BigDecimal vlrPago ) {
-		
+
 			this.vlrPago = vlrPago;
 		}
 
 		public BigDecimal getVlrLiqCred() {
-		
+
 			return vlrLiqCred;
 		}
 
 		public void setVlrLiqCred( BigDecimal vlrLiqCred ) {
-		
+
 			this.vlrLiqCred = vlrLiqCred;
 		}
 
 		public BigDecimal getVlrOutrasDesp() {
-		
+
 			return vlrOutrasDesp;
 		}
 
 		public void setVlrOutrasDesp( BigDecimal vlrOutrasDesp ) {
-		
+
 			this.vlrOutrasDesp = vlrOutrasDesp;
 		}
 
 		public BigDecimal getVlrOutrosCred() {
-		
+
 			return vlrOutrosCred;
 		}
 
 		public void setVlrOutrosCred( BigDecimal vlrOutrosCred ) {
-		
+
 			this.vlrOutrosCred = vlrOutrosCred;
 		}
 
 		public BigDecimal getVlrOcorrSac() {
-		
+
 			return vlrOcorrSac;
 		}
 
 		public void setVlrOcorrSac( BigDecimal vlrOcorrSac ) {
-		
+
 			this.vlrOcorrSac = vlrOcorrSac;
 		}
 
 		public String getCodRejeicoes() {
-		
+
 			return codRejeicoes;
 		}
-		
+
 		public void setCodRejeicoes( String codRejeicoes ) {
-		
+
 			this.codRejeicoes = codRejeicoes;
 		}
 
 		public void setCpfCnpjCli( String cpfCnpjCli ) {
-		
+
 			this.cpfCnpjCli = cpfCnpjCli;
 		}
-		
+
 		public int getSeqregistro() {
-		
+
 			return seqregistro;
 		}
-		
+
 		public void setSeqregistro( int seqregistro ) {
-		
+
 			this.seqregistro = seqregistro;
 		}
 
 		public String getRazCli() {
-		
+
 			return razCli;
 		}
-		
+
 		public void setRazCli( String razCli ) {
-		
+
 			this.razCli = razCli;
 		}
-		
+
 		public String getEndCli() {
-		
+
 			return endCli;
 		}
-		
+
 		public void setEndCli( String endCli ) {
-		
+
 			this.endCli = endCli;
 		}
-		
+
 		public String getBairCli() {
-		
+
 			return bairCli;
 		}
-		
+
 		public void setBairCli( String bairCli ) {
-		
+
 			this.bairCli = bairCli;
 		}
-		
+
 		public String getCepCli() {
-		
+
 			return cepCli;
 		}
-		
+
 		public void setCepCli( String cepCli ) {
-		
+
 			this.cepCli = cepCli;
 		}
-		
+
 		public String getCidCli() {
-		
+
 			return cidCli;
 		}
-		
+
 		public void setCidCli( String cidCli ) {
-		
+
 			this.cidCli = cidCli;
 		}
-		
+
 		public String getUfCli() {
-		
+
 			return ufCli;
 		}
-		
+
 		public void setUfCli( String ufCli ) {
-		
+
 			this.ufCli = ufCli;
 		}
-		
+
 		public int getTipoInscAva() {
-		
+
 			return tipoInscAva;
 		}
-		
+
 		public void setTipoInscAva( int tipoInscAva ) {
-		
+
 			this.tipoInscAva = tipoInscAva;
 		}
-		
+
 		public String getCpfCnpjAva() {
-		
+
 			return cpfCnpjAva;
 		}
-		
+
 		public void setCpfCnpjAva( String cpfCnpjAva ) {
-		
+
 			this.cpfCnpjAva = cpfCnpjAva;
 		}
-		
+
 		public String getRazAva() {
-		
+
 			return razAva;
 		}
-		
+
 		public void setRazAva( String razAva ) {
-		
+
 			this.razAva = razAva;
 		}
 
@@ -4347,203 +4353,198 @@ public class CnabUtil extends FbnUtil {
 		private String razAva;
 
 		public BigDecimal getVlrJurosTaxa() {
-		
+
 			return vlrJurosTaxa;
 		}
-		
+
 		public int getTipoInscCli() {
-		
+
 			return tipoInscCli;
 		}
-		
+
 		public void setTipoInscCli( int tipoInscCli ) {
-		
+
 			this.tipoInscCli = tipoInscCli;
 		}
 
 		public void setVlrJurosTaxa( BigDecimal vlrJurosTaxa ) {
-		
+
 			this.vlrJurosTaxa = vlrJurosTaxa;
 		}
 
 		public BigDecimal getVlrAbatimento() {
-		
+
 			return vlrAbatimento;
 		}
 
-		
 		public void setVlrAbatimento( BigDecimal vlrAbatimento ) {
-		
+
 			this.vlrAbatimento = vlrAbatimento;
 		}
 
 		public BigDecimal getVlrIOF() {
-		
+
 			return vlrIOF;
 		}
 
-		
 		public void setVlrIOF( BigDecimal vlrIOF ) {
-		
+
 			this.vlrIOF = vlrIOF;
 		}
 
 		public Date getDtDesc() {
-		
+
 			return dtDesc;
 		}
-		
+
 		public BigDecimal getVlrDesc() {
-		
+
 			return vlrDesc;
 		}
-		
+
 		public void setVlrDesc( BigDecimal vlrDesc ) {
-		
+
 			this.vlrDesc = vlrDesc;
 		}
 
 		public void setDtDesc( Date dtDesc ) {
-		
+
 			this.dtDesc = dtDesc;
 		}
 
 		public int getCodMovimento() {
-		
+
 			return codMovimento;
 		}
-				
-		
+
 		public int getCodJuros() {
-		
+
 			return codJuros;
 		}
 
-		
 		public void setCodJuros( int codJuros ) {
-		
+
 			this.codJuros = codJuros;
 		}
 
 		public BigDecimal getVlrTitulo() {
-		
+
 			return vlrTitulo;
 		}
-	
+
 		public int getEspecieTit() {
-		
+
 			return especieTit;
 		}
-	
+
 		public Date getDtEmitTit() {
-		
+
 			return dtEmitTit;
 		}
-	
-		
+
 		public void setDtEmitTit( Date dtEmitTit ) {
-		
+
 			this.dtEmitTit = dtEmitTit;
 		}
-	
+
 		public void setEspecieTit( int especieTit ) {
-		
+
 			this.especieTit = especieTit;
 		}
-	
+
 		public void setVlrTitulo( BigDecimal vlrTitulo ) {
-		
+
 			this.vlrTitulo = vlrTitulo;
 		}
-	
+
 		public void setCodMovimento( int codMovimento ) {
-		
+
 			this.codMovimento = codMovimento;
 		}
-	
+
 		public Date getDtVencTitulo() {
-		
+
 			return dtVencTitulo;
 		}
-	
+
 		public void setDtVencTitulo( Date dtVencTitulo ) {
-		
+
 			this.dtVencTitulo = dtVencTitulo;
 		}
-	
+
 		public String getDocCobranca() {
-		
+
 			return docCobranca;
 		}
-	
+
 		public void setDocCobranca( String docCobranca ) {
-		
+
 			this.docCobranca = docCobranca;
 		}
-	
+
 		public String getDigNossoNumero() {
-		
+
 			return digNossoNumero;
 		}
-			
+
 		public void setDigNossoNumero( String digNossoNumero ) {
-		
+
 			this.digNossoNumero = digNossoNumero;
 		}
-	
+
 		public RegT400() {
-	
+
 			setRegistroHeader( 1 );
 			setTipoServico( "01" );
 			setVersaoLayout( "020" );
 		}
-	
+
 		public RegT400( final String line ) throws ExceptionCnab {
-	
+
 			this();
 			parseLine( line );
 		}
-	
+
 		public String getAgencia() {
-	
+
 			return agencia;
 		}
-	
+
 		public void setAgencia( final String agencia ) {
-	
+
 			this.agencia = agencia;
 		}
-	
+
 		public String getCpfCnpjEmp() {
-	
+
 			return cpfCnpjEmp;
 		}
-	
+
 		/**
 		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
 		 * 
-		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.business.component.CnabUtil.Reg1#setTipoInscEmp(int tipoInscEmp )
 		 */
 		public void setCpfCnpjEmp( final String cnpjEmp ) {
-	
+
 			this.cpfCnpjEmp = cnpjEmp;
 		}
-	
+
 		public String getCodBanco() {
-	
+
 			return codBanco;
 		}
-	
+
 		public void setCodBanco( final String codBanco ) {
-	
+
 			this.codBanco = codBanco;
 		}
-	
+
 		public String getCodConvBanco() {
-	
+
 			return codConvBanco;
 		}
-	
+
 		/**
 		 * Indentifica a empresa no banco para determinados tipos de serviços.<br>
 		 * Observar as regras de preenchimento abaixo no que se refere ao headre de serviço/lote:<br>
@@ -4554,88 +4555,88 @@ public class CnabUtil extends FbnUtil {
 		 * VVV - Variação da carteira de cobrança.<br>
 		 */
 		public void setCodConvBanco( final String codConvBanco ) {
-	
+
 			this.codConvBanco = codConvBanco;
 		}
-	
+
 		public String getConta() {
-	
+
 			return conta;
 		}
-	
+
 		public void setConta( final String conta ) {
-	
+
 			this.conta = conta;
 		}
-	
+
 		public Date getDataCred() {
-	
+
 			return dataCred;
 		}
-	
+
 		public void setDataCred( final Date dataCred ) {
-	
+
 			this.dataCred = dataCred;
 		}
-	
+
 		public Date getDataRemRet() {
-	
+
 			return dataRemRet;
 		}
-	
+
 		public void setDataRemRet( final Date dataRemRet ) {
-	
+
 			this.dataRemRet = dataRemRet;
 		}
-	
+
 		public String getDigAgConta() {
-	
+
 			return digAgConta;
 		}
-	
+
 		public void setDigAgConta( final String digAgeConta ) {
-	
+
 			this.digAgConta = digAgeConta;
 		}
-	
+
 		public String getDigAgencia() {
-	
+
 			return digAgencia;
 		}
-	
+
 		public void setDigAgencia( final String digAgencia ) {
-	
+
 			this.digAgencia = digAgencia;
 		}
-	
+
 		public String getDigConta() {
-	
+
 			return digConta;
 		}
-	
+
 		public void setDigConta( final String digConta ) {
-	
+
 			this.digConta = digConta;
 		}
-	
+
 		public String getFormaLancamento() {
-	
+
 			return formaLancamento;
 		}
-	
+
 		/**
 		 * Este campo não será utilizado para combrança.<br>
 		 */
 		public void setFormaLancamento( final String formaLancamento ) {
-	
+
 			this.formaLancamento = formaLancamento;
 		}
-	
+
 		public int getLoteServico() {
-	
+
 			return loteServico;
 		}
-	
+
 		/**
 		 * Indentifica um Lote de Serviço.<br>
 		 * Sequencial e nmão deve ser repetido dentro do arquivo.<br>
@@ -4643,91 +4644,91 @@ public class CnabUtil extends FbnUtil {
 		 * são exclusivas para o Header e para o Trailer do arquivo respectivamente.<br>
 		 */
 		public void setLoteServico( final int loteServico ) {
-	
+
 			this.loteServico = loteServico;
 		}
-	
+
 		public String getMsg1() {
-	
+
 			return msg1;
 		}
-	
+
 		/**
 		 * As menssagens serão impressas em todos os bloquetos referentes 1 e 2 ao mesmo lote.<br>
 		 * Estes campos não serão utilizados no arquivo de retorno.<br>
 		 */
 		public void setMsg1( final String msg1 ) {
-	
+
 			this.msg1 = msg1;
 		}
-	
+
 		/**
 		 * As menssagens serão impressas em todos os bloquetos referentes 1 e 2 ao mesmo lote.<br>
 		 * Estes campos não serão utilizados no arquivo de retorno.<br>
 		 */
 		public String getMsg2() {
-	
+
 			return msg2;
 		}
-	
+
 		public void setMsg2( final String msg2 ) {
-	
+
 			this.msg2 = msg2;
 		}
-	
+
 		public String getRazEmp() {
-	
+
 			return razEmp;
 		}
-	
+
 		public void setRazEmp( final String nomeEmp ) {
-	
+
 			this.razEmp = nomeEmp;
 		}
-	
+
 		public int getNrRemRet() {
-	
+
 			return nrRemRet;
 		}
-	
+
 		public void setNrRemRet( final int nrRemRet ) {
-	
+
 			this.nrRemRet = nrRemRet;
 		}
-	
+
 		public int getRegistroHeader() {
-	
+
 			return registroHeader;
 		}
-	
+
 		/**
 		 * Indica o tipo de registro.<br>
 		 */
 		private void setRegistroHeader( final int registroHeader ) {
-	
+
 			this.registroHeader = registroHeader;
 		}
-	
+
 		public int getTipoInscEmp() {
-	
+
 			return tipoInscEmp;
 		}
-	
+
 		/**
 		 * Indica o tipo de inscrição da empresa.<br>
 		 * 1 - CPF.<br>
 		 * 2 - CNPJ.<br>
 		 */
 		public void setTipoInscEmp( final int tipoInscEmp ) {
-	
+
 			this.tipoInscEmp = tipoInscEmp;
 		}
-	
+
 		public String getTipoOperacao() {
-	
+
 			return tipoOperacao;
 		}
-	
+
 		/**
 		 * Indica a operação que devera ser realizada com os registros Detalhe do Lote.<br>
 		 * Deve constar apenas um tipo por Lote:<br>
@@ -4739,38 +4740,38 @@ public class CnabUtil extends FbnUtil {
 		 * T - Arquivo de retorno.<br>
 		 */
 		public void setTipoOperacao( final String tipoOperacao ) {
-	
+
 			this.tipoOperacao = tipoOperacao;
 		}
-	
+
 		public String getTipoServico() {
-	
+
 			return tipoServico;
 		}
+
 		public int getCodCarteira() {
-	
+
 			return codCarteira;
 		}
-		
+
 		public void setCodCarteira( final int codCarteira ) {
-	
+
 			this.codCarteira = codCarteira;
-		}		
-	
+		}
+
 		public String getIdentTitulo() {
-	
+
 			return identTitulo;
 		}
-	
+
 		/**
 		 * Nosso número.<br>
 		 */
 		public void setIdentTitulo( final String identTitulo ) {
-	
+
 			this.identTitulo = identTitulo;
 		}
-	
-		
+
 		/**
 		 * Indica o tipo de serviço que o lote contém.<br>
 		 * 01 - Cobrança.<br>
@@ -4785,37 +4786,35 @@ public class CnabUtil extends FbnUtil {
 		 * 60 - Pagamento despesa viajante em trânsito.<br>
 		 */
 		private void setTipoServico( final String tipoServico ) {
-	
+
 			this.tipoServico = tipoServico;
 		}
-	
+
 		public String getVersaoLayout() {
-	
+
 			return versaoLayout;
 		}
-	
-		
+
 		public BigDecimal getVlrPercMulta() {
-		
+
 			return vlrPercMulta;
 		}
-	
-		
+
 		public void setVlrPercMulta( BigDecimal vlrPercMulta ) {
-		
+
 			this.vlrPercMulta = vlrPercMulta;
 		}
-	
+
 		/**
 		 * Indica o número da versão do layout do lote, composto de:<br>
 		 * versão : 2 digitos.<br>
 		 * release: 1 digito.<br>
 		 */
 		private void setVersaoLayout( final String versaoLayout ) {
-	
+
 			this.versaoLayout = versaoLayout;
 		}
-		
+
 		public int getIdentEmitBol() {
 
 			return identEmitBol;
@@ -4836,146 +4835,136 @@ public class CnabUtil extends FbnUtil {
 			this.identEmitBol = identEmitBol;
 		}
 
-	
 		@ Override
-		public String getLine(String padraocnab) throws ExceptionCnab {
-			
+		public String getLine( String padraocnab ) throws ExceptionCnab {
+
 			StringBuilder line = new StringBuilder();
-	
+
 			try {
-				
-				line.append("1");
+
+				line.append( "1" );
 				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
-				line.append(  " "  ); 						// Opcional - Dígito da Agencia para debito em conta
-				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito 
-				line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito 
-				line.append( " " ); 						// Opcional - Dígito da conta para debito 
+				line.append( " " ); // Opcional - Dígito da Agencia para debito em conta
+				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito
+				line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito
+				line.append( " " ); // Opcional - Dígito da conta para debito
 				// Identificação da Empresa cedente no banco
 				line.append( "0" ); // Posição 21 a 21 - Zero
-				line.append( StringFunctions.strZero( getCodCarteira()+"", 3 ) ); // Posição 22 a 24 - Código da Carteira
+				line.append( StringFunctions.strZero( getCodCarteira() + "", 3 ) ); // Posição 22 a 24 - Código da Carteira
 				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) ); // Posição 25 a 29 - Código da Agência Cedente
 				line.append( format( getConta(), ETipo.$9, 7, 0 ) ); // Posição 30 a 36 - Conta Corrente
 				line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Posição 37 a 37 - Dígito da conta
 				// fim da idendificação
-				
+
 				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco 
-				
-				if(getVlrPercMulta().floatValue()>0) {
-					line.append( "2" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0  sem multa.
-					line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); // Posição 67 a 70 - Percentual de multa 
+				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco
+
+				if ( getVlrPercMulta().floatValue() > 0 ) {
+					line.append( "2" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
+					line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); // Posição 67 a 70 - Percentual de multa
 				}
 				else {
-					line.append( "0" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0  sem multa.
+					line.append( "0" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
 					line.append( StringFunctions.replicate( "0", 4 ) ); // Posição 67 a 70 - Percentual de multa (preenchido com zeros)
 				}
-				
-				line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 71 a 81 - Identificação do título no banco (nosso numero)					
-				
+
+				line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 71 a 81 - Identificação do título no banco (nosso numero)
+
 				line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 82 a 82 - Digito verificador do nosso numero
 
-				//Implementar futuramente 
+				// Implementar futuramente
 				line.append( format( 0, ETipo.$9, 10, 2 ) ); // Posição 83 a 92 - Valor do Desconto bonif./dia
-				
-				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) ); // Posição 93 a 93 - Condição para Emissão da papeleta de cobrança - 1-Banco emite e processa, 2- Cliente emite e o Banco Processa.
-				
-				line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
-				
-				line.append( StringFunctions.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
-				
-				line.append( " "  ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não
-				line.append( "2" ); // Posição 106 a 106 - Endereçamento para aviso do debito autom. 1 = emite aviso / 2 =não emite
-				
-				line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
-				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) ); // Posição 109 a 110 - Identificação da ocorrência 
-				
-				line.append( StringFunctions.strZero( getDocCobranca(), 10 )); // Posição 111 a 120 - Nro do documento
-				
-				line.append( dateToString( getDtVencTitulo(),"DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
-				
-				line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
-				
-				line.append( "000" ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com zeros )
-				
-				line.append( "00000" ); // Posição 143 a 147 - Agencia depositária ( preencher com zeros )
-				
-//				line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título
 
-				/* 01-Dulicata;
-				   02-Nota Promissoria;
-				   03-Nota de seguro
-				   04-Cobrança seriada
-				   05-Recibo
-				   10-Letras de câmbio
-				   11-Nota de débito
-				   12-Duplicata de serv.
-				   99-Outros; */ 
+				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) ); // Posição 93 a 93 - Condição para Emissão da papeleta de cobrança - 1-Banco emite e processa, 2- Cliente emite e o Banco Processa.
+
+				line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
+
+				line.append( StringFunctions.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
+
+				line.append( " " ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não
+				line.append( "2" ); // Posição 106 a 106 - Endereçamento para aviso do debito autom. 1 = emite aviso / 2 =não emite
+
+				line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
+				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) ); // Posição 109 a 110 - Identificação da ocorrência
+
+				line.append( StringFunctions.strZero( getDocCobranca(), 10 ) ); // Posição 111 a 120 - Nro do documento
+
+				line.append( dateToString( getDtVencTitulo(), "DDMMAA" ) ); // Posição 121 a 126 - Data do vencimento do título
+
+				line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
+
+				line.append( "000" ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com zeros )
+
+				line.append( "00000" ); // Posição 143 a 147 - Agencia depositária ( preencher com zeros )
+
+				// line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título
+
+				/*
+				 * 01-Dulicata; 02-Nota Promissoria; 03-Nota de seguro 04-Cobrança seriada 05-Recibo 10-Letras de câmbio 11-Nota de débito 12-Duplicata de serv. 99-Outros;
+				 */
 				line.append( format( "01", ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
 
-				
 				line.append( "N" ); // Posição 150 a 150 - Identificação (Sempre "N");
-				
+
 				line.append( dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
-				
+
 				line.append( "00" ); // Posição 157 a 158 - 1° Instrução - // Implementação futura.
-				
+
 				line.append( "00" ); // Posição 159 a 160 - 2° Instrução - // Implementação futura.
-				
-				
-				if(1 == getCodJuros()) { // Se Juros/Mora diária
-					line.append( format( getVlrJurosTaxa(), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso						
+
+				if ( 1 == getCodJuros() ) { // Se Juros/Mora diária
+					line.append( format( getVlrJurosTaxa(), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
 				}
 				else {
 					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
 				}
-				
+
 				line.append( dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
-				
+
 				line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
-				
+
 				line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 193 a 205 - (Valor do IOF (Apenas para empresas seguradoras))
-				
-				line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 )); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
-				
-				line.append( StringFunctions.strZero( getTipoInscCli()+"" , 2 ));// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
+
+				line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 ) ); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
+
+				line.append( StringFunctions.strZero( getTipoInscCli() + "", 2 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
 
 				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) );// Posição 221 a 234 - CNPJ/CPF
-				
+
 				line.append( format( getRazCli(), ETipo.X, 40, 0 ) );// Posição 235 a 274 - Nome do Sacado
-				
+
 				line.append( format( getEndCli(), ETipo.X, 40, 0 ) );// Posição 275 a 314 - Endereço Completo
-				
+
 				line.append( format( getMsg1(), ETipo.X, 12, 0 ) );// Posição 315 a 326 - Mensagem 1
-				
+
 				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - Cep
-				
+
 				line.append( format( getRazAva(), ETipo.X, 60, 0 ) );// Posição 335 a 394 - Sacado/Avalista ou Mensagem 2
 
-				line.append(  format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro		
-				
+				line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro
+
 				line.append( (char) 13 );
-				
+
 				line.append( (char) 10 );
-					
-			} 
-			catch ( Exception e ) {
+
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
-	
+
 			return line.toString();
 		}
-	
+
 		@ Override
 		public void parseLine( final String line ) throws ExceptionCnab {
-	
+
 			try {
-	
+
 				if ( line == null ) {
 					throw new ExceptionCnab( "CNAB registro 1.\nLinha nula." );
 				}
-				else {	
-					
-					if(line.length()<400) { // Padrão CNAB 240
+				else {
+
+					if ( line.length() < 400 ) { // Padrão CNAB 240
 						setCodBanco( line.substring( 0, 3 ) );
 						setLoteServico( line.substring( 3, 7 ).trim().length() > 0 ? Integer.parseInt( line.substring( 3, 7 ).trim() ) : 0 );
 						setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
@@ -4999,41 +4988,39 @@ public class CnabUtil extends FbnUtil {
 						setDataCred( stringDDMMAAAAToDate( line.substring( 199, 207 ).trim() ) );
 					}
 					else { // Padrão CNAB 400
-						
-						if( "1".equals( line.substring( 0,1 ))) { // Posição 01 a 01 - Identificação do Registro 
 
-							setCodCarteira( Integer.parseInt( line.substring(107,108) ) ); // Posição 108 a 108 - Código da carteira
+						if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro
+
+							setCodCarteira( Integer.parseInt( line.substring( 107, 108 ) ) ); // Posição 108 a 108 - Código da carteira
 							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 109 - Código das ocorrências (vide pg.45)
-							
+
 							setIdentTitEmp( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
-																					
+
 							setVlrOutrasDesp( strToBigDecimal( line.substring( 188, 201 ) ) );
-							
+
 							setVlrJurosMulta( strToBigDecimal( line.substring( 201, 214 ) ) );
 							setVlrIOF( strToBigDecimal( line.substring( 214, 227 ) ) );
 							setVlrAbatimento( strToBigDecimal( line.substring( 227, 240 ) ) );
 							setVlrDesc( strToBigDecimal( line.substring( 240, 253 ) ) );
-							
+
 							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) );
 							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) );
 							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) );
 							setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
-							
+
 						}
 						else {
 							Funcoes.mensagemErro( null, "Erro na leitura do arquivo de retorno.\nNão é um registro de transação válido para o padrão CNAB 400!" );
 						}
-						
+
 					}
-					
+
 				}
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
-	
-	}
 
+	}
 
 }

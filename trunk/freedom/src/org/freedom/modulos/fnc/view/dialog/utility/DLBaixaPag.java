@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLBaixaPag.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.fnc.view.dialog.utility;
@@ -38,7 +38,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -91,19 +90,19 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private final ListaCampos lcCC = new ListaCampos( this );
 
-	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );	
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
 	public DLBaixaPag( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Baixa" );
 		setAtribos( 360, 420 );
-		
+
 		montaListaCampos();
 		montaTela();
-		
+
 	}
-	
+
 	private void montaListaCampos() {
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
@@ -149,7 +148,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
 	}
-	
+
 	private void montaTela() {
 
 		Funcoes.setBordReq( txtCodPlan );
@@ -183,12 +182,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		adic( txtCodCC, 7, 140, 100, 20 );
 		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 230, 20 );
 		adic( txtDescCC, 110, 140, 230, 20 );
-		
-		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20);
+
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20 );
 		adic( txtCodTipoCob, 7, 180, 80, 20 );
-		adic( new JLabelPad("Descrição do tipo de cobrança"), 90, 160, 250, 20 );
-		adic(txtDescTipoCob, 90, 180, 250, 20 );
-		
+		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 250, 20 );
+		adic( txtDescTipoCob, 90, 180, 250, 20 );
+
 		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
 		adic( txtDoc, 7, 220, 110, 20 );
 		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
@@ -223,9 +222,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodCC.setVlrString( sVals[ 10 ] );
 		txtCodTipoCob.setVlrString( sVals[ 11 ] );
 		txtObs.setVlrString( sVals[ 12 ] );
-		
-		
-		
+
 	}
 
 	public String[] getValores() {
@@ -249,26 +246,26 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		if ( evt.getSource() == btOK ) {
 
-			if ( txtCodConta.getVlrString().length() < 1 ) {				
+			if ( txtCodConta.getVlrString().length() < 1 ) {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 			}
-			else if ( txtCodPlan.getVlrString().length() < 13 ) {				
+			else if ( txtCodPlan.getVlrString().length() < 13 ) {
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
 			}
-			else if ( txtDtPagto.getVlrString().length() < 10 ) {				
+			else if ( txtDtPagto.getVlrString().length() < 10 ) {
 				Funcoes.mensagemInforma( this, "Data do pagamento é requerido!" );
 			}
-			else if ( txtVlrPago.getVlrString().length() < 4 ) {				
+			else if ( txtVlrPago.getVlrString().length() < 4 ) {
 				Funcoes.mensagemInforma( this, "Valor pago é requerido!" );
 			}
-			else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {					
+			else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {
 				Funcoes.mensagemInforma( this, "Valor pago deve ser maior que zero!" );
 			}
-			else {				
+			else {
 				super.actionPerformed( evt );
 			}
 		}
-		else {			
+		else {
 			super.actionPerformed( evt );
 		}
 
@@ -281,20 +278,20 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		ResultSet rs = null;
 
 		try {
-			
+
 			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 			rs = ps.executeQuery();
 
-			if ( rs.next() ) {			
+			if ( rs.next() ) {
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
 			}
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -303,18 +300,19 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			ps = null;
 			rs = null;
 		}
-		
+
 		return iRet;
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {			
+		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
+
 	}
 
 	public void setConexao( DbConnection cn ) {

@@ -2,28 +2,27 @@
  * @version 03/05/2010 <BR>
  * @author Setpoint Informática Ltda./Cristian Ribeiro Mietlicki<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std.view.frame.report <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std.view.frame.report <BR>
+ *         Classe:
  * @(#)FRVendasIpi.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de filtros para o relatório IPI.
+ *                      Tela de filtros para o relatório IPI.
  * 
  */
 
 package org.freedom.modulos.lvf.view.frame.report;
-
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,7 +74,7 @@ public class FRIpi extends FRelatorio {
 		adic( txtDataini, 57, 30, 100, 20 );
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
-		
+
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -95,70 +94,47 @@ public class FRIpi extends FRelatorio {
 		StringBuffer sCab = new StringBuffer();
 
 		sCab.append( "Perído de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
-		
+
 		try {
-			
+
 			sql.append( "SELECT V.DTEMITVENDA,T.ESTIPOMOV,SUM(V.VLRLIQVENDA), SUM(V.VLRBASEIPIVENDA) AS VALORBASEIPI,SUM(V.VLRIPIVENDA)AS VALORIPIVENDA " );
 			sql.append( "FROM VDVENDA V,EQTIPOMOV T " );
 			sql.append( "WHERE " );
 			sql.append( "V.DTEMITVENDA BETWEEN ? AND ? AND " );
 			sql.append( "V.CODTIPOMOV=T.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
 			sql.append( "AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') GROUP BY V.DTEMITVENDA,T.ESTIPOMOV " );
-			sql.append( "UNION ALL ");
+			sql.append( "UNION ALL " );
 			sql.append( "SELECT C.DTENTCOMPRA,T1.ESTIPOMOV,SUM(C.VLRLIQCOMPRA), " );
 			sql.append( "SUM(C.VLRBASEICMSCOMPRA),SUM(C.VLRICMSCOMPRA) " );
 			sql.append( "FROM CPCOMPRA C,EQTIPOMOV T1 " );
 			sql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND " );
 			sql.append( "C.CODTIPOMOV=T1.CODTIPOMOV AND T1.FISCALTIPOMOV='S' " );
 			sql.append( "GROUP BY C.DTENTCOMPRA,T1.ESTIPOMOV ORDER BY 1,3" );
-			
-			
-			
-/*			if(! "".equals( txtCodGrupo.getVlrString())) {				
-				if(txtCodGrupo.getVlrString().trim().length()==12) {
-					sql.append( " and pd.codgrup = '" + txtCodGrupo.getVlrString() + "'"  );					
-				}
-				else {
-					sql.append( " and pd.codgrup like '" + txtCodGrupo.getVlrString() + "%'"  );
-				}
-				
-				sCab.append( "\n Grupo:" + txtCodGrupo.getVlrString().trim() + "-" + txtDescGrupo.getVlrString().trim() );				
-			}
-			
-			if(txtCodCli.getVlrInteger()>0) {
-				sql.append( " and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
-				sCab.append( "\n Cliente:" + txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
-			}
-			
-			if(txtCodProd.getVlrInteger()>0) {
-				sql.append( " and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? " );
-				sCab.append( "\n Produto:" + txtCodProd.getVlrString().trim() + "-" + txtDescProd.getVlrString().trim() );
-			}
-*/
+
+			/*
+			 * if(! "".equals( txtCodGrupo.getVlrString())) { if(txtCodGrupo.getVlrString().trim().length()==12) { sql.append( " and pd.codgrup = '" + txtCodGrupo.getVlrString() + "'" ); } else { sql.append( " and pd.codgrup like '" + txtCodGrupo.getVlrString() + "%'" ); }
+			 * 
+			 * sCab.append( "\n Grupo:" + txtCodGrupo.getVlrString().trim() + "-" + txtDescGrupo.getVlrString().trim() ); }
+			 * 
+			 * if(txtCodCli.getVlrInteger()>0) { sql.append( " and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " ); sCab.append( "\n Cliente:" + txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() ); }
+			 * 
+			 * if(txtCodProd.getVlrInteger()>0) { sql.append( " and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? " ); sCab.append( "\n Produto:" + txtCodProd.getVlrString().trim() + "-" + txtDescProd.getVlrString().trim() ); }
+			 */
 
 			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
-			
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
+
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			
-/*						
-			if ( txtCodCli.getVlrInteger() > 0 ) {
-				ps.setInt( param++, lcCli.getCodEmp() );
-				ps.setInt( param++, lcCli.getCodFilial() );
-				ps.setInt( param++, txtCodCli.getVlrInteger() );
-			}
-			
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				ps.setInt( param++, lcProduto.getCodEmp() );
-				ps.setInt( param++, lcProduto.getCodFilial() );	
-				ps.setInt( param++, txtCodProd.getVlrInteger() );
-			}
-	*/		
+
+			/*
+			 * if ( txtCodCli.getVlrInteger() > 0 ) { ps.setInt( param++, lcCli.getCodEmp() ); ps.setInt( param++, lcCli.getCodFilial() ); ps.setInt( param++, txtCodCli.getVlrInteger() ); }
+			 * 
+			 * if ( txtCodProd.getVlrInteger() > 0 ) { ps.setInt( param++, lcProduto.getCodEmp() ); ps.setInt( param++, lcProduto.getCodFilial() ); ps.setInt( param++, txtCodProd.getVlrInteger() ); }
+			 */
 			rs = ps.executeQuery();
 
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
@@ -180,7 +156,7 @@ public class FRIpi extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
-		
+
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_IPI.jasper", "Relatório de IPI ", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
@@ -196,10 +172,11 @@ public class FRIpi extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
-//		lcCli.setConexao( con );
-//		lcComiss.setConexao( con );
-//		lcGrupo.setConexao( con );
-//		lcProduto.setConexao( con );
+		// lcCli.setConexao( con );
+		// lcComiss.setConexao( con );
+		// lcGrupo.setConexao( con );
+		// lcProduto.setConexao( con );
 	}
 }

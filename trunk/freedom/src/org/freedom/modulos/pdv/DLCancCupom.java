@@ -2,23 +2,23 @@
  * @version 16/07/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)DLCancCupom.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -111,7 +111,6 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 	private final ControllerECF ecf;
 
 	private ControllerTef tef;
-	
 
 	public DLCancCupom() {
 
@@ -119,11 +118,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		setTitulo( "Cancela Venda", this.getClass().getName() );
 		setAtribos( 100, 150, 715, 300 );
 
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
 
 		montaListaCampos();
 		montaTela();
@@ -138,7 +133,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		tab.addKeyListener( this );
 
 		cbInteira.setVlrString( "N" );
-		
+
 		if ( AplicativoPDV.bTEFTerm ) {
 			try {
 				tef = AplicativoPDV.getControllerTef();
@@ -223,20 +218,17 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		try {
 
-			sSQL = 
-				"SELECT NSUTEF,REDETEF,DTTRANSTEF,VLRTEF " + 
-				"FROM VDTEF " + 
-				"WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			sSQL = "SELECT NSUTEF,REDETEF,DTTRANSTEF,VLRTEF " + "FROM VDTEF " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTEF" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-			
+
 				sNSU = rs.getString( "NSUTEF" );
 				sRede = rs.getString( "REDETEF" );
 				dTrans = Funcoes.sqlDateToDate( rs.getDate( "DTTRANSTEF" ) );
@@ -253,7 +245,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao buscar tef vinculado no banco: " + err.getMessage() );
 			return false;
 		}
-		
+
 		return tef.requestCancel( sNSU.trim(), sRede.trim(), dTrans, null, bigVlr, "" );
 	}
 
@@ -269,13 +261,13 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			}
 		}
 		// Primeiro estorna o pagamento:
-		StringBuilder sql = new StringBuilder(); 
-		sql.append( "UPDATE FNITRECEBER IR SET IR.STATUSITREC='R1' " ); 
+		StringBuilder sql = new StringBuilder();
+		sql.append( "UPDATE FNITRECEBER IR SET IR.STATUSITREC='R1' " );
 		sql.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND " );
 		sql.append( "IR.CODREC IN (SELECT R.CODREC FROM FNRECEBER R " );
-		sql.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL " ); 
+		sql.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL " );
 		sql.append( "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? AND R.TIPOVENDA='E')" );
-		
+
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
@@ -297,7 +289,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		if ( bRet ) {
 
-			sql.delete( 0, sql.length() ); 
+			sql.delete( 0, sql.length() );
 			sql.append( "UPDATE VDVENDA SET STATUSVENDA='CV' " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
 
@@ -331,8 +323,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		try {
 
-			sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' " +
-					"WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND CODITVENDA=? AND TIPOVENDA='E'";
+			sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND CODITVENDA=? AND TIPOVENDA='E'";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -360,7 +351,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 				Funcoes.mensagemErro( null, "Não a mais itens na venda\nEla não pode ser cancelada!" );
 				return;
 			}
-			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o cupom?" ) == JOptionPane.YES_OPTION ) {				
+			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o cupom?" ) == JOptionPane.YES_OPTION ) {
 				if ( ecf.cancelaCupom() ) {
 					if ( cancVenda() ) {
 						bCancCupom = true;
@@ -399,9 +390,9 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		try {
 
-			StringBuilder sql = new StringBuilder();  
-			sql.append( "SELECT IT.CODITVENDA,P.DESCPROD,IT.QTDITVENDA," ); 
-			sql.append( "IT.VLRBASEICMSITVENDA,IT.VLRICMSITVENDA,IT.VLRPRODITVENDA " ); 
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT IT.CODITVENDA,P.DESCPROD,IT.QTDITVENDA," );
+			sql.append( "IT.VLRBASEICMSITVENDA,IT.VLRICMSITVENDA,IT.VLRPRODITVENDA " );
 			sql.append( "FROM VDITVENDA IT, EQPRODUTO P " );
 			sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODVENDA=? AND IT.TIPOVENDA='E' AND " );
 			sql.append( "P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD AND " );
@@ -412,7 +403,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			tab.limpa();
@@ -420,7 +411,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			int row = 0;
 
 			while ( rs.next() ) {
-				
+
 				tab.adicLinha();
 				tab.setValor( imgColuna, row, 0 );
 				tab.setValor( String.valueOf( rs.getInt( "CODITVENDA" ) ), row, 1 );
@@ -441,7 +432,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro carregar ítens da venda!\n" + e.getMessage(), true, con, e );
-		} 
+		}
 	}
 
 	private void marcaItem( int iItem ) {
@@ -457,17 +448,16 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 	}
 
 	private boolean isVendaComTef() {
-		
+
 		int iRet = 0;
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT COUNT(*) FROM VDTEF WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
+			PreparedStatement ps = con.prepareStatement( "SELECT COUNT(*) FROM VDTEF WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTEF" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -497,7 +487,8 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 		try {
 			tmp = iCancItem.substring( 1 ).split( "," );
-		} catch ( Exception e ) { }
+		} catch ( Exception e ) {
+		}
 
 		int[] ret = new int[ tmp.length ];
 
@@ -557,13 +548,21 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		super.actionPerformed( e );
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+	}
 
 	public void mouseClicked( MouseEvent e ) {
 
@@ -572,9 +571,13 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		}
 	}
 
-	public void keyTyped( KeyEvent e ) { }
+	public void keyTyped( KeyEvent e ) {
 
-	public void keyReleased( KeyEvent e ) { }
+	}
+
+	public void keyReleased( KeyEvent e ) {
+
+	}
 
 	public void keyPressed( KeyEvent e ) {
 
@@ -593,12 +596,11 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 		if ( txtVenda.getVlrInteger().intValue() != 0 ) {
 			txtVenda.setAtivo( false );
 		}
-		
+
 		try {
 			lcVenda.carregaDados();
 			carregaTabela();
-		}
-		catch (Exception e) {
+		} catch ( Exception e ) {
 			new ExceptionCarregaDados( "Erro ao carregar dados do lista campos " + lcVenda.getName() );
 		}
 

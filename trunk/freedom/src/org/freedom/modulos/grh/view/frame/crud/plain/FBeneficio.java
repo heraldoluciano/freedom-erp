@@ -13,14 +13,14 @@ import org.freedom.library.swing.frame.FDados;
  * Classe:
  * 
  * @FBeneficio.java <BR>
- *                  <BR>
+ * <BR>
  *                  Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                  versão 2.1, Fevereiro de 1999 <BR>
  *                  A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
  *                  Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
  *                  o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
  *                  Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
- *                  <BR>
+ * <BR>
  * @author Setpoint Informática Ltda. <BR>
  * @version 1.0.0 - 03/10/2008 <BR>
  * @since 03/10/2008. <BR>
@@ -37,7 +37,6 @@ public class FBeneficio extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtVlrBenef = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-
 	public FBeneficio() {
 
 		super();
@@ -48,7 +47,7 @@ public class FBeneficio extends FDados implements ActionListener {
 	}
 
 	private void montaTela() {
-		
+
 		nav.setNavigation( true );
 
 		adicCampo( txtCodBenef, 7, 20, 70, 20, "CodBenef", "Cód.benef.", ListaCampos.DB_PK, true );

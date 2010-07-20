@@ -2,23 +2,23 @@
  * @version 06/10/2009 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVolVendasProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                          Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                          modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                          na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                          Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                          sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                          Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                          Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                          de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de filtros para o relatório de volume de vendas por produto.
+ *                          Tela de filtros para o relatório de volume de vendas por produto.
  * 
  */
 
@@ -58,18 +58,17 @@ public class FRVolVendasProd extends FRelatorio {
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
-	
+
 	private JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private final ListaCampos lcProduto = new ListaCampos( this );
-	
+
 	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	
 	private ListaCampos lcGrupo = new ListaCampos( this );
 
 	public FRVolVendasProd() {
@@ -81,9 +80,9 @@ public class FRVolVendasProd extends FRelatorio {
 		montaListaCampos();
 		montaTela();
 	}
-	
+
 	private void montaListaCampos() {
-	
+
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		txtCodCli.setTabelaExterna( lcCli, null );
@@ -91,16 +90,12 @@ public class FRVolVendasProd extends FRelatorio {
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
-	
-/*		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
-		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodComiss.setTabelaExterna( lcComiss );
-		txtCodComiss.setNomeCampo( "CodVend" );
-		txtCodComiss.setFK( true );
-		lcComiss.setReadOnly( true );
-		lcComiss.montaSql( false, "VENDEDOR", "VD" );
-*/
-		
+
+		/*
+		 * lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) ); lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) ); txtCodComiss.setTabelaExterna( lcComiss ); txtCodComiss.setNomeCampo(
+		 * "CodVend" ); txtCodComiss.setFK( true ); lcComiss.setReadOnly( true ); lcComiss.montaSql( false, "VENDEDOR", "VD" );
+		 */
+
 		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
@@ -108,7 +103,7 @@ public class FRVolVendasProd extends FRelatorio {
 		txtCodGrupo.setTabelaExterna( lcGrupo, null );
 		txtCodGrupo.setFK( true );
 		txtCodGrupo.setNomeCampo( "CodGrup" );
-		
+
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProduto, null );
@@ -133,12 +128,12 @@ public class FRVolVendasProd extends FRelatorio {
 		adic( txtDataini, 57, 30, 100, 20 );
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Cli" ), 7, 70, 90, 20 );
 		adic( txtCodCli, 7, 90, 90, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 100, 70, 227, 20 );
 		adic( txtRazCli, 100, 90, 227, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Grupo" ), 7, 110, 90, 20 );
 		adic( txtCodGrupo, 7, 130, 90, 20 );
 		adic( new JLabelPad( "Descrição do grupo" ), 100, 110, 227, 20 );
@@ -168,10 +163,9 @@ public class FRVolVendasProd extends FRelatorio {
 		StringBuffer sCab = new StringBuffer();
 
 		sCab.append( "Perído de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
-		
+
 		try {
 
-			
 			sql.append( "select iv.codprod, pd.descprod, sum(iv.qtditvenda) as qtd " );
 			sql.append( "from vdvenda vd, vditvenda iv, eqproduto pd, eqtipomov tm " );
 			sql.append( "where " );
@@ -180,24 +174,24 @@ public class FRVolVendasProd extends FRelatorio {
 			sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and " );
 			sql.append( "vd.dtemitvenda between ? and ? and substring(vd.statusvenda from 1 for 1)!='C' and vd.codemp=? and vd.codfilial=? and " );
 			sql.append( "tm.SomaVdTipoMov='S' " );
-			
-			if(! "".equals( txtCodGrupo.getVlrString())) {				
-				if(txtCodGrupo.getVlrString().trim().length()==12) {
-					sql.append( " and pd.codgrup = '" + txtCodGrupo.getVlrString() + "'"  );					
+
+			if ( !"".equals( txtCodGrupo.getVlrString() ) ) {
+				if ( txtCodGrupo.getVlrString().trim().length() == 12 ) {
+					sql.append( " and pd.codgrup = '" + txtCodGrupo.getVlrString() + "'" );
 				}
 				else {
-					sql.append( " and pd.codgrup like '" + txtCodGrupo.getVlrString() + "%'"  );
+					sql.append( " and pd.codgrup like '" + txtCodGrupo.getVlrString() + "%'" );
 				}
-				
-				sCab.append( "\n Grupo:" + txtCodGrupo.getVlrString().trim() + "-" + txtDescGrupo.getVlrString().trim() );				
+
+				sCab.append( "\n Grupo:" + txtCodGrupo.getVlrString().trim() + "-" + txtDescGrupo.getVlrString().trim() );
 			}
-			
-			if(txtCodCli.getVlrInteger()>0) {
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( " and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
 				sCab.append( "\n Cliente:" + txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
 			}
-			
-			if(txtCodProd.getVlrInteger()>0) {
+
+			if ( txtCodProd.getVlrInteger() > 0 ) {
 				sql.append( " and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? " );
 				sCab.append( "\n Produto:" + txtCodProd.getVlrString().trim() + "-" + txtDescProd.getVlrString().trim() );
 			}
@@ -208,28 +202,27 @@ public class FRVolVendasProd extends FRelatorio {
 			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
-			
+
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			
+
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
+
 			ps.setInt( param++, Aplicativo.iCodEmp );
-			
+
 			ps.setInt( param++, Aplicativo.iCodFilial );
-			
-						
+
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				ps.setInt( param++, lcCli.getCodEmp() );
 				ps.setInt( param++, lcCli.getCodFilial() );
 				ps.setInt( param++, txtCodCli.getVlrInteger() );
 			}
-			
+
 			if ( txtCodProd.getVlrInteger() > 0 ) {
 				ps.setInt( param++, lcProduto.getCodEmp() );
-				ps.setInt( param++, lcProduto.getCodFilial() );	
+				ps.setInt( param++, lcProduto.getCodFilial() );
 				ps.setInt( param++, txtCodProd.getVlrInteger() );
 			}
-			
+
 			rs = ps.executeQuery();
 
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
@@ -251,7 +244,7 @@ public class FRVolVendasProd extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
-		
+
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_PROD_01.jasper", "Volume de vendas por produto", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
@@ -267,6 +260,7 @@ public class FRVolVendasProd extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcCli.setConexao( con );
 		lcComiss.setConexao( con );

@@ -1,22 +1,23 @@
 /**
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FRExtrato.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Comentários sobre a classe...
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FRExtrato.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Comentários sobre a classe...
  * 
  */
 
@@ -64,7 +65,7 @@ public class FRExtrato extends FRelatorio {
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcConta = new ListaCampos( this );
-	
+
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	public FRExtrato() {
@@ -80,15 +81,15 @@ public class FRExtrato extends FRelatorio {
 		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
-		
+
 		Vector<String> vVals2 = new Vector<String>();
 		Vector<String> vLabs2 = new Vector<String>();
-		vVals2.addElement("G");
-		vVals2.addElement("T");
-		vLabs2.addElement("Grafico");
-		vLabs2.addElement("Texto");
-		rgTipoRel = new JRadioGroup<String, String>(1, 2, vLabs2, vVals2 );
-		rgTipoRel.setVlrString("G");
+		vVals2.addElement( "G" );
+		vVals2.addElement( "T" );
+		vLabs2.addElement( "Grafico" );
+		vLabs2.addElement( "Texto" );
+		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
+		rgTipoRel.setVlrString( "G" );
 
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -99,14 +100,13 @@ public class FRExtrato extends FRelatorio {
 		adic( txtDataini, 25, 35, 110, 20 );
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 35, 40, 20 );
 		adic( txtDatafim, 175, 35, 110, 20 );
-		
-		
+
 		adic( rgTipoRel, 7, 70, 295, 30 );
-		adic( new JLabelPad( "Nº conta" ), 7, 100, 80, 20 );		
+		adic( new JLabelPad( "Nº conta" ), 7, 100, 80, 20 );
 		adic( txtCodConta, 7, 120, 90, 20 );
 		adic( new JLabelPad( "Descrição da conta" ), 100, 100, 200, 20 );
 		adic( txtDescConta, 100, 120, 200, 20 );
-		
+
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -120,47 +120,47 @@ public class FRExtrato extends FRelatorio {
 	}
 
 	public boolean temAcessoConta() {
+
 		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null;
 		boolean ret = false;
 		try {
-			sql.append("SELECT CO.NUMCONTA FROM FNCONTA CO ");
-			sql.append("WHERE CO.CODEMP=? AND CO.CODFILIAL=? AND CO.NUMCONTA=? AND ");
-			sql.append("( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU "); 
-			sql.append("WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND "); 
-			sql.append("CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp ); 
-			sql.append(" AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" )); 
-			sql.append(" AND CU.IDUSU='" + Aplicativo.strUsuario + "'))"); 
-			
-			System.out.println(sql.toString());
-			
+			sql.append( "SELECT CO.NUMCONTA FROM FNCONTA CO " );
+			sql.append( "WHERE CO.CODEMP=? AND CO.CODFILIAL=? AND CO.NUMCONTA=? AND " );
+			sql.append( "( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU " );
+			sql.append( "WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND " );
+			sql.append( "CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp );
+			sql.append( " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+			sql.append( " AND CU.IDUSU='" + Aplicativo.strUsuario + "'))" );
+
+			System.out.println( sql.toString() );
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
 			ps.setString( 3, txtCodConta.getVlrString() );
-			
+
 			rs = ps.executeQuery();
-			 
-			if(rs.next()) {
+
+			if ( rs.next() ) {
 				return true;
 			}
-			 
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
-		
+
 	}
-	
+
 	public void imprimir( boolean bVisualizar ) {
 
-		if(temAcessoConta()) {
-			
+		if ( temAcessoConta() ) {
+
 			String sCodConta = txtCodConta.getVlrString();
 			ResultSet rs = null;
-				
+
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
@@ -169,10 +169,9 @@ public class FRExtrato extends FRelatorio {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 				return;
 			}
-		
-				
+
 			StringBuilder sSQL = new StringBuilder();
-	
+
 			sSQL.append( "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," );
 			sSQL.append( "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN " );
 			sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
@@ -182,12 +181,11 @@ public class FRExtrato extends FRelatorio {
 			sSQL.append( "AND SL.DATASUBLANCA BETWEEN ? AND ? AND S.DATASL=SL.DATASUBLANCA " );
 			sSQL.append( "AND SL.CODPLAN=C.CODPLAN AND SL.CODEMPPN=C.CODEMPPN AND SL.CODFILIALPN=C.CODFILIALPN " );
 			sSQL.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? ORDER BY S.DATASL,L.CODLANCA" );
-	
-			
+
 			try {
-				
+
 				PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-				
+
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
 				ps.setString( 3, sCodConta );
@@ -197,44 +195,44 @@ public class FRExtrato extends FRelatorio {
 				ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				ps.setInt( 8, Aplicativo.iCodEmp );
 				ps.setInt( 9, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-	
-				 rs = ps.executeQuery();
-				
+
+				rs = ps.executeQuery();
+
 			} catch ( Exception e ) {
-				
+
 				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
+				Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage() );
 			}
-			
-			if("T".equals( rgTipoRel.getVlrString())){
-				
+
+			if ( "T".equals( rgTipoRel.getVlrString() ) ) {
+
 				imprimiTexto( rs, bVisualizar, "" );
 			}
-			else{
-				imprimiGrafico( rs, bVisualizar, "Conta: "+txtCodConta.getVlrString()+" - "+txtDescConta.getVlrString() ); 
+			else {
+				imprimiGrafico( rs, bVisualizar, "Conta: " + txtCodConta.getVlrString() + " - " + txtDescConta.getVlrString() );
 			}
 		}
 		else {
 			Funcoes.mensagemInforma( this, "Você não possui acesso a essa conta!" );
 		}
-		
-	} 
+
+	}
 
 	private BigDecimal buscaSaldoAnt() {
 
 		BigDecimal bigRetorno = new BigDecimal( "0.00" );
-		StringBuilder sSQL = new StringBuilder(); 
-			
+		StringBuilder sSQL = new StringBuilder();
+
 		sSQL.append( "SELECT S.SALDOSL FROM FNSALDOLANCA S, FNCONTA C " );
-		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " ); 
+		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND S.CODEMP=C.CODEMPPN AND S.CODFILIAL=C.CODFILIALPN " );
 		sSQL.append( "AND S.CODPLAN=C.CODPLAN AND S.DATASL=" );
 		sSQL.append( "(SELECT MAX(S1.DATASL) FROM FNSALDOLANCA S1 " );
 		sSQL.append( "WHERE S1.DATASL < ? AND S1.CODPLAN=S.CODPLAN " );
 		sSQL.append( "AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL)" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setString( 1, txtCodConta.getVlrString() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -246,16 +244,16 @@ public class FRExtrato extends FRelatorio {
 			}
 			rs.close();
 			ps.close();
-			
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar saldo anterior!\n" + e.getMessage(), true, con, e );
 		}
 		return bigRetorno;
 	}
-	
-	public void imprimiTexto(  ResultSet rs, boolean bVisualizar, String sCab ) {
-		
+
+	public void imprimiTexto( ResultSet rs, boolean bVisualizar, String sCab ) {
+
 		BigDecimal bTotal = new BigDecimal( "0" );
 		BigDecimal bSaldo = new BigDecimal( "0" );
 		BigDecimal bSaldoLinha = new BigDecimal( "0" );
@@ -269,11 +267,10 @@ public class FRExtrato extends FRelatorio {
 		String sDataLanca = "";
 		String sConta = "";
 		String sCodConta = txtCodConta.getVlrString();
-		
-		
+
 		boolean bPrim = true;
 		int linPag = imp.verifLinPag() - 1;
-		
+
 		try {
 
 			imp.limpaPags();
@@ -281,11 +278,11 @@ public class FRExtrato extends FRelatorio {
 			imp.addSubTitulo( "EXTRATO BANCÁRIO" );
 			sConta = "CONTA: " + sCodConta + " - " + txtDescConta.getVlrString();
 			imp.addSubTitulo( sConta );
-			
+
 			while ( rs.next() ) {
-				
-				if ( ! bPrim ) {
-				
+
+				if ( !bPrim ) {
+
 					if ( ! ( sDataLanca.equals( rs.getString( "DataSL" ) ) ) ) {
 						bTotal = new BigDecimal( rs.getString( "SaldoSL" ) );
 					}
@@ -293,13 +290,13 @@ public class FRExtrato extends FRelatorio {
 				else {
 					bTotal = new BigDecimal( rs.getString( "SaldoSL" ) );
 				}
-				
+
 				if ( imp.pRow() == linPag ) {
 					imp.eject();
 					imp.incPags();
 				}
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.montaCab();
 					imp.impCab( 136, true );
 
@@ -315,9 +312,9 @@ public class FRExtrato extends FRelatorio {
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + linhafina + "|" );
-					
+
 					if ( bPrim ) {
-						
+
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
 						imp.say( 103, "Saldo Anterior: " + Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, bAnt.toString() ) );
@@ -328,7 +325,7 @@ public class FRExtrato extends FRelatorio {
 					}
 				}
 				bPrim = false;
-				bSaldo = new BigDecimal( rs.getBigDecimal( "SaldoSL" ).toString());
+				bSaldo = new BigDecimal( rs.getBigDecimal( "SaldoSL" ).toString() );
 				bAnt = bSaldo;
 				sDataLanca = rs.getString( "DataSL" );
 				bSaldoLinha = bSaldoLinha.add( rs.getBigDecimal( "VlrSubLanca" ) );
@@ -375,13 +372,12 @@ public class FRExtrato extends FRelatorio {
 
 			imp.eject();
 			imp.fechaGravacao();
-			
-			
+
 			rs.close();
 			con.commit();
-			
+
 		} catch ( Exception e ) {
-			
+
 			e.printStackTrace();
 		}
 		if ( bVisualizar ) {
@@ -391,8 +387,8 @@ public class FRExtrato extends FRelatorio {
 			imp.print();
 		}
 	}
-	
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();

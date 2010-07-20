@@ -264,13 +264,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
 
-	private JCheckBoxPad cbEmAtendimento = new JCheckBoxPad("Só em atendimento?","S","N");
-	
+	private JCheckBoxPad cbEmAtendimento = new JCheckBoxPad( "Só em atendimento?", "S", "N" );
+
 	private boolean financeiro = false;
 
 	public enum GridChamado {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, 
-		DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI
 	}
 
 	// Construção padrão para tela de atendimento
@@ -324,8 +323,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosAtend.adic( new JLabelPad( "Item" ), 481, 40, 230, 20 );
 		pinFiltrosAtend.adic( cbitContr, 481, 60, 230, 20 );
 
-//		pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
-		pinFiltrosAtend.adic( btAtualizaAtendimentos, 722, 7, 30, 76 ); 
+		// pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
+		pinFiltrosAtend.adic( btAtualizaAtendimentos, 722, 7, 30, 76 );
 
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
@@ -360,7 +359,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 226, 40, 215, 20 );
 		pinFiltrosChamado.adic( cbTpChamado, 226, 60, 215, 20 );
 
-		pinFiltrosChamado.adic( btAtualizaChamados, 722, 7, 30, 76 ); 
+		pinFiltrosChamado.adic( btAtualizaChamados, 722, 7, 30, 76 );
 
 		pinFiltrosChamado.adic( scpStatus, 459, 7, 130, 77 );
 
@@ -394,7 +393,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		setConexao( Aplicativo.getInstace().getConexao() );
 
 		montaListaCamposAtend();
-		
 
 		montaTela();
 
@@ -416,11 +414,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcItRec.carregaDados();
 
 		tpnAbas.setSelectedIndex( 1 );
-		
+
 		tpnAbas.setEnabled( false );
 
 		calcAtrazo();
-		
+
 		financeiro = true;
 
 	}
@@ -594,7 +592,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Cham.", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
-		//		lcChamado.setDinWhereAdic( "CODCLI = #N", txtCodCli );
+		// lcChamado.setDinWhereAdic( "CODCLI = #N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
 
@@ -613,7 +611,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Hora inicial" );
 		tabatd.adicColuna( "Hora final" );
 		tabatd.adicColuna( "chamado" );
-
 
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
@@ -690,10 +687,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			String label = labels.elementAt( i );
 			ImageIcon icon = Chamado.getImagem( valor, StatusOS.IMG_TAMANHO_P );
 
-			if(Chamado.CHAMADO_CONCLUIDO.getValue().equals( valor )) {
+			if ( Chamado.CHAMADO_CONCLUIDO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
-			else if(Chamado.CHAMADO_CANCELADO.getValue().equals( valor )) {
+			else if ( Chamado.CHAMADO_CANCELADO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
@@ -744,7 +741,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "Dt.Prev." );
 		tabchm.adicColuna( "" );
 		tabchm.adicColuna( "Em atendimento" );
-		tabchm.adicColuna( "codcli" ); //Oculto
+		tabchm.adicColuna( "codcli" ); // Oculto
 
 		tabchm.setTamColuna( 60, GridChamado.DTCHAMADO.ordinal() );
 		tabchm.setTamColuna( 20, GridChamado.PRIORIDADE.ordinal() );
@@ -995,7 +992,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
 
-			if ( ! ( txtCodRec.getVlrInteger() > 0 ) && (txtDatainiAtend.getVlrDate()!=null && txtDatafimAtend.getVlrDate()!=null) ) {
+			if ( ! ( txtCodRec.getVlrInteger() > 0 ) && ( txtDatainiAtend.getVlrDate() != null && txtDatafimAtend.getVlrDate() != null ) ) {
 				sql.append( "AND ATEND.DATAATENDO BETWEEN ? AND ?" );
 			}
 
@@ -1011,7 +1008,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if ( cbTipoAtend.getVlrInteger() > 0 ) {
 				sql.append( " AND ATEND.CODEMPTO=? AND ATEND.CODFILIALTO=? AND ATEND.CODTPATENDO=? " );
 			}
-			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && (! financeiro ) ) {
+			if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
 				sql.append( " AND ATEND.CODEMPAE=? AND ATEND.CODFILIALAE=? AND ATEND.CODATEND=? " );
 			}
 			if ( txtCodChamado.getVlrInteger() > 0 ) {
@@ -1034,7 +1031,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 				ps.setString( iparam++, tipoatendo );
 
-				if ( ! ( txtCodRec.getVlrInteger() > 0 ) && (txtDatainiAtend.getVlrDate()!=null && txtDatafimAtend.getVlrDate()!=null) ) {
+				if ( ! ( txtCodRec.getVlrInteger() > 0 ) && ( txtDatainiAtend.getVlrDate() != null && txtDatafimAtend.getVlrDate() != null ) ) {
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatainiAtend.getVlrDate() ) );
 					ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafimAtend.getVlrDate() ) );
 				}
@@ -1057,7 +1054,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
 					ps.setInt( iparam++, cbTipoAtend.getVlrInteger() );
 				}
-				if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && (! financeiro ) ) {
+				if ( txtCodAtendenteAtendimento.getVlrInteger() > 0 && ( !financeiro ) ) {
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodEmp() );
 					ps.setInt( iparam++, lcAtendenteAtendimento.getCodFilial() );
 					ps.setInt( iparam++, txtCodAtendenteAtendimento.getVlrInteger() );
@@ -1114,14 +1111,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, " );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
-			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento ");
+			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento " );
 			sql.append( "from crchamado ch, crtipochamado tc " );
 			sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado " );
-			sql.append( "and ch.codemp=? and ch.codfilial=? ");
+			sql.append( "and ch.codemp=? and ch.codfilial=? " );
 
 			// Se deve utilizar todos os filtros
 
-			if( "N".equals( cbEmAtendimento.getVlrString()) ) {
+			if ( "N".equals( cbEmAtendimento.getVlrString() ) ) {
 				sql.append( "and dtchamado between ? and ? " );
 
 				if ( txtCodCli.getVlrInteger() > 0 ) {
@@ -1131,7 +1128,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					sql.append( " and ch.codemptc=? and ch.codfilialtc=? and tc.codtpchamado=? " );
 				}
 
-				// 	Verifica os status selecionados
+				// Verifica os status selecionados
 
 				boolean primeiro = true;
 
@@ -1192,7 +1189,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 			// Se deve filtrar apenas os em atendimento.
 			else {
-				sql.append( " and ch.ematendimento='S' ");
+				sql.append( " and ch.ematendimento='S' " );
 			}
 
 			sql.append( "order by ch.dtprevisao, ch.prioridade, ch.dtchamado, ch.status, ch.dtconclusao " );
@@ -1206,7 +1203,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 				// Se deve utilizar todos os filtros
 
-				if( "N".equals( cbEmAtendimento.getVlrString()) ) {
+				if ( "N".equals( cbEmAtendimento.getVlrString() ) ) {
 
 					ps.setDate( param++, Funcoes.dateToSQLDate( txtDatainiCham.getVlrDate() ) );
 					ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafimCham.getVlrDate() ) );
@@ -1239,17 +1236,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				}
 
 				rs = ps.executeQuery();
-			}
-			catch (Exception e) {
+			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
-		}
-		catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
 		return rs;
-
 
 	}
 
@@ -1268,16 +1262,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				int row = 0;
 
 				for ( int i = 0; rs.next(); i++ ) {
-					tabchm.adicLinha(); 
+					tabchm.adicLinha();
 
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTCHAMADO.name() ) ), i, GridChamado.DTCHAMADO.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.PRIORIDADE.name() ), i, GridChamado.PRIORIDADE.ordinal() );
 					tabchm.setValor( rs.getInt( GridChamado.CODCHAMADO.name() ), i, GridChamado.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.DESCCHAMADO.name() ), i, GridChamado.DESCCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( GridChamado.SOLICITANTE.name() ), i, GridChamado.SOLICITANTE.ordinal() );
-					//					tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
+					// tabchm.setValor( rs.getString( GridChamado.STATUS.name() ), i, GridChamado.STATUS.ordinal() );
 					imgColuna = Chamado.getImagem( rs.getString( "status" ), Chamado.IMG_TAMANHO_M );
-					tabchm.setValor( imgColuna, row, GridChamado.STATUS.ordinal() ); 
+					tabchm.setValor( imgColuna, row, GridChamado.STATUS.ordinal() );
 					tabchm.setValor( rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ), i, GridChamado.QTDHORASPREVISAO.ordinal() );
 					tabchm.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( GridChamado.DTPREVISAO.name() ) ), i, GridChamado.DTPREVISAO.ordinal() );
 
@@ -1285,28 +1279,28 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 					tabchm.setValor( rs.getInt( GridChamado.CODCLI.name() ), i, GridChamado.CODCLI.ordinal() );
 
-					//Se chamado estiver em atendimento
+					// Se chamado estiver em atendimento
 
-					if(rs.getString( "ematendimento" ).equals( "S" )) {					
-						tabchm.setValor( chamado_em_atendimento , i, GridChamado.EM_ATENDIMENTO.ordinal() );
-						tabchm.setValor( rs.getString( GridChamado.DADOS_ATENDIMENTO.name()  ), i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
+					if ( rs.getString( "ematendimento" ).equals( "S" ) ) {
+						tabchm.setValor( chamado_em_atendimento, i, GridChamado.EM_ATENDIMENTO.ordinal() );
+						tabchm.setValor( rs.getString( GridChamado.DADOS_ATENDIMENTO.name() ), i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
 					}
 					else {
-						tabchm.setValor( chamado_parado , i, GridChamado.EM_ATENDIMENTO.ordinal() );
+						tabchm.setValor( chamado_parado, i, GridChamado.EM_ATENDIMENTO.ordinal() );
 						tabchm.setValor( "", i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
 					}
 
 					row++;
 
-				} 
+				}
 
 				rs.close();
 
 				// Permitindo reordenação
-				if(row>0) {
-					RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabchm.getModel());    
+				if ( row > 0 ) {
+					RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabchm.getModel() );
 
-					tabchm.setRowSorter(sorter);				   
+					tabchm.setRowSorter( sorter );
 				}
 				else {
 					tabchm.setRowSorter( null );
@@ -1321,7 +1315,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void excluiAtend() {
 
-		if(Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" )==JOptionPane.YES_OPTION) {
+		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
 
 			if ( tabatd.getLinhaSel() == -1 ) {
 				Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
@@ -1343,26 +1337,26 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 	}
 
-	private void novoAtend(Integer codchamado, Integer codcli) {
+	private void novoAtend( Integer codchamado, Integer codcli ) {
 
 		Object ORets[];
 
 		DLAtendimento dl = null;
 
 		if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null ,this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger() );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger() );
 		}
 		else {
 
-			if(txtCodCli.getVlrInteger() > 0) {
+			if ( txtCodCli.getVlrInteger() > 0 ) {
 				codcli = txtCodCli.getVlrInteger();
 			}
 
-			if(codcli == null) {
-				codcli = new Integer(0);
+			if ( codcli == null ) {
+				codcli = new Integer( 0 );
 			}
 
-			dl = new DLAtendimento( codcli.intValue(), codchamado ,this, con, false, tipoatendo );
+			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, false, tipoatendo );
 		}
 
 		dl.setVisible( true );
@@ -1420,16 +1414,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			dispose();
 		}
 		else if ( evt.getSource() == btNovo ) {
-			
+
 			int linhasel = tabchm.getLinhaSel();
 
-			if(linhasel > -1) {
-				novoAtend((Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CODCLI.ordinal() ) );
+			if ( linhasel > -1 ) {
+				novoAtend( (Integer) tabchm.getValor( linhasel, GridChamado.CODCHAMADO.ordinal() ), (Integer) tabchm.getValor( linhasel, GridChamado.CODCLI.ordinal() ) );
 			}
 			else {
-				novoAtend(null, null);
+				novoAtend( null, null );
 			}
-
 
 		}
 		else if ( evt.getSource() == btExcluir ) {
@@ -1476,19 +1469,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/"); 
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
-		hParam.put( "DTINI", txtDatainiCham.getVlrDate());
-		hParam.put( "DTFIM", txtDatafimCham.getVlrDate());
+		hParam.put( "DTINI", txtDatainiCham.getVlrDate() );
+		hParam.put( "DTFIM", txtDatafimCham.getVlrDate() );
 
-		if(txtCodCli.getVlrInteger().intValue()>0) {
+		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
 			hParam.put( "CLIENTE", txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
 		}
 		else {
-			hParam.put( "CLIENTE", "DIVERSOS" );	
+			hParam.put( "CLIENTE", "DIVERSOS" );
 		}
 
-		dlGr = new FPrinterJob( "relatorios/chamados.jasper", "RELATÓRIO DE CHAMADOS", "", rs, hParam,this );
+		dlGr = new FPrinterJob( "relatorios/chamados.jasper", "RELATÓRIO DE CHAMADOS", "", rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -1555,8 +1548,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtCodAtendenteAtendimento.setVlrInteger( Atendimento.buscaAtendente() );
 		txtCodAtendenteChamado.setVlrInteger( Atendimento.buscaAtendente() );
 
-//		lcAtendenteAtendimento.carregaDados();
-//		lcAtendenteChamado.carregaDados();
+		// lcAtendenteAtendimento.carregaDados();
+		// lcAtendenteChamado.carregaDados();
 
 	}
 

@@ -1,16 +1,9 @@
 /*
- * Projeto: Freedom
- * Pacote: org.freedom.modules.fnc
- * Classe: @(#)DLBordero.java
+ * Projeto: Freedom Pacote: org.freedom.modules.fnc Classe: @(#)DLBordero.java
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
+ * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR> <BR>
  */
 
 package org.freedom.modulos.fnc.view.dialog.utility;
@@ -44,7 +37,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-
 /**
  * Wizard para criação de bordero de recebíveis.
  * 
@@ -66,29 +58,29 @@ public class DLBordero extends FDialogo {
 	private JPanelPad panelFields = new JPanelPad( 700, 170 );
 
 	private JPanelPad panelSouth = null;
-	
+
 	private JTablePad tabReceber = new JTablePad();
-	
+
 	private JButtonPad btGerarBordero = new JButtonPad( "Gerar Bordero", Icone.novo( "btExecuta.gif" ) );
-	
+
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
-	
+
 	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
 	private ImageIcon imgVencido = Icone.novo( "clVencido.gif" );
-	
+
 	private ImageIcon imgVencido2 = Icone.novo( "clVencido2.gif" );
-	
+
 	private ImageIcon imgPago = Icone.novo( "clPago.gif" );
-	
+
 	private ImageIcon imgPagoParcial = Icone.novo( "clPagoParcial.gif" );
-	
+
 	private ImageIcon imgNaoVencido = Icone.novo( "clNaoVencido.gif" );
-	
+
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
-		
+
 	private ImageIcon imgColuna = null;
-	
+
 	// *** Campos
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -102,41 +94,38 @@ public class DLBordero extends FDialogo {
 	private JTextFieldPad txtDataBordero = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextAreaPad txaObservacao = new JTextAreaPad( 300 );
-	
+
 	private ListaCampos lcConta = new ListaCampos( this );
 
 	private ListaCampos lcContaBordero = new ListaCampos( this );
-	
-	
+
 	private enum RECEBER {
-		SEL, STATUS, DTVENC, CODREC, NPARCITREC, DOCLANCA, CODCLI, RAZCLI, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, 
-		NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODBANCO, NOMEBANCO, OBS;
+		SEL, STATUS, DTVENC, CODREC, NPARCITREC, DOCLANCA, CODCLI, RAZCLI, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODBANCO, NOMEBANCO, OBS;
 	}
-	
-	
+
 	public DLBordero() {
 
 		super();
 		setTitulo( "Bordero de recebíveis" );
 		setAtribos( 740, 440 );
-		
+
 		montaListaCampos();
-		montaTela();		
-		
+		montaTela();
+
 		btGerarBordero.addActionListener( this );
 		btSelecionarTodos.addActionListener( this );
 		btSelecionarNenhum.addActionListener( this );
 	}
 
 	private void montaListaCampos() {
-		
+
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
 		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
-		txtCodConta.setNomeCampo( "NumConta" );		
+		txtCodConta.setNomeCampo( "NumConta" );
 
 		lcContaBordero.add( new GuardaCampo( txtCodContaBordero, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcContaBordero.add( new GuardaCampo( txtDescContaBordero, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -148,15 +137,15 @@ public class DLBordero extends FDialogo {
 	}
 
 	private void montaTela() {
-		
+
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.CENTER );
-		
+
 		// ***** Grid
-		
+
 		panelMaster.add( panelGrid, BorderLayout.CENTER );
 		panelGrid.setBorder( BorderFactory.createEtchedBorder() );
-				
+
 		tabReceber.adicColuna( "" );
 		tabReceber.adicColuna( "" );
 		tabReceber.adicColuna( "Vencimento" );
@@ -178,7 +167,7 @@ public class DLBordero extends FDialogo {
 		tabReceber.adicColuna( "Cód.banco" );
 		tabReceber.adicColuna( "Nome do banco" );
 		tabReceber.adicColuna( "Observação" );
-		
+
 		tabReceber.setTamColuna( 20, RECEBER.SEL.ordinal() );
 		tabReceber.setTamColuna( 20, RECEBER.STATUS.ordinal() );
 		tabReceber.setTamColuna( 80, RECEBER.DTVENC.ordinal() );
@@ -200,16 +189,16 @@ public class DLBordero extends FDialogo {
 		tabReceber.setTamColuna( 60, RECEBER.CODBANCO.ordinal() );
 		tabReceber.setTamColuna( 150, RECEBER.NOMEBANCO.ordinal() );
 		tabReceber.setTamColuna( 300, RECEBER.OBS.ordinal() );
-		
+
 		tabReceber.setColunaEditavel( RECEBER.SEL.ordinal(), true );
-				
+
 		panelGrid.add( new JScrollPane( tabReceber ), BorderLayout.CENTER );
-		
-		panelGridActions.adic( btSelecionarTodos, 3, 3, 30, 30  );
-		panelGridActions.adic( btSelecionarNenhum, 3, 38, 30, 30  );
+
+		panelGridActions.adic( btSelecionarTodos, 3, 3, 30, 30 );
+		panelGridActions.adic( btSelecionarNenhum, 3, 38, 30, 30 );
 		panelGrid.add( panelGridActions, BorderLayout.EAST );
-		
-		// ***** Campos 
+
+		// ***** Campos
 
 		panelFields.setBorder( BorderFactory.createEtchedBorder() );
 		panelMaster.add( panelFields, BorderLayout.SOUTH );
@@ -226,45 +215,45 @@ public class DLBordero extends FDialogo {
 		panelFields.adic( txtDescContaBordero, 140, 60, 360, 20 );
 		panelFields.adic( new JLabelPad( "Observação" ), 7, 80, 100, 20 );
 		panelFields.adic( new JScrollPane( txaObservacao ), 7, 100, 493, 60 );
-		
+
 		panelFields.adic( btGerarBordero, 540, 15, 160, 30 );
-		
+
 		txtCodConta.setRequerido( true );
 		txtDataBordero.setRequerido( true );
-		
+
 		// ***** Rodapé
-				
+
 		panelSouth = adicBotaoSair();
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 	}
-	
+
 	public void carregaGrid( List<GridBordero> grid ) {
-		
+
 		if ( grid != null ) {
-			
+
 			tabReceber.limpa();
-			
+
 			int row = 0;
 			for ( GridBordero g : grid ) {
-				
+
 				tabReceber.adicLinha();
-				
-				if ( "CR".equals( g.getStatus() ) )  {					
-					imgColuna = imgCancelado;  										
+
+				if ( "CR".equals( g.getStatus() ) ) {
+					imgColuna = imgCancelado;
 				}
 				else if ( "RP".equals( g.getStatus() ) && g.getValorAReceber().doubleValue() == 0 ) {
 					imgColuna = imgPago;
 				}
-				else if ( g.getValorPago().doubleValue() > 0 ) { 
-					imgColuna = imgPagoParcial ;
+				else if ( g.getValorPago().doubleValue() > 0 ) {
+					imgColuna = imgPagoParcial;
 				}
 				else if ( g.getDataVencimento().before( Calendar.getInstance().getTime() ) ) {
-					imgColuna = imgVencido;					
+					imgColuna = imgVencido;
 				}
 				else if ( g.getDataVencimento().after( Calendar.getInstance().getTime() ) ) {
 					imgColuna = imgNaoVencido;
 				}
-				
+
 				tabReceber.setValor( new Boolean( false ), row, RECEBER.SEL.ordinal() );
 				tabReceber.setValor( imgColuna, row, RECEBER.STATUS.ordinal() );
 				tabReceber.setValor( g.getDataVencimento(), row, RECEBER.DTVENC.ordinal() );
@@ -286,73 +275,75 @@ public class DLBordero extends FDialogo {
 				tabReceber.setValor( g.getBanco(), row, RECEBER.CODBANCO.ordinal() );
 				tabReceber.setValor( g.getNomeBanco(), row, RECEBER.NOMEBANCO.ordinal() );
 				tabReceber.setValor( g.getObservacao(), row, RECEBER.OBS.ordinal() );
-				
+
 				row++;
 			}
 		}
 	}
-	
-	private void selecionarTodos() {	
+
+	private void selecionarTodos() {
+
 		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
 			tabReceber.setValor( new Boolean( true ), row, RECEBER.SEL.ordinal() );
 		}
-	}	
+	}
 
-	private void selecionarNenhum() {	
+	private void selecionarNenhum() {
+
 		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
 			tabReceber.setValor( new Boolean( false ), row, RECEBER.SEL.ordinal() );
 		}
 	}
-	
+
 	private void gerarBordero() {
-		
+
 		if ( txtCodConta.getVlrString().trim().length() <= 0 ) {
 			Funcoes.mensagemInforma( this, "Conta não informada." );
 			txtCodConta.requestFocus();
 			return;
 		}
-		else if ( txtDataBordero.getVlrString().trim().length() <= 0) {
+		else if ( txtDataBordero.getVlrString().trim().length() <= 0 ) {
 			Funcoes.mensagemInforma( this, "Data do bordero não informada." );
 			txtDataBordero.requestFocus();
 			return;
 		}
 		else {
 			int countSelect = 0;
-			for ( int row=0; row < tabReceber.getNumLinhas(); row++ ) {
-				countSelect += ((Boolean)tabReceber.getValor( row, RECEBER.SEL.ordinal() )) ? 1 : 0; 
+			for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
+				countSelect += ( (Boolean) tabReceber.getValor( row, RECEBER.SEL.ordinal() ) ) ? 1 : 0;
 			}
 			if ( countSelect == 0 ) {
 				Funcoes.mensagemInforma( this, "Nenhuma parcela selecionada." );
 				return;
 			}
 		}
-		
+
 		try {
-			
+
 			StringBuilder selectSequencia = new StringBuilder();
 			selectSequencia.append( "SELECT ISEQ FROM SPGERANUM (?,?,?)" );
-			
-			PreparedStatement ps  = con.prepareStatement( selectSequencia.toString() );
+
+			PreparedStatement ps = con.prepareStatement( selectSequencia.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SPGERANUM" ) );
 			ps.setString( 3, "BD" );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			int codBordero = 1;
-			
+
 			if ( rs.next() ) {
 				codBordero = rs.getInt( "ISEQ" );
 			}
-			
+
 			con.commit();
-			
+
 			StringBuilder insertBordero = new StringBuilder();
 			insertBordero.append( "INSERT INTO FNBORDERO (CODEMP, CODFILIAL, CODBOR, DTBOR, OBSBOR, " );
 			insertBordero.append( "CODEMPCC, CODFILIALCC, NUMCONTA, CODEMPCB, CODFILIALCB, NUMCONTABOR) " );
 			insertBordero.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
-			
-			ps  = con.prepareStatement( insertBordero.toString() );
+
+			ps = con.prepareStatement( insertBordero.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
 			ps.setInt( 3, codBordero );
@@ -364,50 +355,50 @@ public class DLBordero extends FDialogo {
 			ps.setInt( 9, Aplicativo.iCodEmp );
 			ps.setInt( 10, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			ps.setString( 11, txtCodContaBordero.getVlrString() );
-			
+
 			ps.executeUpdate();
 
 			con.commit();
-						
+
 			StringBuilder insertItensBordero = new StringBuilder();
 			insertItensBordero.append( "INSERT INTO FNITBORDERO (CODEMP, CODFILIAL, CODBOR, CODEMPRC, CODFILIALRC, CODREC, NPARCITREC) " );
 			insertItensBordero.append( "VALUES (?, ?, ?, ?, ?, ?, ?)" );
-			
-			for ( int row=0; row < tabReceber.getNumLinhas(); row++ ) {
-				if ( (Boolean)tabReceber.getValor( row, RECEBER.SEL.ordinal() ) ) {
-					ps  = con.prepareStatement( insertItensBordero.toString() );
+
+			for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
+				if ( (Boolean) tabReceber.getValor( row, RECEBER.SEL.ordinal() ) ) {
+					ps = con.prepareStatement( insertItensBordero.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "FNTIBORDERO" ) );
 					ps.setInt( 3, codBordero );
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 6, (Integer)tabReceber.getValor( row, RECEBER.CODREC.ordinal() ) );
-					ps.setInt( 7, (Integer)tabReceber.getValor( row, RECEBER.NPARCITREC.ordinal() ) );
-					
-					ps.executeUpdate();	
+					ps.setInt( 6, (Integer) tabReceber.getValor( row, RECEBER.CODREC.ordinal() ) );
+					ps.setInt( 7, (Integer) tabReceber.getValor( row, RECEBER.NPARCITREC.ordinal() ) );
+
+					ps.executeUpdate();
 					con.commit();
-				}				
+				}
 			}
-			
-			ps  = con.prepareStatement( "UPDATE FNBORDERO SET STATUSBOR='BC' WHERE CODEMP=? AND CODFILIAL=? AND CODBOR=?" );
+
+			ps = con.prepareStatement( "UPDATE FNBORDERO SET STATUSBOR='BC' WHERE CODEMP=? AND CODFILIAL=? AND CODBOR=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
 			ps.setInt( 3, codBordero );
-			
-			ps.executeUpdate();	
+
+			ps.executeUpdate();
 			con.commit();
-			
+
 			Funcoes.mensagemInforma( this, "Criado bordero de número " + codBordero + "." );
 			dispose();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, e.getMessage(), true, con, e );
 		}
 	}
-	
-	@Override
-	public void actionPerformed( ActionEvent e ) { 
+
+	@ Override
+	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btSelecionarTodos ) {
 			selecionarTodos();
@@ -426,219 +417,262 @@ public class DLBordero extends FDialogo {
 		lcConta.setConexao( cn );
 		lcContaBordero.setConexao( cn );
 	}
-	
+
 	public class GridBordero {
-		
+
 		private String status;
-		
+
 		private Date dataVencimento;
-		
+
 		private int codigoReceber;
-		
+
 		private int parcela;
-		
+
 		private String documentoLancamento;
-		
+
 		private int codigoCliente;
-		
+
 		private String razaoCliente;
-		
+
 		private String documentoVenda;
-		
+
 		private BigDecimal valorParcela;
-		
+
 		private Date dataPagamento;
-		
+
 		private BigDecimal valorPago;
-		
+
 		private BigDecimal valorDesconto;
-		
+
 		private BigDecimal valorJuros;
-		
+
 		private BigDecimal valorAReceber;
-		
+
 		private String conta;
-		
+
 		private String descricaoConta;
-		
+
 		private String planejamento;
-		
+
 		private String descricaoPlanejamento;
-		
+
 		private String banco;
-		
+
 		private String nomeBanco;
-		
+
 		private String observacao;
 
-		
-		public GridBordero() {}
+		public GridBordero() {
 
-		public String getStatus() {		
+		}
+
+		public String getStatus() {
+
 			return status;
 		}
-		
-		public void setStatus( String status ) {		
+
+		public void setStatus( String status ) {
+
 			this.status = status;
 		}
-		
-		public Date getDataVencimento() {		
+
+		public Date getDataVencimento() {
+
 			return dataVencimento;
 		}
-		
-		public void setDataVencimento( Date dataVencimento ) {		
+
+		public void setDataVencimento( Date dataVencimento ) {
+
 			this.dataVencimento = dataVencimento;
 		}
-		
-		public int getCodigoReceber() {		
+
+		public int getCodigoReceber() {
+
 			return codigoReceber;
 		}
-		
-		public void setCodigoReceber( int codigoReceber ) {		
+
+		public void setCodigoReceber( int codigoReceber ) {
+
 			this.codigoReceber = codigoReceber;
 		}
-		
-		public int getParcela() {		
+
+		public int getParcela() {
+
 			return parcela;
 		}
-		
-		public void setParcela( int parcela ) {		
+
+		public void setParcela( int parcela ) {
+
 			this.parcela = parcela;
 		}
-		
-		public String getDocumentoLancamento() {		
+
+		public String getDocumentoLancamento() {
+
 			return documentoLancamento;
 		}
-		
-		public void setDocumentoLancamento( String documentoLancamento ) {		
+
+		public void setDocumentoLancamento( String documentoLancamento ) {
+
 			this.documentoLancamento = documentoLancamento;
 		}
-		
-		public int getCodigoCliente() {		
+
+		public int getCodigoCliente() {
+
 			return codigoCliente;
 		}
-		
-		public void setCodigoCliente( int codigoCliente ) {		
+
+		public void setCodigoCliente( int codigoCliente ) {
+
 			this.codigoCliente = codigoCliente;
 		}
-		
-		public String getRazaoCliente() {		
+
+		public String getRazaoCliente() {
+
 			return razaoCliente;
 		}
-		
-		public void setRazaoCliente( String razaoCliente ) {		
+
+		public void setRazaoCliente( String razaoCliente ) {
+
 			this.razaoCliente = razaoCliente;
 		}
-		
-		public String getDocumentoVenda() {		
+
+		public String getDocumentoVenda() {
+
 			return documentoVenda;
 		}
-		
-		public void setDocumentoVenda( String documentoVenda ) {		
+
+		public void setDocumentoVenda( String documentoVenda ) {
+
 			this.documentoVenda = documentoVenda;
 		}
-		
-		public BigDecimal getValorParcela() {		
+
+		public BigDecimal getValorParcela() {
+
 			return valorParcela;
 		}
-		
-		public void setValorParcela( BigDecimal valorParcela ) {		
+
+		public void setValorParcela( BigDecimal valorParcela ) {
+
 			this.valorParcela = valorParcela;
 		}
-		
-		public Date getDataPagamento() {		
+
+		public Date getDataPagamento() {
+
 			return dataPagamento;
 		}
-		
-		public void setDataPagamento( Date dataPagamento ) {		
+
+		public void setDataPagamento( Date dataPagamento ) {
+
 			this.dataPagamento = dataPagamento;
 		}
-		
-		public BigDecimal getValorPago() {		
+
+		public BigDecimal getValorPago() {
+
 			return valorPago;
 		}
-		
-		public void setValorPago( BigDecimal valorPago ) {		
+
+		public void setValorPago( BigDecimal valorPago ) {
+
 			this.valorPago = valorPago;
 		}
-		
-		public BigDecimal getValorDesconto() {		
+
+		public BigDecimal getValorDesconto() {
+
 			return valorDesconto;
 		}
-		
-		public void setValorDesconto( BigDecimal valorDesconto ) {		
+
+		public void setValorDesconto( BigDecimal valorDesconto ) {
+
 			this.valorDesconto = valorDesconto;
 		}
-		
+
 		public BigDecimal getValorJuros() {
+
 			return valorJuros;
 		}
-		
-		public void setValorJuros( BigDecimal valorJuros ) {		
+
+		public void setValorJuros( BigDecimal valorJuros ) {
+
 			this.valorJuros = valorJuros;
-		}		
-		
-		public BigDecimal getValorAReceber() {		
+		}
+
+		public BigDecimal getValorAReceber() {
+
 			return valorAReceber;
 		}
-		
-		public void setValorAReceber( BigDecimal valorAReceber ) {		
+
+		public void setValorAReceber( BigDecimal valorAReceber ) {
+
 			this.valorAReceber = valorAReceber;
 		}
 
-		public String getConta() {		
+		public String getConta() {
+
 			return conta;
 		}
-		
-		public void setConta( String conta ) {		
+
+		public void setConta( String conta ) {
+
 			this.conta = conta;
 		}
-		
-		public String getDescricaoConta() {		
+
+		public String getDescricaoConta() {
+
 			return descricaoConta;
 		}
-		
-		public void setDescricaoConta( String descricaoConta ) {		
+
+		public void setDescricaoConta( String descricaoConta ) {
+
 			this.descricaoConta = descricaoConta;
 		}
-		
-		public String getPlanejamento() {		
+
+		public String getPlanejamento() {
+
 			return planejamento;
 		}
-		
-		public void setPlanejamento( String planejamento ) {		
+
+		public void setPlanejamento( String planejamento ) {
+
 			this.planejamento = planejamento;
 		}
-		
-		public String getDescricaoPlanejamento() {		
+
+		public String getDescricaoPlanejamento() {
+
 			return descricaoPlanejamento;
 		}
-		
-		public void setDescricaoPlanejamento( String descricaoPlanejamento ) {		
+
+		public void setDescricaoPlanejamento( String descricaoPlanejamento ) {
+
 			this.descricaoPlanejamento = descricaoPlanejamento;
 		}
-		
-		public String getBanco() {		
+
+		public String getBanco() {
+
 			return banco;
 		}
-		
-		public void setBanco( String banco ) {		
+
+		public void setBanco( String banco ) {
+
 			this.banco = banco;
 		}
-		
-		public String getNomeBanco() {		
+
+		public String getNomeBanco() {
+
 			return nomeBanco;
 		}
-		
-		public void setNomeBanco( String nomeBanco ) {		
+
+		public void setNomeBanco( String nomeBanco ) {
+
 			this.nomeBanco = nomeBanco;
 		}
-		
-		public String getObservacao() {		
+
+		public String getObservacao() {
+
 			return observacao;
 		}
-		
-		public void setObservacao( String observacao ) {		
+
+		public void setObservacao( String observacao ) {
+
 			this.observacao = observacao;
 		}
 	}

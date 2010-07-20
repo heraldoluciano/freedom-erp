@@ -7,13 +7,13 @@
  *         Pacote: org.freedom.modulos.atd <BR>
  *         Classe: @(#)FAtendente.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -93,15 +93,15 @@ public class FAtendente extends FDados {
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcTipoAtend = new ListaCampos( this, "TA" );
-	
+
 	private JTextFieldPad txtMatEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
 	private ListaCampos lcVend = new ListaCampos( this, "VE" );
-	
+
 	private ListaCampos lcEmpregado = new ListaCampos( this, "EP" );
 
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
@@ -111,9 +111,9 @@ public class FAtendente extends FDados {
 	public FAtendente() {
 
 		super();
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Cadastro de Atendentes" );
 		setAtribos( 50, 20, 490, 490 );
 
@@ -122,7 +122,7 @@ public class FAtendente extends FDados {
 		lcTipoAtend.montaSql( false, "TIPOATEND", "AT" );
 		lcTipoAtend.setQueryCommit( false );
 		lcTipoAtend.setReadOnly( true );
-		txtCodTipoAtend.setTabelaExterna( lcTipoAtend, FTipoAtend.class.getCanonicalName());
+		txtCodTipoAtend.setTabelaExterna( lcTipoAtend, FTipoAtend.class.getCanonicalName() );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -136,15 +136,14 @@ public class FAtendente extends FDados {
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setQueryCommit( false );
 		lcUsu.setReadOnly( true );
-		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName());
-				
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
+
 		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula.", ListaCampos.DB_PK, false ) );
 		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, false ) );
 		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
 		lcEmpregado.setQueryCommit( false );
 		lcEmpregado.setReadOnly( true );
 		txtMatEmpr.setTabelaExterna( lcEmpregado, FEmpregado.class.getCanonicalName() );
-
 
 	}
 
@@ -172,9 +171,9 @@ public class FAtendente extends FDados {
 		adicCampo( txtCodVend, 7, 300, 100, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtDescVend, false );
 		adicDescFK( txtDescVend, 110, 300, 352, 20, "NomeVend", "Nome do comissionado" );
 		adicCampo( txtMatEmpr, 7, 340, 100, 20, "MatEmpr", "Matricula", ListaCampos.DB_FK, txtNomeEmpr, false );
-		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );		
+		adicDescFK( txtNomeEmpr, 110, 340, 352, 20, "NomeEmpr", "Nome do empregado" );
 		adicCampo( txtEmailAtend, 7, 380, 455, 20, "EmailAtend", "E-Mail", ListaCampos.DB_SI, false );
-		
+
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneAtend.setMascara( JTextFieldPad.MC_FONEDDD );

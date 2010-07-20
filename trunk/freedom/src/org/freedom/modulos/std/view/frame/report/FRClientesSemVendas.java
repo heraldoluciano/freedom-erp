@@ -2,23 +2,23 @@
  * @version 07/10/2009 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVolVendasProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                          Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                          modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                          na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                          Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                          sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                          Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                          Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                          de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de filtros para o relatório ICMS por NCM e CFOP.
+ *                          Tela de filtros para o relatório ICMS por NCM e CFOP.
  * 
  */
 
@@ -58,7 +58,7 @@ public class FRClientesSemVendas extends FRelatorio {
 	private JTextFieldFK txtNomeComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcComiss = new ListaCampos( this );
-	
+
 	public FRClientesSemVendas() {
 
 		super( false );
@@ -68,9 +68,9 @@ public class FRClientesSemVendas extends FRelatorio {
 		montaListaCampos();
 		montaTela();
 	}
-	
+
 	private void montaListaCampos() {
-	
+
 		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		txtCodComiss.setTabelaExterna( lcComiss, null );
@@ -95,12 +95,12 @@ public class FRClientesSemVendas extends FRelatorio {
 		adic( txtDataini, 57, 30, 100, 20 );
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Comis." ), 7, 70, 90, 20 );
 		adic( txtCodComiss, 7, 90, 90, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 100, 70, 227, 20 );
 		adic( txtNomeComiss, 100, 90, 227, 20 );
-				
+
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -120,7 +120,7 @@ public class FRClientesSemVendas extends FRelatorio {
 		StringBuffer sCab = new StringBuffer();
 
 		sCab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
-		
+
 		try {
 
 			sql.append( "SELECT CL.CODVEND, VO.NOMEVEND, CL.CODCLI, CL.RAZCLI, ( SELECT MAX(DTEMITVENDA) FROM VDVENDA VD, VDCLIENTE SB " );
@@ -138,37 +138,34 @@ public class FRClientesSemVendas extends FRelatorio {
 			sql.append( "SB.CODPESQ=CL.CODCLI AND " );
 			sql.append( "VD.CODEMPCL=SB.CODEMP AND VD.CODFILIALCL=SB.CODFILIAL AND VD.CODCLI=SB.CODCLI AND " );
 			sql.append( "VD.DTEMITVENDA BETWEEN ? AND ? ) " );
-			sql.append( "AND CL.ATIVOCLI='S' ");
-			
-			if(txtCodComiss.getVlrInteger()>0) {
+			sql.append( "AND CL.ATIVOCLI='S' " );
+
+			if ( txtCodComiss.getVlrInteger() > 0 ) {
 				sql.append( " and cl.codempvd=? and cl.codfilialvd=? and cl.codvend=? " );
 			}
-			
-			sql.append( "order by cl.codvend, cl.razcli ");
-			
-			
+
+			sql.append( "order by cl.codvend, cl.razcli " );
+
 			ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
-			
 
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			if(txtCodComiss.getVlrInteger()>0) {
+
+			if ( txtCodComiss.getVlrInteger() > 0 ) {
 				ps.setInt( param++, lcComiss.getCodEmp() );
 				ps.setInt( param++, lcComiss.getCodFilial() );
 				ps.setInt( param++, txtCodComiss.getVlrInteger() );
 			}
-			
+
 			rs = ps.executeQuery();
 
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
 
 			con.commit();
 
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao buscar dados do relatório!" );
 		}
@@ -183,7 +180,7 @@ public class FRClientesSemVendas extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
-		
+
 		dlGr = new FPrinterJob( "layout/rel/REL_CLI_SEM_VD_01.jasper", "Relatório de clientes sem movimento", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
@@ -199,6 +196,7 @@ public class FRClientesSemVendas extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcComiss.setConexao( con );
 	}

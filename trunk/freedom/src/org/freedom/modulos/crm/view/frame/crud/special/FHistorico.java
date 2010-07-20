@@ -7,13 +7,13 @@
  *         Pacote: org.freedom.modulos.tmk <BR>
  *         Classe: @(#)FHistorico.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -103,7 +103,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDDDCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-	
+
 	private JTextFieldFK txtDDDCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtTelCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
@@ -145,9 +145,9 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	private JTextFieldFK txtUfCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtUfCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldFK txtContCont = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldFK txtContCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
@@ -179,7 +179,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		lcCont.add( new GuardaCampo( txtFaxCont, "FaxCto", "Fax.", ListaCampos.DB_SI, false ) );
 		lcCont.add( new GuardaCampo( txtEmpCont, "RazCto", "Empresa", ListaCampos.DB_SI, false ) );
 		lcCont.add( new GuardaCampo( txtEmailCont, "EmailCto", "E-Mail", ListaCampos.DB_SI, false ) );
-		lcCont.add( new GuardaCampo( txtContCont, "ContCto", "Contato", ListaCampos.DB_SI, false ) );		
+		lcCont.add( new GuardaCampo( txtContCont, "ContCto", "Contato", ListaCampos.DB_SI, false ) );
 		lcCont.add( new GuardaCampo( txtEndCont, "EndCto", "Endereco", ListaCampos.DB_SI, false ) );
 		lcCont.add( new GuardaCampo( txtNumCont, "NumCto", "Numero", ListaCampos.DB_SI, false ) );
 		lcCont.add( new GuardaCampo( txtComplCont, "ComplCto", "Compl.", ListaCampos.DB_SI, false ) );
@@ -188,7 +188,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		lcCont.add( new GuardaCampo( txtUfCont, "UfCto", "UF", ListaCampos.DB_SI, false ) );
 		lcCont.montaSql( false, "CONTATO", "TK" );
 		lcCont.setReadOnly( true );
-		txtCodCont.setTabelaExterna( lcCont, FContato.class.getCanonicalName());
+		txtCodCont.setTabelaExterna( lcCont, FContato.class.getCanonicalName() );
 		txtCodCont.setFK( true );
 		txtCodCont.setNomeCampo( "CodCto" );
 		txtTelCont.setMascara( JTextFieldPad.MC_FONE );
@@ -261,7 +261,6 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		pinCabCont.adic( txtUfCont, 190, 150, 30, 20 );
 		pinCabCont.adic( new JLabelPad( "Falar com:" ), 223, 130, 100, 20 );
 		pinCabCont.adic( txtContCont, 223, 150, 295, 20 );
-		
 
 		pinCabCli.adic( new JLabelPad( "Cod.cli." ), 7, 10, 250, 20 );
 		pinCabCli.adic( txtCodCli, 7, 30, 80, 20 );

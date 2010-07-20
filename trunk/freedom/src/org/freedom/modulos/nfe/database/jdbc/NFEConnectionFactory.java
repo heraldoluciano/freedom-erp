@@ -1,16 +1,9 @@
 /*
- * Projeto: Freedom
- * Pacote: org.freedom.modulos.nfe.database.jdbc
- * Classe: @(#)NFEConnectionFactory.java
+ * Projeto: Freedom Pacote: org.freedom.modulos.nfe.database.jdbc Classe: @(#)NFEConnectionFactory.java
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
+ * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR> <BR>
  */
 package org.freedom.modulos.nfe.database.jdbc;
 
@@ -58,41 +51,42 @@ public class NFEConnectionFactory implements NFEListener {
 	private AbstractNFEFactory objNFEFactory = null;
 
 	private StringBuilder messagesError = new StringBuilder();
-	
+
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
-	
+
 	public NFEConnectionFactory( final DbConnection conFreedom ) {
-		this(conFreedom, null);
+
+		this( conFreedom, null );
 	}
-	
+
 	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF ) {
 
 		this.con = conFreedom;
-		
-		if(TP_NF==null) {
+
+		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
 		}
 		else {
 			setTpNF( TP_NF );
 		}
-		
+
 		if ( conFreedom != null ) {
-			
+
 			try {
-				
+
 				setHasNFE( confirmNFE() );
-				
+
 				if ( getHasNFE() ) {
-					
+
 					props = conFreedom.getProperties();
-					
+
 					setUrl( getUrlDb() );
 					setConNFE( new DbConnection( getUrl(), props ) );
-					
+
 					getObjNFEFactory().setConSys( getCon() );
-					getObjNFEFactory().setConNFE( getConNFE() );									
+					getObjNFEFactory().setConNFE( getConNFE() );
 					getObjNFEFactory().setTpNF( getTpNF() );
-					
+
 				}
 				else {
 					displayMessages();
@@ -104,74 +98,92 @@ public class NFEConnectionFactory implements NFEListener {
 	}
 
 	public DbConnection getCon() {
+
 		return con;
 	}
 
 	public void setCon( DbConnection con ) {
+
 		this.con = con;
 	}
 
 	public DbConnection getConNFE() {
+
 		return conNFE;
 	}
-	
+
 	public void setTpNF( Constant tpNF ) {
+
 		this.tpNF = tpNF;
 	}
-	
+
 	public Constant getTpNF() {
+
 		return tpNF;
-	} 
+	}
 
 	public void setConNFE( DbConnection conNFE ) {
+
 		this.conNFE = conNFE;
 	}
 
 	public boolean getHasNFE() {
+
 		return hasNFE;
 	}
 
 	public void setHasNFE( boolean hasNFE ) {
+
 		this.hasNFE = hasNFE;
 	}
 
 	public String getUrl() {
+
 		return url;
 	}
 
 	public void setUrl( String url ) {
+
 		this.url = url;
 	}
 
 	public String getStrClassNFE() {
+
 		return strClassNFE;
 	}
 
 	public void setStrClassNFE( String strClassNFE ) {
+
 		this.strClassNFE = strClassNFE;
 	}
 
 	public String getDirNFE() {
+
 		return dirNFE;
 	}
 
 	public void setDirNFE( String dirNFE ) {
+
 		this.dirNFE = dirNFE;
 	}
 
 	public Class<AbstractNFEFactory> getClassNFEFactory() {
+
 		return classNFEFactory;
 	}
 
 	public void setClassNFEFactory( Class<AbstractNFEFactory> classNFEFactory ) {
+
 		this.classNFEFactory = (Class<AbstractNFEFactory>) classNFEFactory;
 	}
 
 	public AbstractNFEFactory getObjNFEFactory() {
+
 		return objNFEFactory;
 	}
 
 	public void setObjNFEFactory( AbstractNFEFactory objNFEFactory ) {
+
 		this.objNFEFactory = objNFEFactory;
 		if ( this.objNFEFactory != null ) {
 			this.objNFEFactory.addNFEListener( this );
@@ -182,18 +194,18 @@ public class NFEConnectionFactory implements NFEListener {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, docvenda, getDirNFE() );
 		getObjNFEFactory().setKey( key );
-		
+
 	}
-	
+
 	public void setKey( Integer codemp, Integer codfilial, Integer codcompra, Integer doccompra ) {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, codcompra, doccompra, getDirNFE() );
 		getObjNFEFactory().setKey( key );
-		
+
 	}
 
-
 	private String getUrlDb() {
+
 		return Aplicativo.getParameter( "banconfe" );
 	}
 
@@ -202,56 +214,56 @@ public class NFEConnectionFactory implements NFEListener {
 		getObjNFEFactory().post();
 	}
 
-	@SuppressWarnings ( "unchecked" )
+	@ SuppressWarnings ( "unchecked" )
 	private boolean confirmNFE() throws SQLException {
 
 		boolean result = false;
-		
+
 		if ( "S".equalsIgnoreCase( Aplicativo.getParameter( "nfe" ) ) ) {
-			
+
 			PreparedStatement ps = con.prepareStatement( "SELECT NFEEST FROM SGESTACAO WHERE CODEMP=? AND CODFILIAL=? AND CODEST=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAO" ) );
 			ps.setInt( 3, Aplicativo.iNumEst );
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				if ( "S".equalsIgnoreCase( rs.getString( "NFEEST" ) ) ) {
 					result = true;
 				}
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			if ( result ) {
-				
+
 				StringBuilder sqlpref = new StringBuilder();
-				
+
 				sqlpref.append( "SELECT CLASSNFE, " );
-				
-				if(SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+
+				if ( SystemFunctions.getOS() == SystemFunctions.OS_LINUX ) {
 					sqlpref.append( "DIRNFELIN " );
 				}
-				else if(SystemFunctions.getOS()==SystemFunctions.OS_WINDOWS) {
+				else if ( SystemFunctions.getOS() == SystemFunctions.OS_WINDOWS ) {
 					sqlpref.append( "DIRNFE " );
 				}
-				
+
 				sqlpref.append( "DIRNFE FROM SGPREFERE1 P WHERE P.CODEMP=? AND P.CODFILIAL=?" );
-				
-				ps = con.prepareStatement( sqlpref.toString() ); 
-						
+
+				ps = con.prepareStatement( sqlpref.toString() );
+
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
-					
+
 					setDirNFE( rs.getString( "DIRNFE" ) );
 					setStrClassNFE( rs.getString( "CLASSNFE" ) );
-					
+
 					if ( getDirNFE() == null || "".equals( getDirNFE() ) ) {
 						messagesError.append( "Diretório de exportação NFE não definido!\n" );
 						result = false;
@@ -288,30 +300,31 @@ public class NFEConnectionFactory implements NFEListener {
 							result = false;
 						}
 					}
-					
+
 					rs.close();
-					ps.close();			
+					ps.close();
 					con.commit();
-					
+
 				}
 			}
-			
 
 		}
-		
+
 		return result;
 	}
 
 	private void displayMessages() {
 
 		if ( messagesError.length() > 0 ) {
-			
+
 			Funcoes.mensagemInforma( null, messagesError.toString() );
 			messagesError.delete( 0, messagesError.length() );
 		}
 	}
-	
-	public void beforeValidSend( NFEEvent e ) { }
+
+	public void beforeValidSend( NFEEvent e ) {
+
+	}
 
 	public void afterValidSend( NFEEvent e ) {
 
@@ -323,20 +336,21 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 	}
 
-	public void beforeRunSend( NFEEvent e ) { }
+	public void beforeRunSend( NFEEvent e ) {
+
+	}
 
 	public void afterRunSend( NFEEvent e ) {
-	
+
 		AbstractNFEFactory nfefactory = e.getNfefactory();
-		
+
 		if ( nfefactory.getListInconsistency().size() > 0 ) {
 			DLInconsistency inconsistency = new DLInconsistency( nfefactory.getListInconsistency() );
-			inconsistency.setVisible( true );			
+			inconsistency.setVisible( true );
 		}
 		else {
-			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE()	);
+			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
 		}
 	}
 
 }
-

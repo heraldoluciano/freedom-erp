@@ -85,9 +85,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtCodTipoRecMercDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtRefProdCab = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-	
+
 	private JTextFieldPad txtRefProdDet = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescTipoRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -97,7 +97,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldFK txtDescProdCab = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProdPadrao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -216,16 +216,17 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private AbstractCalcRenda objplugin = null;
 
 	public FRecMerc() {
+
 		montaTela();
 	}
-	
+
 	private void montaTela() {
 
 		setTitulo( "Recepção de mercadorias" );
 		setAtribos( 50, 50, 653, 480 );
 
 		nav.setNavigation( true );
-		
+
 		configuraCampos();
 		carregaPlugin();
 		criaTabelas();
@@ -237,17 +238,16 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		setImprimir( true );
 
+	}
 
-	} 
-	
 	public FRecMerc( boolean novo ) {
 
 		super();
-		
+
 		this.novo = novo;
 
 		montaTela();
-		
+
 	}
 
 	private void configuraCampos() {
@@ -326,7 +326,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampo( txtCodProdCab, 7, 60, 70, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
 		adicDescFK( txtDescProdCab, 80, 60, 417, 20, "DescProd", "Descrição do Produto" );
 		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
-		
+
 		adicCampo( txtCodTran, 7, 100, 70, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
 		adicDescFK( txtNomeTran, 80, 100, 417, 20, "NomeTran", "Nome da transportadora" );
 
@@ -517,7 +517,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcFor.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcTipoRecMerc.addCarregaListener( this );
-		
+
 		btAdicBairro.addActionListener( this );
 		btPesagem.addActionListener( this );
 		btImp.addActionListener( this );
@@ -532,7 +532,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
 		lcTipoRecMerc.add( new GuardaCampo( txtDescTipoRecMerc, "DescTipoRecMerc", "Descrição do tipo de recepção de mercadoria", ListaCampos.DB_SI, false ) );
 		lcTipoRecMerc.add( new GuardaCampo( txtCodProdPadrao, "Codprod", "Cód.Prod.", ListaCampos.DB_SI, false ) );
-		
+
 		txtCodTipoRecMerc.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
 		txtCodTipoRecMerc.setNomeCampo( "CodTipoRecMerc" );
 		txtCodTipoRecMerc.setFK( true );
@@ -545,7 +545,6 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcProdCab.add( new GuardaCampo( txtCodProdCab, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProdCab.add( new GuardaCampo( txtDescProdCab, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdCab.add( new GuardaCampo( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
-		
 
 		txtCodProdCab.setTabelaExterna( lcProdCab, FProduto.class.getCanonicalName() );
 		txtCodProdCab.setNomeCampo( "CodProd" );
@@ -739,7 +738,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private void imprimir( boolean bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
-		
+
 		String DataP1 = null;
 		String HoraP1 = null;
 		String UnidP1 = null;
@@ -749,14 +748,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		String DataP2 = null;
 		String HoraP2 = null;
 		String UnidP2 = null;
-		
+
 		BigDecimal PesoP2 = null;
 		BigDecimal PesoLiq = null;
 		BigDecimal media = null;
-		
+
 		String renda = null;
-		
-		RecMerc recmerc = new RecMerc(this, txtTicket.getVlrInteger(), con);
+
+		RecMerc recmerc = new RecMerc( this, txtTicket.getVlrInteger(), con );
 
 		try {
 
@@ -784,8 +783,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				media = (BigDecimal) p3.get( "media" );
 				renda = (String) p3.get( "renda" );
 
-			} 
-			catch ( Exception e ) {
+			} catch ( Exception e ) {
 				System.out.println( "Erro ao buscar pesagens!" );
 			}
 
@@ -924,7 +922,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			if ( txtPeso1.getVlrBigDecimal().floatValue() > 0 && txtDataPesagem.getVlrDate() != null && txtHoraPesagem.getVlrString() != null ) {
 
 				salvaAmostra();
-				
+
 				if ( TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue().equals( txtTipoProcRecMerc.getVlrString() ) ) {
 
 					calcRenda();
@@ -935,7 +933,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 					mostraRenda( false );
 
 				}
-				
+
 			}
 
 			limpaAmostra();
@@ -960,7 +958,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 					txtRendaAmostragem.setVlrInteger( objplugin.getRenda() );
 
 					mostraRenda( true );
-					
+
 					lcDet.edit();
 					lcDet.post();
 
@@ -1033,7 +1031,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			ps.execute();
 			con.commit();
-			
+
 			lcDet.edit();
 			lcDet.post();
 
@@ -1178,11 +1176,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	}
 
 	private void atualizaStatus() {
-		
-		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );		
-	
+
+		RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+
 	}
-	
+
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcFor ) {
@@ -1199,16 +1197,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
-			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao 
-			if( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
-				carregaSequencia(1);
+			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao
+			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
+				carregaSequencia( 1 );
 			}
 			// Se ja tiver sido realizada a pesagem 2 deve carregar a proxima sequencia
-			else if (txtStatus.getVlrString().equals( RecMerc.STATUS_DESCARREGAMENTO.getValue() )) {
-				carregaSequencia(2);
+			else if ( txtStatus.getVlrString().equals( RecMerc.STATUS_DESCARREGAMENTO.getValue() ) ) {
+				carregaSequencia( 2 );
 			}
-			
-			
+
 		}
 		else if ( cevt.getListaCampos() == lcTipoRecMerc ) {
 			carregaProdutoPadrao();
@@ -1234,34 +1231,34 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 
 	}
-	
+
 	// Futuramente deve ser implementado para buscar automaticamente o
 	// coditrecmerc a partir do status e do tipo de processo.
-	private void carregaSequencia(Integer proximos) {
+	private void carregaSequencia( Integer proximos ) {
+
 		try {
-			
-			for(int i=0;i<proximos;i++) {
+
+			for ( int i = 0; i < proximos; i++ ) {
 				lcDet.next();
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void carregaProdutoPadrao() {
+
 		try {
-			if(txtCodProdPadrao.getVlrInteger()>0 && (!(txtCodProdCab.getVlrInteger()>0)) ) {
+			if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ! ( txtCodProdCab.getVlrInteger() > 0 ) ) ) {
 				txtCodProdCab.setVlrInteger( txtCodProdPadrao.getVlrInteger() );
 				lcProdCab.carregaDados();
 			}
-		}
-		catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		// TODO Auto-generated method stub
@@ -1311,11 +1308,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	public void dispose() {
 
 		super.dispose();
-		
-		if(tela_mae!=null) {
+
+		if ( tela_mae != null ) {
 			tela_mae.montaGrid();
 		}
-		
+
 	}
 
 	@ SuppressWarnings ( "unchecked" )
@@ -1368,12 +1365,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 
 	}
-	public void keyPressed(KeyEvent kevt) {
-		
-		if(kevt.getKeyCode() == KeyEvent.VK_F12) {
+
+	public void keyPressed( KeyEvent kevt ) {
+
+		if ( kevt.getKeyCode() == KeyEvent.VK_F12 ) {
 			btPesagem.doClick();
 		}
-		
+
 	}
 
 }

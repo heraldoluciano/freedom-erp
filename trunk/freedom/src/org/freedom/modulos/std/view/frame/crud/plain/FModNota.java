@@ -46,16 +46,16 @@ public class FModNota extends FDados implements ActionListener {
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDescModNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JRadioGroup<String, String> rbTipoModNota;
 
 	public FModNota() {
 
 		super( false );
-		
+
 		setTitulo( "Cadastro de Modelo de NFs" );
 		setAtribos( 50, 50, 375, 165 );
-		
+
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.add( "Normal" );
 		vLabs.add( "NF-e" );
@@ -66,17 +66,17 @@ public class FModNota extends FDados implements ActionListener {
 		vVals.add( "O" );
 		rbTipoModNota = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
 		rbTipoModNota.setVlrString( "N" );
-		
+
 		adicCampo( txtCodModNota, 7, 20, 90, 20, "CodModNota", "Cód.mod.nts.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModNota, 100, 20, 250, 20, "DescModNota", "Descrição da nota fiscal", ListaCampos.DB_SI, true );
 		adicDB( rbTipoModNota, 7, 60, 343, 30, "TipoModNota", "Tipo", false );
-		
+
 		setListaCampos( true, "MODNOTA", "LF" );
 		lcCampos.setQueryInsert( false );
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-		
+
 		setImprimir( true );
 	}
 
@@ -88,34 +88,34 @@ public class FModNota extends FDados implements ActionListener {
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
 
-		ImprimeOS imp = new ImprimeOS( "", con );		
-		
+		ImprimeOS imp = new ImprimeOS( "", con );
+
 		DLRModNota dl = new DLRModNota();
 		dl.setVisible( true );
-		
+
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
 		}
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( "SELECT CODMODNOTA,DESCMODNOTA FROM LFMODNOTA ORDER BY " + dl.getValor() );
 			ResultSet rs = ps.executeQuery();
-			
+
 			int linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
 			imp.setTitulo( "Relatório de modelos de NFs" );
 			imp.limpaPags();
-			
+
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 80, false );
 					imp.pulaLinha( 0, imp.normal() );
@@ -124,11 +124,11 @@ public class FModNota extends FDados implements ActionListener {
 					imp.pulaLinha( 1, imp.normal() );
 					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
 				}
-				
+
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodModNota" ) );
 				imp.say( 30, rs.getString( "DescModNota" ) );
-				
+
 				if ( imp.pRow() >= linPag ) {
 					imp.incPags();
 					imp.eject();
@@ -144,12 +144,12 @@ public class FModNota extends FDados implements ActionListener {
 			rs.close();
 			ps.close();
 			con.commit();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta tabela de modelos de NFs!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		dl.dispose();
 
 		if ( bVisualizar ) {

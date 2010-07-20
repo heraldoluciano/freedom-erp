@@ -2,23 +2,23 @@
  * @version 07/04/2010 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRReceber.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para filtros do relatório de contas a receber/pagar
+ *                    Tela para filtros do relatório de contas a receber/pagar
  * 
  */
 
@@ -93,7 +93,6 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 
 	private void montaRadioGroups() {
 
-
 	}
 
 	private void montaTela() {
@@ -103,42 +102,42 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 
 		adic( new JLabelPad( "Periodo:" ), 7, 0, 80, 20 );
 		adic( lbLinha, 7, 20, 300, 40 );
-		
+
 		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 30, 30, 20 );
 		adic( txtDataini, 47, 30, 80, 20 );
-		
+
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 127, 30, 30, 20 );
 		adic( txtDatafim, 157, 30, 80, 20 );
 
 		adic( new JLabelPad( "Cód.banco" ), 7, 65, 80, 20 );
 		adic( txtCodBanco, 7, 85, 80, 20 );
-		
+
 		adic( new JLabelPad( "Descrição do banco" ), 90, 65, 215, 20 );
 		adic( txtDescBanco, 90, 85, 215, 20 );
-		
+
 	}
 
 	public void imprimir( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		StringBuilder sql = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
-		
+
 		String titulo = null;
 
 		try {
-		
+
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
 			}
-	
-			filtros.append( "Período de " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString()) ;
-			
+
+			filtros.append( "Período de " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString() );
+
 			titulo = "Contas a Receber/Pagar";
-	
+
 			sql.append( "select ip.codemp, ip.codfilial, ip.dtvencitpag vencimento, " );
 			sql.append( "cast(sum(ip.vlrapagitpag) as numeric(15,2)) vlrapagar, cast(0 as decimal(15,2)) vlrreceber " );
 			sql.append( "from fnitpagar ip, fnpagar pg " );
@@ -146,16 +145,16 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 			sql.append( "ip.codemp = ? and ip.codfilial = ? and ip.dtvencitpag between ? and ? " );
 			sql.append( "and pg.codemp = ip.codemp and pg.codfilial = ip.codfilial and pg.codpag = ip.codpag " );
 			sql.append( "and ip.statusitpag != 'PP' and cast(ip.vlrapagitpag as numeric(15,2)) > 0 " );
-			
+
 			if ( txtCodBanco.getVlrString().length() > 0 ) {
 				sql.append( " and pg.codempbo=? and pg.codfilialbo=? and pg.codbanco=? " );
-				filtros.append( "\nBanco.: " + txtCodBanco.getVlrString() + " - " +  txtDescBanco.getVlrString().trim());
+				filtros.append( "\nBanco.: " + txtCodBanco.getVlrString() + " - " + txtDescBanco.getVlrString().trim() );
 			}
-			
+
 			sql.append( "group by 1 , 2, 3 " );
-			 
+
 			sql.append( "union all " );
-			 
+
 			sql.append( "select ir.codemp, ir.codfilial, coalesce(ir.dtprevitrec,ir.dtvencitrec) vencimento, " );
 			sql.append( "cast(0 as decimal(15,2)) vlrpagar, " );
 			sql.append( "cast(sum(ir.vlrapagitrec) as numeric(15,2)) vlrareceber " );
@@ -167,29 +166,17 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 			if ( txtCodBanco.getVlrString().length() > 0 ) {
 				sql.append( " and ir.codempbo=? AND ir.codfilialbo=? and ir.codbanco=? " );
 			}
-			
+
 			sql.append( "group by 1 , 2, 3 " );
-	
+
 			sql.append( "order by 1, 3, 3 " );
-	
+
 			int iparam = 1;
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, Aplicativo.iCodFilial );
-			
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );			
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			if ( txtCodBanco.getVlrString().length() > 0 ) {
-				ps.setInt( iparam++, Aplicativo.iCodEmp );
-				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( iparam++, txtCodBanco.getVlrString() );
-			}
-			
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, Aplicativo.iCodFilial );
-			
+
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
@@ -198,20 +185,31 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
 				ps.setString( iparam++, txtCodBanco.getVlrString() );
 			}
-			
-			rs = ps.executeQuery();
-	
-				imprimirGrafico( bVisualizar, rs, filtros.toString() );
-	
-				rs.close();
-				ps.close();
-				con.commit();
 
-		} 
-		catch ( SQLException err ) {
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, Aplicativo.iCodFilial );
+
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			if ( txtCodBanco.getVlrString().length() > 0 ) {
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( iparam++, txtCodBanco.getVlrString() );
+			}
+
+			rs = ps.executeQuery();
+
+			imprimirGrafico( bVisualizar, rs, filtros.toString() );
+
+			rs.close();
+			ps.close();
+			con.commit();
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contas a receber/pagar!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		}		
+		}
 	}
 
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
@@ -233,7 +231,7 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do relatório contas a receber/pagar!" + err.getMessage(), true, con, err );				
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório contas a receber/pagar!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
@@ -241,9 +239,9 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		lcBanco.setConexao( cn );
-		
+
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {

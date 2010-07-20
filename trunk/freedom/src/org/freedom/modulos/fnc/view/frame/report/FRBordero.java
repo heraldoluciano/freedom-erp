@@ -150,14 +150,14 @@ public class FRBordero extends FRelatorio {
 		double deTotParc = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
 			}
-			
+
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 

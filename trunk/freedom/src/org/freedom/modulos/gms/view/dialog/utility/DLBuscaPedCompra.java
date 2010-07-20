@@ -165,7 +165,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		setTitulo( "Busca pedido de compra", this.getClass().getName() );
 
 		telacompra = (FCompra) cp;
-		
+
 		setAtribos( 750, 480 );
 
 		montaTela();
@@ -294,7 +294,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		btResetItCompra.addActionListener( this );
 
 		lcCompra.addCarregaListener( this );
-		
+
 		txtCodCompra.addFocusListener( this );
 
 		addWindowListener( this );
@@ -390,7 +390,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		// Lista campos do fornecedor
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.Forn.", ListaCampos.DB_PK, txtRazFor, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		txtCodFor.setTabelaExterna( lcFor, null);
+		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
@@ -449,9 +449,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabitcompra.adicLinha();
 
 					tabitcompra.setValor( new Boolean( true ), irow, ITCOMPRA.SEL.ordinal() );
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODITCOMPRA.toString()), irow, ITCOMPRA.CODITCOMPRA.ordinal() );
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODPROD.toString()), irow, ITCOMPRA.CODPROD.ordinal() );
-					tabitcompra.setValor( rs.getString( ITCOMPRA.DESCPROD.toString()), irow, ITCOMPRA.DESCPROD.ordinal() );
+					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODITCOMPRA.toString() ), irow, ITCOMPRA.CODITCOMPRA.ordinal() );
+					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODPROD.toString() ), irow, ITCOMPRA.CODPROD.ordinal() );
+					tabitcompra.setValor( rs.getString( ITCOMPRA.DESCPROD.toString() ), irow, ITCOMPRA.DESCPROD.ordinal() );
 
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.QTDITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.QTDITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.QTDITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.PRECOITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.PRECOITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.PRECOITCOMPRA.ordinal() );
@@ -462,10 +462,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabitcompra.setValor( "", irow, ITCOMPRA.AGRUP.ordinal() );
 					tabitcompra.setValor( "0,00", irow, ITCOMPRA.VLRAGRUP.ordinal() );
 
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODCOMPRA.toString()), irow, ITCOMPRA.CODCOMPRA.ordinal() );
+					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODCOMPRA.toString() ), irow, ITCOMPRA.CODCOMPRA.ordinal() );
 					tabitcompra.setValor( rs.getString( ITCOMPRA.CODLOTE.toString() ) == null ? "" : rs.getString( ITCOMPRA.CODLOTE.toString() ), irow, ITCOMPRA.CODLOTE.ordinal() );
 
-					vlrprod.add( rs.getBigDecimal( ITCOMPRA.PRECOITCOMPRA.toString()) );
+					vlrprod.add( rs.getBigDecimal( ITCOMPRA.PRECOITCOMPRA.toString() ) );
 					vlrdesc.add( rs.getBigDecimal( ITCOMPRA.VLRDESCITCOMPRA.toString() ) );
 					vlrliq.add( rs.getBigDecimal( ITCOMPRA.VLRLIQITCOMPRA.toString() ) );
 
@@ -506,7 +506,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		StringBuffer obs = new StringBuffer();
 		DLCriaVendaCompra diag = null;
-		
+
 		Integer codplanopag = null;
 		Integer codfor = null;
 		Integer doccompra = null;
@@ -516,29 +516,27 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 			if ( tabitcompra.getNumLinhas() > 0 ) {
 
-				
 				// Loop para pegar o primeiro item selecionado no grid de compras
-				// afim de carregar parametros na tela de confirmação de dados para geração da compra. 
+				// afim de carregar parametros na tela de confirmação de dados para geração da compra.
 				for ( int i = 0; i < tabcompra.getNumLinhas(); i++ ) {
-					
+
 					// Se o ítem estiver selecionado no grid de pedidos de compra
-					if( (Boolean) tabcompra.getValor( i, COMPRA.SEL.ordinal() )) {
-						
-						codplanopag = (Integer) tabcompra.getValor( i, COMPRA.CODPLANOPAG.ordinal() );	
+					if ( (Boolean) tabcompra.getValor( i, COMPRA.SEL.ordinal() ) ) {
+
+						codplanopag = (Integer) tabcompra.getValor( i, COMPRA.CODPLANOPAG.ordinal() );
 						codfor = (Integer) tabcompra.getValor( i, COMPRA.CODFOR.ordinal() );
-						
+
 					}
-					
+
 				}
-				
-				
+
 				diag = new DLCriaVendaCompra( true, "C" );
 				diag.setCodplanopag( codplanopag );
 				diag.setCodTipoMov( codtipomov );
-				
-				diag.setConexao( con ); 
 
-				diag.setNewCodigo( Integer.parseInt( telacompra.lcCampos.getNovoCodigo() ) );	
+				diag.setConexao( con );
+
+				diag.setNewCodigo( Integer.parseInt( telacompra.lcCampos.getNovoCodigo() ) );
 
 				diag.setVisible( true );
 
@@ -553,21 +551,21 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				}
 
 				for ( int i = 0; i < tabitcompra.getNumLinhas(); i++ ) {
-					
+
 					if ( ! ( (Boolean) tabitcompra.getValor( i, ITCOMPRA.SEL.ordinal() ) ).booleanValue() )
 						continue;
 
 					if ( bPrim ) {
-						
+
 						try {
-							
+
 							int param = 1;
-							
+
 							// Executando procedure para geração do cabeçalho da compra.
-							
+
 							sSQL = "SELECT IRET FROM CPADICCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 							ps = con.prepareStatement( sSQL );
-							
+
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 							ps.setInt( param++, codcompra );
@@ -576,7 +574,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
 							ps.setInt( param++, codtipomov );
-						
+
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 							ps.setInt( param++, codfor );
@@ -584,7 +582,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 							ps.setInt( param++, codplanopag );
-							
+
 							rs = ps.executeQuery();
 
 							if ( rs.next() ) {
@@ -594,38 +592,33 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							else {
 								codcompra = null;
 							}
-							
+
 							rs.close();
 							ps.close();
 
-						} 
-						catch ( SQLException err ) {
+						} catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {
 								Funcoes.mensagemErro( this, "Compra já existe!" );
 								return geraCompra();
 							}
 							else
 								Funcoes.mensagemErro( this, "Erro ao gerar compra!\n" + err.getMessage(), true, con, err );
-								codcompra = null;
+							codcompra = null;
 
-								err.printStackTrace();
-								return false;
-						} 
-						catch ( Exception e ) {
+							err.printStackTrace();
+							return false;
+						} catch ( Exception e ) {
 							Funcoes.mensagemErro( this, "Erro genérico ao gerar compra!\n" + e.getMessage(), true, con, e );
 							codcompra = null;
 						}
 						bPrim = false;
 					}
-				
-				
+
 					// Se o cabeçalho da compra foi inserido corretamente, o código da compra não é nulo, portanto deve inserir os ítens.
-					if( codcompra !=null ) {
-					
-						
-						
+					if ( codcompra != null ) {
+
 						try {
-							
+
 							sSQL = "EXECUTE PROCEDURE CPADICITCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?)";
 							ps2 = con.prepareStatement( sSQL );
 							ps2.setInt( 1, Aplicativo.iCodEmp );
@@ -636,30 +629,29 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps2.setInt( 6, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODCOMPRA.ordinal() ) );
 							ps2.setInt( 7, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODITCOMPRA.ordinal() ) );
 							ps2.setString( 8, (String) tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ) );
-							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString())));
-							ps2.setFloat( 10, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString())));
-							ps2.setFloat( 11, new Float(Funcoes.strCurrencyToDouble(tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString())));
+							ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) ) );
+							ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString() ) ) );
+							ps2.setFloat( 11, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) ) );
 
 							ps2.execute();
 							ps2.close();
-	
+
 						} catch ( SQLException err ) {
 							Funcoes.mensagemErro( this, "Erro ao gerar itcompra: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 							try {
 								con.rollback();
-							} 
-							catch ( SQLException err1 ) {
+							} catch ( SQLException err1 ) {
 								err1.printStackTrace();
 							}
 							err.printStackTrace();
 							return false;
-							
+
 						}
-	
+
 					}
-				 
+
 				}
-				
+
 				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
 					telacompra.exec( codcompra );
 					dispose();
@@ -670,11 +662,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			}
 			else
 				Funcoes.mensagemInforma( this, "Não existe nenhum item pra gerar uma compra!" );
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
-		} 
-		finally {
+		} finally {
 			ps = null;
 			ps2 = null;
 			rs = null;
@@ -694,8 +684,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		try {
 
-			if(txtCodFor.getVlrInteger()>0 || txtCodCompra.getVlrInteger()>0) {
-				
+			if ( txtCodFor.getVlrInteger() > 0 || txtCodCompra.getVlrInteger() > 0 ) {
+
 				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, " );
 				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens , " );
 				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib, " );
@@ -704,77 +694,75 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				sql.append( "where " );
 				sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
 				sql.append( "and cp.statuscompra in ('P1','P2','P3') " );
-	
+
 				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
 					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
 				}
-	
+
 				sql.append( "and cp.codemp=? and cp.codfilial=? " );
-	
+
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
 					sql.append( " and cp.codcompra=? " );
 				}
-	
+
 				ps = con.prepareStatement( sql.toString() );
-	
+
 				int param = 1;
-	
+
 				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
 					ps.setInt( param++, lcFor.getCodEmp() );
 					ps.setInt( param++, lcFor.getCodFilial() );
 					ps.setInt( param++, txtCodFor.getVlrInteger() );
 				}
-	
+
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-	
+
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
 					ps.setInt( param++, txtCodCompra.getVlrInteger() );
 				}
-	
+
 				rs = ps.executeQuery();
-				
+
 				tabcompra.limpa();
-	
+
 				int irow = 0;
-	
+
 				while ( rs.next() ) {
-	
+
 					tabcompra.adicLinha();
-	
+
 					tabcompra.setValor( new Boolean( true ), irow, COMPRA.SEL.ordinal() );
-	
-					tabcompra.setValor( rs.getInt( COMPRA.CODCOMPRA.toString()), irow, COMPRA.CODCOMPRA.ordinal() );
-					tabcompra.setValor( rs.getInt( COMPRA.CODPLANOPAG.toString()), irow, COMPRA.CODPLANOPAG.ordinal() );
-					tabcompra.setValor( rs.getInt( COMPRA.CODFOR.toString()), irow, COMPRA.CODFOR.ordinal() );
-					tabcompra.setValor( rs.getString( COMPRA.RAZFOR.toString()), irow, COMPRA.RAZFOR.ordinal() );
-					
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENS.toString() )), irow, COMPRA.NROITENS.ordinal() );
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENSLIB.toString() )), irow, COMPRA.NROITENSLIB.ordinal() );					
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() )), irow, COMPRA.VLRLIQCOMPRA.ordinal() );				
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() )) , irow, COMPRA.VLRLIB.ordinal() );
-	 				
-					irow ++;
-					
+
+					tabcompra.setValor( rs.getInt( COMPRA.CODCOMPRA.toString() ), irow, COMPRA.CODCOMPRA.ordinal() );
+					tabcompra.setValor( rs.getInt( COMPRA.CODPLANOPAG.toString() ), irow, COMPRA.CODPLANOPAG.ordinal() );
+					tabcompra.setValor( rs.getInt( COMPRA.CODFOR.toString() ), irow, COMPRA.CODFOR.ordinal() );
+					tabcompra.setValor( rs.getString( COMPRA.RAZFOR.toString() ), irow, COMPRA.RAZFOR.ordinal() );
+
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENS.toString() ) ), irow, COMPRA.NROITENS.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENSLIB.toString() ) ), irow, COMPRA.NROITENSLIB.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() ) ), irow, COMPRA.VLRLIQCOMPRA.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() ) ), irow, COMPRA.VLRLIB.ordinal() );
+
+					irow++;
+
 				}
-				
+
 				rs.close();
 				ps.close();
-			}	
+			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um pedido ou um fornecedor para busca!" );
 			}
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar compras!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		}
-		finally {
+		} finally {
 			ps = null;
 			rs = null;
 			vVals = null;
 		}
-		
+
 	}
 
 	private void limpaNaoSelecionados( JTablePad ltab ) {
@@ -783,14 +771,13 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		int pos = 0;
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { 
+				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) {
 					ltab.tiraLinha( i );
 					vValidos.remove( i );
 					i--;
 				}
 			}
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -799,7 +786,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		int linhas = ltab.getNumLinhas();
 		int pos = 0;
-		
+
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
 				if ( "F".equals( ltab.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString() ) ) {
@@ -820,12 +807,12 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		Float qtdfilho = null;
 		Float ret = new Float( 0 );
 		String tpagrup = null;
-		int i = iLinha; 
+		int i = iLinha;
 		int iPai = iLinha - 1;
 
 		try {
 			while ( i < tabitcompra.getNumLinhas() ) {
-				
+
 				codprodfilho = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
 				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
 				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRLIQITCOMPRA.ordinal() ).toString() ) );
@@ -840,9 +827,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				i++;
 			}
-			
-		} 
-		catch ( Exception e ) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -863,7 +849,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			int linhaPai = -1;
 
 			for ( int i = 0; i < tabitcompra.getNumLinhas(); i++ ) {
-				
+
 				codprodpai = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
 				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
 				precopai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) );
@@ -887,12 +873,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 			if ( linhaPai > -1 ) {
 				tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
-			} 
-			
-//			limpaFilhos( tabitcompra );
-			 
-		} 
-		catch ( Exception e ) {
+			}
+
+			// limpaFilhos( tabitcompra );
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -1030,7 +1015,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	public void mouseClicked( MouseEvent e ) {
 
 		if ( e.getSource() == tabitcompra ) {
-		
+
 		}
 
 	}
@@ -1054,19 +1039,19 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	public void focusGained( FocusEvent arg0 ) {
 
 		// TODO Auto-generated method stub
-		
+
 	}
- 
+
 	public void focusLost( FocusEvent evt ) {
 
-		if(evt.getSource()==txtCodCompra) {
-			if(txtCodCompra.getVlrInteger()>0) {
-				txtCodFor.setAtivo( false );				
+		if ( evt.getSource() == txtCodCompra ) {
+			if ( txtCodCompra.getVlrInteger() > 0 ) {
+				txtCodFor.setAtivo( false );
 			}
 			else {
 				txtCodFor.setAtivo( true );
 			}
 		}
-		
+
 	}
 }

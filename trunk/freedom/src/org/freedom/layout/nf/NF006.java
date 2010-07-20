@@ -2,19 +2,19 @@
  * @version 04/2008 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: layout <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: layout <BR>
+ *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
  */
@@ -211,28 +211,27 @@ public class NF006 extends Layout {
 				// Fim da classificação fiscal
 
 				// Imprime os dados do item no corpo da nota
-				
-			
+
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 2, itens.getString( NF.C_REFPROD ) );
-					Vector<?> vDesc = Funcoes.strToVectorSilabas(itens.getString( NF.C_OBSITPED )== null || itens.getString( NF.C_OBSITPED ).equals("") ? (itens.getString(NF.C_DESCPROD).trim()): itens.getString(NF.C_OBSITPED),46);
-			        String sDesc = "";
-					
-			        for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
-						
-			        	if (!vDesc.elementAt(iConta).toString().equals(""))
-							sDesc = vDesc.elementAt(iConta).toString();
+					Vector<?> vDesc = Funcoes.strToVectorSilabas( itens.getString( NF.C_OBSITPED ) == null || itens.getString( NF.C_OBSITPED ).equals( "" ) ? ( itens.getString( NF.C_DESCPROD ).trim() ) : itens.getString( NF.C_OBSITPED ), 46 );
+					String sDesc = "";
+
+					for ( int iConta = 0; ( ( iConta < 20 ) && ( vDesc.size() > iConta ) ); iConta++ ) {
+
+						if ( !vDesc.elementAt( iConta ).toString().equals( "" ) )
+							sDesc = vDesc.elementAt( iConta ).toString();
 						else
-							
-						sDesc = "";
-			        
-			        	imp.pulaLinha( 1, imp.comprimido() );
-			        	imp.say( 10, sDesc );
+
+							sDesc = "";
+
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 10, sDesc );
 					}
-					
-			        imp.say( 61, sSigla );
+
+					imp.say( 61, sSigla );
 					imp.say( 64, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 					imp.say( 70, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 					imp.say( 75, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
@@ -245,10 +244,7 @@ public class NF006 extends Layout {
 				}
 				else {
 					// guarda serviço;
-					vServico.addElement( new Object[] { 
-							"".equals( itens.getString( NF.C_OBSITPED ).trim() ) ? itens.getString( NF.C_DESCPROD ) : itens.getString( NF.C_OBSITPED ).trim(), 
-							new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 
-							new BigDecimal( itens.getFloat( NF.C_VLRLIQITPED ) ),
+					vServico.addElement( new Object[] { "".equals( itens.getString( NF.C_OBSITPED ).trim() ) ? itens.getString( NF.C_DESCPROD ) : itens.getString( NF.C_OBSITPED ).trim(), new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), new BigDecimal( itens.getFloat( NF.C_VLRLIQITPED ) ),
 							new BigDecimal( itens.getFloat( NF.C_VLRISSITPED ) ) } );
 				}
 
@@ -427,7 +423,7 @@ public class NF006 extends Layout {
 
 					// Imprime canhoto
 
-					imp.say( imp.pRow()+1, 0, imp.comprimido() );
+					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );

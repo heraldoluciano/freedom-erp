@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLBaixaRec.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.fnc.view.dialog.utility;
@@ -107,7 +107,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	boolean bJurosPosCalc = false;
 
 	private BaixaRecBean baixaRecBean;
-
 
 	public DLBaixaRec( Component cOrig ) {
 
@@ -221,7 +220,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrJuros.addFocusListener( this );
 		txtVlrJuros.addEditListener( this );
 
-		//eUltimo();
+		// eUltimo();
 	}
 
 	private void calcDesc() {
@@ -238,7 +237,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			if ( txtPercJuros.getVlrDouble().doubleValue() != 0 )
 				txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ) );
 		}
-		else								
+		else
 			txtVlrJuros.setVlrBigDecimal( txtPercJuros.getVlrBigDecimal().multiply( txtVlrParc.getVlrBigDecimal() ).divide( new BigDecimal( 100 ), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( Funcoes.getNumDiasAbs( txtDtVenc.getVlrDate(), new Date() ) ) ) );
 		atualizaAberto();
 	}
@@ -246,14 +245,13 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private void atualizaPagto() {
 
 		if ( txtVlr.getVlrBigDecimal().compareTo( txtVlrAberto.getVlrBigDecimal() ) > 0 ) {
-			txtVlrJuros.setVlrBigDecimal( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ));
-			//			txtVlrJuros.setVlrBigDecimal( txtVlrJuros.getVlrBigDecimal().add( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) ) );
+			txtVlrJuros.setVlrBigDecimal( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) );
+			// txtVlrJuros.setVlrBigDecimal( txtVlrJuros.getVlrBigDecimal().add( txtVlr.getVlrBigDecimal().subtract( txtVlrAberto.getVlrBigDecimal() ) ) );
 			atualizaAberto();
 		}
 	}
 
 	private void atualizaAberto() {
-
 
 		BigDecimal atualizado = txtVlrParc.getVlrBigDecimal();
 
@@ -262,7 +260,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		BigDecimal pagoparcial = null;
 
-		if( baixaRecBean != null ) {
+		if ( baixaRecBean != null ) {
 			pagoparcial = baixaRecBean.getValorPagoParc();
 		}
 
@@ -277,13 +275,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrAberto.setVlrBigDecimal( atualizado );
 		txtVlr.setVlrBigDecimal( atualizado );
 
-		//		txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
-
-
+		// txtVlrAberto.setVlrBigDecimal( txtVlrParc.getVlrBigDecimal().subtract( txtVlrDesc.getVlrBigDecimal() ).add( txtVlrJuros.getVlrBigDecimal() ).subtract( txtVlrPago.getVlrBigDecimal() ) );
 
 	}
-
-
 
 	private int getAnoBaseCC() {
 
@@ -307,7 +301,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} 
+		}
 
 		return anoBase;
 	}
@@ -342,7 +336,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar conta de adiantamento de recebivéis.\n" + err.getMessage(), true, con, err );
-		} 
+		}
 	}
 
 	public void setValores( BaixaRecBean baixa ) {
@@ -362,16 +356,15 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDoc.setVlrString( baixa.getDocumento() );
 		txtDtEmis.setVlrDate( baixa.getDataEmissao() );
 		txtDtVenc.setVlrDate( baixa.getDataVencimento() );
-		txtDtPagto.setVlrDate( baixa.getDataPagamento() );		
+		txtDtPagto.setVlrDate( baixa.getDataPagamento() );
 
 		txtVlrParc.setVlrBigDecimal( baixa.getValorParcela() );
 
-		txtVlrDesc.setVlrBigDecimal( baixa.getValorDesconto() );				
-		txtVlrJuros.setVlrBigDecimal( baixa.getValorJuros() );				
+		txtVlrDesc.setVlrBigDecimal( baixa.getValorDesconto() );
+		txtVlrJuros.setVlrBigDecimal( baixa.getValorJuros() );
 		txtVlrAberto.setVlrBigDecimal( baixa.getValorAPagar() );
 
-
-		if(baixa.getValorPago()!=null && baixa.getValorPago().floatValue()>0) {
+		if ( baixa.getValorPago() != null && baixa.getValorPago().floatValue() > 0 ) {
 			txtVlrPago.setVlrBigDecimal( baixa.getValorPago() );
 			txtVlr.setVlrBigDecimal( baixa.getValorPago() );
 		}
@@ -379,8 +372,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			txtVlrPago.setVlrBigDecimal( baixa.getValorAPagar() );
 			txtVlr.setVlrBigDecimal( baixa.getValorAPagar() );
 		}
-
-
 
 		txtObs.setVlrString( baixa.getObservacao() );
 
@@ -392,9 +383,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		lcPlan.carregaDados();
 		lcCC.carregaDados();
 
-		if ( (! ( bJurosPosCalc = Juros.getJurosPosCalc() )) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
+		if ( ( ! ( bJurosPosCalc = Juros.getJurosPosCalc() ) ) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
 			adic( new JLabelPad( "% Juros." ), 180, 200, 57, 20 );
-			Juros calcjuros = new Juros(txtDtVenc.getVlrDate(), txtVlrParc.getVlrBigDecimal());
+			Juros calcjuros = new Juros( txtDtVenc.getVlrDate(), txtVlrParc.getVlrBigDecimal() );
 			txtVlrJuros.setVlrBigDecimal( calcjuros.getVlrjuros() );
 		}
 		else {
@@ -455,7 +446,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) { }
+	public void focusGained( FocusEvent fevt ) {
+
+	}
 
 	public void focusLost( FocusEvent fevt ) {
 
@@ -497,9 +490,13 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 	}
 
-	public void beforeEdit( EditEvent eevt ) { }
+	public void beforeEdit( EditEvent eevt ) {
 
-	public void afterEdit( EditEvent eevt ) { }
+	}
+
+	public void afterEdit( EditEvent eevt ) {
+
+	}
 
 	public void setConexao( DbConnection cn ) {
 
@@ -549,16 +546,18 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		private boolean emBordero;
 
+		public Integer getRecebimento() {
 
-		public Integer getRecebimento() {		
 			return recebimento;
 		}
 
-		public void setRecebimento( Integer recebimento ) {		
+		public void setRecebimento( Integer recebimento ) {
+
 			this.recebimento = recebimento;
 		}
 
-		public Integer getParcela() {		
+		public Integer getParcela() {
+
 			return parcela;
 		}
 
@@ -567,147 +566,175 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 			this.parcela = parcela;
 		}
 
-		public Integer getCliente() {		
+		public Integer getCliente() {
+
 			return cliente;
 		}
 
-		public void setCliente( Integer cliente ) {		
+		public void setCliente( Integer cliente ) {
+
 			this.cliente = cliente;
 		}
 
-		public String getRazaoSocialCliente() {		
+		public String getRazaoSocialCliente() {
+
 			return razaoSocialCliente;
 		}
 
-		public void setRazaoSocialCliente( String razaoSocialCliente ) {		
+		public void setRazaoSocialCliente( String razaoSocialCliente ) {
+
 			this.razaoSocialCliente = razaoSocialCliente;
 		}
 
-		public String getConta() {		
+		public String getConta() {
+
 			return conta;
 		}
 
-		public void setConta( String conta ) {		
+		public void setConta( String conta ) {
+
 			this.conta = conta;
 		}
 
-		public String getPlanejamento() {		
+		public String getPlanejamento() {
+
 			return planejamento;
 		}
 
-		public void setPlanejamento( String planejamento ) {		
+		public void setPlanejamento( String planejamento ) {
+
 			this.planejamento = planejamento;
 		}
 
-		public String getCentroCusto() {		
+		public String getCentroCusto() {
+
 			return centroCusto;
 		}
 
-		public void setCentroCusto( String centroCusto ) {		
+		public void setCentroCusto( String centroCusto ) {
+
 			this.centroCusto = centroCusto;
 		}
 
-		public String getDocumento() {		
+		public String getDocumento() {
+
 			return documento;
 		}
 
-		public void setDocumento( String documento ) {		
+		public void setDocumento( String documento ) {
+
 			this.documento = documento;
 		}
 
-		public Date getDataEmissao() {		
+		public Date getDataEmissao() {
+
 			return dataEmissao;
 		}
 
-		public void setDataEmissao( Date dataEmissao ) {		
+		public void setDataEmissao( Date dataEmissao ) {
+
 			this.dataEmissao = dataEmissao;
 		}
 
-		public Date getDataVencimento() {		
+		public Date getDataVencimento() {
+
 			return dataVencimento;
 		}
 
-		public void setDataVencimento( Date dataVencimento ) {		
+		public void setDataVencimento( Date dataVencimento ) {
+
 			this.dataVencimento = dataVencimento;
 		}
 
-		public Date getDataPagamento() {		
+		public Date getDataPagamento() {
+
 			return dataPagamento;
 		}
 
-		public void setDataPagamento( Date dataPagamento ) {		
+		public void setDataPagamento( Date dataPagamento ) {
+
 			this.dataPagamento = dataPagamento;
 		}
 
 		public BigDecimal getValorParcela() {
+
 			return valorParcela;
 		}
 
-		public void setValorParcela( BigDecimal valorParcela ) {		
+		public void setValorParcela( BigDecimal valorParcela ) {
+
 			this.valorParcela = valorParcela;
 		}
 
-		public BigDecimal getValorAPagar() {		
+		public BigDecimal getValorAPagar() {
+
 			return valorAPagar;
 		}
 
-		public void setValorAPagar( BigDecimal valorAPagar ) {		
+		public void setValorAPagar( BigDecimal valorAPagar ) {
+
 			this.valorAPagar = valorAPagar;
 		}
 
-		public BigDecimal getValorDesconto() {		
+		public BigDecimal getValorDesconto() {
+
 			return valorDesconto;
 		}
 
-		public void setValorDesconto( BigDecimal valorDesconto ) {		
+		public void setValorDesconto( BigDecimal valorDesconto ) {
+
 			this.valorDesconto = valorDesconto;
 		}
 
-		public BigDecimal getValorJuros() {		
+		public BigDecimal getValorJuros() {
+
 			return valorJuros;
 		}
 
-		public void setValorJuros( BigDecimal valorJuros ) {		
+		public void setValorJuros( BigDecimal valorJuros ) {
+
 			this.valorJuros = valorJuros;
 		}
 
-		public BigDecimal getValorPago() {		
+		public BigDecimal getValorPago() {
+
 			return valorPago;
 		}
 
-		public void setValorPago( BigDecimal valorPago ) {		
+		public void setValorPago( BigDecimal valorPago ) {
+
 			this.valorPago = valorPago;
 		}
 
-		public String getObservacao() {		
+		public String getObservacao() {
+
 			return observacao;
 		}
 
-		public void setObservacao( String observacao ) {		
+		public void setObservacao( String observacao ) {
+
 			this.observacao = observacao;
 		}
 
-		public boolean isEmBordero() {		
+		public boolean isEmBordero() {
+
 			return emBordero;
 		}
 
-		public void setEmBordero( boolean travarConta ) {		
+		public void setEmBordero( boolean travarConta ) {
+
 			this.emBordero = travarConta;
 		}
-
 
 		public BigDecimal getValorPagoParc() {
 
 			return valorPagoParc;
 		}
 
-
 		public void setValorPagoParc( BigDecimal valorPagoParc ) {
 
 			this.valorPagoParc = valorPagoParc;
 		}
-
-
 
 	};
 }

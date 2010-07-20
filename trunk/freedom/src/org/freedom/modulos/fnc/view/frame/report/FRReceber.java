@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRReceber.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -65,7 +65,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
-	
+
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -92,10 +92,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
-//	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
-	
-//	private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
-	
+	// private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+
+	// private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
+
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -109,7 +109,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JRadioGroup<String, String> rgOrdem2 = null;
 
 	private ListaCampos lcCli = new ListaCampos( this );
-	
+
 	private ListaCampos lcTipoCli = new ListaCampos( this );
 
 	private ListaCampos lcSetor = new ListaCampos( this );
@@ -135,19 +135,19 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		cbObs.setVlrString( "S" );
 		cbImpTotDia.setVlrString( "S" );
-		
+
 		montaListaCampos();
 		montaRadioGroups();
 		montaTela();
-		
+
 	}
-	
+
 	private void montaListaCampos() {
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
-		
+
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
 		txtCodCli.setTabelaExterna( lcCli, null );
@@ -196,7 +196,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		txtCodTpCob.setListaCampos( lcTipoCob );
 		txtDescTpCob.setListaCampos( lcTipoCob );
 		txtCodTpCob.setFK( true );
-		
+
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
@@ -205,9 +205,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		txtCodTipoCli.setFK( true );
 		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
 
-				
 	}
-	
+
 	private void montaRadioGroups() {
 
 		Vector<String> vVals = new Vector<String>();
@@ -218,7 +217,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vLabs.addElement( "Texto" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgModo.setVlrString( "G" );
-		
+
 		Vector<String> vVals0 = new Vector<String>();
 		Vector<String> vLabs0 = new Vector<String>();
 		vLabs0.addElement( "Contas a receber" );
@@ -250,7 +249,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		rgOrdem2 = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
 		rgOrdem2.setVlrString( "R" );
 	}
-	
+
 	private void montaTela() {
 
 		JLabelPad lbLinha = new JLabelPad();
@@ -265,18 +264,18 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic( new JLabelPad( "Modo de exibição:" ), 7, 60, 287, 20 );
 		adic( rgModo, 7, 80, 247, 30 );
 		adic( new JLabelPad( "Modo:" ), 257, 0, 170, 20 );
-		adic( rgTipoRel, 257, 20, 160, 90 );		
-		
+		adic( rgTipoRel, 257, 20, 160, 90 );
+
 		adic( cbObs, 420, 15, 180, 20 );
 		adic( cbImpTotDia, 420, 40, 180, 20 );
-//		adic( cbParPar, 420, 65, 250, 20 );			
-//		adic( cbAgrupCli, 420, 90, 250, 20 );
-		
+		// adic( cbParPar, 420, 65, 250, 20 );
+		// adic( cbAgrupCli, 420, 90, 250, 20 );
+
 		adic( new JLabelPad( "Primeira ordem:" ), 7, 110, 390, 20 );
 		adic( rgOrdem, 7, 130, 410, 30 );
 		adic( new JLabelPad( "Segunda ordem:" ), 7, 160, 390, 20 );
 		adic( rgOrdem2, 7, 180, 410, 30 );
-		
+
 		adic( new JLabelPad( "Cód.cli." ), 7, 220, 80, 20 );
 		adic( txtCodCli, 7, 240, 80, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 220, 210, 20 );
@@ -289,7 +288,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic( txtCodVend, 7, 320, 80, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 90, 300, 210, 20 );
 		adic( txtNomeVend, 90, 320, 210, 20 );
-		
+
 		adic( new JLabelPad( "Cod.Tp.Cob" ), 303, 220, 80, 20 );
 		adic( txtCodTpCob, 303, 240, 80, 20 );
 		adic( new JLabelPad( "Descrição do Tipo de Cobrança" ), 386, 220, 220, 20 );
@@ -302,13 +301,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic( txtCodPlanoPag, 303, 320, 80, 20 );
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 386, 300, 220, 20 );
 		adic( txtDescPlanoPag, 386, 320, 220, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Tipo.Cli" ), 7, 340, 80, 20 );
 		adic( txtCodTipoCli, 7, 360, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 340, 210, 20 );
 		adic( txtDescTipoCli, 90, 360, 210, 20 );
 
-		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -360,12 +358,11 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		if ( rgOrdem.getVlrString().equals( "P" ) ) {
 			sTitRel1 = "PAGAMENTO";
-/*			if ( "S".equals( cbParPar.getVlrString() ) ) {
-				sCampoOrdem = "L.DATALANCA";
-			}
-			else {*/
-				sCampoOrdem = "IT.DTPAGOITREC";
-			//}
+			/*
+			 * if ( "S".equals( cbParPar.getVlrString() ) ) { sCampoOrdem = "L.DATALANCA"; } else {
+			 */
+			sCampoOrdem = "IT.DTPAGOITREC";
+			// }
 			sCampoTotal = "DTPAGOITREC";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
@@ -423,45 +420,27 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sWhere.append( "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? " );
 			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + sCodTpCob + " - " + Funcoes.copy( txtCodTpCob.getVlrString(), 30 ).trim();
 		}
-		
+
 		if ( txtCodTipoCli.getVlrInteger() > 0 ) {
 			sWhere.append( "AND C.CODEMPTI=? AND C.CODFILIALTI=? AND C.CODTIPOCLI=? " );
 			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim();
 		}
 
-
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
 		/*
-		if ( "S".equals( cbParPar.getVlrString() ) ) {
-			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
-			sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " );
-			sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" );
-			if ( "P".equals( rgOrdem.getVlrString() ) ) {
-				sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " );
-			}
-			sSQL.append( ") THEN IT.VLRPARCITREC " );
-			sSQL.append( "ELSE 0 END) VLRPARCITREC, " );
-			sSQL.append( "COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, " );
-			sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" );
-			sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " );
-			sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" );
-			if ( "P".equals( rgOrdem.getVlrString() ) ) {
-				sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " );
-			}
-			sSQL.append( ") THEN IT.VLRAPAGITREC " );
-			sSQL.append( "ELSE 0 END) VLRAPAGITREC, " );
-			sSQL.append( "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, " );
-		}
-		else {*/
-			sSQL.append( "IT.VLRPARCITREC, " );
-			sSQL.append( "IT.VLRPAGOITREC, " );
-			sSQL.append( "IT.VLRAPAGITREC, " );
-			sSQL.append( "IT.DTPAGOITREC, " );
+		 * if ( "S".equals( cbParPar.getVlrString() ) ) { sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" ); sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " ); sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " ); sSQL.append(
+		 * "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" ); if ( "P".equals( rgOrdem.getVlrString() ) ) { sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " ); } sSQL.append( ") THEN IT.VLRPARCITREC " ); sSQL.append( "ELSE 0 END) VLRPARCITREC, " ); sSQL.append(
+		 * "COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, " ); sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=" ); sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 " ); sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND " ); sSQL.append(
+		 * "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC" ); if ( "P".equals( rgOrdem.getVlrString() ) ) { sSQL.append( " AND L2.DATALANCA BETWEEN ? AND ? " ); } sSQL.append( ") THEN IT.VLRAPAGITREC " ); sSQL.append( "ELSE 0 END) VLRAPAGITREC, " ); sSQL.append(
+		 * "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, " ); } else {
+		 */
+		sSQL.append( "IT.VLRPARCITREC, " );
+		sSQL.append( "IT.VLRPAGOITREC, " );
+		sSQL.append( "IT.VLRAPAGITREC, " );
+		sSQL.append( "IT.DTPAGOITREC, " );
 
-		//}
-		
+		// }
+
 		sSQL.append( "R.DOCREC, IT.OBSITREC, " );
 		sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
 		sSQL.append( "WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
@@ -470,12 +449,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		sSQL.append( sFrom );
 		sSQL.append( ",FNITRECEBER IT " );
 		/*
-		if ( "S".equals( cbParPar.getVlrString() ) ) {
-			sSQL.append( " LEFT OUTER JOIN FNLANCA L ON " );
-			sSQL.append( "L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND " );
-			sSQL.append( "L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC " );
-		}
-		*/
+		 * if ( "S".equals( cbParPar.getVlrString() ) ) { sSQL.append( " LEFT OUTER JOIN FNLANCA L ON " ); sSQL.append( "L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND " ); sSQL.append( "L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC " ); }
+		 */
 		sSQL.append( "WHERE R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " + sCampoOrdem + " BETWEEN ? AND ? " );
 		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
@@ -487,14 +462,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		try {
 			iParans = 1;
 			ps = con.prepareStatement( sSQL.toString() );
-/*
-			if ( "S".equals( cbParPar.getVlrString() ) && "P".equals( rgOrdem.getVlrString() ) ) {
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			}
-*/
+			/*
+			 * if ( "S".equals( cbParPar.getVlrString() ) && "P".equals( rgOrdem.getVlrString() ) ) { ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) ); ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) ); ps.setDate( iParans++, Funcoes.dateToSQLDate(
+			 * txtDataini.getVlrDate() ) ); ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) ); }
+			 */
 			ps.setInt( iParans++, Aplicativo.iCodEmp );
 			ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
@@ -551,13 +522,11 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				ps.setInt( iParans++, lcTipoCli.getCodFilial() );
 				ps.setInt( iParans++, txtCodTipoCli.getVlrInteger() );
 			}
-			
 
 			rs = ps.executeQuery();
-			
-			String sCab = "RELATORIO DE CONTAS " + sTitRel + 
-						" - PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() + " POR: " + sTitRel1;
-			
+
+			String sCab = "RELATORIO DE CONTAS " + sTitRel + " - PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() + " POR: " + sTitRel1;
+
 			if ( "G".equals( rgModo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab );
 			}
@@ -572,7 +541,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contas a receber!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		}		
+		}
 	}
 
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
@@ -598,9 +567,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			}
 		}
 	}
-	
+
 	private void imprimirTexto( boolean bVisualizar, ResultSet rs, String sCab, String sCampoTotal ) {
-		
+
 		String sDtTotal = "";
 		String sDtPago = "";
 		Vector<String> vObs = null;
@@ -613,16 +582,16 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		double deTotalPago = 0;
 		double deTotalApag = 0;
 		boolean bFimDia = false;
-		
+
 		try {
 
-			imp = new ImprimeOS("",con);
-			linPag = imp.verifLinPag()-1;
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de contas" );
 			imp.addSubTitulo( sCab );
-						
+
 			while ( rs.next() ) {
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -647,16 +616,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
-				if ( ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) 
-						&& ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
+				if ( ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) && ( bFimDia ) && ( cbImpTotDia.getVlrString().equals( "S" ) ) ) {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
-					imp.say( 41, "Totais do Dia-> | " + sDtTotal + " | " + 
-							Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaParc ) ) + " | " + 
-							Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaPago ) ) + " | " + 
-							Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( deTotalDiaApag ) ) + " | " );
+					imp.say( 41, "Totais do Dia-> | " + sDtTotal + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaParc ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, String.valueOf( deTotalDiaPago ) ) + " | "
+							+ Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( deTotalDiaApag ) ) + " | " );
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
@@ -669,8 +635,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 
-				if ( ( !"V".equals( rgOrdem.getVlrString() ) ) 
-						|| ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) ) {
+				if ( ( !"V".equals( rgOrdem.getVlrString() ) ) || ( !StringFunctions.sqlDateToStrDate( rs.getDate( sCampoTotal ) ).equals( sDtTotal ) ) ) {
 					imp.say( 3, StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItRec" ) ) );
 				}
 
@@ -686,8 +651,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				sDtPago = Funcoes.copy( sDtPago, 0, 10 );
 
 				imp.say( 61, ( Funcoes.copy( rs.getString( 10 ), 0, 1 ).equals( "P" ) ? Funcoes.copy( rs.getString( "CodVenda" ), 0, 6 ) : Funcoes.copy( rs.getString( "DocRec" ), 0, 6 ) ) + "/" + Funcoes.copy( rs.getString( "NParcItRec" ), 0, 2 ) + "| "
-						+ Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrParcItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrPagoItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrApagItRec" ) ) + " | " + " " + sDtPago
-						+ "  |" );
+						+ Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrParcItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrPagoItRec" ) ) + " | " + Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrApagItRec" ) ) + " | " + " " + sDtPago + "  |" );
 				if ( cbObs.getVlrString().equals( "S" ) ) {
 					if ( rs.getString( "OBSITREC" ) != null ) {
 						vObs = getObs( rs.getString( "OBSITREC" ), 108 );
@@ -780,28 +744,27 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private boolean getPrefere() {
 
 		boolean retorno = false;
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				retorno = rs.getString( "SETORVENDA" ) != null && "CA".indexOf( rs.getString( "SETORVENDA" ) ) >= 0;
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		
+
 		return retorno;
 	}
 

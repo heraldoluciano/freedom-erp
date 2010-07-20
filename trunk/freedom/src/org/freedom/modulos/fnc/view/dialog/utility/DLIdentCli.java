@@ -2,20 +2,20 @@
  * @version 07/03/2007 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLIdentCli.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
  */
@@ -52,7 +52,7 @@ public class DLIdentCli extends FFDialogo {
 		super( cOrig );
 		setTitulo( "Identificação do cliente" );
 		setAtribos( 395, 230 );
-		
+
 		Vector<String> vVals = new Vector<String>();
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.add( "Débito em folha" );
@@ -61,18 +61,18 @@ public class DLIdentCli extends FFDialogo {
 		vVals.add( "02" );
 		rgSubTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgSubTipoFebraban.setVlrString( "02" );
-		
+
 		txtCodCli.setAtivo( false );
 		txtRazCli.setAtivo( false );
-		
+
 		montaTela();
 	}
-	
+
 	private void montaTela() {
-		
+
 		txtAgenciaCli.setRequerido( true );
 		txtIdentCli.setRequerido( true );
-		
+
 		adic( new JLabelPad( "Cód.cli." ), 7, 5, 80, 20 );
 		adic( txtCodCli, 7, 25, 80, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 5, 280, 20 );
@@ -82,7 +82,7 @@ public class DLIdentCli extends FFDialogo {
 		adic( txtAgenciaCli, 7, 70, 80, 20 );
 		adic( new JLabelPad( "Identificação" ), 90, 50, 100, 20 );
 		adic( txtIdentCli, 90, 70, 100, 20 );
-		
+
 		adic( rgSubTipoFebraban, 7, 100, 363, 30 );
 	}
 
@@ -90,21 +90,21 @@ public class DLIdentCli extends FFDialogo {
 
 		Object[] retorno = { new Boolean( false ), "", "", "" };
 		DLIdentCli dl = new DLIdentCli( cOrig );
-		
+
 		dl.txtCodCli.setVlrInteger( codCli );
 		dl.txtRazCli.setVlrString( razCli );
 		dl.txtAgenciaCli.setVlrString( agenciaCli );
 		dl.txtIdentCli.setVlrString( identCli );
 		dl.rgSubTipoFebraban.setVlrString( subTipo );
 		dl.execShow();
-		
+
 		if ( MRET ) {
 			retorno[ 0 ] = new Boolean( MRET );
 			retorno[ 1 ] = dl.txtAgenciaCli.getVlrString();
 			retorno[ 2 ] = dl.txtIdentCli.getVlrString();
 			retorno[ 3 ] = dl.rgSubTipoFebraban.getVlrString();
 		}
-		
+
 		return retorno;
 	}
 
@@ -121,9 +121,9 @@ public class DLIdentCli extends FFDialogo {
 			txtIdentCli.requestFocus();
 			return;
 		}
-		
+
 		MRET = true;
-		
+
 		super.ok();
 	}
 
@@ -131,7 +131,7 @@ public class DLIdentCli extends FFDialogo {
 	public void cancel() {
 
 		MRET = false;
-		
+
 		super.cancel();
 	}
 

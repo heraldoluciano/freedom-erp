@@ -2,23 +2,23 @@
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRBalancete.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -160,20 +160,11 @@ public class FRBalancete extends FRelatorio {
 
 		imp.setTitulo( "Balancete" );
 
-		String sSQL = "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," + 
-		    "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " +
-		    AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) +
-			" AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " + 
-			"SL.DATASUBLANCA BETWEEN ? AND ? AND " + 
-			"SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL " + 
-			( sCodConta.trim().equals( "" ) ? "" : " AND L.CODPLAN=" + 
-			"(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND C.CODFILIAL=?" + 
-			" AND C.NUMCONTA=?)" ) + ( sCodCC.trim().equals( "" ) ? "" : " AND SL.CODCC=" + 
-			"(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND SL.CODFILIALCC=CC.CODFILIAL" + 
-			" AND CC.CODFILIAL=? AND CC.CODCC=?)" ) + " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=?)" + 
-			" FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" + 
-			" AND P.CODEMP=? AND P.CODFILIAL=?" + 
-			" ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN ";
+		String sSQL = "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," + "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp )
+				+ " AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " + "SL.DATASUBLANCA BETWEEN ? AND ? AND " + "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL "
+				+ ( sCodConta.trim().equals( "" ) ? "" : " AND L.CODPLAN=" + "(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND C.CODFILIAL=?" + " AND C.NUMCONTA=?)" )
+				+ ( sCodCC.trim().equals( "" ) ? "" : " AND SL.CODCC=" + "(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND SL.CODFILIALCC=CC.CODFILIAL" + " AND CC.CODFILIAL=? AND CC.CODCC=?)" ) + " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=?)"
+				+ " FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" + " AND P.CODEMP=? AND P.CODFILIAL=?" + " ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN ";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;

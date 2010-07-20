@@ -2,23 +2,23 @@
  * @version 6/08/2008 <BR>
  * @author Setpoint Informática Ltda.
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pcp <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pcp <BR>
+ *         Classe:
  * @(#)FContraProva.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  */
 
 package org.freedom.modulos.pcp.view.frame.crud.detail;
@@ -32,45 +32,42 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
-
-
 public class FContraProva extends FDetalhe {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
-	
-	private JTextFieldPad txtQtdItRet = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15 , 5 );
-	
-	private JTextFieldPad txtCodOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5 , 0 );
-	
-	private JTextFieldPad txtSeqOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5 , 0 );
-	
-	private JTextFieldPad txtDtRet = new JTextFieldPad( JTextFieldPad.TP_DATE, 12 , 0 );
-	
-	private JTextFieldPad txtDtDesc = new JTextFieldPad( JTextFieldPad.TP_DATE, 12 , 0 );
-	
+
+	private JTextFieldPad txtQtdItRet = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 5 );
+
+	private JTextFieldPad txtCodOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private JTextFieldPad txtSeqOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private JTextFieldPad txtDtRet = new JTextFieldPad( JTextFieldPad.TP_DATE, 12, 0 );
+
+	private JTextFieldPad txtDtDesc = new JTextFieldPad( JTextFieldPad.TP_DATE, 12, 0 );
+
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	 
+
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-		
+
 	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
-	
+
 	private JTextFieldFK txtRefProdOp = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
-	
+
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
-	private JTextFieldPad txtCodRetCpIt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8 , 0 );
-	
-	private ListaCampos lcProd = new ListaCampos( this, "PD"  );
-	
+
+	private JTextFieldPad txtCodRetCpIt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private ListaCampos lcProd = new ListaCampos( this, "PD" );
+
 	private ListaCampos lcOp = new ListaCampos( this, "" );
-	
-	
-	public FContraProva( int codOp, int seqOp ){
-		
+
+	public FContraProva( int codOp, int seqOp ) {
+
 		this();
 		txtCodOp.setVlrInteger( codOp );
 		txtSeqOp.setVlrInteger( seqOp );
@@ -78,26 +75,26 @@ public class FContraProva extends FDetalhe {
 		txtSeqOp.setEditable( false );
 		txtCodProd.setEditable( false );
 		txtCodRetCpIt.setEditable( false );
-		
+
 	}
-	
-	public FContraProva(){
-		
+
+	public FContraProva() {
+
 		setAtribos( 50, 50, 450, 350 );
 		setTitulo( "Contra prova" );
-		
+
 		montaListaCampos();
 		montaTela();
-		
+
 	}
-	
-	private void montaTela(){
-		
+
+	private void montaTela() {
+
 		/*************
-		 * Cabeçalho * 
+		 * Cabeçalho *
 		 *************/
-		
-		pinCab = new JPanelPad( 440, 80 );		
+
+		pinCab = new JPanelPad( 440, 80 );
 		setPainel( pinCab, pnCliCab );
 		setListaCampos( lcCampos );
 		adicCampo( txtCodOp, 7, 25, 70, 20, "CODOP", "Cód.Op.", ListaCampos.DB_PK, true );
@@ -106,12 +103,12 @@ public class FContraProva extends FDetalhe {
 		adicCampo( txtDtDesc, 241, 25, 100, 20, "DTDESCARTE", "Data descarte", ListaCampos.DB_SI, true );
 		setListaCampos( true, "RETCP", "PP" );
 		lcCampos.setQueryInsert( true );
-		lcCampos.adicDetalhe( lcDet );		
-		
+		lcCampos.adicDetalhe( lcDet );
+
 		/************
-		 * Detalhe  * 
+		 * Detalhe *
 		 ************/
-		
+
 		setAltDet( 80 );
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
@@ -123,33 +120,33 @@ public class FContraProva extends FDetalhe {
 		adicCampo( txtQtdItRet, 364, 25, 60, 20, "QTDITRET", "Qtd.It", ListaCampos.DB_SI, true );
 		setListaCampos( true, "ITRETCP", "PP" );
 		lcDet.setMaster( lcCampos );
-		lcDet.setQueryInsert( true ); 
-		
+		lcDet.setQueryInsert( true );
+
 		montaTab();
 		tab.setTamColuna( 45, 0 );
 		tab.setTamColuna( 250, 2 );
 		tab.setTamColuna( 60, 3 );
 
 	}
-	
-	private void montaListaCampos(){
-		
+
+	private void montaListaCampos() {
+
 		/**************
-		 *  Produto   * 
+		 * Produto *
 		 **************/
-		
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, txtDescProd,  true ) );
+
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, txtDescProd, true ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
-		
+
 		/**************
-		 *     OP     * 
+		 * OP *
 		 **************/
-		
+
 		lcOp.add( new GuardaCampo( txtCodOp, "CodOp", "Cód.Op", ListaCampos.DB_PK, true ) );
 		lcOp.add( new GuardaCampo( txtSeqOp, "SeqOp", "Seq.Op", ListaCampos.DB_PK, true ) );
 		txtCodOp.setNomeCampo( "CodOp" );
@@ -157,16 +154,15 @@ public class FContraProva extends FDetalhe {
 		lcOp.montaSql( false, "OP", "PP" );
 		txtCodOp.setTabelaExterna( lcOp, FOP.class.getCanonicalName() );
 		txtSeqOp.setTabelaExterna( lcOp, FOP.class.getCanonicalName() );
-		
-		
+
 	}
-	
-	public void setConexao( DbConnection con ){
-		
+
+	public void setConexao( DbConnection con ) {
+
 		super.setConexao( con );
 		lcProd.setConexao( con );
 		lcOp.setConexao( con );
 		lcCampos.carregaDados();
-		
+
 	}
 }

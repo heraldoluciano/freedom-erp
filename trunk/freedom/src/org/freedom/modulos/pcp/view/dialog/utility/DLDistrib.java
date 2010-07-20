@@ -1,22 +1,23 @@
 /**
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)DLDistrib.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Comentários sobre a classe...
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)DLDistrib.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Comentários sobre a classe...
  */
 
 package org.freedom.modulos.pcp.view.dialog.utility;
@@ -47,7 +48,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
 
 public class DLDistrib extends FFDialogo implements MouseListener, ActionListener {
 
@@ -80,12 +80,11 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	private JPanelPad pinCab = new JPanelPad( 400, 60 );
 
 	private JTablePad tabDistrib = new JTablePad();
-	
+
 	private String lotePrincipal = null;
 
-
 	public DLDistrib( DbConnection cn, Component cOrig, boolean bPref ) {
-		
+
 		super( cOrig );
 		setConexao( cn );
 		setTitulo( "Distribuição" );
@@ -175,6 +174,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	}
 
 	public void mouseClicked( MouseEvent mevt ) {
+
 		if ( mevt.getClickCount() == 2 ) {
 			if ( mevt.getSource() == tabDistrib && tabDistrib.getLinhaSel() >= 0 ) {
 				alteraDistrib();
@@ -183,7 +183,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	}
 
 	public void alteraDistrib() {
-		
+
 		int iLinha = tabDistrib.getLinhaSel();
 		int iCodProd = 0;
 		int iSeqDist = 0;
@@ -202,7 +202,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		String sDescProd = null;
 		DLFechaDistrib dl = null;
 		boolean ok = false;
-					
+
 		iSeqDist = ( (Integer) tabDistrib.getValor( iLinha, 6 ) ).intValue();
 		iCodProd = ( (Integer) tabDistrib.getValor( iLinha, 4 ) ).intValue();
 		iCodProdPrinc = txtCodProdEst.getVlrInteger().intValue();
@@ -212,19 +212,19 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		ftQtdant = ftQtdade;
 		ftFator = ( (BigDecimal) tabDistrib.getValor( iLinha, 8 ) ).floatValue();
 		ftQtddistp = txtQtdDistpOp.getVlrBigDecimal().floatValue();
-		
+
 		while ( !ok ) {
-			
+
 			dl = new DLFechaDistrib( DLDistrib.this, iSeqDist, iCodProd, sDescProd, ftQtdade );
-			
+
 			try {
-				
+
 				dl.setLotePrincipal( lotePrincipal );
 				dl.setConexao( con );
 				dl.setVisible( true );
-				
+
 				if ( dl.OK ) {
-					
+
 					ftQtddig = ( (BigDecimal) dl.getValor( 0 ) ).floatValue(); // Quantidade digitada
 					ftQtddist = getSomaTab(); // Quantidade que já foi distribuida(soma do valor total)
 					ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
@@ -236,9 +236,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 
 						if ( ftQtdprod == 0 ) {
 
-							int iresposta = Funcoes.mensagemConfirma( null, 
-									  "Quantidade final produzida é inexistente!\n"
-									+ "Deseja realizar a distribuição a partir da quantidade prevista?" );
+							int iresposta = Funcoes.mensagemConfirma( null, "Quantidade final produzida é inexistente!\n" + "Deseja realizar a distribuição a partir da quantidade prevista?" );
 
 							if ( iresposta == JOptionPane.YES_OPTION ) {
 								ftQtdutil = ftQtdprev;
@@ -253,19 +251,18 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 						}
 
 						if ( ftQtdutil < ( ftQtddist + ftQtddistp + ftFinal - ( ftQtdant * ftFator ) ) ) {
-							Funcoes.mensagemInforma( this,
-									"Quantidade inválida! \nQuantidade total de distribuição ultrapassa a quantidade disponível para distribuição!" );
+							Funcoes.mensagemInforma( this, "Quantidade inválida! \nQuantidade total de distribuição ultrapassa a quantidade disponível para distribuição!" );
 							ftQtdade = ( ftQtdutil - ftQtddistp - ftQtddist ) / ftFator + ftQtdant;
 						}
 						else {
-							
+
 							tabDistrib.setValor( new BigDecimal( ftQtddig ), iLinha, 7 );
 							tabDistrib.setValor( new BigDecimal( ftFinal ), iLinha, 9 );
-							
+
 							ftQtddist = getSomaTab();
-							
+
 							txtQtdDist.setVlrBigDecimal( new BigDecimal( ftQtddist ) );
-							
+
 							ok = true;
 						}
 					}
@@ -273,9 +270,9 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 						Funcoes.mensagemInforma( this, "Quantidade inválida! \nQuantida deve ser maior que zero." );
 					}
 					if ( dl.getUsaModLote() ) {
-						
+
 						if ( dl.gravaLote() ) {
-							
+
 							tabDistrib.setValor( dl.getValor( 1 ), iLinha, 10 );
 							tabDistrib.setValor( dl.getValor( 2 ), iLinha, 11 );
 						}
@@ -290,8 +287,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 				else {
 					ok = true;
 				}
-			}
-			finally {
+			} finally {
 				if ( dl != null ) {
 					dl.dispose();
 				}
@@ -300,9 +296,10 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	}
 
 	public float getSomaTab() {
+
 		float ftTotal = 0;
 		Vector<?> v = null;
-		
+
 		for ( int i = 0; i < tabDistrib.getNumLinhas(); i++ ) {
 			v = tabDistrib.getLinha( i );
 			if ( ( v != null ) && ( v.size() > 10 ) ) {
@@ -316,32 +313,27 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	}
 
 	public void carregaTabela( int iCodop, int iSeqop ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = null;
 		Vector<Object> vLinha = null;
 		int i = 0;
-		
+
 		try {
-			
-			sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " + "D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, "
-					+ "D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " + "CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15," + casasDec + ")),"
-					+ "O.QTDDISTPOP, PD.CODALMOX, PD.CODEMPAX, PD.CODFILIALAX " + "FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, "
-					+ "PPITESTRUTURA ID, PPESTRUTURA E , EQPRODUTO PD " + "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND "
-					+ "D.CODEMP=O.CODEMPPD AND D.CODFILIAL=O.CODFILIALPD AND " + "D.CODPROD=O.CODPROD AND D.SEQEST=O.SEQEST AND " + "ED.CODEMP=D.CODEMPDE AND "
-					+ "ED.CODFILIAL=D.CODFILIALDE AND ED.CODPROD=D.CODPRODDE AND " + "ED.SEQEST=D.SEQESTDE AND F.CODEMP=D.CODEMPFS AND "
-					+ "F.CODFILIAL=D.CODFILIALFS AND F.CODFASE=D.CODFASE AND " + "ID.CODEMP=ED.CODEMP AND ID.CODFILIAL=ED.CODFILIAL AND "
-					+ "ID.CODPROD=ED.CODPROD AND ID.SEQEST=ED.SEQEST AND " + "ID.CODEMPPD=D.CODEMP AND ID.CODFILIALPD=D.CODFILIAL AND "
-					+ "ID.CODPRODPD=D.CODPROD AND E.CODEMP=D.CODEMP AND " + "E.CODFILIAL=D.CODFILIAL AND E.CODPROD=D.CODPROD AND "
-					+ "E.SEQEST=D.SEQEST AND D.CODEMPDE=PD.CODEMP AND " + "D.CODFILIALDE=PD.CODFILIAL AND D.CODPRODDE=PD.CODPROD ";
+
+			sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " + "D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, " + "D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " + "CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15," + casasDec + "))," + "O.QTDDISTPOP, PD.CODALMOX, PD.CODEMPAX, PD.CODFILIALAX "
+					+ "FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, " + "PPITESTRUTURA ID, PPESTRUTURA E , EQPRODUTO PD " + "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND " + "D.CODEMP=O.CODEMPPD AND D.CODFILIAL=O.CODFILIALPD AND "
+					+ "D.CODPROD=O.CODPROD AND D.SEQEST=O.SEQEST AND " + "ED.CODEMP=D.CODEMPDE AND " + "ED.CODFILIAL=D.CODFILIALDE AND ED.CODPROD=D.CODPRODDE AND " + "ED.SEQEST=D.SEQESTDE AND F.CODEMP=D.CODEMPFS AND " + "F.CODFILIAL=D.CODFILIALFS AND F.CODFASE=D.CODFASE AND "
+					+ "ID.CODEMP=ED.CODEMP AND ID.CODFILIAL=ED.CODFILIAL AND " + "ID.CODPROD=ED.CODPROD AND ID.SEQEST=ED.SEQEST AND " + "ID.CODEMPPD=D.CODEMP AND ID.CODFILIALPD=D.CODFILIAL AND " + "ID.CODPRODPD=D.CODPROD AND E.CODEMP=D.CODEMP AND "
+					+ "E.CODFILIAL=D.CODFILIAL AND E.CODPROD=D.CODPROD AND " + "E.SEQEST=D.SEQEST AND D.CODEMPDE=PD.CODEMP AND " + "D.CODFILIALDE=PD.CODFILIAL AND D.CODPRODDE=PD.CODPROD ";
 			ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
 			ps.setInt( 3, iCodop );
 			ps.setInt( 4, iSeqop );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
 
 				vLinha = new Vector<Object>();
@@ -370,23 +362,22 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 			rs.close();
 			ps.close();
 			con.commit();
-		}
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando distribuição!\n" + e.getMessage() );
 		}
 	}
 
 	private int buscaTipoMov() {
-		
+
 		int codTipoMov = 0;
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				if ( rs.getString( 1 ) != null ) {
 					codTipoMov = rs.getInt( 1 );
@@ -398,15 +389,14 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 			}
 			rs.close();
 			ps.close();
-		}
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar documento de preferências!\n" + err.getMessage() );
 		}
 		return codTipoMov;
 	}
 
 	private void gravaDistrib() {
-		
+
 		Vector<?> linha = null;
 
 		for ( int i = 0; i < tabDistrib.getNumLinhas(); i++ ) {
@@ -455,22 +445,20 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 				}
 
 				rs2.close();
-			}
-			catch ( Exception err ) {
+			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar RMA criada", true, con, err );
 				err.printStackTrace();
 			}
 
 			con.commit();
-		}
-		catch ( Exception err ) {
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
 			err.printStackTrace();
 		}
 	}
 
 	private void gravaOp( Vector<?> op ) {
-		
+
 		PreparedStatement ps = null;
 		String sql = null;
 		ResultSet rs = null;
@@ -506,10 +494,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 			ps.close();
 			con.commit();
 
-			sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP,"
-					+ "QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV,"
-					+ "CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP,QTDSUGPRODOP)"
-					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP," + "QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV,"
+					+ "CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP,QTDSUGPRODOP)" + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -546,20 +532,18 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 
 			geraRMA( seqop );
 
-		}
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro ao gerar OP's de distribuição!\n" + e.getMessage() );
 			try {
 				con.rollback();
-			}
-			catch ( SQLException eb ) {
+			} catch ( SQLException eb ) {
 			}
 		}
 
 	}
 
 	public void carregaCampos( Object[] sValores ) {
-		
+
 		txtCodOP.setVlrInteger( (Integer) sValores[ 0 ] );
 		txtSeqOP.setVlrInteger( (Integer) sValores[ 1 ] );
 		txtCodProdEst.setVlrInteger( (Integer) sValores[ 2 ] );
@@ -573,18 +557,27 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
+
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btOK ) {
 			gravaDistrib();
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+	}
 
 }

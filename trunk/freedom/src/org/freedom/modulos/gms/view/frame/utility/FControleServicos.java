@@ -1,16 +1,9 @@
 /*
- * Projeto: Freedom
- * Pacote: org.freedom.modules.crm
- * Classe: @(#)FControServicos.java
+ * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)FControServicos.java
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> 
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
+ * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  */
 
 package org.freedom.modulos.gms.view.frame.utility;
@@ -73,7 +66,6 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-
 /**
  * Painel de controle para Ordens de Serviço
  * 
@@ -83,56 +75,56 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FControleServicos extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
-	private static final long serialVersionUID = 1L;	
-	
+	private static final long serialVersionUID = 1L;
+
 	private static final Color GREEN = new Color( 45, 190, 64 );
 
 	// *** Paineis tela
-	
+
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelMaster = new JPanelPad( 700, 120 );
-	
+
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
+
 	private JTabbedPanePad tabbedAbas = new JTabbedPanePad();
-	
-	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );	
-	
+
+	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private JPanelPad panelNavegador = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
-	private JPanelPad panelFiltros = new JPanelPad("Filtros", Color.BLUE);
-	
+
+	private JPanelPad panelFiltros = new JPanelPad( "Filtros", Color.BLUE );
+
 	// *** Paineis Detalhamento
-	
-	private JPanelPad panelDet = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );		
-	
+
+	private JPanelPad panelDet = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private JPanelPad panelTabDet = new JPanelPad( 700, 0 );
-	
+
 	private JPanelPad panelGridDet = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
+
 	private JPanelPad panelTabDetItens = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
+
 	private JTablePad tabDet = null;
-	
+
 	// *** Labels
-	
+
 	private JLabelPad sepdet = new JLabelPad();
-		
+
 	// *** Geral
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtCodAtendente = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtendente = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtDDDCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtFoneCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
@@ -157,76 +149,84 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private JTextFieldFK txtNumCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	
 	// *** Campos
 
-//	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+	// private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	// ** Checkbox
-	
-	private JCheckBoxPad cbEtapa0 =  new JCheckBoxPad( "Pendentes", "S", "N" );
-	private JCheckBoxPad cbEtapa1 =  new JCheckBoxPad( "Analise", "S", "N" );
-	private JCheckBoxPad cbEtapa2 =  new JCheckBoxPad( "Orçamento", "S", "N" );
-	private JCheckBoxPad cbEtapa3 =  new JCheckBoxPad( "Aprovação", "S", "N" );
-	private JCheckBoxPad cbEtapa4 =  new JCheckBoxPad( "Execução", "S", "N" );
-	private JCheckBoxPad cbEtapa5 =  new JCheckBoxPad( "Faturado", "S", "N" );
-	private JCheckBoxPad cbEtapa6 =  new JCheckBoxPad( "entregue", "S", "N" );
-	
+
+	private JCheckBoxPad cbEtapa0 = new JCheckBoxPad( "Pendentes", "S", "N" );
+
+	private JCheckBoxPad cbEtapa1 = new JCheckBoxPad( "Analise", "S", "N" );
+
+	private JCheckBoxPad cbEtapa2 = new JCheckBoxPad( "Orçamento", "S", "N" );
+
+	private JCheckBoxPad cbEtapa3 = new JCheckBoxPad( "Aprovação", "S", "N" );
+
+	private JCheckBoxPad cbEtapa4 = new JCheckBoxPad( "Execução", "S", "N" );
+
+	private JCheckBoxPad cbEtapa5 = new JCheckBoxPad( "Faturado", "S", "N" );
+
+	private JCheckBoxPad cbEtapa6 = new JCheckBoxPad( "entregue", "S", "N" );
+
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
-	
+
 	// *** Listacampos
 
-//	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
-//	private ListaCampos lcProd = new ListaCampos( this );
+	// private ListaCampos lcCliente = new ListaCampos( this, "CL" );
+	// private ListaCampos lcProd = new ListaCampos( this );
 
 	// *** Botões
 	private JButtonPad btAtualiza = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );	
+
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
+
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
+
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
-	
+
 	private JTablePad tabstatus = new JTablePad();
-	
+
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
-	
+
 	private ListaCampos lcAtendente = new ListaCampos( this, "AE" );
-	
+
 	private ListaCampos lcCli = new ListaCampos( this );
-	
-		
+
 	// Enums
-	
+
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC; 
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC;
 	}
-	
+
 	public FControleServicos() {
-		
+
 		super( false );
-		
+
 		setTitulo( "Painel de controle de serviços", this.getClass().getName() );
 		setAtribos( 10, 10, 740, 600 );
-		
-    	int x = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getWidth()-getWidth())/2;
-    	int y = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getHeight()-getHeight())/2;
-    	
-    	setLocation( x, y );
-    	
-    	setValoresPadrao();
-		
+
+		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
+		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
+
+		setLocation( x, y );
+
+		setValoresPadrao();
+
 		montaListaCampos();
-		
+
 		criaTabelas();
-		
-		montaTela();				
-		
+
+		montaTela();
+
 		montaListeners();
-	
+
 	}
 
 	private void montaListaCampos() {
-		
+
 		// Atendimento para funcionamento
 		txtCodAtendente.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
 		txtCodAtendente.setFK( true );
@@ -235,7 +235,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		lcAtendente.add( new GuardaCampo( txtNomeAtendente, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendente.setReadOnly( true );
-		
+
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
@@ -259,29 +259,27 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		txtCodCli.setFK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
 
-		
-		
 	}
-	
+
 	private void setValoresPadrao() {
-		
+
 		txtDataini.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 
 	}
-	
+
 	private void montaListeners() {
-		
+
 		btAtualiza.addActionListener( this );
 		btNovo.addActionListener( this );
 
 		btEditar.addActionListener( this );
 		btCompra.addActionListener( this );
 		btOrcamento.addActionListener( this );
-		
-		tabDet.addTabelaSelListener( this );	
-		tabDet.addMouseListener( this );	
-		
+
+		tabDet.addTabelaSelListener( this );
+		tabDet.addMouseListener( this );
+
 	}
 
 	private void montaGridStatus() {
@@ -292,7 +290,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabstatus.adicColuna( "Status" ); // Descrição
 
 		tabstatus.setTamColuna( 10, 0 );
-		
+
 		tabstatus.setColunaInvisivel( 1 );
 
 		tabstatus.setTamColuna( 10, 2 );
@@ -303,30 +301,30 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
 
 	}
-	
+
 	private void carregaStatus() {
 
 		Vector<Object> valores = StatusOS.getValores();
 		Vector<String> labels = StatusOS.getLabels();
-//		Vector<ImageIcon> icones = new Vector<ImageIcon>();
+		// Vector<ImageIcon> icones = new Vector<ImageIcon>();
 
 		Vector<Object> item = null;
 
-		for ( int i = 0; i < valores.size(); i++ ) { 
+		for ( int i = 0; i < valores.size(); i++ ) {
 
 			item = new Vector<Object>();
-			
+
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
 			ImageIcon icon = StatusOS.getImagem( valor, StatusOS.IMG_TAMANHO_P );
-			
-			if(StatusOS.OS_FINALIZADA.getValue().equals( valor )) {
+
+			if ( StatusOS.OS_FINALIZADA.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
 				item.addElement( new Boolean( true ) );
 			}
-			
+
 			item.addElement( valor );
 			item.addElement( icon );
 			item.addElement( label );
@@ -336,64 +334,62 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		}
 
 	}
-	
+
 	private void montaTela() {
-		
+
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
-		
+
 		// ***** Cabeçalho
-		
+
 		panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
-		
+
 		panelFiltros.adic( scpStatus, 517, 0, 150, 82 );
 		panelFiltros.adic( btAtualiza, 670, 0, 30, 81 );
-		
+
 		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
 		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
 
 		panelFiltros.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		panelFiltros.adic( txtDatafim, 80, 20, 70, 20 );
-		
+
 		panelFiltros.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
 		panelFiltros.adic( txtCodAtendente, 153, 20, 70, 20 );
-		
+
 		panelFiltros.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
 		panelFiltros.adic( txtNomeAtendente, 226, 20, 270, 20 );
-		
+
 		panelFiltros.adic( new JLabelPad( "Cód.Cli." ), 153, 40, 70, 20 );
 		panelFiltros.adic( txtCodCli, 153, 60, 70, 20 );
-		
+
 		panelFiltros.adic( new JLabelPad( "Razão social do cliente" ), 226, 40, 180, 20 );
 		panelFiltros.adic( txtRazCli, 226, 60, 270, 20 );
 
-		
-//		panelMaster.adic( btRecarregar, 595, 8, 123, 42 ); 
-		
-//		***** Abas
-		
+		// panelMaster.adic( btRecarregar, 595, 8, 123, 42 );
+
+		// ***** Abas
+
 		panelGeral.add( panelAbas, BorderLayout.CENTER );
-		panelGeral.add( panelAbas);
+		panelGeral.add( panelAbas );
 		panelAbas.add( tabbedAbas );
-		
+
 		tabbedAbas.addTab( "Detalhamento", panelDet );
-		
+
 		tabbedAbas.addChangeListener( this );
-		
-		
+
 		// ***** Detalhamento
-		
+
 		panelDet.add( panelTabDet, BorderLayout.NORTH );
-		panelDet.add( panelGridDet, BorderLayout.CENTER );		
+		panelDet.add( panelGridDet, BorderLayout.CENTER );
 		panelGridDet.add( panelTabDetItens );
-		
+
 		panelTabDetItens.add( new JScrollPane( tabDet ) );
-		
+
 		// ***** Rodapé
-		
+
 		Color statusColor = new Color( 111, 106, 177 );
-		Font statusFont = SwingParams.getFontpadmed(); 
-		
+		Font statusFont = SwingParams.getFontpadmed();
+
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 
@@ -401,20 +397,20 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		panelNavegador.add( btEditar );
 		panelNavegador.add( btCompra );
 		panelNavegador.add( btOrcamento );
-		
-		panelSouth.add( panelNavegador, BorderLayout.WEST);
 
-		panelSouth.add( adicBotaoSair(), BorderLayout.EAST);
-		
+		panelSouth.add( panelNavegador, BorderLayout.WEST );
+
+		panelSouth.add( adicBotaoSair(), BorderLayout.EAST );
+
 		montaGridStatus();
 		carregaStatus();
-				
+
 	}
-	
+
 	private void criaTabelas() {
-		
+
 		// Tabela de detalhamento
-		
+
 		tabDet = new JTablePad();
 		tabDet.setRowHeight( 21 );
 
@@ -422,47 +418,47 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Ticket" );
 		tabDet.adicColuna( "Cód.Tipo.Rec.Merc." );
-		
+
 		tabDet.adicColuna( "Data" );
 		tabDet.adicColuna( "Hora" );
 		tabDet.adicColuna( "Cod.Cli." );
 		tabDet.adicColuna( "Cliente" );
 		tabDet.adicColuna( "Orc." );
-				
+
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.TICKET.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.CODTIPORECMERC.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
-		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );		
+		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );
 		tabDet.setTamColuna( 400, DETALHAMENTO.NOMECLI.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODORC.ordinal() );
-		
-		//tabDet.setColunaInvisivel( 2 );
-		
+
+		// tabDet.setColunaInvisivel( 2 );
+
 	}
-	
+
 	public void montaGrid() {
-			
+
 		try {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "select ");
-			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.codcli, cl.nomecli, ");			
-			
-			sql.append( "(select first 1 ros.codorc from EQITRECMERCITOSITORC ros ");
-			sql.append( "where ros.codemp=rm.codemp and ros.codfilial=rm.codfilial and ros.ticket=rm.ticket");
+			sql.append( "select " );
+			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.codcli, cl.nomecli, " );
+
+			sql.append( "(select first 1 ros.codorc from EQITRECMERCITOSITORC ros " );
+			sql.append( "where ros.codemp=rm.codemp and ros.codfilial=rm.codfilial and ros.ticket=rm.ticket" );
 			sql.append( ") codorc " );
-			
-			sql.append( "from eqrecmerc rm, vdcliente cl ");
-			
-			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli ");
+
+			sql.append( "from eqrecmerc rm, vdcliente cl " );
+
+			sql.append( "where cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
-			
-			StringBuffer status = new StringBuffer("");
+
+			StringBuffer status = new StringBuffer( "" );
 
 			boolean primeiro = true;
 
@@ -487,50 +483,50 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				}
 
 			}
-			
-			if(txtCodAtendente.getVlrInteger()>0) {
-				sql.append( " and rm.codempar=? and rm.codfilialar=? and rm.codatendrec=? "  );
+
+			if ( txtCodAtendente.getVlrInteger() > 0 ) {
+				sql.append( " and rm.codempar=? and rm.codfilialar=? and rm.codatendrec=? " );
 			}
-			
-			if(txtCodCli.getVlrInteger()>0) {
-				sql.append( " and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? "  );
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				sql.append( " and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
 			}
-			
+
 			sql.append( " order by rm.dtins desc, rm.hins desc " );
-		
-			System.out.println("SQL:" + sql.toString());
-			
+
+			System.out.println( "SQL:" + sql.toString() );
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			
+
 			int iparam = 1;
-			
+
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ));
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ));
-			
-			if(txtCodAtendente.getVlrInteger()>0) { 
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			if ( txtCodAtendente.getVlrInteger() > 0 ) {
 				ps.setInt( iparam++, lcAtendente.getCodEmp() );
 				ps.setInt( iparam++, lcAtendente.getCodFilial() );
 				ps.setInt( iparam++, txtCodAtendente.getVlrInteger() );
 			}
-			
-			if(txtCodCli.getVlrInteger()>0) {
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
 				ps.setInt( iparam++, lcCli.getCodEmp() );
 				ps.setInt( iparam++, lcCli.getCodFilial() );
-				ps.setInt( iparam++, txtCodCli.getVlrInteger() );				
+				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
 			}
-			
-			ResultSet rs = ps.executeQuery();		
-			
+
+			ResultSet rs = ps.executeQuery();
+
 			tabDet.limpa();
-						
+
 			int row = 0;
-			
+
 			while ( rs.next() ) {
-				
+
 				tabDet.adicLinha();
-				
+
 				imgColuna = StatusOS.getImagem( rs.getString( "status" ), StatusOS.IMG_TAMANHO_M );
 
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
@@ -542,28 +538,27 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCLI.toString().trim() ), row, DETALHAMENTO.CODCLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
-				
+
 				row++;
-				
+
 			}
 
 			// Permitindo reordenação
-			
-			if(row>0) {
-				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabDet.getModel());    
-				tabDet.setRowSorter(sorter);				   
+
+			if ( row > 0 ) {
+				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabDet.getModel() );
+				tabDet.setRowSorter( sorter );
 			}
 			else {
 				tabDet.setRowSorter( null );
 			}
-			
-		} 
-		catch ( Exception e ) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btAtualiza ) {
@@ -575,110 +570,122 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		else if ( e.getSource() == btEditar ) {
 			abreRecMerc();
 		}
-		else if( e.getSource() == btCompra ) {
+		else if ( e.getSource() == btCompra ) {
 			geraCompra();
 		}
-		else if( e.getSource() == btOrcamento ) {
+		else if ( e.getSource() == btOrcamento ) {
 			geraOrcamento();
 		}
 
 	}
 
 	private void novoRecebimento() {
-		
+
 		FOrdemServico ordemservico = new FOrdemServico( true );
-		
+
 		try {
 
 			Aplicativo.telaPrincipal.criatela( "Ordem de Serviço", ordemservico, con );
 			ordemservico.setTelaMae( this );
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void valorAlterado( TabelaSelEvent e ) {
-		/*		
-		if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) {
-			buscaItensVenda( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
-		}
-		*/
+
+		/*
+		 * if ( e.getTabela() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 && !carregandoOrcamentos ) { buscaItensVenda( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" ); }
+		 */
 	}
 
 	private void abreRecMerc() {
-		
+
 		FOrdemServico ordemservico = null;
-	    
+
 		try {
-			
-			if(tabDet.getLinhaSel()>-1) {
-				
+
+			if ( tabDet.getLinhaSel() > -1 ) {
+
 				if ( Aplicativo.telaPrincipal.temTela( FRecMerc.class.getName() ) ) {
 					ordemservico = (FOrdemServico) Aplicativo.telaPrincipal.getTela( FOrdemServico.class.getName() );
 				}
 				else {
-					ordemservico = new FOrdemServico(false);
+					ordemservico = new FOrdemServico( false );
 					Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", ordemservico, con );
-				}    	
-				
-				int ticket =  (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() ) ;
-				int codtiporecmerc = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTIPORECMERC.ordinal() ) ;
-		
-				ordemservico.exec(ticket, codtiporecmerc, this);
+				}
+
+				int ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+				int codtiporecmerc = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODTIPORECMERC.ordinal() );
+
+				ordemservico.exec( ticket, codtiporecmerc, this );
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Não há nenhum registro selecionado para edição!" );
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void mouseClicked( MouseEvent mevt ) {
+
 		JTablePad tabEv = (JTablePad) mevt.getSource();
-		
-		if ( mevt.getClickCount() == 2 ) {					
-			if( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
-				
+
+		if ( mevt.getClickCount() == 2 ) {
+			if ( tabEv == tabDet && tabEv.getLinhaSel() > -1 ) {
+
 				abreRecMerc();
-				
+
 			}
-		}				
+		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+	}
 
 	public void keyPressed( KeyEvent e ) {
-		
+
 		if ( e.getSource() == btAtualiza && e.getKeyCode() == KeyEvent.VK_ENTER ) {
 			btAtualiza.doClick();
 		}
 	}
 
-	public void keyReleased( KeyEvent e ) { }
+	public void keyReleased( KeyEvent e ) {
 
-	public void keyTyped( KeyEvent e ) { }
+	}
 
-	public void beforeCarrega( CarregaEvent e ) { }
+	public void keyTyped( KeyEvent e ) {
+
+	}
+
+	public void beforeCarrega( CarregaEvent e ) {
+
+	}
 
 	public void afterCarrega( CarregaEvent e ) {
 
-//		if ( lcProd == e.getListaCampos() || lcCliente == e.getListaCampos() ) {
-			montaGrid();
-//		}
-		
+		// if ( lcProd == e.getListaCampos() || lcCliente == e.getListaCampos() ) {
+		montaGrid();
+		// }
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -687,205 +694,200 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		montaGrid();
 		lcAtendente.setConexao( cn );
 		lcCli.setConexao( con );
-//		lcProd.setConexao( con );
-		
+		// lcProd.setConexao( con );
+
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
 
-		
 	}
-	
-	private void selectAll(JTablePad tab) {
+
+	private void selectAll( JTablePad tab ) {
+
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( true ), i, 0 );
 		}
 	}
-	
-	private void limpaNaoSelecionados(JTablePad tab) {
+
+	private void limpaNaoSelecionados( JTablePad tab ) {
+
 		int linhas = tab.getNumLinhas();
 		int pos = 0;
-		try {			
+		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( tab.getValor( i, 0 )!=null && ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) { //xxx
+				if ( tab.getValor( i, 0 ) != null && ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() ) { // xxx
 					tab.tiraLinha( i );
 					i--;
-				}					
-			}									
-		}
-		catch (Exception e) {
+				}
+			}
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
-		
+
 	public void stateChanged( ChangeEvent cevt ) {
 
 		if ( cevt.getSource() == tabbedAbas ) {
 			if ( tabbedAbas.getSelectedIndex() == 1 ) {
-//				geraTabTemp();	
+				// geraTabTemp();
 			}
 		}
 	}
-	
+
 	private Integer getPlanoPag() {
-		
+
 		Integer codplanopag = null;
-		
+
 		try {
-		
-			DLInfoPlanoPag dl = new DLInfoPlanoPag(this, con);
-			dl.setVisible(true);
-			
-			if (dl.OK) {
+
+			DLInfoPlanoPag dl = new DLInfoPlanoPag( this, con );
+			dl.setVisible( true );
+
+			if ( dl.OK ) {
 				codplanopag = dl.getValor();
 				dl.dispose();
-			} 
+			}
 			else {
 				dl.dispose();
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return codplanopag;
 	}
-	
-	private void abrecompra(Integer codcompra){
-		
+
+	private void abrecompra( Integer codcompra ) {
+
 		if ( fPrim.temTela( "Compra" ) == false ) {
 			FCompra tela = new FCompra();
 			fPrim.criatela( "Compra", tela, con );
 			tela.exec( codcompra );
 		}
-		
+
 	}
-	
-	private void abreorcamento(Integer codorc){
-		
+
+	private void abreorcamento( Integer codorc ) {
+
 		if ( fPrim.temTela( "Orçamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
 			fPrim.criatela( "Orçamento", tela, con );
 			tela.exec( codorc );
 		}
-		
+
 	}
 
-	
 	private void geraCompra() {
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		Integer ticket = null;
 		BigDecimal pesoliq = null;
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		String unid = null;
 		PreparedStatement ps = null;
-		
+
 		RecMerc recmerc = null;
-		
+
 		try {
-			
-			if(tabDet.getLinhaSel()>-1) {
+
+			if ( tabDet.getLinhaSel() > -1 ) {
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-			
-				recmerc = new RecMerc(this, ticket, con);
-				
-				if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
-					
-					if(Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
+
+				recmerc = new RecMerc( this, ticket, con );
+
+				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
+
+					if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 						Integer codcompra = recmerc.geraCompra();
-					
-						if( codcompra!=null && codcompra>0 ) {
-						
-							abrecompra(codcompra);
-						
+
+						if ( codcompra != null && codcompra > 0 ) {
+
+							abrecompra( codcompra );
+
 						}
 					}
-					
+
 				}
 				else {
 					Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda está pendente de analise!" );
 				}
-				
+
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void geraOrcamento() {
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		Integer ticket = null;
 		BigDecimal pesoliq = null;
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		String unid = null;
 		PreparedStatement ps = null;
-		
+
 		RecMerc recmerc = null;
-		
+
 		try {
-			
-			if(tabDet.getLinhaSel()>-1) {
+
+			if ( tabDet.getLinhaSel() > -1 ) {
 
 				String codorcgrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() ).toString();
-				
+
 				// Se já nao houver orçamento .. deve gerar...
-				if( "".equals( codorcgrid ) || null == codorcgrid ) {
+				if ( "".equals( codorcgrid ) || null == codorcgrid ) {
 
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
-				
-					recmerc = new RecMerc(this, ticket, con);
-					
-					if( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal()).equals( StatusOS.OS_ANALISE.getValue() )) {
-						
-						if(Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" )==JOptionPane.YES_OPTION) {
-	
+
+					recmerc = new RecMerc( this, ticket, con );
+
+					if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
+
+						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+
 							Integer codorc = recmerc.geraOrcamento();
-						
-							if( codorc!=null && codorc>0 ) {
-							
-								abreorcamento(codorc);
-							
+
+							if ( codorc != null && codorc > 0 ) {
+
+								abreorcamento( codorc );
+
 							}
 						}
-						
+
 					}
 					else {
 						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda não foi finalizado!" );
 					}
-					
+
 				}
 				else {
 					// Se já existir um orçamento deve abri-lo
-					
-					abreorcamento( Integer.parseInt( codorcgrid ));
-					
+
+					abreorcamento( Integer.parseInt( codorcgrid ) );
+
 				}
 
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
-	}
-	
-}
 
+	}
+
+}

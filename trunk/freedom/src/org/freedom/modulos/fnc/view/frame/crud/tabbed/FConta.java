@@ -2,23 +2,23 @@
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FConta.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  */
 
 package org.freedom.modulos.fnc.view.frame.crud.tabbed;
@@ -86,7 +86,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private Vector<String> vValsTipoCaixa = new Vector<String>();
 
 	private Vector<String> vLabsTipoCaixa = new Vector<String>();
-	
+
 	private JRadioGroup<?, ?> rgTipoCaixa = null;
 
 	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
@@ -122,17 +122,17 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JTextFieldPad txtIDUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodForContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldPad txtCodHistPad = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
-		
+
 	public FConta() {
 
 		super( false );
@@ -172,7 +172,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		txtIDUsu.setFK( true );
 		txtIDUsu.setNomeCampo( "IDUsu" );
 		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
-		
+
 		lcHist.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHist.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHist.montaSql( false, "HISTPAD", "FN" );
@@ -193,11 +193,11 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		rgTipoCaixa = new JRadioGroup<String, String>( 1, 2, vLabsTipoCaixa, vValsTipoCaixa );
 
 		rgTipoCaixa.setAtivo( false );
-		
+
 		rgTipo.addRadioGroupListener( this );
-		
+
 		/***************
-		 *  ABA GERAL  *
+		 * ABA GERAL *
 		 ***************/
 		setPainel( pinCamposGeral );
 
@@ -216,35 +216,33 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 		adicDB( rgTipo, 7, 180, 170, 30, "TipoConta", "Tipo", true );
 		adicDB( rgTipoCaixa, 7, 235, 170, 30, "TipoCaixa", "Tipo de Caixa", true );
-		
+
 		adicDB( cbAtivaConta, 190, 185, 50, 20, "ativaconta", "Ativa", true );
 		adicDB( chbRestritoTipoMov, 250, 185, 240, 20, "TUSUCONTA", "Permissão", true );
-		
+
 		/******************
-		 *  ABA CONTABIL  *
+		 * ABA CONTABIL *
 		 ******************/
 		setPainel( pinCamposContabil );
 
 		adicTab( "Contábil", pinCamposContabil );
-		
+
 		adicCampo( txtCodContDeb, 7, 20, 150, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 160, 20, 150, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 60, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 60, 300, 20, "DescHist", "Descrição do histórico padrão" );		
+		adicDescFK( txtDescHistPad, 90, 60, 300, 20, "DescHist", "Descrição do histórico padrão" );
 
 		setListaCampos( false, "CONTA", "FN" );
 		lcCampos.setQueryInsert( false );
-		
 
-		setPainel( pinDetRestricoes, pnRestricoes );	
+		setPainel( pinDetRestricoes, pnRestricoes );
 
 		pinDetRestricoes.setPreferredSize( new Dimension( 430, 80 ) );
 		pinDetRestricoes.add( pinNavRestricoes, BorderLayout.SOUTH );
 		pinDetRestricoes.add( pinCamposRestricoes, BorderLayout.CENTER );
 
-		
 		/********************
-		 *  ABA RESTRIÇÕES  *
+		 * ABA RESTRIÇÕES *
 		 ********************/
 		setListaCampos( lcRestricoes );
 		setNavegador( navRestricoes );
@@ -263,7 +261,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcRestricoes.setQueryCommit( false );
 		lcRestricoes.montaTab();
 
-		txtNumConta.setTabelaExterna( lcRestricoes, null);
+		txtNumConta.setTabelaExterna( lcRestricoes, null );
 
 		tbRestricoes.setTamColuna( 80, 0 );
 		tbRestricoes.setTamColuna( 280, 1 );
@@ -295,19 +293,18 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcHist.setConexao( cn );
 	}
 
-
 	public void valorAlterado( RadioGroupEvent evt ) {
 
-		if(evt.getSource() == rgTipo) {
-			if("C".equals( rgTipo.getVlrString() )) {
+		if ( evt.getSource() == rgTipo ) {
+			if ( "C".equals( rgTipo.getVlrString() ) ) {
 				rgTipoCaixa.setAtivo( true );
 			}
 			else {
 				rgTipoCaixa.setVlrString( "F" );
 				rgTipoCaixa.setAtivo( false );
 			}
-			
+
 		}
-		
+
 	}
 }

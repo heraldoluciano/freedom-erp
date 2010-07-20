@@ -2,23 +2,23 @@
  * @version 07/2007 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRetSiacc.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de leitura do arquivo de retorno de Siacc.
+ *                    Tela de leitura do arquivo de retorno de Siacc.
  * 
  */
 
@@ -48,20 +48,21 @@ import org.freedom.modulos.fnc.business.component.SiaccUtil.RegJ;
 import org.freedom.modulos.fnc.library.swing.dialog.DLRegB;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 
-
 public class FRetSiacc extends FRetFBN {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public FRetSiacc() {
-		
+
 		super( FPrefereFBB.TP_SIACC );
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.freedom.modulos.fnc.FRetFBN#execImportar()
 	 */
-	@Override
+	@ Override
 	protected boolean execImportar() {
 
 		boolean retorno = true;
@@ -104,7 +105,7 @@ public class FRetSiacc extends FRetFBN {
 						else {
 							if ( leArquivo( fileReaderSiacc, list ) ) {
 
-								if ( ! montaGrid( list ) ) {
+								if ( !montaGrid( list ) ) {
 									Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
 									lbStatus.setText( "" );
 									retorno = false;
@@ -194,7 +195,7 @@ public class FRetSiacc extends FRetFBN {
 		if ( list != null ) {
 
 			lbStatus.setText( "     Carregando tabela ..." );
-			
+
 			tab.limpa();
 
 			List<Object> infocli = new ArrayList<Object>();
@@ -202,7 +203,7 @@ public class FRetSiacc extends FRetFBN {
 			String regJ = null;
 
 			try {
-				
+
 				for ( Reg reg : list ) {
 
 					if ( reg.getTiporeg() == 'F' ) {
@@ -216,22 +217,22 @@ public class FRetSiacc extends FRetFBN {
 						if ( infocli.size() == EColInfoCli.values().length ) {
 
 							tab.adicLinha();
-							
+
 							if ( "00".equals( ( (RegF) reg ).getCodRetorno() ) ) {
-								
+
 								tab.setValor( imgConfBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
 							}
 							else {
-								
+
 								updateStatusRetorno( (RegF) reg );
-								
+
 								tab.setValor( imgRejBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							}
-							
+
 							String[] mensret = getDetRetorno( txtCodBanco.getVlrString(), ( (RegF) reg ).getCodRetorno(), FPrefereFBB.TP_SIACC );
-							
+
 							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODCLI.ordinal() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -241,7 +242,7 @@ public class FRetSiacc extends FRetFBN {
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), row, EColTab.DTREC.ordinal() ); // Emissão
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), row, EColTab.DTVENC.ordinal() ); // Vencimento
 							tab.setValor( Funcoes.bdToStr( (BigDecimal) ( (RegF) reg ).getValorDebCred() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
-							tab.setValor( Funcoes.dateToStrDate( ((RegF)reg).getDataVenc() ), row, EColTab.DTPAG.ordinal() ); // Data pgto.
+							tab.setValor( Funcoes.dateToStrDate( ( (RegF) reg ).getDataVenc() ), row, EColTab.DTPAG.ordinal() ); // Data pgto.
 							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
@@ -249,21 +250,21 @@ public class FRetSiacc extends FRetFBN {
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( mensret[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
-							
+							tab.setValor( mensret[ 0 ], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+
 							row++;
 						}
 					}
 					else if ( reg.getTiporeg() == 'B' ) {
-						
+
 						if ( regsB == null ) {
 							regsB = new ArrayList<RegB>();
 						}
-						
+
 						regsB.add( (RegB) reg );
 					}
 					else if ( reg.getTiporeg() == 'J' ) {
-						
+
 						regJ = ( (RegJ) reg ).getMenssagemInfo();
 					}
 				}
@@ -274,14 +275,14 @@ public class FRetSiacc extends FRetFBN {
 				else {
 					lbStatus.setText( "     Informações do cliente não encontradas ..." );
 				}
-				
+
 				montaDlRegB( regsB );
-				
+
 				if ( regJ != null && regJ.trim().length() > 0 ) {
-					
+
 					Funcoes.mensagemInforma( this, regJ );
 				}
-				
+
 			} catch ( Exception e ) {
 				retorno = false;
 				Funcoes.mensagemErro( this, "Erro no carregamento da tabela!\n" + e.getMessage() );
@@ -301,34 +302,33 @@ public class FRetSiacc extends FRetFBN {
 		if ( regs != null ) {
 
 			DLRegB dl = new DLRegB( this );
-			
+
 			if ( dl.montaGrid( regs, con ) ) {
-			
+
 				dl.setVisible( true );
 			}
 		}
 	}
-	
+
 	private void updateStatusRetorno( final RegF registro ) {
-		
+
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE FNFBNREC SET SITRETORNO=?" );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setString( 1, registro.getCodRetorno() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNFBNREC" ) );
 			ps.setInt( 4, registro.getCodRec() );
 			ps.setInt( 5, registro.getNparcItRec() );
-			ps.executeUpdate();			
+			ps.executeUpdate();
 			ps.close();
-			
+
 			con.commit();
-		}
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao atualizar status do registro!\n" + e.getMessage(), true, con, e );
 		}
 	}

@@ -1,22 +1,23 @@
 /**
  * @version 18/12/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FModBoleto.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Monta o org.freedom.layout para o boleto bancário.
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FModBoleto.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Monta o org.freedom.layout para o boleto bancário.
  * 
  */
 
@@ -62,39 +63,39 @@ import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final CardLayout cardlayout = new CardLayout();
-	
+
 	private final JPanelPad pnGeral = new JPanelPad( new BorderLayout() );
 
 	private final JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelCampos = new JPanelPad();
-	
+
 	private final JPanelPad panelBoleto = new JPanelPad( JPanelPad.TP_JPANEL, cardlayout );
-	
+
 	private final JPanelPad pinPreImp = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelPreImp = new JPanelPad();
-	
+
 	private final JPanelPad panelBolElect = new JPanelPad();
-	
+
 	private final JPanelPad panelBancos = new JPanelPad( new BorderLayout() );
-	
+
 	private final JPanelPad panelCamposBancos = new JPanelPad();
-	
+
 	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-	
+
 	private final JTextFieldPad txtDvConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-	
+
 	private final JCheckBoxPad ckPreImp = new JCheckBoxPad( "Usa boleto pré-impresso ?", "S", "N" );
 
 	private final JTextAreaPad txaBoleto = new JTextAreaPad( 10000 );
@@ -108,17 +109,17 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private JComboBoxPad cbCamposDin = null;
 
 	private JComboBoxPad cbCamposEspec = null;
-	
+
 	private final JTextFieldPad txtClassModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
 	private final JTextFieldPad txtEspecie = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldPad txtMdeCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-	
+
 	private final JCheckBoxPad ckAceite = new JCheckBoxPad( "Aceite ?", "S", "N" );
-	
+
 	private final JTextFieldPad txtDescLocaPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
 	private final JTextAreaPad txaInstrucao = new JTextAreaPad( 500 );
 
 	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -128,25 +129,24 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	//private final JButtonPad btPath = new JButtonPad( "..." );
+
+	// private final JButtonPad btPath = new JButtonPad( "..." );
 
 	private JComboBoxPad cbAcao = null;
-	
+
 	private JCheckBoxPad cbImpDoc = new JCheckBoxPad( "Imprimi doc. nas instruções?", "S", "N" );
-	
+
 	private final JTablePad tabBancos = new JTablePad();
-	
+
 	private final Navegador navBancos = new Navegador( true );
-	
+
 	private final ListaCampos lcConta = new ListaCampos( this, "CT" );
-	
+
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
-	
+
 	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-	
+
 	private final ListaCampos lcItModBol = new ListaCampos( this );
-	
 
 	public FModBoleto() {
 
@@ -154,16 +154,15 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		setTitulo( "Modelo de boleto/Recibo" );
 		setAtribos( 30, 30, 730, 500 );
 
-		
 		lcItModBol.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcItModBol );
 		lcItModBol.setTabela( tabBancos );
 		lcItModBol.setNavegador( navBancos );
 		navBancos.setListaCampos( lcItModBol );
-		
+
 		montaCombos();
 		montaListaCampos();
-		montaTela();		
+		montaTela();
 
 		lcItModBol.montaTab();
 		tabBancos.setTamColuna( 70, 0 );
@@ -171,34 +170,34 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		tabBancos.setTamColuna( 70, 2 );
 		tabBancos.setTamColuna( 200, 3 );
 		tabBancos.setTamColuna( 70, 4 );
-		
-		//lcItModBol.setState( ListaCampos.LCS_NONE );
-		
+
+		// lcItModBol.setState( ListaCampos.LCS_NONE );
+
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAdic.addActionListener( this );
-		//btPath.addActionListener( this );
+		// btPath.addActionListener( this );
 
 		cbCamposDin.addComboBoxListener( this );
 		cbAcao.addComboBoxListener( this );
-		
+
 		ckPreImp.addCheckBoxListener( this );
 
 		ckAceite.setVlrString( "N" );
-		
+
 		ckPreImp.setVlrString( "S" );
-		
+
 		setImprimir( true );
-		
+
 	}
-	
+
 	private void montaListaCampos() {
-		
+
 		/*************
-		 *  FNCONTA  *
+		 * FNCONTA *
 		 *************/
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -207,9 +206,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
-		
+
 		/*************
-		 *  FNBANCO  *
+		 * FNBANCO *
 		 *************/
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBanco, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -220,9 +219,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		txtCodBanco.setFK( true );
 		txtNomeBanco.setLabel( "Nome do banco" );
-		
+
 		/***************
-		 *  FNCARTCOB  *
+		 * FNCARTCOB *
 		 ***************/
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, txtDescCartCob, false ) );
 		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
@@ -235,9 +234,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodCartCob.setFK( true );
 		txtDescCartCob.setLabel( "Descrição da carteira de cobrança" );
 	}
-	
+
 	private void montaCombos() {
-		
+
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "<--Selecione-->" );
 		vLabs.addElement( "Vencimento" );
@@ -269,7 +268,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "CFOP" );
 		vLabs.addElement( "Descrição da natureza" );
 		vLabs.addElement( "Codigo do orçamento" );
-	//	vLabs.addElement( "Código do conveniado" );
+		// vLabs.addElement( "Código do conveniado" );
 		vLabs.addElement( "Nome do conveniado" );
 		vLabs.addElement( "Observações do orçamento" );
 		vLabs.addElement( "Observações da venda" );
@@ -280,7 +279,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "Total das parcelas" );
 		vLabs.addElement( "Comissionado 1" );
 		vLabs.addElement( "Comissionado 2" );
-				
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "" ); // larg: 10
@@ -313,7 +311,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[CODNAT]" ); // larg: 8
 		vVals.addElement( "[______________NATUREZA_DA_OPERACAO______________]" ); // larg: 50
 		vVals.addElement( "[_CODORC_]" ); // larg: 10
-//		vVals.addElement( "[_CODCONV]" ); // larg: 10
+		// vVals.addElement( "[_CODCONV]" ); // larg: 10
 		vVals.addElement( "[_____________________NOMECONV___________________]" ); // larg: 50
 		vVals.addElement( "[OBSORC_LLL_CCC]" ); // larg: 50
 		vVals.addElement( "[OBSVEN_LLL_CCC]" ); // larg: 50
@@ -324,7 +322,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[TOTAL_PARCELAS]" );
 		vVals.addElement( "[_______COMISSIONADO1_______]" );
 		vVals.addElement( "[_______COMISSIONADO2_______]" );
-		
 
 		cbCamposDin = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
 
@@ -352,44 +349,43 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		Vector<String> vVals3 = new Vector<String>();
 		vVals3.addElement( "" );
 		vVals3.addElement( "<LP><_LP>" );
-		vVals3.addElement( "<EJECT>");
+		vVals3.addElement( "<EJECT>" );
 
 		cbAcao = new JComboBoxPad( vLabs3, vVals3, JComboBoxPad.TP_STRING, 10, 0 );
 	}
 
 	private void montaTela() {
-		
+
 		/****************
-		 *  Aba Geral  *
+		 * Aba Geral *
 		 ****************/
-				
+
 		adicTab( "Geral", pnGeral );
-		
+
 		panelCampos.setPreferredSize( new Dimension( 750, 110 ) );
 		pinCab.add( panelCampos, BorderLayout.NORTH );
-		
+
 		setPainel( panelCampos );
-		
+
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModBol, 100, 30, 250, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		
-		adicCampo( txtMdeCob, 353, 30, 97, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
+
+		adicCampo( txtMdeCob, 353, 30, 97, 20, "mdeCob", "Modalidade", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 460, 30, 200, 20, "PreImpModBol", "", false );
 		adicDB( cbImpDoc, 460, 60, 200, 20, "ImpInfoParc", "", false );
-//		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
-//		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
+		// adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
+		// adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicDBLiv( txtClassModBol, "ClassModBol", "Classe modelo", false );
 		adicDBLiv( txtEspecie, "EspDocModBol", "Espécie Doc.", false );
 		adicDBLiv( ckAceite, "AceiteModBol", "Aceite", false );
 		adicDBLiv( txtDescLocaPag, "DescLPModBol", "Espécie Doc.", false );
 		adicDBLiv( txaInstrucao, "InstPagModBol", "Instruçâo", false );
-		
+
 		setListaCampos( true, "MODBOLETO", "FN" );
 
-
 		/***********************************
-		 *  painel de boleto pre-impresso  *
+		 * painel de boleto pre-impresso *
 		 ***********************************/
 		panelPreImp.adic( new JLabelPad( "Campos de dados" ), 7, 10, 223, 20 );
 		panelPreImp.adic( cbCamposDin, 7, 30, 223, 20 );
@@ -400,12 +396,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelPreImp.adic( new JLabelPad( "Ações" ), 7, 50, 223, 20 );
 		panelPreImp.adic( cbAcao, 7, 70, 223, 20 );
 		panelPreImp.setPreferredSize( new Dimension( 750, 110 ) );
-		
+
 		pinPreImp.add( panelPreImp, BorderLayout.NORTH );
 		pinPreImp.add( spnCli, BorderLayout.CENTER );
-		
+
 		/*********************************
-		 *  painel de boleto eletronico  *
+		 * painel de boleto eletronico *
 		 *********************************/
 		panelBolElect.adic( new JLabelPad( "Class do modelo de boleto" ), 7, 10, 350, 20 );
 		panelBolElect.adic( txtClassModBol, 7, 30, 350, 20 );
@@ -416,67 +412,65 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelBolElect.adic( txtDescLocaPag, 7, 70, 453, 20 );
 		panelBolElect.adic( new JLabelPad( "Instruções de cobrança" ), 7, 90, 450, 20 );
 		panelBolElect.adic( new JScrollPane( txaInstrucao ), 7, 110, 453, 130 );
-		//panelBolElect.adic( btPath, 370, 27, 26, 26 );
-		
+		// panelBolElect.adic( btPath, 370, 27, 26, 26 );
+
 		panelBoleto.add( "preimp", pinPreImp );
-		panelBoleto.add( "bolelect", panelBolElect );	
+		panelBoleto.add( "bolelect", panelBolElect );
 		pinCab.add( panelBoleto, BorderLayout.CENTER );
-		
-		
+
 		/****************
-		 *  Aba Bancos  *
+		 * Aba Bancos *
 		 ****************/
-		
+
 		adicTab( "Bancos", panelBancos );
-		
+
 		panelBancos.add( new JScrollPane( tabBancos ), BorderLayout.CENTER );
-		
-		panelCamposBancos.setPreferredSize( new Dimension( 600, 140 ) );	
-		
+
+		panelCamposBancos.setPreferredSize( new Dimension( 600, 140 ) );
+
 		setPainel( panelCamposBancos );
-		
+
 		setListaCampos( lcItModBol );
 		setNavegador( navBancos );
-		
-		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true);
-		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco");
+
+		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco" );
 		adicCampo( txtCodCartCob, 293, 30, 80, 20, "CodCartCob", "Cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true );
 		adicDescFK( txtDescCartCob, 376, 30, 200, 20, "DescCartCob", "Descrição da carteira de cobrança" );
-		adicCampo( txtConvCob, 579, 30, 70 ,20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true);
-		adicCampo( txtDvConvCob, 652, 30, 50 ,20, "DvConvCob", "Dig.", ListaCampos.DB_SI, false);
-		
+		adicCampo( txtConvCob, 579, 30, 70, 20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true );
+		adicCampo( txtDvConvCob, 652, 30, 50, 20, "DvConvCob", "Dig.", ListaCampos.DB_SI, false );
+
 		adicCampo( txtCodConta, 7, 70, 80, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 90, 70, 283, 20, "DescConta", "Descrição da conta" );
 
-		
 		adic( navBancos, 0, 105, 270, 30 );
-		
+
 		setListaCampos( false, "ITMODBOLETO", "FN" );
-		
+
 		panelBancos.add( panelCamposBancos, BorderLayout.SOUTH );
-		
+
 		pnGeral.add( pinCab );
-	
+
 	}
-	
-	@Override
+
+	@ Override
 	public void beforePost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-		
+
 			if ( txaBoleto.getVlrString() == null || txaBoleto.getVlrString().trim().length() == 0 ) {
-				
+
 				txaBoleto.setVlrString( "Modelo em branco" );
 			}
 		}
-		
+
 		super.beforePost( pevt );
 	}
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
 		if ( evt.getCheckBox() == ckPreImp ) {
-			
+
 			if ( "S".equals( ckPreImp.getVlrString() ) ) {
 				cardlayout.first( panelBoleto );
 			}
@@ -489,11 +483,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	public void valorAlterado( JComboBoxEvent evt ) {
 
 		if ( evt.getComboBoxPad() == cbCamposDin ) {
-			
+
 			txaBoleto.insert( cbCamposDin.getVlrString(), txaBoleto.getCaretPosition() );
 		}
 		else if ( evt.getComboBoxPad() == cbAcao ) {
-			
+
 			txaBoleto.insert( cbAcao.getVlrString(), txaBoleto.getCaretPosition() );
 		}
 	}
@@ -501,30 +495,30 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btAdic ) {
-			
+
 			BigDecimal bigVal = txtAdic.getVlrBigDecimal().setScale( 2, BigDecimal.ROUND_HALF_UP );
 			String sVal = bigVal.toString();
-			
-			if ( cbCamposEspec.getSelectedIndex() < 3 ) { 
-				// Campos de valores			
+
+			if ( cbCamposEspec.getSelectedIndex() < 3 ) {
+				// Campos de valores
 				sVal = cbCamposEspec.getVlrString().replaceAll( "#####.##", StringFunctions.strZero( bigVal.setScale( 2, BigDecimal.ROUND_HALF_UP ).toString(), 8 ) );
 			}
-			else if ( cbCamposEspec.getSelectedIndex() == 3 ) { 
-				// Campos de datas				
+			else if ( cbCamposEspec.getSelectedIndex() == 3 ) {
+				// Campos de datas
 				sVal = cbCamposEspec.getVlrString().replaceAll( "###", StringFunctions.strZero( bigVal.intValue() + "", 3 ) );
 			}
 
 			txaBoleto.insert( sVal, txaBoleto.getCaretPosition() );
 		}
 		else if ( evt.getSource() == btImp ) {
-		
+
 			imprimir( false );
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-		
+
 			imprimir( true );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
@@ -537,24 +531,24 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 			imprimeGrafico( bVisualizar );
 		}
 	}
-	
+
 	private void imprimirTexto( boolean bVisualizar ) {
-		
+
 		ImprimeOS imp = new ImprimeOS( "", con );
 		imp.verifLinPag();
 		imp.setTitulo( "Teste de boleto" );
 		imp.limpaPags();
-		
+
 		String[] sLinhas = txaBoleto.getText().split( "\n" );
-		
+
 		for ( int i = 0; i < sLinhas.length; i++ ) {
-		
+
 			imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
 		}
-		
+
 		imp.eject();
 		imp.fechaGravacao();
-		
+
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
@@ -562,31 +556,24 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 			imp.print();
 		}
 	}
-	
-	private void imprimeGrafico( boolean bVisualizar ) {
-		
-		/*FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
 
-		if ( bVisualizar ) {
-			dlGr.setVisible( true );
-		}
-		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
-			}
-		}*/
+	private void imprimeGrafico( boolean bVisualizar ) {
+
+		/*
+		 * FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
+		 * 
+		 * if ( bVisualizar ) { dlGr.setVisible( true ); } else { try { JasperPrintManager.printReport( dlGr.getRelatorio(), true ); } catch ( Exception err ) { Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err ); } }
+		 */
 	}
-	
+
 	public void setConexao( DbConnection cn ) {
-		
+
 		super.setConexao( cn );
-		
+
 		lcConta.setConexao( cn );
 		lcBanco.setConexao( cn );
 		lcCartCob.setConexao( cn );
 		lcItModBol.setConexao( cn );
 	}
-	
+
 }

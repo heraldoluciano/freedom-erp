@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLEditaPag.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.fnc.view.dialog.utility;
@@ -47,7 +47,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private static final long serialVersionUID = 1L;
 
 	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
+
 	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -95,7 +95,6 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcCC = new ListaCampos( this );
 
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
-	
 
 	public DLEditaPag( Component cOrig ) {
 
@@ -153,7 +152,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
-		
+
 	}
 
 	private void montaTela() {
@@ -184,7 +183,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtCodTipoCob, 7, 180, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 250, 20 );
 		adic( txtDescTipoCob, 90, 180, 250, 20 );
-		
+
 		adic( new JLabelPad( "Doc." ), 7, 200, 81, 20 );
 		adic( txtDoc, 7, 220, 81, 20 );
 		adic( new JLabelPad( "Emissão" ), 91, 200, 81, 20 );
@@ -193,7 +192,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtDtVenc, 175, 220, 81, 20 );
 		adic( new JLabelPad( "Vlr.parcela" ), 259, 200, 81, 20 );
 		adic( txtVlrParc, 259, 220, 81, 20 );
-		
+
 		adic( new JLabelPad( "Vlr.desc." ), 7, 240, 81, 20 );
 		adic( txtVlrDesc, 7, 260, 81, 20 );
 		adic( new JLabelPad( "Vlr.juros." ), 91, 240, 81, 20 );

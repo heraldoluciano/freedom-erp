@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RPFornecedor.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para cadastro de fornecedores.
+ *                       Tela para cadastro de fornecedores.
  * 
  */
 
@@ -100,7 +100,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
 
 		btImp.addActionListener( this );
-	  	btPrevimp.addActionListener( this );
+		btPrevimp.addActionListener( this );
 		setImprimir( true );
 	}
 
@@ -140,40 +140,40 @@ public class RPFornecedor extends FDados implements ActionListener {
 		adicCampo( txtFoneFor, 62, 280, 172, 20, "FoneFor", "Fone", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxFor, 237, 280, 172, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false );
 
-		adicCampo( txtEmailFor, 7, 320, 403, 20, "EmailFor", "E-mail", ListaCampos.DB_SI, false );		
+		adicCampo( txtEmailFor, 7, 320, 403, 20, "EmailFor", "E-mail", ListaCampos.DB_SI, false );
 	}
 
 	private void imprimir( boolean view ) {
-		
+
 		if ( txtCodFor.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione o fornecedor." );
 			return;
 		}
-		
+
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
-			
+
 			sql.append( "SELECT F.CODFOR,F.RAZFOR,F.NOMEFOR,F.CNPJFOR,F.INSCFOR," );
 			sql.append( "F.ENDFOR,F.CIDFOR,F.ESTFOR,F.CEPFOR,F.BAIRFOR," );
 			sql.append( "F.DDDFOR,F.FONEFOR,F.FAXFOR,F.EMAILFOR,F.CODREPFOR,F.TIPOFOR " );
 			sql.append( "FROM RPFORNECEDOR F " );
 			sql.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=?" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
 			ps.setInt( 3, txtCodFor.getVlrInteger() );
 
 			ResultSet rs = ps.executeQuery();
-			
-			HashMap<String,Object> hParam = new HashMap<String, Object>();
-			
+
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
+
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpfornecedor.jasper", "FORNECEDOR - " + txtCodFor.getVlrInteger() + " - " + txtNomeFor.getVlrString(), null, rs, hParam, this);
-			
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpfornecedor.jasper", "FORNECEDOR - " + txtCodFor.getVlrInteger() + " - " + txtNomeFor.getVlrString(), null, rs, hParam, this );
+
 			if ( view ) {
 				dlGr.setVisible( true );
 			}
@@ -194,7 +194,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 		else if ( e.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
-		
+
 		super.actionPerformed( e );
 	}
 }

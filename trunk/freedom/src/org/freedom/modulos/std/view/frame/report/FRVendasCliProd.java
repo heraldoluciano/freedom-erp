@@ -2,23 +2,23 @@
  * @version 16/01/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendCliProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                        Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                        modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                        na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                        Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                        sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                        Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                        Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                        de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                        Comentários sobre a classe...
  * 
  */
 
@@ -66,9 +66,9 @@ public class FRVendasCliProd extends FRelatorio {
 	private JTextFieldPad txtCodComiss = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private Vector<String> vLabs = new Vector<String>();
@@ -80,7 +80,7 @@ public class FRVendasCliProd extends FRelatorio {
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
-	
+
 	private ListaCampos lcTipoCli = new ListaCampos( this );
 
 	public FRVendasCliProd() {
@@ -93,9 +93,9 @@ public class FRVendasCliProd extends FRelatorio {
 		montaListaCampos();
 		montaTela();
 	}
-	
+
 	private void montaRadioGrupo() {
-		
+
 		vLabs.addElement( "Texto" );
 		vLabs.addElement( "Grafico" );
 		vVals.addElement( "T" );
@@ -106,7 +106,7 @@ public class FRVendasCliProd extends FRelatorio {
 	}
 
 	private void montaListaCampos() {
-	
+
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		txtCodCli.setTabelaExterna( lcCli, null );
@@ -114,7 +114,7 @@ public class FRVendasCliProd extends FRelatorio {
 		txtCodCli.setFK( true );
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
-	
+
 		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		txtCodComiss.setTabelaExterna( lcComiss, null );
@@ -122,7 +122,7 @@ public class FRVendasCliProd extends FRelatorio {
 		txtCodComiss.setFK( true );
 		lcComiss.setReadOnly( true );
 		lcComiss.montaSql( false, "VENDEDOR", "VD" );
-		
+
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
@@ -130,7 +130,7 @@ public class FRVendasCliProd extends FRelatorio {
 		txtCodTipoCli.setFK( true );
 		lcTipoCli.setReadOnly( true );
 		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
-		
+
 	}
 
 	private void montaTela() {
@@ -144,31 +144,28 @@ public class FRVendasCliProd extends FRelatorio {
 		adic( lbLinha, 7, 15, 320, 45 );
 
 		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 30, 40, 20 );
-		
-		
+
 		adic( txtDataini, 57, 30, 100, 20 );
-		
-		
+
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Tp.Cliente" ), 7, 70, 90, 20 );
-		adic( txtCodTipoCli, 7, 90, 90, 20 );		
+		adic( txtCodTipoCli, 7, 90, 90, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 100, 70, 227, 20 );
 		adic( txtDescTipoCli, 100, 90, 227, 20 );
-		
+
 		adic( new JLabelPad( "Cód.Cliente" ), 7, 110, 90, 20 );
-		adic( txtCodCli, 7, 130, 90, 20 );		
+		adic( txtCodCli, 7, 130, 90, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 100, 110, 227, 20 );
 		adic( txtRazCli, 100, 130, 227, 20 );
-		
-		
+
 		adic( new JLabelPad( "Cód.Comiss." ), 7, 150, 90, 20 );
 		adic( txtCodComiss, 7, 170, 90, 20 );
-		
-		adic( new JLabelPad( "Nome do comissionado" ), 100, 150, 227, 20 );		
+
+		adic( new JLabelPad( "Nome do comissionado" ), 100, 150, 227, 20 );
 		adic( txtNomeComiss, 100, 170, 227, 20 );
-		
+
 		adic( rgTipo, 7, 210, 320, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
@@ -195,44 +192,44 @@ public class FRVendasCliProd extends FRelatorio {
 
 		try {
 
-			sSQL.append("select razcli_ret razcli, codcli_ret codcli, descprod_ret descprod, codprod_ret codprod, ");
-			sSQL.append("dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda ");
-			sSQL.append("from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) ");
-						
+			sSQL.append( "select razcli_ret razcli, codcli_ret codcli, descprod_ret descprod, codprod_ret codprod, " );
+			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda " );
+			sSQL.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
+
 			ps = con.prepareStatement( sSQL.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			
-			if(txtRazCli.getVlrString().trim().length() > 0 ) {				
-				ps.setInt( 2, txtCodCli.getVlrInteger()  );
+
+			if ( txtRazCli.getVlrString().trim().length() > 0 ) {
+				ps.setInt( 2, txtCodCli.getVlrInteger() );
 			}
 			else {
 				ps.setNull( 2, Types.INTEGER );
 			}
-			
+
 			ps.setInt( 3, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			
+
 			if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
-				ps.setInt( 4, txtCodComiss.getVlrInteger() );				
+				ps.setInt( 4, txtCodComiss.getVlrInteger() );
 			}
 			else {
 				ps.setNull( 4, Types.INTEGER );
-			}		
-				
+			}
+
 			ps.setDate( 5, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( 6, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 
 			if ( txtDescTipoCli.getVlrString().trim().length() > 0 ) {
 				ps.setInt( 7, lcTipoCli.getCodEmp() );
 				ps.setInt( 8, lcTipoCli.getCodFilial() );
-				ps.setInt( 9, txtCodTipoCli.getVlrInteger() );			
+				ps.setInt( 9, txtCodTipoCli.getVlrInteger() );
 			}
 			else {
 				ps.setNull( 7, Types.INTEGER );
 				ps.setNull( 8, Types.INTEGER );
-				ps.setNull( 9, Types.INTEGER );								
+				ps.setNull( 9, Types.INTEGER );
 			}
-			
+
 			rs = ps.executeQuery();
 
 			if ( "G".equals( rgTipo.getVlrString() ) ) {
@@ -282,7 +279,7 @@ public class FRVendasCliProd extends FRelatorio {
 
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
-					
+
 					imp.pulaLinha( 0, imp.comprimido() );
 					imp.say( 0, "|" + sLinDupla + "|" );
 
@@ -298,7 +295,7 @@ public class FRVendasCliProd extends FRelatorio {
 					imp.say( 120, "|" );
 					imp.say( 122, "DOC." );
 					imp.say( 135, "|" );
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + sLinDupla + "|" );
 				}
@@ -317,16 +314,15 @@ public class FRVendasCliProd extends FRelatorio {
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
-				
+
 				if ( printCliente ) {
 					imp.say( 3, Funcoes.copy( rs.getString( "RAZCLI" ).trim(), 0, 40 ) );
 				}
-				
+
 				imp.say( 44, "|" );
 				imp.say( 46, Funcoes.copy( rs.getString( "DESCPROD" ).trim(), 0, 41 ) );
 				imp.say( 88, "|" );
-				imp.say( 90, rs.getBigDecimal( "PRECOVENDA" ) != null ? 
-						Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "PRECOVENDA" ) ) ) : "" );
+				imp.say( 90, rs.getBigDecimal( "PRECOVENDA" ) != null ? Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "PRECOVENDA" ) ) ) : "" );
 				imp.say( 107, "|" );
 				imp.say( 109, rs.getDate( "DTEMITVENDA" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITVENDA" ) ) : "" );
 				imp.say( 120, "|" );
@@ -339,7 +335,7 @@ public class FRVendasCliProd extends FRelatorio {
 			imp.say( 0, "+" + sLinFina + "+" );
 			imp.eject();
 			imp.fechaGravacao();
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao imprmir relatório texto!\n" + e.getMessage(), true, con, e );
@@ -383,6 +379,6 @@ public class FRVendasCliProd extends FRelatorio {
 		lcCli.setConexao( cn );
 		lcComiss.setConexao( cn );
 		lcTipoCli.setConexao( cn );
-		
+
 	}
 }

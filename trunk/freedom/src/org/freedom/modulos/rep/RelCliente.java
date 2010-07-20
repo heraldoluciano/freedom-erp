@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RelCliente.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatorio de clientes, em dois modos: completo e resumido.
+ *                     Relatorio de clientes, em dois modos: completo e resumido.
  * 
  */
 
@@ -45,7 +45,6 @@ import javax.swing.JLabel;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class RelCliente extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
@@ -59,26 +58,26 @@ public class RelCliente extends FRelatorio {
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCidade = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JRadioGroup<String, String> rgModo;
-	
+
 	private JRadioGroup<String, String> rgOrdem;
-	
+
 	private final ListaCampos lcTipoCli = new ListaCampos( this );
-	
+
 	private final ListaCampos lcVend = new ListaCampos( this );
 
 	public RelCliente() {
 
 		super( false );
-		setTitulo( "Relatorio de clientes" );		
+		setTitulo( "Relatorio de clientes" );
 		setAtribos( 50, 50, 325, 330 );
 
 		montaRadioGrupos();
 		montaListaCampos();
 		montaTela();
 	}
-	
+
 	private void montaRadioGrupos() {
 
 		Vector<String> labs = new Vector<String>();
@@ -88,18 +87,18 @@ public class RelCliente extends FRelatorio {
 		vals.add( "C" );
 		vals.add( "R" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
-		
+
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Código" );
 		labs1.add( "Descrição" );
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "CODCLI" );
 		vals1.add( "RAZCLI" );
-		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );		
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );
 	}
-	
+
 	private void montaListaCampos() {
-		
+
 		lcTipoCli.add( new GuardaCampo( txtCodTpCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTpCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
 		lcTipoCli.montaSql( false, "TIPOCLI", "RP" );
@@ -109,7 +108,7 @@ public class RelCliente extends FRelatorio {
 		txtCodTpCli.setTabelaExterna( lcTipoCli, null );
 		txtCodTpCli.setPK( true );
 		txtCodTpCli.setNomeCampo( "CodTipoCli" );
-		
+
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "RP" );
@@ -120,24 +119,24 @@ public class RelCliente extends FRelatorio {
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 	}
-	
+
 	private void montaTela() {
-		
+
 		adic( new JLabel( "Modo :" ), 10, 10, 200, 20 );
 		adic( rgModo, 10, 35, 290, 30 );
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 70, 200, 20 );
 		adic( rgOrdem, 10, 95, 290, 30 );
-		
+
 		adic( new JLabel( "Cód.tp.cli." ), 10, 130, 77, 20 );
 		adic( txtCodTpCli, 10, 150, 77, 20 );
 		adic( new JLabel( "Descrição do tipo de cliente" ), 90, 130, 210, 20 );
 		adic( txtDescTpCli, 90, 150, 210, 20 );
-		
+
 		adic( new JLabel( "Cód.vend." ), 10, 170, 77, 20 );
 		adic( txtCodVend, 10, 190, 77, 20 );
 		adic( new JLabel( "Nome do vendedor" ), 90, 170, 210, 20 );
 		adic( txtNomeVend, 90, 190, 210, 20 );
-		
+
 		adic( new JLabel( "Cidade" ), 10, 210, 290, 20 );
 		adic( txtCidade, 10, 230, 290, 20 );
 	}
@@ -146,13 +145,13 @@ public class RelCliente extends FRelatorio {
 	public void imprimir( boolean visualizar ) {
 
 		try {
-			
+
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rpclientecomp.jasper" : "rpclienteresum.jasper";
 			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : "( resumido )";
 			String filtro = "";
-			
+
 			StringBuilder sql = new StringBuilder();
-			
+
 			sql.append( "SELECT CODCLI,RAZCLI,NOMECLI,CNPJCLI,INSCCLI, " );
 			sql.append( "ENDCLI,CIDCLI,ESTCLI,CEPCLI,BAIRCLI,DDDCLI, " );
 			sql.append( "FONECLI,FAXCLI,EMAILCLI " );
@@ -170,18 +169,18 @@ public class RelCliente extends FRelatorio {
 				sql.append( "AND CIDCLI LIKE '%" + txtCidade.getVlrString() + "%' " );
 			}
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCLIENTE" ) );
 			ResultSet rs = ps.executeQuery();
-			
-			HashMap<String,Object> hParam = new HashMap<String, Object>();
-			
+
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
+
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
-			
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "CLIENTES " + modo, filtro, rs, hParam, this );
+
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + relatorio, "CLIENTES " + modo, filtro, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
@@ -189,7 +188,7 @@ public class RelCliente extends FRelatorio {
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
-			
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
