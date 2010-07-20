@@ -19,8 +19,9 @@
  */
 
 package org.freedom.acao;
-public interface CarregaListener {
-  public void beforeCarrega(CarregaEvent cevt);
-  public void afterCarrega(CarregaEvent cevt);
-}
 
+public interface CarregaListener {
+	public void beforeCarrega(CarregaEvent cevt);
+
+	public void afterCarrega(CarregaEvent cevt);
+}

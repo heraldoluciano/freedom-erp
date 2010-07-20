@@ -19,7 +19,7 @@
  */
 
 package org.freedom.acao;
-public interface Processo extends Runnable {
-  public void run();
-}
 
+public interface Processo extends Runnable {
+	public void run();
+}

@@ -19,8 +19,9 @@
  */
 
 package org.freedom.acao;
-public interface InsertListener {
-  public void beforeInsert(InsertEvent ievt);
-  public void afterInsert(InsertEvent ievt);
-}
 
+public interface InsertListener {
+	public void beforeInsert(InsertEvent ievt);
+
+	public void afterInsert(InsertEvent ievt);
+}

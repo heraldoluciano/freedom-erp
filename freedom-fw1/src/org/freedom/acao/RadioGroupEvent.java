@@ -25,14 +25,14 @@ package org.freedom.acao;
 import javax.swing.JRadioButton;
 
 public class RadioGroupEvent {
-	
+
 	private Object source = null;
 
 	private JRadioButton rButton = null;
 
 	private int Indice = -1;
 
-	public RadioGroupEvent( JRadioButton rb, int ind, Object source ) {
+	public RadioGroupEvent(JRadioButton rb, int ind, Object source) {
 
 		rButton = rb;
 		Indice = ind;
@@ -48,9 +48,9 @@ public class RadioGroupEvent {
 
 		return Indice;
 	}
-	
+
 	public Object getSource() {
-	
+
 		return source;
 	}
 }

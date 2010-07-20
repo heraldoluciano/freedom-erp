@@ -18,22 +18,27 @@
  * Comentários da classe.....
  */
 
-
 package org.freedom.acao;
+
 import org.freedom.library.persistence.ListaCampos;
+
 public class DeleteEvent {
-  private ListaCampos lcCampos = null;
-  public boolean ok = false;
-  public DeleteEvent(ListaCampos lc) {
-    lcCampos = lc;
-  }
-  public ListaCampos getListaCampos() {
-    return lcCampos;
-  }
-  public int getEstado() {
-    return lcCampos.getStatus();
-  }
-  public void cancela() {
-    lcCampos.cancelDelete();
-  }
+	private ListaCampos lcCampos = null;
+	public boolean ok = false;
+
+	public DeleteEvent(ListaCampos lc) {
+		lcCampos = lc;
+	}
+
+	public ListaCampos getListaCampos() {
+		return lcCampos;
+	}
+
+	public int getEstado() {
+		return lcCampos.getStatus();
+	}
+
+	public void cancela() {
+		lcCampos.cancelDelete();
+	}
 }

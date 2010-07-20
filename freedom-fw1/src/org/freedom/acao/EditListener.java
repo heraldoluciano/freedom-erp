@@ -19,9 +19,11 @@
  */
 
 package org.freedom.acao;
-public interface EditListener {
-  public void beforeEdit(EditEvent eevt);
-  public void afterEdit(EditEvent eevt);
-  public void edit(EditEvent eevt);
-}
 
+public interface EditListener {
+	public void beforeEdit(EditEvent eevt);
+
+	public void afterEdit(EditEvent eevt);
+
+	public void edit(EditEvent eevt);
+}

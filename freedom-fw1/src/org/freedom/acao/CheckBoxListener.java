@@ -19,7 +19,9 @@
  */
 
 package org.freedom.acao;
+
 import java.util.EventListener;
+
 public interface CheckBoxListener extends EventListener {
-  public void valorAlterado(CheckBoxEvent evt);
+	public void valorAlterado(CheckBoxEvent evt);
 }

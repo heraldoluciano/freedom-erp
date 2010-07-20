@@ -19,8 +19,9 @@
  */
 
 package org.freedom.acao;
-public interface DeleteListener {
-  public void beforeDelete(DeleteEvent devt);
-  public void afterDelete(DeleteEvent devt);
-}
 
+public interface DeleteListener {
+	public void beforeDelete(DeleteEvent devt);
+
+	public void afterDelete(DeleteEvent devt);
+}

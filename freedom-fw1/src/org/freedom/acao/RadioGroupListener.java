@@ -19,7 +19,9 @@
  */
 
 package org.freedom.acao;
+
 import java.util.EventListener;
+
 public interface RadioGroupListener extends EventListener {
-  public void valorAlterado(RadioGroupEvent evt);
+	public void valorAlterado(RadioGroupEvent evt);
 }

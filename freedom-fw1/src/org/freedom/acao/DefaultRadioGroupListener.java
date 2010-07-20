@@ -19,9 +19,12 @@
  */
 
 package org.freedom.acao;
+
 public class DefaultRadioGroupListener implements RadioGroupListener {
-  public DefaultRadioGroupListener () { }
-  public void valorAlterado(RadioGroupEvent rgevt) {
-         
-  }
+	public DefaultRadioGroupListener() {
+	}
+
+	public void valorAlterado(RadioGroupEvent rgevt) {
+
+	}
 }

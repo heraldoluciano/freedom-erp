@@ -19,13 +19,17 @@
  */
 
 package org.freedom.acao;
+
 import javax.swing.JCheckBox;
+
 public class CheckBoxEvent {
-  private JCheckBox cBox = null;
-  public CheckBoxEvent(JCheckBox cb) {
-    cBox = cb;
-  }
-  public JCheckBox getCheckBox() {
-    return cBox;
-  }
+	private JCheckBox cBox = null;
+
+	public CheckBoxEvent(JCheckBox cb) {
+		cBox = cb;
+	}
+
+	public JCheckBox getCheckBox() {
+		return cBox;
+	}
 }

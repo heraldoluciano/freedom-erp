@@ -19,20 +19,26 @@
  */
 
 package org.freedom.acao;
+
 import org.freedom.library.persistence.ListaCampos;
+
 public class CarregaEvent {
-  private ListaCampos lcCampos = null;
-  public boolean ok = false;
-  public CarregaEvent(ListaCampos lc) {
-    lcCampos = lc;
-  }
-  public ListaCampos getListaCampos() {
-    return lcCampos;
-  }
-  public int getEstado() {
-    return lcCampos.getStatus();
-  }
-  public void cancela() {
-    lcCampos.cancelCarrega();
-  }
+	private ListaCampos lcCampos = null;
+	public boolean ok = false;
+
+	public CarregaEvent(ListaCampos lc) {
+		lcCampos = lc;
+	}
+
+	public ListaCampos getListaCampos() {
+		return lcCampos;
+	}
+
+	public int getEstado() {
+		return lcCampos.getStatus();
+	}
+
+	public void cancela() {
+		lcCampos.cancelCarrega();
+	}
 }

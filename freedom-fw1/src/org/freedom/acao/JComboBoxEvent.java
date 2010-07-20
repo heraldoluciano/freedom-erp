@@ -19,18 +19,23 @@
  */
 
 package org.freedom.acao;
+
 import org.freedom.library.swing.component.JComboBoxPad;
+
 public class JComboBoxEvent {
-  private JComboBoxPad cBox = null;
-  private int Indice = -1;
-  public JComboBoxEvent (JComboBoxPad cb, int ind) {
-    cBox = cb;
-    Indice = ind;
-  }
-  public JComboBoxPad getComboBoxPad() {
-    return cBox;
-  }
-  public int getIndice() {
-    return Indice;
-  }
+	private JComboBoxPad cBox = null;
+	private int Indice = -1;
+
+	public JComboBoxEvent(JComboBoxPad cb, int ind) {
+		cBox = cb;
+		Indice = ind;
+	}
+
+	public JComboBoxPad getComboBoxPad() {
+		return cBox;
+	}
+
+	public int getIndice() {
+		return Indice;
+	}
 }

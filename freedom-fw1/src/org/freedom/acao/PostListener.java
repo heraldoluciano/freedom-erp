@@ -19,8 +19,9 @@
  */
 
 package org.freedom.acao;
-public interface PostListener {
-  public void beforePost(PostEvent pevt);
-  public void afterPost(PostEvent pevt);
-}
 
+public interface PostListener {
+	public void beforePost(PostEvent pevt);
+
+	public void afterPost(PostEvent pevt);
+}
