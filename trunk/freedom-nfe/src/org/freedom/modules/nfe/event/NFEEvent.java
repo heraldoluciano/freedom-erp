@@ -27,7 +27,7 @@ public class NFEEvent {
 
 	private AbstractNFEFactory nfefactory;
 
-	public NFEEvent( AbstractNFEFactory nfefactory ) {
+	public NFEEvent(AbstractNFEFactory nfefactory) {
 		this.nfefactory = nfefactory;
 	}
 
@@ -35,7 +35,7 @@ public class NFEEvent {
 		return nfefactory;
 	}
 
-	public void setNfefactory( AbstractNFEFactory nfefactory ) {
+	public void setNfefactory(AbstractNFEFactory nfefactory) {
 		this.nfefactory = nfefactory;
 
 	}
