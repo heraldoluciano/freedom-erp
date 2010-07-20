@@ -19,8 +19,9 @@
  */
 
 package org.freedom.acao;
-public interface CancelListener {
-  public void beforeCancel(CancelEvent cevt);
-  public void afterCancel(CancelEvent cevt);
-}
 
+public interface CancelListener {
+	public void beforeCancel(CancelEvent cevt);
+
+	public void afterCancel(CancelEvent cevt);
+}

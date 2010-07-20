@@ -22,12 +22,15 @@
 package org.freedom.acao;
 
 import org.freedom.library.swing.component.JTablePad;
+
 public class TabelaSelEvent {
-  private JTablePad tab = null;
-  public TabelaSelEvent(JTablePad tb) {
-    tab = tb;
-  }
-  public JTablePad getTabela() {
-    return tab;
-  }
+	private JTablePad tab = null;
+
+	public TabelaSelEvent(JTablePad tb) {
+		tab = tb;
+	}
+
+	public JTablePad getTabela() {
+		return tab;
+	}
 }

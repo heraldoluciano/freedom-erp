@@ -19,9 +19,9 @@
  * 
  */
 package org.freedom.acao;
+
 import java.util.EventListener;
 
-
 public interface TabelaSelListener extends EventListener {
-  public void valorAlterado(TabelaSelEvent evt);
+	public void valorAlterado(TabelaSelEvent evt);
 }

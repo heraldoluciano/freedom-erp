@@ -19,7 +19,9 @@
  */
 
 package org.freedom.acao;
+
 import java.util.EventListener;
+
 public interface JComboBoxListener extends EventListener {
-  public void valorAlterado(JComboBoxEvent evt);
+	public void valorAlterado(JComboBoxEvent evt);
 }

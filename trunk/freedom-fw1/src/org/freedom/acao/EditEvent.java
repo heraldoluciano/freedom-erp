@@ -19,28 +19,36 @@
  */
 
 package org.freedom.acao;
+
 import org.freedom.library.persistence.ListaCampos;
+
 public class EditEvent {
-  private ListaCampos lcCampos = null;
-  private Object oSrc = null;
-  public boolean ok = false;
-  public EditEvent(ListaCampos lc) {
-    lcCampos = lc;
-    oSrc = lc;
-  }
-  public EditEvent(Object sr) {
-  	oSrc = sr;
-  }
-  public ListaCampos getListaCampos() {
-    return lcCampos;
-  }
-  public int getEstado() {
-    return lcCampos.getStatus();
-  }
-  public void cancela() {
-    lcCampos.cancelEdit();
-  }
-  public Object getSource() {
-    return oSrc;
-  }
+	private ListaCampos lcCampos = null;
+	private Object oSrc = null;
+	public boolean ok = false;
+
+	public EditEvent(ListaCampos lc) {
+		lcCampos = lc;
+		oSrc = lc;
+	}
+
+	public EditEvent(Object sr) {
+		oSrc = sr;
+	}
+
+	public ListaCampos getListaCampos() {
+		return lcCampos;
+	}
+
+	public int getEstado() {
+		return lcCampos.getStatus();
+	}
+
+	public void cancela() {
+		lcCampos.cancelEdit();
+	}
+
+	public Object getSource() {
+		return oSrc;
+	}
 }

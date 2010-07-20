@@ -19,7 +19,9 @@
  */
 
 package org.freedom.acao;
+
 import javax.swing.ImageIcon;
+
 public interface ArvoreFace {
-  public ImageIcon getImagem(int iLinha, boolean bNoh, Object src);
+	public ImageIcon getImagem(int iLinha, boolean bNoh, Object src);
 }
