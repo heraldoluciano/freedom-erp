@@ -94,63 +94,55 @@ import bizcal.util.Tuple;
 
 /**
  * @author martin.heinemann@tudor.lu 21.05.2007 15:18:10
- *
- *
+ * 
+ * 
  * @version <br>
- *          $Log: EventModel.java,v $
- *          Revision 1.4  2008/04/08 13:17:53  heine_
+ *          $Log: EventModel.java,v $ Revision 1.4 2008/04/08 13:17:53 heine_
  *          *** empty log message ***
- *
- *          Revision 1.3  2008/01/21 14:14:17  heine_
- *          code cleanup and java doc
- *
- *          Revision 1.12  2007/06/26 13:10:51  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.11  2007/06/26 08:44:15  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.10  2007/06/20 12:08:17  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.9  2007/06/15 07:00:38  hermen
- *          changed translatrix keys
- *
- *          Revision 1.8  2007/06/08 12:21:10  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.7  2007/06/06 11:23:01  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.6  2007/06/05 08:33:39  heinemann
- *          *** empty log message ***
- *
- *          Revision 1.5  2007/05/30 11:41:18  hermen
- *          *** empty log message ***
- *
- *          Revision 1.4  2007/05/30 11:26:14  hermen
- *          *** empty log message ***
- *
- *          Revision 1.3  2007/05/30 07:17:46  hermen
- *          *** empty log message ***
- *
- *          Revision 1.2  2007/05/25 13:44:00  heinemann
- *          pres-weekend checkin
- *
- *          Revision 1.1  2007/05/22 09:14:10  heinemann
- *          *** empty log message ***
- *
- *
+ * 
+ *          Revision 1.3 2008/01/21 14:14:17 heine_ code cleanup and java doc
+ * 
+ *          Revision 1.12 2007/06/26 13:10:51 heinemann *** empty log message
+ *          ***
+ * 
+ *          Revision 1.11 2007/06/26 08:44:15 heinemann *** empty log message
+ *          ***
+ * 
+ *          Revision 1.10 2007/06/20 12:08:17 heinemann *** empty log message
+ *          ***
+ * 
+ *          Revision 1.9 2007/06/15 07:00:38 hermen changed translatrix keys
+ * 
+ *          Revision 1.8 2007/06/08 12:21:10 heinemann *** empty log message ***
+ * 
+ *          Revision 1.7 2007/06/06 11:23:01 heinemann *** empty log message ***
+ * 
+ *          Revision 1.6 2007/06/05 08:33:39 heinemann *** empty log message ***
+ * 
+ *          Revision 1.5 2007/05/30 11:41:18 hermen *** empty log message ***
+ * 
+ *          Revision 1.4 2007/05/30 11:26:14 hermen *** empty log message ***
+ * 
+ *          Revision 1.3 2007/05/30 07:17:46 hermen *** empty log message ***
+ * 
+ *          Revision 1.2 2007/05/25 13:44:00 heinemann pres-weekend checkin
+ * 
+ *          Revision 1.1 2007/05/22 09:14:10 heinemann *** empty log message ***
+ * 
+ * 
  */
 public class EventModel extends CalendarModel.BaseImpl implements Observer {
 
-
-	public static final int TYPE_DAY   = 1;
-	public static final int TYPE_WEEK  = 2;
+	public static final int TYPE_DAY = 1;
+	public static final int TYPE_WEEK = 2;
 	public static final int TYPE_MONTH = 3;
 
-//	private DateFormat weekNumberFormat = new SimpleDateFormat("W. '" + Translatrix.getTranslationString("calendar.week")  + "'", Translatrix.getLocale());
-//	private DateFormat weekNumberFormat = new SimpleDateFormat("'"+Translatrix.getTranslationString("calendar.week")  + "'", Translatrix.getLocale());
+	// private DateFormat weekNumberFormat = new SimpleDateFormat("W. '" +
+	// Translatrix.getTranslationString("calendar.week") + "'",
+	// Translatrix.getLocale());
+	// private DateFormat weekNumberFormat = new
+	// SimpleDateFormat("'"+Translatrix.getTranslationString("calendar.week") +
+	// "'", Translatrix.getLocale());
 	private DateFormat monthFormatter = new SimpleDateFormat("MMMMMM yyyy", Translatrix.getLocale());
 
 	private ObservableEventList events = null;
@@ -158,7 +150,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	private DateInterval interval;
 
 	private Calendar cal;
-	
+
 	// Default
 	private int days = 1;
 
@@ -168,11 +160,12 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	private int weekStart = java.util.Calendar.MONDAY;
 	private int weekEnd = java.util.Calendar.SUNDAY;
 
-
 	/**
-	 *
-	 * @param days number of days to display
-	 * @param type type of the view that is using the model
+	 * 
+	 * @param days
+	 *            number of days to display
+	 * @param type
+	 *            type of the view that is using the model
 	 */
 	public EventModel(int type) {
 		/* ================================================== */
@@ -193,16 +186,20 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	}
 
 	/**
-	 * @param days number of days to display
-	 * @param eventList the data list on which the model should work
-	 * @param type type of view
-	 * @param hourInterval subset of hours to display
+	 * @param days
+	 *            number of days to display
+	 * @param eventList
+	 *            the data list on which the model should work
+	 * @param type
+	 *            type of view
+	 * @param hourInterval
+	 *            subset of hours to display
 	 */
-	public EventModel(List<Event> eventList, int type, Tuple hourInterval)  {
+	public EventModel(List<Event> eventList, int type, Tuple hourInterval) {
 		/* ================================================== */
-//		this.days 	= days;
+		// this.days = days;
 		this.type = type;
-		this.events = (ObservableEventList) eventList;
+		this.events = ( ObservableEventList ) eventList;
 		this.hourInterval = hourInterval;
 		// check if we have a null list
 		if (eventList == null) {
@@ -214,8 +211,8 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 		// -------------------------------------------------------------
 		// create the initial date
 		// -------------------------------------------------------------
-//		Date start = new Date();
-//		start = DateUtil.getStartOfWeek(new Date());
+		// Date start = new Date();
+		// start = DateUtil.getStartOfWeek(new Date());
 
 		// -------------------------------------------------------------
 		// create a new Calendar for this view
@@ -239,7 +236,7 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 	public DateInterval getInterval() {
 		return interval;
 	}
-	
+
 	/**
 	 * Sets the interval of weekdays to display
 	 * 
@@ -250,13 +247,12 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 		/* ================================================== */
 		this.weekStart = startDay;
 		this.weekEnd = endDay;
-		
+
 		this.days = DateUtil.getDiffDay(weekStart, weekEnd);
-		
+
 		setDate(DateUtil.getStartOfWeek(new Date()));
 		/* ================================================== */
 	}
-	
 
 	public void setDate(Date date) {
 		try {
@@ -267,35 +263,35 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 			// interval = new DateInterval(start, end);
 			// Date start = DateUtil.round2Week(new Date());
 			Date start = null;
-			Date end   = null;
+			Date end = null;
 			switch (this.type) {
-				case TYPE_DAY:
-					start = DateUtil.round2Day(date);
-					end = DateUtil.getDiffDay(start, days);
-					cal.setSummary(Translatrix.getTranslationString("Visão Diária"));
-					break;
-				case TYPE_WEEK:
-					start = DateUtil.setDayOfWeek(date, weekStart);
-					end = DateUtil.getDiffDay(start, days);
-					cal.setSummary(Translatrix.getTranslationString("Visão Semanal"));
-					break;
-				case TYPE_MONTH:
-					start = DateUtil.round2Month(date);
-					end = DateUtil.getDiffDay(start, 31);
-					cal.setSummary(Translatrix.getTranslationString("Visão Mensal") + " - " + monthFormatter.format(start));
-					break;
-				default:
-					break;
+			case TYPE_DAY:
+				start = DateUtil.round2Day(date);
+				end = DateUtil.getDiffDay(start, days);
+				cal.setSummary(Translatrix.getTranslationString("Visão Diária"));
+				break;
+			case TYPE_WEEK:
+				start = DateUtil.setDayOfWeek(date, weekStart);
+				end = DateUtil.getDiffDay(start, days);
+				cal.setSummary(Translatrix.getTranslationString("Visão Semanal"));
+				break;
+			case TYPE_MONTH:
+				start = DateUtil.round2Month(date);
+				end = DateUtil.getDiffDay(start, 31);
+				cal.setSummary(Translatrix.getTranslationString("Visão Mensal") + " - " + monthFormatter.format(start));
+				break;
+			default:
+				break;
 			}
 			if (this.hourInterval != null) {
-				setViewStart(new TimeOfDay(DateUtil.round2Hour(start, (Integer) hourInterval.elementAt(0))));
-				setViewEnd(new TimeOfDay(DateUtil.round2Hour(end, (Integer) hourInterval.elementAt(1))));
+				setViewStart(new TimeOfDay(DateUtil.round2Hour(start, ( Integer ) hourInterval.elementAt(0))));
+				setViewEnd(new TimeOfDay(DateUtil.round2Hour(end, ( Integer ) hourInterval.elementAt(1))));
 			}
 			interval = new DateInterval(start, end);
 
-
 			this.refresh();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -306,7 +302,6 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 			this.events.add(event);
 		/* ================================================== */
 	}
-
 
 	/**
 	 * Add calendarview for refreshing
@@ -325,11 +320,11 @@ public class EventModel extends CalendarModel.BaseImpl implements Observer {
 		/* ====================================================== */
 		try {
 			this.calendarView.refresh();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 		/* ====================================================== */
 	}
-
 
 	/**
 	 * set the list in changed state

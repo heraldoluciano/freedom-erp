@@ -27,7 +27,7 @@ public abstract class AbstractBackground extends JPanelPad implements MouseListe
 
 	private static final long serialVersionUID = 1l;
 
-	private JLabelPad lbfundo = new JLabelPad( Icone.novo( "bgFreedomSTD2.jpg" ) );
+	private JLabelPad lbfundo = new JLabelPad(Icone.novo("bgFreedomSTD2.jpg"));
 
 	private PanelImagemEmpresa pnEmpresa = new PanelImagemEmpresa();
 
@@ -51,29 +51,29 @@ public abstract class AbstractBackground extends JPanelPad implements MouseListe
 
 		super();
 
-		setBorder( null );
-		setSize( 500, 400 );
+		setBorder(null);
+		setSize(500, 400);
 
-		adic( pnEmpresa, 180, 126, 147, 147 );
-		adic( lbAgenda, 130, 2, 92, 92 );
-		adic( lbVenda, 319, 12, 92, 92 );
-		adic( lbReceber, 397, 130, 92, 81 );
-		adic( lbPagar, 371, 257, 92, 81 );
-		adic( lbProduto, 197, 289, 92, 92 );
-		adic( lbOrcamento, 41, 236, 92, 92 );
-		adic( lbCliente, 3, 98, 92, 92 );
-		adic( lbfundo, 0, 0, 500, 400 );
+		adic(pnEmpresa, 180, 126, 147, 147);
+		adic(lbAgenda, 130, 2, 92, 92);
+		adic(lbVenda, 319, 12, 92, 92);
+		adic(lbReceber, 397, 130, 92, 81);
+		adic(lbPagar, 371, 257, 92, 81);
+		adic(lbProduto, 197, 289, 92, 92);
+		adic(lbOrcamento, 41, 236, 92, 92);
+		adic(lbCliente, 3, 98, 92, 92);
+		adic(lbfundo, 0, 0, 500, 400);
 
-		lbAgenda.addMouseListener( this );
-		lbVenda.addMouseListener( this );
-		lbPagar.addMouseListener( this );
-		lbReceber.addMouseListener( this );
-		lbProduto.addMouseListener( this );
-		lbOrcamento.addMouseListener( this );
-		lbCliente.addMouseListener( this );
+		lbAgenda.addMouseListener(this);
+		lbVenda.addMouseListener(this);
+		lbPagar.addMouseListener(this);
+		lbReceber.addMouseListener(this);
+		lbProduto.addMouseListener(this);
+		lbOrcamento.addMouseListener(this);
+		lbCliente.addMouseListener(this);
 	}
 
-	public void setConexao( DbConnection con ) {
+	public void setConexao(DbConnection con) {
 
 		this.con = con;
 		carregaImagemEmpresa();
@@ -84,90 +84,93 @@ public abstract class AbstractBackground extends JPanelPad implements MouseListe
 		try {
 
 			String sql = "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=?";
-			PreparedStatement ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, Aplicativo.iCodEmp);
 			ResultSet rs = ps.executeQuery();
 
-			if ( rs.next() ) {
+			if (rs.next()) {
 
-				Blob blob = rs.getBlob( "FOTOEMP" );
-				BufferedInputStream bi = new BufferedInputStream( blob.getBinaryStream() );
-				byte[] bytes = new byte[ 65000 ];
+				Blob blob = rs.getBlob("FOTOEMP");
+				BufferedInputStream bi = new BufferedInputStream(blob.getBinaryStream());
+				byte[] bytes = new byte[65000];
 
 				try {
-					bi.read( bytes, 0, bytes.length );
-				} catch ( IOException e ) {
+					bi.read(bytes, 0, bytes.length);
+				}
+				catch (IOException e) {
 					e.printStackTrace();
 				}
-				
-				Image image = new ImageIcon( bytes ).getImage();
-				pnEmpresa.setImage( image );
+
+				Image image = new ImageIcon(bytes).getImage();
+				pnEmpresa.setImage(image);
 			}
 
 			con.commit();
-		} catch ( Exception e ) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) {
+	public void mouseEntered(MouseEvent e) {
 
-		if ( e.getSource() instanceof JLabel ) {
-			( (JLabel) e.getSource() ).setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) );
+		if (e.getSource() instanceof JLabel) {
+			( ( JLabel ) e.getSource() ).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		}
 	}
 
-	public void mouseExited( MouseEvent e ) {
+	public void mouseExited(MouseEvent e) {
 
-		if ( e.getSource() instanceof JLabel ) {
-			( (JLabel) e.getSource() ).setCursor( Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) );
+		if (e.getSource() instanceof JLabel) {
+			( ( JLabel ) e.getSource() ).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 
-	public void mousePressed( MouseEvent e ) {
+	public void mousePressed(MouseEvent e) {
 
 	}
 
-	public void mouseReleased( MouseEvent e ) {
+	public void mouseReleased(MouseEvent e) {
 
 	}
-	
+
 	private class PanelImagemEmpresa extends JPanel {
-		
+
 		private static final long serialVersionUID = 1l;
-		
+
 		private Image image = null;
-		
+
 		public PanelImagemEmpresa() {
 
 			super();
-			setOpaque( false );
+			setOpaque(false);
 		}
-		
-		public void setImage( Image image ) {
-			
+
+		public void setImage(Image image) {
+
 			this.image = image;
 			repaint();
 		}
 
-		public void paint( Graphics g ) {
+		public void paint(Graphics g) {
 
-			super.paint( g );
+			super.paint(g);
 
 			try {
 
 				Dimension tam = getSize();
 
-				if ( image != null ) {
+				if (image != null) {
 
-					g.drawImage( image, 0, 0, tam.width, tam.height, this );
+					g.drawImage(image, 0, 0, tam.width, tam.height, this);
 				}
 
-			} catch ( Exception e ) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-		}		
-		
+		}
+
 	}
 
 }

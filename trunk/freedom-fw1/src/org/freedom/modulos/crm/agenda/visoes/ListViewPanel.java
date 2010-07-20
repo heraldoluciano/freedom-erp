@@ -48,7 +48,7 @@ import bizcal.swing.CalendarListener;
 import bizcal.swing.CalendarView;
 import bizcal.swing.util.GradientArea;
 
-public class ListViewPanel extends AbstractCalendarView{
+public class ListViewPanel extends AbstractCalendarView {
 
 	private DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Translatrix.getLocale());
 	private static final long serialVersionUID = 1L;
@@ -59,25 +59,23 @@ public class ListViewPanel extends AbstractCalendarView{
 	Color primaryColor = new Color(230, 230, 230);
 	Color secondaryColor = Color.WHITE;
 	private GradientArea gp;
-	
+
 	/**
 	 * static logger for this class
 	 */
-	private static Logger logger = Logger.getLogger(ListViewPanel.class
-			.getName());
+	private static Logger logger = Logger.getLogger(ListViewPanel.class.getName());
 
 	public ListViewPanel(EventModel model) {
 
-		this.eventModel =model;
+		this.eventModel = model;
 
-		this.button = new JToggleButton(
-				CalendarIcons.getMediumIcon(CalendarIcons.LISTVIEW));
+		this.button = new JToggleButton(CalendarIcons.getMediumIcon(CalendarIcons.LISTVIEW));
 		this.button.setToolTipText(Translatrix.getTranslationString("bizcal.LIST_VIEW"));
 
 		this.setLayout(new BorderLayout());
 
 		gp = new GradientArea(GradientArea.TOP_BOTTOM, secondaryColor, primaryColor);
-		gp.setPreferredSize(new Dimension(30,30));
+		gp.setPreferredSize(new Dimension(30, 30));
 
 		this.add(gp, BorderLayout.NORTH);
 
@@ -90,7 +88,8 @@ public class ListViewPanel extends AbstractCalendarView{
 			listView.refresh0();
 			this.add(listView.getComponent(), BorderLayout.CENTER);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.log(Level.WARNING, "listView creation failed", e);
 		}
 
@@ -109,17 +108,17 @@ public class ListViewPanel extends AbstractCalendarView{
 		listView.setDate(date);
 		try {
 			eventModel.refresh();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.log(Level.WARNING, "updating listView failed", e);
 		}
 	}
 
 	public void setTitle(Date start, Date end) {
 		try {
-			gp.setText("<html><center>" + Translatrix.getTranslationString("bizcal.LIST_VIEW") + "<br>"
-					+ df.format(start) + " - "
-					+ df.format(end), true);
-		} catch (Exception e) {
+			gp.setText("<html><center>" + Translatrix.getTranslationString("bizcal.LIST_VIEW") + "<br>" + df.format(start) + " - " + df.format(end), true);
+		}
+		catch (Exception e) {
 			logger.log(Level.WARNING, "setTitle failed", e);
 		}
 	}
@@ -148,7 +147,8 @@ public class ListViewPanel extends AbstractCalendarView{
 	public List<Event> getEvents() {
 		try {
 			return listView.getEvents();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return null;
 		}
 	}

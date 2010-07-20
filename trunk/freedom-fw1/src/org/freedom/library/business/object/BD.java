@@ -21,63 +21,59 @@
 package org.freedom.library.business.object;
 
 public class BD {
-  private String sIDObj = "";
-  private String sDescObj = "";
-  private String sTipoObj = "";
-  private String sComentObj = "";
-  private String sUsomeObj = "";
-  
-  public BD(String sIDObj,  
-         String sDescObj, String sTipoObj,String sComentObj,
-         String sUsomeObj ) {
-  	this.sIDObj = sIDObj;
-  	this.sDescObj = sDescObj;
-  	this.sComentObj = sComentObj;
-  	this.sUsomeObj = sUsomeObj;
-  	this.sTipoObj = sTipoObj;
-  	
-  }
+	private String sIDObj = "";
+	private String sDescObj = "";
+	private String sTipoObj = "";
+	private String sComentObj = "";
+	private String sUsomeObj = "";
 
-  public String getIDObj() {
-    return this.sIDObj;
-  }  
-  
-  
-  public String getDescObj() {
-    return this.sDescObj;
-  }
+	public BD(String sIDObj, String sDescObj, String sTipoObj, String sComentObj, String sUsomeObj) {
+		this.sIDObj = sIDObj;
+		this.sDescObj = sDescObj;
+		this.sComentObj = sComentObj;
+		this.sUsomeObj = sUsomeObj;
+		this.sTipoObj = sTipoObj;
 
-  public String getTipoObj() {
-    return this.sTipoObj;
-  }
-  
-  public String setComentObj() {
-    return this.sComentObj;
-  }
+	}
 
-  public String getUsomeObj() {
-    return this.sUsomeObj;
-  }
-  
-  public void setIDObj(String sIDObj) {
-    this.sIDObj = sIDObj;
-  }  
-  
-  public void setDescObj(String sDescObj ) {
-    this.sDescObj = sDescObj;
-  }
-  
-  public void setTipoObj(String sTipoObj ) {
-    this.sTipoObj = sTipoObj;
-  }
-  
-  public void setComentObj(String sComentObj) {
-    this.sComentObj = sComentObj;
-  }
+	public String getIDObj() {
+		return this.sIDObj;
+	}
 
-  public void setUsomeObj(String sUsomeObj) {
-    this.sUsomeObj = sUsomeObj;
-  }
-  
+	public String getDescObj() {
+		return this.sDescObj;
+	}
+
+	public String getTipoObj() {
+		return this.sTipoObj;
+	}
+
+	public String setComentObj() {
+		return this.sComentObj;
+	}
+
+	public String getUsomeObj() {
+		return this.sUsomeObj;
+	}
+
+	public void setIDObj(String sIDObj) {
+		this.sIDObj = sIDObj;
+	}
+
+	public void setDescObj(String sDescObj) {
+		this.sDescObj = sDescObj;
+	}
+
+	public void setTipoObj(String sTipoObj) {
+		this.sTipoObj = sTipoObj;
+	}
+
+	public void setComentObj(String sComentObj) {
+		this.sComentObj = sComentObj;
+	}
+
+	public void setUsomeObj(String sUsomeObj) {
+		this.sUsomeObj = sUsomeObj;
+	}
 
 }

@@ -39,107 +39,105 @@ import java.util.Vector;
 
 public class FuncoesCRM {
 
-	public FuncoesCRM() {	} 
-	 
-	public static HashMap<String,Vector<Object>> montaComboContr(DbConnection con, Integer codcli, String textonulo){
+	public FuncoesCRM() {
+	}
+
+	public static HashMap<String, Vector<Object>> montaComboContr(DbConnection con, Integer codcli, String textonulo) {
 
 		Vector<Object> vVals = new Vector<Object>();
 		Vector<Object> vLabs = new Vector<Object>();
-		HashMap<String,Vector<Object>> ret = new HashMap<String,Vector<Object>>();
-		
+		HashMap<String, Vector<Object>> ret = new HashMap<String, Vector<Object>>();
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
-		
-		sql.append( "select ct.codcontr, ct.desccontr " );
-		sql.append( "from vdcliente cl, vdcontrato ct " );
-		sql.append( "where ct.codempcl=cl.codemp and ct.codfilialcl=cl.codfilial and ct.codcli=cl.codcli " );
-		sql.append( "and cl.codemp=? and cl.codfilial=? and cl.codcli=? " );
-		
+
+		sql.append("select ct.codcontr, ct.desccontr ");
+		sql.append("from vdcliente cl, vdcontrato ct ");
+		sql.append("where ct.codempcl=cl.codemp and ct.codfilialcl=cl.codfilial and ct.codcli=cl.codcli ");
+		sql.append("and cl.codemp=? and cl.codfilial=? and cl.codcli=? ");
+
 		try {
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );	
-			ps.setInt( 3, codcli );	
+			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+			ps.setInt(3, codcli);
 			rs = ps.executeQuery();
-						
-			vVals.addElement( -1 );
-			vLabs.addElement( textonulo );
-			
-			while ( rs.next() ) {				
-				vVals.addElement( new Integer( rs.getInt( "codcontr" ) ) );
-				vLabs.addElement( rs.getString( "desccontr" ) );
+
+			vVals.addElement(-1);
+			vLabs.addElement(textonulo);
+
+			while (rs.next()) {
+				vVals.addElement(new Integer(rs.getInt("codcontr")));
+				vLabs.addElement(rs.getString("desccontr"));
 			}
 
-			ret.put( "VAL", vVals );
-			ret.put( "LAB", vLabs );
-			
-			
+			ret.put("VAL", vVals);
+			ret.put("LAB", vLabs);
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		}
+		catch (SQLException err) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( null, "Erro ao buscar dados do contrato" );
+			Funcoes.mensagemErro(null, "Erro ao buscar dados do contrato");
 		}
 		return ret;
 	}
-	
-	public static HashMap<String,Vector<Object>> montaComboItContr(DbConnection con, Integer codcontr, String textonulo){
-		
+
+	public static HashMap<String, Vector<Object>> montaComboItContr(DbConnection con, Integer codcontr, String textonulo) {
+
 		Vector<Object> vVals = new Vector<Object>();
 		Vector<Object> vLabs = new Vector<Object>();
-		HashMap<String,Vector<Object>> ret = new HashMap<String,Vector<Object>>();
-		
+		HashMap<String, Vector<Object>> ret = new HashMap<String, Vector<Object>>();
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
-		
-		sql.append( "select i.coditcontr, i.descitcontr from vdcontrato c, vditcontrato i " );
-		sql.append( "where c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr " );
-		sql.append( "and c.codemp=? and c.codfilial=? and c.codcontr=?" );
-		
+
+		sql.append("select i.coditcontr, i.descitcontr from vdcontrato c, vditcontrato i ");
+		sql.append("where c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr ");
+		sql.append("and c.codemp=? and c.codfilial=? and c.codcontr=?");
+
 		try {
-			 
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp);
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCONTRATO" ));
-			ps.setInt( 3, codcontr);			
-			
+
+			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCONTRATO"));
+			ps.setInt(3, codcontr);
+
 			rs = ps.executeQuery();
-			
-			vVals.addElement( -1 );
-			vLabs.addElement( textonulo );
-			
+
+			vVals.addElement(-1);
+			vLabs.addElement(textonulo);
+
 			int icont = 0;
-			
-			while ( rs.next() ) {
-			
-				vVals.addElement( new Integer( rs.getInt( "coditcontr" ) ) );
-				vLabs.addElement( rs.getString( "descitcontr" ) );
+
+			while (rs.next()) {
+
+				vVals.addElement(new Integer(rs.getInt("coditcontr")));
+				vLabs.addElement(rs.getString("descitcontr"));
 				icont++;
-				
+
 			}
-			
-			ret.put( "VAL", vVals );
-			ret.put( "LAB", vLabs );
-						
+
+			ret.put("VAL", vVals);
+			ret.put("LAB", vLabs);
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		}
+		catch (SQLException err) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( null, "Erro ao montar combo de ítens de contrato!" );
+			Funcoes.mensagemErro(null, "Erro ao montar combo de ítens de contrato!");
 		}
 		return ret;
 	}
-    
 
 }
-

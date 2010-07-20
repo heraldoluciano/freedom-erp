@@ -40,7 +40,6 @@ import org.freedom.library.swing.component.JTextAreaPad;
 public class DLInputText extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
-
 	private JTextAreaPad txaMemo = new JTextAreaPad();
 	private JScrollPane spnMemo = new JScrollPane(txaMemo);
 	private boolean required = false;
@@ -65,7 +64,8 @@ public class DLInputText extends FFDialogo {
 	public void ok() {
 		if (txaMemo.getText().trim().equals("") && required) {
 			Funcoes.mensagemInforma(this, "O campo de texto deve ser preenchido !");
-		} else {
+		}
+		else {
 			OK = true;
 			setVisible(false);
 		}
@@ -74,7 +74,8 @@ public class DLInputText extends FFDialogo {
 	public void cancel() {
 		if (txaMemo.getText().trim().equals("") && required) {
 			Funcoes.mensagemInforma(this, "O campo de texto deve ser preenchido !");
-		} else {
+		}
+		else {
 			OK = false;
 			setVisible(false);
 		}
@@ -82,4 +83,3 @@ public class DLInputText extends FFDialogo {
 	}
 
 }
-

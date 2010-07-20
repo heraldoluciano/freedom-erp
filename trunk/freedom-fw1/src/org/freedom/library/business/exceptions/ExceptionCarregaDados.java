@@ -1,7 +1,7 @@
 package org.freedom.library.business.exceptions;
 
 public class ExceptionCarregaDados extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public ExceptionCarregaDados() {
@@ -19,5 +19,5 @@ public class ExceptionCarregaDados extends Exception {
 	public ExceptionCarregaDados(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

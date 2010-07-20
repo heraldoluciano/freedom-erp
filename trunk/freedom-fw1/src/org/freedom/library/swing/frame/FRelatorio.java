@@ -42,20 +42,20 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCli = new JPanelPad( 350, 170 );
+	private JPanelPad pinCli = new JPanelPad(350, 170);
 
-	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-	private JPanelPad pnCentRod = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
+	private JPanelPad pnCentRod = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 0, 0));
 
-	public JPanelPad pnBotoes = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	public JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
 
-	private JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
 
-	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
 
-	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
-	
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+
 	private final DLLoading wait = new DLLoading();
 
 	boolean setArea = true;
@@ -65,126 +65,126 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 	Container c = null;
 
 	public FRelatorio() {
-		this( true );
+		this(true);
 	}
 
 	public FRelatorio(boolean comScroll) {
 		super(comScroll);
-		setTitulo( "Requisiçao de Relatório", this.getClass().getName() );
-		setAtribos( 100, 100, 350, 200 );
+		setTitulo("Requisiçao de Relatório", this.getClass().getName());
+		setAtribos(100, 100, 350, 200);
 		c = super.getTela();
-		pnRod.setBorder( BorderFactory.createEtchedBorder() );
-		c.add( pnRod, BorderLayout.SOUTH );
-		pnRod.setPreferredSize( new Dimension( 350, 32 ) );
-		btSair.setPreferredSize( new Dimension( 100, 30 ) );
-		pnRod.add( btSair, BorderLayout.EAST );
-		pnRod.add( pnCentRod, BorderLayout.CENTER );
-		pnBotoes.setPreferredSize( new Dimension( 80, 28 ) );
-		pnCentRod.add( pnBotoes );
-		pnBotoes.add( btImp );
-		pnBotoes.add( btPrevimp );
+		pnRod.setBorder(BorderFactory.createEtchedBorder());
+		c.add(pnRod, BorderLayout.SOUTH);
+		pnRod.setPreferredSize(new Dimension(350, 32));
+		btSair.setPreferredSize(new Dimension(100, 30));
+		pnRod.add(btSair, BorderLayout.EAST);
+		pnRod.add(pnCentRod, BorderLayout.CENTER);
+		pnBotoes.setPreferredSize(new Dimension(80, 28));
+		pnCentRod.add(pnBotoes);
+		pnBotoes.add(btImp);
+		pnBotoes.add(btPrevimp);
 
-		btImp.setToolTipText( "Imprimir (Ctrl + I)" );
-		btPrevimp.setToolTipText( "Visualizar Impressão (Ctrl + P)" );
-		btSair.setToolTipText( "Sair (ESC)" );
+		btImp.setToolTipText("Imprimir (Ctrl + I)");
+		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl + P)");
+		btSair.setToolTipText("Sair (ESC)");
 
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		btSair.addActionListener( this );
-		btImp.addKeyListener( this );
-		btPrevimp.addKeyListener( this );
-		btSair.addKeyListener( this );
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
+		btSair.addActionListener(this);
+		btImp.addKeyListener(this);
+		btPrevimp.addKeyListener(this);
+		btSair.addKeyListener(this);
 	}
-	
-	public void setPanel( JPanelPad pn ) {
 
-		c.remove( pinCli );
-		c.add( pn, BorderLayout.CENTER );
+	public void setPanel(JPanelPad pn) {
+
+		c.remove(pinCli);
+		c.add(pn, BorderLayout.CENTER);
 		setArea = false;
 	}
 
-	public void setPainel( JPanelPad pin ) {
+	public void setPainel(JPanelPad pin) {
 
 		pinCli = pin;
 		setArea = false;
 	}
 
-    public void setAreaComp() {
-	    pinCli = new JPanelPad((int)getSize().getWidth()-10,
-	      (int)getSize().getHeight()-65);  
-	    pnCliente.add(pinCli, BorderLayout.CENTER);
-	    setArea = false;
-    }
-    
-	public void adic( Component comp, int iX, int iY, int iLarg, int iAlt ) {
+	public void setAreaComp() {
+		pinCli = new JPanelPad(( int ) getSize().getWidth() - 10, ( int ) getSize().getHeight() - 65);
+		pnCliente.add(pinCli, BorderLayout.CENTER);
+		setArea = false;
+	}
 
-		if ( setArea )
+	public void adic(Component comp, int iX, int iY, int iLarg, int iAlt) {
+
+		if (setArea)
 			setAreaComp();
-		comp.addKeyListener( this );
-		pinCli.adic( comp, iX, iY, iLarg, iAlt );
+		comp.addKeyListener(this);
+		pinCli.adic(comp, iX, iY, iLarg, iAlt);
 	}
 
 	/**
-     * 
-     * Retorna o container do rootPane. Sobrepôs o getTela do FFilho por ele 'resetar' o Layout.
-     * 
-     * @see FFilho#getTela
-     * 
-     */
+	 * 
+	 * Retorna o container do rootPane. Sobrepôs o getTela do FFilho por ele
+	 * 'resetar' o Layout.
+	 * 
+	 * @see FFilho#getTela
+	 * 
+	 */
 	public Container getTela() {
 
 		return c;
 	}
 
-	public abstract void imprimir( boolean b );
+	public abstract void imprimir(boolean b);
 
-	public void actionPerformed( ActionEvent evt ) {
+	public void actionPerformed(ActionEvent evt) {
 
-		if ( evt.getSource() == btSair ) {
+		if (evt.getSource() == btSair) {
 			wait.stop();
 			dispose();
 		}
-		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
+		else if (evt.getSource() == btImp) {
+			imprimir(false);
 		}
-		else if ( evt.getSource() == btPrevimp ) {
-			//wait.start();
-			//Thread th = new Thread( new Runnable() {
-			//	public void run() {
-					imprimir( true );
-			//		wait.stop();
-			//	}
-			//} );
-			//th.start();
+		else if (evt.getSource() == btPrevimp) {
+			// wait.start();
+			// Thread th = new Thread( new Runnable() {
+			// public void run() {
+			imprimir(true);
+			// wait.stop();
+			// }
+			// } );
+			// th.start();
 		}
 	}
 
-	public void keyPressed( KeyEvent kevt ) {
+	public void keyPressed(KeyEvent kevt) {
 
-		if ( kevt.getKeyCode() == KeyEvent.VK_CONTROL ) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
 			bCtrl = true;
 		}
-		else if ( kevt.getKeyCode() == KeyEvent.VK_I ) {
-			if ( bCtrl )
+		else if (kevt.getKeyCode() == KeyEvent.VK_I) {
+			if (bCtrl)
 				btImp.doClick();
 		}
-		else if ( kevt.getKeyCode() == KeyEvent.VK_P ) {
-			if ( bCtrl )
+		else if (kevt.getKeyCode() == KeyEvent.VK_P) {
+			if (bCtrl)
 				btPrevimp.doClick();
 		}
-		else if ( kevt.getKeyCode() == KeyEvent.VK_ESCAPE ) {
+		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			btSair.doClick();
 		}
 	}
 
-	public void keyReleased( KeyEvent kevt ) {
+	public void keyReleased(KeyEvent kevt) {
 
-		if ( kevt.getKeyCode() == KeyEvent.VK_CONTROL ) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
 			bCtrl = false;
 		}
 	}
 
-	public void keyTyped( KeyEvent kevt ) {
+	public void keyTyped(KeyEvent kevt) {
 
 	}
 }

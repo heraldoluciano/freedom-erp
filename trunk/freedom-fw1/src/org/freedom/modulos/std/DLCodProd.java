@@ -43,399 +43,381 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
-
 public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public JTablePad tab = new JTablePad();
-	
-	private JScrollPane spnCentro = new JScrollPane(tab); 
+
+	private JScrollPane spnCentro = new JScrollPane(tab);
 	private int iCodProd = 0;
-	
+
 	private boolean bFilCodProd = false;
 	private boolean bFilRefProd = false;
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
 	private boolean bFilCodProdFor = false;
-	
+
 	private Integer codfor = null;
-	
+
 	private Vector<Integer> vProds = new Vector<Integer>();
 	private Vector<String> vUsaLote = new Vector<String>();
 	private JComponent proxFoco = null;
-	
+
 	public DLCodProd(DbConnection con, JComponent proxFoco, Integer codfor) {
 
 		setTitulo("Pesquisa auxiliar");
-		setAtribos( 575, 260);		
-	    setResizable(true);	 
+		setAtribos(575, 260);
+		setResizable(true);
 		setConexao(con);
-		
+
 		this.codfor = codfor;
 		this.proxFoco = proxFoco;
-	    
-	    c.add( spnCentro, BorderLayout.CENTER);    
-	    
-	    addWindowFocusListener( new WindowAdapter() {
-			 public void windowGainedFocus(WindowEvent e) {
-	            if (tab.getNumLinhas() > 0)
-	            	tab.requestFocus();
-	            else
-	            	btCancel.requestFocus();
-			 }
-	       }
-	    );
-		 
+
+		c.add(spnCentro, BorderLayout.CENTER);
+
+		addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				if (tab.getNumLinhas() > 0)
+					tab.requestFocus();
+				else
+					btCancel.requestFocus();
+			}
+		});
+
 		tab.adicColuna("Cód.prod.");
 		tab.adicColuna("Ref.prod.");
 		tab.adicColuna("Cód.bar.prod.");
 		tab.adicColuna("Cód.fab.prod.");
-		tab.adicColuna("Descrição do produto");    
+		tab.adicColuna("Descrição do produto");
 		tab.adicColuna("Cód.amox.");
 		tab.adicColuna("lote");
-		tab.adicColuna("Validade");   	  
-		tab.adicColuna("Saldo");   	
-		tab.setTamColuna(80,0);
-		tab.setTamColuna(80,1);
-		tab.setTamColuna(80,2);
-		tab.setTamColuna(80,3);
-		tab.setTamColuna(160,4);
-		tab.setTamColuna(80,5); 
-		tab.setTamColuna(80,6);
-		tab.setTamColuna(80,7);
-		tab.setTamColuna(80,8); 
-		
+		tab.adicColuna("Validade");
+		tab.adicColuna("Saldo");
+		tab.setTamColuna(80, 0);
+		tab.setTamColuna(80, 1);
+		tab.setTamColuna(80, 2);
+		tab.setTamColuna(80, 3);
+		tab.setTamColuna(160, 4);
+		tab.setTamColuna(80, 5);
+		tab.setTamColuna(80, 6);
+		tab.setTamColuna(80, 7);
+		tab.setTamColuna(80, 8);
+
 		tab.addKeyListener(this);
-		
+
 		getPrefere();
-		
+
 	}
-	
+
 	public void passaFocus() {
-		if(proxFoco!=null)
+		if (proxFoco != null)
 			proxFoco.requestFocus();
 	}
-	
+
 	public boolean buscaCodProd(String valor) {
-		
-		valor = StringFunctions.alltrim( valor ); 
-		
+
+		valor = StringFunctions.alltrim(valor);
+
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
-		
+
 		ResultSet rs = null;
 		ResultSet rs2 = null;
-		
+
 		String sql = null;
 		String sqladiclote = null;
 		String sqladic = null;
 		String sqlfor = "";
-		
+
 		String where = "";
-		
+
 		String sTemp = null;
-		
+
 		boolean usaOR = false;
-		boolean adicCodProd = false;		
-		
+		boolean adicCodProd = false;
+
 		int ilinha = 0;
-		
-		if(valor == null || valor.trim().length() <= 0) {
-			return false;		
+
+		if (valor == null || valor.trim().length() <= 0) {
+			return false;
 		}
-		
-		try{
-			
+
+		try {
+
 			vProds.clear();
 			vUsaLote.clear();
 			tab.limpa();
 			iCodProd = 0;
-						
-			sqladiclote = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " 
-						+ "L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " 
-						+ "FROM EQPRODUTO P, EQLOTE L, EQALMOX A " 
-						+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " 
-						+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX " 
-						+ "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " 
-						+ "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " 
-						+ "FROM EQLOTE LS " 
-						+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " 
-						+ "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
-	
-			sqladic = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " 
-					+ "FROM EQPRODUTO P, EQALMOX A " 
-					+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " 
-					+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";	
-			
-			
-			sql =  "SELECT P.CODPROD, P.CLOTEPROD FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? ";			
-					
-			if(bFilCodBar) {
-						
+
+			sqladiclote = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " + "L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " + "FROM EQPRODUTO P, EQLOTE L, EQALMOX A "
+					+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " + "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX "
+					+ "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " + "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " + "FROM EQLOTE LS "
+					+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " + "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+
+			sqladic = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " + "FROM EQPRODUTO P, EQALMOX A " + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? "
+					+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";
+
+			sql = "SELECT P.CODPROD, P.CLOTEPROD FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? ";
+
+			if (bFilCodBar) {
+
 				where = "AND (P.CODBARPROD=?) ";
-						
+
 			}
-			
-			if(bFilCodProd) {
-						
+
+			if (bFilCodProd) {
+
 				try {
-							
+
 					int val = Integer.parseInt(valor);
-							
-					if(val < Integer.MAX_VALUE && val > Integer.MIN_VALUE ) {
-								
-						if(where.length()>0) {
-							
+
+					if (val < Integer.MAX_VALUE && val > Integer.MIN_VALUE) {
+
+						if (where.length() > 0) {
+
 							where += "OR (P.CODPROD=?) ";
-							
+
 							usaOR = true;
-						
-						} 
-						else { 
-							
-							where += "AND P.CODPROD=? ";
-							
+
 						}
-								
+						else {
+
+							where += "AND P.CODPROD=? ";
+
+						}
+
 						adicCodProd = true;
-								
+
 					}
-				} 
+				}
 				catch (NumberFormatException e) {
-					System.out.println("Erro ao fazer busca generica de produtos\n"+e.getMessage());
+					System.out.println("Erro ao fazer busca generica de produtos\n" + e.getMessage());
 				}
 			}
-			
-			if(bFilRefProd) {
-				
-				if(where.length()>0) {
-							
+
+			if (bFilRefProd) {
+
+				if (where.length() > 0) {
+
 					where += "OR (P.REFPROD=?) ";
 					usaOR = true;
-							
-				} 
+
+				}
 				else {
-							
+
 					where = "AND (P.REFPROD=?) ";
-							
+
 				}
 			}
-			
-			if(bFilCodFab){
-						
-				if(where.length()>0) {
-							
+
+			if (bFilCodFab) {
+
+				if (where.length() > 0) {
+
 					where += "OR (P.CODFABPROD=?) ";
 					usaOR = true;
-							
-				} 
+
+				}
 				else {
-							
+
 					where = "AND (P.CODFABPROD=?) ";
-							
+
 				}
 			}
-			if(bFilCodProdFor) {
-				
-				sqlfor = "UNION SELECT PF.CODPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P "
-					   + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
-					   + "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? " 
-					   + ( codfor!=null ? (" AND PF.CODFOR=" + codfor) : "");
-				
+			if (bFilCodProdFor) {
+
+				sqlfor = "UNION SELECT PF.CODPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P " + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
+						+ "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? " + ( codfor != null ? ( " AND PF.CODFOR=" + codfor ) : "" );
+
 			}
-			
-			
-			if(usaOR) {
-				where = " AND (" + where.substring(4,where.length()) +") ";
+
+			if (usaOR) {
+				where = " AND (" + where.substring(4, where.length()) + ") ";
 			}
-						
-			sql = sql +  where + sqlfor;		
-			
-			
+
+			sql = sql + where + sqlfor;
+
 			ps = con.prepareStatement(sql);
-			
+
 			int iparam = 1;
-			
+
 			ps.setInt(iparam++, Aplicativo.iCodEmp);
-			
+
 			ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));
-			
-			if(bFilCodBar) {
+
+			if (bFilCodBar) {
 				ps.setString(iparam++, valor);
 			}
-			
-			if(adicCodProd) {
+
+			if (adicCodProd) {
 				ps.setString(iparam++, valor);
 			}
-			
-			if(bFilRefProd) {
+
+			if (bFilRefProd) {
 				ps.setString(iparam++, valor);
 			}
-			
-			if(bFilCodFab) {
+
+			if (bFilCodFab) {
 				ps.setString(iparam++, valor);
 			}
-			if(bFilCodProdFor) {
-				
-				ps.setInt(iparam++, Aplicativo.iCodEmp);			
-				ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));			
+			if (bFilCodProdFor) {
+
+				ps.setInt(iparam++, Aplicativo.iCodEmp);
+				ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));
 				ps.setString(iparam++, valor);
-				
+
 			}
-			
+
 			rs = ps.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				vProds.addElement(new Integer(rs.getString("CODPROD") != null ? rs.getString("CODPROD") : "0"));
 				vUsaLote.addElement(rs.getString("CLOTEPROD") != null ? rs.getString("CLOTEPROD") : "N");
 			}
-			
-			if(vProds.size() <= 0) {
+
+			if (vProds.size() <= 0) {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
-			} else if(vProds.size() == 1) {
+			}
+			else if (vProds.size() == 1) {
 				iCodProd = vProds.elementAt(0).intValue();
 				ok();
 				return true;
 			}
-			
-			for(int i=0; i<vProds.size(); i++) {
-				if(vUsaLote.elementAt(i).equals("S"))
+
+			for (int i = 0; i < vProds.size(); i++) {
+				if (vUsaLote.elementAt(i).equals("S"))
 					sTemp = sqladiclote;
-				else 
+				else
 					sTemp = sqladic;
-				
+
 				ps2 = con.prepareStatement(sTemp);
 				ps2.setInt(1, Aplicativo.iCodEmp);
 				ps2.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
 				ps2.setInt(3, vProds.elementAt(i).intValue());
-				
+
 				rs2 = ps2.executeQuery();
-				
-				if(rs2.next()) {
-					if(vUsaLote.elementAt(i).equals("S")) {
-						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : ""),
-													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : ""),
-													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : ""),
-													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : ""),
-													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : ""),
-													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : ""),					
-													(rs2.getString("CODLOTE") != null ? rs2.getString("CODLOTE").trim() : ""),
-													(rs2.getString("VENCTOLOTE") != null ? rs2.getString("VENCTOLOTE").trim() : ""),
-													(rs2.getString("SLDLOTE") != null ? rs2.getString("SLDLOTE").trim() : "")});
-					} else {
-						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : ""),
-													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : ""),
-													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : ""),
-													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : ""),
-													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : ""),
-													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : ""),					
-													"","",""});
-					}	
+
+				if (rs2.next()) {
+					if (vUsaLote.elementAt(i).equals("S")) {
+						tab.adicLinha(new Object[] { ( rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : "" ),
+								( rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : "" ), ( rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : "" ),
+								( rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : "" ), ( rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : "" ),
+								( rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : "" ), ( rs2.getString("CODLOTE") != null ? rs2.getString("CODLOTE").trim() : "" ),
+								( rs2.getString("VENCTOLOTE") != null ? rs2.getString("VENCTOLOTE").trim() : "" ), ( rs2.getString("SLDLOTE") != null ? rs2.getString("SLDLOTE").trim() : "" ) });
+					}
+					else {
+						tab.adicLinha(new Object[] { ( rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : "" ),
+								( rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : "" ), ( rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : "" ),
+								( rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : "" ), ( rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : "" ),
+								( rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : "" ), "", "", "" });
+					}
 					ilinha++;
-				}				
+				}
 			}
-			
-			if(ilinha <= 0) {
+
+			if (ilinha <= 0) {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
-			} 
-			else if(ilinha == 1) {
+			}
+			else if (ilinha == 1) {
 				iCodProd = vProds.elementAt(0).intValue();
 				ok();
 				return true;
 			}
-			
-			tab.changeSelection(0,0,true,true);
+
+			tab.changeSelection(0, 0, true, true);
 			tab.setLinhaSel(0);
 			setVisible(true);
-			
-		} 
-			catch (SQLException e) {
-			Funcoes.mensagemErro(this, "Erro ao buscar produtos por código de barras!\n"+
-					e.getMessage(), true, con, e);
+
+		}
+		catch (SQLException e) {
+			Funcoes.mensagemErro(this, "Erro ao buscar produtos por código de barras!\n" + e.getMessage(), true, con, e);
 			e.printStackTrace();
 			return false;
-		} finally {
+		}
+		finally {
 			ps = null;
 			rs = null;
-			sql = null;			
+			sql = null;
 		}
-		
+
 		return true;
-		
+
 	}
 
-	public int getCodProd() { 
+	public int getCodProd() {
 		return iCodProd;
 	}
-	
+
 	private void getPrefere() {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		
-		try{
-			
-			sSQL =  "SELECT FILBUSCGENPROD, FILBUSCGENREF, FILBUSCGENCODBAR, FILBUSCGENCODFAB, FILBUSCGENCODFOR " +
-					"FROM SGPREFERE1 " +
-					"WHERE CODEMP=? AND CODFILIAL=?";
-			
+
+		try {
+
+			sSQL = "SELECT FILBUSCGENPROD, FILBUSCGENREF, FILBUSCGENCODBAR, FILBUSCGENCODFAB, FILBUSCGENCODFOR " + "FROM SGPREFERE1 " + "WHERE CODEMP=? AND CODFILIAL=?";
+
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			
+
 			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				
-				bFilCodProd = (rs.getString("FILBUSCGENPROD")!=null && rs.getString("FILBUSCGENPROD").equals("S")) ? true : false;
-				bFilRefProd = (rs.getString("FILBUSCGENREF")!=null && rs.getString("FILBUSCGENREF").equals("S")) ? true : false;
-				bFilCodBar  = (rs.getString("FILBUSCGENCODBAR")!=null && rs.getString("FILBUSCGENCODBAR").equals("S")) ? true : false;
-				bFilCodFab  = (rs.getString("FILBUSCGENCODFAB")!=null && rs.getString("FILBUSCGENCODFAB").equals("S")) ? true : false;
-				bFilCodProdFor  = (rs.getString("FILBUSCGENCODFOR")!=null && rs.getString("FILBUSCGENCODFOR").equals("S")) ? true : false;
-				
+
+			if (rs.next()) {
+
+				bFilCodProd = ( rs.getString("FILBUSCGENPROD") != null && rs.getString("FILBUSCGENPROD").equals("S") ) ? true : false;
+				bFilRefProd = ( rs.getString("FILBUSCGENREF") != null && rs.getString("FILBUSCGENREF").equals("S") ) ? true : false;
+				bFilCodBar = ( rs.getString("FILBUSCGENCODBAR") != null && rs.getString("FILBUSCGENCODBAR").equals("S") ) ? true : false;
+				bFilCodFab = ( rs.getString("FILBUSCGENCODFAB") != null && rs.getString("FILBUSCGENCODFAB").equals("S") ) ? true : false;
+				bFilCodProdFor = ( rs.getString("FILBUSCGENCODFOR") != null && rs.getString("FILBUSCGENCODFOR").equals("S") ) ? true : false;
+
 			}
-			
+
 			// Garante pelo menos um filtro na busca...
-			// Caso se defina no preferencias so a busca generica 
+			// Caso se defina no preferencias so a busca generica
 			// e não escolha as opções...
-			if(!bFilCodProd && !bFilRefProd && !bFilCodBar && !bFilCodFab)
+			if (!bFilCodProd && !bFilRefProd && !bFilCodBar && !bFilCodFab)
 				bFilCodProd = true;
-			
-		} catch (SQLException e) {
-			Funcoes.mensagemErro(this, "Erro ao buscar filtros!\n"+
-					e.getMessage(), true, con, e);
+
+		}
+		catch (SQLException e) {
+			Funcoes.mensagemErro(this, "Erro ao buscar filtros!\n" + e.getMessage(), true, con, e);
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			ps = null;
 			rs = null;
-			sSQL = null;			
+			sSQL = null;
 		}
-		
+
 	}
 
-    public void keyPressed(KeyEvent kevt) {
-    	if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
-    		int ilin = tab.getLinhaSel();
-        	iCodProd = 0;
-        	if (tab.getNumLinhas() > 0 && ilin >= 0) {
-        		iCodProd = Integer.parseInt((String)tab.getValor(ilin, 0));
-        		passaFocus();
-        		super.ok();
-        	} else {
-        		Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
-        		iCodProd = 0;
-        	}
-    	}
-    	else
-    		super.keyPressed(kevt);
-    }
-    
-    public void keyReleased(KeyEvent kevt) { }
-    
-    public void keyTyped(KeyEvent kevt) { }
-        
-}        
+	public void keyPressed(KeyEvent kevt) {
+		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			int ilin = tab.getLinhaSel();
+			iCodProd = 0;
+			if (tab.getNumLinhas() > 0 && ilin >= 0) {
+				iCodProd = Integer.parseInt(( String ) tab.getValor(ilin, 0));
+				passaFocus();
+				super.ok();
+			}
+			else {
+				Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
+				iCodProd = 0;
+			}
+		}
+		else
+			super.keyPressed(kevt);
+	}
+
+	public void keyReleased(KeyEvent kevt) {
+	}
+
+	public void keyTyped(KeyEvent kevt) {
+	}
+
+}

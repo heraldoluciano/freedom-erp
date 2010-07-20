@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.atd; 
+package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -32,46 +32,45 @@ import org.freedom.library.swing.dialog.FDialogo;
 
 import javax.swing.JLabel;
 
-
 public class FTipoAgenda extends FDialogo {
-	
+
 	private static final long serialVersionUID = 1L;
-	private JTextFieldPad txtCodTipoAGD= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private JTextFieldPad txtDescTipoAGD= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-	public ListaCampos lcCampos = new ListaCampos(null); 
-	public Navegador nav = new Navegador(false); 
-	  
-	public FTipoAgenda () {
-		  
+	private JTextFieldPad txtCodTipoAGD = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	private JTextFieldPad txtDescTipoAGD = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	public ListaCampos lcCampos = new ListaCampos(null);
+	public Navegador nav = new Navegador(false);
+
+	public FTipoAgenda() {
+
 		super();
-		setTitulo("Tipos de Agendamentos", this.getClass().getName() );
-		setAtribos( 345, 140 );
+		setTitulo("Tipos de Agendamentos", this.getClass().getName());
+		setAtribos(345, 140);
 		setToFrameLayout();
-		
+
 		pnRodape.add(nav, BorderLayout.WEST);
 		nav.setListaCampos(lcCampos);
 		lcCampos.setNavegador(nav);
-		
-		lcCampos.add(new GuardaCampo( txtCodTipoAGD, "CodTipoAGD", "Cód.tp.agd.", ListaCampos.DB_PK, true));
-		lcCampos.add(new GuardaCampo( txtDescTipoAGD, "DescTipoAGD", "Descrição do tipo de agendamento", ListaCampos.DB_SI,true));
-		lcCampos.montaSql(true, "TIPOAGENDA", "SG");    
+
+		lcCampos.add(new GuardaCampo(txtCodTipoAGD, "CodTipoAGD", "Cód.tp.agd.", ListaCampos.DB_PK, true));
+		lcCampos.add(new GuardaCampo(txtDescTipoAGD, "DescTipoAGD", "Descrição do tipo de agendamento", ListaCampos.DB_SI, true));
+		lcCampos.montaSql(true, "TIPOAGENDA", "SG");
 		lcCampos.setReadOnly(false);
 		txtCodTipoAGD.setTabelaExterna(lcCampos, null);
 		txtCodTipoAGD.setFK(true);
 		txtCodTipoAGD.setNomeCampo("CodTipoAGD");
-		
+
 		adic(new JLabel("Cód.tp.agd."), 7, 10, 70, 20);
 		adic(txtCodTipoAGD, 7, 30, 70, 20);
 		adic(new JLabel("Descrição do tipo de agendamento"), 80, 10, 240, 20);
 		adic(txtDescTipoAGD, 80, 30, 240, 20);
-		    
+
 		lcCampos.setQueryInsert(false);
-	    
+
 	}
-	
+
 	public void setConexao(DbConnection con) {
-		//super.setConexao(con);
+		// super.setConexao(con);
 		lcCampos.setConexao(con);
 	}
-  
+
 }

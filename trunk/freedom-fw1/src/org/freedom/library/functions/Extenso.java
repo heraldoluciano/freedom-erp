@@ -22,24 +22,22 @@ package org.freedom.library.functions;
 
 import org.freedom.infra.functions.StringFunctions;
 
-
 /**
  * @author robson
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * 
+ *         To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Generation - Code and Comments
  */
 public class Extenso {
-	
+
 	public static void main(String[] args) {
-		System.out.println(extenso(132.98,"real","reais","centavo","centavos"));
+		System.out.println(extenso(132.98, "real", "reais", "centavo", "centavos"));
 	}
 
-	public static String extenso(double dExValor , String sExMoedaS, String sExMoedaP,
-			String sExDecS, String sExDecP) {
+	public static String extenso(double dExValor, String sExMoedaS, String sExMoedaP, String sExDecS, String sExDecP) {
 
 		String sExTr = "";
-		String sExBi = ""; 
+		String sExBi = "";
 		String sExMi = "";
 		String sExMil = "";
 		String sExCe = "";
@@ -48,95 +46,95 @@ public class Extenso {
 		String sExValor3 = "";
 		int iTamEx = 0;
 
-		sExValor2 = Funcoes.transValor(dExValor+"",17,2,false);
-		sExValor2 = StringFunctions.replicate(" ",17-sExValor2.length())+sExValor2;
-		//System.out.println(sExValor2.length());
+		sExValor2 = Funcoes.transValor(dExValor + "", 17, 2, false);
+		sExValor2 = StringFunctions.replicate(" ", 17 - sExValor2.length()) + sExValor2;
+		// System.out.println(sExValor2.length());
 
 		iTamEx = sExValor2.trim().length();
-		sExDe = dezenas(sExValor2.substring(15,17));
+		sExDe = dezenas(sExValor2.substring(15, 17));
 
-		//System.out.println(sExValor2.length());
-		
-		if (iTamEx>2)
-			sExCe = centenas(sExValor2.substring(12,15));
-		
-		if (iTamEx>5) {
-			sExMil = centenas(sExValor2.substring(9,12));
+		// System.out.println(sExValor2.length());
+
+		if (iTamEx > 2)
+			sExCe = centenas(sExValor2.substring(12, 15));
+
+		if (iTamEx > 5) {
+			sExMil = centenas(sExValor2.substring(9, 12));
 			if (!sExMil.trim().equals(""))
-				sExMil += " mil"+(!sExCe.trim().equals("")?(iTamEx>7?", ":" e "):"");
-			/*sExDe*/
+				sExMil += " mil" + ( !sExCe.trim().equals("") ? ( iTamEx > 7 ? ", " : " e " ) : "" );
+			/* sExDe */
 		}
 
-		if (iTamEx>8) {
-			sExMi = centenas(sExValor2.substring(6,9));
+		if (iTamEx > 8) {
+			sExMi = centenas(sExValor2.substring(6, 9));
 			if (!sExMi.trim().equals(""))
-				sExMi += (sExMi.equals("um")?" milhao":" milhoes")+((sExMil+sExCe).trim().equals("")?" de":", ");
+				sExMi += ( sExMi.equals("um") ? " milhao" : " milhoes" ) + ( ( sExMil + sExCe ).trim().equals("") ? " de" : ", " );
 		}
-		
-		if (iTamEx>11) {
-			sExBi = centenas(sExValor2.substring(3,6));
+
+		if (iTamEx > 11) {
+			sExBi = centenas(sExValor2.substring(3, 6));
 			if (!sExBi.trim().equals(""))
-				sExBi +=  (sExBi.equals("um")?" bilhao":" bilhoes")+((sExMil+sExCe+sExMi).trim().equals("")?" de":", ");
+				sExBi += ( sExBi.equals("um") ? " bilhao" : " bilhoes" ) + ( ( sExMil + sExCe + sExMi ).trim().equals("") ? " de" : ", " );
 		}
-		
-		if (iTamEx>14) {
-			sExTr = centenas(sExValor2.substring(0,3));
+
+		if (iTamEx > 14) {
+			sExTr = centenas(sExValor2.substring(0, 3));
 			if (!sExTr.trim().equals(""))
-				sExTr += (sExTr.equals("um")?" trilhao":" trilhoes")+((sExMil+sExCe+sExMi+sExBi).trim().equals("")?" de":", ");
+				sExTr += ( sExTr.equals("um") ? " trilhao" : " trilhoes" ) + ( ( sExMil + sExCe + sExMi + sExBi ).trim().equals("") ? " de" : ", " );
 		}
 
-		sExValor3 = sExTr+sExBi+sExMi+sExMil+sExCe;
+		sExValor3 = sExTr + sExBi + sExMi + sExMil + sExCe;
 
-		if (sExValor2.substring(14).trim().equals("1")) 
-			sExValor3 += " "+(sExValor3.trim().equals("")?" ":sExMoedaS);
+		if (sExValor2.substring(14).trim().equals("1"))
+			sExValor3 += " " + ( sExValor3.trim().equals("") ? " " : sExMoedaS );
 		else
-			sExValor3 += " "+(sExValor3.trim().equals("")?" ":sExMoedaP);
+			sExValor3 += " " + ( sExValor3.trim().equals("") ? " " : sExMoedaP );
 
 		if (!sExDe.trim().equals("")) {
 			if (sExValor2.substring(16).trim().equals("1"))
-				sExValor3 += (!sExValor3.trim().equals("")?" e ":" ")+sExDe+" "+sExDecS;
+				sExValor3 += ( !sExValor3.trim().equals("") ? " e " : " " ) + sExDe + " " + sExDecS;
 			else
-				sExValor3 += (!sExValor3.trim().equals("")?" e ":" ")+sExDe+" "+sExDecP;
+				sExValor3 += ( !sExValor3.trim().equals("") ? " e " : " " ) + sExDe + " " + sExDecP;
 		}
-				
+
 		return sExValor3.trim();
 	}
-		
+
 	private static String centenas(String sCeValor) {
 		String sCeValor2 = "   ";
-		if (sCeValor.substring(0,1).equals("1")) {
-			if (sCeValor.equals("100")) 
+		if (sCeValor.substring(0, 1).equals("1")) {
+			if (sCeValor.equals("100"))
 				sCeValor2 = "cem";
-		    else 
-		    	sCeValor2 = "cento";
+			else
+				sCeValor2 = "cento";
 		}
-		else if (sCeValor.substring(0,1).equals("2"))
+		else if (sCeValor.substring(0, 1).equals("2"))
 			sCeValor2 = "duzentos";
-		else if (sCeValor.substring(0,1).equals("3"))
+		else if (sCeValor.substring(0, 1).equals("3"))
 			sCeValor2 = "trezentos";
-		else if (sCeValor.substring(0,1).equals("4"))
+		else if (sCeValor.substring(0, 1).equals("4"))
 			sCeValor2 = "quatrocentos";
-		else if (sCeValor.substring(0,1).equals("5"))
+		else if (sCeValor.substring(0, 1).equals("5"))
 			sCeValor2 = "quinhentos";
-		else if (sCeValor.substring(0,1).equals("6"))
+		else if (sCeValor.substring(0, 1).equals("6"))
 			sCeValor2 = "seiscentos";
-		else if (sCeValor.substring(0,1).equals("7"))
+		else if (sCeValor.substring(0, 1).equals("7"))
 			sCeValor2 = "setecentos";
-		else if (sCeValor.substring(0,1).equals("8"))
+		else if (sCeValor.substring(0, 1).equals("8"))
 			sCeValor2 = "oitocentos";
-		else if (sCeValor.substring(0,1).equals("9"))
+		else if (sCeValor.substring(0, 1).equals("9"))
 			sCeValor2 = "novecentos";
 
-		if (!sCeValor.substring(1,3).equals("00")) {
+		if (!sCeValor.substring(1, 3).equals("00")) {
 			if (!sCeValor2.trim().equals(""))
-				sCeValor2 += " e "+dezenas(sCeValor.substring(1,3));
+				sCeValor2 += " e " + dezenas(sCeValor.substring(1, 3));
 			else
-				sCeValor2 = dezenas(sCeValor.substring(1,3));
+				sCeValor2 = dezenas(sCeValor.substring(1, 3));
 		}
-		
-		return sCeValor2.trim();	
+
+		return sCeValor2.trim();
 	}
-	
+
 	private static String dezenas(String sDeValor) {
 		String sDeValor2 = " ";
 		if (sDeValor.equals("10"))
@@ -159,32 +157,32 @@ public class Extenso {
 			sDeValor2 = "dezoito";
 		else if (sDeValor.equals("19"))
 			sDeValor2 = "dezenove";
-		else if (sDeValor.substring(0,1).equals("2"))
+		else if (sDeValor.substring(0, 1).equals("2"))
 			sDeValor2 = "vinte";
-		else if (sDeValor.substring(0,1).equals("3"))
+		else if (sDeValor.substring(0, 1).equals("3"))
 			sDeValor2 = "trinta";
-		else if (sDeValor.substring(0,1).equals("4"))
+		else if (sDeValor.substring(0, 1).equals("4"))
 			sDeValor2 = "quarenta";
-		else if (sDeValor.substring(0,1).equals("5"))
+		else if (sDeValor.substring(0, 1).equals("5"))
 			sDeValor2 = "cincoenta";
-		else if (sDeValor.substring(0,1).equals("6"))
+		else if (sDeValor.substring(0, 1).equals("6"))
 			sDeValor2 = "sessenta";
-		else if (sDeValor.substring(0,1).equals("7"))
+		else if (sDeValor.substring(0, 1).equals("7"))
 			sDeValor2 = "setenta";
-		else if (sDeValor.substring(0,1).equals("8"))
+		else if (sDeValor.substring(0, 1).equals("8"))
 			sDeValor2 = "oitenta";
-		else if (sDeValor.substring(0,1).equals("9"))
+		else if (sDeValor.substring(0, 1).equals("9"))
 			sDeValor2 = "noventa";
-		
-		if ((!sDeValor.substring(1,2).equals("0")) && (!sDeValor.substring(0,1).equals("1"))) {
+
+		if (( !sDeValor.substring(1, 2).equals("0") ) && ( !sDeValor.substring(0, 1).equals("1") )) {
 			if (!sDeValor2.trim().equals(""))
-				sDeValor2 += " e "+unidades(sDeValor.substring(1,2));
+				sDeValor2 += " e " + unidades(sDeValor.substring(1, 2));
 			else
-				sDeValor2 = unidades(sDeValor.substring(1,2));
+				sDeValor2 = unidades(sDeValor.substring(1, 2));
 		}
-		
+
 		return sDeValor2.trim();
-																				
+
 	}
 
 	private static String unidades(String sUnValor) {
@@ -207,7 +205,7 @@ public class Extenso {
 			sUnValor2 = "oito";
 		else if (sUnValor.equals("9"))
 			sUnValor2 = "nove";
-		
+
 		return sUnValor2.trim();
 	}
 

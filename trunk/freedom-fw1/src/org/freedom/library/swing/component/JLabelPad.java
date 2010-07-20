@@ -27,7 +27,7 @@ public class JLabelPad extends JLabel {
 	private static final long serialVersionUID = 1L;
 
 	public JLabelPad() {
-		super();		
+		super();
 	}
 
 	public JLabelPad(String arg0) {

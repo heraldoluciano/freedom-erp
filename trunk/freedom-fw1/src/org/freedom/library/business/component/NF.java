@@ -32,19 +32,18 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.TabVector;
 import org.freedom.library.swing.frame.Aplicativo;
 
-
 public class NF {
-	
+
 	public static final int TPNF_NONE = -1;
 	public static final int TPNF_ENTRADA = 0;
 	public static final int TPNF_SAIDA = 1;
-	
+
 	public static final int T_CAB = 0;
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
 	public static final int T_ADIC = 3;
 	public static final int T_FRETE = 4;
-	
+
 	// cab
 	public static final int C_CODPED = 0;
 	public static final int C_CODEMIT = 1;
@@ -69,7 +68,7 @@ public class NF {
 	public static final int C_DTEMITPED = 20;
 	public static final int C_DOC = 21;
 	public static final int C_INCRAEMIT = 22;
-	public static final int C_DTSAIDA = 23;	
+	public static final int C_DTSAIDA = 23;
 	public static final int C_CODPLANOPG = 24;
 	public static final int C_DESCPLANOPAG = 25;
 	public static final int C_OBSPED = 26;
@@ -85,7 +84,7 @@ public class NF {
 	public static final int C_BAIRCOBEMIT = 36;
 	public static final int C_NUMCOBEMIT = 37;
 	public static final int C_PERCMCOMISPED = 38;
-	public static final int C_NOMEEMIT = 39;	
+	public static final int C_NOMEEMIT = 39;
 	public static final int C_ENDENTEMIT = 40;
 	public static final int C_NUMENTEMIT = 41;
 	public static final int C_COMPLENTEMIT = 42;
@@ -96,9 +95,9 @@ public class NF {
 	public static final int C_NOMEBANCO = 47;
 	public static final int C_DESCSETOR = 48;
 	public static final int C_VLRDESCITPED = 49;
-	public static final int C_DIASPAG = 50;	
-	public static final int C_PEDEMIT = 51;	
-	public static final int C_VLRLIQPED = 52;	
+	public static final int C_DIASPAG = 50;
+	public static final int C_PEDEMIT = 51;
+	public static final int C_VLRLIQPED = 52;
 	public static final int C_VLRPRODPED = 53;
 	public static final int C_VLRADICPED = 54;
 	public static final int C_VLRBASEICMSPED = 55;
@@ -132,20 +131,20 @@ public class NF {
 	public static final int C_MENSAGENS = 83;
 	public static final int C_VLRBASEICMSST = 84;
 	public static final int C_VLRICMSST = 85;
-	public static final int C_ENDFILIAL= 86;
-	public static final int C_NUMFILIAL= 87;
-	public static final int C_BAIRFILIAL= 88;
-	public static final int C_CIDFILIAL= 89;
-	public static final int C_UFFILIAL= 90;
-	public static final int C_CEPFILIAL= 91;
-	public static final int C_FONEFILIAL= 92;
-	public static final int C_WWWFILIAL= 93;
-	public static final int C_EMAILFILIAL= 94;
+	public static final int C_ENDFILIAL = 86;
+	public static final int C_NUMFILIAL = 87;
+	public static final int C_BAIRFILIAL = 88;
+	public static final int C_CIDFILIAL = 89;
+	public static final int C_UFFILIAL = 90;
+	public static final int C_CEPFILIAL = 91;
+	public static final int C_FONEFILIAL = 92;
+	public static final int C_WWWFILIAL = 93;
+	public static final int C_EMAILFILIAL = 94;
 	public static final int C_CEPENTEMIT = 95;
-	public static final int C_VLRFUNRURALCOMPRA = 96;	
+	public static final int C_VLRFUNRURALCOMPRA = 96;
 	public static final int TAM_CAB = 97;
-	
-	//itens
+
+	// itens
 	public static final int C_CODITPED = 0;
 	public static final int C_CODPROD = 1;
 	public static final int C_REFPROD = 2;
@@ -159,7 +158,7 @@ public class NF {
 	public static final int C_VLRIPIITPED = 10;
 	public static final int C_IMPDTSAIDA = 11;
 	public static final int C_VLRPRODITPED = 12;
-	public static final int C_DESCNAT = 13;	
+	public static final int C_DESCNAT = 13;
 	public static final int C_CODNAT = 14;
 	public static final int C_CODLOTE = 15;
 	public static final int C_VENCLOTE = 16;
@@ -179,26 +178,23 @@ public class NF {
 	public static final int C_CODFABPROD = 30;
 	public static final int C_QTDEMBALAGEM = 31;
 	public static final int C_ALIQFUNRURALITCOMPRA = 32;
-	
+
 	public static final int TAM_ITENS = 33;
-	
-	
-	
-	
-	//adic
+
+	// adic
 	public static final int C_CODAUXV = 0;
 	public static final int C_CPFEMITAUX = 1;
 	public static final int C_NOMEEMITAUX = 2;
 	public static final int C_CIDEMITAUX = 3;
-	public static final int C_UFEMITAUX = 4;	
-	
-	//parc	
+	public static final int C_UFEMITAUX = 4;
+
+	// parc
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
-	public static final int C_NPARCITREC = 2;	
-	
-	//frete
-	public static final int C_CODTRAN= 0;
+	public static final int C_NPARCITREC = 2;
+
+	// frete
+	public static final int C_CODTRAN = 0;
 	public static final int C_RAZTRANSP = 1;
 	public static final int C_NOMETRANSP = 2;
 	public static final int C_INSCTRANSP = 3;
@@ -216,73 +212,72 @@ public class NF {
 	public static final int C_MARCAFRETE = 15;
 	public static final int C_PESOBRUTO = 16;
 	public static final int C_PESOLIQ = 17;
-	public static final int C_VLRFRETEPED = 18;	
+	public static final int C_VLRFRETEPED = 18;
 	public static final int C_CONHECFRETEPED = 19;
 	public static final int C_CPFTRANSP = 20;
-	public static final int C_ADICFRETEBASEICM = 21;	
+	public static final int C_ADICFRETEBASEICM = 21;
 	public static final int C_ALIQICMSFRETEVD = 22;
 	public static final int C_VLRICMSFRETEVD = 23;
 	public static final int C_DDDTRANSP = 24;
 	public static final int C_FONETRANSP = 25;
-	
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
 	protected TabVector parc = null;
 	protected TabVector adic = null;
 	protected TabVector frete = null;
-	protected int tipoNF = TPNF_NONE; 
-	
+	protected int tipoNF = TPNF_NONE;
+
 	protected int casasDec = Aplicativo.casasDec;
 	protected int casasDecFin = Aplicativo.casasDecFin;
-	
+
 	private DbConnection con = null;
-    
+
 	public NF(int casasDec) {
 		super();
 		this.casasDec = casasDec;
 	}
-	
+
 	protected void setConexao(DbConnection arg0) {
 		con = arg0;
 	}
-	
+
 	public DbConnection getConexao() {
 		return con;
 	}
-	
+
 	public int getCasasDec() {
 		return casasDec;
 	}
-	
+
 	public int getCasasDecFin() {
 		return casasDecFin;
 	}
-	
+
 	public int getTipoNF() {
 		return tipoNF;
 	}
-	
+
 	public TabVector getTabVector(int vector) {
 		TabVector t = null;
-		switch(vector) {
-		   case T_CAB:
-		   	  t = cab;
-		   	  break;
-		   case T_ITENS:
-		   	  t = itens;
-		   	  break;
-		   case T_PARC:
-		   	  t = parc;
-		   	  break;
-		   case T_ADIC:
-		   	  t = adic;
-		   	  break;
-		   case T_FRETE:
-		   	  t = frete;
-		   	  break;
+		switch (vector) {
+		case T_CAB:
+			t = cab;
+			break;
+		case T_ITENS:
+			t = itens;
+			break;
+		case T_PARC:
+			t = parc;
+			break;
+		case T_ADIC:
+			t = adic;
+			break;
+		case T_FRETE:
+			t = frete;
+			break;
 		}
 		return t;
 	}
-	
+
 }

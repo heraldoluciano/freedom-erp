@@ -1,7 +1,7 @@
 package org.freedom.library.business.exceptions;
 
 public class ExceptionTabelaExterna extends Exception {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public ExceptionTabelaExterna() {
@@ -19,5 +19,5 @@ public class ExceptionTabelaExterna extends Exception {
 	public ExceptionTabelaExterna(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

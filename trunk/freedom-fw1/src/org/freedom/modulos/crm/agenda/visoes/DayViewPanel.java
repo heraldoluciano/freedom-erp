@@ -44,29 +44,25 @@ import bizcal.swing.CalendarListener;
 import bizcal.util.Interval;
 
 /**
- * @author martin.heinemann@tudor.lu
- * 19.06.2008
- * 14:49:51
- *
- *
- * @version
- * <br>$Log: DayViewPanel.java,v $
- * <br>Revision 1.4  2008/08/12 12:47:28  heine_
- * <br>fixed some bugs and made code improvements
+ * @author martin.heinemann@tudor.lu 19.06.2008 14:49:51
+ * 
+ * 
+ * @version <br>
+ *          $Log: DayViewPanel.java,v $ <br>
+ *          Revision 1.4 2008/08/12 12:47:28 heine_ <br>
+ *          fixed some bugs and made code improvements <br>
  * <br>
- * <br>Revision 1.3  2008/06/24 12:53:25  heine_
- * <br>*** empty log message ***
- * <br>
- *   
+ *          Revision 1.3 2008/06/24 12:53:25 heine_ <br>
+ *          *** empty log message *** <br>
+ * 
  */
 public class DayViewPanel extends AbstractCalendarView {
 
 	private static final long serialVersionUID = 1L;
 
-
-	private final static int STATE_FULL 		= 1;
-	private final static int STATE_MORNING 		= 2;
-	private final static int STATE_AFTERNOON 	= 3;
+	private final static int STATE_FULL = 1;
+	private final static int STATE_MORNING = 2;
+	private final static int STATE_AFTERNOON = 3;
 
 	private int state = STATE_FULL;
 
@@ -78,15 +74,11 @@ public class DayViewPanel extends AbstractCalendarView {
 	public String VIEW_NAME;
 	private JButtonPad switcherButton;
 
-
 	private ImageIcon fullDayIcon;
-
 
 	private ImageIcon morningDayIcon;
 
-
 	private ImageIcon afternoonDayIcon;
-
 
 	private DayViewConfig dayViewConfig;
 
@@ -99,7 +91,6 @@ public class DayViewPanel extends AbstractCalendarView {
 		/* ================================================== */
 	}
 
-
 	/**
 	 * @param model
 	 * @param config
@@ -109,33 +100,30 @@ public class DayViewPanel extends AbstractCalendarView {
 
 		this.dayModel = model;
 		this.dayViewConfig = config;
-		
-		
+
 		this.setLayout(new BorderLayout());
-		
+
 		if (dayModel.getType() == EventModel.TYPE_DAY) {
 			/* ------------------------------------------------------- */
 			VIEW_NAME = VIEW_NAME_DAY;
-			this.button = new JToggleButton(
-					CalendarIcons.getMediumIcon(CalendarIcons.DAYVIEW));
+			this.button = new JToggleButton(CalendarIcons.getMediumIcon(CalendarIcons.DAYVIEW));
 			this.button.setToolTipText(Translatrix.getTranslationString("bizcal.DAY_VIEW"));
 			/* ------------------------------------------------------- */
-		} else {
+		}
+		else {
 			/* ------------------------------------------------------- */
 			VIEW_NAME = VIEW_NAME_WEEK;
-			this.button = new JToggleButton(
-					CalendarIcons.getMediumIcon(CalendarIcons.WEEKVIEW));
+			this.button = new JToggleButton(CalendarIcons.getMediumIcon(CalendarIcons.WEEKVIEW));
 			this.button.setToolTipText(Translatrix.getTranslationString("bizcal.WEEK_VIEW"));
-			
+
 			// set the weekday start/stop to the model
 			this.dayModel.setWeekdayStartEnd(dayViewConfig.getWeekStart(), dayViewConfig.getWeekEnd());
 			/* ------------------------------------------------------- */
 		}
 
-
 		try {
 			/* ------------------------------------------------------- */
-			
+
 			initDayViewSwitcherButton();
 
 			dayView = new DayView(this.dayViewConfig, this.switcherButton);
@@ -143,18 +131,18 @@ public class DayViewPanel extends AbstractCalendarView {
 			dayModel.addCalendarView(dayView);
 
 			dayView.refresh();
-//			dayView.refresh0();
+			// dayView.refresh0();
 			this.add(dayView.getComponent());
 
 			updateSwitcherButton();
 			/* ------------------------------------------------------- */
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		/* ================================================== */
 	}
 
-	
 	/**
 	 * Updates the settings from the config file
 	 */
@@ -166,18 +154,18 @@ public class DayViewPanel extends AbstractCalendarView {
 			this.dayModel.setWeekdayStartEnd(dayViewConfig.getWeekStart(), dayViewConfig.getWeekEnd());
 			/* ------------------------------------------------------- */
 		}
-		
+
 		try {
-//			dayView.refresh();
+			// dayView.refresh();
 			updateSwitcherButton();
 			refreshGrid();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		/* ================================================== */
 	}
-	
-	
+
 	/**
 	 * 
 	 */
@@ -186,19 +174,19 @@ public class DayViewPanel extends AbstractCalendarView {
 		try {
 			this.dayView.resetHorizontalLines();
 			this.dayView.refresh();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		/* ================================================== */
 	}
-	
-	
+
 	/**
 	 *
 	 */
 	private void initDayViewSwitcherButton() {
 		/* ====================================================== */
-		this.switcherButton  = new JButtonPad(CalendarIcons.getMediumIcon(CalendarIcons.DELETE));
+		this.switcherButton = new JButtonPad(CalendarIcons.getMediumIcon(CalendarIcons.DELETE));
 		this.switcherButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -212,18 +200,16 @@ public class DayViewPanel extends AbstractCalendarView {
 
 		});
 
-
 		this.switcherButton.setBorderPainted(false);
 		this.switcherButton.setContentAreaFilled(false);
 		this.switcherButton.setFocusPainted(false);
 
-		this.fullDayIcon 	  = CalendarIcons.getMediumIcon(CalendarIcons.DAY_FULL);
-		this.morningDayIcon   = CalendarIcons.getMediumIcon(CalendarIcons.DAY_MORNING);
+		this.fullDayIcon = CalendarIcons.getMediumIcon(CalendarIcons.DAY_FULL);
+		this.morningDayIcon = CalendarIcons.getMediumIcon(CalendarIcons.DAY_MORNING);
 		this.afternoonDayIcon = CalendarIcons.getMediumIcon(CalendarIcons.DAY_AFTERNOON);
 
 		/* ====================================================== */
 	}
-
 
 	/**
 	 * Update the button in the upper left corner to switch the day view
@@ -235,47 +221,43 @@ public class DayViewPanel extends AbstractCalendarView {
 			this.switcherButton.setIcon(this.fullDayIcon);
 			this.switcherButton.setToolTipText(Translatrix.getTranslationString("Manhã"));
 
-
 			this.dayViewConfig.setDayStartHour(this.dayViewConfig.getDefaultDayStartHour());
 			this.dayViewConfig.setDayEndHour(this.dayViewConfig.getDefaultDayEndHour());
 			/* ------------------------------------------------------- */
-		} else
-			if (STATE_MORNING == this.state) {
-				/* ------------------------------------------------------- */
-				this.switcherButton.setIcon(morningDayIcon);
-				this.switcherButton.setToolTipText(Translatrix.getTranslationString("Tarde"));
+		}
+		else if (STATE_MORNING == this.state) {
+			/* ------------------------------------------------------- */
+			this.switcherButton.setIcon(morningDayIcon);
+			this.switcherButton.setToolTipText(Translatrix.getTranslationString("Tarde"));
 
-				this.dayViewConfig.setDayStartHour(this.dayViewConfig.getDefaultDayStartHour());
-				this.dayViewConfig.setDayEndHour(dayViewConfig.getDayBreak());
-				/* ------------------------------------------------------- */
-			}
-			else
-				if (STATE_AFTERNOON == this.state) {
-					/* ------------------------------------------------------- */
-					this.switcherButton.setIcon(afternoonDayIcon);
-					this.switcherButton.setToolTipText(Translatrix.getTranslationString("Manhã/Tarde"));
+			this.dayViewConfig.setDayStartHour(this.dayViewConfig.getDefaultDayStartHour());
+			this.dayViewConfig.setDayEndHour(dayViewConfig.getDayBreak());
+			/* ------------------------------------------------------- */
+		}
+		else if (STATE_AFTERNOON == this.state) {
+			/* ------------------------------------------------------- */
+			this.switcherButton.setIcon(afternoonDayIcon);
+			this.switcherButton.setToolTipText(Translatrix.getTranslationString("Manhã/Tarde"));
 
-					this.dayViewConfig.setDayStartHour(dayViewConfig.getDayBreak());
-					this.dayViewConfig.setDayEndHour(this.dayViewConfig.getDefaultDayEndHour());
-					/* ------------------------------------------------------- */
-				}
+			this.dayViewConfig.setDayStartHour(dayViewConfig.getDayBreak());
+			this.dayViewConfig.setDayEndHour(this.dayViewConfig.getDefaultDayEndHour());
+			/* ------------------------------------------------------- */
+		}
 		try {
 			dayView.refresh();
 			refreshGrid();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		/* ================================================== */
 	}
-
-
 
 	public void addCalendarListener(CalendarListener listener) {
 		/* ================================================== */
 		dayView.addListener(listener);
 		/* ================================================== */
 	}
-
 
 	public JToggleButton getButton() {
 		return this.button;
@@ -289,17 +271,13 @@ public class DayViewPanel extends AbstractCalendarView {
 		dayModel.setDate(date);
 		try {
 			dayView.refresh();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-
-	public void moved(Event event,
-					  Object orgCalId,
-					  Date orgDate,
-					  Object newCalId,
-					  Date newDate) throws Exception {
+	public void moved(Event event, Object orgCalId, Date orgDate, Object newCalId, Date newDate) throws Exception {
 		/* ====================================================== */
 		event.move(newDate);
 		dayModel.triggerUpdate();
@@ -314,18 +292,20 @@ public class DayViewPanel extends AbstractCalendarView {
 		/* ====================================================== */
 	}
 
-	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {}
+	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {
+	}
 
-	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
+	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {
+	}
 
-//	@Override
+	// @Override
 	public List<?> getEvents() {
 		/* ================================================== */
 		try {
 			Interval interval = this.dayModel.getInterval();
 			/* ------------------------------------------------------- */
-			Date start 	= (Date) interval.getStart();
-			Date end 	= (Date) interval.getEnd();
+			Date start = ( Date ) interval.getStart();
+			Date end = ( Date ) interval.getEnd();
 			/* ------------------------------------------------------- */
 			List<Event> evs = dayModel.getEvents(null);
 			List<Event> shownEvents = new ArrayList<Event>();
@@ -333,13 +313,13 @@ public class DayViewPanel extends AbstractCalendarView {
 			if (evs != null)
 				for (Event e : evs) {
 					/* ------------------------------------------------------- */
-					if (e.getStart().after(start)
-							&& e.getStart().before(end))
+					if (e.getStart().after(start) && e.getStart().before(end))
 						shownEvents.add(e);
 					/* ------------------------------------------------------- */
 				}
 			return shownEvents;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return null;
 		}
 		/* ================================================== */
@@ -352,27 +332,22 @@ public class DayViewPanel extends AbstractCalendarView {
 		/* ================================================== */
 	}
 
-
 	/**
-	 * Defines the order of the day view switching.
-	 * 1. Full
-	 * 2. Morning
-	 * 3. Afternoon
-	 *
+	 * Defines the order of the day view switching. 1. Full 2. Morning 3.
+	 * Afternoon
+	 * 
 	 * @param state
 	 */
 	private void switchState() {
 		/* ================================================== */
 		if (STATE_FULL == state)
 			this.state = STATE_MORNING;
+		else if (STATE_MORNING == state)
+			this.state = STATE_AFTERNOON;
+		else if (STATE_AFTERNOON == state)
+			this.state = STATE_FULL;
 		else
-			if (STATE_MORNING == state)
-				this.state = STATE_AFTERNOON;
-			else
-				if (STATE_AFTERNOON == state)
-					this.state = STATE_FULL;
-				else
-					this.state = STATE_AFTERNOON;
+			this.state = STATE_AFTERNOON;
 		/* ================================================== */
 	}
 
@@ -395,8 +370,7 @@ public class DayViewPanel extends AbstractCalendarView {
 	}
 
 	public DayViewConfig getDayViewConfig() {
-		return this.dayViewConfig;		
+		return this.dayViewConfig;
 	}
-
 
 }

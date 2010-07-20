@@ -25,42 +25,42 @@ import javax.swing.JScrollPane;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JTextAreaPad;
 
-
 public class DLJustCanc extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTextAreaPad txaJustCanc = new JTextAreaPad();
-	
-	public DLJustCanc(){
-			
+
+	public DLJustCanc() {
+
 		setTitulo("Justificativa do cancelamento");
-		setAtribos( 330, 190 );
-		
+		setAtribos(330, 190);
+
 		txaJustCanc.requestFocus();
-		adic( new JScrollPane( txaJustCanc ), 7, 7, 300, 70 );
-		
+		adic(new JScrollPane(txaJustCanc), 7, 7, 300, 70);
+
 	}
 
-	public String getValor(){
-		
+	public String getValor() {
+
 		String sRet = "";
-		
-		if( txaJustCanc.getVlrString().equals( "" )){
+
+		if (txaJustCanc.getVlrString().equals("")) {
 			sRet = "";
 		}
-		else{
+		else {
 			sRet = txaJustCanc.getVlrString();
 		}
 		return sRet;
 	}
-    public void ok(){
-    	if ((txaJustCanc.getVlrString().equals(""))){
-	        Funcoes.mensagemInforma(this,"Informe o motivo do cancelamento!");
-    	    return;
-    	}
-    	else{
-    	    super.ok();
-	    }
-    }
+
+	public void ok() {
+		if (( txaJustCanc.getVlrString().equals("") )) {
+			Funcoes.mensagemInforma(this, "Informe o motivo do cancelamento!");
+			return;
+		}
+		else {
+			super.ok();
+		}
+	}
 }

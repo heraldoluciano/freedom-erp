@@ -41,7 +41,7 @@ import bizcal.common.Event;
 import bizcal.swing.CalendarListener;
 import bizcal.util.Interval;
 
-public class MonthViewPanel extends AbstractCalendarView{
+public class MonthViewPanel extends AbstractCalendarView {
 
 	private static final long serialVersionUID = 1L;
 	private JToggleButton button;
@@ -57,15 +57,15 @@ public class MonthViewPanel extends AbstractCalendarView{
 		this.monthModel = model;
 		try {
 			CalendarViewConfig cvc = new CalendarViewConfig();
-			cvc.setCaption( "Visão Mensal" );
-			monthView = new MonthView(cvc, tela );
+			cvc.setCaption("Visão Mensal");
+			monthView = new MonthView(cvc, tela);
 			monthView.setModel(monthModel);
-			
-			monthModel.addCalendarView( monthView );
+
+			monthModel.addCalendarView(monthView);
 
 			this.add(monthView.getComponent(), BorderLayout.CENTER);
 			monthView.refresh0();
-		} 
+		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,6 +77,7 @@ public class MonthViewPanel extends AbstractCalendarView{
 		monthView.addListener(listener);
 		/* ================================================== */
 	}
+
 	public JToggleButton getButton() {
 		return this.button;
 	}
@@ -89,22 +90,25 @@ public class MonthViewPanel extends AbstractCalendarView{
 		monthModel.setDate(date);
 		try {
 			monthView.refresh0();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {}
+	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {
+	}
 
-	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
+	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {
+	}
 
-//	@Override
+	// @Override
 	public List<Event> getEvents() {
 		try {
 			Interval interval = this.monthModel.getInterval();
 			/* ------------------------------------------------------- */
-			Date start 	= (Date) interval.getStart();
-			Date end 	= (Date) interval.getEnd();
+			Date start = ( Date ) interval.getStart();
+			Date end = ( Date ) interval.getEnd();
 			/* ------------------------------------------------------- */
 			List<Event> evs = monthModel.getEvents(null);
 			List<Event> shownEvents = new ArrayList<Event>();
@@ -112,13 +116,13 @@ public class MonthViewPanel extends AbstractCalendarView{
 			if (evs != null)
 				for (Event e : evs) {
 					/* ------------------------------------------------------- */
-					if (e.getStart().after(start)
-							&& e.getStart().before(end))
+					if (e.getStart().after(start) && e.getStart().before(end))
 						shownEvents.add(e);
 					/* ------------------------------------------------------- */
 				}
 			return shownEvents;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return null;
 		}
 	}

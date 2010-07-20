@@ -34,60 +34,60 @@ public class FObservacao extends FDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	protected JPanelPad pn = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	protected JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
 	public JTextAreaPad txa = new JTextAreaPad();
 
-	private JScrollPane spn = new JScrollPane( txa );
+	private JScrollPane spn = new JScrollPane(txa);
 
 	/**
 	 * 
 	 * Construtor sem titulo.
 	 * 
-	 * @param sPad -
-	 *            Texto inicial.
+	 * @param sPad
+	 *            - Texto inicial.
 	 */
-	public FObservacao( String sPad ) {
+	public FObservacao(String sPad) {
 
-		this( null, sPad, 0 );
+		this(null, sPad, 0);
 	}
 
 	/**
 	 * 
 	 * Construtor com titulo.
 	 * 
-	 * @param sTit -
-	 *            Título da janela.
-	 * @param sPad -
-	 *            Texto inicial.
+	 * @param sTit
+	 *            - Título da janela.
+	 * @param sPad
+	 *            - Texto inicial.
 	 */
-	public FObservacao( String sTit, String sPad ) {
+	public FObservacao(String sTit, String sPad) {
 
-		this( sTit, sPad, 0 );
+		this(sTit, sPad, 0);
 	}
 
-	public FObservacao( String sTit, String sPad, int iTam ) {
+	public FObservacao(String sTit, String sPad, int iTam) {
 
-		if ( sTit != null ) {
-		
-			setTitulo( sTit, this.getClass().getName() );
+		if (sTit != null) {
+
+			setTitulo(sTit, this.getClass().getName());
 		}
 		else {
-		
-			setTitulo( "Observação", this.getClass().getName() );
-		}
-		
-		setAtribos( 400, 200 );
-		
-		pn.add( spn, BorderLayout.CENTER );
-		
-		c.add( pn );
-		
-		txa.setText( sPad );
-		
-		if ( iTam > 0 ) {
 
-			txa.iTamanho = iTam;	
+			setTitulo("Observação", this.getClass().getName());
+		}
+
+		setAtribos(400, 200);
+
+		pn.add(spn, BorderLayout.CENTER);
+
+		c.add(pn);
+
+		txa.setText(sPad);
+
+		if (iTam > 0) {
+
+			txa.iTamanho = iTam;
 		}
 	}
 

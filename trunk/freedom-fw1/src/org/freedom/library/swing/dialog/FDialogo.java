@@ -55,22 +55,22 @@ import org.freedom.bmps.Icone;
 
 public class FDialogo extends JDialog implements ActionListener, KeyListener, WindowListener, IFilho {
 
-//	private FPrincipal fPrim;
+	// private FPrincipal fPrim;
 
 	public JPanelPad adicBotaoSair() {
-        Container c = getContentPane();
-        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-        JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-        pnRod.setPreferredSize(new Dimension(200, 30));
-        btSair.setPreferredSize(new Dimension(110, 30));
-        pnRod.add(btSair, BorderLayout.EAST);
-        c.add(pnRod, BorderLayout.SOUTH);
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                dispose();
-            }
-        });
-        return pnRod;
+		Container c = getContentPane();
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+		pnRod.setPreferredSize(new Dimension(200, 30));
+		btSair.setPreferredSize(new Dimension(110, 30));
+		pnRod.add(btSair, BorderLayout.EAST);
+		c.add(pnRod, BorderLayout.SOUTH);
+		btSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+			}
+		});
+		return pnRod;
 	}
 
 	public void execShow() {
@@ -78,18 +78,18 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 	}
 
 	public Container getTela() {
-        Container tela = getContentPane();
-        tela.setLayout(new BorderLayout());
-        return tela;
+		Container tela = getContentPane();
+		tela.setLayout(new BorderLayout());
+		return tela;
 	}
 
-	public void setTela( Container c ) {
-        setContentPane(c);
-    }
+	public void setTela(Container c) {
+		setContentPane(c);
+	}
 
-	public void setTelaPrim( FPrincipal fP ) {
-//        fPrim = fP;
-    }
+	public void setTelaPrim(FPrincipal fP) {
+		// fPrim = fP;
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -169,18 +169,20 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 		if (evt.getSource() == btOK) {
 			OK = true;
 			setVisible(false);
-		} else if (evt.getSource() == btCancel) {
+		}
+		else if (evt.getSource() == btCancel) {
 			OK = false;
 			setVisible(false);
 		}
 	}
 
 	public void setTitulo(String tit) {
-		setTitulo(tit, this.getClass().getName() );
+		setTitulo(tit, this.getClass().getName());
 	}
+
 	public void setTitulo(String tit, String name) {
 		setTitle(tit);
-		if (getName()==null) {
+		if (getName() == null) {
 			setName(name);
 		}
 	}
@@ -193,15 +195,15 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 		setSize(Larg, Alt);
 		setLocationRelativeTo(this);
 	}
-    public void setPrimeiroFoco(final JComponent comp) {
-    	addWindowListener(
-	    	new WindowAdapter() {
-	    		public void windowActivated(WindowEvent wevt) {
-	    			comp.requestFocusInWindow();
-	    		}
-	    	}
-   		);
-    }
+
+	public void setPrimeiroFoco(final JComponent comp) {
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent wevt) {
+				comp.requestFocusInWindow();
+			}
+		});
+	}
+
 	public void eUltimo() {
 		bUltimo = true;
 	}
@@ -221,8 +223,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 	}
 
 	public void setAreaComp() {
-		pin = new JPanelPad((int) getSize().getWidth(), (int) getSize()
-				.getHeight());
+		pin = new JPanelPad(( int ) getSize().getWidth(), ( int ) getSize().getHeight());
 		c.add(pin, BorderLayout.CENTER);
 		setArea = false;
 	}
@@ -239,7 +240,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 	}
 
 	public void keyPressed(KeyEvent kevt) {
-		if ((bUltimo) & (kevt.getKeyCode() == KeyEvent.VK_ENTER))
+		if (( bUltimo ) & ( kevt.getKeyCode() == KeyEvent.VK_ENTER ))
 			btOK.doClick();
 		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
 			btCancel.doClick();
@@ -264,7 +265,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener, Wi
 	}
 
 	public void firstFocus() {
-		if ((firstFocus != null) && (firstFocus.hasFocus()) && (initFirstFocus))
+		if (( firstFocus != null ) && ( firstFocus.hasFocus() ) && ( initFirstFocus ))
 			firstFocus.requestFocus();
 
 		/*

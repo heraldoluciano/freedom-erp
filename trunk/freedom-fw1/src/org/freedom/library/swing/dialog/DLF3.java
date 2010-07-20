@@ -19,6 +19,7 @@
  */
 
 package org.freedom.library.swing.dialog;
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -35,66 +36,71 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	public JTablePad tab = new JTablePad();
-	private JScrollPane spnCentro = new JScrollPane(tab); 
+	private JScrollPane spnCentro = new JScrollPane(tab);
 	public Object oRetVal = null;
+
 	/**
 	 * 
-	 *  Classe mãe para dialogos auxiliares.
-	 *  Construtor da classe...criado grid com <BR>
-	 *  2 colunas "origem e código aux", <BR>
-	 *  origem: origem da chave, ex: tabela de preços. <BR>
-	 *  código aux.: código auxilial para busca. <BR>
+	 * Classe mãe para dialogos auxiliares. Construtor da classe...criado grid
+	 * com <BR>
+	 * 2 colunas "origem e código aux", <BR>
+	 * origem: origem da chave, ex: tabela de preços. <BR>
+	 * código aux.: código auxilial para busca. <BR>
 	 * 
-	 * @param cOrig - Janela mãe do dialogo.
+	 * @param cOrig
+	 *            - Janela mãe do dialogo.
 	 */
 	public DLF3() {
-		//  	super(cOrig);
+		// super(cOrig);
 		setTitulo("Pesquisa auxiliar");
-		setAtribos( 550, 260);
+		setAtribos(550, 260);
 		setResizable(true);
 
-		c.add( spnCentro, BorderLayout.CENTER);    
+		c.add(spnCentro, BorderLayout.CENTER);
 
-		addWindowFocusListener(
-				new WindowAdapter() {
-					public void windowGainedFocus(WindowEvent e) {
-						if (tab.getNumLinhas() > 0) {
-							tab.requestFocus();
-							//              tab.setLinhaSel(0); 
-						}
-						else
-							btCancel.requestFocus();
-					}
+		addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent e) {
+				if (tab.getNumLinhas() > 0) {
+					tab.requestFocus();
+					// tab.setLinhaSel(0);
 				}
-		);
+				else
+					btCancel.requestFocus();
+			}
+		});
 	}
-	public abstract boolean setValor(Object oVal,String sTipo);
+
+	public abstract boolean setValor(Object oVal, String sTipo);
+
 	public Object getValor() {
 		return oRetVal;
 	}
+
 	public Object getValorGrid() {
 		Object oRet = null;
 		if (tab.getNumLinhas() > 0 && tab.getLinhaSel() >= 0)
-			oRet = tab.getValor(tab.getLinhaSel(),1);
-		return oRet;  	 	
+			oRet = tab.getValor(tab.getLinhaSel(), 1);
+		return oRet;
 	}
+
 	public void keyPressed(KeyEvent kevt) {
-		if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
+		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (tab.getNumLinhas() > 0) {
 
-				//Esquematicos para acertar a linha selecionada...
-				//Quando o form fechar a linha ira pular uma vez uma vez para baixo...
-				//então eu volto uma linha aqui:
+				// Esquematicos para acertar a linha selecionada...
+				// Quando o form fechar a linha ira pular uma vez uma vez para
+				// baixo...
+				// então eu volto uma linha aqui:
 
-				if (tab.getLinhaSel()==tab.getNumLinhas()-1){
-					tab.setLinhaSel(tab.getNumLinhas()-1);
-					btOK.doClick();            
+				if (tab.getLinhaSel() == tab.getNumLinhas() - 1) {
+					tab.setLinhaSel(tab.getNumLinhas() - 1);
+					btOK.doClick();
 				}
 				else {
 					if (tab.getLinhaSel() > 0)
-						tab.setLinhaSel(tab.getLinhaSel()-1);
+						tab.setLinhaSel(tab.getLinhaSel() - 1);
 					else
-						tab.setLinhaSel(tab.getNumLinhas()-1);      	
+						tab.setLinhaSel(tab.getNumLinhas() - 1);
 					btOK.doClick();
 				}
 			}
@@ -104,8 +110,10 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 
 	}
 
-	public void keyReleased(KeyEvent kevt) { }
-	public void keyTyped(KeyEvent kevt) { }
+	public void keyReleased(KeyEvent kevt) {
+	}
+
+	public void keyTyped(KeyEvent kevt) {
+	}
 
 }
-

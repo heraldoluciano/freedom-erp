@@ -35,56 +35,55 @@ import org.freedom.library.persistence.ListaCampos;
 public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
-	
-	public static final int TP_NONE = -1;
-	
-	public static final int TP_STRING = 0;
-	
-	public static final int TP_INTEGER = 4;
-	
-	public static final int TP_BOOLEAN = 10;
-	
-	private Object oValorS = null;
-	
-	private Object oValorN = null;
-	
-	private ListaCampos lcCheck = null;
-	
-	public int Tipo = -1;
-	
-	private CheckBoxListener cbLis = this;
-	
 
-	public JCheckBoxPad( String lab, Object vals, Object valn ) {
-		this( lab, vals, valn, false );
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
+	public static final int TP_NONE = -1;
+
+	public static final int TP_STRING = 0;
+
+	public static final int TP_INTEGER = 4;
+
+	public static final int TP_BOOLEAN = 10;
+
+	private Object oValorS = null;
+
+	private Object oValorN = null;
+
+	private ListaCampos lcCheck = null;
+
+	public int Tipo = -1;
+
+	private CheckBoxListener cbLis = this;
+
+	public JCheckBoxPad(String lab, Object vals, Object valn) {
+		this(lab, vals, valn, false);
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 	}
 
-	public JCheckBoxPad( String lab, Object vals, Object valn, boolean selected ) {
+	public JCheckBoxPad(String lab, Object vals, Object valn, boolean selected) {
 
-		super( lab );
+		super(lab);
 
 		oValorS = vals;
 		oValorN = valn;
 
-		setSelected( selected );
+		setSelected(selected);
 
-		addActionListener( this );
-		addKeyListener( this );
+		addActionListener(this);
+		addKeyListener(this);
 
-		setTipo();		
-    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		setTipo();
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	private void setTipo() {
-		if ( oValorS instanceof Integer ) {
+		if (oValorS instanceof Integer) {
 			Tipo = TP_INTEGER;
 		}
-		else if ( oValorS instanceof String ) {
+		else if (oValorS instanceof String) {
 			Tipo = TP_STRING;
 		}
-		else if ( oValorS instanceof Boolean ) {
+		else if (oValorS instanceof Boolean) {
 			Tipo = TP_BOOLEAN;
 		}
 	}
@@ -93,51 +92,51 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		return Tipo;
 	}
 
-	public void setListaCampos( ListaCampos lc ) {
+	public void setListaCampos(ListaCampos lc) {
 		lcCheck = lc;
 	}
 
 	public String getVlrString() {
-		return isSelected() ? (String) oValorS : (String) oValorN;
+		return isSelected() ? ( String ) oValorS : ( String ) oValorN;
 	}
 
 	public Integer getVlrInteger() {
-		return isSelected() ? (Integer) oValorS : (Integer) oValorN;
+		return isSelected() ? ( Integer ) oValorS : ( Integer ) oValorN;
 	}
 
 	public Boolean getVlrBoolean() {
-		return isSelected() ? (Boolean) oValorS : (Boolean) oValorN;
+		return isSelected() ? ( Boolean ) oValorS : ( Boolean ) oValorN;
 	}
 
-	public void setVlrString( String val ) {
-		if ( val.equals( oValorS ) ) {
-			setSelected( true );
+	public void setVlrString(String val) {
+		if (val.equals(oValorS)) {
+			setSelected(true);
 		}
-		else if ( val.equals( oValorN ) ) {
-			setSelected( false );
+		else if (val.equals(oValorN)) {
+			setSelected(false);
 		}
 		fireValorAlterado();
 	}
 
-	public void setVlrInteger( Integer val ) {
-		if ( val == null ) {
+	public void setVlrInteger(Integer val) {
+		if (val == null) {
 			return;
 		}
-		if ( val.equals( oValorS ) ) {
-			setSelected( true );
+		if (val.equals(oValorS)) {
+			setSelected(true);
 		}
-		if ( val.equals( oValorN ) ) {
-			setSelected( false );
+		if (val.equals(oValorN)) {
+			setSelected(false);
 		}
 		fireValorAlterado();
 	}
 
-	public void setVlrBoolean( Boolean val ) {
-		if ( val == (Boolean) oValorS ) {
-			setSelected( true );
+	public void setVlrBoolean(Boolean val) {
+		if (val == ( Boolean ) oValorS) {
+			setSelected(true);
 		}
-		else if ( val == (Boolean) oValorN ) {
-			setSelected( false );
+		else if (val == ( Boolean ) oValorN) {
+			setSelected(false);
 		}
 		fireValorAlterado();
 	}
@@ -146,33 +145,33 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		return isSelected();
 	}
 
-	public void addCheckBoxListener( CheckBoxListener cbl ) {
+	public void addCheckBoxListener(CheckBoxListener cbl) {
 		cbLis = cbl;
 	}
 
 	private void fireValorAlterado() {
-		cbLis.valorAlterado( new CheckBoxEvent( this ) );
+		cbLis.valorAlterado(new CheckBoxEvent(this));
 	}
 
-	public void actionPerformed( ActionEvent evt ) {
-		if ( lcCheck != null ) {
+	public void actionPerformed(ActionEvent evt) {
+		if (lcCheck != null) {
 			lcCheck.edit();
 		}
 		fireValorAlterado();
 	}
 
-	public void keyPressed( KeyEvent kevt ) {
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+	public void keyPressed(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			transferFocus();
 		}
 	}
 
-	public void keyTyped( KeyEvent kevt ) {
+	public void keyTyped(KeyEvent kevt) {
 	}
 
-	public void keyReleased( KeyEvent kevt ) {
+	public void keyReleased(KeyEvent kevt) {
 	}
 
-	public void valorAlterado( CheckBoxEvent cbevt ) {
+	public void valorAlterado(CheckBoxEvent cbevt) {
 	}
 }

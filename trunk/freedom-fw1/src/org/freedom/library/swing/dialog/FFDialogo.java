@@ -58,300 +58,294 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.frame.IFilho;
 
-public class FFDialogo extends JDialog implements ActionListener,
-        KeyListener, IFilho {
+public class FFDialogo extends JDialog implements ActionListener, KeyListener, IFilho {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    protected FPrincipal fPrim;
+	protected FPrincipal fPrim;
 
-    public static boolean comScroll = false;
+	public static boolean comScroll = false;
 
-    private Component firstFocus = null;
+	private Component firstFocus = null;
 
-    private boolean initFirstFocus = true;
+	private boolean initFirstFocus = true;
 
-    public DbConnection con = null;
+	public DbConnection con = null;
 
-    public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.gif"));
+	public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.gif"));
 
-    public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.gif"));
+	public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.gif"));
 
-    private JPanelPad pnBox = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnBox = new JPanelPad(JPanelPad.TP_JPANEL);
 
-    public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+	public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-    protected JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 3, 3));
+	protected JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 3, 3));
 
-    protected JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
-    
-    private boolean fechaJanela = true;
+	protected JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
 
-    protected JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+	private boolean fechaJanela = true;
 
-    private JPanelPad pin = new JPanelPad();
+	protected JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-    public Container c = getContentPane();
+	private JPanelPad pin = new JPanelPad();
 
-    private Border br = BorderFactory.createEtchedBorder();
+	public Container c = getContentPane();
 
-    protected Component cPai = null;
+	private Border br = BorderFactory.createEtchedBorder();
 
-    boolean setArea = true;
+	protected Component cPai = null;
 
-    boolean bUltimo = false;
+	boolean setArea = true;
 
-    public boolean OK = false;
+	boolean bUltimo = false;
 
-    public boolean bAguardando = false;
+	public boolean OK = false;
 
-    public JComponent pnPai = null;
+	public boolean bAguardando = false;
 
-    public FFDialogo() {
-        this(Aplicativo.telaPrincipal,true);
-    }
+	public JComponent pnPai = null;
 
-    public FFDialogo(Component cOrig) {
-    	
-    	 	
-    	this(cOrig instanceof JFrame ? (JFrame) cOrig : Aplicativo.telaPrincipal,true);
-    	
-        
-        cPai = cOrig;
+	public FFDialogo() {
+		this(Aplicativo.telaPrincipal, true);
+	}
 
-        //Gambs para tornar o form uma modal:
+	public FFDialogo(Component cOrig) {
 
-        if (cOrig instanceof JFrame)
-            pnPai = ((JFrame) cOrig).getRootPane();
-        else if (cOrig instanceof JDialog)
-            pnPai = ((JDialog) cOrig).getRootPane();
-        else if (cOrig instanceof JInternalFrame)
-            pnPai = ((JInternalFrame) cOrig).getDesktopPane();
-        else {
-            pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
-            if (pnPai == null) {
-                Window win = SwingUtilities.getWindowAncestor(cOrig);
-                if (win instanceof JDialog)
-                    pnPai = ((JDialog) win).getRootPane();
-                else if (win instanceof JFrame)
-                    pnPai = ((JFrame) win).getRootPane();
-            }
-        }
+		this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
 
-    }
-    public void setPrimeiroFoco(final JComponent comp) {
-    	addWindowListener(
-	    	new WindowAdapter() {
-	    		public void windowActivated(WindowEvent wevt) {
-	    			comp.requestFocusInWindow();
-	    		}
-	    	}
-   		);
-    }
+		cPai = cOrig;
 
-    public FFDialogo(Frame fOrig,boolean bModal) {
-        super(fOrig, "Dialogo", bModal);
-        if (pnPai == null) {
-            pnPai = Aplicativo.telaPrincipal.dpArea;
-        }
-        setTitle("Dialogo");
-        setAtribos(50, 50, 500, 300);
-        c.setLayout(new BorderLayout());
+		// Gambs para tornar o form uma modal:
 
-        //    pnGrid.setPreferredSize(new Dimension(220,30));
-        btOK.setPreferredSize(new Dimension(110, 30));
-        btCancel.setPreferredSize(new Dimension(110, 30));
-        pnGrid.add(btOK);
-        pnGrid.add(btCancel);
-        pnBotoes.add(pnGrid);
+		if (cOrig instanceof JFrame)
+			pnPai = ( ( JFrame ) cOrig ).getRootPane();
+		else if (cOrig instanceof JDialog)
+			pnPai = ( ( JDialog ) cOrig ).getRootPane();
+		else if (cOrig instanceof JInternalFrame)
+			pnPai = ( ( JInternalFrame ) cOrig ).getDesktopPane();
+		else {
+			pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
+			if (pnPai == null) {
+				Window win = SwingUtilities.getWindowAncestor(cOrig);
+				if (win instanceof JDialog)
+					pnPai = ( ( JDialog ) win ).getRootPane();
+				else if (win instanceof JFrame)
+					pnPai = ( ( JFrame ) win ).getRootPane();
+			}
+		}
 
-        pnBox.add(pnBotoes);
+	}
 
-        pnRodape.add(pnBox, BorderLayout.EAST);
+	public void setPrimeiroFoco(final JComponent comp) {
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent wevt) {
+				comp.requestFocusInWindow();
+			}
+		});
+	}
 
-        //    pnBordRodape.setPreferredSize(new Dimension(250,30));
-        pnBordRodape.setBorder(br);
-        pnBordRodape.add(pnRodape);
+	public FFDialogo(Frame fOrig, boolean bModal) {
+		super(fOrig, "Dialogo", bModal);
+		if (pnPai == null) {
+			pnPai = Aplicativo.telaPrincipal.dpArea;
+		}
+		setTitle("Dialogo");
+		setAtribos(50, 50, 500, 300);
+		c.setLayout(new BorderLayout());
 
-        c.add(pnBordRodape, BorderLayout.SOUTH);
+		// pnGrid.setPreferredSize(new Dimension(220,30));
+		btOK.setPreferredSize(new Dimension(110, 30));
+		btCancel.setPreferredSize(new Dimension(110, 30));
+		pnGrid.add(btOK);
+		pnGrid.add(btCancel);
+		pnBotoes.add(pnGrid);
 
-        btCancel.addActionListener(this);
-        btCancel.addKeyListener(this);
-        btOK.addActionListener(this);
-        btOK.addKeyListener(this);
-        addKeyListener(this);
-    }
+		pnBox.add(pnBotoes);
 
-    public void setPainel(JPanelPad p) {
-        pin = p;
-        setArea = false;
-    }
+		pnRodape.add(pnBox, BorderLayout.EAST);
 
-    public void setPanel(JComponent p) {
-        c.add(p, BorderLayout.CENTER);
-        setArea = false;
-    }
+		// pnBordRodape.setPreferredSize(new Dimension(250,30));
+		pnBordRodape.setBorder(br);
+		pnBordRodape.add(pnRodape);
 
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource() == btOK)
-            ok();
-        else if (evt.getSource() == btCancel)
-            cancel();
-    }
+		c.add(pnBordRodape, BorderLayout.SOUTH);
 
-    public void ok() {
-    	if (fechaJanela) { 
-           OK = true;
-           setVisible(false);
-    	}
-    }
+		btCancel.addActionListener(this);
+		btCancel.addKeyListener(this);
+		btOK.addActionListener(this);
+		btOK.addKeyListener(this);
+		addKeyListener(this);
+	}
 
-    public void cancel() {
-        OK = false;
-        setVisible(false);
-    }
+	public void setPainel(JPanelPad p) {
+		pin = p;
+		setArea = false;
+	}
 
-    public void setFechaJanela(boolean fecha) {
-    	this.fechaJanela = fecha;
-    }
-    
-    public boolean getFechaJanela() {
-    	return this.fechaJanela;
-    }
-    
-    public void setTitulo(String tit) {
-    	setTitulo(tit, this.getClass().getName() );
+	public void setPanel(JComponent p) {
+		c.add(p, BorderLayout.CENTER);
+		setArea = false;
+	}
 
-    }
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btOK)
+			ok();
+		else if (evt.getSource() == btCancel)
+			cancel();
+	}
 
-    public void setTitulo(String tit, String name) {
-    	if (getName() == null) {
-    		setName(name);
-    	}
-    	setTitle(tit);
-    }
-    public void setAtribos(int X, int Y, int Larg, int Alt) {
-        setBounds(X, Y, Larg, Alt);
-    }
+	public void ok() {
+		if (fechaJanela) {
+			OK = true;
+			setVisible(false);
+		}
+	}
 
-    public void setAtribos(int Larg, int Alt) {
-        setBounds((pnPai.getSize().width - Larg) / 2,
-                (pnPai.getSize().height - Alt) / 2, Larg, Alt);
-    }
+	public void cancel() {
+		OK = false;
+		setVisible(false);
+	}
 
-    public void eUltimo() {
-        bUltimo = true;
-    }
+	public void setFechaJanela(boolean fecha) {
+		this.fechaJanela = fecha;
+	}
 
-    public void setToFrameLayout() {
-        pnRodape.remove(0);
-        pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
-        pnGrid.setPreferredSize(new Dimension(100, 30));
-        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                setVisible(false);
-            }
-        });
-        pnGrid.add(btSair);
-        pnRodape.add(pnGrid, BorderLayout.EAST);
-    }
+	public boolean getFechaJanela() {
+		return this.fechaJanela;
+	}
 
-    public void setAreaComp() {
-        pin = new JPanelPad((int) getSize().getWidth(), (int) getSize()
-                .getHeight());
-        c.add(pin, BorderLayout.CENTER);
-        setArea = false;
-    }
+	public void setTitulo(String tit) {
+		setTitulo(tit, this.getClass().getName());
 
-    public void adic(Component comp, int X, int Y, int Larg, int Alt) {
-        if (setArea)
-            setAreaComp();
-        comp.addKeyListener(this);
-        pin.adic(comp, X, Y, Larg, Alt);
-    }
+	}
 
-    public void adicInvisivel(Component comp) {
-        comp.addKeyListener(this);
-    }
+	public void setTitulo(String tit, String name) {
+		if (getName() == null) {
+			setName(name);
+		}
+		setTitle(tit);
+	}
 
-    public void keyPressed(KeyEvent kevt) {
-        if ((bUltimo) & (kevt.getKeyCode() == KeyEvent.VK_ENTER)
-                & (btOK.isEnabled()))
-            btOK.doClick();
-        else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
-            btCancel.doClick();
-    }
+	public void setAtribos(int X, int Y, int Larg, int Alt) {
+		setBounds(X, Y, Larg, Alt);
+	}
 
-    public void keyTyped(KeyEvent kevt) {
-    }
+	public void setAtribos(int Larg, int Alt) {
+		setBounds(( pnPai.getSize().width - Larg ) / 2, ( pnPai.getSize().height - Alt ) / 2, Larg, Alt);
+	}
 
-    public void keyReleased(KeyEvent kevt) {
-    }
+	public void eUltimo() {
+		bUltimo = true;
+	}
 
-    public void setTela(Container c) {
-        setContentPane(c);
-    }
+	public void setToFrameLayout() {
+		pnRodape.remove(0);
+		pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
+		pnGrid.setPreferredSize(new Dimension(100, 30));
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+		btSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				setVisible(false);
+			}
+		});
+		pnGrid.add(btSair);
+		pnRodape.add(pnGrid, BorderLayout.EAST);
+	}
 
-    public Container getTela() {
-        Container tela = getContentPane();
-        tela.setLayout(new BorderLayout());
-        return tela;
-    }
+	public void setAreaComp() {
+		pin = new JPanelPad(( int ) getSize().getWidth(), ( int ) getSize().getHeight());
+		c.add(pin, BorderLayout.CENTER);
+		setArea = false;
+	}
 
-    public JPanelPad adicBotaoSair() {
-        Container c = getContentPane();
-        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-        JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-        pnRod.setPreferredSize(new Dimension(200, 30));
-        btSair.setPreferredSize(new Dimension(110, 30));
-        pnRod.add(btSair, BorderLayout.EAST);
-        c.add(pnRod, BorderLayout.SOUTH);
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                dispose();
-            }
-        });
-        return pnRod;
-    }
+	public void adic(Component comp, int X, int Y, int Larg, int Alt) {
+		if (setArea)
+			setAreaComp();
+		comp.addKeyListener(this);
+		pin.adic(comp, X, Y, Larg, Alt);
+	}
 
-    public void setFirstFocus(Component firstFocus) {
-        this.firstFocus = firstFocus;
-    }
+	public void adicInvisivel(Component comp) {
+		comp.addKeyListener(this);
+	}
 
-    public void firstFocus() {
-        if ((firstFocus != null) && (!firstFocus.isFocusOwner()) && (initFirstFocus))
-            firstFocus.requestFocus();
+	public void keyPressed(KeyEvent kevt) {
+		if (( bUltimo ) & ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) & ( btOK.isEnabled() ))
+			btOK.doClick();
+		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
+			btCancel.doClick();
+	}
 
-        /*
-         * if (firstFocus!=null) { if (firstFocus.hasFocus())
-         * firstFocus.requestFocus(); else loadFirstFocus(); } else
-         * loadFirstFocus();
-         */
-    }
+	public void keyTyped(KeyEvent kevt) {
+	}
 
-    public void setConexao(DbConnection cn) {
-        con = cn;
-    }
-    
-    public void execShow() {
-        setVisible(true);
-    }
+	public void keyReleased(KeyEvent kevt) {
+	}
 
-    public boolean getInitFirstFocus() {
-        return initFirstFocus;
-    }
+	public void setTela(Container c) {
+		setContentPane(c);
+	}
 
-    public void setInitFirstFocus(boolean initFirstFocus) {
-        this.initFirstFocus = initFirstFocus;
-    }
+	public Container getTela() {
+		Container tela = getContentPane();
+		tela.setLayout(new BorderLayout());
+		return tela;
+	}
 
-    public void setTelaPrim(FPrincipal fP) {
-        fPrim = fP;
-    }
+	public JPanelPad adicBotaoSair() {
+		Container c = getContentPane();
+		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+		pnRod.setPreferredSize(new Dimension(200, 30));
+		btSair.setPreferredSize(new Dimension(110, 30));
+		pnRod.add(btSair, BorderLayout.EAST);
+		c.add(pnRod, BorderLayout.SOUTH);
+		btSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+			}
+		});
+		return pnRod;
+	}
 
-    public void dispose() {
-        System.gc();
-        super.dispose();
-    }
+	public void setFirstFocus(Component firstFocus) {
+		this.firstFocus = firstFocus;
+	}
+
+	public void firstFocus() {
+		if (( firstFocus != null ) && ( !firstFocus.isFocusOwner() ) && ( initFirstFocus ))
+			firstFocus.requestFocus();
+
+		/*
+		 * if (firstFocus!=null) { if (firstFocus.hasFocus())
+		 * firstFocus.requestFocus(); else loadFirstFocus(); } else
+		 * loadFirstFocus();
+		 */
+	}
+
+	public void setConexao(DbConnection cn) {
+		con = cn;
+	}
+
+	public void execShow() {
+		setVisible(true);
+	}
+
+	public boolean getInitFirstFocus() {
+		return initFirstFocus;
+	}
+
+	public void setInitFirstFocus(boolean initFirstFocus) {
+		this.initFirstFocus = initFirstFocus;
+	}
+
+	public void setTelaPrim(FPrincipal fP) {
+		fPrim = fP;
+	}
+
+	public void dispose() {
+		System.gc();
+		super.dispose();
+	}
 }

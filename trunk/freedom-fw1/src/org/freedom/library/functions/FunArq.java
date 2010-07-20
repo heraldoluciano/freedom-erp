@@ -19,8 +19,9 @@
  */
 
 package org.freedom.library.functions;
+
 public class FunArq {
-   public void convArq() {
-   	
-   }
+	public void convArq() {
+
+	}
 }

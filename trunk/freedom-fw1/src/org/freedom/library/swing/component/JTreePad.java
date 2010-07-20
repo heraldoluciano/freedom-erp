@@ -17,59 +17,57 @@
  *
  * Comentários da classe.....
  */
- 
+
 package org.freedom.library.swing.component;
+
 import java.awt.Component;
 import javax.swing.JTree;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freedom.acao.ArvoreFace;
+
 public class JTreePad extends JTree implements ArvoreFace {
-  /**
+	/**
 	 * 
 	 */
-  private static final long serialVersionUID = 1L;
-  private ArvoreFace face = this;
-  public JTreePad() {
-  	setCellRenderer(new NohImg(this));
-  }
-  public void setImgTrat(ArvoreFace imgT) {
-    face = imgT;
-  }
-  public ImageIcon getImagem(int iLinha, boolean bNoh, Object src) {
-  	return null;
-  }
-  public ImageIcon getImg(int iLinha, boolean bNoh, Object src) {
-  	return face.getImagem(iLinha,bNoh,src);
-  }
+	private static final long serialVersionUID = 1L;
+	private ArvoreFace face = this;
+
+	public JTreePad() {
+		setCellRenderer(new NohImg(this));
+	}
+
+	public void setImgTrat(ArvoreFace imgT) {
+		face = imgT;
+	}
+
+	public ImageIcon getImagem(int iLinha, boolean bNoh, Object src) {
+		return null;
+	}
+
+	public ImageIcon getImg(int iLinha, boolean bNoh, Object src) {
+		return face.getImagem(iLinha, bNoh, src);
+	}
 }
+
 class NohImg extends DefaultTreeCellRenderer {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTreePad pai = null;
-    public NohImg(JTreePad p) {
-      pai = p;
-    }
 
-    public Component getTreeCellRendererComponent(
-                        JTree tree,
-                        Object value,
-                        boolean sel,
-                        boolean expanded,
-                        boolean leaf,
-                        int row,
-                        boolean hasFocus) {
-      ImageIcon img = pai.getImg(row,leaf,value);
-      super.getTreeCellRendererComponent(
-                        tree, value, sel,
-                        expanded, leaf, row,
-                        hasFocus);
-      if (img != null)
-        setIcon(img);
-      return this;
-    }
+	public NohImg(JTreePad p) {
+		pai = p;
+	}
+
+	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		ImageIcon img = pai.getImg(row, leaf, value);
+		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+		if (img != null)
+			setIcon(img);
+		return this;
+	}
 
 }

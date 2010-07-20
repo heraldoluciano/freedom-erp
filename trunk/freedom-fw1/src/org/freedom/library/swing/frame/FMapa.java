@@ -39,41 +39,40 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.jdesktop.swingx.JXMapViewer;
 
 public final class FMapa extends FFilho implements ActionListener, KeyListener {
-	
-	private static final long serialVersionUID = 1L;
-	private JPanelPad pnMapa = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private Mapa mapa = new Mapa();
-    private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
-    private JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
-    private JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
-    private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
-    private JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
-    private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
-    private GridLayout glImp = new GridLayout( 1, 2);
-    boolean Shift = false;
-    boolean Ctrl = false;
-    private Image img = null;
 
-	
-	public FMapa (boolean comScroll) {
+	private static final long serialVersionUID = 1L;
+	private JPanelPad pnMapa = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+	private Mapa mapa = new Mapa();
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
+	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
+	private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
+	private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
+	private GridLayout glImp = new GridLayout(1, 2);
+	boolean Shift = false;
+	boolean Ctrl = false;
+	private Image img = null;
+
+	public FMapa(boolean comScroll) {
 		super(comScroll);
 		setTitulo("Mapa");
-		
-	    btSair.setToolTipText("Fecha a Tela (Shift + F4)");
-	    btImp.setToolTipText("Imprimir (Ctrl+P)");
-	    btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
-		
-		setAtribos( 0, 0, 1000, 700 );
+
+		btSair.setToolTipText("Fecha a Tela (Shift + F4)");
+		btImp.setToolTipText("Imprimir (Ctrl+P)");
+		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
+
+		setAtribos(0, 0, 1000, 700);
 		c.add(pnMapa);
-		mapa.setZoom( 2 );
-		
-//		JXMapViewer pm = new JXMapViewer();
-		pnMapa.add( mapa, BorderLayout.CENTER);	
-		img = mapa.createImage( 500, 500 );
-		
+		mapa.setZoom(2);
+
+		// JXMapViewer pm = new JXMapViewer();
+		pnMapa.add(mapa, BorderLayout.CENTER);
+		img = mapa.createImage(500, 500);
+
 		pnImp.setLayout(flImp);
 		pnGImp.setLayout(glImp);
-		pnGImp.setPreferredSize(new Dimension( 80, 26));
+		pnGImp.setPreferredSize(new Dimension(80, 26));
 		pnGImp.add(btImp);
 		pnGImp.add(btPrevimp);
 		pnImp.add(pnGImp);
@@ -83,108 +82,105 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 		btSair.addKeyListener(this);
 		btImp.addKeyListener(this);
 		btPrevimp.addKeyListener(this);
-		btPrevimp.addActionListener( this );
+		btPrevimp.addActionListener(this);
 
 		addKeyListener(this);
 		addInternalFrameListener(this);
-		     
-		pnRodape.add( btSair, BorderLayout.EAST);      
-		pnRodape.add( pnImp, BorderLayout.WEST);
+
+		pnRodape.add(btSair, BorderLayout.EAST);
+		pnRodape.add(pnImp, BorderLayout.WEST);
 		c.add(pnBordRod, BorderLayout.SOUTH);
-		
+
 	}
-	
-	public void setEndereco(final String rua, final Integer numero, final String cidade, final String uf ) {
-		mapa.buscaEndereco( rua, numero, cidade, uf );
+
+	public void setEndereco(final String rua, final Integer numero, final String cidade, final String uf) {
+		mapa.buscaEndereco(rua, numero, cidade, uf);
 	}
-	
-	@ Override
+
+	@Override
 	protected void finalize() throws Throwable {
 		try {
-			super.finalize();	
+			super.finalize();
 		}
 		finally {
 			c = null;
 			mapa.removeAll();
 			mapa = null;
 			Runtime.getRuntime().gc();
-			System.gc();			
+			System.gc();
 		}
 	}
+
 	/*
-	private void close() throws Throwable {
-		try {
-			finalize();
+	 * private void close() throws Throwable { try { finalize(); } catch
+	 * (Exception e) { e.printStackTrace(); }
+	 * 
+	 * }
+	 */
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getActionCommand() == "Sair")
+			dispose();
+		if (evt.getSource() == btPrevimp) {
+			imprimir(true);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		else if (evt.getSource() == btImp) {
+			imprimir(false);
 		}
 
-	}
-	*/
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getActionCommand() == "Sair") 
-			dispose();
-		if ( evt.getSource() == btPrevimp ) {
-			imprimir( true );
-		}
-		else if ( evt.getSource() == btImp ) {
-			imprimir( false );
-		}
-		
 	}
 
 	private void imprimir(boolean visualizar) {
 		try {
-			
-//			Testes para verificar modo de imprimir mapa.
-			
+
+			// Testes para verificar modo de imprimir mapa.
+
 			JXMapViewer mp2 = mapa.getMainMap();
-//			Container cnt = mp2.getParent();
-			
+			// Container cnt = mp2.getParent();
+
 			Graphics gr = mp2.getGraphics();
-			gr.drawRect( 10, 10, 100, 100 );
-			
+			gr.drawRect(10, 10, 100, 100);
+
 			HashMap<Object, Object> hParam = new HashMap<Object, Object>();
 			hParam.put("MAPA", img);
-				
-/*			FPrinterJob dlGr = new FPrinterJob( "relatorios/Mapa.jasper", "Mapa", null, this, hParam, con );
-	
-			if ( visualizar ) {
-				dlGr.setVisible( true );
-			}
-			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			}
-			
-			*/
+
+			/*
+			 * FPrinterJob dlGr = new FPrinterJob( "relatorios/Mapa.jasper",
+			 * "Mapa", null, this, hParam, con );
+			 * 
+			 * if ( visualizar ) { dlGr.setVisible( true ); } else {
+			 * JasperPrintManager.printReport( dlGr.getRelatorio(), true ); }
+			 */
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void keyPressed(KeyEvent kevt) {
-		if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) Shift = true;
-		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;
-		if(Shift) {
-			if(kevt.getKeyCode() == KeyEvent.VK_F4) btSair.doClick();
+		if (kevt.getKeyCode() == KeyEvent.VK_SHIFT)
+			Shift = true;
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+			Ctrl = true;
+		if (Shift) {
+			if (kevt.getKeyCode() == KeyEvent.VK_F4)
+				btSair.doClick();
 		}
-		if(Ctrl) {
-			if (kevt.getKeyCode() == KeyEvent.VK_R) btPrevimp.doClick();
-			else if (kevt.getKeyCode() == KeyEvent.VK_P) btImp.doClick();
+		if (Ctrl) {
+			if (kevt.getKeyCode() == KeyEvent.VK_R)
+				btPrevimp.doClick();
+			else if (kevt.getKeyCode() == KeyEvent.VK_P)
+				btImp.doClick();
 		}
-	}	
-	
+	}
+
 	public void keyReleased(KeyEvent kevt) {
-		if(kevt.getKeyCode() == KeyEvent.VK_SHIFT) 
+		if (kevt.getKeyCode() == KeyEvent.VK_SHIFT)
 			Shift = false;
-		else if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) 
+		else if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
 			Ctrl = false;
 	}
 
-	public void keyTyped(KeyEvent kevt) {  }
-	
+	public void keyTyped(KeyEvent kevt) {
+	}
 
-	
-}    
+}

@@ -19,6 +19,7 @@
  */
 
 package org.freedom.library.swing.dialog;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -47,86 +48,86 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.frame.Aplicativo;
 
-public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {private static final long serialVersionUID = 1L;
-	
-	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0));  
-	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {
+	private static final long serialVersionUID = 1L;
+
+	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 0, 0));
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 	private JTextArea txa = new JTextArea();
 	private JScrollPane spn = new JScrollPane(txa);
-	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
-	private JButtonPad btImp = new JButtonPad("Imprimir",Icone.novo("btImprime.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btImp = new JButtonPad("Imprimir", Icone.novo("btImprime.gif"));
 	private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.gif"));
 	private JButtonPad btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
 	private JButtonPad btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
 	private JButtonPad btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
 	private JLabelPad lbPag = new JLabelPad();
-	private JLabelPad lbImp = new JLabelPad("Impressora: "); 
-	private JPanelPad pinCab = new JPanelPad(81,45);
+	private JLabelPad lbImp = new JLabelPad("Impressora: ");
+	private JPanelPad pinCab = new JPanelPad(81, 45);
 	private JButtonPad btMais = new JButtonPad(Icone.novo("btZoomMais.gif"));
-	private JButtonPad btMenos = new JButtonPad(Icone.novo("btZoomMenos.gif"));  
-	private JPanelPad pinTools = new JPanelPad(81,45);
+	private JButtonPad btMenos = new JButtonPad(Icone.novo("btZoomMenos.gif"));
+	private JPanelPad pinTools = new JPanelPad(81, 45);
 	private JButtonPad btTxt = new JButtonPad(Icone.novo("btTXT.gif"));
-	private JButtonPad btPdf = new JButtonPad(Icone.novo("btPdf.gif"));  
-	public  ImprimeOS imp = null;
-	public  String strTemp = ""; 
+	private JButtonPad btPdf = new JButtonPad(Icone.novo("btPdf.gif"));
+	public ImprimeOS imp = null;
+	public String strTemp = "";
 	boolean bVisualiza = false;
 	boolean bProcessaPos = true;
-	  
+
 	public DLVisualiza(ImprimeOS impOS, JInternalFrame pai) {
 		super(pai);
-//		super(false);
-		//Prepara arquivo temp:
+		// super(false);
+		// Prepara arquivo temp:
 		imp = impOS;
-		//monta a area de visualização:
+		// monta a area de visualização:
 		setTitulo("Visualizar Impressão");
-		
-		txa.setFont(getFonte());			
 
-		txa.setEditable(false);      
-		
-		pnCli.add(spn);      
-		
+		txa.setFont(getFonte());
+
+		txa.setEditable(false);
+
+		pnCli.add(spn);
+
 		Container c = getContentPane();
-		c.removeAll(); //Removido todos os componentes da classe mae.
-		
-		c.add(pnCab,BorderLayout.NORTH);
-		btSair.setPreferredSize(new Dimension(80,30));
+		c.removeAll(); // Removido todos os componentes da classe mae.
+
+		c.add(pnCab, BorderLayout.NORTH);
+		btSair.setPreferredSize(new Dimension(80, 30));
 		pnCab.add(pinCab);
-		pinCab.adic(btMais,7,5,30,30);
-		pinCab.adic(btMenos,40,5,30,30);
-		
-		pinTools.adic(btTxt,7,5,30,30);
-		pinTools.adic(btPdf,40,5,30,30);
+		pinCab.adic(btMais, 7, 5, 30, 30);
+		pinCab.adic(btMenos, 40, 5, 30, 30);
+
+		pinTools.adic(btTxt, 7, 5, 30, 30);
+		pinTools.adic(btPdf, 40, 5, 30, 30);
 		btTxt.setToolTipText("Exporta para arquivo TXT");
 		btPdf.setToolTipText("Exporta para formato PDF");
 		pnCab.add(pinTools);
-		
-		
+
 		c.add(pnCli, BorderLayout.CENTER);
-		
-		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-		JPanelPad pnFCenter = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,0,0));
-		
-		JPanelPad pnDir = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
+
+		JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+		JPanelPad pnFCenter = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+		JPanelPad pnDir = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
 		pnDir.add(btImp);
 		pnDir.add(btSair);
-		pnRod.add(pnDir,BorderLayout.EAST);
-		pnRod.add(lbImp,BorderLayout.WEST);
-		
-		JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,5));
+		pnRod.add(pnDir, BorderLayout.EAST);
+		pnRod.add(lbImp, BorderLayout.WEST);
+
+		JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 5));
 		pnFCenter.add(pnCenter);
-		
+
 		pnCenter.add(btPrim);
 		pnCenter.add(btAnt);
 		pnCenter.add(lbPag);
 		pnCenter.add(btProx);
 		pnCenter.add(btUlt);
-		pnRod.add(pnFCenter,BorderLayout.CENTER);
-		  
+		pnRod.add(pnFCenter, BorderLayout.CENTER);
+
 		c.add(pnRod, BorderLayout.SOUTH);
-		  
-		//Configura os Listeners e Componentes      
-		
+
+		// Configura os Listeners e Componentes
+
 		lbPag.setHorizontalAlignment(SwingConstants.CENTER);
 		btSair.addActionListener(this);
 		btImp.addActionListener(this);
@@ -140,20 +141,20 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 		btMenos.addActionListener(this);
 		txa.addCaretListener(this);
 		txa.setText(imp.lePagina(1));
-		upContaPag(imp.getPagAtual(),imp.getNumPags());
-	
+		upContaPag(imp.getPagAtual(), imp.getNumPags());
+
 	}
-	  
+
 	public void actionPerformed(ActionEvent evt) {
 		String sConteudo = "";
 		if (evt.getSource() == btSair)
 			dispose();
-		else if (evt.getSource() == btImp) 
+		else if (evt.getSource() == btImp)
 			imp.print();
-		else if (evt.getSource() == btAnt) 
-			sConteudo = imp.lePagina(imp.getPagAtual()-1);
+		else if (evt.getSource() == btAnt)
+			sConteudo = imp.lePagina(imp.getPagAtual() - 1);
 		else if (evt.getSource() == btProx)
-			sConteudo = imp.lePagina(imp.getPagAtual()+1);
+			sConteudo = imp.lePagina(imp.getPagAtual() + 1);
 		else if (evt.getSource() == btPrim)
 			sConteudo = imp.lePagina(1);
 		else if (evt.getSource() == btUlt)
@@ -166,34 +167,34 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 			zoomMais();
 		else if (evt.getSource() == btMenos)
 			zoomMenos();
-		if( sConteudo.trim().length() != 0 ) {
+		if (sConteudo.trim().length() != 0) {
 			txa.setText(sConteudo);
-			upContaPag(imp.getPagAtual(),imp.getNumPags());
-			txa.select(0,1);
+			upContaPag(imp.getPagAtual(), imp.getNumPags());
+			txa.select(0, 1);
 		}
 	}
-	
+
 	public void zoomMais() {
 		Font fAtual = txa.getFont();
-		txa.setFont(new Font(fAtual.getName(),fAtual.getStyle(),fAtual.getSize()+1));
+		txa.setFont(new Font(fAtual.getName(), fAtual.getStyle(), fAtual.getSize() + 1));
 		txa.updateUI();
 	}
-	
+
 	public void zoomMenos() {
 		Font fAtual = txa.getFont();
-		txa.setFont(new Font(fAtual.getName(),fAtual.getStyle(),fAtual.getSize()-1));
+		txa.setFont(new Font(fAtual.getName(), fAtual.getStyle(), fAtual.getSize() - 1));
 		txa.updateUI();
 	}
-	
+
 	public void upContaPag(int Atual, int Num) {
-		lbPag.setText(Atual+" de "+Num);
+		lbPag.setText(Atual + " de " + Num);
 		lbPag.updateUI();
 	}
-	
+
 	public void setNomeImp(String sNome) {
-		lbImp.setText(" Impressora:  "+sNome);
+		lbImp.setText(" Impressora:  " + sNome);
 	}
-	
+
 	public void caretUpdate(CaretEvent cevt) {
 		int iLinha = 0;
 		int iIni = 0;
@@ -204,36 +205,39 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 				iLinha = txa.getLineOfOffset(cevt.getDot());
 				iIni = txa.getLineStartOffset(iLinha);
 				iFim = txa.getLineEndOffset(iLinha);
-				if (iIni+1 != txa.getSelectionStart() && iFim != txa.getSelectionEnd())
-					txa.select(iIni+1,iFim);
-			} catch(BadLocationException err) { }
+				if (iIni + 1 != txa.getSelectionStart() && iFim != txa.getSelectionEnd())
+					txa.select(iIni + 1, iFim);
+			}
+			catch (BadLocationException err) {
+			}
 			bProcessaPos = true;
 		}
 	}
-	
+
 	private Font getFonte() {
-		Font ret = null;;
+		Font ret = null;
+		;
 		StringBuilder sql = new StringBuilder();
 		try {
-			
-			if(con == null) {
+
+			if (con == null) {
 				con = Aplicativo.getInstace().getConexao();
 			}
-						
-			sql.append( "select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");  
-			sql.append( "from sgestacao ");
-			sql.append( "where ");
-			sql.append( "codemp=? and codfilial=? and codest=? ;");
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAO" ) );
-			ps.setInt( 3, Aplicativo.iNumEst );
-			
+
+			sql.append("select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");
+			sql.append("from sgestacao ");
+			sql.append("where ");
+			sql.append("codemp=? and codfilial=? and codest=? ;");
+
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGESTACAO"));
+			ps.setInt(3, Aplicativo.iNumEst);
+
 			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				ret = new Font(rs.getString( 1 ).trim(),Font.BOLD, rs.getInt( 2 ));	
+
+			if (rs.next()) {
+				ret = new Font(rs.getString(1).trim(), Font.BOLD, rs.getInt(2));
 			}
 
 		}
@@ -250,5 +254,5 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 		}
 		return ret;
 	}
-	
+
 }
