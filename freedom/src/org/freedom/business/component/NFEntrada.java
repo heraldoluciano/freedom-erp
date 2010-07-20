@@ -2,23 +2,23 @@
  * @version 08/08/2005 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.layout <BR>
- * Classe:
+ *         Pacote: org.freedom.layout <BR>
+ *         Classe:
  * @(#)NFEntrada.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -34,7 +34,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 
 public class NFEntrada extends NF {
 
@@ -53,40 +52,40 @@ public class NFEntrada extends NF {
 	public boolean carregaTabelas( DbConnection con, Vector<?> params ) {
 
 		boolean retorno = true;
-		
+
 		StringBuffer sql = new StringBuffer();
-		BigDecimal qtdfrete = new BigDecimal(0);
+		BigDecimal qtdfrete = new BigDecimal( 0 );
 		int cont = 0;
-		
+
 		try {
 
 			setConexao( con );
 
-			sql.append( "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," ); 
+			sql.append( "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," );
 			sql.append( "F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR, " );
 			sql.append( "C.VLRDESCITCOMPRA, F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, " );
 			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, C.OBSERVACAO, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
-			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA, TM.TIPOMOV, C.VLRFUNRURALCOMPRA "  );
+			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA, TM.TIPOMOV, C.VLRFUNRURALCOMPRA " );
 			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG, EQTIPOMOV TM " );
 			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
-			sql.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV ");
+			sql.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV " );
 			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ( (Integer) params.elementAt( 0 ) ).intValue() );
 			ps.setInt( 2, ( (Integer) params.elementAt( 1 ) ).intValue() );
 			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			ResultSet rs = ps.executeQuery();
-			
+
 			cont++;
-			cab = new TabVector( TAM_CAB );			
-			
+			cab = new TabVector( TAM_CAB );
+
 			frete = new TabVector( 26 );
 			frete.addRow();
-			
+
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODCOMPRA" ) );
@@ -115,7 +114,7 @@ public class NFEntrada extends NF {
 				cab.setDate( C_DTSAIDA, rs.getDate( "DTENTCOMPRA" ) );
 				cab.setString( C_CODPLANOPG, ( rs.getString( "CODPLANOPAG" ) != null ? rs.getString( "CODPLANOPAG" ) : "" ) );
 				cab.setString( C_DESCPLANOPAG, ( rs.getString( "DESCPLANOPAG" ) != null ? rs.getString( "DESCPLANOPAG" ) : "" ) );
-				cab.setString( C_OBSPED,( rs.getString( "OBSERVACAO" ) != null ? rs.getString( "OBSERVACAO" ) : "" ) );
+				cab.setString( C_OBSPED, ( rs.getString( "OBSERVACAO" ) != null ? rs.getString( "OBSERVACAO" ) : "" ) );
 				cab.setString( C_NOMEVEND, "" );
 				cab.setString( C_EMAILVEND, "" );
 				cab.setString( C_DESCFUNC, "" );
@@ -146,20 +145,20 @@ public class NFEntrada extends NF {
 				cab.setBigDecimal( C_VLRADICPED, rs.getBigDecimal( "VLRADICCOMPRA" ) );
 				cab.setBigDecimal( C_VLRICMSPED, rs.getBigDecimal( "VLRICMSCOMPRA" ) );
 				cab.setBigDecimal( C_VLRBASEICMSPED, rs.getBigDecimal( "VLRBASEICMSCOMPRA" ) );
-				cab.setBigDecimal( C_VLRIPIPED, rs.getBigDecimal( "VLRIPICOMPRA" ) );				
+				cab.setBigDecimal( C_VLRIPIPED, rs.getBigDecimal( "VLRIPICOMPRA" ) );
 				cab.setBigDecimal( C_BASEISS, new BigDecimal( "0.00" ) );
 				cab.setBigDecimal( C_VLRISS, new BigDecimal( "0.00" ) );
-				cab.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" ) );		
+				cab.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" ) );
 				qtdfrete = rs.getBigDecimal( "QTDFRETECOMPRA" );
 				cab.setBigDecimal( C_QTDFRETE, qtdfrete );
 				cab.setString( C_HALT, rs.getString( "HALT" ) );
 				cab.setString( C_TIPOMOV, rs.getString( "TIPOMOV" ) );
 				cab.setBigDecimal( C_VLRFUNRURALCOMPRA, rs.getBigDecimal( "VLRFUNRURALCOMPRA" ) );
-								
-				//XXX
-				
-				frete.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" )  );
-				
+
+				// XXX
+
+				frete.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" ) );
+
 				frete.setString( C_DDDTRANSP, "" );
 				frete.setString( C_FONETRANSP, "" );
 				frete.setInt( C_CODTRAN, 0 );
@@ -175,72 +174,70 @@ public class NFEntrada extends NF {
 				frete.setString( C_TIPOFRETE, "" );
 				frete.setString( C_PLACAFRETE, "" );
 				frete.setString( C_UFFRETE, "" );
-				
-				
-				if(qtdfrete!=null) {			
+
+				if ( qtdfrete != null ) {
 					frete.setBigDecimal( C_QTDFRETE, qtdfrete );
 				}
 				else {
-					frete.setBigDecimal( C_QTDFRETE, new BigDecimal(0) );
+					frete.setBigDecimal( C_QTDFRETE, new BigDecimal( 0 ) );
 				}
-				
+
 				frete.setString( C_ESPFRETE, "" );
 				frete.setString( C_MARCAFRETE, "" );
 
 				frete.setBigDecimal( C_PESOBRUTO, new BigDecimal( "0.00" ) );
 				frete.setBigDecimal( C_PESOLIQ, new BigDecimal( "0.00" ) );
-					
-				
+
 				frete.setString( C_CONHECFRETEPED, "" );
 				frete.setString( C_CPFTRANSP, "" );
 				frete.setString( C_ADICFRETEBASEICM, "" );
-				
+
 				frete.setBigDecimal( C_ALIQICMSFRETEVD, new BigDecimal( "0.00" ) );
 				frete.setBigDecimal( C_VLRICMSFRETEVD, new BigDecimal( "0.00" ) );
-				
+
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			cab.setRow( -1 );
 
 			sql = new StringBuffer();
 			sql.append( "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.VLRIPIITCOMPRA, " );
 			sql.append( "I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, I.OBSITCOMPRA, P.CODUNID, " );
 			sql.append( "I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, I.VLRDESCITCOMPRA, " );
-			sql.append( "I.VLRADICITCOMPRA, ");
-			sql.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND ");
-			sql.append(	"L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE, " );
-			sql.append( "(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND ");
+			sql.append( "I.VLRADICITCOMPRA, " );
+			sql.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND " );
+			sql.append( "L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE, " );
+			sql.append( "(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND " );
 			sql.append( "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL) QTDITENS, " );
-						
-			sql.append(	"(SELECT M.MENS " );
-			sql.append(	"FROM LFMENSAGEM M, LFITCLFISCAL CL ");
-			sql.append(	"WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME ");
-			sql.append(	"AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC AND CL.GERALFISC='S'");
-			sql.append(	") MENS,");
-			
+
+			sql.append( "(SELECT M.MENS " );
+			sql.append( "FROM LFMENSAGEM M, LFITCLFISCAL CL " );
+			sql.append( "WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME " );
+			sql.append( "AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC AND CL.GERALFISC='S'" );
+			sql.append( ") MENS," );
+
 			sql.append( "P.CODBARPROD, P.CODFABPROD, P.QTDEMBALAGEM, I.ALIQFUNRURALITCOMPRA " );
-			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N " ); 
+			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N " );
 			sql.append( "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " );
 			sql.append( "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL " );
 			sql.append( "AND I.CODPROD=P.CODPROD AND I.CODEMPPD=P.CODEMP AND I.CODFILIALPD=P.CODFILIAL " );
 			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
-			
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ( (Integer) params.elementAt( 0 ) ).intValue() );
 			ps.setInt( 2, ( (Integer) params.elementAt( 1 ) ).intValue() );
 			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
-			
+
 			cont++;
 			itens = new TabVector( TAM_ITENS );
-			
+
 			while ( rs.next() ) {
-				
+
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITCOMPRA" ) );
 				itens.setInt( C_CODPROD, rs.getInt( "CODPROD" ) );
@@ -270,28 +267,27 @@ public class NFEntrada extends NF {
 				itens.setBigDecimal( C_VLRISSITPED, new BigDecimal( "0.00" ) );
 				itens.setBigDecimal( C_VLRDESCITPROD, rs.getBigDecimal( "VLRDESCITCOMPRA" ) );
 				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
-				itens.setString( C_CODFABPROD, rs.getString( "CODFABPROD" ) );				
-				itens.setBigDecimal( C_QTDEMBALAGEM, rs.getBigDecimal( "QTDEMBALAGEM" ));
+				itens.setString( C_CODFABPROD, rs.getString( "CODFABPROD" ) );
+				itens.setBigDecimal( C_QTDEMBALAGEM, rs.getBigDecimal( "QTDEMBALAGEM" ) );
 				itens.setBigDecimal( C_ALIQFUNRURALITCOMPRA, rs.getBigDecimal( "ALIQFUNRURALITCOMPRA" ) );
-				
+
 			}
-			
+
 			rs.close();
 			ps.close();
 			con.commit();
-			
+
 			itens.setRow( -1 );
 			frete.setRow( -1 );
 
 			adic = new TabVector( 5 );
 			parc = new TabVector( 3 );
 
-		} 
-		catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro na NFEntrada\n" + cont + "\n" + e.getMessage() );
 			e.printStackTrace();
 			retorno = false;
-		} 
+		}
 
 		return retorno;
 	}

@@ -2,23 +2,23 @@
  * @version 29/10/2007 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRRazFor.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                   Comentários sobre a classe...
  * 
  */
 
@@ -45,7 +45,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FRRazCli extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -57,7 +56,7 @@ public class FRRazCli extends FRelatorio {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private ListaCampos lcCli = new ListaCampos( this );
@@ -101,7 +100,7 @@ public class FRRazCli extends FRelatorio {
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód. Cliente", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtDescCli, "RazCli", "Razão social  do Cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
-		
+
 		txtCodCli.setTabelaExterna( lcCli, null );
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
@@ -132,51 +131,49 @@ public class FRRazCli extends FRelatorio {
 			if ( codcli != 0 ) {
 				sCab.append( "CLIENTE - " + txtDescCli.getVlrString() );
 			}
-			
+
 			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
 			sSQL.append( " CAST( ' " );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			/**
-			 * Tipo A = Saldo anteiror
-			 * Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
+			 * Tipo A = Saldo anteiror Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
 			 */
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, " );
 			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRPARCREC+VLRMULTAREC+VLRJUROSREC) " );
 			sSQL.append( "FROM FNRECEBER R WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
 			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
-			
-			  /**
 
-             *  Subtrai o valor recebido do saldo anterior
-
-             */
-
-            sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
-            sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI AND ");
-            sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) - " );
-			
-            /**
-			 *  Subtrai o valor do desconto na data do lançamento financeiro 
+			/**
+			 * 
+			 * Subtrai o valor recebido do saldo anterior
 			 */
-			
+
+			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
+			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI AND " );
+			sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) - " );
+
+			/**
+			 * Subtrai o valor do desconto na data do lançamento financeiro
+			 */
+
 			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNLANCA L, FNSUBLANCA SL, SGPREFERE1 PF WHERE  " );
-			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI AND ");
-			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND ");
-			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND ");
+			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI AND " );
+			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND " );
+			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
 			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
 			sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) - " );
-						
+
 			/**
 			 * Subtrai as devoluções do saldo anterior
 			 */
-			sSQL.append( "( COALESCE( ( SELECT SUM(CP.VLRLIQCOMPRA) ");
-            sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF ");
-            sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND ");
-            sSQL.append( "TM.CODFILIAL = CP.CODFILIALTM AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND ");
-            sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND ");
-            sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND ");
-            sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND ");
-            sSQL.append( "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA < ? ),0) ) ) " );
+			sSQL.append( "( COALESCE( ( SELECT SUM(CP.VLRLIQCOMPRA) " );
+			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF " );
+			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND " );
+			sSQL.append( "TM.CODFILIAL = CP.CODFILIALTM AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND " );
+			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND " );
+			sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
+			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
+			sSQL.append( "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA < ? ),0) ) ) " );
 			sSQL.append( "VLRDEB, 0.00 VLRCRED " );
 			/**
 			 * Filtro do cliente
@@ -190,26 +187,26 @@ public class FRRazCli extends FRelatorio {
 			 */
 			sSQL.append( "( EXISTS (SELECT * FROM FNRECEBER R2 WHERE R2.CODEMP=? AND R2.CODFILIAL=? AND " );
 			sSQL.append( "R2.CODEMPCL=C.CODEMP AND R2.CODFILIALCL=C.CODFILIAL AND R2.CODCLI=C.CODCLI AND " );
-			sSQL.append( " DATAREC BETWEEN ? AND ? ) OR ");
+			sSQL.append( " DATAREC BETWEEN ? AND ? ) OR " );
 			sSQL.append( "EXISTS (SELECT * FROM FNLANCA L2, FNRECEBER R2 " );
 			sSQL.append( "WHERE L2.CODEMPRC=R2.CODEMP AND L2.CODFILIALRC=R2.CODFILIAL AND " );
 			sSQL.append( "L2.CODREC=R2.CODREC AND C.CODEMP=R2.CODEMPCL AND C.CODFILIAL=R2.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=R2.CODCLI AND R2.CODEMP=? AND R2.CODFILIAL=? AND L2.DATALANCA BETWEEN ?  AND ?) OR ");
-			sSQL.append( " EXISTS (SELECT * FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF ");
-            sSQL.append(  "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND ");
-            sSQL.append(  "TM.CODFILIAL = CP.CODFILIALTM AND TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND ");
-            sSQL.append(  "TM.TIPOMOV='DV' AND CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND ");
-            sSQL.append(  "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND ");
-            sSQL.append(  "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA BETWEEN ? AND ? ) ) " );
+			sSQL.append( "C.CODCLI=R2.CODCLI AND R2.CODEMP=? AND R2.CODFILIAL=? AND L2.DATALANCA BETWEEN ?  AND ?) OR " );
+			sSQL.append( " EXISTS (SELECT * FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF " );
+			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND " );
+			sSQL.append( "TM.CODFILIAL = CP.CODFILIALTM AND TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND " );
+			sSQL.append( "TM.TIPOMOV='DV' AND CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
+			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
+			sSQL.append( "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA BETWEEN ? AND ? ) ) " );
 			/**
 			 * Fim da query de saldo anterior
 			 */
-			
+
 			/**
-			 * Query das vendas 
+			 * Query das vendas
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'Q' TIPO, R.DOCREC DOC, " );
-			sSQL.append( "R.VLRPARCREC VLRDEB, (R.VLRMULTAREC-R.VLRJUROSREC)*-1 VLRCRED ");
+			sSQL.append( "R.VLRPARCREC VLRDEB, (R.VLRMULTAREC-R.VLRJUROSREC)*-1 VLRCRED " );
 			sSQL.append( "FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND " );
 			sSQL.append( "C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=? AND " );
 			sSQL.append( "R.CODFILIAL=? AND " );
@@ -217,12 +214,12 @@ public class FRRazCli extends FRelatorio {
 				sSQL.append( "C.CODCLI=? AND " );
 			}
 			sSQL.append( "R.DATAREC BETWEEN ? AND ? " );
-			
+
 			/**
-			 * Query dos recebimentos 
+			 * Query dos recebimentos
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA, " );
-			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (L.VLRLANCA * -1) VLRCRED ");
+			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (L.VLRLANCA * -1) VLRCRED " );
 			sSQL.append( "FROM FNLANCA L, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND " );
 			sSQL.append( "L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
@@ -233,34 +230,34 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
 			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
 			/**
-			 * Query das devoluções 
+			 * Query das devoluções
 			 */
 			sSQL.append( "UNION ALL SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CP.DTENTCOMPRA DATA, " );
-			sSQL.append( " 'Z' TIPO, CP.DOCCOMPRA DOC, 0.00 VLRDEB, (CP.VLRLIQCOMPRA * -1) VLRCRED ");
+			sSQL.append( " 'Z' TIPO, CP.DOCCOMPRA DOC, 0.00 VLRDEB, (CP.VLRLIQCOMPRA * -1) VLRCRED " );
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF, VDCLIENTE C " );
-			sSQL.append( "WHERE TM.CODEMP=CP.CODEMPTM AND TM.CODFILIAL=CP.CODFILIALTM AND ");
-			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND ");
-            sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND ");
-            sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND ");
-            sSQL.append( "CP.CODFOR=CF.CODFOR AND " );
+			sSQL.append( "WHERE TM.CODEMP=CP.CODEMPTM AND TM.CODFILIAL=CP.CODFILIALTM AND " );
+			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND " );
+			sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
+			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
+			sSQL.append( "CP.CODFOR=CF.CODFOR AND " );
 			if ( codcli != 0 ) {
 				sSQL.append( "C.CODCLI=? AND " );
 			}
 			sSQL.append( "CP.CODEMP=? AND CP.CODFILIAL=? AND " );
-			sSQL.append( "CP.DTENTCOMPRA BETWEEN ? AND ? " ); 
-			
+			sSQL.append( "CP.DTENTCOMPRA BETWEEN ? AND ? " );
+
 			/**
-			 * Query dos descontos 
+			 * Query dos descontos
 			 */
 			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA, " );
-			sSQL.append( " 'X' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (SL.VLRSUBLANCA * -1) VLRCRED ");
+			sSQL.append( " 'X' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (SL.VLRSUBLANCA * -1) VLRCRED " );
 			sSQL.append( "FROM FNLANCA L, FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C, SGPREFERE1 PF " );
 			sSQL.append( "WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND " );
-			
-			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND ");
-			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND ");			
+
+			sSQL.append( " SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND SL.CODLANCA=L.CODLANCA AND " );
+			sSQL.append( " SL.CODEMPPN=PF.CODEMPDC AND SL.CODFILIALPN=PF.CODFILIALDC AND SL.CODPLAN=PF.CODPLANDC AND " );
 			sSQL.append( " PF.CODEMP=? AND PF.CODFILIAL=? AND " );
-			
+
 			sSQL.append( " L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
 
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
@@ -269,17 +266,15 @@ public class FRRazCli extends FRelatorio {
 			}
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.VLRDESCREC>0 AND " );
 			sSQL.append( "L.DATALANCA BETWEEN ? AND ?  " );
-			
+
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5 " );
 
-			
-			
 			ps = con.prepareStatement( sSQL.toString() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 1
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 2
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3 
-			
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3
+
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 5
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
@@ -339,12 +334,12 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 38
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 39
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 40
-			
+
 			// Parametros dos descontos
 
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
-			
+
 			if ( codcli != 0 ) {
 				ps.setInt( param++, codcli ); // 41
 			}
@@ -352,11 +347,11 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 43
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
-			
-			System.out.println("QUERY" + sSQL.toString());
-			
+
+			System.out.println( "QUERY" + sSQL.toString() );
+
 			rs = ps.executeQuery();
-			
+
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
 
 			rs.close();

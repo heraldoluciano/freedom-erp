@@ -2,23 +2,23 @@
  * @version 28/02/2007 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.fnc <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.fnc <BR>
+ *         Classe:
  * @(#)FCodRetorno.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de manutenção dos dados dos clientes referentes ao esquema Febraban.
+ *                      Tela de manutenção dos dados dos clientes referentes ao esquema Febraban.
  * 
  */
 package org.freedom.modulos.fnc.view.frame.crud.plain;
@@ -52,13 +52,13 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 public class FManutCli extends FDados implements RadioGroupListener, PostListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtCodEmpPF = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-	
+
 	private final JTextFieldPad txtCodFilialPF = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
@@ -78,7 +78,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 	private final JRadioGroup<?, ?> rgSubTipoFebraban;
 
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
-	
+
 	private final ListaCampos lcCliente = new ListaCampos( this, "" );
 
 	private Vector<String> vLabs = new Vector<String>();
@@ -93,8 +93,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 		setTitulo( "Códigos de retorno" );
 		setAtribos( 200, 60, 367, 290 );
-		
-		
+
 		vLabs.add( "SIACC" );
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
@@ -115,7 +114,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
-		
+
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
@@ -126,20 +125,20 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		montaTela();
 
 		rgTipoFebraban.addRadioGroupListener( this );
-		
+
 		lcCampos.addPostListener( this );
 		lcCampos.addInsertListener( this );
-		//txtIdentificacao.setAtivo( false );
+		// txtIdentificacao.setAtivo( false );
 	}
 
 	private void montaTela() {
-		
-		adic( new JLabel( "Tipo:"), 7, 0, 333, 20  );
-		adic( rgTipoFebraban, 7, 20, 333, 30  );	
-		
-		txtTipoFebraban.setVlrString( "01" );		
+
+		adic( new JLabel( "Tipo:" ), 7, 0, 333, 20 );
+		adic( rgTipoFebraban, 7, 20, 333, 30 );
+
+		txtTipoFebraban.setVlrString( "01" );
 		lcCampos.add( new GuardaCampo( txtTipoFebraban, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
-		
+
 		adicCampo( txtCodCli, 7, 70, 90, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PF, txtRazCli, true );
 		adicDescFK( txtRazCli, 100, 70, 240, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodBanco, 7, 110, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
@@ -153,44 +152,43 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 		setListaCampos( false, "FBNCLI", "FN" );
 	}
-	
+
 	private boolean getIdentificacao() {
-		
+
 		boolean retorno = true;
-		
+
 		try {
-			
+
 			String agencia = StringFunctions.strZero( txtAgencia.getVlrString().trim().replaceAll( "-", "" ), 5 );
 			String conta = StringFunctions.strZero( txtConta.getVlrString().trim().replaceAll( "-", "" ), 10 );
 			String digito = "";
-			
-			if(Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() )) {
+
+			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
 				BancodoBrasil banco = new BancodoBrasil();
 				digito = banco.digVerif( agencia + conta, 11 );
 			}
-			
+
 			String identificacao = agencia + conta + digito;
-			
+
 			txtIdentificacao.setVlrString( identificacao );
-		}
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			retorno = false;
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar identificação.\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		return retorno;
 	}
 
 	@ Override
 	public void beforePost( PostEvent e ) {
-		
-		//if ( ! getIdentificacao() ) {
-			//e.cancela();
-		//}
+
+		// if ( ! getIdentificacao() ) {
+		// e.cancela();
+		// }
 
 		super.beforePost( e );
-		
+
 		txtCodEmpPF.setVlrInteger( Aplicativo.iCodEmp );
 		txtCodFilialPF.setVlrInteger( ListaCampos.getMasterFilial( "SGPREFERE6" ) );
 	}
@@ -198,7 +196,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 	public void valorAlterado( RadioGroupEvent evt ) {
 
 		if ( evt.getIndice() >= 0 ) {
-			if(rgTipoFebraban.getVlrString().equals( "01" )) {
+			if ( rgTipoFebraban.getVlrString().equals( "01" ) ) {
 				txtConta.setEnabled( false );
 			}
 			else {
@@ -215,10 +213,12 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		lcBanco.setConexao( cn );
 		lcCliente.setConexao( cn );
 	}
-	public void afterCarrega( CarregaEvent e ) { 
+
+	public void afterCarrega( CarregaEvent e ) {
+
 		if ( e.getListaCampos() == lcCampos ) {
-			if(rgTipoFebraban.getVlrString().equals( "01" )) {
-				txtConta.setEnabled( false );				
+			if ( rgTipoFebraban.getVlrString().equals( "01" ) ) {
+				txtConta.setEnabled( false );
 			}
 			else {
 				txtConta.setEnabled( true );
@@ -232,15 +232,15 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	public void afterInsert( InsertEvent ievt ) {
 
-		if( ievt.getListaCampos() == lcCampos ){
-			
+		if ( ievt.getListaCampos() == lcCampos ) {
+
 			txtTipoFebraban.setVlrString( "01" );
 		}
-		
+
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-		
+
 	}
 
 }

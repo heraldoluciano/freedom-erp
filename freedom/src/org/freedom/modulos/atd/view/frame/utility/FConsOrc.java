@@ -7,13 +7,13 @@
  *         Pacote: org.freedom.modulos.atd <BR>
  *         Classe: @(#)FConsOrc.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -215,7 +215,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		pinCab.adic( cbLiberado, 25, 220, 80, 20 );
 		pinCab.adic( cbFaturadoParcial, 140, 180, 120, 20 );
 		pinCab.adic( cbFaturado, 140, 200, 80, 20 );
-		
+
 		pinCab.adic( new JLabel( "Filtrar por:" ), 290, 164, 110, 20 );
 		pinCab.adic( gbVenc, 290, 185, 150, 60 );
 
@@ -330,7 +330,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 			where.append( "AND C.CODEMPEC=O.CODEMP AND C.CODFILIALEC=" + lcEnc.getCodFilial() );
 		}
 
-		if ( ! "".equals( txtCid.getVlrString() ) ) {
+		if ( !"".equals( txtCid.getVlrString() ) ) {
 			where.append( " AND C.CIDCONV  = '" + txtCid.getVlrString() + "'" );
 		}
 
@@ -346,9 +346,9 @@ public class FConsOrc extends FFilho implements ActionListener {
 		try {
 
 			sql.append( "SELECT O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC,O.CODCONV,C.NOMECONV,O.CODCLI," );
-			sql.append( "CL.NOMECLI,C.FONECONV ,T.DESCTPCONV, IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,IT.CODPROD," ); 
+			sql.append( "CL.NOMECLI,C.FONECONV ,T.DESCTPCONV, IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,IT.CODPROD," );
 			sql.append( "P.CODBARPROD,P.DESCPROD,C.CIDCONV, CL.CIDCLI,(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC " );
-			sql.append( "WHERE EC.CODENC=C.CODENC AND EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) " ); 
+			sql.append( "WHERE EC.CODENC=C.CODENC AND EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) " );
 			sql.append( "FROM VDORCAMENTO O,VDCLIENTE CL,ATCONVENIADO C, EQPRODUTO P, VDITORCAMENTO IT,ATTIPOCONV T " );
 			sql.append( "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND " );
 			sql.append( "IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND T.CODTPCONV=C.CODTPCONV AND T.CODEMP=C.CODEMPTC AND " );

@@ -2,23 +2,23 @@
  * @version 19/12/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FREtiqueta.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Classe para impressão de etiquetas de clientes.
+ *                     Classe para impressão de etiquetas de clientes.
  * 
  */
 
@@ -87,12 +87,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JTextFieldPad txtCodTipo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private JTextFieldPad txtUfCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0);
-	
-	private JTextFieldPad txtCidadeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0);
-	
-	private JTextFieldPad txtModEtiq = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0);
+
+	private JTextFieldPad txtUfCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
+	private JTextFieldPad txtCidadeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
+	private JTextFieldPad txtModEtiq = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private ListaCampos lcModEtiq = new ListaCampos( this );
 
@@ -109,11 +109,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad( 500 );
 
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
-	private JTextFieldPad txtPostScript= new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
+	private JTextFieldPad txtPostScript = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private Etiqueta objEtiq = null;
-	
+
 	private EtiquetaComis objEtiqComis = new EtiquetaComis();
 
 	private JTextFieldPad txtCodPapel = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -147,11 +147,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
 	private JComboBoxPad cbAtivoCli = null;
-	
+
 	private JComboBoxPad cbOrdem = null;
-	
+
 	private JRadioGroup<String, Object> cbComissionados = null;
-	
+
 	private String tabelabd = null;
 
 	public FREtiqueta() {
@@ -185,19 +185,19 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		vOrdem.addElement( "ENDCLI, NUMCLI" );
 
 		cbOrdem = new JComboBoxPad( lOrdem, vOrdem, JComboBoxPad.TP_INTEGER, 5, 0 );
-		
+
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
-		
-		vLabs1.addElement("Comissionado");
- 		vLabs1.addElement("Cliente"); 
- 		vVals1.addElement("CM");
- 		vVals1.addElement("CL");
-		    
- 		cbComissionados = new JRadioGroup<String, Object>( 1, 2, vLabs1.toArray(), vVals1.toArray() );
- 		cbComissionados.setVlrString("CL");
- 		cbComissionados.addRadioGroupListener( this );
- 		
+
+		vLabs1.addElement( "Comissionado" );
+		vLabs1.addElement( "Cliente" );
+		vVals1.addElement( "CM" );
+		vVals1.addElement( "CL" );
+
+		cbComissionados = new JRadioGroup<String, Object>( 1, 2, vLabs1.toArray(), vVals1.toArray() );
+		cbComissionados.setVlrString( "CL" );
+		cbComissionados.addRadioGroupListener( this );
+
 		lcPapel.add( new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false ) );
 		lcPapel.add( new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false ) );
 		lcPapel.add( new GuardaCampo( txtColPapel, "Colpapel", "Num. colunas", ListaCampos.DB_SI, false ) );
@@ -216,7 +216,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcModEtiq.add( new GuardaCampo( txtComprimido, "Comprimido", "Imp. Comp.", ListaCampos.DB_SI, false ) );
 		lcModEtiq.add( new GuardaCampo( txtPostScript, "PosScript", "Pos.Script", ListaCampos.DB_SI, false ) );
 		lcModEtiq.add( new GuardaCampo( txtModEtiq, "ModEtiq", "modelo", ListaCampos.DB_SI, false ) );
-		
+
 		lcModEtiq.setReadOnly( true );
 		lcModEtiq.montaSql( false, "MODETIQUETA", "SG" );
 		txtCodModEtiq.setTabelaExterna( lcModEtiq, null );
@@ -262,13 +262,13 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		pinCab.adic( new JLabelPad( "Status" ), 370, 5, 100, 20 );
 		pinCab.adic( cbAtivoCli, 370, 25, 135, 20 );
-		
-		pinCab.adic( new JLabelPad("Cidade"), 370, 85, 100, 20 );
+
+		pinCab.adic( new JLabelPad( "Cidade" ), 370, 85, 100, 20 );
 		pinCab.adic( txtCidadeCli, 370, 105, 100, 20 );
-		
-		pinCab.adic( new JLabelPad("UF"), 370, 125, 100, 20 );
+
+		pinCab.adic( new JLabelPad( "UF" ), 370, 125, 100, 20 );
 		pinCab.adic( txtUfCli, 370, 145, 100, 20 );
-		
+
 		pinCab.adic( cbComissionados, 370, 180, 235, 30 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
@@ -278,7 +278,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		pinCab.adic( new JLabelPad( "Ordem" ), 370, 45, 200, 20 );
 		pinCab.adic( cbOrdem, 370, 65, 200, 20 );
-		
+
 		pinCab.adic( new JLabelPad( "Cód.setor" ), 7, 85, 280, 20 );
 		pinCab.adic( txtCodSetor, 7, 105, 80, 20 );
 		pinCab.adic( new JLabelPad( "Descrição do setor" ), 90, 85, 280, 20 );
@@ -322,18 +322,18 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	public void montaTabela( JTablePad tb ) {
 
-		if( cbComissionados.getVlrString().equals( "CL" ) ){
+		if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 			objEtiq = new EtiquetaCli();
 		}
-		else if( cbComissionados.getVlrString().equals( "CM" )){
+		else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 			objEtiq = new EtiquetaComis();
-		}			
-		
+		}
+
 		objEtiq.setTexto( txaEtiqueta.getVlrString() );
 		Vector<?> vLabelsColunas = objEtiq.getLabelsColunasAdic();
 		Vector<?> vTamanhos = objEtiq.getTamsAdic();
 		tb.limpa();
-		
+
 		for ( int i = 0; vLabelsColunas.size() > i; i++ ) {
 			tb.adicColuna( vLabelsColunas.elementAt( i ).toString() );
 			String sTmp = vTamanhos.elementAt( i ).toString();
@@ -346,17 +346,17 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 			tb.setTamColuna( iiTam, i );
 		}
 		tb.adicColuna( "Cód.cli." );
-		tb.setTamColuna( 80, tb.getNumColunas()-1 );
+		tb.setTamColuna( 80, tb.getNumColunas() - 1 );
 
 		bMontaTab = false;
 	}
 
-	@SuppressWarnings("unchecked")
+	@ SuppressWarnings ( "unchecked" )
 	public void adicItens() {
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
-		
+
 		try {
 			ps = con.prepareStatement( montaQuery() );
 			rs = ps.executeQuery();
@@ -369,7 +369,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					String sTmp = rs.getString( i ) != null ? rs.getString( i ) : "";
 					vLinha.addElement( sTmp );
 				}
-				vLinha.addElement( new Integer(rs.getInt( "codcli" ) ) );
+				vLinha.addElement( new Integer( rs.getInt( "codcli" ) ) );
 				tab.adicLinha( (Vector<Object>) vLinha.clone() );
 			}
 		} catch ( SQLException e ) {
@@ -408,7 +408,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcCliente.setConexao( cn );
 		lcVendedor.setConexao( cn );
 	}
-	
+
 	private boolean removeEtiquetas() {
 
 		boolean retorno = false;
@@ -463,7 +463,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		return conexao;
 	}
-	
+
 	private boolean persistEtiquetas() {
 
 		boolean retorno = false;
@@ -480,19 +480,19 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		String sql = sSql.toString();
 
 		int codcli = 0;
-	
+
 		etiquetas : {
 
 			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
-				codcli = (Integer) tab.getValor( i, tab.getNumColunas()-1 );
-				
+				codcli = (Integer) tab.getValor( i, tab.getNumColunas() - 1 );
+
 				if ( !insertEtiqueta( conexao, codcli, sql ) ) {
 					break etiquetas;
 				}
-				
+
 			}
-			
+
 			retorno = true;
 		}
 
@@ -522,9 +522,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 		return retorno;
 	}
-	
 
-	@SuppressWarnings("unchecked")
+	@ SuppressWarnings ( "unchecked" )
 	public void imprimir( boolean bVisualizar ) {
 
 		String sTxa = txaEtiqueta.getVlrString();
@@ -535,44 +534,45 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		ImprimeOS imp = null;
 		ResultSet rs1 = null;
 		StringBuffer sSQL = new StringBuffer();
-		
+
 		if ( txtPostScript.getVlrString().equals( "S" ) ) {
-			
+
 			if ( removeEtiquetas() ) {
 
 				if ( persistEtiquetas() ) {
-					
+
 					sSQL.append( "SELECT C.CODCLI, C.RAZCLI, C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.UFCLI, C.CIDCLI, C.CEPCLI  " );
 					sSQL.append( "FROM VDCLIENTE C, VDETIQCLI E " );
 					sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND E.CODEMP=C.CODEMP AND E.CODFILIAL=C.CODFILIAL AND " );
 					sSQL.append( "E.CODCLI=C.CODCLI AND E.NRCONEXAO=? ORDER BY " );
-					sSQL.append( cbOrdem.getVlrString());
-					
+					sSQL.append( cbOrdem.getVlrString() );
+
 					try {
-						
+
 						PreparedStatement ps1 = con.prepareStatement( sSQL.toString() );
 						ps1.setInt( 1, Aplicativo.iCodEmp );
 						ps1.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 						ps1.setInt( 3, getNrConexao() );
 						rs1 = ps1.executeQuery();
-						
+
 					} catch ( Exception e ) {
 						e.printStackTrace();
 					}
-							
+
 					FPrinterJob dlGr = null;
 					dlGr = new FPrinterJob( "relatorios/etiquetas/clientes/" + txtModEtiq.getVlrString(), "Etiquetas", null, rs1, null, this );
-					
-					if( bVisualizar ){
+
+					if ( bVisualizar ) {
 						dlGr.setVisible( true );
-					}else{
+					}
+					else {
 						try {
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( JRException e ) {
-							Funcoes.mensagemErro( this, "Erro ao montar etiquetas\n"+e.getMessage() );
+							Funcoes.mensagemErro( this, "Erro ao montar etiquetas\n" + e.getMessage() );
 							e.printStackTrace();
-						}  
-					  
+						}
+
 					}
 					try {
 						con.commit();
@@ -651,14 +651,14 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	}
 
 	private String montaQuery() {
-		
+
 		String sSQL = "";
 		try {
 			String sCampos = "";
 			Vector<?> vCamposAdic = null;
-									
+
 			vCamposAdic = objEtiq.getCamposAdic();
-			
+
 			String sWhere = "WHERE CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial( objEtiq.getNometabela() );
 
 			try {
@@ -675,54 +675,53 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 				if ( !txtCodCli.getVlrString().equals( "" ) ) {
 					sWhere += " AND CODCLI=" + txtCodCli.getVlrInteger().intValue();
 				}
-				if( !txtCidadeCli.getVlrString().equals( "" ) ){
-					
-					if( cbComissionados.getVlrString().equals( "CL" )){
+				if ( !txtCidadeCli.getVlrString().equals( "" ) ) {
+
+					if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 						sWhere += " AND CIDCLI=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
 					}
-					else if( cbComissionados.getVlrString().equals( "CM" )){
+					else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 						sWhere += " AND CIDVEND=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
 					}
 				}
-				if (!txtUfCli.getVlrString().equals( "" )){
-					
-					if( cbComissionados.getVlrString().equals( "CL" )){
+				if ( !txtUfCli.getVlrString().equals( "" ) ) {
+
+					if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 						sWhere += " AND UFCLI=" + "'" + txtUfCli.getVlrString().trim() + "'";
 					}
-					else if( cbComissionados.getVlrString().equals( "CM" )){
+					else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 						sWhere += " AND UFVEND=" + "'" + txtUfCli.getVlrString().trim() + "'";
 					}
 				}
-				
+
 				if ( cbAtivoCli.getVlrString() != null ) {
-					if ( cbAtivoCli.getVlrString().equals( "Ativos" ) )
-					{
-						if( cbComissionados.getVlrString().equals( "CL" )){
+					if ( cbAtivoCli.getVlrString().equals( "Ativos" ) ) {
+						if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 							sWhere += " AND ATIVOCLI='S'";
 						}
-						else if( cbComissionados.getVlrString().equals( "CM" )){
+						else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 							sWhere += " AND ATIVOCOMIS='S'";
 						}
-						
+
 					}
-					else if ( cbAtivoCli.getVlrString().equals( "Inativos" ) ){
-						
-						if( cbComissionados.getVlrString().equals( "CL" )){
+					else if ( cbAtivoCli.getVlrString().equals( "Inativos" ) ) {
+
+						if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 							sWhere += " AND ATIVOCLI='N'";
 						}
-						else if( cbComissionados.getVlrString().equals( "CM" )){
+						else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 							sWhere += " AND ATIVOCOMIS='N'";
 						}
 					}
 				}
 				if ( !txtCodVend.getVlrString().equals( "" ) ) {
-					
-					if( cbComissionados.getVlrString().equals( "CL" )){
+
+					if ( cbComissionados.getVlrString().equals( "CL" ) ) {
 						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
 						sWhere += " AND CODEMPVD=" + Aplicativo.iCodEmp;
 						sWhere += " AND CODFILIALVD=" + lcVendedor.getCodFilial();
 					}
-					else if( cbComissionados.getVlrString().equals( "CM" )){
+					else if ( cbComissionados.getVlrString().equals( "CM" ) ) {
 						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
 					}
 				}
@@ -731,9 +730,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					sCampos = sCampos + vCamposAdic.elementAt( i ).toString() + ",";
 				}
 
-				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + "," + objEtiq.getPK() + " FROM " + 
-				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY "+cbOrdem.getVlrString();
-				System.out.println("***" + sSQL);
+				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + "," + objEtiq.getPK() + " FROM " + objEtiq.getNometabela() + " " + sWhere + " ORDER BY " + cbOrdem.getVlrString();
+				System.out.println( "***" + sSQL );
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
@@ -807,7 +805,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-//		objEtiq.setTexto( txaEtiqueta.getVlrString() ); XXXX
+		// objEtiq.setTexto( txaEtiqueta.getVlrString() ); XXXX
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -870,26 +868,26 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	public void valorAlterado( RadioGroupEvent evt ) {
 
-		if( cbComissionados.getVlrString().equals( "CM" )){
-			
+		if ( cbComissionados.getVlrString().equals( "CM" ) ) {
+
 			txtCodCli.setVlrString( "" );
 			txtCodSetor.setVlrString( "" );
 			txtCodTipo.setVlrString( "" );
-			
+
 			txtDescTipo.setVlrString( "" );
 			txtDescSetor.setVlrString( "" );
 			txtRazCli.setVlrString( "" );
-			
+
 			txtCodCli.setSoLeitura( true );
 			txtCodSetor.setSoLeitura( true );
 			txtCodTipo.setSoLeitura( true );
 		}
-		if( cbComissionados.getVlrString().equals( "CL" )){
-			
+		if ( cbComissionados.getVlrString().equals( "CL" ) ) {
+
 			txtCodCli.setSoLeitura( false );
 			txtCodSetor.setSoLeitura( false );
 			txtCodTipo.setSoLeitura( false );
 		}
-		
+
 	}
 }

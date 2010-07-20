@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FCaixa.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  * 
  */
 
@@ -65,7 +65,6 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 	private JCheckBoxPad cbTEF = new JCheckBoxPad( "Possui Gerenciador Padrão de TEF ?", "S", "N" );
 
 	private JCheckBoxPad cbOrcamento = new JCheckBoxPad( "Habilitar venda somente com orçamento ?", "S", "N" );
-	
 
 	public FCaixa() {
 
@@ -83,7 +82,7 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 		cbECF.setVlrString( "N" );
 		cbTEF.setVlrString( "N" );
 		cbOrcamento.setVlrString( "N" );
-		
+
 		adicCampo( txtCodCaixa, 7, 20, 80, 20, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, true );
 		adicCampo( txtDescCaixa, 90, 20, 300, 20, "DescCaixa", "Descrição do caixa", ListaCampos.DB_SI, true );
 		adicCampo( txtCodEst, 7, 60, 80, 20, "CodEst", "Cód.est.", ListaCampos.DB_FK, txtDescEst, true );
@@ -110,8 +109,7 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT COUNT(SEQCAIXA) FROM PVSEQUENCIA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=?" );
+			PreparedStatement ps = con.prepareStatement( "SELECT COUNT(SEQCAIXA) FROM PVSEQUENCIA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVSEQUENCIA" ) );
 			ps.setInt( 3, txtCodCaixa.getVlrInteger().intValue() );
@@ -128,7 +126,7 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 			e.printStackTrace();
 		} catch ( Exception e ) {
 			e.printStackTrace();
-		} 
+		}
 
 		return retorno;
 

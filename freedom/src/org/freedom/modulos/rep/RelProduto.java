@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RelProduto.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatorio de produtos, em dois modos: produtos e preços.
+ *                     Relatorio de produtos, em dois modos: produtos e preços.
  * 
  */
 
@@ -45,7 +45,6 @@ import javax.swing.JLabel;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class RelProduto extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
@@ -53,19 +52,19 @@ public class RelProduto extends FRelatorio {
 	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JRadioGroup<String, String> rgModo;
-	
+
 	private JRadioGroup<String, String> rgOrdem;
-	
+
 	private final ListaCampos lcFor = new ListaCampos( this );
 
 	public RelProduto() {
 
 		super( false );
-		setTitulo( "Relatorio de produtos" );		
+		setTitulo( "Relatorio de produtos" );
 		setAtribos( 50, 50, 325, 250 );
-		
+
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.montaSql( false, "FORNECEDOR", "RP" );
@@ -75,7 +74,7 @@ public class RelProduto extends FRelatorio {
 		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-		
+
 		Vector<String> labs = new Vector<String>();
 		labs.add( "produtos" );
 		labs.add( "preços" );
@@ -83,7 +82,7 @@ public class RelProduto extends FRelatorio {
 		vals.add( "P" );
 		vals.add( "R" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
-		
+
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Código" );
 		labs1.add( "Descrição" );
@@ -91,12 +90,12 @@ public class RelProduto extends FRelatorio {
 		vals1.add( "CODPROD" );
 		vals1.add( "DESCPROD" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );
-		
+
 		adic( new JLabel( "Modo :" ), 10, 10, 200, 20 );
 		adic( rgModo, 10, 35, 290, 30 );
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 70, 200, 20 );
 		adic( rgOrdem, 10, 95, 290, 30 );
-		
+
 		adic( new JLabel( "Cód.for." ), 10, 130, 77, 20 );
 		adic( txtCodFor, 10, 150, 77, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 90, 130, 210, 20 );
@@ -107,13 +106,13 @@ public class RelProduto extends FRelatorio {
 	public void imprimir( boolean visualizar ) {
 
 		try {
-			
+
 			String relatorio = "P".equals( rgModo.getVlrString() ) ? "rpproduto.jasper" : "rpprodutopreco.jasper";
 			String modo = "P".equals( rgModo.getVlrString() ) ? "" : " ( preços )";
 			String filtro = null;
-			
+
 			StringBuilder sql = new StringBuilder();
-			
+
 			sql.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, G.DESCGRUP, F.RAZFOR, P.REFPRODFOR, " );
 			sql.append( "P.CODBARPROD, P.EMBALAPROD, P.PRECOPROD1, P.PRECOPROD2, P.PRECOPROD3 " );
 			sql.append( "FROM RPPRODUTO P, RPGRUPO G, RPFORNECEDOR F " );
@@ -125,18 +124,18 @@ public class RelProduto extends FRelatorio {
 				filtro = "Fornecedor : " + txtRazFor.getVlrString().trim();
 			}
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
 			ResultSet rs = ps.executeQuery();
-			
-			HashMap<String,Object> hParam = new HashMap<String, Object>();
+
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
-			
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "PRODUTOS" + modo, filtro, rs, hParam, this );
+
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + relatorio, "PRODUTOS" + modo, filtro, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );

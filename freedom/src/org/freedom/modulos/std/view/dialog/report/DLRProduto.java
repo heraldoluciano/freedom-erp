@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLRProduto.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.std.view.dialog.report;
@@ -36,7 +36,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
 import java.util.Vector;
-
 
 public class DLRProduto extends FFDialogo {
 
@@ -73,7 +72,7 @@ public class DLRProduto extends FFDialogo {
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JCheckBoxPad cbAtivoProd = new JCheckBoxPad( "Somente Ativos", "S", "N" );
-	
+
 	private JComboBoxPad cbTipo;
 
 	private ListaCampos lcAlmox = new ListaCampos( this );
@@ -93,13 +92,12 @@ public class DLRProduto extends FFDialogo {
 	private Vector<String> vLabsTipo = new Vector<String>();
 
 	private Vector<Object> vValsTipo = new Vector<Object>();
-	
 
 	public DLRProduto( DbConnection cn ) {
 
 		setTitulo( "Relatório de Produtos" );
 		setAtribos( 470, 470 );
-		
+
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
@@ -113,7 +111,7 @@ public class DLRProduto extends FFDialogo {
 		vValsModo.addElement( "C" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
-		
+
 		vValsTipo.addElement( "T" );
 		vValsTipo.addElement( "P" );
 		vValsTipo.addElement( "S" );
@@ -166,7 +164,7 @@ public class DLRProduto extends FFDialogo {
 		adic( cbTipo, 270, 82, 170, 24 );
 
 		adic( new JLabelPad( "Selecão por descrição:" ), 7, 115, 146, 20 );
-		
+
 		pinSelec.adic( new JLabelPad( "De:" ), 7, 5, 30, 20 );
 		pinSelec.adic( txtDe, 7, 25, 243, 20 );
 		pinSelec.adic( new JLabelPad( "A:" ), 7, 45, 30, 20 );
@@ -174,12 +172,12 @@ public class DLRProduto extends FFDialogo {
 		adic( pinSelec, 7, 135, 260, 100 );
 
 		adic( new JLabelPad( "Selecão por código:" ), 270, 115, 128, 20 );
-		
+
 		pinSelec2.adic( new JLabelPad( "De:" ), 7, 5, 30, 20 );
 		pinSelec2.adic( txtDe2, 7, 25, 153, 20 );
 		pinSelec2.adic( new JLabelPad( "A:" ), 7, 45, 30, 20 );
 		pinSelec2.adic( txtA2, 7, 65, 153, 20 );
-		adic( pinSelec2, 270, 135, 170, 100 );		
+		adic( pinSelec2, 270, 135, 170, 100 );
 
 		adic( new JLabelPad( "Cód.for." ), 7, 250, 80, 20 );
 		adic( txtCodForn, 7, 270, 80, 20 );
@@ -197,7 +195,7 @@ public class DLRProduto extends FFDialogo {
 		lcAlmox.setConexao( cn );
 		lcCodForn.setConexao( cn );
 		lcMarca.setConexao( cn );
-		
+
 	}
 
 	public String[] getValores() {

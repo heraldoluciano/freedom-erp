@@ -2,22 +2,22 @@
  * @version 22/05/2006 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: layout <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: layout <BR>
+ *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Layout da nota fiscal para a empresa Iswara Ltda.
+ *                   Layout da nota fiscal para a empresa Iswara Ltda.
  */
 
 package org.freedom.layout.nf;
@@ -32,14 +32,14 @@ import org.freedom.library.functions.Funcoes;
 
 public class NF023 extends Layout {
 
-	public boolean imprimir(  NF nf, ImprimeOS imp ) {
+	public boolean imprimir( NF nf, ImprimeOS imp ) {
 
 		boolean retorno = super.imprimir( nf, imp );
 		boolean bjatem = false;
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
 		final int MAXLINE = 33;
-		int iLinPag = imp.verifLinPag("NF");
+		int iLinPag = imp.verifLinPag( "NF" );
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
@@ -65,20 +65,20 @@ public class NF023 extends Layout {
 
 			if ( cab.next() ) {
 
-				iNumNota = cab.getInt(NF.C_DOC);
+				iNumNota = cab.getInt( NF.C_DOC );
 				vObs = Funcoes.strToVectorSilabas( cab.getString( NF.C_OBSPED ), 120 );
 			}
-  
+
 			for ( int i = 0; i < 4; i++ ) {
-				
+
 				if ( parc.next() ) {
-						
-					sDuplics[ i ] = iNumNota + " / " + parc.getInt(NF.C_NPARCITREC);
+
+					sDuplics[ i ] = iNumNota + " / " + parc.getInt( NF.C_NPARCITREC );
 					sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
-					sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );					
+					sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );
 				}
 				else {
-					
+
 					sDuplics[ i ] = "";
 					sVencs[ i ] = "";
 					sVals[ i ] = "";
@@ -93,16 +93,16 @@ public class NF023 extends Layout {
 
 				sNat[ 0 ] = Funcoes.copy( itens.getString( NF.C_DESCNAT ).trim(), 32 );
 				sNat[ 1 ] = Funcoes.setMascara( itens.getString( NF.C_CODNAT ), "#.###" );
-				
+
 				if ( adic.next() ) {
-					
+
 					sValsCli[ 0 ] = !adic.getString( NF.C_CPFEMITAUX ).equals( "" ) ? adic.getString( NF.C_CPFEMITAUX ) : cab.getString( NF.C_CPFEMIT );
 					sValsCli[ 1 ] = !adic.getString( NF.C_NOMEEMITAUX ).equals( "" ) ? adic.getString( NF.C_NOMEEMITAUX ) : cab.getString( NF.C_RAZEMIT );
 					sValsCli[ 2 ] = !adic.getString( NF.C_CIDEMITAUX ).equals( "" ) ? adic.getString( NF.C_CIDEMITAUX ) : cab.getString( NF.C_CIDEMIT );
 					sValsCli[ 3 ] = !adic.getString( NF.C_UFEMITAUX ).equals( "" ) ? adic.getString( NF.C_UFEMITAUX ) : cab.getString( NF.C_UFEMIT );
 				}
 				else {
-					
+
 					sValsCli[ 0 ] = cab.getString( NF.C_CPFEMIT );
 					sValsCli[ 1 ] = cab.getString( NF.C_RAZEMIT );
 					sValsCli[ 2 ] = cab.getString( NF.C_CIDEMIT );
@@ -116,14 +116,14 @@ public class NF023 extends Layout {
 					imp.pulaLinha( 1, imp.comprimido() );
 
 					if ( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
-						
+
 						imp.say( 103, "X" );
 					}
 					else {
-					
+
 						imp.say( 87, "X" );
 					}
-					imp.say(128, cab.getString( NF.C_DOC ) );
+					imp.say( 128, cab.getString( NF.C_DOC ) );
 					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 5, sNat[ 0 ] );
 					imp.say( 48, sNat[ 1 ] );
@@ -137,7 +137,7 @@ public class NF023 extends Layout {
 					imp.say( 103, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
 
 					if ( !itens.getString( NF.C_IMPDTSAIDA ).equals( "N" ) ) {
-					
+
 						imp.say( 124, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );
 					}
 
@@ -151,25 +151,25 @@ public class NF023 extends Layout {
 					// Fim do cabeçalho ...
 
 					// Imprime dados da fatura ...
-					imp.say(5, cab.getString( NF.C_DOC ) );
-					imp.pulaLinha( 1, imp.comprimido());
-					imp.say(  93, sDuplics[0]);
-					imp.say( 108, sVencs[0]);
-					imp.say( 125, sVals[0]);
-					imp.say( 110, sDuplics[1]);
-					imp.say(105, sVencs[1]);
-					imp.say(125, sVals[1]);
-					imp.pulaLinha( 1, imp.comprimido());
-					imp.say(  6, sDuplics[2]);
-					imp.say( 26, sVencs[2]);
-					imp.say( 52, sVals[2]);
-					imp.say( 93, sDuplics[3]);
-					imp.say(108, sVencs[3]);
-					imp.say(125, sVals[3]);
-					imp.pulaLinha( 2, imp.comprimido());
-					String sValorTotLiqVenda = Extenso.extenso(itens.getFloat(NF.C_VLRLIQPED),"real","reais","centavo","centavos").toUpperCase(); 
-					imp.say(5,sValorTotLiqVenda);
-			        imp.pulaLinha( 3, imp.comprimido() );
+					imp.say( 5, cab.getString( NF.C_DOC ) );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 93, sDuplics[ 0 ] );
+					imp.say( 108, sVencs[ 0 ] );
+					imp.say( 125, sVals[ 0 ] );
+					imp.say( 110, sDuplics[ 1 ] );
+					imp.say( 105, sVencs[ 1 ] );
+					imp.say( 125, sVals[ 1 ] );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 6, sDuplics[ 2 ] );
+					imp.say( 26, sVencs[ 2 ] );
+					imp.say( 52, sVals[ 2 ] );
+					imp.say( 93, sDuplics[ 3 ] );
+					imp.say( 108, sVencs[ 3 ] );
+					imp.say( 125, sVals[ 3 ] );
+					imp.pulaLinha( 2, imp.comprimido() );
+					String sValorTotLiqVenda = Extenso.extenso( itens.getFloat( NF.C_VLRLIQPED ), "real", "reais", "centavo", "centavos" ).toUpperCase();
+					imp.say( 5, sValorTotLiqVenda );
+					imp.pulaLinha( 3, imp.comprimido() );
 
 					// Fim dos dados da fatura ...
 
@@ -179,40 +179,40 @@ public class NF023 extends Layout {
 
 				sTemp = itens.getString( NF.C_DESCFISC ).trim();
 				if ( sDescFisc.length() > 0 ) {
-					
+
 					if ( sDescFisc.indexOf( sTemp ) > -1 ) {
-					
+
 						bjatem1 = true;
 					}
-					if ( ! bjatem1 ) {
-					
+					if ( !bjatem1 ) {
+
 						vDescFisc.addElement( sDescFisc );
 					}
-					
+
 					bjatem1 = false;
 				}
 				else {
-					
+
 					sDescFisc = sTemp;
 				}
-					
+
 				sDescFisc = itens.getString( NF.C_DESCFISC2 ).trim();
-				
+
 				if ( sDescFisc.length() > 0 ) {
-					
+
 					if ( sDescFisc.indexOf( sTemp ) > -1 ) {
-						
+
 						bjatem2 = true;
 					}
-					if ( ! bjatem2 ) {
-						
+					if ( !bjatem2 ) {
+
 						vDescFisc.addElement( sDescFisc );
 					}
-					
+
 					bjatem2 = false;
 				}
 				else {
-				
+
 					sDescFisc = sTemp;
 				}
 
@@ -225,23 +225,23 @@ public class NF023 extends Layout {
 				if ( !sCodfisc.equals( "" ) ) {
 
 					for ( int i = 0; i < vClfisc.size(); i++ ) {
-						
+
 						if ( vClfisc.elementAt( i ) != null ) {
-							
+
 							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
-								
+
 								bjatem = true;
 								sSigla = String.valueOf( (char) ( 64 + i ) );
 							}
 							else {
-							
+
 								bjatem = false;
 							}
 						}
 					}
 
 					if ( !bjatem ) {
-						
+
 						vClfisc.addElement( sCodfisc );
 						sSigla = String.valueOf( (char) ( 63 + vClfisc.size() ) );
 						vSigla.addElement( sSigla + " = " + sCodfisc );
@@ -261,8 +261,6 @@ public class NF023 extends Layout {
 				imp.say( 103, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 				imp.say( 118, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
 				imp.say( 135, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
-				
-				
 
 				// Fim da impressão do item ...
 
@@ -279,10 +277,9 @@ public class NF023 extends Layout {
 						// Imprime observação no corpo da nota ...
 
 						for ( int i = 0; i < vObs.size(); i++ ) {
-							
+
 							if ( imp.pRow() < MAXLINE ) {
-								
-								
+
 							}
 						}
 					}
@@ -307,14 +304,14 @@ public class NF023 extends Layout {
 					else {
 
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 4,  "********************" );
+						imp.say( 4, "********************" );
 						imp.say( 32, "********************" );
-						imp.say( 114,"********************" );
+						imp.say( 114, "********************" );
 						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4,  "********************" );
+						imp.say( 4, "********************" );
 						imp.say( 58, "********************" );
 						imp.say( 87, "********************" );
-						imp.say( 114,"********************" );
+						imp.say( 114, "********************" );
 					}
 
 					// Fim da impressão dos totais ...
@@ -322,7 +319,7 @@ public class NF023 extends Layout {
 					// Imprime informações do frete ...
 
 					if ( iContaFrete == 0 ) {
-						
+
 						frete.next();
 						iContaFrete++;
 					}
@@ -334,11 +331,11 @@ public class NF023 extends Layout {
 					imp.say( 107, frete.getString( NF.C_UFFRETE ) );
 
 					if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
-					
+
 						imp.say( 116, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
 					}
 					else {
-					
+
 						imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
 					}
 
@@ -348,11 +345,11 @@ public class NF023 extends Layout {
 					imp.say( 107, frete.getString( NF.C_UFTRANSP ) );
 
 					if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
-					
+
 						imp.say( 116, cab.getString( NF.C_INSCEMIT ) );
 					}
 					else {
-					
+
 						imp.say( 116, frete.getString( NF.C_INSCTRANSP ) );
 					}
 
@@ -364,33 +361,29 @@ public class NF023 extends Layout {
 					imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
 					imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getString( NF.C_PESOLIQ ) ) ) );
 					imp.pulaLinha( 13, imp.comprimido() );
-					imp.say(128, cab.getString( NF.C_DOC ) );
+					imp.say( 128, cab.getString( NF.C_DOC ) );
 
 					// Fim da impressão do frete ...
 
 					// Imprime observação e classificações fiscais ...
 
-					
-			
 					int aux = 0;
 					for ( int i = indexObs; i < 5; i++ ) {
-						
+
 						if ( aux < sizeObs ) {
-							
+
 							imp.pulaLinha( 1, imp.comprimido() );
-							
+
 							if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
-							
+
 								imp.say( 2, vSigla.elementAt( indexSigla++ ) );
 							}
 							if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
-							
-								
+
 							}
 						}
 						else {
-							
-							
+
 						}
 					}
 
@@ -398,11 +391,11 @@ public class NF023 extends Layout {
 
 					// Imprime canhoto ...
 
-					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());
-					
-					imp.setPrc(0,0);
+					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
+
+					imp.setPrc( 0, 0 );
 					imp.incPags();
-				
+
 				}
 			}
 

@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./ Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasCFOP.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  * 
  */
 
@@ -79,11 +79,11 @@ public class FRVendasCFOP extends FRelatorio {
 	private Vector<String> vLabsFin = new Vector<String>();
 
 	private Vector<String> vValsFin = new Vector<String>();
-	
+
 	private JRadioGroup<?, ?> rgTipo = null;
-	
+
 	private Vector<String> vLabs1 = new Vector<String>();
-	
+
 	private Vector<String> vVals1 = new Vector<String>();
 
 	private ListaCampos lcCFOP = new ListaCampos( this, "NT" );
@@ -120,15 +120,14 @@ public class FRVendasCFOP extends FRelatorio {
 		vValsFin.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
-		
-		 
-		vLabs1.addElement("Texto");
- 		vLabs1.addElement("Grafico"); 
- 		vVals1.addElement("T");
- 		vVals1.addElement("G");
-		    
- 		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
- 		rgTipo.setVlrString("T");
+
+		vLabs1.addElement( "Texto" );
+		vLabs1.addElement( "Grafico" );
+		vVals1.addElement( "T" );
+		vVals1.addElement( "G" );
+
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "T" );
 
 		lcCFOP.add( new GuardaCampo( txtCodCFOP, "CodNat", "CFOP", ListaCampos.DB_PK, false ) );
 		lcCFOP.add( new GuardaCampo( txtDescCFOP, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false ) );
@@ -146,7 +145,7 @@ public class FRVendasCFOP extends FRelatorio {
 		lcMov.setReadOnly( true );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		txtCodTipoMov.setFK( true );
-		txtCodTipoMov.setTabelaExterna( lcMov, null);
+		txtCodTipoMov.setTabelaExterna( lcMov, null );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -202,12 +201,12 @@ public class FRVendasCFOP extends FRelatorio {
 
 		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
 			sWhere += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
-			sCab +=  "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
+			sCab += "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
 		}
 
 		if ( rgFaturados.getVlrString().equals( "S" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab +=  "FATURADO";
+			sCab += "FATURADO";
 		}
 		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
@@ -218,11 +217,11 @@ public class FRVendasCFOP extends FRelatorio {
 
 		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab += "FINANCEIRO" ;
+			sCab += "FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			sCab +=  "NAO FINANCEIRO" ;
+			sCab += "NAO FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "A" ) )
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
@@ -230,7 +229,6 @@ public class FRVendasCFOP extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
-		
 		sSQL.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " );
 		sSQL.append( "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA " );
 		sSQL.append( "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT " );
@@ -249,38 +247,37 @@ public class FRVendasCFOP extends FRelatorio {
 		sSQL.append( "ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA, V.CODVENDA " );
 
 		try {
-				
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-				
+
 		} catch ( Exception e ) {
-				
-			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage());
+
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
-		if("T".equals( rgTipo.getVlrString())){
-			
+		if ( "T".equals( rgTipo.getVlrString() ) ) {
+
 			imprimeTexto( rs, bVisualizar, sCab );
 		}
-		else{
-			imprimeGrafico( rs, bVisualizar, sCab ); 
+		else {
+			imprimeGrafico( rs, bVisualizar, sCab );
 		}
 	}
 
-	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
-		
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		String sCFOP = "";
 		bTotalCFOP = new BigDecimal( "0" );
 		bTotalGeral = new BigDecimal( "0" );
-		
-		
+
 		try {
 
 			imp.verifLinPag();
@@ -288,7 +285,7 @@ public class FRVendasCFOP extends FRelatorio {
 			imp.setTitulo( "Relatório de Vendas por CFOP" );
 			imp.addSubTitulo( "PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
 			imp.limpaPags();
-			
+
 			while ( rs.next() ) {
 
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
@@ -361,7 +358,7 @@ public class FRVendasCFOP extends FRelatorio {
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta tabela de venda!\n" + err.getMessage(), true, con, err );
-		} 
+		}
 
 		if ( bVisualizar ) {
 			imp.preview( this );
@@ -370,33 +367,34 @@ public class FRVendasCFOP extends FRelatorio {
 			imp.print();
 		}
 	}
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
-		
+
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ) );
 		hParam.put( "FILTROS", sCab );
-		
+
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCFOP.jasper", "Compras por CFOP", null, rs, hParam, this );
-		
+
 		if ( bVisualizar ) {
-			
+
 			dlGr.setVisible( true );
-		
+
 		}
-		else {		
-			try {				
-			
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
-			
-			} catch ( Exception err ) {					
-			
-					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Compras por CFOP!\n" + err.getMessage(), true, con, err );
+		else {
+			try {
+
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+
+			} catch ( Exception err ) {
+
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Compras por CFOP!\n" + err.getMessage(), true, con, err );
 			}
 		}
 	}
-	
+
 	private void subTotal( ImprimeOS imp, ResultSet rs ) {
 
 		try {

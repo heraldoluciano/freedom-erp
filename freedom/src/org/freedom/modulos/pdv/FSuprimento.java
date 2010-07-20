@@ -2,23 +2,23 @@
  * @version 15/07/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FAbreCaixa.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  * 
  */
 
@@ -65,34 +65,29 @@ public class FSuprimento extends FFDialogo {
 	private final JTextFieldFK txtUsuarioAnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldFK txtUsuarioAtual = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private final ControllerECF ecf;
-	
+
 	private char STATUS_OLD = '0';
-	
 
 	public FSuprimento() {
 
 		super( Aplicativo.telaPrincipal );
 		setTitulo( "Suprimento de caixa" );
 		setAtribos( 435, 270 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-		
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		montaTela();
 	}
-	
+
 	private void montaTela() {
-		
+
 		adic( new JLabelPad( "Data da última operação" ), 7, 10, 200, 20 );
 		adic( txtDataAnt, 7, 30, 200, 20 );
 		adic( new JLabelPad( "Saldo atual do caixa" ), 210, 10, 200, 20 );
 		adic( txtSldAnt, 210, 30, 200, 20 );
-		
+
 		adic( new JLabelPad( "Último operador" ), 7, 50, 200, 20 );
 		adic( txtUsuarioAnt, 7, 70, 200, 20 );
 		adic( new JLabelPad( "Status atual do caixa" ), 210, 50, 200, 20 );
@@ -136,10 +131,10 @@ public class FSuprimento extends FFDialogo {
 				else {
 					txtDataAnt.setVlrDate( rs.getDate( "DDTAMOVRET" ) );
 					txtSldAnt.setVlrString( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "NVLRSLDMOV" ) ) );
-					txtUsuarioAnt.setVlrString( rs.getString( "CIDUSU" ) );	
-					
-					STATUS_OLD = rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ];	
-	
+					txtUsuarioAnt.setVlrString( rs.getString( "CIDUSU" ) );
+
+					STATUS_OLD = rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ];
+
 					txtStatusAnt.setVlrString( Funcoes.transStatusECF( STATUS_OLD ) );
 				}
 			}

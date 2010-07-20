@@ -1,22 +1,23 @@
 /**
  * @version 07/2007 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FExporta.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Formulário de exportação de dados para arquivo, dos dados referentes a contabilidade e livros fiscais.
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FExporta.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Formulário de exportação de dados para arquivo, dos dados referentes a contabilidade e livros fiscais.
  * 
  */
 
@@ -57,11 +58,10 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.std.view.dialog.utility.DLChecaExporta;
 
-
 public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final JPanelPad panelExporta = new JPanelPad();
 
 	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -83,9 +83,8 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	private String sistema;
 
 	private Contabil layoutContabil;
-	
+
 	private List<?> erros;
-		
 
 	public FExporta() {
 
@@ -166,7 +165,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	private void getFile() {
 
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
 
 		if ( fileChooser.showOpenDialog( this ) == JFileChooser.APPROVE_OPTION ) {
 			txtFile.setVlrString( fileChooser.getSelectedFile().getPath() );
@@ -227,13 +226,13 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			}
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao checar banco de dados!\n" + e.getMessage(), true, con, e );		
+			Funcoes.mensagemErro( this, "Erro ao checar banco de dados!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
 		}
 	}
 
 	private void showErros() {
-	
+
 		DLChecaExporta dl = new DLChecaExporta( this, rgModo.getVlrString(), sistema );
 		dl.setConexao( con );
 		dl.carregaDados( erros );
@@ -246,9 +245,11 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 			String filename = txtFile.getVlrString().trim();
 			File filecontabil = new File( filename );
-			
+
 			layoutContabil.addActionListener( new ActionListener() {
+
 				public void actionPerformed( ActionEvent e ) {
+
 					if ( e.getSource().equals( layoutContabil ) ) {
 						if ( Contabil.SET_SIZE_ROWS.equals( e.getActionCommand() ) ) {
 							progress.setMaximum( layoutContabil.getSizeMax() );
@@ -258,9 +259,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 							progress.setVisible( true );
 						}
 					}
-				}				
-			});
-			
+				}
+			} );
+
 			layoutContabil.createFile( filecontabil );
 
 			Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso!" );
@@ -295,8 +296,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 				getLayoutEbs();
 			}
 			else {
-				Funcoes.mensagemErro( this, "Sistema de exportação não definido!\n" +
-											"Verifique o cadastro de preferências do sistema." );
+				Funcoes.mensagemErro( this, "Sistema de exportação não definido!\n" + "Verifique o cadastro de preferências do sistema." );
 				dispose();
 			}
 		}
@@ -307,8 +307,8 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		try {
 
 			layoutContabil = new FreedomContabil();
-			((FreedomContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
-			
+			( (FreedomContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!" );
 			e.printStackTrace();
@@ -316,36 +316,36 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	}
 
 	private List<SafeContabilVO> getLayoutSafe() {
-		
+
 		List<SafeContabilVO> erros = null;
 
 		try {
 
 			layoutContabil = new SafeContabil();
-			erros = ((SafeContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
-			
+			erros = ( (SafeContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Safe Contábil!" );
 			e.printStackTrace();
 		}
-		
+
 		return erros;
 	}
 
 	private List<Contabil> getLayoutEbs() {
-		
+
 		List<Contabil> erros = null;
 
 		try {
 
 			layoutContabil = new EbsContabil();
-			((EbsContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
-			
+			( (EbsContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Cordilheira Contábil!" );
 			e.printStackTrace();
 		}
-		
+
 		return erros;
 	}
 
@@ -353,7 +353,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		if ( e.getSource() == btGerar ) {
 			Thread th = new Thread( new Runnable() {
+
 				public void run() {
+
 					gerar();
 				}
 			} );
@@ -371,7 +373,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		}
 	}
 
-	public void focusGained( FocusEvent e ) { }
+	public void focusGained( FocusEvent e ) {
+
+	}
 
 	public void focusLost( FocusEvent e ) {
 
@@ -380,11 +384,10 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		}
 	}
 
-	@Override
+	@ Override
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 	}
 
-	
 }

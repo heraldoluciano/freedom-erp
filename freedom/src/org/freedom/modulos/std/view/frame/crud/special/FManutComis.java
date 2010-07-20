@@ -2,23 +2,23 @@
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FContComis.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  * 
  */
 
@@ -61,7 +61,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
-
 
 public class FManutComis extends FFilho implements ActionListener {
 
@@ -132,7 +131,7 @@ public class FManutComis extends FFilho implements ActionListener {
 	private JButtonPad btLib = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private Vector<String> vCodComi = new Vector<String>();
-	
+
 	private Map<String, Object> bPref = null;
 
 	String sEmitRel = "";
@@ -149,6 +148,7 @@ public class FManutComis extends FFilho implements ActionListener {
 	}
 
 	private void montaTela() {
+
 		setTitulo( "Controle de Comissões" );
 		setAtribos( 50, 25, 690, 430 );
 
@@ -264,68 +264,69 @@ public class FManutComis extends FFilho implements ActionListener {
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 		cbComPag.setVlrString( "N" );
-		
+
 	}
-	
+
 	private void montaTela2() {
-		txtCodVend.setRequerido( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) );
+
+		txtCodVend.setRequerido( (Boolean) bPref.get( "VDMANUTCOMOBRIG" ) );
 	}
-	
+
 	private Map<String, Object> getPrefere() {
-		
+
 		Map<String, Object> retorno = new HashMap<String, Object>();
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
-			sSQL.append( "SELECT VDMANUTCOMOBRIG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );			
+
+			sSQL.append( "SELECT VDMANUTCOMOBRIG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 
 			try {
-			
+
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
-					
+
 					retorno.put( "VDMANUTCOMOBRIG", new Boolean( "S".equals( rs.getString( "VDMANUTCOMOBRIG" ) ) ) );
-							
+
 				}
-				
+
 				rs.close();
 				ps.close();
-				
+
 				con.commit();
 			} catch ( SQLException err ) {
-				
+
 				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
 		} finally {
-			
+
 			sSQL = null;
 			ps = null;
 			rs = null;
 		}
 		return retorno;
 	}
-	
+
 	private void pesq() {
 
 		int iparam = 1;
 		String sWhere = " ";
-		
-		if( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) ){
-			
+
+		if ( (Boolean) bPref.get( "VDMANUTCOMOBRIG" ) ) {
+
 			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 
 				Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
 				return;
 
-			}	
+			}
 		}
 		if ( txtDataini.getText().trim().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial é requerido!" );
@@ -335,7 +336,7 @@ public class FManutComis extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Data final é requerido!" );
 			return;
 		}
-		
+
 		else if ( txtDataini.getVlrDate().after( txtDatafim.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial não pode ser maior que a data final!" );
 			return;
@@ -357,26 +358,20 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " 
-			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " 
-			+ "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere 
-			+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) 
-			+ " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
-			+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " 
-			+ " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " 
-			+ " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
-			+ "ORDER BY " 
-			+ ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
-		
+		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " + "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere
+				+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
+				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " + " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
+				+ "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
-			System.out.println( "SQL COMIS: " + sSQL ); 
-			if ( !txtCodVend.getText().trim().equals( "" ) ) {				
+			System.out.println( "SQL COMIS: " + sSQL );
+			if ( !txtCodVend.getText().trim().equals( "" ) ) {
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-				ps.setInt( iparam++, txtCodVend.getVlrInteger().intValue() );	
+				ps.setInt( iparam++, txtCodVend.getVlrInteger().intValue() );
 			}
-			
+
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -402,9 +397,9 @@ public class FManutComis extends FFilho implements ActionListener {
 					bVlrTotPago = bVlrTotPago.add( new BigDecimal( rs.getString( "VlrComi" ) ) );
 				}
 				/* # IMPLEMENTAR # */
-				
-				tab.setValor( rs.getInt( "CodVend" ), i, 1 );  
-			tab.setValor( rs.getString( "NomeVend" ), i, 2 );  
+
+				tab.setValor( rs.getInt( "CodVend" ), i, 1 );
+				tab.setValor( rs.getString( "NomeVend" ), i, 2 );
 				tab.setValor( rs.getString( "RazCli" ), i, 3 );
 				tab.setValor( rs.getString( "DocRec" ), i, 4 );
 				tab.setValor( rs.getString( "NParcItRec" ), i, 5 );
@@ -463,16 +458,16 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private void baixar() {
 
-		if( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) ){
-		
+		if ( (Boolean) bPref.get( "VDMANUTCOMOBRIG" ) ) {
+
 			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 
 				Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
 				return;
 
-			}	
+			}
 		}
-		
+
 		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger() );
 		dl.setConexao( con );
 		dl.setVisible( true );
@@ -585,8 +580,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		super.setConexao( cn );
 		lcVend.setConexao( cn );
 		bPref = getPrefere();
-	    montaTela2();
-		
-		
+		montaTela2();
+
 	}
 }

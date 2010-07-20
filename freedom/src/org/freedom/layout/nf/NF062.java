@@ -7,13 +7,13 @@
  *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -67,21 +67,20 @@ public class NF062 extends Layout {
 		Vector<String> vSigla = new Vector<String>();
 		Vector<String> vMens = new Vector<String>();
 		Vector<String> vObs = new Vector<String>();
-		
+
 		try {
-			
-			//Teste comando para mudar o espaçamento vertical.
-			
+
+			// Teste comando para mudar o espaçamento vertical.
+
 			imp.setaEspVert( ImprimeOS.EPSON_8PP );
-			
-			if ( cab.next() ) { 
-				iNumNota = cab.getInt(NF.C_DOC);
-		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),30);
-		        vMens = Funcoes.strToVectorSilabas(cab.getString(NF.C_MENSAGENS),30);
-		        vObs.addElement( "" );		        
-		        vObs.addAll( vMens );		        
+
+			if ( cab.next() ) {
+				iNumNota = cab.getInt( NF.C_DOC );
+				vObs = Funcoes.strToVectorSilabas( cab.getString( NF.C_OBSPED ), 30 );
+				vMens = Funcoes.strToVectorSilabas( cab.getString( NF.C_MENSAGENS ), 30 );
+				vObs.addElement( "" );
+				vObs.addAll( vMens );
 			}
-			
 
 			complementar = "CO".equals( cab.getString( NF.C_TIPOMOV ) );
 
@@ -143,12 +142,12 @@ public class NF062 extends Layout {
 					else {
 						imp.say( 56, "X" );
 					}
-					
+
 					imp.say( 81, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 					imp.say( 102, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( 5, imp.comprimido() );
-					
+
 					imp.say( 2, Funcoes.copy( sNat[ 0 ], 23 ) );
 					imp.say( 26, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
@@ -184,18 +183,17 @@ public class NF062 extends Layout {
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
 					sDescFisc += sTemp;
 				}
-				
+
 				// Fim da menssagem fiscal ...
 
 				// Definição da sigla para a classificação fiscal
 
 				sCodfisc = itens.getString( NF.C_CODFISC ).trim();
-			
 
 				if ( !sCodfisc.equals( "" ) ) {
 					for ( int i = 0; i < vClfisc.size() && !bjatem; i++ ) {
 						if ( vClfisc.elementAt( i ) != null ) {
-							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {								
+							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 								sSigla = String.valueOf( (char) ( 64 + i ) );
 								bjatem = true;
 							}
@@ -207,7 +205,7 @@ public class NF062 extends Layout {
 					if ( !bjatem ) {
 						vClfisc.addElement( sCodfisc );
 						sSigla = String.valueOf( (char) ( 63 + vClfisc.size() ) );
-						vSigla.addElement( sSigla + "=" + Funcoes.copy( sCodfisc , 8) );
+						vSigla.addElement( sSigla + "=" + Funcoes.copy( sCodfisc, 8 ) );
 						vDescFisc.add( sDescFisc );
 						sDescFisc = "";
 					}
@@ -224,19 +222,18 @@ public class NF062 extends Layout {
 				}
 				else {
 					imp.say( 2, itens.getString( NF.C_REFPROD ) );
-					imp.say( 8, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 23) );
+					imp.say( 8, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 23 ) );
 					imp.say( 31, " - CF:" + sSigla );
 					imp.say( 40, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 					imp.say( 46, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 					imp.say( 49, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
 					imp.say( 62, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( itens.getBigDecimal( NF.C_QTDITPED ) ) ) ) );
 					imp.say( 76, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ) ) ) );
-					
+
 					imp.say( 90, Funcoes.strDecimalToStrCurrency( 2, 2, String.valueOf( itens.getBigDecimal( NF.C_PERCICMSITPED ) ) ) );
-					
-					
+
 				}
-				
+
 				iProdImp++;
 
 				iItImp++;
@@ -264,7 +261,7 @@ public class NF062 extends Layout {
 						imp.say( 38, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSST ) ) ) );
 						imp.say( 55, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRICMSST ) ) ) );
 						imp.say( 75, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRPRODPED ) ) ) );
-						
+
 						imp.pulaLinha( 2, imp.comprimido() );
 
 						if ( !complementar ) {
@@ -272,28 +269,28 @@ public class NF062 extends Layout {
 							imp.say( 38, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRADICPED ) ) ) );
 							imp.say( 55, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRIPIPED ) ) ) );
 						}
-						
+
 						BigDecimal vlrliq = cab.getBigDecimal( NF.C_VLRLIQPED );
-//						BigDecimal dificmssubst = cab.getBigDecimal( NF.C_VLRICMSST );
+						// BigDecimal dificmssubst = cab.getBigDecimal( NF.C_VLRICMSST );
 						BigDecimal vlradic = cab.getBigDecimal( NF.C_VLRADICPED );
-//						BigDecimal vlrsoma = vlradic.add(dificmssubst);
-						BigDecimal vlrtotnota = vlrliq.add(vlradic);											
-						
-						imp.say( 75, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( vlrtotnota )) );
+						// BigDecimal vlrsoma = vlradic.add(dificmssubst);
+						BigDecimal vlrtotnota = vlrliq.add( vlradic );
+
+						imp.say( 75, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( vlrtotnota ) ) );
 
 						iItImp = 0;
 
 					}
 					else {
 						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
-						imp.say( 4,  "********" );
+						imp.say( 4, "********" );
 						imp.say( 32, "********" );
-						imp.say( 114,"********" );
+						imp.say( 114, "********" );
 						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4,  "*********" );
+						imp.say( 4, "*********" );
 						imp.say( 58, "*********" );
 						imp.say( 87, "*********" );
-						imp.say( 114,"*********" );
+						imp.say( 114, "*********" );
 					}
 
 					// Fim da impressão dos totais
@@ -348,60 +345,53 @@ public class NF062 extends Layout {
 					// Fim da impressão do frete
 
 					// Imprime observação e classificações fiscais
-					
 
-					
-
-					
-					
 					int sizeObsDescFisc = vDescFisc.size() > vObs.size() ? vDescFisc.size() : vObs.size();
 
-//					imp.pulaLinha( 1, imp.comprimido());
-					
-					for( int i=0; i < 10 && i< sizeObsDescFisc ; i++ ) {				
-												
+					// imp.pulaLinha( 1, imp.comprimido());
+
+					for ( int i = 0; i < 10 && i < sizeObsDescFisc; i++ ) {
+
 						boolean blinha = false;
-						
-						imp.pulaLinha( 1, imp.comprimido());
-						
- 					    if( vSigla.size() > 0 && indexSigla < vSigla.size() ) { 		
- 					    	
- 					    	Vector<String> vDescFiscSigla = Funcoes.stringToVector( vDescFisc.elementAt( indexSigla ).toString() );
- 					    	
-							imp.say(  2, "CF:" + vSigla.elementAt(indexSigla++) + " ");
-							
+
+						imp.pulaLinha( 1, imp.comprimido() );
+
+						if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
+
+							Vector<String> vDescFiscSigla = Funcoes.stringToVector( vDescFisc.elementAt( indexSigla ).toString() );
+
+							imp.say( 2, "CF:" + vSigla.elementAt( indexSigla++ ) + " " );
+
 							blinha = true;
-							
-							for(int i2=0; i2 < vDescFiscSigla.size();i2 ++) {
-								if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
-									imp.say( (blinha? 16 : 2) , Funcoes.copy( vDescFiscSigla.elementAt(i2), 30 ) );
-									if(blinha)
-										imp.pulaLinha( 1, imp.comprimido());			
+
+							for ( int i2 = 0; i2 < vDescFiscSigla.size(); i2++ ) {
+								if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
+									imp.say( ( blinha ? 16 : 2 ), Funcoes.copy( vDescFiscSigla.elementAt( i2 ), 30 ) );
+									if ( blinha )
+										imp.pulaLinha( 1, imp.comprimido() );
 									blinha = false;
 								}
 							}
-							
 
 						}
-		
-					}					
-					
-					sizeObs = vObs.size();
-										 
-					for( int i=0; i < vObs.size(); i++ ) {
-					    if( imp.pRow() < (MAXLINE + 22) ) {
-					        imp.pulaLinha( 1, imp.comprimido() );
-							imp.say(  2, (String)vObs.elementAt(i));
-					    }
+
 					}
-					
+
+					sizeObs = vObs.size();
+
+					for ( int i = 0; i < vObs.size(); i++ ) {
+						if ( imp.pRow() < ( MAXLINE + 22 ) ) {
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 2, (String) vObs.elementAt( i ) );
+						}
+					}
 
 					// Fim da observação
 
 					// Imprime canhoto
 
-					//imp.pulaLinha( 4, imp.comprimido() );
-					//imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
+					// imp.pulaLinha( 4, imp.comprimido() );
+					// imp.say( 128, StringFunctions.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow() + 3, imp.comprimido() );
 					imp.setPrc( 0, 0 );

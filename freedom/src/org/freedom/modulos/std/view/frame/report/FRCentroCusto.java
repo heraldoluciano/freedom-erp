@@ -2,23 +2,23 @@
  * @version 25/06/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRCentroCusto.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                        Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                        modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                        na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                        Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                        sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                        Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                        Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                        de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatório financeiro com filtro por contas e centros de custos.
+ *                        Relatório financeiro com filtro por contas e centros de custos.
  * 
  */
 
@@ -164,61 +164,30 @@ public class FRCentroCusto extends FRelatorio {
 		String sDesccc = "";
 		String sSiglacc = "";
 
-		String sSQL = "SELECT CM.CODCC,CM.SIGLACC,CM.DESCCC,CM.NIVELCC,"
-				+
-				// Primeira sub-select >>
-				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" + " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) + " AND L.CODEMP=CM.CODEMP" + " AND L.CODFILIAL=?"
-				+ " AND SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL" 
-				+ " AND SL.CODLANCA=L.CODLANCA" 
-				+ " AND SL.DATASUBLANCA BETWEEN ? AND ?" 
-				+ " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" 
-				+ " AND SL.CODEMPCC=CM.CODEMP" 
-				+ " AND SL.CODFILIALCC=CM.CODFILIAL"
-				+ " AND SL.CODSUBLANCA > 0"
+		String sSQL = "SELECT CM.CODCC,CM.SIGLACC,CM.DESCCC,CM.NIVELCC," +
+		// Primeira sub-select >>
+				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" + " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) + " AND L.CODEMP=CM.CODEMP"
+				+ " AND L.CODFILIAL=?" + " AND SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL" + " AND SL.CODLANCA=L.CODLANCA" + " AND SL.DATASUBLANCA BETWEEN ? AND ?" + " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" + " AND SL.CODEMPCC=CM.CODEMP"
+				+ " AND SL.CODFILIALCC=CM.CODFILIAL" + " AND SL.CODSUBLANCA > 0"
 				+ " AND PL.CODPLAN=SL.CODPLAN"
 				+ " AND PL.CODEMP=SL.CODEMPPN"
 				+ " AND PL.CODFILIAL=SL.CODFILIALPN"
 				+ " AND PL.TIPOPLAN = 'R'),"
 				+
 				// Fim da primeira e inicio da segunda >>
-				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" + " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) + " AND L.CODEMP=CM.CODEMP" + " AND L.CODFILIAL=?"
-				+ " AND SL.CODEMP=L.CODEMP" 
-				+ " AND SL.CODFILIAL=L.CODFILIAL" 
-				+ " AND SL.CODLANCA=L.CODLANCA" 
-				+ " AND SL.DATASUBLANCA BETWEEN ? AND ?" 
-				+ " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" 
-				+ " AND SL.CODEMPCC=CM.CODEMP" 
-				+ " AND SL.CODFILIALCC=CM.CODFILIAL"
-				+ " AND SL.CODSUBLANCA > 0" 
-				+ " AND PL.CODPLAN=SL.CODPLAN" 
-				+ " AND PL.CODEMP=SL.CODEMPPN"
+				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" + " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) + " AND L.CODEMP=CM.CODEMP"
+				+ " AND L.CODFILIAL=?" + " AND SL.CODEMP=L.CODEMP" + " AND SL.CODFILIAL=L.CODFILIAL" + " AND SL.CODLANCA=L.CODLANCA" + " AND SL.DATASUBLANCA BETWEEN ? AND ?" + " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" + " AND SL.CODEMPCC=CM.CODEMP"
+				+ " AND SL.CODFILIALCC=CM.CODFILIAL" + " AND SL.CODSUBLANCA > 0" + " AND PL.CODPLAN=SL.CODPLAN" + " AND PL.CODEMP=SL.CODEMPPN"
 				+ " AND PL.CODFILIAL=SL.CODFILIALPN"
 				+ " AND PL.TIPOPLAN = 'D'),"
 				+
 				// Fim da segunda e inicio da terceira >>
-				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" 
-				+ " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) 
-				+ ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) 
-				+ " AND L.CODEMP=CM.CODEMP" 
-				+ " AND L.CODFILIAL=?"
-				+ " AND SL.CODEMP=L.CODEMP" 
-				+ " AND SL.CODFILIAL=L.CODFILIAL" 
-				+ " AND SL.CODLANCA=L.CODLANCA" 
-				+ " AND SL.DATASUBLANCA BETWEEN ? AND ?" 
-				+ " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" 
-				+ " AND SL.CODEMPCC=CM.CODEMP" 
-				+ " AND SL.CODFILIALCC=CM.CODFILIAL"
-				+ " AND SL.CODSUBLANCA > 0" 
-				+ " AND PL.CODPLAN=SL.CODPLAN" 
-				+ " AND PL.CODEMP=SL.CODEMPPN" 
-				+ " AND PL.CODFILIAL=SL.CODFILIALPN" 
-				+ " AND PL.TIPOPLAN IN ('R','D'))"
+				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL" + " WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ( sCodPlan.equals( "" ) ? "" : " AND L.CODPLAN=?" ) + " AND L.CODEMP=CM.CODEMP"
+				+ " AND L.CODFILIAL=?" + " AND SL.CODEMP=L.CODEMP" + " AND SL.CODFILIAL=L.CODFILIAL" + " AND SL.CODLANCA=L.CODLANCA" + " AND SL.DATASUBLANCA BETWEEN ? AND ?" + " AND SUBSTR(SL.CODCC,1,STRLEN(RTRIM(CM.CODCC)))=RTRIM(CM.CODCC)" + " AND SL.CODEMPCC=CM.CODEMP"
+				+ " AND SL.CODFILIALCC=CM.CODFILIAL" + " AND SL.CODSUBLANCA > 0" + " AND PL.CODPLAN=SL.CODPLAN" + " AND PL.CODEMP=SL.CODEMPPN" + " AND PL.CODFILIAL=SL.CODFILIALPN" + " AND PL.TIPOPLAN IN ('R','D'))"
 				+
 				// Fim da terceira sub-select>>
-				" FROM FNCC CM" 
-				+ " WHERE CM.CODEMP=? AND CM.CODFILIAL=? AND ANOCC=?" 
-				+ ( sCodCC.equals( "" ) ? "" : " AND SUBSTR(CM.CODCC,1,STRLEN(RTRIM('" + sCodCC + "')))=RTRIM('" + sCodCC + "')" ) 
-				+ ( cbUsaAnal.getVlrString().equals( "S" ) ? " AND CM.NIVELCC=10" : "" )
+				" FROM FNCC CM" + " WHERE CM.CODEMP=? AND CM.CODFILIAL=? AND ANOCC=?" + ( sCodCC.equals( "" ) ? "" : " AND SUBSTR(CM.CODCC,1,STRLEN(RTRIM('" + sCodCC + "')))=RTRIM('" + sCodCC + "')" ) + ( cbUsaAnal.getVlrString().equals( "S" ) ? " AND CM.NIVELCC=10" : "" )
 				+ " ORDER BY CM.CODCC,CM.DESCCC,CM.NIVELCC";
 
 		PreparedStatement ps = null;
@@ -300,8 +269,9 @@ public class FRCentroCusto extends FRelatorio {
 					sDesccc = " " + StringFunctions.replicate( " ", iNivelcc ) + rs.getString( "DESCCC" );
 					sSiglacc = Funcoes.copy( rs.getString( "SIGLACC" ) != null ? rs.getString( "SIGLACC" ) : "", 1, 10 );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow(), 0, "| " + Funcoes.copy( rs.getString( "CODCC" ), 0, 19 ) + " | " + sSiglacc + " | " + Funcoes.copy( sDesccc, 0, 50 ) + " | " + ( rs.getString( 5 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 5 ) ) : StringFunctions.replicate( " ", 12 ) ) + " | "
-							+ ( rs.getString( 6 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 6 ) ) : StringFunctions.replicate( " ", 12 ) ) + " | " + ( rs.getString( 7 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 7 ) ) : StringFunctions.replicate( " ", 12 ) ) );
+					imp.say( imp.pRow(), 0, "| " + Funcoes.copy( rs.getString( "CODCC" ), 0, 19 ) + " | " + sSiglacc + " | " + Funcoes.copy( sDesccc, 0, 50 ) + " | " + ( rs.getString( 5 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 5 ) ) : StringFunctions.replicate( " ", 12 ) )
+							+ " | " + ( rs.getString( 6 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 6 ) ) : StringFunctions.replicate( " ", 12 ) ) + " | "
+							+ ( rs.getString( 7 ) != null ? Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( 7 ) ) : StringFunctions.replicate( " ", 12 ) ) );
 					imp.say( imp.pRow(), 136, "|" );
 					if ( iNivelcc == 10 ) {
 						bTotal = bTotal.add( new BigDecimal( rs.getString( 7 ) != null ? rs.getString( 7 ) : "0" ) );

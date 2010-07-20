@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FTipoCob.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                   Comentários sobre a classe...
  * 
  */
 
@@ -51,11 +51,10 @@ public class FTipoCob extends FDados implements ActionListener {
 	private final JTextFieldPad txtDescTipoCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtDuplCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-	
+
 	private JRadioGroup<?, ?> rgTipoFebraban = null;
-	
+
 	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobraça?", "S", "N" );
-	
 
 	public FTipoCob() {
 
@@ -64,40 +63,39 @@ public class FTipoCob extends FDados implements ActionListener {
 		setAtribos( 50, 50, 480, 250 );
 
 		montaRadioGrupos();
-		
+
 		montaTela();
-		
+
 		setListaCampos( true, "TIPOCOB", "FN" );
 		lcCampos.setQueryInsert( false );
-		
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-		
+
 		rgTipoFebraban.setVlrString( "00" );
 	}
-	
+
 	private void montaRadioGrupos() {
 
 		/*********************
-		 *   TIPO FEBRABAN   *
+		 * TIPO FEBRABAN *
 		 *********************/
 
 		Vector<String> vLabsTipoFebraban = new Vector<String>();
 		Vector<String> vValsTipoFebraban = new Vector<String>();
-		
+
 		vLabsTipoFebraban.addElement( "Nenhum" );
 		vLabsTipoFebraban.addElement( "SIACC" );
 		vLabsTipoFebraban.addElement( "CNAB" );
 		vValsTipoFebraban.addElement( "00" );
 		vValsTipoFebraban.addElement( "01" );
 		vValsTipoFebraban.addElement( "02" );
-		
+
 		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabsTipoFebraban, vValsTipoFebraban );
 	}
-	
+
 	private void montaTela() {
-		
+
 		adicCampo( txtCodTipoCob, 7, 20, 80, 20, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoCob, 90, 20, 250, 20, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, true );
 		adicCampo( txtDuplCob, 343, 20, 80, 20, "DuplCob", "Duplicata", ListaCampos.DB_SI, false );
@@ -113,7 +111,7 @@ public class FTipoCob extends FDados implements ActionListener {
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 

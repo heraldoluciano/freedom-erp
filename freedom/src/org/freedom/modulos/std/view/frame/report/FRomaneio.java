@@ -7,13 +7,13 @@
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe: @(#)FRomaneio.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -71,19 +71,19 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 	private JTextFieldPad txtCodItRoma = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodTransp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDtPrevItRoma = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtDescVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldFK txtRazTransp = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private JButtonPad btBuscar = new JButtonPad( "Busca venda" , Icone.novo( "btGerar.gif" ) );
+
+	private JButtonPad btBuscar = new JButtonPad( "Busca venda", Icone.novo( "btGerar.gif" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this, "VA" );
-	
+
 	private ListaCampos lcTransp = new ListaCampos( this, "TN" );
 
 	public FRomaneio() {
@@ -100,8 +100,8 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		setImprimir( true );
 	}
 
-	private void montaTela(){
-		
+	private void montaTela() {
+
 		setAltCab( 140 );
 		pinCab = new JPanelPad( 500, 90 );
 		setListaCampos( lcCampos );
@@ -112,14 +112,14 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		adicCampo( txtDtPrevRoma, 290, 20, 97, 20, "DtPrevRoma", "Data prevista", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEntregaRoma, 390, 20, 97, 20, "DtEntregaRoma", "Data de entrega", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStatusRoma, "StatusRoma", "Status", ListaCampos.DB_SI, false );
-		adicCampo( txtCodTransp, 7, 65, 70, 20, "CodTran", "Cód.Transp", ListaCampos.DB_FK, txtRazTransp ,true );
+		adicCampo( txtCodTransp, 7, 65, 70, 20, "CodTran", "Cód.Transp", ListaCampos.DB_FK, txtRazTransp, true );
 		adicDescFK( txtRazTransp, 80, 65, 250, 20, "RazTransp", "Razão social da transportadora" );
 		setListaCampos( true, "ROMANEIO", "VD" );
-		lcCampos.setQueryInsert( false );	
-		
+		lcCampos.setQueryInsert( false );
+
 		adic( btBuscar, 340, 60, 150, 30 );
 		btBuscar.addActionListener( this );
-		
+
 		setAltDet( 60 );
 		pinDet = new JPanelPad( 590, 110 );
 		setPainel( pinDet, pnDet );
@@ -132,19 +132,17 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		setListaCampos( true, "ITROMANEIO", "VD" );
 		lcCampos.setQueryInsert( false );
 		montaTab();
-		
-	
 
 		tab.setTamColuna( 150, 2 );
 		tab.setTamColuna( 100, 3 );
 	}
-	
-	private void montaListaCampos(){
-		
+
+	private void montaListaCampos() {
+
 		/*************
-		 *   VENDA   *
+		 * VENDA *
 		 ************/
-		
+
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtDescVenda, "VlrLiqVenda", "Valor da venda", ListaCampos.DB_SI, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );
@@ -152,69 +150,70 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		lcVenda.setReadOnly( true );
 		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtDescVenda.setListaCampos( lcVenda );
-		
+
 		/********************
-		 *  TRANSPORTADORA  *
+		 * TRANSPORTADORA *
 		 ********************/
-		
+
 		lcTransp.add( new GuardaCampo( txtCodTransp, "CodTran", "Cód.trans", ListaCampos.DB_PK, true ) );
 		lcTransp.add( new GuardaCampo( txtRazTransp, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
 		lcTransp.montaSql( false, "TRANSP", "VD" );
 		lcTransp.setQueryCommit( false );
 		lcTransp.setReadOnly( true );
 		txtCodTransp.setTabelaExterna( lcTransp, null );
-		
+
 	}
-	
+
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btPrevimp ){
+		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
-		else if ( evt.getSource() == btImp ){
+		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		else if( evt.getSource() == btBuscar){
+		else if ( evt.getSource() == btBuscar ) {
 			gerar();
 		}
 		super.actionPerformed( evt );
 	}
-	
-	private int getmax(){
-		
+
+	private int getmax() {
+
 		int imax = 0;
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
-		
+
 		sql.append( "select max(coditroma) from vditromaneio where codemp=? and codfilial=? and codroma=? " );
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "vdromaneio" ) );
 			ps.setInt( 3, txtCodRoma.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
-			
-			if( rs.next() ){
+
+			if ( rs.next() ) {
 				imax = rs.getInt( 1 ) + 1;
 			}
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar max(romaneio)!" );
-		} 
-		
+		}
+
 		return imax;
 	}
-	private void gerar(){
-		
-		StringBuffer sql = new StringBuffer();	
+
+	private void gerar() {
+
+		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-			
+
 		sql.append( "select v.codemp, v.codfilial, v.codvenda, v.tipovenda " );
 		sql.append( "from vdvenda v, vdfretevd f " );
 		sql.append( "where " );
@@ -222,11 +221,11 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		sql.append( "and v.codvenda not in ( select codvenda from vditromaneio where codemp=? and codfilial=? and codroma=? ) and " );
 		sql.append( "f.codemptn=? and f.codfilialtn=? and f.codtran=? and " );
 		sql.append( "v.dtsaidavenda=? " );
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sql.toString() );
-		
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodRoma.getVlrInteger() );
@@ -234,40 +233,35 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			ps.setInt( 5, ListaCampos.getMasterFilial( "vdvenda" ) );
 			ps.setInt( 6, txtCodTransp.getVlrInteger() );
 			ps.setDate( 7, Funcoes.dateToSQLDate( txtDtSaidaRoma.getVlrDate() ) );
-			
+
 			rs = ps.executeQuery();
-			
-			while( rs.next() ){
-				
-				insertRegistros( rs.getInt( "codemp" ), rs.getInt( "codfilial" ),
-						         txtCodRoma.getVlrInteger(), getmax(), rs.getInt( "codemp" ), rs.getInt( "codfilial" ), 
-						         rs.getString( "tipovenda" ), rs.getInt( "codvenda" ),
-						         Funcoes.dateToSQLDate( txtDtSaidaRoma.getVlrDate()));
-				
-						         
+
+			while ( rs.next() ) {
+
+				insertRegistros( rs.getInt( "codemp" ), rs.getInt( "codfilial" ), txtCodRoma.getVlrInteger(), getmax(), rs.getInt( "codemp" ), rs.getInt( "codfilial" ), rs.getString( "tipovenda" ), rs.getInt( "codvenda" ), Funcoes.dateToSQLDate( txtDtSaidaRoma.getVlrDate() ) );
+
 			}
-			
+
 			con.commit();
-		
+
 			lcCampos.carregaDados();
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda!" );
 		}
 	}
-	
-	private void insertRegistros( int codemp, int codfilial, int codroma, int coditroma, int codempva, int codfilialva, 
-			String tipovenda, int codvenda, Date dtprevitroma ){
-		
+
+	private void insertRegistros( int codemp, int codfilial, int codroma, int coditroma, int codempva, int codfilialva, String tipovenda, int codvenda, Date dtprevitroma ) {
+
 		StringBuffer sql = new StringBuffer();
-		PreparedStatement  ps = null;
-		
+		PreparedStatement ps = null;
+
 		sql.append( "insert into vditromaneio( codemp, codfilial, codroma, coditroma, codempva, codfilialva, " );
 		sql.append( "tipovenda, codvenda, dtprevitroma ) values( ?,?,?,?,?,?,?,?,? )" );
 
 		try {
-			
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, codemp );
 			ps.setInt( 2, codfilial );
@@ -277,10 +271,10 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			ps.setInt( 6, codfilialva );
 			ps.setString( 7, tipovenda );
 			ps.setInt( 8, codvenda );
-			ps.setDate( 9, Funcoes.dateToSQLDate( dtprevitroma ));
-			
+			ps.setDate( 9, Funcoes.dateToSQLDate( dtprevitroma ) );
+
 			ps.execute();
-						
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao inserir dados na tabela VDITROMANEIO" );
@@ -291,27 +285,26 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 
 		String sProd = "P.CODPROD ";
 		DLRRomaneio dl = new DLRRomaneio();
-		StringBuffer sql = new StringBuffer(); 
-	
+		StringBuffer sql = new StringBuffer();
+
 		if ( comRefProd() ) {
-			
+
 			sProd = "P.REFPROD ";
 		}
-		
-		
+
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
 		}
-		
+
 		sql.append( "SELECT R.DATAROMA, " );
 		sql.append( sProd );
 		sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, " );
 		sql.append( "SUM(I.QTDITVENDA) QTDITVENDA, " );
 		sql.append( "SUM(I.VLRLIQITVENDA/I.QTDITVENDA) VLRUNIT, " );
 		sql.append( "SUM(I.VLRLIQITVENDA) VLRTOTAL, " );
-		sql.append( "P.REFPROD,P.LOCALPROD ");
+		sql.append( "P.REFPROD,P.LOCALPROD " );
 		sql.append( "FROM VDROMANEIO R, VDITROMANEIO IR, " );
 		sql.append( "VDVENDA V,VDITVENDA I,EQPRODUTO P " );
 		sql.append( "WHERE R.CODROMA=? AND IR.CODROMA=R.CODROMA  " );
@@ -322,31 +315,31 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		sql.append( ", P.DESCPROD, P.CODUNID, R.CODROMA, P.REFPROD, P.LOCALPROD " );
 		sql.append( "ORDER BY " );
 		sql.append( ( dl.getValor().trim().equals( "CODPROD" ) ? sProd : dl.getValor() ) );
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, txtCodRoma.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
 
 			imprimiGrafico( rs, bVisualizar );
-		
-			con.commit();				
-			
+
+			con.commit();
+
 			dl.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta do relatório\n!" + err.getMessage(), true, con, err );
-		}	
+		}
 	}
-	
+
 	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
 
 		FPrinterJob dlGr = null;
-		
+
 		dlGr = new FPrinterJob( "relatorios/Romaneio.jasper", "Romaneio", null, rs, null, this );
 
 		if ( bVisualizar ) {
@@ -374,7 +367,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			if ( rs.next() ) {
 				bResultado = rs.getString( "UsaRefProd" ).trim().equals( "S" );
 			}
-		
+
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );

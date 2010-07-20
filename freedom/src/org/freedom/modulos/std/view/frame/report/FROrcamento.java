@@ -8,13 +8,13 @@
  *         Classe:
  * @(#)FROrcamento.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -45,7 +45,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FROrcamento extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -63,9 +62,9 @@ public class FROrcamento extends FRelatorio {
 	private JCheckBoxPad cbFaturadoParcial = new JCheckBoxPad( "Faturado parcial", "S", "N" );
 
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad( "Faturado", "S", "N" );
-	
+
 	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
-	
+
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
 
 	public FROrcamento() {
@@ -91,17 +90,16 @@ public class FROrcamento extends FRelatorio {
 		borda2.setBorder( BorderFactory.createEtchedBorder() );
 		adic( status, 15, 75, 50, 18 );
 		adic( borda2, 7, 85, 300, 80 );
-		
-		
+
 		adic( cbAberto, 25, 90, 80, 20 );
 		adic( cbFaturadoParcial, 140, 90, 120, 20 );
-		
+
 		adic( cbImpresso, 25, 107, 80, 20 );
 		adic( cbFaturado, 140, 107, 80, 20 );
-		
-		adic( cbLiberado, 25, 124, 80, 20 );		
+
+		adic( cbLiberado, 25, 124, 80, 20 );
 		adic( cbProduzido, 140, 124, 110, 20 );
-		
+
 		adic( cbCancelado, 25, 141, 110, 20 );
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -114,7 +112,7 @@ public class FROrcamento extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder status = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
-		
+
 		try {
 
 			if ( "S".equals( cbAberto.getVlrString() ) ) {
@@ -165,7 +163,6 @@ public class FROrcamento extends FRelatorio {
 				}
 				status.append( "'CA'" );
 			}
-			
 
 			sql.append( "select o.codorc, o.dtorc, o.dtvencorc," );
 			sql.append( "o.codcli, cl.razcli, o.vlrliqorc " );

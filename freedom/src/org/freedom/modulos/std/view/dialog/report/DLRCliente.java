@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLRCliente.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.std.view.dialog.report;
@@ -39,7 +39,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-
 public class DLRCliente extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
@@ -53,7 +52,7 @@ public class DLRCliente extends FFDialogo {
 	private JTextFieldPad txtA = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -75,9 +74,9 @@ public class DLRCliente extends FFDialogo {
 	private JCheckBoxPad cbFis = new JCheckBoxPad( "Física", "S", "N" );
 
 	private JCheckBoxPad cbJur = new JCheckBoxPad( "Jurídica", "S", "N" );
-	
+
 	private JCheckBoxPad cbAtiv = new JCheckBoxPad( "Somente Ativos", "S", "N" );
-	
+
 	private JCheckBoxPad cbInativ = new JCheckBoxPad( "Somente Inativos", "S", "N" );
 
 	private JRadioGroup<?, ?> rgOrdem = null;
@@ -135,7 +134,7 @@ public class DLRCliente extends FFDialogo {
 
 		rgModo = new JRadioGroup<String, String>( 2, 3, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
-		
+
 		vLabsEnd.addElement( "Cadast." );
 		vLabsEnd.addElement( "Ent." );
 		vLabsEnd.addElement( "Cob." );
@@ -147,8 +146,8 @@ public class DLRCliente extends FFDialogo {
 
 		cbObs.setVlrString( "N" );
 		cbAtiv.setVlrString( "S" );
-		cbInativ.setVlrString( "N" );		
-		
+		cbInativ.setVlrString( "N" );
+
 		cbFis.setVlrString( "S" );
 		cbJur.setVlrString( "S" );
 
@@ -195,7 +194,6 @@ public class DLRCliente extends FFDialogo {
 		adic( cbObs, 270, 16, 165, 20 );
 		adic( cbAtiv, 270, 34, 160, 20 );
 		adic( cbInativ, 270, 52, 160, 20 );
-		
 
 		JLabelPad lbSelecao = new JLabelPad( "   Seleção :" );
 		lbSelecao.setOpaque( true );
@@ -208,21 +206,21 @@ public class DLRCliente extends FFDialogo {
 		adic( new JLabelPad( "À:", SwingConstants.RIGHT ), 12, 125, 30, 20 );
 		adic( txtA, 47, 125, 200, 20 );
 
-		adic( new JLabelPad( "UF" ), 277,75, 30, 20 );
+		adic( new JLabelPad( "UF" ), 277, 75, 30, 20 );
 		adic( txtEstCli, 277, 95, 30, 20 );
-		
+
 		adic( new JLabelPad( "Cidade" ), 310, 75, 130, 20 );
 		adic( txtCid, 310, 95, 130, 20 );
 		adic( new JLabelPad( "Bairro" ), 277, 115, 140, 20 );
 		adic( txtBairro, 277, 135, 163, 20 );
-		
+
 		JLabelPad lbEnd = new JLabelPad( "Endereço :" );
 		lbSelecao.setOpaque( true );
 		adic( lbEnd, 7, 155, 85, 20 );
 		adic( rgEnd, 7, 175, 259, 30 );
 
 		JLabelPad lbBordaPessoa = new JLabelPad();
-		lbBordaPessoa.setBorder( BorderFactory.createEtchedBorder() );		
+		lbBordaPessoa.setBorder( BorderFactory.createEtchedBorder() );
 		adic( new JLabelPad( "Pessoa :" ), 270, 155, 75, 20 );
 		adic( lbBordaPessoa, 270, 175, 170, 30 );
 		adic( cbFis, 287, 180, 70, 20 );
@@ -266,13 +264,13 @@ public class DLRCliente extends FFDialogo {
 			sRetorno[ 0 ] = "C1.RAZCLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "I" ) ) {
-			if( "A".equals( rgEnd.getVlrString() ) ) {
+			if ( "A".equals( rgEnd.getVlrString() ) ) {
 				sRetorno[ 0 ] = "C1.CIDCLI, C1.RAZCLI";
 			}
-			else if( "E".equals( rgEnd.getVlrString() ) ) {
+			else if ( "E".equals( rgEnd.getVlrString() ) ) {
 				sRetorno[ 0 ] = "C1.CIDENT, C1.RAZCLI";
 			}
-			else if( "C".equals( rgEnd.getVlrString() ) ) {
+			else if ( "C".equals( rgEnd.getVlrString() ) ) {
 				sRetorno[ 0 ] = "C1.CIDCOB, C1.RAZCLI";
 			}
 		}

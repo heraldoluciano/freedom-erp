@@ -3,27 +3,27 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RPPedido.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de pedidos de vendas.
+ *                   Tela de cadastro de pedidos de vendas.
  * 
  */
 
-package org.freedom.modulos.rep; 
+package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -124,7 +124,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtCodItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
+
 	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -134,7 +134,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtPrecoItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPrecoCustoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-	
+
 	private final JTextFieldPad txtVlrItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPercIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
@@ -154,7 +154,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtVlrRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPercPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-	
+
 	private final JTextFieldPad txtFatorLucratividade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 4, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtVlrPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
@@ -180,11 +180,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtRecTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPagTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-	
+
 	private final JTextFieldPad txtPercTotLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-	
+
 	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-	
+
 	private final JTextFieldPad txtFatLucCli = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
@@ -210,7 +210,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final ListaCampos lcTransportadora = new ListaCampos( this, "TP" );
 
 	private final ListaCampos lcProduto = new ListaCampos( this, "PD" );
-	
+
 	private final ListaCampos lcReferencia = new ListaCampos( this, "PD" );
 
 	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
@@ -218,12 +218,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final ListaCampos lcPedido = new ListaCampos( this, "" );
 
 	private List<Object> prefere = null;
-	
+
 	private JButtonPad btExp = new JButtonPad( Icone.novo( "btExportar.gif" ) );
-	
+
 	boolean fator = false;
 
-	
 	public RPPedido() {
 
 		super( false );
@@ -234,7 +233,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		montaListaCampos();
 
 		montaMaster();
-		
+
 		setImprimir( true );
 		btPrevimp.addActionListener( this );
 		btImp.addActionListener( this );
@@ -385,7 +384,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
-		lcProduto.add( new GuardaCampo( txtPrecoCustoProd, "precocusto", "Preco.Custo", ListaCampos.DB_SI, false));
+		lcProduto.add( new GuardaCampo( txtPrecoCustoProd, "precocusto", "Preco.Custo", ListaCampos.DB_SI, false ) );
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto, null );
@@ -404,10 +403,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcReferencia.setReadOnly( true );
 		txtRefProd.setListaCampos( lcDet );
 		txtRefProd.setTabelaExterna( lcReferencia, null );
-		
+
 		txtRefProd.addKeyListener( this );
-		
-		
+
 		/****************
 		 * FORNECEDOR 2 *
 		 ****************/
@@ -427,7 +425,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		 * PEDIDOS *
 		 ***********/
 		setListaCampos( lcCampos );
-		
+
 		setAltCab( 170 );
 		setPainel( panelPedido, pnCliCab );
 
@@ -452,7 +450,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		adicDB( rgRemessa, 584, 20, 90, 110, "TipoRemPed", "Remessa", false );
 		adicDB( rgFrete, 469, 100, 110, 30, "TipoFretePed", "Frete", false );
-		
+
 		setListaCampos( true, "PEDIDO", "RP" );
 
 	}
@@ -498,14 +496,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		setAltDet( 175 );
 		setPainel( panelCamposItens, panelItens );
-		
+
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-		
+
 		panelCamposItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Itens" ) );
 
 		adicCampo( txtCodItem, 7, 15, 50, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
-		
+
 		if ( "S".equals( (String) prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
@@ -517,7 +515,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			adicCampo( txtCodProd, 60, 15, 90, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
 		}
-		
+
 		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdItem, 402, 15, 48, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
 		adicCampo( txtPrecoItem, 453, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
@@ -526,7 +524,6 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adicCampo( txtPercIPIItem, 550, 15, 62, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItPed", "Valor IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtPercItLucro, 615, 15, 58, 20, "PercItlucro", "% Lucro", ListaCampos.DB_SI, false );
-		
 
 		adicCampo( txtPercDescItem, 7, 55, 70, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
@@ -540,28 +537,28 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adic( txtCodForItem, 319, 55, 80, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 402, 35, 189, 20 );
 		adic( txtRazForItem, 402, 55, 210, 20 );
-		if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
-			
-			 adicCampo( txtFatorLucratividade, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
-			 fator = true;
+		if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) ) ) {
+
+			adicCampo( txtFatorLucratividade, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
+			fator = true;
 		}
-		
+
 		btExp.setPreferredSize( new Dimension( 30, 30 ) );
 		btExp.setToolTipText( "Copia orçamento." );
 		pnNavCab.add( btExp, BorderLayout.EAST );
-		
+
 		txtCodForItem.setAtivo( false );
 		txtPercItLucro.setAtivo( false );
 
 		btObsPed.setToolTipText( "Observação do pedido" );
 		btEmailPed.setToolTipText( "Enviar pedido por e-mail" );
-		
+
 		pnGImp.setPreferredSize( new Dimension( 160, 26 ) );
 		pnGImp.add( btObsPed );
 		pnGImp.add( btEmailPed );
 
 		setListaCampos( true, "ITPEDIDO", "RP" );
-		
+
 		montaTab();
 
 		tab.setTamColuna( 50, 0 );
@@ -570,8 +567,6 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		tab.setTamColuna( 100, 3 );
 		tab.setTamColuna( 100, 4 );
 		tab.setTamColuna( 100, 5 );
-		
-		
 
 	}
 
@@ -634,109 +629,108 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			txtVlrPagItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercPagItem.getVlrBigDecimal() ) );
 		}
 	}
-	
-    private void calcPercItLucro(){
-		
-		BigDecimal percLucro = new BigDecimal("0.00");
+
+	private void calcPercItLucro() {
+
+		BigDecimal percLucro = new BigDecimal( "0.00" );
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
-		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatorLucratividade.getVlrBigDecimal() : new BigDecimal (1) );
+		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatorLucratividade.getVlrBigDecimal() : new BigDecimal( 1 ) );
 		BigDecimal ipiitem = txtPercIPIItem.getVlrBigDecimal().multiply( precoVenda ).divide( bdCem );
-		precoVendaFator = precoVendaFator.subtract( ipiitem == null ? new BigDecimal(0) : ipiitem );
-						
+		precoVendaFator = precoVendaFator.subtract( ipiitem == null ? new BigDecimal( 0 ) : ipiitem );
+
 		try {
 
-			if(prefere.get( EPrefere.TPCALCLUCRO.ordinal() ).toString().equals( "V" )) {
+			if ( prefere.get( EPrefere.TPCALCLUCRO.ordinal() ).toString().equals( "V" ) ) {
 				// Calculo correto de lucratividade baseado no preço final.
-				percLucro = ((precoVendaFator.subtract( precoCusto )).divide( precoVendaFator, new MathContext( 10 ) ).multiply( bdCem ));
+				percLucro = ( ( precoVendaFator.subtract( precoCusto ) ).divide( precoVendaFator, new MathContext( 10 ) ).multiply( bdCem ) );
 			}
 			else {
 				// Calculo de lucratividade baseado no custo ... errado
-				percLucro = (precoVendaFator.multiply( bdCem )).divide( precoCusto, new MathContext( 10 ) ).subtract( bdCem );
+				percLucro = ( precoVendaFator.multiply( bdCem ) ).divide( precoCusto, new MathContext( 10 ) ).subtract( bdCem );
 			}
 			percLucro.setScale( 2, BigDecimal.ROUND_HALF_UP );
-			
+
 			txtPercItLucro.setVlrBigDecimal( percLucro );
-			
-		}
-		catch ( Exception e ) {
-			
+
+		} catch ( Exception e ) {
+
 			e.printStackTrace();
 		}
 	}
-	
-	private void calcTotLucro(){
-		
-		BigDecimal totalLucro = new BigDecimal(0);
+
+	private void calcTotLucro() {
+
+		BigDecimal totalLucro = new BigDecimal( 0 );
 		StringBuilder sSQL = new StringBuilder();
-		
+
 		sSQL.append( "SELECT ( SUM(COALESCE(PERCITLUCRO,0)* IT.VLRLIQITPED) / SUM(VLRLIQITPED)) FROM RPITPEDIDO IT WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPED=?" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
 			ps.setInt( 3, txtCodPed.getVlrInteger() );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
-			if( rs.next() ){
-				
-				if( txtPercTotLucro.getVlrBigDecimal() == null ){
-					
-					txtPercTotLucro.setVlrBigDecimal( new BigDecimal(0) );
-				
-				}else{
-				
-					txtPercTotLucro.setVlrBigDecimal( rs.getBigDecimal( 1 )!=null ? rs.getBigDecimal( 1 ) : new BigDecimal( "0.00" ) );
+
+			if ( rs.next() ) {
+
+				if ( txtPercTotLucro.getVlrBigDecimal() == null ) {
+
+					txtPercTotLucro.setVlrBigDecimal( new BigDecimal( 0 ) );
+
+				}
+				else {
+
+					txtPercTotLucro.setVlrBigDecimal( rs.getBigDecimal( 1 ) != null ? rs.getBigDecimal( 1 ) : new BigDecimal( "0.00" ) );
 				}
 			}
-			
+
 		} catch ( SQLException err ) {
-		
+
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao calcular Total de Lucro!" );
 		}
 	}
-		
+
 	private void loadProduto() {
-		
+
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT PRECOPROD1, PERCIPIPROD, COMISPROD FROM RPPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
+			PreparedStatement ps = con.prepareStatement( "SELECT PRECOPROD1, PERCIPIPROD, COMISPROD FROM RPPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
 			ps.setInt( 3, txtCodProd.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
+
 				txtPrecoItem.setVlrBigDecimal( rs.getBigDecimal( "PRECOPROD1" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PRECOPROD1" ) );
 				txtPercIPIItem.setVlrBigDecimal( rs.getBigDecimal( "PERCIPIPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PERCIPIPROD" ) );
 				txtPercRecItem.setVlrBigDecimal( rs.getBigDecimal( "COMISPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "COMISPROD" ) );
-			}			
+			}
 
 			con.commit();
-			
+
 			rs.close();
 			ps.close();
-			
+
 			ps = con.prepareStatement( "SELECT PERCCOMIS FROM RPVENDEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPVENDEDOR" ) );
 			ps.setInt( 3, txtCodVend.getVlrInteger() );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
+
 				BigDecimal perccomis = rs.getBigDecimal( "PERCCOMIS" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PERCCOMIS" );
 				txtPercPagItem.setVlrBigDecimal( txtPercRecItem.getVlrBigDecimal().divide( new BigDecimal( "100" ) ).multiply( perccomis ) );
-			}			
-		
+			}
+
 			con.commit();
-			
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar produto!\n" + e.getMessage() );
 			e.printStackTrace();
@@ -800,16 +794,16 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			}
 		}
 	}
-	
+
 	private FPrinterJob getPedido( final Integer codped ) {
-		
+
 		String classLayout = "/opt/freedom/reports/pedido.jasper";
-		
+
 		if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
-		
+
 			classLayout = "/opt/freedom/reports/" + (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) + ".jasper";
 		}
-		
+
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
@@ -830,16 +824,16 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
 
 			try {
-				
+
 				EmailBean mail = Aplicativo.getEmailBean();
 				mail.setAssunto( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString() );
-				
+
 				DLEmail dlenvio = new DLEmail( this );
 				dlenvio.setVisible( true );
-				
+
 				if ( dlenvio.OK ) {
 					if ( dlenvio.OPTION_CLIENTE == dlenvio.getOption() ) {
-						mail.setPara( AplicativoRep.getEmailCliente( txtCodCli.getVlrInteger(), con ) );	
+						mail.setPara( AplicativoRep.getEmailCliente( txtCodCli.getVlrInteger(), con ) );
 					}
 					else {
 						mail.setPara( AplicativoRep.getEmailFornecedor( txtCodFor.getVlrInteger(), con ) );
@@ -866,7 +860,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			}
 		}
 	}
-	
+
 	private void exportar() {
 
 		PreparedStatement ps = null;
@@ -882,7 +876,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			dl = new RPCopiaPed( this );
 			dl.setConexao( con );
 			dl.setVisible( true );
-			
+
 			if ( !dl.OK ) {
 				dl.dispose();
 				return;
@@ -893,33 +887,32 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			sSQL = "SELECT IRET FROM VDCOPIAPEDSP(?,?,?,?,?,?)";
 
 			ps = con.prepareStatement( sSQL );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, iVals[ 0 ] );
 			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, iVals[ 1 ]  );
+			ps.setInt( 5, iVals[ 1 ] );
 			ps.setInt( 6, txtCodPed.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Pedido '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + 
-						"Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+				if ( Funcoes.mensagemConfirma( this, "Pedido '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					txtCodPed.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 					lcCampos.carregaDados();
 				}
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o pedido!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-			
+
 		} finally {
 			ps = null;
 			rs = null;
@@ -935,7 +928,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			try {
 
 				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
-				
+
 				if ( visualizar ) {
 					dlGr.setVisible( true );
 				}
@@ -954,17 +947,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( e.getListaCampos() == lcDet ) {
 			lcProduto.carregaDados();
 			lcPedido.carregaDados();
-			
+
 		}
 		else if ( e.getListaCampos() == lcCampos ) {
 			String s = txtCodPed.getVlrString();
 			lcPedido.carregaDados();
 			txtCodPed.setVlrString( s );
-			calcTotLucro(); 
+			calcTotLucro();
 		}
 		else if ( e.getListaCampos() == lcCliente ) {
 			lcVendedor.carregaDados();
-			lcPlanoPag.carregaDados();			
+			lcPlanoPag.carregaDados();
 		}
 		else if ( e.getListaCampos() == lcReferencia ) {
 			lcProduto.carregaDados();
@@ -974,9 +967,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				loadProduto();
 			}
-			if( txtFatorLucratividade.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0  ){
-				txtFatorLucratividade.setVlrBigDecimal( txtFatLucCli.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0 ?
-						new BigDecimal ( 1 ) :  txtFatLucCli.getVlrBigDecimal() );
+			if ( txtFatorLucratividade.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) == 0 ) {
+				txtFatorLucratividade.setVlrBigDecimal( txtFatLucCli.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) == 0 ? new BigDecimal( 1 ) : txtFatLucCli.getVlrBigDecimal() );
 			}
 		}
 	}
@@ -994,26 +986,28 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 			txtDataPed.setVlrDate( Calendar.getInstance().getTime() );
 			txtDataPed.requestFocus();
-			
-			//txtFatorLucratividade.setVlrString( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) );
-			//txtFatorLucratividade.setVisible( true );
-			
+
+			// txtFatorLucratividade.setVlrString( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) );
+			// txtFatorLucratividade.setVisible( true );
+
 		}
 		else if ( e.getListaCampos() == lcDet ) {
 
 			if ( "S".equals( prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
-				
+
 				txtRefProd.requestFocus();
 			}
 			else {
-				
+
 				txtCodProd.requestFocus();
-			}	
-			
+			}
+
 		}
 	}
 
-	public void beforeInsert( InsertEvent e ) { }
+	public void beforeInsert( InsertEvent e ) {
+
+	}
 
 	@ Override
 	public void afterPost( PostEvent e ) {
@@ -1021,18 +1015,18 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( e.getListaCampos() == lcCampos && lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT ) {
 
 			lcDet.insert( true );
-			
+
 			if ( "S".equals( prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
-				
+
 				txtRefProd.requestFocus();
 			}
 			else {
-				
+
 				txtCodProd.requestFocus();
 			}
 		}
-		else if( e.getListaCampos() == lcDet ){
-			
+		else if ( e.getListaCampos() == lcDet ) {
+
 			calcTotLucro();
 		}
 		super.afterPost( e );
@@ -1060,7 +1054,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 
-	public void beforeDelete( DeleteEvent e ) { }
+	public void beforeDelete( DeleteEvent e ) {
+
+	}
 
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
@@ -1077,29 +1073,31 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		else if ( e.getSource() == btImp ) {
 			imprimir( false );
 		}
-		else if( e.getSource() == btExp ){
+		else if ( e.getSource() == btExp ) {
 			exportar();
 		}
 		super.actionPerformed( e );
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
-		
+
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			
+
 			if ( kevt.getSource() == txtPrecoItem ) {
-				
+
 				calcPercItLucro();
 			}
-			else if( kevt.getSource() == txtFatorLucratividade ){
-				
+			else if ( kevt.getSource() == txtFatorLucratividade ) {
+
 				calcPercItLucro();
-				
+
 			}
 		}
 	}
-	
-	public void focusGained( FocusEvent e ) { }
+
+	public void focusGained( FocusEvent e ) {
+
+	}
 
 	public void focusLost( FocusEvent e ) {
 
@@ -1107,12 +1105,13 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			lcDet.post();
 			lcDet.insert( true );
 		}
-		
+
 	}
-	
+
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
-		
+
 		prefere = RPPrefereGeral.getPrefere( cn );
 
 		lcCliente.setConexao( cn );
@@ -1125,17 +1124,18 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcReferencia.setConexao( cn );
 		lcFornecedorItem.setConexao( cn );
 		lcPedido.setConexao( cn );
-		
-		montaDetalhe();		
+
+		montaDetalhe();
 	}
-	
+
 	public void executar( final Integer codped ) {
+
 		txtCodPed.setVlrInteger( codped );
 		lcCampos.carregaDados();
 	}
-	
+
 	private class DLEmail extends FFDialogo {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		private JRadioGroup<String, Integer> rgOrdem = null;
@@ -1143,25 +1143,24 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		private Vector<String> vLabs = new Vector<String>();
 
 		private Vector<Integer> vVals = new Vector<Integer>();
-		
+
 		final int OPTION_FORNECEDOR = 0;
-		
+
 		final int OPTION_CLIENTE = 1;
-		
 
 		public DLEmail( Component cOrig ) {
 
 			super( cOrig );
-			
+
 			setTitulo( "Seleção de envio" );
 			setAtribos( 300, 160 );
-			
+
 			vLabs.addElement( "Fornecedor" );
 			vLabs.addElement( "Cliente" );
 			vVals.addElement( OPTION_FORNECEDOR );
 			vVals.addElement( OPTION_CLIENTE );
-			rgOrdem = new JRadioGroup<String,Integer>( 1, 2, vLabs, vVals );
-			
+			rgOrdem = new JRadioGroup<String, Integer>( 1, 2, vLabs, vVals );
+
 			adic( new JLabelPad( "Enviar para:" ), 7, 10, 80, 15 );
 			adic( rgOrdem, 7, 30, 270, 30 );
 		}
@@ -1170,7 +1169,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 			return rgOrdem.getVlrInteger();
 		}
-		
+
 	}
 
 }

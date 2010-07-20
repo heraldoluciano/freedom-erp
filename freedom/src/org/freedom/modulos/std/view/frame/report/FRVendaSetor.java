@@ -2,23 +2,23 @@
  * @version 24/03/2004 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendaSetor.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  * 
  */
 
@@ -308,21 +308,21 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public void imprimir( boolean bVisualizar ) {
 
 		if ( txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10 ) {
-			
+
 			Funcoes.mensagemInforma( this, "Período inválido!" );
 			return;
 		}
 
 		if ( "V".equals( rgTipoRel.getVlrString() ) ) {
-			
+
 			impVendedor( bVisualizar );
 		}
 		else if ( "P".equals( rgTipoRel.getVlrString() ) ) {
-			
+
 			impProduto( bVisualizar );
 		}
 		else if ( "C".equals( rgTipoRel.getVlrString() ) ) {
-			
+
 			impCliente( bVisualizar );
 		}
 	}
@@ -333,7 +333,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		iRetorno = iTam / 9;
 
 		if ( ( iTam % 9 ) > 0 ) {
-			
+
 			iRetorno++;
 		}
 
@@ -349,17 +349,17 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		for ( int i = 0; i < vItens.size(); i++ ) {
 
 			if ( vItens.elementAt( i ).elementAt( POS_CODSETOR ).toString().equals( sCodSetor ) ) {
-				
+
 				bInicio = true;
 				sCodVend = new String( vItens.elementAt( i ).elementAt( POS_CODVEND ).toString() );
-				
+
 				if ( vRetorno.indexOf( sCodVend ) == -1 ) {
-					
+
 					vRetorno.addElement( sCodVend );
 				}
 			}
 			else if ( bInicio ) {
-				
+
 				break;
 			}
 		}
@@ -374,11 +374,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int iRetorno = 0;
 
 		if ( iColSel < NUM_COLUNAS ) { // Verifica se a coluna selecionada é menor que o número de colunas total
-			
+
 			iRetorno = iColSel;
 		}
 		else { // caso contrário a retorna o resto
-			
+
 			iRetorno = iColSel % NUM_COLUNAS;
 		}
 
@@ -396,20 +396,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iColunas = vCols.size() % NUM_COLUNAS;
 
 			if ( iColunas == 0 ) {
-				
+
 				iColunas = NUM_COLUNAS;
 			}
 		}
 
 		for ( int i = 0; i < iColunas; i++ ) {
-			
+
 			sRetorno.append( "| " );
 			sRetorno.append( Funcoes.adicionaEspacos( vCols.elementAt( i + ( iPassada * NUM_COLUNAS ) ).toString(), NUM_COLUNAS ) );
 			iCols = i;
 		}
 
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
-			
+
 			sRetorno.append( "|" );
 			sRetorno.append( StringFunctions.replicate( " ", 10 ) );
 		}
@@ -433,7 +433,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iColunas = vTotSetor.size() % NUM_COLUNAS;
 
 			if ( iColunas == 0 ) {
-				
+
 				iColunas = NUM_COLUNAS;
 			}
 		}
@@ -443,7 +443,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			deTemp = vTotSetor.elementAt( i + ( iPassada * NUM_COLUNAS ) );
 
 			if ( deTemp == null ) {
-				
+
 				deTemp = new Double( 0 );
 			}
 
@@ -454,7 +454,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
-			
+
 			sRetorno.append( "|" );
 			sRetorno.append( StringFunctions.replicate( " ", 10 ) );
 		}
@@ -472,11 +472,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int iRetorno = -1;
 
 		if ( vCols != null ) {
-			
+
 			for ( int i = 0; i < vCols.size(); i++ ) {
-				
+
 				if ( sCodVend.equals( vCols.elementAt( i ).toString() ) ) {
-					
+
 					iRetorno = i;
 					break;
 				}
@@ -491,10 +491,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		Vector<Double> vRetorno = new Vector<Double>();
 
 		for ( int i = 0; i < vCols.size(); i++ ) {
-			
+
 			vRetorno.addElement( new Double( 0 ) );
 		}
-		
+
 		return vRetorno;
 	}
 
@@ -663,7 +663,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sFrom = ", VDCLIENTE C1, VDCLIENTE C2 ";
 				}
 				else {
-//					sWhere.append( "AND C1.CODCLI=? " );
+					// sWhere.append( "AND C1.CODCLI=? " );
 					sWhere.append( "AND V.CODCLI=? " );
 				}
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
@@ -737,7 +737,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSQL.append( "GROUP BY 1,2,3,4,5" );
 			sSQL.append( "ORDER BY 1,2,3,4,5" );
 
-			System.out.println(sSQL.toString());
+			System.out.println( sSQL.toString() );
 			try {
 
 				ps = con.prepareStatement( sSQL.toString() );
@@ -1797,7 +1797,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public void valorAlterado( RadioGroupEvent rge ) {
 
 		String sTipoRel = rge.getRadioButton().getText();
-			
+
 		if ( "CLIENTE".equalsIgnoreCase( sTipoRel ) ) {
 			rgOrdemRel.setAtivo( true );
 		}

@@ -12,7 +12,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-
 public class RPCopiaPed extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;

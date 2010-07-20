@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.atd <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.atd <BR>
+ *         Classe:
  * @(#)FTipoConv.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                    Comentários sobre a classe...
  * 
  */
 
@@ -61,11 +61,11 @@ public class FTipoConv extends FDados implements ActionListener {
 		adicCampo( txtCodAuxTipoConv, 7, 60, 140, 20, "CodAuxTpConv", "Código auxiliar", ListaCampos.DB_SI, false );
 		adicCampo( txtClassOrc, 150, 60, 190, 20, "ClassTpConv", "Layout de orçamentos", ListaCampos.DB_SI, false );
 		setListaCampos( true, "TIPOCONV", "AT" );
-	
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		
+
 		setImprimir( true );
 	}
 
@@ -77,7 +77,7 @@ public class FTipoConv extends FDados implements ActionListener {
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
@@ -89,45 +89,45 @@ public class FTipoConv extends FDados implements ActionListener {
 		imp.limpaPags();
 		imp.montaCab();
 		imp.setTitulo( "Relatório de Tipos de Conveniados" );
-		
+
 		DLRTipoConv dl = new DLRTipoConv();
 		dl.setVisible( true );
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
 		}
-		
+
 		String sSQL = "SELECT CODTPCONV,DESCTPCONV FROM ATTIPOCONV ORDER BY " + dl.getValor();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
 
 				if ( imp.pRow() >= linPag ) {
 					imp.incPags();
 					imp.eject();
 				}
-				
+
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 80, false );
 					imp.say( 0, imp.normal() );
 					imp.say( 2, "Código" );
 					imp.say( 25, "Descrição" );
 					imp.pulaLinha( 1, imp.normal() );
 					imp.say( 0, StringFunctions.replicate( "-", 79 ) );
-					
+
 				}
 
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodTpConv" ) );
 				imp.say( 25, rs.getString( "DescTpConv" ) );
-								
+
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
@@ -138,11 +138,11 @@ public class FTipoConv extends FDados implements ActionListener {
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			dl.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de tipos de conveniados!" + err.getMessage(), true, con, err );
 		}
@@ -153,7 +153,7 @@ public class FTipoConv extends FDados implements ActionListener {
 		else {
 			imp.print();
 		}
-		
+
 	}
-	
+
 }

@@ -1,16 +1,9 @@
 /*
- * Projeto: Freedom
- * Pacote: org.freedom.modules.fnc
- * Classe: @(#)FBordero.java
+ * Projeto: Freedom Pacote: org.freedom.modules.fnc Classe: @(#)FBordero.java
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
+ * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR> <BR>
  */
 
 package org.freedom.modulos.fnc.view.frame.crud.detail;
@@ -53,7 +46,6 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
-
 /**
  * Cadastro bordero de recebíveis.
  * 
@@ -64,9 +56,9 @@ import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 public class FBordero extends FDetalhe implements CarregaListener, InsertListener, DeleteListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Color GREEN = new Color( 45, 190, 60 );
-	
+
 	private static final Color YELLOW = new Color( 255, 204, 51 );
 
 	private JPanelPad panelMaster = new JPanelPad();
@@ -84,56 +76,55 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 	private JTextAreaPad txaObservacao = new JTextAreaPad( 300 );
 
 	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
-	
+
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtVlrParcItRec = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-	
+
 	private JTextFieldFK txtVlrApagItRec = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-	
+
 	private JTextFieldFK txtVlrPagoItRec = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-	
+
 	private JTextFieldFK txtDtPagoItRec = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldFK txtDtVencItRec = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtStatusItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JLabelPad lbStatus = new JLabelPad( "", SwingConstants.CENTER );
-	
+
 	private ListaCampos lcConta = new ListaCampos( this, "CC" );
 
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
-	
+
 	private ListaCampos lcItReceber = new ListaCampos( this, "RC" );
-	
 
 	public FBordero() {
 
 		super( false );
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Bordero" );
 		setAtribos( 50, 50, 575, 420 );
-		
+
 		montaListaCampos();
-		montaTela();	
-		
+		montaTela();
+
 		lcDet.addCarregaListener( this );
 		lcItReceber.addCarregaListener( this );
-		
+
 		lcDet.addInsertListener( this );
-		lcDet.addDeleteListener( this );		
+		lcDet.addDeleteListener( this );
 		lcDet.addPostListener( this );
-		
+
 		btCompletar.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 	}
-	
+
 	private void montaListaCampos() {
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
@@ -142,18 +133,18 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcConta.setReadOnly( true );
 		txtCodConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 		txtCodConta.setFK( true );
-		
-		lcItReceber.add( new GuardaCampo( txtStatusItRec, "StatusItRec", "Status", ListaCampos.DB_SI, false ) );	
-		lcItReceber.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, false ) );		
-		lcItReceber.add( new GuardaCampo( txtNParcItRec, "NParcItRec", "Cód.It.rec.", ListaCampos.DB_PK, false ) );	
+
+		lcItReceber.add( new GuardaCampo( txtStatusItRec, "StatusItRec", "Status", ListaCampos.DB_SI, false ) );
+		lcItReceber.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, false ) );
+		lcItReceber.add( new GuardaCampo( txtNParcItRec, "NParcItRec", "Cód.It.rec.", ListaCampos.DB_PK, false ) );
 		lcItReceber.add( new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Vencimento", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtDtPagoItRec, "DtPagoItRec", "Dt.Pagto.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Vlr.titulo", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrApagItRec, "VlrApagItRec", "Vlr.Aberto", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrPagoItRec, "VlrPagoItRec", "Vlr.Pago", ListaCampos.DB_SI, false ) );
-//		lcItReceber.setWhereAdic( " NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " +
-//				"WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " +
-//				"B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
+		// lcItReceber.setWhereAdic( " NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " +
+		// "WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " +
+		// "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 		lcItReceber.montaSql( false, "ITRECEBER IR", "FN" );
 		lcItReceber.setQueryCommit( false );
 		lcItReceber.setReadOnly( true );
@@ -164,9 +155,9 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		txtNParcItRec.setFK( true );
 		txtNParcItRec.setNomeCampo( "NParcItRec" );
 	}
-	
+
 	private void montaTela() {
-		
+
 		setAltCab( 170 );
 		setListaCampos( lcCampos );
 		setPainel( panelMaster, pnCliCab );
@@ -176,22 +167,21 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		adicDescFK( txtDescConta, 183, 20, 260, 20, "DescConta", "Descrição da conta" );
 		adicCampo( txtDataBordero, 446, 20, 100, 20, "DtBor", "Data", ListaCampos.DB_SI, true );
 		adicDB( txaObservacao, 7, 60, 539, 60, "ObsBor", "Observação", false );
-				
+
 		setListaCampos( true, "BORDERO", "FN" );
-		lcCampos.setQueryInsert( false );	
-		
+		lcCampos.setQueryInsert( false );
 
 		setAltDet( 100 );
-		setPainel( panelDetalhe, pnDet );		
+		setPainel( panelDetalhe, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-		
+
 		adicCampo( txtCodRec, 7, 20, 90, 20, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true );
 		adicCampo( txtNParcItRec, 100, 20, 67, 20, "NParcItRec", "Parcela", ListaCampos.DB_PF, true );
 		adicDescFK( txtDtVencItRec, 170, 20, 120, 20, "DtVencItRec", "Vencimento" );
 		adicDescFK( txtDtPagoItRec, 293, 20, 120, 20, "DtPagoItRec", "Dt.Pagto." );
 		adic( lbStatus, 416, 20, 120, 20 );
-		
+
 		adicDescFK( txtVlrParcItRec, 170, 60, 120, 20, "VlrParcItRec", "Vlr.titulo" );
 		adicDescFK( txtVlrPagoItRec, 293, 60, 120, 20, "VlrPagoItRec", "Vlr.Pago" );
 		adicDescFK( txtVlrApagItRec, 416, 60, 120, 20, "VlrApagItRec", "Vlr.Aberto" );
@@ -200,108 +190,108 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcDet.setQueryInsert( false );
 
 		montaTab();
-		
+
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 3 ) );
 		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
 		pnGImp.add( btCompletar );
 		pnGImp.add( btImp );
 		pnGImp.add( btPrevimp );
-		
+
 		setImprimir( true );
 
 		txtCodRec.setFK( true );
 		navRod.setAtivo( Navegador.BT_EDITAR, false );
-		
+
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
 	}
-	
+
 	private void showStatus() {
-		
-		lbStatus.setVisible( true );		
-		
-		if ( "RB".equals( txtStatusItRec.getVlrString() ) )  {	
-			lbStatus.setVisible( false );					
+
+		lbStatus.setVisible( true );
+
+		if ( "RB".equals( txtStatusItRec.getVlrString() ) ) {
+			lbStatus.setVisible( false );
 		}
-		else if ( "CR".equals( txtStatusItRec.getVlrString() ) )  {					
+		else if ( "CR".equals( txtStatusItRec.getVlrString() ) ) {
 			lbStatus.setText( "Cancelada" );
-			lbStatus.setBackground( Color.DARK_GRAY );								
+			lbStatus.setBackground( Color.DARK_GRAY );
 		}
-		else if ( "RP".equals( txtStatusItRec.getVlrString() ) && txtVlrApagItRec.getVlrBigDecimal().doubleValue() == 0 ) {				
+		else if ( "RP".equals( txtStatusItRec.getVlrString() ) && txtVlrApagItRec.getVlrBigDecimal().doubleValue() == 0 ) {
 			lbStatus.setText( "Recebida" );
-			lbStatus.setBackground( GREEN );		
+			lbStatus.setBackground( GREEN );
 		}
-		else if ( txtVlrPagoItRec.getVlrBigDecimal().doubleValue() > 0 ) { 				
+		else if ( txtVlrPagoItRec.getVlrBigDecimal().doubleValue() > 0 ) {
 			lbStatus.setText( "Rec. parcial" );
-			lbStatus.setBackground( Color.BLUE );		
+			lbStatus.setBackground( Color.BLUE );
 		}
 		if ( txtDtVencItRec.getVlrDate() != null ) {
-			if ( txtDtVencItRec.getVlrDate().before( Calendar.getInstance().getTime() ) ) {				
+			if ( txtDtVencItRec.getVlrDate().before( Calendar.getInstance().getTime() ) ) {
 				lbStatus.setText( "Vencida" );
-				lbStatus.setBackground( Color.RED );				
+				lbStatus.setBackground( Color.RED );
 			}
-			else if ( txtDtVencItRec.getVlrDate().after( Calendar.getInstance().getTime() ) ) {				
+			else if ( txtDtVencItRec.getVlrDate().after( Calendar.getInstance().getTime() ) ) {
 				lbStatus.setText( "À vencer" );
-				lbStatus.setBackground( YELLOW );		
+				lbStatus.setBackground( YELLOW );
 			}
 		}
 		else {
 			lbStatus.setVisible( false );
 		}
 	}
-	
+
 	private void concluiBordero() {
-		
+
 		if ( txtCodBordero.getVlrInteger() <= 0 ) {
 			return;
 		}
-		
+
 		try {
-			PreparedStatement ps  = con.prepareStatement( "UPDATE FNBORDERO SET STATUSBOR='BC' WHERE CODEMP=? AND CODFILIAL=? AND CODBOR=?" );
+			PreparedStatement ps = con.prepareStatement( "UPDATE FNBORDERO SET STATUSBOR='BC' WHERE CODEMP=? AND CODFILIAL=? AND CODBOR=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
 			ps.setInt( 3, txtCodBordero.getVlrInteger() );
-			
-			ps.executeUpdate();	
+
+			ps.executeUpdate();
 			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void imprimir( boolean visualizar ) {
-		
+
 		if ( txtCodBordero.getVlrInteger() == 0 ) {
 			return;
 		}
-		
-		StringBuilder sql = new StringBuilder();		
+
+		StringBuilder sql = new StringBuilder();
 		sql.append( "SELECT CL.CPFCLI,CL.CNPJCLI,CL.FONECLI, B.CODBOR, B.NUMCONTA, C.DESCCONTA, B.NUMCONTABOR, C2.DESCCONTA DESCCONTABOR, B.DTBOR, B.OBSBOR," );
 		sql.append( "IB.CODREC, IB.NPARCITREC, R.CODCLI, CL.RAZCLI, IR.VLRITREC, IR.DTVENCITREC,R.DOCREC,C.AGENCIACONTA " );
 		sql.append( "FROM FNBORDERO B, FNITBORDERO IB, FNCONTA C, FNCONTA C2, " );
 		sql.append( "FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 		sql.append( "WHERE B.CODEMP=? AND B.CODFILIAL=? AND B.CODBOR=? AND " );
 		sql.append( "C.CODEMP=B.CODEMPCC AND C.CODFILIAL=B.CODFILIALCC AND C.NUMCONTA=B.NUMCONTA AND " );
-		sql.append( "C2.CODEMP=B.CODEMPCB AND C2.CODFILIAL=B.CODFILIALCB AND C2.NUMCONTA=B.NUMCONTABOR AND " );    
+		sql.append( "C2.CODEMP=B.CODEMPCB AND C2.CODFILIAL=B.CODFILIALCB AND C2.NUMCONTA=B.NUMCONTABOR AND " );
 		sql.append( "IB.CODEMP=B.CODEMP AND IB.CODFILIAL=B.CODFILIAL AND IB.CODBOR=B.CODBOR AND " );
 		sql.append( "IR.CODEMP=IB.CODEMPRC AND IR.CODFILIAL=IB.CODFILIALRC AND IR.CODREC=IB.CODREC AND IR.NPARCITREC=IB.NPARCITREC AND " );
 		sql.append( "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sql.append( "CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND CL.CODCLI=R.CODCLI " );
 		sql.append( "ORDER BY IB.NPARCITREC" );
-		
+
 		ResultSet rs = null;
-		
+
 		try {
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
 			ps.setInt( 3, txtCodBordero.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
-			
+
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FBordero.jasper", "Bordero de recebíveis", null, rs, null, this );
 
 			if ( visualizar ) {
@@ -315,7 +305,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 					Funcoes.mensagemErro( this, "Erro na impressão!" + e.getMessage(), true, con, e );
 				}
 			}
-			
+
 			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -340,22 +330,31 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent e ) { }
+	public void beforeCarrega( CarregaEvent e ) {
 
-	public void afterCarrega( CarregaEvent e ) {		
+	}
+
+	public void afterCarrega( CarregaEvent e ) {
+
 		showStatus();
 	}
 
-	public void beforeInsert( InsertEvent e ) {	
-		lbStatus.setVisible( false );	
+	public void beforeInsert( InsertEvent e ) {
+
+		lbStatus.setVisible( false );
 	}
 
-	public void afterInsert( InsertEvent e ) { }
+	public void afterInsert( InsertEvent e ) {
 
-	public void beforeDelete( DeleteEvent e ) { }
+	}
+
+	public void beforeDelete( DeleteEvent e ) {
+
+	}
 
 	public void afterDelete( DeleteEvent e ) {
-		lbStatus.setVisible( false );	
+
+		lbStatus.setVisible( false );
 	}
 
 	@ Override

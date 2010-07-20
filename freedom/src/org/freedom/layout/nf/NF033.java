@@ -2,22 +2,22 @@
  * @version 22/05/2006 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: layout <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: layout <BR>
+ *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Layout da nota fiscal para a empresa Iswara Ltda.
+ *                   Layout da nota fiscal para a empresa Iswara Ltda.
  */
 
 package org.freedom.layout.nf;
@@ -62,7 +62,7 @@ public class NF033 extends Layout {
 		String[] sVals = new String[] { "", "", "", "", "", "", "", "" };
 		String[] sDuplics = new String[] { "", "", "", "", "", "", "", "" };
 		String[] sDescParcs = new String[] { "", "", "", "", "", "", "", "" };
-		Map<Integer,String> mDescParcs = null;
+		Map<Integer, String> mDescParcs = null;
 		Vector<?> vDescFisc = new Vector<Object>();
 		Vector<?> vDescProd = new Vector<Object>();
 
@@ -359,9 +359,9 @@ public class NF033 extends Layout {
 
 	}
 
-	private Map<Integer,String> getDescParcs( final int codvenda ) {
+	private Map<Integer, String> getDescParcs( final int codvenda ) {
 
-		Map<Integer,String> retorno = new HashMap<Integer,String>();
+		Map<Integer, String> retorno = new HashMap<Integer, String>();
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -380,7 +380,7 @@ public class NF033 extends Layout {
 			ps.setInt( 3, codvenda );
 			rs = ps.executeQuery();
 
-			for ( int i=0; rs.next(); i++ ) {
+			for ( int i = 0; rs.next(); i++ ) {
 				retorno.put( rs.getInt( "NROPARCPAG" ), rs.getString( "DESCPARCPAG" ) );
 			}
 

@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasDet.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -61,11 +61,11 @@ public class FRVendasDet extends FRelatorio {
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-	
+
 	private JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtIdUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-	
+
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
@@ -77,7 +77,7 @@ public class FRVendasDet extends FRelatorio {
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
-	
+
 	private JCheckBoxPad cbVendaSubcli = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
 
 	private JRadioGroup<String, String> rgTipo = null;
@@ -97,8 +97,8 @@ public class FRVendasDet extends FRelatorio {
 		setTitulo( "Vendas Detalhadas" );
 		setAtribos( 80, 80, 320, 480 );
 
-		Vector< String > vLabs = new Vector< String >();
-		Vector< String > vVals = new Vector< String >();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -107,8 +107,8 @@ public class FRVendasDet extends FRelatorio {
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 
-		Vector< String > vLabs1 = new Vector< String >();
-		Vector< String > vVals1 = new Vector< String >();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 
 		vLabs1.addElement( "Faturado" );
 		vLabs1.addElement( "Não Faturado" );
@@ -119,8 +119,8 @@ public class FRVendasDet extends FRelatorio {
 		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
 
-		Vector< String > vLabs2 = new Vector< String >();
-		Vector< String > vVals2 = new Vector< String >();
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
 
 		vLabs2.addElement( "Financeiro" );
 		vLabs2.addElement( "Não Finaceiro" );
@@ -195,7 +195,6 @@ public class FRVendasDet extends FRelatorio {
 		adic( rgFinanceiro, 153, 265, 120, 70 );
 		adic( cbVendaSubcli, 7, 340, 200, 20 );
 		adic( cbVendaCanc, 7, 360, 230, 20 );
-		
 
 	}
 
@@ -217,7 +216,7 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere5 = "";
 		String sWhere6 = "";
 		String sWhere7 = "";
-		
+
 		boolean bComRef = comRef();
 
 		try {
@@ -257,17 +256,17 @@ public class FRVendasDet extends FRelatorio {
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
-			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {				
+			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
 				if ( sCab.length() > 0 ) {
 					sCab.append( "\n" );
 				}
-				if ( cbVendaSubcli.getVlrString().equals( "S" ) ) { 
+				if ( cbVendaSubcli.getVlrString().equals( "S" ) ) {
 					sWhere6 = " AND C.CODPESQ=" + txtCodCli.getVlrInteger().intValue() + " ";
-					sCab.append( "Cliente principal: " );		
-				}				
+					sCab.append( "Cliente principal: " );
+				}
 				else {
 					sWhere4 = " AND C.CODCLI=" + txtCodCli.getVlrInteger().intValue() + " ";
-					sCab.append( "Cliente : " );		
+					sCab.append( "Cliente : " );
 				}
 				sCab.append( txtRazCli.getVlrString() );
 			}
@@ -287,20 +286,20 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( "Comissionado :" );
 				sCab.append( txtNomeVend.getVlrString() );
 			}
-			if (!"".equals( txtCidCli.getVlrString().trim() )) {
-				sWhere7 = " AND C.CIDCLI='"+txtCidCli.getVlrString().trim()+"'";
-		
+			if ( !"".equals( txtCidCli.getVlrString().trim() ) ) {
+				sWhere7 = " AND C.CIDCLI='" + txtCidCli.getVlrString().trim() + "'";
+
 				sCab.append( " - CID.:  " );
 				sCab.append( txtCidCli.getVlrString() );
 			}
 
-			if (!"".equals( txtIdUsu.getVlrString().trim() )) {
-				sWhere7 = " AND V.IDUSUINS='"+txtIdUsu.getVlrString().trim().toUpperCase()+"'";
-		
+			if ( !"".equals( txtIdUsu.getVlrString().trim() ) ) {
+				sWhere7 = " AND V.IDUSUINS='" + txtIdUsu.getVlrString().trim().toUpperCase() + "'";
+
 				sCab.append( " - USU.:  " );
 				sCab.append( txtIdUsu.getVlrString().trim().toUpperCase() );
 			}
-			
+
 			sSQL.append( "SELECT " );
 			sSQL.append( "	( SELECT VO.CODORC FROM VDVENDAORC VO " );
 			sSQL.append( "	  WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " );
@@ -401,7 +400,7 @@ public class FRVendasDet extends FRelatorio {
 						imp.say( 44, " Totais da venda: " );
 						imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtd.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
 						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
-						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin,String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
 						imp.say( 124, "|" );
 						imp.say( 135, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -454,17 +453,17 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 124, "| " + ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
 				imp.say( 135, "|" );
 
-				if (rs.getBigDecimal( "QtdItVenda" )!=null) {  
+				if ( rs.getBigDecimal( "QtdItVenda" ) != null ) {
 					bQtd = bQtd.add( rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
-					bQtdTot = bQtdTot.add(rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ));
+					bQtdTot = bQtdTot.add( rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
 				}
-				if (rs.getBigDecimal( "VlrLiqItVenda" )!=null) {
+				if ( rs.getBigDecimal( "VlrLiqItVenda" ) != null ) {
 					bVlrLiq = bVlrLiq.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
 					bVlrLiqTot = bVlrLiqTot.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
 				}
-				if (rs.getBigDecimal( "VlrDescItVenda" )!=null) {  
+				if ( rs.getBigDecimal( "VlrDescItVenda" ) != null ) {
 					bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
-					bVlrDescTot = bVlrDescTot.add(  rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+					bVlrDescTot = bVlrDescTot.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
 				}
 				iCodVendaAnt = rs.getInt( "CodVenda" );
 			}
@@ -514,7 +513,7 @@ public class FRVendasDet extends FRelatorio {
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
-		HashMap< String, Object > hParam = new HashMap< String, Object >();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasDetalhadas.jasper", "Vendas Detalhadas", sCab, rs, hParam, this );

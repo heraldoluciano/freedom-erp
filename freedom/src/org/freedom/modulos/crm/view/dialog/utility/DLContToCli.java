@@ -1,16 +1,9 @@
 /*
- * Projeto: Freedom
- * Pacote: org.freedom.modules.crm
- * Classe: @(#)DLContToCli.java
+ * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)DLContToCli.java
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
+ * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR> <BR>
  */
 package org.freedom.modulos.crm.view.dialog.utility;
 
@@ -25,13 +18,11 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 
-
-
 /**
  * Dialogo de ajuste para campos não compatíveis entre Contato e Cliente.
  * 
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva
- * @version 09/09/2009 - Alex Rodrigues 
+ * @version 09/09/2009 - Alex Rodrigues
  */
 public class DLContToCli extends FFDialogo {
 
@@ -54,7 +45,6 @@ public class DLContToCli extends FFDialogo {
 	private ListaCampos lcClasCli = new ListaCampos( this, "" );
 
 	private ListaCampos lcSetor = new ListaCampos( this, "" );
-	
 
 	public DLContToCli( Component cOrig, int iCodSetor ) {
 
@@ -119,13 +109,13 @@ public class DLContToCli extends FFDialogo {
 	}
 
 	public ContatoClienteBean getValores() {
-		
+
 		ContatoClienteBean contatoClienteBean = new ContatoClienteBean();
 
-		contatoClienteBean.setTipo( txtCodTipoCli.getVlrInteger() ); 
-		contatoClienteBean.setClassificacao( txtCodClasCli.getVlrInteger() ); 
+		contatoClienteBean.setTipo( txtCodTipoCli.getVlrInteger() );
+		contatoClienteBean.setClassificacao( txtCodClasCli.getVlrInteger() );
 		contatoClienteBean.setSetor( txtCodSetor.getVlrInteger() );
-		
+
 		return contatoClienteBean;
 	}
 
@@ -136,37 +126,42 @@ public class DLContToCli extends FFDialogo {
 		lcSetor.setConexao( cn );
 		lcSetor.carregaDados();
 	}
-	
+
 	public class ContatoClienteBean {
-		
+
 		private Integer tipo;
-		
+
 		private Integer classificacao;
-		
+
 		private Integer setor;
 
-		
-		public Integer getTipo() {		
+		public Integer getTipo() {
+
 			return tipo;
 		}
-		
-		public void setTipo( Integer tipo ) {		
+
+		public void setTipo( Integer tipo ) {
+
 			this.tipo = tipo;
 		}
-		
+
 		public Integer getClassificacao() {
+
 			return classificacao;
 		}
-		
-		public void setClassificacao( Integer classificacao ) {		
+
+		public void setClassificacao( Integer classificacao ) {
+
 			this.classificacao = classificacao;
 		}
-		
-		public Integer getSetor() {		
+
+		public Integer getSetor() {
+
 			return setor;
 		}
-		
-		public void setSetor( Integer setor ) {		
+
+		public void setSetor( Integer setor ) {
+
 			this.setor = setor;
 		}
 	}

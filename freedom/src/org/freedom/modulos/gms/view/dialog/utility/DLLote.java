@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLLote.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  */
 
 package org.freedom.modulos.gms.view.dialog.utility;
@@ -38,8 +38,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-
-
 public class DLLote extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
@@ -51,7 +49,7 @@ public class DLLote extends FFDialogo {
 	private JTextFieldPad txtDataINILote = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVenctoLote = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtDiasAvisoLote = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -65,15 +63,15 @@ public class DLLote extends FFDialogo {
 	private JLabelPad lbDataINILote = new JLabelPad( "Data ini." );
 
 	private JLabelPad lbVenctoLote = new JLabelPad( "Vencimento" );
-	
+
 	private JLabelPad lbQtdProdLote = new JLabelPad( "Qtd. no lote" );
-	
+
 	private JLabelPad lbDiasAvisoLote = new JLabelPad( "Dias para aviso" );
-	
-	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 ); 
-	
+
+	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 );
+
 	public static final int LOTE_VALIDO = 0;
-	
+
 	public static final int LOTE_INVALIDO = -1;
 
 	public DLLote( Component cOrig, String sCodLote, String sCodProd, String sDescProd, DbConnection cn ) {
@@ -100,7 +98,7 @@ public class DLLote extends FFDialogo {
 		adic( txtDescProd, 90, 60, 200, 20 );
 		adic( lbQtdProdLote, 7, 80, 300, 20 );
 		adic( txtQtdProdLote, 7, 100, 80, 20 );
-		
+
 		adic( lbDiasAvisoLote, 90, 80, 150, 20 );
 		adic( txtDiasAvisoLote, 90, 100, 80, 20 );
 
@@ -122,28 +120,27 @@ public class DLLote extends FFDialogo {
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
 			ps.setString( 3, txtCodLote.getText().trim() );
 			ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
-			
+
 			if ( txtDataINILote.getVlrString().equals( "" ) )
 				ps.setNull( 5, Types.DATE );
 			else
 				ps.setDate( 5, Funcoes.dateToSQLDate( txtDataINILote.getVlrDate() ) );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtVenctoLote.getVlrDate() ) );
-			
-			if (txtQtdProdLote.getVlrBigDecimal()==null) {
+
+			if ( txtQtdProdLote.getVlrBigDecimal() == null ) {
 				ps.setNull( 7, Types.DECIMAL );
 			}
 			else {
 				ps.setBigDecimal( 7, txtQtdProdLote.getVlrBigDecimal() );
 			}
-			
-			if (txtDiasAvisoLote.getVlrInteger()==null) {
+
+			if ( txtDiasAvisoLote.getVlrInteger() == null ) {
 				ps.setInt( 8, 0 );
 			}
 			else {
 				ps.setInt( 8, txtDiasAvisoLote.getVlrInteger() );
 			}
 
-				
 			ps.executeUpdate();
 			ps.close();
 			con.commit();

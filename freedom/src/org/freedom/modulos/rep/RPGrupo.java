@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RPGrupo.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                  Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                  modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                  na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                  Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                  sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                  Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                  Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                  de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de grupo e sub-grupo de produtos.
+ *                  Tela de cadastro de grupo e sub-grupo de produtos.
  * 
  */
 
@@ -160,7 +160,7 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 	}
 
 	private void gravaGrupo( String[] grupo ) {
-		
+
 		boolean update = grupo != null;
 
 		DLGrupo dlgrupo = new DLGrupo( this );
@@ -169,19 +169,18 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 		dlgrupo.setVisible( true );
 
 		if ( dlgrupo.OK ) {
-			
+
 			PreparedStatement ps = null;
 			String sql = null;
 
 			try {
-				
+
 				grupo = dlgrupo.getGrupo();
-				
-				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : 
-							   "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP ) VALUES ( ?,?,?,?,?,? )";
-	
+
+				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP ) VALUES ( ?,?,?,?,?,? )";
+
 				ps = con.prepareStatement( sql );
-				
+
 				if ( update ) {
 					ps.setString( 1, grupo[ 1 ].trim() );
 					ps.setString( 2, grupo[ 2 ].trim() );
@@ -195,7 +194,7 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 					ps.setString( 3, grupo[ 0 ].trim() + StringFunctions.replicate( "0", 4 - grupo[ 0 ].trim().length() ) );
 					ps.setString( 4, grupo[ 1 ].trim() );
 					ps.setInt( 5, 1 );
-					ps.setString( 6, grupo[ 2 ].trim() );	
+					ps.setString( 6, grupo[ 2 ].trim() );
 				}
 
 				if ( ps.executeUpdate() == 0 ) {
@@ -220,7 +219,7 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 	}
 
 	private void gravaSubGrupo( final String[] grupo, String[] subgrupo ) {
-		
+
 		boolean update = subgrupo != null;
 
 		DLGrupo dlgrupo = new DLGrupo( this );
@@ -229,19 +228,18 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 		dlgrupo.setVisible( true );
 
 		if ( dlgrupo.OK ) {
-			
+
 			subgrupo = dlgrupo.getSubGrupo();
-			
+
 			PreparedStatement ps = null;
 			String sql = null;
 
 			try {
-				
-				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : 
-							   "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP,CODEMPSG,CODFILIALSG,CODSUBGRUP ) VALUES ( ?,?,?,?,?,?,?,?,? )";
-	
+
+				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP,CODEMPSG,CODFILIALSG,CODSUBGRUP ) VALUES ( ?,?,?,?,?,?,?,?,? )";
+
 				ps = con.prepareStatement( sql );
-				
+
 				if ( update ) {
 					ps.setString( 1, subgrupo[ 1 ].trim() );
 					ps.setString( 2, subgrupo[ 2 ].trim() );
@@ -258,7 +256,7 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 					ps.setString( 6, subgrupo[ 2 ].trim() );
 					ps.setInt( 7, Aplicativo.iCodEmp );
 					ps.setInt( 8, ListaCampos.getMasterFilial( "RPGRUPO" ) );
-					ps.setString( 9, grupo[ 0 ].trim() );		
+					ps.setString( 9, grupo[ 0 ].trim() );
 				}
 
 				if ( ps.executeUpdate() == 0 ) {
@@ -281,14 +279,14 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 
 		dlgrupo.dispose();
 	}
-	
+
 	private void deletarGrupo() {
-		
+
 		PreparedStatement ps = null;
 		String sql = null;
 
 		try {
-						
+
 			sql = "DELETE FROM RPGRUPO WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?";
 
 			ps = con.prepareStatement( sql );
@@ -308,10 +306,10 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 			montaTab();
 
 		} catch ( Exception e ) {
-			
-			if ( e instanceof SQLException && ( (SQLException) e ).getErrorCode()  == 335544466) {
-				Funcoes.mensagemErro( this ,"O registro possui vínculos, não pode ser deletado!" );
-			} 
+
+			if ( e instanceof SQLException && ( (SQLException) e ).getErrorCode() == 335544466 ) {
+				Funcoes.mensagemErro( this, "O registro possui vínculos, não pode ser deletado!" );
+			}
 			else {
 				Funcoes.mensagemErro( this, "Erro ao excluir grupo\n" + e.getMessage() );
 			}
@@ -320,33 +318,33 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 	}
 
 	private String[] getGrupo( final String codgrupo ) {
-		
+
 		String[] retorno = new String[ 3 ];
 		try {
-	
+
 			String sql = "SELECT DESCGRUP, SIGLAGRUP FROM RPGRUPO WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?";
 			PreparedStatement ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
 			ps.setString( 3, codgrupo );
 			ResultSet rs = ps.executeQuery();
-	
+
 			if ( rs.next() ) {
-	
+
 				retorno[ 0 ] = codgrupo;
 				retorno[ 1 ] = rs.getString( "DESCGRUP" );
 				retorno[ 2 ] = rs.getString( "SIGLAGRUP" );
 			}
-	
+
 			ps.close();
-	
+
 			con.commit();
-	
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao gravar grupo\n" + e.getMessage() );
 			e.printStackTrace();
 		}
-		
+
 		return retorno;
 	}
 
@@ -357,24 +355,16 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 		}
 		else if ( evt.getSource() == btGrupo ) {
 			if ( tab.getLinhaSel() > -1 ) {
-				gravaGrupo( new String[] { 
-						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 2 ) }
-					);	
-			} 
+				gravaGrupo( new String[] { (String) tab.getValor( tab.getLinhaSel(), 0 ), (String) tab.getValor( tab.getLinhaSel(), 1 ), (String) tab.getValor( tab.getLinhaSel(), 2 ) } );
+			}
 			else {
 				gravaGrupo( null );
 			}
 		}
 		else if ( evt.getSource() == btSubGrupo ) {
 			if ( tab.getLinhaSel() > -1 ) {
-				gravaSubGrupo( new String[] { 
-						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 2 ) }
-					, null );	
-			} 
+				gravaSubGrupo( new String[] { (String) tab.getValor( tab.getLinhaSel(), 0 ), (String) tab.getValor( tab.getLinhaSel(), 1 ), (String) tab.getValor( tab.getLinhaSel(), 2 ) }, null );
+			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um grupo!" );
 			}
@@ -383,53 +373,49 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 
 	public void keyPressed( KeyEvent e ) {
 
-		 if ( e.getKeyCode() == KeyEvent.VK_DELETE && e.getSource() == tab ) {
-			 if ( tab.getLinhaSel() > -1 ) {
-				 deletarGrupo();
-			 }
-			 else {
-				 Funcoes.mensagemInforma( this, "Selecione um grupo para excluir!" ); 
-			 }
-		 }
+		if ( e.getKeyCode() == KeyEvent.VK_DELETE && e.getSource() == tab ) {
+			if ( tab.getLinhaSel() > -1 ) {
+				deletarGrupo();
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um grupo para excluir!" );
+			}
+		}
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
 
 	}
 
-	public void keyReleased( KeyEvent kevt ) { }
+	public void keyReleased( KeyEvent kevt ) {
 
-	public void mouseEntered( MouseEvent mevt ) { }
+	}
 
-	public void mousePressed( MouseEvent mevt ) { }
+	public void mouseEntered( MouseEvent mevt ) {
+
+	}
+
+	public void mousePressed( MouseEvent mevt ) {
+
+	}
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		if ( mevt.getSource() == tab && 
-				mevt.getClickCount() == 2 && 
-					tab.getLinhaSel() >= 0 ) {
+		if ( mevt.getSource() == tab && mevt.getClickCount() == 2 && tab.getLinhaSel() >= 0 ) {
 			if ( ( (String) tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 4 ) {
 				if ( tab.getLinhaSel() > -1 ) {
 
-					gravaGrupo( new String[] { 
-							(String) tab.getValor( tab.getLinhaSel(), 0 ), 
-							(String) tab.getValor( tab.getLinhaSel(), 1 ), 
-							(String) tab.getValor( tab.getLinhaSel(), 2 ) }
-						);	
+					gravaGrupo( new String[] { (String) tab.getValor( tab.getLinhaSel(), 0 ), (String) tab.getValor( tab.getLinhaSel(), 1 ), (String) tab.getValor( tab.getLinhaSel(), 2 ) } );
 				}
 			}
 			else {
-				
-				gravaSubGrupo( getGrupo( (String) tab.getValor( tab.getLinhaSel(), 0 ) ),
-						new String[] { 
-						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
-						(String) tab.getValor( tab.getLinhaSel(), 2 ) } );
+
+				gravaSubGrupo( getGrupo( (String) tab.getValor( tab.getLinhaSel(), 0 ) ), new String[] { (String) tab.getValor( tab.getLinhaSel(), 0 ), (String) tab.getValor( tab.getLinhaSel(), 1 ), (String) tab.getValor( tab.getLinhaSel(), 2 ) } );
 			}
 		}
 
 	}
-	
+
 	public void mouseExited( MouseEvent mevt ) {
 
 	}

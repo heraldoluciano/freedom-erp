@@ -2,22 +2,22 @@
  * @version 06/06/2006 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: layout <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: layout <BR>
+ *         Classe:
  * @(#)NF025.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Layout da nota fiscal para a empresa 025.
+ *                Layout da nota fiscal para a empresa 025.
  */
 
 package org.freedom.layout.nf;
@@ -236,12 +236,8 @@ public class NF025 extends Layout {
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf(
-																				cab.getFloat( NF.C_VLRBASEICMSPED ) +
-																				("S".equals( frete.getString( NF.C_ADICFRETEBASEICM ) ) ? frete.getFloat( NF.C_VLRFRETEPED ) : 0f ) ) ) );
-						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( 
-																				cab.getFloat( NF.C_VLRICMSPED ) +
-								                                               ("S".equals( frete.getString( NF.C_ADICFRETEBASEICM ) ) ? frete.getFloat( NF.C_VLRICMSFRETEVD ) : 0f ) ) ) );
+						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) + ( "S".equals( frete.getString( NF.C_ADICFRETEBASEICM ) ) ? frete.getFloat( NF.C_VLRFRETEPED ) : 0f ) ) ) );
+						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) + ( "S".equals( frete.getString( NF.C_ADICFRETEBASEICM ) ) ? frete.getFloat( NF.C_VLRICMSFRETEVD ) : 0f ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
 						imp.pulaLinha( 2, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );

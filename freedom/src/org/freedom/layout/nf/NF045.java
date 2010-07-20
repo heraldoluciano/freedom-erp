@@ -2,22 +2,22 @@
  * @version 22/05/2006 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
- * Pacote: layout <BR>
- * Classe:
+ *         Projeto: Freedom <BR>
+ *         Pacote: layout <BR>
+ *         Classe:
  * @(#)NFIswara.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Layout da nota fiscal para a empresa Iswara Ltda.
+ *                   Layout da nota fiscal para a empresa Iswara Ltda.
  */
 
 package org.freedom.layout.nf;
@@ -199,7 +199,7 @@ public class NF045 extends Layout {
 				sTemp = itens.getString( NF.C_DESCFISC ).trim();
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
 					sDescFisc += sTemp;
-				}	
+				}
 				sTemp = itens.getString( NF.C_DESCFISC2 ).trim();
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
 					sDescFisc += sTemp;
@@ -252,15 +252,15 @@ public class NF045 extends Layout {
 				// Fim da impressão do item
 
 				iItImp++;
-				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
-					
-					if (iContaFrete == 0){
+				if ( ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) || ( imp.pRow() == MAXLINE - 1 ) ) {
+
+					if ( iContaFrete == 0 ) {
 						frete.next();
 						iContaFrete++;
 					}
-					
-					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
-					
+
+					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido() );
+
 					// Imprime totais
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
@@ -268,16 +268,14 @@ public class NF045 extends Layout {
 						imp.say( 5, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
 						imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRIPIPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) ) ) );
-					/*	imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
-						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
-						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
-						imp.pulaLinha( 2, imp.comprimido() );
-						
-						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
-						
-						iItImp = 0;
-						*/
+						/*
+						 * imp.pulaLinha( 2, imp.comprimido() ); imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) ); imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) ); imp.say( 114,
+						 * Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) ); imp.pulaLinha( 2, imp.comprimido() );
+						 * 
+						 * imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
+						 * 
+						 * iItImp = 0;
+						 */
 					}
 					else {
 						imp.pulaLinha( 0, imp.comprimido() );
@@ -297,16 +295,18 @@ public class NF045 extends Layout {
 
 					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 5, frete.getString( NF.C_RAZTRANSP ) );
-					imp.say( 77, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
+					imp.say( 77, "C".equals( frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
 					imp.say( 90, frete.getString( NF.C_PLACAFRETE ) );
 					imp.say( 106, frete.getString( NF.C_UFFRETE ) );
 
-					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
+					if ( "C".equals( frete.getString( NF.C_TIPOTRANSP ) ) ) {
 						imp.say( 112, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
-					} else {
-						if ("".equals( frete.getString( NF.C_CNPJTRANSP ) )) {
+					}
+					else {
+						if ( "".equals( frete.getString( NF.C_CNPJTRANSP ) ) ) {
 							imp.say( 112, Funcoes.setMascara( frete.getString( NF.C_CPFTRANSP ), "###.###.###-##" ) );
-						} else {
+						}
+						else {
 							imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
 						}
 					}
@@ -362,7 +362,7 @@ public class NF045 extends Layout {
 					// Imprime canhoto
 
 					imp.pulaLinha( 4, imp.comprimido() );
-					
+
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );
 					imp.incPags();

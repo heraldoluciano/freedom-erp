@@ -2,23 +2,23 @@
  * @version 02/08/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FPesquisaOrc.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Formulário de consulta de orçamento.
+ *                       Formulário de consulta de orçamento.
  * 
  */
 
@@ -61,7 +61,6 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
-
 public class FPesquisaOrc extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -101,7 +100,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JCheckBoxPad cbAberto = new JCheckBoxPad( "Aberto", "S", "N" );
-	
+
 	private JCheckBoxPad cbAgrupar = new JCheckBoxPad( "Agrupar ítens", "S", "N" );
 
 	private JCheckBoxPad cbImpresso = new JCheckBoxPad( "Impresso", "S", "N" );
@@ -111,9 +110,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private JCheckBoxPad cbFaturadoParcial = new JCheckBoxPad( "Faturado parcial", "S", "N" );
 
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad( "Faturado", "S", "N" );
-	
+
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
-	
+
 	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
 
 	private JRadioGroup<String, String> gbVenc;
@@ -131,7 +130,6 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private ListaCampos lcCaixa = new ListaCampos( this );
 
 	private ListaCampos lcUsu = new ListaCampos( this );
-	
 
 	public FPesquisaOrc() {
 
@@ -187,51 +185,50 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		c.add( pnCli, BorderLayout.CENTER );
 		pnCli.add( pinCab, BorderLayout.NORTH );
 		pnCli.add( spnTab, BorderLayout.CENTER );
-		
+
 		adicBotaoSair();
-		
+
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
-		periodo.setOpaque( true );		
+		periodo.setOpaque( true );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
 		pinCab.adic( periodo, 20, 5, 60, 20 );
-		pinCab.adic( borda, 7, 15, 266, 45 );		
+		pinCab.adic( borda, 7, 15, 266, 45 );
 		pinCab.adic( txtDtIni, 20, 30, 100, 20 );
 		pinCab.adic( new JLabel( "até", SwingConstants.CENTER ), 120, 30, 40, 20 );
 		pinCab.adic( txtDtFim, 160, 30, 100, 20 );
 
 		pinCab.adic( new JLabel( "Ordenada por", SwingConstants.CENTER ), 17, 60, 100, 20 );
 		pinCab.adic( gbVenc, 7, 80, 266, 30 );
-		
+
 		JLabel valores = new JLabel( "Valores entre", SwingConstants.CENTER );
-		valores.setOpaque( true );		
+		valores.setOpaque( true );
 		JLabel borda1 = new JLabel();
 		borda1.setBorder( BorderFactory.createEtchedBorder() );
 		pinCab.adic( valores, 20, 110, 100, 20 );
-		pinCab.adic( borda1, 7, 120, 266, 45 );		
+		pinCab.adic( borda1, 7, 120, 266, 45 );
 		pinCab.adic( txtValorMenor, 20, 135, 100, 20 );
 		pinCab.adic( new JLabel( "até", SwingConstants.CENTER ), 120, 135, 40, 20 );
-		pinCab.adic( txtValorMaior, 160, 135, 100, 20 );		
+		pinCab.adic( txtValorMaior, 160, 135, 100, 20 );
 
 		JLabel status = new JLabel( "Status", SwingConstants.CENTER );
 		status.setOpaque( true );
 		JLabel borda2 = new JLabel();
 		borda2.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		pinCab.adic( status, 15, 165, 50, 18 );
 		pinCab.adic( borda2, 7, 175, 266, 78 );
-		
+
 		pinCab.adic( cbAberto, 25, 180, 80, 20 );
 		pinCab.adic( cbFaturadoParcial, 140, 180, 120, 20 );
-		
+
 		pinCab.adic( cbImpresso, 25, 197, 80, 20 );
 		pinCab.adic( cbFaturado, 140, 197, 80, 20 );
-		
-		pinCab.adic( cbLiberado, 25, 214, 80, 20 );		
+
+		pinCab.adic( cbLiberado, 25, 214, 80, 20 );
 		pinCab.adic( cbProduzido, 140, 214, 110, 20 );
-		
+
 		pinCab.adic( cbCancelado, 25, 231, 110, 20 );
-				
 
 		pinCab.adic( new JLabel( "Cód.cli." ), 280, 10, 77, 20 );
 		pinCab.adic( txtCodCli, 280, 30, 77, 20 );
@@ -248,8 +245,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		pinCab.adic( new JLabel( "Nome do usuario" ), 360, 90, 220, 20 );
 		pinCab.adic( txtNomeUsu, 360, 110, 220, 20 );
 
-		pinCab.adic( cbAgrupar, 275, 140, 220, 20 );		
-		
+		pinCab.adic( cbAgrupar, 275, 140, 220, 20 );
+
 		pinCab.adic( btBusca, 280, 200, 145, 30 );
 		pinCab.adic( btPrevimp, 437, 200, 145, 30 );
 
@@ -288,7 +285,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		tab.setTamColuna( 100, 12 );
 
 		tab.addMouseListener( new MouseAdapter() {
+
 			public void mouseClicked( MouseEvent mevt ) {
+
 				if ( mevt.getSource() == tab && mevt.getClickCount() == 2 )
 					abreOrc();
 			}
@@ -299,9 +298,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		btConsVenda.addActionListener( this );
 
 		btConsVenda.setToolTipText( "Busca venda." );
-		
+
 		cbAgrupar.setVlrString( "S" );
-		
 
 	}
 
@@ -312,9 +310,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private void carregaTabela() {
 
 		StringBuilder sql = new StringBuilder();
-		StringBuilder where = new StringBuilder();	
+		StringBuilder where = new StringBuilder();
 		StringBuilder status = new StringBuilder();
-		
+
 		boolean bUsaOr = false;
 		boolean bUsaWhere = false;
 		boolean cliente = txtCodCli.getVlrInteger().intValue() > 0;
@@ -322,13 +320,13 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		boolean caixa = txtCodCaixa.getVlrInteger().intValue() > 0;
 		boolean usuario = txtIdUsu.getVlrString().trim().length() > 0;
 
-		where.append( " AND " + ("V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC ") + "BETWEEN ? AND ?" );
+		where.append( " AND " + ( "V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC " ) + "BETWEEN ? AND ?" );
 
 		if ( !txtValorMenor.getVlrString().equals( "" ) && !txtValorMaior.getVlrString().equals( "" ) ) {
 			where.append( " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal() );
 			where.append( " AND IT.VLRLIQITORC <= " + txtValorMaior.getVlrBigDecimal() );
 		}
-		
+
 		if ( "S".equals( cbAberto.getVlrString() ) ) {
 			status.append( "'*','OA'" );
 		}
@@ -369,9 +367,6 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			status.append( "'CA'" );
 		}
 
-
-		
-		
 		if ( status.length() > 0 ) {
 			where.append( " AND O.STATUSORC IN(" + status.toString() + ") " );
 		}
@@ -385,50 +380,50 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		if ( usuario ) {
 			where.append( " AND O.IDUSUINS=? " );
 		}
-		
-		if("S".equals( cbAgrupar.getVlrString() )) {
+
+		if ( "S".equals( cbAgrupar.getVlrString() ) ) {
 			sql.append( "SELECT" );
 			sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
-			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,'-' VENCAUTORIZORC,'-' NUMAUTORIZORC," ); 
+			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,'-' VENCAUTORIZORC,'-' NUMAUTORIZORC," );
 			sql.append( "  CL.CIDCLI,'-' APROVITORC,O.VLRLIQORC VLRLIQITORC," );
-			sql.append( "  '-' CODVENDA,'-' DOCVENDA,'-' VLRLIQVENDA " ); 
+			sql.append( "  '-' CODVENDA,'-' DOCVENDA,'-' VLRLIQVENDA " );
 			sql.append( "FROM" );
 			sql.append( "  VDORCAMENTO O, VDCLIENTE CL " );
-//			sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " ); 
-//			sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " ); 
-//			sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
+			// sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " );
+			// sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " );
+			// sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
 			sql.append( "WHERE" );
-			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " ); 
-//			sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " ); 
-			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " ); 
+			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " );
+			// sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
+			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
 			sql.append( where );
 			sql.append( "ORDER BY 2" );
 		}
 		else {
 			sql.append( "SELECT" );
 			sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
-			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," ); 
+			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," );
 			sql.append( "  CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC," );
-			sql.append( "  VO.CODVENDA,VD.DOCVENDA,IVD.VLRLIQITVENDA " ); 
+			sql.append( "  VO.CODVENDA,VD.DOCVENDA,IVD.VLRLIQITVENDA " );
 			sql.append( "FROM" );
 			sql.append( "  VDORCAMENTO O, VDCLIENTE CL, VDITORCAMENTO IT " );
-			sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " ); 
-			sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " ); 
+			sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " );
+			sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " );
 			sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
 			sql.append( "WHERE" );
-			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " ); 
-			sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " ); 
-			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " ); 
+			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " );
+			sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
+			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
 			sql.append( where );
 			sql.append( "ORDER BY 2" );
 		}
 
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-						
+
 			int param = 1;
-			
+
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
@@ -444,11 +439,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 				ps.setInt( param++, lcComis.getCodFilial() );
 				ps.setInt( param++, txtCodComis.getVlrInteger().intValue() );
 			}
-			/*if ( caixa ) {
-				ps.setInt( param++, Aplicativo.iCodEmp );
-				ps.setInt( param++, lcCaixa.getCodFilial() );
-				ps.setInt( param++, txtCodCaixa.getVlrInteger().intValue() );
-			}*/
+			/*
+			 * if ( caixa ) { ps.setInt( param++, Aplicativo.iCodEmp ); ps.setInt( param++, lcCaixa.getCodFilial() ); ps.setInt( param++, txtCodCaixa.getVlrInteger().intValue() ); }
+			 */
 			if ( usuario ) {
 				ps.setInt( param++, txtIdUsu.getVlrInteger().intValue() );
 			}

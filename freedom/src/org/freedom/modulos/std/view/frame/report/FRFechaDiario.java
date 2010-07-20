@@ -26,7 +26,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FRFechaDiario extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -113,7 +112,6 @@ public class FRFechaDiario extends FRelatorio {
 		sCab.append( "Período: " + txtDataIni.getVlrString() + " à " + txtDataFim.getVlrString() );
 
 		if ( "R".equals( rgTipo.getVlrString() ) ) {
-			
 
 			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, " );
 			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
@@ -179,7 +177,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC, " );
 			sSQL.append( "VO.NOMEVEND, VC.CODORC, VC.CODITORC, " );
 			sSQL.append( "V.CODCLI CODEMIT, CL.RAZCLI RAZEMIT, " );
-			sSQL.append( "SUM(IO.VLRLIQITORC) VALORORC, " ); 
+			sSQL.append( "SUM(IO.VLRLIQITORC) VALORORC, " );
 			sSQL.append( "SUM(IV.VLRLIQITVENDA) VALOR " );
 			sSQL.append( "FROM PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO, " );
 			sSQL.append( "VDVENDA V, VDCLIENTE CL, VDITVENDA IV " );
@@ -199,7 +197,7 @@ public class FRFechaDiario extends FRelatorio {
 				sCab.append( " - Caixa: " + codcaixa );
 			}
 			if ( !"".equals( idusu ) ) {
-				sSQL.append( " V.IDUSUINS=? AND " ); 
+				sSQL.append( " V.IDUSUINS=? AND " );
 				sCab.append( " - Usuário: " + idusu );
 			}
 
@@ -247,13 +245,13 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "IR.VLRPAGOITREC VALOR " );
 			sSQL.append( "FROM FNLANCA L, VDCLIENTE CL, FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P, VDVENDEDOR VD " );
 			sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND " );
-			sSQL.append( "L.CODEMPRC=IR.CODEMP AND L.CODFILIALRC=IR.CODFILIAL AND L.CODREC=IR.CODREC AND ");
-			sSQL.append( "L.NPARCITREC=IR.NPARCITREC AND L.DATALANCA BETWEEN ? AND ? AND ");
+			sSQL.append( "L.CODEMPRC=IR.CODEMP AND L.CODFILIALRC=IR.CODFILIAL AND L.CODREC=IR.CODREC AND " );
+			sSQL.append( "L.NPARCITREC=IR.NPARCITREC AND L.DATALANCA BETWEEN ? AND ? AND " );
 			sSQL.append( "L.PDVITREC='S' AND IR.STATUSITREC='RP' AND " );
-			sSQL.append( "CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND ");
-			sSQL.append( "CL.CODCLI=R.CODCLI AND ");
+			sSQL.append( "CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND " );
+			sSQL.append( "CL.CODCLI=R.CODCLI AND " );
 			if ( !"".equals( idusu ) ) {
-				sSQL.append( " IR.IDUSUINS=? AND " ); //AO INVÉS DE CP.IDUSUINS, FOI COLOCADO IR.IDUSUINS
+				sSQL.append( " IR.IDUSUINS=? AND " ); // AO INVÉS DE CP.IDUSUINS, FOI COLOCADO IR.IDUSUINS
 			}
 			sSQL.append( "IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " );
 			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND " );
@@ -339,7 +337,7 @@ public class FRFechaDiario extends FRelatorio {
 			if ( !"".equals( idusu ) ) {
 				ps.setString( param++, idusu );
 			}
-			
+
 			rs = ps.executeQuery();
 
 			imp.setTitulo( "Fechamento diário" );

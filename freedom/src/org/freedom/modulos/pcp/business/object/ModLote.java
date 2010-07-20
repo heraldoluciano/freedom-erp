@@ -1,7 +1,5 @@
 /*
- * Created on 17/06/2005
- * Autor: anderson 
- * Descrição:  
+ * Created on 17/06/2005 Autor: anderson Descrição:
  */
 package org.freedom.modulos.pcp.business.object;
 
@@ -13,7 +11,7 @@ import org.freedom.library.business.object.ModeloLote;
 public class ModLote extends ModeloLote {
 
 	public ModLote() {
-		
+
 		adicOpcao( "Código do produto", VLR_CODPROD, new Integer( 8 ) );
 		adicOpcao( "Dia", VLR_DIA, new Integer( 2 ) );
 		adicOpcao( "Mês", VLR_MES, new Integer( 2 ) );

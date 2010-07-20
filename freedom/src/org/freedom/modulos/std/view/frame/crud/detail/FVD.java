@@ -57,7 +57,7 @@ public abstract class FVD extends FDetalhe {
 	protected int casasDec = Aplicativo.casasDec;
 
 	protected int casasDecFin = Aplicativo.casasDecFin;
-	
+
 	protected CalcImpostos impostos = new CalcImpostos();
 
 	/**
@@ -560,7 +560,6 @@ public abstract class FVD extends FDetalhe {
 		return bdRetorno;
 	}
 
-
 	/**
 	 * mostra uma FObsevacao contendo a descrição completa do produto, quando clicado duas vezes sobre o JTextFieldFK do item.
 	 * 
@@ -936,9 +935,9 @@ public abstract class FVD extends FDetalhe {
 
 		try {
 
-			numserie = new NumSerie(this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico);
+			numserie = new NumSerie( this, lcDet, codvenda, coditvenda, codprod, descprod, strnumserie, unico );
 
-			ret = numserie.testaNumSerie(DLSerieGrid.TIPO_VENDA);
+			ret = numserie.testaNumSerie( DLSerieGrid.TIPO_VENDA );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();

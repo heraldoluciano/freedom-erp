@@ -1502,7 +1502,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabManut.setValor( rs.getString( "DESCCARTCOB" ) != null ? rs.getString( "DESCCARTCOB" ) : "", i, EColTabManut.DESCCARTCOB.ordinal() );// NOMEBANCO
 				tabManut.setValor( rs.getString( "ObsItRec" ) != null ? rs.getString( "ObsItRec" ) : "", i, EColTabManut.OBS.ordinal() );
 				tabManut.setValor( rs.getString( "DescPont" ) != null ? rs.getString( "DescPont" ) : "", i, EColTabManut.DESCPONT.ordinal() );
-//				tabManut.setValor( rs.getString( "CODREC" ) != null ? rs.getString( "CODREC" ) : "", i, EColTabManut.CODREC.ordinal() );
+				// tabManut.setValor( rs.getString( "CODREC" ) != null ? rs.getString( "CODREC" ) : "", i, EColTabManut.CODREC.ordinal() );
 
 			}
 
@@ -2130,8 +2130,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					return;
 				}
 
-				iCodRec = Integer.parseInt( tabManut.getValor( iLin, EColTabManut.CODREC.ordinal()).toString()) ;
-				iNParcItRec = Integer.parseInt(tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal()).toString() );
+				iCodRec = Integer.parseInt( tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() ).toString() );
+				iNParcItRec = Integer.parseInt( tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() ).toString() );
 
 				String[] sPlanoConta = getPlanejamentoConta( iCodRec );
 

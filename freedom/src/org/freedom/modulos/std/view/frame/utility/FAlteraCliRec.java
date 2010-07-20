@@ -1,22 +1,23 @@
 /**
  * @version 29/05/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FAlteraCliRec.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Comentários sobre a classe...
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FAlteraCliRec.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Comentários sobre a classe...
  */
 package org.freedom.modulos.std.view.frame.utility;
 
@@ -52,38 +53,37 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtStatusVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldFK txtDoc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private ListaCampos lcVenda = new ListaCampos( this );
-	
+
 	private ListaCampos lcCli = new ListaCampos( this );
-	
-	private JButtonPad btTrocaDoc = new JButtonPad(Icone.novo("btTrocaNumero.gif"));
+
+	private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 
 	private Vector<String> vLabs1 = new Vector<String>();
-	
+
 	private Vector<String> vVals1 = new Vector<String>();
-	
+
 	private JRadioGroup<?, ?> rgTipo = null;
 
-	
 	public FAlteraCliRec() {
 
 		super( false );
 		setTitulo( "Alteração de cliente/receber" );
 		setAtribos( 50, 50, 370, 230 );
-		
+
 		vLabs1.addElement( "Venda" );
 		vLabs1.addElement( "ECF" );
 		vVals1.addElement( "V" );
@@ -92,14 +92,14 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgTipo.setVlrString( "E" );
 
-	
 		montaListaCampos();
 		montaTela();
-		
+
 		btTrocaDoc.addActionListener( this );
-		
+
 	}
-		private void montaTela() {
+
+	private void montaTela() {
 
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
@@ -110,7 +110,6 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pinCli, BorderLayout.CENTER );
 
-	
 		pinCli.adic( rgTipo, 7, 7, 330, 30 );
 		pinCli.adic( new JLabelPad( "Pedido:" ), 7, 40, 80, 20 );
 		pinCli.adic( txtCodVenda, 7, 60, 80, 20 );
@@ -127,30 +126,30 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		pinCli.adic( btTrocaDoc, 310, 130, 30, 30 );
 
 	}
-	
+
 	private void montaListaCampos() {
 
 		/*************
-		 *  Pedido   *
+		 * Pedido *
 		 *************/
-		
-		lcVenda.add( new GuardaCampo(rgTipo, "TipoVenda", "Tipo venda", ListaCampos.DB_PK, true) );
+
+		lcVenda.add( new GuardaCampo( rgTipo, "TipoVenda", "Tipo venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
-		lcVenda.add(new GuardaCampo( txtDoc, "DocVenda", "Documento", ListaCampos.DB_SI, false));
+		lcVenda.add( new GuardaCampo( txtDoc, "DocVenda", "Documento", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. liq.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
-		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ) );				
+		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setReadOnly( true );
 		txtCodVenda.setTabelaExterna( lcVenda, null );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
-		
+
 		/*************
-		 * Cliente   * 
-		*************/
-		
+		 * Cliente *
+		 *************/
+
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		txtCodCli.setTabelaExterna( lcCli, null );
@@ -159,9 +158,9 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 	}
-	
+
 	private void alteraEManut( String sManut ) throws SQLException {
-		
+
 		PreparedStatement ps = null;
 		StringBuilder sSQL = new StringBuilder();
 
@@ -176,16 +175,16 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		ps.executeUpdate();
 
 		con.commit();
-	
+
 	}
-	
-	private void alteraVenda( int codCli, String tipoVenda,  int codVenda ) throws SQLException {
-	
+
+	private void alteraVenda( int codCli, String tipoVenda, int codVenda ) throws SQLException {
+
 		PreparedStatement ps = null;
 		StringBuilder sSQL = new StringBuilder();
-		
+
 		sSQL.append( "UPDATE VDVENDA SET CODEMPCL=?, CODFILIALCL=?, CODCLI=? WHERE CODEMP=? AND CODFILIAL=? AND TIPOVENDA=? AND CODVENDA=?" );
-		
+
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
@@ -198,12 +197,12 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 
 		con.commit();
 	}
-	
-	private void alteraReceber( int codCli,  String tipoVenda,  int codVenda ) throws SQLException {
-		
+
+	private void alteraReceber( int codCli, String tipoVenda, int codVenda ) throws SQLException {
+
 		PreparedStatement ps = null;
 		StringBuilder sSQL = new StringBuilder();
-		
+
 		sSQL.append( "UPDATE FNRECEBER SET CODEMPCL=?, CODFILIALCL=?, CODCLI=? WHERE CODEMPVA=? AND CODFILIALVA=? AND TIPOVENDA=? AND CODVENDA=?" );
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
@@ -216,60 +215,61 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		ps.executeUpdate();
 
 		con.commit();
-	
-	}
-	private void alteraCli(){
 
-		if ( txtCodVenda.getVlrInteger().intValue() == 0  ) {
+	}
+
+	private void alteraCli() {
+
+		if ( txtCodVenda.getVlrInteger().intValue() == 0 ) {
 
 			Funcoes.mensagemInforma( this, "Informe um pedido!" );
 			txtCodVenda.requestFocus();
 			return;
 		}
-		
-		if( txtCodCli.getVlrInteger().intValue() == 0 ){
-			
+
+		if ( txtCodCli.getVlrInteger().intValue() == 0 ) {
+
 			Funcoes.mensagemInforma( this, "Informe o cliente!" );
 			txtCodCli.requestFocus();
 			return;
 		}
-		
+
 		try {
-			
+
 			alteraEManut( "S" );
 			alteraVenda( txtCodCli.getVlrInteger().intValue(), rgTipo.getVlrString(), txtCodVenda.getVlrInteger().intValue() );
-			alteraReceber(  txtCodCli.getVlrInteger().intValue(), rgTipo.getVlrString(), txtCodVenda.getVlrInteger().intValue() );
+			alteraReceber( txtCodCli.getVlrInteger().intValue(), rgTipo.getVlrString(), txtCodVenda.getVlrInteger().intValue() );
 			alteraEManut( "N" );
-			
+
 			Funcoes.mensagemInforma( this, "Cliente alterado com sucesso!" );
-			
+
 		} catch ( SQLException e ) {
-		
+
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao alterar cliente "  + e.getMessage() );
-			
+			Funcoes.mensagemErro( this, "Erro ao alterar cliente " + e.getMessage() );
+
 			try {
 				con.rollback();
-			
+
 			} catch ( SQLException err ) {
-			
+
 				err.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro na alteração! "  + e.getMessage() );
+				Funcoes.mensagemErro( this, "Erro na alteração! " + e.getMessage() );
 			}
 		}
 	}
-	
-	public void setConexao(DbConnection cn) {
-		
+
+	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcVenda.setConexao( cn );
 		lcCli.setConexao( cn );
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-	
-		if( e.getSource() == btTrocaDoc ){
-			
+
+		if ( e.getSource() == btTrocaDoc ) {
+
 			alteraCli();
 		}
 	}

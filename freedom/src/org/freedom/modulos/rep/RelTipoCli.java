@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RelTipoCli.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatorio de tipo de cliente.
+ *                     Relatorio de tipo de cliente.
  * 
  */
 
@@ -44,15 +44,15 @@ import org.freedom.library.swing.frame.FRelatorio;
 public class RelTipoCli extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
-	
+
 	private JRadioGroup<String, String> rgOrdem;
 
 	public RelTipoCli() {
 
 		super( false );
-		setTitulo( "Relatorio de tipos de clientes" );		
+		setTitulo( "Relatorio de tipos de clientes" );
 		setAtribos( 50, 50, 285, 150 );
-		
+
 		Vector<String> labs = new Vector<String>();
 		labs.add( "Código" );
 		labs.add( "Descrição" );
@@ -60,7 +60,7 @@ public class RelTipoCli extends FRelatorio {
 		vals.add( "CODTIPOCLI" );
 		vals.add( "DESCTIPOCLI" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs, vals );
-		
+
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 10, 200, 20 );
 		adic( rgOrdem, 10, 35, 250, 30 );
 	}
@@ -69,26 +69,26 @@ public class RelTipoCli extends FRelatorio {
 	public void imprimir( boolean visualizar ) {
 
 		try {
-			
+
 			StringBuilder sql = new StringBuilder();
-			
+
 			sql.append( "SELECT TP.CODTIPOCLI AS CODIGO ,TP.DESCTIPOCLI AS DESCRICAO,TP.TIPOCLI AS TIPO," );
 			sql.append( "(SELECT COUNT(CLI.CODCLI) FROM RPCLIENTE CLI " );
-			sql.append( "WHERE CLI.CODEMPTC=TP.CODEMP AND CLI.CODFILIALTC=TP.CODFILIAL AND CLI.CODTIPOCLI=TP.CODTIPOCLI) AS QTD " ); 
+			sql.append( "WHERE CLI.CODEMPTC=TP.CODEMP AND CLI.CODFILIALTC=TP.CODFILIAL AND CLI.CODTIPOCLI=TP.CODTIPOCLI) AS QTD " );
 			sql.append( "FROM RPTIPOCLI TP " );
 			sql.append( "WHERE TP.CODEMP=? AND TP.CODFILIAL=? " );
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPTIPOCLI" ) );
 			ResultSet rs = ps.executeQuery();
-			
-			HashMap<String,Object> hParam = new HashMap<String, Object>();
+
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
-			
+
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rptipocli.jasper", "TIPOS DE CLIENTE", null, rs, hParam, this );
 
 			if ( visualizar ) {

@@ -2,23 +2,23 @@
  * @version 23/02/2004 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLBuscaProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para busca de produtos por similaridade ou códigos alternativos.
+ *                      Tela para busca de produtos por similaridade ou códigos alternativos.
  */
 
 package org.freedom.modulos.std.view.dialog.utility;
@@ -80,7 +80,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 	}
 
 	public boolean setValor( Object oVal, String sTipo ) {
-		
+
 		StringBuffer sSQL = new StringBuffer();
 
 		if ( sTipo.equals( "similar" ) ) {
@@ -96,7 +96,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 			sSQL.append( "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " );
 			sSQL.append( "                   AND SIM2." + sCol + "=?) " );
 			sSQL.append( "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? " );
-			sSQL.append( sWhereAdic.equals( "" ) ? "" : "AND " + sWhereAdic ); 
+			sSQL.append( sWhereAdic.equals( "" ) ? "" : "AND " + sWhereAdic );
 			sSQL.append( " AND PROD.CODPROD=SIM.CODPROD" );
 
 			setTitulo( "Produtos similares à " + oVal.toString() );
@@ -131,13 +131,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 					iPadrao = iCont;
 				}
 
-				tab.adicLinha( 
-						new Object[] { 
-								rs.getString( 1 ) != null ? rs.getString( 1 ) : "", 
-								rs.getString( 2 ) != null ? rs.getString( 2 ) : "", 
-								rs.getString( 3 ) != null ? rs.getString( 3 ).trim() : "", 
-								rs.getString( 4 ) != null ? rs.getString( 4 ) : "", } 
-						);
+				tab.adicLinha( new Object[] { rs.getString( 1 ) != null ? rs.getString( 1 ) : "", rs.getString( 2 ) != null ? rs.getString( 2 ) : "", rs.getString( 3 ) != null ? rs.getString( 3 ).trim() : "", rs.getString( 4 ) != null ? rs.getString( 4 ) : "", } );
 
 				if ( "REFPROD".equals( sCol.toUpperCase() ) ) {
 					oRetVal = rs.getString( 1 ) != null ? rs.getString( 1 ) : "";
@@ -156,8 +150,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 				tab.setLinhaSel( iPadrao );
 				setVisible( true );
 			}
-		}
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar código auxiliar!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
@@ -167,8 +160,8 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		super.actionPerformed( evt );
-		
-		if( evt.getSource() == btOK ){
+
+		if ( evt.getSource() == btOK ) {
 			if ( tab.getNumLinhas() > 0 ) {
 				buscaValores();
 			}

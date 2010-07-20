@@ -2,23 +2,23 @@
  * @version 04/06/2010 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.gms <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.gms <BR>
+ *         Classe:
  * @(#)DLInfoVendedor.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Dialog para entrada de código do vendedor...
+ *                         Dialog para entrada de código do vendedor...
  */
 
 package org.freedom.modulos.gms.view.dialog.utility;
@@ -46,17 +46,17 @@ public class DLInfoVendedor extends FFDialogo {
 	private JLabelPad lbCodVend = new JLabelPad( "Cód.Comis." );
 
 	private JLabelPad lbNomeComis = new JLabelPad( "Nome do comissionado" );
-	
+
 	private ListaCampos lcComis = new ListaCampos( this, "VD" );
-	
+
 	public DLInfoVendedor( Component cOrig, DbConnection cn ) {
 
 		super( cOrig );
-		
+
 		setConexao( cn );
 		setTitulo( "Informe o comissionado" );
 		setAtribos( 370, 140 );
-		
+
 		montaListaCampos();
 
 		txtCodVend.setRequerido( true );
@@ -64,9 +64,9 @@ public class DLInfoVendedor extends FFDialogo {
 		adic( lbCodVend, 7, 0, 80, 20 );
 		adic( txtNomeVend, 7, 20, 80, 20 );
 
-		adic( lbNomeComis, 90, 0, 250, 20);
-		adic( txtNomeVend, 90, 20, 250, 20);
-		
+		adic( lbNomeComis, 90, 0, 250, 20 );
+		adic( txtNomeVend, 90, 20, 250, 20 );
+
 		txtCodVend.requestFocus();
 	}
 
@@ -88,15 +88,14 @@ public class DLInfoVendedor extends FFDialogo {
 
 		return txtCodVend.getVlrInteger();
 	}
-	
 
 	public void actionPerformed( ActionEvent evt ) {
-		
+
 		if ( evt.getSource() == btOK ) {
 			if ( txtCodVend.getText().trim().length() == 0 ) {
 				Funcoes.mensagemInforma( this, "Informe o comissionado!" );
 				txtCodVend.requestFocus();
-				
+
 			}
 			else {
 				super.actionPerformed( evt );
@@ -105,12 +104,13 @@ public class DLInfoVendedor extends FFDialogo {
 		else if ( evt.getSource() == btCancel ) {
 			super.actionPerformed( evt );
 		}
-		
+
 	}
-	
-	public void setConexao( DbConnection cn) {
+
+	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcComis.setConexao( cn );
 	}
-	
+
 }

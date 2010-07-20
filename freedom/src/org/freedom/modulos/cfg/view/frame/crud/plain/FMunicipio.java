@@ -2,23 +2,23 @@
  * @version 17/12/2008 <BR>
  * @author Setpoint Informática Ltda.
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FUF.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *              Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *              modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *              na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *              Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *              sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *              Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *              Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *              de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *              Comentários sobre a classe...
  * 
  */
 package org.freedom.modulos.cfg.view.frame.crud.plain;
@@ -42,47 +42,46 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.std.view.dialog.report.DLRMunicipio;
 
-
-public class FMunicipio extends FDados{
+public class FMunicipio extends FDados {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTextFieldPad txtCodMunicipio = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
-	
+
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
-	
-	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 ); 
-	
+
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
+	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
 	private JTextFieldFK txtNomePais = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
 	private JTextFieldPad txtNomeMunicipio = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
 	private JTextFieldPad txtDDDMunicipio = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
-	
+
 	private ListaCampos lcPais = new ListaCampos( this );
 
 	private ListaCampos lcUF = new ListaCampos( this );
-	
-	public FMunicipio(){
-		
+
+	public FMunicipio() {
+
 		super();
 		setTitulo( "Cadastro de UF" );
 		setAtribos( 50, 50, 370, 220 );
-		
-		lcCampos.setUsaME( false );			
-		
+
+		lcCampos.setUsaME( false );
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		montaTela();
 		montaListaCampos();
-		
+
 		setImprimir( true );
 	}
-	
-	private void montaTela(){
-		
+
+	private void montaTela() {
+
 		adicCampo( txtCodMunicipio, 7, 20, 60, 20, "CodMunic", "Cód.Mun.", ListaCampos.DB_PK, true );
 		adicCampo( txtSiglaUF, 70, 20, 50, 20, "SiglaUf", "UF", ListaCampos.DB_PF, txtNomeUF, true );
 		adicDescFK( txtNomeUF, 123, 20, 220, 20, "NomeUF", "Nome" );
@@ -90,38 +89,38 @@ public class FMunicipio extends FDados{
 		adicDescFK( txtNomePais, 70, 60, 273, 20, "NomePais", "Nome do País" );
 		adicCampo( txtNomeMunicipio, 7, 100, 275, 20, "NomeMunic", "Municipio", ListaCampos.DB_SI, true );
 		adicCampo( txtDDDMunicipio, 285, 100, 55, 20, "DDDMunic", "DDD", ListaCampos.DB_SI, true );
-		
+
 		setListaCampos( false, "MUNICIPIO", "SG" );
 	}
-	
-	private void montaListaCampos(){
-		
+
+	private void montaListaCampos() {
+
 		/**********
-		 *  PAÍS  *
+		 * PAÍS *
 		 **********/
-		
-		lcPais.setUsaME( false );		
+
+		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "Codpais", "Cód.pais.", ListaCampos.DB_PK, false ) );
 		lcPais.add( new GuardaCampo( txtNomePais, "NomePais", "Descrição do país", ListaCampos.DB_SI, false ) );
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
-		
+
 		/**********
-		 *   UF   *
+		 * UF *
 		 **********/
-		
-		lcUF.setUsaME( false );		
+
+		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla UF", ListaCampos.DB_PK, false ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUF", "Nome UF", ListaCampos.DB_SI, false ) );
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
-		
+
 	}
-	
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
@@ -133,7 +132,7 @@ public class FMunicipio extends FDados{
 
 		super.actionPerformed( evt );
 	}
-	
+
 	private void imprimir( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
@@ -148,7 +147,7 @@ public class FMunicipio extends FDados{
 				dl.dispose();
 				return;
 			}
-			
+
 			sSQL.append( "SELECT M.CODMUNIC, M.SIGLAUF, M.CODPAIS, M.NOMEMUNIC, M.DDDMUNIC, " );
 			sSQL.append( "P.NOMEPAIS, U.NOMEUF " );
 			sSQL.append( "FROM SGMUNICIPIO M, SGUF U, SGPAIS P " );
@@ -175,7 +174,7 @@ public class FMunicipio extends FDados{
 
 		}
 	}
-	
+
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
 
 		String sLinhaFina = StringFunctions.replicate( "-", 125 );
@@ -243,7 +242,6 @@ public class FMunicipio extends FDados{
 			imp.pulaLinha( 1, imp.normal() );
 			imp.say( 0, StringFunctions.replicate( "=", 125 ) );
 			imp.pulaLinha( 1, imp.normal() );
-		
 
 			imp.eject();
 			imp.fechaGravacao();
@@ -261,7 +259,7 @@ public class FMunicipio extends FDados{
 
 		}
 	}
-	
+
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/RelMunicipio.jasper", "Municipio", null, rs, null, this );
@@ -277,13 +275,11 @@ public class FMunicipio extends FDados{
 			}
 		}
 	}
-	
-	
-	
+
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcPais.setConexao( cn ); 
+		lcPais.setConexao( cn );
 		lcUF.setConexao( cn );
 	}
 }

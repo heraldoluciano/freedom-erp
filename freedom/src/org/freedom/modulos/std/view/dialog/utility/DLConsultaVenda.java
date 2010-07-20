@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)DLConsultaVenda.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                          Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                          modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                          na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                          Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                          sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                          Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                          Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                          de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                          Comentários sobre a classe...
  */
 
 package org.freedom.modulos.std.view.dialog.utility;
@@ -43,7 +43,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JScrollPane;
-
 
 public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
@@ -163,17 +162,17 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer(); 
-		
+		StringBuffer sSQL = new StringBuffer();
+
 		try {
-			
+
 			sSQL.append( "SELECT IT.CODITVENDA, P.DESCPROD, IT.QTDITVENDA," );
 			sSQL.append( "IT.PRECOITVENDA,IT.VLRLIQITVENDA,IT.CODLOTE,IT.VLRDESCITVENDA, IT.REFPROD " );
 			sSQL.append( "FROM VDITVENDA IT, EQPRODUTO P " );
 			sSQL.append( "WHERE IT.CODVENDA=? AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.TIPOVENDA=? " );
 			sSQL.append( "AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " );
 			sSQL.append( "ORDER BY CODITVENDA" );
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, txtCodVenda.getVlrInteger().intValue() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -181,9 +180,9 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 			ps.setString( 4, txtTipoVenda.getVlrString() );
 
 			rs = ps.executeQuery();
-			
+
 			for ( int i = 0; rs.next(); i++ ) {
-				
+
 				tabConsulta.adicLinha();
 				tabConsulta.setValor( String.valueOf( rs.getInt( "CodItVenda" ) ), i, 0 );
 				tabConsulta.setValor( String.valueOf( rs.getString( "RefProd" ) ), i, 1 );
@@ -194,7 +193,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrDescItVenda" ) ), i, 6 );
 				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrLiqItVenda" ) ), i, 7 );
 			}
-			
+
 			rs.close();
 			ps.close();
 

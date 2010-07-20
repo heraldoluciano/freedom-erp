@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FCliente.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de clientes.
+ *                   Tela de cadastro de clientes.
  */
 
 package org.freedom.modulos.std.view.frame.crud.tabbed;
@@ -101,10 +101,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCob;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
 
-
-public class FCliente extends FTabDados 
-		implements RadioGroupListener, PostListener, ActionListener, TabelaSelListener, ChangeListener, 
-		CarregaListener, InsertListener, FocusListener {
+public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, TabelaSelListener, ChangeListener, CarregaListener, InsertListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -113,8 +110,8 @@ public class FCliente extends FTabDados
 	private JPanelPad pinVend = new JPanelPad();
 
 	private JPanelPad pinCob = new JPanelPad();
-	
-	private JPanelPad pinMapa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout());
+
+	private JPanelPad pinMapa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnObs1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad de observações com 2 linha e 1 coluna
 
@@ -137,13 +134,13 @@ public class FCliente extends FTabDados
 	private JPanelPad pinCli = new JPanelPad();
 
 	private JPanelPad pnFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private JPanelPad pnCliFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private JPanelPad pinFor = new JPanelPad( 0, 80 );
-	
+
 	private JPanelPad pinCliFor = new JPanelPad( 0, 80 );
-	
+
 	private JPanelPad pinTesteFor = new JPanelPad( 0, 30 );
 
 	private JPanelPad pnCto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -191,7 +188,7 @@ public class FCliente extends FTabDados
 	private JTablePad tabMetaVend = new JTablePad();
 
 	private JTablePad tabFor = new JTablePad();
-	
+
 	private JTablePad tabCliFor = new JTablePad();
 
 	private JTablePad tabHist = new JTablePad();
@@ -267,7 +264,7 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtCodCnae = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JTextFieldFK txtDescCnae = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
-	
+
 	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtInscCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -279,13 +276,13 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtSSPCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldPad txtEndCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtComplCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtBairCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JTextFieldPad txtSuframaCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
 
 	private JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -305,11 +302,11 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtFaxCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtEmailNfeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtEmailEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtEmailCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
@@ -391,44 +388,44 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodPaisEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPaisEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodPaisCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPaisCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtDDDMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-	
+
 	private JTextFieldFK txtDDDMunCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-	
+
 	private JTextFieldFK txtDDDMunEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-	
+
 	private JTextFieldPad txtCodMunicEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMunEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCodMunicCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMunCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
-	
+
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
 	private JTextFieldPad txtSiglaUFCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldFK txtNomeUFCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
-	
+
+	private JTextFieldFK txtNomeUFCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
 	private JTextFieldPad txtSiglaUFEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
-	private JTextFieldFK txtNomeUFEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
+
+	private JTextFieldFK txtNomeUFEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtCodPesq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -443,25 +440,25 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtCelCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodForCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtNomeForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtcnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
-	
+
 	private JTextFieldFK txtcpfForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 11, 0 );
-	
+
 	private JTextFieldFK txtBairForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JTextFieldFK txtEndForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtNumForCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldFK txtCnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
-	
+
 	private JTextFieldFK txtrgForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldPad txtCodCliFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -469,7 +466,7 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtCodCpCliFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtDescForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtAnoMetaVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
@@ -481,13 +478,13 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodCliContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldPad txtCodHistPad = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
 	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
@@ -499,15 +496,15 @@ public class FCliente extends FTabDados
 	private JRadioGroup<String, String> rgPessoa = null;
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
-	
+
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
-	
+
 	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Rural", "S", "N" );
-	
+
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
 	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.gif" ) );
-	
+
 	private JButtonPad btMapa = new JButtonPad( Icone.novo( "btMapa.png" ) );
 
 	private JButtonPad btAtCobranca = new JButtonPad( Icone.novo( "btReset.gif" ) );
@@ -549,17 +546,17 @@ public class FCliente extends FTabDados
 	private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
 	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
-	
+
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
-	
+
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
-	
-	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo("btPesquisa.gif") );
+
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
 
 	private ListaCampos lcCnae = new ListaCampos( this, "" );
-	
+
 	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
 
 	private ListaCampos lcVend = new ListaCampos( this, "VD" );
@@ -579,39 +576,39 @@ public class FCliente extends FTabDados
 	private ListaCampos lcPesq = new ListaCampos( this, "PQ" );
 
 	private ListaCampos lcCliFor = new ListaCampos( this );
-	
+
 	private ListaCampos lcClixFor = new ListaCampos( this );
 
 	private ListaCampos lcMetaVend = new ListaCampos( this );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
-	
+
 	private ListaCampos lcForCli = new ListaCampos( this, "FR" );
 
 	private ListaCampos lcPais = new ListaCampos( this, "" );
-	
+
 	private ListaCampos lcPaisEnt = new ListaCampos( this, "" );
-	
+
 	private ListaCampos lcPaisCob = new ListaCampos( this, "" );
 
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
-	
+
 	private ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-	
+
 	private ListaCampos lcUF = new ListaCampos( this );
-	
+
 	private ListaCampos lcUFEnt = new ListaCampos( this );
-	
+
 	private ListaCampos lcUFCob = new ListaCampos( this );
-	
+
 	private ListaCampos lcMunic = new ListaCampos( this );
-	
+
 	private ListaCampos lcMunicEnt = new ListaCampos( this );
-	
+
 	private ListaCampos lcMunicCob = new ListaCampos( this );
 
 	private Navegador navFor = new Navegador( true );
-	
+
 	private Navegador navClixFor = new Navegador( true );
 
 	private Navegador navMetaVend = new Navegador( false );
@@ -621,14 +618,13 @@ public class FCliente extends FTabDados
 	private Map<String, Object> bPref = null;
 
 	private boolean bExecCargaObs = false;
-	
+
 	private String sURLBanco = null;
-	
-	
+
 	public FCliente() {
-		
+
 		super();
-		
+
 		setTitulo( "Cadastro de Clientes" );
 		setAtribos( 50, 20, 545, 710 );
 
@@ -648,11 +644,11 @@ public class FCliente extends FTabDados
 	}
 
 	private void montaTela() {
-		
+
 		nav.setNavigation( true );
 
 		adicTab( "Cliente", pinCli );
-		
+
 		lcCampos.addPostListener( this );
 		lcCampos.addInsertListener( this );
 
@@ -670,7 +666,7 @@ public class FCliente extends FTabDados
 		lcCnae.setQueryCommit( false );
 		lcCnae.setReadOnly( true );
 		txtCodCnae.setTabelaExterna( lcCnae, null );
-		
+
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
@@ -699,15 +695,15 @@ public class FCliente extends FTabDados
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
-		
+
 		lcPaisEnt.setUsaME( false );
 		lcPaisEnt.add( new GuardaCampo( txtCodPaisEnt, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
 		lcPaisEnt.add( new GuardaCampo( txtDescPaisEnt, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
 		lcPaisEnt.montaSql( false, "PAIS", "SG" );
 		lcPaisEnt.setQueryCommit( false );
 		lcPaisEnt.setReadOnly( true );
-		txtCodPaisEnt.setTabelaExterna( lcPaisEnt, FPais.class.getCanonicalName()  );
-		
+		txtCodPaisEnt.setTabelaExterna( lcPaisEnt, FPais.class.getCanonicalName() );
+
 		lcPaisCob.setUsaME( false );
 		lcPaisCob.add( new GuardaCampo( txtCodPaisCob, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
 		lcPaisCob.add( new GuardaCampo( txtDescPaisCob, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
@@ -736,11 +732,11 @@ public class FCliente extends FTabDados
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
-		
+
 		/************************
-         * CARTEIRA DE COBRANÇA *
-         ************************/
-		
+		 * CARTEIRA DE COBRANÇA *
+		 ************************/
+
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
 		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
@@ -748,18 +744,17 @@ public class FCliente extends FTabDados
 		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setQueryCommit( false );
-		lcCartCob.setReadOnly( true );		
+		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setTabelaExterna( lcCartCob, FCartCob.class.getCanonicalName() );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
-		
-		
+
 		/***************
-		 *  MUNICIPIO  *
+		 * MUNICIPIO *
 		 **************/
-		
-		lcMunic.setUsaME( false );		
+
+		lcMunic.setUsaME( false );
 		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
@@ -767,13 +762,13 @@ public class FCliente extends FTabDados
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );		
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 		/***************
-		 *      UF     *
+		 * UF *
 		 **************/
-		
-		lcUF.setUsaME( false );		
+
+		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
@@ -781,12 +776,12 @@ public class FCliente extends FTabDados
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF, FUF.class.getCanonicalName() );
-		
+
 		/******************
-		 *  MUNICIPIO ENT *
+		 * MUNICIPIO ENT *
 		 ******************/
-		
-		lcMunicEnt.setUsaME( false );		
+
+		lcMunicEnt.setUsaME( false );
 		lcMunicEnt.add( new GuardaCampo( txtCodMunicEnt, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
 		lcMunicEnt.add( new GuardaCampo( txtDescMunEnt, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunicEnt.add( new GuardaCampo( txtDDDMunEnt, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
@@ -794,13 +789,13 @@ public class FCliente extends FTabDados
 		lcMunicEnt.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicEnt.setQueryCommit( false );
 		lcMunicEnt.setReadOnly( true );
-		txtCodMunicEnt.setTabelaExterna( lcMunicEnt, FMunicipio.class.getCanonicalName() );		
+		txtCodMunicEnt.setTabelaExterna( lcMunicEnt, FMunicipio.class.getCanonicalName() );
 
 		/***************
-		 *   UF ENT    *
+		 * UF ENT *
 		 **************/
-		
-		lcUFEnt.setUsaME( false );		
+
+		lcUFEnt.setUsaME( false );
 		lcUFEnt.add( new GuardaCampo( txtSiglaUFEnt, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
 		lcUFEnt.add( new GuardaCampo( txtNomeUFEnt, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
 		lcUFEnt.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
@@ -808,26 +803,26 @@ public class FCliente extends FTabDados
 		lcUFEnt.setQueryCommit( false );
 		lcUFEnt.setReadOnly( true );
 		txtSiglaUFEnt.setTabelaExterna( lcUFEnt, FUF.class.getCanonicalName() );
-		
+
 		/******************
-		 *  MUNICIPIO COB *
+		 * MUNICIPIO COB *
 		 ******************/
-		
-		lcMunicCob.setUsaME( false );		
+
+		lcMunicCob.setUsaME( false );
 		lcMunicCob.add( new GuardaCampo( txtCodMunicCob, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, false ) );
 		lcMunicCob.add( new GuardaCampo( txtDescMunCob, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
-		lcMunicCob.add( new GuardaCampo( txtDDDMunCob, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );		
+		lcMunicCob.add( new GuardaCampo( txtDDDMunCob, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
 		lcMunicCob.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUFCob );
 		lcMunicCob.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunicCob.setQueryCommit( false );
 		lcMunicCob.setReadOnly( true );
-		txtCodMunicCob.setTabelaExterna( lcMunicCob, FMunicipio.class.getCanonicalName() );		
+		txtCodMunicCob.setTabelaExterna( lcMunicCob, FMunicipio.class.getCanonicalName() );
 
 		/***************
-		 *   UF COB    *
+		 * UF COB *
 		 **************/
-		
-		lcUFCob.setUsaME( false );		
+
+		lcUFCob.setUsaME( false );
 		lcUFCob.add( new GuardaCampo( txtSiglaUFCob, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
 		lcUFCob.add( new GuardaCampo( txtNomeUFCob, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
 		lcUFCob.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
@@ -849,7 +844,7 @@ public class FCliente extends FTabDados
 		lcClas.setQueryCommit( false );
 		lcClas.setReadOnly( true );
 		txtCodClas.setTabelaExterna( lcClas, FClasCli.class.getCanonicalName() );
-		
+
 		lcHistorico.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHistorico.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHistorico.montaSql( false, "HISTPAD", "FN" );
@@ -860,7 +855,7 @@ public class FCliente extends FTabDados
 		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
 		adicCampo( txtNomeCli, 90, 60, 322, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true );
-		
+
 		Vector<String> vPessoaLab = new Vector<String>();
 		Vector<String> vPessoaVal = new Vector<String>();
 
@@ -873,37 +868,36 @@ public class FCliente extends FTabDados
 
 		adicDB( rgPessoa, 415, 20, 100, 60, "PessoaCli", "Pessoa", true );
 		rgPessoa.setVlrString( "J" );
-		
-        cbAtivo.setEnabled( ( Boolean )bPref.get( "HABATIVCLI" ) );
-        
+
+		cbAtivo.setEnabled( (Boolean) bPref.get( "HABATIVCLI" ) );
+
 		adicDB( cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo", true );
 		adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
 		adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
-		
-		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );		
+
+		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );
 		adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
-		adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );		
-		
+		adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );
+
 		adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
 
 		adicCampo( txtCodCnae, 7, 180, 80, 20, "CodCnae", "Cód.CNAE", ListaCampos.DB_FK, txtDescCnae, false );
 		adicDescFK( txtDescCnae, 90, 180, 325, 20, "DescCnae", "Descrição da atividade principal (CNAE)" );
 
-		
 		adicCampo( txtCnpjCli, 7, 220, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtInscCli, 130, 220, 107, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false );
 		adicCampo( txtCpfCli, 240, 220, 120, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );
 		adicCampo( txtRgCli, 363, 220, 80, 20, "RgCli", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtSSPCli, 446, 220, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );	
+		adicCampo( txtSSPCli, 446, 220, 70, 20, "SSPCli", "Orgão exp.", ListaCampos.DB_SI, false );
 		adicCampo( txtCepCli, 7, 260, 90, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
 		adic( btBuscaEnd, 100, 260, 20, 20 );
 		adicCampo( txtEndCli, 125, 260, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCli, 443, 260, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCli, 7, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtBairCli, 7, 300, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtComplCli, 210, 300, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );		
- 
+		adicCampo( txtSuframaCli, 379, 300, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );
+
 		adicCampo( txtDDDCli, 7, 340, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneCli, 50, 340, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
 		adicCampo( txtRamalCli, 150, 340, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );
@@ -920,37 +914,35 @@ public class FCliente extends FTabDados
 		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
 
-				
-		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
+		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
 			adicCampo( txtEmailNfeCli, 7, 460, 509, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
-			
+
 			adicCampo( txtCodPais, 7, 500, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
 			adicDescFK( txtDescPais, 80, 500, 217, 20, "NomePais", "Nome do país" );
-			
+
 			adicCampo( txtSiglaUF, 300, 500, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
 			adicDescFK( txtNomeUF, 353, 500, 162, 20, "NomeUF", "Nome UF" );
-			
+
 			adicCampo( txtCodMunic, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
-			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );			
-			
+			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );
+
 		}
-		else{
-			
+		else {
+
 			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );			
+			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidCli, 300, 460, 162, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );			
+			adicCampo( txtUFCli, 465, 460, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );
 		}
-	
-		if ( (Boolean)bPref.get( "BUSCACEP" )) {
+
+		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
 		}
 		else {
 			btBuscaEnd.setEnabled( false );
 		}
-			
-		
+
 		txtCpfCli.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
@@ -968,17 +960,16 @@ public class FCliente extends FTabDados
 		btAtEntrega.addActionListener( this );
 		btFirefox.addActionListener( this );
 		btFirefox.setToolTipText( "Acessar Site" );
-		
+
 		btBuscaEnd.addActionListener( this );
 		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 
-
 		adicCampo( txtEndEnt, 7, 20, 260, 20, "EndEnt", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumEnt, 270, 20, 50, 20, "NumEnt", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplEnt, 323, 20, 49, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );		
-		adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );	
-		adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );		
-		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );		
+		adicCampo( txtComplEnt, 323, 20, 49, 20, "ComplEnt", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );
+		adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );
+		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
 
 		adicCampo( txtDDDFoneEnt, 7, 100, 30, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneEnt, 40, 100, 70, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
@@ -986,24 +977,22 @@ public class FCliente extends FTabDados
 		adicCampo( txtDDDFaxEnt, 113, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
-		
+
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
-		
-		
-		
+
 		adic( btAtEntrega, 400, 15, 30, 30 );
-		
-		if ( (Boolean)bPref.get( "USAIBGECLI" )) {		
-			
-			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false);
+
+		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
+			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false );
 			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
 			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
 			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
 			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
-			
+
 		}
-		else{			
+		else {
 			adicCampo( txtCodPaisEnt, 7, 180, 70, 20, "CodPaisEnt", "Cod.país", ListaCampos.DB_FK, txtDescPaisEnt, false );
 			adicDescFK( txtDescPaisEnt, 80, 180, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidEnt, 7, 140, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
@@ -1021,7 +1010,7 @@ public class FCliente extends FTabDados
 		adicCampo( txtEndCob, 7, 20, 260, 20, "EndCob", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCob, 270, 20, 50, 20, "NumCob", "Num.", ListaCampos.DB_SI, false );
 		adicCampo( txtComplCob, 323, 20, 49, 20, "ComplCob", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCepCob, 270, 60, 100, 20, "CepCob", "Cep", ListaCampos.DB_SI, false );
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );
 		adicCampo( txtDDDFoneCob, 7, 100, 30, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false );
@@ -1031,20 +1020,20 @@ public class FCliente extends FTabDados
 		adicCampo( txtFaxCob, 146, 100, 70, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false );
 		txtFaxCob.setMascara( JTextFieldPad.MC_FONE );
 		adicCampo( txtEmailCob, 219, 100, 150, 20, "EmailCob", "Email", ListaCampos.DB_SI, false );
-		
+
 		adic( btAtCobranca, 400, 15, 30, 30 );
-		
-		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
-			
+
+		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
 			adicCampo( txtCodPaisCob, 7, 140, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
 			adicDescFK( txtDescPaisCob, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFCob, 7, 180, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
 			adicDescFK( txtNomeUFCob, 80, 180, 290, 20, "NomeUFCob", "Nome UF" );
 			adicCampo( txtCodMunicCob, 7, 220, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
 			adicDescFK( txtDescMunCob, 80, 220, 290, 20, "NomeMunicCob", "Nome do municipio" );
-			
+
 		}
-		else{			
+		else {
 			adicCampo( txtCodPaisCob, 7, 180, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
 			adicDescFK( txtDescPaisCob, 80, 180, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidCob, 7, 140, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
@@ -1068,8 +1057,8 @@ public class FCliente extends FTabDados
 		adicDescFK( txtNomeBanco, 90, 180, 240, 20, "NomeBanco", "Nome do banco" );
 
 		adicCampo( txtCodCartCob, 7, 220, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
-		adicDescFK( txtDescCartCob, 90, 220, 240, 20, "DescCartCob", "Descrição da carteira de cobrança" );		
-		
+		adicDescFK( txtDescCartCob, 90, 220, 240, 20, "DescCartCob", "Descrição da carteira de cobrança" );
+
 		adicCampo( txtCodPesq, 7, 260, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
 		adicDescFK( txtDescPesq, 90, 260, 240, 20, "RazCli", "Razão social do cliente principal" );
 		adicCampo( txtCodFiscCli, 7, 300, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
@@ -1079,7 +1068,7 @@ public class FCliente extends FTabDados
 		adicCampo( txtCodContCred, 170, 380, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
-		
+
 		// Adicionar botão para agrupamento de clientes
 
 		btGrpCli.setToolTipText( "Clientes agrupados" );
@@ -1087,12 +1076,12 @@ public class FCliente extends FTabDados
 
 		btMapa.setToolTipText( "Exibição de mapa" );
 		btMapa.setPreferredSize( new Dimension( 38, 26 ) );
-		
-		pnGImp.add( btMapa );
-		pnGImp.add( btGrpCli);
 
-		pnGImp.setPreferredSize(new Dimension( 150, 26 ));		
-		
+		pnGImp.add( btMapa );
+		pnGImp.add( btGrpCli );
+
+		pnGImp.setPreferredSize( new Dimension( 150, 26 ) );
+
 		btGrpCli.addActionListener( this );
 
 		adicTab( "Observações", pnObs1 );
@@ -1128,16 +1117,14 @@ public class FCliente extends FTabDados
 		pnObs1_2.add( pnObs1_2_2, BorderLayout.CENTER );
 		pnObs1.add( pnObs1_1, BorderLayout.CENTER );
 		pnObs1.add( pnObs1_2, BorderLayout.SOUTH );
-		
 
 		adicTab( "Imagens", pinImages );
 		setPainel( pinImages );
 		adicDB( fotoCli, 10, 30, 200, 270, "FotoCli", "Foto ( 200 pixel X 270 pixel )", false );
 		adicDB( imgAssCli, 10, 330, 340, 85, "ImgAssCli", "Assinatura ( 340 pixel X 85 pixel )", false );
 
-		
 		setListaCampos( true, "CLIENTE", "VD" );
-		lcCampos.setValidarcpf( (Boolean)bPref.get( "CONSISTCPFCLI" ) );
+		lcCampos.setValidarcpf( (Boolean) bPref.get( "CONSISTCPFCLI" ) );
 
 		// Fornecedor:
 
@@ -1201,14 +1188,16 @@ public class FCliente extends FTabDados
 		tabHist.setTamColuna( 70, 8 );
 
 		tabHist.addMouseListener( new MouseAdapter() {
+
 			public void mouseClicked( MouseEvent mevt ) {
+
 				if ( mevt.getClickCount() == 2 ) {
 					editaHist();
 				}
 			}
 		} );
 
-		//tpnCont.setTabPlacement( SwingConstants.BOTTOM );
+		// tpnCont.setTabPlacement( SwingConstants.BOTTOM );
 		tpnCont.add( "Historico", pinHistorico );
 		tpnCont.add( "Lançamento de Contatos", pinContatos );
 		tpnCont.addChangeListener( this );
@@ -1218,7 +1207,7 @@ public class FCliente extends FTabDados
 		pnCto.add( tpnCont );
 
 		pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
-		pinHistorico.add( pinHistbt, BorderLayout.EAST);
+		pinHistorico.add( pinHistbt, BorderLayout.EAST );
 
 		pinHistbt.setPreferredSize( new Dimension( 37, 36 ) );
 		pinHistbt.adic( btNovoHist, 1, 1, 30, 30 );
@@ -1437,7 +1426,7 @@ public class FCliente extends FTabDados
 		btSetaQtdDez.addActionListener( this );
 		btMudaTudo.addActionListener( this );
 
-		if ( (Boolean)bPref.get( "SETORVENDA" ) ) {
+		if ( (Boolean) bPref.get( "SETORVENDA" ) ) {
 			lcSetor = new ListaCampos( this, "SR" );
 			lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false ) );
 			lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
@@ -1449,7 +1438,7 @@ public class FCliente extends FTabDados
 			adicCampo( txtCodSetor, 7, 300, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true );
 			adicDescFK( txtDescSetor, 90, 300, 237, 20, "DescSetor", "Descrição do setor" );
 		}
-	
+
 		setPainel( pinCliFor, pnCliFor );
 		adicTab( "Cliente x Fornecedor", pnCliFor );
 		setListaCampos( lcClixFor );
@@ -1460,14 +1449,14 @@ public class FCliente extends FTabDados
 		pnCliFor.add( pinCliFor, BorderLayout.CENTER );
 		pnCliFor.add( pinTesteFor, BorderLayout.SOUTH );
 		pinTesteFor.adic( navClixFor, 0, 0, 270, 25 );
-		
+
 		navClixFor.setAtivo( 0, false );
 		navClixFor.setAtivo( 1, false );
 		navClixFor.setAtivo( 2, false );
 		navClixFor.setAtivo( 3, false );
 		navClixFor.setAtivo( 4, false );
 		navClixFor.setAtivo( 8, true );
-		
+
 		lcForCli.add( new GuardaCampo( txtCodForCli, "CodFor", "Cód.for.", ListaCampos.DB_PK, null, true ) );
 		lcForCli.add( new GuardaCampo( txtDescForCli, "RazFor", "Razão social do fronecedor", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtNomeForCli, "NomeFor", "Nome do Fornecedor", ListaCampos.DB_SI, false ) );
@@ -1483,32 +1472,32 @@ public class FCliente extends FTabDados
 		lcForCli.setQueryCommit( false );
 		txtCodForCli.setListaCampos( lcForCli );
 		txtCodForCli.setTabelaExterna( lcForCli, FFornecedor.class.getCanonicalName() );
-		
+
 		adic( btBuscaFor, 7, 7, 30, 30 );
-		btBuscaFor.setToolTipText("Buscar fornecedor");
-		adicCampo( txtCodForCli, 50, 20, 55, 20, "CodFor", "Cód.For", ListaCampos.DB_PF, txtDescForCli,  true );
+		btBuscaFor.setToolTipText( "Buscar fornecedor" );
+		adicCampo( txtCodForCli, 50, 20, 55, 20, "CodFor", "Cód.For", ListaCampos.DB_PF, txtDescForCli, true );
 		adicDescFK( txtDescForCli, 110, 20, 200, 20, "RazFor", "Razão social do Fornecedor" );
-		setListaCampos( false, "CLIFOR", "EQ" );		
+		setListaCampos( false, "CLIFOR", "EQ" );
 		lcClixFor.montaTab();
 		lcClixFor.setQueryInsert( false );
 		lcClixFor.setQueryCommit( false );
-		
-		adic( new JLabelPad("Nome"), 313, 0, 200, 20 );
+
+		adic( new JLabelPad( "Nome" ), 313, 0, 200, 20 );
 		adic( txtNomeForCli, 313, 20, 180, 20 );
-		adic( new JLabelPad("Endereço"), 7, 40, 200, 20 );
-		adic( txtEndForCli , 7, 60, 305, 20 );
-		adic( new JLabelPad("Bairro"), 315, 40, 120, 20 );
-		adic( txtBairForCli , 315, 60, 131, 20 );
-		adic( new JLabelPad("Nº"), 450, 40, 200, 20 );
-		adic( txtNumForCli , 450, 60, 45, 20 );
-		adic( new JLabelPad("CNPJ"), 7, 80, 160, 20 );
+		adic( new JLabelPad( "Endereço" ), 7, 40, 200, 20 );
+		adic( txtEndForCli, 7, 60, 305, 20 );
+		adic( new JLabelPad( "Bairro" ), 315, 40, 120, 20 );
+		adic( txtBairForCli, 315, 60, 131, 20 );
+		adic( new JLabelPad( "Nº" ), 450, 40, 200, 20 );
+		adic( txtNumForCli, 450, 60, 45, 20 );
+		adic( new JLabelPad( "CNPJ" ), 7, 80, 160, 20 );
 		adic( txtCnpjForCli, 7, 100, 160, 20 );
-		adic( new JLabelPad("Inscrição Estadual"), 170, 80, 200, 20 );
+		adic( new JLabelPad( "Inscrição Estadual" ), 170, 80, 200, 20 );
 		adic( txtinscForCli, 170, 100, 142, 20 );
-		adic( new JLabelPad("CPF"), 315, 80, 200, 20 );
+		adic( new JLabelPad( "CPF" ), 315, 80, 200, 20 );
 		adic( txtcpfForCli, 315, 100, 180, 20 );
-		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
-		txtCnpjForCli.setMascara(  JTextFieldPad.MC_CNPJ );
+		txtcpfForCli.setMascara( JTextFieldPad.MC_CPF );
+		txtCnpjForCli.setMascara( JTextFieldPad.MC_CNPJ );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -1516,17 +1505,15 @@ public class FCliente extends FTabDados
 		btMapa.addActionListener( this );
 		tpn.addChangeListener( this );
 		lcCampos.setQueryInsert( false );
-		
+
 		lcCampos.addCarregaListener( this );
-		tbObsData.addTabelaSelListener( this );		
+		tbObsData.addTabelaSelListener( this );
 		lcMunic.addCarregaListener( this );
-		
-		
 
 	}
-	
-	private void setValores(){
-		
+
+	private void setValores() {
+
 		txtNomeForCli.setVlrString( txtNomeCli.getVlrString() );
 		txtcpfForCli.setVlrInteger( txtCpfCli.getVlrInteger() );
 		txtinscForCli.setVlrString( txtInscCli.getVlrString() );
@@ -1535,89 +1522,89 @@ public class FCliente extends FTabDados
 		txtEndForCli.setVlrString( txtEndCli.getVlrString() );
 		txtNumForCli.setVlrInteger( txtNumCli.getVlrInteger() );
 		txtBairForCli.setVlrString( txtBairCli.getVlrString() );
-		
+
 	}
-	
-	private void fazBusca(){
-		
+
+	private void fazBusca() {
+
 		String sCodCli = txtCodCli.getVlrString();
 		int codFor = 0;
-		
-		if( "".equals( sCodCli ) ){
-			
+
+		if ( "".equals( sCodCli ) ) {
+
 			Funcoes.mensagemInforma( this, "Selecione um cliente! " );
 		}
 
 		codFor = pesqFor();
-		
-		if( codFor != 0 ){
+
+		if ( codFor != 0 ) {
 
 			txtCodForCli.setVlrInteger( codFor );
 			setValores();
-            lcForCli.carregaDados();
+			lcForCli.carregaDados();
 			lcClixFor.carregaDados();
-			
-		} else {
-			
-			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" +
-					"Dejeja replicar os dados do cliente automaticamente?" ) == JOptionPane.YES_OPTION ) {
+
+		}
+		else {
+
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Dejeja replicar os dados do cliente automaticamente?" ) == JOptionPane.YES_OPTION ) {
 				codFor = inserirFor();
-				
-				if ( codFor!=0 ) {
-					
+
+				if ( codFor != 0 ) {
+
 					txtCodForCli.setVlrInteger( codFor );
 					lcForCli.carregaDados();
 					lcClixFor.carregaDados();
 					Funcoes.mensagemInforma( this, "Fornecedor inserido com sucesso!" );
 					setValores();
-						
+
 				}
 			}
 		}
 	}
-	
-	private int getCodFor(){
-		
+
+	private int getCodFor() {
+
 		int codigo = 0;
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
-		
+
 		sSQL.append( "SELECT MAX( F.CODFOR ) FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=?" );
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ResultSet rs  = ps.executeQuery(); 
-			
-			if( rs.next() ){
-			
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
 				codigo = rs.getInt( 1 ) + 1;
 			}
-			
+
 		} catch ( SQLException err ) {
-			
+
 			err.printStackTrace();
-			Funcoes.mensagemInforma( this, "Erro ao buscar último fornecedor!" + err.getMessage());  
+			Funcoes.mensagemInforma( this, "Erro ao buscar último fornecedor!" + err.getMessage() );
 		}
-		
+
 		return codigo;
 	}
-	
+
 	private int inserirFor() {
-		
+
 		int codfor = getCodFor();
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
-		
+
 		sSQL.append( "INSERT INTO CPFORNECED " );
-		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " ); 
+		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
 		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR ) " );
 		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
@@ -1625,7 +1612,7 @@ public class FCliente extends FTabDados
 			ps.setString( 4, txtRazCli.getVlrString() );
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 7, (Integer)bPref.get("CODTIPOFOR") );
+			ps.setInt( 7, (Integer) bPref.get( "CODTIPOFOR" ) );
 			ps.setInt( 8, Aplicativo.iCodEmp );
 			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 			ps.setInt( 10, Aplicativo.iCodEmp );
@@ -1638,61 +1625,61 @@ public class FCliente extends FTabDados
 			ps.setString( 17, txtEndCli.getVlrString() );
 			ps.setInt( 18, txtNumCli.getVlrInteger() );
 			ps.setString( 19, txtBairCli.getVlrString() );
-			
+
 			ps.executeUpdate();
-			
+
 			con.commit();
-		} catch ( SQLException  e ) {
-			
+		} catch ( SQLException e ) {
+
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao inserir Fornecedor" + e.getMessage() );
 		}
-		
+
 		return codfor;
 	}
-	
+
 	private int pesqFor() {
-		
+
 		int codfor = 0;
 		StringBuilder sSql = new StringBuilder();
 		String chave = null;
 		PreparedStatement ps = null;
-		
-		if ( "J".equals(rgPessoa.getVlrString()) ) {
-			
+
+		if ( "J".equals( rgPessoa.getVlrString() ) ) {
+
 			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CNPJFOR=? " );
 			chave = txtCnpjCli.getVlrString();
-			
-		} else {
-			
+
+		}
+		else {
+
 			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CPFFOR=? " );
 			chave = txtCpfCli.getVlrString();
-			
+
 		}
 		try {
-			
+
 			ps = con.prepareStatement( sSql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ));
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 			ps.setString( 3, chave );
 			ResultSet rs = ps.executeQuery();
-			
-		
-			if( rs.next() ){
-			
-				codfor = rs.getInt( "CODFOR" ); 
+
+			if ( rs.next() ) {
+
+				codfor = rs.getInt( "CODFOR" );
 			}
 
 			con.commit();
-		
-		} catch (SQLException e) {
-			
+
+		} catch ( SQLException e ) {
+
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao pesquisar fornecedor! " + e.getMessage() );
 		}
-		
+
 		return codfor;
-		
+
 	}
 
 	private void carregaTabelaObs() {
@@ -1701,28 +1688,28 @@ public class FCliente extends FTabDados
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuffer sSql = new StringBuffer();
-		
+
 		Object[] oLinha = null;
-		
+
 		try {
-			
+
 			iCodCli = txtCodCli.getVlrInteger().intValue();
 			txaTxtObsCli.setText( "" );
 			bExecCargaObs = true;
 			tbObsData.limpa();
-			
+
 			if ( iCodCli != 0 ) {
-				
+
 				sSql.append( "SELECT OC.DTOBSCLI, OC.HOBSCLI, OC.SEQOBSCLI FROM VDOBSCLI OC " );
 				sSql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
 				sSql.append( "ORDER BY OC.DTOBSCLI DESC, OC.HOBSCLI DESC, OC.SEQOBSCLI DESC" );
-				
+
 				ps = con.prepareStatement( sSql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDOBSCLI" ) );
 				ps.setInt( 3, iCodCli );
 				rs = ps.executeQuery();
-				
+
 				while ( rs.next() ) {
 					oLinha = new Object[ 3 ];
 					oLinha[ 0 ] = rs.getString( "DTOBSCLI" );
@@ -1730,19 +1717,17 @@ public class FCliente extends FTabDados
 					oLinha[ 2 ] = rs.getString( "SEQOBSCLI" );
 					tbObsData.adicLinha( oLinha );
 				}
-				
+
 				rs.close();
 				ps.close();
-				
+
 				con.commit();
-				
+
 			}
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, 
-					"Não foi possível carregar dados da tabela observações de cliente (VDOBSCLI).\n" 
-						+ err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Não foi possível carregar dados da tabela observações de cliente (VDOBSCLI).\n" + err.getMessage(), true, con, err );
 		} finally {
 			iCodCli = 0;
 			rs = null;
@@ -1763,16 +1748,16 @@ public class FCliente extends FTabDados
 		int iLinha = 0;
 
 		try {
-			
-			sSql.append( "select h.codhisttk, coalesce(h.sithisttk,'') sithisttk, coalesce(h.tipohisttk,'') tipohisttk,");
+
+			sSql.append( "select h.codhisttk, coalesce(h.sithisttk,'') sithisttk, coalesce(h.tipohisttk,'') tipohisttk," );
 			sSql.append( "coalesce(h.datahisttk,cast('today' as date)) datahisttk, coalesce(h.deschisttk,'') deschisttk," );
-			sSql.append( "coalesce(h.codcto,'') codcto, coalesce(h.codatend,'') codatend, coalesce(a.nomeatend,'') nomeatend,");
-			sSql.append( "coalesce(h.horahisttk,'') horahisttk "); 
+			sSql.append( "coalesce(h.codcto,'') codcto, coalesce(h.codatend,'') codatend, coalesce(a.nomeatend,'') nomeatend," );
+			sSql.append( "coalesce(h.horahisttk,'') horahisttk " );
 			sSql.append( "FROM TKHISTORICO H, ATATENDENTE A " );
 			sSql.append( "WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=? " );
 			sSql.append( "AND A.CODATEND=H.CODATEND AND A.CODEMP=H.CODEMPAE AND A.CODFILIAL=H.CODFILIALAE " );
 			sSql.append( "ORDER BY H.DATAHISTTK DESC,H.HORAHISTTK DESC,H.CODHISTTK" );
-			
+
 			ps = con.prepareStatement( sSql.toString() );
 			ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -1782,7 +1767,7 @@ public class FCliente extends FTabDados
 			tabHist.limpa();
 
 			while ( rs.next() ) {
-				
+
 				tabHist.adicLinha();
 				tabHist.setValor( rs.getString( "CodHistTK" ), iLinha, 0 );
 				tabHist.setValor( rs.getString( "SitHistTK" ), iLinha, 1 );
@@ -1794,14 +1779,14 @@ public class FCliente extends FTabDados
 				tabHist.setValor( rs.getString( "NomeAtend" ), iLinha, 7 );
 				tabHist.setValor( rs.getString( "HoraHistTK" ), iLinha, 8 );
 				iLinha++;
-				
+
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar tabela de históricos!\n" + err.getMessage(), true, con, err );
@@ -1818,40 +1803,40 @@ public class FCliente extends FTabDados
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		String sSql = null;
-		
+
 		try {
-			
+
 			if ( !bExecCargaObs ) {
-				
+
 				if ( tbObsData.getSelectedRow() > -1 ) {
-					
+
 					iCodCli = txtCodCli.getVlrInteger().intValue();
-					
+
 					if ( iCodCli != 0 ) {
-						
+
 						sSql = "SELECT OC.TXTOBSCLI FROM VDOBSCLI OC WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND SEQOBSCLI=? ";
-						
+
 						ps = con.prepareStatement( sSql );
 						ps.setInt( 1, Aplicativo.iCodEmp );
 						ps.setInt( 2, ListaCampos.getMasterFilial( "VDOBSCLI" ) );
 						ps.setInt( 3, iCodCli );
 						ps.setInt( 4, Integer.parseInt( tbObsData.getValor( tbObsData.getSelectedRow(), 2 ).toString() ) );
 						rs = ps.executeQuery();
-						
+
 						if ( rs.next() ) {
 							txaTxtObsCli.setVlrString( rs.getString( "TXTOBSCLI" ) );
 						}
-						
+
 						rs.close();
 						ps.close();
-						
+
 						con.commit();
 					}
-					
+
 				}
-				
+
 			}
-			
+
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Não foi possível carregar dados da tabela " + "observações de cliente (VDOBSCLI).\n" + err.getMessage(), true, con, err );
 		} finally {
@@ -1867,25 +1852,25 @@ public class FCliente extends FTabDados
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = "SELECT CNPJCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CNPJCLI=?";
-		
+
 		try {
-		
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCLIENTE" ));
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCLIENTE" ) );
 			ps.setString( 3, txtCnpjCli.getVlrString() );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				bRetorno = true;
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao checar CNPJ.\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -1911,23 +1896,17 @@ public class FCliente extends FTabDados
 
 		DLNovoHist dl = new DLNovoHist( iCod, 1, this );
 		dl.setConexao( con );
-		dl.setValores( new Object[] { 
-				(String) tabHist.getValor( iLin, 6 ), 
-				(String) tabHist.getValor( iLin, 4 ), 
-				(String) tabHist.getValor( iLin, 1 ), 
-				(String) tabHist.getValor( iLin, 2 ), 
-				(Date) Funcoes.strDateToSqlDate( (String) tabHist.getValor( iLin, 5 ) ) 
-				} );
+		dl.setValores( new Object[] { (String) tabHist.getValor( iLin, 6 ), (String) tabHist.getValor( iLin, 4 ), (String) tabHist.getValor( iLin, 1 ), (String) tabHist.getValor( iLin, 2 ), (Date) Funcoes.strDateToSqlDate( (String) tabHist.getValor( iLin, 5 ) ) } );
 		dl.setVisible( true );
-		
+
 		if ( dl.OK ) {
-			
+
 			oRets = dl.getValores();
 			PreparedStatement ps = null;
 			String sSQL = null;
-			
+
 			try {
-				
+
 				sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?,?)";
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Integer.parseInt( (String) tabHist.getValor( iLin, 0 ) ) );
@@ -1944,9 +1923,9 @@ public class FCliente extends FTabDados
 				ps.setString( 12, (String) oRets[ 3 ] );// status do historico
 				ps.execute();
 				ps.close();
-				
+
 				con.commit();
-				
+
 			} catch ( Exception err ) {
 				err.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao salvar o histórico!\n" + err.getMessage(), true, con, err );
@@ -1966,22 +1945,22 @@ public class FCliente extends FTabDados
 		StringBuffer sSql = new StringBuffer();
 		DLInputText dl = null;
 		iCodCli = txtCodCli.getVlrInteger().intValue();
-		
+
 		if ( ( tbObsData.getSelectedRow() > -1 ) && ( iCodCli != 0 ) ) {
-			
+
 			try {
-				
+
 				dl = new DLInputText( this, "Observação", false );
 				dl.setTexto( txaTxtObsCli.getText() );
 				dl.setVisible( true );
 
 				if ( dl.OK ) {
-					
+
 					try {
-						
+
 						sSql.append( "UPDATE VDOBSCLI SET DTOBSCLI=?, HOBSCLI=? , TXTOBSCLI=? " );
 						sSql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND SEQOBSCLI=?" );
-						
+
 						ps = con.prepareStatement( sSql.toString() );
 						ps.setDate( 1, new Date( Calendar.getInstance().getTime().getTime() ) );
 						ps.setTime( 2, new Time( Calendar.getInstance().getTime().getTime() ) );
@@ -1992,16 +1971,16 @@ public class FCliente extends FTabDados
 						ps.setInt( 7, Integer.parseInt( tbObsData.getValor( tbObsData.getSelectedRow(), 2 ).toString() ) );
 						ps.executeUpdate();
 						ps.close();
-						
+
 						con.commit();
-						
+
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Não foi possível alterar a observação.\n" + err.getMessage(), true, con, err );
 					}
 				}
-				
+
 				carregaTabelaObs();
-				
+
 			} finally {
 				ps = null;
 				sSql = null;
@@ -2016,13 +1995,13 @@ public class FCliente extends FTabDados
 		PreparedStatement ps = null;
 		String sSql = null;
 		iCodCli = txtCodCli.getVlrInteger().intValue();
-		
+
 		if ( ( tbObsData.getSelectedRow() > -1 ) && ( iCodCli != 0 ) ) {
-			
+
 			if ( Funcoes.mensagemConfirma( this, "Confirma exclusão da mensagem?" ) == JOptionPane.YES_OPTION ) {
-				
+
 				try {
-					
+
 					sSql = "DELETE FROM VDOBSCLI WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND SEQOBSCLI=?";
 					ps = con.prepareStatement( sSql );
 					ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2031,11 +2010,11 @@ public class FCliente extends FTabDados
 					ps.setInt( 4, Integer.parseInt( tbObsData.getValor( tbObsData.getSelectedRow(), 2 ).toString() ) );
 					ps.executeUpdate();
 					ps.close();
-					
+
 					con.commit();
-					
+
 					carregaTabelaObs();
-					
+
 				} catch ( SQLException err ) {
 					Funcoes.mensagemErro( this, "Não foi possível excluir a observação.\n" + err.getMessage(), true, con, err );
 					err.printStackTrace();
@@ -2044,9 +2023,9 @@ public class FCliente extends FTabDados
 					iCodCli = 0;
 					sSql = null;
 				}
-				
+
 			}
-			
+
 		}
 	}
 
@@ -2056,17 +2035,15 @@ public class FCliente extends FTabDados
 			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
 			return;
 		}
-		else if ( Funcoes.mensagemConfirma( this, 
-				"Deseja relamente excluir o histórico '" + tabHist.getValor( tabHist.getLinhaSel(), 0 ) + "'?" ) 
-					!= JOptionPane.YES_OPTION ) {
+		else if ( Funcoes.mensagemConfirma( this, "Deseja relamente excluir o histórico '" + tabHist.getValor( tabHist.getLinhaSel(), 0 ) + "'?" ) != JOptionPane.YES_OPTION ) {
 			return;
 		}
 
 		PreparedStatement ps = null;
 		String sSQL = null;
-		
+
 		try {
-			
+
 			sSQL = "DELETE FROM TKHISTORICO WHERE CODHISTTK=? AND CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement( sSQL );
 			ps.setString( 1, (String) tabHist.getValor( tabHist.getLinhaSel(), 0 ) );
@@ -2074,11 +2051,11 @@ public class FCliente extends FTabDados
 			ps.setInt( 3, ListaCampos.getMasterFilial( "TKHISTORICO" ) );
 			ps.execute();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			carregaTabHist();
-			
+
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao excluir o histórico!\n" + err.getMessage(), true, con, err );
@@ -2098,9 +2075,9 @@ public class FCliente extends FTabDados
 		Integer iCodAtende = getAtendente();
 
 		if ( iCodAtende.compareTo( new Integer( 0 ) ) > 0 ) {
-			
+
 			try {
-				
+
 				sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,'" + iMes + "-01-" + txtAno.getVlrInteger() + "','V')";
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2114,9 +2091,9 @@ public class FCliente extends FTabDados
 				ps.setString( 9, "EF" );// status do historico
 				ps.execute();
 				ps.close();
-				
+
 				con.commit();
-			
+
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro ao inserir historicos para o cliente.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
@@ -2126,9 +2103,7 @@ public class FCliente extends FTabDados
 			}
 		}
 		else {
-			Funcoes.mensagemInforma( this, 
-					"Não é possivel gerar contatos para esse cliente, pois não existe um atendente\n" +
-					"vinculado ao vendedor padrão!" );
+			Funcoes.mensagemInforma( this, "Não é possivel gerar contatos para esse cliente, pois não existe um atendente\n" + "vinculado ao vendedor padrão!" );
 		}
 
 		carregaTabHist();
@@ -2139,20 +2114,20 @@ public class FCliente extends FTabDados
 		Integer iCodAtende = getAtendente();
 
 		if ( iCodAtende.compareTo( new Integer( 0 ) ) > 0 ) {
-			
-			HashMap<String,HashMap<String, Integer>> hmMeses = new HashMap<String,HashMap<String, Integer>>();
-			HashMap<String,Integer> hmJan = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmFev = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmMar = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmAbr = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmMai = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmJun = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmJul = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmAgo = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmSet = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmOut = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmNov = new HashMap<String,Integer>();
-			HashMap<String,Integer> hmDez = new HashMap<String,Integer>();
+
+			HashMap<String, HashMap<String, Integer>> hmMeses = new HashMap<String, HashMap<String, Integer>>();
+			HashMap<String, Integer> hmJan = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmFev = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmMar = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmAbr = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmMai = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmJun = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmJul = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmAgo = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmSet = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmOut = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmNov = new HashMap<String, Integer>();
+			HashMap<String, Integer> hmDez = new HashMap<String, Integer>();
 
 			hmJan.put( "ANT", txtAntQtdContJan.getVlrInteger() );
 			hmJan.put( "NOVO", txtNovaQtdContJan.getVlrInteger() );
@@ -2194,14 +2169,12 @@ public class FCliente extends FTabDados
 
 			if ( iMes == null ) {
 				for ( int iM = 1; iM < 13; iM++ ) {
-					int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf(iM) ) ).get( "ANT" ) ).intValue();
-					int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf(iM) ) ).get( "NOVO" ) ).intValue();
+					int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf( iM ) ) ).get( "ANT" ) ).intValue();
+					int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf( iM ) ) ).get( "NOVO" ) ).intValue();
 
 					if ( iQtdNov > 0 ) {
 						if ( iQtdAnt > iQtdNov ) {
-							Funcoes.mensagemInforma( this, 
-									"A nova quantidade informada é menor ou igual a quantidade atual, " + 
-									"\n você deve excluir os contatos manualmente." );
+							Funcoes.mensagemInforma( this, "A nova quantidade informada é menor ou igual a quantidade atual, " + "\n você deve excluir os contatos manualmente." );
 						}
 						else if ( iQtdNov > iQtdAnt ) {
 							for ( int i = 0; ( iQtdNov - iQtdAnt ) > i; i++ ) {
@@ -2212,13 +2185,11 @@ public class FCliente extends FTabDados
 				}
 			}
 			else {
-				int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf(iMes) ) ).get( "ANT" ) ).intValue();
-				int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf(iMes) ) ).get( "NOVO" ) ).intValue();
+				int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf( iMes ) ) ).get( "ANT" ) ).intValue();
+				int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf( iMes ) ) ).get( "NOVO" ) ).intValue();
 				if ( iQtdNov > 0 ) {
 					if ( iQtdAnt > iQtdNov ) {
-						Funcoes.mensagemInforma( this, 
-								"A nova quantidade informada é menor ou igual a quantidade atual, " + 
-								"\n você deve excluir os contatos manualmente." );
+						Funcoes.mensagemInforma( this, "A nova quantidade informada é menor ou igual a quantidade atual, " + "\n você deve excluir os contatos manualmente." );
 					}
 					else if ( iQtdNov > iQtdAnt ) {
 						for ( int i = 0; ( iQtdNov - iQtdAnt ) > i; i++ ) {
@@ -2231,9 +2202,7 @@ public class FCliente extends FTabDados
 			carregaTabHist();
 		}
 		else {
-			Funcoes.mensagemInforma( this, 
-					"Não é possivel gerar contatos para esse cliente, pois não existe um atendente\n" 
-					+ "vinculado ao vendedor padrão!" );
+			Funcoes.mensagemInforma( this, "Não é possivel gerar contatos para esse cliente, pois não existe um atendente\n" + "vinculado ao vendedor padrão!" );
 		}
 	}
 
@@ -2243,22 +2212,22 @@ public class FCliente extends FTabDados
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		
+
 		try {
-			
+
 			sSQL = "SELECT U.CODAGE,U.TIPOAGE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?";
-			
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setString( 3, Aplicativo.strUsuario );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
 				oRet[ 0 ] = new Integer( rs.getInt( 1 ) );
 				oRet[ 1 ] = rs.getString( 2 );
 			}
-			
+
 			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -2277,24 +2246,24 @@ public class FCliente extends FTabDados
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSql = null;
-		
+
 		try {
-			
+
 			sSql = "SELECT CODATEND FROM ATATENDENTE WHERE CODEMPVE=? AND CODFILIALVE=? AND CODVEND=?";
-			
+
 			ps = con.prepareStatement( sSql );
 			ps.setInt( 1, lcVend.getCodEmp() );
 			ps.setInt( 2, lcVend.getCodFilial() );
 			ps.setInt( 3, txtCodVend.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				iRet = new Integer( rs.getInt( 1 ) );
 			}
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
@@ -2342,7 +2311,7 @@ public class FCliente extends FTabDados
 			txtAntQtdContDez.setVlrString( "" );
 			txtNovaQtdContDez.setVlrString( "" );
 
-			sSql.append( "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) FROM TKHISTORICO TK " ); 
+			sSql.append( "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) FROM TKHISTORICO TK " );
 			sSql.append( "WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? " );
 			sSql.append( "AND CODEMPCL=? AND CODFILIALCL=? AND CODCLI=? " );
 			sSql.append( "GROUP BY 1 ORDER BY 1" );
@@ -2358,7 +2327,7 @@ public class FCliente extends FTabDados
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
-				
+
 				iMes = rs.getInt( 1 );
 				iQtd = rs.getInt( 2 );
 
@@ -2410,12 +2379,12 @@ public class FCliente extends FTabDados
 					txtAntQtdContDez.setVlrInteger( new Integer( iQtd ) );
 					txtNovaQtdContDez.setVlrString( "" );
 				}
-				
+
 			}
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 
 		} catch ( Exception err ) {
@@ -2427,16 +2396,16 @@ public class FCliente extends FTabDados
 			sSql = null;
 		}
 	}
-	
+
 	private Map<String, Object> getPrefere() {
 
 		Map<String, Object> retorno = new HashMap<String, Object>();
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			sSQL.append( "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI," );
 			sSQL.append( "P.CONSISTEIECLI, P.CONSISTCPFCLI, P.CONSISTEIEPF, " );
 			sSQL.append( "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " );
@@ -2444,44 +2413,44 @@ public class FCliente extends FTabDados
 			sSQL.append( "ELSE 'N' " );
 			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR, USAIBGECLI, USAIBGEFOR, USAIBGETRANSP, BUSCACEP " );
 			sSQL.append( "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " );
-			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? ");
-			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?");
+			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? " );
+			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 
 			try {
-			
+
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
 				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
 				ps.setInt( 4, Aplicativo.iCodEmp );
 				ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-				
+
 				rs = ps.executeQuery();
-				
+
 				if ( rs.next() ) {
-					
-					retorno.put( "SETORVENDA", new Boolean( "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0 ));
+
+					retorno.put( "SETORVENDA", new Boolean( "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0 ) );
 					retorno.put( "RGCLIOBRIG", new Boolean( "S".equals( rs.getString( "RGCLIOBRIG" ) ) ) );
 					retorno.put( "CLIMESMOCNPJ", new Boolean( "S".equals( rs.getString( "CLIMESMOCNPJ" ) ) ) );
-					retorno.put( "CLIMESMOCNPJ", new Boolean( "S".equals( rs.getString( "CLIMESMOCNPJ" ) ) ) ); 
+					retorno.put( "CLIMESMOCNPJ", new Boolean( "S".equals( rs.getString( "CLIMESMOCNPJ" ) ) ) );
 					retorno.put( "CONSISTEIECLI", new Boolean( "S".equals( rs.getString( "CONSISTEIECLI" ) ) ) );
 					retorno.put( "CONSISTCPFCLI", new Boolean( "S".equals( rs.getString( "CONSISTCPFCLI" ) ) ) );
 					retorno.put( "HABATIVCLI", new Boolean( "S".equals( rs.getString( "HABATIVCLI" ) ) ) );
-					retorno.put( "CODTIPOFOR", rs.getInt( "CODTIPOFOR" ));
-					retorno.put( "USAIBGECLI", new Boolean( "S".equals( rs.getString( "USAIBGECLI" ) ) )  );
-					retorno.put( "USAIBGEFOR", new Boolean( "S".equals( rs.getString( "USAIBGEFOR" ) ) )  );
-					retorno.put( "USAIBGETRANSP", new Boolean( "S".equals( rs.getString( "USAIBGETRANSP" ) ) )  );
-					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) )  );	
-					retorno.put( "CONSISTEIEPF", new Boolean( "S".equals( rs.getString( "CONSISTEIEPF" ) ) )  );						
-					
+					retorno.put( "CODTIPOFOR", rs.getInt( "CODTIPOFOR" ) );
+					retorno.put( "USAIBGECLI", new Boolean( "S".equals( rs.getString( "USAIBGECLI" ) ) ) );
+					retorno.put( "USAIBGEFOR", new Boolean( "S".equals( rs.getString( "USAIBGEFOR" ) ) ) );
+					retorno.put( "USAIBGETRANSP", new Boolean( "S".equals( rs.getString( "USAIBGETRANSP" ) ) ) );
+					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
+					retorno.put( "CONSISTEIEPF", new Boolean( "S".equals( rs.getString( "CONSISTEIEPF" ) ) ) );
+
 				}
-				
+
 				rs.close();
 				ps.close();
-				
+
 				con.commit();
 			} catch ( SQLException err ) {
-				
+
 				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
@@ -2492,69 +2461,32 @@ public class FCliente extends FTabDados
 		}
 		return retorno;
 	}
-	
+
 	/**
 	 * private boolean[] getPrefere() {
-
-		boolean[] bRet = new boolean[ 8 ];
-		String sSQL = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			sSQL = "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI, P.CODTIPOFORCLI," +
-					"P.CONSISTEIECLI, P.CONSISTCPFCLI, " +
-					"(CASE WHEN P.USUATIVCLI='N' THEN 'S' " +
-					"WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " +
-					"ELSE 'N' " +
-					"END) HABATIVCLI  " +
-					"FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " +
-					"ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? "+
-					"WHERE P.CODEMP=? AND P.CODFILIAL=?";
-
-			try {
-				ps = con.prepareStatement( sSQL );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
-				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-				rs = ps.executeQuery();
-				
-				if ( rs.next() ) {
-					
-					bRet[ 0 ] = "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0;
-					bRet[ 1 ] = "S".equals( rs.getString( "RGCLIOBRIG" ) );
-					bRet[ 2 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
-					bRet[ 3 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
-					bRet[ 4 ] = "S".equals( rs.getString( "CONSISTEIECLI" ) );
-					bRet[ 5 ] = "S".equals( rs.getString( "CONSISTCPFCLI" ) );
-					bRet[ 6 ] = "S".equals( rs.getString( "HABATIVCLI" ) );
-					bRet[ 7 ] = rs.getString( "CODTIPOFORCLI" ) ;
-				}
-				
-				rs.close();
-				ps.close();
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-		} finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return bRet;
-	}
-
+	 * 
+	 * boolean[] bRet = new boolean[ 8 ]; String sSQL = null; PreparedStatement ps = null; ResultSet rs = null;
+	 * 
+	 * try {
+	 * 
+	 * sSQL = "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI, P.CODTIPOFORCLI," + "P.CONSISTEIECLI, P.CONSISTCPFCLI, " + "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " + "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " + "ELSE 'N' " + "END) HABATIVCLI  " +
+	 * "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " + "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? "+ "WHERE P.CODEMP=? AND P.CODFILIAL=?";
+	 * 
+	 * try { ps = con.prepareStatement( sSQL ); ps.setInt( 1, Aplicativo.iCodEmp ); ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) ); ps.setString( 3, Aplicativo.strUsuario.toLowerCase() ); ps.setInt( 4, Aplicativo.iCodEmp ); ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); rs
+	 * = ps.executeQuery();
+	 * 
+	 * if ( rs.next() ) {
+	 * 
+	 * bRet[ 0 ] = "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0; bRet[ 1 ] = "S".equals( rs.getString( "RGCLIOBRIG" ) ); bRet[ 2 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) ); bRet[ 3 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) ); bRet[ 4 ] = "S".equals( rs.getString( "CONSISTEIECLI" ) );
+	 * bRet[ 5 ] = "S".equals( rs.getString( "CONSISTCPFCLI" ) ); bRet[ 6 ] = "S".equals( rs.getString( "HABATIVCLI" ) ); bRet[ 7 ] = rs.getString( "CODTIPOFORCLI" ) ; }
+	 * 
+	 * rs.close(); ps.close();
+	 * 
+	 * if ( !con.getAutoCommit() ) { con.commit(); } } catch ( SQLException err ) { Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err ); err.printStackTrace(); } } finally { sSQL = null; ps = null; rs = null; } return bRet; }
+	 * 
 	 * 
 	 */
-	
+
 	private void grpCli() {
 
 		DLGrpCli dl = null;
@@ -2581,7 +2513,7 @@ public class FCliente extends FTabDados
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-		
+
 		ImprimeOS imp = new ImprimeOS( "", con );
 		String[] sValores;
 
@@ -2598,31 +2530,31 @@ public class FCliente extends FTabDados
 			imprimeResumido1( imp, sValores );
 		}
 		else if ( "2".equals( sValores[ 7 ] ) ) {
-			imprimeResumido2( imp, sValores );			
+			imprimeResumido2( imp, sValores );
 		}
 		else if ( "3".equals( sValores[ 7 ] ) ) {
-			imprimeResumido3( imp, sValores );			
+			imprimeResumido3( imp, sValores );
 		}
 		else if ( "C".equals( sValores[ 7 ] ) ) {
-			imprimeCompleto( imp, sValores );			
+			imprimeCompleto( imp, sValores );
 		}
 		else if ( "A".equals( sValores[ 7 ] ) ) {
 			imprimeAlinhaFilial( imp, sValores );
 		}
-		
-		dl.dispose();	
+
+		dl.dispose();
 
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
-		else { 
+		else {
 			imp.print();
 		}
 
 	}
-	
+
 	private void imprimeResumido1( final ImprimeOS imp, final String[] sValores ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -2634,7 +2566,6 @@ public class FCliente extends FTabDados
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
-		
 
 		if ( sValores[ 1 ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
@@ -2653,13 +2584,13 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -2674,9 +2605,10 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
-			if ( !(Boolean)bPref.get( "SetorVenda" ) ) {
+			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
-				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );;
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
+				;
 			}
 			else {
 				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
@@ -2692,96 +2624,94 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
-		if ( !sValores[19].equals( "" )) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ 19 ].equals( "" ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
 			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
-		
-		if(sValores[20].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='S' " );			
-		}
-		
-		if(sValores[21].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='N' " );			
+
+		if ( sValores[ 20 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='S' " );
 		}
 
-		
-		
-		try {				
+		if ( sValores[ 21 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='N' " );
+		}
+
+		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
-			
+
 			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 			And.setVisible( true );
-			
+
 			con.commit();
-			
+
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI," );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI," );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI," );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI," );
 			}
 			sSQL.append( "C1.FONECLI,C1.DDDCLI,C1.CODPESQ " );
-			sSQL.append(  sObs );
+			sSQL.append( sObs );
 			sSQL.append( "FROM VDCLIENTE C1 " );
 			sSQL.append( sFrom );
 			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
 			sSQL.append( " ORDER BY " + sValores[ 0 ] );
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() >= linPag ) {
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "+" + linhaFina + "+" );
 					imp.incPags();
 					imp.eject();
-					
+
 				}
-				
+
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
 					imp.say( 0, "|" + linhaFina + "|" );
@@ -2795,9 +2725,9 @@ public class FCliente extends FTabDados
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + linhaFina + "|" );
-					
+
 				}
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 4, rs.getString( "CodCli" ) );
@@ -2818,53 +2748,53 @@ public class FCliente extends FTabDados
 				imp.say( 135, "|" );
 
 				if ( !sObs.equals( "" ) ) {
-					
+
 					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
-					
+
 					for ( int i = 0; i < vObs.size(); i++ ) {
-						
+
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
 						imp.say( 14, vObs.elementAt( i ).toString() );
 						imp.say( 117, "|" );
 						imp.say( 135, "|" );
-						
+
 						if ( imp.pRow() >= linPag ) {
-							
+
 							imp.pulaLinha( 1, imp.comprimido() );
 							imp.say( 0, "+" + linhaFina + "+" );
 							imp.incPags();
 							imp.eject();
-							
+
 						}
-						
+
 					}
-					
+
 				}
-				
+
 				And.atualiza( iContaReg );
 				iContaReg++;
-				
+
 			}
-			
+
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + linhaFina + "+" );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
 
 			con.commit();
-			
+
 			And.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
-	
+
 	private void imprimeResumido2( final ImprimeOS imp, final String[] sValores ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -2876,7 +2806,6 @@ public class FCliente extends FTabDados
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
-		
 
 		if ( sValores[ 1 ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
@@ -2895,13 +2824,13 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -2916,7 +2845,7 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
-			if ( !(Boolean)bPref.get( "SetorVenda" ) ) {
+			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
 				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
 			}
@@ -2934,66 +2863,65 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
-		if ( !sValores[19].equals( "" )) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ 19 ].equals( "" ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
 			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
-		
-		if(sValores[20].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='S' " );			
+
+		if ( sValores[ 20 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='S' " );
 		}
-		if(sValores[21].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='N' " );			
+		if ( sValores[ 21 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='N' " );
 		}
 
-
-		try {				
+		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
-			
+
 			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 			And.setVisible( true );
-			
+
 			con.commit();
-			
+
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.FONECLI," );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI,C1.NUMCLI," );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI,C1.NUMENT AS NUMCLI," );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI,C1.NUMCOB AS NUMCLI," );
 			}
 			sSQL.append( "C1.FAXCLI,C1.DDDCLI,C1.CONTCLI,C1.EMAILCLI,C1.SITECLI " );
@@ -3003,7 +2931,7 @@ public class FCliente extends FTabDados
 			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
 			sSQL.append( " ORDER BY " + sValores[ 0 ] );
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
@@ -3012,16 +2940,16 @@ public class FCliente extends FTabDados
 			while ( rs.next() ) {
 
 				if ( imp.pRow() >= linPag ) {
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "+" + linhaFina + "+" );
 					imp.incPags();
 					imp.eject();
-					
+
 				}
 
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
 					imp.say( 0, "|" + linhaFina + "|" );
@@ -3032,8 +2960,8 @@ public class FCliente extends FTabDados
 					imp.say( 74, "|  Endereço / Web Site" );
 					imp.say( 117, "|   Tel / Fax" );
 					imp.say( 135, "|" );
-					
-				}					
+
+				}
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" + linhaFina + "|" );
@@ -3062,47 +2990,47 @@ public class FCliente extends FTabDados
 				imp.say( 135, "|" );
 
 				if ( !sObs.equals( "" ) ) {
-					
+
 					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
-					
+
 					for ( int i = 0; i < vObs.size(); i++ ) {
-						
+
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
 						imp.say( 14, vObs.elementAt( i ).toString() );
 						imp.say( 117, "|" );
 						imp.say( 135, "|" );
-						
+
 						if ( imp.pRow() >= linPag ) {
 							imp.incPags();
 							imp.eject();
 						}
-						
+
 					}
-					
+
 				}
-				
+
 				And.atualiza( iContaReg );
 				iContaReg++;
-				
+
 			}
-			
+
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + linhaFina + "+" );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
 
 			con.commit();
-			
+
 			And.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
-	
+
 	private void imprimeResumido3( final ImprimeOS imp, final String[] sValores ) {
 
 		PreparedStatement ps = null;
@@ -3116,7 +3044,6 @@ public class FCliente extends FTabDados
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
-		
 
 		if ( sValores[ 1 ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
@@ -3135,13 +3062,13 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -3156,9 +3083,10 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "REPRESENTANTE = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
-			if ( !(Boolean)bPref.get( "SetorVenda" ) ) {
+			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
-				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );;
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
+				;
 			}
 			else {
 				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
@@ -3174,96 +3102,95 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
-		if ( !sValores[19].equals( "" )) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ 19 ].equals( "" ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
 			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
-		
-		if(sValores[20].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='S' " );			
+
+		if ( sValores[ 20 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='S' " );
 		}
-		if(sValores[21].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='N' " );			
+		if ( sValores[ 21 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='N' " );
 		}
 
-		
-		try {				
+		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
-			
+
 			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 			And.setVisible( true );
-			
+
 			con.commit();
-			
+
 			sSQL.append( "SELECT C1.CODCLI,C1.NOMECLI," );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI," );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
 				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI," );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
 				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI," );
 			}
 			sSQL.append( "C1.FONECLI,C1.DDDCLI " );
-			sSQL.append(  sObs );
+			sSQL.append( sObs );
 			sSQL.append( "FROM VDCLIENTE C1 " );
 			sSQL.append( sFrom );
 			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
 			sSQL.append( " ORDER BY " + sValores[ 0 ] );
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() >= linPag ) {
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "+" + linhaFina + "+" );
 					imp.incPags();
 					imp.eject();
-					
+
 				}
-				
+
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 136, true );
 					imp.say( 0, "|" + linhaFina + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -3277,9 +3204,9 @@ public class FCliente extends FTabDados
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + linhaFina + "|" );
-					
+
 				}
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" + Funcoes.alinhaDir( rs.getString( "CODCLI" ), 8 ) );
 				imp.say( 9, "|" + ( rs.getString( "NOMECLI" ) != null ? Funcoes.copy( rs.getString( "NOMECLI" ), 29 ) : "" ) );
@@ -3288,56 +3215,56 @@ public class FCliente extends FTabDados
 				imp.say( 76, "|" + ( rs.getString( "BAIRCLI" ) != null ? Funcoes.copy( rs.getString( "BAIRCLI" ), 19 ) : "" ) );
 				imp.say( 96, "|" + ( rs.getString( "CIDCLI" ) != null ? Funcoes.copy( rs.getString( "CIDCLI" ), 19 ) : "" ) );
 				imp.say( 116, "|" + ( rs.getString( "UFCLI" ) != null ? Funcoes.copy( rs.getString( "UFCLI" ), 2 ) : "" ) );
-				imp.say( 119, "|" + ( rs.getString( "DDDCLI" ) != null ? ("(" + rs.getString( "DDDCLI" ) + ")") : "" ) + ( rs.getString( "FONECLI" ) != null ? Funcoes.setMascara( rs.getString( "FONECLI" ).trim(), "####-####" ) : "" ).trim() );
+				imp.say( 119, "|" + ( rs.getString( "DDDCLI" ) != null ? ( "(" + rs.getString( "DDDCLI" ) + ")" ) : "" ) + ( rs.getString( "FONECLI" ) != null ? Funcoes.setMascara( rs.getString( "FONECLI" ).trim(), "####-####" ) : "" ).trim() );
 				imp.say( 135, "|" );
 
 				if ( "S".equals( sValores[ 1 ] ) ) {
-					
+
 					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 100 );
-					
+
 					for ( int i = 0; i < vObs.size(); i++ ) {
-						
+
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|      Obs: " + vObs.elementAt( i ).toString() );
 						imp.say( 119, "|" );
 						imp.say( 135, "|" );
-						
+
 						if ( imp.pRow() >= linPag ) {
-							
+
 							imp.pulaLinha( 1, imp.comprimido() );
 							imp.say( 0, "+" + linhaFina + "+" );
 							imp.incPags();
 							imp.eject();
-							
+
 						}
-						
+
 					}
-					
+
 				}
-				
+
 				And.atualiza( iContaReg );
 				iContaReg++;
-				
+
 			}
-			
+
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + linhaFina + "+" );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
 
 			con.commit();
-			
+
 			And.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
-	
+
 	private void imprimeCompleto( final ImprimeOS imp, final String[] sValores ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -3348,7 +3275,6 @@ public class FCliente extends FTabDados
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
-		
 
 		if ( sValores[ 1 ].equals( "S" ) ) {
 			sObs = ",C1.OBSCLI ";
@@ -3367,13 +3293,13 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.CIDCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 5 ] + "'" );
@@ -3388,7 +3314,7 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
-			if ( !(Boolean)bPref.get( "SetorVenda" ) ) {
+			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
 				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
 			}
@@ -3406,69 +3332,68 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.BAIRCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
-		if ( !sValores[19].equals( "" )) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ 19 ].equals( "" ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 			}
 			sWhere.append( "'" + sValores[ 19 ] + "'" );
 			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
-		
-		if(sValores[20].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='S' " );			
+
+		if ( sValores[ 20 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='S' " );
 		}
-		if(sValores[21].equals( "S" )) {
-			sWhere.append( " AND C1.ATIVOCLI='N' " );			
+		if ( sValores[ 21 ].equals( "S" ) ) {
+			sWhere.append( " AND C1.ATIVOCLI='N' " );
 		}
 
-		
-		try {				
+		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
-			
+
 			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 			And.setVisible( true );
-			
+
 			con.commit();
 
 			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.PESSOACLI,C1.NOMECLI,C1.CONTCLI," );
 			sSQL.append( "C1.CNPJCLI,C1.INSCCLI,C1.CPFCLI," );
 			sSQL.append( "C1.RGCLI,C1.FONECLI,C1.DDDCLI,C1.FAXCLI,C1.EMAILCLI,C1.CODPESQ, " );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI,C1.CEPCLI " );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
 				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI,C1.CEPENT AS CEPCLI " );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
 				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI,C1.CEPCOB AS CEPCLI " );
 			}
@@ -3478,14 +3403,14 @@ public class FCliente extends FTabDados
 			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
 			sSQL.append( " ORDER BY " + sValores[ 0 ] );
-		
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
@@ -3539,7 +3464,7 @@ public class FCliente extends FTabDados
 					imp.say( 7, Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );
 					imp.say( 50, "IE:" );
 					if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCli" ) != null ) {
-					//	Funcoes.validaIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
+						// Funcoes.validaIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
 						imp.say( 55, Funcoes.formataIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) ) );
 					}
 				}
@@ -3575,31 +3500,30 @@ public class FCliente extends FTabDados
 					imp.incPags();
 					imp.eject();
 				}
-				
+
 				And.atualiza( iContaReg++ );
-				
+
 			}
-			
+
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + linhaFina + "+" );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
-			
+
 			con.commit();
-			
+
 			And.dispose();
-			
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		
-		
+
 	}
-	
+
 	private void imprimeAlinhaFilial( final ImprimeOS imp, final String[] sValores ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -3613,7 +3537,6 @@ public class FCliente extends FTabDados
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
-		
 
 		if ( sValores[ 12 ].equals( "C" ) ) {
 			sOrdem = "1,3,4";
@@ -3653,7 +3576,7 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "REPRES. : " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
-			if ( !(Boolean)bPref.get( "SetorVenda" ) ) {
+			if ( !(Boolean) bPref.get( "SetorVenda" ) ) {
 				sFrom = ",VDVENDEDOR V ";
 				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
 				sWhere2.append( " AND C2.CODEMPVD=V.CODEMP AND C2.CODFILIALVD=V.CODFILIAL AND C2.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
@@ -3680,16 +3603,16 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "BAIRRO : " + sValores[ 18 ] );
 		}
 
-		if ( !sValores[19].equals( "" )) {
-			if( "A".equals( sValores[ 17 ] ) ) {
+		if ( !sValores[ 19 ].equals( "" ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCLI=" );
 				sWhere2.append( " AND C2.UFCLI=" );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFENT=" );
 				sWhere2.append( " AND C2.UFENT=" );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sWhere.append( " AND C1.UFCOB=" );
 				sWhere2.append( " AND C2.UFCOB=" );
 			}
@@ -3698,31 +3621,31 @@ public class FCliente extends FTabDados
 			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
 
-		try {				
+		try {
 
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
-			
+
 			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 			rs.next();
-			
+
 			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 			And.setVisible( true );
-			
+
 			con.commit();
-			
+
 			sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.DDDCLI,C1.FONECLI," );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI " );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI " );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI " );
 			}
 			sSQL.append( "FROM VDCLIENTE C1" );
@@ -3730,16 +3653,16 @@ public class FCliente extends FTabDados
 			sSQL.append( " WHERE C1.CODCLI=C1.CODPESQ " );
 			sSQL.append( " AND C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
-			sSQL.append( " UNION ALL SELECT C2.CODPESQ,");
+			sSQL.append( " UNION ALL SELECT C2.CODPESQ," );
 			sSQL.append( "(SELECT C3.RAZCLI FROM VDCLIENTE C3 WHERE C3.CODCLI=C2.CODPESQ) AS RAZMATRIZ," );
 			sSQL.append( "'B' TIPO,C2.CODCLI,C2.RAZCLI,C2.DDDCLI,C2.FONECLI," );
-			if( "A".equals( sValores[ 17 ] ) ) {
+			if ( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C2.ENDCLI,C2.CIDCLI " );
 			}
-			else if( "E".equals( sValores[ 17 ] ) ) {
+			else if ( "E".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C2.ENDENT AS ENDCLI,C2.CIDENT AS CIDCLI " );
 			}
-			else if( "C".equals( sValores[ 17 ] ) ) {
+			else if ( "C".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C2.ENDCOB AS ENDCLI,C2.CIDCOB AS CIDCLI " );
 			}
 			sSQL.append( "FROM VDCLIENTE C2" );
@@ -3755,12 +3678,12 @@ public class FCliente extends FTabDados
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
-				
+
 				sCodpesq = String.valueOf( rs.getInt( 1 ) );
-				
-				if ( sCodpesqant.equals( "" ) ){
+
+				if ( sCodpesqant.equals( "" ) ) {
 					sCodpesqant = sCodpesq;
 				}
 
@@ -3840,9 +3763,9 @@ public class FCliente extends FTabDados
 			imp.fechaGravacao();
 
 			con.commit();
-			
+
 			And.dispose();
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!\n" + err.getMessage(), true, con, err );
@@ -3854,9 +3777,9 @@ public class FCliente extends FTabDados
 
 		PreparedStatement ps = null;
 		int iCod = 0;
-		
+
 		try {
-			
+
 			Object oRets[];
 
 			if ( txtCodCli.getVlrInteger().intValue() == 0 ) {
@@ -3871,11 +3794,11 @@ public class FCliente extends FTabDados
 			DLNovoHist dl = new DLNovoHist( iCod, 1, this );
 			dl.setConexao( con );
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
-				
+
 				oRets = dl.getValores();
-				
+
 				try {
 					String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,?)";
 					ps = con.prepareStatement( sSQL );
@@ -3916,7 +3839,7 @@ public class FCliente extends FTabDados
 						ps.setString( 15, (String) agente[ 1 ] );
 						ps.execute();
 						ps.close();
-						
+
 						con.commit();
 					}
 				} catch ( Exception err ) {
@@ -3939,16 +3862,15 @@ public class FCliente extends FTabDados
 		DLInputText dl = null;
 		iCodCli = txtCodCli.getVlrInteger().intValue();
 		java.util.Date dtHoje = null;
-		
-		
+
 		if ( iCodCli != 0 ) {
 			try {
 				dl = new DLInputText( this, "Observação", false );
 				dl.setTexto( "" );
 				dl.setVisible( true );
-				
-				if ( ( dl.OK  ) && ( !dl.getTexto().trim().equals( "" ) ) ) {
-					
+
+				if ( ( dl.OK ) && ( !dl.getTexto().trim().equals( "" ) ) ) {
+
 					try {
 						dtHoje = new java.util.Date();
 						sSql = "INSERT INTO VDOBSCLI (SEQOBSCLI, CODEMP, CODFILIAL, CODCLI, DTOBSCLI, HOBSCLI, TXTOBSCLI) " + "VALUES ((COALESCE((SELECT MAX(OC.SEQOBSCLI) " + "FROM VDOBSCLI OC " + "WHERE OC.CODEMP=? AND OC.CODFILIAL=? AND OC.CODCLI=?)+1,1 ))," + "?,?,?,?,?,?)";
@@ -4034,16 +3956,16 @@ public class FCliente extends FTabDados
 			txtFoneEnt.setVlrString( txtFoneCli.getVlrString() );
 			txtDDDFaxEnt.setVlrString( txtDDDFaxCli.getVlrString() );
 			txtFaxEnt.setVlrString( txtFaxCli.getVlrString() );
-			
-			if ( (Boolean)bPref.get( "USAIBGECLI" )) {				
+
+			if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 				txtCodPaisEnt.setVlrInteger( txtCodPais.getVlrInteger() );
 				txtSiglaUFEnt.setVlrString( txtSiglaUF.getVlrString() );
 				txtCodMunicEnt.setVlrString( txtCodMunic.getVlrString() );
 				lcPaisEnt.carregaDados();
-				lcUFEnt.carregaDados(); 
-				lcMunicEnt.carregaDados();				 				
+				lcUFEnt.carregaDados();
+				lcMunicEnt.carregaDados();
 			}
-			else{
+			else {
 				txtCidEnt.setVlrString( txtCidCli.getVlrString() );
 				txtUFEnt.setVlrString( txtUFCli.getVlrString() );
 			}
@@ -4061,18 +3983,19 @@ public class FCliente extends FTabDados
 			txtFoneCob.setVlrString( txtFoneCli.getVlrString() );
 			txtDDDFaxCob.setVlrString( txtDDDFaxCli.getVlrString() );
 			txtFaxCob.setVlrString( txtFaxCli.getVlrString() );
-			
-			if ( (Boolean)bPref.get( "USAIBGECLI" )) {
-				
+
+			if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+
 				txtCodPaisCob.setVlrInteger( txtCodPais.getVlrInteger() );
 				txtSiglaUFCob.setVlrString( txtSiglaUF.getVlrString() );
 				txtCodMunicCob.setVlrString( txtCodMunic.getVlrString() );
-				lcPaisCob.carregaDados(); 
-				lcUFCob.carregaDados(); 
-				lcMunicCob.carregaDados();				
-				
-			}else{
-				
+				lcPaisCob.carregaDados();
+				lcUFCob.carregaDados();
+				lcMunicCob.carregaDados();
+
+			}
+			else {
+
 				txtCidCob.setVlrString( txtCidCli.getVlrString() );
 				txtUFCob.setVlrString( txtUFCli.getVlrString() );
 			}
@@ -4133,43 +4056,38 @@ public class FCliente extends FTabDados
 		}
 		else if ( evt.getSource() == btExcluiHist ) {
 			excluiHist();
-		}else if( evt.getSource() == btBuscaFor ){
+		}
+		else if ( evt.getSource() == btBuscaFor ) {
 			fazBusca();
 		}
-		else if( evt.getSource() == btMapa ){
-			FMapa tela = new FMapa(false);
-			if(tpn.getSelectedIndex() == 2) {
-				tela.setEndereco( txtEndCob.getVlrString(), txtNumCob.getVlrInteger(), 
-								  txtCidCob.getVlrString().equals( "" )?txtDescMunCob.getVlrString():txtCidCob.getVlrString(), 
-								  txtUFCob.getVlrString().equals( "" )?txtSiglaUFCob.getVlrString():txtUFCob.getVlrString());
+		else if ( evt.getSource() == btMapa ) {
+			FMapa tela = new FMapa( false );
+			if ( tpn.getSelectedIndex() == 2 ) {
+				tela.setEndereco( txtEndCob.getVlrString(), txtNumCob.getVlrInteger(), txtCidCob.getVlrString().equals( "" ) ? txtDescMunCob.getVlrString() : txtCidCob.getVlrString(), txtUFCob.getVlrString().equals( "" ) ? txtSiglaUFCob.getVlrString() : txtUFCob.getVlrString() );
 			}
-			else if(tpn.getSelectedIndex() == 3) {
-				tela.setEndereco( txtEndEnt.getVlrString(), txtNumEnt.getVlrInteger(), 
-								  txtCidEnt.getVlrString().equals( "" )?txtDescMunEnt.getVlrString():txtCidEnt.getVlrString(), 
-								  txtUFEnt.getVlrString().equals( "" )?txtSiglaUFEnt.getVlrString():txtUFEnt.getVlrString());
+			else if ( tpn.getSelectedIndex() == 3 ) {
+				tela.setEndereco( txtEndEnt.getVlrString(), txtNumEnt.getVlrInteger(), txtCidEnt.getVlrString().equals( "" ) ? txtDescMunEnt.getVlrString() : txtCidEnt.getVlrString(), txtUFEnt.getVlrString().equals( "" ) ? txtSiglaUFEnt.getVlrString() : txtUFEnt.getVlrString() );
 			}
 			else {
-				tela.setEndereco( txtEndCli.getVlrString(), txtNumCli.getVlrInteger(), 
-								  txtCidCli.getVlrString().equals( "" )?txtDescMun.getVlrString():txtCidCli.getVlrString(), 
-								  txtUFCli.getVlrString().equals( "" )?txtSiglaUF.getVlrString():txtUFCli.getVlrString());
+				tela.setEndereco( txtEndCli.getVlrString(), txtNumCli.getVlrInteger(), txtCidCli.getVlrString().equals( "" ) ? txtDescMun.getVlrString() : txtCidCli.getVlrString(), txtUFCli.getVlrString().equals( "" ) ? txtSiglaUF.getVlrString() : txtUFCli.getVlrString() );
 			}
-			
-			tela.setTelaPrim( Aplicativo.telaPrincipal ); 
+
+			tela.setTelaPrim( Aplicativo.telaPrincipal );
 			Aplicativo.telaPrincipal.criatela( "Mapa", tela, con );
 		}
 		super.actionPerformed( evt );
-		
-		if(evt.getSource() == btFirefox ){
-	    	
-	    	if(!txtSiteCli.getVlrString().equals( "" )){
-	    		
-	    		sURLBanco = txtSiteCli.getVlrString();
-	        	Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLBanco );
-	    	}
-	    	else
-	    		Funcoes.mensagemInforma( this, "Informe o Site do Cliente! " );
-	    }
-		else if (evt.getSource() == btBuscaEnd ){
+
+		if ( evt.getSource() == btFirefox ) {
+
+			if ( !txtSiteCli.getVlrString().equals( "" ) ) {
+
+				sURLBanco = txtSiteCli.getVlrString();
+				Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLBanco );
+			}
+			else
+				Funcoes.mensagemInforma( this, "Informe o Site do Cliente! " );
+		}
+		else if ( evt.getSource() == btBuscaEnd ) {
 			buscaEndereco();
 		}
 	}
@@ -4220,7 +4138,7 @@ public class FCliente extends FTabDados
 		if ( rgPessoa.getVlrString().compareTo( "J" ) == 0 ) {
 			txtCnpjCli.setEnabled( true );
 			txtInscCli.setEnabled( true );
-			if ( (Boolean)bPref.get( "CLIMESMOCNPJ" ) ) {
+			if ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) {
 				setBordaReq( txtCnpjCli );
 				setBordaReq( txtInscCli );
 			}
@@ -4267,34 +4185,34 @@ public class FCliente extends FTabDados
 			carregaTabHist();
 		}
 		if ( cevt.getListaCampos() == lcMunic ) {
-			if("".equals( txtDDDCli.getVlrString())) {
+			if ( "".equals( txtDDDCli.getVlrString() ) ) {
 				txtDDDCli.setVlrString( txtDDDMun.getVlrString() );
 			}
-			if("".equals( txtDDDFaxCli.getVlrString())) {
+			if ( "".equals( txtDDDFaxCli.getVlrString() ) ) {
 				txtDDDFaxCli.setVlrString( txtDDDMun.getVlrString() );
 			}
-			if("".equals( txtDDDCelCli.getVlrString())) {
+			if ( "".equals( txtDDDCelCli.getVlrString() ) ) {
 				txtDDDCelCli.setVlrString( txtDDDMun.getVlrString() );
 			}
 		}
 		if ( cevt.getListaCampos() == lcMunicCob ) {
-			if("".equals( txtDDDFoneCob.getVlrString())) {
+			if ( "".equals( txtDDDFoneCob.getVlrString() ) ) {
 				txtDDDFoneCob.setVlrString( txtDDDMunCob.getVlrString() );
 			}
-			if("".equals( txtDDDFaxCob.getVlrString())) {
+			if ( "".equals( txtDDDFaxCob.getVlrString() ) ) {
 				txtDDDFaxCob.setVlrString( txtDDDMunCob.getVlrString() );
-			}			
-			
+			}
+
 		}
 		if ( cevt.getListaCampos() == lcMunicEnt ) {
-			if("".equals( txtDDDFoneEnt.getVlrString())) {
+			if ( "".equals( txtDDDFoneEnt.getVlrString() ) ) {
 				txtDDDFoneEnt.setVlrString( txtDDDMunEnt.getVlrString() );
 			}
-			if("".equals( txtDDDFaxEnt.getVlrString())) {
+			if ( "".equals( txtDDDFaxEnt.getVlrString() ) ) {
 				txtDDDFaxEnt.setVlrString( txtDDDMunEnt.getVlrString() );
-			}			
-		}		
-		
+			}
+		}
+
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -4304,29 +4222,30 @@ public class FCliente extends FTabDados
 	public void afterInsert( InsertEvent ievt ) {
 
 		if ( ievt.getListaCampos() == lcCampos ) {
-			if ( (Boolean)bPref.get( "HABATIVCLI" )) {
+			if ( (Boolean) bPref.get( "HABATIVCLI" ) ) {
 				cbAtivo.setVlrString( "S" );
-			} else {
+			}
+			else {
 				cbAtivo.setVlrString( "N" );
 			}
 		}
 	}
 
 	public void beforePost( PostEvent pevt ) {
-		
-		if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) ) {
-			
+
+		if ( ( (Boolean) bPref.get( "CONSISTEIEPF" ) ) && ( (Boolean) bPref.get( "CONSISTEIECLI" ) ) ) {
+
 			String sUF = "";
-			
-			if ( (Boolean)bPref.get( "USAIBGECLI" )) {						
-				 sUF = txtSiglaUF.getText();
+
+			if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
+				sUF = txtSiglaUF.getText();
 			}
-			else{
-				 sUF = txtUFCli.getText();
+			else {
+				sUF = txtUFCli.getText();
 			}
-						
-			if ( ! Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
-				if ( ! txtInscCli.getText().trim().equals( "" ) ) {
+
+			if ( !Funcoes.validaIE( txtInscCli.getText(), sUF ) ) {
+				if ( !txtInscCli.getText().trim().equals( "" ) ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
 					txtInscCli.requestFocus();
@@ -4334,22 +4253,22 @@ public class FCliente extends FTabDados
 				}
 			}
 
-			if ( ( ! "".equals( txtInscCli.getVlrString() )) && (!"ISENTO".equals( txtInscCli.getText().trim())) ) {
-				txtInscCli.setVlrString( Funcoes.formataIE(txtInscCli.getVlrString(), sUF ) );
+			if ( ( !"".equals( txtInscCli.getVlrString() ) ) && ( !"ISENTO".equals( txtInscCli.getText().trim() ) ) ) {
+				txtInscCli.setVlrString( Funcoes.formataIE( txtInscCli.getVlrString(), sUF ) );
 			}
-			else if  ( "".equals( txtInscCli.getVlrString() ) ) {
+			else if ( "".equals( txtInscCli.getVlrString() ) ) {
 				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
 					txtInscCli.setVlrString( "ISENTO" );
 				}
 			}
-			
+
 		}
-		
+
 		if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
 			return;
 		}
 
-		if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean)bPref.get( "CLIMESMOCNPJ" ) ) ) {
+		if ( ( txtCnpjCli.getText().trim().length() < 1 ) && ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) ) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 			txtCnpjCli.requestFocus();
@@ -4357,7 +4276,7 @@ public class FCliente extends FTabDados
 		}
 
 		if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( duploCNPJ() ) ) {
-			if ( (Boolean)bPref.get( "CLIMESMOCNPJ" ) ) {
+			if ( (Boolean) bPref.get( "CLIMESMOCNPJ" ) ) {
 				if ( Funcoes.mensagemConfirma( this, "Este CNPJ já está cadastrado! Salvar mesmo assim?" ) != JOptionPane.OK_OPTION ) {
 					pevt.cancela();
 					txtCnpjCli.requestFocus();
@@ -4376,7 +4295,7 @@ public class FCliente extends FTabDados
 			return;
 		}
 
-		if ( !(Boolean)bPref.get( "USAIBGECLI" )) {
+		if ( !(Boolean) bPref.get( "USAIBGECLI" ) ) {
 			if ( txtUFCli.getText().trim().length() < 2 ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
@@ -4384,31 +4303,17 @@ public class FCliente extends FTabDados
 				return;
 			}
 		}
-		
-		/*	
-		 if ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) { 
-			String sUF = "";
-			if ( (Boolean)bPref.get( "USAIBGECLI" )) {		
-				
-				 sUF = txtSiglaUF.getText();
-			}else{
-				 sUF = txtUFCli.getText();
-			}
-			
-			
-			if ( ! Funcoes.vIE( txtInscCli.getText(), sUF ) ) {
-				if ( ! txtInscCli.getText().trim().equals( "" ) ) {
-					pevt.cancela();
-					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-					txtInscCli.requestFocus();
-					return;
-				}
-			}
 
-			if ( ! txtInscCli.getText().trim().equals( "" ) ) {
-				txtInscCli.setVlrString( Funcoes.sIEValida );
-			}
-		}*/
+		/*
+		 * if ( (Boolean)bPref.get( "CONSISTEIECLI" ) ) { String sUF = ""; if ( (Boolean)bPref.get( "USAIBGECLI" )) {
+		 * 
+		 * sUF = txtSiglaUF.getText(); }else{ sUF = txtUFCli.getText(); }
+		 * 
+		 * 
+		 * if ( ! Funcoes.vIE( txtInscCli.getText(), sUF ) ) { if ( ! txtInscCli.getText().trim().equals( "" ) ) { pevt.cancela(); Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" ); txtInscCli.requestFocus(); return; } }
+		 * 
+		 * if ( ! txtInscCli.getText().trim().equals( "" ) ) { txtInscCli.setVlrString( Funcoes.sIEValida ); } }
+		 */
 	}
 
 	public void afterPost( PostEvent pevt ) {
@@ -4420,11 +4325,11 @@ public class FCliente extends FTabDados
 			}
 		}
 	}
-	
+
 	private void buscaEndereco() {
 
-		if( ! "".equals( txtCepCli.getVlrString() ) ) {
-		
+		if ( !"".equals( txtCepCli.getVlrString() ) ) {
+
 			txtEndCli.setEnabled( false );
 			txtComplCli.setEnabled( false );
 			txtBairCli.setEnabled( false );
@@ -4432,60 +4337,57 @@ public class FCliente extends FTabDados
 			txtUFCli.setEnabled( false );
 			txtCodPais.setEnabled( false );
 			txtSiglaUF.setEnabled( false );
-			txtCodMunic.setEnabled( false );		
+			txtCodMunic.setEnabled( false );
 			txtDDDCli.setEnabled( false );
 			txtDDDFaxCli.setEnabled( false );
 			txtDDDCelCli.setEnabled( false );
-			
-			Thread th = new Thread(
-					new Runnable() {
-				        public void run() {
-				        	try {
-					    		WSCep cep = new WSCep();
-								cep.setCon( con );
-								cep.setCep( txtCepCli.getVlrString() );
-								cep.busca();
-								Endereco endereco = cep.getEndereco();
-							
-								txtEndCli.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
-								txtComplCli.setVlrString( endereco.getComplemento() );
-								txtBairCli.setVlrString( endereco.getBairro() ) ;
-								txtCidCli.setVlrString( endereco.getCidade() ) ;
-								txtUFCli.setVlrString( endereco.getSiglauf() ) ;
-								txtCodPais.setVlrInteger( endereco.getCodpais() );
-								txtSiglaUF.setVlrString( endereco.getSiglauf() );
-								txtCodMunic.setVlrString( endereco.getCodmunic() );
-								
-								lcPais.carregaDados();
-								lcUF.carregaDados();
-								lcMunic.carregaDados();
-								
-								txtNumCli.requestFocus();
-				        	}
-				        	catch (Exception e) {
-				        		e.printStackTrace();
-				        		Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
-							}
-				        	finally {
-								txtEndCli.setEnabled( true );
-								txtComplCli.setEnabled( true );
-								txtBairCli.setEnabled( true );
-								txtCidCli.setEnabled( true );
-								txtUFCli.setEnabled( true );
-								txtCodPais.setEnabled( true );
-								txtSiglaUF.setEnabled( true );
-								txtCodMunic.setEnabled( true );		
-								txtDDDCli.setEnabled( true );
-								txtDDDFaxCli.setEnabled( true );
-								txtDDDCelCli.setEnabled( true );
-				        	}
-				        }
+
+			Thread th = new Thread( new Runnable() {
+
+				public void run() {
+
+					try {
+						WSCep cep = new WSCep();
+						cep.setCon( con );
+						cep.setCep( txtCepCli.getVlrString() );
+						cep.busca();
+						Endereco endereco = cep.getEndereco();
+
+						txtEndCli.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
+						txtComplCli.setVlrString( endereco.getComplemento() );
+						txtBairCli.setVlrString( endereco.getBairro() );
+						txtCidCli.setVlrString( endereco.getCidade() );
+						txtUFCli.setVlrString( endereco.getSiglauf() );
+						txtCodPais.setVlrInteger( endereco.getCodpais() );
+						txtSiglaUF.setVlrString( endereco.getSiglauf() );
+						txtCodMunic.setVlrString( endereco.getCodmunic() );
+
+						lcPais.carregaDados();
+						lcUF.carregaDados();
+						lcMunic.carregaDados();
+
+						txtNumCli.requestFocus();
+					} catch ( Exception e ) {
+						e.printStackTrace();
+						Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+					} finally {
+						txtEndCli.setEnabled( true );
+						txtComplCli.setEnabled( true );
+						txtBairCli.setEnabled( true );
+						txtCidCli.setEnabled( true );
+						txtUFCli.setEnabled( true );
+						txtCodPais.setEnabled( true );
+						txtSiglaUF.setEnabled( true );
+						txtCodMunic.setEnabled( true );
+						txtDDDCli.setEnabled( true );
+						txtDDDFaxCli.setEnabled( true );
+						txtDDDCelCli.setEnabled( true );
 					}
-			);
+				}
+			} );
 			try {
 				th.start();
-			}
-			catch(Exception err) {
+			} catch ( Exception err ) {
 				Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
 				txtCepCli.requestFocus();
 			}
@@ -4494,16 +4396,16 @@ public class FCliente extends FTabDados
 			Funcoes.mensagemInforma( null, "Digite um CEP para busca!" );
 			txtCepCli.requestFocus();
 		}
-		
+
 	}
 
 	public void setConexao( DbConnection cn ) {
-	
+
 		super.setConexao( cn );
 		bPref = getPrefere();
-	
+
 		montaTela();
-	
+
 		lcTipoCli.setConexao( cn );
 		lcCnae.setConexao( cn );
 		lcTipoFiscCli.setConexao( cn );
@@ -4530,11 +4432,11 @@ public class FCliente extends FTabDados
 		lcMunicCob.setConexao( con );
 		lcPaisCob.setConexao( con );
 		lcPaisEnt.setConexao( con );
-		
+
 		if ( lcSetor != null ) {
 			lcSetor.setConexao( con );
 		}
-		
+
 	}
 
 }

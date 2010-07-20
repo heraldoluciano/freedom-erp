@@ -2,23 +2,23 @@
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasCli <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  * 
  */
 
@@ -45,7 +45,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FRDesempVend extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -57,7 +56,7 @@ public class FRDesempVend extends FRelatorio {
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private ListaCampos lcVend = new ListaCampos( this );
 
 	public FRDesempVend() {
@@ -65,7 +64,7 @@ public class FRDesempVend extends FRelatorio {
 		super( false );
 		setTitulo( "Desempenho por vendedor" );
 		setAtribos( 80, 80, 330, 200 );
-		
+
 		montaListaCampos();
 		montaTela();
 
@@ -75,9 +74,9 @@ public class FRDesempVend extends FRelatorio {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
 	}
-	
-	private void montaListaCampos(){
-		
+
+	private void montaListaCampos() {
+
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, txtDescVend, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Descrição do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
@@ -100,11 +99,11 @@ public class FRDesempVend extends FRelatorio {
 		adic( txtDataini, 17, 35, 125, 20 );
 		adic( new JLabelPad( "à", SwingConstants.CENTER ), 142, 35, 30, 20 );
 		adic( txtDatafim, 172, 35, 125, 20 );
-		adic( new JLabelPad("Cód.Vend"),7, 65, 60, 20 );
+		adic( new JLabelPad( "Cód.Vend" ), 7, 65, 60, 20 );
 		adic( txtCodVend, 7, 85, 60, 20 );
-		adic( new JLabelPad("Nome do vendedor"),70, 65, 200, 20 );
+		adic( new JLabelPad( "Nome do vendedor" ), 70, 65, 200, 20 );
 		adic( txtDescVend, 70, 85, 235, 20 );
-	
+
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -119,15 +118,14 @@ public class FRDesempVend extends FRelatorio {
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		StringBuffer sWhere1 = new StringBuffer();
-		
 
 		try {
-			
-			if( txtCodVend.getVlrInteger().intValue() > 0 ) {
-				
-				sWhere1.append( ( "AND V.CODVEND= " + txtCodVend.getVlrString() ));
+
+			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+
+				sWhere1.append( ( "AND V.CODVEND= " + txtCodVend.getVlrString() ) );
 			}
-			
+
 			sSQL.append( "SELECT V.CODVEND, V.NOMEVEND, " );
 			sSQL.append( "SUM((SELECT COUNT(*) FROM VDVENDA VD2 " );
 			sSQL.append( "WHERE VD2.CODEMPVD=V.CODEMP AND VD2.CODFILIALVD=V.CODFILIAL AND " );
@@ -143,16 +141,15 @@ public class FRDesempVend extends FRelatorio {
 			sSQL.append( "VD.DTEMITVENDA BETWEEN  ? AND ? " );
 			sSQL.append( sWhere1.toString() );
 			sSQL.append( "GROUP BY 1,2 " );
-		
-						
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDEDOR" ));
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
 			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
+
 			rs = ps.executeQuery();
 
 			imprimirGrafico( bVisualizar, rs, sCab.toString() );

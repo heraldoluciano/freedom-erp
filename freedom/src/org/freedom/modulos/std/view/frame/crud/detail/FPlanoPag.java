@@ -2,23 +2,23 @@
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FPlanoPag.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Cadastro de planos de pagamento.
+ *                    Cadastro de planos de pagamento.
  * 
  */
 
@@ -91,41 +91,41 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
-	
+
 	private JTextFieldPad txtDiaVctoPPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private JTextFieldPad txtCodTbJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	 
-	private JTextFieldFK txtDescTbJ = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-	
+
+	private JTextFieldPad txtCodTbJ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTbJ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JTextFieldPad txtPercDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
-	
+
 	private JCheckBoxPad cbAtivo = null;
-	
+
 	private JCheckBoxPad cbSabado = null;
-	
+
 	private JCheckBoxPad cbDomingo = null;
-	
+
 	private JCheckBoxPad cbFeriado = null;
-	
+
 	private JRadioGroup<String, String> rgCV = null;
-	
+
 	private JRadioGroup<String, String> rgRV = null;
-	
+
 	private JRadioGroup<String, String> rgRegraVenc = null;
-	
+
 	private Vector<String> vLabsCV = new Vector<String>();
 
 	private Vector<String> vValsCV = new Vector<String>();
-	
+
 	private Vector<String> vLabsRV = new Vector<String>();
 
 	private Vector<String> vValsRV = new Vector<String>();
-	
+
 	private Vector<String> vValsRegraVenc = new Vector<String>();
 
 	private Vector<String> vLabsRebraVenc = new Vector<String>();
@@ -135,8 +135,8 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
 	private ListaCampos lcCC = new ListaCampos( this, "CC" );
-	
-	private ListaCampos lcTabJuros = new ListaCampos( this, "TBJ"  );
+
+	private ListaCampos lcTabJuros = new ListaCampos( this, "TBJ" );
 
 	private JCheckBoxPad cbAutoBaixa = new JCheckBoxPad( "Gerar lançamento financeiro já quitado?", "S", "N" );
 
@@ -146,7 +146,6 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 
 		setTitulo( "Cadastro de Planos de Pagamento" );
 		setAtribos( 50, 50, 765, 520 );
-		
 
 		vValsCV.addElement( "C" );
 		vValsCV.addElement( "V" );
@@ -156,7 +155,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		vLabsCV.addElement( "Ambos" );
 		rgCV = new JRadioGroup<String, String>( 1, 3, vLabsCV, vValsCV );
 		rgCV.setVlrString( "V" );
-		
+
 		vValsRV.addElement( "A" );
 		vValsRV.addElement( "F" );
 		vValsRV.addElement( "U" );
@@ -165,7 +164,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		vLabsRV.addElement( "Dia útil" );
 		rgRV = new JRadioGroup<String, String>( 1, 3, vLabsRV, vValsRV );
 		rgRV.setVlrString( "A" );
-		
+
 		vValsRegraVenc.addElement( "A" );
 		vValsRegraVenc.addElement( "P" );
 		vValsRegraVenc.addElement( "N" );
@@ -174,17 +173,16 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		vLabsRebraVenc.addElement( "Nenhuma" );
 		rgRegraVenc = new JRadioGroup<String, String>( 1, 3, vLabsRebraVenc, vValsRegraVenc );
 		rgRegraVenc.setVlrString( "N" );
-		
+
 		cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 		cbAtivo.setVlrString( "S" );
-		
+
 		cbSabado = new JCheckBoxPad( "Sábado", "S", "N" );
-	
+
 		cbDomingo = new JCheckBoxPad( "Domingo", "S", "N" );
 
 		cbFeriado = new JCheckBoxPad( "Feriado", "S", "N" );
-	
-		
+
 		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
@@ -197,7 +195,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setQueryCommit( false );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName());
+		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.CC.", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do Centro de custo", ListaCampos.DB_SI, false ) );
@@ -207,67 +205,66 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcCC.setQueryCommit( false );
 		lcCC.setReadOnly( true );
 		txtCodCC.setTabelaExterna( lcCC, FCentroCusto.class.getCanonicalName() );
-		
+
 		lcTabJuros.add( new GuardaCampo( txtCodTbJ, "CodTbj", "Cód.tb.jur.", ListaCampos.DB_PK, false ) );
 		lcTabJuros.add( new GuardaCampo( txtDescTbJ, "DescTbJ", "Descrição da tabela de juros", ListaCampos.DB_SI, false ) );
 		lcTabJuros.montaSql( false, "TBJUROS", "FN" );
 		lcTabJuros.setQueryCommit( false );
 		lcTabJuros.setReadOnly( true );
 		txtCodTbJ.setTabelaExterna( lcTabJuros, FTabJuros.class.getCanonicalName() );
-		
 
 		setAltCab( 310 );
 		pinCab = new JPanelPad();
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
-				
+
 		adicCampo( txtCodPlanoPag, 7, 20, 70, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, null, true );
 		adicCampo( txtDescPlanoPag, 80, 20, 217, 20, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, null, true );
 		adicCampo( txtNumParc, 300, 20, 67, 20, "ParcPlanoPag", "N° Parcs.", ListaCampos.DB_SI, null, true );
 		adicCampo( txtNumConta, 370, 20, 97, 20, "NumConta", "N.Conta", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescConta, 470, 20, 267, 20, "DescConta", "Descrição da conta" ); 
+		adicDescFK( txtDescConta, 470, 20, 267, 20, "DescConta", "Descrição da conta" );
 		adicCampo( txtCodPlan, 7, 60, 100, 20, "CodPlan", "Cód.planj.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescPlan, 110, 60, 257, 20, "DescPlan", "Descrição do planejamento" );
 		adicCampo( txtCodCC, 370, 60, 97, 20, "CodCC", "Centro de custo", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescCC, 470, 60, 267, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, false );
-		adicCampo( txtCodTbJ, 7, 100, 70, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_FK, false );
+		adicCampo( txtCodTbJ, 7, 100, 70, 20, "CodTbJ", "Cód.tb.juros", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescTbJ, 80, 100, 217, 20, "DescTbJ", "Descrição da tabela de juros" );
 		adicCampo( txtPercDesc, 300, 100, 70, 20, "PercDesc", "% Desconto", ListaCampos.DB_SI, false );
 		adicDB( rgCV, 375, 100, 363, 37, "CVPlanoPag", "Cadastro para:", true );
-		adicDB( cbApOrcPlanoPag, 7, 125, 250, 20, "ApOrcPlanoPag", "", true ); 
-		adicDB( cbAtivo, 300, 125, 70, 20, "AtivoPlanoPag", "", true ); 
-		
+		adicDB( cbApOrcPlanoPag, 7, 125, 250, 20, "ApOrcPlanoPag", "", true );
+		adicDB( cbAtivo, 300, 125, 70, 20, "AtivoPlanoPag", "", true );
+
 		/********************************
 		 * Regra para dia de vencimento *
 		 ********************************/
-		
+
 		JLabelPad lbLinha1 = new JLabelPad();
-		lbLinha1.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbRegra = new JLabelPad("Regra para dia do vencimento:" , SwingConstants.CENTER );
-		lbRegra.setOpaque(true);
-		
+		lbLinha1.setBorder( BorderFactory.createEtchedBorder() );
+		JLabelPad lbRegra = new JLabelPad( "Regra para dia do vencimento:", SwingConstants.CENTER );
+		lbRegra.setOpaque( true );
+
 		adic( lbRegra, 380, 150, 200, 20 );
 		adic( lbLinha1, 370, 160, 370, 95 );
 		adicDB( rgRV, 380, 175, 340, 37, "RvDiaPlanoPag", "", true );
-		adicCampo( txtDiaVctoPPag,380, 230, 50, 20, "DiaVctoPlanoPag", "Dia", ListaCampos.DB_SI, true );
-		
+		adicCampo( txtDiaVctoPPag, 380, 230, 50, 20, "DiaVctoPlanoPag", "Dia", ListaCampos.DB_SI, true );
+
 		/***********************
 		 * Regra de vencimento *
 		 ***********************/
-		
+
 		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("Regra de vencimento:" , SwingConstants.CENTER );
-		lbPeriodo.setOpaque(true);
-		
+		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		JLabelPad lbPeriodo = new JLabelPad( "Regra de vencimento:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque( true );
+
 		adic( lbPeriodo, 10, 150, 150, 20 );
 		adic( lbLinha, 5, 160, 360, 95 );
 		adicDB( rgRegraVenc, 15, 175, 330, 37, "RegrVctoPlanoPag", "", true );
-		adicDB( cbSabado, 20, 215, 80, 20, "RvSabPlanoPag", "", true ); 
-		adicDB( cbDomingo, 140, 215, 100, 20, "RvDomPlanoPag", "", true ); 
-		adicDB( cbFeriado, 265, 215, 80, 20, "RvFerPlanoPag", "", true ); 
-		
+		adicDB( cbSabado, 20, 215, 80, 20, "RvSabPlanoPag", "", true );
+		adicDB( cbDomingo, 140, 215, 100, 20, "RvDomPlanoPag", "", true );
+		adicDB( cbFeriado, 265, 215, 80, 20, "RvFerPlanoPag", "", true );
+
 		setListaCampos( true, "PLANOPAG", "FN" );
 		lcCampos.setQueryInsert( true );
 
@@ -281,7 +278,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicCampo( txtPercItemPag, 70, 20, 97, 20, "PercPag", "Percento", ListaCampos.DB_SI, true );
 		adicCampo( txtDiasItemPag, 170, 20, 57, 20, "DiasPag", "Dias", ListaCampos.DB_SI, false );
 		adicCampo( txtDescItemPag, 230, 20, 143, 20, "DescParcPag", "Descrição", ListaCampos.DB_SI, false );
-		adicDB( cbAutoBaixa, 380, 20, 300, 20, "AutoBaixaParc", "", false ); 
+		adicDB( cbAutoBaixa, 380, 20, 300, 20, "AutoBaixaParc", "", false );
 
 		setListaCampos( true, "PARCPAG", "FN" );
 		lcDet.setQueryInsert( false );
@@ -300,7 +297,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-		
+
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
@@ -340,11 +337,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 			dl.dispose();
 			return;
 		}
-		String sSQL = "SELECT PLANO.CODPLANOPAG,PLANO.DESCPLANOPAG,PLANO.PARCPLANOPAG," + 
-			"PARC.NROPARCPAG,PARC.PERCPAG,PARC.DIASPAG " + 
-			"FROM FNPLANOPAG PLANO,FNPARCPAG PARC " + 
-			"WHERE PARC.CODPLANOPAG=PLANO.CODPLANOPAG " + 
-			"ORDER BY " + dl.getValor();
+		String sSQL = "SELECT PLANO.CODPLANOPAG,PLANO.DESCPLANOPAG,PLANO.PARCPLANOPAG," + "PARC.NROPARCPAG,PARC.PERCPAG,PARC.DIASPAG " + "FROM FNPLANOPAG PLANO,FNPARCPAG PARC " + "WHERE PARC.CODPLANOPAG=PLANO.CODPLANOPAG " + "ORDER BY " + dl.getValor();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sCodMaster = "";
@@ -421,62 +414,63 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-		
-		
+
 	}
 
 	public void beforePost( PostEvent pevt ) {
-		
+
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( cbAutoBaixa.getVlrString().equals( "S" ) && ( txtNumConta.getVlrString().equals( "" ) || txtCodPlan.getVlrString().equals( "" ) ) ) {
 				Funcoes.mensagemInforma( this, "Para quitar os pagamentos é necessário um 'N.Conta' e um 'Cód. Planejamento'!" );
 				pevt.cancela();
 			}
 		}
-		if( (txtDiaVctoPPag.getVlrInteger().intValue() > 31 || txtDiaVctoPPag.getVlrInteger().intValue() < 1) && ( ! "A".equals( rgRV.getVlrString() ) ) ){
-			
-			Funcoes.mensagemInforma( this, "Dia digitado inválido!" ); 
+		if ( ( txtDiaVctoPPag.getVlrInteger().intValue() > 31 || txtDiaVctoPPag.getVlrInteger().intValue() < 1 ) && ( !"A".equals( rgRV.getVlrString() ) ) ) {
+
+			Funcoes.mensagemInforma( this, "Dia digitado inválido!" );
 			pevt.cancela();
 			txtDiaVctoPPag.requestFocus();
-			
+
 		}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-		
+
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-		
-		if ( cevt.getListaCampos() == lcCampos && cevt.ok ){
+
+		if ( cevt.getListaCampos() == lcCampos && cevt.ok ) {
 			txtNumParc.setEditable( false );
 		}
-		if( "N".equals( rgRegraVenc.getVlrString())){
+		if ( "N".equals( rgRegraVenc.getVlrString() ) ) {
 			cbSabado.setEnabled( false );
 			cbDomingo.setEnabled( false );
 			cbFeriado.setEnabled( false );
-		}else{
+		}
+		else {
 			cbSabado.setEnabled( true );
 			cbDomingo.setEnabled( true );
 			cbFeriado.setEnabled( true );
 		}
-		if( "F".equals( rgRV.getVlrString() ) || "U".equals( rgRV.getVlrString() ) ){
-			
+		if ( "F".equals( rgRV.getVlrString() ) || "U".equals( rgRV.getVlrString() ) ) {
+
 			txtDiaVctoPPag.setEditable( true );
-		}else{
+		}
+		else {
 			txtDiaVctoPPag.setEditable( false );
-			txtDiaVctoPPag.setVlrInteger( new Integer(0) );
+			txtDiaVctoPPag.setVlrInteger( new Integer( 0 ) );
 		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-		
+
 		cbAtivo.setVlrString( "S" );
-		
-		if( ievt.getListaCampos() == lcCampos ){
+
+		if ( ievt.getListaCampos() == lcCampos ) {
 			txtNumParc.setEditable( true );
 			rgRegraVenc.setVlrString( "N" );
 		}
@@ -492,28 +486,29 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
-		
 
-		if( evt.getSource() == rgRegraVenc  ){
-			
-			if( "N".equals( rgRegraVenc.getVlrString())){
+		if ( evt.getSource() == rgRegraVenc ) {
+
+			if ( "N".equals( rgRegraVenc.getVlrString() ) ) {
 				cbSabado.setEnabled( false );
 				cbDomingo.setEnabled( false );
 				cbFeriado.setEnabled( false );
-			}else{
+			}
+			else {
 				cbSabado.setEnabled( true );
 				cbDomingo.setEnabled( true );
 				cbFeriado.setEnabled( true );
 			}
 		}
-		if( "F".equals( rgRV.getVlrString() ) || "U".equals( rgRV.getVlrString() ) ){
-			
+		if ( "F".equals( rgRV.getVlrString() ) || "U".equals( rgRV.getVlrString() ) ) {
+
 			txtDiaVctoPPag.setEditable( true );
-			
-		}else{
-			
+
+		}
+		else {
+
 			txtDiaVctoPPag.setEditable( false );
-			txtDiaVctoPPag.setVlrInteger( new Integer(0) );
+			txtDiaVctoPPag.setVlrInteger( new Integer( 0 ) );
 		}
 	}
 }

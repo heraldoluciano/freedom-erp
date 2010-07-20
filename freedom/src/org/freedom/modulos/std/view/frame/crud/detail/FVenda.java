@@ -2,26 +2,26 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * @version 14/04/2010 
+ * @version 14/04/2010
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FVenda.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para cadastro de pedidos e notas fiscais de venda.
+ *                 Tela para cadastro de pedidos e notas fiscais de venda.
  * 
  */
 
@@ -122,7 +122,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
-public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener  {
+public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -177,7 +177,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-	
+
 	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtESTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -189,7 +189,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtSiglaUFCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -262,7 +262,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtVlrFreteVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
-	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );	
+	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrComisVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -486,30 +486,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldFK txtItemLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
-	private NFEConnectionFactory nfecf = null; 
+	private NFEConnectionFactory nfecf = null;
 
 	private BigDecimal fatLucro = null;
-	
+
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-	
+
 	private JTextFieldFK txtObsSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 150, 0 );
-	
+
 	private JLabelPad lbNumSerie = new JLabelPad();
-	
+
 	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
-	
-	private boolean NF_EMITIDA = false; 
-	
+
+	private boolean NF_EMITIDA = false;
+
 	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
-	
+
 	private enum POS_PREFS {
-		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, 
-		NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND,
-		IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA,
-		USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, 
-		VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN
+		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN
 	}
 
 	public FVenda() {
@@ -522,17 +518,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	// Função criada para montar a tela conforme a preferência do usuário:
 	// com ou sem Referência de PK;
 	private void montaTela() {
-		
+
 		nav.setNavigation( true );
 
 		oPrefs = prefs(); // Carrega as preferências
 
 		if ( (Boolean) oPrefs[ POS_PREFS.MULTICOMIS.ordinal() ] ) {
-			numComissionados = getNumComissionados();		
+			numComissionados = getNumComissionados();
 		}
 
 		txtTipoVenda.setVlrString( "V" );
-		
+
 		pnCliCab.add( tpnCab );
 
 		pinCabVenda.setFirstFocus( txtCodVenda );
@@ -545,7 +541,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tpnCab.addTab( "Comissão", pinCabComis );
 
 		btBuscaOrc.setPreferredSize( new Dimension( 170, 0 ) );
-//		pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
+		// pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
 		pnGImp.removeAll(); // Remove os botões de impressão para adicionar logo embaixo
@@ -571,8 +567,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtSiglaUFCli, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );		
-		
+		lcCli.add( new GuardaCampo( txtSiglaUFCli, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
+
 		txtNomeCli.setSize( 197, 20 );
 		lcCli.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
@@ -580,7 +576,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
-		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName()  );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 
 		// FK Vendedor
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Venda", ListaCampos.DB_PK, false ) );
@@ -668,7 +664,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// ListaCampos de Totais (É acionada pelo listaCampos de Venda)
 
 		lcVenda2.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
-//		lcVenda2.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
+		// lcVenda2.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
 		lcVenda2.add( new GuardaCampo( txtVlrFreteVenda, "VlrFreteVenda", "Vlr. frete", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrComisVenda, "VlrComisVenda", "Vlr. comis.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtMedComisVenda, "PercMComisVenda", "Med. comis.", ListaCampos.DB_SI, false ) );
@@ -699,7 +695,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis, FCLComis.class.getCanonicalName() );
-
 
 		// lc para vinculo de ítem de venda com ítem de compra
 
@@ -769,7 +764,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
-		btComiss.addActionListener( this );		
+		btComiss.addActionListener( this );
 
 		txtPercDescItVenda.addFocusListener( this );
 		txtVlrDescItVenda.addFocusListener( this );
@@ -807,12 +802,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		this.addKeyListener( this );
 
-
-/*		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( SwingParams.getFontboldmed() );
-		lbStatus.setOpaque( true );
-		lbStatus.setVisible( false );
-*/
+		/*
+		 * lbStatus.setForeground( Color.WHITE ); lbStatus.setFont( SwingParams.getFontboldmed() ); lbStatus.setOpaque( true ); lbStatus.setVisible( false );
+		 */
 		setImprimir( true );
 
 		txtVlrLiqItVenda.setAtivo( false );
@@ -892,7 +884,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( txtTipoFrete, "CTipoFrete", "Tp.Frete", ListaCampos.DB_SI, false ) );
 
 		// FK do número de série
-		
+
 		lcNumSerie.add( new GuardaCampo( txtNumSerie, "NumSerie", "Num.Série", ListaCampos.DB_PK, false ) );
 		lcNumSerie.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcNumSerie.add( new GuardaCampo( txtObsSerie, "ObsSerie", "Observações", ListaCampos.DB_SI, false ) );
@@ -905,20 +897,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtObsSerie.setListaCampos( lcNumSerie );
 		txtObsSerie.setNomeCampo( "ObsSerie" );
 		txtObsSerie.setLabel( "Observações" );
-		
-		
-		
+
 		/*
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=4 AND TU.CODFILIALUS=1 AND TU.IDUSU='sysdba') ) ORDER
 		 * BY 1
 		 */
-		lcTipoMov.setWhereAdic( 
-				"( (ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " + 
-				" ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + 
-				"WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + 
-				"TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
-				+ Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + 
-				" AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
+		lcTipoMov.setWhereAdic( "( (ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
+				+ Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 
 		if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 			txtFiscalTipoMov1.setText( "S" );
@@ -939,10 +924,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcModNota.montaSql( false, "MODNOTA", "LF" );
 		lcModNota.setQueryCommit( false );
 		lcModNota.setReadOnly( true );
-		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName());
+		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName() );
 
 		lcTipoMov.adicDetalhe( lcModNota );
-
 
 		// Adiciona os componentes na tela e no ListaCompos da venda
 		setListaCampos( lcCampos );
@@ -955,17 +939,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtDocVenda, 460, 20, 77, 20, "DocVenda", "Nro. Doc.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data da emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda", "Data da saída", ListaCampos.DB_SI, true );
-		
+
 		adicCampo( txtCodCli, 7, 60, 80, 20, "CodCli", "Cód. cli.", ListaCampos.DB_FK, txtDescCli, true );
 		adicDescFK( txtDescCli, 90, 60, 264, 20, "RazCli", "Razão social do cliente" );
 		adicDescFK( txtSiglaUFCli, 357, 60, 20, 20, "SiglaUF", "UF" );
-		
+
 		adicCampo( txtCodPlanoPag, 380, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 460, 60, 178, 20, "DescPlanoPag", "Descrição do plano de pag." );
 		adicCampo( txtPedCliVenda, 640, 60, 97, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_PK, true );
-//		adic( lbStatus, 649, 60, 95, 20 );
+		// adic( lbStatus, 649, 60, 95, 20 );
 
 		setPainel( pinCabComis );
 
@@ -1036,14 +1020,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItVenda, 7, 20, 30, 20, "CodItVenda", "Item", ListaCampos.DB_PK, true );
-		 
+
 		if ( (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
-			
+
 			if ( (Boolean) oPrefs[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] ) {
 				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
-			
+
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, true );
 			adic( new JLabelPad( "Referência" ), 40, 0, 70, 20 );
@@ -1053,7 +1037,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
-			
+
 			if ( (Boolean) oPrefs[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] ) {
 				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
@@ -1082,7 +1066,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// colocar aqui o campo de saldo
 		adicDescFK( txtSldLiqProd, 280, 60, 67, 20, "SldLiqProd", "Saldo" );
 		adicCampo( txtVlrBaseICMSItVenda, 350, 60, 67, 20, "VlrBaseICMSItVenda", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrBaseICMSItVendaBrut, "VlrBaseICMSBrutItVenda", "B. ICMS S/Red.", ListaCampos.DB_SI, false );		
+		adicCampoInvisivel( txtVlrBaseICMSItVendaBrut, "VlrBaseICMSBrutItVenda", "B. ICMS S/Red.", ListaCampos.DB_SI, false );
 		adicCampo( txtPercICMSItVenda, 420, 60, 57, 20, "PercICMSItVenda", "% ICMS", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrICMSItVenda, 480, 60, 67, 20, "VlrICMSItVenda", "V. ICMS", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI", ListaCampos.DB_SI, false );
@@ -1102,10 +1086,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
 
-		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false);  
-		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false); 
-		adicCampoInvisivel( txtCodFiscIf, "codfisc", "codfisc" , ListaCampos.DB_SI, false);
-		adicCampoInvisivel( txtCodItFisc, "coditfisc", "coditfisc" , ListaCampos.DB_SI, false);
+		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodFiscIf, "codfisc", "codfisc", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodItFisc, "coditfisc", "coditfisc", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtCodCompra, "codcompra", "Cód.Compra", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItCompra, "coditcompra", "Cód.It.Compra", ListaCampos.DB_FK, false );
@@ -1115,9 +1099,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtTipoVendaRemessa, "tipoVendaVR", "tipo remessa", ListaCampos.DB_FK, false );
 
 		lbNumSerie = adicCampo( txtNumSerie, 7, 100, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
-		
+
 		lbNumSerie.setVisible( false );
-		
+
 		pinTot.adic( new JLabelPad( "Vlr.prod." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrProdVenda, 7, 20, 90, 20 );
 		pinTot.adic( new JLabelPad( "Vlr.desc." ), 7, 40, 90, 20 );
@@ -1160,18 +1144,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		btComiss.setVisible( false );
 
-		if("S".equals( permusu.get( "VISUALIZALUCR" )) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {		
+		if ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
 			adicPainelLucr();
 		}
 
 		JPanelPad navEast = new JPanelPad();
 		navEast.setPreferredSize( new Dimension( 150, 30 ) );
 		navEast.tiraBorda();
-		
+
 		navEast.adic( lbStatus, 26, 3, 110, 20 );
-		
-		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );		
-		
+
+		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
+
 		pnAdicionalCab.add( btBuscaOrc );
 		pnAdicionalCab.setBackground( Color.BLUE );
 
@@ -1182,9 +1166,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lbStatus.setOpaque( true );
 		lbStatus.setText( "NÃO SALVO" );
 
-		
 		pnAdicionalCab.add( navEast );
-		
+
 	}
 
 	private synchronized void focusIni() {
@@ -1202,11 +1185,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
-	public NFEConnectionFactory getNfecf() {	
+	public NFEConnectionFactory getNfecf() {
+
 		return nfecf;
 	}
 
-	public void setNfecf( NFEConnectionFactory nfecf ) {	
+	public void setNfecf( NFEConnectionFactory nfecf ) {
+
 		this.nfecf = nfecf;
 	}
 
@@ -1404,32 +1389,32 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		try {
 
 			ps = con.prepareStatement( sSQL );
-			
+
 			ps.setInt( 1, Aplicativo.iCodFilial );
-			
+
 			ps.setInt( 2, lcProd.getCodEmp() );
-			ps.setInt( 3, lcProd.getCodFilial() );			
+			ps.setInt( 3, lcProd.getCodFilial() );
 			ps.setInt( 4, txtCodProd.getVlrInteger() );
-			
+
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, lcCli.getCodFilial() );
 			ps.setInt( 7, txtCodCli.getVlrInteger() );
-			
+
 			ps.setNull( 8, Types.INTEGER );
 			ps.setNull( 9, Types.INTEGER );
 			ps.setNull( 10, Types.INTEGER );
-			
+
 			ps.setInt( 11, lcTipoMov.getCodFilial() );
 			ps.setInt( 12, txtCodTipoMov.getVlrInteger() );
-			
+
 			// Incluido parametro com o código do item fiscal
-			if( null == txtCodItFisc.getVlrInteger() || txtCodItFisc.getVlrInteger()<=0 ) {
+			if ( null == txtCodItFisc.getVlrInteger() || txtCodItFisc.getVlrInteger() <= 0 ) {
 				ps.setNull( 13, Types.INTEGER );
 			}
 			else {
 				ps.setInt( 13, txtCodItFisc.getVlrInteger() );
 			}
-			
+
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
@@ -1455,30 +1440,29 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void getICMS() {
 
 		try {
-			
-			if(!NF_EMITIDA) {
-			
+
+			if ( !NF_EMITIDA ) {
+
 				impostos.setCodnat( txtCodNat.getVlrString() );
 				impostos.setUftransacao( txtEstCli.getVlrString() );
-			
+
 				impostos.calcAliqFisc( txtAliqFisc.getVlrBigDecimal() );
-				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc()!=null ? impostos.getAliqfisc() : new BigDecimal(0)  );
+				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() != null ? impostos.getAliqfisc() : new BigDecimal( 0 ) );
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public BigDecimal getVolumes(){
 
-		BigDecimal retorno = new BigDecimal(0);
+	public BigDecimal getVolumes() {
 
-		for( int i=0; i<tab.getNumLinhas(); i++ ){
+		BigDecimal retorno = new BigDecimal( 0 );
 
-			retorno = retorno.add( ConversionFunctions.stringCurrencyToBigDecimal( tab.getValor( i,  (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ]? 6:5 ).toString() ));
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+			retorno = retorno.add( ConversionFunctions.stringCurrencyToBigDecimal( tab.getValor( i, (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ? 6 : 5 ).toString() ) );
 		}
 
 		return retorno;
@@ -1595,7 +1579,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private HashMap<String, Object> getPermissaoUsu() {
-		HashMap<String,Object> ret = new HashMap<String, Object>();
+
+		HashMap<String, Object> ret = new HashMap<String, Object>();
 
 		try {
 
@@ -1617,49 +1602,49 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			con.commit();
 
-		}
-		catch (Exception e) {			
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
 	}
 
 	private void abreBuscaCompra() {
-		DLBuscaCompra dl = new DLBuscaCompra(lcDet, lcProd, txtCodVenda.getVlrInteger(), con ); 	
+
+		DLBuscaCompra dl = new DLBuscaCompra( lcDet, lcProd, txtCodVenda.getVlrInteger(), con );
 		dl.setConexao( con );
 		dl.setVisible( true );
-		HashMap<String,Integer> retorno = null;
+		HashMap<String, Integer> retorno = null;
 
 		if ( dl.OK ) {
 			retorno = dl.getValor();
 			txtCodCompra.setVlrInteger( (Integer) retorno.get( "codcompra" ) );
-			txtCodItCompra.setVlrInteger( (Integer) retorno.get( "coditcompra" ) );			
+			txtCodItCompra.setVlrInteger( (Integer) retorno.get( "coditcompra" ) );
 		}
-		else {	
+		else {
 			txtCodCompra.setVlrInteger( null );
 			txtCodItCompra.setVlrInteger( null );
 		}
 
-		lcItCompra.carregaDados();		
+		lcItCompra.carregaDados();
 	}
 
 	private void abreBuscaRemessa() {
 
-		DLBuscaRemessa dl = new DLBuscaRemessa( txtCodProd.getVlrInteger() ); 	
+		DLBuscaRemessa dl = new DLBuscaRemessa( txtCodProd.getVlrInteger() );
 		dl.setConexao( con );
 		dl.setVisible( true );
-		HashMap<String,Integer> retorno = null;
+		HashMap<String, Integer> retorno = null;
 
 		if ( dl.OK ) {
 			retorno = dl.getVenda();
 			txtCodVendaRemessa.setVlrInteger( (Integer) retorno.get( "codvenda" ) );
-			txtCodItVendaRemessa.setVlrInteger( (Integer) retorno.get( "coditvenda" ) );	
-			txtTipoVendaRemessa.setVlrString( "V" );			
+			txtCodItVendaRemessa.setVlrInteger( (Integer) retorno.get( "coditvenda" ) );
+			txtTipoVendaRemessa.setVlrString( "V" );
 		}
-		else {	
+		else {
 			txtCodVendaRemessa.setVlrInteger( null );
-			txtCodItVendaRemessa.setVlrInteger( null );	
-			txtTipoVendaRemessa.setVlrString( null );	
+			txtCodItVendaRemessa.setVlrInteger( null );
+			txtTipoVendaRemessa.setVlrString( null );
 		}
 
 		lcItRemessa.carregaDados();
@@ -1719,66 +1704,65 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private void atualizaLucratividade() {
 
-		if("S".equals( permusu.get( "VISUALIZALUCR" )) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
+		if ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
 
-			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(),fatLucro, oPrefs[ POS_PREFS.TIPOCUSTO.ordinal()].toString(), con );		   
+			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), fatLucro, oPrefs[ POS_PREFS.TIPOCUSTO.ordinal() ].toString(), con );
 
 			/****************************
-			 * Atualizando painel geral 
+			 * Atualizando painel geral
 			 ****************************/
 
 			txtTotFat.setVlrBigDecimal( luc.getTotfat() );
-			txtTotCusto.setVlrBigDecimal( luc.getTotcusto());
-			txtTotLucro.setVlrBigDecimal( luc.getTotlucro());
+			txtTotCusto.setVlrBigDecimal( luc.getTotcusto() );
+			txtTotLucro.setVlrBigDecimal( luc.getTotlucro() );
 			pbLucrTotal.setValue( luc.getPerclucrvenda().toBigInteger().intValue() );
 
-			//Lucro menor que 20% (Vermelho)
-			if(luc.getPerclucrvenda().compareTo( new BigDecimal(20.00) )<=0) {
-				pbLucrTotal.setForeground( new Color(255,0,0) );	
+			// Lucro menor que 20% (Vermelho)
+			if ( luc.getPerclucrvenda().compareTo( new BigDecimal( 20.00 ) ) <= 0 ) {
+				pbLucrTotal.setForeground( new Color( 255, 0, 0 ) );
 
 			}
-			//Lucro maior que 20% menor que 30% (Laranja)
-			else if (luc.getPerclucrvenda().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucrvenda().compareTo( new BigDecimal(30.00) )<=0){
-				pbLucrTotal.setForeground( new Color(226,161,35) ) ;	
+			// Lucro maior que 20% menor que 30% (Laranja)
+			else if ( luc.getPerclucrvenda().compareTo( new BigDecimal( 20.00 ) ) > 0 && luc.getPerclucrvenda().compareTo( new BigDecimal( 30.00 ) ) <= 0 ) {
+				pbLucrTotal.setForeground( new Color( 226, 161, 35 ) );
 			}
-			//Lucro maior que 30% e menor que 50% (Azul)
-			else if (luc.getPerclucrvenda().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucrvenda().compareTo( new BigDecimal(50.00) )<=0){
-				pbLucrTotal.setForeground( new Color(0,0,255) ) ;	
+			// Lucro maior que 30% e menor que 50% (Azul)
+			else if ( luc.getPerclucrvenda().compareTo( new BigDecimal( 30.00 ) ) > 0 && luc.getPerclucrvenda().compareTo( new BigDecimal( 50.00 ) ) <= 0 ) {
+				pbLucrTotal.setForeground( new Color( 0, 0, 255 ) );
 			}
-			//Lucro maior que 50% (Verde)
+			// Lucro maior que 50% (Verde)
 			else {
-				pbLucrTotal.setForeground( new Color(0,143,20) );
+				pbLucrTotal.setForeground( new Color( 0, 143, 20 ) );
 			}
 
 			/****************************
-			 * Atulizando painel item 
+			 * Atulizando painel item
 			 ****************************/
 
 			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
-			txtItemCusto.setVlrBigDecimal( luc.getItemcusto() == null ? new BigDecimal(0) : luc.getItemcusto() );
-			txtItemLucro.setVlrBigDecimal( luc.getItemlucro() == null ? new BigDecimal(0) : luc.getItemlucro() );
+			txtItemCusto.setVlrBigDecimal( luc.getItemcusto() == null ? new BigDecimal( 0 ) : luc.getItemcusto() );
+			txtItemLucro.setVlrBigDecimal( luc.getItemlucro() == null ? new BigDecimal( 0 ) : luc.getItemlucro() );
 
 			pbLucrItem.setValue( luc.getPerclucrit().toBigInteger().intValue() );
-			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItVenda.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
+			pnLucrItem.setBorder( BorderFactory.createTitledBorder( txtCodItVenda.getVlrString() + "-" + txtDescProd.getVlrString().trim() ) );
 
-			//Lucro menor que 20% (Vermelho)
-			if(luc.getPerclucrit().compareTo( new BigDecimal(20.00) )<=0) {
-				pbLucrItem.setForeground( new Color(255,0,0) );	
+			// Lucro menor que 20% (Vermelho)
+			if ( luc.getPerclucrit().compareTo( new BigDecimal( 20.00 ) ) <= 0 ) {
+				pbLucrItem.setForeground( new Color( 255, 0, 0 ) );
 
 			}
-			//Lucro maior que 20% menor que 30% (Laranja)
-			else if (luc.getPerclucrit().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(30.00) )<=0){
-				pbLucrItem.setForeground( new Color(226,161,35) ) ;	
+			// Lucro maior que 20% menor que 30% (Laranja)
+			else if ( luc.getPerclucrit().compareTo( new BigDecimal( 20.00 ) ) > 0 && luc.getPerclucrit().compareTo( new BigDecimal( 30.00 ) ) <= 0 ) {
+				pbLucrItem.setForeground( new Color( 226, 161, 35 ) );
 			}
-			//Lucro maior que 30% e menor que 50% (Azul)
-			else if (luc.getPerclucrit().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(50.00) )<=0){
-				pbLucrItem.setForeground( new Color(0,0,255) ) ;	
+			// Lucro maior que 30% e menor que 50% (Azul)
+			else if ( luc.getPerclucrit().compareTo( new BigDecimal( 30.00 ) ) > 0 && luc.getPerclucrit().compareTo( new BigDecimal( 50.00 ) ) <= 0 ) {
+				pbLucrItem.setForeground( new Color( 0, 0, 255 ) );
 			}
-			//Lucro maior que 50% (Verde)
+			// Lucro maior que 50% (Verde)
 			else {
-				pbLucrItem.setForeground( new Color(0,143,20) );
+				pbLucrItem.setForeground( new Color( 0, 143, 20 ) );
 			}
-
 
 		}
 
@@ -1788,53 +1772,52 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 
-			tpnCab.addTab( "Lucratividade", pinCabLucratividade );			
-			setPainel(pinCabLucratividade) ;
+			tpnCab.addTab( "Lucratividade", pinCabLucratividade );
+			setPainel( pinCabLucratividade );
 
 			/******************
 			 * Painel Geral
 			 ******************/
 
-			pnLucrGeral.setBorder( BorderFactory.createTitledBorder( "Lucratividade Geral" ) );			
-			adic(pnLucrGeral, 4, 0, 230, 92 );			
-			setPainel(pnLucrGeral);			
-			pbLucrTotal.setStringPainted(true);									
+			pnLucrGeral.setBorder( BorderFactory.createTitledBorder( "Lucratividade Geral" ) );
+			adic( pnLucrGeral, 4, 0, 230, 92 );
+			setPainel( pnLucrGeral );
+			pbLucrTotal.setStringPainted( true );
 
-			adic( pbLucrTotal, 2 , 2, 215 , 20);			
+			adic( pbLucrTotal, 2, 2, 215, 20 );
 
-			adic( new JLabelPad("Faturado"), 2, 25, 75 , 20);
-			adic( txtTotFat, 2, 45, 70 , 20);
+			adic( new JLabelPad( "Faturado" ), 2, 25, 75, 20 );
+			adic( txtTotFat, 2, 45, 70, 20 );
 
-			adic( new JLabelPad("Custo"), 75, 25, 75 , 20);
-			adic( txtTotCusto, 75, 45, 70 , 20);
+			adic( new JLabelPad( "Custo" ), 75, 25, 75, 20 );
+			adic( txtTotCusto, 75, 45, 70, 20 );
 
-			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
-			adic( txtTotLucro, 148, 45, 70 , 20);
+			adic( new JLabelPad( "Lucro" ), 153, 25, 75, 20 );
+			adic( txtTotLucro, 148, 45, 70, 20 );
 
 			/******************
 			 * Painel Item
 			 ******************/
 
-			setPainel(pinCabLucratividade) ;
+			setPainel( pinCabLucratividade );
 
-			pnLucrItem.setBorder( BorderFactory.createTitledBorder( "Lucratividade Item" ) );			
-			adic(pnLucrItem, 240, 0, 230, 92 );			
+			pnLucrItem.setBorder( BorderFactory.createTitledBorder( "Lucratividade Item" ) );
+			adic( pnLucrItem, 240, 0, 230, 92 );
 
-			setPainel(pnLucrItem);			
-			pbLucrItem.setStringPainted(true);									
+			setPainel( pnLucrItem );
+			pbLucrItem.setStringPainted( true );
 
-			adic( pbLucrItem, 2 , 2, 215 , 20);			
+			adic( pbLucrItem, 2, 2, 215, 20 );
 
-			adic( new JLabelPad("Faturado"), 2, 25, 75 , 20);
-			adic( txtItemFat, 2, 45, 70 , 20);
+			adic( new JLabelPad( "Faturado" ), 2, 25, 75, 20 );
+			adic( txtItemFat, 2, 45, 70, 20 );
 
-			adic( new JLabelPad("Custo"), 75, 25, 75 , 20);
-			adic( txtItemCusto, 75, 45, 70 , 20);
+			adic( new JLabelPad( "Custo" ), 75, 25, 75, 20 );
+			adic( txtItemCusto, 75, 45, 70, 20 );
 
-			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
-			adic( txtItemLucro, 148, 45, 70 , 20);
-		}
-		catch (Exception e) {
+			adic( new JLabelPad( "Lucro" ), 153, 25, 75, 20 );
+			adic( txtItemLucro, 148, 45, 70, 20 );
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -1907,7 +1890,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( txtCodNat.getAtivo() ) {
 			txtUltCamp = txtCodNat;
-		}		
+		}
 		else if ( txtVlrIPIItVenda.getAtivo() ) {
 			txtUltCamp = txtVlrIPIItVenda;
 		}
@@ -1949,7 +1932,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 	}
-	
 
 	private void mostraTelaDescont() {
 
@@ -2023,7 +2005,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			retorno = txtCodLote.mostraDLF2FK();
 
 		}
-		else if ( statuslote > 0 ){
+		else if ( statuslote > 0 ) {
 
 			Funcoes.mensagemInforma( this, "Faltam " + statuslote + " dias para o vencimento deste lote!" );
 
@@ -2116,10 +2098,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			List<Integer> lsParcRecibo = null;
 			String[] sValores = null;
 
-			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), 
-					chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), 
-					chbReImpNfTipoMov.getVlrString(), txtCodTran.getVlrInteger(), txtTipoFrete.getVlrString(), 
-					getVolumes(), (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) );
+			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString(), txtCodTran.getVlrInteger(), txtTipoFrete
+					.getVlrString(), getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
 			// dl.getDadosCli();
 			dl.setVisible( true );
 
@@ -2132,7 +2112,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else {
 				dl.dispose();
-			} 
+			}
 
 			lcCampos.carregaDados();
 
@@ -2140,20 +2120,19 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				// Ordem dos parâmetros decrescente por que uma tela abre na
 				// frente da outra.
-				/*{ 0 - CODPLANOPAG, 1 - VLRDESCVENDA, 2 - VLRADICVENDA, 3 - IMPPED, 4 - IMPNOTA, 
-					5 - MODBOL1, 6 - IMPREC, 7 - MODBOL2, 8 - REIMPNOTA};*/
+				/*
+				 * { 0 - CODPLANOPAG, 1 - VLRDESCVENDA, 2 - VLRADICVENDA, 3 - IMPPED, 4 - IMPNOTA, 5 - MODBOL1, 6 - IMPREC, 7 - MODBOL2, 8 - REIMPNOTA};
+				 */
 
-				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPBOL.ordinal() ] )  ) && 
-						( ! "".equals(sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) ) ) {
+				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPBOL.ordinal() ] ) ) && ( !"".equals( sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) ) ) {
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
 					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 					fBol.gerar();
-					fBol.imprimir( true, this ); 
+					fBol.imprimir( true, this );
 				}
-				else if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPREC.ordinal() ] ) ) && 
-						( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
+				else if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPREC.ordinal() ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
 					if ( "".equals( sValores[ DLFechaVenda.COL_RETDFV.MODBOL2.ordinal() ] ) ) {
@@ -2169,16 +2148,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 
 				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) || ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || 
-							txtTipoMov.getVlrString().equals( "VT" ) || 
-							txtTipoMov.getVlrString().equals( "TR" ) || 
-							txtTipoMov.getVlrString().equals( "CS" ) || 
-							txtTipoMov.getVlrString().equals( "CE" ) || 
-							txtTipoMov.getVlrString().equals( "PE" ) || 
-							txtTipoMov.getVlrString().equals( "DV" ) || 
-							txtTipoMov.getVlrString().equals( "VR" ) || 
-							txtTipoMov.getVlrString().equals( "BN" ) || 
-							txtTipoMov.getVlrString().equals( "CO" ) ) {
+					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
+							|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "VR" ) || txtTipoMov.getVlrString().equals( "BN" ) || txtTipoMov.getVlrString().equals( "CO" ) ) {
 						emiteNotaFiscal( "NF" );
 					}
 					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
@@ -2200,8 +2171,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					lcCampos.edit();
 					lcCampos.post();
 				}
-				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) && 
-						( (Boolean) oPrefs[ POS_PREFS.BLOQVENDA.ordinal() ] ) ) {
+				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) && ( (Boolean) oPrefs[ POS_PREFS.BLOQVENDA.ordinal() ] ) ) {
 					bloqvenda();
 				}
 			}
@@ -2255,8 +2225,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno = rs.getString( 1 ).trim();
 			}
 
-			if( "G".equals( tipopedido ) ){
-				if( retorno == null ){
+			if ( "G".equals( tipopedido ) ) {
+				if ( retorno == null ) {
 					retorno = "PED_PD.jasper";
 				}
 			}
@@ -2264,7 +2234,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			rs.close();
 			ps.close();
 
-			//			con.commit();
+			// con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -2279,20 +2249,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void emiteNotaFiscal( final String sTipo ) {
-		if ( (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) ) {
+
+		if ( ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) ) {
 			emiteNFE();
-		} else {
+		}
+		else {
 			emiteNF( sTipo );
 		}
 	}
 
 	private void emiteNFE() {
 
-		nfecf.setKey( Aplicativo.iCodEmp, 
-				ListaCampos.getMasterFilial( "VDVENDA" ), 
-				txtTipoVenda.getVlrString(), 
-				txtCodVenda.getVlrInteger(), 
-				txtDocVenda.getVlrInteger() );
+		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger(), txtDocVenda.getVlrInteger() );
 
 		nfecf.post();
 	}
@@ -2342,11 +2310,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				else if ( layNF instanceof Leiaute ) {
 
 					StringBuffer sSQL = new StringBuffer();
-					sSQL.append( "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND ");
+					sSQL.append( "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND " );
 					sSQL.append( "IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA)," );
 					sSQL.append( "(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD " );
 					sSQL.append( " AND L.CODLOTE=I.CODLOTE AND L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE)," );
-					sSQL.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD ");
+					sSQL.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD " );
 					sSQL.append( " AND L.CODLOTE=I.CODLOTE AND L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE)," );
 					sSQL.append( "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS" );
 					sSQL.append( " AND M.CODFILIAL=I.CODFILIALME AND M.CODEMP=I.CODEMPME)," );
@@ -2373,18 +2341,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					sSQL.append( "V.VLRPISVENDA,V.VLRCOFINSVENDA,V.VLRIRVENDA,V.VLRCSOCIALVENDA,V.CODCLCOMIS,V.PERCCOMISVENDA," );
 					sSQL.append( "V.PERCMCOMISVENDA, N.IMPDTSAIDANAT,P.DESCAUXPROD, C.DDDCLI " );
 					sSQL.append( " FROM VDVENDA V, VDCLIENTE C, VDITVENDA I, EQPRODUTO P, VDVENDEDOR VEND, FNPLANOPAG PG," );
-					sSQL.append( " VDFRETEVD F, VDTRANSP T, LFNATOPER N, SGFILIAL FL, LFITCLFISCAL CL, SGMUNICIPIO M ");
+					sSQL.append( " VDFRETEVD F, VDTRANSP T, LFNATOPER N, SGFILIAL FL, LFITCLFISCAL CL, SGMUNICIPIO M " );
 					sSQL.append( "WHERE V.TIPOVENDA='V' AND V.CODVENDA=" );
 					sSQL.append( iCodVenda );
 					sSQL.append( " AND V.CODEMP=? AND V.CODFILIAL=? AND FL.CODEMP=V.CODEMP AND FL.CODFILIAL=V.CODFILIAL" );
 					sSQL.append( " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
 					sSQL.append( " AND I.CODVENDA=V.CODVENDA AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA " );
-					sSQL.append( " AND P.CODPROD=I.CODPROD AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD ");
-					sSQL.append( " AND VEND.CODVEND=V.CODVEND AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD");
+					sSQL.append( " AND P.CODPROD=I.CODPROD AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD " );
+					sSQL.append( " AND VEND.CODVEND=V.CODVEND AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD" );
 					sSQL.append( " AND PG.CODPLANOPAG=V.CODPLANOPAG AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG" );
 					sSQL.append( " AND F.CODVENDA=V.CODVENDA AND F.TIPOVENDA=F.TIPOVENDA AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL" );
-					sSQL.append( " AND T.CODTRAN=F.CODTRAN AND T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN");
-					sSQL.append( " AND N.CODNAT=I.CODNAT AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT");
+					sSQL.append( " AND T.CODTRAN=F.CODTRAN AND T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN" );
+					sSQL.append( " AND N.CODNAT=I.CODNAT AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT" );
 					sSQL.append( " AND CL.CODFISC = P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC" );
 					sSQL.append( " AND CL.GERALFISC='S' AND FL.CODMUNIC=M.CODMUNIC AND FL.CODPAIS=M.CODPAIS AND FL.SIGLAUF=M.SIGLAUF " );
 					sSQL.append( "ORDER BY P." + dl.getValor() + ",P.DESCPROD" );
@@ -2392,8 +2360,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					StringBuffer sSQLRec = new StringBuffer();
 					sSQLRec.append( "SELECT I.DTVENCITREC,I.VLRPARCITREC,I.NPARCITREC FROM FNRECEBER R, FNITRECEBER I WHERE R.CODVENDA=" );
 					sSQLRec.append( iCodVenda );
-					sSQLRec.append( " AND R.CODEMPVA="+Aplicativo.iCodEmp );
-					sSQLRec.append( " AND R.CODFILIALVA="+ListaCampos.getMasterFilial( "VDVENDA" ) );
+					sSQLRec.append( " AND R.CODEMPVA=" + Aplicativo.iCodEmp );
+					sSQLRec.append( " AND R.CODFILIALVA=" + ListaCampos.getMasterFilial( "VDVENDA" ) );
 					sSQLRec.append( " AND I.CODREC=R.CODREC AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL ORDER BY I.DTVENCITREC" );
 
 					StringBuffer sSQLInfoAdic = new StringBuffer();
@@ -2429,7 +2397,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			imp.preview( this );
 		}
 
-		imp.fechaPreview();		
+		imp.fechaPreview();
 	}
 
 	private void imprimir( boolean bVisualizar, int iCodVenda ) {
@@ -2455,7 +2423,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		int linPag = imp.verifLinPag( "PD" ) - 1;
 		int iDiasPE = 0;
 		String tipoimp = "T";
-		HashMap<String,Object> hParam = new HashMap<String,Object>();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		try {
 
@@ -2470,60 +2438,59 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				return;
 			}
 
-			sSQL.append( "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC ");
-			sSQL.append( "WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL ");
-			sSQL.append( "AND IC.TIPOVENDA=V.TIPOVENDA) QTDITENS,(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD ");
-			sSQL.append( "AND L.CODLOTE=I.CODLOTE) CODLOTE, 0 NROITENS, ");
-			sSQL.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L ");
-			sSQL.append( "WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE,V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI, ");
-			sSQL.append( "V.DTEMITVENDA,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.PESSOACLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI, ");
-			sSQL.append( "C.UFCLI,C.FONECLI,C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID, ");
-			sSQL.append( "I.PERCISSITVENDA,I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,I.PERCIPIITVENDA, ");
-			sSQL.append( "VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,V.VLRFRETEVENDA,V.VLRDESCVENDA,I.VLRDESCITVENDA, ");
-			sSQL.append( "V.VLRADICVENDA,V.VLRIPIVENDA,V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG, ");
-			
+			sSQL.append( "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC " );
+			sSQL.append( "WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL " );
+			sSQL.append( "AND IC.TIPOVENDA=V.TIPOVENDA) QTDITENS,(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD " );
+			sSQL.append( "AND L.CODLOTE=I.CODLOTE) CODLOTE, 0 NROITENS, " );
+			sSQL.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L " );
+			sSQL.append( "WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE,V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI, " );
+			sSQL.append( "V.DTEMITVENDA,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.PESSOACLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI, " );
+			sSQL.append( "C.UFCLI,C.FONECLI,C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID, " );
+			sSQL.append( "I.PERCISSITVENDA,I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,I.PERCIPIITVENDA, " );
+			sSQL.append( "VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,V.VLRFRETEVENDA,V.VLRDESCVENDA,I.VLRDESCITVENDA, " );
+			sSQL.append( "V.VLRADICVENDA,V.VLRIPIVENDA,V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG, " );
+
 			sSQL.append( "T.RAZTRAN,T.DDDFONETRAN, T.FONETRAN," );
 			sSQL.append( "VF.TIPOFRETEVD TIPOFRETE," );
-			
+
 			sSQL.append( "SE.DESCSETOR," );
-			
+
 			sSQL.append( "CM.DESCCLCOMIS,PERCMCOMISVENDA," );
-			
-			sSQL.append( "I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA, ");
-			sSQL.append( "(SELECT PE.DIASPE FROM VDPRAZOENT PE WHERE PE.CODEMP=P.CODEMPPE AND PE.CODFILIAL=P.CODFILIALPE AND PE.CODPE=P.CODPE) DIASPE, ");
-			sSQL.append( "C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND, ");
-			
-			sSQL.append( "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC) AS DESCFUNC, ");
-			
-			sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FCL.DESCFISC,V.DOCVENDA, C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, ");
-			sSQL.append( "C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, VF.PESOLIQVD, VF.QTDFRETEVD, P.DESCCOMPPROD, V.OBSVENDA, VF.QTDFRETEVD ");
-			
-			sSQL.append( "FROM VDCLIENTE C, EQPRODUTO P,FNPLANOPAG PG, VDITVENDA I ");
-			
-			sSQL.append( "LEFT OUTER JOIN VDVENDA V on V.CODEMP=I.CODEMP AND V.CODFILIAL=I.CODFILIAL AND V.CODVENDA=I.CODVENDA AND V.TIPOVENDA=I.TIPOVENDA ");
 
-			sSQL.append( "LEFT OUTER JOIN VDVENDEDOR VEND on VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND VEND.CODVEND=V.CODVEND ");
-			
-			sSQL.append( "LEFT OUTER JOIN VDFRETEVD VF on VF.CODEMP=I.CODEMP AND VF.CODFILIAL=I.CODFILIAL AND VF.CODVENDA=I.CODVENDA AND VF.TIPOVENDA=I.TIPOVENDA ");
-			
+			sSQL.append( "I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA, " );
+			sSQL.append( "(SELECT PE.DIASPE FROM VDPRAZOENT PE WHERE PE.CODEMP=P.CODEMPPE AND PE.CODFILIAL=P.CODFILIALPE AND PE.CODPE=P.CODPE) DIASPE, " );
+			sSQL.append( "C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND, " );
+
+			sSQL.append( "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC) AS DESCFUNC, " );
+
+			sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FCL.DESCFISC,V.DOCVENDA, C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, " );
+			sSQL.append( "C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, VF.PESOLIQVD, VF.QTDFRETEVD, P.DESCCOMPPROD, V.OBSVENDA, VF.QTDFRETEVD " );
+
+			sSQL.append( "FROM VDCLIENTE C, EQPRODUTO P,FNPLANOPAG PG, VDITVENDA I " );
+
+			sSQL.append( "LEFT OUTER JOIN VDVENDA V on V.CODEMP=I.CODEMP AND V.CODFILIAL=I.CODFILIAL AND V.CODVENDA=I.CODVENDA AND V.TIPOVENDA=I.TIPOVENDA " );
+
+			sSQL.append( "LEFT OUTER JOIN VDVENDEDOR VEND on VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND VEND.CODVEND=V.CODVEND " );
+
+			sSQL.append( "LEFT OUTER JOIN VDFRETEVD VF on VF.CODEMP=I.CODEMP AND VF.CODFILIAL=I.CODFILIAL AND VF.CODVENDA=I.CODVENDA AND VF.TIPOVENDA=I.TIPOVENDA " );
+
 			sSQL.append( "LEFT OUTER JOIN VDTRANSP T ON T.CODEMP=VF.CODEMPTN AND T.CODFILIAL=VF.CODFILIALTN AND T.CODTRAN=VF.CODTRAN " );
-			
+
 			sSQL.append( "LEFT OUTER JOIN VDSETOR SE ON SE.CODEMP=VEND.CODEMPSE AND SE.CODFILIAL=VEND.CODFILIALSE AND SE.CODSETOR=VEND.CODSETOR " );
-			 
+
 			sSQL.append( "LEFT OUTER JOIN VDCLCOMIS CM ON CM.CODEMP=V.CODEMPCM AND CM.CODFILIAL=V.CODFILIALCM AND CM.CODCLCOMIS=V.CODCLCOMIS " );
-			
-			sSQL.append( "left outer join lfclfiscal fcl on fcl.CODEMP=I.CODEMPif AND fcl.CODFILIAL=I.CODFILIALif AND fcl.CODfisc=I.codfisc ");
 
-			sSQL.append( "WHERE ");
-			sSQL.append( "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND ");
-			sSQL.append( "V.CODVENDA=? AND C.CODEMP=V.CODEMPCL ");
-			sSQL.append( "AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL ");
-			sSQL.append( "AND I.TIPOVENDA=V.TIPOVENDA AND I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD ");
-			sSQL.append( "AND P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD ");
-			sSQL.append( "AND VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG ");
-			sSQL.append( "AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG ");
-			sSQL.append( "ORDER BY P.DESCPROD,P.DESCPROD ");
+			sSQL.append( "left outer join lfclfiscal fcl on fcl.CODEMP=I.CODEMPif AND fcl.CODFILIAL=I.CODFILIALif AND fcl.CODfisc=I.codfisc " );
 
+			sSQL.append( "WHERE " );
+			sSQL.append( "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " );
+			sSQL.append( "V.CODVENDA=? AND C.CODEMP=V.CODEMPCL " );
+			sSQL.append( "AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL " );
+			sSQL.append( "AND I.TIPOVENDA=V.TIPOVENDA AND I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD " );
+			sSQL.append( "AND P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD " );
+			sSQL.append( "AND VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG " );
+			sSQL.append( "AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "ORDER BY P.DESCPROD,P.DESCPROD " );
 
 			ps = con.prepareStatement( sSQL.toString() );
 
@@ -2556,13 +2523,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
 							hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 							hParam.put( "TIPOVENDA", "V" );
-							hParam.put( "REPORT_CONNECTION", con.getConnection() ); 
-							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/");
+							hParam.put( "REPORT_CONNECTION", con.getConnection() );
+							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
 
-							System.out.println("SQL:" + sSQL.toString());
+							System.out.println( "SQL:" + sSQL.toString() );
 
-							//								FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
-							FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
+							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
+							FPrinterJob dlGr = new FPrinterJob( "layout/pd/" + getLayoutPedido( tipoimp ), "PEDIDO", "", rs, hParam, this, null );
 
 							if ( bVisualizar ) {
 								dlGr.setVisible( true );
@@ -2577,18 +2544,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							}
 
 						}
-						else{
+						else {
 
 							hParam.put( "CODEMP", Aplicativo.iCodEmp );
 							hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
 							hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 							hParam.put( "TIPOVENDA", "V" );
-							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/"); 
+							hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/" );
 
-							//FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
+							// FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
 
-							FPrinterJob dlGr = new FPrinterJob("layout/pd/PED_PD.jasper","PEDIDO","",rs,hParam,this,null);
-
+							FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
 
 							if ( bVisualizar ) {
 								dlGr.setVisible( true );
@@ -2601,7 +2567,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 									err.printStackTrace();
 								}
 							}
-						}											
+						}
 					}
 				} catch ( Exception err ) {
 					err.printStackTrace();
@@ -2612,11 +2578,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 					if ( layNF instanceof Leiaute ) {
 
-						/*ps = con.prepareStatement( sSQL.toString() );
-							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-							ps.setInt( 3, iCodVenda );
-							rs = ps.executeQuery();*/
+						/*
+						 * ps = con.prepareStatement( sSQL.toString() ); ps.setInt( 1, Aplicativo.iCodEmp ); ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) ); ps.setInt( 3, iCodVenda ); rs = ps.executeQuery();
+						 */
 
 						psRec = con.prepareStatement( sSQLRec.toString() );
 						rsRec = psRec.executeQuery();
@@ -2683,7 +2647,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 								imp.impCab( 136, false );
 								imp.say( 0, imp.comprimido() );
-								imp.say( 1, "CLIENTE: " + rs.getString( "CodCli" ).trim() + " - " + ( rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).trim() : "" ) );// nome cliente															
+								imp.say( 1, "CLIENTE: " + rs.getString( "CodCli" ).trim() + " - " + ( rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).trim() : "" ) );// nome cliente
 								imp.say( 70, "PEDIDO N.: " + rs.getString( "CodVenda" ).trim() );
 								imp.pulaLinha( 1, imp.comprimido() );
 								imp.say( 1, rs.getString( "CpfCli" ) != null ? "CPF    : " + Funcoes.setMascara( rs.getString( "CpfCli" ), "###.###.###-##" ) : "CNPJ   : " + Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );// CNJP cliente
@@ -2692,8 +2656,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 								imp.say( 1, ( rs.getString( "RgCli" ) != null ? "R.G.   : " + rs.getString( "RgCli" ) : "I.E.   : " + ( rs.getString( "InscCli" ) != null ? rs.getString( "InscCli" ) : "" ) ) );// IE cliente
 								imp.say( 70, "CONTATO: " + ( rs.getString( "ContCli" ) != null ? rs.getString( "ContCli" ).trim() : "" ) );
 								imp.pulaLinha( 1, imp.comprimido() );
-								imp.say( 1, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).trim() + " N°:" + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) : "" ) + " " + ( rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" ) + ( rs.getString( "CidCli" ) != null ? " - " + rs.getString( "CidCli" ).trim() : "" ) + ( rs.getString( "UFCli" ) != null ? " - " + rs.getString( "UFCli" ).trim() : "" )
-										+ ( rs.getString( "CEPCli" ) != null ? " - " + rs.getString( "CEPCli" ).trim() : "" ) + " TEL: " + ( rs.getString( "DDDCli" ) != null ? Funcoes.setMascara( rs.getString( "DDDCli" ), "(####)" ) : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ) + " - FAX:"
+								imp.say( 1, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).trim() + " N°:" + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) : "" ) + " " + ( rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" )
+										+ ( rs.getString( "CidCli" ) != null ? " - " + rs.getString( "CidCli" ).trim() : "" ) + ( rs.getString( "UFCli" ) != null ? " - " + rs.getString( "UFCli" ).trim() : "" ) + ( rs.getString( "CEPCli" ) != null ? " - " + rs.getString( "CEPCli" ).trim() : "" )
+										+ " TEL: " + ( rs.getString( "DDDCli" ) != null ? Funcoes.setMascara( rs.getString( "DDDCli" ), "(####)" ) : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ) + " - FAX:"
 										+ ( rs.getString( "FaxCli" ) != null ? Funcoes.setMascara( rs.getString( "FaxCli" ), "####-####" ) : "" ) );// endereço e telefone cliente
 								imp.pulaLinha( 1, imp.comprimido() );
 								imp.say( 0, StringFunctions.replicate( "-", 135 ) );
@@ -2745,7 +2710,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					imp.say( 0, "PAGAMENTO.........:    " + rs.getString( "CODPLANOPAG" ) + " - " + rs.getString( "DESCPLANOPAG" ) );
 					imp.pulaLinha( 1, imp.comprimido() );
 
-
 					if ( (Boolean) oPrefs[ POS_PREFS.DIASPEDT.ordinal() ] ) {
 
 						dtHoje = new Date();
@@ -2771,7 +2735,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 70, StringFunctions.replicate( "-", 40 ) );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 85, "Assinatura" );	
+					imp.say( 85, "Assinatura" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -2796,7 +2760,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					imp.say( 0, StringFunctions.replicate( "-", 135 ) );
 					imp.pulaLinha( 2, imp.comprimido() );
 
-
 					imp.eject();
 					imp.fechaGravacao();
 
@@ -2808,8 +2771,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 				}
 				else {
-					//FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
-					FPrinterJob dlGr = new FPrinterJob("layout/pd/PED_PD.jasper","PEDIDO","",rs,hParam,this,null);
+					// FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
+					FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", "", rs, hParam, this, null );
 
 					if ( bVisualizar ) {
 						dlGr.setVisible( true );
@@ -2901,40 +2864,37 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.USAPRECOZERO.ordinal() ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
 				retorno[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals( rs.getString( "MULTICOMIS" ) );
 
-				retorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = 
-					( "FV".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
-				retorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = 
-					( "II".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
+				retorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = ( "FV".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
+				retorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = ( "II".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
 				classped = rs.getString( "TIPOCLASSPED" );
 				retorno[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] = "S".equals( rs.getString( "VENDAPATRIM" ) );
 				retorno[ POS_PREFS.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
 				retorno[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
 				retorno[ POS_PREFS.INFVDREMESSA.ordinal() ] = "S".equals( rs.getString( "INFVDREMESSA" ) );
-				retorno[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" ) ;
-				retorno[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals(rs.getString( "BUSCACODPRODGEN" )) ;
-
+				retorno[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
+				retorno[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals( rs.getString( "BUSCACODPRODGEN" ) );
 
 			}
 			rs.close();
 			ps.close();
 			con.commit();
-		} 
-		catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
+		} finally {
 			rs = null;
 			ps = null;
 		}
 		return retorno;
 	}
 
-	public void exec( int codvenda) {
+	public void exec( int codvenda ) {
+
 		exec( codvenda, -1, "V" );
 	}
 
 	public void exec( int codvenda, String tipovenda ) {
+
 		exec( codvenda, -1, tipovenda );
 	}
 
@@ -2947,10 +2907,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( coditvenda > 0 ) {
 			txtCodItVenda.setVlrInteger( coditvenda );
 			lcDet.carregaDados();
-		}	
+		}
 	}
 
-	public void beforeInsert( InsertEvent ievt ) { }
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
 
 	public void afterInsert( InsertEvent ievt ) {
 
@@ -3048,7 +3010,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 						if ( Funcoes.mensagemConfirma( this, mens.toString() ) == JOptionPane.YES_OPTION ) {
 							abreComissVend();
-							if( !consisteComisObrig() ){
+							if ( !consisteComisObrig() ) {
 								pevt.cancela();
 							}
 						}
@@ -3080,30 +3042,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					if ( !consultaCredito( txtVlrLiqItVenda.getVlrBigDecimal(), false ) ) {
 						pevt.cancela();
 					}
-				}				
+				}
 				if ( (Boolean) oPrefs[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] && "DV".equals( txtTipoMov.getVlrString() ) ) {
-					abreBuscaCompra();				
+					abreBuscaCompra();
 				}
-				if ( (Boolean) oPrefs[ POS_PREFS.INFVDREMESSA.ordinal() ] && ! "VR".equals( txtTipoMov.getVlrString() )  ) {
-					abreBuscaRemessa();				
-				}
-				
-				if ( ! (txtCodItFisc.getVlrInteger()>0) ) {
-					if ( Funcoes.mensagemConfirma( this, 
-							  "Este ítem apresenta problemas nas regras de tributação.\n"
-							+ "É possível que esse ítem não seja impresso na nota fiscal!\n"
-							+ "Deseja continuar?\n" ) != 0 ) {
-						pevt.cancela();
-						return;
-					}	
+				if ( (Boolean) oPrefs[ POS_PREFS.INFVDREMESSA.ordinal() ] && !"VR".equals( txtTipoMov.getVlrString() ) ) {
+					abreBuscaRemessa();
 				}
 
+				if ( ! ( txtCodItFisc.getVlrInteger() > 0 ) ) {
+					if ( Funcoes.mensagemConfirma( this, "Este ítem apresenta problemas nas regras de tributação.\n" + "É possível que esse ítem não seja impresso na nota fiscal!\n" + "Deseja continuar?\n" ) != 0 ) {
+						pevt.cancela();
+						return;
+					}
+				}
 
 				calcDescIt();
 				calcComisIt();
 			}
 
-			if ( (Boolean) oPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal()] && txtTipoProd.getVlrString().equals( "O" ) ) {
+			if ( (Boolean) oPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] && txtTipoProd.getVlrString().equals( "O" ) ) {
 				FPassword pass = new FPassword( this, FPassword.VENDA_IMOBLIZIADO, "Venda imobilizado", con );
 				pass.setVisible( true );
 				if ( !pass.OK ) {
@@ -3113,17 +3071,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 
 			if ( txtSerieProd.getVlrString().equals( "S" ) && txtNumSerie.isEditable() ) {
-				if ( !testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable()) ) {
+				if ( !testaNumSerie( txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable() ) ) {
 					pevt.cancela();
 				}
 			}
-			
-			
+
 		}
 		txtTipoVenda.setVlrString( "V" );
 	}
 
-	
 	public void afterPost( PostEvent pevt ) {
 
 		lcVenda2.carregaDados(); // Carrega os Totais
@@ -3133,12 +3089,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov2.setText( "N" );
 			}
 		}
-		if (pevt.getListaCampos() == lcDet) { 
-			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItVenda.getVlrBigDecimal().floatValue()>1  ) {
-				testaNumSerie(txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable()) ;								
-			}			
+		if ( pevt.getListaCampos() == lcDet ) {
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItVenda.getVlrBigDecimal().floatValue() > 1 ) {
+				testaNumSerie( txtCodVenda.getVlrInteger(), txtCodItVenda.getVlrInteger(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtNumSerie.getVlrString(), txtNumSerie.isEditable() );
+			}
 		}
-		
+
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -3148,23 +3104,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 		/*
-		 * if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { 
-		 * // Cancela os auto-incrementos que sobrepõem o que está guardado na tabela venda 
-		 * if (cevt.getListaCampos() == lcVendedor) { 
-		 * lcVendedor.cancLerCampo(2, true); //Comissão do vendedor; 
-		 * } else if ( cevt.getListaCampos() == lcCli) { 
-		 * lcCli.cancLerCampo(2, true); //Código de Pagamento 
-		 * lcCli.cancLerCampo(3, true); //Código do Vendador 
-		 * } 
-		 * } else { 
-		 * if (cevt.getListaCampos() == lcVendedor) { //Ativa auto-incrementos 
-		 * lcVendedor.cancLerCampo(2, false); //Comissão do vendedor; 
-		 * } else if (cevt.getListaCampos() == cCli) { 
-		 * lcCli.cancLerCampo(2, false); //Código do Pagamento 
-		 * lcCli.cancLerCampo(3, false); //Código do Vendedor 
-		 * } 
-		 * } 
-		 * Por que faz a mesma coisa no if e no else?
+		 * if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { // Cancela os auto-incrementos que sobrepõem o que está guardado na tabela venda if (cevt.getListaCampos() == lcVendedor) { lcVendedor.cancLerCampo(2, true); //Comissão do vendedor; } else if ( cevt.getListaCampos() == lcCli) {
+		 * lcCli.cancLerCampo(2, true); //Código de Pagamento lcCli.cancLerCampo(3, true); //Código do Vendador } } else { if (cevt.getListaCampos() == lcVendedor) { //Ativa auto-incrementos lcVendedor.cancLerCampo(2, false); //Comissão do vendedor; } else if (cevt.getListaCampos() == cCli) {
+		 * lcCli.cancLerCampo(2, false); //Código do Pagamento lcCli.cancLerCampo(3, false); //Código do Vendedor } } Por que faz a mesma coisa no if e no else?
 		 */
 		if ( cevt.getListaCampos() == lcVendedor ) {// Ativa auto-incrementos
 			lcVendedor.cancLerCampo( 2, false ); // Comissão do vendedor;
@@ -3216,30 +3158,30 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					calcVlrItem( null, false );
 					getICMS();
 				}
-				
+
 				if ( "S".equals( txtSerieProd.getVlrString() ) ) {
-						
+
 					setAltDet( 140 );
-						
-//					lbCodLote.setVisible( true );
-//					txtCodLote.setVisible( true );
-						
+
+					// lbCodLote.setVisible( true );
+					// txtCodLote.setVisible( true );
+
 					lbNumSerie.setVisible( true );
 					txtNumSerie.setVisible( true );
-					
+
 					habilitaSerie();
-						
+
 				}
-				else  {
-					
+				else {
+
 					setAltDet( 100 );
-						
-//					lbCodLote.setVisible( false );
-//					txtCodLote.setVisible( false );
-						
+
+					// lbCodLote.setVisible( false );
+					// txtCodLote.setVisible( false );
+
 					lbNumSerie.setVisible( false );
 					txtNumSerie.setVisible( false );
-						
+
 				}
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
@@ -3248,7 +3190,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				getCFOP();
 				getTratTrib();
-			} 
+			}
 			else if ( cevt.getListaCampos() == lcNat ) {
 				if ( cevt.ok && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 					getICMS();
@@ -3262,7 +3204,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
-				codvenda = null;			
+				codvenda = null;
 			}
 			else if ( cevt.getListaCampos() == lcCli ) {
 				if ( (Boolean) oPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
@@ -3283,36 +3225,36 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					setReCalcPreco( true );
 				}
 			}
-			
+
 			// ***** Verificação do status
-			
+
 			// Desabilitada a feature devido a problema na edição do registro após setar para readonly.
-//			nav.setActionDefault();
-//			navRod.setActionDefault();
-			
+			// nav.setActionDefault();
+			// navRod.setActionDefault();
+
 			String statusvenda = txtStatusVenda.getVlrString().trim();
 
 			if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
 				NF_EMITIDA = true;
-				
+
 				lbStatus.setText( "CANCELADA" );
 				lbStatus.setBackground( Color.RED );
-				
+
 			}
 			else if ( getVendaBloqueada() ) {
 				NF_EMITIDA = true;
-				
+
 				lbStatus.setText( "BLOQUEADA" );
 				lbStatus.setBackground( Color.BLUE );
 				// Desabilitada a feature devido a problema na edição do registro após setar para readonly.
-//				nav.setReadOnly( true );
-//				navRod.setReadOnly( true );
-				
+				// nav.setReadOnly( true );
+				// navRod.setReadOnly( true );
+
 			}
 			else if ( txtStatusVenda.getVlrString().trim().length() > 0 && ( txtStatusVenda.getVlrString().trim().equals( "V2" ) || txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
 				NF_EMITIDA = true;
 				lbStatus.setText( "EMITIDA" );
-				
+
 				lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			}
 			else if ( statusvenda.length() > 0 && ( statusvenda.equals( "P2" ) || statusvenda.equals( "P3" ) ) ) {
@@ -3320,33 +3262,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
 			}
-			else if ( statusvenda.equals( "P1" )) {
+			else if ( statusvenda.equals( "P1" ) ) {
 				lbStatus.setText( "PENDENTE" );
 				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
 
 			}
-			else if ( "".equals( statusvenda ) || statusvenda==null) {
+			else if ( "".equals( statusvenda ) || statusvenda == null ) {
 				lbStatus.setForeground( Color.WHITE );
-				lbStatus.setBackground( Color.BLACK );	
+				lbStatus.setBackground( Color.BLACK );
 				lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 				lbStatus.setOpaque( true );
 				lbStatus.setText( "NÃO SALVO" );
 				NF_EMITIDA = false;
 			}
-			else { 
+			else {
 				lbStatus.setText( statusvenda );
 				lbStatus.setBackground( Color.DARK_GRAY );
-				lbStatus.setVisible( true );	
+				lbStatus.setVisible( true );
 				NF_EMITIDA = false;
 			}
-			
-			
-			
-			
-			
-			
-
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -3354,21 +3289,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void habilitaSerie() {
-		
-		if( "S".equals( txtSerieProd.getVlrString() ) && txtQtdItVenda.getVlrBigDecimal().compareTo( new BigDecimal( 1 ) )==0 ) {
 
-			
+		if ( "S".equals( txtSerieProd.getVlrString() ) && txtQtdItVenda.getVlrBigDecimal().compareTo( new BigDecimal( 1 ) ) == 0 ) {
+
 			txtNumSerie.setEditable( true );
 		}
 		else {
 			txtNumSerie.setEditable( false );
 		}
-		
+
 		defineUltimoCampo();
 
 	}
-	
-	public void beforeDelete( DeleteEvent devt ) { }
+
+	public void beforeDelete( DeleteEvent devt ) {
+
+	}
 
 	public void afterDelete( DeleteEvent devt ) {
 
@@ -3492,7 +3428,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						lcDet.cancel( true );
 					}
 					pass.dispose();
-				}				
+				}
 			}
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F3 && kevt.getSource() == txtVlrDescItVenda ) {
@@ -3505,8 +3441,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			btConsPgto.doClick();
 		}
 
-		if(kevt.getKeyCode() == KeyEvent.VK_F12 && ( ("S".equals( permusu.get( "VISUALIZALUCR" )) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) ) ) {
-			DLAltFatLucro dl = new DLAltFatLucro(this, fatLucro);
+		if ( kevt.getKeyCode() == KeyEvent.VK_F12 && ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) ) ) {
+			DLAltFatLucro dl = new DLAltFatLucro( this, fatLucro );
 			dl.setVisible( true );
 			if ( dl.OK ) {
 				fatLucro = dl.getValor();
@@ -3518,7 +3454,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 		super.keyPressed( kevt );
-		
+
 	}
 
 	public void keyTyped( KeyEvent kevt ) {
@@ -3542,85 +3478,83 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
-	private void calcImpostos(boolean buscabase) {
-		if(!NF_EMITIDA) {
+	private void calcImpostos( boolean buscabase ) {
+
+		if ( !NF_EMITIDA ) {
 			setCalcImpostos( buscabase );
 			getCalcImpostos();
 		}
-		
+
 	}
-	
+
 	private void getTratTrib() {
 
 		try {
-			if(!NF_EMITIDA) {	
+			if ( !NF_EMITIDA ) {
 				impostos.setCodprod( txtCodProd.getVlrInteger() );
 				impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
 				impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
 				impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
-				
+
 				impostos.calcTratTrib();
-				
+
 				txtOrigFisc.setVlrString( impostos.getOrigfisc() );
 				txtCodTratTrib.setVlrString( impostos.getCodtrattrib() );
 				txtRedFisc.setVlrBigDecimal( impostos.getRedfisc() );
 				txtTipoFisc.setVlrString( impostos.getTipofisc() );
 				txtTipoST.setVlrString( impostos.getTipost() );
-				
-				if(impostos.getCodmens()>0) {
-					txtCodMens.setVlrInteger( impostos.getCodmens());
+
+				if ( impostos.getCodmens() > 0 ) {
+					txtCodMens.setVlrInteger( impostos.getCodmens() );
 				}
-				
+
 				txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
 				txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
 				txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
 				txtMargemVlAgr.setVlrBigDecimal( impostos.getMargemvlragr() );
-	
-				// Carregando campos para gravação do item de classificação selecionado
-	
 
-				if ( impostos.getCoditfisc()!=null && impostos.getCoditfisc().floatValue()>0 ) {
+				// Carregando campos para gravação do item de classificação selecionado
+
+				if ( impostos.getCoditfisc() != null && impostos.getCoditfisc().floatValue() > 0 ) {
 
 					txtCodEmpIf.setVlrInteger( impostos.getCodempif() );
-					txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() ) ;
+					txtCodFilialIf.setVlrInteger( impostos.getCodfilialif() );
 					txtCodFiscIf.setVlrString( impostos.getCodfisc() );
 					txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
 				}
 			}
-		}		
-		catch (Exception e) {
-				e.printStackTrace();
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void setCalcImpostos( boolean buscabase ) {
-		
+
 		try {
-			
+
 			getTratTrib();
 			getICMS();
 
-			impostos.setBuscabase( buscabase );			
-			impostos.setVlrprod( txtVlrProdItVenda.getVlrBigDecimal() );		
-			impostos.setVlrdescit( txtPercDescItVenda.getVlrBigDecimal() );		
-			
+			impostos.setBuscabase( buscabase );
+			impostos.setVlrprod( txtVlrProdItVenda.getVlrBigDecimal() );
+			impostos.setVlrdescit( txtPercDescItVenda.getVlrBigDecimal() );
+
 			impostos.calcICMS();
-			impostos.calcIPI();			
+			impostos.calcIPI();
 			impostos.calcVlrLiqIt();
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void getCalcImpostos( ) {
 
-		try { 
-			
-			if(!NF_EMITIDA) {
-		
+	private void getCalcImpostos() {
+
+		try {
+
+			if ( !NF_EMITIDA ) {
+
 				txtVlrBaseICMSItVendaBrut.setVlrBigDecimal( impostos.getVlrbaseicmsitbrut() );
 				txtVlrBaseICMSItVenda.setVlrBigDecimal( impostos.getVlrbaseicmsit() );
 				txtPercICMSItVenda.setVlrBigDecimal( impostos.getAliqfisc() );
@@ -3629,21 +3563,19 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtBaseIPIItVenda.setVlrBigDecimal( impostos.getVlrbaseipiit() );
 				txtPercIPIItVenda.setVlrBigDecimal( impostos.getAliqipifisc() );
 				txtVlrIPIItVenda.setVlrBigDecimal( impostos.getVlripiit() );
-		
+
 				txtVlrLiqItVenda.setVlrBigDecimal( impostos.getVlrliqit() );
 				txtCodItFisc.setVlrInteger( impostos.getCoditfisc() );
-				
+
 				defineUltimoCampo();
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
 	public void focusLost( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtPercDescItVenda ) {
@@ -3655,7 +3587,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				calcVlrProd();
 
 				calcImpostos( true );
-				
+
 				txtVlrDescItVenda.setAtivo( false );
 			}
 		}
@@ -3688,7 +3620,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( txtVlrComisItVenda.getAtivo() ) {
 				txtPercComItVenda.setAtivo( false );
 			}
-			calcComisIt(); 
+			calcComisIt();
 			calcVlrProd();
 			calcImpostos( true );
 		}

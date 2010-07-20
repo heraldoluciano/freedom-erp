@@ -2,23 +2,23 @@
  * @version 30/05/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.cfg <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.cfg <BR>
+ *         Classe:
  * @(#)FUsuario.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                   Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                   modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                   na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                   Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                   sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                   Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                   Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                   de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Formulário de cadastro de usuários do sistema.
+ *                   Formulário de cadastro de usuários do sistema.
  * 
  */
 
@@ -73,7 +73,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 
 public class FUsuario extends FTabDados implements PostListener, DeleteListener, CarregaListener, ChangeListener, InsertListener, ActionListener, CheckBoxListener {
- 
+
 	private static final long serialVersionUID = 1L;
 
 	private static Vector<String> vCodDisp = new Vector<String>();
@@ -99,33 +99,33 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JCheckBoxPad cbCompra = new JCheckBoxPad( "Realizar compras", "S", "N" );
 
 	private JCheckBoxPad cbReceita = new JCheckBoxPad( "Vender produto com receita", "S", "N" );
-	
+
 	private JCheckBoxPad cbAtivCli = new JCheckBoxPad( "Ativar clientes", "S", "N" );
-	
-	private JCheckBoxPad cbLiberaCred = new JCheckBoxPad( "Liberar crédito", "S", "N");
-	
+
+	private JCheckBoxPad cbLiberaCred = new JCheckBoxPad( "Liberar crédito", "S", "N" );
+
 	private JCheckBoxPad cbCancelaOP = new JCheckBoxPad( "Cancelar OP de outro usuário", "S", "N" );
-	
+
 	private JCheckBoxPad cbVendaImobilizado = new JCheckBoxPad( "Vender imobilizado", "S", "N" );
-	
+
 	private JCheckBoxPad cbRMAOutCC = new JCheckBoxPad( "Lançar RMA em outros C.C.", "S", "N" );
-	
+
 	private JCheckBoxPad cbVisualizaLucr = new JCheckBoxPad( "Visualizar Lucratividade", "S", "N" );
-	
+
 	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
-	
+
 	private JList lsDisp = new JList();
 
 	private JList lsEmp = new JList();
 
 	private JPanelPad pinAcesso = new JPanelPad();
-	
+
 	private JPanelPad pinCor = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinGeral = new JPanelPad();
 
 	private JPanelPad pinEmail = new JPanelPad();
-		
+
 	private JRadioGroup<?, ?> rgAprovaRMA = null;
 
 	private JRadioGroup<?, ?> rgAprovaSolicitacao = null;
@@ -145,13 +145,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodConfEmail = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtNomeRemet = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -167,13 +167,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JTextFieldPad txtPNomeUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtUNomeUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldPad txtCorAgenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private DbConnection conIB = null;
 
 	private ListaCampos lcAlmox = new ListaCampos( this, "AM" );
-	
+
 	private ListaCampos lcConfEmail = new ListaCampos( this, "CE" );
 
 	private ListaCampos lcCC = new ListaCampos( this, "CC" );
@@ -188,12 +188,12 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private Vector<String> vAprovaSolicitacaoVal = new Vector<String>();
 
-    private JColorChooser tcc = new JColorChooser();
-    
+	private JColorChooser tcc = new JColorChooser();
+
 	private JPanelPad pnPermissoes = new JPanelPad();
-	
+
 	private JPanelPad pnAprovacoes = new JPanelPad();
-	
+
 	public FUsuario() {
 
 		super();
@@ -255,9 +255,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcConfEmail.montaSql( false, "CONFEMAIL", "TK" );
 		lcConfEmail.setQueryCommit( false );
 		lcConfEmail.setReadOnly( true );
-		txtCodConfEmail.setTabelaExterna( lcConfEmail, FConfEmail.class.getCanonicalName() );		
-		
-		
+		txtCodConfEmail.setTabelaExterna( lcConfEmail, FConfEmail.class.getCanonicalName() );
+
 		adicTab( "Usuario", pinGeral );
 		setPainel( pinGeral );
 
@@ -287,9 +286,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adic( spnEmp, 247, 260, 195, 100 );
 
 		adicTab( "Acesso", pinAcesso );
-		pinAcesso.adic( pnPermissoes, 3, 0 , 440, 170 );
+		pinAcesso.adic( pnPermissoes, 3, 0, 440, 170 );
 		pnPermissoes.setBorder( BorderFactory.createTitledBorder( "Permissões" ) );
-		
+
 		setPainel( pnPermissoes );
 
 		adicDB( cbBaixoCusto, 4, 0, 180, 20, "BaixoCustoUsu", "", false );
@@ -304,16 +303,16 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( cbVendaImobilizado, 200, 60, 200, 20, "VENDAPATRIMUSU", "", false );
 		adicDB( cbRMAOutCC, 200, 80, 200, 20, "RMAOUTCC", "", false );
 		adicDB( cbVisualizaLucr, 200, 100, 200, 20, "VISUALIZALUCR", "", false );
-		
+
 		adicDB( cbLiberaCampoPesagem, 200, 120, 200, 20, "LIBERACAMPOPESAGEM", "", false );
-				
+
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		pinAcesso.adic( pnAprovacoes, 3, 175 , 440, 180 );
+		pinAcesso.adic( pnAprovacoes, 3, 175, 440, 180 );
 		pnAprovacoes.setBorder( BorderFactory.createTitledBorder( "Aprovações" ) );
 
-		setPainel(pnAprovacoes);
-		
+		setPainel( pnAprovacoes );
+
 		adicCampo( txtCodAlmox, 4, 20, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescAlmox, 107, 20, 318, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicDB( rgAprovaSolicitacao, 4, 65, 200, 80, "AprovCPSolicitacaoUsu", "Solicitação de compra", false );
@@ -321,13 +320,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		adicTab( "Cor", pinCor );
 		setPainel( pinCor );
-		
+
 		adicTab( "Email", pinEmail );
 		setPainel( pinEmail );
-		
+
 		adicCampo( txtCodConfEmail, 7, 20, 100, 20, "CodConfEmail", "Cd.C.Email", ListaCampos.DB_FK, false );
 		adicDescFK( txtNomeRemet, 110, 20, 330, 20, "NomeRemet", "Nome do remetente" );
-		
+
 		setListaCampos( false, "USUARIO", "SG" );
 		lcCampos.setQueryInsert( false );
 
@@ -341,16 +340,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		btAdicEmp.addActionListener( this );
 		btDelEmp.addActionListener( this );
-		
+
 		super.setBordaReq( txpSenha );
 		super.setBordaReq( txpConfirma );
-			
-        pinCor.add(tcc, BorderLayout.CENTER);
-        tcc.getSelectionModel().addChangeListener(this);
-        
-		
 
-		
+		pinCor.add( tcc, BorderLayout.CENTER );
+		tcc.getSelectionModel().addChangeListener( this );
+
 	}
 
 	private void adicionaEmp() {
@@ -359,42 +355,42 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			return;
 		}
 		for ( int i = lsDisp.getMaxSelectionIndex(); i >= 0; i-- ) {
-		
+
 			if ( lsDisp.isSelectedIndex( i ) ) {
-			
+
 				vEmp.add( vDisp.elementAt( i ) );
 				vDisp.remove( i );
 				vCodEmp.add( vCodDisp.elementAt( i ) );
 				vCodDisp.remove( i );
 			}
 		}
-		
+
 		lsDisp.setListData( vDisp );
 		lsEmp.setListData( vEmp );
 		lcCampos.edit();
 	}
 
 	private int buscaAnoBaseCC() {
-	
+
 		int iRet = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-	
+
 		try {
-			
+
 			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -407,44 +403,44 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	private void carregaAcesso() {
-	
+
 		int iPos = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		
+
 		try {
-	
+
 			sSQL.append( "SELECT FL.CODFILIAL,FL.NOMEFILIAL " );
 			sSQL.append( "FROM SGFILIAL FL, SGACESSOEU AC " );
 			sSQL.append( "WHERE AC.IDUSU=? AND FL.CODEMP=AC.CODEMPFL AND FL.CODFILIAL=AC.CODFILIALFL" );
-			
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setString( 1, txtIDUsu.getVlrString() );
-			
+
 			rs = ps.executeQuery();
-			
+
 			vEmp.clear();
 			vCodEmp.clear();
-			
+
 			while ( rs.next() ) {
-			
+
 				vCodEmp.addElement( rs.getString( "CodFilial" ) );
 				vEmp.addElement( rs.getString( "NomeFilial" ) != null ? rs.getString( "NomeFilial" ).trim() : "" );
-	
+
 				iPos = vCodDisp.indexOf( rs.getString( "CodFilial" ) );
-				
-				if(vCodDisp==null) {
+
+				if ( vCodDisp == null ) {
 					vCodDisp.remove( iPos );
 					vDisp.remove( iPos );
 				}
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			lsEmp.setListData( vEmp );
 			lsDisp.setListData( vDisp );
 		} catch ( SQLException err ) {
@@ -458,31 +454,31 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	private void carregaDisp() {
-	
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-		
+
 			ps = con.prepareStatement( "SELECT CODFILIAL,NOMEFILIAL FROM SGFILIAL WHERE CODEMP=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			
+
 			rs = ps.executeQuery();
-			
+
 			vDisp.clear();
 			vCodDisp.clear();
-			
+
 			while ( rs.next() ) {
-			
+
 				vCodDisp.addElement( rs.getString( "CodFilial" ) );
 				vDisp.addElement( rs.getString( "NomeFilial" ) != null ? rs.getString( "NomeFilial" ).trim() : "" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 			lsDisp.setListData( vDisp );
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -494,56 +490,56 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	private void gravaAcesso() {
-	
+
 		String sSep = null;
 		String sSqlI = null;
 		String sSqlD = null;
 		String sSqlG = null;
-		
+
 		PreparedStatement ps = null;
-		
+
 		try {
-			
+
 			sSep = "";
 			sSqlI = "";
-			
+
 			for ( int i = 0; i < vCodEmp.size(); i++ ) {
-				
+
 				sSqlI += sSep + vCodEmp.elementAt( i );
 				sSep = ",";
 			}
-			
+
 			sSqlD = "DELETE FROM SGACESSOEU WHERE IDUSU=? AND CODEMP=?";
-			
+
 			ps = con.prepareStatement( sSqlD );
 			ps.setString( 1, txtIDUsu.getVlrString() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
-			
+
 			ps.executeUpdate();
-			
+
 			ps.close();
-			
+
 			con.commit();
-			
+
 			if ( vCodEmp.size() > 0 ) {
-			
+
 				sSqlI = "INSERT INTO SGACESSOEU (CODEMP,CODFILIAL,IDUSU,CODEMPFL,CODFILIALFL) " + "SELECT CODEMP," + Aplicativo.iCodFilial + ",'" + txtIDUsu.getVlrString() + "',CODEMP,CODFILIAL FROM SGFILIAL " + "WHERE CODEMP=? AND CODFILIAL IN (" + sSqlI + ")";
-				
+
 				ps = con.prepareStatement( sSqlI );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.executeUpdate();
 				ps.close();
 				con.commit();
 			}
-			
+
 			sSqlG = "GRANT " + txtIDGrpUsu.getVlrString().trim() + " TO USER \"" + txtIDUsu.getVlrString().trim() + "\"";
-			
+
 			ps = con.prepareStatement( sSqlG );
-	
+
 			ps.executeUpdate();
-			
+
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -558,86 +554,86 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	private void removeEmp() {
-	
+
 		if ( lsEmp.isSelectionEmpty() ) {
 			return;
 		}
-		
+
 		for ( int i = lsEmp.getMaxSelectionIndex(); i >= 0; i-- ) {
-		
+
 			if ( lsEmp.isSelectedIndex( i ) ) {
-			
+
 				vDisp.add( vEmp.elementAt( i ) );
 				vEmp.remove( i );
 				vCodDisp.add( vCodEmp.elementAt( i ) );
 				vCodEmp.remove( i );
 			}
 		}
-		
+
 		lsDisp.setListData( vDisp );
 		lsEmp.setListData( vEmp );
 		lcCampos.edit();
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-	
+
 		if ( evt.getSource() == btAdicEmp ) {
-			
+
 			adicionaEmp();
 		}
 		else if ( evt.getSource() == btDelEmp ) {
-		
+
 			removeEmp();
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
 	public void beforeCarrega( CarregaEvent pevt ) {
-	
+
 		if ( pevt.getListaCampos() == lcCC ) {
-			
-//			System.out.println( "Carrega CC" );
+
+			// System.out.println( "Carrega CC" );
 		}
-		else if ( (pevt.getListaCampos() == lcCampos) && (txtIDUsu.getText()!=null) ) {
+		else if ( ( pevt.getListaCampos() == lcCampos ) && ( txtIDUsu.getText() != null ) ) {
 			txtIDUsu.setText( txtIDUsu.getText().toLowerCase() );
 		}
-		
-	
+
 	}
 
 	public void afterCarrega( CarregaEvent pevt ) {
+
 		carregaDisp();
 		carregaAcesso();
 		txpSenha.setVlrString( "88888888" );
 		txpConfirma.setVlrString( "88888888" );
-		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );		
+		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		Color cor = new Color(txtCorAgenda.getVlrInteger());
-		
+		Color cor = new Color( txtCorAgenda.getVlrInteger() );
+
 		tcc.setColor( cor );
 		tcc.repaint();
 		tcc.revalidate();
 	}
 
 	public void beforeDelete( DeleteEvent devt ) {
-	
+
 		PreparedStatement ps = null;
-		
+
 		if ( "SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-		
+
 			return;
 		}
-		
+
 		try {
-			
+
 			ps = conIB.prepareStatement( "execute procedure deleteuser(?)" );
 			ps.setString( 1, txtIDUsu.getVlrString() );
-			
+
 			ps.execute();
-			
+
 			ps.close();
-			
+
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -653,7 +649,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-	
+
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -661,48 +657,48 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		carregaDisp();
 		carregaAcesso();
 		cbAtivCli.setVlrString( "N" );
-		
+
 	}
 
 	public void beforePost( PostEvent pevt ) {
-	
-		if ( ! txpSenha.getVlrString().equals( txpConfirma.getVlrString() ) ) {
-			
+
+		if ( !txpSenha.getVlrString().equals( txpConfirma.getVlrString() ) ) {
+
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Senha diferente da confirmação!" );
 			txpSenha.requestFocus();
-			
+
 			return;
 		}
 		else if ( "".equals( txpSenha.getVlrString().trim() ) ) {
-			
+
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Senha em branco!" );
 			txpSenha.requestFocus();
-			
+
 			return;
 		}
 		else if ( txpSenha.getVlrString().length() > 8 ) {
-			
+
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "A senha não pode ultrapassar 8 caracteres!" );
 			txpSenha.requestFocus();
-			
+
 			return;
 		}
-		else if ( ! "ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) ) {
-			
+		else if ( !"ADM".equalsIgnoreCase( txtIDGrpUsu.getVlrString() ) ) {
+
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Só o grupo \"ADM\" está disponível!" );
 			txtIDGrpUsu.requestFocus();
-			
+
 			return;
 		}
 		else {
-			
+
 			PreparedStatement ps = null;
 			ResultSet rs = null;
-			
+
 			try {
 
 				boolean bCheck = false;
@@ -782,13 +778,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	public void afterPost( PostEvent pevt ) {
 
 		if ( pevt.ok ) {
-			
+
 			gravaAcesso();
 		}
 	}
 
 	public void valorAlterado( CheckBoxEvent evt ) {
-	
+
 		boolean checked = evt.getCheckBox().isSelected();
 		txtCodAlmox.setRequerido( checked );
 	}
@@ -796,27 +792,24 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	public void setConexao( DbConnection cn, DbConnection cnIB ) {
 
 		super.setConexao( cn );
-		
+
 		conIB = cnIB;
 		lcGrup.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC() );
 		lcAlmox.setConexao( cn );
 		lcConfEmail.setConexao( cn );
-		
+
 		if ( conIB == null ) {
-			Funcoes.mensagemInforma( this, 
-					  "A conexão com o banco de dados de usuário está nula,\n" 
-					+ "provavelmente o usuário qual você conectou não possui\n" 
-					+ "permissão para acessar este banco de dados.\n" 
-					+ "Por favor, contate o administrador do sistema." );
+			Funcoes.mensagemInforma( this, "A conexão com o banco de dados de usuário está nula,\n" + "provavelmente o usuário qual você conectou não possui\n" + "permissão para acessar este banco de dados.\n" + "Por favor, contate o administrador do sistema." );
 			dispose();
 		}
 	}
-	
-	public void stateChanged(ChangeEvent e) {
-			Color cor = tcc.getColor();					
-			txtCorAgenda.setVlrInteger( cor.getRGB() );			
+
+	public void stateChanged( ChangeEvent e ) {
+
+		Color cor = tcc.getColor();
+		txtCorAgenda.setVlrInteger( cor.getRGB() );
 	}
-	
+
 }

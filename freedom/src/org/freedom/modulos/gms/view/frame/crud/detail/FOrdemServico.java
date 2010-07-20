@@ -190,8 +190,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldPad txtCodBarProdItOS = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCodAlmoxProdItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
-//	private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
+	// private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
 
@@ -226,11 +226,11 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pnItemRecMerc = new JPanelPad();
-	
+
 	private JPanelPad pnItemOS = new JPanelPad();
 
 	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
-	
+
 	private JPanelPad pinRodapeDividido = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
 	private JTabbedPanePad tpnItens = new JTabbedPanePad();
@@ -246,7 +246,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JPanelPad pinCondicoesRecepcao = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinServicoSolicItRecMerc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private JPanelPad pnRodapeSuplemento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	// *** Lista Campos
@@ -258,7 +258,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private ListaCampos lcProd2 = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcProdItOS = new ListaCampos( this, "PD" );
-	
+
 	private ListaCampos lcProdItOS2 = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcItRecMercItOS = new ListaCampos( this );
@@ -288,11 +288,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JLabelPad lbDtValidSerie = new JLabelPad();
 
 	private Navegador navItRecMercItOS = new Navegador( true );
-	
+
 	// ** Combobox
-	
+
 	private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
-	
 
 	// *** Tela do Painel de controle
 
@@ -301,7 +300,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	public FOrdemServico() {
 
 		super();
-		
+
 		nav.setNavigation( true );
 
 		setTitulo( "Ordem de Serviço" );
@@ -336,25 +335,25 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private void montaTela() {
 
 		montaPaineis();
-		
+
 		montaCombos();
-		
+
 		montaCabecalho();
-		
+
 		montaDetalhe();
-		
+
 		adicListeners();
-		
+
 		montaDetalhedoDetalhe();
-		
+
 		montaTab();
-		
+
 		ajustaTabelaDetalhe();
 
 		lcItRecMercItOS.montaTab();
-		
+
 		ajustaTabelaSuplemento();
-		
+
 		setImprimir( true );
 
 	}
@@ -383,23 +382,22 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tpnItens.addTab( "Solicitação", pinServicoSolicItRecMerc );
 		tpnItens.addTab( "Condições", pinCondicoesRecepcao );
 		tpnItens.addTab( "Obs.", pinObsItRecMerc );
-		
-		pnDet.add(pnItemRecMerc);
-		pnDet.add(pnItemOS);
-		
-		pnGImp.setPreferredSize(new Dimension( 90, 26 ));	
-		
+
+		pnDet.add( pnItemRecMerc );
+		pnDet.add( pnItemOS );
+
+		pnGImp.setPreferredSize( new Dimension( 90, 26 ) );
+
 		pnBordRod.removeAll();
-		pnBordRod.add(pinRodapeDividido);
+		pnBordRod.add( pinRodapeDividido );
 
 		pinRodapeDividido.add( pnRodape );
 		pnRodape.remove( btSair );
-		
-		pnRodapeSuplemento.add(navItRecMercItOS, BorderLayout.WEST);
-		pnRodapeSuplemento.add(btSair, BorderLayout.EAST);
-		
-		pinRodapeDividido.add(pnRodapeSuplemento);
 
+		pnRodapeSuplemento.add( navItRecMercItOS, BorderLayout.WEST );
+		pnRodapeSuplemento.add( btSair, BorderLayout.EAST );
+
+		pinRodapeDividido.add( pnRodapeSuplemento );
 
 	}
 
@@ -422,33 +420,33 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		adicCampo( txtDtEnt, 532, 20, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrevRet, 605, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
-		
+
 		adicDB( cbStatus, 678, 20, 115, 20, "Status", "Status", false );
 
 		adic( lbStatus, 620, 20, 123, 60 );
 
 		setListaCampos( true, "RECMERC", "EQ" );
 		lcCampos.setQueryInsert( true );
-		
 
 	}
-	
+
 	private void montaCombos() {
-		
-		cbStatus.setItens( StatusOS.getLabels( ), StatusOS.getValores( ) );
-		
+
+		cbStatus.setItens( StatusOS.getLabels(), StatusOS.getValores() );
+
 	}
 
 	private boolean buscaGen() {
+
 		return (Boolean) prefere.get( "buscacodprodgen" );
 	}
-	
+
 	private void montaDetalhe() {
 
 		setAltDet( 100 );
 
 		setPainel( pnItemRecMerc );
-		
+
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
@@ -456,7 +454,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		if ( comRef() ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
-			
+
 			if ( buscaGen() ) {
 				txtRefProd.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) );
 			}
@@ -467,26 +465,26 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			adic( new JLabelPad( "Referência" ), 40, 0, 70, 20 );
 			adic( txtRefProd, 40, 20, 70, 20 );
 			txtRefProd.setFK( true );
-			
+
 		}
 		else {
-			
+
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
-			
+
 			if ( buscaGen() ) {
 				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
-			
+
 			adicCampo( txtCodProd, 55, 20, 70, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.", ListaCampos.DB_FK, false );
-			
+
 		}
 
 		adicDescFK( txtDescProd, 113, 20, 270, 20, "DescProd", "Descrição do Produto" );
-		
+
 		adicCampo( txtQtdItOS, 7, 60, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
-//		txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
+		// txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
 		lbNumSerie = adicCampo( txtNumSerie, 55, 60, 103, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 161, 60, 80, 20, "DtFabricSerie", "Fabricação" );
@@ -529,49 +527,47 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private void montaDetalhedoDetalhe() {
 
 		setPainel( pnItemOS );
-		
+
 		setListaCampos( lcItRecMercItOS );
 
 		setNavegador( navItRecMercItOS );
 
 		adicCampo( txtCodItOS, 7, 20, 30, 20, "CodItOS", "Seq.", ListaCampos.DB_PK, true );
-		
+
 		if ( comRef() ) {
-			
+
 			adicCampo( txtRefProdItOS, 40, 20, 70, 20, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItOS, true );
-			
+
 			txtRefProdItOS.setBuscaAdic( new DLBuscaProd( con, "REFPRODPD", lcProd2.getWhereAdic() ) );
-			
+
 			if ( buscaGen() ) {
-				txtRefProdItOS.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) ); 
+				txtRefProdItOS.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) );
 			}
-			
+
 			adicCampoInvisivel( txtCodProdItOS, "CodProdpd", "Código", ListaCampos.DB_SI, false );
-			
+
 		}
 		else {
-	
+
 			adicCampo( txtCodProdItOS, 40, 20, 70, 20, "CodProdPD", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdItOS, true );
 			adicCampoInvisivel( txtRefProdItOS, "RefProdPD", "Referência", ListaCampos.DB_SI, false );
-			
+
 		}
-		
-		
+
 		adicDescFK( txtDescProdItOS, 113, 20, 270, 20, "DescProd", "Descrição do Produto" );
 
 		adicCampoInvisivel( txtRefProdItOS, "RefProdPD", "Ref.", ListaCampos.DB_FK, false );
 
 		adicCampo( txtQtdItOSItOS, 7, 60, 45, 20, "QtdItOS", "Qtd.", ListaCampos.DB_SI, true );
-		
+
 		adicDBLiv( txaObsItOS, "ObsItOS", "Observações", false );
 
 		setListaCampos( true, "ITRECMERCITOS", "EQ" );
 
 		txtCodProdItOS.setNomeCampo( "CodProd" );
-		
+
 		txtRefProdItOS.setNomeCampo( "refprod" );
 
-		
 		lcItRecMercItOS.setQueryInsert( false );
 		lcItRecMercItOS.setQueryCommit( false );
 
@@ -599,7 +595,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
 			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
-			
+
 			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -641,7 +637,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tab.setColunaInvisivel( 13 );
 		tab.setColunaInvisivel( 14 );
 		tab.setColunaInvisivel( 15 );
-		
+
 	}
 
 	private void ajustaTabelaSuplemento() {
@@ -657,7 +653,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tabItOS.setColunaInvisivel( 3 );
 		tabItOS.setColunaInvisivel( 4 );
 		tabItOS.setColunaInvisivel( 6 );
-		
+
 	}
 
 	private void adicListeners() {
@@ -683,7 +679,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		txtNumSerie.addKeyListener( this );
 
 		lcItRecMercItOS.addPostListener( this );
-		
+
 		cbStatus.addComboBoxListener( this );
 	}
 
@@ -774,7 +770,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcNumSerie.add( new GuardaCampo( txtDtValidSerie, "dtvalidserie", "Validade", ListaCampos.DB_SI, false ) );
 
 		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
-		
+
 		lcNumSerie.setAutoLimpaPK( false );
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
 		lcNumSerie.setQueryCommit( false );
@@ -793,7 +789,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
 
 		/***************
-		 * PROCESSOS   *
+		 * PROCESSOS *
 		 ***************/
 
 		lcProc.add( new GuardaCampo( txtCodProcRecMerc, "CodProcRecMerc", "Cód.Proc.", ListaCampos.DB_PK, false ) );
@@ -828,8 +824,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS.setQueryCommit( false );
 		lcProdItOS.setReadOnly( true );
 		txtCodProdItOS.setTabelaExterna( lcProdItOS, FProduto.class.getCanonicalName() );
-		
-		
+
 		// * Produto referencia
 
 		lcProdItOS2.add( new GuardaCampo( txtRefProdItOS, "RefProd", "Referência", ListaCampos.DB_PK, true ) );
@@ -851,8 +846,6 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS2.setQueryCommit( false );
 		lcProdItOS2.setReadOnly( true );
 		txtRefProdItOS.setTabelaExterna( lcProdItOS2, FProduto.class.getCanonicalName() );
-
-		
 
 	}
 
@@ -999,21 +992,20 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		if ( ( e.getSource() == txtQtdItOS ) ) {
 			habilitaSerie();
 		}
-		
+
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 
-		
 	}
-	
+
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
-//			RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
+			// RecMerc.atualizaStatus( txtStatus.getVlrString(), lbStatus );
 		}
 		else if ( cevt.getListaCampos() == lcProd || cevt.getListaCampos() == lcProd2 ) {
-			
+
 			if ( "S".equals( txtSerieProd.getVlrString() ) ) {
 
 				lbNumSerie.setVisible( true );
@@ -1027,7 +1019,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 				habilitaSerie();
 
-			}				
+			}
 			else {
 
 				lbNumSerie.setVisible( false );
@@ -1044,8 +1036,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else if ( cevt.getListaCampos() == lcDet ) {
 			// lcItRecMercItOS.carregaItens();
 		}
-		else if( cevt.getListaCampos() == lcNumSerie && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-			verificaGarantia();				
+		else if ( cevt.getListaCampos() == lcNumSerie && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+			verificaGarantia();
 		}
 
 	}
@@ -1130,7 +1122,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		DLSerieGrid dl = new DLSerieGrid();
 		dl.setCodemp( lcDet.getCodEmp() );
 		dl.setCodfilial( lcDet.getCodFilial() );
-		dl.setCod( txtTicket.getVlrInteger());
+		dl.setCod( txtTicket.getVlrInteger() );
 		dl.setCodit( txtCodItRecMerc.getVlrInteger() );
 		dl.setCodemppd( lcProd.getCodEmp() );
 		dl.setCodfilialpd( lcProd.getCodFilial() );
@@ -1174,14 +1166,15 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 					pevt.cancela();
 				}
 			}
-			
-		} 
+
+		}
 	}
 
 	private void verificaGarantia() {
-		cbGarantia.setVlrString( NumSerie.isGarantia( txtDtEnt.getVlrDate(), txtDtValidSerie.getVlrDate()) ? "S" : "N" );
+
+		cbGarantia.setVlrString( NumSerie.isGarantia( txtDtEnt.getVlrDate(), txtDtValidSerie.getVlrDate() ) ? "S" : "N" );
 	}
-	
+
 	public void afterPost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcCampos ) {
@@ -1228,10 +1221,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 					lcCampos.post();
 				}
 			}
-			else if ( kevt.getSource() == txtQtdItOS && "N".equals( txtSerieProd.getVlrString() ) || ( kevt.getSource() == txtNumSerie && txtQtdItOS.getVlrBigDecimal().floatValue()==1  ) ) {		
-				
+			else if ( kevt.getSource() == txtQtdItOS && "N".equals( txtSerieProd.getVlrString() ) || ( kevt.getSource() == txtNumSerie && txtQtdItOS.getVlrBigDecimal().floatValue() == 1 ) ) {
+
 				postaItOS();
-				
+
 			}
 
 		}
@@ -1254,7 +1247,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 
 	}
-	
+
 	private void buscaAtendente() {
 
 		PreparedStatement ps = null;

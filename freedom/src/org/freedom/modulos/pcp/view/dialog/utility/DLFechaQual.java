@@ -2,23 +2,23 @@
  * @version 17/07/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pcp <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pcp <BR>
+ *         Classe:
  * @(#)DLFechaQual.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  */
 package org.freedom.modulos.pcp.view.dialog.utility;
 
@@ -34,7 +34,6 @@ import org.freedom.library.swing.frame.Aplicativo;
 
 import java.util.HashMap;
 import java.util.Vector;
-
 
 public class DLFechaQual extends FFDialogo {
 
@@ -57,24 +56,23 @@ public class DLFechaQual extends FFDialogo {
 	private JRadioGroup<?, ?> rgTipo = null;
 
 	String tipo = "";
-		
+
 	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
 
 	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer, String status, boolean editable, String codUnid, DbConnection con ) {
 
 		setTitulo( "Qualidade" );
 		setAtribos( 390, 220 );
-		
+
 		adic( new JLabelPad( "Descrição da analise" ), 7, 5, 360, 20 );
 		adic( txtDescEst, 7, 25, 360, 20 );
-		
-		txtVlrMin.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
-		txtVlrMax.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
-		txtVlrAfer.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
-		
+
+		txtVlrMin.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con ) ) );
+		txtVlrMax.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con ) ) );
+		txtVlrAfer.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con ) ) );
+
 		tipo = sTipo;
 
 		vLabs1.addElement( "Pendente" );
@@ -120,8 +118,8 @@ public class DLFechaQual extends FFDialogo {
 
 		txtDescEst.setVlrString( sDescAnalise );
 		txtDescEst.setAtivo( false );
-		
-		if ( ! editable ) {
+
+		if ( !editable ) {
 			rgTipo.setAtivo( false );
 			txtVlrAfer.setAtivo( false );
 			txtDescAfer.setAtivo( false );
@@ -148,14 +146,14 @@ public class DLFechaQual extends FFDialogo {
 		return hRet;
 	}
 
-	private int casasDec(){
-		
-		int ret =0;
-		
-		
+	private int casasDec() {
+
+		int ret = 0;
+
 		return ret;
-		
+
 	}
+
 	public void ok() {
 
 		if ( "DT".equals( tipo ) ) {

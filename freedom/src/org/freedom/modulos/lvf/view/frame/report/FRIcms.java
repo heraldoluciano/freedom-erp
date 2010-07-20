@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasIcms.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  * 
  */
 
@@ -99,19 +99,9 @@ public class FRIcms extends FRelatorio {
 			bVlrIcmsCompra = new BigDecimal( "0" );
 			bVlrIcmsPagar = new BigDecimal( "0" );
 
-			sSQL = "SELECT V.DTEMITVENDA,T.ESTIPOMOV,SUM(V.VLRLIQVENDA)," 
-				+ "SUM(V.VLRBASEICMSVENDA),SUM(V.VLRICMSVENDA) " 
-				+ "FROM VDVENDA V,EQTIPOMOV T " 
-				+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " 
-				+ "V.CODTIPOMOV=T.CODTIPOMOV AND T.FISCALTIPOMOV='S' "
-				+ "AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') GROUP BY V.DTEMITVENDA,T.ESTIPOMOV " 
-				+ "UNION ALL " 
-				+ "SELECT C.DTENTCOMPRA,T1.ESTIPOMOV,SUM(C.VLRLIQCOMPRA)," 
-				+ "SUM(C.VLRBASEICMSCOMPRA),SUM(C.VLRICMSCOMPRA) " 
-				+ "FROM CPCOMPRA C,EQTIPOMOV T1 " 
-				+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND "
-				+ "C.CODTIPOMOV=T1.CODTIPOMOV AND T1.FISCALTIPOMOV='S' " 
-				+ "GROUP BY C.DTENTCOMPRA,T1.ESTIPOMOV ORDER BY 1,3";
+			sSQL = "SELECT V.DTEMITVENDA,T.ESTIPOMOV,SUM(V.VLRLIQVENDA)," + "SUM(V.VLRBASEICMSVENDA),SUM(V.VLRICMSVENDA) " + "FROM VDVENDA V,EQTIPOMOV T " + "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " + "V.CODTIPOMOV=T.CODTIPOMOV AND T.FISCALTIPOMOV='S' "
+					+ "AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') GROUP BY V.DTEMITVENDA,T.ESTIPOMOV " + "UNION ALL " + "SELECT C.DTENTCOMPRA,T1.ESTIPOMOV,SUM(C.VLRLIQCOMPRA)," + "SUM(C.VLRBASEICMSCOMPRA),SUM(C.VLRICMSCOMPRA) " + "FROM CPCOMPRA C,EQTIPOMOV T1 "
+					+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND " + "C.CODTIPOMOV=T1.CODTIPOMOV AND T1.FISCALTIPOMOV='S' " + "GROUP BY C.DTENTCOMPRA,T1.ESTIPOMOV ORDER BY 1,3";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );

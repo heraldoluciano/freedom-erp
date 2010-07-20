@@ -549,15 +549,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JLabelPad separador_atividade = new JLabelPad();
 
 	private JLabelPad separador_exigencia = new JLabelPad();
-	
+
 	private JLabelPad separador_adicional = new JLabelPad();
-	
+
 	private JLabelPad separador_radios = new JLabelPad();
 
 	public FProduto() {
 
 		super();
-		
+
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Produtos" );
@@ -878,7 +878,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adic( txtSldLiqAlmox, 570, 220, 76, 20 );
 
 		JPanelPad pnControles = new JPanelPad();
-		pnControles.setBorder( SwingParams.getPanelLabel( "Controles", Color.BLUE ) ) ;
+		pnControles.setBorder( SwingParams.getPanelLabel( "Controles", Color.BLUE ) );
 
 		adic( pnControles, 7, 245, 650, 110 );
 
@@ -890,31 +890,31 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		setPainel( pnControles );
 
 		// Atividade
-		
+
 		adicDB( cbAtivo, 10, 15, 50, 20, "AtivoProd", "Ativo", true );
 		adicDB( cbRMA, 7, 60, 50, 20, "RMAProd", "RMA", true );
-		
+
 		pnControles.adic( separador_atividade, 60, 6, 2, 75 );
 
 		// Exigencias
 		adicDB( cbLote, 70, 15, 58, 20, "CLoteProd", "Lote", true );
 		adicDB( cbSerie, 140, 15, 60, 20, "SerieProd", "Nro. Série", true );
 
-		adicDB( cbReceita, 70, 60, 60, 20, "UsaReceitaProd", "Receita", true );		
+		adicDB( cbReceita, 70, 60, 60, 20, "UsaReceitaProd", "Receita", true );
 		adicDB( cbGuiaTraf, 140, 60, 90, 20, "GuiaTrafProd", "Guia de tráfego", true );
 
 		pnControles.adic( separador_exigencia, 240, 6, 2, 75 );
 
-		// PDV	
+		// PDV
 		adicDB( cbAdicPDV, 250, 20, 110, 20, "UsaTelaAdicPDV", "PDV", true );
-		
+
 		pnControles.adic( separador_radios, 390, 6, 2, 75 );
-		
+
 		// Radios
-		
+
 		adicDB( rgCV, 398, 15, 115, 65, "CVProd", "Cadastro para:", true );
 		adicDB( rgAbaixCust, 520, 15, 115, 65, "VERIFPROD", "Abaixo custo:", true );
-		
+
 		setPainel( pinGeral );
 
 		adicCampo( txtCodAlmox, 7, 380, 80, 20, "CodAlmox", "Cód. almox.", ListaCampos.DB_FK, true );
@@ -942,20 +942,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicDescFK( txtDescPrazoEnt, 346, 500, 190, 20, "DescPE", "Descrição do prazo de entrega" );
 		adicDescFK( txtDias, 539, 500, 110, 20, "DiasPE", "Dias p/entrega" );
 
-	//	adic( btDuplicar, 540, 500, 110, 30 );
+		// adic( btDuplicar, 540, 500, 110, 30 );
 
-		//pnRod.add( btDuplicar );
-//		btCopiar.setPreferredSize( new Dimension(30,30) );
+		// pnRod.add( btDuplicar );
+		// btCopiar.setPreferredSize( new Dimension(30,30) );
 
 		btCopiar.setPreferredSize( new Dimension( 38, 26 ) );
 
+		pnImp.add( btCopiar );
 
-		pnImp.add(btCopiar);
-		
-		
 		// Decrição completa
 
-		
 		adicTab( "Descrição completa", pnDesc );
 		adicDBLiv( txaDescComp, "DescCompProd", "Descrição completa", false );
 		pnDesc.add( spnDesc );

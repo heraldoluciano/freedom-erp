@@ -2,23 +2,23 @@
  * @version 05/12/2002 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.fnc <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.fnc <BR>
+ *         Classe:
  * @(#)FTrnsLancCat.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  */
 package org.freedom.modulos.fnc.view.frame.utility;
 
@@ -69,23 +69,22 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 	private final JTextFieldPad txtCodPlanOrig = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldPad txtDescPlanOrgi = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtTipoPlanOrgi = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtCodPlanDest = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldPad txtDescPlanDest = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtTipoPlanDest = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final ListaCampos lcPlanOrig = new ListaCampos( this, "PN" );
 
 	private final ListaCampos lcPlanDest = new ListaCampos( this, "PN" );
-	
+
 	private final String[] tabelas;
-	
+
 	private final Map<String, String> mapaTabelas = new HashMap<String, String>();
-	
 
 	public FTrnsLancCat() {
 
@@ -98,10 +97,10 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 		btVerificar.addActionListener( this );
 		btTransferir.addActionListener( this );
-		
+
 		lcPlanOrig.addCarregaListener( this );
 		lcPlanDest.addCarregaListener( this );
-		
+
 		mapaTabelas.put( "CPRATEIO", "FN" );
 		mapaTabelas.put( "EQPRODPLAN", "PN" );
 		mapaTabelas.put( "FNCONTA", "PN" );
@@ -113,20 +112,8 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		mapaTabelas.put( "FNPLANOPAG", "PN" );
 		mapaTabelas.put( "FNSUBLANCA", "PN" );
 		mapaTabelas.put( "VDVENDEDOR", "PN" );
-		
-		tabelas = new String[]{ 
-				"CPRATEIO",
-				"EQPRODPLAN",
-				"FNCONTA",
-				"FNFBNCLI",
-				"FNITPAGAR",
-				"FNITRECEBER",
-				"FNLANCA",
-				"FNPAGTOCOMI",
-				"FNPLANOPAG",
-				"FNSUBLANCA",
-				"VDVENDEDOR"
-				};
+
+		tabelas = new String[] { "CPRATEIO", "EQPRODPLAN", "FNCONTA", "FNFBNCLI", "FNITPAGAR", "FNITRECEBER", "FNLANCA", "FNPAGTOCOMI", "FNPLANOPAG", "FNSUBLANCA", "VDVENDEDOR" };
 	}
 
 	private void montaListaCampos() {
@@ -210,13 +197,13 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		status.setBorder( BorderFactory.createLineBorder( Color.BLUE ) );
 		status.setForeground( Color.BLUE );
 	}
-	
+
 	private boolean valida() {
-		
+
 		boolean origemOk = false;
 		String mensagem = null;
 		int cm = 0;
-		
+
 		if ( txtCodPlanOrig.getVlrString() == null || txtCodPlanOrig.getVlrString().trim().length() == 0 ) {
 			mensagem = "Planejamento de origem deve ser informado.";
 			cm = 1;
@@ -233,44 +220,44 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 			mensagem = "Planejamento de destino não pode ser CAIXA  ou BANCO.";
 			cm = 4;
 		}
-		else if ( ! txtTipoPlanOrgi.getVlrString().equals( txtTipoPlanDest.getVlrString() ) ) {
+		else if ( !txtTipoPlanOrgi.getVlrString().equals( txtTipoPlanDest.getVlrString() ) ) {
 			mensagem = "Planejamento de destino deve ser do mesmo tipo que o de origem.";
 			cm = 5;
 		}
 		else {
 			origemOk = true;
 		}
-		
-		if( ! origemOk ) {
+
+		if ( !origemOk ) {
 			JOptionPane.showMessageDialog( panelCentro, mensagem, "Alerta", JOptionPane.INFORMATION_MESSAGE );
-			if ( cm == 1 || cm ==3 ) {
-				txtCodPlanOrig.requestFocus();	
+			if ( cm == 1 || cm == 3 ) {
+				txtCodPlanOrig.requestFocus();
 			}
 			else {
 				txtCodPlanDest.requestFocus();
 			}
 		}
-		
+
 		return origemOk;
 	}
 
 	private void verificar() {
 
 		if ( valida() ) {
-			
-			btVerificar.setEnabled( false );	
-			
+
+			btVerificar.setEnabled( false );
+
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sql = new StringBuilder();
 			int numeroDeRegistros = 0;
-			
+
 			String idFk = "";
-			
+
 			for ( String tabela : tabelas ) {
-				
+
 				idFk = mapaTabelas.get( tabela );
-				
+
 				sql.delete( 0, sql.length() );
 				sql.append( "SELECT COUNT(*) FROM " );
 				sql.append( tabela );
@@ -278,23 +265,23 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 				sql.append( " CODEMP" + idFk + "=? AND" );
 				sql.append( " CODFILIAL" + idFk + "=? AND" );
 				sql.append( " CODPLAN=?" );
-				
+
 				try {
-					
+
 					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, lcPlanOrig.getCodFilial() );
 					ps.setString( 3, txtCodPlanOrig.getVlrString() );
-					
+
 					rs = ps.executeQuery();
-					
+
 					if ( rs.next() ) {
 						numeroDeRegistros += rs.getInt( 1 );
 					}
-					
+
 					rs.close();
 					ps.close();
-					
+
 					con.commit();
 				} catch ( SQLException e ) {
 					e.printStackTrace();
@@ -302,12 +289,12 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 					break;
 				}
 			}
-			
+
 			status.setText( numeroDeRegistros + " registros para o planejamento " + txtDescPlanOrgi.getVlrString() );
-			
+
 			if ( numeroDeRegistros > 0 ) {
-				btTransferir.setEnabled( true );		
-				btTransferir.requestFocus();				
+				btTransferir.setEnabled( true );
+				btTransferir.requestFocus();
 			}
 		}
 	}
@@ -316,14 +303,14 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
-		boolean problema = false;		
+		boolean problema = false;
 		String idFk = "";
-		
+
 		try {
 			for ( String tabela : tabelas ) {
-				
+
 				idFk = mapaTabelas.get( tabela );
-				
+
 				sql.delete( 0, sql.length() );
 				sql.append( "UPDATE " );
 				sql.append( tabela );
@@ -335,11 +322,11 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 				sql.append( " CODEMP" + idFk + "=? AND" );
 				sql.append( " CODFILIAL" + idFk + "=? AND" );
 				sql.append( " CODPLAN=?" );
-				
+
 				try {
-					
+
 					status.setText( "Atulizando tabela " + tabela );
-					
+
 					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, lcPlanDest.getCodFilial() );
@@ -348,7 +335,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 					ps.setInt( 5, lcPlanOrig.getCodFilial() );
 					ps.setString( 6, txtCodPlanOrig.getVlrString() );
 					ps.executeUpdate();
-					
+
 				} catch ( SQLException e ) {
 					e.printStackTrace();
 					problema = true;
@@ -357,24 +344,23 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 					break;
 				}
 			}
-		} 
-		finally {
+		} finally {
 			try {
 				if ( problema ) {
 					con.rollback();
 				}
 				else {
-					
+
 					sql.delete( 0, sql.length() );
 					sql.append( "DELETE FROM FNSALDOLANCA " );
 					sql.append( "WHERE CODEMPPN=? AND CODFILIALPN=? AND CODPLAN=?" );
-					
+
 					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, lcPlanOrig.getCodFilial() );
 					ps.setString( 3, txtCodPlanOrig.getVlrString() );
 					ps.executeUpdate();
-					
+
 					con.commit();
 					btTransferir.setEnabled( false );
 					status.setText( "Transferência completada." );
@@ -396,7 +382,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
-		
+
 		if ( e.getListaCampos() == lcPlanOrig || e.getListaCampos() == lcPlanDest ) {
 			btVerificar.setEnabled( true );
 			btTransferir.setEnabled( false );
@@ -405,7 +391,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
-		
+
 	}
 
 	public void setConexao( DbConnection cn ) {

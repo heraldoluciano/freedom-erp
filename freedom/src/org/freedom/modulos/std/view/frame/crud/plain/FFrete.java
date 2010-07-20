@@ -2,23 +2,23 @@
  * @version 02/11/2003 <BR>
  * @author Setpoint Informática Ltda./Marco Antonio Sanchez<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FFrete.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  * 
  */
 
@@ -58,7 +58,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 public class FFrete extends FDados implements InsertListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final JPanelPad panelIcms = new JPanelPad( 390, 100 );
 
 	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -112,9 +112,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	public FFrete() {
 
 		super( false );
-		
+
 		nav.setNavigation( true );
-		
+
 		setTitulo( "Lançamento de Fretes" );
 		setAtribos( 50, 50, 390, 360 );
 
@@ -138,7 +138,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		lcVenda.add( new GuardaCampo( txtSeries, "Serie", "Serie", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false ) );
 		txtDocVenda.setListaCampos( lcVenda );
-		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName());
+		txtCodVenda.setTabelaExterna( lcVenda, FVenda.class.getCanonicalName() );
 		txtCodVenda.setFK( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setQueryCommit( false );
@@ -168,18 +168,18 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		adicCampo( txtPesoBrutVD, 100, 180, 77, 20, "PesoBrutVd", "P.bruto", ListaCampos.DB_SI, true );
 		adicCampo( txtPesoLiqVD, 180, 180, 77, 20, "PesoLiqVd", "P.liq.", ListaCampos.DB_SI, true );
 		adicCampo( txtEspFreteVD, 260, 180, 95, 20, "EspFreteVd", "Especie", ListaCampos.DB_SI, true );
-		
+
 		adic( panelIcms, -1, 210, 390, 100 );
 		panelIcms.setBorder( BorderFactory.createEmptyBorder() );
 		setPainel( panelIcms );
-		
-		adicDB( cbAdicICMSFrete, 7, 0, 300, 30, "AdicFreteBaseICM", "",  true );
-//		adicCampo( txtPercIcmsFreteVD, 7, 50, 90, 20, "AliqICMSFreteVD", "% icms", ListaCampos.DB_SI, false );
+
+		adicDB( cbAdicICMSFrete, 7, 0, 300, 30, "AdicFreteBaseICM", "", true );
+		// adicCampo( txtPercIcmsFreteVD, 7, 50, 90, 20, "AliqICMSFreteVD", "% icms", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIcmsFreteVD, 100, 50, 150, 20, "VlrIcmsFreteVD", "Valor do icms do frete", ListaCampos.DB_SI, false );
 
 		txtVlrIcmsFreteVD.setNaoEditavel( true );
 		txtPercIcmsFreteVD.setNaoEditavel( true );
-		
+
 		txtPlacaFreteVD.setStrMascara( "###-####" );
 
 		setListaCampos( true, "FRETEVD", "VD" );
@@ -189,33 +189,32 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-		
+
 		setImprimir( true );
 	}
 
 	private void usaIcmsFreteVenda() {
-		
+
 		try {
-			
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT ADICFRETEBASEICM FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+
+			PreparedStatement ps = con.prepareStatement( "SELECT ADICFRETEBASEICM FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
+
 			ResultSet rs = ps.executeQuery();
 			boolean adicionaIcmsVenda = false;
-			
+
 			if ( rs.next() ) {
 				adicionaIcmsVenda = rs.getString( "ADICFRETEBASEICM" ).trim().equals( "S" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 
 			panelIcms.setVisible( adicionaIcmsVenda );
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 		}
@@ -237,7 +236,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 			dl.dispose();
 			return;
 		}
-		
+
 		sValores = dl.getValores();
 		dl.dispose();
 
@@ -248,40 +247,40 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		if ( sValores[ 2 ].trim().length() > 0 ) {
 			sWhere = sWhere + sAnd + "VD.DtEmitVenda <= '" + Funcoes.strDateToStrDB( sValores[ 2 ] ) + "'";
 			sAnd = " AND ";
-		}		
+		}
 		String sDataini = sValores[ 1 ];
 		String sDatafim = sValores[ 2 ];
 
 		try {
-			
-			StringBuilder sql = new StringBuilder(); 
-			sql.append( "SELECT F.CODVENDA,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,F.VLRFRETEVD,F.QTDFRETEVD," ); 
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT F.CODVENDA,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,F.VLRFRETEVD,F.QTDFRETEVD," );
 			sql.append( "F.PESOLIQVD,F.PESOBRUTVD,F.ESPFRETEVD,F.MARCAFRETEVD, T.CODTRAN,T.NOMETRAN," );
-			sql.append( "VD.DOCVENDA,F.PERCVENDAFRETEVD,F.CONHECFRETEVD,VD.DTEMITVENDA FROM VDVENDA VD, VDTRANSP T,VDFRETEVD F  WHERE T.CODTRAN=F.CODTRAN  " ); 
+			sql.append( "VD.DOCVENDA,F.PERCVENDAFRETEVD,F.CONHECFRETEVD,VD.DTEMITVENDA FROM VDVENDA VD, VDTRANSP T,VDFRETEVD F  WHERE T.CODTRAN=F.CODTRAN  " );
 			sql.append( "AND T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN AND F.CODVENDA=VD.CODVENDA AND " );
 			sql.append( "VD.CODEMP=F.CODEMP AND VD.CODFILIAL=F.CODFILIAL" );
 			sql.append( sWhere );
 			sql.append( " ORDER BY " + sValores[ 0 ] + ",VD.DTEMITVENDA" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ResultSet rs = ps.executeQuery();
-			
+
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Lancamentos de Fretes" );
 			imp.addSubTitulo( "RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :" + sDataini + " Até: " + sDatafim );
-			
+
 			String linha = StringFunctions.replicate( "-", 133 );
-			
+
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 136, true );
 
 					imp.say( 0, imp.comprimido() );
 					imp.say( 0, "|" + linha + "|" );
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 2, "Tipo frete  " );
@@ -292,7 +291,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 					imp.say( 92, "Placa" );
 					imp.say( 102, "UF" );
 					imp.say( 135, "|" );
-					
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 2, "Conhec." );
@@ -307,10 +306,10 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 					imp.say( 135, "|" );
 
 				}
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" + linha + "|" );
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 2, rs.getString( "TipoFreteVd" ).equals( "C" ) ? "CIF" : "FOB" );
@@ -321,7 +320,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 				imp.say( 92, Funcoes.setMascara( rs.getString( "PlacaFreteVd" ), "###-####" ) );
 				imp.say( 102, rs.getString( "UFFRETEVD" ) );
 				imp.say( 135, "|" );
-				
+
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 2, Funcoes.copy( rs.getString( "ConhecFreteVd" ), 8 ) );
@@ -351,9 +350,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 			rs.close();
 			ps.close();
 			con.commit();
-			
+
 			dl.dispose();
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de lancameto de fretes!\n" + err.getMessage(), true, con, err );
@@ -368,51 +367,42 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 	}
 
 	private void calcPerc() {
-		
+
 		if ( txtVlrLiqVenda.getVlrDouble().doubleValue() > 0 ) {
-			txtPercVendaFreteVD.setVlrBigDecimal( 
-					txtVlrFreteVD.getVlrBigDecimal().divide( 
-							txtVlrLiqVenda.getVlrBigDecimal(), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( 100 ) ) );
+			txtPercVendaFreteVD.setVlrBigDecimal( txtVlrFreteVD.getVlrBigDecimal().divide( txtVlrLiqVenda.getVlrBigDecimal(), 2, BigDecimal.ROUND_HALF_UP ).multiply( new BigDecimal( 100 ) ) );
 		}
 	}
-	
+
 	private void calculaIcmsFrete() {
-		
-	/*	if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) {
-			BigDecimal icms = 
-				txtVlrFreteVD.getVlrBigDecimal().divide( new BigDecimal( "100.00" ) ).multiply( txtPercIcmsFreteVD.getVlrBigDecimal() );
-			txtVlrIcmsFreteVD.setVlrBigDecimal( icms );
-		}*/
+
+		/*
+		 * if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) { BigDecimal icms = txtVlrFreteVD.getVlrBigDecimal().divide( new BigDecimal( "100.00" ) ).multiply( txtPercIcmsFreteVD.getVlrBigDecimal() ); txtVlrIcmsFreteVD.setVlrBigDecimal( icms ); }
+		 */
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-	
+
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-	
+
 		super.actionPerformed( evt );
 	}
 
 	public void keyPressed( KeyEvent e ) {
-/*
-		if ( e.getKeyCode() == KeyEvent.VK_ENTER && 
-				e.getSource() == txtPercIcmsFreteVD && 
-					txtVlrFreteVD.getVlrBigDecimal() != null && 
-						txtVlrFreteVD.getVlrBigDecimal().floatValue() > 0 ) {
-			calculaIcmsFrete();
-		}
-		else {
-			super.keyPressed( e );
-		}*/
-		
+
+		/*
+		 * if ( e.getKeyCode() == KeyEvent.VK_ENTER && e.getSource() == txtPercIcmsFreteVD && txtVlrFreteVD.getVlrBigDecimal() != null && txtVlrFreteVD.getVlrBigDecimal().floatValue() > 0 ) { calculaIcmsFrete(); } else { super.keyPressed( e ); }
+		 */
+
 		super.keyPressed( e );
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
+
 		txtPlacaFreteVD.setVlrString( "*******" );
 		txtUFFreteVD.setVlrString( "**" );
 		txtEspFreteVD.setVlrString( "Volume" );
@@ -421,18 +411,24 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		txtPesoLiqVD.setVlrBigDecimal( new BigDecimal( "1" ) );
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {}
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
 
 	public void focusLost( FocusEvent fevt ) {
+
 		if ( fevt.getSource() == txtVlrFreteVD ) {
 			calcPerc();
 			calculaIcmsFrete();
 		}
 	}
 
-	public void focusGained( FocusEvent e ) {}
+	public void focusGained( FocusEvent e ) {
+
+	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcTran.setConexao( cn );
 		lcVenda.setConexao( cn );

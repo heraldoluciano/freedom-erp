@@ -1,22 +1,23 @@
 /**
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FRExtrato.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Comentários sobre a classe...
+ *         Projeto: Freedom <BR>
+ * 
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe: @(#)FRExtrato.java <BR>
+ * 
+ *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *         na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *         Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *         sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *         Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *         Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ * <BR>
+ * 
+ *         Comentários sobre a classe...
  * 
  */
 
@@ -61,7 +62,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcConta = new ListaCampos( this );
-	
+
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	public FRExtratoPrevisto() {
@@ -77,15 +78,15 @@ public class FRExtratoPrevisto extends FRelatorio {
 		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
-		
+
 		Vector<String> vVals2 = new Vector<String>();
 		Vector<String> vLabs2 = new Vector<String>();
-		vVals2.addElement("G");
-//		vVals2.addElement("T");
-		vLabs2.addElement("Grafico");
-//		vLabs2.addElement("Texto");
-		rgTipoRel = new JRadioGroup<String, String>(1, 2, vLabs2, vVals2 );
-		rgTipoRel.setVlrString("G");
+		vVals2.addElement( "G" );
+		// vVals2.addElement("T");
+		vLabs2.addElement( "Grafico" );
+		// vLabs2.addElement("Texto");
+		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
+		rgTipoRel.setVlrString( "G" );
 
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -96,15 +97,15 @@ public class FRExtratoPrevisto extends FRelatorio {
 		adic( txtDataini, 25, 35, 110, 20 );
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 35, 40, 20 );
 		adic( txtDatafim, 175, 35, 110, 20 );
-				
-//		adic( rgTipoRel, 7, 70, 295, 30 );
-		
-		adic( new JLabelPad( "Nº conta" ), 7, 80, 80, 20 );				
+
+		// adic( rgTipoRel, 7, 70, 295, 30 );
+
+		adic( new JLabelPad( "Nº conta" ), 7, 80, 80, 20 );
 		adic( txtCodConta, 7, 100, 90, 20 );
-		
+
 		adic( new JLabelPad( "Descrição da conta" ), 100, 80, 200, 20 );
 		adic( txtDescConta, 100, 100, 200, 20 );
-		
+
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -118,47 +119,47 @@ public class FRExtratoPrevisto extends FRelatorio {
 	}
 
 	public boolean temAcessoConta() {
+
 		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null;
 		boolean ret = false;
 		try {
-			sql.append("SELECT CO.NUMCONTA FROM FNCONTA CO ");
-			sql.append("WHERE CO.CODEMP=? AND CO.CODFILIAL=? AND CO.NUMCONTA=? AND ");
-			sql.append("( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU "); 
-			sql.append("WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND "); 
-			sql.append("CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp ); 
-			sql.append(" AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" )); 
-			sql.append(" AND CU.IDUSU='" + Aplicativo.strUsuario + "'))"); 
-			
-			System.out.println(sql.toString());
-			
+			sql.append( "SELECT CO.NUMCONTA FROM FNCONTA CO " );
+			sql.append( "WHERE CO.CODEMP=? AND CO.CODFILIAL=? AND CO.NUMCONTA=? AND " );
+			sql.append( "( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU " );
+			sql.append( "WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND " );
+			sql.append( "CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp );
+			sql.append( " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+			sql.append( " AND CU.IDUSU='" + Aplicativo.strUsuario + "'))" );
+
+			System.out.println( sql.toString() );
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
 			ps.setString( 3, txtCodConta.getVlrString() );
-			
+
 			rs = ps.executeQuery();
-			 
-			if(rs.next()) {
+
+			if ( rs.next() ) {
 				return true;
 			}
-			 
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
-		
+
 	}
-	
+
 	public void imprimir( boolean bVisualizar ) {
 
-		if(temAcessoConta()) {
-			
+		if ( temAcessoConta() ) {
+
 			String sCodConta = txtCodConta.getVlrString();
 			ResultSet rs = null;
-				
+
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
@@ -167,12 +168,11 @@ public class FRExtratoPrevisto extends FRelatorio {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 				return;
 			}
-		
-				
+
 			StringBuilder sql = new StringBuilder();
-	
+
 			// Lançamentos
-			
+
 			sql.append( "select sl.datasublanca data, sl.histsublanca historico, " );
 			sql.append( "cast(substring(l.doclanca from 1 for 10) as char(10)) doc, sl.vlrsublanca valor, 'E' tipo " );
 			sql.append( "from fnlanca l, fnconta c, fnsublanca sl " );
@@ -181,90 +181,89 @@ public class FRExtratoPrevisto extends FRelatorio {
 			sql.append( "and sl.datasublanca between ? and ? " );
 			sql.append( "and sl.codplan = c.codplan and sl.codemppn = c.codemppn and sl.codfilialpn = c.codfilialpn " );
 			sql.append( "and sl.codemp = ? and sl.codfilial = ? " );
-			
+
 			sql.append( " union " );
-			
+
 			// Contas a receber
-			
+
 			sql.append( "select coalesce(ir.dtprevitrec,ir.dtvencitrec) data, cast( substring(ir.obsitrec from 1 for 100) as varchar(100)) historico, " );
 			sql.append( "ir.doclancaitrec doc, ir.vlrapagitrec valor, 'R' tipo " );
 			sql.append( "from fnitreceber ir " );
 			sql.append( "where " );
 			sql.append( "ir.codemp = ? and ir.codfilial=? and ir.numconta = ? " );
 			sql.append( "and coalesce(ir.dtprevitrec,ir.dtvencitrec) between ? and ? and ir.statusitrec in ('RL','R1') " );
-			
+
 			// Contas a pagar
-			
+
 			sql.append( " union " );
-			
-			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , ip.doclancaitpag doc, ");
-			sql.append( "(ip.vlrapagitpag * -1) valor, 'P' tipo ");
-			sql.append( "from fnitpagar ip ");
-			sql.append( "where ");
-			sql.append( "ip.codemp = ? and ip.codfilial = ? and ip.numconta = ? ");
-			sql.append( " and ip.dtvencitpag between ? and ? and ip.statusitpag in ('PL','P1') ");
-			
-			sql.append( "order by 1 ");
-			
+
+			sql.append( "select ip.dtvencitpag data, cast( substring(ip.obsitpag from 1 for 100) as varchar(100)) historico , ip.doclancaitpag doc, " );
+			sql.append( "(ip.vlrapagitpag * -1) valor, 'P' tipo " );
+			sql.append( "from fnitpagar ip " );
+			sql.append( "where " );
+			sql.append( "ip.codemp = ? and ip.codfilial = ? and ip.numconta = ? " );
+			sql.append( " and ip.dtvencitpag between ? and ? and ip.statusitpag in ('PL','P1') " );
+
+			sql.append( "order by 1 " );
+
 			try {
-				
+
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				
+
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( 3, sCodConta );				
+				ps.setString( 3, sCodConta );
 				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );				
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );
 				ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-				ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );				
+				ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				ps.setInt( 8, Aplicativo.iCodEmp );
 				ps.setInt( 9, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-	
+
 				ps.setInt( 10, Aplicativo.iCodEmp );
 				ps.setInt( 11, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 				ps.setString( 12, sCodConta );
 				ps.setDate( 13, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( 14, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-				
+
 				ps.setInt( 15, Aplicativo.iCodEmp );
 				ps.setInt( 16, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
 				ps.setString( 17, sCodConta );
 				ps.setDate( 18, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( 19, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-				
+
 				rs = ps.executeQuery();
-				
-			} 
-			catch ( Exception e ) {
-				
+
+			} catch ( Exception e ) {
+
 				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
+				Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage() );
 			}
-			
-			imprimiGrafico( rs, bVisualizar, "Conta: "+txtCodConta.getVlrString()+" - "+txtDescConta.getVlrString() ); 
+
+			imprimiGrafico( rs, bVisualizar, "Conta: " + txtCodConta.getVlrString() + " - " + txtDescConta.getVlrString() );
 
 		}
 		else {
 			Funcoes.mensagemInforma( this, "Você não possui acesso a essa conta!" );
 		}
-		
-	} 
+
+	}
 
 	private BigDecimal buscaSaldoAnt() {
 
 		BigDecimal bigRetorno = new BigDecimal( "0.00" );
-		StringBuilder sSQL = new StringBuilder(); 
-			
+		StringBuilder sSQL = new StringBuilder();
+
 		sSQL.append( "SELECT S.SALDOSL FROM FNSALDOLANCA S, FNCONTA C " );
-		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " ); 
+		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " );
 		sSQL.append( "AND S.CODEMP=C.CODEMPPN AND S.CODFILIAL=C.CODFILIALPN " );
 		sSQL.append( "AND S.CODPLAN=C.CODPLAN AND S.DATASL=" );
 		sSQL.append( "(SELECT MAX(S1.DATASL) FROM FNSALDOLANCA S1 " );
 		sSQL.append( "WHERE S1.DATASL < ? AND S1.CODPLAN=S.CODPLAN " );
 		sSQL.append( "AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL)" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setString( 1, txtCodConta.getVlrString() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -276,15 +275,15 @@ public class FRExtratoPrevisto extends FRelatorio {
 			}
 			rs.close();
 			ps.close();
-			
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar saldo anterior!\n" + e.getMessage(), true, con, e );
 		}
 		return bigRetorno;
 	}
-	
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();

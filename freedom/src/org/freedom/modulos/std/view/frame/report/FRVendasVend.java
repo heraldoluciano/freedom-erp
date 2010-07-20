@@ -2,23 +2,23 @@
  * @version 08/12/2000 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRVendasCli <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                 de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                 Comentários sobre a classe...
  * 
  */
 
@@ -44,7 +44,6 @@ import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FRVendasVend extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -62,7 +61,7 @@ public class FRVendasVend extends FRelatorio {
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private ListaCampos lcVendedor = new ListaCampos( this );
 
 	public FRVendasVend() {
@@ -74,8 +73,7 @@ public class FRVendasVend extends FRelatorio {
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
-		
-		
+
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
 
@@ -109,7 +107,7 @@ public class FRVendasVend extends FRelatorio {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
-		
+
 		adic( new JLabelPad( "Periodo:" ), 7, 10, 120, 20 );
 		adic( new JLabelPad( "De:" ), 7, 30, 30, 20 );
 		adic( txtDataini, 37, 30, 90, 20 );
@@ -124,7 +122,7 @@ public class FRVendasVend extends FRelatorio {
 
 		adic( rgFaturados, 7, 110, 120, 70 );
 		adic( rgFinanceiro, 148, 110, 120, 70 );
-		
+
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
@@ -136,7 +134,7 @@ public class FRVendasVend extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-		
+
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -151,7 +149,7 @@ public class FRVendasVend extends FRelatorio {
 		String sWhere2 = null;
 
 		try {
-			
+
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 				sCab.append( "FATURADO" );
@@ -199,8 +197,8 @@ public class FRVendasVend extends FRelatorio {
 			sSQL.append( sWhere2 );
 			sSQL.append( "order by vd.dtemitvenda " );
 
-			System.out.println("SQL:" + sSQL.toString());
-			 
+			System.out.println( "SQL:" + sSQL.toString() );
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -208,9 +206,9 @@ public class FRVendasVend extends FRelatorio {
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 5, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			
+
 			imprimirGrafico( bVisualizar, rs, sCab.toString() );
-						
+
 			con.commit();
 
 		} catch ( Exception err ) {
@@ -227,7 +225,7 @@ public class FRVendasVend extends FRelatorio {
 			System.gc();
 		}
 	}
-	
+
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_VEND_01.jasper", "Vendas por Vendedor", sCab, rs, null, this );
@@ -245,7 +243,8 @@ public class FRVendasVend extends FRelatorio {
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
-		lcVendedor.setConexao( cn );		
+		lcVendedor.setConexao( cn );
 	}
 }

@@ -4,23 +4,23 @@ package org.freedom.modulos.pdv;
  * @version 01/11/2005 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FFechaVenda.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de fechamento de venda no PDV.
+ *                      Tela de fechamento de venda no PDV.
  * 
  */
 
@@ -71,13 +71,12 @@ import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.text.TextTefAction;
 
-
 public class DLFechaVenda extends FFDialogo implements ControllerTefListener, CarregaListener, MouseListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final int CASAS_DEC = Aplicativo.casasDec;
-	
+
 	private static final int CASAS_DEC_FIN = Aplicativo.casasDecFin;
 
 	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -142,13 +141,13 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final JTextFieldPad txtCidCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
-	private final JTextFieldPad txtUFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );	
-	
+	private final JTextFieldPad txtUFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
 	private final JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );	
+	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -157,18 +156,18 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private final JTextFieldPad txtCodTipoCobItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private final JTextFieldFK txtDescTipoCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
+
 	private final JTextFieldPad txtCodBancoItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
-	
+
 	private final JTextFieldFK txtDescBancoItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtCodCartCobItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldFK txtDescCartCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );	
+	private final JTextFieldFK txtDescCartCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final Vector<String> vVals = new Vector<String>();
 
@@ -201,7 +200,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	private final ListaCampos lcReceber = new ListaCampos( this );
 
 	private final ListaCampos lcItReceber = new ListaCampos( this );
-	
+
 	private final ListaCampos lcTipoCobItRec = new ListaCampos( this, "TC" );
 
 	private final ListaCampos lcBancoItRec = new ListaCampos( this, "BO" );
@@ -221,9 +220,9 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	private JLabelPad lbChequeElet;
 
 	private boolean bFrete = false;
-	
+
 	private boolean bReceber = false;
-	
+
 	private boolean bUserRec = false;
 
 	private boolean trocouCli = false;
@@ -241,11 +240,10 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	private final ControllerECF ecf;
 
 	private ControllerTef tef;
-	
+
 	private StringBuilder comprovanteTef = new StringBuilder();
-	
+
 	private boolean vendaFechada = false;
-	
 
 	public DLFechaVenda( Object[] args ) {
 
@@ -253,14 +251,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		setAtribos( 330, 385 );
 
 		param = args;
-		iCodVenda = ((Integer)param[ 0 ]).intValue();
-		sTipoVenda = (String)param[ 1 ];
-		iNumCupom = ((Integer)param[ 3 ]).intValue();
+		iCodVenda = ( (Integer) param[ 0 ] ).intValue();
+		sTipoVenda = (String) param[ 1 ];
+		iNumCupom = ( (Integer) param[ 3 ] ).intValue();
 		txtCodPlanoPag.setVlrInteger( (Integer) param[ 4 ] );
-		trocouCli = ((Boolean)param[ 7 ]).booleanValue();
-		txtCodVend.setVlrInteger( (Integer)param[ 12 ] );
+		trocouCli = ( (Boolean) param[ 7 ] ).booleanValue();
+		txtCodVend.setVlrInteger( (Integer) param[ 12 ] );
 
-		txtVlrCupom.setVlrBigDecimal( (BigDecimal)param[ 2 ] );
+		txtVlrCupom.setVlrBigDecimal( (BigDecimal) param[ 2 ] );
 		txtVlrTef.setAtivo( false );
 
 		vVals.addElement( "C" );
@@ -268,13 +266,9 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		vLabs.addElement( "CIF" );
 		vLabs.addElement( "FOB" );
 		rgFreteVD = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-		
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		if ( AplicativoPDV.bTEFTerm ) {
 			try {
 				tef = AplicativoPDV.getControllerTef();
@@ -306,7 +300,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			tpn.setEnabledAt( 1, false );
 			tpn.setEnabledAt( 2, false );
 		}
-		
+
 		tpn.setEnabledAt( 3, false );
 
 		int iCodAux = getCodAux();
@@ -328,7 +322,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 		lcTran.addCarregaListener( this );
 		lcVendedor.addCarregaListener( this );
-		
+
 		tabRec.addMouseListener( this );
 
 		lcItReceber.montaTab();
@@ -336,7 +330,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	}
 
 	private void montaListaCampos() {
-		
+
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
 		lcItReceber.setTabela( tabRec );
@@ -363,7 +357,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcVendedor.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_FK, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor,null );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setAtivo( ! ( (Boolean) param[ 11 ] ).booleanValue() );
@@ -441,7 +435,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		txtCidCliAuxV.setListaCampos( lcAuxVenda );
 		txtUFCliAuxV.setListaCampos( lcAuxVenda );
 		txtCPFCliAuxV.setMascara( JTextFieldPad.MC_CPF );
-		
+
 		/*
 		 * TIPO DE COBRANÇA
 		 */
@@ -455,7 +449,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		txtCodTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtDescTipoCobItRec.setListaCampos( lcTipoCobItRec );
 		txtCodTipoCobItRec.setFK( true );
-		
+
 		/*
 		 * BANCO DA PARCELA
 		 */
@@ -469,10 +463,10 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		txtCodBancoItRec.setListaCampos( lcBancoItRec );
 		txtDescBancoItRec.setListaCampos( lcBancoItRec );
 		txtCodBancoItRec.setFK( true );
-		
+
 		/*
 		 * TIPO DE COBRANÇA DA PARCELA
-		 */		
+		 */
 		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );
 		lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
 		lcCartCobItRec.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.Banco.", ListaCampos.DB_PK, false ) );
@@ -483,8 +477,8 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec, null );
 		txtCodCartCobItRec.setListaCampos( lcBancoItRec );
 		txtDescCartCobItRec.setListaCampos( lcBancoItRec );
-		txtCodCartCobItRec.setFK( true );	
-		
+		txtCodCartCobItRec.setFK( true );
+
 		/*
 		 * RECEBER
 		 */
@@ -498,7 +492,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		txtVlrParcRec.setListaCampos( lcReceber );
 		txtTipoVenda.setListaCampos( lcReceber );
 		txtAltUsuRec.setListaCampos( lcReceber );
-		
+
 		/*
 		 * PARCELA DO RECEBER
 		 */
@@ -569,7 +563,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		/*
 		 * ABA AUXILIAR
 		 */
-		
+
 		setPainel( pnAdic );
 
 		adic( new JLabelPad( "Nome" ), 7, 0, 240, 20 );
@@ -619,50 +613,47 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		/*
 		 * ABA RECEBER
 		 */
-		
+
 		setPainel( pnReceber );
 
 		JPanelPad pinTopRec = new JPanelPad( 400, 60 );
 		pinTopRec.setPreferredSize( new Dimension( 400, 60 ) );
-		
+
 		pinTopRec.adic( new JLabelPad( "Valor Tot." ), 7, 0, 130, 20 );
 		pinTopRec.adic( txtVlrParcRec, 7, 20, 130, 20 );
-		
+
 		txtVlrParcRec.setAtivo( false );
-		
+
 		pnReceber.add( pinTopRec, BorderLayout.NORTH );
 		pnReceber.add( new JScrollPane( tabRec ), BorderLayout.CENTER );
 	}
-	
+
 	private synchronized boolean fechaVenda() {
-		
+
 		boolean fechavenda = false;
-		
+
 		lcVendedor.carregaDados();
 		lcClComis.carregaDados();
 
 		fechamento : if ( validaFechamento() && fechamento() ) {
-			
+
 			if ( !ecf.iniciaFechamentoCupom() ) {
 				break fechamento;
 			}
-			
-			if ( txtVlrDinheiro.floatValue() > 0f && 
-					!ecf.efetuaFormaPagamento( "Dinheiro", txtVlrDinheiro.getVlrBigDecimal() ) ) {
+
+			if ( txtVlrDinheiro.floatValue() > 0f && !ecf.efetuaFormaPagamento( "Dinheiro", txtVlrDinheiro.getVlrBigDecimal() ) ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 				break fechamento;
 			}
-			if ( txtVlrCheque.floatValue() > 0f && 
-					!ecf.efetuaFormaPagamento( "Cheque", txtVlrCheque.getVlrBigDecimal() ) ) {
+			if ( txtVlrCheque.floatValue() > 0f && !ecf.efetuaFormaPagamento( "Cheque", txtVlrCheque.getVlrBigDecimal() ) ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 				break fechamento;
 			}
-			if ( txtVlrTef.floatValue() > 0f && 
-					!ecf.efetuaFormaPagamento( "Cartão", txtVlrTef.getVlrBigDecimal() ) ) {
+			if ( txtVlrTef.floatValue() > 0f && !ecf.efetuaFormaPagamento( "Cartão", txtVlrTef.getVlrBigDecimal() ) ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 				break fechamento;
 			}
-			
+
 			if ( ecf.finalizaFechamentoCupom( getMenssage() ) ) {
 				if ( tef() ) {
 					btCancel.setEnabled( false );
@@ -675,13 +666,13 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 				break fechamento;
 			}
-			
+
 			fechavenda = true;
 		}
-		
+
 		return fechavenda;
 	}
-	
+
 	private boolean validaFechamento() {
 
 		if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
@@ -704,7 +695,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			txtVlrDinheiro.requestFocus();
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -715,7 +706,8 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 				if ( !lcFreteVD.post() ) {
 					Funcoes.mensagemInforma( this, "Não foi possivel salvar frete!" );
 					return false;
-				} else {
+				}
+				else {
 					impMens = true;
 				}
 			}
@@ -729,14 +721,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		if ( !gravaVenda() ) {
 			return false;
 		}
-		
-		// carrega o receber 
-		txtCodRec.setVlrInteger( getCodRec() );				
+
+		// carrega o receber
+		txtCodRec.setVlrInteger( getCodRec() );
 		lcReceber.carregaDados();
 		lcItReceber.carregaDados();
 		lcTipoCobItRec.carregaDados();
 		lcBancoItRec.carregaDados();
-		lcCartCobItRec.carregaDados();		
+		lcCartCobItRec.carregaDados();
 
 		try {
 			// Fecha a venda:
@@ -757,12 +749,12 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar fechamento." );
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private boolean gravaVenda() {
-	
+
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE VDVENDA SET " );
@@ -778,7 +770,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			sql.append( "CODFILIALPG=?, " );
 			sql.append( "IMPNOTAVENDA='S' " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
-	
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, txtCodVend.getVlrInteger().intValue() );
 			ps.setInt( 2, lcVendedor.getCodEmp() );
@@ -793,34 +785,33 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setInt( 11, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 12, iCodVenda );
 			ps.executeUpdate();
-			ps.close();	
+			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao gravar a venda: " + err.getMessage() );
 			return false;
 		}
-	
+
 		return true;
 	}
 
 	private boolean finalizaVenda() {
-	
-		try {	
-			PreparedStatement ps = con.prepareStatement(
-					"UPDATE VDVENDA SET STATUSVENDA='V3' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
+
+		try {
+			PreparedStatement ps = con.prepareStatement( "UPDATE VDVENDA SET STATUSVENDA='V3' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 3, iCodVenda );
-			ps.executeUpdate();	
-			ps.close();	
+			ps.executeUpdate();
+			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível finalizar a venda!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 			return false;
 		}
-	
+
 		return true;
 	}
 
@@ -829,7 +820,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		if ( txtVlrTroco.floatValue() > 0 ) {
 			return false;
 		}
-		
+
 		try {
 			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -847,14 +838,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar o troco." );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private boolean tef() {
-		
+
 		boolean btef = true;
-		
+
 		if ( AplicativoPDV.bTEFTerm ) {
 			if ( txtVlrTef.floatValue() > 0 && tef != null ) {
 				try {
@@ -866,23 +857,21 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 				}
 			}
 		}
-		
+
 		return btef;
 	}
 
 	private void vinculaTef() {
 
 		try {
-			PreparedStatement ps = con.prepareStatement( 
-					"INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF) VALUES (?,?,?,?,?,?,?,?)" );
+			PreparedStatement ps = con.prepareStatement( "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF) VALUES (?,?,?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTEF" ) );
 			ps.setString( 3, "E" );
 			ps.setInt( 4, iCodVenda );
-			/*ps.setString( 5, Tef.retNsu( prop ) );
-			ps.setString( 6, Tef.retRede( prop ) );
-			ps.setDate( 7, Funcoes.dateToSQLDate( Tef.retData( prop ) ) );
-			ps.setBigDecimal( 8, Tef.retValor( prop ) );**/
+			/*
+			 * ps.setString( 5, Tef.retNsu( prop ) ); ps.setString( 6, Tef.retRede( prop ) ); ps.setDate( 7, Funcoes.dateToSQLDate( Tef.retData( prop ) ) ); ps.setBigDecimal( 8, Tef.retValor( prop ) );*
+			 */
 			ps.executeUpdate();
 			ps.close();
 			con.commit();
@@ -893,68 +882,57 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	}
 
 	private void calculaValorPago() {
-	
-		txtVlrPago.setVlrBigDecimal( txtVlrDinheiro.getVlrBigDecimal().add( 
-	                                 txtVlrCheque.getVlrBigDecimal().add( 
-	                                 txtVlrTef.getVlrBigDecimal() ) ) );
-		txtVlrTroco.setVlrBigDecimal( txtVlrPago.getVlrBigDecimal().subtract( 
-									  txtVlrCupom.getVlrBigDecimal() ) );
+
+		txtVlrPago.setVlrBigDecimal( txtVlrDinheiro.getVlrBigDecimal().add( txtVlrCheque.getVlrBigDecimal().add( txtVlrTef.getVlrBigDecimal() ) ) );
+		txtVlrTroco.setVlrBigDecimal( txtVlrPago.getVlrBigDecimal().subtract( txtVlrCupom.getVlrBigDecimal() ) );
 	}
 
 	private void alteraRec() {
-		
-		if ( bUserRec ) {					
+
+		if ( bUserRec ) {
 			FPassword fpw = new FPassword( this, FPassword.ALT_PARC_VENDA, null, con );
-			fpw.execShow();					
-			if ( ! fpw.OK ) {					
+			fpw.execShow();
+			if ( !fpw.OK ) {
 				return;
-			}					
+			}
 			fpw.dispose();
 		}
 
 		lcItReceber.edit();
-		
-		DLFechaParcela dl = new DLFechaParcela( this, con ); 
-				
-		Object[] valores = new Object[] {
-				txtVlrParcItRec.getVlrBigDecimal(),
-				txtDtVencItRec.getVlrDate(), 
-				txtVlrDescItRec.getVlrBigDecimal(), 
-				txtCodTipoCobItRec.getVlrInteger(), 
-				txtCodBancoItRec.getVlrString(),
-				txtCodCartCobItRec.getVlrString(),
-				"N"
-		};
+
+		DLFechaParcela dl = new DLFechaParcela( this, con );
+
+		Object[] valores = new Object[] { txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), "N" };
 
 		dl.setValores( valores );
 		dl.setVisible( true );
-		
+
 		if ( dl.OK ) {
-			
+
 			valores = dl.getValores();
-			
+
 			txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.VALOR.ordinal() ] );
 			txtDtVencItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATA.ordinal() ] );
 			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.DESCONTO.ordinal() ] );
 			txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
 			txtCodBancoItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.BANCO.ordinal() ] );
-			txtCodCartCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );			
-			txtAltUsuRec.setVlrString( "S" );			
-			lcItReceber.post();			
+			txtCodCartCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );
+			txtAltUsuRec.setVlrString( "S" );
+			lcItReceber.post();
 			txtAltUsuRec.setVlrString( "N" );
-			
+
 			// Atualiza lcReceber
-			if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {			
+			if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
 				lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
 			}
-			else {			
+			else {
 				lcReceber.carregaDados(); // Caso não, atualiza
 			}
 		}
-		else {			
+		else {
 			lcItReceber.cancel( true );
 		}
-		
+
 		dl.dispose();
 	}
 
@@ -1002,18 +980,18 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		ResultSet rs = null;
 
 		try {
-			
+
 			ps = con.prepareStatement( "SELECT CODREC FROM FNRECEBER WHERE TIPOVENDA='E' AND CODVENDA=? AND CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, iCodVenda );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			
+
 			rs = ps.executeQuery();
-			
-			if ( rs.next() ) {			
+
+			if ( rs.next() ) {
 				iRetorno = rs.getInt( "CodRec" );
 			}
-			
+
 			ps.close();
 
 			con.commit();
@@ -1024,7 +1002,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps = null;
 			rs = null;
 		}
-		
+
 		return iRetorno;
 	}
 
@@ -1036,26 +1014,14 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 			String[] dadosCli = (String[]) param[ 6 ];
 
-			sMenssage = ( dadosCli[ 0 ] != null ? dadosCli[ 0 ].trim() : "" ) + " - " + 
-						( dadosCli[ 1 ] != null ? dadosCli[ 1 ].trim() : "" ) + "\n" + 
-						( dadosCli[ 2 ] != null ? dadosCli[ 2 ].trim() : "" ) + " , " + 
-						( dadosCli[ 3 ] != null ? dadosCli[ 3 ].trim() : "" ) + " - " + 
-						( dadosCli[ 4 ] != null ? dadosCli[ 4 ].trim() : "" ) + "/" + 
-						( dadosCli[ 5 ] != null ? dadosCli[ 5 ].trim() : "" ) + "\n" + 
-						txtDescTran.getVlrString().trim() + " - " + 
-						txtPlacaFreteVD.getVlrString().trim();
+			sMenssage = ( dadosCli[ 0 ] != null ? dadosCli[ 0 ].trim() : "" ) + " - " + ( dadosCli[ 1 ] != null ? dadosCli[ 1 ].trim() : "" ) + "\n" + ( dadosCli[ 2 ] != null ? dadosCli[ 2 ].trim() : "" ) + " , " + ( dadosCli[ 3 ] != null ? dadosCli[ 3 ].trim() : "" ) + " - "
+					+ ( dadosCli[ 4 ] != null ? dadosCli[ 4 ].trim() : "" ) + "/" + ( dadosCli[ 5 ] != null ? dadosCli[ 5 ].trim() : "" ) + "\n" + txtDescTran.getVlrString().trim() + " - " + txtPlacaFreteVD.getVlrString().trim();
 
 		}
 		else if ( txtNomeCliAuxV.getVlrString().trim().length() > 0 ) {
 
-			sMenssage = txtNomeCliAuxV.getVlrString().trim() + " - " + 
-						txtCPFCliAuxV.getVlrString().trim() + "\n" + 
-						txtEndCliAuxV.getVlrString().trim() + " , " + 
-						txtNumCliAuxV.getVlrString().trim() + " - " + 
-						txtCidCliAuxV.getVlrString().trim() + "/" + 
-						txtUFCliAuxV.getVlrString().trim() + "\n" + 
-						txtDescTran.getVlrString().trim() + " - " + 
-						txtPlacaFreteVD.getVlrString().trim();
+			sMenssage = txtNomeCliAuxV.getVlrString().trim() + " - " + txtCPFCliAuxV.getVlrString().trim() + "\n" + txtEndCliAuxV.getVlrString().trim() + " , " + txtNumCliAuxV.getVlrString().trim() + " - " + txtCidCliAuxV.getVlrString().trim() + "/" + txtUFCliAuxV.getVlrString().trim() + "\n"
+					+ txtDescTran.getVlrString().trim() + " - " + txtPlacaFreteVD.getVlrString().trim();
 		}
 
 		if ( sMenssage.length() > 300 ) {
@@ -1069,8 +1035,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT ADICPDV, HABRECEBER FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?" );
+			PreparedStatement ps = con.prepareStatement( "SELECT ADICPDV, HABRECEBER FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE4" ) );
 			ResultSet rs = ps.executeQuery();
@@ -1083,24 +1048,24 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			rs.close();
 			ps.close();
 			con.commit();
-			
+
 			ps = con.prepareStatement( "SELECT VERIFALTPARCVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
+
 			rs = ps.executeQuery();
-			
-			if ( rs.next() ) {			
+
+			if ( rs.next() ) {
 				bUserRec = "S".equals( rs.getString( "VerifAltParcVenda" ) );
 			}
-			
+
 			rs.close();
-			ps.close();			
+			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE4!\n" + err.getMessage(), true, con, err );
-		} 
+		}
 	}
 
 	public boolean actionTef( final ControllerTefEvent e ) {
@@ -1131,7 +1096,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		else if ( e.getAction() == TextTefAction.RE_PRINT ) {
 			actionTef = ecf.fecharRelatorioGerencial();
 			if ( actionTef ) {
-				actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );				
+				actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );
 			}
 		}
 		else if ( e.getAction() == TextTefAction.CONFIRM ) {
@@ -1144,7 +1109,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	public void actionPerformed( ActionEvent evt ) {
 
 		boolean bRet = false;
-		
+
 		if ( evt.getSource() == btOK && !vendaFechada ) {
 			if ( !vendaFechada ) {
 				vendaFechada = fechaVenda();
@@ -1174,24 +1139,35 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	public void mouseClicked( MouseEvent e ) {
 
-		if ( e.getClickCount() == 2 ) {			
+		if ( e.getClickCount() == 2 ) {
 			if ( e.getSource() == tabRec && tabRec.getLinhaSel() >= 0 ) {
 				alteraRec();
 			}
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {
 
-	public void mouseExited( MouseEvent e ) { }
+	}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {
 
-	public void mouseReleased( MouseEvent e ) { }
+	}
 
-	public void focusGained( FocusEvent arg0 ) { }
+	public void mousePressed( MouseEvent e ) {
+
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+	}
+
+	public void focusGained( FocusEvent arg0 ) {
+
+	}
 
 	public void focusLost( FocusEvent fevt ) {
+
 		if ( fevt.getSource() == txtVlrDinheiro || fevt.getSource() == txtVlrCheque || fevt.getSource() == txtVlrTef ) {
 			calculaValorPago();
 		}
@@ -1213,11 +1189,11 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		}
 	}
 
-	@Override
+	@ Override
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		lcPlanoPag.setConexao( cn );
 		lcVendedor.setConexao( cn );
 		lcClComis.setConexao( cn );
@@ -1225,7 +1201,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		lcFreteVD.setConexao( cn );
 		lcAuxVenda.setConexao( cn );
 		lcReceber.setConexao( cn );
-		lcItReceber.setConexao( cn );	
+		lcItReceber.setConexao( cn );
 		lcTipoCobItRec.setConexao( cn );
 		lcBancoItRec.setConexao( cn );
 		lcCartCobItRec.setConexao( cn );

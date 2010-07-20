@@ -2,23 +2,23 @@
  * @version 23/08/2007 <BR>
  * @author Setpoint Informática Ltda. <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRCodbarProd.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                       de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                       Comentários sobre a classe...
  */
 package org.freedom.modulos.std.view.frame.report;
 
@@ -63,7 +63,6 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 
-
 public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
@@ -85,7 +84,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private final JTextFieldPad txtQtdPod = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JComboBox cbSel = null;
-	
+
 	private JComboBoxPad cbEtiquetas = null;
 
 	private final JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
@@ -101,7 +100,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private final JScrollPane spnGrid = new JScrollPane( tabGrid );
 
 	private final ListaCampos lcProduto = new ListaCampos( this );
-	
+
 	private final JCheckBoxPad cbPreco = new JCheckBoxPad( "Mostra preço?", "S", "N" );
 
 	public FRCodbarProd() {
@@ -109,7 +108,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		super( true );
 		setTitulo( "Etiquetas de código de barras" );
 		setAtribos( 80, 30, 520, 380 );
-		
+
 		montaTela();
 		montaListaCampos();
 
@@ -141,23 +140,22 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		c.add( pnGrid, BorderLayout.CENTER );
 		c.add( pnBotoesGrid, BorderLayout.EAST );
 		c.add( spnGrid );
-		
+
 		Vector<String> vLabsCtb = new Vector<String>();
 		Vector<Integer> vValsCtb = new Vector<Integer>();
 		vLabsCtb.addElement( "<--Selecione-->" );
 		vLabsCtb.addElement( "Pimaco 6280" );
-		vLabsCtb.addElement( "Argox OS-214" );		
+		vLabsCtb.addElement( "Argox OS-214" );
 		vValsCtb.addElement( EEtiqueta.NONE.ordinal() );
 		vValsCtb.addElement( EEtiqueta.PIMANCO_6280.ordinal() );
-		vValsCtb.addElement( EEtiqueta.ARGOX_OS214.ordinal() );		
-	
+		vValsCtb.addElement( EEtiqueta.ARGOX_OS214.ordinal() );
+
 		cbEtiquetas = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
-		
-		
+
 		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
 		cbPreco.setVlrString( "S" );
 		pnCampos.adic( cbPreco, 210, 60, 150, 20 );
-		
+
 		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 10, 100, 20 );
 		pnCampos.adic( txtCodProd, 07, 30, 80, 20 );
 		pnCampos.adic( new JLabelPad( "Descrição do produto" ), 93, 10, 200, 20 );
@@ -168,7 +166,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		pnCampos.adic( btSelectCompra, 445, 55, 50, 30 );
 		pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
 		pnBotoesGrid.adic( btExcluirTudo, 0, 30, 30, 30 );
-	
+
 		tabGrid.adicColuna( "Cód. prod" );
 		tabGrid.adicColuna( "Descrição do produto" );
 		tabGrid.adicColuna( "Qtd" );
@@ -405,9 +403,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		return retorno;
 	}
-	
+
 	private ResultSet getEtiquetas() {
-		
+
 		ResultSet rs = null;
 		try {
 			StringBuffer sSQL = new StringBuffer();
@@ -423,7 +421,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
-		
+
 		return rs;
 	}
 
@@ -437,8 +435,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 			buffer[ 0 ] = imp;
 			buffer[ 1 ] = bufferImprimir;
-			
-			ResultSet rs = getEtiquetas(); 
+
+			ResultSet rs = getEtiquetas();
 
 			EtiquetaPPLA etiqueta;
 
@@ -477,28 +475,28 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-		
+
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-		
+
 		if ( removeEtiquetas() ) {
 
 			if ( persistEtiquetas() ) {
-				
+
 				EEtiqueta etiqueta = getTpEtiquetas();
 
 				if ( bVisualizar ) {
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						FPrinterJob dlGr = null;
-						if (!"".equals( getTpEtiquetas())) {
-							
+						if ( !"".equals( getTpEtiquetas() ) ) {
+
 							hParam.put( "MOSTRAPRECO", cbPreco.getVlrString() );
-							dlGr = new FPrinterJob( etiqueta.local , "Etiquetas", null, getEtiquetas(), hParam, this );
+							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), hParam, this );
 							dlGr.setVisible( true );
 						}
 					}
 				}
 				else {
-					
+
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						try {
 							FPrinterJob dlGr = null;
@@ -507,7 +505,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
-						}	
+						}
 					}
 					// impressora de etiquetas
 					else {
@@ -515,7 +513,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 						ImprimeOS imp = new ImprimeOS( "", con, "ET", false );
 						Object[] etiquetas = montaEtiquetas();
 						imp.gravaTexto( etiquetas[ 1 ].toString() );
-						imp.fechaGravacao();	
+						imp.fechaGravacao();
 						imp.preview( this );
 					}
 				}
@@ -581,13 +579,14 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private enum EEtiqueta {
 
-		NONE( 0, "" ), 
-		PIMANCO_6280( 0, "relatorios/Pimaco6280.jasper" ), 
-		ARGOX_OS214( 1, "" );
+		NONE( 0, "" ), PIMANCO_6280( 0, "relatorios/Pimaco6280.jasper" ), ARGOX_OS214( 1, "" );
 
 		final static int JASPER = 0;
+
 		final static int ETIQUETA = 1;
+
 		int tipo;
+
 		String local;
 
 		EEtiqueta( int tipo, String local ) {

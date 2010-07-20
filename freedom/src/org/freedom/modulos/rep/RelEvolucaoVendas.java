@@ -3,23 +3,23 @@
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.rep <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.rep <BR>
+ *         Classe:
  * @(#)RelEvolcaoVendas.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                           Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                           modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                           na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                           Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                           sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                           Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                           Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                           de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Relatorio de evolução de vendas, em gráficos pizza e em barras.
+ *                           Relatorio de evolução de vendas, em gráficos pizza e em barras.
  * 
  */
 
@@ -89,17 +89,16 @@ public class RelEvolucaoVendas extends FRelatorio {
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JRadioGroup<String, String> rgModo;
-	
+
 	private final ListaCampos lcCliente = new ListaCampos( this );
-	
+
 	private final ListaCampos lcFornecedor = new ListaCampos( this );
-	
+
 	private final ListaCampos lcVendedor = new ListaCampos( this );
-	
+
 	private final ListaCampos lcMoeda = new ListaCampos( this );
-	
+
 	private List<Object> prefere = new ArrayList<Object>();
-	
 
 	public RelEvolucaoVendas() {
 
@@ -129,13 +128,13 @@ public class RelEvolucaoVendas extends FRelatorio {
 		vals.add( "L" );
 		rgModo = new JRadioGroup<String, String>( 3, 1, labs, vals );
 	}
-	
+
 	private void montaListaCampos() {
-		
+
 		/***********
 		 * CLIENTE *
 		 ***********/
-		
+
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
@@ -145,11 +144,11 @@ public class RelEvolucaoVendas extends FRelatorio {
 		txtCodCli.setTabelaExterna( lcCliente, null );
 		txtCodCli.setPK( true );
 		txtCodCli.setNomeCampo( "CodCli" );
-		
+
 		/**************
 		 * FORNECEDOR *
 		 **************/
-		
+
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
@@ -159,25 +158,25 @@ public class RelEvolucaoVendas extends FRelatorio {
 		txtCodFor.setTabelaExterna( lcFornecedor, null );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-		
+
 		/************
 		 * VENDEDOR *
 		 ************/
-		
+
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
 		lcVendedor.montaSql( false, "VENDEDOR", "RP" );
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setListaCampos( lcVendedor );
-		txtCodVend.setTabelaExterna( lcVendedor, null);
+		txtCodVend.setTabelaExterna( lcVendedor, null );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
-		
+
 		/*********
 		 * MOEDA *
 		 *********/
-		
+
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtNomeMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
 		lcMoeda.montaSql( false, "MOEDA", "RP" );
@@ -200,30 +199,30 @@ public class RelEvolucaoVendas extends FRelatorio {
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		adic( periodo, 25, 150, 60, 20 );
-		
+
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
 		adic( borda, 10, 160, 290, 45 );
-		
+
 		adic( txtDtIni, 25, 175, 110, 20 );
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 175, 40, 20 );
 		adic( txtDtFim, 175, 175, 110, 20 );
-		
+
 		adic( new JLabel( "Cód.for." ), 310, 35, 87, 20 );
 		adic( txtCodFor, 310, 55, 87, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 400, 35, 210, 20 );
 		adic( txtRazFor, 400, 55, 210, 20 );
-		
+
 		adic( new JLabel( "Cód.vend." ), 310, 75, 87, 20 );
 		adic( txtCodVend, 310, 95, 87, 20 );
 		adic( new JLabel( "Nome do vendedor" ), 400, 75, 210, 20 );
 		adic( txtNomeVend, 400, 95, 210, 20 );
-		
+
 		adic( new JLabel( "Cód.cli." ), 310, 115, 87, 20 );
 		adic( txtCodCli, 310, 135, 87, 20 );
 		adic( new JLabel( "Razão social do cliente" ), 400, 115, 210, 20 );
 		adic( txtRazCli, 400, 135, 210, 20 );
-		
+
 		adic( new JLabel( "Cód.moeda" ), 310, 155, 87, 20 );
 		adic( txtCodMoeda, 310, 175, 87, 20 );
 		adic( new JLabel( "Descrição da moeda" ), 400, 155, 210, 20 );
@@ -237,7 +236,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 			Funcoes.mensagemInforma( this, "O campo \"Cód.moeda\" é requerido!" );
 			return;
 		}
-		
+
 		if ( txtDtIni.getVlrDate() != null && txtDtFim.getVlrDate() != null ) {
 			if ( txtDtFim.getVlrDate().before( txtDtIni.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final inferior a inicial!" );
@@ -251,10 +250,10 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 			Date dtini = txtDtIni.getVlrDate();
 			Date dtfim = txtDtFim.getVlrDate();
-			
+
 			StringBuilder from = new StringBuilder();
 			StringBuilder where = new StringBuilder();
-			
+
 			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPMOEDA M " );
 				where.append( " AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND P.CODMOEDA='" + txtCodMoeda.getVlrString() + "' AND M.CODMOEDA=P.CODMOEDA " );
@@ -269,7 +268,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 			}
 			if ( txtCodVend.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPVENDEDOR V " );
-				where.append( " AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " AND V.CODVEND=P.CODVEND "  );
+				where.append( " AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " AND V.CODVEND=P.CODVEND " );
 			}
 
 			StringBuilder sql = new StringBuilder();
@@ -295,8 +294,8 @@ public class RelEvolucaoVendas extends FRelatorio {
 			sql.append( where );
 			sql.append( " GROUP BY 2 " );
 
-			System.out.println("Query:" + sql.toString());
-			
+			System.out.println( "Query:" + sql.toString() );
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPEDIDO" ) );
@@ -337,27 +336,23 @@ public class RelEvolucaoVendas extends FRelatorio {
 			JFreeChart jfreechart = null;
 
 			if ( "P".equals( modo ) ) {
-				
+
 				DefaultPieDataset pizza = new DefaultPieDataset();
 
 				while ( rs.next() ) {
 
-					pizza.setValue( rs.getString( "MES" ) + "(" + Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VALOR" ) ) + ")", 
-							rs.getDouble( "VALOR" ) );
+					pizza.setValue( rs.getString( "MES" ) + "(" + Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VALOR" ) ) + ")", rs.getDouble( "VALOR" ) );
 				}
 
 				jfreechart = ChartFactory.createPieChart3D( "", pizza, true, false, false );
 			}
 			else if ( "B".equals( modo ) ) {
-				
+
 				DefaultCategoryDataset barra = new DefaultCategoryDataset();
 
 				while ( rs.next() ) {
 
-					barra.setValue( 
-							rs.getDouble( "VALOR" ), 
-							rs.getString( "MES" ) + "(" + Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VALOR" ) ) + ")", 
-							"" );
+					barra.setValue( rs.getDouble( "VALOR" ), rs.getString( "MES" ) + "(" + Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VALOR" ) ) + ")", "" );
 				}
 
 				jfreechart = ChartFactory.createBarChart3D( "", "Meses", "Valores", barra, PlotOrientation.VERTICAL, true, false, false );
@@ -377,7 +372,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 			}
 
 			jfreechart.setBackgroundPaint( new Color( 255, 255, 255 ) );
-			
+
 			Plot plot = jfreechart.getPlot();
 			plot.setForegroundAlpha( 0.6f );
 
@@ -400,9 +395,9 @@ public class RelEvolucaoVendas extends FRelatorio {
 		lcFornecedor.setConexao( cn );
 		lcVendedor.setConexao( cn );
 		lcMoeda.setConexao( cn );
-		
+
 		prefere = RPPrefereGeral.getPrefere( cn );
-		
+
 		txtCodMoeda.setVlrString( (String) prefere.get( EPrefere.CODMOEDA.ordinal() ) );
 		lcMoeda.carregaDados();
 	}

@@ -2,23 +2,23 @@
  * @version 19/02/2008 <BR>
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.grh <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.grh <BR>
+ *         Classe:
  * @(#)FEmpregado.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro de cadidatos.
+ *                     Tela de cadastro de cadidatos.
  * 
  */
 
@@ -590,7 +590,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 	}
 
 	private void bloqueiaStatus() {
-	
+
 		if ( rgStatus.getVlrString().equals( "DI" ) ) {
 			rgStatus.setAtivo( true );
 		}
@@ -599,7 +599,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 			rgStatus.setAtivo( 0, true );
 			rgStatus.setAtivo( 6, true );
 			rgStatus.setAtivo( 1, true );
-	
+
 		}
 		else {
 			rgStatus.setAtivo( false );
@@ -611,27 +611,27 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-			
+
 		try {
 			DLRCandidato dl = new DLRCandidato( this, con );
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
-				
+
 				HashMap<String, Object> hParam = dl.getParams();
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );
 				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
-				
+
 				String dea = null;
-				String de = (String)hParam.get( "DE" );
-				String a = (String)hParam.get( "A" );
-				
-				if ( de!=null && de.trim().length()>0 && a!=null && a.trim().length()>0 ) {
+				String de = (String) hParam.get( "DE" );
+				String a = (String) hParam.get( "A" );
+
+				if ( de != null && de.trim().length() > 0 && a != null && a.trim().length() > 0 ) {
 					dea = "AND C.NOMECAND BETWEEN '" + de + "' AND '" + a + "' ";
 				}
-				
-				String strCaracteristicas = (String)hParam.get( "CARACTERISTICAS" );
-				
+
+				String strCaracteristicas = (String) hParam.get( "CARACTERISTICAS" );
+
 				StringBuffer sql = new StringBuffer();
 				sql.append( "SELECT C.CODCAND, C.NOMECAND, C.DDDCAND, C.FONECAND, C.SEXOCAND, C.DTNASCCAND, C.PRETENSAOSAL " );
 				sql.append( "FROM RHCANDIDATO C " );
@@ -650,7 +650,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 					sql.append( "WHERE C.CODFILIAL=CC.CODFILIAL AND C.CODCAND=CC.CODCAND AND C.CODCAND=CC.CODCAND AND " );
 					sql.append( "C.CODEMP=CC.CODEMPCT AND C.CODFILIAL=CC.CODFILIALCT AND CC.CODCARAC IN (" + strCaracteristicas + ") ) " );
 				}
-				
+
 				sql.append( "ORDER BY " + hParam.get( "ORDEM" ) );
 
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -661,7 +661,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 				ResultSet rs = ps.executeQuery();
 
 				FPrinterJob dlGr = new FPrinterJob( "relatorios/grhCandidato.jasper", "Lista de Candidatos", null, rs, hParam, this );
-			
+
 				if ( bVisualizar ) {
 					dlGr.setVisible( true );
 				}
@@ -700,7 +700,9 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent e ) { }
+	public void beforeCarrega( CarregaEvent e ) {
+
+	}
 
 	public void afterPost( PostEvent e ) {
 
@@ -710,7 +712,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 	}
 
 	public void setConexao( DbConnection cn ) {
-	
+
 		super.setConexao( cn );
 		lcEstadoCivil.setConexao( cn );
 		lcCurso.setConexao( cn );
@@ -720,28 +722,27 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		lcCaracteristicaCand.setConexao( cn );
 		lcFuncaoCand.setConexao( cn );
 	}
-	
+
 	private class DLRCandidato extends FFDialogo {
-		
+
 		private static final long serialVersionUID = 1l;
-		
+
 		private final JPanelPad panelCaracteristicas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-		
+
 		private final JPanelPad panelItensCaracteristicas = new JPanelPad();
-		
+
 		private final JTextFieldPad txtCodCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 		private final JTextFieldPad txtNomeCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-		
+
 		private final JTextFieldPad txtNomeDe = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-		
+
 		private final JTextFieldPad txtNomeA = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-		
+
 		private JRadioGroup<String, String> rgOrdem = null;
-		
+
 		private HashMap<String, JCheckBoxPad> caracteristicas = new HashMap<String, JCheckBoxPad>();
-		
-		
+
 		DLRCandidato( Component cOrig, DbConnection cn ) {
 
 			super( cOrig );
@@ -760,8 +761,8 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 			vVals.addElement( "C.CODCAND" );
 			rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 			rgOrdem.setVlrString( "N" );
-			
-			adic( rgOrdem, 10, 30, 320, 30 );			
+
+			adic( rgOrdem, 10, 30, 320, 30 );
 
 			JLabelPad nome = new JLabelPad( "Nome:", SwingConstants.CENTER );
 			nome.setOpaque( true );
@@ -774,42 +775,42 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 			adic( txtNomeDe, 50, 90, 120, 20 );
 			adic( new JLabelPad( "a", SwingConstants.CENTER ), 170, 90, 30, 20 );
 			adic( txtNomeA, 200, 90, 120, 20 );
-								
+
 			panelCaracteristicas.setBorder( BorderFactory.createTitledBorder( "Caracteristicas" ) );
 			panelCaracteristicas.add( new JScrollPane( panelItensCaracteristicas ), BorderLayout.CENTER );
 			panelItensCaracteristicas.tiraBorda();
 			adic( panelCaracteristicas, 10, 130, 320, 120 );
-			
+
 			montaCaracteristicas();
 		}
-		
+
 		private void montaCaracteristicas() {
-			
+
 			for ( JCheckBoxPad cb : caracteristicas.values() ) {
 				panelItensCaracteristicas.remove( cb );
 			}
-			
+
 			carregaCaracteristicas();
-			
+
 			if ( caracteristicas.isEmpty() ) {
 				return;
 			}
-			
+
 			int y = 5;
 			for ( JCheckBoxPad cb : caracteristicas.values() ) {
 				panelItensCaracteristicas.adic( cb, 5, y, 290, 20 );
-				y+=20;
+				y += 20;
 				cb.setSelected( true );
-			}		
-			
-			panelItensCaracteristicas.setPreferredSize( new Dimension( 290, y+5 ) );
+			}
+
+			panelItensCaracteristicas.setPreferredSize( new Dimension( 290, y + 5 ) );
 			panelCaracteristicas.setVisible( true );
 		}
-		
+
 		private void carregaCaracteristicas() {
-			
+
 			try {
-				
+
 				caracteristicas.clear();
 
 				StringBuilder sql = new StringBuilder();
@@ -817,7 +818,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 				sql.append( "FROM RHCARACTERISTICA C " );
 				sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
 				sql.append( "ORDER BY DESCCARAC " );
-				
+
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "RHCARACTERISTICA" ) );
@@ -825,9 +826,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 				ResultSet rs = ps.executeQuery();
 
 				while ( rs.next() ) {
-					caracteristicas.put( 
-							rs.getString( "CODCARAC" ).trim(), 
-							new JCheckBoxPad( rs.getString( "DESCCARAC" ).trim()/* + "(" + rs.getString( "CODCARAC" ).trim() + ")"*/, "S", "N" ) );
+					caracteristicas.put( rs.getString( "CODCARAC" ).trim(), new JCheckBoxPad( rs.getString( "DESCCARAC" ).trim()/* + "(" + rs.getString( "CODCARAC" ).trim() + ")" */, "S", "N" ) );
 				}
 
 				rs.close();
@@ -839,12 +838,12 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 				Funcoes.mensagemErro( this, "Erro ao carregar caracteristicas!\n" + err.getMessage(), true, con, err );
 			}
 		}
-		
+
 		public HashMap<String, Object> getParams() {
-			
+
 			HashMap<String, Object> params = new HashMap<String, Object>();
-			
-			String strCaracteristicas = "";			
+
+			String strCaracteristicas = "";
 			for ( Entry<String, JCheckBoxPad> ek : caracteristicas.entrySet() ) {
 				JCheckBoxPad cb = ek.getValue();
 				if ( "S".equals( cb.getVlrString() ) ) {
@@ -854,12 +853,12 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 					strCaracteristicas += "'" + ek.getKey() + "'";
 				}
 			}
-			
-			params.put( "ORDEM", rgOrdem.getVlrString() );			
+
+			params.put( "ORDEM", rgOrdem.getVlrString() );
 			params.put( "DE", txtNomeDe.getVlrString() );
 			params.put( "A", txtNomeA.getVlrString() );
 			params.put( "CARACTERISTICAS", strCaracteristicas );
-			
+
 			return params;
 		}
 	}

@@ -2,23 +2,23 @@
  * @version 25/06/2004 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.cfg <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.cfg <BR>
+ *         Classe:
  * @(#)FPais.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                Comentários sobre a classe...
  * 
  */
 
@@ -48,7 +48,7 @@ public class FCodGPS extends FDados implements ActionListener {
 	public FCodGPS() {
 
 		super();
-		
+
 		nav.setNavigation( true );
 		setTitulo( "Cadastro de Códigos de Pagamento de GPS" );
 		setAtribos( 50, 50, 410, 165 );
@@ -57,15 +57,15 @@ public class FCodGPS extends FDados implements ActionListener {
 
 		adicCampo( txtCodGPS, 7, 20, 70, 20, "CodGPS", "Cód.GPS", ListaCampos.DB_PK, true );
 		adicCampo( txtDescGPS, 80, 20, 280, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS", ListaCampos.DB_SI, true );
-				
+
 		setListaCampos( true, "CODGPS", "RH" );
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		
+
 		setImprimir( true );
-		
+
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -76,66 +76,66 @@ public class FCodGPS extends FDados implements ActionListener {
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
-		
+
 	}
 
 	private void imprimir( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ImprimeOS imp = new ImprimeOS( "", con );	
-		int linPag = imp.verifLinPag() - 1;	
-		
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+
 		try {
-		
+
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Códigos de pagamento de GPS/INSS" );
-			
+
 			String sSQL = "SELECT CODGPS,DESCGPS FROM RHCODGPS ORDER BY CODGPS";
-			
+
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
-			
+
 			while ( rs.next() ) {
-				
+
 				if ( imp.pRow() >= linPag ) {
 					imp.incPags();
 					imp.eject();
 				}
-				
+
 				if ( imp.pRow() == 0 ) {
-					
+
 					imp.impCab( 136, false );
-					
-					imp.say( 0, imp.normal() );					
+
+					imp.say( 0, imp.normal() );
 					imp.say( 2, "Cód.GPS" );
 					imp.say( 15, "Descrição" );
-					
+
 					imp.pulaLinha( 1, imp.normal() );
 					imp.say( 0, StringFunctions.replicate( "-", 135 ) );
-					
+
 				}
-				
+
 				imp.pulaLinha( 1, imp.normal() );
-				imp.say( 2, rs.getString( "CodGPS" ) != null ? rs.getString( "CodGPS" ) : ""  );
-				imp.say( 15, rs.getString( "DescGPS" ) != null ? rs.getString( "DescGPS" ) : ""  );				
-				
+				imp.say( 2, rs.getString( "CodGPS" ) != null ? rs.getString( "CodGPS" ) : "" );
+				imp.say( 15, rs.getString( "DescGPS" ) != null ? rs.getString( "DescGPS" ) : "" );
+
 			}
 
 			imp.pulaLinha( 1, imp.normal() );
 			imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "=", 135 ) );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta tabela de codigos de gps!" + err.getMessage(), true, con, err );
@@ -147,7 +147,7 @@ public class FCodGPS extends FDados implements ActionListener {
 		else {
 			imp.print();
 		}
-		
+
 	}
-	
+
 }

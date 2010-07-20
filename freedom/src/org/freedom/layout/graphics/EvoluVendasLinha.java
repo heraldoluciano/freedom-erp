@@ -2,23 +2,23 @@
  * @version 10/08/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.relatorios <BR>
- * Classe:
+ *         Pacote: org.freedom.relatorios <BR>
+ *         Classe:
  * @(#)EvoluVendasLinha.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                           Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                           modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                           na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                           Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                           sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                           Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                           Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                           de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Gráfico de evolução de vendas no formato de linha variante.
+ *                           Gráfico de evolução de vendas no formato de linha variante.
  * 
  */
 
@@ -86,21 +86,16 @@ public class EvoluVendasLinha extends LeiauteGR {
 
 		imprimeRodape( false );
 		Vector<String> vLegenda = new Vector<String>();
-		
+
 		try {
 			XYSeries series = new XYSeries( "Evolução de vendas" );
-			
+
 			while ( rs.next() ) {
-				
+
 				series.add( rs.getInt( 2 ), rs.getDouble( 1 ) );
-				vLegenda.addElement( Funcoes.adicionaEspacos( Funcoes.strMes( rs.getInt( 2 ) ), 3 ) 
-						+ "/" 
-						+ rs.getString( 3 ) 
-						+ " >" 
-						+ Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( 1 ) ) 
-						+ " ) " );
+				vLegenda.addElement( Funcoes.adicionaEspacos( Funcoes.strMes( rs.getInt( 2 ) ), 3 ) + "/" + rs.getString( 3 ) + " >" + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( 1 ) ) + " ) " );
 			}
-			
+
 			datasetLinha.addSeries( series );
 
 		} catch ( SQLException e ) {

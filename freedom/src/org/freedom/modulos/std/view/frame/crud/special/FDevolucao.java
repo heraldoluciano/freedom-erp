@@ -2,23 +2,23 @@
  * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FDevolucao.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  */
 
 package org.freedom.modulos.std.view.frame.crud.special;
@@ -52,7 +52,6 @@ import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaItVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.utility.FCancVenda;
-
 
 public class FDevolucao extends FWizard implements CarregaListener {
 
@@ -126,7 +125,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		pin1 = new JPanelPad();
 		setPainel( pin1 );
 
-		rg1 = new JRadioGroup<String, String>(3, 1, new Object[] { "Devolução de saída completa.", "Devolução de saída parcial.", "Devolução de saída sem venda agregada.", }, new Object[] { "SC", "SP", "SS" } );
+		rg1 = new JRadioGroup<String, String>( 3, 1, new Object[] { "Devolução de saída completa.", "Devolução de saída parcial.", "Devolução de saída sem venda agregada.", }, new Object[] { "SC", "SP", "SS" } );
 		rg1.setBorder( BorderFactory.createEmptyBorder() );
 
 		adic( new JLabelPad( "Documento de entrada:" ), 20, 10, 250, 20 );
@@ -470,13 +469,8 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		int iCodTipoMov = 0;
 		String sSerie = "";
 		int iDoc = 0;
-		String sSQL = "SELECT P.CODTIPOMOV5,S.SERIE," + 
-		  "(SELECT DOC FROM LFNOVODOCSP(T.SERIE,T.CODEMP,T.CODFILIALSE)) " + 
-		   "FROM SGPREFERE1 P, EQTIPOMOV T, LFSERIE S WHERE " + 
-		   "T.CODTIPOMOV =P.CODTIPOMOV AND T.CODEMP=P.CODEMPTM AND " + 
-		   "T.CODFILIAL=P.CODFILIALTM AND S.SERIE=T.SERIE AND "	+ 
-		   "S.CODEMP=T.CODEMPSE AND S.CODFILIAL=T.CODFILIALSE AND " + 
-		   "P.CODEMP=? AND P.CODFILIAL=?";
+		String sSQL = "SELECT P.CODTIPOMOV5,S.SERIE," + "(SELECT DOC FROM LFNOVODOCSP(T.SERIE,T.CODEMP,T.CODFILIALSE)) " + "FROM SGPREFERE1 P, EQTIPOMOV T, LFSERIE S WHERE " + "T.CODTIPOMOV =P.CODTIPOMOV AND T.CODEMP=P.CODEMPTM AND " + "T.CODFILIAL=P.CODFILIALTM AND S.SERIE=T.SERIE AND "
+				+ "S.CODEMP=T.CODEMPSE AND S.CODFILIAL=T.CODFILIALSE AND " + "P.CODEMP=? AND P.CODFILIAL=?";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );

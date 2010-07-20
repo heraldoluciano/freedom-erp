@@ -4,23 +4,23 @@ package org.freedom.modulos.pdv;
  * @version 30/06/2004 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FFechaVenda.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -64,7 +64,7 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 	private static final String ADM = "ADM";
 
 	private final JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelExit = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
 
 	private final JPanelPad panelCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -84,24 +84,19 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 	private final ControllerECF ecf;
 
 	private ControllerTef tef;
-	
+
 	private boolean open = false;
-	
 
 	public FAdmTef() {
 
 		super( false );
 		setTitulo( "Administração TEF" );
 		setAtribos( 100, 100, 335, 210 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
 
 		if ( AplicativoPDV.bTEFTerm ) {
-			
+
 			try {
 				tef = AplicativoPDV.getControllerTef();
 				tef.setControllerMessageListener( this );
@@ -139,16 +134,16 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		lbWarnig.setForeground( Color.BLUE );
 		lbWarnig.setPreferredSize( new Dimension( 335, 30 ) );
 		lbWarnig.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		btSair.setPreferredSize( new Dimension( 100, 30 ) );
 		panelSouth.setPreferredSize( new Dimension( 100, 34 ) );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 
 		panelCenter.add( panelFields, BorderLayout.CENTER );
 		panelCenter.add( lbWarnig, BorderLayout.SOUTH );
-		
+
 		panelExit.add( btSair );
-		
+
 		panelSouth.add( panelExit, BorderLayout.EAST );
 
 		c.add( panelCenter, BorderLayout.CENTER );
@@ -237,8 +232,8 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
-		else if ( evt.getSource() == btCommand ) {			
-			lbWarnig.setText( "" );			
+		else if ( evt.getSource() == btCommand ) {
+			lbWarnig.setText( "" );
 			if ( ADM.equals( cbComando.getVlrString() ) ) {
 				invokeAdminTef();
 			}

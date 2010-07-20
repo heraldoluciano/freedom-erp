@@ -2,23 +2,23 @@
  * @version 15/07/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.pdv <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.pdv <BR>
+ *         Classe:
  * @(#)FGravaMoeda.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                      Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                      modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                      na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                      Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                      sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                      Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                      Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                      de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                      Comentários sobre a classe...
  * 
  */
 
@@ -65,32 +65,27 @@ public class FSangria extends FFDialogo {
 	private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private final ControllerECF ecf;
-	
+
 	private char STATUS_OLD = '0';
-	
 
 	public FSangria() {
 
 		super( Aplicativo.telaPrincipal );
 		setTitulo( "Sangria de Caixa" );
 		setAtribos( 435, 270 );
-		
-		ecf = new ControllerECF( 
-				AplicativoPDV.getEcfdriver(), 
-				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo, 
-				AplicativoPDV.getEcflayout() );
-		
+
+		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo, AplicativoPDV.getEcflayout() );
+
 		montaTela();
 	}
-	
+
 	private void montaTela() {
 
 		adic( new JLabelPad( "Data da última operação" ), 7, 10, 200, 20 );
 		adic( txtDataUOper, 7, 30, 200, 20 );
 		adic( new JLabelPad( "Saldo atual do caixa" ), 210, 10, 200, 20 );
 		adic( txtSaldoUOper, 210, 30, 200, 20 );
-		
+
 		adic( new JLabelPad( "Último operador" ), 7, 50, 200, 20 );
 		adic( txtUsuUOper, 7, 70, 200, 20 );
 		adic( new JLabelPad( "Status atual do caixa" ), 210, 50, 200, 20 );
@@ -117,18 +112,17 @@ public class FSangria extends FFDialogo {
 
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)" );
+			PreparedStatement ps = con.prepareStatement( "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)" );
 			ps.setInt( 1, AplicativoPDV.iCodCaixa );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
-				STATUS_OLD = rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ];	
+
+				STATUS_OLD = rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ];
 
 				txtStatusUOper.setVlrString( Funcoes.transStatusECF( STATUS_OLD ) );
 				txtDataUOper.setVlrDate( rs.getDate( "DDTAMOVRET" ) );
@@ -138,13 +132,13 @@ public class FSangria extends FFDialogo {
 
 			rs.close();
 			ps.close();
-			
+
 			con.commit();
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro carregar informações do caixa!!\n" + e.getMessage(), true, con, e );
-		} 
+		}
 	}
 
 	private void execSangria() {
@@ -155,7 +149,7 @@ public class FSangria extends FFDialogo {
 		}
 
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
@@ -166,13 +160,13 @@ public class FSangria extends FFDialogo {
 			ps.execute();
 
 			ps.close();
-			
+
 			con.commit();
-			
-			if ( ! ecf.sangria( txtValor.getVlrBigDecimal() ) ) {
+
+			if ( !ecf.sangria( txtValor.getVlrBigDecimal() ) ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 			}
-			if ( ! ecf.abrirGaveta() ) {
+			if ( !ecf.abrirGaveta() ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 			}
 
@@ -187,7 +181,7 @@ public class FSangria extends FFDialogo {
 		if ( evt.getSource() == btOK ) {
 			execSangria();
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
@@ -225,7 +219,7 @@ public class FSangria extends FFDialogo {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		loadInfoCaixa();
 	}
 }

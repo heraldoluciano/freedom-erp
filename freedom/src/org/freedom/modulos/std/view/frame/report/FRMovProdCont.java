@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-
 public class FRMovProdCont extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -34,9 +33,8 @@ public class FRMovProdCont extends FRelatorio {
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcProduto = new ListaCampos( this );
-	
-	private JCheckBoxPad cbAgrupado = new JCheckBoxPad( "Agrupado? ", "S", "N" );
 
+	private JCheckBoxPad cbAgrupado = new JCheckBoxPad( "Agrupado? ", "S", "N" );
 
 	public FRMovProdCont() {
 
@@ -46,7 +44,7 @@ public class FRMovProdCont extends FRelatorio {
 
 		montaTela();
 		montaListaCampos();
-		
+
 		Calendar cal = Calendar.getInstance();
 		txtDatafim.setVlrDate( cal.getTime() );
 		cal.set( Calendar.DAY_OF_MONTH, 1 );
@@ -79,11 +77,11 @@ public class FRMovProdCont extends FRelatorio {
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		String sRelatorio = "";
-		
-		if( cbAgrupado.getVlrString().equals( "S" )){
-			sRelatorio = "S"; 
+
+		if ( cbAgrupado.getVlrString().equals( "S" ) ) {
+			sRelatorio = "S";
 		}
-		else{
+		else {
 			sRelatorio = "N";
 		}
 

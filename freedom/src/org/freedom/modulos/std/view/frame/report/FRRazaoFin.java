@@ -2,23 +2,23 @@
  * @version 25/06/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  * 
- * Projeto: Freedom <BR>
+ *         Projeto: Freedom <BR>
  * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
+ *         Pacote: org.freedom.modulos.std <BR>
+ *         Classe:
  * @(#)FRRazaoFin.java <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
+ *                     Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                     modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                     na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                     Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                     sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                     Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                     Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                     de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ *                     Comentários sobre a classe...
  * 
  */
 
@@ -68,7 +68,7 @@ public class FRRazaoFin extends FRelatorio {
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setWhereAdic( "NIVELPLAN=6" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan, null);
+		txtCodPlan.setTabelaExterna( lcPlan, null );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
@@ -104,11 +104,9 @@ public class FRRazaoFin extends FRelatorio {
 
 		try {
 			int iParam = 1;
-			
-			ps = con.prepareStatement( "SELECT SL.CODPLAN, SALDOSL FROM FNSALDOLANCA SL " +
-							           "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODEMPPN=? AND SL.CODFILIALPN=? AND " +
-							           "SL.CODPLAN=? AND SL.DATASL=(SELECT MAX(SL2.DATASL) FROM FNSALDOLANCA SL2 " +
-							                                        "WHERE SL2.CODPLAN=SL.CODPLAN AND SL2.DATASL<?)" );
+
+			ps = con.prepareStatement( "SELECT SL.CODPLAN, SALDOSL FROM FNSALDOLANCA SL " + "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODEMPPN=? AND SL.CODFILIALPN=? AND " + "SL.CODPLAN=? AND SL.DATASL=(SELECT MAX(SL2.DATASL) FROM FNSALDOLANCA SL2 "
+					+ "WHERE SL2.CODPLAN=SL.CODPLAN AND SL2.DATASL<?)" );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
 			ps.setInt( iParam++, Aplicativo.iCodFilial );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -128,7 +126,7 @@ public class FRRazaoFin extends FRelatorio {
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar saldo!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
-		} 
+		}
 
 		return dRet;
 	}
@@ -174,11 +172,7 @@ public class FRRazaoFin extends FRelatorio {
 
 			sSaldoAnt = Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( buscaSaldo() ) );
 
-			sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA " + 
-			       "FROM FNSUBLANCA SL " + 
-			       "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN=? AND " +
-			       "SL.CODEMPPN=? AND CODFILIALPN=? AND SL.DATASUBLANCA BETWEEN ? AND ? " +
-			       "ORDER BY SL.DATASUBLANCA";
+			sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA " + "FROM FNSUBLANCA SL " + "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN=? AND " + "SL.CODEMPPN=? AND CODFILIALPN=? AND SL.DATASUBLANCA BETWEEN ? AND ? " + "ORDER BY SL.DATASUBLANCA";
 
 			ps = con.prepareStatement( sSQL );
 
@@ -235,10 +229,10 @@ public class FRRazaoFin extends FRelatorio {
 				imp.say( 14, "|" );
 				imp.say( 16, rs.getString( "CODLANCA" ) );
 				imp.say( 25, "|" );
-				
+
 				hist = Funcoes.strToVectorSilabas( rs.getString( "HISTSUBLANCA" ), 62 );
-				if (rs.getString( "HISTSUBLANCA" )!=null) {
-					  imp.say( 27, hist.get( 0 ) );
+				if ( rs.getString( "HISTSUBLANCA" ) != null ) {
+					imp.say( 27, hist.get( 0 ) );
 				}
 				bVlrSubLanca = rs.getBigDecimal( "VLRSUBLANCA" );
 				bTotal = bTotal.add( bVlrSubLanca );
@@ -248,7 +242,7 @@ public class FRRazaoFin extends FRelatorio {
 					imp.say( 92, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrSubLanca.doubleValue() * -1 ) ) );
 					imp.say( 105, "|" );
 					imp.say( 120, "|" );
-					bTotRec = bTotRec.add( new BigDecimal( bVlrSubLanca.doubleValue() * -1)  );
+					bTotRec = bTotRec.add( new BigDecimal( bVlrSubLanca.doubleValue() * -1 ) );
 				}
 				else {
 					imp.say( 90, "|" );
@@ -260,13 +254,13 @@ public class FRRazaoFin extends FRelatorio {
 
 				imp.say( 122, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotal ) ) );
 				imp.say( 135, "|" );
-				
+
 				if ( hist.size() > 1 ) {
-					for ( int i=1; i < hist.size(); i++ ) {
+					for ( int i = 1; i < hist.size(); i++ ) {
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
 						imp.say( 14, "|" );
-						imp.say( 25, "|" );				
+						imp.say( 25, "|" );
 						imp.say( 27, hist.get( i ) );
 						imp.say( 90, "|" );
 						imp.say( 105, "|" );
@@ -281,9 +275,9 @@ public class FRRazaoFin extends FRelatorio {
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 90, "|" );
-			imp.say( 91, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( bTotRec ) ) );
+			imp.say( 91, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotRec ) ) );
 			imp.say( 105, "|" );
-			imp.say( 106, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( bTotDesp ) ) );
+			imp.say( 106, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotDesp ) ) );
 			imp.say( 120, "|" );
 			imp.say( 122, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotal ) ) );
 			imp.say( 135, "|" );

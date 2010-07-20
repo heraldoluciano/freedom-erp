@@ -5,15 +5,15 @@
  *         Pacote: org.freedom.modulos.gms <BR>
  *         Classe:
  * @(#)FRma.java <BR>
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
- * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *               Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *               modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *               na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *               Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *               sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *               Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *               Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *               de acordo com os termos da LPG-PC <BR>
- *               <BR>
+ * <BR>
  *               Tela para cadastro de Requisições de material ao almoxarifado.
  */
 
@@ -85,7 +85,6 @@ import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
-
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, JComboBoxListener {
 
@@ -236,9 +235,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
-	
+
 	private ListaCampos lcContrato = new ListaCampos( this, "" );
-	
+
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
 	private String sSitItRma = txtSitItRma.getVlrString();
@@ -255,7 +254,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private String SitRma = "";
 
-	private HashMap<String,Object> prefere  = new HashMap<String,Object>();
+	private HashMap<String, Object> prefere = new HashMap<String, Object>();
 
 	private boolean bAprovaCab = false;
 
@@ -276,45 +275,44 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	private String sSitRma;
 
 	private JPanelPad pnEnquadramento = new JPanelPad();
-	
+
 	private Vector<Integer> vValsContr = new Vector<Integer>();
 
 	private Vector<String> vLabsContr = new Vector<String>();
 
 	private JComboBoxPad cbContr = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
-	
+
 	private Vector<Integer> vValsitContr = new Vector<Integer>();
 
 	private Vector<String> vLabsitContr = new Vector<String>();
 
 	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
-	
+
 	private JPanelPad pinCabRma = new JPanelPad();
-	
+
 	private JPanelPad pinCabEnquadramento = new JPanelPad();
-	
+
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
-	
+
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-	
+
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-		
+
 	public FRma() {
 
 		setTitulo( "RMA" );
 		setAtribos( 15, 10, 772, 580 );
-		
+
 		nav.setNavigation( true );
-		
+
 		lcItContrato.setMaster( lcContrato );
-		
+
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 3 ) );
@@ -323,7 +321,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		pnGImp.add( btImp );
 
 		pnMaster.add( spTab, BorderLayout.CENTER );
-		
+
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Rma", pinCabRma );
 
@@ -403,7 +401,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 		lcUsu.setQueryCommit( false );
 		lcUsu.setReadOnly( true );
-		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName());
+		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
 
 		lcOP.add( new GuardaCampo( txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, false ) );
 		lcOP.add( new GuardaCampo( txtSeqOF, "SeqOF", "Sequencia da fase", ListaCampos.DB_PK, false ) );
@@ -443,7 +441,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		txtCodContr.setTabelaExterna( lcContrato, FContrato.class.getCanonicalName() );
 
 		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.It.Contr.", ListaCampos.DB_PF, false ) );
-		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );		
+		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
 		lcItContrato.setReadOnly( true );
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
@@ -457,11 +455,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		rgPriod.setVlrString( "B" );
 
 		setListaCampos( lcCampos );
-		
+
 		setAltCab( 260 );
-		
-//		setPainel( pinCab, pnCliCab );
-		
+
+		// setPainel( pinCab, pnCliCab );
+
 		setPainel( pinCabRma );
 
 		adicCampo( txtCodRma, 7, 20, 110, 20, "CodRma", "Cód.Rma", ListaCampos.DB_PK, true );
@@ -472,7 +470,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		adicCampo( txtCodOP, 7, 60, 60, 20, "CodOP", "Cód.OP", ListaCampos.DB_FK, false );
 		adicCampo( txtSeqOP, 70, 60, 47, 20, "SeqOP", "Sq.OP", ListaCampos.DB_FK, false );
 		adicCampo( txtSeqOF, 120, 60, 37, 20, "SeqOF", "Sq.FS", ListaCampos.DB_FK, txtDescFase, false );
-		adicDescFKInvisivel( txtDescCC, "DescCC", "Descrição do centro de custos" );		
+		adicDescFKInvisivel( txtDescCC, "DescCC", "Descrição do centro de custos" );
 		adicCampo( txtAnoCC, 160, 60, 50, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
 		adicCampo( txtCodCC, 213, 60, 200, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
 		adicDescFK( txtDescCC, 416, 60, 207, 20, "DescCC", "Descrição do centro de custos" );
@@ -518,7 +516,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		btMotivoCancelaRMA.setToolTipText( "Motivo do cancelamento da RMA." );
 		btMotivoCancelaItem.setToolTipText( "Motivo do cancelamento do ítem." );
 		btMotivoPrior.setToolTipText( "Motivo da prioridade do ítem." );
-		
+
 		pinCabRma.adic( pinBotCab, 630, 1, 114, 190 );
 		pinBotCab.adic( btAprovaRMA, 0, 0, 110, 30 );
 		pinBotCab.adic( btFinAprovRMA, 0, 31, 110, 30 );
@@ -554,14 +552,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		setNavegador( navRod );
 
 		adicCampo( txtCodItRma, 7, 20, 30, 20, "CodItRma", "Item", ListaCampos.DB_PK, true );
-		
+
 		if ( comRef() ) {
-			
+
 			adicCampo( txtRefProd, 40, 20, 87, 20, "RefProd", "Referência", ListaCampos.DB_FK, txtDescProd, true );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false );
 
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
-			
+
 			if ( buscaGen() ) {
 				txtRefProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
@@ -570,11 +568,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 		else {
 			adicCampo( txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
-			
+
 			if ( buscaGen() ) {
 				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
-			
+
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false );
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 			txtQtdItRma.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmox, lcProd, con, "qtditrma" ) );
@@ -632,8 +630,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private void buscaInfoUsuAtual() {
 
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU,RMAOUTCC " 
-			 	 	+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU,RMAOUTCC " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -666,10 +663,10 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					else
 						bExpede = false;
 				}
-				if ("S".equals( sOutCC )) {
+				if ( "S".equals( sOutCC ) ) {
 					txtCodCC.setNaoEditavel( false );
 				}
-				
+
 			}
 			con.commit();
 
@@ -840,7 +837,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) && ( ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) || ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) ) ) {
-			CustosProd custo = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(),con);
+			CustosProd custo = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 			txtPrecoItRma.setVlrBigDecimal( custo.getCustoMPMProd() );
 		}
 
@@ -867,49 +864,45 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			}
 		}
 
-		if (cevt.getListaCampos() == lcCli ) {	  		
-	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>" );
-	  		cbContr.setItensGeneric( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	  		
-	  	}
-		
+		if ( cevt.getListaCampos() == lcCli ) {
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>" );
+			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		}
+
 		if ( cevt.getListaCampos() == lcCampos ) {
 			cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
 			cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
 		}
 
-		
-		
 	}
 
 	private HashMap<String, Object> getPrefere() {
 
 		HashMap<String, Object> ret = new HashMap<String, Object>();
-		
+
 		String sSQL = "SELECT USAREFPROD, LANCARMACONTR, BUSCACODPRODGEN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				ret.put( "COMREF", rs.getString( "UsaRefProd" ) );
 				ret.put( "LANCARMACONTR", rs.getString( "LANCARMACONTR" ) );
-				ret.put( "BUSCACODPRODGEN", "S".equals(rs.getString( "BUSCACODPRODGEN" )) );
-				
+				ret.put( "BUSCACODPRODGEN", "S".equals( rs.getString( "BUSCACODPRODGEN" ) ) );
+
 			}
-			
+
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
+		} finally {
 			rs = null;
 			ps = null;
 			sSQL = null;
@@ -1052,7 +1045,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		DLRPedido dl = new DLRPedido( sOrdRMA, true );
-		
+
 		dl.setConexao( con );
 		dl.setVisible( true );
 
@@ -1060,48 +1053,48 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			dl.dispose();
 			return;
 		}
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		try {
-			
-			sql.append(" SELECT");
-			
-			sql.append(" (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),");
 
-			sql.append(" R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA,");
-			
-			sql.append(" I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA,I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,I.CODITRMA,");
-			
-			sql.append(" P.REFPROD,P.DESCPROD, P.CODUNID, UND.DESCUNID,A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,");
+			sql.append( " SELECT" );
 
-			sql.append(" (SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV AND U.CODEMP=R.CODEMPUA AND U.CODFILIAL=R.CODFILIALUA),");
+			sql.append( " (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA)," );
 
-			sql.append(" (SELECT C.DESCCC FROM FNCC C, SGUSUARIO U WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC  AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),");
+			sql.append( " R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA," );
 
-			sql.append(" (SELECT C.DESCCC FROM FNCC C, SGUSUARIO U WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC  AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),");
+			sql.append( " I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA,I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,I.CODITRMA," );
 
-			sql.append(" (SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP AND U.CODEMP=R.CODEMPUE AND U.CODFILIAL=R.CODFILIALUE),");
+			sql.append( " P.REFPROD,P.DESCPROD, P.CODUNID, UND.DESCUNID,A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC," );
 
-			sql.append(" I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP");
+			sql.append( " (SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV AND U.CODEMP=R.CODEMPUA AND U.CODFILIAL=R.CODFILIALUA)," );
 
-			sql.append(" FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND");
-			
-			sql.append(" WHERE"); 
-			
-			sql.append(" R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?");
-			sql.append(" AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD");
-			sql.append(" AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA");
-			sql.append(" AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC AND CC.anocc=R.anocc");
-			sql.append(" AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX");
-			sql.append(" AND UND.CODEMP = P.codempud AND UND.CODFILIAL=P.codfilialud AND UND.codunid=P.codunid");
+			sql.append( " (SELECT C.DESCCC FROM FNCC C, SGUSUARIO U WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC  AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV)," );
 
-			sql.append(" ORDER BY R.CODRMA ");
-			
-			sql.append(", P." + dl.getValor() );
-			
-			System.out.println("SQL:" + sql.toString());
-			
+			sql.append( " (SELECT C.DESCCC FROM FNCC C, SGUSUARIO U WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC  AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP)," );
+
+			sql.append( " (SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP AND U.CODEMP=R.CODEMPUE AND U.CODFILIAL=R.CODFILIALUE)," );
+
+			sql.append( " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP" );
+
+			sql.append( " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND" );
+
+			sql.append( " WHERE" );
+
+			sql.append( " R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?" );
+			sql.append( " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" );
+			sql.append( " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA" );
+			sql.append( " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC AND CC.anocc=R.anocc" );
+			sql.append( " AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX" );
+			sql.append( " AND UND.CODEMP = P.codempud AND UND.CODFILIAL=P.codfilialud AND UND.codunid=P.codunid" );
+
+			sql.append( " ORDER BY R.CODRMA " );
+
+			sql.append( ", P." + dl.getValor() );
+
+			System.out.println( "SQL:" + sql.toString() );
+
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, lcCampos.getCodEmp() );
@@ -1110,38 +1103,40 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 			rs = ps.executeQuery();
 
-			if( "G".equals( dl.getTipo() )){
-				imprimirGrafico( bVisualizar, rs, "", dl.ehResumido()) ;
-			
-			}else{
+			if ( "G".equals( dl.getTipo() ) ) {
+				imprimirGrafico( bVisualizar, rs, "", dl.ehResumido() );
+
+			}
+			else {
 				imprimirTexto( bVisualizar, rs, "", dl.ehResumido() );
 			}
-		
+
 			rs.close();
 			ps.close();
 
 			con.commit();
-			}catch (Exception e) {
-	
-				e.printStackTrace();
-			}
-	
+		} catch ( Exception e ) {
+
+			e.printStackTrace();
+		}
+
 	}
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ){
-		
+
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
+
 		ImprimeOS imp = null;
-		int linPag = 0;		
-		
+		int linPag = 0;
+
 		try {
-			
-			imp = new ImprimeOS("",con);
-			linPag = imp.verifLinPag()-1;
+
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
 			imp.setTitulo( "Impressão de RMA" );
 			imp.limpaPags();
-			
+
 			while ( rs.next() ) {
-			
+
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.eject();
 					imp.incPags();
@@ -1207,13 +1202,13 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 2, "Item" );
 					imp.say( imp.pRow() + 0, 8, "Referencia" );
 					imp.say( imp.pRow() + 0, 22, "Descrição dos produtos" );
-				
+
 					if ( isResum ) {
 						imp.say( imp.pRow() + 0, 60, "Qtd.aprov." );
 						imp.say( imp.pRow() + 0, 75, "Qtd.exp." );
 						imp.say( imp.pRow() + 0, 90, "Unid" );
 					}
-				
+
 					else {
 						imp.say( imp.pRow() + 0, 60, "Qtd.req." );
 						imp.say( imp.pRow() + 0, 75, "Qtd.aprov." );
@@ -1281,7 +1276,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				imp.say( imp.pRow() + 0, 1, "|" );
 				imp.say( imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:" );
 				imp.say( imp.pRow() + 0, 136, "|" );
-			
+
 				for ( int i = 0; vProdCan.size() > i; i++ ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
@@ -1300,35 +1295,35 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			imp.say( imp.pRow() + 0, 52, StringFunctions.replicate( "_", 41 ) );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 62, "Ass. do requisitante" );
-			
-			imp.eject();		 
+
+			imp.eject();
 			imp.fechaGravacao();
-	            
-			if (bVisualizar)
-				imp.preview(this);
-			
+
+			if ( bVisualizar )
+				imp.preview( this );
+
 			else
 				imp.print();
-			
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-		
+
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQRMA" ));
-		hParam.put( "RAZAOEMP" , Aplicativo.empresa.toString() );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQRMA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "RESUMIDO", new Boolean( isResum ) );
 
 		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
-		
+
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
@@ -1342,13 +1337,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	}
 
 	private boolean comRef() {
-		return "S".equals( prefere.get( "COMREF" ));
-	}
-	
-	private boolean buscaGen() {
-		return (Boolean) prefere.get( "BUSCACODPRODGEN" );
+
+		return "S".equals( prefere.get( "COMREF" ) );
 	}
 
+	private boolean buscaGen() {
+
+		return (Boolean) prefere.get( "BUSCACODPRODGEN" );
+	}
 
 	public void keyTyped( KeyEvent kevt ) {
 
@@ -1479,17 +1475,17 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		lcCli.setConexao( cn );
 		lcContrato.setConexao( cn );
 		lcItContrato.setConexao( cn );
-		
+
 		prefere = getPrefere();
 
-		if("S".equals( (String) prefere.get( "LANCARMACONTR" ))) {
+		if ( "S".equals( (String) prefere.get( "LANCARMACONTR" ) ) ) {
 			adicInfoContrato();
 		}
-		
+
 		montaDetalhe();
 
 		lcUnid.setConexao( cn );
@@ -1532,45 +1528,42 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		Color color = new Color( r, g, b );
 		return color;
 	}
-	
+
 	private void adicInfoContrato() {
-		
+
 		try {
 			tpnCab.addTab( "Contrato/Projeto", pinCabEnquadramento );
 
 			setPainel( pinCabEnquadramento );
-								
+
 			adic( new JLabelPad( "Cód.Cliente" ), 7, 10, 90, 20 );
 			adic( txtCodCli, 7, 30, 90, 20 );
 			adic( new JLabelPad( "Razão Social do Cliente." ), 100, 10, 510, 20 );
 			adic( txtRazCli, 100, 30, 510, 20 );
-						
+
 			adic( new JLabelPad( "Contrato/Projeto" ), 7, 50, 284, 20 );
 			adic( cbContr, 7, 70, 284, 20 );
 			adic( new JLabelPad( "Item" ), 298, 50, 320, 20 );
 			adic( cbitContr, 298, 70, 310, 20 );
-						
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 
-		if( evt.getComboBoxPad() == cbContr ){
-	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Não selecionado>" );
-	  		cbitContr.setItensGeneric( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );
+		if ( evt.getComboBoxPad() == cbContr ) {
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Não selecionado>" );
+			cbitContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
-		else if (evt.getComboBoxPad() == cbitContr ) {
-			if(cbContr.getVlrInteger()>0)
+		else if ( evt.getComboBoxPad() == cbitContr ) {
+			if ( cbContr.getVlrInteger() > 0 )
 				txtCodContr.setVlrInteger( cbContr.getVlrInteger() );
-			if(cbitContr.getVlrInteger()>0)			
-			txtCodItContr.setVlrInteger( cbitContr.getVlrInteger() );
+			if ( cbitContr.getVlrInteger() > 0 )
+				txtCodItContr.setVlrInteger( cbitContr.getVlrInteger() );
 		}
-		
+
 	}
 
-	
-	
 }

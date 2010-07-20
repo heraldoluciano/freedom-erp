@@ -1,6 +1,5 @@
 package org.freedom.modulos.std.view.dialog.utility;
 
-
 import javax.swing.JScrollPane;
 
 import org.freedom.library.swing.component.JPanelPad;
@@ -26,7 +25,7 @@ public class DLBuscaDescProd extends FDialogo {
 		pn.adic( new JScrollPane( txa ), 0, 0, 385, 133 );
 		c.add( pn );
 	}
-	
+
 	public String getTexto() {
 
 		return txa.getVlrString();
