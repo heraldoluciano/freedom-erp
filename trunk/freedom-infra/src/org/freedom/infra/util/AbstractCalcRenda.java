@@ -19,8 +19,6 @@ import org.freedom.infra.model.jdbc.DbConnection;
  * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
 
-
-
 /**
  * Classe padrão para implementação de calculo de renda.
  * 
@@ -31,11 +29,11 @@ import org.freedom.infra.model.jdbc.DbConnection;
 public abstract class AbstractCalcRenda {
 
 	public abstract void inicializa(Integer ticket, Integer coditrecmerc, DbConnection con);
-	
+
 	public abstract Integer getRenda();
-	
+
 	public abstract BigDecimal getMedia();
-	
+
 	public abstract boolean isInicialized();
 
 }

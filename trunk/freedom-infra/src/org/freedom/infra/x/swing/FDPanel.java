@@ -1,4 +1,3 @@
-
 package org.freedom.infra.x.swing;
 
 import java.awt.Dimension;
@@ -11,17 +10,16 @@ import javax.swing.JLayeredPane;
 public class FDPanel extends JLayeredPane {
 
 	private static final long serialVersionUID = 1l;
-	
 
 	public FDPanel() {
 		super();
 		initialize();
 	}
-	
-	public FDPanel( LayoutManager layout ) {
+
+	public FDPanel(LayoutManager layout) {
 		super();
 		initialize();
-		setLayout( layout );
+		setLayout(layout);
 	}
 
 	/**
@@ -29,24 +27,18 @@ public class FDPanel extends JLayeredPane {
 	 * 
 	 */
 	private void initialize() {
-        this.setSize(new Dimension(98, 18));
+		this.setSize(new Dimension(98, 18));
 	}
 
-	public void add( final JComponent component,
-					 final int x,
-					 final int y,
-					 final int width,
-					 final int height ) {
+	public void add(final JComponent component, final int x, final int y, final int width, final int height) {
 
-		component.setBounds( x, y, width, height );
-		add( component, JLayeredPane.DEFAULT_LAYER );
+		component.setBounds(x, y, width, height);
+		add(component, JLayeredPane.DEFAULT_LAYER);
 	}
 
-	public void add( final JComponent component,
-					 final Point point,
-					 final Dimension dimension ) {
+	public void add(final JComponent component, final Point point, final Dimension dimension) {
 
-		add( component, point.x, point.y, dimension.width, dimension.height );
+		add(component, point.x, point.y, dimension.width, dimension.height);
 	}
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+} // @jve:decl-index=0:visual-constraint="10,10"

@@ -1,4 +1,3 @@
-
 package org.freedom.infra.x.UIMaker.effect;
 
 import java.util.ArrayList;
@@ -13,27 +12,27 @@ public class SetEffect {
 	}
 
 	public void doStart() {
-		for ( Effect e : effects ) {
+		for (Effect e : effects) {
 			e.doStart();
 		}
 	}
 
 	public void doStop() {
-		for ( Effect e : effects ) {
+		for (Effect e : effects) {
 			e.doStop();
 		}
 	}
 
-	public void addEffect( Effect effect ) {
-		effects.add( effect );
+	public void addEffect(Effect effect) {
+		effects.add(effect);
 	}
 
-	public void removeEffect( int indexEffect ) {
-		effects.remove( indexEffect );
+	public void removeEffect(int indexEffect) {
+		effects.remove(indexEffect);
 	}
 
-	public void removeEffect( Effect effect ) {
-		effects.remove( effect );
+	public void removeEffect(Effect effect) {
+		effects.remove(effect);
 	}
 
 }
