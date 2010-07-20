@@ -17,36 +17,35 @@ package org.freedom.modules.nfe.bean;
 /**
  * Classe para definição de incosistência na NF-e.<br>
  * 
- * @see	org.freedom.modules.nfe.control.AbstractNFEFactory
+ * @see org.freedom.modules.nfe.control.AbstractNFEFactory
  * 
  * @author Setpoint Informática Ltda./Robson Sanchez/Alex Rodrigues
  * @version 10/08/2009
  */
 public class NFEInconsistency {
-	
+
 	private TypeInconsistency typeInconsistency;
-	
+
 	private String description;
-	
+
 	private String correctiveAction;
-	
+
 	private String field;
-	
+
 	private String valueField;
-	
-	
+
 	public enum TypeInconsistency {
-		
+
 		WARNING, ERROR, MESSAGE;
 	}
 
-	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction ) {
-		setTypeInconsistency( typeInconsistency );
-		setDescription( description );
-		setCorrectiveAction( correctiveAction );
+	public NFEInconsistency(TypeInconsistency typeInconsistency, String description, String correctiveAction) {
+		setTypeInconsistency(typeInconsistency);
+		setDescription(description);
+		setCorrectiveAction(correctiveAction);
 	}
 
-	private void setTypeInconsistency( TypeInconsistency typeInconsistency ) {
+	private void setTypeInconsistency(TypeInconsistency typeInconsistency) {
 		this.typeInconsistency = typeInconsistency;
 	}
 
@@ -54,7 +53,7 @@ public class NFEInconsistency {
 		return typeInconsistency;
 	}
 
-	private void setDescription( String description ) {
+	private void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -62,7 +61,7 @@ public class NFEInconsistency {
 		return description;
 	}
 
-	private void setCorrectiveAction( String correctiveAction ) {
+	private void setCorrectiveAction(String correctiveAction) {
 		this.correctiveAction = correctiveAction;
 	}
 
@@ -74,7 +73,7 @@ public class NFEInconsistency {
 		return field;
 	}
 
-	public NFEInconsistency setField( String field ) {
+	public NFEInconsistency setField(String field) {
 		this.field = field;
 		return this;
 	}
@@ -83,7 +82,7 @@ public class NFEInconsistency {
 		return valueField;
 	}
 
-	public NFEInconsistency setValueField( String valueField ) {
+	public NFEInconsistency setValueField(String valueField) {
 		this.valueField = valueField;
 		return this;
 	}
