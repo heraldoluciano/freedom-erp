@@ -83,7 +83,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	private ListaCampos lcProd = new ListaCampos( this );
 
 	private enum paramCons {
-		NONE, CODEMPIV, CODFILIALIV, CODPRODIV, CODEMPCP, CODFILIALCP, CODPRODCP, CODEMPOP, CODFILIALOP, CODPRODOP, CODEMPRM, CODFILIALRM, CODPRODRM, CODEMPVD, CODFILIALVD, CODPRODVD
+		NONE, CODEMPIV, CODPRODIV, CODEMPCP, CODPRODCP, CODEMPOP, CODPRODOP, CODEMPRM, CODPRODRM, CODEMPVD, CODPRODVD
 	}
 
 	private enum paramProc {
@@ -157,11 +157,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				iUltProd = 0;
 		}
 		try {
-			sSQL = "SELECT CODPROD FROM EQPRODUTO " + "WHERE " + ( cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND" : "" ) + " CODFILIAL=? AND CODEMP=? AND CODPROD>=?" + " ORDER BY CODPROD";
+			sSQL = "SELECT CODPROD FROM EQPRODUTO " + 
+			   "WHERE " 
+			   + ( cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND" : "" ) + 
+			   "  AND CODEMP=? AND CODPROD>=?" + 
+			   " ORDER BY CODPROD";
 			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, iUltProd );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, iUltProd );
 			rs = ps.executeQuery();
 			vProds = new Vector<Integer>();
 			while ( rs.next() ) {
@@ -219,31 +222,33 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					sWhere = " AND DTMOVPROD >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
 				}
 
-				sSQL = "DELETE FROM EQMOVPROD WHERE " + "CODEMP=? AND CODFILIAL=? " + "AND CODPROD=?" + sWhere;
+				sSQL = "DELETE FROM EQMOVPROD WHERE " + 
+				   "CODEMP=? AND CODPROD=?" + sWhere;
 				state( sProd + "Limpando movimentações desatualizadas..." );
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, iFilialMov );
-				ps.setInt( 3, iCodProd );
+			//	ps.setInt( 2, iFilialMov );
+				ps.setInt( 2, iCodProd );
 				ps.executeUpdate();
 				ps.close();
 				//             	 
 				// Funcoes.mensagemInforma( this, "Teste" );
 				/* state(sProd+"Limpando inventários desatualizados..."); */
 				if ( ( txtDataini.getVlrString().equals( "" ) ) ) {
-					sSQL = "UPDATE EQPRODUTO SET SLDPROD=0 WHERE " + "CODEMP=? AND CODFILIAL=? " + "AND CODPROD=?";
+					sSQL = "UPDATE EQPRODUTO SET SLDPROD=0 WHERE " + 
+					  "CODEMP=? AND CODPROD=?";
 					ps = con.prepareStatement( sSQL );
 					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, iFilialMov );
-					ps.setInt( 3, iCodProd );
+					//ps.setInt( 2, iFilialMov );
+					ps.setInt( 2, iCodProd );
 					ps.executeUpdate();
 					ps.close();
 					state( sProd + "Limpando saldos..." );
-					sSQL = "UPDATE EQSALDOPROD SET SLDPROD=0 WHERE " + "CODEMP=? AND CODFILIAL=? " + "AND CODPROD=?";
+					sSQL = "UPDATE EQSALDOPROD SET SLDPROD=0 WHERE CODEMP=? AND CODPROD=?";
 					ps = con.prepareStatement( sSQL );
 					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, iFilialMov );
-					ps.setInt( 3, iCodProd );
+				//	ps.setInt( 2, iFilialMov );
+					ps.setInt( 2, iCodProd );
 					ps.executeUpdate();
 					ps.close();
 					state( sProd + "Limpando saldos..." );
@@ -272,47 +277,103 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					sWhereOP = "";
 				}
 
-				sSQLInventario = "SELECT 'A' TIPOPROC, I.CODEMPPD, I.CODFILIALPD, I.CODPROD," + "I.CODEMPLE, I.CODFILIALLE, I.CODLOTE," + "I.CODEMPTM, I.CODFILIALTM, I.CODTIPOMOV," + "I.CODEMP, I.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " + "I.CODINVPROD CODMASTER, I.CODINVPROD CODITEM, "
-						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT," + "I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," + "I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " + "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX " + "FROM EQINVPROD I "
-						+ "WHERE I.CODEMP=? AND I.CODFILIAL=? AND " + "I.CODPROD = ?" + sWhereInventario;
+				sSQLInventario = "SELECT 'A' TIPOPROC, I.CODEMPPD, I.CODFILIALPD, I.CODPROD," 
+						+ "I.CODEMPLE, I.CODFILIALLE, I.CODLOTE," 
+						+ "I.CODEMPTM, I.CODFILIALTM, I.CODTIPOMOV," 
+						+ "I.CODEMP, I.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " 
+						+ "I.CODINVPROD CODMASTER, I.CODINVPROD CODITEM, "
+						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT," 
+						+ "I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," 
+						+ "I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " 
+						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX " 
+						+ "FROM EQINVPROD I "
+						+ "WHERE I.CODEMP=? AND I.CODPROD = ?" + sWhereInventario;
 
-				sSQLCompra = "SELECT 'C' TIPOPROC, IC.CODEMPPD, IC.CODFILIALPD, IC.CODPROD," + "IC.CODEMPLE, IC.CODFILIALLE, IC.CODLOTE," + "C.CODEMPTM, C.CODFILIALTM, C.CODTIPOMOV," + "C.CODEMP, C.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " + "C.CODCOMPRA CODMASTER, IC.CODITCOMPRA CODITEM,"
-						+ "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, " + "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," + "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " + "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX " + "FROM CPCOMPRA C,CPITCOMPRA IC "
-						+ "WHERE IC.CODCOMPRA=C.CODCOMPRA AND " + "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " + "IC.QTDITCOMPRA > 0 AND " + "C.CODEMP=? AND C.CODFILIAL=? AND IC.CODPROD = ?" + sWhereCompra;
+				sSQLCompra = "SELECT 'C' TIPOPROC, IC.CODEMPPD, IC.CODFILIALPD, IC.CODPROD," 
+						+ "IC.CODEMPLE, IC.CODFILIALLE, IC.CODLOTE," 
+						+ "C.CODEMPTM, C.CODFILIALTM, C.CODTIPOMOV," 
+						+ "C.CODEMP, C.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " 
+						+ "C.CODCOMPRA CODMASTER, IC.CODITCOMPRA CODITEM,"
+						+ "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, " 
+						+ "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," 
+						+ "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " 
+						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX " 
+						+ "FROM CPCOMPRA C,CPITCOMPRA IC "
+						+ "WHERE IC.CODCOMPRA=C.CODCOMPRA AND " 
+						+ "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND IC.QTDITCOMPRA > 0 AND " 
+						+ "C.CODEMP=? AND IC.CODPROD = ?" + sWhereCompra;
 
-				sSQLOP = "SELECT 'O' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," + "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," + "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," + "O.CODEMP, O.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA ," + "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"
-						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " + "CAST(NULL AS CHAR(4)) CODNAT, " + "O.DTFABROP DTPROC, O.CODOP DOCPROC, 'N' FLAG, " + "O.QTDFINALPRODOP QTDPROC, " + "( SELECT SUM(PD.CUSTOMPMPROD) FROM PPITOP IT, EQPRODUTO PD "
-						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " + "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " + "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND " + "PD.CODPROD=IT.CODPROD) CUSTOPROC, " + "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX " + "FROM PPOP O "
-						+ "WHERE O.QTDFINALPRODOP > 0 AND " + "O.CODEMP=? AND O.CODFILIAL=? AND O.CODPROD = ?" + sWhereOP;
+				sSQLOP = "SELECT 'O' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," 
+						+ "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," 
+						+ "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," 
+						+ "O.CODEMP, O.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA ," 
+						+ "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"
+						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
+						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
+						+ "O.DTFABROP DTPROC, O.CODOP DOCPROC, 'N' FLAG, " 
+						+ "O.QTDFINALPRODOP QTDPROC, " 
+						+ "( SELECT SUM(PD.CUSTOMPMPROD) FROM PPITOP IT, EQPRODUTO PD "
+						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " 
+						+ "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " 
+						+ "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND " 
+						+ "PD.CODPROD=IT.CODPROD) CUSTOPROC, " 
+						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX " 
+						+ "FROM PPOP O "
+						+ "WHERE O.QTDFINALPRODOP > 0 AND " 
+						+ "O.CODEMP=? AND O.CODPROD = ?" + sWhereOP;
 
-				sSQLRMA = "SELECT 'R' TIPOPROC, IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, " + "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " + "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " + "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, "
-						+ "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, " + "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " + "CAST(NULL AS CHAR(4)) CODNAT, " + "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " + "RMA.CODRMA DOCPROC, 'N' FLAG, "
-						+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," + "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " + "FROM EQRMA RMA ,EQITRMA IT " + "WHERE IT.CODRMA=RMA.CODRMA AND " + "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " + "IT.QTDITRMA > 0 AND "
-						+ "RMA.CODEMP=? AND RMA.CODFILIAL=? AND IT.CODPROD = ?" + sWhereRMA;
+				sSQLRMA = "SELECT 'R' TIPOPROC, IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, " 
+						+ "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " 
+						+ "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " 
+						+ "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, "
+						+ "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, " 
+						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
+						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
+						+ "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " 
+						+ "RMA.CODRMA DOCPROC, 'N' FLAG, "
+						+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," 
+						+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " 
+						+ "FROM EQRMA RMA ,EQITRMA IT " 
+						+ "WHERE IT.CODRMA=RMA.CODRMA AND " 
+						+ "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " 
+						+ "IT.QTDITRMA > 0 AND "
+						+ "RMA.CODEMP=? AND IT.CODPROD = ?" + sWhereRMA;
 
-				sSQLVenda = "SELECT 'V' TIPOPROC, IV.CODEMPPD, IV.CODFILIALPD, IV.CODPROD," + "IV.CODEMPLE, IV.CODFILIALLE, IV.CODLOTE," + "V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV," + "V.CODEMP, V.CODFILIAL, V.TIPOVENDA, " + "V.CODVENDA CODMASTER, IV.CODITVENDA CODITEM, "
-						+ "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " + "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " + "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " + "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " + "FROM VDVENDA V ,VDITVENDA IV "
-						+ "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND " + "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " + "IV.QTDITVENDA > 0 AND " + "V.CODEMP=? AND V.CODFILIAL=? AND IV.CODPROD = ?" + sWhereVenda;
+				sSQLVenda = "SELECT 'V' TIPOPROC, IV.CODEMPPD, IV.CODFILIALPD, IV.CODPROD," 
+						+ "IV.CODEMPLE, IV.CODFILIALLE, IV.CODLOTE," 
+						+ "V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV," 
+						+ "V.CODEMP, V.CODFILIAL, V.TIPOVENDA, " 
+						+ "V.CODVENDA CODMASTER, IV.CODITVENDA CODITEM, "
+						+ "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " 
+						+ "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " 
+						+ "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " 
+						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " 
+						+ "FROM VDVENDA V ,VDITVENDA IV "
+						+ "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND " 
+						+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " 
+						+ "IV.QTDITVENDA > 0 AND " 
+						+ "V.CODEMP=? AND IV.CODPROD = ?" + sWhereVenda;
 
 				try {
 					state( sProd + "Iniciando reconstrução..." );
-					sSQL = sSQLInventario + " UNION ALL " + sSQLCompra + " UNION ALL " + sSQLOP + " UNION ALL " + sSQLRMA + " UNION ALL " + sSQLVenda + " ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
+					sSQL = sSQLInventario + " UNION ALL " + sSQLCompra + " UNION ALL " + sSQLOP + " UNION ALL " 
+					  + sSQLRMA + " UNION ALL " + sSQLVenda + " ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
 					// System.out.println(sSQL);
 					ps = con.prepareStatement( sSQL );
 					ps.setInt( paramCons.CODEMPIV.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODFILIALIV.ordinal(), ListaCampos.getMasterFilial( "EQINVPROD" ) );
+					//ps.setInt( paramCons.CODFILIALIV.ordinal(), ListaCampos.getMasterFilial( "EQINVPROD" ) );
 					ps.setInt( paramCons.CODPRODIV.ordinal(), iCodProd );
 					ps.setInt( paramCons.CODEMPCP.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODFILIALCP.ordinal(), ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					//ps.setInt( paramCons.CODFILIALCP.ordinal(), ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 					ps.setInt( paramCons.CODPRODCP.ordinal(), iCodProd );
 					ps.setInt( paramCons.CODEMPOP.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODFILIALOP.ordinal(), ListaCampos.getMasterFilial( "PPOP" ) );
+					//ps.setInt( paramCons.CODFILIALOP.ordinal(), ListaCampos.getMasterFilial( "PPOP" ) );
 					ps.setInt( paramCons.CODPRODOP.ordinal(), iCodProd );
 					ps.setInt( paramCons.CODEMPRM.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODFILIALRM.ordinal(), ListaCampos.getMasterFilial( "EQRMA" ) );
+					//ps.setInt( paramCons.CODFILIALRM.ordinal(), ListaCampos.getMasterFilial( "EQRMA" ) );
 					ps.setInt( paramCons.CODPRODRM.ordinal(), iCodProd );
 					ps.setInt( paramCons.CODEMPVD.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODFILIALVD.ordinal(), ListaCampos.getMasterFilial( "VDVENDA" ) );
+					//ps.setInt( paramCons.CODFILIALVD.ordinal(), ListaCampos.getMasterFilial( "VDVENDA" ) );
 					ps.setInt( paramCons.CODPRODVD.ordinal(), iCodProd );
 					rs = ps.executeQuery();
 					bOK = true;
@@ -373,7 +434,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		PreparedStatement ps = null;
 		double dePrecoMovprod = 0;
 		try {
-			sSQL = "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sSQL = "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," + 
+			"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			state( sProd + "Processando dia: " + StringFunctions.sqlDateToStrDate( rs.getDate( 19 ) ) + " Doc: [" + rs.getInt( 20 ) + "]" );
 			ps = con.prepareStatement( sSQL );
 			sCIV = rs.getString( "TIPOPROC" ); // tipo COMPRA, INVENTARIO, VENDA
