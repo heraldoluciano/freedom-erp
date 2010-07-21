@@ -78,6 +78,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
@@ -117,6 +118,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JPanelPad pnCodAcess = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnMedidas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnServico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnLote = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -160,6 +163,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtDescProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtDescAuxProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
@@ -309,6 +314,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtDescTpChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescUnidFat = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -421,6 +428,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JPanelPad pinRodCodAcess = new JPanelPad( 650, 120 );
 
 	private JPanelPad pinMedidas = new JPanelPad( 650, 120 );
+	
+	private JPanelPad pinServico = new JPanelPad( 650, 120 );
 
 	private JPanelPad pinRodLote = new JPanelPad( 650, 120 );
 
@@ -453,6 +462,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private ListaCampos lcGrup = new ListaCampos( this, "GP" );
 
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
+	
+	private ListaCampos lcTipoChamado = new ListaCampos( this, "TC" );
 
 	private ListaCampos lcPrazoEnt = new ListaCampos( this, "PE" );
 
@@ -521,7 +532,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JCheckBoxPad cbCpFatConv = new JCheckBoxPad( "", "S", "N" );
 
 	private enum eprefs {
-		CODMOEDA, PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP
+		CODMOEDA, PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP, TAMDESCPROD
 	};
 
 	private JLabelPad lbUnidFat = null;
@@ -678,6 +689,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCodProdEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
 		txtSeqEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
 		txtCodProdEst.setNomeCampo( "codprodet" );
+		
+		lcTipoChamado.add( new GuardaCampo( txtCodTpChamado, "CodTpChamado", "Cód.Tp.Cham.", ListaCampos.DB_PK, true ) );
+		lcTipoChamado.add( new GuardaCampo( txtDescTpChamado, "DescTpChamado", "Descrição do tipo de chamado", ListaCampos.DB_SI, false ) );
+		lcTipoChamado.montaSql( false, "TIPOCHAMADO", "CR" );
+		lcTipoChamado.setReadOnly( true );
+		lcTipoChamado.setQueryCommit( false );
+		txtCodTpChamado.setTabelaExterna( lcTipoChamado, FTipoChamado.class.getCanonicalName() );
 
 		vValsTipo.addElement( "P" );
 		vValsTipo.addElement( "S" );
@@ -976,6 +994,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtQtdEmbalagem, 7, 100, 110, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );
 		adicCampo( txtCubagem, 120, 100, 110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );
 
+		setListaCampos( true, "PRODUTO", "EQ" );
+
+		// Serviçox
+
+		setPainel( pinServico, pnServico );
+		adicTab( "Serviço", pnServico );
+
+		adicCampo( txtCodTpChamado, 7, 20, 110, 20, "CodTpChamado", "Cód.Tp.Cham.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescTpChamado, 120, 20, 250, 20, "DescTpChamado", "Descrição do tipo de chamado" );
+
+		
 		setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Preço
@@ -1344,6 +1373,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		txtCodProd.requestFocus();
 		btCopiar.addActionListener( this );
+		
+		txtDescProd.iTamanho = Integer.parseInt( sPrefs[eprefs.TAMDESCPROD.ordinal()] );
 
 	}
 
@@ -1455,14 +1486,18 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private String[] getPrefs() {
 
-		String sRetorno[] = new String[ 5 ];
+		String sRetorno[] = new String[ 6 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 
-			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS  " + "FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F, SGPAIS PA " + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP AND " + "F.CODEMP=E.CODEMP AND F.CODFILIAL=? AND " + "PA.CODPAIS=F.CODPAIS";
+			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS, P.TAMDESCPROD " 
+				 + "FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F, SGPAIS PA " 
+				 + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP AND " 
+				 + "F.CODEMP=E.CODEMP AND F.CODFILIAL=? AND " 
+				 + "PA.CODPAIS=F.CODPAIS";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1477,6 +1512,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				sRetorno[ eprefs.TIPOCODBAR.ordinal() ] = rs.getString( "TIPOCODBAR" );
 				sRetorno[ eprefs.CODEANEMP.ordinal() ] = rs.getString( "CODEANEMP" );
 				sRetorno[ eprefs.CODPAISEMP.ordinal() ] = rs.getString( "CODEANPAIS" );
+				sRetorno[ eprefs.TAMDESCPROD.ordinal() ] = rs.getString( "TAMDESCPROD" );
 			}
 
 			rs.close();
@@ -2034,6 +2070,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCodAltProd.setConexao( cn );
 		lcProdAcesso.setConexao( cn );
 		lcProdEstCod.setConexao( cn );
+		lcTipoChamado.setConexao( cn );
 	}
 
 	public void beforePost( PostEvent pevt ) {
