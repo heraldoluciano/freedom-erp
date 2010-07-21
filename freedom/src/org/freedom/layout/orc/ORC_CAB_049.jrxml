@@ -31,7 +31,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(49)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="USUARIO" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["Usuario vazio"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["Usuario não informado"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
