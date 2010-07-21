@@ -475,7 +475,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 				txtCodProd.setBuscaGenProd( new DLCodProd( con, null, null ) );
 			}
 
-			adicCampo( txtCodProd, 55, 20, 70, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProd, false );
+			adicCampo( txtCodProd, 40, 20, 70, 20, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.", ListaCampos.DB_FK, false );
 
 		}
@@ -636,7 +636,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tab.setColunaInvisivel( 12 );
 		tab.setColunaInvisivel( 13 );
 		tab.setColunaInvisivel( 14 );
-		tab.setColunaInvisivel( 15 );
+	//	tab.setColunaInvisivel( 15 );
 
 	}
 
