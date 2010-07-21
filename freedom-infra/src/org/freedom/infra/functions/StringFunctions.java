@@ -56,6 +56,28 @@ public final class StringFunctions {
 
 	}
 
+	public static String properCase(String text) {
+		String ret = text;
+		
+		try {
+			if(text!=null) {
+			
+				if(text.length()>0) {
+					
+					ret = ( (text.charAt(0) + "" ).toUpperCase() ) + text.toLowerCase().substring(1);
+					
+				}
+			
+			
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
 	public static String sqlDateToStrDate(java.sql.Date d) {
 
 		String ret = "";
