@@ -39,6 +39,9 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CIDADEDIAMESANO" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="USUARIO" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["Usuário não informado"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, MC.NOMEMUNIC CIDCLI, C.ENDCLI,
 C.FONECLI, C.FAXCLI, C.BAIRCLI, C.SIGLAUF UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
 O.DTVENCORC, C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
@@ -114,6 +117,9 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 					</subreportParameter>
 					<subreportParameter  name="TITULO">
 						<subreportParameterExpression><![CDATA["PEDIDO N°"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="USUARIO">
+						<subreportParameterExpression><![CDATA[$P{USUARIO}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_CAB_049.jasper"]]></subreportExpression>
