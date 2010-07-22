@@ -787,9 +787,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				System.out.println( "Erro ao buscar pesagens!" );
 			}
 
-			imp.pulaLinha( 0, imp.comprimido() );
+			imp.pulaLinha( 0, imp.comprimido() + " " );
 
-			imp.say( imp.pRow(), 70, txtDescMun.getVlrString().trim() );
+			imp.say( imp.pRow(), 68, txtDescMun.getVlrString().trim() );
 
 			imp.pulaLinha( 3, imp.comprimido() );
 
