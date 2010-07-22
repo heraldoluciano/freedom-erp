@@ -1033,6 +1033,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				if ( "70".equals( txtCodTratTrib.getVlrString() ) ) {
 					rgTipoFisc.setVlrString( "FF" );
 				}
+				else if("51".equals( txtCodTratTrib.getVlrString() )) {
+					rgTipoFisc.setVlrString( "II" );
+				}
 				else {
 					rgTipoFisc.setVlrString( "TT" );
 				}
@@ -1041,7 +1044,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 				rgTpRedIcmsFisc.setAtivo( false );
 				cbRedBaseST.setEnabled( false );
-				txtRedFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
+				txtRedFisc.setVlrBigDecimal( new BigDecimal( 0 ) ); 
 				txtRedFisc.setAtivo( false );
 
 				// Substituição tributária
@@ -1056,8 +1059,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 					if ( "00".equals( txtCodTratTrib.getVlrString() ) ) {
 						rgTipoFisc.setVlrString( "TT" );
 					}
-					// Isento ou não tribut.
-					else if ( "30".equals( txtCodTratTrib.getVlrString() ) || "40".equals( txtCodTratTrib.getVlrString() ) ) {
+					// Isento ou não tribut. ou diferimento integral
+					else if ( "30".equals( txtCodTratTrib.getVlrString() ) || "40".equals( txtCodTratTrib.getVlrString())) {
 						rgTipoFisc.setVlrString( "II" );
 						txtAliqFisc.setVlrBigDecimal( new BigDecimal( 0 ) );
 					}
