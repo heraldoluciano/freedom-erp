@@ -189,6 +189,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
+	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
 	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
 
 	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
@@ -1004,6 +1006,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodTpChamado, 7, 20, 110, 20, "CodTpChamado", "Cód.Tp.Cham.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescTpChamado, 120, 20, 250, 20, "DescTpChamado", "Descrição do tipo de chamado" );
 
+		adicCampo( txtQtdHorasServ, 7, 60, 110, 20, "QtdHorasServ", "Qtd. Horas", ListaCampos.DB_SI, false );
 		
 		setListaCampos( true, "PRODUTO", "EQ" );
 
