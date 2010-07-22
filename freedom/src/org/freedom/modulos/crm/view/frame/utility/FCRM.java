@@ -952,7 +952,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ), null );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
 
 	}
 
@@ -1366,22 +1366,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 
 		carregaAtendimentos();
-	}
-
-	private void novoChamado() {
-
-		FChamado chamado = null;
-
-		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
-			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
-		}
-		else {
-			chamado = new FChamado();
-			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
-		}
-
-		chamado.exec( null, txtCodCli.getVlrInteger() );
-
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
