@@ -188,8 +188,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDBLiv( txaObsChamado, "ObsChamado", "Observações", false );
 
 		adicCampoInvisivel( txtTicket, "Ticket", "Ticket", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtCodItRecMerc, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodItOS, "CodItOS", "Cod.It.OS", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodItRecMerc, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodItOS, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
 		
 		setListaCampos( true, "CHAMADO", "CR" );
 
@@ -341,6 +341,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtDescChamado.setVlrString( descchamado );
 	}
 	
+	public void setDetChamado(String detchamado) {
+		txaDetChamado.setVlrString( detchamado );		
+	}
+	
 	public void setSolicitante(String solicitante) {
 		txtSolicitante.setVlrString( solicitante );
 	}
@@ -350,12 +354,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcAtend.carregaDados();
 	}
 	
-	public void setPrioridade(String prioridade) {
-		cbPrioridade.setVlrString( prioridade );
+	public void setPrioridade(Integer prioridade) {
+		cbPrioridade.setVlrInteger( prioridade );
 	}
 	
 	public void setCodTpChamado(Integer codtpchamado) {
+		cbTpChamado.setVlrInteger( codtpchamado );
 		txtCodTpChamado.setVlrInteger( codtpchamado );
+		
 		lcTipoChamado.carregaDados();
 	}
 	
