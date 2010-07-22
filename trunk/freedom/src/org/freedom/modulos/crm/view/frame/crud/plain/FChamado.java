@@ -26,6 +26,7 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -129,6 +130,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcItRecMercItOS = new ListaCampos( this, "OS" );
+
+	private FDados telanterior = null;
 	
 	public FChamado() {
 
@@ -187,6 +190,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", false );
 		adicDBLiv( txaObsChamado, "ObsChamado", "Observações", false );
 
+//		adicCampo( txtTicket, 432, 140, 80, 20, "Ticket", "Ticket", ListaCampos.DB_FK, false );
+//		adicCampo( txtCodItRecMerc, 515, 140, 80, 20, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
+//		adicCampo( txtCodItOS, 598, 140, 80, 20, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
+		
 		adicCampoInvisivel( txtTicket, "Ticket", "Ticket", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItRecMerc, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItOS, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
@@ -236,6 +243,15 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcAtend.setReadOnly( true );
 
 		// FK para Item de Ordem de serviço
+		txtTicket.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
+		txtCodItRecMerc.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
+		txtCodItOS.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
+		
+		txtTicket.setFK( true );
+		txtCodItRecMerc.setFK( true );
+		txtCodItOS.setFK( true );
+//		txtCodAtend.setNomeCampo( "CodAtend" );
+
 		lcItRecMercItOS.add( new GuardaCampo( txtTicket, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
 		lcItRecMercItOS.add( new GuardaCampo( txtCodItRecMerc, "CodItRecMerc", "Cod.it.rec.merc.", ListaCampos.DB_PK, false ) );
 		lcItRecMercItOS.add( new GuardaCampo( txtCodItOS, "CodItOS", "Cod.it.OS", ListaCampos.DB_PK, false ) );
@@ -383,5 +399,22 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtCodItOS.setVlrInteger( coditos );
 		lcItRecMercItOS.carregaDados();
 	}
+	
+	public void setTelaAnterior(FDados telaant) {
+		this.telanterior = telaant;
+	}
+	
+	public void actionPerformed( ActionEvent evt ) {
+
+		if ( evt.getSource() == btSair ) {
+			if(telanterior!=null) {
+				telanterior.lcCampos.carregaDados();
+			}
+		}
+
+		super.actionPerformed( evt );
+
+	}
+
 	
 }
