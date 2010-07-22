@@ -27,6 +27,7 @@ package org.freedom.modulos.crm.view.frame.crud.plain;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -86,6 +87,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -121,6 +128,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
+	private ListaCampos lcItRecMercItOS = new ListaCampos( this, "OS" );
+	
 	public FChamado() {
 
 		super();
@@ -178,6 +187,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", false );
 		adicDBLiv( txaObsChamado, "ObsChamado", "Observações", false );
 
+		adicCampoInvisivel( txtTicket, "Ticket", "Ticket", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodItRecMerc, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodItOS, "CodItOS", "Cod.It.OS", ListaCampos.DB_SI, false );
+		
 		setListaCampos( true, "CHAMADO", "CR" );
 
 		panelGeral.add( panelDetalhamento, BorderLayout.CENTER );
@@ -222,6 +235,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setReadOnly( true );
 
+		// FK para Item de Ordem de serviço
+		lcItRecMercItOS.add( new GuardaCampo( txtTicket, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
+		lcItRecMercItOS.add( new GuardaCampo( txtCodItRecMerc, "CodItRecMerc", "Cod.it.rec.merc.", ListaCampos.DB_PK, false ) );
+		lcItRecMercItOS.add( new GuardaCampo( txtCodItOS, "CodItOS", "Cod.it.OS", ListaCampos.DB_PK, false ) );
+		lcItRecMercItOS.montaSql( false, "ITRECMERCITOS", "EQ" );
+		lcItRecMercItOS.setReadOnly( true );
+
+		
 	}
 
 	private void montaCombos() {
@@ -235,20 +256,15 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
-	public void exec( Integer codchamado, Integer codcli ) {
+
+	
+	public void exec( Integer codchamado ) {
 
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
 		}
-		else if ( codcli != null ) {
-			lcCampos.insert( true );
-			txtCodCli.setVlrInteger( codcli );
-			lcCli.carregaDados();
-		}
-		else {
-			lcCampos.insert( true );
-		}
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -258,7 +274,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcCli.setConexao( cn );
 		lcTipoChamado.setConexao( cn );
 		lcAtend.setConexao( cn );
-
+		lcItRecMercItOS.setConexao( cn );
+		
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
@@ -311,4 +328,54 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
+	public void novo() {
+		lcCampos.insert( true );
+	}
+	
+	public void setCodCli(Integer codcli) {
+		txtCodCli.setVlrInteger( codcli );
+		lcCli.carregaDados();
+	}
+	
+	public void setDescChamado(String descchamado) {
+		txtDescChamado.setVlrString( descchamado );
+	}
+	
+	public void setSolicitante(String solicitante) {
+		txtSolicitante.setVlrString( solicitante );
+	}
+	
+	public void setCodAtend(Integer codatend) {
+		txtCodAtend.setVlrInteger( codatend );
+		lcAtend.carregaDados();
+	}
+	
+	public void setPrioridade(String prioridade) {
+		cbPrioridade.setVlrString( prioridade );
+	}
+	
+	public void setCodTpChamado(Integer codtpchamado) {
+		txtCodTpChamado.setVlrInteger( codtpchamado );
+		lcTipoChamado.carregaDados();
+	}
+	
+	public void setDtChamado(Date dtchamado) {
+		txtDtChamado.setVlrDate( dtchamado );
+	}
+	
+	public void setDtPrevisao(Date dtprevisao) {
+		txtDtPrevisao.setVlrDate( dtprevisao );
+	}
+	
+	public void setQtdHorasPrevisao(BigDecimal qtdhorasprevisao) {
+		txtQtdHorasPrev.setVlrBigDecimal( qtdhorasprevisao );
+	}
+	
+	public void setItOS(Integer ticket, Integer coditrecmerc, Integer coditos) {
+		txtTicket.setVlrInteger( ticket );
+		txtCodItRecMerc.setVlrInteger( coditrecmerc );
+		txtCodItOS.setVlrInteger( coditos );
+		lcItRecMercItOS.carregaDados();
+	}
+	
 }
