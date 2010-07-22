@@ -1409,9 +1409,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			
 			chamado.setCodCli( txtCodCli.getVlrInteger() );
 			chamado.setDescChamado( txtDescProdItOS.getVlrString() );
+			chamado.setDetChamado( txaObsItOS.getVlrString() );
 			chamado.setSolicitante( txtSolicitante.getVlrString() );
 			chamado.setCodAtend( txtCodAtend.getVlrInteger() );
-			chamado.setPrioridade( (String) Prioridade.MEDIA.getValue() );
+			chamado.setPrioridade( (Integer) Prioridade.MEDIA.getValue() );
 			chamado.setCodTpChamado( txtCodTpChamado.getVlrInteger() );
 			chamado.setDtChamado( txtDtEnt.getVlrDate() );
 			chamado.setDtPrevisao( txtDtPrevRet.getVlrDate() );
