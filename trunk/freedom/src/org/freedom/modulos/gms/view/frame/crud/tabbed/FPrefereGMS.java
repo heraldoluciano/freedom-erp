@@ -28,6 +28,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -71,13 +72,17 @@ public class FPrefereGMS extends FTabDados {
 	private JTextFieldPad txtCodTipoRecMercOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoRecMercOS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JCheckBoxPad cbGeraChamadoOS = new JCheckBoxPad("Gera chamado a partir de OS.", "S", "N");
 
 	/****************
 	 * Paineis *
 	 ****************/
 
-	private JPanelPad pinGeral = new JPanelPad( 330, 200 );
+	private JPanelPad pinGeral = new JPanelPad();
 
+	private JPanelPad pinOS = new JPanelPad();
+	
 	public FPrefereGMS() {
 
 		super();
@@ -157,16 +162,21 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercCM.setFK( true );
 		txtCodTipoRecMercCM.setNomeCampo( "CodTipoRecMerc" );
 
-		adicCampo( txtCodTipoRecMercOS, 7, 100, 70, 20, "CodTipoRecMercOS", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercOS, false );
-		adicDescFK( txtDescTipoRecMercOS, 80, 100, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
-		txtCodTipoRecMercOS.setFK( true );
-		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
-
-		adicCampo( txtCodTipoMovTC, 7, 140, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
-		adicDescFK( txtDescTipoMovTC, 80, 140, 330, 20, "DescTipoMov", "Tipo de movimento padrão para compra" );
+		adicCampo( txtCodTipoMovTC, 7, 100, 70, 20, "CodTipoMovTC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovTC, false );
+		adicDescFK( txtDescTipoMovTC, 80, 100, 330, 20, "DescTipoMov", "Tipo de movimento padrão para compra" );
 		txtCodTipoMovTC.setFK( true );
 		txtCodTipoMovTC.setNomeCampo( "CodTipoMov" );
 
+		setPainel( pinOS );
+		adicTab( "Ordem de serviço", pinOS );
+
+		adicCampo( txtCodTipoRecMercOS, 7, 20, 70, 20, "CodTipoRecMercOS", "Cód.Tp.Rec.", ListaCampos.DB_FK, txtDescTipoRecMercOS, false );
+		adicDescFK( txtDescTipoRecMercOS, 80, 20, 330, 20, "DescTipoRecMerc", "Tipo de recebimento padrão para Ordem de Serviço" );
+		txtCodTipoRecMercOS.setFK( true );
+		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
+		
+		adicDB( cbGeraChamadoOS, 60, 7, 200, 20, "GeraChamadoOS", "", true );
+		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
