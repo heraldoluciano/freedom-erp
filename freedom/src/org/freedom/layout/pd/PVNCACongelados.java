@@ -38,7 +38,8 @@ public class PVNCACongelados extends Leiaute {
 
 		boolean bRetorno;
 		boolean bRec = false;
-		final int casaDecFin = Aplicativo.casasDecFin;
+		final int casasDecFin = Aplicativo.casasDecFin;
+		final int casasDecPre = Aplicativo.casasDecPre;
 		final int maxLine = 27;
 		int iLinha;
 		int contItem = 0;
@@ -119,15 +120,15 @@ public class PVNCACongelados extends Leiaute {
 				}
 
 				iQtdItem += rs.getInt( "QTDITVENDA" );
-				bdTotalItem = bdTotalItem.add( new BigDecimal( rs.getFloat( "VLRLIQITVENDA" ) ).divide( new BigDecimal( 1 ), casaDecFin, BigDecimal.ROUND_HALF_UP ) );
+				bdTotalItem = bdTotalItem.add( new BigDecimal( rs.getFloat( "VLRLIQITVENDA" ) ).divide( new BigDecimal( 1 ), casasDecFin, BigDecimal.ROUND_HALF_UP ) );
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 1, "|" + ( Funcoes.alinhaCentro( rs.getInt( "QTDITVENDA" ), 8 ) ) );
 				imp.say( 12, "| " + ( rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ).substring( 0, 4 ) : "" ) );
 				imp.say( 19, "| " + ( rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ).trim() : "" ) );
 				imp.say( 96, ( Funcoes.alinhaDir( rs.getInt( "CODPROD" ), 8 ) ) );
-				imp.say( 105, "| " + Funcoes.strDecimalToStrCurrency( 12, casaDecFin, ( rs.getString( "PRECOITVENDA" ) != null ? rs.getString( "PRECOITVENDA" ).trim() : "" ) ) );
-				imp.say( 120, "| " + Funcoes.strDecimalToStrCurrency( 13, casaDecFin, ( rs.getString( "VLRLIQITVENDA" ) != null ? rs.getString( "VLRLIQITVENDA" ).trim() : "" ) ) );
+				imp.say( 105, "| " + Funcoes.strDecimalToStrCurrency( 12, casasDecPre, ( rs.getString( "PRECOITVENDA" ) != null ? rs.getString( "PRECOITVENDA" ).trim() : "" ) ) );
+				imp.say( 120, "| " + Funcoes.strDecimalToStrCurrency( 13, casasDecPre, ( rs.getString( "VLRLIQITVENDA" ) != null ? rs.getString( "VLRLIQITVENDA" ).trim() : "" ) ) );
 				imp.say( 135, " |" );
 
 				contItem++;
@@ -164,7 +165,7 @@ public class PVNCACongelados extends Leiaute {
 					else
 						imp.say( 105, "| Total :" );
 
-					imp.say( 122, Funcoes.strDecimalToStrCurrency( 13, casaDecFin, bdTotalItem.toString() ) );
+					imp.say( 122, Funcoes.strDecimalToStrCurrency( 13, casasDecFin, bdTotalItem.toString() ) );
 					imp.say( 135, " |" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 1, "|" + StringFunctions.replicate( "-", 9 ) + "+" );
