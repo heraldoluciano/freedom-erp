@@ -11,18 +11,18 @@ No nosso caso são criados os procedimentos: AddUser, CheckUser, ChangePassword 
 
 = Details =
 
-"1. Baixe o projeto Freedom-ERP;
-2. Os arquivos de instalação da UDF são encontrados na pasta
+"# Baixe o projeto Freedom-ERP;
+# Os arquivos de instalação da UDF são encontrados na pasta
 src.org.freedom.udf e são específicos para as plataformas Windows e
 Linux ;
-3. Copie os arquivos stp_udf_win.sql, stp_udf.dll e udfinstall.bat
+# Copie os arquivos stp_udf_win.sql, stp_udf.dll e udfinstall.bat
 (Windows) para a sub-pasta UDF do Firebird (exemplo:
 c:\opt\firebird\UDF). Copie os arquivos stp_udf_lin.sql, stp_udf.so e
 udfinstall.sh (Linux) para a sub-pasta UDF do Firebird (exemplo:
 /opt/firebird/UDF) ;
-4. Execute o script de instalação udfinstall.bat (Windows) ou
+# Execute o script de instalação udfinstall.bat (Windows) ou
 udfinstall.sh (Linux);
-5. Caso você tenha instalado o Firebird em outra pasta, altere o
+# Caso você tenha instalado o Firebird em outra pasta, altere o
 script de instalação para apontar para a pasta correta."
 
 texto adaptado de citação Robson Sanchez em http://groups.google.com/group/freedomerp/browse_thread/thread/3da6eee156e31e28
