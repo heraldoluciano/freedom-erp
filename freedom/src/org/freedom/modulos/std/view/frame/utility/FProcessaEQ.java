@@ -152,24 +152,27 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Integer> vProds = null;
+		
 		if ( iUltProd > 0 ) {
 			if ( Funcoes.mensagemConfirma( null, "Gostaria de continuar a partir do produto '" + iUltProd + "'?" ) != JOptionPane.YES_OPTION )
 				iUltProd = 0;
 		}
 		try {
-			sSQL = "SELECT CODPROD FROM EQPRODUTO " + 
-			   "WHERE " 
-			   + ( cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND" : "" ) + 
-			   "  AND CODEMP=? AND CODPROD>=?" + 
-			   " ORDER BY CODPROD";
+			sSQL = "SELECT CODPROD FROM EQPRODUTO WHERE " 
+			   + ( cbAtivo.getVlrString().equals( "S" ) ? "ATIVOPROD='S' AND" : "" ) 
+			   + " CODEMP=? AND CODPROD>=?" 
+			   + " ORDER BY CODPROD";
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, iUltProd );
 			rs = ps.executeQuery();
 			vProds = new Vector<Integer>();
+			
 			while ( rs.next() ) {
 				vProds.addElement( new Integer( rs.getInt( "CodProd" ) ) );
 			}
+			
 			rs.close();
 			ps.close();
 			con.commit();
