@@ -2816,7 +2816,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			impostos.setTipotransacao( CalcImpostos.TRANSACAO_ENTRADA );
 			impostos.setCoddestinatario( txtCodFor.getVlrInteger() );
 			impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
-
+			impostos.setCodfisc(null );
+			impostos.setCoditfisc( null );
+			
 			impostos.calcTratTrib();
 
 			// txtOrigFisc.setVlrString( impostos.getOrigfisc() );
