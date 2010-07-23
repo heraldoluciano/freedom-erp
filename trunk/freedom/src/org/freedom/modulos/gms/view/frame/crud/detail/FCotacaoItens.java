@@ -77,6 +77,8 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
+	private int casasDecPre = Aplicativo.casasDecPre;
+	
 	private JPanelPad pinCab = new JPanelPad( 740, 242 );
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 92 );
@@ -147,7 +149,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 	private JTextFieldPad txtQtdCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtPrecoCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtPrecoCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 

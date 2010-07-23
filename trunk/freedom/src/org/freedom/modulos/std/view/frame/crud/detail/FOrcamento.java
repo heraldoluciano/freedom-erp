@@ -1104,7 +1104,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void calcDescIt() {
 
 		if ( txtPercDescItOrc.floatValue() > 0 ) {
-			txtVlrDescItOrc.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( txtVlrProdItOrc.floatValue() * txtPercDescItOrc.floatValue() / 100, casasDecFin ) ) );
+			txtVlrDescItOrc.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( txtVlrProdItOrc.floatValue() * txtPercDescItOrc.floatValue() / 100, casasDecPre ) ) );
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
 		}
 		else if ( txtVlrDescItOrc.floatValue() == 0 ) {
@@ -1120,7 +1120,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			BigDecimal vlrdesc = txtVlrDescItOrc.getVlrBigDecimal();
 			BigDecimal vlrprod = txtVlrProdItOrc.getVlrBigDecimal();
 
-			txtPercDescItOrc.setVlrBigDecimal( ( vlrdesc.multiply( cem ) ).divide( vlrprod, casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+			txtPercDescItOrc.setVlrBigDecimal( ( vlrdesc.multiply( cem ) ).divide( vlrprod, casasDecPre, BigDecimal.ROUND_HALF_UP ) );
 
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
 		}

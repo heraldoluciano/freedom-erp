@@ -71,6 +71,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
+	private int casasDecPre = Aplicativo.casasDecPre;
+	
 	private JTextFieldPad txtCodInv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -87,7 +89,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
 	private JTextFieldPad txtQtdInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtPrecoInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtPrecoInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtSldAtualInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 

@@ -58,6 +58,8 @@ public abstract class FVD extends FDetalhe {
 
 	protected int casasDecFin = Aplicativo.casasDecFin;
 
+	protected int casasDecPre = Aplicativo.casasDecPre;
+	
 	protected CalcImpostos impostos = new CalcImpostos();
 
 	/**
@@ -477,19 +479,19 @@ public abstract class FVD extends FDetalhe {
 
 					bdQtdItem = vQtdItem.elementAt( i );
 					bdBuscaPreco = buscaPreco( iParans );
-					bdPrecoProd = vPrecoProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+					bdPrecoProd = vPrecoProd.elementAt( i ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP );
 
 					// se o preço for diferente altera.
 					if ( bdPrecoProd.floatValue() != bdBuscaPreco.floatValue() ) {
 
-						bdPercDescProd = vPercDescProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+						bdPercDescProd = vPercDescProd.elementAt( i ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP );
 						bdVlrBrutoProd = calcVlrProd( bdBuscaPreco, bdQtdItem );
 
 						if ( bdPercDescProd.floatValue() > 0 ) {
-							bdDescProd = ( bdVlrBrutoProd.multiply( bdPercDescProd ).divide( new BigDecimal( 100 ), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+							bdDescProd = ( bdVlrBrutoProd.multiply( bdPercDescProd ).divide( new BigDecimal( 100 ), Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
 						}
 						else {
-							bdDescProd = vDescProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+							bdDescProd = vDescProd.elementAt( i ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP );
 						}
 
 						bdVlrLiqProd = impostos.calcVlrTotalProd( bdVlrBrutoProd, bdDescProd );
@@ -556,7 +558,7 @@ public abstract class FVD extends FDetalhe {
 	 */
 	protected BigDecimal calcVlrProd( BigDecimal arg0, BigDecimal arg1 ) {
 
-		BigDecimal bdRetorno = arg0.multiply( arg1 ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		BigDecimal bdRetorno = arg0.multiply( arg1 ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP );
 		return bdRetorno;
 	}
 

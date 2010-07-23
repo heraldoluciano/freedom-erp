@@ -105,6 +105,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
+	private int casasDecPre = Aplicativo.casasDecPre;
+	
 	private JPanelPad pinGeral = new JPanelPad();
 
 	private JPanelPad pnFatConv = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -203,17 +205,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtLocalProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
-	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtSldProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtSldAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -231,7 +233,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtUnidFat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -277,7 +279,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtSeqPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

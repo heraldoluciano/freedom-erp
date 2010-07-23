@@ -32,6 +32,7 @@ public class Layout extends Object {
 	protected TabVector frete = null;
 	protected int casasDec = Aplicativo.casasDec;
 	protected int casasDecFin = Aplicativo.casasDecFin;
+	protected int casasDecPre = Aplicativo.casasDecPre;
 
 	public Layout() {
 	}

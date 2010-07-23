@@ -230,6 +230,7 @@ public class NF {
 
 	protected int casasDec = Aplicativo.casasDec;
 	protected int casasDecFin = Aplicativo.casasDecFin;
+	protected int casasDecPre = Aplicativo.casasDecPre;
 
 	private DbConnection con = null;
 
@@ -254,6 +255,10 @@ public class NF {
 		return casasDecFin;
 	}
 
+	public int getCasasDecPre() {
+		return casasDecPre;
+	}
+	
 	public int getTipoNF() {
 		return tipoNF;
 	}

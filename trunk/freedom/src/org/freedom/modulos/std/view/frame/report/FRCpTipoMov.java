@@ -386,7 +386,7 @@ public class FRCpTipoMov extends FRelatorio {
 				/*
 				 * }
 				 */
-				imp.say( imp.pRow(), 117, "| " + Funcoes.strDecimalToStrCurrency( 10, Aplicativo.casasDecFin, ( rs.getString( "VLRLIQITCOMPRA" ) != null ? rs.getString( "VLRLIQITCOMPRA" ) : "" ) ) );
+				imp.say( imp.pRow(), 117, "| " + Funcoes.strDecimalToStrCurrency( 10, Aplicativo.casasDecPre, ( rs.getString( "VLRLIQITCOMPRA" ) != null ? rs.getString( "VLRLIQITCOMPRA" ) : "" ) ) );
 				imp.say( imp.pRow(), 135, "|" );
 
 				bTotal = bTotal.add( rs.getBigDecimal( "VLRLIQITCOMPRA" ) );
@@ -399,7 +399,7 @@ public class FRCpTipoMov extends FRelatorio {
 			imp.say( imp.pRow(), 0, "| " );
 			imp.say( imp.pRow(), 44, "TOTAL" );
 			imp.say( imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, bQtdtot.toString() ) );
-			imp.say( imp.pRow(), 117, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, bTotal.toString() ) );
+			imp.say( imp.pRow(), 117, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, bTotal.toString() ) );
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );

@@ -94,6 +94,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
+	private int casasDecPre = Aplicativo.casasDecPre;
+	
 	private JPanelPad pinCab = new JPanelPad( 740, 242 );
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 92 );
@@ -130,13 +132,13 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JTextFieldPad txtQtdItRma = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtQtdAprovRma = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtQtdExpRma = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtPrecoItRma = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtPrecoItRma = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

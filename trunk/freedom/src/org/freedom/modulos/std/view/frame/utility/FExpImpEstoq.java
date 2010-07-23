@@ -518,7 +518,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 		con.commit();
 
-		return custo.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		return custo.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP );
 	}
 
 	private Integer getAlmoxarifado( final Integer codprod ) throws Exception {
@@ -711,7 +711,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 		con.commit();
 
-		return saldoAtual.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		return saldoAtual.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
 	}
 
 	private void showInvalidos() {
