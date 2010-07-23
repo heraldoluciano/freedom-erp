@@ -17,6 +17,6 @@ No nosso caso são criados os procedimentos: AddUser, CheckUser, ChangePassword 
  # Execute o script de instalação udfinstall.bat (Windows) ou udfinstall.sh (Linux);
  # Caso você tenha instalado o Firebird em outra pasta, altere o script de instalação para apontar para a pasta correta."
 
-texto adaptado de citação Robson Sanchez em http://groups.google.com/group/freedomerp/browse_thread/thread/3da6eee156e31e28
+Texto adaptado de citação Robson Sanchez em http://groups.google.com/group/freedomerp/browse_thread/thread/3da6eee156e31e28
 
 Referencias externas: http://www.firebase.com.br/fb/artigo.php?id=236
