@@ -322,7 +322,7 @@ public class FRVendasCliProd extends FRelatorio {
 				imp.say( 44, "|" );
 				imp.say( 46, Funcoes.copy( rs.getString( "DESCPROD" ).trim(), 0, 41 ) );
 				imp.say( 88, "|" );
-				imp.say( 90, rs.getBigDecimal( "PRECOVENDA" ) != null ? Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "PRECOVENDA" ) ) ) : "" );
+				imp.say( 90, rs.getBigDecimal( "PRECOVENDA" ) != null ? Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecPre, String.valueOf( rs.getBigDecimal( "PRECOVENDA" ) ) ) : "" );
 				imp.say( 107, "|" );
 				imp.say( 109, rs.getDate( "DTEMITVENDA" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITVENDA" ) ) : "" );
 				imp.say( 120, "|" );

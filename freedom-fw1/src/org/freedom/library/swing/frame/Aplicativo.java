@@ -76,6 +76,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int casasDec = 2;
 
 	public static int casasDecFin = 2;
+	
+	public static int casasDecPre = 2;
 
 	public DbConnection con = null; // Variavel de conexao com o banco de dados
 

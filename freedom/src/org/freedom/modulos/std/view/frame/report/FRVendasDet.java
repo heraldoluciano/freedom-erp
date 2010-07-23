@@ -399,8 +399,8 @@ public class FRVendasDet extends FRelatorio {
 						imp.say( 0, "|" );
 						imp.say( 44, " Totais da venda: " );
 						imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtd.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
-						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
-						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
 						imp.say( 124, "|" );
 						imp.say( 135, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -447,9 +447,9 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 16, "| " + Funcoes.copy( rs.getString( "DescProd" ), 34 ) );
 				imp.say( 54, "| " + Funcoes.copy( rs.getString( "CodLote" ), 13 ) );
 				imp.say( 69, "| " + rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
-				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "PrecoItVenda" ) ) ) );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "VlrDescItVenda" ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "VlrLiqItVenda" ) ) ) );
+				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( rs.getBigDecimal( "PrecoItVenda" ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( rs.getBigDecimal( "VlrDescItVenda" ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( rs.getBigDecimal( "VlrLiqItVenda" ) ) ) );
 				imp.say( 124, "| " + ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
 				imp.say( 135, "|" );
 
@@ -458,12 +458,12 @@ public class FRVendasDet extends FRelatorio {
 					bQtdTot = bQtdTot.add( rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
 				}
 				if ( rs.getBigDecimal( "VlrLiqItVenda" ) != null ) {
-					bVlrLiq = bVlrLiq.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
-					bVlrLiqTot = bVlrLiqTot.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+					bVlrLiq = bVlrLiq.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
+					bVlrLiqTot = bVlrLiqTot.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
 				}
 				if ( rs.getBigDecimal( "VlrDescItVenda" ) != null ) {
-					bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
-					bVlrDescTot = bVlrDescTot.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+					bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
+					bVlrDescTot = bVlrDescTot.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
 				}
 				iCodVendaAnt = rs.getInt( "CodVenda" );
 			}
@@ -475,8 +475,8 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 0, "|" );
 				imp.say( 44, " Totais da venda: " );
 				imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtd.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
@@ -487,8 +487,8 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 0, "|" );
 				imp.say( 44, " TOTAL GERAL : " );
 				imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtdTot.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDescTot.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiqTot.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrDescTot.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecPre, String.valueOf( bVlrLiqTot.setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );

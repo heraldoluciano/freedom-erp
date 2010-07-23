@@ -194,6 +194,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldPad txtCasasDecFin = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 1, 0);
 
+	private JTextFieldPad txtCasasDecPre = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 1, 0);
+	
 	private JTextFieldPad txtPercPrecoCusto = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
@@ -1008,12 +1010,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
 
-		adic(pinCentrosdecustoGeral, 7, 10, 170, 125);
-		adic(pinCasasDecGeral, 180, 10, 167, 125);
-		adic(pinValidacoesGeral, 350, 10, 340, 125);
+		adic(pinCentrosdecustoGeral, 7, 10, 170, 155);
+		adic(pinCasasDecGeral, 180, 10, 167, 155);
+		adic(pinValidacoesGeral, 350, 10, 340, 155);
 
-		adic(pinOpcoesGeral, 7, 140, 340, 150);
-		adic(pinConsistenciasGeral, 350, 140, 340, 150);
+		adic(pinOpcoesGeral, 7, 170, 340, 150);
+		adic(pinConsistenciasGeral, 350, 170, 340, 150);
 
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel("Centro de custo", Color.BLUE));
 		pinCasasDecGeral.setBorder(SwingParams.getPanelLabel("Casas decimais", Color.BLUE));
@@ -1029,6 +1031,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicCampo(txtCasasDecFin, 7, 15, 110, 20, "CasasDecFin", "Financeiro", ListaCampos.DB_SI, true);
 		adicCampo(txtCasasDec, 7, 55, 110, 20, "CasasDec", "Geral", ListaCampos.DB_SI, true);
+		adicCampo(txtCasasDecPre, 7, 95, 110, 20, "CasasDecPre", "Preço", ListaCampos.DB_SI, true);
 
 		setPainel(pinOpcoesGeral);
 

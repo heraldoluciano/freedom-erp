@@ -76,6 +76,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private int casasDecFin = Aplicativo.casasDecFin;
 
+	private int casasDecPre = Aplicativo.casasDecPre;
+	
 	private JPanelPad pinCab = new JPanelPad( 750, 242 );
 
 	private JPanelPad pinBotCab = new JPanelPad();
@@ -158,7 +160,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private JTextFieldPad txtQtdAprovCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtPrecoCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtPrecoCot = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -166,15 +168,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private JTextFieldPad txtCodCCUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
-	private JTextFieldPad txtVlrFreteItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtVlrFreteItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtPercIpiItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, casasDec );
 
-	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtVlrBaseIpiItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtVlrBaseIpiItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtVlrIpiItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecFin );
+	private JTextFieldPad txtVlrIpiItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextAreaPad txaMotivoCancCot = new JTextAreaPad();
 

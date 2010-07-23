@@ -395,7 +395,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC,CASASDECFIN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDEC, CASASDECFIN, CASASDECPRE FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -403,6 +403,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
 				casasDecFin = rs.getInt("CASASDECFIN");
+				casasDecPre = rs.getInt("CASASDECPRE");
 			}
 
 			rs.close();

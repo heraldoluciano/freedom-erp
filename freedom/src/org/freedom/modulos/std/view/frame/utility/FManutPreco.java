@@ -125,7 +125,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 	private Vector<String> vSelOperador = new Vector<String>();
 
 	private int iCasasDec = 0;
-
+	
 	public FManutPreco() {
 
 		super( false );
@@ -324,15 +324,15 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDECPRE FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			try {
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
 				rs = ps.executeQuery();
 				if ( rs.next() ) {
-					if ( rs.getString( "CASASDEC" ) != null ) {
-						iRetorno = rs.getInt( "CASASDEC" );
+					if ( rs.getString( "CASASDECPRE" ) != null ) {
+						iRetorno = rs.getInt( "CASASDECPRE" );
 					}
 				}
 				rs.close();

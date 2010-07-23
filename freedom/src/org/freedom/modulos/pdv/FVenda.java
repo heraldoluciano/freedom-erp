@@ -87,6 +87,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private static final int CASAS_DEC_FIN = Aplicativo.casasDecFin;
 
+	private static final int CASAS_DEC_PRE = Aplicativo.casasDecPre;
+	
 	private final StatusBar sbVenda = new StatusBar( new BorderLayout() );
 
 	private final JPanelPad pnStatusBar = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -169,21 +171,21 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtQtdade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_FIN );
+	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtBaseCalc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtBaseCalc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
 	private final JTextFieldPad txtAliqIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 2 );
 
-	private final JTextFieldPad txtTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtValorIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtValorIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtBaseCalc1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtBaseCalc1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtValorIcms1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtValorIcms1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
 	private final JTextFieldPad txtNumeroCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -191,9 +193,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtQtdadeItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC );
 
-	private final JTextFieldPad txtValorTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtValorTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtValorTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
+	private final JTextFieldPad txtValorTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_PRE );
 
 	private final JTextFieldPad txtTelaAdicPDV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -201,9 +203,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, CASAS_DEC_FIN );
+	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
+	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_PRE );
 
 	private final JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -1235,7 +1237,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						txtCodProd1.setVlrString( rs2.getString( "codprod" ) );
 						txtDescProd.setVlrString( rs2.getString( "descprod" ) );
 						txtQtdadeItem.setVlrBigDecimal( rs2.getBigDecimal( "qtditvenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
-						txtValorTotalItem.setVlrBigDecimal( rs2.getBigDecimal( "vlrliqitvenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+						txtValorTotalItem.setVlrBigDecimal( rs2.getBigDecimal( "vlrliqitvenda" ).setScale( Aplicativo.casasDecPre, BigDecimal.ROUND_HALF_UP ) );
 					}
 
 					ret = false;
@@ -1820,7 +1822,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 				if ( rs.next() ) {
 					retorno[ 0 ] = rs.getBigDecimal( "COMISPROD" ) != null ? rs.getBigDecimal( "COMISPROD" ) : new BigDecimal( "0.00" );
-					retorno[ 1 ] = ( retorno[ 0 ].multiply( txtPreco.getVlrBigDecimal() ) ).divide( new BigDecimal( 100 ), AplicativoPDV.casasDecFin, BigDecimal.ROUND_HALF_UP );
+					retorno[ 1 ] = ( retorno[ 0 ].multiply( txtPreco.getVlrBigDecimal() ) ).divide( new BigDecimal( 100 ), AplicativoPDV.casasDecPre, BigDecimal.ROUND_HALF_UP );
 				}
 
 				rs.close();
