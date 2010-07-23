@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ORC_PD_02"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(6)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALPF" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1122)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIDADEDIAMESANO" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
+C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
+O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
+(CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
+(CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
+CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV,E.ENDEMP,E.NUMEMP,E.FONEEMP,E.CEPEMP,
+E.BAIREMP,E.CIDEMP,E.UFEMP,V.NOMEVEND
+FROM  VDCLIENTE C, FNPLANOPAG PP, SGEMPRESA E, SGPREFERE1 P1, VDVENDEDOR V, VDORCAMENTO O
+LEFT OUTER JOIN ATCONVENIADO CV ON 
+O.CODEMPCV=CV.CODEMP AND O.CODFILIALCV=CV.CODFILIAL AND O.CODCONV=CV.CODCONV
+LEFT OUTER JOIN ATTIPOCONV TC ON 
+TC.CODEMP=O.CODEMPTC AND TC.CODFILIAL=O.CODFILIALTC AND TC.CODTPCONV=O.CODTPCONV
+WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=$P{CODORC} AND
+C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI AND
+PP.CODEMP=O.CODEMPPG AND PP.CODFILIAL=O.CODFILIALPG AND
+PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP AND
+V.CODEMP=O.CODEMPVD AND V.CODFILIAL=O.CODFILIALVD AND V.CODVEND=O.CODVEND AND 
+P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
+
+	<field name="CODCLI" class="java.lang.Long"/>
+	<field name="OBSORC" class="java.lang.String"/>
+	<field name="PRAZOENTORC" class="java.lang.Short"/>
+	<field name="CIDCLI" class="java.lang.String"/>
+	<field name="ENDCLI" class="java.lang.String"/>
+	<field name="FONECLI" class="java.lang.String"/>
+	<field name="BAIRCLI" class="java.lang.String"/>
+	<field name="UFCLI" class="java.lang.String"/>
+	<field name="DDDCLI" class="java.lang.String"/>
+	<field name="NUMCLI" class="java.lang.Long"/>
+	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="CODORC" class="java.lang.Long"/>
+	<field name="DTORC" class="java.sql.Date"/>
+	<field name="DTVENCORC" class="java.sql.Date"/>
+	<field name="DESCPLANOPAG" class="java.lang.String"/>
+	<field name="RAZEMP" class="java.lang.String"/>
+	<field name="CONTCLI" class="java.lang.String"/>
+	<field name="USANOMEVENDORC" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
+	<field name="NOMEASS" class="java.io.InputStream"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
+	<field name="CODCONV" class="java.lang.Long"/>
+	<field name="NOMECONV" class="java.lang.String"/>
+	<field name="CODTPCONV" class="java.lang.Long"/>
+	<field name="DESCTPCONV" class="java.lang.String"/>
+	<field name="ENDEMP" class="java.lang.String"/>
+	<field name="NUMEMP" class="java.lang.Long"/>
+	<field name="FONEEMP" class="java.lang.String"/>
+	<field name="CEPEMP" class="java.lang.String"/>
+	<field name="BAIREMP" class="java.lang.String"/>
+	<field name="CIDEMP" class="java.lang.String"/>
+	<field name="UFEMP" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="38"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="5"
+						y="3"
+						width="527"
+						height="35"
+						key="subreport-1"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB_02.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="325"
+						y="2"
+						width="207"
+						height="14"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDADEDIAMESANO} + "."]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="64"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="9"
+						y="1"
+						width="47"
+						height="15"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Orçamento:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="58"
+						y="1"
+						width="84"
+						height="15"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODORC}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="9"
+						y="18"
+						width="11"
+						height="12"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[À]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="9"
+						y="34"
+						width="41"
+						height="12"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[A/C Sr(a) :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="23"
+						y="18"
+						width="506"
+						height="12"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="53"
+						y="34"
+						width="477"
+						height="12"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONTCLI}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="9"
+						y="51"
+						width="21"
+						height="12"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Ref.:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="33"
+						y="51"
+						width="498"
+						height="12"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSORC}.trim()]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="50"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="3"
+						y="1"
+						width="531"
+						height="47"
+						key="subreport-2"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODORC">
+						<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_DET_02.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="50"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="28"
+						width="535"
+						height="15"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fone: " + "( " + 
+$F{FONEEMP}.substring( 1, 4 ) + " ) " +
+$F{FONEEMP}.substring( 4, 8 ) + " - " +
+$F{FONEEMP}.substring( 8, 12 )+ " - " + 
+$F{ENDEMP}.trim() + ", " + 
+$F{NUMEMP}.toString() + " - " +
+$F{BAIREMP}.trim() + " - " +
+$F{CIDEMP}.trim() + " - " +
+ $F{UFEMP}.trim() + " - " +
+ $F{CEPEMP}.substring(0,2) + "." +
+ $F{CEPEMP}.substring(2,5) + "-" +
+$F{CEPEMP}.substring(5,8)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="10"
+						width="535"
+						height="15"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZEMP}.trim()]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="166"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="2"
+						y="3"
+						width="215"
+						height="15"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Forma de pagamento:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="19"
+						width="215"
+						height="16"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="2"
+						y="36"
+						width="215"
+						height="15"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Prazo de entrega:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="52"
+						width="215"
+						height="16"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.toString() + " dias"]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="151"
+						y="145"
+						width="239"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="148"
+						width="535"
+						height="16"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()]]></textFieldExpression>
+				</textField>
+				<image  vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="151"
+						y="106"
+						width="239"
+						height="30"
+						key="image-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASS}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="2"
+						y="69"
+						width="94"
+						height="15"
+						key="staticText-15">
+							<printWhenExpression><![CDATA[new Boolean($F{DTVENCORC}!=null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Proposta válida até:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="85"
+						width="245"
+						height="15"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="318"
+						y="4"
+						width="83"
+						height="10"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Data de aprovação:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="318"
+						y="40"
+						width="77"
+						height="1"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="411"
+						y="4"
+						width="115"
+						height="10"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Assinatura do cliente:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="411"
+						y="40"
+						width="112"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</summary>
+</jasperReport>
