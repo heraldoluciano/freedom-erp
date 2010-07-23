@@ -39,7 +39,8 @@ public class PVNCACongelados extends Leiaute {
 		boolean bRetorno;
 		boolean bRec = false;
 		final int casasDecFin = Aplicativo.casasDecFin;
-		final int casasDecPre = Aplicativo.casasDecPre;
+		final int casasDecPre = Aplicativo.casasDecFin;
+//		final int casasDecPre = Aplicativo.casasDecPre;
 		final int maxLine = 27;
 		int iLinha;
 		int contItem = 0;
