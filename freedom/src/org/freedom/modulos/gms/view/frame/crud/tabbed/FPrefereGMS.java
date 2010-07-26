@@ -73,8 +73,6 @@ public class FPrefereGMS extends FTabDados {
 
 	private JTextFieldFK txtDescTipoRecMercOS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JCheckBoxPad cbGeraChamadoOS = new JCheckBoxPad("Gera chamado a partir de OS.", "S", "N");
-
 	/****************
 	 * Paineis *
 	 ****************/
@@ -82,6 +80,8 @@ public class FPrefereGMS extends FTabDados {
 	private JPanelPad pinGeral = new JPanelPad();
 
 	private JPanelPad pinOS = new JPanelPad();
+	
+	private JPanelPad pinCompra = new JPanelPad();
 	
 	public FPrefereGMS() {
 
@@ -175,7 +175,9 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercOS.setFK( true );
 		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
 		
-		adicDB( cbGeraChamadoOS, 60, 7, 200, 20, "GeraChamadoOS", "", true );
+		setPainel( pinCompra );
+		adicTab( "Compra", pinCompra );
+		
 		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
