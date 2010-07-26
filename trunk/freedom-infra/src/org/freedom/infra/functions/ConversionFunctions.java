@@ -137,6 +137,27 @@ public final class ConversionFunctions {
 		return retvalue;
 	}
 
+	public static Date strDateToDate(String sVal) {
+		GregorianCalendar cal = new GregorianCalendar();
+		if (sVal.trim().length() == 10) {
+			sVal = sVal.trim();
+			try {
+				int iAno = Integer.parseInt(sVal.substring(6));
+				int iMes = Integer.parseInt(sVal.substring(3, 5)) - 1;
+				int iDia = Integer.parseInt(sVal.substring(0, 2));
+				cal = new GregorianCalendar(iAno, iMes, iDia);
+			}
+			catch (Exception err) {
+				cal = null;
+			}
+		}
+		else
+			cal = null;
+		if (cal == null)
+			return null;
+		return cal.getTime();
+	}
+	
 	public static Date strDate6digToDate(String strdate) {
 
 		GregorianCalendar cal = new GregorianCalendar();
