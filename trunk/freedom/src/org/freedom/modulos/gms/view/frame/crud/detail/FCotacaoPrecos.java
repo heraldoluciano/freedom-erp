@@ -108,7 +108,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtDtEmitSol = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -366,7 +366,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 //		setPainel( pinCab, pnCliCab );
 		setPainel( pinCabCampos );
 
-		txtDtEmitSolicitacao.setEditable( false );
+		txtDtEmitSol.setEditable( false );
 		lcCampos.setPodeExc( false );
 		lcCampos.setPodeIns( false );
 		nav.setAtivo( 0, false );
@@ -375,20 +375,22 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		nav.setAtivo( 3, false );
 		nav.setAtivo( 4, false );
 
-		adicCampo( txtCodSolicitacao, 7, 20, 70, 20, "CodSol", "Cód.Sol", ListaCampos.DB_PK, true );
-		adicCampo( txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário", ListaCampos.DB_FK, true );
-		adicCampo( txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol", "Data da Sol.", ListaCampos.DB_SI, true );
+		adicCampo( txtCodSolicitacao, 7, 20, 60, 20, "CodSol", "Cód.Solic.", ListaCampos.DB_PK, true );
+
+		adicCampo( txtAnoCC, 70, 20, 50, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
+		adicCampo( txtCodCC, 123, 20, 140, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
+		adicDescFK( txtDescCC, 266, 20, 182, 20, "DescCC", "Descrição do centro de custos" );
+
+		adicCampo( txtIDUsu, 451, 20, 80, 20, "IdUsu", "Usuário", ListaCampos.DB_FK, true );
+		adicCampo( txtDtEmitSol, 533, 20, 70, 20, "DtEmitSol", "Data da Solic.", ListaCampos.DB_SI, true );
 
 		adicDescFKInvisivel( txtDescCC, "DescCC", "Descrição do c.c." );
-		adicCampo( txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
-		adicCampo( txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescCC, 286, 20, 162, 20, "DescCC", "Descrição do centro de custos" );
 
 		adicCampo( txtStatusSolicitacao, 490, 60, 30, 20, "SitSol", "Sit.Sol.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtOrigSolicitacao, "OrigSol", "Origem", ListaCampos.DB_SI, false );
 
 		txtIDUsu.setNaoEditavel( true );
-		txtDtEmitSolicitacao.setNaoEditavel( true );
+		txtDtEmitSol.setNaoEditavel( true );
 		txtCodCC.setNaoEditavel( true );
 		txtAnoCC.setNaoEditavel( true );
 
