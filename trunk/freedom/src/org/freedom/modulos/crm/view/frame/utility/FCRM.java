@@ -85,6 +85,12 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 public class FCRM extends FFilho implements CarregaListener, ActionListener, FocusListener, JComboBoxListener, KeyListener, ChangeListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final int ABA_NONE= -1;
+	
+	private static final int ABA_CHAMADO = 0;
+	
+	private static final int ABA_ATENDIMENTO = 1;
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
@@ -194,7 +200,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	
+	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
 	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
 
@@ -611,6 +619,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Hora inicial" );
 		tabatd.adicColuna( "Hora final" );
 		tabatd.adicColuna( "chamado" );
+		tabatd.adicColuna( "codcli" );
 
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
@@ -629,6 +638,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setColunaInvisivel( 4 );
 		tabatd.setColunaInvisivel( 6 );
 		tabatd.setColunaInvisivel( 10 );
+		tabatd.setColunaInvisivel( 11 );
 
 		tabatd.setRowHeight( 20 );
 	}
@@ -833,11 +843,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void adicBotoes() {
 
-		pnBotConv.setPreferredSize( new Dimension( 90, 30 ) );
+		pnBotConv.setPreferredSize( new Dimension( 120, 30 ) );
 
-		pnBotConv.add( btNovo );
+		pnBotConv.add( btNovoAtendimento );
 		pnBotConv.add( btExcluir );
 		pnBotConv.add( btImprimir );
+		pnBotConv.add( btNovoChamado );
 
 	}
 
@@ -896,7 +907,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		tpnAbas.addChangeListener( this );
 
-		btNovo.addActionListener( this );
+		btNovoAtendimento.addActionListener( this );
+		btNovoChamado.addActionListener( this );
 		btExcluir.addActionListener( this );
 		btImprimir.addActionListener( this );
 		btAtualizaChamados.addActionListener( this );
@@ -987,7 +999,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
+			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
@@ -1091,6 +1103,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getTime( "HoraAtendo" ).toString(), i, 8 );
 					tabatd.setValor( rs.getTime( "HoraAtendoFin" ).toString(), i, 9 );
 					tabatd.setValor( rs.getInt( "CODCHAMADO" ), i, 10 );
+					tabatd.setValor( rs.getInt( "CODCLI" ), i, 11 );
 
 				}
 				rs.close();
@@ -1367,6 +1380,51 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		carregaAtendimentos();
 	}
+	
+	private void novoChamado() {
+		try {
+			
+			FChamado chamado = null;
+			Integer codcli = null;
+
+			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
+				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
+			}
+			else {
+				chamado = new FChamado();
+				Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
+			}
+
+			if(txtCodCli.getVlrInteger()<1) {
+			
+				if( tpnAbas.getSelectedIndex() == ABA_CHAMADO) {
+				
+					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), GridChamado.CODCLI.ordinal() );
+				
+				}
+				else if( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO) {
+					
+					codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), 11 );
+				
+				}
+
+			}
+			else {
+				codcli = txtCodCli.getVlrInteger();
+			}
+
+					
+			chamado.novo();
+				
+			chamado.setCodCli( codcli );
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -1397,7 +1455,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
-		else if ( evt.getSource() == btNovo ) {
+		else if ( evt.getSource() == btNovoAtendimento ) {
 
 			int linhasel = tabchm.getLinhaSel();
 
@@ -1409,12 +1467,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 
 		}
+		else if ( evt.getSource() == btNovoChamado ) {
+			novoChamado();			
+		}
 		else if ( evt.getSource() == btExcluir ) {
 			excluiAtend();
 		}
 		else if ( evt.getSource() == btImprimir ) {
 
-			if ( tpnAbas.getSelectedIndex() == 1 ) { // Aba de Atendimentos selecionada
+			if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) { 
 				try {
 					FRAtendimentos tela = FRAtendimentos.class.newInstance();
 					tela.setParametros( txtCodCli.getVlrInteger(), txtDatainiAtend.getVlrDate(), txtDatafimAtend.getVlrDate() );
@@ -1424,7 +1485,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					e.printStackTrace();
 				}
 			}
-			else if ( tpnAbas.getSelectedIndex() == 0 ) {
+			else if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
 
 				imprimiGraficoChamado( executaQueryChamados(), true );
 
@@ -1605,10 +1666,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	public void stateChanged( ChangeEvent cevt ) {
 
 		if ( cevt.getSource() == tpnAbas ) {
-			if ( tpnAbas.getSelectedIndex() == 1 ) {
+			if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) {
 				carregaAtendimentos();
 			}
-			else if ( tpnAbas.getSelectedIndex() == 0 ) {
+			else if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
 				carregaChamados();
 			}
 		}
