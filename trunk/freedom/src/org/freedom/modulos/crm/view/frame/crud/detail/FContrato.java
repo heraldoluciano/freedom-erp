@@ -26,6 +26,9 @@ package org.freedom.modulos.crm.view.frame.crud.detail;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -40,10 +43,6 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.dialog.utility.DLMinutaContr;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
-
-import java.util.Vector;
-
-import org.freedom.bmps.Icone;
 
 public class FContrato extends FDetalhe implements ActionListener {
 
@@ -106,6 +105,8 @@ public class FContrato extends FDetalhe implements ActionListener {
 	private ListaCampos lcProdutoex = new ListaCampos( this, "PE" );
 
 	private String sMinuta = "";
+	
+	private JTextFieldPad txtKeyLic = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0); 
 
 	public FContrato() {
 
@@ -178,19 +179,20 @@ public class FContrato extends FDetalhe implements ActionListener {
 		adicCampo( txtCodProdPE, 343, 65, 60, 20, "CodProdPE", "Cód.prod.", ListaCampos.DB_FK, txtDescProdPE, true );
 		adicDescFK( txtDescProdPE, 406, 65, 277, 20, "DescProdPE", "Descrição do produto/serviço excedente" );
 
-		adicCampo( txtQtdProd, 7, 105, 80, 20, "QtdItContr", "Quantidade", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrProd, 90, 105, 80, 20, "VlrItContr", "Valor", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrExcedProd, 173, 105, 80, 20, "VlrItContrExced", "Vlr.exced.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdProd, 7, 105, 110, 20, "QtdItContr", "Quantidade", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrProd, 120, 105, 110, 20, "VlrItContr", "Valor normal", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrExcedProd, 233, 105, 107, 20, "VlrItContrExced", "Valor excedente", ListaCampos.DB_SI, true );		
+		adicCampo( txtKeyLic, 343, 105, 340, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
 
 		setListaCampos( true, "ITCONTRATO", "VD" );
 		lcDet.setQueryInsert( false );
 		montaTab();
 		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
+		btPrevimp.addActionListener( this ); 
 
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 420, 1 );
-		tab.setColunaInvisivel( 2 );
+		tab.setColunaInvisivel( 2 ); 
 		tab.setColunaInvisivel( 3 );
 		tab.setColunaInvisivel( 4 );
 		tab.setColunaInvisivel( 5 );
