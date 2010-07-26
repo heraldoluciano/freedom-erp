@@ -71,6 +71,7 @@ import javax.swing.filechooser.FileFilter;
 //import org.brazilutils.br.uf.UF;
 //import org.brazilutils.br.uf.ie.InscricaoEstadual;
 
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
@@ -1945,24 +1946,7 @@ public class Funcoes {
 	}
 
 	public static Date strDateToDate(String sVal) {
-		GregorianCalendar cal = new GregorianCalendar();
-		if (sVal.trim().length() == 10) {
-			sVal = sVal.trim();
-			try {
-				int iAno = Integer.parseInt(sVal.substring(6));
-				int iMes = Integer.parseInt(sVal.substring(3, 5)) - 1;
-				int iDia = Integer.parseInt(sVal.substring(0, 2));
-				cal = new GregorianCalendar(iAno, iMes, iDia);
-			}
-			catch (Exception err) {
-				cal = null;
-			}
-		}
-		else
-			cal = null;
-		if (cal == null)
-			return null;
-		return cal.getTime();
+		return ConversionFunctions.strDateToDate(sVal);
 	}
 
 	public static String dateToStrDataHora(Date dVal) {
