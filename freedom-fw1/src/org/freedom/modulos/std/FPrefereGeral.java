@@ -98,7 +98,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JPanelPad pinFiscal = new JPanelPad();
 
-	private JPanelPad pinSVV = new JPanelPad();
+	private JPanelPad pinSVV_LIC = new JPanelPad();
 
 	private JPanelPad pinDev = new JPanelPad();
 
@@ -1281,8 +1281,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		// SVV
 
-		setPainel(pinSVV);
-		adicTab("SVV", pinSVV);
+		setPainel(pinSVV_LIC);
+		adicTab("SVV/Licenciamento", pinSVV_LIC);
 
 		adicCampo(txtCodFor, 7, 25, 90, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, false);
 		adicDescFK(txtDescFor, 100, 25, 300, 20, "DescFor", "Razão social do fornecedor");
