@@ -3491,11 +3491,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 			if ( !NF_EMITIDA ) {
+
 				impostos.setCodprod( txtCodProd.getVlrInteger() );
 				impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
 				impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
 				impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
 
+				impostos.setCodfisc(null );
+				impostos.setCoditfisc( null );
+				
 				impostos.calcTratTrib();
 
 				txtOrigFisc.setVlrString( impostos.getOrigfisc() );
