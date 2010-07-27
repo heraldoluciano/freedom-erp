@@ -456,6 +456,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtNumForCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtInscMunCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtCnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
 
@@ -912,11 +914,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtSiteCli, 7, 380, 280, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
 		adic( btFirefox, 290, 380, 20, 20 );
 		adicCampo( txtEmailCli, 7, 420, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtContCli, 256, 420, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
 
 		if ( (Boolean) bPref.get( "USAIBGECLI" ) ) {
 
-			adicCampo( txtEmailNfeCli, 7, 460, 509, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
+			adicCampo( txtEmailNfeCli, 7, 460, 245, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
+			adicCampo( txtInscMunCli, 256, 460, 260, 20, "InscMunCli", "Inscrição Municipal", ListaCampos.DB_SI, false );
 
 			adicCampo( txtCodPais, 7, 500, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
 			adicDescFK( txtDescPais, 80, 500, 217, 20, "NomePais", "Nome do país" );
