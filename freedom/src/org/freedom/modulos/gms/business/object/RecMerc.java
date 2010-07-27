@@ -531,7 +531,7 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select codtipomov2 from sgprefere1 " );
+			sql.append( "select codtipomov from sgprefere8 " );
 			sql.append( "where codemp=? and codfilial=? " );
 
 			ps = con.prepareStatement( sql.toString() );
