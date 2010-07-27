@@ -36,6 +36,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -133,6 +134,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	
+	private JButtonPad btRecarregaPrecos = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -149,19 +152,23 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private org.freedom.modulos.gms.view.frame.crud.detail.FCompra telacompra = null;
 
 	private PrefereGMS preferegms = PrefereGMS.getInstance();
+	
+	private boolean bloqprecoaprov = false;
 
-	public static enum COMPRA {
-		SEL, CODCOMPRA, CODPLANOPAG, CODFOR, RAZFOR, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
+	public static enum enum_compra {
+		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
 	}
 
-	public static enum ITCOMPRA {
-		SEL, CODITCOMPRA, CODPROD, DESCPROD, QTDITCOMPRA, PRECOITCOMPRA, VLRDESCITCOMPRA, VLRLIQITCOMPRA, TPAGRUP, AGRUP, VLRAGRUP, CODCOMPRA, CODLOTE
+	public static enum enum_itcompra {
+		SEL, CODITCOMPRA, CODEMPPD, CODFILIALPD, CODPROD, DESCPROD, QTDITCOMPRA, PRECOITCOMPRA, VLRDESCITCOMPRA, VLRLIQITCOMPRA, TPAGRUP, AGRUP, VLRAGRUP, CODCOMPRA, CODLOTE, APROVPRECO, CODEMPFR, CODFILIALFR, CODFOR, DTENTCOMPRA
 	}
 
-	public DLBuscaPedCompra( Object cp ) {
+	public DLBuscaPedCompra( Object cp, boolean bloqprecoaprov ) {
 
 		super();
 
+		this.bloqprecoaprov = bloqprecoaprov;
+		
 		setTitulo( "Busca pedido de compra", this.getClass().getName() );
 
 		telacompra = (FCompra) cp;
@@ -254,6 +261,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		pinBtSel.adic( btResetItCompra, 3, 65, 30, 30 );
 		pinBtSel.adic( btAgruparItens, 3, 96, 30, 30 );
 		pinBtSel.adic( btGerar, 3, 127, 30, 30 );
+		pinBtSel.adic( btRecarregaPrecos, 3, 158, 30, 30 );
 
 		pnFor.add( pnTabCompra, BorderLayout.NORTH );
 		pnFor.add( pnForTab, BorderLayout.CENTER );
@@ -267,6 +275,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		btNenhumCompra.setToolTipText( "Limpar seleção" );
 		btGerar.setToolTipText( "Gerar no venda" );
 		btAgruparItens.setToolTipText( "Agrupar ítens" );
+		btRecarregaPrecos.setToolTipText( "Recarrega Preços" );
 
 	}
 
@@ -278,6 +287,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		btBuscar.addKeyListener( this );
 		btGerar.addKeyListener( this );
+		btRecarregaPrecos.addKeyListener( this );
 		btAgruparItens.addKeyListener( this );
 
 		txtCodCompra.addActionListener( this );
@@ -285,6 +295,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		btBuscar.addActionListener( this );
 		btExec.addActionListener( this );
 		btGerar.addActionListener( this );
+		btRecarregaPrecos.addActionListener( this );
 		btAgruparItens.addActionListener( this );
 		btTodosCompra.addActionListener( this );
 		btNenhumCompra.addActionListener( this );
@@ -308,6 +319,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabcompra.adicColuna( "S/N" );
 		tabcompra.adicColuna( "Cód.Cp." );
 		tabcompra.adicColuna( "Cod.Plan.Pg." );
+		tabcompra.adicColuna( "" );
+		tabcompra.adicColuna( "" );
 		tabcompra.adicColuna( "Cód.For." );
 		tabcompra.adicColuna( "Razão do fornecedor" );
 		tabcompra.adicColuna( "Nº itens." );
@@ -315,20 +328,26 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabcompra.adicColuna( "Valor total" );
 		tabcompra.adicColuna( "Valor liberado" );
 
-		tabcompra.setTamColuna( 25, COMPRA.SEL.ordinal() );
-		tabcompra.setTamColuna( 60, COMPRA.CODCOMPRA.ordinal() );
-		tabcompra.setTamColuna( 60, COMPRA.CODFOR.ordinal() );
-		tabcompra.setTamColuna( 210, COMPRA.RAZFOR.ordinal() );
-		tabcompra.setTamColuna( 60, COMPRA.NROITENS.ordinal() );
-		tabcompra.setTamColuna( 60, COMPRA.NROITENSLIB.ordinal() );
-		tabcompra.setTamColuna( 100, COMPRA.VLRLIQCOMPRA.ordinal() );
-		tabcompra.setTamColuna( 100, COMPRA.VLRLIB.ordinal() );
+		tabcompra.setTamColuna( 25, enum_compra.SEL.ordinal() );
+		tabcompra.setTamColuna( 60, enum_compra.CODCOMPRA.ordinal() );
+		
+		tabcompra.setColunaInvisivel( enum_compra.CODEMPFR.ordinal() );
+		tabcompra.setColunaInvisivel( enum_compra.CODFILIALFR.ordinal() );
+		
+		tabcompra.setTamColuna( 60, enum_compra.CODFOR.ordinal() );
+		tabcompra.setTamColuna( 210, enum_compra.RAZFOR.ordinal() );
+		tabcompra.setTamColuna( 60, enum_compra.NROITENS.ordinal() );
+		tabcompra.setTamColuna( 60, enum_compra.NROITENSLIB.ordinal() );
+		tabcompra.setTamColuna( 100, enum_compra.VLRLIQCOMPRA.ordinal() );
+		tabcompra.setTamColuna( 100, enum_compra.VLRLIB.ordinal() );
 
-		tabcompra.setColunaEditavel( COMPRA.SEL.ordinal(), true );
-		tabcompra.setColunaInvisivel( COMPRA.CODPLANOPAG.ordinal() );
+		tabcompra.setColunaEditavel( enum_compra.SEL.ordinal(), true );
+		tabcompra.setColunaInvisivel( enum_compra.CODPLANOPAG.ordinal() );
 
 		tabitcompra.adicColuna( "S/N" );
 		tabitcompra.adicColuna( "Ítem" );
+		tabitcompra.adicColuna( "" );
+		tabitcompra.adicColuna( "" );
 		tabitcompra.adicColuna( "Cód.Pd." );
 		tabitcompra.adicColuna( "Descrição do produto" );
 		tabitcompra.adicColuna( "Qtd." );
@@ -340,26 +359,40 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabitcompra.adicColuna( "Vlr.Agr." );
 		tabitcompra.adicColuna( "Compra" );
 		tabitcompra.adicColuna( "Lote" );
+		tabitcompra.adicColuna( "" );
+		tabitcompra.adicColuna( "" );
+		tabitcompra.adicColuna( "" );
+		tabitcompra.adicColuna( "" );
+		tabitcompra.adicColuna( "" ); // Data de entrada
 
-		tabitcompra.setTamColuna( 25, ITCOMPRA.SEL.ordinal() );
-		tabitcompra.setTamColuna( 30, ITCOMPRA.CODITCOMPRA.ordinal() );
-		tabitcompra.setTamColuna( 50, ITCOMPRA.CODPROD.ordinal() );
-		tabitcompra.setTamColuna( 190, ITCOMPRA.DESCPROD.ordinal() );
-		tabitcompra.setTamColuna( 40, ITCOMPRA.QTDITCOMPRA.ordinal() );
-		tabitcompra.setTamColuna( 60, ITCOMPRA.PRECOITCOMPRA.ordinal() );
-		tabitcompra.setColunaEditavel( ITCOMPRA.PRECOITCOMPRA.ordinal(), true );
-		tabitcompra.setTamColuna( 60, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
-		tabitcompra.setTamColuna( 60, ITCOMPRA.VLRLIQITCOMPRA.ordinal() );
+		tabitcompra.setTamColuna( 25, enum_itcompra.SEL.ordinal() );
+		tabitcompra.setTamColuna( 30, enum_itcompra.CODITCOMPRA.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.CODEMPPD.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.CODFILIALPD.ordinal() );
+		tabitcompra.setTamColuna( 50, enum_itcompra.CODPROD.ordinal() );
+		tabitcompra.setTamColuna( 190, enum_itcompra.DESCPROD.ordinal() );
+		tabitcompra.setTamColuna( 40, enum_itcompra.QTDITCOMPRA.ordinal() );
+		tabitcompra.setTamColuna( 60, enum_itcompra.PRECOITCOMPRA.ordinal() );
+//		tabitcompra.setColunaEditavel( enum_itcompra.PRECOITCOMPRA.ordinal(), true );
+		tabitcompra.setTamColuna( 60, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
+		tabitcompra.setTamColuna( 60, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
 
-		tabitcompra.setColunaInvisivel( ITCOMPRA.TPAGRUP.ordinal() );
-		tabitcompra.setColunaInvisivel( ITCOMPRA.AGRUP.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.TPAGRUP.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.AGRUP.ordinal() );
 
-		tabitcompra.setTamColuna( 60, ITCOMPRA.VLRAGRUP.ordinal() );
-		tabitcompra.setTamColuna( 40, ITCOMPRA.CODCOMPRA.ordinal() );
+		tabitcompra.setTamColuna( 60, enum_itcompra.VLRAGRUP.ordinal() );
+		tabitcompra.setTamColuna( 40, enum_itcompra.CODCOMPRA.ordinal() );
 
-		tabitcompra.setTamColuna( 80, ITCOMPRA.CODLOTE.ordinal() );
+		tabitcompra.setTamColuna( 60, enum_itcompra.CODLOTE.ordinal() );
 
-		tabitcompra.setColunaEditavel( ITCOMPRA.SEL.ordinal(), true );
+		tabitcompra.setColunaEditavel( enum_itcompra.SEL.ordinal(), true );
+		
+		tabitcompra.setTamColuna( 20, enum_itcompra.APROVPRECO.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.CODEMPFR.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.CODFILIALFR.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.CODFOR.ordinal() );
+		tabitcompra.setColunaInvisivel( enum_itcompra.DTENTCOMPRA.ordinal() );
+		
 
 	}
 
@@ -416,8 +449,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 			sql.append( "select " );
 			sql.append( "ic.coditcompra, ic.codprod, pd.descprod, ic.qtditcompra, ic.precoitcompra, ic.vlrdescitcompra, " );
-			sql.append( "ic.vlrliqitcompra, ic.codcompra, cp.codplanopag, ic.codlote " );
-
+			sql.append( "ic.vlrliqitcompra, ic.codcompra, cp.codplanopag, ic.codlote, coalesce(ic.aprovpreco,'N') aprovpreco, " );
+			sql.append( "cp.codempfr, cp.codfilialfr, cp.codfor, ic.codemppd, ic.codfilialpd, ic.codprod, cp.dtentcompra " );
+			
 			sql.append( "from cpcompra cp, cpitcompra ic, eqproduto pd " );
 
 			sql.append( "where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra " );
@@ -428,11 +462,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 			for ( int i = 0; i < tabcompra.getNumLinhas(); i++ ) {
 
-				if ( ! ( (Boolean) tabcompra.getValor( i, COMPRA.SEL.ordinal() ) ).booleanValue() ) {
+				if ( ! ( (Boolean) tabcompra.getValor( i, enum_compra.SEL.ordinal() ) ).booleanValue() ) {
 					continue;
 				}
 
-				codcompra = (Integer) tabcompra.getValor( i, COMPRA.CODCOMPRA.ordinal() );
+				codcompra = (Integer) tabcompra.getValor( i, enum_compra.CODCOMPRA.ordinal() );
 
 				ps = con.prepareStatement( sql.toString() );
 
@@ -444,32 +478,50 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				int irow = tabitcompra.getNumLinhas();
 
+				String aprovpreco = "N";
+				
 				while ( rs.next() ) {
 
 					tabitcompra.adicLinha();
 
-					tabitcompra.setValor( new Boolean( true ), irow, ITCOMPRA.SEL.ordinal() );
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODITCOMPRA.toString() ), irow, ITCOMPRA.CODITCOMPRA.ordinal() );
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODPROD.toString() ), irow, ITCOMPRA.CODPROD.ordinal() );
-					tabitcompra.setValor( rs.getString( ITCOMPRA.DESCPROD.toString() ), irow, ITCOMPRA.DESCPROD.ordinal() );
+					aprovpreco = rs.getString( enum_itcompra.APROVPRECO.toString());
+					
+					if( (bloqprecoaprov) && ("N".equals( aprovpreco )) ) {
+						tabitcompra.setValor( new Boolean( false ), irow, enum_itcompra.SEL.ordinal() );
+					}
+					else {
+						tabitcompra.setValor( new Boolean( true ), irow, enum_itcompra.SEL.ordinal() );	
+					}
+					
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODITCOMPRA.toString() ), irow, enum_itcompra.CODITCOMPRA.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODEMPPD.toString() ), irow, enum_itcompra.CODEMPPD.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFILIALPD.toString() ), irow, enum_itcompra.CODFILIALPD.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODPROD.toString() ), irow, enum_itcompra.CODPROD.ordinal() );
+					tabitcompra.setValor( rs.getString( enum_itcompra.DESCPROD.toString() ), irow, enum_itcompra.DESCPROD.ordinal() );
 
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.QTDITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.QTDITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.QTDITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.PRECOITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.PRECOITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.PRECOITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.VLRDESCITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( ITCOMPRA.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( ITCOMPRA.VLRLIQITCOMPRA.toString() ) : "0" ), irow, ITCOMPRA.VLRLIQITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.PRECOITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
 
-					tabitcompra.setValor( "", irow, ITCOMPRA.TPAGRUP.ordinal() );
-					tabitcompra.setValor( "", irow, ITCOMPRA.AGRUP.ordinal() );
-					tabitcompra.setValor( "0,00", irow, ITCOMPRA.VLRAGRUP.ordinal() );
+					tabitcompra.setValor( "", irow, enum_itcompra.TPAGRUP.ordinal() );
+					tabitcompra.setValor( "", irow, enum_itcompra.AGRUP.ordinal() );
+					tabitcompra.setValor( "0,00", irow, enum_itcompra.VLRAGRUP.ordinal() );
 
-					tabitcompra.setValor( rs.getInt( ITCOMPRA.CODCOMPRA.toString() ), irow, ITCOMPRA.CODCOMPRA.ordinal() );
-					tabitcompra.setValor( rs.getString( ITCOMPRA.CODLOTE.toString() ) == null ? "" : rs.getString( ITCOMPRA.CODLOTE.toString() ), irow, ITCOMPRA.CODLOTE.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODCOMPRA.toString() ), irow, enum_itcompra.CODCOMPRA.ordinal() );
+					tabitcompra.setValor( rs.getString( enum_itcompra.CODLOTE.toString() ) == null ? "" : rs.getString( enum_itcompra.CODLOTE.toString() ), irow, enum_itcompra.CODLOTE.ordinal() );
+					
+					tabitcompra.setValor( aprovpreco, irow, enum_itcompra.APROVPRECO.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODEMPFR.toString() ), irow, enum_itcompra.CODEMPFR.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFILIALFR.toString() ), irow, enum_itcompra.CODFILIALFR.ordinal() );
+					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFOR.toString() ), irow, enum_itcompra.CODFOR.ordinal() );
+					tabitcompra.setValor( Funcoes.dateToStrDate( Funcoes.sqlDateToDate( rs.getDate( enum_itcompra.DTENTCOMPRA.toString() ))), irow, enum_itcompra.DTENTCOMPRA.ordinal() );
+ 
+					vlrprod.add( rs.getBigDecimal( enum_itcompra.PRECOITCOMPRA.toString() ) );
+					vlrdesc.add( rs.getBigDecimal( enum_itcompra.VLRDESCITCOMPRA.toString() ) );
+					vlrliq.add( rs.getBigDecimal( enum_itcompra.VLRLIQITCOMPRA.toString() ) );
 
-					vlrprod.add( rs.getBigDecimal( ITCOMPRA.PRECOITCOMPRA.toString() ) );
-					vlrdesc.add( rs.getBigDecimal( ITCOMPRA.VLRDESCITCOMPRA.toString() ) );
-					vlrliq.add( rs.getBigDecimal( ITCOMPRA.VLRLIQITCOMPRA.toString() ) );
-
-					vValidos.addElement( new Integer[] { codcompra, rs.getInt( ITCOMPRA.CODITCOMPRA.toString() ) } );
+					vValidos.addElement( new Integer[] { codcompra, rs.getInt( enum_itcompra.CODITCOMPRA.toString() ) } );
 
 					irow++;
 
@@ -521,10 +573,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				for ( int i = 0; i < tabcompra.getNumLinhas(); i++ ) {
 
 					// Se o ítem estiver selecionado no grid de pedidos de compra
-					if ( (Boolean) tabcompra.getValor( i, COMPRA.SEL.ordinal() ) ) {
+					if ( (Boolean) tabcompra.getValor( i, enum_compra.SEL.ordinal() ) ) {
 
-						codplanopag = (Integer) tabcompra.getValor( i, COMPRA.CODPLANOPAG.ordinal() );
-						codfor = (Integer) tabcompra.getValor( i, COMPRA.CODFOR.ordinal() );
+						codplanopag = (Integer) tabcompra.getValor( i, enum_compra.CODPLANOPAG.ordinal() );
+						codfor = (Integer) tabcompra.getValor( i, enum_compra.CODFOR.ordinal() );
 
 					}
 
@@ -552,8 +604,15 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				for ( int i = 0; i < tabitcompra.getNumLinhas(); i++ ) {
 
-					if ( ! ( (Boolean) tabitcompra.getValor( i, ITCOMPRA.SEL.ordinal() ) ).booleanValue() )
+					if ( ! ( (Boolean) tabitcompra.getValor( i, enum_itcompra.SEL.ordinal() ) ).booleanValue() ) {
 						continue;
+					}
+
+					// Verifica se deve bloquear preço não aprovado (cotação)
+					
+					if( (bloqprecoaprov) && ("N".equals( (String) tabitcompra.getValor( i, enum_itcompra.APROVPRECO.ordinal() ))) ) {
+						continue;
+					}
 
 					if ( bPrim ) {
 
@@ -626,12 +685,12 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps2.setInt( 3, codcompra );
 							ps2.setInt( 4, Aplicativo.iCodEmp );
 							ps2.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-							ps2.setInt( 6, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODCOMPRA.ordinal() ) );
-							ps2.setInt( 7, (Integer) tabitcompra.getValor( i, ITCOMPRA.CODITCOMPRA.ordinal() ) );
-							ps2.setString( 8, (String) tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ) );
-							ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) ) );
-							ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString() ) ) );
-							ps2.setFloat( 11, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) ) );
+							ps2.setInt( 6, (Integer) tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) );
+							ps2.setInt( 7, (Integer) tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );
+							ps2.setString( 8, (String) tabitcompra.getValor( i, enum_itcompra.TPAGRUP.ordinal() ) );
+							ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.QTDITCOMPRA.ordinal() ).toString() ) ) );
+							ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.VLRDESCITCOMPRA.ordinal() ).toString() ) ) );
+							ps2.setFloat( 11, new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.PRECOITCOMPRA.ordinal() ).toString() ) ) );
 
 							ps2.execute();
 							ps2.close();
@@ -693,7 +752,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				sql.append( "from cpcompra cp, cpforneced fr " );
 				sql.append( "where " );
 				sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
-				sql.append( "and cp.statuscompra in ('P1','P2','P3') " );
+				sql.append( "and cp.statuscompra in ('P1','P2','P3') and cp.impnotacompra='N' " );
 
 				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
 					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
@@ -732,17 +791,17 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 					tabcompra.adicLinha();
 
-					tabcompra.setValor( new Boolean( true ), irow, COMPRA.SEL.ordinal() );
+					tabcompra.setValor( new Boolean( true ), irow, enum_compra.SEL.ordinal() );
 
-					tabcompra.setValor( rs.getInt( COMPRA.CODCOMPRA.toString() ), irow, COMPRA.CODCOMPRA.ordinal() );
-					tabcompra.setValor( rs.getInt( COMPRA.CODPLANOPAG.toString() ), irow, COMPRA.CODPLANOPAG.ordinal() );
-					tabcompra.setValor( rs.getInt( COMPRA.CODFOR.toString() ), irow, COMPRA.CODFOR.ordinal() );
-					tabcompra.setValor( rs.getString( COMPRA.RAZFOR.toString() ), irow, COMPRA.RAZFOR.ordinal() );
+					tabcompra.setValor( rs.getInt( enum_compra.CODCOMPRA.toString() ), irow, enum_compra.CODCOMPRA.ordinal() );
+					tabcompra.setValor( rs.getInt( enum_compra.CODPLANOPAG.toString() ), irow, enum_compra.CODPLANOPAG.ordinal() );
+					tabcompra.setValor( rs.getInt( enum_compra.CODFOR.toString() ), irow, enum_compra.CODFOR.ordinal() );
+					tabcompra.setValor( rs.getString( enum_compra.RAZFOR.toString() ), irow, enum_compra.RAZFOR.ordinal() );
 
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENS.toString() ) ), irow, COMPRA.NROITENS.ordinal() );
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.NROITENSLIB.toString() ) ), irow, COMPRA.NROITENSLIB.ordinal() );
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIQCOMPRA.toString() ) ), irow, COMPRA.VLRLIQCOMPRA.ordinal() );
-					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( COMPRA.VLRLIB.toString() ) ), irow, COMPRA.VLRLIB.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.NROITENS.toString() ) ), irow, enum_compra.NROITENS.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.NROITENSLIB.toString() ) ), irow, enum_compra.NROITENSLIB.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIQCOMPRA.toString() ) ), irow, enum_compra.VLRLIQCOMPRA.ordinal() );
+					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIB.toString() ) ), irow, enum_compra.VLRLIB.ordinal() );
 
 					irow++;
 
@@ -789,7 +848,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( "F".equals( ltab.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString() ) ) {
+				if ( "F".equals( ltab.getValor( i, enum_itcompra.TPAGRUP.ordinal() ).toString() ) ) {
 					ltab.tiraLinha( i );
 					i--;
 				}
@@ -813,16 +872,16 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		try {
 			while ( i < tabitcompra.getNumLinhas() ) {
 
-				codprodfilho = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
-				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
-				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRLIQITCOMPRA.ordinal() ).toString() ) );
-				tpagrup = tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString();
-				precofilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) );
+				codprodfilho = new Integer( tabitcompra.getValor( i, enum_itcompra.CODPROD.ordinal() ).toString() );
+				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.QTDITCOMPRA.ordinal() ).toString() ) );
+				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.VLRLIQITCOMPRA.ordinal() ).toString() ) );
+				tpagrup = tabitcompra.getValor( i, enum_itcompra.TPAGRUP.ordinal() ).toString();
+				precofilho = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.PRECOITCOMPRA.ordinal() ).toString() ) );
 
 				if ( ( codprodfilho.compareTo( codprodpai ) == 0 ) && ( precopai.compareTo( precofilho ) == 0 ) ) {
-					tabitcompra.setValor( "F", i, ITCOMPRA.TPAGRUP.ordinal() );
+					tabitcompra.setValor( "F", i, enum_itcompra.TPAGRUP.ordinal() );
 					ret += qtdfilho;
-					tabitcompra.setValor( "AGRUPADO", i, ITCOMPRA.DESCPROD.ordinal() );
+					tabitcompra.setValor( "AGRUPADO", i, enum_itcompra.DESCPROD.ordinal() );
 				}
 
 				i++;
@@ -850,29 +909,29 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 			for ( int i = 0; i < tabitcompra.getNumLinhas(); i++ ) {
 
-				codprodpai = new Integer( tabitcompra.getValor( i, ITCOMPRA.CODPROD.ordinal() ).toString() );
-				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.QTDITCOMPRA.ordinal() ).toString() ) );
-				precopai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.PRECOITCOMPRA.ordinal() ).toString() ) );
-				tpagr = tabitcompra.getValor( i, ITCOMPRA.TPAGRUP.ordinal() ).toString();
-				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, ITCOMPRA.VLRDESCITCOMPRA.ordinal() ).toString() ) );
+				codprodpai = new Integer( tabitcompra.getValor( i, enum_itcompra.CODPROD.ordinal() ).toString() );
+				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.QTDITCOMPRA.ordinal() ).toString() ) );
+				precopai = new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.PRECOITCOMPRA.ordinal() ).toString() ) );
+				tpagr = tabitcompra.getValor( i, enum_itcompra.TPAGRUP.ordinal() ).toString();
+				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitcompra.getValor( i, enum_itcompra.VLRDESCITCOMPRA.ordinal() ).toString() ) );
 
 				if ( tpagr.equals( "" ) ) {
 					qtdnovopai = qtdatupai;
 					qtdnovopai += marcaFilhos( i + 1, codprodpai, precopai );
 
 					if ( qtdatupai.compareTo( qtdnovopai ) != 0 ) {
-						tabitcompra.setValor( "P", i, ITCOMPRA.TPAGRUP.ordinal() );
-						tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, ITCOMPRA.QTDITCOMPRA.ordinal() );
+						tabitcompra.setValor( "P", i, enum_itcompra.TPAGRUP.ordinal() );
+						tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, enum_itcompra.QTDITCOMPRA.ordinal() );
 						linhaPai = i;
 					}
 					else {
-						tabitcompra.setValor( "N", i, ITCOMPRA.TPAGRUP.ordinal() );
+						tabitcompra.setValor( "N", i, enum_itcompra.TPAGRUP.ordinal() );
 					}
 				}
 			}
 
 			if ( linhaPai > -1 ) {
-				tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, ITCOMPRA.VLRDESCITCOMPRA.ordinal() );
+				tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
 			}
 
 			// limpaFilhos( tabitcompra );
@@ -916,8 +975,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					}
 				}
 			}
-			else if ( kevt.getSource() == tabitcompra )
+			else if ( kevt.getSource() == tabitcompra ) {
 				btGerar.requestFocus();
+			}
 		}
 		// super.keyPressed(kevt);
 	}
@@ -974,9 +1034,112 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		else if ( evt.getSource() == btResetItCompra ) {
 			tabitcompra.limpa();
 		}
+		else if ( evt.getSource() == btRecarregaPrecos ) {
+			recarregaPrecos();
+		}
+
 
 	}
 
+	
+	private void recarregaPrecos() {
+		StringBuilder sql_preco = new StringBuilder();
+		StringBuilder sql_update = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		BigDecimal preconovo = null;
+		
+		try {
+			
+			// Query para atualizar o preço;
+			sql_update.append( "update cpitcompra ic ");
+			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco='S', ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) ");
+			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? and ic.precoitcompra!=? " ); 
+			
+			// Se deve buscar preço de cotação.			
+			sql_preco.append( "select first 1 ct.precocot ");
+			sql_preco.append( "from cpcotacao ct, cpsolicitacao sl, cpitsolicitacao iso ");
+			sql_preco.append( "where ");
+			sql_preco.append( "iso.codemp = sl.codemp and iso.codfilial=sl.codfilial and iso.codsol=sl.codsol ");
+			sql_preco.append( "and ct.codemp=iso.codemp and ct.codfilial=iso.codfilial and ct.codsol=iso.codsol and ct.coditsol=iso.coditsol ");
+			sql_preco.append( "and iso.codemppd=? and iso.codfilialpd=? and iso.codprod=? ");
+			sql_preco.append( "and ct.codempfr=? and ct.codfilialfr=? and ct.codfor=? ");
+			sql_preco.append( "and ct.dtvalidcot >= ? ");
+			sql_preco.append( "and ct.sititsol not in ('EF','CA') ");
+			sql_preco.append( "order by ct.dtcot desc ");
+
+			Integer codemppd = null;
+			Integer codfilialpd = null;
+			Integer codprod = null;
+			Integer codempfr = null;
+			Integer codfilialfr = null;
+			Integer codfor = null;
+			Date dtent = null;
+			
+			for(int i = 0; tabitcompra.getNumLinhas() > i; i++) {
+				
+				codemppd = (Integer) tabitcompra.getValor( i, enum_itcompra.CODEMPPD.ordinal() );
+				codfilialpd = (Integer) tabitcompra.getValor( i, enum_itcompra.CODFILIALPD.ordinal() );				
+				codprod = (Integer) tabitcompra.getValor( i, enum_itcompra.CODPROD.ordinal() );
+				
+				codempfr = (Integer) tabitcompra.getValor( i, enum_itcompra.CODEMPFR.ordinal() );
+				codfilialfr = (Integer) tabitcompra.getValor( i, enum_itcompra.CODFILIALFR.ordinal() );				
+				codfor = Integer.parseInt( tabitcompra.getValor( i, enum_itcompra.CODFOR.ordinal() ).toString());
+				dtent = Funcoes.strDateToDate( tabitcompra.getValor( i, enum_itcompra.DTENTCOMPRA.ordinal() ).toString()); 
+
+				ps = con.prepareStatement( sql_preco.toString() );
+				
+				ps.setInt( 1, codemppd );
+				ps.setInt( 2, codfilialpd );
+				ps.setInt( 3, codprod );
+				
+				ps.setInt( 4, codempfr );
+				ps.setInt( 5, codfilialfr );
+				ps.setInt( 6, codfor );
+				ps.setDate( 7, Funcoes.dateToSQLDate( dtent ) );
+			
+				rs = ps.executeQuery();
+			
+			
+				if(rs.next()) {
+					
+					preconovo = rs.getBigDecimal( "precocot" ); 
+				
+				}
+			
+				if(preconovo!=null) {
+
+					ps = con.prepareStatement( sql_update.toString() );
+				
+					ps.setBigDecimal( 1, preconovo );
+					ps.setBigDecimal( 2, preconovo );					
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					ps.setInt( 5, (Integer) tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) );
+					ps.setInt( 6, (Integer) tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );					
+					
+					ps.setBigDecimal( 7, preconovo );
+					
+					System.out.println("preço atualizado: sql:" + sql_update.toString());
+					System.out.println("preço novo:" + preconovo );
+					System.out.println("compra:" +  tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) + "-" +  tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );
+					
+
+					ps.executeUpdate();
+					ps.close();
+					con.commit();
+					
+				}
+			}
+			
+			buscaItCompra();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void beforeCarrega( CarregaEvent e ) {
 
 	}
