@@ -117,7 +117,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtPlacaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtPlacaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private final JTextFieldPad txtUFFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -202,7 +202,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
 	private final JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldFK txtDescBancoItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -319,9 +319,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		CODPLANOPAG, VLRDESCVENDA, VLRADICVENDA, IMPPED, IMPNOTA, MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL, NUMCONTA
 	};
 
-	BigDecimal volumes = null;
+	private BigDecimal volumes = null;
+	
+	private String codmarca = "";
 
-	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe ) {
+	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, 
+			String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
 
 		super( cOrig );
 
@@ -338,7 +341,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		iCodVendaFecha = iCodVenda.intValue();
 		icodTran = codtran.intValue();
+		
 		this.volumes = volumes;
+		this.codmarca = codmarca;
 
 		setTitulo( "Fechar Venda" );
 		setAtribos( 405, 490 );
@@ -393,6 +398,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodTran.setNomeCampo( "CodTran" );
 		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
 		lcTran.add( new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtPlacaFreteVD, "PlacaTran", "Placa do veículo", ListaCampos.DB_SI, false ) );
+		lcTran.add( new GuardaCampo( txtUFFreteVD, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
+		
 		txtDescTran.setListaCampos( lcTran );
 		txtCodTran.setTabelaExterna( lcTran, null );
 		txtCodTran.setFK( true );
@@ -855,11 +863,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				lcTran.carregaDados();
 			}
 
-			txtPlacaFreteVD.setVlrString( "*******" );
-			txtUFFreteVD.setVlrString( "**" );
+			if(txtPlacaFreteVD.getVlrString()==null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
+				txtPlacaFreteVD.setVlrString( "*******" );	
+			}
+			
+			if(txtUFFreteVD.getVlrString()==null || "".equals( txtUFFreteVD.getVlrString() ) ) {
+				txtUFFreteVD.setVlrString( "**" );
+			}
 
 			if ( (Boolean) oPrefs[ 4 ] ) {
-				txtQtdFreteVD.setVlrBigDecimal( volumes );
+				txtQtdFreteVD.setVlrBigDecimal( this.volumes );
 			}
 			else {
 				txtQtdFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
@@ -868,7 +881,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			txtVlrFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
 
 			txtEspFreteVD.setVlrString( "Volume" );
-			txtMarcaFreteVD.setVlrString( "**********" );
+			
+			if(this.codmarca!=null) {
+				txtMarcaFreteVD.setVlrString( this.codmarca );
+			}
+			else {			
+				txtMarcaFreteVD.setVlrString( "**********" );
+			}
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, iCodVendaFecha );
