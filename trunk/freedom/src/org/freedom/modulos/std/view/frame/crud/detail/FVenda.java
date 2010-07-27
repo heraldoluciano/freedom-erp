@@ -70,7 +70,6 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.business.component.CtrlMultiComis;
 import org.freedom.business.component.NFSaida;
-import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.Lucratividade;
@@ -115,6 +114,7 @@ import org.freedom.modulos.std.view.dialog.utility.DLMultiComiss;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
 import org.freedom.modulos.std.view.frame.crud.plain.FLiberaCredito;
+import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
@@ -327,6 +327,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtTipoFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldFK txtTipoProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtCodMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 6, 0 );
+	
+	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -373,6 +377,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodVendaRemessa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodItVendaRemessa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextAreaPad txaObsItVenda = new JTextAreaPad( 500 );
 
@@ -451,6 +457,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private ListaCampos lcItCompra = new ListaCampos( this, "CP" );
 
 	private ListaCampos lcItRemessa = new ListaCampos( this, "VR" );
+	
+	private ListaCampos lcMarca = new ListaCampos( this, "MC" );
 
 	private CtrlMultiComis ctrlmc = null;
 
@@ -784,6 +792,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.addCarregaListener( this );
 		lcFisc.addCarregaListener( this );
 		lcProd.addCarregaListener( this );
+		lcMarca.addCarregaListener( this );
 		lcProd2.addCarregaListener( this );
 		lcNat.addCarregaListener( this );
 		lcVenda2.addCarregaListener( this );
@@ -836,6 +845,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.add( new GuardaCampo( txtVerifProd, "VerifProd", "Verif. custo", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtTipoProd, "TipoProd", "Tipo.Prod", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtQtdEmbalagem, "QtdEmbalagem", "Qtd.Embalagem", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtCodMarca, "CodMarca", "Marca", ListaCampos.DB_SI, false ) );
 
 		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F', 'O' " + ( (Boolean) oPrefs[ POS_PREFS.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
 
@@ -858,6 +869,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd2.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtVerifProd, "VerifProd", "Verif. custo", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtQtdEmbalagem, "QtdEmbalagem", "Qtd.Embalagem", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodMarca, "CodMarca", "Marca", ListaCampos.DB_SI, false ) );
 
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
@@ -867,6 +880,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
+		// FK Marca
+		
+		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, true ) );
+		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
+		lcMarca.montaSql( false, "MARCA", "EQ" );
+		lcMarca.setReadOnly( true );
+		lcMarca.setQueryCommit( false );
+		txtCodMarca.setTabelaExterna( lcMarca, FMarca.class.getCanonicalName() );
+		
+		
 		// FK Tipo de movimentos
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -1456,19 +1479,63 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	}
 
+	
+	
+	private BigDecimal getVolumes() {
+		
+		StringBuilder sql = new StringBuilder();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		BigDecimal volumes = new BigDecimal(0);
+		
+		try {
+			
+			sql.append( "select (iv.qtditvenda / coalesce(pd.qtdembalagem,1) ) volumes  " );
+			sql.append( "from vditvenda iv, eqproduto pd " );
+			sql.append( "where " );
+			sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and " );
+			sql.append( "iv.codemp=? and iv.codfilial=? and iv.codvenda=? and iv.tipovenda=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodVenda.getVlrInteger() );
+			ps.setString( 4, txtTipoVenda.getVlrString() );
+			
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				volumes = volumes.add(rs.getBigDecimal( "volumes" ));
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return volumes;
+		
+	}
+	
+	/*
 	public BigDecimal getVolumes() {
 
 		BigDecimal retorno = new BigDecimal( 0 );
 
+		
+
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
 			retorno = retorno.add( ConversionFunctions.stringCurrencyToBigDecimal( tab.getValor( i, (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ? 6 : 5 ).toString() ) );
+
 		}
 
 		return retorno;
 
 	}
-
+*/
 	public Vector<Object> getParansDesconto() {
 
 		Vector<Object> param = new Vector<Object>();
@@ -2098,8 +2165,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			List<Integer> lsParcRecibo = null;
 			String[] sValores = null;
 
-			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString(), txtCodTran.getVlrInteger(), txtTipoFrete
-					.getVlrString(), getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) );
+			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), 
+					chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), 
+					chbReImpNfTipoMov.getVlrString(), txtCodTran.getVlrInteger(), txtTipoFrete.getVlrString(), getVolumes(),
+					( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ),
+					txtDescMarca.getVlrString()
+				);
 			// dl.getDadosCli();
 			dl.setVisible( true );
 
@@ -3183,6 +3254,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtNumSerie.setVisible( false );
 
 				}
+				lcMarca.carregaDados();
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
@@ -3497,9 +3569,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
 				impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
 
-				impostos.setCodfisc(null );
+				impostos.setCodfisc( null );
 				impostos.setCoditfisc( null );
-				
+
 				impostos.calcTratTrib();
 
 				txtOrigFisc.setVlrString( impostos.getOrigfisc() );
@@ -3653,6 +3725,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcSerie.setConexao( cn );
 		lcProd.setConexao( cn );
 		lcProd2.setConexao( cn );
+		lcMarca.setConexao( cn );		
 		lcNat.setConexao( cn );
 		lcAlmox.setConexao( cn );
 		lcLote.setConexao( cn );
