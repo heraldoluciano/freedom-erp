@@ -394,6 +394,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		txtCodCC.setNaoEditavel( true );
 		txtAnoCC.setNaoEditavel( true );
 
+		// Não deve carregar solicitações canceladas ou pendentes.
+		
+		lcCampos.setWhereAdic( "SITSOL NOT IN ('CA','PE')" );
 		setListaCampos( true, "SOLICITACAO", "CP" );
 		lcCampos.setQueryInsert( false );
 
@@ -728,8 +731,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 			btAprovar.setEnabled( false );
 
-			if ( !txtStatusSolicitacao.getVlrString().equals( "AF" ) )
+			if ( !txtStatusSolicitacao.getVlrString().equals( "AF" ) ) {
 				btFinalizar.setEnabled( true );
+			}
 			else {
 				btFinalizar.setEnabled( false );
 			}
@@ -949,7 +953,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				lcCampos.post();
 			}
 		}
-		else if ( evt.getSource() == btFinalizar ) {
+
+
+  		else if ( evt.getSource() == btFinalizar ) {
+ 
 			if ( Funcoes.mensagemConfirma( null, "Deseja finalizar o processo de aprovação da compra?\n Após este procedimento a compra não poderá mais ser alterada\n" + "e estará disponível para expedição da nota fiscal!" ) == JOptionPane.OK_OPTION ) {
 				;
 				lcCampos.setState( ListaCampos.LCS_EDIT );
@@ -957,6 +964,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				lcCampos.post();
 			}
 		}
+
 		else if ( evt.getSource() == btComprar ) {
 			if ( Funcoes.mensagemConfirma( null, "Deseja cotar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem cotadas" + " estará cotando as quantidades aprovadas!" ) == JOptionPane.OK_OPTION ) {
 				;
@@ -965,6 +973,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				lcCampos.post();
 			}
 		}
+		
 
 		super.actionPerformed( evt );
 	}

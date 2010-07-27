@@ -399,6 +399,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean habconvcp = false;
 
 	private boolean habilitaCusto = false;
+	
+	private boolean bloqprecoaprov = false;
 
 	private String abaTransp = "N";
 
@@ -704,7 +706,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
 		lcNumSerie.setAutoLimpaPK( false );
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
-		lcNumSerie.setQueryCommit( false );
+		lcNumSerie.setQueryCommit( false ); 
 		lcNumSerie.setReadOnly( true );
 		txtNumSerie.setTabelaExterna( lcNumSerie, FSerie.class.getCanonicalName() );
 		txtObsSerie.setListaCampos( lcNumSerie );
@@ -937,6 +939,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicDescFK( txtDescProd, 128, 20, 220, 20, "DescProd", "Descrição do produto" );
 		adic( new JLabelPad( "Unid." ), 351, 0, 50, 20 );
+		
 		adic( txtCodUnid, 351, 20, 50, 20 );
 		adicCampo( txtQtdItCompra, 404, 20, 70, 20, "qtditcompra", "Quant.", ListaCampos.DB_SI, true );
 
@@ -1426,7 +1429,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
-			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP " );
+			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1454,6 +1457,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				labelobs03cp = rs.getString( "LABELOBS03CP" );
 				labelobs04cp = rs.getString( "LABELOBS04CP" );
 				habconvcp = rs.getString( "HABCONVCP" ) == null ? false : rs.getString( "HABCONVCP" ).equals( "S" );
+				bloqprecoaprov = rs.getString( "BLOQPRECOAPROV" ).equals( "S" );
 
 			}
 			con.commit();
@@ -1949,7 +1953,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private void abreBuscaCompra() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca pedido de compra" ) ) {
-			DLBuscaPedCompra tela = new DLBuscaPedCompra( this );
+			DLBuscaPedCompra tela = new DLBuscaPedCompra( this, bloqprecoaprov  );
 			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
 		}
 	}
