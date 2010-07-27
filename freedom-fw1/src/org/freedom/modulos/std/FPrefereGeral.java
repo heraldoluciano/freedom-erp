@@ -408,7 +408,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbPrecoCotacao = new JCheckBoxPad("Usa preço de cotação", "S", "N");
 	
-	private final JCheckBoxPad cbDescartaPrecoValid = new JCheckBoxPad("Descarta preço por validade", "S", "N");
+	private final JCheckBoxPad cbBloqPrecoAprov = new JCheckBoxPad("Bloqueia preço não validado", "S", "N");
 
 	private final JCheckBoxPad cbTransAbaCp = new JCheckBoxPad("Aba transp. na tela de compras.", "S", "N");
 
@@ -1140,7 +1140,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinComprasCotacao);
 		
 		adicDB(cbPrecoCotacao, 7, 15, 200, 20, "UsaPrecoCot", "", false);
-		adicDB(cbDescartaPrecoValid, 7, 35, 200, 20, "DescartaPrecoCotValid", "", false);
+		adicDB(cbBloqPrecoAprov, 7, 35, 200, 20, "BloqPrecoAprov", "", false);
 		
 		// Preço
 
