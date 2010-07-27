@@ -127,6 +127,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinValidacoesGeral = new JPanelPad();
 
 	private JPanelPad pinCompras = new JPanelPad();
+	
+	private JPanelPad pinComprasCotacao = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 
@@ -308,8 +310,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final String opcoes = "Opções";
 
-	private JLabelPad lbCompOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
-
 	private JLabelPad lbProdOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JLabelPad lbRecursos = new JLabelPad(opcoes, SwingConstants.CENTER);
@@ -405,13 +405,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbEstLotNeg = new JCheckBoxPad("Permite saldo lote negativo.", "S", "N");
 
 	private final JCheckBoxPad cbUsaRefCompra = new JCheckBoxPad("Usa referência na compra. ", "S", "N");
+	
+	private final JCheckBoxPad cbPrecoCotacao = new JCheckBoxPad("Usa preço de cotação", "S", "N");
+	
+	private final JCheckBoxPad cbDescartaPrecoValid = new JCheckBoxPad("Descarta preço por validade", "S", "N");
 
 	private final JCheckBoxPad cbTransAbaCp = new JCheckBoxPad("Aba transp. na tela de compras.", "S", "N");
 
 	private final JCheckBoxPad cbImportAbaCp = new JCheckBoxPad("Aba Importação na tela de compras.", "S", "N");
-
-	// private final JCheckBoxPad cbTabSolCp = new JCheckBoxPad(
-	// "Aba solicitação na tela de compras.", "S", "N" );
 
 	private final JCheckBoxPad cbPrecoRel = new JCheckBoxPad("Mostra preço de compra nos relatórios.", "S", "N", true);
 
@@ -1111,15 +1112,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		// Compra
 
 		setPainel(pinCompra);
+		
 		adicTab("Compras", pinCompra);
 
-		lbCompOpcoes.setOpaque(true);
-		adic(lbCompOpcoes, 17, 5, 70, 20);
-		adic(pinCompras, 7, 15, 300, 400);
+		adic(pinCompras, 7, 5, 285, 420);
+		adic(pinComprasCotacao, 300, 5, 285, 210);
+		
+		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
+		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
+		
 		setPainel(pinCompras);
+
 		adicDB(cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "", false);
 		adicDB(cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "", false);
-		// adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
 		adicDB(cbImportAbaCp, 7, 55, 250, 20, "TabImportCp", "", false);
 		adicDB(cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "", false);
 		adicDB(cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true);
@@ -1132,6 +1137,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtObs03, 11, 320, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs04, 11, 360, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
 
+		setPainel(pinComprasCotacao);
+		
+		adicDB(cbPrecoCotacao, 7, 15, 200, 20, "UsaPrecoCot", "", false);
+		adicDB(cbDescartaPrecoValid, 7, 35, 200, 20, "DescartaPrecoCotValid", "", false);
+		
 		// Preço
 
 		setPainel(pinPreco);
