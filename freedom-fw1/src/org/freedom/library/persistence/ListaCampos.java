@@ -2809,7 +2809,21 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 					}
 					catch (SQLException err) {
 						if (err.getErrorCode() == FB_FK_INVALIDA) {
-							Funcoes.mensagemErro(cOwner, "O registro possui vínculos, não pode ser deletado!");
+							
+							StringBuilder mensagem = new StringBuilder("Este registro não pode ser apagado, pois possui vínculo com a tabela: ");
+							
+							String errormessage = err.getMessage();
+							
+							String tabela = errormessage.substring( errormessage.indexOf("on table") + 9 ); 
+							 
+							mensagem.append( tabela + "!\n");
+							
+							mensagem.append( "Mensagem original:\n");
+							
+							mensagem.append( errormessage.substring(errormessage.indexOf("violation")) );
+							
+							Funcoes.mensagemErro(cOwner, mensagem.toString());
+							
 							bRetorno = false;
 						}
 						else if (err.getErrorCode() == FB_PK_DUPLA) {
