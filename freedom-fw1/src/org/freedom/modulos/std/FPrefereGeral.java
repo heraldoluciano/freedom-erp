@@ -165,10 +165,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDescTipoForFT = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodTipoForFT = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDescTipoFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
-	private JTextFieldFK txtDescTipoFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+//	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
+	
+//	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
+
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
@@ -314,7 +323,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JLabelPad lbRecursos = new JLabelPad(opcoes, SwingConstants.CENTER);
 
-	private JLabelPad lbFrete = new JLabelPad(opcoes, SwingConstants.CENTER);
+	private JPanelPad pnFrete = new JPanelPad();
 
 	private JLabelPad lbCtbOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
@@ -325,8 +334,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JLabelPad lbProdCont = new JLabelPad();
 
 	private JLabelPad lbRecursosCont = new JLabelPad();
-
-	private JLabelPad lbFreteCont = new JLabelPad();
 
 	private JLabelPad lbFinOpcoes = new JLabelPad();
 
@@ -565,6 +572,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcGrupo = new ListaCampos(this, "GP");
 
 	private ListaCampos lcTipoFor = new ListaCampos(this, "TF");
+	
+	private ListaCampos lcTipoForFT = new ListaCampos(this, "FT");
 
 	private ListaCampos lcTipoCli = new ListaCampos(this, "TC");
 
@@ -728,6 +737,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcFor.setReadOnly(true);
 		txtCodFor.setTabelaExterna(lcFor, null);
 
+		// Tipo de fornecedor para clientes / devolução
+		
 		lcTipoFor.add(new GuardaCampo(txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false));
 		lcTipoFor.add(new GuardaCampo(txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false));
 		lcTipoFor.montaSql(false, "TIPOFOR", "CP");
@@ -735,6 +746,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoFor.setReadOnly(true);
 		txtCodTipoFor.setTabelaExterna(lcTipoFor, null);
 
+		// Tipo de fornecedor para transportadoras / conhecimento de frete
+		lcTipoForFT.add(new GuardaCampo(txtCodTipoForFT, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false));
+		lcTipoForFT.add(new GuardaCampo(txtDescTipoForFT, "DescTipoFor", "Descrição do tipo de for. para transportadoras", ListaCampos.DB_SI, false));
+		lcTipoForFT.montaSql(false, "TIPOFOR", "CP");
+		lcTipoForFT.setQueryCommit(false);
+		lcTipoForFT.setReadOnly(true);
+		txtCodTipoForFT.setTabelaExterna(lcTipoForFT, null);
+		
 		lcTipoCli.add(new GuardaCampo(txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false));
 		lcTipoCli.add(new GuardaCampo(txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
 		lcTipoCli.montaSql(false, "TIPOCLI", "VD");
@@ -1306,7 +1325,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinDev);
 		adicTab("Devolução", pinDev);
 
-		adicCampo(txtCodTipoFor, 7, 25, 90, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, false);
+		adicCampo(txtCodTipoFor, 7, 25, 90, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoForFT, false);
 		adicDescFK(txtDescTipoFor, 100, 25, 300, 20, "DescTipoFor", "Descrição do tipo de fornecedor");
 		adicCampo(txtCodTipoMov5, 7, 65, 90, 20, "CodTipoMov5", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento");
@@ -1453,17 +1472,22 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		 * Conhecimento de frete *
 		 *************************/
 
-		lbFrete.setOpaque(true);
-		lbFreteCont.setBorder(BorderFactory.createEtchedBorder(1));
-
 		setPainel(pinFrete);
 		adicTab("Conhecimento de frete", pinFrete);
 
-		adic(lbFrete, 17, 10, 70, 20);
-		adic(lbFreteCont, 7, 20, 430, 100);
-		adicCampo(txtCodTipoMov9, 13, 55, 90, 20, "CodTipoMov9", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
-		adicDescFK(txtDescTipoMov9, 106, 55, 310, 20, "DescTipoMov", "Descrição do tp. mov. para conhecimento de frete");
+		adic(pnFrete, 7, 10, 450, 155);
+		pnFrete.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
+		
+		setPainel(pnFrete);
+		
+		adicCampo(txtCodTipoMov9, 7, 20, 90, 20, "CodTipoMov9", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
+		adicDescFK(txtDescTipoMov9, 100, 20, 330, 20, "DescTipoMov", "Descrição do tp. mov. para conhecimento de frete");
 
+		adicCampo(txtCodTipoForFT, 7, 60, 90, 20, "CodTipoForFT", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoForFT, false);
+		adicDescFK(txtDescTipoForFT, 100, 60, 330, 20, "DescTipoFor", "Descrição do tipo forn. p/transportadoras");
+		
+		txtCodTipoForFT.setNomeCampo("codtipofor");
+		
 		setListaCampos(false, "PREFERE1", "SG");
 
 		txtCodHistRec.setNomeCampo("CodHist"); // Acerto o nome para que o
@@ -1697,6 +1721,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov9.setConexao(cn);
 
 		lcTransp.setConexao(cn);
+		lcTipoForFT.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
 		lcPlanoPag2.setConexao(cn);
 		lcClasCli.setConexao(cn);
