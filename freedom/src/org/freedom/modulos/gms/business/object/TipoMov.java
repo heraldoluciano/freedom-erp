@@ -1,8 +1,13 @@
 package org.freedom.modulos.gms.business.object;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.infra.pojos.Constant;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.frame.Aplicativo;
 
 public class TipoMov implements java.io.Serializable {
 
@@ -165,5 +170,105 @@ public class TipoMov implements java.io.Serializable {
 		return ret;
 
 	}
+	
+	public static Integer getTipoMovFrete() {
+		Integer ret = null;
+		
+		try {
 
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select p.codtipomov9 from SGPREFERE1 p where p.codemp=? and p.codfilial=?" );
+
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getInt( "codtipomov9" );
+				
+			}
+
+			rs.close();
+			ps.close();
+
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();		
+		}
+		return ret;
+	}
+	
+	public static String getSerieTipoMov(Integer codtipomov) {
+		String ret = null;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select serie from eqtipomov where codemp=? and codfilial=? and codtipomov=? " );
+
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( 3, codtipomov );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getString( "serie" );
+				
+			}
+
+			rs.close();
+			ps.close();
+
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();		
+		}
+		return ret;
+	}
+	
+	public static Integer getDocSerie(String serie) {
+		Integer ret = null;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "select coalesce(docserie,0) docserie from lfseqserie where " );			
+			sql.append( "codemp=? and codfilial=? and serie=? and " );
+			sql.append( "codempss=? and codfilialss=? and ativserie='S'" );
+			
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );			
+			ps.setString( 3, serie );
+			
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );			
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getInt( "docserie" );
+				
+			}
+			else {
+				ret = 1;
+			}
+
+			rs.close();
+			ps.close();
+
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();		
+		}
+		return ret;
+	}
+
+	
 }
