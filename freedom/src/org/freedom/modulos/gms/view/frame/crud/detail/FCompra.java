@@ -958,7 +958,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescNat, 55, 60, 220, 20, "DescNat", "Descrição da CFOP" );
 
 		adicCampo( txtVlrBaseICMSItCompra, 278, 60, 70, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercICMSItCompra, 351, 60, 50, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true );
+		adicCampo( txtPercICMSItCompra, 351, 60, 50, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrICMSItCompra, 404, 60, 70, 20, "VlrICMSItCompra", "Vlr. ICMS", ListaCampos.DB_SI, false );
 
 		adicCampo( txtVlrBaseIPIItCompra, 477, 60, 70, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );

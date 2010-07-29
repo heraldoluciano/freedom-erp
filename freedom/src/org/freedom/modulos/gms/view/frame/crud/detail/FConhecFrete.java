@@ -43,6 +43,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
@@ -398,7 +399,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 		adicCampo( txtCodTran, 7, 60, 90, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtRazTran, true );
 		adicDescFK( txtRazTran, 100, 60, 250, 20, "RazTran", "Razão social da transportadora" );
-		adicCampo( txtCodNat, 353, 60, 90, 20, "CodNat", "Cód.CFOP.", ListaCampos.DB_FK, txtDescNat, true );
+		adicCampo( txtCodNat, 353, 60, 90, 20, "CodNat", "Cód.CFOP.", ListaCampos.DB_FK, txtDescNat, false );
 		adicDescFK( txtDescNat, 446, 60, 250, 20, "DescNat", "Descrição na natureza da operação" );
 
 		adicCampo( txtCodRemet, 7, 100, 90, 20, "CodRemet", "Cód.Remet.", ListaCampos.DB_FK, txtNomeRemet, true );
@@ -491,26 +492,11 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 		try {
 
-			StringBuilder sql = new StringBuilder();
-			sql.append( "select p.codtipomov9 from SGPREFERE1 p where p.codemp=? and p.codfilial=?" );
+			txtCodTipoMov.setVlrInteger( TipoMov.getTipoMovFrete() );
+			lcTipoMov.carregaDados();
 
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				txtCodTipoMov.setVlrInteger( rs.getInt( "codtipomov9" ) );
-				lcTipoMov.carregaDados();
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, e.getMessage(), true, con, e );
 		}
