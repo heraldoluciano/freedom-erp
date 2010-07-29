@@ -53,6 +53,7 @@ import org.freedom.modulos.gms.business.object.TipoRecMerc;
 import org.freedom.modulos.gms.view.dialog.utility.DLPesagem;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
@@ -113,6 +114,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtCodBairro = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeBairro = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
+	private JTextFieldFK txtVlrFrete = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -147,6 +150,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
 	private JRadioGroup<String, String> rgFrete = null;
+	
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	// *** Campos (Detalhe)
 
@@ -181,6 +188,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private ListaCampos lcMunic = new ListaCampos( this );
 
 	private ListaCampos lcProc = new ListaCampos( this, "TP" );
+	
+	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
 
 	// *** Labels
 
@@ -312,7 +321,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private void montaCabecalho() {
 
-		setAltCab( 210 );
+		setAltCab( 250 );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -324,8 +333,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicDescFK( txtDescTipoRecMerc, 196, 20, 301, 20, "DescTipoRecMerc", "Tipo de recebimento" );
 
 		adicCampo( txtCodProdCab, 7, 60, 70, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
-		adicDescFK( txtDescProdCab, 80, 60, 417, 20, "DescProd", "Descrição do Produto" );
+		adicDescFK( txtDescProdCab, 80, 60, 200, 20, "DescProd", "Descrição do Produto" );
 		adicCampoInvisivel( txtRefProdCab, "RefProd", "Referência", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCodAlmox, 283, 60, 50, 20, "CodAlmox", "Almox.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox, 336, 60, 160, 20, "DescAlmox", "Descrição do almoxarifado" );
 
 		adicCampo( txtCodTran, 7, 100, 70, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
 		adicDescFK( txtNomeTran, 80, 100, 417, 20, "NomeTran", "Nome da transportadora" );
@@ -340,7 +352,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampoInvisivel( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
 
-		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
+		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 
 		pinCab.adic( lbBairro, 500, 120, 100, 20 );
@@ -552,6 +564,16 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcProdCab.setReadOnly( true );
 		lcProdCab.montaSql( false, "PRODUTO", "EQ" );
+		
+		// * Almoxarifado (Cabeçalho)
+		
+		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
+		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+		lcAlmox.montaSql( false, "ALMOX", "EQ" );
+		lcAlmox.setReadOnly( true );
+		lcAlmox.setQueryCommit( false );
+		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
+
 
 		// * Fornecedor
 
@@ -619,6 +641,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		lcBairro.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "Sigla.UF", ListaCampos.DB_PK, false ) );
 		lcBairro.add( new GuardaCampo( txtCodPais, "CodPais", "Cód.País", ListaCampos.DB_PK, false ) );
 		lcBairro.add( new GuardaCampo( txtNomeBairro, "NomeBairro", "Nome do Bairro", ListaCampos.DB_SI, false ) );
+		lcBairro.add( new GuardaCampo( txtVlrFrete, "VlrFrete", "Valor Frete", ListaCampos.DB_SI, false ) );
 
 		lcBairro.setDinWhereAdic( "CODPAIS = #N", txtCodPais );
 		lcBairro.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
@@ -881,6 +904,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		lcProdCab.setConexao( cn );
 		lcProdDet.setConexao( cn );
+		lcAlmox.setConexao( cn );		
 		lcTran.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcTipoRecMerc.setConexao( cn );
@@ -1170,7 +1194,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		if ( evt.getComboBoxPad() == cbBairro ) {
 			if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
 				txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
-				// lcBairro.carregaDados();
+//				lcBairro.carregaDados();
 			}
 		}
 	}
