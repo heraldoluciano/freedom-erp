@@ -48,6 +48,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -173,6 +174,12 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private JTextFieldPad txtPlacaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldPad txtNroDependTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
+	
+	private final JCheckBoxPad cbDescontaIR = new JCheckBoxPad( "Desconta IR do valor dos fretes", "S", "N" );
+	
+	private final JCheckBoxPad cbDescontaINSS = new JCheckBoxPad( "Desconta INSS do valor dos fretes", "S", "N" );
+	
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
 	public FTransp() {
 
@@ -201,6 +208,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		rgTipoTransp.addRadioGroupListener( this );
 		btPrevimp.addActionListener( this );
 		lcMunic.addCarregaListener( this );
+		btBuscaFor.addActionListener( this );
 
 		setImprimir( true );
 
@@ -250,8 +258,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		adicCampo( txtCelTran, 422, 220, 128, 20, "Celtran", "Celular", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodFor, 7, 260, 75, 20, "CodFor", "Cod.Forn.", ListaCampos.DB_FK, false );
-		adicDescFK( txtRazFor, 85, 260, 464, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtRazFor, 85, 260, 431, 20, "RazFor", "Razão social do fornecedor" );
 
+		adic( btBuscaFor, 519, 260, 30, 20 );		
+		
 		adicCampo( txtCodBanco, 7, 300, 75, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
 		adicDescFK( txtNomeBanco, 85, 300, 272, 20, "NomeBanco", "Nome do banco" );
 
@@ -299,6 +309,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		adicCampo( txtCodGPS, 7, 100, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescGPS, 85, 100, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
+		
+		adicDB( cbDescontaINSS, 7, 140, 300, 20, "descontainss", "", false );
+		
+		adicDB( cbDescontaIR, 7, 160, 300, 20, "descontair", "", false );
 
 		/*******************************************************************
 		 * 
@@ -598,9 +612,9 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
+		try { 
 
-			sSQL.append( "SELECT USAIBGETRANSP, BUSCACEP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "SELECT USAIBGETRANSP, BUSCACEP,COALESCE (CODTIPOFORFT,0) CODTIPOFOR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 
 			try {
 
@@ -613,6 +627,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 					retorno.put( "USAIBGETRANSP", new Boolean( "S".equals( rs.getString( "USAIBGETRANSP" ) ) ) );
 					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
+					retorno.put( "CODTIPOFOR", rs.getInt( "CODTIPOFOR" ) );
 				}
 
 				rs.close();
@@ -719,6 +734,9 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			buscaEndereco();
 
 		}
+		else if ( evt.getSource() == btBuscaFor ) {
+			buscaFornecedor();
+		}
 
 		super.actionPerformed( evt );
 
@@ -743,4 +761,166 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
+	
+	private void buscaFornecedor() {
+
+		String sCodCli = txtCodTran.getVlrString();
+		int codFor = 0;
+
+		if ( "".equals( sCodCli ) ) {
+
+			Funcoes.mensagemInforma( this, "Selecione um transportador! " );
+		}
+
+		codFor = pesqFor();
+
+		if ( codFor != 0 ) {
+			
+			Funcoes.mensagemInforma( this, "Já existe o fornecedor vinculado!" );
+
+		}
+		else {
+
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum fornecedor equivalente!\n" + "Dejeja replicar os dados do transportador automaticamente?" ) == JOptionPane.YES_OPTION ) {
+				codFor = inserirFor();
+
+				if ( codFor != 0 ) {
+
+					txtCodFor.setVlrInteger( codFor );
+					lcForneced.carregaDados();
+					Funcoes.mensagemInforma( this, "Fornecedor inserido com sucesso!" );
+
+				}
+			}
+		}
+	}
+
+	
+	private int getCodFor() {
+
+		int codigo = 0;
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+
+		sSQL.append( "SELECT MAX( F.CODFOR ) FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=?" );
+
+		try {
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				codigo = rs.getInt( 1 ) + 1;
+			}
+
+		} catch ( SQLException err ) {
+
+			err.printStackTrace();
+			Funcoes.mensagemInforma( this, "Erro ao buscar último fornecedor!" + err.getMessage() );
+		}
+
+		return codigo;
+	}
+
+	private int inserirFor() {
+
+		int codfor = getCodFor();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+
+		sSQL.append( "INSERT INTO CPFORNECED " );
+		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+
+		try {
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( 3, codfor );
+			ps.setString( 4, txtRazTran.getVlrString() );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( 7, (Integer) prefs.get( "CODTIPOFOR" ) );
+			ps.setInt( 8, Aplicativo.iCodEmp );
+			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( 10, Aplicativo.iCodEmp );
+			ps.setInt( 11, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setString( 12, txtNomeTran.getVlrString() );
+			
+			// Se for autonomo considera que é pessoa fisica
+			if("A".equals( rgTipoTransp.getVlrString() )) {
+				ps.setString( 13, "F" );
+			}
+			else {
+				ps.setString( 13, "J" );
+			}
+			
+			ps.setString( 14, txtCnpjTran.getVlrString() );
+			ps.setString( 15, txtCpfTran.getVlrString() );
+			ps.setString( 16, txtInscTran.getVlrString() );
+			ps.setString( 17, txtEndTran.getVlrString() );
+			ps.setInt( 18, txtNumTran.getVlrInteger() );
+			ps.setString( 19, txtBairTran.getVlrString() );
+
+			ps.executeUpdate();
+
+			con.commit();
+		} catch ( SQLException e ) {
+			codfor = 0;
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao inserir Fornecedor" + e.getMessage() );
+		}
+
+		return codfor;
+	}
+
+	private int pesqFor() {
+
+		int codfor = 0;
+		StringBuilder sSql = new StringBuilder();
+		String chave = null;
+		PreparedStatement ps = null;
+		
+		if("A".equals( rgTipoTransp.getVlrString() )) {
+		
+			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CPFFOR=? " );
+			chave = txtCpfTran.getVlrString();
+
+		}
+		else {
+
+			sSql.append( "SELECT CODFOR FROM CPFORNECED F WHERE F.CODEMP=? AND F.CODFILIAL=? AND CNPJFOR=? " );
+			chave = txtCnpjTran.getVlrString();
+
+		}
+		try {
+
+			ps = con.prepareStatement( sSql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setString( 3, chave );
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				codfor = rs.getInt( "CODFOR" );
+			}
+
+			con.commit();
+
+		} catch ( SQLException e ) {
+
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao pesquisar fornecedor! " + e.getMessage() );
+		}
+
+		return codfor;
+
+	}
+	
 }
