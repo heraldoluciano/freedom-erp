@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -90,9 +91,21 @@ public class RecMerc implements java.io.Serializable {
 
 	private Integer codcompra = null;
 
+	private Integer codfrete = null;
+
+	private Integer coddestinat = null;
+
+	private Integer codremet = null;
+	
+	private Integer codtran = null;
+
 	private Integer codorc = null;
 
 	private Object[] oPrefs = null;
+	
+	private Date dtent = null;
+	
+	private BigDecimal precopeso = null;
 
 	public static ImageIcon getImagem( String status, String tamanho ) {
 
@@ -455,6 +468,38 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
+	private void geraCodFrete() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codfrete = 1;
+
+		try {
+
+			sql.append( "select coalesce(max(codfrete),0) + 1 from lffrete " );
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				codfrete = rs.getInt( 1 );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		setCodfrete( codfrete );
+
+	}
+
+
 	private void geraCodOrc() {
 
 		StringBuilder sql = new StringBuilder();
@@ -552,7 +597,7 @@ public class RecMerc implements java.io.Serializable {
 		setCodtipomov( codtipomov );
 
 	}
-
+	
 	private void CarregaRecMerc() {
 
 		StringBuilder sql = new StringBuilder();
@@ -565,17 +610,28 @@ public class RecMerc implements java.io.Serializable {
 		try {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
-			sql.append( ", rm.codcli " );
+			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, (br.vlrfrete/coalesce(br.qtdfrete,1)) vlrfrete " );
+			
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
-
+			
+			sql.append( "left outer join cpforneced fr on " );
+			sql.append( "fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor " );
+			
+			sql.append( "left outer join sgfilial fi on " );
+			sql.append( "fi.codemp=rm.codemp and fi.codfilial=rm.codfilial " );
+			
+			sql.append( "left outer join sgbairro br on " );
+			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro " );
+			
+			
 			sql.append( "left outer join eqtipomov tm on " );
 			sql.append( "tm.codemp=tr.codemptc and tm.codfilial=tr.codfilialtc and tm.codtipomov=tr.codtipomovcp " );
 
 			sql.append( "left outer join lfseqserie ss " );
 			sql.append( "on ss.codemp=tm.codempse and ss.codfilial=tm.codfilialse and ss.serie=tm.serie and " );
-			sql.append( "codempss=? and codfilialss=? and ativserie='S'" );
+			sql.append( "codempss=? and codfilialss=? and ativserie='S' " );
 			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? " );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -597,6 +653,11 @@ public class RecMerc implements java.io.Serializable {
 				setTipofrete( rs.getString( "tipofrete" ) );
 				setCodfor( rs.getInt( "codfor" ) );
 				setCodcli( rs.getInt( "codcli" ) );
+				setCodremet( rs.getInt("codremet") );
+				setCoddestinat( rs.getInt("coddestinat") );
+				setCodtran( rs.getInt("codtran") );
+				setDtent( Funcoes.sqlDateToDate( rs.getDate( "dtent" )) );
+				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );
 			}
 
 			con.commit();
@@ -637,8 +698,9 @@ public class RecMerc implements java.io.Serializable {
 			sql.append( "codempfr, codfilialfr, codfor, " );
 			sql.append( "codempse, codfilialse, serie, doccompra, " );
 			sql.append( "codemptm, codfilialtm, codtipomov, " );
-			sql.append( "dtentcompra, dtemitcompra, tipofretecompra" );
-			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+			sql.append( "dtentcompra, dtemitcompra, tipofretecompra," );
+			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket " );
+			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = con.prepareStatement( sql.toString() );
 
@@ -669,15 +731,34 @@ public class RecMerc implements java.io.Serializable {
 			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ) );
 
 			ps.setString( param++, getTipofrete() );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( param++, getCodtran() );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, getTicket() );
 
 			ps.execute();
 
-			con.commit();
 			ps.close();
 
 			geraItemCompra( getCodcompra() );
 
-		} catch ( Exception e ) {
+			// Ser for FOB (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
+			if( "F".equals( getTipofrete()) ) {
+				
+				geraFreteRecMerc();
+				
+			}
+			else {
+				con.commit();
+			}
+			
+
+		} 
+		catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, con, e );
 			setCodcompra( null );
 			e.printStackTrace();
@@ -685,6 +766,162 @@ public class RecMerc implements java.io.Serializable {
 
 		return getCodcompra();
 
+	}
+
+	public void geraFreteRecMerc() {
+
+		StringBuilder sql = new StringBuilder();
+
+		Integer ticket = null;
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			HashMap<String, Object> p1 = getPrimeirapesagem();
+
+			peso1 = (BigDecimal) p1.get( "peso" );
+			
+			geraCodFrete();
+
+			sql.append( "insert into lffrete (" );
+			sql.append( "codemp, codfilial, codfrete,  " );
+			sql.append( "codemptn, codfilialtn, codtran, " );
+			sql.append( "codemptm, codfilialtm, codtipomov, serie, docfrete, " );
+			sql.append( "tipofrete, tipopgto, " );
+			sql.append( "codempre, codfilialre, codremet, " );
+			sql.append( "codempde, codfilialde, coddestinat, " );
+			sql.append( "dtemitfrete, qtdfrete, vlrmercadoria, vlrfrete, " );
+			sql.append( "pesobruto, pesoliquido, codemprm, codfilialrm, ticket " );
+
+			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ? )" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			int param = 1;
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setInt( param++, getCodfrete() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( param++, getCodtran());
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			
+			Integer codtipomov = TipoMov.getTipoMovFrete(); 
+			String serie = TipoMov.getSerieTipoMov( codtipomov );
+			
+			ps.setInt( param++, codtipomov );
+			ps.setString( param++, serie);			
+			ps.setInt( param++, TipoMov.getDocSerie( serie ));
+			
+			ps.setString( param++, getTipofrete());			
+			
+			ps.setString( param++, "A"); // Frete a pagar
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
+			ps.setInt( param++, getCodremet() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
+			ps.setInt( param++, getCoddestinat() );
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( getDtent() ) );
+			
+			ps.setBigDecimal( param++, peso1 );
+			
+			ps.setBigDecimal( param++, getValorLiqCompra() );
+			
+			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), peso1 ) );
+			
+			ps.setBigDecimal( param++, peso1 );
+			
+			ps.setBigDecimal( param++, peso1 );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			
+			ps.setInt( param++, getTicket() );
+			
+			ps.execute();
+
+			ps.close();
+			
+			/// Vincula Compra/Frete
+			
+			sql = new StringBuilder();
+			
+			sql.append( "insert into lffretecompra (codemp, codfilial, codfrete, codcompra) values (? ,?, ?, ?) " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setInt( param++, getCodfrete() );
+			ps.setInt( param++, getCodcompra() );	
+						
+			ps.execute();
+
+			con.commit();
+			
+			ps.close();
+			
+
+		} 
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar conhecimento de frete!", true, con, e );
+			setCodcompra( null );
+			e.printStackTrace();
+			try {
+				con.rollback();
+			}
+			catch (Exception err) {
+				err.printStackTrace();
+			}
+		}
+
+	}
+	
+	public BigDecimal getValorLiqCompra() {
+		BigDecimal ret = null;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "select vlrliqcompra from cpcompra where " );			
+			sql.append( "codemp=? and codfilial=? and codcompra=? " );
+			
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );			
+			ps.setInt( 3, getCodcompra() );
+			
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getBigDecimal( "vlrliqcompra" );
+				
+			}
+
+			rs.close();
+			ps.close();
+
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();		
+		}
+		return ret;
 	}
 
 	public Integer geraOrcamento() {
@@ -903,6 +1140,22 @@ public class RecMerc implements java.io.Serializable {
 		}
 	}
 
+	public BigDecimal getValorFrete(BigDecimal precopeso, BigDecimal peso) {
+
+		BigDecimal ret = null;
+
+		try {
+
+			ret = precopeso.multiply( peso );
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+
+	}
+
 	public Integer getCodfor() {
 
 		return codfor;
@@ -973,6 +1226,17 @@ public class RecMerc implements java.io.Serializable {
 		this.codcompra = codcompra;
 	}
 
+	public Integer getCodfrete() {
+
+		return codfrete;
+	}
+
+	public void setCodfrete( Integer codfrete ) {
+
+		this.codfrete = codfrete;
+	}
+
+
 	public Integer getCodorc() {
 
 		return codorc;
@@ -1001,6 +1265,66 @@ public class RecMerc implements java.io.Serializable {
 	public void setCodvend( Integer codvend ) {
 
 		this.codvend = codvend;
+	}
+
+
+	public Integer getCoddestinat() {
+
+		return coddestinat;
+	}
+
+
+	public void setCoddestinat( Integer coddestinat ) {
+
+		this.coddestinat = coddestinat;
+	}
+
+
+	public Integer getCodremet() {
+
+		return codremet;
+	}
+
+
+	public void setCodremet( Integer codremet ) {
+
+		this.codremet = codremet;
+	}
+
+	
+	public Integer getCodtran() {
+	
+		return codtran;
+	}
+
+	
+	public void setCodtran( Integer codtran ) {
+	
+		this.codtran = codtran;
+	}
+
+	
+	public Date getDtent() {
+	
+		return dtent;
+	}
+
+	
+	public void setDtent( Date dtent ) {
+	
+		this.dtent = dtent;
+	}
+
+	
+	public BigDecimal getPrecopeso() {
+	
+		return precopeso;
+	}
+
+	
+	public void setPrecopeso( BigDecimal precopeso ) {
+	
+		this.precopeso = precopeso;
 	}
 
 }
