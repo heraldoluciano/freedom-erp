@@ -62,6 +62,7 @@ import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
@@ -70,6 +71,7 @@ import org.freedom.modulos.lvf.view.frame.crud.detail.FNCM;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FTabelaIRRF;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.lvf.view.frame.report.FRIcms;
 import org.freedom.modulos.lvf.view.frame.report.FRIpi;
@@ -316,6 +318,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200402000, 2, true, FRCpTipoMov.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por fornecedor", "Compras por Fornecedor", 'f', 200403000, 2, true, FRComprasFor.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200404000, 2, true, FRCpItem.class );
+		addSeparador( 200400000 );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200405000, 2, true, FRFreteRecMerc.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
@@ -462,6 +466,11 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de Alíquotas", "Tabela de alíquotas", 'T', 800400000, 1, true, FTabICMS.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Natureza de operação (CFOP)", "Naturezas de operação(CFOP)", 'z', 80090000, 1, true, FNatoPer.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Regras CFOP", "Regras CFOP", 'R', 800200000, 1, true, FRegraFiscal.class );
+		
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 800900000, 1, true, FTabelaIRRF.class );
+//		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 800160000, 1, true, FTabelaIRRF.class );
+		
+		
 
 		addSeparador( 800000000 );
 
