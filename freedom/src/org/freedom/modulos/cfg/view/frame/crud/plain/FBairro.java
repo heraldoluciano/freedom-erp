@@ -38,6 +38,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 
 public class FBairro extends FDados implements ActionListener {
@@ -67,10 +68,15 @@ public class FBairro extends FDados implements ActionListener {
 	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtVlrFrete = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecPre );
+	
+	private JTextFieldPad txtQtdFrete = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
 
 	public FBairro() {
 
 		this( false, null );
+		
 	}
 
 	public FBairro( boolean novo, DbConnection pcon ) {
@@ -78,15 +84,19 @@ public class FBairro extends FDados implements ActionListener {
 		super();
 
 		setTitulo( "Cadastro de Bairros" );
-		setAtribos( 50, 50, 415, 245 );
+		setAtribos( 50, 50, 415, 285 );
 
 		montaListaCampos();
 
 		lcCampos.setUsaME( false );
 
 		adicCampo( txtCodBairro, 7, 140, 75, 20, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true );
-		adicCampo( txtNomeBairro, 85, 140, 300, 20, "NomeBairro", "Nome do bairro", ListaCampos.DB_SI, true );
-
+		adicCampo( txtNomeBairro, 85, 140, 300, 20, "NomeBairro", "Nome do bairro", ListaCampos.DB_FK, true );
+		
+		adicCampo( txtVlrFrete, 7, 180, 75, 20, "VlrFrete", "Vlr. frete", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtQtdFrete, 85, 180, 75, 20, "QtdFrete", "Qtd. frete", ListaCampos.DB_SI, true );
+		
 		adicCampo( txtCodPais, 7, 20, 75, 20, "CodPais", "Cod.país", ListaCampos.DB_PF, true );
 		adicDescFK( txtDescPais, 85, 20, 300, 20, "DescPais", "Nome do país" );
 
@@ -95,6 +105,8 @@ public class FBairro extends FDados implements ActionListener {
 
 		adicCampo( txtCodMun, 7, 100, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_PF, true );
 		adicDescFK( txtDescMun, 85, 100, 300, 20, "NomeMunic", "Nome do municipio" );
+		
+		txtNomeBairro.setNomeCampo( "nomebairro" );
 
 		setListaCampos( true, "BAIRRO", "SG" );
 
