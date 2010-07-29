@@ -1529,7 +1529,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	}
 
-	private void fazBusca() {
+	private void buscaFornecedor() {
 
 		String sCodCli = txtCodCli.getVlrString();
 		int codFor = 0;
@@ -4062,7 +4062,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			excluiHist();
 		}
 		else if ( evt.getSource() == btBuscaFor ) {
-			fazBusca();
+			buscaFornecedor();
 		}
 		else if ( evt.getSource() == btMapa ) {
 			FMapa tela = new FMapa( false );
