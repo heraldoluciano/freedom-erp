@@ -25,6 +25,10 @@ package org.freedom.modulos.fnc.view.frame.crud.plain;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.util.Date;
+
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -34,7 +38,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
-public class FTalaoCheq extends FDados implements ActionListener, KeyListener {
+public class FTalaoCheq extends FDados implements ActionListener, KeyListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -70,24 +74,25 @@ public class FTalaoCheq extends FDados implements ActionListener, KeyListener {
 		txtNumconta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 
 		adicCampo( txtNumconta, 7, 20, 80, 20, "Numconta", "Número conta", ListaCampos.DB_PF, true );
-		adicCampo( txtSeqtalao, 90, 20, 60, 20, "Seqtalao", "Sequencia", ListaCampos.DB_PK, true);
-		adicDescFK( txtDescconta, 153, 20, 210, 20, "Descconta", "Descrição da conta" );
-		adicCampo( txtDttalao, 7, 60, 70, 20, "Dttalao", "Data", ListaCampos.DB_SI, true );
-		adicDB( cbxAtivotalao, 90, 60, 70, 20, "DvBanco", "Ativo", true );
+		adicDescFK( txtDescconta, 90, 20, 210, 20, "Descconta", "Descrição da conta" );
+		adicCampo( txtSeqtalao, 310, 20, 60, 20, "Seqtalao", "Sequencia", ListaCampos.DB_PK, true);
+		adicCampo( txtDttalao, 7, 60, 90, 20, "Dttalao", "Data", ListaCampos.DB_SI, true );
+		adicDB( cbxAtivotalao, 110, 60, 70, 20, "AtivoTalao", "Ativo", true );
 		
 		adicCampo( txtCheqinitalao, 7, 110, 80, 20, "Cheqinitalao", "Cheque inicial", ListaCampos.DB_SI, false );
 		adicCampo( txtCheqfimtalao, 90, 110, 80, 20, "Cheqfimtalao", "Cheque final", ListaCampos.DB_SI, false );
-		adicCampo( txtCheqatualtalao, 173, 110, 80, 20, "Cheqatualtalao", "Cheque final", ListaCampos.DB_SI, false );
+		adicCampo( txtCheqatualtalao, 173, 110, 80, 20, "Cheqatualtalao", "Número atual", ListaCampos.DB_SI, false );
 		setListaCampos( false, "TALAOCHEQ", "FN" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
+		lcCampos.addInsertListener( this );
 		setImprimir( true );
 		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
+		super.actionPerformed( evt );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
@@ -97,5 +102,17 @@ public class FTalaoCheq extends FDados implements ActionListener, KeyListener {
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+		txtDttalao.setVlrDate( new Date()  );
+		cbxAtivotalao.setVlrString( "S" );
+		txtCheqinitalao.setVlrInteger( 1 );
+		txtCheqfimtalao.setVlrInteger( 999999 );
+		txtCheqatualtalao.setVlrInteger( 0 );
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
 	}
 }
