@@ -241,6 +241,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JTextFieldFK txtDescFiscFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcTipoFiscFor = new ListaCampos( this, "FF" );
+	
+	private JTextFieldPad txtNroDependFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	
 	public FFornecedor() {
@@ -407,6 +409,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicTab( "Complemento", pinComplemento );
 
 		adicCampo( txtSuframaFor, 7, 20, 137, 20, "suframafor", "SUFRAMA", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNroDependFor, 7, 60, 137, 20, "NroDependFor", "Nro. Dependentes", ListaCampos.DB_SI, false );
 		
 		// Painel Observações
 		adicTab( "Observações", panelObservacao );

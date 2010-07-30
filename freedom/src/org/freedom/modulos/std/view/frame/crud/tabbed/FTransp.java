@@ -824,12 +824,12 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		int codfor = getCodFor();
 		StringBuilder sSQL = new StringBuilder();
-		PreparedStatement ps = null;
+		PreparedStatement ps = null; 
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, NRODEPENDFOR ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
 
 		try {
 
@@ -861,11 +861,14 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			ps.setString( 17, txtEndTran.getVlrString() );
 			ps.setInt( 18, txtNumTran.getVlrInteger() );
 			ps.setString( 19, txtBairTran.getVlrString() );
+			ps.setInt( 20, txtNroDependTran.getVlrInteger() );
 
 			ps.executeUpdate();
 
 			con.commit();
-		} catch ( SQLException e ) {
+		
+		} 
+		catch ( SQLException e ) {
 			codfor = 0;
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao inserir Fornecedor" + e.getMessage() );
