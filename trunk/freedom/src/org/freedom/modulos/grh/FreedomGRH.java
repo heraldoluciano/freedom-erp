@@ -39,6 +39,8 @@ import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.grh.view.frame.crud.plain.FNivelCurso;
 import org.freedom.modulos.grh.view.frame.crud.plain.FTurnos;
+import org.freedom.modulos.grh.view.frame.crud.special.FTabelaINSS;
+import org.freedom.modulos.grh.view.frame.crud.special.FTabelaIRRF;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FCandidato;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregadores;
@@ -69,6 +71,7 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Empregadores", "Empregadores", 'p', 100100600, 2, true, FEmpregadores.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Benefícios", "Cadastro de Benefícios", 'b', 100100700, 2, true, FBeneficio.class );
 
+
 		addSeparador( 100100000 );
 
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Areas", "Areas", 'A', 100100700, 2, true, FArea.class );
@@ -79,7 +82,10 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100101100, 2, true, FEstadoCivil.class );
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Códigos GPS/INSS", "Códigos GPS/INSS", 'g', 100101200, 2, true, FCodGPS.class );
-
+		addSeparador( 100100000 );
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 100101300, 1, true, FTabelaIRRF.class );
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 100101400, 1, true, FTabelaINSS.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de vagas", "Cadastro de vagas", 'V', 200100000, 1, true, FVaga.class );
 		addSeparador( 200000000 );
