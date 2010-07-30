@@ -42,6 +42,7 @@ import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FBordero;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.fnc.view.frame.report.FRBordero;
@@ -427,6 +428,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601501000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
+		addSeparador( 600000000 );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
