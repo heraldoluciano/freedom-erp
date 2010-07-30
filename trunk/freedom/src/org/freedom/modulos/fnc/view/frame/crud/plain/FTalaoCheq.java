@@ -60,7 +60,7 @@ public class FTalaoCheq extends FDados implements ActionListener, KeyListener {
 
 		super();
 		setTitulo( "Cadastro de Talonário de Cheques" );
-		setAtribos( 50, 50, 450, 310 );
+		setAtribos( 50, 50, 400, 210 );
 
 		lcConta.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PK, txtDescconta, true ) );
 		lcConta.add( new GuardaCampo( txtDescconta, "Descconta", "Descriçao do conta", ListaCampos.DB_SI, null, false ) );
@@ -73,11 +73,11 @@ public class FTalaoCheq extends FDados implements ActionListener, KeyListener {
 		adicCampo( txtSeqtalao, 90, 20, 60, 20, "Seqtalao", "Sequencia", ListaCampos.DB_PK, true);
 		adicDescFK( txtDescconta, 153, 20, 210, 20, "Descconta", "Descrição da conta" );
 		adicCampo( txtDttalao, 7, 60, 70, 20, "Dttalao", "Data", ListaCampos.DB_SI, true );
-		adicDB( cbxAtivotalao, 70, 60, 70, 20, "DvBanco", "Ativo", true );
+		adicDB( cbxAtivotalao, 90, 60, 70, 20, "DvBanco", "Ativo", true );
 		
-		adicCampo( txtCheqinitalao, 7, 100, 80, 20, "Cheqinitalao", "Cheque inicial", ListaCampos.DB_SI, false );
-		adicCampo( txtCheqfimtalao, 90, 100, 80, 20, "Cheqfimtalao", "Cheque final", ListaCampos.DB_SI, false );
-		adicCampo( txtCheqfimtalao, 173, 100, 80, 20, "Cheqatualtalao", "Cheque final", ListaCampos.DB_SI, false );
+		adicCampo( txtCheqinitalao, 7, 110, 80, 20, "Cheqinitalao", "Cheque inicial", ListaCampos.DB_SI, false );
+		adicCampo( txtCheqfimtalao, 90, 110, 80, 20, "Cheqfimtalao", "Cheque final", ListaCampos.DB_SI, false );
+		adicCampo( txtCheqatualtalao, 173, 110, 80, 20, "Cheqatualtalao", "Cheque final", ListaCampos.DB_SI, false );
 		setListaCampos( false, "TALAOCHEQ", "FN" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
