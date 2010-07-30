@@ -30,8 +30,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -48,7 +51,6 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -174,10 +176,6 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private JTextFieldPad txtPlacaTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldPad txtNroDependTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
-	
-	private final JCheckBoxPad cbDescontaIR = new JCheckBoxPad( "Desconta IR do valor dos fretes", "S", "N" );
-	
-	private final JCheckBoxPad cbDescontaINSS = new JCheckBoxPad( "Desconta INSS do valor dos fretes", "S", "N" );
 	
 	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
@@ -310,9 +308,6 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		adicCampo( txtCodGPS, 7, 100, 75, 20, "CodGPS", "Cod.GPS.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescGPS, 85, 100, 464, 20, "DescGPS", "Descrição do código de pagamento GPS/INSS" );
 		
-		adicDB( cbDescontaINSS, 7, 140, 300, 20, "descontainss", "", false );
-		
-		adicDB( cbDescontaIR, 7, 160, 300, 20, "descontair", "", false );
 
 		/*******************************************************************
 		 * 
