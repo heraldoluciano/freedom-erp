@@ -82,8 +82,7 @@ public class FTipoFor extends FDados implements ActionListener {
 		
 		adicDB( cbRetencaoIR, 116, 55, 200, 20, "retencaoirrf", "", false );
 		adicCampo( txtPercBaseIRRF, 119, 100, 100, 20, "PercBaseIRRF", "% Base do IRRF", ListaCampos.DB_SI, false );
-		
-		
+				
 		setListaCampos( true, "TIPOFOR", "CP" );
 		
 		btImp.addActionListener( this );
