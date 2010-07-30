@@ -65,17 +65,18 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
+import org.freedom.modulos.grh.view.frame.crud.special.FTabelaINSS;
+import org.freedom.modulos.grh.view.frame.crud.special.FTabelaIRRF;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FNBM;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FNCM;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
-import org.freedom.modulos.lvf.view.frame.crud.plain.FTabelaIRRF;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.lvf.view.frame.report.FRIcms;
-import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRIcmsNcm;
+import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
 import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
@@ -468,9 +469,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Regras CFOP", "Regras CFOP", 'R', 800200000, 1, true, FRegraFiscal.class );
 		
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 800900000, 1, true, FTabelaIRRF.class );
-//		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 800160000, 1, true, FTabelaIRRF.class );
-		
-		
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 800160000, 1, true, FTabelaINSS.class );
 
 		addSeparador( 800000000 );
 
