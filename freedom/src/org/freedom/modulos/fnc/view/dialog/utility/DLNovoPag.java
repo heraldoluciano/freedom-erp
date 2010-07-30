@@ -24,8 +24,11 @@
 package org.freedom.modulos.fnc.view.dialog.utility;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -38,6 +41,8 @@ import java.util.Map;
 
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -53,17 +58,34 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
-public class DLNovoPag extends FFDialogo implements PostListener, MouseListener {
+public class DLNovoPag extends FFDialogo implements PostListener, MouseListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pnPag = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 580, 170 );
+	private JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinCampos = new JPanelPad( 580, 180 );
 
+	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDescTipoFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtRetencaoINSS = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtRetencaoIRRF = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtPercBaseINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtPercBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtNroDependFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -89,7 +111,11 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 
 	private JTextFieldPad txtDtVencItPag = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrDescPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrAPagPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDtEmisPag = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -116,6 +142,8 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 	private ListaCampos lcItPagar = new ListaCampos( this );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
+	
+	private ListaCampos lcTipoFor = new ListaCampos( this, "TF" );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
@@ -136,11 +164,26 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 	private Historico historico = null;
 
 	private Component owner = null;
-
+	
+	private JTextFieldPad txtVlrBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrBaseINSS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrRetIRRF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrRetINSS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	
+	private JPanelPad pnRetencoes = new JPanelPad(580, 75);
+	
+	private JLabelPad lbObs = new JLabelPad( "Observações" );
+	
+	private int saltolinha = 0;
+	
 	public DLNovoPag( Component cOrig ) {
 
 		super( cOrig );
 		this.owner = cOrig;
+		
 		setTitulo( "Novo título para pagamento" );
 		setAtribos( 600, 450 );
 
@@ -149,6 +192,327 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 
 		lcPagar.addPostListener( this );
 		tabPag.addMouseListener( this );
+		lcFor.addCarregaListener( this );
+		lcTipoFor.addCarregaListener( this );
+		txtVlrParcPag.addFocusListener( this );
+		
+	}
+
+	private void montaTela() {
+
+		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.pag.", ListaCampos.DB_PK, true ) );
+		lcPagar.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_FK, true ) );
+		lcPagar.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, true ) );
+		lcPagar.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false ) );
+		lcPagar.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_FK, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor da parc.", ListaCampos.DB_SI, false ) );		
+		lcPagar.add( new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI, true ) );
+		lcPagar.add( new GuardaCampo( txtDocPag, "DocPag", "N.documento", ListaCampos.DB_SI, true ) );
+		lcPagar.add( new GuardaCampo( txtObs, "ObsPag", "Obs.", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrDescPag, "VlrDescPag", "Valor da parc.", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrAPagPag, "VlrAPagPag", "Valor a pargar", ListaCampos.DB_SI, false ) );
+
+		lcPagar.montaSql( true, "PAGAR", "FN" );
+
+		txtNParcPag.setNomeCampo( "NParcPag" );
+		lcItPagar.add( new GuardaCampo( txtNParcPag, "NParcPag", "N.parc.", ListaCampos.DB_PK, false ) );
+		lcItPagar.add( new GuardaCampo( txtVlrParcItPag, "VlrParcItPag", "Valor tot.", ListaCampos.DB_SI, false ) );
+		lcItPagar.add( new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Dt.vencto.", ListaCampos.DB_SI, false ) );
+		lcItPagar.montaSql( false, "ITPAGAR", "FN" );
+		lcItPagar.setQueryCommit( false );
+		txtNParcPag.setListaCampos( lcItPagar );
+		txtVlrParcItPag.setListaCampos( lcItPagar );
+		txtDtVencItPag.setListaCampos( lcItPagar );
+
+		lcItPagar.montaTab();
+		// tabPag.addMouseListener( new HandlerMouseListenerPagamento() );
+
+		c.add( pnPag );
+
+//		pnPag.add( pinCab, BorderLayout.NORTH );
+//		pnPag.add( spnTab, BorderLayout.CENTER );
+
+		setPainel( pinCampos );
+
+		adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
+		adic( txtCodFor, 7, 20, 80, 20 );
+		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
+		adic( txtDescFor, 90, 20, 197, 20 );
+		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
+		adic( txtCodPlanoPag, 290, 20, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 250, 20 );
+		adic( txtDescPlanoPag, 373, 20, 200, 20 );
+
+		adic( new JLabelPad( "Cód.Tip.Cob." ), 7, 40, 250, 20 );
+		adic( txtCodTipoCob, 7, 60, 80, 20 );
+		adic( new JLabelPad( "Descrição Tipo Cobrança" ), 90, 40, 200, 20 );
+		adic( txtDescTipoCob, 90, 60, 197, 20 );
+
+		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
+		adic( txtCodBanco, 290, 60, 80, 20 );
+		adic( txtDescBanco, 373, 60, 200, 20 );
+
+		adic( new JLabelPad( "Nº Conta" ), 7, 80, 80, 20 );
+		adic( txtCodConta, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 90, 80, 200, 20 );
+		adic( txtDescConta, 90, 100, 197, 20 );
+
+		adic( new JLabelPad( "Dt.Emissão" ), 290, 80, 80, 20 );
+		adic( txtDtEmisPag, 290, 100, 80, 20 );
+
+		adic( new JLabelPad( "Documento" ), 373, 80, 100, 20 );
+		adic( txtDocPag, 373, 100, 100, 20 );
+		
+		adic( new JLabelPad( "Valor original" ), 476, 80, 97, 20 );
+		adic( txtVlrParcPag, 476, 100, 97, 20 );
+
+		adic( lbObs, 7, 120 , 300, 20 );
+		adic( txtObs, 7, 140, 565, 20 );
+		
+		pnRetencoes.setBorder(SwingParams.getPanelLabel("Retenções", Color.RED));		
+		
+		pnRetencoes.adic( new JLabelPad( "Vlr.base IRRF" ), 7, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrBaseIRRF, 7, 20, 90, 20 );
+
+		pnRetencoes.adic( new JLabelPad( "Vlr.base INSS" ), 100, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrBaseINSS, 100, 20, 90, 20 );
+
+		pnRetencoes.adic( new JLabelPad( "Valor IRRF" ), 193, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrRetIRRF, 193, 20, 90, 20 );
+
+		pnRetencoes.adic( new JLabelPad( "Valor INSS" ), 286, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrRetINSS, 286, 20, 90, 20 );
+		
+		pnRetencoes.adic( new JLabelPad( "Tot.Desc." ), 379, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrDescPag, 379, 20, 90, 20 );
+
+		pnRetencoes.adic( new JLabelPad( "Tot.Líquido" ), 472, 0, 90, 20 );
+		pnRetencoes.adic( txtVlrAPagPag, 472, 20, 90, 20 );
+		
+		pnPag.add( pinCab, BorderLayout.NORTH );
+		pnPag.add( spnTab, BorderLayout.CENTER );
+
+		pinCab.add( pinCampos, BorderLayout.CENTER );		
+		pinCab.add( pnRetencoes, BorderLayout.SOUTH );
+		
+		
+	}
+	
+	private void removeRetencoes(boolean remove) {
+		
+		pinCab.remove( pnRetencoes );
+		
+		if(!remove) {
+			pinCab.add( pnRetencoes, BorderLayout.SOUTH ); 
+		}
+		
+		this.validate();
+		this.repaint();
+			
+	}
+	
+	private BigDecimal getVlrISS(BigDecimal valorbase) {
+		BigDecimal ret = null;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		BigDecimal aliquota = null;
+		Integer nrodepend = 0;
+		BigDecimal cem = new BigDecimal(100);
+		
+		try {
+			
+			sql.append( "select first 1 coalesce(inss.aliquota,0) aliquota ");
+			sql.append( "from rhtabelainss inss ");
+			sql.append( "where ");
+			sql.append( "inss.teto >= ? ");
+			sql.append( "order by inss.teto ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setBigDecimal( 1, valorbase );
+			
+			rs = ps.executeQuery( );
+			
+			if (rs.next()) {
+				
+				aliquota = rs.getBigDecimal( "aliquota" );
+				
+			}
+			else {
+				return new BigDecimal( 0 );
+			}
+			
+			System.out.println("Aliquota INSS:" + aliquota);
+			
+			ret = valorbase.multiply( aliquota.divide( cem ) );
+			
+			System.out.println("Valor INSS:" + ret);
+
+			
+			ps.close();
+			rs.close();
+			con.commit();
+						
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	private BigDecimal getVlrIRRF(BigDecimal valorbase) {
+		
+		BigDecimal ret = null;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		BigDecimal aliquota = null;
+		BigDecimal reducaodependente = null;
+		BigDecimal deducao = new BigDecimal( 0 );
+		Integer nrodepend = 0;
+		BigDecimal cem = new BigDecimal(100);
+		
+		try {
+			
+			sql.append( "select first 1 coalesce(ir.aliquota,0) aliquota, coalesce(ir.reducaodependente,0) reducao, coalesce(ir.deducao,0) deducao ");
+			sql.append( "from rhtabelairrf ir ");
+			sql.append( "where ");
+			sql.append( "ir.teto >= ? ");
+			sql.append( "order by ir.teto ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setBigDecimal( 1, valorbase );
+			
+			rs = ps.executeQuery( );
+			
+			if (rs.next()) {
+				
+				deducao = rs.getBigDecimal( "deducao" );
+				
+				System.out.println("Deducao IR:" + deducao);
+				
+				aliquota = rs.getBigDecimal( "aliquota" );
+				
+				System.out.println("Aliquota IR:" + aliquota);
+				
+				reducaodependente = rs.getBigDecimal( "reducao" );
+				
+				System.out.println("Reducao IR:" + reducaodependente);
+				
+			}
+			else {
+				return null;
+			}
+			
+			ret = valorbase.subtract( deducao ) ;
+			
+			System.out.println("Base - deducao:" + ret);
+			
+			ret = ret.subtract( reducaodependente.multiply( new BigDecimal(nrodepend) ) );
+			
+			System.out.println("Base - dependentes:" + ret);
+			
+			ret = ret.subtract( getVlrISS( valorbase ) );
+			
+			System.out.println("Base - ISS:" + ret);
+			
+			ret = ret.multiply( aliquota.divide( cem ) );
+			
+			System.out.println("Valor IRRF:" + ret);
+
+			
+			
+			ps.close();
+			rs.close();
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	private void calcRetencoes() {
+		
+		BigDecimal percbaseinss = null;
+		BigDecimal percbaseirrf = null;
+		BigDecimal vlrbaseinss = null;
+		BigDecimal vlrbaseirrf = null;
+		BigDecimal vlrinss = null;
+		BigDecimal vlrirrf = null;
+		BigDecimal vlroriginal = null;
+		BigDecimal cem = new BigDecimal( 100 );
+		
+		try {
+			
+			vlroriginal = txtVlrParcPag.getVlrBigDecimal();
+			
+			percbaseinss = txtPercBaseINSS.getVlrBigDecimal();
+			
+			percbaseirrf = txtPercBaseIRRF.getVlrBigDecimal();
+			
+			vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+			
+			vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+
+			txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
+			txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
+			txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
+			txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
+			
+			vlrinss = getVlrISS( vlrbaseinss );			
+			vlrirrf = getVlrIRRF( vlrbaseirrf );
+			
+			txtVlrRetINSS.setVlrBigDecimal( vlrinss );
+			txtVlrRetIRRF.setVlrBigDecimal( vlrirrf );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void calcTotLiquido() {
+		
+		BigDecimal vlrdescontos = null;
+		BigDecimal vlrorig = null;
+		BigDecimal vlrliquido = null;
+		BigDecimal vlrirrf = null;
+		BigDecimal vlrinss = null;
+		
+		try {
+
+			vlrirrf = txtVlrRetIRRF.getVlrBigDecimal();
+			vlrinss = txtVlrRetINSS.getVlrBigDecimal();
+
+			vlrdescontos = vlrirrf.add( vlrinss );
+
+			vlrorig = txtVlrParcPag.getVlrBigDecimal();
+			
+			if(vlrdescontos == null) {
+				 vlrdescontos = new BigDecimal( 0 );
+			}
+			if(vlrorig == null) {
+				 Funcoes.mensagemInforma( null, "Valor original inválido!" );
+				 return;
+			}
+			
+			vlrliquido = vlrorig.subtract( vlrdescontos );
+			
+			txtVlrDescPag.setVlrBigDecimal( vlrdescontos );
+			txtVlrAPagPag.setVlrBigDecimal( vlrliquido );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void montaListaCampos() {
@@ -164,7 +528,9 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.for.", ListaCampos.DB_FK, false ) );
 		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtNroDependFor, "NroDependFor", "Nro.Depend.", ListaCampos.DB_SI, false ) );
 
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
@@ -216,80 +582,25 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
-
+		
+		/***************
+		 * CPTIPOFOR   *
+		 ***************/		
+		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false ) );
+		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
+		lcTipoFor.add( new GuardaCampo( txtRetencaoINSS, "RetencaoINSS", "Ret.INSS", ListaCampos.DB_SI, false ) );
+		lcTipoFor.add( new GuardaCampo( txtRetencaoIRRF, "RetencaoIRRF", "Ret.IRRF", ListaCampos.DB_SI, false ) );		
+		lcTipoFor.add( new GuardaCampo( txtPercBaseINSS, "PercBaseINSS", "%Base.INSS", ListaCampos.DB_SI, false ) );
+		lcTipoFor.add( new GuardaCampo( txtPercBaseIRRF, "PercBaseIRRF", "%Base.IRRF", ListaCampos.DB_SI, false ) );
+		lcTipoFor.montaSql( false, "TIPOFOR", "CP" );
+		lcTipoFor.setQueryCommit( false );
+		lcTipoFor.setReadOnly( true );
+		txtCodTipoFor.setTabelaExterna( lcTipoFor, null );
+		txtCodTipoFor.setFK( true );
+		txtCodTipoFor.setNomeCampo( "CodTipoFor" );
+		
 	}
-
-	private void montaTela() {
-
-		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.pag.", ListaCampos.DB_PK, true ) );
-		lcPagar.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_FK, true ) );
-		lcPagar.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, true ) );
-		lcPagar.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false ) );
-		lcPagar.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_FK, false ) );
-		lcPagar.add( new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor da parc.", ListaCampos.DB_SI, false ) );
-		lcPagar.add( new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI, true ) );
-		lcPagar.add( new GuardaCampo( txtDocPag, "DocPag", "N.documento", ListaCampos.DB_SI, true ) );
-		lcPagar.add( new GuardaCampo( txtObs, "ObsPag", "Obs.", ListaCampos.DB_SI, false ) );
-		lcPagar.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
-
-		lcPagar.montaSql( true, "PAGAR", "FN" );
-
-		txtNParcPag.setNomeCampo( "NParcPag" );
-		lcItPagar.add( new GuardaCampo( txtNParcPag, "NParcPag", "N.parc.", ListaCampos.DB_PK, false ) );
-		lcItPagar.add( new GuardaCampo( txtVlrParcItPag, "VlrParcItPag", "Valor tot.", ListaCampos.DB_SI, false ) );
-		lcItPagar.add( new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Dt.vencto.", ListaCampos.DB_SI, false ) );
-		lcItPagar.montaSql( false, "ITPAGAR", "FN" );
-		lcItPagar.setQueryCommit( false );
-		txtNParcPag.setListaCampos( lcItPagar );
-		txtVlrParcItPag.setListaCampos( lcItPagar );
-		txtDtVencItPag.setListaCampos( lcItPagar );
-
-		lcItPagar.montaTab();
-		// tabPag.addMouseListener( new HandlerMouseListenerPagamento() );
-
-		c.add( pnPag );
-
-		pnPag.add( pinCab, BorderLayout.NORTH );
-		pnPag.add( spnTab, BorderLayout.CENTER );
-
-		setPainel( pinCab );
-
-		adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
-		adic( txtCodFor, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
-		adic( txtDescFor, 90, 20, 197, 20 );
-		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
-		adic( txtCodPlanoPag, 290, 20, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 250, 20 );
-		adic( txtDescPlanoPag, 373, 20, 200, 20 );
-
-		adic( new JLabelPad( "Cód.Tip.Cob." ), 7, 40, 250, 20 );
-		adic( txtCodTipoCob, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição Tipo Cobrança" ), 90, 40, 200, 20 );
-		adic( txtDescTipoCob, 90, 60, 197, 20 );
-
-		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
-		adic( txtCodBanco, 290, 60, 80, 20 );
-		adic( txtDescBanco, 373, 60, 200, 20 );
-
-		adic( new JLabelPad( "Nº Conta" ), 7, 80, 250, 20 );
-		adic( txtCodConta, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 80, 200, 20 );
-		adic( txtDescConta, 90, 100, 197, 20 );
-
-		adic( new JLabelPad( " Valor" ), 290, 80, 80, 20 );
-		adic( txtVlrParcPag, 290, 100, 80, 20 );
-
-		adic( new JLabelPad( "Dt.Emissão" ), 373, 80, 80, 20 );
-		adic( txtDtEmisPag, 373, 100, 80, 20 );
-
-		adic( new JLabelPad( "Doc." ), 456, 80, 117, 20 );
-		adic( txtDocPag, 456, 100, 117, 20 );
-
-		adic( new JLabelPad( "Observações" ), 7, 120, 300, 20 );
-		adic( txtObs, 7, 140, 565, 20 );
-	}
-
+	
 	public void setValues( Object[] values ) {
 
 		txtCodFor.setVlrInteger( values[ 0 ] != null ? (Integer) values[ 0 ] : 0 );
@@ -305,6 +616,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 		lcBanco.carregaDados();
 		lcPlanoPag.carregaDados();
 		lcFor.carregaDados();
+		
 	}
 
 	public int getCodigoPagamento() {
@@ -395,7 +707,9 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcFor.setConexao( cn );
+		lcTipoFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcConta.setConexao( cn );
 		lcTipoCob.setConexao( cn );
@@ -536,5 +850,50 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener 
 
 		// TODO Auto-generated method stub
 
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if ( cevt.getListaCampos() == lcFor ) {
+
+			lcTipoFor.carregaDados();
+			
+		}
+		if ( cevt.getListaCampos() == lcTipoFor ) {
+			
+			if( ( "S".equals( txtRetencaoINSS.getVlrString() ) ) || ( "S".equals( txtRetencaoIRRF.getVlrString() ) )) {				
+				removeRetencoes(false);				
+			}
+			else {
+				removeRetencoes(true);
+			}
+
+		}
+
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void focusGained( FocusEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void focusLost( FocusEvent fevt ) {
+		
+		if ( fevt.getSource() == txtVlrParcPag ) {
+			
+			calcRetencoes();
+			calcTotLiquido();
+			
+			
+		}
+		
 	}
 }
