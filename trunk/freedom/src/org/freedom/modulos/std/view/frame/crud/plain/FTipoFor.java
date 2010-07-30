@@ -29,10 +29,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
@@ -45,6 +49,16 @@ public class FTipoFor extends FDados implements ActionListener {
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtDescTipoFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JCheckBoxPad cbRetencaoIR = new JCheckBoxPad( "Retém IR", "S", "N" );
+	
+	private final JCheckBoxPad cbRetencaoINSS = new JCheckBoxPad( "Retém INSS", "S", "N" );
+	
+	private JTextFieldPad txtPercBaseINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtPercBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
+	private JLabelPad sepdet = new JLabelPad();
 
 	public FTipoFor() {
 
@@ -53,13 +67,29 @@ public class FTipoFor extends FDados implements ActionListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de Tipo de Fornecedor" );
-		setAtribos( 50, 50, 380, 145 );
-		adicCampo( txtCodTipoFor, 7, 20, 70, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoFor, 80, 20, 250, 20, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, true );
+		
+		setAtribos( 50, 50, 405, 200 );
+		
+		adicCampo( txtCodTipoFor, 7, 20, 100, 20, "CodTipoFor", "Cód.Tipo fornec.", ListaCampos.DB_PK, true );
+		
+		adicCampo( txtDescTipoFor, 110, 20, 270, 20, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, true );
+		
+		adicDB( cbRetencaoINSS, 5, 55,  100, 20, "retencaoinss", "", false );		
+		adicCampo( txtPercBaseINSS, 7, 100, 100, 20, "PercBaseINSS", "% Base do INSS", ListaCampos.DB_SI, false );
+		
+		sepdet.setBorder( BorderFactory.createEtchedBorder() );
+		adic( sepdet, 113, 52, 2, 75 );
+		
+		adicDB( cbRetencaoIR, 116, 55, 200, 20, "retencaoirrf", "", false );
+		adicCampo( txtPercBaseIRRF, 119, 100, 100, 20, "PercBaseIRRF", "% Base do IRRF", ListaCampos.DB_SI, false );
+		
+		
 		setListaCampos( true, "TIPOFOR", "CP" );
+		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
+		
 		setImprimir( true );
 	}
 
