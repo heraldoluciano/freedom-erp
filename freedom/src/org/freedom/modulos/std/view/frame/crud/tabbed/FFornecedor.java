@@ -242,6 +242,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private ListaCampos lcTipoFiscFor = new ListaCampos( this, "FF" );
 
+	
 	public FFornecedor() {
 
 		super();
@@ -406,7 +407,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicTab( "Complemento", pinComplemento );
 
 		adicCampo( txtSuframaFor, 7, 20, 137, 20, "suframafor", "SUFRAMA", ListaCampos.DB_SI, false );
-
+		
 		// Painel Observações
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
