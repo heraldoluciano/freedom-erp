@@ -23,9 +23,10 @@ fn_senha_firebird()
          SENHA_FIREBIRD_TMP=""
       fi
    done
-   ISC_PASSWORD=$SENHA_FIREBIRD_TMP
-   export ISC_USER
-   export ISC_PASSWORD
+   ISC_PASSWORD="$SENHA_FIREBIRD_TMP"
+   
+   #export ISC_USER
+   #export ISC_PASSWORD
 }
 
 fn_fim_script() 
@@ -47,9 +48,9 @@ fn_executa()
     fn_fim_script
   fi
 
-  export $ISC_USER
-  export $ISC_PASSWORD   
-  $CMD_GBAK -B localhost:/opt/firebird/dados/desenv/freedom.fdb /tmp/freedom.fbk
+  #export $ISC_USER
+  #export $ISC_PASSWORD   
+  $CMD_GBAK -B localhost:/opt/firebird/dados/desenv/freedom.fdb /tmp/freedom.fbk -user "$ISC_USER" -pass "$ISC_PASSWORD"
   rm ./freedom.zip
   zip ./freedom.zip /tmp/freedom.fbk
    
