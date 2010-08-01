@@ -84,10 +84,12 @@ public class FTipoCob extends FDados implements ActionListener {
 		Vector<String> vLabsTipoFebraban = new Vector<String>();
 		Vector<String> vValsTipoFebraban = new Vector<String>();
 
-		vLabsTipoFebraban.addElement( "Nenhum" );
+		vLabsTipoFebraban.addElement( "Carteira" );
+		vLabsTipoFebraban.addElement( "Cheque" );
 		vLabsTipoFebraban.addElement( "SIACC" );
 		vLabsTipoFebraban.addElement( "CNAB" );
 		vValsTipoFebraban.addElement( "00" );
+		vValsTipoFebraban.addElement( "CQ" );
 		vValsTipoFebraban.addElement( "01" );
 		vValsTipoFebraban.addElement( "02" );
 
@@ -99,7 +101,7 @@ public class FTipoCob extends FDados implements ActionListener {
 		adicCampo( txtCodTipoCob, 7, 20, 80, 20, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoCob, 90, 20, 250, 20, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, true );
 		adicCampo( txtDuplCob, 343, 20, 80, 20, "DuplCob", "Duplicata", ListaCampos.DB_SI, false );
-		adicDB( rgTipoFebraban, 7, 70, 416, 30, "TipoFebraban", "Tipo cobrança FEBRABAN", false );
+		adicDB( rgTipoFebraban, 7, 70, 416, 30, "TipoFebraban", "Tipo de cob. FEBRABAN ou forma de pagto.", false );
 		adicDB( cbObriCartCob, 7, 115, 416, 20, "ObrigCartCob", "", true );
 	}
 
