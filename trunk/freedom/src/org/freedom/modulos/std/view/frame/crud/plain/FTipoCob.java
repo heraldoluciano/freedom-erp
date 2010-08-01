@@ -31,15 +31,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.std.view.dialog.report.DLRTipoCob;
 
 public class FTipoCob extends FDados implements ActionListener {
@@ -52,6 +60,16 @@ public class FTipoCob extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDuplCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
+	private JTextFieldPad txtNumconta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescconta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtSeqtalao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
+
+	private ListaCampos lcConta = new ListaCampos( this, "" );
+
+	private ListaCampos lcTalaoCheq = new ListaCampos( this, "" );
+	
 	private JRadioGroup<?, ?> rgTipoFebraban = null;
 
 	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobraça?", "S", "N" );
@@ -60,8 +78,22 @@ public class FTipoCob extends FDados implements ActionListener {
 
 		super();
 		setTitulo( "Cadastro de Tipo de Cobrança" );
-		setAtribos( 50, 50, 480, 250 );
+		setAtribos( 50, 50, 480, 320 );
+		
+		lcConta.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PK, txtDescconta, false ) );
+		lcConta.add( new GuardaCampo( txtDescconta, "Descconta", "Descriçao do conta", ListaCampos.DB_SI, null, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setQueryCommit( false );
+		lcConta.setReadOnly( true );
+		txtNumconta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 
+		lcTalaoCheq.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PF, txtDescconta, false ) );
+		lcTalaoCheq.add( new GuardaCampo( txtSeqtalao, "Seqtalao", "Seq.", ListaCampos.DB_PK, txtDescconta, false ) );
+		lcTalaoCheq.montaSql( false, "TALAOCHEQ", "FN" );
+		lcTalaoCheq.setQueryCommit( false );
+		lcTalaoCheq.setReadOnly( true );
+		txtSeqtalao.setTabelaExterna( lcTalaoCheq, FTalaoCheq.class.getCanonicalName() );
+		
 		montaRadioGrupos();
 
 		montaTela();
@@ -102,7 +134,16 @@ public class FTipoCob extends FDados implements ActionListener {
 		adicCampo( txtDescTipoCob, 90, 20, 250, 20, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, true );
 		adicCampo( txtDuplCob, 343, 20, 80, 20, "DuplCob", "Duplicata", ListaCampos.DB_SI, false );
 		adicDB( rgTipoFebraban, 7, 70, 416, 30, "TipoFebraban", "Tipo de cob. FEBRABAN ou forma de pagto.", false );
-		adicDB( cbObriCartCob, 7, 115, 416, 20, "ObrigCartCob", "", true );
+		adicDB( cbObriCartCob, 7, 110, 416, 20, "ObrigCartCob", "", true );
+		adic( new JLabelPad( "Informações para impressão de cheques" ), 7, 145, 420, 20 );
+		
+		JLabelPad borda = new JLabelPad();
+		borda.setBorder( BorderFactory.createEtchedBorder() );
+		adic( borda, 7, 165, 420, 4 );
+		adicCampo( txtNumconta, 7, 195, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescconta, 90, 195, 230, 20, "Descconta", "Descrição da conta" );
+		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_FK, true);
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -188,4 +229,11 @@ public class FTipoCob extends FDados implements ActionListener {
 		else
 			imp.print();
 	}
+	
+	public void setConexao(DbConnection cn) {
+		super.setConexao( cn );
+		lcConta.setConexao( cn );
+		lcTalaoCheq.setConexao( cn );
+	}
+	
 }
