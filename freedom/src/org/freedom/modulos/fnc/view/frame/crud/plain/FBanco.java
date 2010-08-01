@@ -37,6 +37,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
@@ -60,6 +61,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 	private JTextFieldFK txtDescModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtDigito = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextAreaPad txaLayoutCheqBanco = new JTextAreaPad( 1000 );
 
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
 
@@ -75,7 +78,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		super();
 		setTitulo( "Cadastro de Banco" );
-		setAtribos( 50, 50, 450, 310 );
+		setAtribos( 50, 50, 460, 440 );
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, txtDescModBol, false ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descriçao do modelo de boleto", ListaCampos.DB_SI, null, false ) );
@@ -86,14 +89,15 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		adicCampo( txtCodBanco, 7, 20, 70, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeBanco, 80, 20, 280, 20, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, true );
-		adicCampo( txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol, false );
-		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
-		adicCampo( txtDigito, 313, 60, 50, 20, "DvBanco", "Dígito", ListaCampos.DB_SI, true );
-		adicCampo( txtSiteBanco, 7, 100, 330, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
-		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
-		adicDB( imgBolBanco2, 7, 200, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
+//		adicCampo( txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol, false );
+//		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
+		adicCampo( txtDigito, 363, 20, 50, 20, "DvBanco", "Dígito", ListaCampos.DB_SI, true );
+		adicCampo( txtSiteBanco, 7, 60, 380, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
+		adic( btFirefox, 390, 59, 20, 20 );
+		adicDB( imgBolBanco, 7, 100, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
+		adicDB( imgBolBanco2, 210, 100, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
+		adicDB( txaLayoutCheqBanco, 7, 150, 403, 200, "LayoutCheqBanco", "Layout de impressão de cheques: [LIN=?|COL=?|TAM=?|CAMPO=?]", false );
 
-		adic( btFirefox, 340, 100, 20, 20 );
 		setListaCampos( false, "BANCO", "FN" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
