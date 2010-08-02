@@ -152,7 +152,7 @@ public class FRBoleto extends FRelatorio {
 
 	private JInternalFrame fExt = null;
 
-	private String sInfoMoeda[] = new String[ 4 ];
+//	private String sInfoMoeda[] = new String[ 4 ];
 
 	private List<?> lsParcelas = null;
 
@@ -404,7 +404,7 @@ public class FRBoleto extends FRelatorio {
 
 	}
 
-	private String aplicaTxtObs( String sTxa, final String sCampo, String sValor ) {
+	public static String aplicaTxtObs( String sTxa, final String sCampo, String sValor ) {
 
 		String retorno = "";
 		String sParam1 = "";
@@ -468,7 +468,7 @@ public class FRBoleto extends FRelatorio {
 		return retorno;
 	}
 
-	private String aplicCampos( ResultSet rs, String[] sNat ) {
+	public static String aplicCampos( ResultSet rs, String[] sNat , String[] sInfoMoeda) {
 
 		Date dCampo = null;
 		String sRet = null;
@@ -574,10 +574,14 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[__TELEFONE___]", Funcoes.setMascara( sCampo.trim(), "####-####" ) );
 				if ( ( sCampo = rs.getString( "DDDCli" ) ) != null || ( sCampo = "(" + rs.getString( "DDDCli" ) ) + ")" != null )
 					sTxa = sTxa.replaceAll( "\\[DDD]", Funcoes.copy( sCampo, 0, 5 ) );
-				if ( ( sCampo = sNat[ 0 ] ) != null )
-					sTxa = sTxa.replaceAll( "\\[CODNAT]", Funcoes.copy( sCampo, 0, 8 ) );
-				if ( ( sCampo = sNat[ 1 ] ) != null )
-					sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
+				
+				if( sNat != null ){
+					if ( ( sCampo = sNat[ 0 ] ) != null )
+						sTxa = sTxa.replaceAll( "\\[CODNAT]", Funcoes.copy( sCampo, 0, 8 ) );
+					if ( ( sCampo = sNat[ 1 ] ) != null )
+						sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
+				}
+				
 				if ( ( sCampo = rs.getString( "CODVENDA" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );
 				if ( ( sCampo = rs.getString( "VlrApagRec" ) ) != null && rs.getDouble( "VlrApagRec" ) != 0 )
@@ -653,14 +657,14 @@ public class FRBoleto extends FRelatorio {
 			sRet = sb.toString();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( null, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
 			err.printStackTrace();
 		}
 
 		return sRet;
 	}
 
-	private String[] getMoeda() {
+	public static String[] getMoeda() {
 
 		String sRet[] = new String[ 5 ];
 		StringBuilder sSQL = new StringBuilder();
@@ -671,7 +675,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "WHERE M.CODMOEDA=P.CODMOEDA AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO " );
 			sSQL.append( "AND P.CODEMP=? AND P.CODFILIAL=?" );
 
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ResultSet rs = ps.executeQuery();
@@ -686,9 +690,11 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, con, err );
+			Aplicativo.getInstace().getConexao().commit();
+			
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
 			err.printStackTrace();
 		}
 
@@ -1301,7 +1307,7 @@ public class FRBoleto extends FRelatorio {
 			sNat = new String[ 2 ];
 			sNat[ 0 ] = rs.getString( "CODNAT" );
 			sNat[ 1 ] = rs.getString( "DESCNAT" );
-			sVal = aplicCampos( rs, sNat );
+			sVal = aplicCampos( rs, sNat, getMoeda() );
 
 			if ( sVal != null ) {
 
@@ -1363,7 +1369,6 @@ public class FRBoleto extends FRelatorio {
 		lcVenda2.setConexao( cn );
 		lcTipoMov.setConexao( cn );
 		lcCartCob.setConexao( con );
-		sInfoMoeda = getMoeda();
 
 		getAtualizaParcela();
 	}
