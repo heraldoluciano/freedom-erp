@@ -74,6 +74,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
+import org.freedom.modulos.fnc.view.dialog.report.DLImpBoletoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixa;
@@ -83,7 +84,6 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
-import org.freedom.modulos.std.view.dialog.utility.DLImpBoletoRec;
 
 public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener {
 
