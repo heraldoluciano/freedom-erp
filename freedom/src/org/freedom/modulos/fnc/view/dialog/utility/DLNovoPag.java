@@ -77,9 +77,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 	
 	private JTextFieldPad txtRetencaoINSS = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
+	private JTextFieldPad txtRetencaoOutros = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtRetencaoIRRF = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextFieldPad txtPercBaseINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtPercRetOutros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtPercBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
 	
@@ -165,13 +169,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private Component owner = null;
 	
-	private JTextFieldPad txtVlrBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrBaseINSS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrBaseINSS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrRetIRRF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrRetIRRF = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrRetINSS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 12, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrRetINSS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	private JPanelPad pnRetencoes = new JPanelPad(580, 75);
 	
@@ -212,6 +216,11 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		lcPagar.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
 		lcPagar.add( new GuardaCampo( txtVlrDescPag, "VlrDescPag", "Valor da parc.", ListaCampos.DB_SI, false ) );
 		lcPagar.add( new GuardaCampo( txtVlrAPagPag, "VlrAPagPag", "Valor a pargar", ListaCampos.DB_SI, false ) );
+		
+		lcPagar.add( new GuardaCampo( txtVlrBaseIRRF, "VlrBaseIRRF", "Valor base IRRF", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrBaseINSS, "VlrBaseINSS", "Valor base INSS", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrRetIRRF, "VlrRetIRRF", "Valor ret. IRRF", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtVlrRetINSS, "VlrRetINSS", "Valor ret. INSS", ListaCampos.DB_SI, false ) );
 
 		lcPagar.montaSql( true, "PAGAR", "FN" );
 
@@ -312,7 +321,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 	}
 	
-	private BigDecimal getVlrISS(BigDecimal valorbase) {
+	private BigDecimal getVlrISS(BigDecimal valororiginal, BigDecimal valorbase, BigDecimal peroutros) {
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -331,7 +340,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "order by inss.teto ");
 			
 			ps = con.prepareStatement( sql.toString() );
-			ps.setBigDecimal( 1, valorbase );
+			ps.setBigDecimal( 1, valororiginal );
 			
 			rs = ps.executeQuery( );
 			
@@ -345,6 +354,12 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			}
 			
 			System.out.println("Aliquota INSS:" + aliquota);
+			
+			if( (peroutros!=null) && (peroutros.compareTo( new BigDecimal(0) )>0) ) {
+				aliquota = aliquota.add(peroutros);
+			}
+			
+			System.out.println("Aliquota INSS+Outros:" + aliquota);
 			
 			ret = valorbase.multiply( aliquota.divide( cem ) );
 			
@@ -363,7 +378,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		return ret;
 	}
 	
-	private BigDecimal getVlrIRRF(BigDecimal valorbase) {
+	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbase) {
 		
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
@@ -385,7 +400,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "order by ir.teto ");
 			
 			ps = con.prepareStatement( sql.toString() );
-			ps.setBigDecimal( 1, valorbase );
+			ps.setBigDecimal( 1, valororiginal );
 			
 			rs = ps.executeQuery( );
 			
@@ -416,7 +431,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			System.out.println("Base - dependentes:" + ret);
 			
-			ret = ret.subtract( getVlrISS( valorbase ) );
+			ret = ret.subtract( getVlrISS( valororiginal, valorbase, null ) );
 			
 			System.out.println("Base - ISS:" + ret);
 			
@@ -440,37 +455,65 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 	
 	private void calcRetencoes() {
 		
+		BigDecimal cem = new BigDecimal( 100 );
+		
 		BigDecimal percbaseinss = null;
 		BigDecimal percbaseirrf = null;
+		BigDecimal percoutros = null;
 		BigDecimal vlrbaseinss = null;
 		BigDecimal vlrbaseirrf = null;
+		
 		BigDecimal vlrinss = null;
 		BigDecimal vlrirrf = null;
 		BigDecimal vlroriginal = null;
-		BigDecimal cem = new BigDecimal( 100 );
+		
+		Boolean calcinss = false;
+		Boolean calcirrf = false;
+		Boolean calcoutros = false;
 		
 		try {
 			
+			
+			calcinss = "S".equals( txtRetencaoINSS.getVlrString() );
+			calcirrf = "S".equals( txtRetencaoIRRF.getVlrString() );
+			calcoutros = "S".equals( txtRetencaoIRRF.getVlrString() );
+			
 			vlroriginal = txtVlrParcPag.getVlrBigDecimal();
 			
-			percbaseinss = txtPercBaseINSS.getVlrBigDecimal();
+			//Se deve calcular a retenção de INSS...
+			if( calcinss ) {
+				
+				percbaseinss = txtPercBaseINSS.getVlrBigDecimal();
+				
+				vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+				
+				// Se deve calcular a retenção de outros tributos junto com o INSS
+				if(calcoutros) {
+					percoutros = txtPercRetOutros.getVlrBigDecimal();
+				}
+				
+				vlrinss = getVlrISS( vlroriginal, vlrbaseinss, percoutros );
+				
+				// Carregando campos...
+				txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
+				txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
+				txtVlrRetINSS.setVlrBigDecimal( vlrinss );
+							
+			}
 			
-			percbaseirrf = txtPercBaseIRRF.getVlrBigDecimal();
-			
-			vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
-			
-			vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+			//Se deve calcular a retenção de INSS...
+			if( calcirrf ) {
 
-			txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
-			txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
-			txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
-			txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
-			
-			vlrinss = getVlrISS( vlrbaseinss );			
-			vlrirrf = getVlrIRRF( vlrbaseirrf );
-			
-			txtVlrRetINSS.setVlrBigDecimal( vlrinss );
-			txtVlrRetIRRF.setVlrBigDecimal( vlrirrf );
+				percbaseirrf = txtPercBaseIRRF.getVlrBigDecimal();
+				vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf );
+				
+				txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
+				txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
+				txtVlrRetIRRF.setVlrBigDecimal( vlrirrf );
+				
+			}
+				
 			
 		}
 		catch (Exception e) {
@@ -589,9 +632,11 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false ) );
 		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
 		lcTipoFor.add( new GuardaCampo( txtRetencaoINSS, "RetencaoINSS", "Ret.INSS", ListaCampos.DB_SI, false ) );
-		lcTipoFor.add( new GuardaCampo( txtRetencaoIRRF, "RetencaoIRRF", "Ret.IRRF", ListaCampos.DB_SI, false ) );		
+		lcTipoFor.add( new GuardaCampo( txtRetencaoIRRF, "RetencaoIRRF", "Ret.IRRF", ListaCampos.DB_SI, false ) );
+		lcTipoFor.add( new GuardaCampo( txtRetencaoOutros, "RetencaoOutros", "Ret.Outros", ListaCampos.DB_SI, false ) );
 		lcTipoFor.add( new GuardaCampo( txtPercBaseINSS, "PercBaseINSS", "%Base.INSS", ListaCampos.DB_SI, false ) );
 		lcTipoFor.add( new GuardaCampo( txtPercBaseIRRF, "PercBaseIRRF", "%Base.IRRF", ListaCampos.DB_SI, false ) );
+		lcTipoFor.add( new GuardaCampo( txtPercRetOutros , "PercRetOutros", "%Ret.Outros", ListaCampos.DB_SI, false ) );
 		lcTipoFor.montaSql( false, "TIPOFOR", "CP" );
 		lcTipoFor.setQueryCommit( false );
 		lcTipoFor.setReadOnly( true );
