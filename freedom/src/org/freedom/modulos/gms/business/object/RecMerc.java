@@ -817,8 +817,11 @@ public class RecMerc implements java.io.Serializable {
 			String serie = TipoMov.getSerieTipoMov( codtipomov );
 			
 			ps.setInt( param++, codtipomov );
-			ps.setString( param++, serie);			
-			ps.setInt( param++, TipoMov.getDocSerie( serie ));
+			ps.setString( param++, serie);		
+			
+//			ps.setInt( param++, TipoMov.getDocSerie( serie ));
+			
+			ps.setInt( param++, getTicket());
 			
 			ps.setString( param++, getTipofrete());			
 			
