@@ -564,7 +564,7 @@ where rm.codemp=70 and rm.codfilial=1 and rm.dtent between '2010-01-01' and '201
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PESOLIQUIDO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRFRETE}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
