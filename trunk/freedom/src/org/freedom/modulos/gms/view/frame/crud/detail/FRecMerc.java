@@ -352,7 +352,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampoInvisivel( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
 
-		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
+//		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 
 		pinCab.adic( lbBairro, 500, 120, 100, 20 );
@@ -1274,7 +1275,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private void carregaProdutoPadrao() {
 
 		try {
-			if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ! ( txtCodProdCab.getVlrInteger() > 0 ) ) ) {
+//			if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ! ( txtCodProdCab.getVlrInteger() > 0 ) ) ) {
+			if ( txtCodProdPadrao.getVlrInteger() > 0 && ( ListaCampos.LCS_INSERT == lcCampos.getStatus() )) {
 				txtCodProdCab.setVlrInteger( txtCodProdPadrao.getVlrInteger() );
 				lcProdCab.carregaDados();
 			}
@@ -1294,7 +1296,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		super.beforePost( pevt );
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-			carregaTipoRec();
+//			carregaTipoRec();
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( "PE" );
 			}
