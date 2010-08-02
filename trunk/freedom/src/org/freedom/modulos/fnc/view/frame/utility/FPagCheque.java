@@ -32,21 +32,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
+import org.freedom.acao.TabelaEditEvent;
+import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone; // import org.freedom.componentes.ObjetoHistorico;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -62,7 +60,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 
-public class FPagCheque extends FFilho implements ActionListener, CarregaListener, ChangeListener {
+public class FPagCheque extends FFilho implements ActionListener, TabelaEditListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -80,41 +78,39 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
-    private JLabelPad lbAberto = new JLabelPad( "Aberto", imgAberto, SwingConstants.LEFT );
+    private JLabelPad lbVlrapag = new JLabelPad( "Total a pagar", imgAberto, SwingConstants.LEFT );
 
-	private JLabelPad lbSelecionado = new JLabelPad( "Selecionado", imgSelecionado, SwingConstants.LEFT );
+	private JLabelPad lbSelecionado = new JLabelPad( "Total selecionado", imgSelecionado, SwingConstants.LEFT );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
-	private JPanelPad pnTabManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pnTabPagar = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinBotoesManut = new JPanelPad( 40, 210 );
+	private JPanelPad pinBotoesPagar = new JPanelPad( 40, 210 );
 
-	private JPanelPad pinManut = new JPanelPad( 500, 100 );
+	private JPanelPad pinPagar = new JPanelPad( 500, 60 );
 
-	private JPanelPad pnManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pnPagar = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JTablePad tabManut = new JTablePad();
+	private JTablePad tabPagar = new JTablePad();
 
-	private JScrollPane spnManut = new JScrollPane( tabManut );
+	private JScrollPane spnPagar = new JScrollPane( tabPagar );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrTotAberto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrTotApag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtDatainiManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtVlrTotSel = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtDatainiPagar = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtDatafimManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtDatafimPagar = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCNPJFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0);
-
-	private JTextFieldPad txtTotalAberto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
-
-	private JTextFieldPad txtTotalSelecionado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
 
 	private JButtonPad btExecutar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -122,38 +118,19 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 	private ListaCampos lcFor = new ListaCampos( this );
 
-	private Date dIniManut = null;
+	private Date dIniPagar = null;
 
-	private Date dFimManut = null;
+	private Date dFimPagar = null;
 	
-	private enum TAB_MANUT_COLS {};
+	private boolean carregandoTabela = false; 
 	
-	/*
-	 *		tabManut.adicColuna( "" ); // 0
-		tabManut.adicColuna( "Vencimento" ); // 1
-		tabManut.adicColuna( "Status" ); // 2
-		tabManut.adicColuna( "Cód.pag." ); // 5
-		tabManut.adicColuna( "Nº parc." ); // 6
-		tabManut.adicColuna( "Doc. lanca" ); // 7
-		tabManut.adicColuna( "Doc. compra" ); // 8
-		tabManut.adicColuna( "Valor parcelamento" ); // 9
-		tabManut.adicColuna( "Data pagto." ); // 10
-		tabManut.adicColuna( "Valor pago" ); // 11
-		tabManut.adicColuna( "Valor desc." ); // 12
-		tabManut.adicColuna( "Valor juros" ); // 13
-		tabManut.adicColuna( "Valor devolução" ); // 14
-		tabManut.adicColuna( "Valor adic" ); // 15
-		tabManut.adicColuna( "Valor aberto" ); // 16
-		tabManut.adicColuna( "Valor cancelado" ); // 17
-		tabManut.adicColuna( "Conta" ); // 18
-		tabManut.adicColuna( "Categoria" ); // 19
-		tabManut.adicColuna( "Centro de custo" ); // 20
-		tabManut.adicColuna( "Tp.Cob." ); // 21
-		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 22
-		tabManut.adicColuna( "Observação" ); // 23
-	 * */
-	 
+	private static String LABEL_SEL = "Sel.";
+	
+	private enum COLS_PAG {SEL, DTEMIT, DTVENCTO, STATUS, CODCOMPRA, CODPAG, NPARC, DOCLANCA, DOCCOMPRA, 
+		VLRAPAG, NUMCONTA, CODTIPOCOB, DESCTIPOCOB, HISTPAG};
 
+	private enum SQL_PARAMS {NONE, DATAINI, DATAFIM, CODEMP, CODFILIAL, CODEMPFR, CODFILIALFR, CODFOR };
+		
 	public FPagCheque() {
 
 		super( false );
@@ -169,18 +146,18 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		pnLegenda.setPreferredSize( new Dimension( 700, 50 ) );
 		pnLegenda.setLayout( null );
 
-		lbAberto.setBounds( 5, 0, 90, 17 );
-		txtTotalAberto.setBounds( 5, 18, 90, 18 );
-		lbSelecionado.setBounds( 200, 0, 90, 17 );
-		txtTotalSelecionado.setBounds( 200, 18, 90, 18 );
+		lbVlrapag.setBounds( 5, 0, 130, 17 );
+		txtVlrTotApag.setBounds( 5, 18, 130, 18 );
+		lbSelecionado.setBounds( 140, 0, 130, 17 );
+		txtVlrTotSel.setBounds( 140, 18, 130, 18 );
 
-		pnLegenda.add( lbAberto );
-		pnLegenda.add( txtTotalAberto );
+		pnLegenda.add( lbVlrapag );
+		pnLegenda.add( txtVlrTotApag );
 		pnLegenda.add( lbSelecionado );
-		pnLegenda.add( txtTotalSelecionado );
+		pnLegenda.add( txtVlrTotSel );
 
-		txtTotalAberto.setSoLeitura( true );
-		txtTotalSelecionado.setSoLeitura( true );
+		txtVlrTotApag.setSoLeitura( true );
+		txtVlrTotSel.setSoLeitura( true );
 
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 600, 42 ) );
@@ -192,31 +169,31 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 		// Pagar
 
-		tpn.addTab( "Pagar", pnManut );
+		tpn.addTab( "Pagar", pnPagar );
 
 		btSelTudo.setToolTipText( "Marcar todos" );
 		btSelNada.setToolTipText( "Demarcar todos" );
 		btGerar.setToolTipText( "Emitir cheque" );
 		btExecutar.setToolTipText( "Listar pagamentos" );
 
-		pnManut.add( pinManut, BorderLayout.NORTH );
-		pnTabManut.add( pinBotoesManut, BorderLayout.EAST );
-		pnTabManut.add( spnManut, BorderLayout.CENTER );
-		pnManut.add( pnTabManut, BorderLayout.CENTER );
+		pnPagar.add( pinPagar, BorderLayout.NORTH );
+		pnTabPagar.add( pinBotoesPagar, BorderLayout.EAST );
+		pnTabPagar.add( spnPagar, BorderLayout.CENTER );
+		pnPagar.add( pnTabPagar, BorderLayout.CENTER );
 
-		txtDatainiManut.setVlrDate( new Date() );
-		txtDatafimManut.setVlrDate( new Date() );
+		txtDatainiPagar.setVlrDate( new Date() );
+		txtDatafimPagar.setVlrDate( new Date() );
 		
-		pinManut.adic( new JLabelPad( "Cód.forn." ), 7, 0, 80, 20 );
-		pinManut.adic( txtCodFor, 7, 20, 80, 20 );
-		pinManut.adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
-		pinManut.adic( txtRazFor, 90, 20, 250, 20 );
+		pinPagar.adic( new JLabelPad( "Cód.forn." ), 7, 0, 80, 20 );
+		pinPagar.adic( txtCodFor, 7, 20, 80, 20 );
+		pinPagar.adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
+		pinPagar.adic( txtRazFor, 90, 20, 250, 20 );
 		
-		pinManut.adic( new JLabelPad( "Período" ), 343, 0, 100, 20 );
-		pinManut.adic( txtDatainiManut, 343, 20, 100, 20 );
-		pinManut.adic( new JLabelPad( "até" ), 446, 0, 100, 20 );
-		pinManut.adic( txtDatafimManut, 446, 20, 100, 20 );
-		pinManut.adic( btExecutar, 556, 10, 30, 30 );
+		pinPagar.adic( new JLabelPad( "Período" ), 343, 0, 100, 20 );
+		pinPagar.adic( txtDatainiPagar, 343, 20, 100, 20 );
+		pinPagar.adic( new JLabelPad( "até" ), 446, 0, 100, 20 );
+		pinPagar.adic( txtDatafimPagar, 446, 20, 100, 20 );
+		pinPagar.adic( btExecutar, 556, 10, 30, 30 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -229,68 +206,91 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		txtCodFor.setTabelaExterna( lcFor, null );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
+		
+		txtCodFor.setRequerido( true );
+		txtDatainiPagar.setRequerido( true );
+		txtDatafimPagar.setRequerido( true );
+		txtCodFor.requestFocus();
 
-		pinBotoesManut.adic( btSelTudo, 5, 10, 30, 30 );
-		pinBotoesManut.adic( btSelNada, 5, 40, 30, 30 );
-		pinBotoesManut.adic( btGerar, 5, 70, 30, 30 );
+		pinBotoesPagar.adic( btSelTudo, 5, 10, 30, 30 );
+		pinBotoesPagar.adic( btSelNada, 5, 40, 30, 30 );
+		pinBotoesPagar.adic( btGerar, 5, 70, 30, 30 );
 
-		tabManut.adicColuna( "" ); // 0
-		tabManut.adicColuna( "Vencimento" ); // 1
-		tabManut.adicColuna( "Status" ); // 2
-		tabManut.adicColuna( "Cód.pag." ); // 5
-		tabManut.adicColuna( "Nº parc." ); // 6
-		tabManut.adicColuna( "Doc. lanca" ); // 7
-		tabManut.adicColuna( "Doc. compra" ); // 8
-		tabManut.adicColuna( "Valor parcelamento" ); // 9
-		tabManut.adicColuna( "Data pagto." ); // 10
-		tabManut.adicColuna( "Valor pago" ); // 11
-		tabManut.adicColuna( "Valor desc." ); // 12
-		tabManut.adicColuna( "Valor juros" ); // 13
-		tabManut.adicColuna( "Valor devolução" ); // 14
-		tabManut.adicColuna( "Valor adic" ); // 15
-		tabManut.adicColuna( "Valor aberto" ); // 16
-		tabManut.adicColuna( "Valor cancelado" ); // 17
-		tabManut.adicColuna( "Conta" ); // 18
-		tabManut.adicColuna( "Categoria" ); // 19
-		tabManut.adicColuna( "Centro de custo" ); // 20
-		tabManut.adicColuna( "Tp.Cob." ); // 21
-		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 22
-		tabManut.adicColuna( "Observação" ); // 23
+		tabPagar.adicColuna( LABEL_SEL ); 
+		tabPagar.adicColuna( "Emissão" ); 
+		tabPagar.adicColuna( "Vencto." ); 
+		tabPagar.adicColuna( "Sit." ); 
+		tabPagar.adicColuna( "Nº Compra" ); 
+		tabPagar.adicColuna( "Cód.pag." ); 
+		tabPagar.adicColuna( "Nº parc." ); 
+		tabPagar.adicColuna( "Doc.lanca" ); 
+		tabPagar.adicColuna( "Doc.compra" );
+		tabPagar.adicColuna( "Valor parcela" ); 
+		tabPagar.adicColuna( "Nº conta" ); 
+		tabPagar.adicColuna( "Cód.tp.cob." );
+		tabPagar.adicColuna( "Descrição do tipo de cobrança" ); 
+		tabPagar.adicColuna( "Histórico" ); 
 
-		tabManut.setTamColuna( 0, 0 );
-		tabManut.setTamColuna( 80, 1 );
-		tabManut.setTamColuna( 50, 2 );
-		tabManut.setTamColuna( 70, 5 );
-		tabManut.setTamColuna( 60, 6 );
-		tabManut.setTamColuna( 75, 7 );
-		tabManut.setTamColuna( 90, 8 );
-		tabManut.setTamColuna( 140, 9 );
-		tabManut.setTamColuna( 100, 10 );
-		tabManut.setTamColuna( 100, 11 );
-		tabManut.setTamColuna( 100, 12 );
-		tabManut.setTamColuna( 100, 13 );
-		tabManut.setTamColuna( 100, 14 );
-		tabManut.setTamColuna( 100, 15 );
-		tabManut.setTamColuna( 100, 16 );
-		tabManut.setTamColuna( 100, 17 );
-		tabManut.setTamColuna( 130, 18 );
-		tabManut.setTamColuna( 210, 19 );
-		tabManut.setTamColuna( 220, 20 );
-		tabManut.setTamColuna( 80, 21 );
-		tabManut.setTamColuna( 200, 22 );
-		tabManut.setTamColuna( 260, 23 );
+		tabPagar.setColunaEditavel( COLS_PAG.SEL.ordinal(), true );
+		tabPagar.setTamColuna( 20, COLS_PAG.SEL.ordinal() );
+		tabPagar.setTamColuna( 90, COLS_PAG.DTEMIT.ordinal() );
+		tabPagar.setTamColuna( 90, COLS_PAG.DTVENCTO.ordinal() );
+		tabPagar.setTamColuna( 20, COLS_PAG.STATUS.ordinal() );
+		tabPagar.setTamColuna( 80, COLS_PAG.CODCOMPRA.ordinal() );
+		tabPagar.setTamColuna( 80, COLS_PAG.CODPAG.ordinal() );
+		tabPagar.setTamColuna( 50, COLS_PAG.NPARC.ordinal() );
+		tabPagar.setTamColuna( 80, COLS_PAG.DOCLANCA.ordinal() );
+		tabPagar.setTamColuna( 80, COLS_PAG.DOCCOMPRA.ordinal() );
+		tabPagar.setTamColuna( 90, COLS_PAG.VLRAPAG.ordinal() );
+		tabPagar.setTamColuna( 90, COLS_PAG.NUMCONTA.ordinal() );
+		tabPagar.setTamColuna( 70, COLS_PAG.CODTIPOCOB.ordinal() );
+		tabPagar.setTamColuna( 250, COLS_PAG.DESCTIPOCOB.ordinal() );
+		tabPagar.setTamColuna( 300, COLS_PAG.HISTPAG.ordinal() );
+		tabPagar.addTabelaEditListener( this );
 
-		lcFor.addCarregaListener( this );
+/*		tabPagar.getColumn( LABEL_SEL ).addPropertyChangeListener(
+			new PropertyChangeListener() {
+				public void propertyChange( PropertyChangeEvent arg0 ) {
+					System.out.println("Valor alterado!");
+				}
+			} 
+		);
+	*/	
+//		tabPagar.getColumn( LABEL_SEL ).get
+/*		tabPagar.getSelectionModel().addListSelectionListener(
+		        new ListSelectionListener() {
+		            public void valueChanged(ListSelectionEvent event) {
+		                int viewRow = tabPagar.getSelectedRow();
+		                if (viewRow < 0) {
+		                    //Selection got filtered away.
+		                	System.out.println("Não selecionado");
+		                    statusText.setText("");
+		                } else {
+		                    int modelRow = 
+		                        tabPagar.convertRowIndexToModel(viewRow);
+		                    System.out.println("Selecionado");
+		                }
+		            }
+		        }
+		); */
+		
+		
+		btExecutar.addActionListener( this );
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
 		btGerar.addActionListener( this );
-		tpn.addChangeListener( this );
+//		tpn.addChangeListener( this );
+		
+		btExecutar.setFocusable( false );
+		//btExecutar.setSelected( false );
+		//btExecutar.setDefaultCapable( false );
+		//btExecutar.setRequestFocusEnabled( false );
 
-		tabManut.addMouseListener( new MouseAdapter() {
+		tabPagar.addMouseListener( new MouseAdapter() {
 
 			public void mouseClicked( MouseEvent mevt ) {
 
-				if ( mevt.getSource() == tabManut && mevt.getClickCount() == 2 ) {
+				if ( mevt.getSource() == tabPagar && mevt.getClickCount() == 2 ) {
 					
 				}
 			}
@@ -298,31 +298,80 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 	}
 
+	private synchronized void marcarTodos() {
+		try {
+			carregandoTabela = true; // Evitar execução circular
+			for ( int i=0; i < tabPagar.getNumLinhas(); i++ ) {
+				tabPagar.setValor( new Boolean( true ), i, COLS_PAG.SEL.ordinal() );
+			}
+		}
+		finally {
+			carregandoTabela = false;
+		}
+		calcTotais();
+	}
+	
+	private synchronized void desmarcarTodos() {
+		try {
+			carregandoTabela = true;
+			for ( int i=0; i < tabPagar.getNumLinhas(); i++ ) {
+				tabPagar.setValor( new Boolean( false ), i, COLS_PAG.SEL.ordinal() );
+			}
+		}
+		finally {
+			carregandoTabela = false;
+		}
+		calcTotais();
+	}
+	
+	private synchronized void calcTotais() {
+		BigDecimal vlrtotapag = new BigDecimal(0);
+		BigDecimal vlrtotsel = new BigDecimal(0);
+		BigDecimal vlrapag = new BigDecimal(0);
+		//Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRAPAGITPAG" ) )
+		for ( int i=0; i < tabPagar.getNumLinhas(); i++ ) {
+			vlrapag = ConversionFunctions.stringCurrencyToBigDecimal( 
+							(String) tabPagar.getValor( i, COLS_PAG.VLRAPAG.ordinal() ) );
+			vlrtotapag = vlrtotapag.add( vlrapag  );
+			if ( (Boolean) tabPagar.getValor( i, COLS_PAG.SEL.ordinal() ) ) {
+				vlrtotsel = vlrtotsel.add( vlrapag );
+			}
+		}
+		txtVlrTotApag.setVlrBigDecimal( vlrtotapag );
+		txtVlrTotSel.setVlrBigDecimal( vlrtotsel );
+	}
 
-	private void carregaGridManut() {
+	private synchronized void carregaGridPagar() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sWhereManut = new StringBuffer();
+		StringBuffer sWherePagar = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
 
-		Float bdTotAberto = 0.0f;
-		Float bdTotSelecionado = 0.0f;
-
+		BigDecimal vlrtotapag = new BigDecimal(0);
+		BigDecimal vlrtotsel = new BigDecimal(0);
+		
 		try {
 
+			carregandoTabela = true;
+
 			if ( validaPeriodo() ) {
+				
+				tabPagar.limpa();
 
-				tabManut.limpa();
-
-				sSQL.append( "SELECT IT.CODPAG, IT.NPARCITPAG, IT.DTITPAG, IT.DTVENCITPAG, ");
+				sSQL.append( "SELECT IT.CODPAG, IT.NPARCPAG, IT.DTITPAG, IT.DTVENCITPAG, ");
 				sSQL.append( "IT.STATUSITPAG, P.CODFOR, F.RAZFOR, IT.DOCLANCAITPAG, P.CODCOMPRA, ");
-				sSQL.append( "IT.VLRAPAGITPAG, IT.NUMCONTA, IT.OBSITPAG, CO.DOCCOMPRA " );
+				sSQL.append( "IT.VLRAPAGITPAG, IT.NUMCONTA, IT.OBSITPAG, CO.DOCCOMPRA, P.DOCPAG, " );
+				sSQL.append( "P.CODTIPOCOB, TC.DESCTIPOCOB ");
 				sSQL.append( "FROM FNITPAGAR IT, CPFORNECED F, FNPAGAR P " );
 				sSQL.append( "LEFT OUTER JOIN CPCOMPRA CO ON ");
 				sSQL.append( "CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND ");
 				sSQL.append( "CO.CODFILIAL=P.CODFILIALCP " );
+				sSQL.append( "LEFT OUTER JOIN FNTIPOCOB TC ON ");
+				sSQL.append( "TC.CODEMP=P.CODEMPTC AND TC.CODFILIAL=P.CODFILIALTC AND ");
+				sSQL.append( "TC.CODTIPOCOB=P.CODTIPOCOB " );
+				
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND ");
 				sSQL.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 				sSQL.append( "IT.STATUSITPAG='P1' AND "); 
@@ -335,54 +384,44 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 				try {
 
 					ps = con.prepareStatement( sSQL.toString() );
-					ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
-					ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-					ps.setInt( 5, Aplicativo.iCodEmp );
-					ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-					ps.setInt( 7, txtCodFor.getVlrInteger() );
+					ps.setDate( SQL_PARAMS.DATAINI.ordinal(), Funcoes.dateToSQLDate( dIniPagar ) );
+					ps.setDate( SQL_PARAMS.DATAFIM.ordinal(), Funcoes.dateToSQLDate( dFimPagar ) );
+					ps.setInt( SQL_PARAMS.CODEMP.ordinal(), Aplicativo.iCodEmp );
+					ps.setInt( SQL_PARAMS.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNPAGAR" ) );
+					ps.setInt( SQL_PARAMS.CODEMPFR.ordinal(), Aplicativo.iCodEmp );
+					ps.setInt( SQL_PARAMS.CODFILIALFR.ordinal(), ListaCampos.getMasterFilial( "CPFORNECED" ) );
+					ps.setInt( SQL_PARAMS.CODFOR.ordinal(), txtCodFor.getVlrInteger() );
 					rs = ps.executeQuery();
-
-					double bdVlrAPagar = 0.0;
-
-					System.out.println( sSQL.toString() );
+//					System.out.println( sSQL.toString() );
 
 					for ( int i = 0; rs.next(); i++ ) {
+						vlrtotapag  = vlrtotapag.add( rs.getBigDecimal( "VLRAPAGITPAG" )  ) ;
+						vlrtotsel  = vlrtotsel.add( rs.getBigDecimal( "VLRAPAGITPAG" )  ) ;
 
-						tabManut.adicLinha();
-
-						bdVlrAPagar = Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrApagItPag" ) ).doubleValue();
-
-						tabManut.setValor( new Boolean(true), i, 0 );
-						tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtVencItPag" ) ), i, 1 );
-						tabManut.setValor( rs.getString( "StatusItPag" ), i, 2 );
-						tabManut.setValor( rs.getString( "CodPag" ), i, 3 );
-						tabManut.setValor( rs.getString( "NParcPag" ), i, 4 );
-						tabManut.setValor( ( rs.getString( "DocLancaItPag" ) != null ? rs.getString( "DocLancaItPag" ) : ( rs.getString( "DocPag" ) != null ? rs.getString( "DocPag" ) + "/" + rs.getString( "NParcPag" ) : "" ) ), i, 5 );
-						tabManut.setValor( Funcoes.copy( rs.getString( 23 ), 0, 10 ).trim(), i, 6 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrParcItPag" ) ), i, 7 );
-						tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ), i, 8 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrPagoItPag" ) ), i, 9 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrDescItPag" ) ), i, 10 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrJurosItPag" ) ), i, 11 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrDevItPag" ) ), i, 12 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrAdicItPag" ) ), i, 13 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrApagItPag" ) ), i, 14 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRCANCITPAG" ) ), i, 15 );
-						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 16 );
-						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 17 );
-						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 18 );
-						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 19 );
-						tabManut.setValor( rs.getString( "DESCTIPOCOB" ) != null ? rs.getString( "DESCTIPOCOB" ) : "", i, 20 );
-						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 21 );
+						tabPagar.adicLinha();
+						tabPagar.setValor( new Boolean(true), i, COLS_PAG.SEL.ordinal() );
+						tabPagar.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTITPAG" ) ), i, COLS_PAG.DTEMIT.ordinal() );
+						tabPagar.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ), i, COLS_PAG.DTVENCTO.ordinal() );
+						tabPagar.setValor( rs.getString( "STATUSITPAG" ), i, COLS_PAG.STATUS.ordinal() );
+						tabPagar.setValor( rs.getString( "CODCOMPRA" ), i, COLS_PAG.CODCOMPRA.ordinal() );
+						tabPagar.setValor( rs.getString( "CODPAG" ), i, COLS_PAG.CODPAG.ordinal() );
+						tabPagar.setValor( rs.getString( "NPARCPAG" ), i, COLS_PAG.NPARC.ordinal() );
+						tabPagar.setValor( ( rs.getString( "DOCLANCAITPAG" ) != null ? rs.getString( "DOCLANCAITPAG" ) : 
+							   ( rs.getString( "DOCPAG" ) != null ? rs.getString( "DOCPAG" ) + "/" + rs.getString( "NPARCPAG" ) : "" ) ), i, COLS_PAG.DOCLANCA.ordinal() );
+						tabPagar.setValor( rs.getString( "DOCCOMPRA" ), i, COLS_PAG.DOCCOMPRA.ordinal() );
+						tabPagar.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRAPAGITPAG" ) ), i, COLS_PAG.VLRAPAG.ordinal() );
+						tabPagar.setValor( rs.getString( "NUMCONTA" ), i, COLS_PAG.NUMCONTA.ordinal() );
+						tabPagar.setValor( rs.getString( "CODTIPOCOB" ), i, COLS_PAG.CODTIPOCOB.ordinal() );
+						tabPagar.setValor( rs.getString( "DESCTIPOCOB" ), i, COLS_PAG.DESCTIPOCOB.ordinal() );
+						tabPagar.setValor( rs.getString( "OBSITPAG" ), i, COLS_PAG.HISTPAG.ordinal() );
+						
 					}
 
 					rs.close();
 					ps.close();
 
-					txtTotalAberto.setVlrDouble( Funcoes.arredDouble( bdTotAberto.doubleValue(), Aplicativo.casasDecFin ) );
-//					txtTotalSelecionado.setVlrDouble( Funcoes.arredDouble( bdTotSelecioando.doubleValue(), Aplicativo.casasDecFin ) );
+					txtVlrTotApag.setVlrBigDecimal( vlrtotapag );
+					txtVlrTotSel.setVlrBigDecimal( vlrtotsel );
 
 					con.commit();
 				} catch ( SQLException err ) {
@@ -396,12 +435,12 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 			ps = null;
 			rs = null;
 			sSQL = null;
-			sWhereManut = null;
+			sWherePagar = null;
 			sWhereStatus = null;
+			carregandoTabela = false;
 		}
+		
 	}
-
-
 
 	private boolean validaPeriodo() {
 
@@ -411,22 +450,22 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 			txtCodFor.requestFocus();
 		}
 		
-		if ( txtDatainiManut.getText().trim().length() < 10 ) {
+		if ( txtDatainiPagar.getText().trim().length() < 10 ) {
 
 			Funcoes.mensagemInforma( this, "Data inicial inválida!" );
 		}
-		else if ( txtDatafimManut.getText().trim().length() < 10 ) {
+		else if ( txtDatafimPagar.getText().trim().length() < 10 ) {
 
 			Funcoes.mensagemInforma( this, "Data final inválida!" );
 		}
-		else if ( txtDatafimManut.getVlrDate().before( txtDatainiManut.getVlrDate() ) ) {
+		else if ( txtDatafimPagar.getVlrDate().before( txtDatainiPagar.getVlrDate() ) ) {
 
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 		}
 		else {
 
-			dIniManut = txtDatainiManut.getVlrDate();
-			dFimManut = txtDatafimManut.getVlrDate();
+			dIniPagar = txtDatainiPagar.getVlrDate();
+			dFimPagar = txtDatafimPagar.getVlrDate();
 			bRetorno = true;
 		}
 
@@ -434,51 +473,41 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 	}
 
 
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcFor ) {
-
-		}
-	}
-
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
 		else if ( evt.getSource() == btSelTudo ) {
+			marcarTodos();
 		}
 		else if ( evt.getSource() == btSelNada ) {
+			desmarcarTodos();
 		}
 		else if ( evt.getSource() == btGerar ) {
+					
 		}
 		else if ( evt.getSource() == btExecutar ) {
-			carregaGridManut();
+			carregaGridPagar();
 		}
 	}
 
-	public void stateChanged( ChangeEvent cevt ) {
-
-	}
-
-	private void cancelaItem() {
-
-	}
-
-	private void execCancItem( int codpag, int nparcitpag, String obs ) {
-
-	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
 
+	}
+
+	public void valorAlterado( TabelaEditEvent evt ) {
+
+		if ( (evt.getTabela()==tabPagar) && 
+				(evt.getTabela().getColunaEditada()==COLS_PAG.SEL.ordinal()) && 
+					(!carregandoTabela) ) {
+			calcTotais();
+		}
+		
 	}
 
 }
