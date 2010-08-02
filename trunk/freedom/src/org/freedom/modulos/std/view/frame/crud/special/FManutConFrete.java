@@ -47,6 +47,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -78,9 +79,11 @@ public class FManutConFrete extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtNomeTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtValorSelecionados = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
@@ -120,7 +123,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 
 	private JScrollPane spnTab = new JScrollPane( tab );
 
-	private ListaCampos lcFornecedor = new ListaCampos( this );
+	private ListaCampos lcTransp = new ListaCampos( this );
 
 	private BigDecimal valorSelecionados = new BigDecimal( "0.00" );
 
@@ -143,14 +146,15 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		setTitulo( "Controle de Conhecimento de Frete" );
 		setAtribos( 50, 50, 740, 430 );
 
-		lcFornecedor.add( new GuardaCampo( txtCodFor, "Codfor", "Cód.for.", ListaCampos.DB_PK, txtRazFor, true ) );
-		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		lcFornecedor.montaSql( false, "FORNECED", "CP" );
-		lcFornecedor.setReadOnly( true );
-		txtCodFor.setPK( true );
-		txtCodFor.setTabelaExterna( lcFornecedor, FFornecedor.class.getCanonicalName() );
-		txtCodFor.setListaCampos( lcFornecedor );
-		txtCodFor.setNomeCampo( "CodFor" );
+		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, txtNomeTran, true ) );
+		lcTransp.add( new GuardaCampo( txtNomeTran, "NomeTran", "Nome do transportador", ListaCampos.DB_SI, false ) );
+		lcTransp.add( new GuardaCampo( txtCodFor, "CodFor", "Código do fornecedor vinculado", ListaCampos.DB_SI, false ) );
+		lcTransp.montaSql( false, "TRANSP", "VD" );
+		lcTransp.setReadOnly( true );
+		txtCodTran.setPK( true );
+		txtCodTran.setTabelaExterna( lcTransp, FTransp.class.getCanonicalName() );
+		txtCodTran.setListaCampos( lcTransp );
+		txtCodTran.setNomeCampo( "CodTran" );
 
 		montaTela();
 
@@ -195,10 +199,10 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		pinTop.adic( new JLabel( "à", SwingConstants.CENTER ), 117, 30, 30, 20 );
 		pinTop.adic( txtDataFim, 147, 30, 100, 20 );
 
-		pinTop.adic( new JLabelPad( "Cód.for." ), 270, 10, 80, 20 );
-		pinTop.adic( txtCodFor, 270, 30, 90, 20 );
-		pinTop.adic( new JLabelPad( "Razão social do fornecedor" ), 363, 10, 300, 20 );
-		pinTop.adic( txtRazFor, 363, 30, 337, 20 );
+		pinTop.adic( new JLabelPad( "Cód.trans." ), 270, 10, 80, 20 );
+		pinTop.adic( txtCodTran, 270, 30, 90, 20 );
+		pinTop.adic( new JLabelPad( "Nome do transportador" ), 363, 10, 300, 20 );
+		pinTop.adic( txtNomeTran, 363, 30, 337, 20 );
 
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
@@ -320,8 +324,8 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		txtTotalPago.setVlrBigDecimal( valorPago );
 
 		if ( txtCodFor.getVlrInteger() == 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione o fornecedor!" );
-			txtCodFor.requestFocus();
+			Funcoes.mensagemInforma( this, "Selecione um transportador com fornecedor vinculado!" );
+			txtCodTran.requestFocus();
 			return;
 		}
 		if ( "N".equals( cbPendentes.getVlrString() ) && "N".equals( cbEmPagamento.getVlrString() ) && "N".equals( cbPagos.getVlrString() ) ) {
@@ -700,7 +704,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 
 		super.setConexao( cn );
 
-		lcFornecedor.setConexao( cn );
+		lcTransp.setConexao( cn );
 
 	}
 
