@@ -57,6 +57,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRReceberMes;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberSetor;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
 import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
+import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
@@ -376,6 +377,9 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 400401000, 2, true, FRPagar.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Comissões", "Comissão", 'C', 400402000, 2, true, FRComissoes.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 400403000, 2, true, FRRazFor.class );
+		addSeparador( 400000000 );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Emissão de cheques", "Emissão de cheques", 'm', 400500000, 2, true, FPagCheque.class );
+		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 500100000, 1, true, FManutRec.class );
