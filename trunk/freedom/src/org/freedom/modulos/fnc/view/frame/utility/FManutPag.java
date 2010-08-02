@@ -51,7 +51,7 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.bmps.Icone; // import org.freedom.componentes.ObjetoHistorico;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -69,6 +69,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.fnc.view.dialog.report.DLImpReciboPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
@@ -233,6 +234,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JButtonPad btEstManut = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
 	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
+	
+	private JButtonPad btImpRec = new JButtonPad( Icone.novo( "btImprimeRec.gif" ) );
 
 	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
@@ -354,6 +357,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pnRod.add( pnLegenda, BorderLayout.WEST );
 
 		btSair.addActionListener( this );
+		btImpRec.addActionListener( this );
 
 		// Consulta:
 
@@ -655,7 +659,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btEstManut, 5, 100, 30, 30 );
 		pinBotoesManut.adic( btExcluirManut, 5, 130, 30, 30 );
 		pinBotoesManut.adic( btCancItem, 5, 160, 30, 30 );
-
+		pinBotoesManut.adic( btImpRec, 5, 190, 30, 30 );
+		
+		
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "Vencimento" ); // 1
 		tabManut.adicColuna( "Status" ); // 2
@@ -2040,6 +2046,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		else if ( evt.getSource() == btCancItem ) {
 			cancelaItem();
 		}
+		else if ( evt.getSource() == btImpRec ) {
+			impRecibo();
+		}
+
 	}
 
 	public void stateChanged( ChangeEvent cevt ) {
@@ -2102,6 +2112,25 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			Funcoes.mensagemErro( this, "Não foi possível efetuar o cancelamento!\n" + e.getMessage() );
 		}
 
+	}
+	
+	private void impRecibo() {
+
+		DLImpReciboPag dl = null;
+
+		if ( tabManut.getLinhaSel() < 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione uma parcela no grid!" );
+			return;
+		}
+
+		dl = new DLImpReciboPag( this, con, Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 5 ).toString()), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 6 ).toString()) );
+
+		dl.setVisible( true );
+
+		if ( dl.OK ) {
+
+			dl.imprimir();
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
