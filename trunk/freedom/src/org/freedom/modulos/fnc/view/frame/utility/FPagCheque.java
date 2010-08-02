@@ -1,12 +1,13 @@
 /**
- * @version 11/02/2002 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 01/08/2010 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
+ *         Pacote: org.freedom.modulos.fnc.view.frame.utility <BR>
  *         Classe:
- * @(#)FManutPag.java <BR>
+ *         
+ * @(#)FPagCheque.java <BR>
  * 
  *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -18,7 +19,7 @@
  *                    de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                    Tela de manutenção de contas a pagar.
+ *                    Tela de emissão de cheques para pagamento de fornecedores.
  * 
  */
 
@@ -70,6 +71,12 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 	private ImageIcon imgAberto = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgSelecionado = Icone.novo( "clPago.gif" );
+	
+	private JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+
+	private JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );	
 
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
@@ -95,59 +102,21 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
-
-	private JTextFieldFK txtCNPJForManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
-
-	private JTextFieldPad txtPrimCompr = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private JTextFieldPad txtUltCompr = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private JTextFieldPad txtVlrMaxFat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-
-	private JTextFieldPad txtDataMaxFat = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-
-	private JTextFieldPad txtVlrTotCompr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-
-	private JTextFieldPad txtVlrTotPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-
 	private JTextFieldPad txtVlrTotAberto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-
-	private JTextFieldPad txtDataMaxAcum = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-
-	private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
-
-	private JTextFieldPad txtCodPagBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtDatainiManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafimManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCNPJFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0);
 
 	private JTextFieldPad txtTotalAberto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
 
 	private JTextFieldPad txtTotalSelecionado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
 
-	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
-
-	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
-
-	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.gif" ) );
-
-	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
-
-	private JButtonPad btEstManut = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
-
-	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
-
-	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecutar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -158,6 +127,32 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 	private Date dFimManut = null;
 	
 	private enum TAB_MANUT_COLS {};
+	
+	/*
+	 *		tabManut.adicColuna( "" ); // 0
+		tabManut.adicColuna( "Vencimento" ); // 1
+		tabManut.adicColuna( "Status" ); // 2
+		tabManut.adicColuna( "Cód.pag." ); // 5
+		tabManut.adicColuna( "Nº parc." ); // 6
+		tabManut.adicColuna( "Doc. lanca" ); // 7
+		tabManut.adicColuna( "Doc. compra" ); // 8
+		tabManut.adicColuna( "Valor parcelamento" ); // 9
+		tabManut.adicColuna( "Data pagto." ); // 10
+		tabManut.adicColuna( "Valor pago" ); // 11
+		tabManut.adicColuna( "Valor desc." ); // 12
+		tabManut.adicColuna( "Valor juros" ); // 13
+		tabManut.adicColuna( "Valor devolução" ); // 14
+		tabManut.adicColuna( "Valor adic" ); // 15
+		tabManut.adicColuna( "Valor aberto" ); // 16
+		tabManut.adicColuna( "Valor cancelado" ); // 17
+		tabManut.adicColuna( "Conta" ); // 18
+		tabManut.adicColuna( "Categoria" ); // 19
+		tabManut.adicColuna( "Centro de custo" ); // 20
+		tabManut.adicColuna( "Tp.Cob." ); // 21
+		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 22
+		tabManut.adicColuna( "Observação" ); // 23
+	 * */
+	 
 
 	public FPagCheque() {
 
@@ -199,12 +194,10 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 
 		tpn.addTab( "Pagar", pnManut );
 
-		btBaixaManut.setToolTipText( "Baixa" );
-		btEditManut.setToolTipText( "Editar" );
-		btNovoManut.setToolTipText( "Novo" );
-		btExcluirManut.setToolTipText( "Excluir" );
-		btCancItem.setToolTipText( "Cancela Item" );
-		btExecManut.setToolTipText( "Listar" );
+		btSelTudo.setToolTipText( "Marcar todos" );
+		btSelNada.setToolTipText( "Demarcar todos" );
+		btGerar.setToolTipText( "Emitir cheque" );
+		btExecutar.setToolTipText( "Listar pagamentos" );
 
 		pnManut.add( pinManut, BorderLayout.NORTH );
 		pnTabManut.add( pinBotoesManut, BorderLayout.EAST );
@@ -223,11 +216,11 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		pinManut.adic( txtDatainiManut, 343, 20, 100, 20 );
 		pinManut.adic( new JLabelPad( "até" ), 446, 0, 100, 20 );
 		pinManut.adic( txtDatafimManut, 446, 20, 100, 20 );
-		pinManut.adic( btExecManut, 556, 10, 30, 30 );
+		pinManut.adic( btExecutar, 556, 10, 30, 30 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		lcFor.add( new GuardaCampo( txtCNPJForManut, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
@@ -237,12 +230,9 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
 
-		pinBotoesManut.adic( btBaixaManut, 5, 10, 30, 30 );
-		pinBotoesManut.adic( btEditManut, 5, 40, 30, 30 );
-		pinBotoesManut.adic( btNovoManut, 5, 70, 30, 30 );
-		pinBotoesManut.adic( btEstManut, 5, 100, 30, 30 );
-		pinBotoesManut.adic( btExcluirManut, 5, 130, 30, 30 );
-		pinBotoesManut.adic( btCancItem, 5, 160, 30, 30 );
+		pinBotoesManut.adic( btSelTudo, 5, 10, 30, 30 );
+		pinBotoesManut.adic( btSelNada, 5, 40, 30, 30 );
+		pinBotoesManut.adic( btGerar, 5, 70, 30, 30 );
 
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "Vencimento" ); // 1
@@ -291,13 +281,9 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		tabManut.setTamColuna( 260, 23 );
 
 		lcFor.addCarregaListener( this );
-		btBaixaManut.addActionListener( this );
-		btEditManut.addActionListener( this );
-		btNovoManut.addActionListener( this );
-		btExcluirManut.addActionListener( this );
-		btExecManut.addActionListener( this );
-		btEstManut.addActionListener( this );
-		btCancItem.addActionListener( this );
+		btSelTudo.addActionListener( this );
+		btSelNada.addActionListener( this );
+		btGerar.addActionListener( this );
 		tpn.addChangeListener( this );
 
 		tabManut.addMouseListener( new MouseAdapter() {
@@ -340,7 +326,7 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND ");
 				sSQL.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 				sSQL.append( "IT.STATUSITPAG='P1' AND "); 
-				sSQL.append( "IT.DTITPAG AND BETWEEN ? AND ? AND " );
+				sSQL.append( "IT.DTITPAG BETWEEN ? AND ? AND " );
 				sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
 				sSQL.append( "P.CODEMPFR=? AND P.CODFILIALFR=? AND P.CODFOR=? AND " );
 				sSQL.append( "IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
@@ -465,21 +451,14 @@ public class FPagCheque extends FFilho implements ActionListener, CarregaListene
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
-		else if ( evt.getSource() == btBaixaManut ) {
+		else if ( evt.getSource() == btSelTudo ) {
 		}
-		else if ( evt.getSource() == btEditManut ) {
+		else if ( evt.getSource() == btSelNada ) {
 		}
-		else if ( evt.getSource() == btNovoManut ) {
+		else if ( evt.getSource() == btGerar ) {
 		}
-		else if ( evt.getSource() == btExcluirManut ) {
-		}
-		else if ( evt.getSource() == btExecManut ) {
+		else if ( evt.getSource() == btExecutar ) {
 			carregaGridManut();
-		}
-		else if ( evt.getSource() == btEstManut ) {
-		}
-		else if ( evt.getSource() == btCancItem ) {
-			cancelaItem();
 		}
 	}
 
