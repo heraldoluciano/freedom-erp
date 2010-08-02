@@ -54,11 +54,17 @@ public class FTipoFor extends FDados implements ActionListener {
 	
 	private final JCheckBoxPad cbRetencaoINSS = new JCheckBoxPad( "Retém INSS", "S", "N" );
 	
+	private final JCheckBoxPad cbRetencaoOutros = new JCheckBoxPad( "Retém Outros", "S", "N" );
+	
 	private JTextFieldPad txtPercBaseINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtPercBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
 	
+	private JTextFieldPad txtPercRetOutros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 3, Aplicativo.casasDecFin );
+	
 	private JLabelPad sepdet = new JLabelPad();
+	
+	private JLabelPad sepdet2 = new JLabelPad();
 
 	public FTipoFor() {
 
@@ -70,19 +76,26 @@ public class FTipoFor extends FDados implements ActionListener {
 		
 		setAtribos( 50, 50, 405, 200 );
 		
-		adicCampo( txtCodTipoFor, 7, 20, 100, 20, "CodTipoFor", "Cód.Tipo fornec.", ListaCampos.DB_PK, true );
+		sepdet.setBorder( BorderFactory.createEtchedBorder() );		
+		sepdet2.setBorder( BorderFactory.createEtchedBorder() );
 		
+		adicCampo( txtCodTipoFor, 7, 20, 100, 20, "CodTipoFor", "Cód.Tipo fornec.", ListaCampos.DB_PK, true );		
 		adicCampo( txtDescTipoFor, 110, 20, 270, 20, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, true );
 		
-		adicDB( cbRetencaoINSS, 5, 55,  100, 20, "retencaoinss", "", false );		
+		adicDB( cbRetencaoINSS, 5, 55,  100, 20, "retencaoinss", "", false );				
 		adicCampo( txtPercBaseINSS, 7, 100, 100, 20, "PercBaseINSS", "% Base do INSS", ListaCampos.DB_SI, false );
 		
-		sepdet.setBorder( BorderFactory.createEtchedBorder() );
+
 		adic( sepdet, 113, 52, 2, 75 );
 		
-		adicDB( cbRetencaoIR, 116, 55, 200, 20, "retencaoirrf", "", false );
-		adicCampo( txtPercBaseIRRF, 119, 100, 100, 20, "PercBaseIRRF", "% Base do IRRF", ListaCampos.DB_SI, false );
-				
+		adicDB( cbRetencaoOutros, 116, 55, 105, 20, "retencaooutros", "", false );
+		adicCampo( txtPercRetOutros, 119, 100, 100, 20, "Percretoutros", "% Ret. Outros", ListaCampos.DB_SI, false );
+
+		adic( sepdet2, 225, 52, 2, 75 );
+		
+		adicDB( cbRetencaoIR, 228, 55, 100, 20, "retencaoirrf", "", false );
+		adicCampo( txtPercBaseIRRF, 231, 100, 100, 20, "PercBaseIRRF", "% Base do IRRF", ListaCampos.DB_SI, false );
+
 		setListaCampos( true, "TIPOFOR", "CP" );
 		
 		btImp.addActionListener( this );
