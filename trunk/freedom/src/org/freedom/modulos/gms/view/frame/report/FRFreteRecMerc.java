@@ -143,7 +143,7 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		sql.append( "select ");
 		sql.append( "rm.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, ");
-		sql.append( "fr.pesoliquido, fr.vlrfrete, ");
+		sql.append( "fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
 
 		sql.append( "(select p.vlrpagopag from FNPAGAR p ");
 		sql.append( "where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
@@ -236,7 +236,7 @@ public class FRFreteRecMerc extends FRelatorio {
 		catch ( SQLException err ) {
 
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar dados da coleta" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados dos fretes." );
 
 		}
  
