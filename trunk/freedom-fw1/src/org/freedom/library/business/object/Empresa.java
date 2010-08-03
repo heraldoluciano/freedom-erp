@@ -45,7 +45,7 @@ public class Empresa {
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("SELECT E.RAZEMP,F.FONEFILIAL,F.FAXFILIAL,F.EMAILFILIAL,E.FOTOEMP,F.ENDFILIAL,F.NUMFILIAL,F.BAIRFILIAL,F.CEPFILIAL,F.SIGLAUF,F.DDDFILIAL,CNPJFILIAL,INSCFILIAL, ");
+		sql.append("SELECT E.RAZEMP,F.FONEFILIAL,F.FAXFILIAL,F.EMAILFILIAL,E.FOTOEMP,F.ENDFILIAL,F.NUMFILIAL,F.BAIRFILIAL,F.CEPFILIAL,F.SIGLAUF,F.DDDFILIAL,CNPJFILIAL,INSCFILIAL, WWWFILIAL, ");
 		sql.append("(SELECT M.NOMEMUNIC FROM SGMUNICIPIO M WHERE M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC) AS CIDFILIAL ");
 		sql.append("FROM SGEMPRESA E, SGFILIAL F ");
 		sql.append("WHERE F.CODEMP=? AND F.CODFILIAL=? AND E.CODEMP=F.CODEMP");
@@ -58,7 +58,7 @@ public class Empresa {
 
 			if (rs.next()) {
 
-				razemp = rs.getString("RAZEMP");
+				razemp = rs.getString("RAZEMP"); 
 
 				hValores.put("RAZEMP", razemp);
 
@@ -74,6 +74,7 @@ public class Empresa {
 				hValores.put("INSCFILIAL", rs.getString("INSCFILIAL"));
 				hValores.put("CEPFILIAL", rs.getString("CEPFILIAL"));
 				hValores.put("EMAILFILIAL", rs.getString("EMAILFILIAL"));
+				hValores.put("WWWFILIAL", rs.getString("WWWFILIAL"));
 
 				hValores.put("RODAPE",
 						rs.getString("ENDFILIAL") != null ? ( rs.getString("ENDFILIAL").trim() + ", " + ( rs.getString("NUMFILIAL") == null ? "" : rs.getString("NUMFILIAL").trim() + "-" )
