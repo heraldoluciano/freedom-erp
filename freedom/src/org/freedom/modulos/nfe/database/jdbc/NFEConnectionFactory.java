@@ -54,11 +54,6 @@ public class NFEConnectionFactory implements NFEListener {
 
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
 
-	public NFEConnectionFactory( final DbConnection conFreedom ) {
-
-		this( conFreedom, null );
-	}
-
 	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF ) {
 
 		this.con = conFreedom;
