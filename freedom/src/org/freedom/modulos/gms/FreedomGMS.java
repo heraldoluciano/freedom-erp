@@ -54,6 +54,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.gms.view.frame.report.FRColetas;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
+import org.freedom.modulos.gms.view.frame.report.FRPesoRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRValorEstoque;
 import org.freedom.modulos.gms.view.frame.utility.FConsCompra;
 import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
@@ -287,7 +288,8 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 500000000 );
 		addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500500000, 1, false, null );
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Coletas por dia", "Coletas por dia", 'o', 500501000, 2, true, FRColetas.class );
-
+		addOpcao( 500500000, TP_OPCAO_ITEM, "Relação de entradas/peso", "Relação de entradas/peso", 'e', 500501100, 2, true, FRPesoRecMerc.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false, null );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
