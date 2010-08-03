@@ -355,8 +355,11 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				sSQL.append( "IT.CODPAG=P.CODPAG AND IT.STATUSITPAG='P1' AND ");
 				sSQL.append( "IT.DTITPAG BETWEEN ? AND ? AND " );				
 				sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
-				sSQL.append( "P.CODEMPFR=? AND P.CODFILIALFR=? AND P.CODFOR=? " );
-				sSQL.append( "ORDER BY IT.DTITPAG" );
+				sSQL.append( "P.CODEMPFR=? AND P.CODFILIALFR=? AND P.CODFOR=? AND " );
+				sSQL.append( "NOT EXISTS (SELECT * FROM FNPAGCHEQ PC " );
+				sSQL.append( "WHERE PC.CODEMP=IT.CODEMP AND PC.CODFILIAL=IT.CODFILIAL AND ");
+				sSQL.append( "PC.CODPAG=IT.CODPAG AND PC.NPARCPAG=IT.NPARCPAG ) " );
+				sSQL.append( "ORDER BY IT.DTITPAG, IT.CODPAG, IT.NPARCPAG" );
 
 				try {
 
@@ -477,6 +480,30 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     }
     
+    private int execSqlInsertPagcheq(LinkedList<Vector<Object>> listapagar, int seqcheq) throws SQLException {
+    	StringBuffer sqlins = new StringBuffer();
+    	PreparedStatement ps = null;
+    	int count = 0;
+    	
+    	sqlins.append( "INSERT INTO FNPAGCHEQ ( CODEMP, CODFILIAL, CODPAG, NPARCPAG, " );
+    	sqlins.append( "CODEMPCH, CODFILIALCH, SEQCHEQ ) " );
+    	sqlins.append( "VALUES ( ?, ?, ?, ?, ?, ?, ?)" );
+    	
+    	for (int i=0; i<listapagar.size(); i++) {
+    		ps = con.prepareStatement( sqlins.toString() );
+    		ps.setInt( 1, Aplicativo.iCodEmp );
+    		ps.setInt( 2, ListaCampos.getMasterFilial( "FNITPAGAR" ));
+    		ps.setInt( 3, (Integer) ( (Vector<Object>) listapagar.get( i ) ).elementAt( COLS_PAG.CODPAG.ordinal() ) );
+    		ps.setInt( 4, (Integer) ( (Vector<Object>) listapagar.get( i ) ).elementAt( COLS_PAG.NPARC.ordinal() ) );
+    		ps.setInt( 5, Aplicativo.iCodEmp );
+    		ps.setInt( 6, ListaCampos.getMasterFilial( "FNCHEQUE" ));
+    		ps.setInt( 7, seqcheq );
+    	}
+    	
+    	count += ps.executeUpdate();
+    	return count;
+    }
+    
     private int execSqlInsertCheque( int codfor, String numconta, int seqcheq, BigDecimal vlrcheque ) throws SQLException {
     	StringBuffer sqlins = new StringBuffer();
     	PreparedStatement ps = null;
@@ -572,11 +599,10 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	try {
     		seqcheq = getSeqcheque();
     		execSqlInsertCheque( txtCodFor.getVlrInteger() , numconta, seqcheq, vlrcheque );
+    		execSqlInsertPagcheq( listapagar, seqcheq );
 //    		ps.executeUpdate();
-        	for (int i=0; i<listapagar.size(); i++) {
-        		
-        	}
         	con.commit();
+        	carregaGridPagar();
     	} catch (SQLException e) {
     		try {
     			con.rollback();
