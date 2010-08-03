@@ -92,6 +92,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -3258,6 +3260,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
+				
+				if (txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO )){
+					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_SERVICE ) );
+					
+				} else {
+					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT ) );
+				}
+
 			}
 			else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				getCFOP();
@@ -3713,7 +3723,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		setNfecf( new NFEConnectionFactory( cn ) );
 		permusu = getPermissaoUsu();
 		montaTela();
 		lcTratTrib.setConexao( cn );
@@ -3735,5 +3744,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItCompra.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
+		setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT ) );
 	}
 }
