@@ -765,14 +765,21 @@ public class Funcoes {
 	}
 
 	public static String trimFinal(String sVal) {
+		if (sVal == null){
+			return null;
+		}
+		
 		char[] cVal = sVal.toCharArray();
+		
 		String sRetorno = sVal;
+		
 		for (int i = sVal.length() - 1; i >= 0; i--) {
 			if (cVal[i] != ' ') {
 				sRetorno = sVal.substring(0, i + 1);
 				break;
 			}
 		}
+		
 		return sRetorno;
 	}
 
