@@ -37,6 +37,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -130,7 +133,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		VLRAPAG, NUMCONTA, CODTIPOCOB, DESCTIPOCOB, HISTPAG};
 
 	private enum SQL_PARAMS {NONE, DATAINI, DATAFIM, CODEMP, CODFILIAL, CODEMPFR, CODFILIALFR, CODFOR };
-		
+
+	enum COLS_GERAR {CODPAG, NPARCPAG};
+	
 	public FPagCheque() {
 
 		super( false );
@@ -247,34 +252,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		tabPagar.setTamColuna( 250, COLS_PAG.DESCTIPOCOB.ordinal() );
 		tabPagar.setTamColuna( 300, COLS_PAG.HISTPAG.ordinal() );
 		tabPagar.addTabelaEditListener( this );
-
-/*		tabPagar.getColumn( LABEL_SEL ).addPropertyChangeListener(
-			new PropertyChangeListener() {
-				public void propertyChange( PropertyChangeEvent arg0 ) {
-					System.out.println("Valor alterado!");
-				}
-			} 
-		);
-	*/	
-//		tabPagar.getColumn( LABEL_SEL ).get
-/*		tabPagar.getSelectionModel().addListSelectionListener(
-		        new ListSelectionListener() {
-		            public void valueChanged(ListSelectionEvent event) {
-		                int viewRow = tabPagar.getSelectedRow();
-		                if (viewRow < 0) {
-		                    //Selection got filtered away.
-		                	System.out.println("Não selecionado");
-		                    statusText.setText("");
-		                } else {
-		                    int modelRow = 
-		                        tabPagar.convertRowIndexToModel(viewRow);
-		                    System.out.println("Selecionado");
-		                }
-		            }
-		        }
-		); */
-		
-		
 		btExecutar.addActionListener( this );
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
@@ -363,22 +340,21 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				sSQL.append( "SELECT IT.CODPAG, IT.NPARCPAG, IT.DTITPAG, IT.DTVENCITPAG, ");
 				sSQL.append( "IT.STATUSITPAG, P.CODFOR, F.RAZFOR, IT.DOCLANCAITPAG, P.CODCOMPRA, ");
 				sSQL.append( "IT.VLRAPAGITPAG, IT.NUMCONTA, IT.OBSITPAG, CO.DOCCOMPRA, P.DOCPAG, " );
-				sSQL.append( "P.CODTIPOCOB, TC.DESCTIPOCOB ");
-				sSQL.append( "FROM FNITPAGAR IT, CPFORNECED F, FNPAGAR P " );
+				sSQL.append( "IT.CODTIPOCOB, ");
+				sSQL.append( "( SELECT TC.DESCTIPOCOB FROM FNTIPOCOB TC ");
+				sSQL.append( "WHERE TC.CODEMP=IT.CODEMPTC AND TC.CODFILIAL=IT.CODFILIALTC AND ");
+				sSQL.append( "TC.CODTIPOCOB=IT.CODTIPOCOB) DESCTIPOCOB " );
+				sSQL.append( "FROM CPFORNECED F, FNITPAGAR IT, FNPAGAR P " );
 				sSQL.append( "LEFT OUTER JOIN CPCOMPRA CO ON ");
 				sSQL.append( "CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND ");
 				sSQL.append( "CO.CODFILIAL=P.CODFILIALCP " );
-				sSQL.append( "LEFT OUTER JOIN FNTIPOCOB TC ON ");
-				sSQL.append( "TC.CODEMP=P.CODEMPTC AND TC.CODFILIAL=P.CODFILIALTC AND ");
-				sSQL.append( "TC.CODTIPOCOB=P.CODTIPOCOB " );
-				
-				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND ");
+				sSQL.append( "WHERE F.CODFOR=P.CODFOR AND ");
 				sSQL.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
-				sSQL.append( "IT.STATUSITPAG='P1' AND "); 
-				sSQL.append( "IT.DTITPAG BETWEEN ? AND ? AND " );
+				sSQL.append( "IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND ");
+				sSQL.append( "IT.CODPAG=P.CODPAG AND IT.STATUSITPAG='P1' AND ");
+				sSQL.append( "IT.DTITPAG BETWEEN ? AND ? AND " );				
 				sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
-				sSQL.append( "P.CODEMPFR=? AND P.CODFILIALFR=? AND P.CODFOR=? AND " );
-				sSQL.append( "IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
+				sSQL.append( "P.CODEMPFR=? AND P.CODFILIALFR=? AND P.CODFOR=? " );
 				sSQL.append( "ORDER BY IT.DTITPAG" );
 
 				try {
@@ -397,15 +373,14 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					for ( int i = 0; rs.next(); i++ ) {
 						vlrtotapag  = vlrtotapag.add( rs.getBigDecimal( "VLRAPAGITPAG" )  ) ;
 						vlrtotsel  = vlrtotsel.add( rs.getBigDecimal( "VLRAPAGITPAG" )  ) ;
-
 						tabPagar.adicLinha();
 						tabPagar.setValor( new Boolean(true), i, COLS_PAG.SEL.ordinal() );
 						tabPagar.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTITPAG" ) ), i, COLS_PAG.DTEMIT.ordinal() );
 						tabPagar.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ), i, COLS_PAG.DTVENCTO.ordinal() );
 						tabPagar.setValor( rs.getString( "STATUSITPAG" ), i, COLS_PAG.STATUS.ordinal() );
 						tabPagar.setValor( rs.getString( "CODCOMPRA" ), i, COLS_PAG.CODCOMPRA.ordinal() );
-						tabPagar.setValor( rs.getString( "CODPAG" ), i, COLS_PAG.CODPAG.ordinal() );
-						tabPagar.setValor( rs.getString( "NPARCPAG" ), i, COLS_PAG.NPARC.ordinal() );
+						tabPagar.setValor( new Integer(rs.getInt( "CODPAG" )), i, COLS_PAG.CODPAG.ordinal() );
+						tabPagar.setValor( new Integer(rs.getInt( "NPARCPAG" )), i, COLS_PAG.NPARC.ordinal() );
 						tabPagar.setValor( ( rs.getString( "DOCLANCAITPAG" ) != null ? rs.getString( "DOCLANCAITPAG" ) : 
 							   ( rs.getString( "DOCPAG" ) != null ? rs.getString( "DOCPAG" ) + "/" + rs.getString( "NPARCPAG" ) : "" ) ), i, COLS_PAG.DOCLANCA.ordinal() );
 						tabPagar.setValor( rs.getString( "DOCCOMPRA" ), i, COLS_PAG.DOCCOMPRA.ordinal() );
@@ -414,7 +389,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 						tabPagar.setValor( rs.getString( "CODTIPOCOB" ), i, COLS_PAG.CODTIPOCOB.ordinal() );
 						tabPagar.setValor( rs.getString( "DESCTIPOCOB" ), i, COLS_PAG.DESCTIPOCOB.ordinal() );
 						tabPagar.setValor( rs.getString( "OBSITPAG" ), i, COLS_PAG.HISTPAG.ordinal() );
-						
 					}
 
 					rs.close();
@@ -475,7 +449,10 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btSair ) {
+		if ( evt.getSource() == btExecutar ) {
+			carregaGridPagar();
+		}
+		else if ( evt.getSource() == btSair ) {
 			dispose();
 		}
 		else if ( evt.getSource() == btSelTudo ) {
@@ -485,19 +462,55 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			desmarcarTodos();
 		}
 		else if ( evt.getSource() == btGerar ) {
-					
-		}
-		else if ( evt.getSource() == btExecutar ) {
-			carregaGridPagar();
+			gerarCheque();		
 		}
 	}
 
+    private void gerarCheque() {
+    	LinkedList<Vector<Object>> listapagar = new LinkedList<Vector<Object>>();
+    	listapagar = getListapagar( listapagar );
+    	if (validaListapagar( listapagar ) ) {
+    		
+    	}
+    }
+    
+    private boolean validaListapagar(LinkedList<Vector<Object>> listapagar) {
+    	boolean result = false;
+    	Vector<Object> item = null;
+    	if ( listapagar.size()>0 ) {
+    		for ( int i=0; i<listapagar.size(); i++ ) {
+    			item = listapagar.get( i );
+    			if ( "".equals( item.elementAt( COLS_PAG.NUMCONTA.ordinal() ) ) ) {
+    				Funcoes.mensagemInforma( this, "Um item selecionado não possui conta definida!" );
+    				break;
+    			} else if ("".equals( item.elementAt( COLS_PAG.CODTIPOCOB.ordinal() ) )) {
+    				Funcoes.mensagemInforma( this, "Um item selecionado não possui tipo de cobrança definido!" );
+    				break;
+    			} else {
+    				result = true;
+    			}
+    		}
+    	} else {
+    		Funcoes.mensagemInforma( this, "Selecione algum item na lista!" );
+    	}
+    	return result;
+    }
+    
+    //@ SuppressWarnings ( "unchecked" )
+	private LinkedList<Vector<Object>> getListapagar(LinkedList<Vector<Object>> listapagar) {
+    	Vector<Object> item = null;
+    	for (int i=0; i<tabPagar.getNumLinhas(); i++) {
+    		item = (Vector<Object>) tabPagar.getLinha( i );
+    		if ( (Boolean) item.elementAt( COLS_PAG.SEL.ordinal() ) ) {
+    			listapagar.add( item );
+    		}
+    	}
+    	return listapagar;
+    }
 
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
-
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
