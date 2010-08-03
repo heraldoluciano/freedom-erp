@@ -535,7 +535,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
 		lcFreteVD.add( new GuardaCampo( rgFreteVD, "TipoFreteVD", "Tipo", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtConhecFreteVD, "ConhecFreteVD", "Conhec.", ListaCampos.DB_SI, false ) );
-		lcFreteVD.add( new GuardaCampo( txtPlacaFreteVD, "PlacaFreteVD", "Placa", ListaCampos.DB_SI, true ) );
+		lcFreteVD.add( new GuardaCampo( txtPlacaFreteVD, "PlacaFreteVD", "Placa", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtUFFreteVD, "UFFreteVD", "Placa", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtVlrFreteVD, "VlrFreteVD", "Valor", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtQtdFreteVD, "QtdFreteVD", "Qtd.", ListaCampos.DB_SI, true ) );
@@ -837,6 +837,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		lcVenda.edit();
 		lcFreteVD.addCarregaListener( this );
+		lcTran.addCarregaListener( this );
 	}
 
 	private void calcPeso() {
@@ -1678,6 +1679,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
+		if(cevt.getListaCampos() == lcTran) {
+			if(txtPlacaFreteVD.getVlrString()==null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
+				txtPlacaFreteVD.setVlrString( "*******" );	
+			}
+		}
+		
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
