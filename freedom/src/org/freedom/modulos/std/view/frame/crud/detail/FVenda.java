@@ -2214,7 +2214,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 						fBol.setParcelas( lsParcRecibo );
 						fBol.gerar();
-						fBol.imprimir( true );
+						fBol.imprimir( true, this );
 					}
 				}
 
