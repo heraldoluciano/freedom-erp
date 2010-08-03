@@ -42,6 +42,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import org.freedom.acao.TabelaEditEvent;
@@ -462,27 +463,147 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			desmarcarTodos();
 		}
 		else if ( evt.getSource() == btGerar ) {
-			gerarCheque();		
+			gerar();		
 		}
 	}
 
-    private void gerarCheque() {
+    private void gerar() {
     	LinkedList<Vector<Object>> listapagar = new LinkedList<Vector<Object>>();
     	listapagar = getListapagar( listapagar );
     	if (validaListapagar( listapagar ) ) {
-    		
+    		if ( Funcoes.mensagemConfirma( this, "Executar a geração do cheque?" )==JOptionPane.YES_OPTION) {
+    			gerarCheque( listapagar );
+    		}
+    	}
+    }
+    
+    private int execSqlInsertCheque( int codfor, String numconta, int seqcheq, BigDecimal vlrcheque ) throws SQLException {
+    	StringBuffer sqlins = new StringBuffer();
+    	PreparedStatement ps = null;
+    	
+    	StringBuffer histcheq = new StringBuffer( "'CHEQUE DE PAGAMENTO DE FORNECEDOR: " );
+    	   histcheq.append( codfor );
+    	   histcheq.append( " - '|| " );
+    	// Não estão todos os campos da tabela cheque no comando INSERT, 
+    	// alguns valores são inseridos por padrão.
+    	
+		sqlins.append( "INSERT INTO FNCHEQUE ( " );
+		sqlins.append( "CODEMP, CODFILIAL, CODEMPBO, CODFILIALBO, CODBANC, SEQCHEQ, NUMCHEQ, ");
+		sqlins.append( "AGENCIACHEQ, CONTACHEQ, NOMEEMITCHEQ,  NOMEFAVCHEQ, ");
+		sqlins.append( "VLRCHEQ,  HISTCHEQ, CNPJEMITCHEQ, CPFEMITCHEQ, DDDEMITCHEQ, FONEEMITCHEQ, ");
+		sqlins.append( "CNPJFAVCHEQ, CPFFAVCHEQ ) ");
+		sqlins.append( "SELECT ");
+		sqlins.append( Aplicativo.iCodEmp );
+		sqlins.append(" CODEMP, ");
+		sqlins.append( ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+		sqlins.append( " CODFILIAL, ");
+		sqlins.append( "CT.CODEMPBO, CT.CODFILIALBO, CT.CODBANCO CODBANC, ");
+		sqlins.append( seqcheq );
+		sqlins.append( " SEQCHEQ, 0 NUMCHEQ, CT.AGENCIACONTA AGENCIACHEQ, '");
+		sqlins.append( numconta.trim() );
+		sqlins.append( "' CONTACHEQ, F.RAZFILIAL NOMEEMITCHEQ, FR.RAZFOR NOMEFAVCHEQ, ");
+		sqlins.append( vlrcheque );
+		sqlins.append( " VLRCHEQ, ");
+		sqlins.append( histcheq.toString() );
+		sqlins.append(" FR.RAZFOR  HISTCHEQ, F.CNPJFILIAL CNPJEMITCHEQ, '' CPFEMITCHEQ, ");
+		sqlins.append( "F.DDDFILIAL DDDEMITCHEQ, SUBSTRING( F.FONEFILIAL FROM 1 FOR 8) FONEEMITCHEQ, ");
+		sqlins.append( "FR.CNPJFOR CNPJFAVCHEQ, FR.CPFFOR CPFFAVCHEQ ");
+		sqlins.append( "FROM SGFILIAL F, CPFORNECED FR, FNCONTA CT ");
+		sqlins.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+		sqlins.append( "FR.CODEMP=? AND FR.CODFILIAL=? AND FR.CODFOR=? AND " );
+		sqlins.append( "CT.CODEMP=? AND CT.CODFILIAL=? AND CT.NUMCONTA=? ");
+		
+		ps = con.prepareStatement( sqlins.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+		ps.setInt( 3, Aplicativo.iCodEmp );
+		ps.setInt( 4, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+		ps.setInt( 5, codfor );
+		ps.setInt( 6, Aplicativo.iCodEmp );
+		ps.setInt( 7, ListaCampos.getMasterFilial( "FNCONTA" ) );
+		ps.setString( 8, numconta );
+    	return ps.executeUpdate(); 
+    }
+    
+    private String getNumconta(LinkedList<Vector<Object>> listapagar) {
+    	String numconta = "";
+    	for ( int i=0; i<listapagar.size(); i++ ) {
+    		if ( (Boolean) ( (Vector<Object>) listapagar.get( i ) ).elementAt( COLS_PAG.SEL.ordinal() ) ) {
+    			numconta = ( String ) ( (Vector<Object>) listapagar.get( i ) ).elementAt( COLS_PAG.NUMCONTA.ordinal() ) ;
+    		}
+    	}
+    	return numconta;
+    }
+    
+    private int getSeqcheque() throws SQLException {
+    	int seqcheq = 1;
+    	String sqlquery = "SELECT COALESCE(NROSEQ,0)+1 NROSEQ FROM SGSEQUENCIA WHERE CODEMP=? AND CODFILIAL=? AND SGTAB=?";
+    	String sqlinsert = "INSERT INTO SGSEQUENCIA (CODEMP, CODFILIAL, SGTAB, NROSEQ) VALUES (?,?,?,?)";
+    	String sqlupdate = "UPDATE SGSEQUENCIA SET NROSEQ=? WHERE CODEMP=? AND CODFILIAL=? AND SGTAB=?";
+    	PreparedStatement ps = con.prepareStatement( sqlquery );
+    	ps.setInt( 1, Aplicativo.iCodEmp );
+    	ps.setInt( 2, ListaCampos.getMasterFilial( "FNCHEQUE" ));
+    	ps.setString( 3, "CH" );
+    	ResultSet rs =  ps.executeQuery();
+    	if (rs.next()) {
+    		seqcheq = rs.getInt( "NROSEQ" );
+    		ps =  con.prepareStatement( sqlupdate );
+    		ps.setInt( 1, seqcheq );
+    		ps.setInt( 2, Aplicativo.iCodEmp );
+    		ps.setInt( 3, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+    		ps.setString( 4, "CH" );
+    		ps.executeUpdate();
+    	} else {
+    		ps = con.prepareStatement( sqlinsert );
+    		ps.setInt( 1, Aplicativo.iCodEmp );
+    		ps.setInt( 2, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+    		ps.setString( 3, "CH" );
+    		ps.setInt( 4, seqcheq );
+    		ps.executeUpdate();
+    	}
+    	return seqcheq;
+    }
+    
+    private void gerarCheque(LinkedList<Vector<Object>> listapagar) {
+    	PreparedStatement ps = null;
+    	String numconta = getNumconta(listapagar);
+    	BigDecimal vlrcheque = txtVlrTotSel.getVlrBigDecimal();
+    	int seqcheq = 0;
+    	try {
+    		seqcheq = getSeqcheque();
+    		execSqlInsertCheque( txtCodFor.getVlrInteger() , numconta, seqcheq, vlrcheque );
+//    		ps.executeUpdate();
+        	for (int i=0; i<listapagar.size(); i++) {
+        		
+        	}
+        	con.commit();
+    	} catch (SQLException e) {
+    		try {
+    			con.rollback();
+    		} catch ( SQLException err ) {
+        		Funcoes.mensagemErro( this, "Erro executando rollback!\n" + err.getMessage() );
+    		}
+    		Funcoes.mensagemErro( this, "Erro executando inserção do cheque!\n" + e.getMessage() );
     	}
     }
     
     private boolean validaListapagar(LinkedList<Vector<Object>> listapagar) {
     	boolean result = false;
     	Vector<Object> item = null;
+    	String numconta = "";
     	if ( listapagar.size()>0 ) {
     		for ( int i=0; i<listapagar.size(); i++ ) {
     			item = listapagar.get( i );
     			if ( "".equals( item.elementAt( COLS_PAG.NUMCONTA.ordinal() ) ) ) {
     				Funcoes.mensagemInforma( this, "Um item selecionado não possui conta definida!" );
     				break;
+    			} else if ( "".equals( item.elementAt( COLS_PAG.NUMCONTA.ordinal() ) ) ) {
+    				if ( "".equals( numconta ) ) {
+    					numconta = (String) item.elementAt( COLS_PAG.NUMCONTA.ordinal() );
+    				} else if ( numconta.equals( item.elementAt( COLS_PAG.NUMCONTA.ordinal() ) ) ) {
+    					Funcoes.mensagemInforma( this, "Um item selecionado possui conta diferente dos demais!" );
+    					break;
+    				}
     			} else if ("".equals( item.elementAt( COLS_PAG.CODTIPOCOB.ordinal() ) )) {
     				Funcoes.mensagemInforma( this, "Um item selecionado não possui tipo de cobrança definido!" );
     				break;
