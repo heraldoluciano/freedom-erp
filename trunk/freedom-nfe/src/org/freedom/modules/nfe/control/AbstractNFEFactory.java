@@ -32,7 +32,6 @@ import org.freedom.modules.nfe.event.NFEListener;
  * @version 15/07/2009 Robson Sanchez
  * @version 10/03/2010 Anderson Sanchez
  */
-
 public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
@@ -48,18 +47,21 @@ public abstract class AbstractNFEFactory {
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
 
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
-
+	
 	public static final Constant TP_NF_IN = new Constant("Entrada", new Integer(0));
 
 	public static final Constant TP_NF_OUT = new Constant("Saida", new Integer(1));
 
 	public static final Constant TP_NF_BOTH = new Constant("Ambos", new Integer(3));
+	
+	public static final Constant TP_NF_SERVICE = new Constant("Serviço", new Integer(4));
 
 	public enum SYSTEM {
 		FREEDOM
 	};
 
-	public AbstractNFEFactory() {
+	public AbstractNFEFactory() 
+	{
 	}
 
 	public boolean isValid() {
