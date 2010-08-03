@@ -1011,8 +1011,10 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
 		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
 		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
-		sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4 " );
+		sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4, " );
 
+		sSQL.append( "ITR.OBSITREC OBS " );
+		
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
 		sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, " );
 		sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V " );
