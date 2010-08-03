@@ -143,7 +143,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 				String sSQL = "UPDATE VDVENDA SET STATUSVENDA = 'C" + sStatus.substring( 0, 1 ) + "' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
 
 				try {
-
+ 
 					ps = con.prepareStatement( sSQL );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
