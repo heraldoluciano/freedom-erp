@@ -1055,7 +1055,11 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "SELECT C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA,C.CODFOR," );
 				sSql.append( "F.UFFOR,F.CNPJFOR,IC.CODNAT,IC.CODPROD,P.REFPROD," );
 				sSql.append( "C.DTEMITCOMPRA,C.SERIE,TM.CODMODNOTA,IC.PERCICMSITCOMPRA," );
-				sSql.append( "IC.QTDITCOMPRA,IC.VLRLIQITCOMPRA,IC.VLRBASEICMSITCOMPRA," );
+
+				sSql.append( "(case when IC.qtditcompracanc>0 then ic.qtditcompracanc else ic.qtditcompra end) qtditcompra,");
+				
+				sSql.append( "IC.VLRLIQITCOMPRA,IC.VLRBASEICMSITCOMPRA," );
+				
 				sSql.append( "IC.PERCICMSITCOMPRA,IC.VLRBASEICMSITCOMPRA,IC.VLRIPIITCOMPRA," );
 				sSql.append( "CF.ORIGFISC, CF.CODTRATTRIB, C.CODCOMPRA " );
 				sSql.append( "FROM CPCOMPRA C,CPFORNECED F,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P, LFITCLFISCAL CF " );
@@ -1124,7 +1128,10 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "SELECT V.DTSAIDAVENDA,V.DOCVENDA,IV.CODITVENDA,V.CODCLI," );
 				sSql.append( "C.UFCLI, C.PESSOACLI, C.CNPJCLI, C.CPFCLI, IV.CODNAT,IV.CODPROD,P.REFPROD," );
 				sSql.append( "V.DTEMITVENDA,V.SERIE,TM.CODMODNOTA,IV.PERCICMSITVENDA," );
-				sSql.append( "IV.QTDITVENDA,IV.VLRLIQITVENDA,IV.VLRBASEICMSITVENDA," );
+				
+				sSql.append( "(case when Iv.qtditvendacanc>0 then iv.qtditvendacanc else iv.qtditvenda end) qtditvenda,");
+				
+				sSql.append( "IV.VLRLIQITVENDA,IV.VLRBASEICMSITVENDA," );
 				sSql.append( "IV.PERCICMSITVENDA,IV.VLRBASEICMSITVENDA,IV.VLRIPIITVENDA," );
 				sSql.append( "CF.ORIGFISC,CF.CODTRATTRIB " );
 				sSql.append( "FROM VDVENDA V,VDCLIENTE C,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF " );
