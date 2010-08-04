@@ -265,15 +265,15 @@ public class FRColetas extends FRelatorio {
 
 			sql.append( "select " );
 			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-			// sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli " );
+			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, " );
 
-			sql.append( "pd.descprod, rm.ticket, 'teste' as razcli " );
+			sql.append( "pd.descprod, rm.ticket " );
 
 			sql.append( "from " );
 			sql.append( "eqrecmerc rm " );
 
-			// sql.append( "left outer join vdcliente cl on " );
-			// sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			sql.append( "left outer join vdcliente cl on " );
+			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
 
 			sql.append( "left outer join eqitrecmerc it on " );
 			sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
@@ -295,7 +295,7 @@ public class FRColetas extends FRelatorio {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 
-			sql.append( "group by 1,2,3,4, " );
+		//	sql.append( "group by 1,2,3,4 " );
 
 			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, it.codprod " );
 
