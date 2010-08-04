@@ -203,6 +203,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vValTipoUsoImp.addElement( "RS" );
 		vValTipoUsoImp.addElement( "RG" );
 		vValTipoUsoImp.addElement( "ET" );
+		vValTipoUsoImp.addElement( "CH" );
 		vValTipoUsoImp.addElement( "TO" );
 
 		vLabTipoUsoImp.addElement( "Nota fiscal" );
@@ -211,6 +212,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vLabTipoUsoImp.addElement( "Relatório simples" );
 		vLabTipoUsoImp.addElement( "Relatório gráfico" );
 		vLabTipoUsoImp.addElement( "Etiquetas" );
+		vLabTipoUsoImp.addElement( "Cheques" );
 		vLabTipoUsoImp.addElement( "Todos" );
 
 		vLabDriversBal.addElement( "<Selecione um modelo>" );
