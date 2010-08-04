@@ -35,7 +35,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -49,6 +51,8 @@ import org.freedom.bmps.Icone; // import org.freedom.componentes.ObjetoHistorico
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.functions.Extenso;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -61,6 +65,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FPagCheque extends FFilho implements ActionListener, TabelaEditListener {
 
@@ -87,6 +93,8 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	private JButtonPad btSelNadaCheq = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
 	private JButtonPad btImpCheq = new JButtonPad( Icone.novo( "btImprime.gif" ) );	
+
+	private JButtonPad btPrevCheq = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );	
 	
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
@@ -162,6 +170,8 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 	private ListaCampos lcFor = new ListaCampos( this );
 
+	private String layoutCheq = null; 
+	
 	private Date dIniPagar = null;
 
 	private Date dFimPagar = null;
@@ -181,14 +191,51 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	
 	private enum SQL_PARAMS_PAG {NONE, DATAINI, DATAFIM, CODEMP, CODFILIAL, CODEMPFR, CODFILIALFR, CODFOR };
 
-	private enum SQL_PARAMS_CHEQ {NONE, CODEMP, CODFILIAL, DATAINI, DATAFIM };
+	private enum SQL_PARAMS_CHEQ {NONE, CODEMP, CODFILIAL, DATAINI, DATAFIM, NUMCONTA };
+	
+	private JTextFieldPad txtNumconta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescconta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodbanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private JTextFieldPad txtSeqtalao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );	
+	
+	private ListaCampos lcConta = new ListaCampos( this, "" );
+
+	private ListaCampos lcTalaoCheq = new ListaCampos( this, "" );
+	
+	private Map<String, String> prefs = new HashMap<String, String>();
+	
 	
 	public FPagCheque() {
 
 		super( false );
 		setTitulo( "Emissão de cheques" );
 		setAtribos( 20, 20, 820, 480 );
+		
+		lcConta.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PK, txtDescconta, false ) );
+		lcConta.add( new GuardaCampo( txtDescconta, "Descconta", "Descriçao do conta", ListaCampos.DB_SI, null, false ) );
+		lcConta.add( new GuardaCampo( txtCodbanco, "Codbanco", "Cód.banco", ListaCampos.DB_SI, null, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setQueryCommit( false );
+		lcConta.setReadOnly( true );
+		txtNumconta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
+		txtNumconta.setFK( true );
+		txtNumconta.setNomeCampo( "NUMCONTA" );
+		txtNumconta.setRequerido( true );
 
+		lcTalaoCheq.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PF, txtDescconta, false ) );
+		lcTalaoCheq.add( new GuardaCampo( txtSeqtalao, "Seqtalao", "Seq.", ListaCampos.DB_PK, txtDescconta, false ) );
+		lcTalaoCheq.setDinWhereAdic( "NUMCONTA = #S", txtNumconta );
+		lcTalaoCheq.montaSql( false, "TALAOCHEQ", "FN" );
+		lcTalaoCheq.setQueryCommit( false );
+		lcTalaoCheq.setReadOnly( true );
+		txtSeqtalao.setTabelaExterna( lcTalaoCheq, FTalaoCheq.class.getCanonicalName() );
+		txtSeqtalao.setFK( true );
+		txtSeqtalao.setNomeCampo( "SEQTALAO" );
+		txtSeqtalao.setRequerido( true );
+		
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
 		c.add( pnRod, BorderLayout.SOUTH );
@@ -324,6 +371,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		btSelTudoCheq.setToolTipText( "Marcar todos" );
 		btSelNadaCheq.setToolTipText( "Demarcar todos" );
 		btImpCheq.setToolTipText( "Imprimir cheques" );
+		btPrevCheq.setToolTipText( "Previsão da impressão de cheques" );
 		btExeccheq.setToolTipText( "Listar cheques" );
 
 		pnCheq.add( pinCheq, BorderLayout.NORTH );
@@ -336,7 +384,15 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		pinCheq.adic( txtDatainiCheq, 7, 20, 100, 20 );
 		pinCheq.adic( new JLabelPad( "até" ), 110, 0, 100, 20 );
 		pinCheq.adic( txtDatafimCheq, 110, 20, 100, 20 );
-		pinCheq.adic( btExeccheq, 556, 10, 30, 30 );
+
+		pinCheq.adic( new JLabelPad( "Nº conta" ), 223, 0, 80, 20 );
+		pinCheq.adic( txtNumconta, 223, 20, 80, 20 );
+		pinCheq.adic( new JLabelPad( "Descricção da conta" ), 306, 0, 230, 20 );
+		pinCheq.adic( txtDescconta, 306, 20, 230, 20 );
+		pinCheq.adic( new JLabelPad( "Seq.talão" ), 539, 0, 60, 20 );
+		pinCheq.adic( txtSeqtalao, 539, 20, 60, 20 );
+		
+		pinCheq.adic( btExeccheq, 612, 10, 30, 30 );
 
 		txtDatainiCheq.setRequerido( true );
 		txtDatafimCheq.setRequerido( true );
@@ -344,6 +400,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		pinBotoesCheq.adic( btSelTudoCheq, 5, 10, 30, 30 );
 		pinBotoesCheq.adic( btSelNadaCheq, 5, 40, 30, 30 );
 		pinBotoesCheq.adic( btImpCheq, 5, 70, 30, 30 );
+		pinBotoesCheq.adic( btPrevCheq, 5, 100, 30, 30 );
 
 //		private enum COLS_CHEQ { SEL, DTEMIT, DTVENCTO, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA };
 		
@@ -375,9 +432,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		btSelTudoCheq.addActionListener( this );
 		btSelNadaCheq.addActionListener( this );
 		btImpCheq.addActionListener( this );
+		btPrevCheq.addActionListener( this );
 
 		btExeccheq.setFocusable( false );
-		
 		
 	}
 
@@ -480,7 +537,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 			carregandoTabela = true;
 
-			if ( validaPeriodoPag() ) {
+			if ( validaFiltrosPag() ) {
 				
 				tabPagar.limpa();
 
@@ -564,7 +621,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		
 	}
 
-	private boolean validaPeriodoPag() {
+	private boolean validaFiltrosPag() {
 
 		boolean bRetorno = false;
 
@@ -594,30 +651,64 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		return bRetorno;
 	}
 
-	private boolean validaPeriodoCheq() {
+	private boolean validaFiltrosCheq() {
 
 		boolean bRetorno = false;
-
+		String codbanco = txtCodbanco.getVlrString();
+		
 		if ( txtDatainiCheq.getText().trim().length() < 10 ) {
-
 			Funcoes.mensagemInforma( this, "Data inicial inválida!" );
 		}
 		else if ( txtDatafimCheq.getText().trim().length() < 10 ) {
-
 			Funcoes.mensagemInforma( this, "Data final inválida!" );
 		}
 		else if ( txtDatafimCheq.getVlrDate().before( txtDatainiCheq.getVlrDate() ) ) {
-
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 		}
+		else if ( "".equals( txtNumconta.getText().trim() ) ) {
+			Funcoes.mensagemInforma( this, "Selecione uma conta!" );
+		} 
+		else if ( "".equals( txtSeqtalao.getText().trim() ) ) {
+			Funcoes.mensagemInforma( this, "Selecione uma talonário!" );
+		} 
 		else {
-
-			dIniCheq = txtDatainiCheq.getVlrDate();
-			dFimCheq = txtDatafimCheq.getVlrDate();
-			bRetorno = true;
+			layoutCheq = getLayoutcheq( codbanco );
+			if ( (layoutCheq == null) || ("".equals( layoutCheq )) ) {
+				Funcoes.mensagemInforma( this, 
+						"Não existe layout de cheques configurado para o banco " + 
+						codbanco + "!" );
+			} else { 
+				dIniCheq = txtDatainiCheq.getVlrDate();
+				dFimCheq = txtDatafimCheq.getVlrDate();
+				bRetorno = true;
+			}
 		}
 
 		return bRetorno;
+	}
+
+	private String getLayoutcheq( String codbanco ) {
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuffer sql = new StringBuffer("SELECT B.LAYOUTCHEQBANCO FROM FNBANCO B ");
+		String result = null;
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODBANCO=? " );
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 3, codbanco );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result = rs.getString( "LAYOUTCHEQBANCO" );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro consultando layout de cheque!\n" + e.getMessage() );
+		}
+		return result;
 	}
 	
 	private synchronized void carregaGridCheq() {
@@ -627,19 +718,21 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		StringBuffer sSQL = new StringBuffer();
 		BigDecimal vlrtotcheq = new BigDecimal(0);
 		BigDecimal vlrtotsel = new BigDecimal(0);
+		String numconta = txtNumconta.getVlrString();
 		
 		try {
 
 			carregandoTabela = true;
 
-			if ( validaPeriodoCheq() ) {
+			if ( validaFiltrosCheq() ) {
 				
 				tabCheq.limpa();
 				sSQL.append( "SELECT CH.SEQCHEQ, CH.DTEMITCHEQ, CH.DTVENCTOCHEQ, CH.NUMCHEQ, ");
 				sSQL.append( "CH.NOMEFAVCHEQ, CH.SITCHEQ, CH.VLRCHEQ, CH.CONTACHEQ, CH.HISTCHEQ ");
 				sSQL.append( "FROM FNCHEQUE CH ");
 				sSQL.append( "WHERE CH.CODEMP=? AND CH.CODFILIAL=? AND " );
-				sSQL.append( "CH.DTEMITCHEQ BETWEEN ? AND ? AND CH.TIPOCHEQ='PF' " );				
+				sSQL.append( "CH.DTEMITCHEQ BETWEEN ? AND ? AND CH.TIPOCHEQ='PF' AND " );
+				sSQL.append( "CH.CONTACHEQ=? " );
 				sSQL.append( "ORDER BY CH.DTEMITCHEQ, CH.SEQCHEQ" );
 
 				try {
@@ -649,6 +742,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					ps.setInt( SQL_PARAMS_CHEQ.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNPAGAR" ) );
 					ps.setDate( SQL_PARAMS_CHEQ.DATAINI.ordinal(), Funcoes.dateToSQLDate( dIniCheq ) );
 					ps.setDate( SQL_PARAMS_CHEQ.DATAFIM.ordinal(), Funcoes.dateToSQLDate( dFimCheq ) );
+					ps.setString( SQL_PARAMS_CHEQ.NUMCONTA.ordinal(), numconta );
 					rs = ps.executeQuery();
 //					System.out.println( sSQL.toString() );
 
@@ -716,7 +810,10 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			desmarcarTodosCheq();
 		}
 		else if ( evt.getSource() == btImpCheq ) {
-			imprimir();		
+			imprimir(false);		
+		} 
+		else if ( evt.getSource() == btPrevCheq ) {
+			imprimir(true);		
 		} 
 		else if ( evt.getSource() == btExeccheq ) {
 			carregaGridCheq();
@@ -734,13 +831,15 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     }
 
-    private void imprimir() {
-    	LinkedList<Vector<Object>> listacheq = new LinkedList<Vector<Object>>();
-    	listacheq = getListacheq( listacheq );
-    	if (validaListacheq( listacheq ) ) {
-    		if ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION) {
-    			imprimirCheque( listacheq );
-    		}
+    private void imprimir(boolean visualizar) {
+    	if ( validaImpressora() ) {
+	    	LinkedList<Vector<Object>> listacheq = new LinkedList<Vector<Object>>();
+	    	listacheq = getListacheq( listacheq );
+	    	if (validaListacheq( listacheq ) ) {
+	    		if ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION) {
+	    			imprimirCheque( listacheq, visualizar );
+	    		}
+	    	}
     	}
     }
     
@@ -856,7 +955,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     }
     
     private void gerarCheque(LinkedList<Vector<Object>> listapagar) {
-    	PreparedStatement ps = null;
     	String numconta = getNumconta(listapagar);
     	BigDecimal vlrcheque = txtVlrTotSelPag.getVlrBigDecimal();
     	int seqcheq = 0;
@@ -864,7 +962,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		seqcheq = getSeqcheque();
     		execSqlInsertCheque( txtCodFor.getVlrInteger() , numconta, seqcheq, vlrcheque );
     		execSqlInsertPagcheq( listapagar, seqcheq );
-//    		ps.executeUpdate();
         	con.commit();
         	carregaGridPagar();
         	tabCheq.requestFocus();
@@ -879,26 +976,71 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     }
 
-    private void imprimirCheque(LinkedList<Vector<Object>> listacheq) {
+    private Map<String, Object> montaMap( Vector<Object> item ) {
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	result.put( "DTEMIT", item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) );
+    	result.put( "DTVENCTO", item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) );
+    	result.put( "NUMCHEQ", item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ) );
+    	result.put( "NOMEFAVCHEQ", item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ) );
+    	result.put( "VLRCHEQ", item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) );
+    	result.put( "DTEMITEX", Funcoes.dateToStrExtenso( 
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() );
+    	result.put( "DTVENCTOEX", Funcoes.dateToStrExtenso( 
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase() );
+    	result.put( "VLRCHEQEX", Extenso.extenso( ConversionFunctions.stringCurrencyToBigDecimal( 
+    			(String) item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) ).doubleValue() , 
+    			prefs.get( "SINGMOEDA" ), prefs.get( "PLURMOEDA" ), 
+    			prefs.get( "DECSMOEDA" ), prefs.get( "DECPMOEDA" ) ).toUpperCase() );
+    	return result;
+    }
+    
+    private void imprimirCheque( LinkedList<Vector<Object>> listacheq, boolean visualizar ) {
     	PreparedStatement ps = null;
-  //  	String numconta = getNumconta(listapagar);
     	BigDecimal vlrcheque = txtVlrTotSelCheq.getVlrBigDecimal();
-    	int seqcheq = 0;
-    	try {
-//    		seqcheq = getSeqcheque();
- ///   		execSqlInsertCheque( txtCodFor.getVlrInteger() , numconta, seqcheq, vlrcheque );
-//    		execSqlInsertPagcheq( listapagar, seqcheq );
-//    		ps.executeUpdate();
-        	con.commit();
-    //    	carregaGridPagar();
-    	} catch (SQLException e) {
-    		try {
-    			con.rollback();
-    		} catch ( SQLException err ) {
-        		Funcoes.mensagemErro( this, "Erro executando rollback!\n" + err.getMessage() );
-    		}
-    		Funcoes.mensagemErro( this, "Erro executando impressão de cheques!\n" + e.getMessage() );
+    	ImprimeOS imp = new ImprimeOS("", con, "CH", true );
+    	Vector<Object> item = null;
+    	Map<String, Object> itemMap = null;
+    	
+    	for ( int i=0; i<listacheq.size(); i++ ) {
+    		item = listacheq.get( i );
+    		itemMap = montaMap(item); 
+    		montaLayoutCheq( imp, itemMap );
     	}
+    	if ( visualizar ) {
+    		imp.preview( this );
+    	}
+    }
+    
+    private void montaLayoutCheq( ImprimeOS imp,  Map<String, Object> itemMap  ) {
+        String[] layout = layoutCheq.split( "\n" );
+    	for ( int i=0; i<layout.length; i++ ) {
+    		System.out.println( layout[i] );
+    	}
+    }
+    
+    private boolean validaImpressora() {
+    	boolean result = false;
+    	ResultSet rs = null;
+    	PreparedStatement ps = null;
+    	StringBuffer sql = new StringBuffer("SELECT EI.TIPOUSOIMP FROM SGESTACAOIMP EI " );
+    	sql.append( "WHERE EI.CODEMP=? AND EI.CODFILIAL=? AND CODEST=? AND TIPOUSOIMP=?" );
+    	try { 
+    		ps = con.prepareStatement( sql.toString() );
+    		ps.setInt( 1, Aplicativo.iCodEmp );
+    		ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAOIMP" ) );
+    		ps.setInt( 3, Aplicativo.iNumEst );
+    		ps.setString( 4, "CH");
+    		rs = ps.executeQuery();
+    		if ( rs.next() ) {
+    			result = true;
+    		}
+    		if ( !result ) {
+    			Funcoes.mensagemInforma( this, "Configure impressora de cheques na estação de trabalho!" );
+    		}
+    	} catch ( SQLException e ) {
+    		Funcoes.mensagemInforma( this, "Erro consultando impressora!\n" + e.getMessage() );
+    	}
+    	return result;
     }
     
     private boolean validaListapagar(LinkedList<Vector<Object>> listapagar) {
@@ -983,8 +1125,42 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
+		lcConta.setConexao( cn );
+		lcTalaoCheq.setConexao( cn );
+		setPrefs();
 	}
 
+	private void setPrefs() {
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuffer sql = 
+			new StringBuffer( "SELECT P.CODMOEDA, MC.NOMEMUNIC, " );
+				sql.append(	"M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA ");
+				sql.append( "FROM FNMOEDA M, SGPREFERE1 P, SGFILIAL F, SGMUNICIPIO MC " );
+				sql.append( "WHERE M.CODMOEDA=P.CODMOEDA AND P.CODEMP=? AND P.CODFILIAL=? AND " );
+				sql.append( "F.CODEMP=? AND F.CODFILIAL=? AND ");
+				sql.append( "MC.CODPAIS=F.CODPAIS AND MC.SIGLAUF=F.SIGLAUF AND MC.CODMUNIC=F.CODMUNIC" );
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				prefs.put( "CODMOEDA", rs.getString( "CODMOEDA" ).trim() );
+				prefs.put( "NOMEMUNIC", rs.getString( "NOMEMUNIC" ).trim() );
+				prefs.put( "SINGMOEDA", rs.getString( "PLURMOEDA" ).trim() );
+				prefs.put( "PLURMOEDA", rs.getString( "PLURMOEDA" ).trim() );
+				prefs.put( "DECSMOEDA", rs.getString( "DECSMOEDA" ).trim() );
+				prefs.put( "DECPMOEDA", rs.getString( "DECPMOEDA" ).trim() );
+			}
+			con.commit();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro consultando preferências!\n" + e.getMessage() );
+		}
+	}
+	
 	public void valorAlterado( TabelaEditEvent evt ) {
 
 		if ( (evt.getTabela()==tabPagar) && 
