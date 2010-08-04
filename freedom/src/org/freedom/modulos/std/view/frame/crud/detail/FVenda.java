@@ -3624,7 +3624,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			impostos.setBuscabase( buscabase );
 			impostos.setVlrprod( txtVlrProdItVenda.getVlrBigDecimal() );
-			impostos.setVlrdescit( txtPercDescItVenda.getVlrBigDecimal() );
+			impostos.setVlrdescit( txtVlrDescItVenda.getVlrBigDecimal() );
 
 			impostos.calcICMS();
 			impostos.calcIPI();
@@ -3664,18 +3664,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	public void focusLost( FocusEvent fevt ) {
 
-		if ( fevt.getSource() == txtPercDescItVenda ) {
+		if ( fevt.getSource() == txtPercDescItVenda || fevt.getSource() == txtVlrDescItVenda) {
+
 			if ( txtPercDescItVenda.getText().trim().length() < 1 ) {
 				txtVlrDescItVenda.setAtivo( true );
 			}
-			else {
-				calcDescIt();
-				calcVlrProd();
+//			impostos.setVlrdescit( txtVlrDescItVenda.getVlrBigDecimal() );
+//			impostos.calcVlrLiqIt();
 
-				calcImpostos( true );
+			calcDescIt();
+			calcVlrProd();
+			
+			calcImpostos( true );
+			getCalcImpostos();
+			
+//			txtVlrDescItVenda.setAtivo( false );
 
-				txtVlrDescItVenda.setAtivo( false );
-			}
 		}
 		else if ( fevt.getSource() == txtPercComItVenda ) {
 			if ( txtPercComItVenda.getText().trim().length() < 1 ) {
