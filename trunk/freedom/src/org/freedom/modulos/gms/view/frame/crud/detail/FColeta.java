@@ -152,6 +152,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	private JTextFieldFK txtDtValidSerie = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private JTextFieldFK txtDtFabricSerie = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
 
 	// *** Paineis
@@ -185,6 +187,13 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JLabelPad lbNumSerie = new JLabelPad();
+	
+	private JLabelPad lbDtFabricSerie = new JLabelPad();
+
+	private JLabelPad lbDtValidSerie = new JLabelPad();
+	
+	private JLabelPad lbGarantia = new JLabelPad();
+
 
 	public FColeta() {
 
@@ -267,7 +276,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private void montaDetalhe() {
 
-		setAltDet( 70 );
+		setAltDet( 100 );
 
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -290,14 +299,24 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false );
 		}
 
-		adicDescFK( txtDescProd, 128, 20, 230, 20, "DescProd", "Descrição do Produto" );
-		adicCampo( txtQtdItColeta, 361, 20, 70, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProd, 128, 20, 300, 20, "DescProd", "Descrição do Produto" );
+		adicCampo( txtQtdItColeta, 431, 20, 70, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
 		txtQtdItColeta.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
-		lbNumSerie = adicCampo( txtNumSerie, 434, 20, 150, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
+		lbNumSerie = adicCampo( txtNumSerie, 7, 60, 119, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
+		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 129, 60, 80, 20, "DtFabricSerie", "Fabricação" );
+		lbDtValidSerie = adicDescFK( txtDtValidSerie, 212, 60, 80, 20, "DtFabricSerie", " Validade" );
+		lbGarantia = adicDB( cbGarantia, 306, 60, 80, 20, "garantia", "Garantia", false );
 
 		lbNumSerie.setVisible( false );
+		lbDtFabricSerie.setVisible( false );
+		lbDtValidSerie.setVisible( false );
+
+		txtNumSerie.setVisible( false );
+		txtDtFabricSerie.setVisible( false );
+		txtDtValidSerie.setVisible( false );
+		lbGarantia.setVisible( false );
 
 		adicCampoInvisivel( txtCodProcRecMerc, "CodProcRecMerc", "Cod.Proc.", ListaCampos.DB_FK, txtDescProcRecMerc, true );
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
@@ -306,7 +325,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		txtStatusItRecMerc.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
 		
-		adicDB( cbGarantia, 587, 20, 80, 20, "garantia", "Garantia", false );
+		
 
 		setListaCampos( true, "ITRECMERC", "EQ" );
 		lcDet.setQueryInsert( true );
@@ -486,6 +505,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcNumSerie.add( new GuardaCampo( txtNumSerie, "NumSerie", "Num.Série", ListaCampos.DB_PK, false ) );
 		lcNumSerie.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcNumSerie.add( new GuardaCampo( txtObsSerie, "ObsSerie", "Observações", ListaCampos.DB_SI, false ) );
+		lcNumSerie.add( new GuardaCampo( txtDtFabricSerie, "dtfabricserie", "Fabricação", ListaCampos.DB_SI, false ) );
+		lcNumSerie.add( new GuardaCampo( txtDtValidSerie, "dtvalidserie", "Validade", ListaCampos.DB_SI, false ) );
+
+		
 		lcNumSerie.setDinWhereAdic( "CODPROD=#N", txtCodProd );
 		lcNumSerie.setAutoLimpaPK( false );
 		lcNumSerie.montaSql( false, "SERIE", "EQ" );
@@ -675,6 +698,15 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				lbNumSerie.setVisible( true );
 				txtNumSerie.setVisible( true );
 
+				lbDtFabricSerie.setVisible( true );
+				txtDtFabricSerie.setVisible( true );
+
+				lbDtValidSerie.setVisible( true );
+				txtDtValidSerie.setVisible( true );
+				lbGarantia.setVisible( true );
+				cbGarantia.setVisible( true );
+
+
 				// habilitaSerie();
 
 			}
@@ -682,6 +714,15 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 				lbNumSerie.setVisible( false );
 				txtNumSerie.setVisible( false );
+
+				lbDtFabricSerie.setVisible( false );
+				txtDtFabricSerie.setVisible( false );
+
+				lbDtValidSerie.setVisible( false );
+				txtDtValidSerie.setVisible( false );
+				
+				lbGarantia.setVisible( false );
+				cbGarantia.setVisible( false );
 
 			}
 		}
@@ -720,7 +761,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 
-			try {
+			try { 
 
 				ps = con.prepareStatement( sSQL );
 				ps.setString( 1, txtNumSerie.getVlrString() );
@@ -846,7 +887,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				 */
 			}
 
-			if ( ( kevt.getSource() == txtQtdItColeta || kevt.getSource() == txtNumSerie ) && ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
+			if ( ( (kevt.getSource() == txtQtdItColeta && !txtNumSerie.isEditable()) || kevt.getSource() == txtNumSerie ) && ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
 				if ( "S".equals( txtSerieProd.getVlrString() ) && kevt.getSource() == txtNumSerie ) {
 
 					lcDet.post();
