@@ -28,6 +28,7 @@ import org.freedom.library.functions.EmailBean;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -37,7 +38,9 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.DLBuscaSerie;
+import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
@@ -144,6 +147,12 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtGarantia = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtDtValidSerie = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
 
 	// *** Paineis
 
@@ -296,6 +305,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		txtStatusItRecMerc.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
+		
+		adicDB( cbGarantia, 587, 20, 80, 20, "garantia", "Garantia", false );
 
 		setListaCampos( true, "ITRECMERC", "EQ" );
 		lcDet.setQueryInsert( true );
@@ -647,6 +658,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	public void valorAlterado( JComboBoxEvent evt ) {
 
 	}
+	
+	private void verificaGarantia() {
+
+		cbGarantia.setVlrString( NumSerie.isGarantia( txtDtEnt.getVlrDate(), txtDtValidSerie.getVlrDate() ) ? "S" : "N" );
+	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -669,6 +685,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 			}
 		}
+		else if ( cevt.getListaCampos() == lcNumSerie && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+			verificaGarantia();
+		}
+
+		
 
 	}
 
@@ -686,6 +707,69 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	}
 
+	public boolean testaNumSerie() {
+
+		boolean bRetorno = false;
+		boolean bValido = false;
+
+		// Validação e abertura da tela para cadastramento da serie unitária
+		if ( txtNumSerie.isEditable() ) {
+
+			String sSQL = "SELECT COUNT(*) FROM EQSERIE WHERE NUMSERIE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+
+				ps = con.prepareStatement( sSQL );
+				ps.setString( 1, txtNumSerie.getVlrString() );
+				ps.setInt( 2, txtCodProd.getVlrInteger() );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, lcNumSerie.getCodFilial() );
+
+				rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+					if ( rs.getInt( 1 ) > 0 ) {
+						bValido = true;
+					}
+				}
+
+				rs.close();
+				ps.close();
+				con.commit();
+
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, con, err );
+			}
+			if ( !bValido ) {
+
+				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString() );
+
+				dl.setVisible( true );
+
+				if ( dl.OK ) {
+					bRetorno = true;
+					txtNumSerie.setVlrString( dl.getNumSerie() );
+					lcNumSerie.carregaDados();
+				}
+				dl.dispose();
+			}
+			else {
+				bRetorno = true;
+			}
+		}
+		// Tela para cadastramento da série para quantidade maior que 1
+		else {
+
+			// abreDlSerieMuitiplos();
+
+		}
+
+		return bRetorno;
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
 		super.beforePost( pevt );
@@ -704,6 +788,16 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		else if ( pevt.getListaCampos() == lcDet ) {
 			txtCodTipoRecMercDet.setVlrInteger( txtCodTipoRecMerc.getVlrInteger() );
 			txtCodProcRecMerc.setVlrInteger( 1 );
+			
+			
+			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItColeta.getVlrBigDecimal().floatValue() == 1 ) {
+				if ( !testaNumSerie() ) {
+					pevt.cancela();
+				}
+			}
+			
+			
+			
 		}
 	}
 

@@ -321,7 +321,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private void montaCabecalho() {
 
-		setAltCab( 250 );
+		setAltCab( 210 );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -353,7 +353,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
 
 //		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, true );
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
 
 		pinCab.adic( lbBairro, 500, 120, 100, 20 );
@@ -1193,11 +1193,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	public void valorAlterado( JComboBoxEvent evt ) {
 
 		if ( evt.getComboBoxPad() == cbBairro ) {
-			if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
-				txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
-//				lcBairro.carregaDados();
-			}
+				if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
+					txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
+				}
 		}
+
 	}
 
 	private void atualizaStatus() {
@@ -1296,9 +1296,19 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		super.beforePost( pevt );
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-//			carregaTipoRec();
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( "PE" );
+			}
+
+			if( cbBairro.getVlrInteger()>0) {
+				if ( txtCodBairro.getVlrInteger() != cbBairro.getVlrInteger() ) {
+					txtCodBairro.setVlrInteger( cbBairro.getVlrInteger() );
+				}
+			}
+			else {
+				Funcoes.mensagemInforma( this, "O bairro de origem não foi definido!" );
+				pevt.cancela();
+				cbBairro.requestFocus();
 			}
 		}
 	}
