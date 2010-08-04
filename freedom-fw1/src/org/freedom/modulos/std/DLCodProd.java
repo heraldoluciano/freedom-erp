@@ -170,25 +170,28 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 
 				try {
 
-					int val = Integer.parseInt(valor);
-
-					if (val < Integer.MAX_VALUE && val > Integer.MIN_VALUE) {
-
-						if (where.length() > 0) {
-
-							where += "OR (P.CODPROD=?) ";
-
-							usaOR = true;
-
+					if(Funcoes.ehInteiro(valor)) {
+					
+						int val = Integer.parseInt(valor);
+	
+						if (val < Integer.MAX_VALUE && val > Integer.MIN_VALUE) {
+	
+							if (where.length() > 0) {
+	
+								where += "OR (P.CODPROD=?) ";
+	
+								usaOR = true;
+	
+							}
+							else {
+	
+								where += "AND P.CODPROD=? ";
+	
+							}
+	
+							adicCodProd = true;
+	
 						}
-						else {
-
-							where += "AND P.CODPROD=? ";
-
-						}
-
-						adicCodProd = true;
-
 					}
 				}
 				catch (NumberFormatException e) {
