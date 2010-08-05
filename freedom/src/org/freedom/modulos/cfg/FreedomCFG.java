@@ -62,7 +62,7 @@ public class FreedomCFG extends AplicativoPD {
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Usuarios", "Usuarios", 'U', 100101020, 3, true, FUsuario.class );
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Acesso", "Acesso Menu", 'A', 100101030, 3, true, FAcesso.class );
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Menu", "Menu X Objeto", 'M', 100101040, 3, true, FMenuObj.class );
-		addOpcao( 100100000, TP_OPCAO_MENU, "Tabela Geográficas", "", 'C', 100102000, 2, false, null );
+		addOpcao( 100100000, TP_OPCAO_MENU, "Tabelas Geográficas", "", 'C', 100102000, 2, false, null );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Paises", "Paises", 'P', 100102020, 3, true, FPais.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Cidades", "Cidades", 'd', 100102030, 3, true, FMunicipio.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Estados", "Estados", 'E', 100102040, 3, true, FUF.class );
