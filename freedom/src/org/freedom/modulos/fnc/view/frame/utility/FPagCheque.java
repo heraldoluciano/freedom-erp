@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
@@ -757,7 +758,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 						tabCheq.setValor( new Integer(rs.getInt( "NUMCHEQ" )), i, COLS_CHEQ.NUMCHEQ.ordinal() );
 						tabCheq.setValor( rs.getString( "NOMEFAVCHEQ" ), i, COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
 						tabCheq.setValor( rs.getString( "SITCHEQ" ), i, COLS_CHEQ.SITCHEQ.ordinal() );
-						tabCheq.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRCHEQ" ) ), i, COLS_CHEQ.VLRCHEQ.ordinal() );
+						tabCheq.setValor( Funcoes.strDecimalToStrCurrency( Aplicativo.casasDecFin, rs.getString( "VLRCHEQ" ) ), i, COLS_CHEQ.VLRCHEQ.ordinal() );
 						tabCheq.setValor( rs.getString( "CONTACHEQ" ), i, COLS_CHEQ.NUMCONTA.ordinal() );
 						tabCheq.setValor( rs.getString( "HISTCHEQ" ), i, COLS_CHEQ.HISTCHEQ.ordinal() );
 					}
@@ -836,7 +837,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	    	LinkedList<Vector<Object>> listacheq = new LinkedList<Vector<Object>>();
 	    	listacheq = getListacheq( listacheq );
 	    	if (validaListacheq( listacheq ) ) {
-	    		if ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION) {
+	    		if ( (visualizar ) || ( Funcoes.mensagemConfirma( this, "Imprimir cheques?" )==JOptionPane.YES_OPTION ) ) {
 	    			imprimirCheque( listacheq, visualizar );
 	    		}
 	    	}
@@ -978,19 +979,29 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
     private Map<String, Object> montaMap( Vector<Object> item ) {
     	Map<String, Object> result = new HashMap<String, Object>();
-    	result.put( "DTEMIT", item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) );
-    	result.put( "DTVENCTO", item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) );
-    	result.put( "NUMCHEQ", item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ) );
-    	result.put( "NOMEFAVCHEQ", item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ) );
-    	result.put( "VLRCHEQ", item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) );
-    	result.put( "DTEMITEX", Funcoes.dateToStrExtenso( 
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() );
-    	result.put( "DTVENCTOEX", Funcoes.dateToStrExtenso( 
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase() );
-    	result.put( "VLRCHEQEX", Extenso.extenso( ConversionFunctions.stringCurrencyToBigDecimal( 
+    	String str = item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ).toString();
+    	result.put( "DTEMIT", str );
+    	str = item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ).toString();
+    	result.put( "DTVENCTO", str );
+    	str = item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ).toString();
+    	result.put( "NUMCHEQ", str );
+    	str = item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ).toString().trim().toUpperCase();
+    	result.put( "NOMEFAVCHEQ", str );
+    	str = "#( " + item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ).toString() +" )#" ;
+    	result.put( "VLRCHEQ", str) ;
+    	str = Funcoes.dateToStrExtenso( 
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() ;
+    	result.put( "DTEMITEX", str);
+    	str = Funcoes.dateToStrExtenso( 
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase();
+    	result.put( "DTVENCTOEX", str );
+    	str = "#( " + Extenso.extenso( ConversionFunctions.stringCurrencyToBigDecimal( 
     			(String) item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) ).doubleValue() , 
     			prefs.get( "SINGMOEDA" ), prefs.get( "PLURMOEDA" ), 
-    			prefs.get( "DECSMOEDA" ), prefs.get( "DECPMOEDA" ) ).toUpperCase() );
+    			prefs.get( "DECSMOEDA" ), prefs.get( "DECPMOEDA" ) ).toUpperCase() + " )#";
+    	result.put( "VLRCHEQEX", str );
+    	str = prefs.get( "NOMEMUNIC" ).toUpperCase();
+    	result.put( "NOMEMUNIC", str );
     	return result;
     }
     
@@ -998,13 +1009,15 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	PreparedStatement ps = null;
     	BigDecimal vlrcheque = txtVlrTotSelCheq.getVlrBigDecimal();
     	ImprimeOS imp = new ImprimeOS("", con, "CH", true );
+    	imp.setImpEject( false );
     	Vector<Object> item = null;
     	Map<String, Object> itemMap = null;
-    	
+		imp.say( 0, 0, imp.comprimido() );
     	for ( int i=0; i<listacheq.size(); i++ ) {
     		item = listacheq.get( i );
     		itemMap = montaMap(item); 
     		montaLayoutCheq( imp, itemMap );
+    		imp.setPrc( 0, 0 );
     	}
     	if ( visualizar ) {
     		imp.preview( this );
@@ -1012,9 +1025,62 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     }
     
     private void montaLayoutCheq( ImprimeOS imp,  Map<String, Object> itemMap  ) {
-        String[] layout = layoutCheq.split( "\n" );
-    	for ( int i=0; i<layout.length; i++ ) {
-    		System.out.println( layout[i] );
+    	
+        String[] layout = layoutCheq.toString().split( "\n" );
+		Iterator<String> listKeys = null;
+		String key = null;
+		int lin = 0;
+		int col = 0;
+		String campo = "";
+		String valor = "";
+		int tam = 0;
+		int pos = 0;
+		int ini = 0;
+		int posx = 0;
+		for ( int i=0; i<layout.length; i++ ) {
+    		// [LIN=01|COL=50|TAM=12|CAMPO=VLRCHEQ]
+    		pos = layout[i].indexOf( "LIN=" );
+    		ini = -1;
+    		if (pos>=0) {
+    			pos += 4;
+    			lin = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
+    			pos = layout[i].indexOf( "COL=", pos );
+    			if (pos>=0) {
+    				pos += 4;
+	    			col = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
+	    			pos = layout[i].indexOf( "TAM=", pos );
+	    			if (pos>=0) {
+	    				pos += 4;
+	        			tam = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
+	        			posx = pos;
+		    			pos = layout[i].indexOf( "INI=", pos );
+		    			if (pos>=0) {
+		        			ini = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
+		    			}
+		    			pos = layout[i].indexOf( "CAMPO=", posx );
+		    			if (pos>=0) {
+		    				pos += 6;
+			    			campo = layout[i].substring( pos, layout[i].indexOf( "]", pos )  );
+			    			valor = itemMap.get( campo ).toString();
+		    			} else {
+			    			pos = layout[i].indexOf( "TEXTO=", posx );
+			    			if (pos>=0) {
+			    				pos += 6;
+				    			valor = layout[i].substring( pos, layout[i].indexOf( "]", pos )  );
+			    			}
+		    			}
+		    			if (ini>0) {
+		    				valor = valor.substring(ini-1);
+		    			} 
+		    			if ( valor.length()>tam ) {
+		    				valor = valor.substring( 0, tam );
+		    			}
+		    			if (pos>=0) {
+		    				imp.say( lin, col, valor );
+		    			}
+	    			}
+    			}
+    		}
     	}
     }
     
@@ -1174,5 +1240,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		}
 		
 	}
-
+	
 }
+
+
