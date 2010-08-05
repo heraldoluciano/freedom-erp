@@ -955,9 +955,31 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	return seqcheq;
     }
     
+    private int getSeqtalao( final String numconta ) throws SQLException {
+    	ResultSet rs = null;
+    	PreparedStatement ps = null;
+    	int result = 0;
+    	StringBuffer sql = new StringBuffer( "SELECT MAX(T.SEQTALAO) SEQTALAO FROM FNTALAOCHEQ T " );
+    	sql.append( "WHERE T.CODEMP=? AND T.CODFILIAL=? AND T.NUMCONTA=? AND T.ATIVOTALAO=? " );
+    	ps = con.prepareStatement( sql.toString() );
+    	ps.setInt( 1, Aplicativo.iCodEmp );
+    	ps.setInt( 2, ListaCampos.getMasterFilial( "FNTALAOCHEQ" ) );
+    	ps.setString( 3, numconta );
+    	ps.setString( 4, "S" );
+    	rs = ps.executeQuery();
+    	if (rs.next()) {
+    		result = rs.getInt( "SEQTALAO" );
+    	}
+    	rs.close();
+    	ps.close();
+    	con.commit();
+    	return result;
+    }
+    
     private void gerarCheque(LinkedList<Vector<Object>> listapagar) {
     	String numconta = getNumconta(listapagar);
     	BigDecimal vlrcheque = txtVlrTotSelPag.getVlrBigDecimal();
+    	int seqtalao = 0;
     	int seqcheq = 0;
     	try {
     		seqcheq = getSeqcheque();
@@ -965,8 +987,14 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		execSqlInsertPagcheq( listapagar, seqcheq );
         	con.commit();
         	carregaGridPagar();
-        	tabCheq.requestFocus();
+        	// getSeqtalao tem que ser após commit, pois o método possui chamada interna ao commit.
+        	seqtalao = getSeqtalao( numconta );
+        	// As rotinas abaixo são responsáveis pela carga dos cheques
+        	txtNumconta.setVlrString( numconta );
+        	txtSeqtalao.setVlrInteger( seqtalao );
+        	lcConta.carregaDados();
         	carregaGridCheq();
+        	tabCheq.requestFocus();
     	} catch (SQLException e) {
     		try {
     			con.rollback();
