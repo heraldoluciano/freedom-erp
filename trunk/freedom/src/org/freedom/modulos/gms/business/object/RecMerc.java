@@ -567,7 +567,7 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
-	private void geraCodTipoMov() {
+	private void geraCodTipoMovCP() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -597,6 +597,38 @@ public class RecMerc implements java.io.Serializable {
 		setCodtipomov( codtipomov );
 
 	}
+	
+	private void geraCodTipoMovOrc() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codorc = 1;
+
+		try {
+
+			sql.append( "select codtipomov2 from sgprefere1 " );
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				codtipomov = rs.getInt( 1 );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		setCodtipomov( codtipomov );
+
+	}
+
 	
 	private void CarregaRecMerc() {
 
@@ -945,7 +977,7 @@ public class RecMerc implements java.io.Serializable {
 
 			geraCodVend();
 
-			geraCodTipoMov();
+			geraCodTipoMovOrc();
 
 			if ( oPrefs == null ) {
 				geraPrefereOrc();
