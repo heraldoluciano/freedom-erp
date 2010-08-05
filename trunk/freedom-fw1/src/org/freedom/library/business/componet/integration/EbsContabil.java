@@ -660,7 +660,7 @@ public class EbsContabil extends Contabil {
 			rsCFOP.close();
 			psCFOP.close();
 
-			saida.setVariacaoCfop(0);
+			saida.setVariacaoCfop(1); // Se for 0 não não considera para recolhimento de tributos.
 			saida.setClassificacao1(01); // Padrão do Cordilheira
 			saida.setClassificacao2(0);
 			saida.setCnpjDestinatario(rs.getString("cnpjcli"));
