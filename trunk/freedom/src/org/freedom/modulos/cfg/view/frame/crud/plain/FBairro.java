@@ -84,29 +84,29 @@ public class FBairro extends FDados implements ActionListener {
 		super();
 
 		setTitulo( "Cadastro de Bairros" );
-		setAtribos( 50, 50, 415, 285 );
+		setAtribos( 50, 50, 415, 245 );
 
 		montaListaCampos();
 
 		lcCampos.setUsaME( false );
 
-		adicCampo( txtCodBairro, 7, 140, 75, 20, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true );
-		adicCampo( txtNomeBairro, 85, 140, 300, 20, "NomeBairro", "Nome do bairro", ListaCampos.DB_FK, true );
+		adicCampo( txtCodBairro, 7, 20, 75, 20, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true );
+		adicCampo( txtNomeBairro, 85, 20, 300, 20, "NomeBairro", "Nome do bairro", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtVlrFrete, 7, 180, 75, 20, "VlrFrete", "Vlr. frete", ListaCampos.DB_SI, true );
+		adicCampo( txtCodMun, 7, 60, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMun, 85, 60, 140, 20, "NomeMunic", "Nome do municipio" );
 		
-		adicCampo( txtQtdFrete, 85, 180, 75, 20, "QtdFrete", "Qtd. frete", ListaCampos.DB_SI, true );
-		
-		adicCampo( txtCodPais, 7, 20, 75, 20, "CodPais", "Cod.país", ListaCampos.DB_PF, true );
-		adicDescFK( txtDescPais, 85, 20, 300, 20, "DescPais", "Nome do país" );
+		adicCampo( txtSiglaUF, 228, 60, 40, 20, "SiglaUf", "UF", ListaCampos.DB_SI, true );
+		adicDescFK( txtNomeUF, 271, 60, 120, 20, "NomeUF", "Nome UF" );
 
-		adicCampo( txtSiglaUF, 7, 60, 75, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_PF, true );
-		adicDescFK( txtNomeUF, 85, 60, 300, 20, "NomeUF", "Nome UF" );
+		adicCampo( txtCodPais, 7, 100, 75, 20, "CodPais", "Cod.país", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescPais, 85, 100, 140, 20, "DescPais", "Nome do país" );
 
-		adicCampo( txtCodMun, 7, 100, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_PF, true );
-		adicDescFK( txtDescMun, 85, 100, 300, 20, "NomeMunic", "Nome do municipio" );
+		adicCampo( txtVlrFrete, 7, 140, 75, 20, "VlrFrete", "Vlr. frete", ListaCampos.DB_SI, true );
 		
-		txtNomeBairro.setNomeCampo( "nomebairro" );
+		adicCampo( txtQtdFrete, 85, 140, 75, 20, "QtdFrete", "Qtd. frete", ListaCampos.DB_SI, true );
+		
+//		txtNomeBairro.setNomeCampo( "nomebairro" );
 
 		setListaCampos( true, "BAIRRO", "SG" );
 
@@ -162,7 +162,7 @@ public class FBairro extends FDados implements ActionListener {
 		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
-		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+//		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
@@ -175,7 +175,9 @@ public class FBairro extends FDados implements ActionListener {
 		lcMunic.setUsaME( false );
 		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
-		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_FK, false ) );
+		lcMunic.add( new GuardaCampo( txtCodPais, "CodPais", "País", ListaCampos.DB_FK, false ) );
+//		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
