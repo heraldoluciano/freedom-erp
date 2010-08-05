@@ -381,8 +381,8 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 	private void ajustaCampos() {
 
-		txtData.setAtivo( false );
-		txtHora.setAtivo( false );
+		txtData.setEditable( false );
+		txtHora.setEditable( false );
 
 		// Liberado para testes
 		// txtPeso1.setAtivo( balanca==null );
