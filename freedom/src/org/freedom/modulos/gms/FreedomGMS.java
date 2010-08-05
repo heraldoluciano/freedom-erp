@@ -171,7 +171,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Atribuições", "Atribuição", 'r', 100105010, 4, true, FAtribuicao.class );
 		addOpcao( 100105000, TP_OPCAO_ITEM, "Atribuições por usuário", "Atribuição por usuário", 'u', 100105020, 4, true, FAtribUsu.class );
 
-		addOpcao( 100100000, TP_OPCAO_MENU, "Tabela Geográficas", "", 'C', 100106000, 2, false, null );
+		addOpcao( 100100000, TP_OPCAO_MENU, "Tabelas Geográficas", "", 'C', 100106000, 2, false, null );
 		addOpcao( 100106000, TP_OPCAO_ITEM, "Paises", "Paises", 'P', 100106010, 3, true, FPais.class );
 		addOpcao( 100106000, TP_OPCAO_ITEM, "Cidades", "Cidades", 'd', 100106020, 3, true, FMunicipio.class );
 		addOpcao( 100106000, TP_OPCAO_ITEM, "Estados", "Estados", 'E', 100106030, 3, true, FUF.class );
