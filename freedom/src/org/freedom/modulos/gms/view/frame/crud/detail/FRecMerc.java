@@ -813,7 +813,14 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			imp.pulaLinha( 0, imp.comprimido() + " " );
 
-			imp.say( imp.pRow(), 68, txtDescMun.getVlrString().trim() );
+			if(cbBairro.getSelectedItem()==null) {
+			
+				imp.say( imp.pRow(), 68, txtDescMun.getVlrString() );
+			
+			}
+			else {
+				imp.say( imp.pRow(), 68, cbBairro.getSelectedItem().toString() );
+			}
 
 			imp.pulaLinha( 3, imp.comprimido() );
 
