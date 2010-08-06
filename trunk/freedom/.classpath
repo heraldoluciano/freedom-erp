@@ -18,7 +18,6 @@
 	<classpathentry kind="lib" path="lib/commons-discovery-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/dsn.jar"/>
 	<classpathentry kind="lib" path="lib/imap.jar"/>
-	<classpathentry kind="lib" path="lib/mailapi.jar"/>
 	<classpathentry kind="lib" path="lib/pop3.jar"/>
 	<classpathentry kind="lib" path="lib/saaj.jar"/>
 	<classpathentry kind="lib" path="lib/smtp.jar"/>
@@ -32,6 +31,6 @@
 	<classpathentry kind="lib" path="/freedom-fw1/lib/bizcal.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/nachocalendar.jar"/>
 	<classpathentry kind="lib" path="lib/poi.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/setpoint-nfe"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
