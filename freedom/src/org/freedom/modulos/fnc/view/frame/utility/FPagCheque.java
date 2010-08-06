@@ -30,6 +30,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,7 +71,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
-public class FPagCheque extends FFilho implements ActionListener, TabelaEditListener {
+public class FPagCheque extends FFilho implements ActionListener, TabelaEditListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -208,6 +210,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	
 	private Map<String, String> prefs = new HashMap<String, String>();
 	
+	private int cheqatualtalao = 0;
 	
 	public FPagCheque() {
 
@@ -322,7 +325,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		txtCodFor.setRequerido( true );
 		txtDatainiPagar.setRequerido( true );
 		txtDatafimPagar.setRequerido( true );
-		txtCodFor.requestFocus();
+		//txtCodFor.requestFocus();
 
 		pinBotoesPagar.adic( btSelTudoPag, 5, 10, 30, 30 );
 		pinBotoesPagar.adic( btSelNadaPag, 5, 40, 30, 30 );
@@ -359,12 +362,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		tabPagar.setTamColuna( 250, COLS_PAG.DESCTIPOCOB.ordinal() );
 		tabPagar.setTamColuna( 300, COLS_PAG.HISTPAG.ordinal() );
 		tabPagar.addTabelaEditListener( this );
+		tabPagar.addKeyListener( this );
 		btExecpagar.addActionListener( this );
 		btSelTudoPag.addActionListener( this );
 		btSelNadaPag.addActionListener( this );
 		btGerarPag.addActionListener( this );
 		
-		btExecpagar.setFocusable( false );
+		//btExecpagar.setFocusable( false );
 
 		// Aba cheques
 		
@@ -429,12 +433,17 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		tabCheq.setTamColuna( 250, COLS_CHEQ.HISTCHEQ.ordinal() );
 
 		tabCheq.addTabelaEditListener( this );
+		tabCheq.addKeyListener( this );
 		btExeccheq.addActionListener( this );
 		btSelTudoCheq.addActionListener( this );
 		btSelNadaCheq.addActionListener( this );
 		btImpCheq.addActionListener( this );
 		btPrevCheq.addActionListener( this );
 
+		//pinPagar.setFirstFocus( txtCodFor );
+		txtCodFor.requestFocus();
+		txtCodFor.addKeyListener( this );
+		txtDatafimPagar.addKeyListener( this );
 		btExeccheq.setFocusable( false );
 		
 	}
@@ -519,13 +528,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			vlrtotcheq = vlrtotcheq.add( vlrcheq  );
 			if ( (Boolean) tabCheq.getValor( i, COLS_CHEQ.SEL.ordinal() ) ) {
 				vlrtotsel = vlrtotsel.add( vlrcheq );
-			}
+			} 
 		}
 		txtVlrTotCheq.setVlrBigDecimal( vlrtotcheq );
 		txtVlrTotSelCheq.setVlrBigDecimal( vlrtotsel );
 	}
 	
-	private synchronized void carregaGridPagar() {
+	private synchronized void carregaTabPagar() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -712,14 +721,36 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		return result;
 	}
 	
-	private synchronized void carregaGridCheq() {
+	private int getCheqatualtalao( String numconta, int seqtalao ) throws SQLException {
+		int result = 0;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuffer sql = new StringBuffer("SELECT T.CHEQATUALTALAO FROM FNTALAOCHEQ T ");
+		sql.append( "WHERE T.CODEMP=? AND T.CODFILIAL=? AND T.NUMCONTA=? AND T.SEQTALAO=?" );
+		ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "FNTALAOCHEQ" ) );
+		ps.setString( 3, numconta );
+		ps.setInt( 4, seqtalao );
+		rs = ps.executeQuery();
+		if ( rs.next() ) {
+			result = rs.getInt( "CHEQATUALTALAO" );
+		}
+		rs.close();
+		ps.close();
+		return result;
+	}
+	
+	private synchronized void carregaTabCheq() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		BigDecimal vlrtotcheq = new BigDecimal(0);
 		BigDecimal vlrtotsel = new BigDecimal(0);
+		int seqtalao = txtSeqtalao.getVlrInteger();
 		String numconta = txtNumconta.getVlrString();
+		int numcheqtab = 0;
 		
 		try {
 
@@ -733,11 +764,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				sSQL.append( "FROM FNCHEQUE CH ");
 				sSQL.append( "WHERE CH.CODEMP=? AND CH.CODFILIAL=? AND " );
 				sSQL.append( "CH.DTEMITCHEQ BETWEEN ? AND ? AND CH.TIPOCHEQ='PF' AND " );
-				sSQL.append( "CH.CONTACHEQ=? " );
+				sSQL.append( "CH.SITCHEQ='CA' AND CH.CONTACHEQ=? " );
 				sSQL.append( "ORDER BY CH.DTEMITCHEQ, CH.SEQCHEQ" );
 
 				try {
 
+					cheqatualtalao = getCheqatualtalao( numconta, seqtalao );
+					numcheqtab = cheqatualtalao;
 					ps = con.prepareStatement( sSQL.toString() );
 					ps.setInt( SQL_PARAMS_CHEQ.CODEMP.ordinal(), Aplicativo.iCodEmp );
 					ps.setInt( SQL_PARAMS_CHEQ.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNPAGAR" ) );
@@ -750,12 +783,17 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					for ( int i = 0; rs.next(); i++ ) {
 						vlrtotcheq  = vlrtotcheq.add( rs.getBigDecimal( "VLRCHEQ" )  ) ;
 						vlrtotsel  = vlrtotsel.add( rs.getBigDecimal( "VLRCHEQ" )  ) ;
+						if ( rs.getInt( "NUMCHEQ" ) == 0 ) {
+							numcheqtab ++;
+						} else {
+							numcheqtab = rs.getInt( "NUMCHEQ" );
+						}
 						tabCheq.adicLinha();
 						tabCheq.setValor( new Boolean(true), i, COLS_CHEQ.SEL.ordinal() );
 						tabCheq.setValor( new Integer(rs.getInt( "SEQCHEQ" )), i, COLS_CHEQ.SEQ.ordinal() );
 						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCHEQ" ) ), i, COLS_CHEQ.DTEMIT.ordinal() );
 						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCTOCHEQ" ) ), i, COLS_CHEQ.DTVENCTO.ordinal() );
-						tabCheq.setValor( new Integer(rs.getInt( "NUMCHEQ" )), i, COLS_CHEQ.NUMCHEQ.ordinal() );
+						tabCheq.setValor( new Integer( numcheqtab ), i, COLS_CHEQ.NUMCHEQ.ordinal() );
 						tabCheq.setValor( rs.getString( "NOMEFAVCHEQ" ), i, COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
 						tabCheq.setValor( rs.getString( "SITCHEQ" ), i, COLS_CHEQ.SITCHEQ.ordinal() );
 						tabCheq.setValor( Funcoes.strDecimalToStrCurrency( Aplicativo.casasDecFin, rs.getString( "VLRCHEQ" ) ), i, COLS_CHEQ.VLRCHEQ.ordinal() );
@@ -790,7 +828,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btExecpagar ) {
-			carregaGridPagar();
+			carregaTabPagar();
 		}
 		else if ( evt.getSource() == btSair ) {
 			dispose();
@@ -817,12 +855,12 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			imprimir(true);		
 		} 
 		else if ( evt.getSource() == btExeccheq ) {
-			carregaGridCheq();
+			carregaTabCheq();
 		}
 
 	}
 
-    private void gerar() {
+    private synchronized void gerar() {
     	LinkedList<Vector<Object>> listapagar = new LinkedList<Vector<Object>>();
     	listapagar = getListapagar( listapagar );
     	if (validaListapagar( listapagar ) ) {
@@ -832,7 +870,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     }
 
-    private void imprimir(boolean visualizar) {
+    private synchronized void imprimir(boolean visualizar) {
     	if ( validaImpressora() ) {
 	    	LinkedList<Vector<Object>> listacheq = new LinkedList<Vector<Object>>();
 	    	listacheq = getListacheq( listacheq );
@@ -986,14 +1024,15 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		execSqlInsertCheque( txtCodFor.getVlrInteger() , numconta, seqcheq, vlrcheque );
     		execSqlInsertPagcheq( listapagar, seqcheq );
         	con.commit();
-        	carregaGridPagar();
+        	carregaTabPagar();
         	// getSeqtalao tem que ser após commit, pois o método possui chamada interna ao commit.
         	seqtalao = getSeqtalao( numconta );
         	// As rotinas abaixo são responsáveis pela carga dos cheques
         	txtNumconta.setVlrString( numconta );
         	txtSeqtalao.setVlrInteger( seqtalao );
         	lcConta.carregaDados();
-        	carregaGridCheq();
+        	carregaTabCheq();
+        	tpn.setSelectedIndex( 1 ); // Seleciona aba de cheques
         	tabCheq.requestFocus();
     	} catch (SQLException e) {
     		try {
@@ -1033,9 +1072,11 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	return result;
     }
     
-    private void imprimirCheque( LinkedList<Vector<Object>> listacheq, boolean visualizar ) {
+    private synchronized void imprimirCheque( LinkedList<Vector<Object>> listacheq, boolean visualizar ) {
     	PreparedStatement ps = null;
     	BigDecimal vlrcheque = txtVlrTotSelCheq.getVlrBigDecimal();
+    	String numconta = txtNumconta.getVlrString();
+    	int seqtalao = txtSeqtalao.getVlrInteger();
     	ImprimeOS imp = new ImprimeOS("", con, "CH", true );
     	imp.setImpEject( false );
     	Vector<Object> item = null;
@@ -1049,7 +1090,73 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     	if ( visualizar ) {
     		imp.preview( this );
+    	} else 	if ( ajustaNumcheq( listacheq, numconta, seqtalao ) ) {
+   			imp.print();
+   			if ( confirmaImpressao() ) {
+   				atualizaSitCheq( listacheq, numconta, seqtalao );
+   				carregaTabCheq();
+   			}
     	}
+    }
+    
+    private boolean atualizaSitCheq( LinkedList<Vector<Object>> listacheq, String numconta, int seqtalao ) {
+    	boolean result = false;
+    	PreparedStatement ps = null;
+    	StringBuffer sqlcheq = new StringBuffer();
+    	StringBuffer sqltalao = new StringBuffer();
+    	sqlcheq.append( "UPDATE FNCHEQUE SET NUMCHEQ=?, SITCHEQ=? " );
+    	sqlcheq.append( "WHERE CODEMP=? AND CODFILIAL=? AND SEQCHEQ=?" );
+    	sqltalao.append( "UPDATE FNTALAOCHEQ SET CHEQATUALTALAO=? " );
+    	sqltalao.append( "WHERE CODEMP=? AND CODFILIAL=? AND NUMCONTA=? AND SEQTALAO=?" );
+    	try {
+    		for ( int i=0; i<listacheq.size(); i++ ) {
+    			ps = con.prepareStatement( sqlcheq.toString() );
+    			ps.setInt( 1, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ) );
+    			ps.setString( 2, "ED" );
+    			ps.setInt( 3, Aplicativo.iCodEmp );
+    			ps.setInt( 4, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+    			ps.setInt( 5, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.SEQ.ordinal() ) );
+    			ps.executeUpdate();
+    			ps.close();
+    		}
+    		ps = con.prepareStatement( sqltalao.toString() );
+    		ps.setInt( 1, cheqatualtalao );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNTALAOCHEQ" ) );
+			ps.executeUpdate();
+    		con.commit();
+    	} catch ( SQLException e ) {
+    		
+    	} finally {
+    		sqlcheq = null;
+    		sqltalao = null;
+    	}
+    	return result;
+    }
+    
+    private boolean confirmaImpressao() {
+    	boolean result = false;
+    	if ( Funcoes.mensagemConfirma( this, "Confirma impressão dos cheques?" ) == JOptionPane.YES_OPTION ) {
+    		result = true;
+    	} 
+    	return result;
+    }
+    
+    private boolean ajustaNumcheq( LinkedList<Vector<Object>> listacheq, String numconta, int seqtalao ) {
+    	boolean result = true;
+    	try { 
+			cheqatualtalao = getCheqatualtalao( numconta, seqtalao );
+			// Execução de commit para liberar tabela de talonário.
+			con.commit();
+			for ( int i=0; i<listacheq.size(); i++ ) {
+	 			cheqatualtalao ++;
+	 			listacheq.get( i ).add( COLS_CHEQ.NUMCHEQ.ordinal(), new Integer(cheqatualtalao) ) ;
+			}
+    	} catch ( SQLException e ) {
+    		result = false;
+    		Funcoes.mensagemErro( this, "Erro carregando a numeração de cheques!\n" + e.getMessage() );
+    	}
+    	return result;
     }
     
     private void montaLayoutCheq( ImprimeOS imp,  Map<String, Object> itemMap  ) {
@@ -1189,7 +1296,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     			}
     		}
     	} else {
-    		Funcoes.mensagemInforma( this, "Selecione algum item na lista!" );
+    		Funcoes.mensagemInforma( this, "Selecione algum cheque na lista!" );
     	}
     	return result;
     }
@@ -1266,6 +1373,32 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					(!carregandoTabela) ) {
 			calcTotaisCheq();
 		}
+		
+	}
+
+	public void keyPressed( KeyEvent kevt ) {
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			if ( kevt.getSource() == txtDatafimPagar ) {
+				carregaTabPagar();
+			} else if ( kevt.getSource() == txtSeqtalao ) {
+				carregaTabCheq();
+			} else if ( kevt.getSource() == tabPagar ) {
+				// Gerar cheque quando pressionar <ENTER> sobre a lista de pagamentos.
+				gerar();
+			} else if ( kevt.getSource() == tabCheq ) {
+				// Imprimir cheque quando pressionar <ENTER> sobre a lista de cheques.
+				imprimir( false );
+			}
+		}
+	}
+
+	public void keyReleased( KeyEvent arg0 ) {
+
+		
+	}
+
+	public void keyTyped( KeyEvent arg0 ) {
+
 		
 	}
 	
