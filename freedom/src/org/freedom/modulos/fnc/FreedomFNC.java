@@ -54,6 +54,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRReceberMes;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberSetor;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
 import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
+import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
 import org.freedom.modulos.fnc.view.frame.utility.FRemCnab;
 import org.freedom.modulos.fnc.view.frame.utility.FRemSiacc;
 import org.freedom.modulos.fnc.view.frame.utility.FTrnsLancCat;
@@ -143,7 +144,9 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200200000, 1, false, null );
 		addOpcao( 200200000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 200201000, 2, true, FRPagar.class );
 		addOpcao( 200200000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 200202000, 2, true, FRRazFor.class );
-
+		addSeparador( 200000000 );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Emissão de cheques", "Emissão de cheques", 'm', 200300000, 2, true, FPagCheque.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Bordero", "Bordero", 'B', 300200000, 1, true, FBordero.class );
@@ -206,7 +209,8 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
 
 		addSeparador( 400000000 );
-		addOpcao( 400000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 401400000, 1, true, FTalaoCheq.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 401400000, 2, true, FTipoCob.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 401500000, 1, true, FTalaoCheq.class );
 		
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
