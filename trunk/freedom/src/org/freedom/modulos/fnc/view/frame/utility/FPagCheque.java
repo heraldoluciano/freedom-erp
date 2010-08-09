@@ -1188,8 +1188,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	    				pos += 4;
 	        			tam = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
 	        			posx = pos;
-		    			pos = layout[i].indexOf( "INI=", pos );
+		    			pos = layout[i].indexOf( "INI=", posx );
 		    			if (pos>=0) {
+		    				pos += 4;
 		        			ini = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
 		    			}
 		    			pos = layout[i].indexOf( "CAMPO=", posx );
@@ -1205,7 +1206,11 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			    			}
 		    			}
 		    			if (ini>0) {
-		    				valor = valor.substring(ini-1);
+		    				if ( valor.length()>=ini ) {
+		    					valor = valor.substring(ini-1);
+		    				} else {
+		    					valor = "";
+		    				}
 		    			} 
 		    			if ( valor.length()>tam ) {
 		    				valor = valor.substring( 0, tam );
