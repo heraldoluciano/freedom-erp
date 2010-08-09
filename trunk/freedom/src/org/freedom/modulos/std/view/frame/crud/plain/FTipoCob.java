@@ -140,9 +140,9 @@ public class FTipoCob extends FDados implements ActionListener {
 		JLabelPad borda = new JLabelPad();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
 		adic( borda, 7, 165, 420, 4 );
-		adicCampo( txtNumconta, 7, 195, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, true );
+		adicCampo( txtNumconta, 7, 195, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescconta, 90, 195, 230, 20, "Descconta", "Descrição da conta" );
-		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_FK, true);
+		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_FK, false);
 		
 	}
 
