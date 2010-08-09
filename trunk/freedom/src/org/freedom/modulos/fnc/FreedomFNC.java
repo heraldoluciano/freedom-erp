@@ -37,6 +37,7 @@ import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCodRetorno;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FManutCli;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FHistPad;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
@@ -204,6 +205,9 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
 
+		addSeparador( 400000000 );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 401400000, 1, true, FTalaoCheq.class );
+		
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
 		addBotao( "btContaReceber.gif", "Contas a receber", "Manutenção de contas a receber", 300100000, FManutRec.class );
