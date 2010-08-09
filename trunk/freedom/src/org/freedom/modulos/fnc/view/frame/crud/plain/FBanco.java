@@ -96,7 +96,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		adic( btFirefox, 390, 59, 20, 20 );
 		adicDB( imgBolBanco, 7, 100, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
 		adicDB( imgBolBanco2, 210, 100, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
-		adicDB( txaLayoutCheqBanco, 7, 150, 403, 200, "LayoutCheqBanco", "Layout de impressão de cheques: [LIN=?|COL=?|TAM=?|CAMPO=?]", false );
+		adicDB( txaLayoutCheqBanco, 7, 150, 403, 200, "LayoutCheqBanco", "Layout de impressão de cheques: [LIN=?|COL=?|TAM=?|INI=?|CAMPO=?]", false );
 
 		setListaCampos( false, "BANCO", "FN" );
 		btImp.addActionListener( this );
