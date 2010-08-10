@@ -1046,29 +1046,63 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
     private Map<String, Object> montaMap( Vector<Object> item ) {
     	Map<String, Object> result = new HashMap<String, Object>();
+
     	String str = item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ).toString();
     	result.put( "DTEMIT", str );
-    	str = item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ).toString();
-    	result.put( "DTVENCTO", str );
-    	str = item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ).toString();
-    	result.put( "NUMCHEQ", str );
-    	str = item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ).toString().trim().toUpperCase();
-    	result.put( "NOMEFAVCHEQ", str );
-    	str = "#( " + item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ).toString() +" )#" ;
-    	result.put( "VLRCHEQ", str) ;
+
     	str = Funcoes.dateToStrExtenso( 
     			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() ;
     	result.put( "DTEMITEX", str);
+    	
+    	str = String.valueOf( Funcoes.getDiaMes(   
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ) ) ;
+    	result.put( "DIAEMIT", str );
+
+    	str = Funcoes.getMesExtenso(  
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() ;
+    	result.put( "MESEMIT", str );
+
+    	str = String.valueOf( Funcoes.getAno(   
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ) ) ;
+    	result.put( "ANOEMIT", str );
+    	
+    	str = item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ).toString();
+    	result.put( "DTVENCTO", str );
+
     	str = Funcoes.dateToStrExtenso( 
     			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase();
     	result.put( "DTVENCTOEX", str );
+
+    	str = String.valueOf( Funcoes.getDiaMes(   
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ) ) ;
+    	result.put( "DIAVENCTO", str );
+
+    	str = Funcoes.getMesExtenso(  
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase() ;
+    	result.put( "MESVENCTO", str );
+
+    	str = String.valueOf( Funcoes.getAno(   
+    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ) ) ;
+    	result.put( "ANOVENCTO", str );
+    	
+    	str = item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ).toString();
+    	result.put( "NUMCHEQ", str );
+
+    	str = item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ).toString().trim().toUpperCase();
+    	result.put( "NOMEFAVCHEQ", str );
+
+    	str = "#( " + item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ).toString() +" )#" ;
+    	result.put( "VLRCHEQ", str) ;
+
     	str = "#( " + Extenso.extenso( ConversionFunctions.stringCurrencyToBigDecimal( 
     			(String) item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) ).doubleValue() , 
     			prefs.get( "SINGMOEDA" ), prefs.get( "PLURMOEDA" ), 
     			prefs.get( "DECSMOEDA" ), prefs.get( "DECPMOEDA" ) ).toUpperCase() + " )#";
     	result.put( "VLRCHEQEX", str );
+
     	str = prefs.get( "NOMEMUNIC" ).toUpperCase();
     	result.put( "NOMEMUNIC", str );
+
     	return result;
     }
     
