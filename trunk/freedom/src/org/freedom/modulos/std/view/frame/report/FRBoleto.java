@@ -175,6 +175,8 @@ public class FRBoleto extends FRelatorio {
 	private JButtonPad btGerar = new JButtonPad( "Montar boletos", Icone.novo( "btGerar.gif" ) );
 
 	private Checkbox cbTab = new Checkbox();
+	
+	private String[] moeda = null;
 
 	public FRBoleto() {
 
@@ -1193,6 +1195,8 @@ public class FRBoleto extends FRelatorio {
 				tbBoletos.setValor( rs.getBigDecimal( "VlrParcItRec" ), i, 5 );
 
 			}
+			rs.close();
+			con.commit();
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -1304,12 +1308,11 @@ public class FRBoleto extends FRelatorio {
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
 		String[] sNat = null;
-
 		while ( rs.next() ) {
 			sNat = new String[ 2 ];
 			sNat[ 0 ] = rs.getString( "CODNAT" );
 			sNat[ 1 ] = rs.getString( "DESCNAT" );
-			sVal = aplicCampos( rs, sNat, getMoeda() );
+			sVal = aplicCampos( rs, sNat, moeda );
 
 			if ( sVal != null ) {
 
@@ -1327,6 +1330,9 @@ public class FRBoleto extends FRelatorio {
 			}
 		}
 
+		rs.close();
+		con.commit();
+		
 		imp.fechaGravacao();
 
 		if ( bVisualizar ) {
@@ -1371,6 +1377,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda2.setConexao( cn );
 		lcTipoMov.setConexao( cn );
 		lcCartCob.setConexao( con );
+		moeda = getMoeda();
 
 		getAtualizaParcela();
 	}
