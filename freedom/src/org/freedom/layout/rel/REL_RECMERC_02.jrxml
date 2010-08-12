@@ -30,7 +30,7 @@
 	<parameter name="TITULO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
-cp.dtentcompra, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra,
+cp.dtentcompra, rm.dtent, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra,
 rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra
 from
 cpcompra cp left outer join cpforneced fr on
@@ -46,6 +46,7 @@ ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra
 where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' and '2011-01-01']]></queryString>
 
 	<field name="DTENTCOMPRA" class="java.sql.Date"/>
+	<field name="DTENT" class="java.sql.Date"/>
 	<field name="CODFOR" class="java.lang.Integer"/>
 	<field name="NOMEFOR" class="java.lang.String"/>
 	<field name="NOMEBAIRRO" class="java.lang.String"/>
@@ -75,7 +76,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 	</variable>
 
 		<group  name="diario" >
-			<groupExpression><![CDATA[$F{DTENTCOMPRA}]]></groupExpression>
+			<groupExpression><![CDATA[$F{DTENT}]]></groupExpression>
 			<groupHeader>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -467,7 +468,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<textElement>
 						<font fontName="Arial" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTENTCOMPRA}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTENT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
