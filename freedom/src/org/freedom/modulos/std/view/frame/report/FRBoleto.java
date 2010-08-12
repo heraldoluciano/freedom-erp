@@ -514,8 +514,8 @@ public class FRBoleto extends FRelatorio {
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null ) {
 					sTxa = sTxa.replaceAll( "\\[DATADOC_]", StringFunctions.sqlDateToStrDate( dCampo ) );
 					sTxa = sTxa.replaceAll( "\\[DIA_E]", StringFunctions.strZero( String.valueOf( Funcoes.getDiaMes( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
-					sTxa = sTxa.replaceAll( "\\[MES_E]", StringFunctions.strZero( Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ), 2 ) );
-					sTxa = sTxa.replaceAll( "\\[ANO_E]", StringFunctions.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[MES_E]", Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ) );
+					sTxa = sTxa.replaceAll( "\\[ANO_E]", StringFunctions.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 4 ) );
 				}
 				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
