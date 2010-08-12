@@ -138,7 +138,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		int param = 1;
 
 		sql.append( "select ");
-		sql.append( "cp.dtentcompra, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra, ");
+		sql.append( "cp.dtentcompra, rm.dtent, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra, ");
 		sql.append( "rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra ");
 		sql.append( "from ");
 		sql.append( "cpcompra cp left outer join cpforneced fr on ");
@@ -151,7 +151,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		sql.append( "al.codemp=rm.codemp and al.codfilial=rm.codfilial and al.codalmox=rm.codalmox ");
 		sql.append( "left outer join cpitcompra ic on ");
 		sql.append( "ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra ");
-		sql.append( "where cp.codemp=? and cp.codfilial=? and cp.dtentcompra between ? and ? ");
+		sql.append( "where cp.codemp=? and cp.codfilial=? and rm.dtent between ? and ? ");
 
 		if ( txtCodTran.getVlrInteger() > 0 ) {
 			sql.append( "and cp.codemptn=? and cp.codfilialtn=? and cp.codtran=? " );
