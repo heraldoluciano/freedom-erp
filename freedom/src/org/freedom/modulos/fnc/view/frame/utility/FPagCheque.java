@@ -1202,6 +1202,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		int col = 0;
 		String campo = "";
 		String valor = "";
+		String completa = "";
 		int tam = 0;
 		int pos = 0;
 		int ini = 0;
@@ -1226,6 +1227,14 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		    			if (pos>=0) {
 		    				pos += 4;
 		        			ini = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
+		        			posx = pos;
+		    			}
+		    			pos = layout[i].indexOf( "COMPL=", posx );
+		    			if (pos>=0) {
+		    				pos += 6;
+		        			completa = layout[i].substring( pos, layout[i].indexOf( "|", pos ) );
+		    			} else {
+		    				completa = "";
 		    			}
 		    			pos = layout[i].indexOf( "CAMPO=", posx );
 		    			if (pos>=0) {
@@ -1246,8 +1255,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		    					valor = "";
 		    				}
 		    			} 
-		    			if ( valor.length()>tam ) {
+		    			// caso o tamanho de valor seja maior que o tamanho desejado
+		    			if ( valor.length()>tam ) { 
 		    				valor = valor.substring( 0, tam );
+		    				
+		    			} // caso o valor seja menor que tam e precise de complemento 
+		    			else if ( (valor.length()<tam ) && ( !"".equals( completa ) ) ) {
+		    				valor = completaTexto( valor, tam, completa );
 		    			}
 		    			if (pos>=0) {
 		    				imp.say( lin, col, valor );
@@ -1256,6 +1270,17 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     			}
     		}
     	}
+    }
+    
+    private String completaTexto( String valor, int tam, String completa ) {
+    	StringBuffer valorTexto = new StringBuffer( valor );
+    	while ( valorTexto.length()<tam ) {
+    		valorTexto.append( completa );
+    	}
+    	if ( valorTexto.length()>tam ) {
+    		valorTexto.delete( tam, valorTexto.length() );
+    	}
+    	return valorTexto.toString();
     }
     
     private boolean validaImpressora() {
