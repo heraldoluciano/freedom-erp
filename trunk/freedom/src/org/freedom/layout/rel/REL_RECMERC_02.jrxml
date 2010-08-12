@@ -71,8 +71,11 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 	<variable name="precomediototal" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$V{vlracumuladototal}.divide($V{pesocumuladototal}, BigDecimal.ROUND_CEILING)]]></variableExpression>
 	</variable>
-	<variable name="fatorrenda" class="java.math.BigDecimal" resetType="None" calculation="Sum">
+	<variable name="fatorrenda" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
 		<variableExpression><![CDATA[($F{QTDITCOMPRA}.multiply(new BigDecimal($F{RENDAAMOSTRAGEM}.doubleValue())))]]></variableExpression>
+	</variable>
+	<variable name="fatorrendatot" class="java.math.BigDecimal" resetType="Group" resetGroup="diario" calculation="Sum">
+		<variableExpression><![CDATA[$V{fatorrenda}]]></variableExpression>
 	</variable>
 
 		<group  name="diario" >
@@ -145,7 +148,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<textElement>
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{fatorrenda}.divide($V{pesocumuladodiario}, BigDecimal.ROUND_CEILING)]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{fatorrendatot}.divide($V{pesocumuladodiario}, BigDecimal.ROUND_CEILING)]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
