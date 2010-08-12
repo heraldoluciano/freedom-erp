@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -54,8 +55,8 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
-import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 /**
@@ -142,11 +143,18 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
 
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
+	
+	private ListaCampos lcProduto = new ListaCampos( this, "PD" );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA;
 	}
 
 	public FControleRecMerc() {
@@ -154,7 +162,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		super( false );
 
 		setTitulo( "Painel de recepção de matéria prima", this.getClass().getName() );
-		setAtribos( 20, 20, 740, 400 );
+		setAtribos( 20, 20, 960, 600 );
 
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
@@ -243,6 +251,20 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		txtCodFor.setTabelaExterna( lcForneced, FFornecedor.class.getCanonicalName() );
 		txtCodFor.setFK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
+		
+		
+		// * Produto (
+
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+
+		txtCodProd.setTabelaExterna( lcProduto, FProduto.class.getCanonicalName() );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+
+		lcProduto.setReadOnly( true );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+
 
 	}
 
@@ -293,6 +315,14 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		panelFiltros.adic( new JLabelPad( "Razão social do fornecedor" ), 226, 0, 180, 20 );
 		panelFiltros.adic( txtRazFor, 226, 20, 270, 20 );
+		
+		panelFiltros.adic( new JLabelPad( "Cód.Prod." ), 7, 40, 70, 20 );
+		panelFiltros.adic( txtCodProd, 7, 60, 70, 20 );
+
+		panelFiltros.adic( new JLabelPad( "Descrição do produto" ), 80, 40, 180, 20 );
+		panelFiltros.adic( txtDescProd, 80, 60, 270, 20 );
+
+		
 
 		// ***** Abas
 
@@ -353,6 +383,12 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.adicColuna( "Placa" );
 		tabDet.adicColuna( "Cod.T." );
 		tabDet.adicColuna( "Transportador" );
+		tabDet.adicColuna( "Cod.F." );
+		tabDet.adicColuna( "Fornecedor" );
+		tabDet.adicColuna( "Peso Liquido" );
+		tabDet.adicColuna( "Renda" );
+
+		
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -362,7 +398,14 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );
-		tabDet.setTamColuna( 400, DETALHAMENTO.NOMETRAN.ordinal() );
+		tabDet.setTamColuna( 200, DETALHAMENTO.NOMETRAN.ordinal() );
+		tabDet.setTamColuna( 40, DETALHAMENTO.CODFOR.ordinal() );
+		tabDet.setTamColuna( 200, DETALHAMENTO.NOMEFOR.ordinal() );
+		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.RENDA.ordinal() );
+
+		
+
 
 		// tabDet.setColunaInvisivel( 2 );
 
@@ -375,9 +418,17 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.placaveiculo placa, rm.codtran, tr.nometran " );
-			sql.append( "from eqrecmerc rm, vdtransp tr " );
+			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.placaveiculo placa, rm.codtran, tr.nometran, rm.codfor, fr.nomefor, " );
+
+			sql.append( "(select first 1 cast(ic.qtditcompra as decimal(15,0)) from eqitrecmercitcp irc, cpitcompra ic ");
+			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
+			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra and ic.coditcompra=irc.coditcompra) qtditcompra, ");
+					
+			sql.append( "rm.rendaamostragem renda ");
+			
+			sql.append( "from eqrecmerc rm, vdtransp tr, cpforneced fr " );
 			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran " );
+			sql.append( "and fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
 			sql.append( "and rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
 
@@ -416,6 +467,10 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			if ( txtCodFor.getVlrInteger() > 0 ) {
 				sql.append( " and rm.codempfr=? and rm.codfilialfr=? and rm.codfor=? " );
 			}
+			
+			if ( txtCodProd.getVlrInteger() > 0 ) {
+				sql.append( " and rm.codemppd=? and rm.codfilialpd=? and rm.codprod=? " );
+			}
 
 			System.out.println( "SQL:" + sql.toString() );
 
@@ -433,21 +488,40 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				ps.setInt( iparam++, lcForneced.getCodFilial() );
 				ps.setInt( iparam++, txtCodFor.getVlrInteger() );
 			}
+			
+			if ( txtCodProd.getVlrInteger() > 0 ) {
+				ps.setInt( iparam++, lcProduto.getCodEmp() );
+				ps.setInt( iparam++, lcProduto.getCodFilial() );
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );				
+			}
 
 			ResultSet rs = ps.executeQuery();
 
 			tabDet.limpa();
 
 			int row = 0;
+			
+			RecMerc recmerc = null;
+			BigDecimal peso1 = new BigDecimal(0);
+			BigDecimal peso2 = new BigDecimal(0);
+			BigDecimal pesoliquido = new BigDecimal(0);
+			String status_recmerc = null;
 
 			while ( rs.next() ) {
 
 				tabDet.adicLinha();
+				
+				peso1 = new BigDecimal(0);
+				peso2 = new BigDecimal(0);
+				pesoliquido = new BigDecimal(0);
 
+				status_recmerc = rs.getString( "status" );
+				
 				imgColuna = RecMerc.getImagem( rs.getString( "status" ), RecMerc.IMG_TAMANHO_M );
 
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
-				tabDet.setValor( rs.getString( "status" ), row, DETALHAMENTO.STATUSTXT.ordinal() );
+				
+				tabDet.setValor( status_recmerc, row, DETALHAMENTO.STATUSTXT.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString().trim() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
@@ -455,6 +529,39 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFOR.toString().trim() ), row, DETALHAMENTO.CODFOR.ordinal() );
+				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEFOR.toString().trim() ), row, DETALHAMENTO.NOMEFOR.ordinal() );
+				
+				 
+				
+				if(status_recmerc.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
+					
+					pesoliquido = rs.getBigDecimal( "qtditcompra" );
+					
+				}
+				else if(status_recmerc.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
+				
+				
+					recmerc = new RecMerc( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
+					
+					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
+	
+					peso1 = (BigDecimal) p1.get( "peso" );
+	
+					HashMap<String, Object> p2 = recmerc.getSegundapesagem();
+	
+					peso2 = (BigDecimal) p2.get( "peso" );
+	
+					if(peso2!=null && peso1!=null) {
+						pesoliquido = peso1.subtract( peso2 );
+					}
+										
+				}
+				
+				Integer renda = rs.getInt( DETALHAMENTO.RENDA.toString().trim() );
+				
+				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
+				tabDet.setValor( renda > 0 ? renda.toString() : "", row, DETALHAMENTO.RENDA.ordinal() );
 
 				row++;
 
@@ -617,6 +724,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		super.setConexao( cn );
 		montaGrid();
 		lcForneced.setConexao( con );
+		lcProduto.setConexao( con );
 
 	}
 
@@ -680,13 +788,13 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	}
 
 	private void abrecompra( Integer codcompra ) {
-
+/*
 		if ( fPrim.temTela( "Compra" ) == false ) {
 			FCompra tela = new FCompra();
 			fPrim.criatela( "Compra", tela, con );
 			tela.exec( codcompra );
 		}
-
+*/
 	}
 
 	private void geraCompra() {
