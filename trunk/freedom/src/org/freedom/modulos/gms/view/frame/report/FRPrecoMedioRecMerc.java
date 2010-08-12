@@ -138,11 +138,15 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		int param = 1;
 
 		sql.append( "select ");
-		sql.append( "cp.dtentcompra, rm.dtent, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra, ");
+		sql.append( "cp.dtentcompra, rm.dtent, cp.codfor, ");
+		sql.append( "(select nomefor from cpforneced where codemp=cp.codempfr and codfilial=cp.codfilialfr and codfor=cp.codfor) nomefor , "); 
+		sql.append( "br.nomebairro, al.descalmox, ic.qtditcompra, ");
 		sql.append( "rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra ");
 		sql.append( "from ");
-		sql.append( "cpcompra cp left outer join cpforneced fr on ");
-		sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor ");
+		sql.append( "cpcompra cp ");
+// Substituido por subselect por problemas de perfornce da query
+//		left outer join cpforneced fr on ");
+//		sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor ");
 		sql.append( "right outer join eqrecmerc rm on ");
 		sql.append( "rm.codemp=cp.codemprm and rm.codfilial=cp.codfilialrm and rm.ticket=cp.ticket ");
 		sql.append( "left outer join sgbairro br on ");
