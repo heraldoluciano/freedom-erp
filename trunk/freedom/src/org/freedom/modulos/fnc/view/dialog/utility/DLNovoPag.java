@@ -69,7 +69,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private JPanelPad pinCampos = new JPanelPad( 580, 180 );
+	private JPanelPad pinCampos = new JPanelPad( 580, 220 );
 
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -125,7 +125,11 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private JTextFieldPad txtDocPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	
+	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private final JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCodTipoCobItPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -183,6 +187,18 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 	
 	private int saltolinha = 0;
 	
+	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+
+	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+
+	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final ListaCampos lcCC = new ListaCampos( this,  "CC" );
+	
+	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
+	
 	public DLNovoPag( Component cOrig ) {
 
 		super( cOrig );
@@ -222,6 +238,10 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		lcPagar.add( new GuardaCampo( txtVlrRetIRRF, "VlrRetIRRF", "Valor ret. IRRF", ListaCampos.DB_SI, false ) );
 		lcPagar.add( new GuardaCampo( txtVlrRetINSS, "VlrRetINSS", "Valor ret. INSS", ListaCampos.DB_SI, false ) );
 
+		lcPagar.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) );
+		lcPagar.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
+		lcPagar.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
+		
 		lcPagar.montaSql( true, "PAGAR", "FN" );
 
 		txtNParcPag.setNomeCampo( "NParcPag" );
@@ -250,7 +270,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		adic( txtDescFor, 90, 20, 197, 20 );
 		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
 		adic( txtCodPlanoPag, 290, 20, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 250, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 200, 20 );
 		adic( txtDescPlanoPag, 373, 20, 200, 20 );
 
 		adic( new JLabelPad( "Cód.Tip.Cob." ), 7, 40, 250, 20 );
@@ -262,22 +282,32 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		adic( txtCodBanco, 290, 60, 80, 20 );
 		adic( txtDescBanco, 373, 60, 200, 20 );
 
-		adic( new JLabelPad( "Nº Conta" ), 7, 80, 80, 20 );
-		adic( txtCodConta, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 80, 200, 20 );
-		adic( txtDescConta, 90, 100, 197, 20 );
+		adic( new JLabelPad( "Cód.catg." ), 7, 80, 80, 20 );
+		adic( txtCodPlan, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição da categoria" ), 90, 80, 250, 20 );
+		adic( txtDescPlan, 90, 100, 197, 20 );
 
-		adic( new JLabelPad( "Dt.Emissão" ), 290, 80, 80, 20 );
-		adic( txtDtEmisPag, 290, 100, 80, 20 );
+		adic( new JLabelPad( "Cód.c.c." ), 290, 80, 80, 20 );
+		adic( txtCodCC, 290, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 373, 80, 200, 20 );
+		adic( txtDescCC, 373, 100, 200, 20 );
 
-		adic( new JLabelPad( "Documento" ), 373, 80, 100, 20 );
-		adic( txtDocPag, 373, 100, 100, 20 );
+		adic( new JLabelPad( "Nº Conta" ), 7, 120, 80, 20 );
+		adic( txtCodConta, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 90, 120, 200, 20 );
+		adic( txtDescConta, 90, 140, 197, 20 );
+
+		adic( new JLabelPad( "Dt.Emissão" ), 290, 120, 80, 20 );
+		adic( txtDtEmisPag, 290, 140, 80, 20 );
+
+		adic( new JLabelPad( "Documento" ), 373, 120, 100, 20 );
+		adic( txtDocPag, 373, 140, 100, 20 );
 		
-		adic( new JLabelPad( "Valor original" ), 476, 80, 97, 20 );
-		adic( txtVlrParcPag, 476, 100, 97, 20 );
+		adic( new JLabelPad( "Valor original" ), 476, 120, 97, 20 );
+		adic( txtVlrParcPag, 476, 140, 97, 20 );
 
-		adic( lbObs, 7, 120 , 300, 20 );
-		adic( txtObs, 7, 140, 565, 20 );
+		adic( lbObs, 7, 160 , 300, 20 );
+		adic( txtObs, 7, 180, 565, 20 );
 		
 		pnRetencoes.setBorder(SwingParams.getPanelLabel("Retenções", Color.RED));		
 		
@@ -644,6 +674,40 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		txtCodTipoFor.setFK( true );
 		txtCodTipoFor.setNomeCampo( "CodTipoFor" );
 		
+		/******************
+		 * FNPLANEJAMENTO *
+		 ******************/
+		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
+		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
+		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
+		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
+		lcPlan.setReadOnly( true );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
+		txtCodPlan.setFK( true );
+		txtCodPlan.setNomeCampo( "CodPlan" );
+
+		/***************
+		 * FNCC        *
+		 ***************/
+		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
+		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
+		lcCC.setReadOnly( true );
+		lcCC.setQueryCommit( false );
+		lcCC.setWhereAdic( "NIVELCC=10" );
+		lcCC.montaSql( false, "CC", "FN" );
+		txtCodCC.setTabelaExterna( lcCC, null );
+		txtCodCC.setFK( true );
+		txtCodCC.setNomeCampo( "CodCC" );
+		txtAnoCC.setTabelaExterna( lcCC, null );
+		txtAnoCC.setFK( true );
+		txtAnoCC.setNomeCampo( "AnoCC" );
+
+		lcCC.addCarregaListener( this );
+
+
+		
 	}
 	
 	public void setValues( Object[] values ) {
@@ -761,6 +825,9 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		lcPagar.setConexao( cn );
 		lcItPagar.setConexao( cn );
 		lcBanco.setConexao( cn );
+		lcPlan.setConexao( cn );
+		lcCC.setConexao( cn );
+		
 		lcPagar.insert( true );
 
 		prefere = getPrefere();
