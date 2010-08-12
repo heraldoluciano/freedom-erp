@@ -284,7 +284,7 @@ public class RecMerc implements java.io.Serializable {
 
 			}
 
-			con.commit();
+//			con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -331,7 +331,7 @@ public class RecMerc implements java.io.Serializable {
 
 			}
 
-			con.commit();
+//			con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -374,7 +374,7 @@ public class RecMerc implements java.io.Serializable {
 
 			}
 
-			con.commit();
+//			con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -642,8 +642,7 @@ public class RecMerc implements java.io.Serializable {
 		try {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
-			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, (br.vlrfrete/coalesce(br.qtdfrete,1)) vlrfrete " );
-			
+			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete " );			
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
@@ -692,7 +691,7 @@ public class RecMerc implements java.io.Serializable {
 				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );
 			}
 
-			con.commit();
+//			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( orig, "Erro ao buscar informações do recebimento de mercadorias!", true, con, e );
@@ -815,6 +814,13 @@ public class RecMerc implements java.io.Serializable {
 			HashMap<String, Object> p1 = getPrimeirapesagem();
 
 			peso1 = (BigDecimal) p1.get( "peso" );
+
+			HashMap<String, Object> p2 = getSegundapesagem();
+
+			peso2 = (BigDecimal) p2.get( "peso" );
+
+			pesoliq = peso1.subtract( peso2 );
+
 			
 			geraCodFrete();
 
@@ -869,15 +875,15 @@ public class RecMerc implements java.io.Serializable {
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( getDtent() ) );
 			
-			ps.setBigDecimal( param++, peso1 );
+			ps.setBigDecimal( param++, pesoliq );
 			
 			ps.setBigDecimal( param++, getValorLiqCompra() );
 			
-			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), peso1 ) );
+			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), pesoliq ) );
 			
-			ps.setBigDecimal( param++, peso1 );
+			ps.setBigDecimal( param++, pesoliq );
 			
-			ps.setBigDecimal( param++, peso1 );
+			ps.setBigDecimal( param++, pesoliq );
 			
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			
@@ -1138,6 +1144,7 @@ public class RecMerc implements java.io.Serializable {
 
 			DLInfoPlanoPag dl = new DLInfoPlanoPag( getOrig(), con );
 			dl.setConexao( con );
+			
 			dl.setVisible( true );
 
 			if ( dl.OK ) {
