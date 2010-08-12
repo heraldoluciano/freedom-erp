@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.gms.business.object.RecMerc;
@@ -827,6 +828,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			imp.say( imp.pRow(), 3, "PLACA:............:" );
 			imp.say( imp.pRow(), 24, Funcoes.setMascara( txtPlacaTran.getVlrString(), JTextFieldPad.mascplaca ) );
 
+			imp.say( imp.pRow(), 35, "FRETE:" );
+			imp.say( imp.pRow(), 41, "F".equals( rgFrete.getVlrString()) ? "FOB" : "CIF" );
+			
 			imp.say( imp.pRow(), 70, "INTERNO.:" );
 
 			imp.say( imp.pRow(), 0, " " + imp.normal() );
@@ -1326,6 +1330,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		if ( pevt.getListaCampos() == lcDet ) {
 			lcCampos.carregaDados();
+			liberaRenda( false );
 		}
 	}
 
@@ -1414,7 +1419,36 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		if ( kevt.getKeyCode() == KeyEvent.VK_F12 ) {
 			btPesagem.doClick();
 		}
+		if ( kevt.getKeyCode() == KeyEvent.VK_F11 ) {
+			liberaCampo( true );
+		}
+
 
 	}
+	
+	private void liberaRenda( boolean libera){
+		
+		txtRendaAmostragem.setAtivo( libera );
+		txtMediaAmostragem.setAtivo( libera );
+	
+		
+	}
+	
+	private void liberaCampo( boolean libera ) {
+
+		FPassword fpw = new FPassword( this, FPassword.LIBERA_CAMPO_PESAGEM, null, con );
+		fpw.execShow();
+
+		if ( fpw.OK ) {
+			liberaRenda(libera);
+		}
+
+		fpw.dispose();
+
+	}
+
+	
+
+	
 
 }
