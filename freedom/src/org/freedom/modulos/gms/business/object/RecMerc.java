@@ -300,7 +300,7 @@ public class RecMerc implements java.io.Serializable {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		try {
+		try { 
 
 			pesagem = new HashMap<String, Object>();
 
@@ -309,7 +309,7 @@ public class RecMerc implements java.io.Serializable {
 			sql.append( "where " );
 			sql.append( "a.codemp=i.codemp and a.codfilial=i.codfilial and a.ticket=i.ticket and a.coditrecmerc=i.coditrecmerc " );
 			sql.append( "and i.codemp=? and i.codfilial=? and i.ticket=? " );
-			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=? " );
+			sql.append( "and p.codemp=i.codemptp and p.codfilial=i.codfilialtp and p.codprocrecmerc=i.codprocrecmerc and p.tipoprocrecmerc=?  and p.codtiporecmerc=i.codtiporecmerc " );
 			sql.append( "and pd.codemp=i.codemppd and pd.codfilial=i.codfilialpd and pd.codprod=i.codprod " );
 			sql.append( "order by a.dataamost, a.codamostragem desc" );
 
@@ -778,8 +778,8 @@ public class RecMerc implements java.io.Serializable {
 
 			geraItemCompra( getCodcompra() );
 
-			// Ser for FOB (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
-			if( "F".equals( getTipofrete()) ) {
+			// Ser for CIF (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
+			if( "C".equals( getTipofrete()) ) {
 				
 				geraFreteRecMerc();
 				
@@ -1081,7 +1081,7 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setInt( 6, codcompra );
-			ps.setBigDecimal( 7, pesoliq );
+			ps.setBigDecimal( 7, pesoliq ); 			
 
 			ps.execute();
 			ps.close();
