@@ -60,6 +60,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.PrefereGMS;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.std.view.dialog.utility.DLCriaVendaCompra;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 
 public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener, FocusListener {
 
@@ -73,7 +74,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	private JScrollPane spntabcompra = new JScrollPane( tabcompra );
 
-	private JPanelPad pinCab = new JPanelPad( 0, 65 );
+	private JPanelPad pinCab = new JPanelPad( 0, 105 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -144,6 +145,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private JButtonPad btResetItCompra = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
+	
+	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
 	private ListaCampos lcCompra = new ListaCampos( this, "CP" );
 
@@ -154,6 +157,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private PrefereGMS preferegms = PrefereGMS.getInstance();
 	
 	private boolean bloqprecoaprov = false;
+	
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 
 	public static enum enum_compra {
 		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
@@ -173,7 +181,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		telacompra = (FCompra) cp;
 
-		setAtribos( 750, 480 );
+		setAtribos( 750, 520 );
 
 		montaTela();
 
@@ -213,13 +221,19 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		pinCab.adic( new JLabelPad( "Razão social do fornecedor" ), 123, 5, 300, 20 );
 		pinCab.adic( txtRazFor, 123, 25, 300, 20 );
 
-		pinCab.adic( txtStatusCompra, 396, 5, 27, 20 );
+//		pinCab.adic( txtStatusCompra, 396, 5, 27, 20 );
 
 		pinCab.adic( new JLabelPad( "Vlr.Prod." ), 426, 5, 77, 20 );
 		pinCab.adic( txtVlrProdCompra, 426, 25, 77, 20 );
 
 		pinCab.adic( new JLabelPad( "Vlr.Liq." ), 506, 5, 77, 20 );
 		pinCab.adic( txtVlrLiqCompra, 506, 25, 77, 20 );
+		
+		pinCab.adic( new JLabelPad( "Cód.Pg." ), 7, 45, 60, 20 );
+		pinCab.adic( txtCodPlanoPag, 7, 65, 60, 20 );
+
+		pinCab.adic( new JLabelPad( "Descrição do plano de pagamento" ), 70, 45, 353, 20 );
+		pinCab.adic( txtDescPlanoPag, 70, 65, 353, 20 );
 
 		pinCab.adic( btBuscar, 632, 20, 100, 30 );
 
@@ -273,7 +287,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		btExec.setToolTipText( "Executar montagem" );
 		btTodosCompra.setToolTipText( "Selecionar tudo" );
 		btNenhumCompra.setToolTipText( "Limpar seleção" );
-		btGerar.setToolTipText( "Gerar no venda" );
+		btGerar.setToolTipText( "Gerar compra" );
 		btAgruparItens.setToolTipText( "Agrupar ítens" );
 		btRecarregaPrecos.setToolTipText( "Recarrega Preços" );
 
@@ -305,6 +319,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		btResetItCompra.addActionListener( this );
 
 		lcCompra.addCarregaListener( this );
+		lcPlanoPag.addCarregaListener( this );
 
 		txtCodCompra.addFocusListener( this );
 
@@ -409,6 +424,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		lcCompra.add( new GuardaCampo( txtVlrProdCompra, "VlrProdCompra", "Vlr.Prod.", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "Vlr.Liq.", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, null, false ) );
+		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.Pg.", ListaCampos.DB_FK, txtDescPlanoPag, false ) ); 
 
 		txtCodCompra.setTabelaExterna( lcCompra, null );
 		txtCodCompra.setNomeCampo( "CodCompra" );
@@ -429,6 +445,19 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
 
+		// Plano de pagamento
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C','A')" );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
+		lcPlanoPag.setQueryCommit( false );
+		lcPlanoPag.setReadOnly( true );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
+		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
+		txtCodPlanoPag.setFK( true );
+
+
+		
 	}
 
 	private void buscaItCompra() {
@@ -1035,7 +1064,14 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			tabitcompra.limpa();
 		}
 		else if ( evt.getSource() == btRecarregaPrecos ) {
-			recarregaPrecos();
+
+			if(txtCodPlanoPag.getVlrInteger()>0) {
+				recarregaPrecos();
+			}
+			else {
+				Funcoes.mensagemInforma( null, "Para recarregar os preços de cotações é necessário informar\n o plano de pagamento!" );
+				txtCodPlanoPag.requestFocus();
+			}
 		}
 
 
@@ -1045,6 +1081,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private void recarregaPrecos() {
 		StringBuilder sql_preco = new StringBuilder();
 		StringBuilder sql_update = new StringBuilder();
+		StringBuilder sql_update_status_preco = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		BigDecimal preconovo = null;
@@ -1053,27 +1090,52 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			
 			// Query para atualizar o preço;
 			sql_update.append( "update cpitcompra ic ");
-			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco='S', ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) ");
-			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? and ic.precoitcompra!=? " ); 
+			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco=?, ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) ");
+			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " ); 
+			
+			// Query para atualizar o status do preco;
+			sql_update_status_preco.append( "update cpitcompra ic ");
+			sql_update_status_preco.append( "set ic.aprovpreco=? ");
+			sql_update_status_preco.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " );
 			
 			// Se deve buscar preço de cotação.			
 			sql_preco.append( "select first 1 ct.precocot ");
-			sql_preco.append( "from cpcotacao ct, cpsolicitacao sl, cpitsolicitacao iso ");
+			sql_preco.append( "from cpcotacao ct, cpsolicitacao sl, cpitsolicitacao iso, cpcompra cp ");
+			
+			sql_preco.append( "left outer join eqrecmerc rm on ");
+			sql_preco.append( "rm.codemp=cp.codemprm and rm.codfilial=cp.codfilialrm and rm.ticket=cp.ticket ");
+			
 			sql_preco.append( "where ");
 			sql_preco.append( "iso.codemp = sl.codemp and iso.codfilial=sl.codfilial and iso.codsol=sl.codsol ");
 			sql_preco.append( "and ct.codemp=iso.codemp and ct.codfilial=iso.codfilial and ct.codsol=iso.codsol and ct.coditsol=iso.coditsol ");
 			sql_preco.append( "and iso.codemppd=? and iso.codfilialpd=? and iso.codprod=? ");
 			sql_preco.append( "and ct.codempfr=? and ct.codfilialfr=? and ct.codfor=? ");
-			sql_preco.append( "and ct.dtvalidcot >= ? ");
-			sql_preco.append( "and ct.sititsol not in ('EF','CA') ");
-			sql_preco.append( "order by ct.dtcot desc ");
+			sql_preco.append( "and cp.codemp=? and cp.codfilial=? and cp.codcompra=? ");
 
+			//Filtro da validade e da data de vigor 
+			sql_preco.append( "and (ct.dtvalidcot>=? and (ct.dtcot<=? ))");
+			
+			//Filtro do statuso
+			sql_preco.append( "and ct.sititsol not in ('EF','CA') ");
+			
+			// Filtro da renda
+			sql_preco.append( "and ( (ct.rendacot = rm.rendaamostragem) or ( coalesce(ct.usarendacot,'N') = 'N') ) ");
+
+			// Filtro do plano de pagamento
+			sql_preco.append( "and ( (ct.codemppp=? and ct.codfilialpp=? and ct.codplanopag=? ) ");
+			sql_preco.append( "   or (ct.codplanopag is null)) ");
+			
+			sql_preco.append( "order by ct.dtcot desc ");
+			
 			Integer codemppd = null;
 			Integer codfilialpd = null;
 			Integer codprod = null;
 			Integer codempfr = null;
 			Integer codfilialfr = null;
 			Integer codfor = null;
+			Integer codempcp = null;
+			Integer codfilialcp = null;
+			Integer codcompra = null;
 			Date dtent = null;
 			
 			for(int i = 0; tabitcompra.getNumLinhas() > i; i++) {
@@ -1085,6 +1147,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				codempfr = (Integer) tabitcompra.getValor( i, enum_itcompra.CODEMPFR.ordinal() );
 				codfilialfr = (Integer) tabitcompra.getValor( i, enum_itcompra.CODFILIALFR.ordinal() );				
 				codfor = Integer.parseInt( tabitcompra.getValor( i, enum_itcompra.CODFOR.ordinal() ).toString());
+				
+				codcompra = Integer.parseInt( tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ).toString());
+
 				dtent = Funcoes.strDateToDate( tabitcompra.getValor( i, enum_itcompra.DTENTCOMPRA.ordinal() ).toString()); 
 
 				ps = con.prepareStatement( sql_preco.toString() );
@@ -1096,7 +1161,16 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				ps.setInt( 4, codempfr );
 				ps.setInt( 5, codfilialfr );
 				ps.setInt( 6, codfor );
-				ps.setDate( 7, Funcoes.dateToSQLDate( dtent ) );
+				
+				ps.setInt( 7, Aplicativo.iCodEmp );
+				ps.setInt( 8, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+				ps.setInt( 9, codcompra );
+								
+				ps.setDate( 10, Funcoes.dateToSQLDate( dtent ) );
+				ps.setDate( 11, Funcoes.dateToSQLDate( dtent ) );
+				ps.setInt( 12, Aplicativo.iCodEmp );
+				ps.setInt( 13, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+				ps.setInt( 14, txtCodPlanoPag.getVlrInteger() );
 			
 				rs = ps.executeQuery();
 			
@@ -1106,24 +1180,44 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					preconovo = rs.getBigDecimal( "precocot" ); 
 				
 				}
+				else { 
+					preconovo = null;
+				}
 			
 				if(preconovo!=null) {
 
 					ps = con.prepareStatement( sql_update.toString() );
 				
 					ps.setBigDecimal( 1, preconovo );
-					ps.setBigDecimal( 2, preconovo );					
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					ps.setInt( 4, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-					ps.setInt( 5, (Integer) tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) );
-					ps.setInt( 6, (Integer) tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );					
-					
-					ps.setBigDecimal( 7, preconovo );
+					ps.setString( 2, "S" );
+					ps.setBigDecimal( 3, preconovo );					
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					ps.setInt( 6, (Integer) tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) );
+					ps.setInt( 7, (Integer) tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );					
 					
 					System.out.println("preço atualizado: sql:" + sql_update.toString());
 					System.out.println("preço novo:" + preconovo );
 					System.out.println("compra:" +  tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) + "-" +  tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );
 					
+
+					ps.executeUpdate();
+					ps.close();
+					con.commit();
+					
+				}
+				else {
+					ps = con.prepareStatement( sql_update_status_preco.toString() );
+					
+					ps.setString( 1, "N" );
+					
+					ps.setInt( 2, Aplicativo.iCodEmp );
+					ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					ps.setInt( 4, (Integer) tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) );
+					ps.setInt( 5, (Integer) tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );					
+					
+					System.out.println("status preço atualizado: sql:" + sql_update.toString());					
+					System.out.println("compra:" +  tabitcompra.getValor( i, enum_itcompra.CODCOMPRA.ordinal() ) + "-" +  tabitcompra.getValor( i, enum_itcompra.CODITCOMPRA.ordinal() ) );
 
 					ps.executeUpdate();
 					ps.close();
@@ -1150,6 +1244,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			txtCodFor.setAtivo( false );
 			// lcFor.limpaCampos( true );
 		}
+		else if(e.getListaCampos()==lcPlanoPag && bloqprecoaprov) {
+			recarregaPrecos();			
+		}
+	
 
 	}
 
@@ -1168,8 +1266,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		super.setConexao( cn );
 
 		lcFor.setConexao( cn );
-
-		lcCompra.setConexao( cn );
+		lcCompra.setConexao( cn );		
+		lcPlanoPag.setConexao( cn );
 
 		txtCodCompra.setFocusable( true );
 		setFirstFocus( txtCodCompra );
