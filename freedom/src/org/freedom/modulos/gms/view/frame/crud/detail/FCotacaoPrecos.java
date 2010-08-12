@@ -53,6 +53,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -67,6 +68,7 @@ import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
+import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 
 public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
@@ -205,6 +207,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcProd2 = new ListaCampos( this, "PD" );
+	
+	private ListaCampos lcPlanoPag = new ListaCampos( this, "PP" );
 
 	private ListaCampos lcProd3 = new ListaCampos( this, "PD" );
 
@@ -256,6 +260,14 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private String sSitItExp;
 
+	private JCheckBoxPad cbUsaRendaCot = new JCheckBoxPad( "Usa renda", "S", "N" );
+	
+	private JTextFieldPad txtRendaCot = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	public FCotacaoPrecos() {
 
 		setTitulo( "Cotação de Preços" );
@@ -349,6 +361,14 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
 		txtCodFor.setTabelaExterna( lcFor, null );
+		
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('C','A')" );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
+		lcPlanoPag.setQueryCommit( false );
+		lcPlanoPag.setReadOnly( true );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, FPlanoPag.class.getCanonicalName() );
 
 		vValsTipo.addElement( "M" );
 		vValsTipo.addElement( "A" );
@@ -452,7 +472,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private void montaDetalhe() {
 
-		setAltDet( 100 );
+		setAltDet( 140 );
 		setListaCampos( lcDet );
 //		setPainel( pinCab, pnCliCab );
 		pnCliCab.add( pinCabGeral );
@@ -553,21 +573,21 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcCotacao.setTabela( tab );
 
 		txtQtdItAprovado.setNaoEditavel( true );
-		txtDtCot.setSoLeitura( true );
+//		txtDtCot.setSoLeitura( true );
 
 		txtRefProd2.setSoLeitura( true );
 		txtCodProd2.setSoLeitura( true );
 
 		adicCampo( txtCodCot, 7, 20, 47, 20, "CodCot", "Cot.", ListaCampos.DB_PK, true );
 
-		adicCampoInvisivel( txtDtCot, "DtCot", "Data", ListaCampos.DB_SI, false );
-		adicCampo( txtDtValidCot, 57, 20, 70, 20, "DtValidCot", "Validade", ListaCampos.DB_SI, true );
+		adicCampo( txtDtCot, 57, 20, 70, 20, "DtCot", "Data ini.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtValidCot, 130, 20, 70, 20, "DtValidCot", "Validade", ListaCampos.DB_SI, true );
 
-		adicCampo( txtCodFor, 130, 20, 57, 20, "CodFor", "Cd.For.", ListaCampos.DB_FK, txtDescFor, false );
-		adicDescFK( txtDescFor, 190, 20, 200, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodFor, 203, 20, 57, 20, "CodFor", "Cd.For.", ListaCampos.DB_FK, txtDescFor, false );
+		adicDescFK( txtDescFor, 263, 20, 191, 20, "RazFor", "Razão social do fornecedor" );
 
-		adicCampo( txtQtdCot, 390, 20, 84, 20, "QtdCot", "Qtd.Cot.", ListaCampos.DB_SI, false );
-		adicCampo( txtQtdAprovCot, 480, 20, 84, 20, "QtdAprovCot", "Qtd.Aprov.", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdCot, 457, 20, 84, 20, "QtdCot", "Qtd.Cot.", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdAprovCot, 544, 20, 82, 20, "QtdAprovCot", "Qtd.Aprov.", ListaCampos.DB_SI, false );
 
 		adicCampo( txtPrecoCot, 7, 60, 87, 20, "PrecoCot", "Preço", ListaCampos.DB_SI, false );
 
@@ -580,6 +600,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		adicCampo( txtVlrIpiItCompra, 367, 60, 87, 20, "VlrIpiItCompra", "V.IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLiqItCompra, 457, 60, 87, 20, "VlrLiqItCompra", "V.Liq", ListaCampos.DB_SI, true );
 
+		adicCampo( txtCodPlanoPag, 7, 100, 47, 20, "CodPlanoPag", "Cód.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 57, 100, 216, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		
+		adicCampo( txtRendaCot, 277, 100, 84, 20, "RendaCot", "Renda", ListaCampos.DB_SI, false );
+		
+		adicDB( cbUsaRendaCot, 367, 100, 100, 20, "UsaRendacot", "" , false );
+		
 		adicCampoInvisivel( txtIdUsuCot, "IdUsuCot", "Usuário", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSituacaoIt, "SitItSol", "Sit.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSituacaoItAprov, "SitAprovItSol", "Ap.", ListaCampos.DB_SI, false );
@@ -1325,6 +1352,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		lcProd2.setConexao( cn );
 		lcProd3.setConexao( cn );
 		lcProd4.setConexao( cn );
+		lcPlanoPag.setConexao( cn );
+		
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
 		lcUsu.setConexao( cn );
