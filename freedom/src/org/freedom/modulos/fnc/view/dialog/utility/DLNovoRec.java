@@ -65,7 +65,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 	private final JPanelPad pnRec = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private final JPanelPad pinCab = new JPanelPad( 580, 170 );
+	private final JPanelPad pinCab = new JPanelPad( 580, 210 );
 
 	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -119,6 +119,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
+	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private final JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private final JTextFieldPad txtDtEmisRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JTextFieldPad txtDocRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -128,6 +132,15 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private final JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+
+	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+
+	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -168,6 +181,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	private Map<String, Integer> prefere = null;
 
 	private Historico historico = null;
+	
+	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
+	
+	private final ListaCampos lcCC = new ListaCampos( this, "CC" );
 
 	public DLNovoRec( Component cOrig ) {
 
@@ -291,7 +308,40 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		txtCodConta.setNomeCampo( "NumConta" );
 		txtDescConta.setTabelaExterna( lcConta, null );
 		txtDescConta.setLabel( "Descrição da Conta" );
+		
+		/************************
+		 * FNPLANEJAMENTO       *
+		 ************************/
+		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
+		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
+		lcPlan.setWhereAdic( "TIPOPLAN = 'R' AND NIVELPLAN = 6" );
+		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
+		lcPlan.setReadOnly( true );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
+		txtCodPlan.setFK( true );
+		txtCodPlan.setNomeCampo( "CodPlan" );
+		
+		/***************
+		 * FNCC        *
+		 ***************/
+		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
+		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
+		lcCC.setReadOnly( true );
+		lcCC.setQueryCommit( false );
+		lcCC.setWhereAdic( "NIVELCC=10" );
+		lcCC.montaSql( false, "CC", "FN" );
+		txtCodCC.setTabelaExterna( lcCC, null );
+		txtCodCC.setFK( true );
+		txtCodCC.setNomeCampo( "CodCC" );
+		txtAnoCC.setTabelaExterna( lcCC, null );
+		txtAnoCC.setFK( true );
+		txtAnoCC.setNomeCampo( "AnoCC" );
 
+		lcCC.addCarregaListener( this );
+
+		
 		/***************
 		 * FNRECEBER *
 		 ***************/
@@ -308,6 +358,11 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcReceber.add( new GuardaCampo( txtObs, "ObsRec", "Obs.", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtStatus, "StatusRec", "Status", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
+
+		lcReceber.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) ); 
+		lcReceber.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
+		lcReceber.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
+
 		lcReceber.montaSql( true, "RECEBER", "FN" );
 
 		/************************
@@ -376,6 +431,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		txtCodTipoCobItRec.setListaCampos( lcItReceber );
 		txtCodBancoItRec.setListaCampos( lcItReceber );
 		txtCodCartCobItRec.setListaCampos( lcItReceber );
+		
+		
+		
+
 
 	}
 
@@ -406,27 +465,37 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		adic( new JLabelPad( "Descrição da Carteira de Cob." ), 373, 40, 200, 20 );
 		adic( txtDescCartCob, 373, 60, 200, 20 );
 
-		adic( new JLabelPad( "Cód.banco" ), 7, 80, 250, 20 );
-		adic( txtCodBanco, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descriçao do banco" ), 90, 80, 200, 20 );
-		adic( txtDescBanco, 90, 100, 197, 20 );
+		adic( new JLabelPad( "Cód.catg." ), 7, 80, 80, 20 );
+		adic( txtCodPlan, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição da categoria" ), 90, 80, 250, 20 );
+		adic( txtDescPlan, 90, 100, 197, 20 );
 
-		adic( new JLabelPad( "Nº Conta" ), 290, 80, 250, 20 );
-		adic( txtCodConta, 290, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 373, 80, 250, 20 );
-		adic( txtDescConta, 373, 100, 200, 20 );
+		adic( new JLabelPad( "Cód.c.c." ), 290, 80, 80, 20 );
+		adic( txtCodCC, 290, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 373, 80, 200, 20 );
+		adic( txtDescCC, 373, 100, 200, 20 );
+		
+		adic( new JLabelPad( "Cód.banco" ), 7, 120, 250, 20 );
+		adic( txtCodBanco, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Descriçao do banco" ), 90, 120, 200, 20 );
+		adic( txtDescBanco, 90, 140, 197, 20 );
 
-		adic( new JLabelPad( "Valor" ), 7, 120, 80, 20 );
-		adic( txtVlrParcRec, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Nº Conta" ), 290, 120, 250, 20 );
+		adic( txtCodConta, 290, 140, 80, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 373, 120, 250, 20 );
+		adic( txtDescConta, 373, 140, 200, 20 );
 
-		adic( new JLabelPad( "Dt.Emissão" ), 90, 120, 80, 20 );
-		adic( txtDtEmisRec, 90, 140, 80, 20 );
+		adic( new JLabelPad( "Valor" ), 7, 160, 80, 20 );
+		adic( txtVlrParcRec, 7, 180, 80, 20 );
 
-		adic( new JLabelPad( "Doc." ), 173, 120, 114, 20 );
-		adic( txtDocRec, 173, 140, 114, 20 );
+		adic( new JLabelPad( "Dt.Emissão" ), 90, 160, 80, 20 );
+		adic( txtDtEmisRec, 90, 180, 80, 20 );
 
-		adic( new JLabelPad( "Observações" ), 290, 120, 284, 20 );
-		adic( txtObs, 290, 140, 284, 20 );
+		adic( new JLabelPad( "Doc." ), 173, 160, 114, 20 );
+		adic( txtDocRec, 173, 180, 114, 20 );
+
+		adic( new JLabelPad( "Observações" ), 290, 160, 284, 20 );
+		adic( txtObs, 290, 180, 284, 20 );
 	}
 
 	private void testaCodRec() { // Traz o verdadeiro número do codrec
@@ -722,6 +791,10 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		lcBancoItRec.setConexao( cn );
 		lcCartCobItRec.setConexao( cn );
 		lcConta.setConexao( cn );
+		lcPlan.setConexao( cn );
+		lcCC.setConexao( cn );
+		
+		
 		lcReceber.insert( true );
 
 		prefere = getPrefere();
