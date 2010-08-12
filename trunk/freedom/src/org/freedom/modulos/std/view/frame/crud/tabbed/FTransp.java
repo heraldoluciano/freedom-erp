@@ -828,8 +828,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, NRODEPENDFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, NRODEPENDFOR,");
+		sSQL.append( "CODPAIS, SIGLAUF, CODMUNIC, UFFOR, CIDFOR ) " );
+		
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
 
 		try {
 
@@ -862,6 +864,14 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			ps.setInt( 18, txtNumTran.getVlrInteger() );
 			ps.setString( 19, txtBairTran.getVlrString() );
 			ps.setInt( 20, txtNroDependTran.getVlrInteger() );
+			
+			ps.setInt( 21, txtCodPais.getVlrInteger() );
+			ps.setString( 22, txtSiglaUF.getVlrString() );
+			ps.setString( 23, txtCodMunic.getVlrString() );
+			ps.setString( 24, txtUFTran.getVlrString() );
+			ps.setString( 25, txtCidTran.getVlrString() );
+
+			
 
 			ps.executeUpdate();
 
