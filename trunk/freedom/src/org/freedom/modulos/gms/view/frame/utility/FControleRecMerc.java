@@ -55,6 +55,8 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
@@ -76,7 +78,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelMaster = new JPanelPad( 700, 120 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 130 );
 
 	private JPanelPad panelAbas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -136,6 +138,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	private JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
+	private JButtonPad btCotacao = new JButtonPad( Icone.novo( "btCotacao.png" ) );
+	
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 
 	private JTablePad tabstatus = new JTablePad();
@@ -154,7 +158,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA, CODCOMPRA;
 	}
 
 	public FControleRecMerc() {
@@ -274,6 +278,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		btEditar.setToolTipText( "Abre recepção de mercadorias - (ENTER/SPACE)" );
 		btNovo.setToolTipText( "Nova recepção - (F12)" );
 		btCompra.setToolTipText( "Gerar pedido de compra - (F11)" );
+		btCotacao.setToolTipText( "Gerar cotação" );
 	}
 
 	private void montaListeners() {
@@ -283,6 +288,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		btEditar.addActionListener( this );
 		btCompra.addActionListener( this );
+		btCotacao.addActionListener( this );
 
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
@@ -299,10 +305,10 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( panelFiltros, 4, 0, 720, 114 );
+		panelMaster.adic( panelFiltros, 4, 0, 935, 120 );
 
-		panelFiltros.adic( scpStatus, 517, 0, 150, 82 );
-		panelFiltros.adic( btAtualiza, 670, 0, 30, 81 );
+		panelFiltros.adic( scpStatus, 737, 0, 150, 90 );
+		panelFiltros.adic( btAtualiza, 890, 0, 30, 89 );
 
 		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
 		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
@@ -314,13 +320,13 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		panelFiltros.adic( txtCodFor, 153, 20, 70, 20 );
 
 		panelFiltros.adic( new JLabelPad( "Razão social do fornecedor" ), 226, 0, 180, 20 );
-		panelFiltros.adic( txtRazFor, 226, 20, 270, 20 );
+		panelFiltros.adic( txtRazFor, 226, 20, 320, 20 );
 		
-		panelFiltros.adic( new JLabelPad( "Cód.Prod." ), 7, 40, 70, 20 );
-		panelFiltros.adic( txtCodProd, 7, 60, 70, 20 );
+		panelFiltros.adic( new JLabelPad( "Cód.Prod." ), 153, 40, 70, 20 );
+		panelFiltros.adic( txtCodProd, 153, 60, 70, 20 );
 
-		panelFiltros.adic( new JLabelPad( "Descrição do produto" ), 80, 40, 180, 20 );
-		panelFiltros.adic( txtDescProd, 80, 60, 270, 20 );
+		panelFiltros.adic( new JLabelPad( "Descrição do produto" ), 226, 40, 180, 20 );
+		panelFiltros.adic( txtDescProd, 226, 60, 320, 20 );
 
 		
 
@@ -355,6 +361,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		panelNavegador.add( btNovo );
 		// panelNavegador.add( btExcluir );
 		panelNavegador.add( btEditar );
+		panelNavegador.add( btCotacao );
 		panelNavegador.add( btCompra );
 
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
@@ -387,8 +394,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.adicColuna( "Fornecedor" );
 		tabDet.adicColuna( "Peso Liquido" );
 		tabDet.adicColuna( "Renda" );
-
-		
+		tabDet.adicColuna( "Cód.ped." );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -398,15 +404,13 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.PLACA.ordinal() );
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODTRAN.ordinal() );
-		tabDet.setTamColuna( 200, DETALHAMENTO.NOMETRAN.ordinal() );
+		tabDet.setTamColuna( 240, DETALHAMENTO.NOMETRAN.ordinal() );
 		tabDet.setTamColuna( 40, DETALHAMENTO.CODFOR.ordinal() );
 		tabDet.setTamColuna( 200, DETALHAMENTO.NOMEFOR.ordinal() );
 		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.RENDA.ordinal() );
-
-		
-
-
+//		tabDet.setTamColuna( 50, DETALHAMENTO.CODCOMPRA.ordinal() );
+		tabDet.setColunaInvisivel( DETALHAMENTO.CODCOMPRA.ordinal() );
 		// tabDet.setColunaInvisivel( 2 );
 
 	}
@@ -424,8 +428,11 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
 			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra and ic.coditcompra=irc.coditcompra) qtditcompra, ");
 					
-			sql.append( "rm.rendaamostragem renda ");
+			sql.append( "rm.rendaamostragem renda, ");
 			
+			sql.append( "(select first 1 irc.codcompra from eqitrecmercitcp irc ");
+			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket) codcompra ");
+
 			sql.append( "from eqrecmerc rm, vdtransp tr, cpforneced fr " );
 			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran " );
 			sql.append( "and fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
@@ -532,8 +539,6 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFOR.toString().trim() ), row, DETALHAMENTO.CODFOR.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEFOR.toString().trim() ), row, DETALHAMENTO.NOMEFOR.ordinal() );
 				
-				 
-				
 				if(status_recmerc.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
 					
 					pesoliquido = rs.getBigDecimal( "qtditcompra" );
@@ -553,7 +558,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 					peso2 = (BigDecimal) p2.get( "peso" );
 	
 					if(peso2!=null && peso1!=null) {
-						pesoliquido = peso1.subtract( peso2 );
+						pesoliquido = peso1.subtract( peso2 ).setScale( 0 );
+						
 					}
 										
 				}
@@ -561,7 +567,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				Integer renda = rs.getInt( DETALHAMENTO.RENDA.toString().trim() );
 				
 				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
-				tabDet.setValor( renda > 0 ? renda.toString() : "", row, DETALHAMENTO.RENDA.ordinal() );
+				tabDet.setValor( renda > 0 ? renda : 0, row, DETALHAMENTO.RENDA.ordinal() );
+				
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCOMPRA.toString().trim() ), row, DETALHAMENTO.CODCOMPRA.ordinal() );
 
 				row++;
 
@@ -591,6 +599,10 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		else if ( e.getSource() == btCompra ) {
 			geraCompra();
 		}
+		else if ( e.getSource() == btCotacao ) {
+			geraCotacao();
+		}
+
 
 	}
 
@@ -788,15 +800,27 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	}
 
 	private void abrecompra( Integer codcompra ) {
-/*
+
 		if ( fPrim.temTela( "Compra" ) == false ) {
 			FCompra tela = new FCompra();
 			fPrim.criatela( "Compra", tela, con );
 			tela.exec( codcompra );
 		}
-*/
+
 	}
 
+	private void abreSolicitacao( Integer codsolicitacao, Integer codfor, Integer renda ) {
+		
+		if ( fPrim.temTela( "Compra" ) == false ) {
+			FCotacaoPrecos tela = new FCotacaoPrecos();
+			fPrim.criatela( "Cotações de preços ", tela, con );
+			
+			tela.abreCotacao( codsolicitacao, codfor, renda  );
+		}
+
+	}
+
+	
 	private void geraCompra() {
 
 		StringBuilder sql = new StringBuilder();
@@ -809,24 +833,82 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		PreparedStatement ps = null;
 
 		RecMerc recmerc = null;
+		
+		Integer codcompra = null;
 
 		try {
 
 			if ( tabDet.getLinhaSel() > -1 ) {
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+				codcompra = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCOMPRA.ordinal() );
 
 				recmerc = new RecMerc( this, ticket, con );
+				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
+				if ( statustxt.equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( RecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( RecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
+
+					if(codcompra!=null && codcompra>0) {
+						abrecompra( codcompra );
+					}
+					else {
+					
+						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+
+							codcompra = recmerc.geraCompra();
+
+							if ( codcompra != null && codcompra > 0 ) {
+
+								abrecompra( codcompra );
+
+							}
+						}
+					}
+
+				}
+				else {
+					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
+				}
+
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void geraCotacao() {
+
+		StringBuilder sql = new StringBuilder();
+
+		Integer forneced = null;
+
+		RecMerc recmerc = null;
+		
+		Integer renda = null;
+
+		try {
+
+			if ( tabDet.getLinhaSel() > -1 ) {
+
+				
 
 				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( RecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) ) {
 
-					if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+					forneced = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFOR.ordinal() );
+					
+					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + forneced.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Integer codcompra = recmerc.geraCompra();
+						Integer codsolicitacao = RecMerc.getSolicitacao(this);
+						
+						renda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.RENDA.ordinal() );
+						
+						if ( codsolicitacao != null && codsolicitacao > 0 ) {
 
-						if ( codcompra != null && codcompra > 0 ) {
-
-							abrecompra( codcompra );
+							abreSolicitacao( codsolicitacao, forneced, renda );
 
 						}
 					}
