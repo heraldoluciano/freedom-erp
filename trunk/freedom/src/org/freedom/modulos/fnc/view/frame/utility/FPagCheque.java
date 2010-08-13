@@ -444,6 +444,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		txtCodFor.requestFocus();
 		txtCodFor.addKeyListener( this );
 		txtDatafimPagar.addKeyListener( this );
+		txtSeqtalao.addKeyListener( this );
 		btExeccheq.setFocusable( false );
 		
 	}
