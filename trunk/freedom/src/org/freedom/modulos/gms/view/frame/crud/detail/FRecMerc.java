@@ -265,7 +265,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		txtPlacaTran.setUpperCase( true );
 		txtPlacaTran.setMascara( JTextFieldPad.MC_PLACA );
 
-		txtCodMunic.setAtivo( false );
+//		txtCodMunic.setAtivo( false );
 
 		vValsFrete.addElement( "C" );
 		vValsFrete.addElement( "F" );
@@ -346,11 +346,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicDB( rgFrete, 500, 100, 123, 20, "TipoFrete", "Tipo de frete", false );
 
 		adicCampo( txtCodFor, 7, 140, 70, 20, "CodFor", "Cod.For.", ListaCampos.DB_FK, txtRazFor, true );
-		adicDescFK( txtRazFor, 80, 140, 237, 20, "RazFor", "Razão social do fornecedor" );
+		adicDescFK( txtRazFor, 80, 140, 200, 20, "RazFor", "Razão social do fornecedor" );
 
-		adicCampo( txtCodPais, 320, 140, 28, 20, "CodPais", "País", ListaCampos.DB_SI, false );
-		adicCampo( txtSiglaUF, 351, 140, 23, 20, "SiglaUF", "UF", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodPais, "CodPais", "País", ListaCampos.DB_SI, false );
+		adicCampo( txtSiglaUF, 283, 140, 30, 20, "SiglaUF", "UF", ListaCampos.DB_FK, false );
+		adicCampo( txtCodMunic, 316, 140, 58 , 20, "CodMunic", "Cód.Mun.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescMun, 377, 140, 120, 20, "DescMunic", "Município" );
 
 //		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
