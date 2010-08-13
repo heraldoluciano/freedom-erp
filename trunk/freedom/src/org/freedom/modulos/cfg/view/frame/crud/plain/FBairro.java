@@ -65,9 +65,9 @@ public class FBairro extends FDados implements ActionListener {
 
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
-	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescMunic = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtVlrFrete = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecPre );
 	
@@ -93,8 +93,8 @@ public class FBairro extends FDados implements ActionListener {
 		adicCampo( txtCodBairro, 7, 20, 75, 20, "CodBairro", "Cód.Bairro", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeBairro, 85, 20, 300, 20, "NomeBairro", "Nome do bairro", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtCodMun, 7, 60, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescMun, 85, 60, 140, 20, "NomeMunic", "Nome do municipio" );
+		adicCampo( txtCodMunic, 7, 60, 75, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMunic, 85, 60, 140, 20, "NomeMunic", "Nome do municipio" );
 		
 		adicCampo( txtSiglaUF, 228, 60, 40, 20, "SiglaUf", "UF", ListaCampos.DB_SI, true );
 		adicDescFK( txtNomeUF, 271, 60, 120, 20, "NomeUF", "Nome UF" );
@@ -137,7 +137,7 @@ public class FBairro extends FDados implements ActionListener {
 
 	public void setCodMunic( String codmunic ) {
 
-		txtCodMun.setVlrString( codmunic );
+		txtCodMunic.setVlrString( codmunic );
 		lcMunic.carregaDados();
 	}
 
@@ -162,7 +162,7 @@ public class FBairro extends FDados implements ActionListener {
 		lcUF.setUsaME( false );
 		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
-//		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
 		lcUF.montaSql( false, "UF", "SG" );
 		lcUF.setQueryCommit( false );
 		lcUF.setReadOnly( true );
@@ -173,15 +173,15 @@ public class FBairro extends FDados implements ActionListener {
 		 **************/
 
 		lcMunic.setUsaME( false );
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
-		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
+		lcMunic.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtDescMunic, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_FK, false ) );
 		lcMunic.add( new GuardaCampo( txtCodPais, "CodPais", "País", ListaCampos.DB_FK, false ) );
-//		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
 		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
 		lcMunic.setQueryCommit( false );
 		lcMunic.setReadOnly( true );
-		txtCodMun.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
+		txtCodMunic.setTabelaExterna( lcMunic, FMunicipio.class.getCanonicalName() );
 
 	}
 
