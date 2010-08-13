@@ -421,6 +421,8 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		tabCheq.adicColuna( "Histórico" ); 
 
 		tabCheq.setColunaEditavel( COLS_CHEQ.SEL.ordinal(), true );
+		tabCheq.setColunaEditavel( COLS_CHEQ.VLRCHEQ.ordinal(), true );
+		
 		tabCheq.setTamColuna( 20, COLS_CHEQ.SEL.ordinal() );
 		tabCheq.setTamColuna( 70, COLS_CHEQ.SEQ.ordinal() );
 		tabCheq.setTamColuna( 90, COLS_CHEQ.DTEMIT.ordinal() );
@@ -1140,7 +1142,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	PreparedStatement ps = null;
     	StringBuffer sqlcheq = new StringBuffer();
     	StringBuffer sqltalao = new StringBuffer();
-    	sqlcheq.append( "UPDATE FNCHEQUE SET NUMCHEQ=?, SITCHEQ=? " );
+    	sqlcheq.append( "UPDATE FNCHEQUE SET NUMCHEQ=?, SITCHEQ=?, VLRCHEQ=? " );
     	sqlcheq.append( "WHERE CODEMP=? AND CODFILIAL=? AND SEQCHEQ=?" );
     	sqltalao.append( "UPDATE FNTALAOCHEQ SET CHEQATUALTALAO=? " );
     	sqltalao.append( "WHERE CODEMP=? AND CODFILIAL=? AND NUMCONTA=? AND SEQTALAO=?" );
@@ -1149,9 +1151,10 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     			ps = con.prepareStatement( sqlcheq.toString() );
     			ps.setInt( 1, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ) );
     			ps.setString( 2, "ED" );
-    			ps.setInt( 3, Aplicativo.iCodEmp );
-    			ps.setInt( 4, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
-    			ps.setInt( 5, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.SEQ.ordinal() ) );
+    			ps.setBigDecimal( 3, ConversionFunctions.stringCurrencyToBigDecimal( (String) listacheq.get( i ).elementAt( COLS_CHEQ.VLRCHEQ.ordinal()+1 ) ) );
+    			ps.setInt( 4, Aplicativo.iCodEmp );
+    			ps.setInt( 5, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+    			ps.setInt( 6, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.SEQ.ordinal() ) );
     			ps.executeUpdate();
     			ps.close();
     		}
@@ -1159,9 +1162,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		ps.setInt( 1, cheqatualtalao );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNTALAOCHEQ" ) );
+			ps.setString( 4, numconta );
+			ps.setInt( 5, seqtalao );
+			
 			ps.executeUpdate();
     		con.commit();
     	} catch ( SQLException e ) {
+    		e.printStackTrace();
     		
     	} finally {
     		sqlcheq = null;
