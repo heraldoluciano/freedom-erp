@@ -279,7 +279,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "Total das parcelas" );
 		vLabs.addElement( "Comissionado 1" );
 		vLabs.addElement( "Comissionado 2" );
-		vLabs.addElement( "Valor Pago" );
+		vLabs.addElement( "Valor Pago" );		
+		vLabs.addElement( "Extenso desconto" ); 
+		vLabs.addElement( "Nro.Cheque" );
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "" ); // larg: 10
@@ -324,6 +326,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[_______COMISSIONADO1_______]" );
 		vVals.addElement( "[_______COMISSIONADO2_______]" );
 		vVals.addElement( "[VPAGO_DOCUMENT]" ); // larg: 15
+		vVals.addElement( "[VALOR_EXTENSO_DESC]" ); 
+		vVals.addElement( "[NUM_CHEQ]" ); 
 
 		cbCamposDin = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
 
