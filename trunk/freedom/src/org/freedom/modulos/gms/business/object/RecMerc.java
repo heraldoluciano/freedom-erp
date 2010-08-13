@@ -437,7 +437,8 @@ public class RecMerc implements java.io.Serializable {
 		this.ticket = ticket;
 	}
 
-	private void geraCodCompra() {
+/*	
+private void geraCodCompra() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -466,6 +467,33 @@ public class RecMerc implements java.io.Serializable {
 
 		setCodcompra( codcompra );
 
+	}*/
+	
+	private void geraCodCompra() {
+
+		// através do generator do banco
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codcompra = 1;
+		try {
+			ps = con.prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, "CP" );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				codcompra = rs.getInt( 1 );
+			}
+			
+		} 
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		setCodcompra( codcompra );
+		
 	}
 	
 	
