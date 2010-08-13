@@ -545,8 +545,21 @@ public class FRBoleto extends FRelatorio {
 				catch (Exception e) {
 					System.out.println("Protegendo, caso não exista a coluna na query");
 				}
-				if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 )
+				
+				try {
+					if ( ( sCampo = rs.getString( "NroCheq" ) ) != null && rs.getDouble( "VlrPagoItRec" ) != 0 ) {
+						sTxa = sTxa.replaceAll( "\\[NUM_CHEQ]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					}
+				}
+				catch (Exception e) {
+					System.out.println("Protegendo, caso não exista a coluna na query");
+				}
+				
+				
+				if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 ) {
 					sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					sTxa = sTxa.replaceAll( "\\[VALOR_EXTENSO_DESC]", Extenso.extenso( rs.getDouble( "VlrDescItRec" ), sInfoMoeda[ 0 ], sInfoMoeda[ 1 ], sInfoMoeda[ 2 ], sInfoMoeda[ 3 ] ) ).toUpperCase();
+				}
 				if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODCLI]", Funcoes.copy( sCampo, 0, 8 ) );
 				if ( ( sCampo = rs.getString( "RazCli" ) ) != null )
