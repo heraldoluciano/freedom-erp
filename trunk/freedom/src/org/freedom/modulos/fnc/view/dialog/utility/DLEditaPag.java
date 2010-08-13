@@ -96,7 +96,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
-	public DLEditaPag( Component cOrig ) {
+	public DLEditaPag( Component cOrig, boolean edita ) {
 
 		super( cOrig );
 		setTitulo( "Editar" );
