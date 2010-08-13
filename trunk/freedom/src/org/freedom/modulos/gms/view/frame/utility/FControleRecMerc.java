@@ -307,8 +307,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 		panelMaster.adic( panelFiltros, 4, 0, 935, 120 );
 
-		panelFiltros.adic( scpStatus, 737, 0, 150, 90 );
-		panelFiltros.adic( btAtualiza, 890, 0, 30, 89 );
+		panelFiltros.adic( scpStatus, 587, 0, 150, 90 );
+		panelFiltros.adic( btAtualiza, 740, 0, 30, 89 );
 
 		panelFiltros.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
 		panelFiltros.adic( txtDataini, 7, 20, 70, 20 );
