@@ -1115,7 +1115,8 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	imp.setImpEject( false );
     	Vector<Object> item = null;
     	Map<String, Object> itemMap = null;
-		imp.say( 0, 0, imp.comprimido() );
+    	// imprime comprimido na coluna 2 para utiliar a linha 0
+		imp.say( 0, 2, imp.comprimido() );
     	for ( int i=0; i<listacheq.size(); i++ ) {
     		item = listacheq.get( i );
     		itemMap = montaMap(item); 
