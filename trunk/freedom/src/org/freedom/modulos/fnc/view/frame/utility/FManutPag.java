@@ -135,7 +135,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pinBotoesManut = new JPanelPad( 40, 210 );
 
-	private JPanelPad pinManut = new JPanelPad( 500, 100 );
+	private JPanelPad pinManut = new JPanelPad( 500, 155 );
 
 	private JPanelPad pnManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -150,6 +150,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodForManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodForManut2 = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCNPJForManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -172,18 +174,26 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodPagBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodPagManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDocManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtCodCompraBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtCodCompraManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodForBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCNPJForBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtDtEmisManut = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
@@ -200,6 +210,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldPad txtDatafimManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtRazForManut = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtRazForManut2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtRazForBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -286,10 +298,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private ListaCampos lcForBaixa = new ListaCampos( this );
 
 	private ListaCampos lcForManut = new ListaCampos( this );
+	
+	private ListaCampos lcForManut2 = new ListaCampos( this );
 
 	private ListaCampos lcCompraBaixa = new ListaCampos( this );
 
 	private ListaCampos lcPagBaixa = new ListaCampos( this );
+	
+	private ListaCampos lcPagManut = new ListaCampos( this );
 
 	private ListaCampos lcBancoBaixa = new ListaCampos( this );
 
@@ -582,6 +598,19 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 		tpn.addTab( "Manutenção", pnManut );
 
+		lcPagManut.add( new GuardaCampo( txtCodPagManut, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false ) );
+		lcPagManut.add( new GuardaCampo( txtDocManut, "DocPag", "Doc.pag.", ListaCampos.DB_SI, false ) );
+		lcPagManut.add( new GuardaCampo( txtCodCompraManut, "CodCompra", "Compra", ListaCampos.DB_SI, false ) );
+		lcPagManut.add( new GuardaCampo( txtCodForManut2, "CodFor", "Cod.for.", ListaCampos.DB_FK, false ) );
+		lcPagManut.add( new GuardaCampo( txtDtEmisManut, "DataPag", "Data emissão", ListaCampos.DB_SI, false ) );
+		lcPagManut.montaSql( false, "PAGAR", "FN" );
+		lcPagManut.setQueryCommit( false );
+		lcPagManut.setReadOnly( true );
+		txtCodPagManut.setTabelaExterna( lcPagManut, null );
+		txtCodPagManut.setFK( true );
+		txtCodPagManut.setNomeCampo( "CodPag" );
+
+		
 		btBaixaManut.setToolTipText( "Baixa" );
 		btEditManut.setToolTipText( "Editar" );
 		btNovoManut.setToolTipText( "Novo" );
@@ -608,6 +637,25 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( new JLabelPad( "Descrição do fornecedor" ), 60, 45, 250, 20 );
 		pinManut.adic( txtRazForManut, 60, 65, 180, 20 );
 
+		JLabelPad separacao = new JLabelPad();
+		separacao.setBorder( BorderFactory.createEtchedBorder() );
+		pinManut.adic( separacao, 7, 95, 726, 2 );
+
+		pinManut.adic( new JLabelPad( "Cod.pag." ), 7, 100, 80, 20 );
+		pinManut.adic( txtCodPagManut, 7, 120, 80, 20 );
+		pinManut.adic( new JLabelPad( "Doc." ), 90, 100, 77, 20 );
+		pinManut.adic( txtDocManut, 90, 120, 77, 20 );
+		pinManut.adic( new JLabelPad( "Pedido" ), 170, 100, 77, 20 );
+		pinManut.adic( txtCodCompraManut, 170, 120, 77, 20 );
+		pinManut.adic( new JLabelPad( "Cód.for." ), 250, 100, 300, 20 );
+		pinManut.adic( txtCodForManut2, 250, 120, 77, 20 );
+		pinManut.adic( new JLabelPad( "Razão social do fornecedor" ), 330, 100, 300, 20 );
+		pinManut.adic( txtRazForManut2, 330, 120, 300, 20 );
+		pinManut.adic( new JLabelPad( "Data emissão " ), 633, 100, 100, 20 );
+		pinManut.adic( txtDtEmisManut, 633, 120, 100, 20 );
+
+		
+		
 		vValsData.addElement( "V" );
 		vValsData.addElement( "E" );
 		vLabsData.addElement( "Vencimento" );
@@ -653,6 +701,18 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		txtCodForManut.setFK( true );
 		txtCodForManut.setNomeCampo( "CodFor" );
 
+		lcForManut2.add( new GuardaCampo( txtCodForManut2, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcForManut2.add( new GuardaCampo( txtRazForManut2, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+
+		lcForManut2.montaSql( false, "FORNECED", "CP" );
+		lcForManut2.setQueryCommit( false );
+		lcForManut2.setReadOnly( true );
+
+		txtCodForManut2.setTabelaExterna( lcForManut2, null );
+		txtCodForManut2.setFK( true );
+		txtCodForManut2.setNomeCampo( "CodFor" );
+
+		
 		pinBotoesManut.adic( btBaixaManut, 5, 10, 30, 30 );
 		pinBotoesManut.adic( btEditManut, 5, 40, 30, 30 );
 		pinBotoesManut.adic( btNovoManut, 5, 70, 30, 30 );
@@ -713,6 +773,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 260, 23 );
 
 		lcFor.addCarregaListener( this );
+		lcPagManut.addCarregaListener( this );
 		lcPagBaixa.addCarregaListener( this );
 		btBaixa.addActionListener( this );
 		btBaixaConsulta.addActionListener( this );
@@ -1103,62 +1164,70 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				vDtEmiss.clear();
 				vCodPed.clear();
 
-				sWhereManut.append( " AND " );
-				sWhereManut.append( "V".equals( rgData.getVlrString() ) ? "IT.DTVENCITPAG" : "IT.DTITPAG" );
-				sWhereManut.append( " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?" );
 
-				if ( "S".equals( cbPagas.getVlrString() ) || "S".equals( cbAPagar.getVlrString() ) || "S".equals( cbPagParcial.getVlrString() ) || "S".equals( cbCanceladas.getVlrString() ) ) {
-
-					boolean bStatus = false;
-
-					if ( "S".equals( cbPagas.getVlrString() ) ) {
-						sWhereStatus.append( "IT.STATUSITPAG='PP'" );
-						bStatus = true;
-					}
-					if ( "S".equals( cbAPagar.getVlrString() ) ) {
-						sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='P1'" : " IT.STATUSITPAG='P1'" );
-						bStatus = true;
-					}
-					if ( "S".equals( cbPagParcial.getVlrString() ) ) {
-						sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='PL'" : " IT.STATUSITPAG='PL'" );
-						bStatus = true;
-					}
-					if ( "S".equals( cbCanceladas.getVlrString() ) ) {
-						sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='CP'" : " IT.STATUSITPAG='CP'" );
-					}
-
-					sWhereManut.append( " AND (" );
-					sWhereManut.append( sWhereStatus );
-					sWhereManut.append( ")" );
-				}
+				if(txtCodPagManut.getVlrInteger()>0){
+					sWhereManut.append( " and IT.CODEMP="+Aplicativo.iCodEmp+ " AND IT.CODFILIAL=" + lcPagManut.getCodFilial()+ " AND IT.CODPAG= " + txtCodPagManut.getVlrInteger()+ " " );
+				}	
 				else {
-
-					Funcoes.mensagemInforma( null, "Você deve selecionar ao menos um filtro de status!" );
-					return;
-				}
-
-				if ( !"TT".equals( rgVenc.getVlrString() ) ) {
-
-					sWhereManut.append( " AND IT.DTVENCITPAG" );
-
-					if ( "VE".equals( rgVenc.getVlrString() ) ) {
-
-						sWhereManut.append( " <'" );
-						sWhereManut.append( Funcoes.dateToStrDB( new Date() ) );
-						sWhereManut.append( "'" );
+					
+					sWhereManut.append( " AND " );
+					sWhereManut.append( "V".equals( rgData.getVlrString() ) ? "IT.DTVENCITPAG" : "IT.DTITPAG" );
+					sWhereManut.append( " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?" );
+					
+					if ( "S".equals( cbPagas.getVlrString() ) || "S".equals( cbAPagar.getVlrString() ) || "S".equals( cbPagParcial.getVlrString() ) || "S".equals( cbCanceladas.getVlrString() ) ) {
+	
+						boolean bStatus = false;
+	
+						if ( "S".equals( cbPagas.getVlrString() ) ) {
+							sWhereStatus.append( "IT.STATUSITPAG='PP'" );
+							bStatus = true;
+						}
+						if ( "S".equals( cbAPagar.getVlrString() ) ) {
+							sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='P1'" : " IT.STATUSITPAG='P1'" );
+							bStatus = true;
+						}
+						if ( "S".equals( cbPagParcial.getVlrString() ) ) {
+							sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='PL'" : " IT.STATUSITPAG='PL'" );
+							bStatus = true;
+						}
+						if ( "S".equals( cbCanceladas.getVlrString() ) ) {
+							sWhereStatus.append( bStatus ? " OR IT.STATUSITPAG='CP'" : " IT.STATUSITPAG='CP'" );
+						}
+	
+						sWhereManut.append( " AND (" );
+						sWhereManut.append( sWhereStatus );
+						sWhereManut.append( ")" );
 					}
 					else {
-
-						sWhereManut.append( " >='" );
-						sWhereManut.append( Funcoes.dateToStrDB( new Date() ) );
-						sWhereManut.append( "'" );
+	
+						Funcoes.mensagemInforma( null, "Você deve selecionar ao menos um filtro de status!" );
+						return;
 					}
-				}
-
-				if ( !"".equals( txtCodForManut.getText().trim() ) ) {
-
-					sWhereManut.append( " AND P.CODFOR=" );
-					sWhereManut.append( txtCodForManut.getText().trim() );
+	
+					if ( !"TT".equals( rgVenc.getVlrString() ) ) {
+	
+						sWhereManut.append( " AND IT.DTVENCITPAG" );
+	
+						if ( "VE".equals( rgVenc.getVlrString() ) ) {
+	
+							sWhereManut.append( " <'" );
+							sWhereManut.append( Funcoes.dateToStrDB( new Date() ) );
+							sWhereManut.append( "'" );
+						}
+						else {
+	
+							sWhereManut.append( " >='" );
+							sWhereManut.append( Funcoes.dateToStrDB( new Date() ) );
+							sWhereManut.append( "'" );
+						}
+					}
+	
+					if ( !"".equals( txtCodForManut.getText().trim() ) ) {
+	
+						sWhereManut.append( " AND P.CODFOR=" );
+						sWhereManut.append( txtCodForManut.getText().trim() );
+					}
+					
 				}
 
 				sSQL.append( "SELECT IT.DTITPAG,IT.DTVENCITPAG,IT.STATUSITPAG,P.CODFOR,F.RAZFOR,P.CODPAG," );
@@ -1186,11 +1255,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				try {
 
 					ps = con.prepareStatement( sSQL.toString() );
-					ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
-					ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-
+					
+					if(! (txtCodPagManut.getVlrInteger()>0) ){
+						
+						ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
+						ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
+						ps.setInt( 3, Aplicativo.iCodEmp );
+						ps.setInt( 4, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+					
+					}
+					
 					rs = ps.executeQuery();
 
 					double bdVlrAPagar = 0.0;
@@ -1583,7 +1657,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				 */
 				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
 
-				if ( imgStatusAt != imgPago ) {
+//				if ( imgStatusAt != imgPago ) {
 
 					iLin = tabManut.getLinhaSel();
 
@@ -1592,7 +1666,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					sVals = new String[ 15 ];
 
-					dl = new DLEditaPag( this );
+					dl = new DLEditaPag( this, imgStatusAt != imgPago );
 
 					sVals[ 0 ] = (String) tabManut.getValor( iLin, 3 );
 					sVals[ 1 ] = (String) tabManut.getValor( iLin, 4 );
@@ -1620,7 +1694,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					dl.setConexao( con );
 					dl.setVisible( true );
 
-					if ( dl.OK ) {
+					if ( dl.OK && imgStatusAt != imgPago) {
 
 						sRets = dl.getValores();
 
@@ -1739,7 +1813,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							Funcoes.mensagemErro( this, "Erro ao editar parcela!\n" + err.getMessage(), true, con, err );
 							err.printStackTrace();
 						}
-					}
+	//				}
 
 					dl.dispose();
 					carregaGridManut();
@@ -2012,6 +2086,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			carregaConsulta();
 		}
+		if ( cevt.getListaCampos() == lcPagManut ) {
+			carregaGridManut();
+		}
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -2139,9 +2216,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		lcFor.setConexao( cn );
 		lcForBaixa.setConexao( cn );
 		lcForManut.setConexao( cn );
+		lcForManut2.setConexao( cn );
 		lcCompraBaixa.setConexao( cn );
 		lcBancoBaixa.setConexao( cn );
 		lcPagBaixa.setConexao( cn );
+		lcPagManut.setConexao( cn );
 		prefere = getPrefere();
 
 		iAnoCC = (Integer) prefere.get( "anocc" );
