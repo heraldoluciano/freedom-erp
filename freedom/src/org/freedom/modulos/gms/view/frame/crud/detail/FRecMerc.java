@@ -58,6 +58,8 @@ import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
+import sun.security.krb5.internal.Ticket;
+
 public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
 	// *** Constantes
@@ -816,11 +818,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			if(cbBairro.getSelectedItem()==null) {
 			
-				imp.say( imp.pRow(), 68, txtDescMun.getVlrString() );
+				imp.say( imp.pRow(), 77, txtDescMun.getVlrString() );
 			
 			}
 			else {
-				imp.say( imp.pRow(), 68, cbBairro.getSelectedItem().toString() );
+				imp.say( imp.pRow(), 77, cbBairro.getSelectedItem().toString() );
 			}
 
 			imp.pulaLinha( 3, imp.comprimido() );
@@ -835,7 +837,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			imp.say( imp.pRow(), 0, " " + imp.normal() );
 
-			imp.say( imp.pRow(), 48, StringFunctions.strZero( interno, 10 ) );
+			imp.say( imp.pRow(), 48, StringFunctions.strZero( txtTicket.getVlrString(), 10 ) );
 
 			imp.pulaLinha( 1, imp.comprimido() );
 
