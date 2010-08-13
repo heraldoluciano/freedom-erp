@@ -1314,6 +1314,19 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		txtCodSolicitacao.setVlrString( iCodCompra + "" );
 		lcCampos.carregaDados();
 	}
+	
+	public void abreCotacao( int codsolicitacao, int codfor, int renda ) {
+
+		txtCodSolicitacao.setVlrInteger( codsolicitacao );
+		
+		lcCampos.carregaDados();
+		
+		lcCotacao.insert( true );
+		txtCodFor.setVlrInteger( codfor );
+		lcFor.carregaDados();
+		txtRendaCot.setVlrInteger( renda );
+		txtPrecoCot.requestFocus();
+	}
 
 	public void execDev( int iCodFor, int iCodTipoMov, String sSerie, int iDoc ) {
 
