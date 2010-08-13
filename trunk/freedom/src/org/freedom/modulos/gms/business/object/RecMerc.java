@@ -467,6 +467,8 @@ public class RecMerc implements java.io.Serializable {
 		setCodcompra( codcompra );
 
 	}
+	
+	
 
 	private void geraCodFrete() {
 
@@ -964,7 +966,7 @@ public class RecMerc implements java.io.Serializable {
 		}
 		return ret;
 	}
-
+	
 	public Integer geraOrcamento() {
 
 		StringBuilder sql = new StringBuilder();
@@ -1159,6 +1161,36 @@ public class RecMerc implements java.io.Serializable {
 			e.printStackTrace();
 		}
 		return codplanopag;
+	}
+	
+	public static Integer getSolicitacao(Component orig) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codsol = 1;
+
+		try {
+
+			sql.append( "select coalesce(max(codsol),0) from cpsolicitacao " );
+			sql.append( "where sitsol='AT' and codemp=? and codfilial=? " );
+
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPSOLICITACAO" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				codsol = rs.getInt( 1 );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return codsol;
 	}
 
 	private void getCodVendTela() {
