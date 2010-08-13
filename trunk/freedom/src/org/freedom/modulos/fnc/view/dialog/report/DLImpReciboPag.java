@@ -143,7 +143,8 @@ public class DLImpReciboPag extends FDialogo {
 		sSQL.append( "null codorc, null nomeconv, ip.obsitpag obsorc, p.codcompra docvenda, p.codcompra codvenda, p.codpag reciboitrec, null nomevend, null nomevend2, null nomevend3, null nomevend4, " );
 		
 		if(txtNumCheque.getVlrInteger()>0) {
-			sSQL.append( "(select first 1 ch.vlrcheq from fncheque ch where ch.contacheq=ip.numconta and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") vlrpagoitrec ");	
+			sSQL.append( "(select first 1 ch.vlrcheq from fncheque ch where ch.contacheq=ip.numconta and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") vlrpagoitrec, ");	
+			sSQL.append( "(select first 1 ch.numcheq from fncheque ch where ch.contacheq=ip.numconta and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") numcheq ");
 		}
 		else {
 		
