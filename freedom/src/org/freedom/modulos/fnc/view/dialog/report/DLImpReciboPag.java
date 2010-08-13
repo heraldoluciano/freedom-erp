@@ -47,6 +47,8 @@ public class DLImpReciboPag extends FDialogo {
 	private static final long serialVersionUID = 1L;
 
 	public JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	public JTextFieldPad txtNumCheque = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -70,7 +72,7 @@ public class DLImpReciboPag extends FDialogo {
 
 		super();
 		
-		setAtribos( 370, 150 );
+		setAtribos( 370, 160 );
 		setTitulo( "Impressão de Recibo" );
 
 		this.con = con;
@@ -107,6 +109,11 @@ public class DLImpReciboPag extends FDialogo {
 		adic( txtCodModBol, 7, 30, 80, 20 );
 		adic( new JLabelPad( "Descrição do modelo de recibo" ), 90, 10, 220, 20 );
 		adic( txtDescModBol, 90, 30, 250, 20 );
+		
+		adic( new JLabelPad( "Cheque" ), 7, 50, 80, 20 );
+		adic( txtNumCheque, 7, 70, 80, 20 );
+		
+		
 	}
 
 	public void imprimir() {
@@ -133,9 +140,18 @@ public class DLImpReciboPag extends FDialogo {
 		sSQL.append( "(SELECT COUNT(*) FROM FNITPAGAR ITP2 " );
 		sSQL.append( "WHERE ITP2.CODPAG=P.CODPAG AND ITP2.CODEMP=P.CODEMP AND ITP2.CODFILIAL=P.CODFILIAL) PARCS, ");
 		
-		sSQL.append( "null codorc, null nomeconv, ip.obsitpag obsorc, p.codcompra docvenda, p.codcompra codvenda, p.codpag reciboitrec, null nomevend, null nomevend2, null nomevend3, null nomevend4 " );
+		sSQL.append( "null codorc, null nomeconv, ip.obsitpag obsorc, p.codcompra docvenda, p.codcompra codvenda, p.codpag reciboitrec, null nomevend, null nomevend2, null nomevend3, null nomevend4, " );
+		
+		if(txtNumCheque.getVlrInteger()>0) {
+			sSQL.append( "(select first 1 ch.vlrcheq from fncheque ch where ch.contacheq=ip.numconta and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") vlrpagoitrec ");	
+		}
+		else {
+		
+			sSQL.append( "ip.vlrpagoitpag vlrpagoitrec " );
+		}
 		
 		sSQL.append( "FROM CPFORNECED F, FNPAGAR P, SGPREFERE1 PF, FNMOEDA M, FNMODBOLETO MB, FNITPAGAR IP, SGFILIAL FI ");
+				
 		sSQL.append( "WHERE ");
 		sSQL.append( "F.CODEMP=P.codempfr AND F.CODFILIAL=P.codfilialfr AND F.codfor=P.codfor ");
 
@@ -172,7 +188,6 @@ public class DLImpReciboPag extends FDialogo {
 		}
 	}
 
-	
 	public void imprimeTexto( final boolean bVisualizar, final ResultSet rs ) throws Exception {
 
 		String sVal = null;
