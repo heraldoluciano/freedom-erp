@@ -1216,6 +1216,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		int pos = 0;
 		int ini = 0;
 		int posx = 0;
+		boolean imprimiu = false;
 		for ( int i=0; i<layout.length; i++ ) {
     		// [LIN=01|COL=50|TAM=12|CAMPO=VLRCHEQ]
     		pos = layout[i].indexOf( "LIN=" );
@@ -1274,11 +1275,17 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		    			}
 		    			if (pos>=0) {
 		    				imp.say( lin, col, valor );
+		    				if (!imprimiu) {
+		    					imprimiu = true;
+		    				}
 		    			}
 	    			}
     			}
     		}
     	}
+		if ( imprimiu ) {
+			imp.say( imp.pRow(), imp.pCol()+1, "\n" );
+		}
     }
     
     private String completaTexto( String valor, int tam, String completa ) {
