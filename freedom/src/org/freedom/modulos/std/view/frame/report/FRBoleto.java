@@ -534,10 +534,17 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[VALOR_DOCUMEN]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 					sTxa = sTxa.replaceAll( "\\[VALOR_EXTENSO]", Extenso.extenso( rs.getDouble( "VlrParcItRec" ), sInfoMoeda[ 0 ], sInfoMoeda[ 1 ], sInfoMoeda[ 2 ], sInfoMoeda[ 3 ] ) ).toUpperCase();
 				}
-				if ( ( sCampo = rs.getString( "VlrApagItRec" ) ) != null && rs.getDouble( "VlrApagItRec" ) != 0 )
+				if ( ( sCampo = rs.getString( "VlrApagItRec" ) ) != null && rs.getDouble( "VlrApagItRec" ) != 0 ) {
 					sTxa = sTxa.replaceAll( "\\[VLIQ_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
-				if ( ( sCampo = rs.getString( "VlrPagoItRec" ) ) != null && rs.getDouble( "VlrPagoItRec" ) != 0 )
-					sTxa = sTxa.replaceAll( "\\[VPAGO_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+				}
+				try {
+					if ( ( sCampo = rs.getString( "VlrPagoItRec" ) ) != null && rs.getDouble( "VlrPagoItRec" ) != 0 ) {
+						sTxa = sTxa.replaceAll( "\\[VPAGO_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					}
+				}
+				catch (Exception e) {
+					System.out.println("Protegendo, caso não exista a coluna na query");
+				}
 				if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 )
 					sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
