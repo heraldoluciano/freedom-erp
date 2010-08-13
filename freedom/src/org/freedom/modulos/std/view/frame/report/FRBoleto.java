@@ -536,6 +536,8 @@ public class FRBoleto extends FRelatorio {
 				}
 				if ( ( sCampo = rs.getString( "VlrApagItRec" ) ) != null && rs.getDouble( "VlrApagItRec" ) != 0 )
 					sTxa = sTxa.replaceAll( "\\[VLIQ_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+				if ( ( sCampo = rs.getString( "VlrPagoItRec" ) ) != null && rs.getDouble( "VlrPagoItRec" ) != 0 )
+					sTxa = sTxa.replaceAll( "\\[VPAGO_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 )
 					sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
