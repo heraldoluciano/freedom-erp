@@ -630,7 +630,7 @@ public class ImprimeOS implements ActionListener {
 			gravaTexto(( ( char ) 13 ) + "");
 			iCol = 0;
 		}
-		if (iR != 0) {
+		if ( (iR != 0) || ( (iR == 0) && (iRow==0) ) ) {
 			sTexto = space(( iC - iCol ) - 1) + sTexto;
 		}
 		gravaTexto(sTexto);
