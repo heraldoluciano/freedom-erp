@@ -527,11 +527,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFILIALPD.toString() ), irow, enum_itcompra.CODFILIALPD.ordinal() );
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODPROD.toString() ), irow, enum_itcompra.CODPROD.ordinal() );
 					tabitcompra.setValor( rs.getString( enum_itcompra.DESCPROD.toString() ), irow, enum_itcompra.DESCPROD.ordinal() );
-
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.PRECOITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
+ 
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.PRECOITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
+					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
 
 					tabitcompra.setValor( "", irow, enum_itcompra.TPAGRUP.ordinal() );
 					tabitcompra.setValor( "", irow, enum_itcompra.AGRUP.ordinal() );
@@ -570,6 +570,36 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			e.printStackTrace();
 		}
 
+	}
+	
+	private Integer geraCodCompra() { // Traz o verdadeiro número do codCompra
+		// através do generator do banco
+		
+		Integer ret = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = con.prepareStatement( "SELECT * FROM SPGERANUM(?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, "CP" );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				ret = rs.getInt( 1 ) ;
+			}
+			
+			// rs.close();
+			// ps.close();
+			con.commit();
+			
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao confirmar código da Compra!\n" + err.getMessage(), true, con, err );
+		}
+		return ret;
 	}
 
 	private boolean geraCompra() {
@@ -617,7 +647,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				diag.setConexao( con );
 
-				diag.setNewCodigo( Integer.parseInt( telacompra.lcCampos.getNovoCodigo() ) );
+//				diag.setNewCodigo( Integer.parseInt( telacompra.lcCampos.getNovoCodigo() ) );
+				diag.setNewCodigo( geraCodCompra() );
 
 				diag.setVisible( true );
 
