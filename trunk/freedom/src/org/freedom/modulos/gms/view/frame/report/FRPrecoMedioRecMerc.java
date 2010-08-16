@@ -47,6 +47,8 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 
 public class FRPrecoMedioRecMerc extends FRelatorio {
 
@@ -67,11 +69,24 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 	private ListaCampos lcTransp = new ListaCampos( this );
 
 	private ListaCampos lcForneced = new ListaCampos( this );
+	
+	private ListaCampos lcProduto = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcAlmox = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 
 	public FRPrecoMedioRecMerc() {
 
 		setTitulo( "Relação de preço médio diário" );
-		setAtribos( 80, 80, 380, 280 );
+		setAtribos( 80, 80, 380, 360 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -94,6 +109,31 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		lcForneced.setReadOnly( true );
 		lcForneced.montaSql( false, "FORNECED", "CP" );
 		
+		// * Almoxarifado (
+		
+		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false ) );
+		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+		lcAlmox.montaSql( false, "ALMOX", "EQ" );
+		lcAlmox.setReadOnly( true );
+		lcAlmox.setQueryCommit( false );
+		
+		txtCodAlmox.setTabelaExterna( lcAlmox, FAlmox.class.getCanonicalName() );
+		txtCodAlmox.setNomeCampo( "CodAlmox" );
+		txtCodAlmox.setFK( true );
+		
+		// * Produto (
+
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+
+		txtCodProd.setTabelaExterna( lcProduto, FProduto.class.getCanonicalName() );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+
+		lcProduto.setReadOnly( true );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+
+		
 		JPanelPad pnPeriodo = new JPanelPad();
 		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
 
@@ -107,7 +147,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
 
-		adic( pnFiltros, 4, 75, 325, 120 );
+		adic( pnFiltros, 4, 75, 325, 200 );
 
 		pnFiltros.adic( new JLabelPad( "Cód.Tran." ), 4, 5, 70, 20 );
 		pnFiltros.adic( txtCodTran, 4, 25, 70, 20 );
@@ -120,6 +160,19 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 		pnFiltros.adic( new JLabelPad( "Nome do fornecedor" ), 77, 45, 230, 20 );
 		pnFiltros.adic( txtNomeFor, 77, 65, 230, 20 );
+		
+		pnFiltros.adic( new JLabelPad( "Cód.Prod." ), 4, 85, 70, 20 );
+		pnFiltros.adic( txtCodProd, 4, 105, 70, 20 );
+
+		pnFiltros.adic( new JLabelPad( "Descrição do produto" ), 77, 85, 230, 20 );
+		pnFiltros.adic( txtDescProd, 77, 105, 230, 20 );
+		
+		pnFiltros.adic( new JLabelPad( "Cód.Almox." ), 4, 125, 70, 20 );
+		pnFiltros.adic( txtCodAlmox, 4, 145, 70, 20 );
+
+		pnFiltros.adic( new JLabelPad( "Descrição do almoxarifado" ), 77, 125, 230, 20 );
+		pnFiltros.adic( txtDescAlmox, 77, 145, 230, 20 ); 
+		
 
 	}
 
@@ -163,6 +216,13 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		if ( txtCodFor.getVlrInteger() > 0 ) {
 			sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
 		}
+		if ( txtCodProd.getVlrInteger() > 0 ) {
+			sql.append( "and rm.codemppd=? and rm.codfilialpd=? and rm.codprod=? and ic.codemppd=? and ic.codfilialpd=? and ic.codprod=? " );
+		}
+		if ( txtCodAlmox.getVlrInteger() > 0 ) {
+			sql.append( "and rm.codempax=? and rm.codfilialax=? and rm.codalmox=? " );
+		}
+
 
 		sql.append( " order by rm.dtent,rm.ticket " );
 
@@ -197,6 +257,27 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 				sCab.append( "Fornecedor: " + txtNomeFor.getVlrString() + "\n" );
 			}
+			if ( txtCodProd.getVlrInteger() > 0 ) {
+				
+				ps.setInt( param++, lcProduto.getCodEmp() );
+				ps.setInt( param++, lcProduto.getCodFilial() );
+				ps.setInt( param++, txtCodProd.getVlrInteger() );
+				
+				ps.setInt( param++, lcProduto.getCodEmp() );
+				ps.setInt( param++, lcProduto.getCodFilial() );
+				ps.setInt( param++, txtCodProd.getVlrInteger() );
+
+				sCab.append( "Produto: " + txtDescProd.getVlrString() + "\n" );				
+			}
+			if ( txtCodAlmox.getVlrInteger() > 0 ) {
+				
+				ps.setInt( param++, lcAlmox.getCodEmp() );
+				ps.setInt( param++, lcAlmox.getCodFilial() );
+				ps.setInt( param++, txtCodAlmox.getVlrInteger() );
+				
+				sCab.append( "Almoxarifado: " + txtDescAlmox.getVlrString() + "\n" );				
+			}
+			
 			
 			System.out.println( "SQL:" + sql.toString() );
 
@@ -240,6 +321,8 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 
 		lcTransp.setConexao( cn );
 		lcForneced.setConexao( cn );
+		lcProduto.setConexao( cn );
+		lcAlmox.setConexao( cn );
 
 	}
 }
