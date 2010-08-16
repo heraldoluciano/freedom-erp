@@ -58,8 +58,6 @@ import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
-import sun.security.krb5.internal.Ticket;
-
 public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener, KeyListener {
 
 	// *** Constantes
