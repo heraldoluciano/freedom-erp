@@ -308,7 +308,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[__CEP__]" ); // larg: 9
 		vVals.addElement( "[___________BAIRRO___________]" ); // larg: 30
 		vVals.addElement( "[___________CIDADE___________]" ); // larg: 30
-		vVals.addElement( "[UF]" ); // larg: 2
+		vVals.addElement( "[UF]" ); // larg: 2h
 		vVals.addElement( "[__TELEFONE___]" ); // larg: 15
 		vVals.addElement( "[DDD]" );// larg: 4
 		vVals.addElement( "[CODNAT]" ); // larg: 8
