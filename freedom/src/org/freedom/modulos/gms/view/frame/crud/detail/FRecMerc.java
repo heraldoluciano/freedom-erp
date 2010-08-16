@@ -147,6 +147,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldPad txtRendaAmostragem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtDataPesagem = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtEnt = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtHoraPesagem = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
@@ -331,7 +333,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicCampo( txtPlacaTran, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true );
 
 		adicCampo( txtCodTipoRecMerc, 153, 20, 40, 20, "CodTipoRecMerc", "Cód.T.", ListaCampos.DB_FK, txtDescTipoRecMerc, true );
-		adicDescFK( txtDescTipoRecMerc, 196, 20, 301, 20, "DescTipoRecMerc", "Tipo de recebimento" );
+		adicDescFK( txtDescTipoRecMerc, 196, 20, 228, 20, "DescTipoRecMerc", "Tipo de recebimento" );
+		
+		adicCampo( txtDtEnt, 427, 20, 70, 20, "DtEnt", "Data", ListaCampos.DB_SI, true );
 
 		adicCampo( txtCodProdCab, 7, 60, 70, 20, "CodProd", "Cod.Pd.", ListaCampos.DB_FK, txtDescProdCab, true );
 		adicDescFK( txtDescProdCab, 80, 60, 200, 20, "DescProd", "Descrição do Produto" );
