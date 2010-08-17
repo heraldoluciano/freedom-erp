@@ -264,5 +264,30 @@ public final class ConversionFunctions {
 		return ret;
 
 	}
+	
+	public static String bigDecimalToStr(BigDecimal vlr) {
+		String retorno = null;
+		if (vlr == null) {
+			retorno = "0";
+		}
+		else {
+			retorno = String.valueOf(vlr);
+		}
+		return retorno;
+	}
+	
+	public static String dateToStrDate(Date dVal) {
+		String ret = "";
+		if (dVal != null) {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(dVal);
+			int iAno = cal.get(Calendar.YEAR);
+			int iMes = cal.get(Calendar.MONTH) + 1;
+			int iDia = cal.get(Calendar.DAY_OF_MONTH);
+			ret = StringFunctions.strZero(String.valueOf(iDia), 2) + "/" + StringFunctions.strZero(String.valueOf(iMes), 2) + "/" + String.valueOf(iAno);
+		}
+		return ret;
+
+	}
 
 }
