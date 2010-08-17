@@ -45,14 +45,16 @@ public class FCartCob extends FDados implements ActionListener {
 	private final JTextFieldPad txtDescCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtVariacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
 	public FCartCob() {
 
 		super();
-		setTitulo( "Cadastro de tipos de clientes" );
-		setAtribos( 50, 50, 420, 180 );
+		setTitulo( "Cadastro de carteiras de cobrança" );
+		setAtribos( 50, 50, 420, 200 );
 
 		montaListaCampos();
 
@@ -64,12 +66,13 @@ public class FCartCob extends FDados implements ActionListener {
 
 	private void montaTela() {
 
-		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód. banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 90, 30, 300, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtCodBanco, 7, 20, 80, 20, "CodBanco", "Cód. banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 90, 20, 300, 20, "NomeBanco", "Nome do banco" );
 
-		adicCampo( txtCodCartCob, 7, 70, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescCartCob, 90, 70, 237, 20, "DescCartCob", "Descrição da carteira de cobraça", ListaCampos.DB_SI, true );
-		adicCampo( txtCartCobCnab, 330, 70, 60, 20, "CartCobCnab", "Cód. cnab", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCartCob, 7, 60, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescCartCob, 90, 60, 237, 20, "DescCartCob", "Descrição da carteira de cobraça", ListaCampos.DB_SI, true );		
+		adicCampo( txtCartCobCnab, 330, 60, 60, 20, "CartCobCnab", "Cód. cnab", ListaCampos.DB_SI, true );
+		adicCampo( txtVariacao, 7, 100, 80, 20, "VariacaoCartCob", "Variação", ListaCampos.DB_SI, false );
 
 	}
 
@@ -78,7 +81,9 @@ public class FCartCob extends FDados implements ActionListener {
 		/***************
 		 * FNBANCO *
 		 ***************/
-
+		Integer numero = new Integer(0);
+		new Long(numero.longValue());
+		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
