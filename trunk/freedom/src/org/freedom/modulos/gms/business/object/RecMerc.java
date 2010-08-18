@@ -106,6 +106,10 @@ public class RecMerc implements java.io.Serializable {
 	private Date dtent = null;
 	
 	private BigDecimal precopeso = null;
+	
+	private enum COLS_ITRECMERC {
+		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODEMPPD, REFPROD, CODFILIALPD, CODPROD, CODEMPNS, CODFILIALNS, NUMSERIE, GARANTIA, QTDITRECMERC, OBSITRECMERC;
+	}
 
 	public static ImageIcon getImagem( String status, String tamanho ) {
 
@@ -1081,6 +1085,8 @@ private void geraCodCompra() {
 		return getCodorc();
 
 	}
+	
+	
 
 	public Integer geraItemCompra( Integer codcompra ) {
 
@@ -1129,6 +1135,147 @@ private void geraCodCompra() {
 		}
 
 		return getCodcompra();
+
+	}
+	
+	public Vector<HashMap<String,Object>> carregaItRecMerc() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Vector<HashMap<String,Object>> ret = new Vector<HashMap<String,Object>>();
+		
+		try {
+
+			sql.append( "select " );
+			sql.append( COLS_ITRECMERC.CODEMP.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.CODFILIAL.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.TICKET.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.CODITRECMERC.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.CODEMPPD.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.CODFILIALPD.name() );
+			sql.append( "," );
+			sql.append( COLS_ITRECMERC.CODPROD.name() );
+			
+			sql.append( " from " );
+			sql.append( "eqitrecmerc " );
+			
+			sql.append( "where " );
+			
+			sql.append( "codemp=? and codfilial=? and ticket=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, getTicket() );
+			
+			
+			rs = ps.executeQuery();
+			
+			
+
+			while (rs.next()) {
+			
+				HashMap<String, Object> item = new HashMap<String, Object>();
+				
+				item.put( COLS_ITRECMERC.CODEMP.name(), rs.getInt( COLS_ITRECMERC.CODEMP.name() ) );
+				item.put( COLS_ITRECMERC.CODFILIAL.name(), rs.getInt( COLS_ITRECMERC.CODFILIAL.name() ) );
+				item.put( COLS_ITRECMERC.TICKET.name(), rs.getInt( COLS_ITRECMERC.TICKET.name() ) );
+				item.put( COLS_ITRECMERC.CODITRECMERC.name(), rs.getInt( COLS_ITRECMERC.CODITRECMERC.name() ) );
+				item.put( COLS_ITRECMERC.CODEMPPD.name(), rs.getInt( COLS_ITRECMERC.CODEMPPD.name() ) );
+				item.put( COLS_ITRECMERC.CODFILIALPD.name(), rs.getInt( COLS_ITRECMERC.CODFILIALPD.name() ) );
+				item.put( COLS_ITRECMERC.CODPROD.name(), rs.getInt( COLS_ITRECMERC.CODPROD.name() ) );
+				
+				ret.add( item );
+				
+			}
+			
+			con.commit();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
+		
+	}
+	
+	public Vector<Integer> gerarRma( ) {
+
+		StringBuilder sql = new StringBuilder();
+
+		BigDecimal pesoliq = null;
+		BigDecimal peso1 = null;
+		BigDecimal peso2 = null;
+		String unid = null;
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+		Vector<Integer> ret = new Vector<Integer>();
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select codrma from eqgerarmaossp(?,?,?,?)" );
+
+			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
+
+			if(itens!=null && itens.size()>0) {
+
+				int i= 0;
+				
+				for(i = 0; i<itens.size(); i++) {
+
+					// Gerar RMA para os ítens
+					
+					ps = con.prepareStatement( sql.toString() );
+
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+					ps.setInt( 3, getTicket() );
+					
+					HashMap<String, Object> item = (HashMap<String,Object>) itens.get( i );
+					Integer coditrecmerc = (Integer)item.get( COLS_ITRECMERC.CODITRECMERC.name() );
+					
+					ps.setInt( 4, coditrecmerc );
+					
+					rs = ps.executeQuery();
+					
+					while (rs.next()) {
+						
+						ret.add( rs.getInt( "CODRMA" ) );
+						
+					}
+					
+					
+					ps.close();
+
+				}
+				
+				if(i>0) {
+					Funcoes.mensagemInforma( orig, "RMAs geradas com sucesso!!!" );
+				}
+				
+			}
+			else {
+				Funcoes.mensagemErro( orig, "Nenhum item de Ordem de serviço encontrado!" );				
+			}
+			
+			
+
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar rma!", true, con, e );
+			setCodcompra( null );
+			e.printStackTrace();
+		}
+
+		return ret;
 
 	}
 
