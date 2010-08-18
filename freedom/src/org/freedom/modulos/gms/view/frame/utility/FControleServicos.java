@@ -186,6 +186,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
+	
+	private JButtonPad btRma = new JButtonPad( Icone.novo( "btRma.gif" ) );
 
 	private JTablePad tabstatus = new JTablePad();
 
@@ -198,7 +200,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMA;
 	}
 
 	public FControleServicos() {
@@ -276,6 +278,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		btEditar.addActionListener( this );
 		btCompra.addActionListener( this );
 		btOrcamento.addActionListener( this );
+		btRma.addActionListener( this );
 
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
@@ -397,6 +400,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		panelNavegador.add( btEditar );
 		panelNavegador.add( btCompra );
 		panelNavegador.add( btOrcamento );
+		panelNavegador.add( btRma );
 
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
 
@@ -424,6 +428,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.adicColuna( "Cod.Cli." );
 		tabDet.adicColuna( "Cliente" );
 		tabDet.adicColuna( "Orc." );
+		tabDet.adicColuna( "Rma" );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -432,8 +437,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );
-		tabDet.setTamColuna( 400, DETALHAMENTO.NOMECLI.ordinal() );
+		tabDet.setTamColuna( 350, DETALHAMENTO.NOMECLI.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODORC.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODRMA.ordinal() );
 
 		// tabDet.setColunaInvisivel( 2 );
 
@@ -576,6 +582,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		else if ( e.getSource() == btOrcamento ) {
 			geraOrcamento();
 		}
+		else if ( e.getSource() == btRma ) {
+			gerarRma();
+		}
+
 
 	}
 
@@ -868,7 +878,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 					}
 					else {
-						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda não foi finalizado!" );
+						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda encontra-se pendente!\nPara gerar orçamento deve estar 'Em Análise'!" );
 					}
 
 				}
@@ -876,6 +886,74 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					// Se já existir um orçamento deve abri-lo
 
 					abreorcamento( Integer.parseInt( codorcgrid ) );
+
+				}
+
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void gerarRma() {
+
+		StringBuilder sql = new StringBuilder();
+		Integer ticket = null;
+		PreparedStatement ps = null;
+
+		RecMerc recmerc = null;
+
+		try {
+
+			if ( tabDet.getLinhaSel() > -1 ) {
+
+				String codrmagrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMA.ordinal() ).toString();
+
+				// Se nao houver RMA.. deve gerar...
+				if ( "".equals( codrmagrid ) || null == codrmagrid ) {
+
+					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+
+					recmerc = new RecMerc( this, ticket, con );
+					
+					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
+					
+					if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
+ 						 statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+ 						 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
+ 						 statustxt.equals( StatusOS.OS_PRONTO.getValue() )
+					){
+
+						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+
+							Vector<Integer> rmas = recmerc.gerarRma( );
+
+							
+							if ( rmas != null && rmas.size() > 0 ) {
+
+								System.out.println("RMA(s) " + Funcoes.vectorToString( rmas, "," ) + " gerada(s) com sucesso...");
+
+							}
+						}
+
+					}
+					else {
+						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de RMA!\n" 
+													 + "Para gerar RMA ela deve estar em uma das situações abaixo:\n"
+													 + "'Em Análise', 'Encaminhada', 'Em andamento' ou 'Pronto' !" );
+					}
+
+				}
+				else {
+					// Se já existir um orçamento deve abri-lo
+
+					abreorcamento( Integer.parseInt( codrmagrid ) );
 
 				}
 
