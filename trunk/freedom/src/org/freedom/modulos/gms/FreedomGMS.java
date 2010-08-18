@@ -318,9 +318,9 @@ public class FreedomGMS extends AplicativoPD {
 		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class );
 		addBotao( "btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class );
 		addBotao( "btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class );
-
+ 
 		addBotao( "btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
-		addBotao( "btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 300500000, FControleRecMerc.class );
+		addBotao( "btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 500100000, FControleRecMerc.class );
 
 		addBotao( "btServico.png", "Ordem de Serviço", "Ordem de Serviço", 700200000, FOrdemServico.class );
 		addBotao( "btPainelServico.png", "Painel de Controle de Serviços", "Painel de Controle de Serviços", 700100000, FControleServicos.class );
