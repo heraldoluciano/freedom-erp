@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/liquidlnf.jar"/>
+	<classpathentry kind="lib" path="lib/metouia.jar"/>
+	<classpathentry kind="lib" path="lib/squareness.jar"/>
+	<classpathentry kind="lib" path="lib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="/freedom-ecf/lib/comm.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
+	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="lib/ireport.jar"/>
+	<classpathentry kind="lib" path="lib/barbecue.jar"/>
+	<classpathentry kind="lib" path="lib/jaybird-full.jar"/>
+	<classpathentry kind="lib" path="lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/dsn.jar"/>
+	<classpathentry kind="lib" path="lib/imap.jar"/>
+	<classpathentry kind="lib" path="lib/pop3.jar"/>
+	<classpathentry kind="lib" path="lib/saaj.jar"/>
+	<classpathentry kind="lib" path="lib/smtp.jar"/>
+	<classpathentry kind="lib" path="lib/TableLayout.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-fw1"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jfreechart.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/bizcal.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/nachocalendar.jar"/>
+	<classpathentry kind="lib" path="lib/poi.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
