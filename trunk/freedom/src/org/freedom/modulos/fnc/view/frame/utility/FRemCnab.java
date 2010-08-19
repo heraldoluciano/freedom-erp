@@ -127,14 +127,16 @@ public class FRemCnab extends FRemFBN {
 		return args;
 	}
 
-	private int getCarteiraCobranca( final int codrec, final int nparc ) {
+	private HashMap<String, Object> getCarteiraCobranca( final int codrec, final int nparc ) {
 
 		int carteira = 0;
+		String variacao = "";
+		HashMap<String, Object> ret = new HashMap<String, Object>();
 
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT CB.CARTCOBCNAB " );
+			sql.append( "SELECT CB.CARTCOBCNAB, CB.VARIACAOCARTCOB " );
 			sql.append( "FROM FNCARTCOB CB, FNITRECEBER IR " );
 			sql.append( "WHERE CB.CODEMPBO=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODBANCO=IR.CODBANCO AND " );
 			sql.append( "CB.CODEMP=IR.CODEMPCB AND CB.CODFILIAL=IR.CODFILIALCB AND CB.CODCARTCOB=IR.CODCARTCOB AND " );
@@ -151,8 +153,12 @@ public class FRemCnab extends FRemFBN {
 			if ( rs.next() ) {
 
 				carteira = rs.getInt( "CARTCOBCNAB" );
+				variacao = rs.getString( "VARIACAOCARTCOB" );
 
 			}
+			
+			ret.put( "CARTEIRA", carteira );
+			ret.put( "VARIACAO", carteira );
 
 			rs.close();
 			ps.close();
@@ -161,7 +167,7 @@ public class FRemCnab extends FRemFBN {
 			e.printStackTrace();
 		}
 
-		return carteira;
+		return ret;
 	}
 
 	private RegHeader getRegHeader() throws ExceptionCnab {
@@ -257,7 +263,12 @@ public class FRemCnab extends FRemFBN {
 		reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
 		reg.setDataCred( null );
-		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
+		
+		
+		
+		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
+		
+		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 
 		reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 
@@ -266,6 +277,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );
 
 		reg.setVlrPercMulta( new BigDecimal( 0 ) );
+		
+		reg.setVariacaoCarteira( (String) infocarteira.get( "VARIACAO" ) );
 
 		reg.setCodMovimento( codMovimento );
 
@@ -292,6 +305,10 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
 
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
+		
+		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
+		
+		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 
 		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
 
@@ -350,8 +367,10 @@ public class FRemCnab extends FRemFBN {
 			banco = new Bradesco();
 		}
 
+		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
+		
 		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ) );
-		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
+		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
