@@ -21,6 +21,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
 import org.freedom.modulos.std.business.component.Orcamento;
@@ -100,17 +101,28 @@ public class RecMerc implements java.io.Serializable {
 	private Integer codtran = null;
 
 	private Integer codorc = null;
+	
+	private Integer codchamado = null;
 
 	private Object[] oPrefs = null;
 	
 	private Date dtent = null;
 	
+	private Date dtprevret = null;
+	
 	private BigDecimal precopeso = null;
+	
+	private String solicitante = null;
 	
 	private enum COLS_ITRECMERC {
 		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODEMPPD, REFPROD, CODFILIALPD, CODPROD, CODEMPNS, CODFILIALNS, NUMSERIE, GARANTIA, QTDITRECMERC, OBSITRECMERC,
-		NUMITENSMATPRIM, NUMITENS;
+		NUMITENSRMA, NUMITENS, NUMITENSCHAMADO;
 	}
+	
+	private enum COLS_ITRECMERCITOS {
+		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODITOS, CODEMPPD, REFPROD, DESCPROD, CODFILIALPD, CODPROD, QTDITOS,OBSITOS, GERARMA, GERACHAMADO, CODTPCHAMADO;
+	}
+
 
 	public static ImageIcon getImagem( String status, String tamanho ) {
 
@@ -442,38 +454,6 @@ public class RecMerc implements java.io.Serializable {
 		this.ticket = ticket;
 	}
 
-/*	
-private void geraCodCompra() {
-
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer codcompra = 1;
-
-		try {
-
-			sql.append( "select coalesce(max(codcompra),0) + 1 from cpcompra " );
-			sql.append( "where codemp=? and codfilial=? " );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				codcompra = rs.getInt( 1 );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-		setCodcompra( codcompra );
-
-	}*/
-	
 	private void geraCodCompra() {
 
 		// através do generator do banco
@@ -563,6 +543,37 @@ private void geraCodCompra() {
 		}
 
 		setCodorc( codorc );
+
+	}
+	
+	private void geraCodChamado() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codchamado = 1;
+
+		try {
+
+			sql.append( "select coalesce(max(codchamado),0) + 1 from crchamado " );
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				codchamado = rs.getInt( 1 );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		setCodchamado( codchamado );
 
 	}
 
@@ -677,7 +688,8 @@ private void geraCodCompra() {
 		try {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
-			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete " );			
+			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete, " );
+			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret " );
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
@@ -723,7 +735,9 @@ private void geraCodCompra() {
 				setCoddestinat( rs.getInt("coddestinat") );
 				setCodtran( rs.getInt("codtran") );
 				setDtent( Funcoes.sqlDateToDate( rs.getDate( "dtent" )) );
+				setDtprevret( Funcoes.sqlDateToDate( rs.getDate( "dtprevret" )) );
 				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );
+				setSolicitante( rs.getString( "solicitante" ) );
 			}
 
 //			con.commit();
@@ -1162,9 +1176,11 @@ private void geraCodCompra() {
 			sql.append( "," );
 			sql.append( COLS_ITRECMERC.CODPROD.name() );
 			sql.append( "," );
-			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc and gerarma='S'),0)) as " + COLS_ITRECMERC.NUMITENSMATPRIM.name() );
+			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc and gerarma='S'),0)) as " + COLS_ITRECMERC.NUMITENSRMA.name() );
 			sql.append( "," );
 			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc ),0)) as " + COLS_ITRECMERC.NUMITENS.name() );
+			sql.append( "," );
+			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc and gerachamado='S'),0)) as " + COLS_ITRECMERC.NUMITENSCHAMADO.name() );
 			
 			sql.append( " from " );
 			sql.append( "eqitrecmerc itr " );
@@ -1198,7 +1214,8 @@ private void geraCodCompra() {
 				item.put( COLS_ITRECMERC.CODFILIALPD.name(), rs.getInt( COLS_ITRECMERC.CODFILIALPD.name() ) );
 				item.put( COLS_ITRECMERC.CODPROD.name(), rs.getInt( COLS_ITRECMERC.CODPROD.name() ) );
 				item.put( COLS_ITRECMERC.NUMITENS.name(), rs.getInt( COLS_ITRECMERC.NUMITENS.name() ) );
-				item.put( COLS_ITRECMERC.NUMITENSMATPRIM.name(), rs.getInt( COLS_ITRECMERC.NUMITENSMATPRIM.name() ) );
+				item.put( COLS_ITRECMERC.NUMITENSRMA.name(), rs.getInt( COLS_ITRECMERC.NUMITENSRMA.name() ) );
+				item.put( COLS_ITRECMERC.NUMITENSCHAMADO.name(), rs.getInt( COLS_ITRECMERC.NUMITENSCHAMADO.name() ) );
 				
 				ret.add( item );
 				
@@ -1216,22 +1233,104 @@ private void geraCodCompra() {
 		
 	}
 	
-	public Vector<Integer> gerarRma( ) {
+	public Vector<HashMap<String,Object>> carregaItRecMercItOS() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Vector<HashMap<String,Object>> ret = new Vector<HashMap<String,Object>>();
+		
+		try {
+
+			sql.append( "select " );
+			sql.append( "os." );
+			sql.append( COLS_ITRECMERCITOS.CODEMP.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODFILIAL.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.TICKET.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODITRECMERC.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODEMPPD.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODFILIALPD.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODPROD.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.OBSITOS.name() );			
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.GERARMA.name() );			
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.GERACHAMADO.name() );
+			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.QTDITOS.name() );
+			sql.append( ",pd." );
+			sql.append( COLS_ITRECMERCITOS.DESCPROD.name() );			
+			sql.append( ",pd." );
+			sql.append( COLS_ITRECMERCITOS.CODTPCHAMADO.name() );
+
+			sql.append( " from " );
+			sql.append( "eqitrecmercitos os, eqproduto pd " );
+			
+			sql.append( "where " );
+			sql.append( "pd.codemp=os.codemppd and pd.codfilial=os.codfilialpd and pd.codprod=os.codprodpd and " );
+			sql.append( "os.codemp=? and os.codfilial=? and os.ticket=? " );
+			
+			System.out.println("query de itens de OS:" + sql.toString());
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, getTicket() );
+			
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+			
+				HashMap<String, Object> item = new HashMap<String, Object>();
+				
+				item.put( COLS_ITRECMERCITOS.CODEMP.name(), rs.getInt( COLS_ITRECMERC.CODEMP.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODFILIAL.name(), rs.getInt( COLS_ITRECMERC.CODFILIAL.name() ) );
+				item.put( COLS_ITRECMERCITOS.TICKET.name(), rs.getInt( COLS_ITRECMERC.TICKET.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODITRECMERC.name(), rs.getInt( COLS_ITRECMERC.CODITRECMERC.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODITOS.name(), rs.getInt( COLS_ITRECMERCITOS.CODITOS.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODEMPPD.name(), rs.getInt( COLS_ITRECMERCITOS.CODEMPPD.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODFILIALPD.name(), rs.getInt( COLS_ITRECMERCITOS.CODFILIALPD.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODPROD.name(), rs.getInt( COLS_ITRECMERCITOS.CODPROD.name() ) );
+				item.put( COLS_ITRECMERCITOS.DESCPROD.name(), rs.getString( COLS_ITRECMERCITOS.DESCPROD.name() ) );
+				item.put( COLS_ITRECMERCITOS.GERARMA.name(), rs.getString( COLS_ITRECMERCITOS.GERARMA.name() ) );
+				item.put( COLS_ITRECMERCITOS.GERACHAMADO.name(), rs.getString( COLS_ITRECMERCITOS.GERACHAMADO.name() ) );
+				item.put( COLS_ITRECMERCITOS.OBSITOS.name(), rs.getString( COLS_ITRECMERCITOS.OBSITOS.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODTPCHAMADO.name(), rs.getInt( COLS_ITRECMERCITOS.CODTPCHAMADO.name() ) );
+				item.put( COLS_ITRECMERCITOS.QTDITOS.name(), rs.getBigDecimal( COLS_ITRECMERCITOS.QTDITOS.name() ) );
+				
+				ret.add( item );
+				
+			}
+			
+			con.commit();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
+		
+	}
+	
+	public Vector<Integer> gerarRmas( ) {
 
 		StringBuilder sql = new StringBuilder();
-
-		BigDecimal pesoliq = null;
-		BigDecimal peso1 = null;
-		BigDecimal peso2 = null;
-		String unid = null;
 		PreparedStatement ps = null;
-		Integer codplanopag = null;
 		Vector<Integer> ret = new Vector<Integer>();
 		ResultSet rs = null;
 
 		try {
 
-			sql.append( "select codrma from eqgerarmaossp(?,?,?,?)" );
+			sql.append( "select codrma from eqgerarmaossp(?,?,?,?) group by 1" );
 
 			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
 
@@ -1245,7 +1344,7 @@ private void geraCodCompra() {
 					// Gerar RMA para os ítens
 					HashMap<String, Object> item = (HashMap<String,Object>) itens.get( i );
 					
-					int numitensrma = (Integer) item.get( COLS_ITRECMERC.NUMITENSMATPRIM.name() );
+					int numitensrma = (Integer) item.get( COLS_ITRECMERC.NUMITENSRMA.name() );
 					
 					if(numitensrma>0) {
 					
@@ -1290,8 +1389,165 @@ private void geraCodCompra() {
 			
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar rma!", true, con, e );
+			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, con, e );
 			setCodcompra( null );
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+	
+	public Vector<Integer> gerarChamados( ) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		Vector<Integer> ret = new Vector<Integer>();
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "insert into crchamado " );
+			sql.append( "codemp, codfilial, codchamado, descchamado, detchamado, obschamado, codempcl, codfilialcl, codcli, " );
+			sql.append( "solicitante, prioridade, codemptc, codfilialtc, codtpchamado, dtchamado, dtprevisao, qtdhorasprevisao, " );			
+			sql.append( "codempos, codfilialos, ticket, coditrecmerc, coditos " );
+			sql.append( "values " );
+			sql.append( "( ?,?,?,?,?,?,?,?,?," );
+			sql.append( "  ?,?,?,?,?,?,?,?," );
+			sql.append( "  ?,?,?,?,?" );
+			sql.append( " )" );
+
+			Vector<HashMap<String, Object>> itens = carregaItRecMercItOS();
+
+			if(itens!=null && itens.size()>0) {
+
+				int i= 0;
+				int numchamados = 0;
+				
+				for(i = 0; i<itens.size(); i++) {
+
+					// Gerar Chamados para os ítens
+					HashMap<String, Object> item = (HashMap<String,Object>) itens.get( i );
+					boolean gerachamado = "S".equals( item.get( COLS_ITRECMERCITOS.GERACHAMADO.name() ));
+					
+					if(gerachamado) {
+						
+						
+						Integer codtpchamado = (Integer) item.get( COLS_ITRECMERCITOS.CODTPCHAMADO.name() );
+						String descprod = (String) item.get( COLS_ITRECMERCITOS.DESCPROD.name()  );
+						
+						if(codtpchamado!=null && codtpchamado>0) {
+						
+							geraCodChamado();
+							
+							ps = con.prepareStatement( sql.toString() );
+							int iparam = 1;
+							
+							ps.setInt( iparam++, Aplicativo.iCodEmp );
+							ps.setInt( iparam++, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+							ps.setInt( iparam++, getCodchamado() );
+							
+							ps.setString( iparam++, descprod );
+							ps.setString( iparam++, (String) item.get( COLS_ITRECMERCITOS.OBSITOS.name() ) );
+							
+							ps.setInt( iparam++, Aplicativo.iCodEmp );
+							ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+							ps.setInt( iparam++, getCodcli() );
+							
+							ps.setString( iparam++, getSolicitante() );
+							ps.setInt( iparam++, (Integer) Prioridade.MEDIA.getValue() );
+							
+							ps.setInt( iparam++, Aplicativo.iCodEmp );
+							ps.setInt( iparam++, ListaCampos.getMasterFilial( "CRTIPOCHAMADO" ) );	
+							ps.setInt( iparam++, codtpchamado );
+							
+							ps.setDate( iparam++, Funcoes.dateToSQLDate( getDtent()) );
+							ps.setDate( iparam++, Funcoes.dateToSQLDate( getDtprevret()) );
+														
+							ps.setBigDecimal( iparam++, (BigDecimal) item.get( COLS_ITRECMERCITOS.QTDITOS.name() ) );
+							
+							ps.setInt( iparam++, Aplicativo.iCodEmp );
+							ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQITRECMERCITOS" ) );
+							ps.setInt( iparam++, getTicket() );
+							
+							ps.setInt( iparam++, (Integer) item.get( COLS_ITRECMERCITOS.CODITRECMERC.name() ));
+							ps.setInt( iparam++, (Integer) item.get( COLS_ITRECMERCITOS.CODITOS.name() ));
+							
+							rs = ps.executeQuery();
+							
+							ret.add( getCodchamado() );
+							numchamados ++;
+
+						}
+						else {
+							Funcoes.mensagemInforma( orig, "Não foi possível gerar o chamado para o serviço " 
+														   + descprod.trim() 
+														   + " pois este, não possui um tipo de chamado definido!\n" 
+														   + "Verifique o cadastro do serviço.");
+						}
+						
+						ps.close();
+						
+					}
+
+				}
+				
+				if(numchamados>0) {
+					Funcoes.mensagemInforma( orig, "Chamados (" + Funcoes.vectorToString( ret, "," ) + ") gerados com sucesso!!!" );
+				}
+				else {
+					Funcoes.mensagemInforma( orig, "Nenhuma Chamado foi gerado!!!" );
+				}
+				
+			}
+			else {
+				Funcoes.mensagemErro( orig, "Nenhum item de Ordem de serviço encontrado!" );				
+			}
+			
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar chamados!\n" + e.getMessage(), true, con, e );
+			setCodcompra( null );
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+	
+
+	public static Vector<Integer> getRmasOS( Integer ticketrma ) {
+
+		StringBuilder sql = new StringBuilder();
+
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+		Vector<Integer> ret = new Vector<Integer>();
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select codrma from eqrma where codempos=? and codfilialos=? and ticket=? " );
+
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+	
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRMA" ) );
+			ps.setInt( 3, ticketrma );						
+						
+			rs = ps.executeQuery();
+						
+				while (rs.next()) {
+							
+					ret.add( rs.getInt( "CODRMA" ) );
+					
+				}
+					
+				ps.close();
+						
+				
+
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
@@ -1594,6 +1850,42 @@ private void geraCodCompra() {
 	public void setPrecopeso( BigDecimal precopeso ) {
 	
 		this.precopeso = precopeso;
+	}
+
+	
+	public Integer getCodchamado() {
+	
+		return codchamado;
+	}
+
+	
+	public void setCodchamado( Integer codchamado ) {
+	
+		this.codchamado = codchamado;
+	}
+
+	
+	public String getSolicitante() {
+	
+		return solicitante;
+	}
+
+	
+	public void setSolicitante( String solicitante ) {
+	
+		this.solicitante = solicitante;
+	}
+
+	
+	public Date getDtprevret() {
+	
+		return dtprevret;
+	}
+
+	
+	public void setDtprevret( Date dtprevret ) {
+	
+		this.dtprevret = dtprevret;
 	}
 
 }
