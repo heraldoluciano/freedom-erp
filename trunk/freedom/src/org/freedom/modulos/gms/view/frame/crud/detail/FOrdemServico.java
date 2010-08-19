@@ -106,6 +106,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldPad txtGarantia = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtGeraChamado = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtStatusItRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -605,6 +607,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicDBLiv( txaObsItOS, "ObsItOS", "Observações", false );
 
 		adicCampoInvisivel( txtStatusItOS, "StatusItOS", "Status", ListaCampos.DB_SI, false );
+		
+		adicCampoInvisivel( txtGeraChamado, "GeraChamado", "Gera chamado", ListaCampos.DB_SI, false );
 		
 		pnAdicItOS.adic( btChamado, 0, 0, 30, 26 );
 		pnAdicItOS.adic( btAdicProdutoEstrutura, 30, 0, 30, 26 );
@@ -1330,6 +1334,9 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else if ( pevt.getListaCampos() == lcItRecMercItOS ) {
 			if(txtStatusItOS.getVlrString()==null || StatusOS.IT_OS_NAO_SALVO.getValue().equals( txtStatusItOS.getVlrString() )) {
 				txtStatusItOS.setVlrString( StatusOS.IT_OS_PENDENTE.getValue().toString() );
+			}
+			if( "S".equals(txtTipoProdItOS.getVlrString()) ) {
+				txtGeraChamado.setVlrString( "S" );
 			}
 		}
 	}
