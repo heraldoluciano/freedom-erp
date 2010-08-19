@@ -199,6 +199,8 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 	
 	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
 	
+
+	
 	public DLNovoPag( Component cOrig ) {
 
 		super( cOrig );
@@ -351,7 +353,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 	}
 	
-	private BigDecimal getVlrISS(BigDecimal valororiginal, BigDecimal valorbase, BigDecimal peroutros) {
+	private BigDecimal getVlrINSS(BigDecimal valororiginal, BigDecimal valorbase, BigDecimal peroutros) {
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -375,6 +377,8 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			rs = ps.executeQuery( );
 			
 			if (rs.next()) {
+				
+				nrodepend = txtNroDependFor.getVlrInteger();
 				
 				aliquota = rs.getBigDecimal( "aliquota" );
 				
@@ -408,7 +412,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		return ret;
 	}
 	
-	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbase) {
+	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbaseirrf, BigDecimal valorbaseinss) {
 		
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
@@ -430,11 +434,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "order by ir.teto ");
 			
 			ps = con.prepareStatement( sql.toString() );
-			ps.setBigDecimal( 1, valororiginal );
+			ps.setBigDecimal( 1, valorbaseirrf );
 			
 			rs = ps.executeQuery( );
 			
 			if (rs.next()) {
+				
+				nrodepend = txtNroDependFor.getVlrInteger();
 				
 				deducao = rs.getBigDecimal( "deducao" );
 				
@@ -453,23 +459,24 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 				return null;
 			}
 			
-			ret = valorbase.subtract( deducao ) ;
 			
-			System.out.println("Base - deducao:" + ret);
+			/*** reduzindo a base****/
 			
-			ret = ret.subtract( reducaodependente.multiply( new BigDecimal(nrodepend) ) );
+			//Reduzindo dependentes
+			valorbaseirrf = valorbaseirrf.subtract( reducaodependente.multiply( new BigDecimal(nrodepend) ) );
 			
-			System.out.println("Base - dependentes:" + ret);
+			//Reduzindo INSS pagoc
+			if(valorbaseinss!=null && valorbaseinss.compareTo( new BigDecimal( 0 ))>0 ) {
+				valorbaseirrf = valorbaseirrf.subtract( getVlrINSS( valororiginal, valorbaseinss, null ) );
+			}
+			// Calcula IRRF sem dedução da tabela
+			ret = valorbaseirrf.multiply( aliquota.divide( cem ) );
 			
-			ret = ret.subtract( getVlrISS( valororiginal, valorbase, null ) );
+			// Subtraindo dedução da tabela
 			
-			System.out.println("Base - ISS:" + ret);
-			
-			ret = ret.multiply( aliquota.divide( cem ) );
+			ret = ret.subtract( deducao );
 			
 			System.out.println("Valor IRRF:" + ret);
-
-			
 			
 			ps.close();
 			rs.close();
@@ -522,7 +529,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 					percoutros = txtPercRetOutros.getVlrBigDecimal();
 				}
 				
-				vlrinss = getVlrISS( vlroriginal, vlrbaseinss, percoutros );
+				vlrinss = getVlrINSS( vlroriginal, vlrbaseinss, percoutros );
 				
 				// Carregando campos...
 				txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
@@ -536,7 +543,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 				percbaseirrf = txtPercBaseIRRF.getVlrBigDecimal();
 				vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
-				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf );
+				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss );
 				
 				txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
 				txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
