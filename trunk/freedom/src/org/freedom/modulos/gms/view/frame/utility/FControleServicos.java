@@ -187,6 +187,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
 	
+	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
+	
 	private JButtonPad btRma = new JButtonPad( Icone.novo( "btRma.gif" ) );
 
 	private JTablePad tabstatus = new JTablePad();
@@ -200,7 +202,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMA;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CHAMADOS;
 	}
 
 	public FControleServicos() {
@@ -279,6 +281,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		btCompra.addActionListener( this );
 		btOrcamento.addActionListener( this );
 		btRma.addActionListener( this );
+		btChamado.addActionListener( this );
 
 		tabDet.addTabelaSelListener( this );
 		tabDet.addMouseListener( this );
@@ -400,6 +403,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		panelNavegador.add( btEditar );
 		panelNavegador.add( btCompra );
 		panelNavegador.add( btOrcamento );
+		panelNavegador.add( btChamado );
 		panelNavegador.add( btRma );
 
 		panelSouth.add( panelNavegador, BorderLayout.WEST );
@@ -439,7 +443,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );
 		tabDet.setTamColuna( 350, DETALHAMENTO.NOMECLI.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODORC.ordinal() );
-		tabDet.setTamColuna( 50, DETALHAMENTO.CODRMA.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODRMAS.ordinal() );
 
 		// tabDet.setColunaInvisivel( 2 );
 
@@ -544,7 +548,11 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCLI.toString().trim() ), row, DETALHAMENTO.CODCLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
+				
+				Vector<Integer> rmas = RecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
 
+				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );
+				
 				row++;
 
 			}
@@ -583,8 +591,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			geraOrcamento();
 		}
 		else if ( e.getSource() == btRma ) {
-			gerarRma();
+			gerarRmas();
 		}
+		else if ( e.getSource() == btRma ) {
+			gerarChamados();
+		}
+
 
 
 	}
@@ -900,7 +912,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	}
 	
-	private void gerarRma() {
+	private void gerarRmas() {
 
 		StringBuilder sql = new StringBuilder();
 		Integer ticket = null;
@@ -912,7 +924,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			if ( tabDet.getLinhaSel() > -1 ) {
 
-				String codrmagrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMA.ordinal() ).toString();
+				String codrmagrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMAS.ordinal() ).toString();
 
 				// Se nao houver RMA.. deve gerar...
 				if ( "".equals( codrmagrid ) || null == codrmagrid ) {
@@ -932,7 +944,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							Vector<Integer> rmas = recmerc.gerarRma( );
+							Vector<Integer> rmas = recmerc.gerarRmas( );
 
 							
 							if ( rmas != null && rmas.size() > 0 ) {
@@ -950,10 +962,65 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					}
 
 				}
-				else {
-					// Se já existir um orçamento deve abri-lo
 
-					abreorcamento( Integer.parseInt( codrmagrid ) );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void gerarChamados() {
+
+		StringBuilder sql = new StringBuilder();
+		Integer ticket = null;
+		PreparedStatement ps = null;
+
+		RecMerc recmerc = null;
+
+		try {
+
+			if ( tabDet.getLinhaSel() > -1 ) {
+
+				String codchamadogrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMAS.ordinal() ).toString();
+
+				// Se nao houver chamado deve gerar...
+				if ( "".equals( codchamadogrid ) || null == codchamadogrid ) {
+
+					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+
+					recmerc = new RecMerc( this, ticket, con );
+					
+					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
+					
+					if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
+ 						 statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+ 						 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() )
+					){
+
+						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de chamados para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+
+							Vector<Integer> chamados = recmerc.gerarChamados( );
+
+							
+							if ( chamados != null && chamados.size() > 0 ) {
+
+								System.out.println("Chamado(s) " + Funcoes.vectorToString( chamados, "," ) + " gerado(s) com sucesso...");
+
+							}
+						}
+
+					}
+					else {
+						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de Chamados!\n" 
+													 + "Para gerar Chamados ela deve estar em uma das situações abaixo:\n"
+													 + "'Em Análise', 'Encaminhada' ou 'Em andamento' !" );
+					}
 
 				}
 
@@ -967,5 +1034,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		}
 
 	}
+	
 
 }
