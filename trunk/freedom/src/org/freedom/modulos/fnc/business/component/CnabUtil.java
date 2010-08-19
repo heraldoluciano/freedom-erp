@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.BancodoBrasil;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
@@ -440,7 +441,22 @@ public class CnabUtil extends FbnUtil {
 					line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa
 					line.append( "01" ); // Posição 010 a 011 - Código do serviço (01)
 					line.append( format( LITERAL_SERV, ETipo.X, 15, 0 ) );// Posição 012 a 026 - Literal Serviço
-					line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
+					
+					// Informação personalizada para o banco do brasil
+					if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+						
+						line.append( StringFunctions.strZero( getAgencia(), 4 ) );// Posição 027 a 030 - Prefixo da agencia
+						line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
+						line.append( StringFunctions.strZero(getConta(),8 ));// Posição 032 a 039 - Numero da conta
+						line.append( getDigConta());// Posição 040 a 040 - Digito verificador da conta
+						line.append( StringFunctions.strZero( getCodConvBanco(), 6 ) );// Posição 027 a 046 - Código da Empresa
+						
+						
+					}
+					else {
+						line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
+					}
+					
 					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação
 					line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
@@ -2635,6 +2651,8 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrTarifa;
 
 		private String codRejeicoes;
+		
+		private int diasProtesto;
 
 		public Reg3T() {
 
@@ -4079,6 +4097,8 @@ public class CnabUtil extends FbnUtil {
 		private int codCarteira;
 
 		private String identTitulo;
+		
+		private String variacaocarteira;
 
 		private String identTitEmp;
 
@@ -4141,7 +4161,40 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrOcorrSac;
 
 		private int identEmitBol = 2;
+		
+		private int codProtesto = 0;
+		
+		private int diasProtesto = 0;
+		
+		public int getCodProtesto() {
 
+			return codProtesto;
+		}
+
+		/**
+		 * Código para protesto.<br>
+		 * 1 - Dias corridos.<br>
+		 * 2 - Dias utéis.<br>
+		 * 3 - Não protestar.<br>
+		 */
+		public void setCodProtesto( final int codProtesto ) {
+
+			this.codProtesto = codProtesto;
+		}
+
+		public int getDiasProtesto() {
+
+			return diasProtesto;
+		}
+
+		/**
+		 * Número de dias para protesto.<br>
+		 */
+		public void setDiasProtesto( final int diasProtesto ) {
+
+			this.diasProtesto = diasProtesto;
+		}
+		
 		public String getCpfCnpjCli() {
 
 			return cpfCnpjCli;
@@ -4753,6 +4806,16 @@ public class CnabUtil extends FbnUtil {
 
 			return codCarteira;
 		}
+		
+		public String getVariacaoCarteira() {
+
+			return variacaocarteira;
+		}
+		
+		public void setVariacaoCarteira(String var) {
+
+			variacaocarteira = var;
+		}
 
 		public void setCodCarteira( final int codCarteira ) {
 
@@ -4843,48 +4906,95 @@ public class CnabUtil extends FbnUtil {
 			try {
 
 				line.append( "1" );
-				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
-				line.append( " " ); // Opcional - Dígito da Agencia para debito em conta
-				line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito
-				line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito
-				line.append( " " ); // Opcional - Dígito da conta para debito
-				// Identificação da Empresa cedente no banco
-				line.append( "0" ); // Posição 21 a 21 - Zero
-				line.append( StringFunctions.strZero( getCodCarteira() + "", 3 ) ); // Posição 22 a 24 - Código da Carteira
-				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) ); // Posição 25 a 29 - Código da Agência Cedente
-				line.append( format( getConta(), ETipo.$9, 7, 0 ) ); // Posição 30 a 36 - Conta Corrente
-				line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Posição 37 a 37 - Dígito da conta
-				// fim da idendificação
 
-				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco
-
-				if ( getVlrPercMulta().floatValue() > 0 ) {
-					line.append( "2" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
-					line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); // Posição 67 a 70 - Percentual de multa
+				/*************************************************/
+				/**                                             **/
+				/** Implementação para o banco do Brasil CBR641 **/
+				/**                                             **/
+				/*************************************************/
+				
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {					
+					line.append( format( getTipoInscEmp(), ETipo.$9, 2, 0 ) );// 002 a 003 - Tipo de inscrição da empresa
+					line.append( format( getCpfCnpjEmp(), ETipo.$9, 14, 0 ) );//004 a 017 - Numero do CPF/CNPJ da Empresa
+					line.append( format( getAgencia(), ETipo.$9, 4, 0 ) );//018 a 021 - Agencia
+					line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );//022 a 022 - Digito da agencia
+					line.append( format( getConta(), ETipo.$9, 8, 0 ) );//023 a 030 - Numero da conta corrente
+					line.append( format( getDigConta(), ETipo.X, 1, 0 ) );//031 a 031 - Digito da conta corrente
+					line.append( format( getCodConvBanco(), ETipo.X, 6, 0 ) );//032 a 037 - Convenio
+					line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
+					line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 063 a 073 - Nosso numero
+					line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 074 a 074 - Digito verificador do nosso numero
+					line.append( "00" ); // Posição 075 a 076 - Numero da prestacao informar zeros
+					line.append( "00" ); // Posição 077 a 078 - Grupo de valor informar zeros
+					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 079 a 081 - Preencher com brancos
+					line.append( " " );// Posição 082 a 082 -Indicativo de mensagem Preencher com brancos
+					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 083 a 085 - Preencher com brancos
+					line.append( format( getVariacaoCarteira(), ETipo.X, 3, 0 ) ); // Posição 086 a 088 - Variacao da carteira
+					line.append( "0" ); // Posição 089 a 089 - Conta caução
+					line.append( "00000" ); // Posição 090 a 094 - Codigo de responsabilidade 
+					line.append( "0" ); // Posição 095 a 095 - Digito do codigo de responsabilidade
+					line.append( "000000" ); // Posição 096 a 101 - Numero do borderô
+					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 102 a 106 - Tipo de cobrança Preencher com brancos
+					line.append( StringFunctions.strZero( getCodCarteira() + "", 2 ) ); // Posição 107 a 108 - Código da Carteira de cobranca
+					
 				}
+				
+				/*************************************************/
+				/**                                             **/
+				/** Implementação para outros bancos (BRADESCO) **/
+				/**                                             **/
+				/*************************************************/
+				
 				else {
-					line.append( "0" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
-					line.append( StringFunctions.replicate( "0", 4 ) ); // Posição 67 a 70 - Percentual de multa (preenchido com zeros)
+				
+					line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Agencia para debito em conta
+					line.append( " " ); // Opcional - Dígito da Agencia para debito em conta
+					line.append( StringFunctions.replicate( " ", 5 ) ); // Opcional - Razão da conta para debito
+					line.append( StringFunctions.replicate( " ", 7 ) ); // Opcional - Conta do sacado para debito
+					line.append( " " ); // Opcional - Dígito da conta para debito
+					// Identificação da Empresa cedente no banco
+					line.append( "0" ); // Posição 21 a 21 - Zero
+					
+					line.append( StringFunctions.strZero( getCodCarteira() + "", 3 ) ); // Posição 22 a 24 - Código da Carteira
+					line.append( format( getAgencia(), ETipo.$9, 5, 0 ) ); // Posição 25 a 29 - Código da Agência Cedente
+					line.append( format( getConta(), ETipo.$9, 7, 0 ) ); // Posição 30 a 36 - Conta Corrente
+					line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Posição 37 a 37 - Dígito da conta
+					// fim da idendificação
+
+					line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco
+
+					if ( getVlrPercMulta().floatValue() > 0 ) {
+						line.append( "2" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
+						line.append( format( getVlrPercMulta(), ETipo.$9, 4, 2 ) ); // Posição 67 a 70 - Percentual de multa
+					}
+					else {
+						line.append( "0" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
+						line.append( StringFunctions.replicate( "0", 4 ) ); // Posição 67 a 70 - Percentual de multa (preenchido com zeros)
+					}
+
+					line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 71 a 81 - Identificação do título no banco (nosso numero)
+
+					line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 82 a 82 - Digito verificador do nosso numero
+
+					// Implementar futuramente
+					line.append( format( 0, ETipo.$9, 10, 2 ) ); // Posição 83 a 92 - Valor do Desconto bonif./dia
+
+					line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) ); // Posição 93 a 93 - Condição para Emissão da papeleta de cobrança - 1-Banco emite e processa, 2- Cliente emite e o Banco Processa.
+
+					line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
+
+					line.append( StringFunctions.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
+
+					line.append( " " ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não
+					line.append( "2" ); // Posição 106 a 106 - Endereçamento para aviso do debito autom. 1 = emite aviso / 2 =não emite
+
+					line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
+					
 				}
+				
+			
 
-				line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 71 a 81 - Identificação do título no banco (nosso numero)
-
-				line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 82 a 82 - Digito verificador do nosso numero
-
-				// Implementar futuramente
-				line.append( format( 0, ETipo.$9, 10, 2 ) ); // Posição 83 a 92 - Valor do Desconto bonif./dia
-
-				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) ); // Posição 93 a 93 - Condição para Emissão da papeleta de cobrança - 1-Banco emite e processa, 2- Cliente emite e o Banco Processa.
-
-				line.append( "N" ); // Posição 94 a 94 - Ident. se emite boleto para deb. automaticao
-
-				line.append( StringFunctions.replicate( " ", 10 ) ); // Posição 95 a 104 - Identificação da operacao do banco (em branco)
-
-				line.append( " " ); // Posição 105 a 105 - Indicador de rateio crédito 'R' = sim / " "= não
-				line.append( "2" ); // Posição 106 a 106 - Endereçamento para aviso do debito autom. 1 = emite aviso / 2 =não emite
-
-				line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 107 a 108 - Branco
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) ); // Posição 109 a 110 - Identificação da ocorrência
 
 				line.append( StringFunctions.strZero( getDocCobranca(), 10 ) ); // Posição 111 a 120 - Nro do documento
@@ -4893,8 +5003,13 @@ public class CnabUtil extends FbnUtil {
 
 				line.append( format( getVlrTitulo(), ETipo.$9, 13, 2 ) ); // Posição 127 a 139 - Valor do título
 
-				line.append( "000" ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com zeros )
-
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {	
+					line.append( BancodoBrasil.BANCO_DO_BRASIL ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com 001 )
+				}
+				else {
+					line.append( "000" ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com zeros )
+				}
+				
 				line.append( "00000" ); // Posição 143 a 147 - Agencia depositária ( preencher com zeros )
 
 				// line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título
@@ -4908,9 +5023,18 @@ public class CnabUtil extends FbnUtil {
 
 				line.append( dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
 
-				line.append( "00" ); // Posição 157 a 158 - 1° Instrução - // Implementação futura.
-
-				line.append( "00" ); // Posição 159 a 160 - 2° Instrução - // Implementação futura.
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+					
+					line.append( format( getCodJuros(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - 1° Instrução - Código para juros
+					line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
+					
+				}
+				else {
+				
+					line.append( "00" ); // Posição 157 a 158 - 1° Instrução - // Implementação futura.
+					line.append( "00" ); // Posição 159 a 160 - 2° Instrução - // Implementação futura.
+					
+				}
 
 				if ( 1 == getCodJuros() ) { // Se Juros/Mora diária
 					line.append( format( getVlrJurosTaxa(), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
@@ -4919,7 +5043,12 @@ public class CnabUtil extends FbnUtil {
 					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
 				}
 
-				line.append( dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+					line.append( "000000" ); // Posição 174 a 179 - Data limite para concessão de desconto (informar 000000)	
+				}
+				else{
+					line.append( dateToString( getDtDesc(), "DDMMAA" ) ); // Posição 174 a 179 - Data limete para concessão de desconto
+				}
 
 				line.append( format( getVlrDesc(), ETipo.$9, 13, 2 ) ); // Posição 180 a 192 - Valor de desconto
 
@@ -4939,11 +5068,20 @@ public class CnabUtil extends FbnUtil {
 
 				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - Cep
 
-				line.append( format( getRazAva(), ETipo.X, 60, 0 ) );// Posição 335 a 394 - Sacado/Avalista ou Mensagem 2
-
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+					line.append( format( getCidCli(), ETipo.X, 15, 0 ) );// Posição 335 a 349 - Cidade do sacado
+					line.append( format( getUfCli(), ETipo.X, 2, 0 ) );// Posição 350 a 351 - UF do sacado
+					line.append( format( getRazAva(), ETipo.X, 40, 0 ) );// Posição 352 a 391 - Sacado/Avalista ou Mensagem 2
+					line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 392 a 393 - Numero de dias para protesto
+					line.append( " " ); // Posição 394 a 394 - Brancos para completar registro
+				}
+				else {
+					line.append( format( getRazAva(), ETipo.X, 60, 0 ) );// Posição 335 a 394 - Sacado/Avalista ou Mensagem 2
+				}
+				
 				line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro
 
-				line.append( (char) 13 );
+				line.append( (char) 13 ); 
 
 				line.append( (char) 10 );
 
