@@ -158,7 +158,7 @@ public class FRemCnab extends FRemFBN {
 			}
 			
 			ret.put( "CARTEIRA", carteira );
-			ret.put( "VARIACAO", carteira );
+			ret.put( "VARIACAO", variacao );
 
 			rs.close();
 			ps.close();
@@ -263,9 +263,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
 		reg.setDataCred( null );
-		
-		
-		
+				
 		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 		
 		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
