@@ -108,7 +108,8 @@ public class RecMerc implements java.io.Serializable {
 	private BigDecimal precopeso = null;
 	
 	private enum COLS_ITRECMERC {
-		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODEMPPD, REFPROD, CODFILIALPD, CODPROD, CODEMPNS, CODFILIALNS, NUMSERIE, GARANTIA, QTDITRECMERC, OBSITRECMERC;
+		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODEMPPD, REFPROD, CODFILIALPD, CODPROD, CODEMPNS, CODFILIALNS, NUMSERIE, GARANTIA, QTDITRECMERC, OBSITRECMERC,
+		NUMITENSMATPRIM, NUMITENS;
 	}
 
 	public static ImageIcon getImagem( String status, String tamanho ) {
@@ -1160,13 +1161,19 @@ private void geraCodCompra() {
 			sql.append( COLS_ITRECMERC.CODFILIALPD.name() );
 			sql.append( "," );
 			sql.append( COLS_ITRECMERC.CODPROD.name() );
+			sql.append( "," );
+			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc and gerarma='S'),0)) as " + COLS_ITRECMERC.NUMITENSMATPRIM.name() );
+			sql.append( "," );
+			sql.append( "(coalesce((select count(*) from eqitrecmercitos os where os.codemp=itr.codemp and os.codfilial=itr.codfilial and os.ticket=itr.ticket and os.coditrecmerc=itr.coditrecmerc ),0)) as " + COLS_ITRECMERC.NUMITENS.name() );
 			
 			sql.append( " from " );
-			sql.append( "eqitrecmerc " );
+			sql.append( "eqitrecmerc itr " );
 			
 			sql.append( "where " );
 			
 			sql.append( "codemp=? and codfilial=? and ticket=? " );
+			
+			System.out.println("query de itens de recmerc:" + sql.toString());
 			
 			ps = con.prepareStatement( sql.toString() );
 			
@@ -1190,6 +1197,8 @@ private void geraCodCompra() {
 				item.put( COLS_ITRECMERC.CODEMPPD.name(), rs.getInt( COLS_ITRECMERC.CODEMPPD.name() ) );
 				item.put( COLS_ITRECMERC.CODFILIALPD.name(), rs.getInt( COLS_ITRECMERC.CODFILIALPD.name() ) );
 				item.put( COLS_ITRECMERC.CODPROD.name(), rs.getInt( COLS_ITRECMERC.CODPROD.name() ) );
+				item.put( COLS_ITRECMERC.NUMITENS.name(), rs.getInt( COLS_ITRECMERC.NUMITENS.name() ) );
+				item.put( COLS_ITRECMERC.NUMITENSMATPRIM.name(), rs.getInt( COLS_ITRECMERC.NUMITENSMATPRIM.name() ) );
 				
 				ret.add( item );
 				
@@ -1229,37 +1238,48 @@ private void geraCodCompra() {
 			if(itens!=null && itens.size()>0) {
 
 				int i= 0;
+				int numrmas = 0;
 				
 				for(i = 0; i<itens.size(); i++) {
 
 					// Gerar RMA para os ítens
-					
-					ps = con.prepareStatement( sql.toString() );
-
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-					ps.setInt( 3, getTicket() );
-					
 					HashMap<String, Object> item = (HashMap<String,Object>) itens.get( i );
-					Integer coditrecmerc = (Integer)item.get( COLS_ITRECMERC.CODITRECMERC.name() );
 					
-					ps.setInt( 4, coditrecmerc );
+					int numitensrma = (Integer) item.get( COLS_ITRECMERC.NUMITENSMATPRIM.name() );
 					
-					rs = ps.executeQuery();
+					if(numitensrma>0) {
 					
-					while (rs.next()) {
+						ps = con.prepareStatement( sql.toString() );
+	
+						ps.setInt( 1, Aplicativo.iCodEmp );
+						ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+						ps.setInt( 3, getTicket() );
 						
-						ret.add( rs.getInt( "CODRMA" ) );
+						
+						Integer coditrecmerc = (Integer)item.get( COLS_ITRECMERC.CODITRECMERC.name() );
+						
+						ps.setInt( 4, coditrecmerc );
+						
+						rs = ps.executeQuery();
+						
+						while (rs.next()) {
+							
+							ret.add( rs.getInt( "CODRMA" ) );
+							numrmas ++;
+							
+						}
+						
+						ps.close();
 						
 					}
-					
-					
-					ps.close();
 
 				}
 				
-				if(i>0) {
-					Funcoes.mensagemInforma( orig, "RMAs geradas com sucesso!!!" );
+				if(numrmas>0) {
+					Funcoes.mensagemInforma( orig, "RMAs (" + Funcoes.vectorToString( ret, "," ) + ") geradas com sucesso!!!" );
+				}
+				else {
+					Funcoes.mensagemInforma( orig, "Nenhuma RMA foi gerada!!!" );
 				}
 				
 			}
