@@ -324,7 +324,7 @@ public class FRemCnab extends FRemFBN {
 		}
 
 		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
-		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ] ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
+		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
 
 		// reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
 		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
