@@ -35,6 +35,8 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
+import org.freedom.modulos.crm.view.frame.utility.FCRM;
 import org.freedom.modulos.gms.view.frame.crud.detail.FColeta;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
@@ -219,7 +221,6 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 200700000 );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Fretes de Rec.Merc.", "Fretes de Rec.Merc.", 'c', 200705000, 2, true, FRFreteRecMerc.class );
 		
-		
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Cancela venda", "Cancelamento", 'C', 300200000, 1, true, FCancVenda.class );
@@ -301,6 +302,11 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Tipo de atendente", "Tipo de atendente", 'T', 700300000, 1, true, FTipoAtend.class );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'd', 700400000, 1, true, FAtendente.class );
 
+		addSeparador( 700000000 );
+		addOpcao( 700000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'A', 700500000, 1, true, FCRM.class );
+		addSeparador( 700000000 );
+		addOpcao( 700000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 700600000, 1, true, FChamado.class );
+
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101010, FCliente.class );
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100102020, FFornecedor.class );
@@ -318,7 +324,10 @@ public class FreedomGMS extends AplicativoPD {
 		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class );
 		addBotao( "btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class );
 		addBotao( "btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class );
- 
+
+		addBotao( "btAtendimentos.gif", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 700500000, FCRM.class );
+		addBotao( "btChamado.png", "Chamados", "Chamados", 700600000, FChamado.class );
+		
 		addBotao( "btColeta.png", "Coleta de materiais", "Coleta de Materiais", 500400000, FColeta.class );
 		addBotao( "btRecMatPrim.png", "Painel de Controle", "Painel de Controle", 500100000, FControleRecMerc.class );
 
