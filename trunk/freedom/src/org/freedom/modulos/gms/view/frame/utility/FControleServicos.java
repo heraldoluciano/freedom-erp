@@ -202,7 +202,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CHAMADOS;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, CODCLI, NOMECLI, CODORC, CODRMAS, CODCHAMADOS;
 	}
 
 	public FControleServicos() {
@@ -432,7 +432,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.adicColuna( "Cod.Cli." );
 		tabDet.adicColuna( "Cliente" );
 		tabDet.adicColuna( "Orc." );
-		tabDet.adicColuna( "Rma" );
+		tabDet.adicColuna( "Rmas" );
+		tabDet.adicColuna( "Cham." );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -441,9 +442,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		tabDet.setTamColuna( 60, DETALHAMENTO.DATA.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.HORA.ordinal() );
 		tabDet.setTamColuna( 60, DETALHAMENTO.CODCLI.ordinal() );
-		tabDet.setTamColuna( 350, DETALHAMENTO.NOMECLI.ordinal() );
+		tabDet.setTamColuna( 300, DETALHAMENTO.NOMECLI.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODORC.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.CODRMAS.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODCHAMADOS.ordinal() );
 
 		// tabDet.setColunaInvisivel( 2 );
 
@@ -549,11 +551,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
 				
-				Vector<Integer> rmas = RecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
+				Vector<Integer> rmas = RecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
+				Vector<Integer> chamados = RecMerc.getChamadosOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
 
-				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );
+				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );				
+				tabDet.setValor( Funcoes.vectorToString( chamados, "," ), row, DETALHAMENTO.CODCHAMADOS.ordinal() );
 				
-				row++;
+				row++; 
 
 			}
 
@@ -593,7 +597,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		else if ( e.getSource() == btRma ) {
 			gerarRmas();
 		}
-		else if ( e.getSource() == btRma ) {
+		else if ( e.getSource() == btChamado ) {
 			gerarChamados();
 		}
 
@@ -858,7 +862,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		String unid = null;
-		PreparedStatement ps = null;
+		PreparedStatement ps = null; 
 
 		RecMerc recmerc = null;
 
@@ -874,9 +878,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 					recmerc = new RecMerc( this, ticket, con );
-
-					if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
-
+					
+					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() );
+					
+					if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+	 					 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
+	 					 statustxt.equals( StatusOS.OS_PRONTO.getValue() )
+					){
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 							Integer codorc = recmerc.geraOrcamento();
@@ -986,7 +995,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			if ( tabDet.getLinhaSel() > -1 ) {
 
-				String codchamadogrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMAS.ordinal() ).toString();
+				String codchamadogrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCHAMADOS.ordinal() ).toString();
 
 				// Se nao houver chamado deve gerar...
 				if ( "".equals( codchamadogrid ) || null == codchamadogrid ) {
