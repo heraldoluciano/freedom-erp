@@ -120,7 +120,7 @@ public class RecMerc implements java.io.Serializable {
 	}
 	
 	private enum COLS_ITRECMERCITOS {
-		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODITOS, CODEMPPD, REFPROD, DESCPROD, CODFILIALPD, CODPROD, QTDITOS,OBSITOS, GERARMA, GERACHAMADO, CODTPCHAMADO;
+		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODITOS, CODEMPPD, REFPROD, DESCPROD, CODFILIALPD, CODPRODPD, QTDITOS, QTDHORASSERV, OBSITOS, GERARMA, GERACHAMADO, CODTPCHAMADO;
 	}
 
 
@@ -1251,11 +1251,13 @@ public class RecMerc implements java.io.Serializable {
 			sql.append( ",os." );
 			sql.append( COLS_ITRECMERCITOS.CODITRECMERC.name() );
 			sql.append( ",os." );
+			sql.append( COLS_ITRECMERCITOS.CODITOS.name() );
+			sql.append( ",os." );
 			sql.append( COLS_ITRECMERCITOS.CODEMPPD.name() );
 			sql.append( ",os." );
 			sql.append( COLS_ITRECMERCITOS.CODFILIALPD.name() );
 			sql.append( ",os." );
-			sql.append( COLS_ITRECMERCITOS.CODPROD.name() );
+			sql.append( COLS_ITRECMERCITOS.CODPRODPD.name() );
 			sql.append( ",os." );
 			sql.append( COLS_ITRECMERCITOS.OBSITOS.name() );			
 			sql.append( ",os." );
@@ -1265,7 +1267,9 @@ public class RecMerc implements java.io.Serializable {
 			sql.append( ",os." );
 			sql.append( COLS_ITRECMERCITOS.QTDITOS.name() );
 			sql.append( ",pd." );
-			sql.append( COLS_ITRECMERCITOS.DESCPROD.name() );			
+			sql.append( COLS_ITRECMERCITOS.DESCPROD.name() );
+			sql.append( "," );
+			sql.append( "coalesce(pd." + COLS_ITRECMERCITOS.QTDHORASSERV.name() + ",1) " + COLS_ITRECMERCITOS.QTDHORASSERV.name() );			
 			sql.append( ",pd." );
 			sql.append( COLS_ITRECMERCITOS.CODTPCHAMADO.name() );
 
@@ -1297,13 +1301,14 @@ public class RecMerc implements java.io.Serializable {
 				item.put( COLS_ITRECMERCITOS.CODITOS.name(), rs.getInt( COLS_ITRECMERCITOS.CODITOS.name() ) );
 				item.put( COLS_ITRECMERCITOS.CODEMPPD.name(), rs.getInt( COLS_ITRECMERCITOS.CODEMPPD.name() ) );
 				item.put( COLS_ITRECMERCITOS.CODFILIALPD.name(), rs.getInt( COLS_ITRECMERCITOS.CODFILIALPD.name() ) );
-				item.put( COLS_ITRECMERCITOS.CODPROD.name(), rs.getInt( COLS_ITRECMERCITOS.CODPROD.name() ) );
+				item.put( COLS_ITRECMERCITOS.CODPRODPD.name(), rs.getInt( COLS_ITRECMERCITOS.CODPRODPD.name() ) );
 				item.put( COLS_ITRECMERCITOS.DESCPROD.name(), rs.getString( COLS_ITRECMERCITOS.DESCPROD.name() ) );
 				item.put( COLS_ITRECMERCITOS.GERARMA.name(), rs.getString( COLS_ITRECMERCITOS.GERARMA.name() ) );
 				item.put( COLS_ITRECMERCITOS.GERACHAMADO.name(), rs.getString( COLS_ITRECMERCITOS.GERACHAMADO.name() ) );
 				item.put( COLS_ITRECMERCITOS.OBSITOS.name(), rs.getString( COLS_ITRECMERCITOS.OBSITOS.name() ) );
 				item.put( COLS_ITRECMERCITOS.CODTPCHAMADO.name(), rs.getInt( COLS_ITRECMERCITOS.CODTPCHAMADO.name() ) );
 				item.put( COLS_ITRECMERCITOS.QTDITOS.name(), rs.getBigDecimal( COLS_ITRECMERCITOS.QTDITOS.name() ) );
+				item.put( COLS_ITRECMERCITOS.QTDHORASSERV.name(), rs.getBigDecimal( COLS_ITRECMERCITOS.QTDHORASSERV.name() ) );
 				
 				ret.add( item );
 				
@@ -1408,11 +1413,11 @@ public class RecMerc implements java.io.Serializable {
 		try {
 
 			sql.append( "insert into crchamado " );
-			sql.append( "codemp, codfilial, codchamado, descchamado, detchamado, obschamado, codempcl, codfilialcl, codcli, " );
+			sql.append( "(codemp, codfilial, codchamado, descchamado, detchamado, codempcl, codfilialcl, codcli, " );
 			sql.append( "solicitante, prioridade, codemptc, codfilialtc, codtpchamado, dtchamado, dtprevisao, qtdhorasprevisao, " );			
-			sql.append( "codempos, codfilialos, ticket, coditrecmerc, coditos " );
+			sql.append( "codempos, codfilialos, ticket, coditrecmerc, coditos) " );
 			sql.append( "values " );
-			sql.append( "( ?,?,?,?,?,?,?,?,?," );
+			sql.append( "( ?,?,?,?,?,?,?,?," );
 			sql.append( "  ?,?,?,?,?,?,?,?," );
 			sql.append( "  ?,?,?,?,?" );
 			sql.append( " )" );
@@ -1431,7 +1436,6 @@ public class RecMerc implements java.io.Serializable {
 					boolean gerachamado = "S".equals( item.get( COLS_ITRECMERCITOS.GERACHAMADO.name() ));
 					
 					if(gerachamado) {
-						
 						
 						Integer codtpchamado = (Integer) item.get( COLS_ITRECMERCITOS.CODTPCHAMADO.name() );
 						String descprod = (String) item.get( COLS_ITRECMERCITOS.DESCPROD.name()  );
@@ -1463,20 +1467,30 @@ public class RecMerc implements java.io.Serializable {
 							
 							ps.setDate( iparam++, Funcoes.dateToSQLDate( getDtent()) );
 							ps.setDate( iparam++, Funcoes.dateToSQLDate( getDtprevret()) );
-														
-							ps.setBigDecimal( iparam++, (BigDecimal) item.get( COLS_ITRECMERCITOS.QTDITOS.name() ) );
+										
+							// Calcula o numero de horas estimadas multiplicando a contidade do serviço 
+							// com o numero de horas estimadas do cadastro de serviço.
+							
+							BigDecimal qtditos = (BigDecimal) item.get( COLS_ITRECMERCITOS.QTDITOS.name() );
+							BigDecimal nrohoras = (BigDecimal) item.get( COLS_ITRECMERCITOS.QTDHORASSERV.name() );
+							
+							ps.setBigDecimal( iparam++, nrohoras.multiply( qtditos ) );
 							
 							ps.setInt( iparam++, Aplicativo.iCodEmp );
 							ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQITRECMERCITOS" ) );
 							ps.setInt( iparam++, getTicket() );
 							
 							ps.setInt( iparam++, (Integer) item.get( COLS_ITRECMERCITOS.CODITRECMERC.name() ));
+							
 							ps.setInt( iparam++, (Integer) item.get( COLS_ITRECMERCITOS.CODITOS.name() ));
 							
-							rs = ps.executeQuery();
+							ps.execute();
 							
 							ret.add( getCodchamado() );
 							numchamados ++;
+							
+							con.commit();
+							ps.close();
 
 						}
 						else {
@@ -1486,7 +1500,7 @@ public class RecMerc implements java.io.Serializable {
 														   + "Verifique o cadastro do serviço.");
 						}
 						
-						ps.close();
+						
 						
 					}
 
@@ -1545,6 +1559,44 @@ public class RecMerc implements java.io.Serializable {
 				ps.close();
 						
 				
+
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+	
+	public static Vector<Integer> getChamadosOS( Integer ticketchamado ) {
+
+		StringBuilder sql = new StringBuilder();
+
+		PreparedStatement ps = null;
+		Integer codplanopag = null;
+		Vector<Integer> ret = new Vector<Integer>();
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select codchamado from crchamado where codempos=? and codfilialos=? and ticket=? " );
+
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+	
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+			ps.setInt( 3, ticketchamado );						
+						
+			rs = ps.executeQuery();
+						
+				while (rs.next()) {
+							
+					ret.add( rs.getInt( "CODCHAMADO" ) );
+					
+				} 
+					
+				ps.close();
 
 		} 
 		catch ( Exception e ) {
