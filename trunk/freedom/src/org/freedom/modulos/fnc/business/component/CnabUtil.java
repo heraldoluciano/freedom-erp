@@ -438,7 +438,7 @@ public class CnabUtil extends FbnUtil {
 
 					line.append( getRegistroHeader() ); // Posição 001 a 001 - Identificação do Registro
 					line.append( "1" ); // Posição 002 a 002 - Identificação do Arquvo de remessa
-					line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa
+					line.append( format( LITERAL_REM, ETipo.X, 7, 0 ) ); // Posição 003 a 009 - Literação de remassa
 					line.append( "01" ); // Posição 010 a 011 - Código do serviço (01)
 					line.append( format( LITERAL_SERV, ETipo.X, 15, 0 ) );// Posição 012 a 026 - Literal Serviço
 					
@@ -457,14 +457,24 @@ public class CnabUtil extends FbnUtil {
 						line.append( StringFunctions.strZero( getCodConvBanco(), 20 ) );// Posição 027 a 046 - Código da Empresa
 					}
 					
-					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
+					line.append( format( getRazEmp().toUpperCase(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação
-					line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
+					line.append( format( getNomeBanco().toUpperCase(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
 					line.append( dateToString( getDataGeracao(), DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo
-					line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
-					line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
-					line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
-					line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
+					
+					if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+						line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) );// Posição 101 a 107 - Sequencial da remessa
+						line.append( StringFunctions.replicate( " ", 287 ) ); // Posição 108 a 394 - Espaço em branco
+					}
+					else {
+						line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branc
+						line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
+						line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
+						line.append( StringFunctions.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
+					}
+					
+
+					
 					line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um
 					line.append( (char) 13 );
 					line.append( (char) 10 );
@@ -4934,7 +4944,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( "00000" ); // Posição 090 a 094 - Codigo de responsabilidade 
 					line.append( "0" ); // Posição 095 a 095 - Digito do codigo de responsabilidade
 					line.append( "000000" ); // Posição 096 a 101 - Numero do borderô
-					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 102 a 106 - Tipo de cobrança Preencher com brancos
+					line.append( StringFunctions.replicate( " ", 5 ) );// Posição 102 a 106 - Tipo de cobrança Preencher com brancos
 					line.append( StringFunctions.strZero( getCodCarteira() + "", 2 ) ); // Posição 107 a 108 - Código da Carteira de cobranca
 					
 				}
@@ -5005,12 +5015,13 @@ public class CnabUtil extends FbnUtil {
 
 				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {	
 					line.append( BancodoBrasil.BANCO_DO_BRASIL ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com 001 )
+					line.append( "0000" ); // Posição 143 a 146 - Agencia depositária ( preencher com zeros )
+					line.append( " " ); // Posição 147 a 147 - Digito Verificador do Prefixo da Agencia. Preencher com branco.
 				}
 				else {
 					line.append( "000" ); // Posição 140 a 142 - Banco encarregado da cobrança ( preencher com zeros )
+					line.append( "00000" ); // Posição 143 a 147 - Agencia depositária ( preencher com zeros )
 				}
-				
-				line.append( "00000" ); // Posição 143 a 147 - Agencia depositária ( preencher com zeros )
 
 				// line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título
 
@@ -5059,19 +5070,24 @@ public class CnabUtil extends FbnUtil {
 				line.append( StringFunctions.strZero( getTipoInscCli() + "", 2 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
 
 				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) );// Posição 221 a 234 - CNPJ/CPF
-
-				line.append( format( getRazCli(), ETipo.X, 40, 0 ) );// Posição 235 a 274 - Nome do Sacado
-
-				line.append( format( getEndCli(), ETipo.X, 40, 0 ) );// Posição 275 a 314 - Endereço Completo
-
-				line.append( format( getMsg1(), ETipo.X, 12, 0 ) );// Posição 315 a 326 - Mensagem 1
-
+				
+				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+					line.append( format( StringFunctions.clearString( StringFunctions.clearAccents( getRazCli()), " " ).toUpperCase(), ETipo.X, 37, 0 ) );// Posição 235 a 271 - Nome do Sacado
+					line.append( StringFunctions.replicate( " ", 3 ) ); // Posição 272 a 274 - Brancos
+					line.append( format( StringFunctions.clearString( StringFunctions.clearAccents( getEndCli() ), " " ).toUpperCase(), ETipo.X, 52, 0 ) );// Posição 275 a 326 - Endereço Completo
+				}
+				else {
+					line.append( format( getRazCli(), ETipo.X, 40, 0 ) );// Posição 235 a 274 - Nome do Sacado
+					line.append( format( getEndCli(), ETipo.X, 40, 0 ) );// Posição 275 a 314 - Endereço Completo
+					line.append( format( getMsg1(),   ETipo.X, 12, 0 ) );// Posição 315 a 326 - Mensagem 1
+				}
+				
 				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) ); // Posição 327 a 334 - Cep
 
 				if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
-					line.append( format( getCidCli(), ETipo.X, 15, 0 ) );// Posição 335 a 349 - Cidade do sacado
+					line.append( format( StringFunctions.clearAccents( getCidCli() ).toUpperCase(), ETipo.X, 15, 0 ) );// Posição 335 a 349 - Cidade do sacado
 					line.append( format( getUfCli(), ETipo.X, 2, 0 ) );// Posição 350 a 351 - UF do sacado
-					line.append( format( getRazAva(), ETipo.X, 40, 0 ) );// Posição 352 a 391 - Sacado/Avalista ou Mensagem 2
+					line.append( format( StringFunctions.clearString( StringFunctions.clearAccents( getRazAva()), " " ).toUpperCase(), ETipo.X, 40, 0 ) );// Posição 352 a 391 - Sacado/Avalista ou Mensagem 2
 					line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 392 a 393 - Numero de dias para protesto
 					line.append( " " ); // Posição 394 a 394 - Brancos para completar registro
 				}

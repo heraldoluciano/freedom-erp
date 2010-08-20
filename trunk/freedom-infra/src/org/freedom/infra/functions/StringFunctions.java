@@ -211,7 +211,9 @@ public final class StringFunctions {
 			cTmp = 'c';
 		else if (isContained(cTmp, "Ç"))
 			cTmp = 'C';
-		return cTmp;
+		else if (isContained(cTmp, "&"))
+			cTmp = 'E';
+		return cTmp;    
 	}
 
 	public static boolean isContained(char cTexto, String sTexto) {
@@ -226,12 +228,19 @@ public final class StringFunctions {
 	}
 
 	public static String clearAccents(String sTexto) {
+		if ( sTexto == null ){
+			return "";
+		}
+		
 		String sRet = "";
 		char cVals[] = sTexto.toCharArray();
+		
 		for (int i = 0; i < cVals.length; i++) {
 			cVals[i] = clearAccent(cVals[i]);
 		}
+		
 		sRet = new String(cVals);
+		
 		return sRet;
 	}
 

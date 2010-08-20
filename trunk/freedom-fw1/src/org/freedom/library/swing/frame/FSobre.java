@@ -154,7 +154,8 @@ public class FSobre extends FFDialogo {
 
 		pnNotas.add(pnRodapeNotas, BorderLayout.CENTER);
 
-		lbRodapeNotas.setText(getHtmlNotas());
+//		lbRodapeNotas.setText(getHtmlNotasPorVersao());
+		lbRodapeNotas.setText(getHtmlNotasGeral());
 
 	}
 
@@ -264,7 +265,39 @@ public class FSobre extends FFDialogo {
 
 	}
 
-	private String getHtmlNotas() {
+	private String getHtmlNotasGeral() {
+		String ret = "";
+		String file = "";
+		String extensao = ".html";
+
+		try {
+
+			file = "release" + extensao;
+			
+			InputStream is = this.getClass().getResourceAsStream("/org/freedom/doc/release_notes/" + file);
+
+			byte buf[] = new byte[is.available()];
+
+			StringBuffer notas = new StringBuffer();
+
+			while (is.read(buf) > 0) {
+				notas.append(new String(buf, Charset.forName("ISO-8859-1")));
+			}
+
+			ret = "<html>" + notas + "</html>";
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			ret = "<html>" + "Não foi possível localizar as notas da versão.\n" + file + "</html>";
+
+		}
+
+		return ret;
+
+	}
+	/*
+	private String getHtmlNotasPorVersao() {
 		String ret = "";
 		String file = "";
 		String versao = "";
@@ -304,7 +337,7 @@ public class FSobre extends FFDialogo {
 		return ret;
 
 	}
-
+*/
 	private String getHtmlVersao() {
 		String ret = "";
 
