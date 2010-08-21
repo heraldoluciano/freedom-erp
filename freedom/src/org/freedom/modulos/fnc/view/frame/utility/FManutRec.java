@@ -1803,7 +1803,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?,VLRDEVITREC=?," );
 						sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
 						sSQL.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
-						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=? " );
+						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=? " );
 						sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
@@ -1930,11 +1930,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							else {
 								ps.setDate( 27, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTPREV.ordinal() ] ) );
 							}
+							
+							ps.setBigDecimal( 28, (BigDecimal) ( oRets[ EColRet.VLRPARC.ordinal() ] ) );
 
-							ps.setInt( 28, iCodRec );
-							ps.setInt( 29, iNParcItRec );
-							ps.setInt( 30, Aplicativo.iCodEmp );
-							ps.setInt( 31, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setInt( 29, iCodRec );
+							ps.setInt( 30, iNParcItRec );
+							ps.setInt( 31, Aplicativo.iCodEmp );
+							ps.setInt( 32, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 							ps.executeUpdate();
 
