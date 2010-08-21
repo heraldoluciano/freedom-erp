@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/jmf.jar"/>
 	<classpathentry kind="lib" path="lib/mp3plugin.jar"/>
 	<classpathentry kind="lib" path="lib/mailapi.jar"/>
-	<classpathentry kind="lib" path="/freedom/lib/boleto.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
