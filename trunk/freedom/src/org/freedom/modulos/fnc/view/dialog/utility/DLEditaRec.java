@@ -143,7 +143,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	};
 
 	public enum EColRet {
-		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC
+		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC, VLRPARC
 	};
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
@@ -261,7 +261,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		// txtDescConta.setAtivo( false );
 		// txtDescPlan.setAtivo( false );
 		txtDtEmis.setAtivo( false );
-		txtVlrParc.setAtivo( false );
+//		txtVlrParc.setAtivo( false );
 
 		adic( new JLabelPad( "Cód.cli." ), 7, 0, 250, 20 );
 		adic( txtCodCli, 7, 20, 80, 20 );
@@ -425,6 +425,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		oRetorno[ EColRet.CODBOR.ordinal() ] = txtCodBordero.getVlrString();
 		oRetorno[ EColRet.CODREC.ordinal() ] = txtCodRec.getVlrInteger();
 		oRetorno[ EColRet.NPARCITREC.ordinal() ] = txtnParcitrec.getVlrInteger();
+		oRetorno[ EColRet.VLRPARC.ordinal() ] = txtVlrParc.getVlrBigDecimal();
 
 		return oRetorno;
 	}
