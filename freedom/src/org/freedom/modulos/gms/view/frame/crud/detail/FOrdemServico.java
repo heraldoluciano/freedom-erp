@@ -15,10 +15,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -108,6 +107,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldPad txtGarantia = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextFieldPad txtGeraChamado = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtGeraRMA = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtGeraNovo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtStatusItRecMerc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -298,6 +301,14 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
 	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
+	
+	private ImageIcon img_os_servico = Icone.novo( "os_servico_18x18.png" );
+	
+	private ImageIcon img_os_novo = Icone.novo( "os_novo_18x18.png" );
+	
+	private ImageIcon img_os_componente = Icone.novo( "os_componente_18x18.png" );
+	
+	private ImageIcon img_excecoes = Icone.novo( "os_excecao_18x18.png" );
 
 	// *** Labels
 
@@ -582,7 +593,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 			adicCampo( txtRefProdItOS, 40, 20, 70, 20, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItOS, true );
 
-			txtRefProdItOS.setBuscaAdic( new DLBuscaProd( con, "REFPRODPD", lcProd2.getWhereAdic() ) );
+			txtRefProdItOS.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 
 			if ( buscaGen() ) {
 				txtRefProdItOS.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) );
@@ -609,6 +620,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampoInvisivel( txtStatusItOS, "StatusItOS", "Status", ListaCampos.DB_SI, false );
 		
 		adicCampoInvisivel( txtGeraChamado, "GeraChamado", "Gera chamado", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtGeraRMA, "GeraRma", "Gera RMA", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtGeraNovo, "GeraNovo", "Gera novo", ListaCampos.DB_SI, false );
 		
 		pnAdicItOS.adic( btChamado, 0, 0, 30, 26 );
 		pnAdicItOS.adic( btAdicProdutoEstrutura, 30, 0, 30, 26 );
@@ -697,9 +710,11 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		// Tabela de Suplementos
 
-		tabItOS.setRowHeight( 21 );
+		tabItOS.setRowHeight( 24 );
 
-		tabItOS.setTamColuna( 30, 0 );
+		tabItOS.adicColuna( "" );
+		
+		tabItOS.setTamColuna( 20, 0 );
 		tabItOS.setTamColuna( 70, 1 );
 		tabItOS.setTamColuna( 200, 2 );
 		tabItOS.setColunaInvisivel( 3 );
@@ -707,9 +722,44 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tabItOS.setTamColuna( 50, 5 );
 		tabItOS.setColunaInvisivel( 6 );
 		tabItOS.setTamColuna( 35, 7 );
-		
+		tabItOS.setColunaInvisivel( 8 );
+		tabItOS.setColunaInvisivel( 9 );
+		tabItOS.setColunaInvisivel( 10 );
+		tabItOS.setTamColuna( 25, 11 );
 
 	}
+	
+	private void reprocessaTabItOs() {
+		
+		try {
+			
+			for(int i = 0; i < tabItOS.getNumLinhas(); i++) {
+			
+				boolean gerachamado = "S".equals( (String)tabItOS.getValor( i, 8 ));
+				boolean gerarma = "S".equals( (String)tabItOS.getValor( i, 9 ));
+				boolean geranovo = "S".equals( (String)tabItOS.getValor( i, 10 ));
+				
+				if(gerachamado) {
+					tabItOS.setValor( img_os_servico, i, 11 );
+				}
+				else if(gerarma) {
+					tabItOS.setValor( img_os_componente, i, 11 );					
+				}
+				else if(geranovo) {
+					tabItOS.setValor( img_os_novo, i, 11 );	
+				}
+				else {
+					tabItOS.setValor( img_excecoes, i, 11 );
+				}
+				
+			}
+			
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
 
 	private void adicListeners() {
 
@@ -1197,6 +1247,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 		else if ( cevt.getListaCampos() == lcItRecMercItOS ) {
 			atualizaStatusItOS();
+			reprocessaTabItOs();
 		}
 		else if ( cevt.getListaCampos() == lcProdItOS || cevt.getListaCampos() == lcProdItOS2 ) {
 			// Ser for um serviço deve ativar o botão de chamados
@@ -1621,3 +1672,4 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	
 
 }
+
