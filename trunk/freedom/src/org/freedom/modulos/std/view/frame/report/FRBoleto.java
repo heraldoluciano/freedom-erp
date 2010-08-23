@@ -547,8 +547,8 @@ public class FRBoleto extends FRelatorio {
 				}
 				
 				try {
-					if ( ( sCampo = rs.getString( "NroCheq" ) ) != null && rs.getDouble( "VlrPagoItRec" ) != 0 ) {
-						sTxa = sTxa.replaceAll( "\\[NUM_CHEQ]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					if ( ( sCampo = rs.getString( "NumCheq" ) ) != null && rs.getDouble( "VlrParcItRec" ) != 0 ) {
+						sTxa = sTxa.replaceAll( "\\[NUM_CHEQ]", sCampo );
 					}
 				}
 				catch (Exception e) {
