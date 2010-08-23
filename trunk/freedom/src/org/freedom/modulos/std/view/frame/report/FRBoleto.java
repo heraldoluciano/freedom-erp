@@ -520,7 +520,7 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.copy( sCampo, 15 ) );
+					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.copy( StringFunctions.strZero( sCampo.trim(), 8), 15 ) );
 				if ( ( sCampo = rs.getString( "ReciboItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[RECIBO]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "NParcItRec" ) ) != null ) {
@@ -548,7 +548,7 @@ public class FRBoleto extends FRelatorio {
 				
 				try {
 					if ( ( sCampo = rs.getString( "NumCheq" ) ) != null && rs.getDouble( "VlrParcItRec" ) != 0 ) {
-						sTxa = sTxa.replaceAll( "\\[NUM_CHEQ]", sCampo );
+						sTxa = sTxa.replaceAll( "\\[NUM_CHEQ]", Funcoes.copy( StringFunctions.strZero( sCampo.trim(), 8), 15 ) );
 					}
 				}
 				catch (Exception e) {
