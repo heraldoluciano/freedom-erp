@@ -38,8 +38,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
+
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -1263,7 +1265,6 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			e.printStackTrace();
 		}
 	}
-	
 	
 	public void beforeCarrega( CarregaEvent e ) {
 
