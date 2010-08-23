@@ -26,6 +26,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -35,14 +42,6 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
 public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
@@ -50,7 +49,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	public JTablePad tab = new JTablePad();
 
 	private JScrollPane spnCentro = new JScrollPane(tab);
-	private int iCodProd = 0;
+	private String codprod = "";
 
 	private boolean bFilCodProd = false;
 	private boolean bFilRefProd = false;
@@ -60,7 +59,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private Integer codfor = null;
 
-	private Vector<Integer> vProds = new Vector<Integer>();
+	private Vector<String> vProds = new Vector<String>();
 	private Vector<String> vUsaLote = new Vector<String>();
 	private JComponent proxFoco = null;
 
@@ -115,7 +114,10 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			proxFoco.requestFocus();
 	}
 
-	public boolean buscaCodProd(String valor) {
+//	public boolean buscaCodProd(String valor ) {
+//		return buscaCodProd(valor, false);
+//	}
+	public boolean buscaCodProd(String valor, boolean referencia) {
 
 		valor = StringFunctions.alltrim(valor);
 
@@ -148,17 +150,26 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			vProds.clear();
 			vUsaLote.clear();
 			tab.limpa();
-			iCodProd = 0;
+			codprod = "0";
 
-			sqladiclote = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " + "L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " + "FROM EQPRODUTO P, EQLOTE L, EQALMOX A "
-					+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " + "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX "
-					+ "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " + "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " + "FROM EQLOTE LS "
-					+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " + "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+			sqladiclote = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " 
+						+ "L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " 
+						+ "FROM EQPRODUTO P, EQLOTE L, EQALMOX A "
+						+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " 
+						+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX "
+						+ "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " 
+						+ "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " 
+						+ "FROM EQLOTE LS "
+						+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " 
+						+ "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
 
-			sqladic = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " + "FROM EQPRODUTO P, EQALMOX A " + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? "
+			sqladic = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " 
+					+ "FROM EQPRODUTO P, EQALMOX A " 
+					+ "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " + (referencia ? "P.REFPROD=? " : "P.CODPROD=? ") 								
 					+ "AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";
+					
 
-			sql = "SELECT P.CODPROD, P.CLOTEPROD FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? ";
+			sql = "SELECT P.CODPROD, P.REFPROD, P.CLOTEPROD FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? ";
 
 			if (bFilCodBar) {
 
@@ -230,8 +241,10 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			}
 			if (bFilCodProdFor) {
 
-				sqlfor = "UNION SELECT PF.CODPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P " + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
-						+ "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? " + ( codfor != null ? ( " AND PF.CODFOR=" + codfor ) : "" );
+				sqlfor = "UNION SELECT PF.CODPROD, P.REFPROD, P.CLOTEPROD FROM CPPRODFOR PF, EQPRODUTO P " 
+					   + "WHERE P.CODEMP = PF.CODEMP AND P.CODFILIAL=PF.CODFILIAL AND P.CODPROD=PF.CODPROD "
+					   + "AND PF.CODEMP=? AND PF.CODFILIAL=? AND PF.REFPRODFOR = ? " 
+					   + ( codfor != null ? ( " AND PF.CODFOR=" + codfor ) : "" );
 
 			}
 
@@ -275,7 +288,14 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				vProds.addElement(new Integer(rs.getString("CODPROD") != null ? rs.getString("CODPROD") : "0"));
+				
+				if(referencia) {
+					vProds.addElement( rs.getString("REFPROD") != null ? rs.getString("REFPROD") : "0");
+				}
+				else {
+					vProds.addElement( rs.getString("CODPROD") != null ? rs.getString("CODPROD") : "0");
+				}
+				
 				vUsaLote.addElement(rs.getString("CLOTEPROD") != null ? rs.getString("CLOTEPROD") : "N");
 			}
 
@@ -284,7 +304,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				return false;
 			}
 			else if (vProds.size() == 1) {
-				iCodProd = vProds.elementAt(0).intValue();
+				codprod = vProds.elementAt(0);
 				ok();
 				return true;
 			}
@@ -298,7 +318,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				ps2 = con.prepareStatement(sTemp);
 				ps2.setInt(1, Aplicativo.iCodEmp);
 				ps2.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-				ps2.setInt(3, vProds.elementAt(i).intValue());
+				ps2.setString(3, vProds.elementAt(i));
 
 				rs2 = ps2.executeQuery();
 
@@ -325,7 +345,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				return false;
 			}
 			else if (ilinha == 1) {
-				iCodProd = vProds.elementAt(0).intValue();
+				codprod = vProds.elementAt(0);
 				ok();
 				return true;
 			}
@@ -350,8 +370,8 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 
 	}
 
-	public int getCodProd() {
-		return iCodProd;
+	public String getCodProd() {
+		return codprod;
 	}
 
 	private void getPrefere() {
@@ -402,15 +422,15 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			int ilin = tab.getLinhaSel();
-			iCodProd = 0;
+			codprod = "0";
 			if (tab.getNumLinhas() > 0 && ilin >= 0) {
-				iCodProd = Integer.parseInt(( String ) tab.getValor(ilin, 0));
+				codprod = ( String ) tab.getValor(ilin, 0);
 				passaFocus();
 				super.ok();
 			}
 			else {
 				Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
-				iCodProd = 0;
+				codprod = "0";
 			}
 		}
 		else
