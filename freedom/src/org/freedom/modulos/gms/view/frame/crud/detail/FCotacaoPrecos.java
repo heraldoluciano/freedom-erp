@@ -34,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -267,6 +268,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JButtonPad btRecarregaPrecos = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
 	
 	public FCotacaoPrecos() {
 
@@ -444,6 +447,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		btCancelaItem.setToolTipText( "Cancelar ítem." );
 		btMotivoCancelaItem.setToolTipText( "Motivo do cancelamento do ítem." );
 		btMotivoAbaixo.setToolTipText( "Motivo do número de cotações baixo." );
+		btRecarregaPrecos.setToolTipText( "Recarrega Preços" );
 
 //		pinCab.adic( pinBotCab, 630, 1, 125, 99 );
 
@@ -460,6 +464,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		btMotivoCancelaItem.addActionListener( this );
 		btMotivoAbaixo.addActionListener( this );
 		btFinalizar.addActionListener( this );
+		btRecarregaPrecos.addActionListener( this );
 
 		pinDet = new JPanelPad( 740, 100 );
 		setPainel( pinDet, pnDet );
@@ -607,6 +612,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		
 		adicDB( cbUsaRendaCot, 367, 100, 100, 20, "UsaRendacot", "" , false );
 		
+//		adic( btRecarregaPrecos, 467,100,100,20 );
+		
 		adicCampoInvisivel( txtIdUsuCot, "IdUsuCot", "Usuário", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSituacaoIt, "SitItSol", "Sit.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSituacaoItAprov, "SitAprovItSol", "Ap.", ListaCampos.DB_SI, false );
@@ -738,6 +745,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		}
 		if ( pevt.getListaCampos() == lcDet ) {
 			lcCampos.carregaDados();
+			
+		}
+		else if( pevt.getListaCampos() == lcCotacao ) {
+			
+			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
+			
 		}
 	}
 
@@ -999,6 +1012,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				txtStatusSolicitacao.setVlrString( "EF" );
 				lcCampos.post();
 			}
+		}
+		else if(evt.getSource() == btRecarregaPrecos) {
+//			recarregaPrecosPedidos( txtCodProd2.getVlrInteger(), txtCodFor.getVlrInteger(), txtCodPlanoPag.getVlrInteger(), txtDtCot.getVlrDate(), txtDtValidCot.getVlrDate(), txtPrecoCot.getVlrBigDecimal(), "S".equals( cbUsaRendaCot.getVlrString() ), txtRendaCot.getVlrInteger() );
 		}
 		
 
@@ -1400,4 +1416,108 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		Color color = new Color( r, g, b );
 		return color;
 	}
+	
+	public static void recarregaPrecosPedidos( Integer codprod, Integer codfor, Integer codplanopag, Date dataini, Date datafim, BigDecimal preconovo, boolean usarenda, Integer renda ) {
+
+		StringBuilder sql_itens = new StringBuilder();
+		StringBuilder sql_update = new StringBuilder();
+	
+		PreparedStatement ps_update = null;
+		PreparedStatement ps_select = null;
+		
+		ResultSet rs = null;
+
+		DbConnection con = Aplicativo.getInstace().getConexao();
+
+		try {
+	
+			
+			// Query para selecionar a compra ;
+			sql_itens.append( "select " );
+			sql_itens.append( "cp.codcompra, ic.coditcompra " );
+			sql_itens.append( "from cpitcompra ic, cpcompra cp " );
+			
+			sql_itens.append( "left outer join eqrecmerc rm on ");
+			sql_itens.append( "rm.codemp=cp.codemprm and rm.codfilial=cp.codfilialrm and rm.ticket=cp.ticket ");
+			
+			sql_itens.append( "where " ); 
+			sql_itens.append( "cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? and " );
+			sql_itens.append( "cp.codemppg=? and cp.codfilialpg=? and cp.codplanopag=? and cp.dtentcompra between ? and ? " );
+			sql_itens.append( "and ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra and " );
+			sql_itens.append( "ic.codemppd=? and ic.codfilialpd=? and ic.codprod=? " );
+			sql_itens.append( "and cp.statuscompra in ('P1','P2','P3') " );
+
+			// Query para atualizar o preço;
+			sql_update.append( "update cpitcompra ic " );
+			sql_update.append( "set ic.precoitcompra=?, ic.aprovpreco=?, ic.vlrliqitcompra = ( (? * ic.qtditcompra) - (coalesce(ic.vlrdescitcompra,0) ) ) " );
+			sql_update.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? and ic.coditcompra=? " );
+			
+
+			if(usarenda) {			
+				sql_itens.append( "and rm.rendaamostragem=? ");				
+			}
+	
+			// Executando query dos itens de compra a serem atualizados
+
+			ps_select = con.prepareStatement( sql_itens.toString() );
+
+			int iparam = 1;
+
+			ps_select.setInt( iparam++, Aplicativo.iCodEmp );
+			ps_select.setInt( iparam++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps_select.setInt( iparam++, codfor );
+
+			ps_select.setInt( iparam++, Aplicativo.iCodEmp );
+			ps_select.setInt( iparam++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+			ps_select.setInt( iparam++, codplanopag );
+
+			ps_select.setDate( iparam++, Funcoes.dateToSQLDate( dataini ) );
+			ps_select.setDate( iparam++, Funcoes.dateToSQLDate( datafim ) );
+
+			ps_select.setInt( iparam++, Aplicativo.iCodEmp );
+			ps_select.setInt( iparam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps_select.setInt( iparam++, codprod );
+			
+			if(usarenda) {
+				ps_select.setInt( iparam++, renda );
+			}
+
+			rs = ps_select.executeQuery();
+			
+			System.out.println("Query:" + sql_itens.toString());
+
+			// Percorrendo os itens para realização da atualização do preço.
+			while ( rs.next() ) {
+				
+				Integer codcompra = rs.getInt( "CODCOMPRA" );
+				Integer coditcompra = rs.getInt( "CODITCOMPRA" );
+				
+				System.out.println("CODCOMPRA:" + codcompra );
+				System.out.println("CODITCOMPRA:" + coditcompra );
+				
+				ps_update = con.prepareStatement( sql_update.toString() );
+
+				iparam = 1;
+				
+
+				ps_update.setBigDecimal( iparam++, preconovo );
+				ps_update.setString( iparam++, "S" );
+				ps_update.setBigDecimal( iparam++, preconovo );
+
+				ps_update.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_update.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+				ps_update.setInt( iparam++, codcompra );
+				ps_update.setInt( iparam++, coditcompra );
+
+				ps_update.executeUpdate();
+
+			}
+
+			con.commit();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+	
 }

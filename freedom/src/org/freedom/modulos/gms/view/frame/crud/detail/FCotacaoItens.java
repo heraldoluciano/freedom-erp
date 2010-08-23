@@ -78,7 +78,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 	private int casasDecFin = Aplicativo.casasDecFin;
 
 	private int casasDecPre = Aplicativo.casasDecPre;
-	
+
 	private JPanelPad pinCab = new JPanelPad( 740, 242 );
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 92 );
@@ -1045,6 +1045,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+
 		bPrefs = prefs();
 		montaMestre();
 		montaDetalhe();
@@ -1056,9 +1057,11 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		lcProd4.setConexao( cn );
 		lcUsu.setConexao( cn );
 		lcFor.setConexao( cn );
+
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+
 		try {
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1083,4 +1086,5 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 		Color color = new Color( r, g, b );
 		return color;
 	}
+
 }
