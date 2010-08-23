@@ -211,9 +211,9 @@ public class DLImpReciboPag extends FDialogo {
 
 				for ( int i = 0; i < sLinhas.length; i++ ) {
 					if ( i == 0 ) {
-//						imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
+						imp.say( imp.pRow() + 1, 0, imp.normal() + imp.expandido() + "" );
 //						imp.say( imp.pRow() + 1, 0  + "" );
-						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
+						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] ); 
 					}
 					else {
 						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
