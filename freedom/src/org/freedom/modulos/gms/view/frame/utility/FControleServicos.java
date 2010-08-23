@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -60,6 +61,7 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.RecMerc;
 import org.freedom.modulos.gms.business.object.StatusOS;
+import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
@@ -782,6 +784,36 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		}
 		return codplanopag;
 	}
+	
+	private HashMap<Short, String> getTipoProdServOrc() {
+		
+		HashMap<Short, String> ret = new HashMap<Short, String>();
+		
+		try {
+
+			DLTipoProdServOrc dl = new DLTipoProdServOrc( this );
+			dl.setVisible( true );
+
+			if ( dl.OK ) {
+		
+				ret.put( DLTipoProdServOrc.COMPONENTES, dl.getComponentes() );
+				ret.put( DLTipoProdServOrc.SERVICOS, dl.getServicos() );
+				ret.put( DLTipoProdServOrc.NOVOS, dl.getNovos() );
+				
+				dl.dispose();
+			}
+			else {
+				dl.dispose();
+			}
+
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
 
 	private void abrecompra( Integer codcompra ) {
 
@@ -875,6 +907,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				// Se já nao houver orçamento .. deve gerar...
 				if ( "".equals( codorcgrid ) || null == codorcgrid ) {
 
+					
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 					recmerc = new RecMerc( this, ticket, con );
@@ -888,7 +921,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					){
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							Integer codorc = recmerc.geraOrcamento();
+							Integer codorc = recmerc.geraOrcamento(getTipoProdServOrc());
 
 							if ( codorc != null && codorc > 0 ) {
 
