@@ -67,6 +67,8 @@ public class DLImpReciboPag extends FDialogo {
 	private DbConnection con = null;
 
 	private JInternalFrame owner = null;
+	
+	private ListaCampos lcCheque = new ListaCampos( this );
 
 	public DLImpReciboPag( JInternalFrame owner, DbConnection con, int codRec, int parcRec ) {
 
@@ -134,13 +136,13 @@ public class DLImpReciboPag extends FDialogo {
 		sSQL.append( "F.pessoafor, (IP.dtvencitpag-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,");
 		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, F.inscfor, mb.txamodbol, ");
 		
-		sSQL.append( "p.codfor codcli, f.razfor razcli, f.nomefor nomecli, f.cpffor cpfcli, f.rgfor rgcli, f.inscfor insccli, ");
+		sSQL.append( "p.codfor codcli, f.razfor razcli, f.nomefor nomecli, f.cpffor cpfcli, f.rgfor rgcli, f.cnpjfor cnpjcli, f.inscfor insccli, ");
 		sSQL.append( "f.endfor endcob, f.numfor numcob, f.complfor complcob, f.bairfor baircob, f.cepfor cepcob, f.cidfor cidcob, f.uffor ufcob, f.fonefor fonecli, f.dddfonefor dddcli, ");
 		
 		sSQL.append( "(SELECT COUNT(*) FROM FNITPAGAR ITP2 " );
 		sSQL.append( "WHERE ITP2.CODPAG=P.CODPAG AND ITP2.CODEMP=P.CODEMP AND ITP2.CODFILIAL=P.CODFILIAL) PARCS, ");
 		
-		sSQL.append( "null codorc, null nomeconv, ip.obsitpag obsorc, p.codcompra docvenda, p.codcompra codvenda, p.codpag reciboitrec, null nomevend, null nomevend2, null nomevend3, null nomevend4, " );
+		sSQL.append( "null codorc, null nomeconv, ip.obsitpag obsorc, cp.doccompra docvenda, p.codcompra codvenda, p.codpag reciboitrec, null nomevend, null nomevend2, null nomevend3, null nomevend4, " );
 		
 		if(txtNumCheque.getVlrInteger()>0) {
 			sSQL.append( "(select first 1 ch.vlrcheq from fncheque ch where ch.contacheq=ip.numconta and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") vlrpagoitrec, ");	
@@ -151,8 +153,10 @@ public class DLImpReciboPag extends FDialogo {
 			sSQL.append( "ip.vlrpagoitpag vlrpagoitrec " );
 		}
 		
-		sSQL.append( "FROM CPFORNECED F, FNPAGAR P, SGPREFERE1 PF, FNMOEDA M, FNMODBOLETO MB, FNITPAGAR IP, SGFILIAL FI ");
-				
+		sSQL.append( "FROM CPFORNECED F, SGPREFERE1 PF, FNMOEDA M, FNMODBOLETO MB, FNITPAGAR IP, SGFILIAL FI, FNPAGAR P ");
+
+		sSQL.append( "LEFT OUTER JOIN CPCOMPRA CP ON CP.CODEMP=P.CODEMPCP AND CP.CODFILIAL=P.CODFILIALCP AND CP.CODCOMPRA=P.CODCOMPRA " );
+		
 		sSQL.append( "WHERE ");
 		sSQL.append( "F.CODEMP=P.codempfr AND F.CODFILIAL=P.codfilialfr AND F.codfor=P.codfor ");
 
