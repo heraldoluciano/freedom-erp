@@ -24,6 +24,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.view.dialog.utility.DLInfoVendedor;
+import org.freedom.modulos.gms.view.dialog.utility.DLTipoProdServOrc;
 import org.freedom.modulos.std.business.component.Orcamento;
 
 public class RecMerc implements java.io.Serializable {
@@ -1014,7 +1015,7 @@ public class RecMerc implements java.io.Serializable {
 		return ret;
 	}
 	
-	public Integer geraOrcamento() {
+	public Integer geraOrcamento(HashMap<Short, String> tipoprodserv) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1089,7 +1090,11 @@ public class RecMerc implements java.io.Serializable {
 			con.commit();
 			ps.close();
 
-			geraItemOrc( getCodorc() );
+			/** GERANDO OS ITENS DO ORCAMENTO **/
+			
+			geraItemOrc( getCodorc(), tipoprodserv );			
+			
+			/***********************************/
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao gerar orçamento!", true, con, e );
@@ -1607,7 +1612,7 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
-	public Integer geraItemOrc( Integer codorc ) {
+	public Integer geraItemOrc( Integer codorc, HashMap<Short,String> tipoprodservorc ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1616,7 +1621,7 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-			sql.append( "execute procedure vdadicitorcrecmercsp(?,?,?,?,?,?)" );
+			sql.append( "execute procedure vdadicitorcrecmercsp(?,?,?,?,?,?,?,?,?)" );
 
 			ps = con.prepareStatement( sql.toString() );
 
@@ -1627,6 +1632,10 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ps.setInt( 6, getCodorc() );
+			
+			ps.setString( 7, tipoprodservorc.get( DLTipoProdServOrc.COMPONENTES ) );
+			ps.setString( 8, tipoprodservorc.get( DLTipoProdServOrc.SERVICOS ) );
+			ps.setString( 9, tipoprodservorc.get( DLTipoProdServOrc.NOVOS ) );
 
 			ps.execute();
 			ps.close();
