@@ -46,9 +46,6 @@ public class DLTipoProdServOrc extends FFDialogo {
 	
 	private JCheckBoxPad cbNovos = new JCheckBoxPad( "Produtos novos?", "S", "N" );
 	
-	
-	
-
 	private JLabelPad lbTitulo = new JLabelPad( "Selecione os tipos de produto/serviço que devem ser orçados." );
 
 	public DLTipoProdServOrc( Component orig ) {
