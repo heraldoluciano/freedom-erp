@@ -93,7 +93,7 @@ public class FSobre extends FFDialogo {
 		super(Aplicativo.telaPrincipal);
 
 		setTitulo("Freedom-ERP");
-		setAtribos(900, 550);
+		setAtribos(920, 550);
 
 		setToFrameLayout();
 		adicListeners();
@@ -285,6 +285,7 @@ public class FSobre extends FFDialogo {
 			}
 
 			ret = "<html>" + notas + "</html>";
+
 
 		}
 		catch (Exception e) {

@@ -229,6 +229,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vEquipeSis.add("Robson Sanchez: Supervisão/Analise");
 		vEquipeSis.add("Anderson Sanchez: Supervisão/Desenvolvimento");
 		vEquipeSis.add("Luiz Frederico: Suporte/Testes");
+		vEquipeSis.add("Heraldo Luciano: Suporte/Testes/Documentação");
 		vEquipeSis.add("Sergio Murilo: Suporte/Testes");
 		vEquipeSis.add("Alan Alexandre Oliveira: Desenvolvimento");
 		vEquipeSis.add("Alexandre Marcondes: Desenvolvimento");
