@@ -32,6 +32,8 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 public class FRegraComiss extends FDetalhe {
 
@@ -56,18 +58,62 @@ public class FRegraComiss extends FDetalhe {
 	private JCheckBoxPad cbObrig = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private ListaCampos lcTipoVend = new ListaCampos( this, "TV" );
+	
+	private ListaCampos lcSecao = new ListaCampos( this, "SC" );
+	
+	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcVend = new ListaCampos( this, "VD" );
+	
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 
 	public FRegraComiss() {
 
-		setTitulo( "Regra de comissionamento" );
+		setTitulo( "Regras de comissionamento" );
 		setAtribos( 50, 50, 600, 450 );
 
-		pinCab = new JPanelPad( 440, 60 );
+		pinCab = new JPanelPad( 440, 140 );
+		setAltCab( 140 );
+
+		//FK com a Secao de produção
+		
+		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
+		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
+		
+		lcSecao.montaSql( false, "SECAO", "EQ" );
+		lcSecao.setReadOnly( true );
+		lcSecao.setQueryCommit( false );
+		txtCodSecao.setTabelaExterna( lcSecao, FSecaoProd.class.getCanonicalName() );
+		
+		//FK com o vendedor
+		
+		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
+		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		
+		lcVend.setDinWhereAdic( "CODTIPOVEND = #N", txtCodTipoVend );
+		lcVend.setDinWhereAdic( "CODSECAO = #S", txtCodSecao );
+		lcVend.montaSql( false, "VENDEDOR", "VD" );
+		lcVend.setQueryCommit( false );
+		lcVend.setReadOnly( true );
+		
+		txtCodVend.setTabelaExterna( lcVend, FVendedor.class.getCanonicalName() );
+		
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
-		adicCampo( txtCodRegrComis, 7, 20, 80, 20, "CodRegrComis", "Cód.regra", ListaCampos.DB_PK, true );
-		adicCampo( txtDescRegrComis, 90, 20, 300, 20, "DescRegrComis", "Descrição da regra de comissionamento", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtCodRegrComis, 7, 20, 80, 20, "CodRegrComis", "Cód.Regra", ListaCampos.DB_PK, true );
+		adicCampo( txtDescRegrComis, 90, 20, 350, 20, "DescRegrComis", "Descrição da regra de comissionamento", ListaCampos.DB_SI, true );
+
+		adicCampo( txtCodSecao, 7, 60, 80, 20, "CodSecao", "Cód.seção", ListaCampos.DB_FK, txtDescSecao, false );
+		adicDescFK( txtDescSecao, 90, 60, 350, 20, "DescSecao", "Descrição da seção" );
+
 		setListaCampos( true, "REGRACOMIS", "VD" );
+		
 		lcCampos.setQueryInsert( true );
 
 		lcTipoVend.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.comis.", ListaCampos.DB_PK, false ) );
@@ -77,17 +123,25 @@ public class FRegraComiss extends FDetalhe {
 		lcTipoVend.setReadOnly( true );
 		txtCodTipoVend.setTabelaExterna( lcTipoVend, null );
 
-		setAltDet( 80 );
+		setAltDet( 120 );
 
 		pinDet = new JPanelPad( 600, 80 );
+		
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
+		
 		adicCampo( txtSeqComis, 7, 25, 30, 20, "SeqItRc", "Item", ListaCampos.DB_PK, true );
+		
 		adicCampo( txtCodTipoVend, 40, 25, 80, 20, "CodTipoVend", "Cód.tp.comis.", ListaCampos.DB_FK, txtDescTipoVend, true );
 		adicDescFK( txtDescTipoVend, 123, 25, 280, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
 		adicCampo( txtPercComis, 406, 25, 55, 20, "PercComisItRc", "% Comis.", ListaCampos.DB_SI, true );
-		adicDB( cbObrig, 461, 25, 87, 20, "ObrigItRc", "Obrigatório?", true );
+		
+		adicDB( cbObrig, 463, 25, 87, 20, "ObrigItRc", "Obrigatório?", true );
+		
+		adicCampo( txtCodVend, 40, 65, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false );
+		adicDescFK( txtDescVend, 123, 65, 280, 20, "NomeVend", "Nome do comissionado" );
+		
 		setListaCampos( true, "ITREGRACOMIS", "VD" );
 		lcDet.setQueryInsert( true );
 
@@ -101,6 +155,10 @@ public class FRegraComiss extends FDetalhe {
 	public void setConexao( DbConnection con ) {
 
 		super.setConexao( con );
+		
 		lcTipoVend.setConexao( con );
+		lcSecao.setConexao( con );
+		lcVend.setConexao( con );
+		
 	}
 }
