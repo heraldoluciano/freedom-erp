@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
 	<classpathentry kind="lib" path="lib/barbecue.jar"/>
 	<classpathentry kind="lib" path="lib/jaybird-full.jar"/>
-	<classpathentry kind="lib" path="lib/commons-discovery-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/dsn.jar"/>
 	<classpathentry kind="lib" path="lib/imap.jar"/>
 	<classpathentry kind="lib" path="lib/pop3.jar"/>
@@ -32,5 +31,6 @@
 	<classpathentry kind="lib" path="/freedom-fw1/lib/nachocalendar.jar"/>
 	<classpathentry kind="lib" path="lib/poi.jar"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="lib/commons-discovery.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -28,9 +28,8 @@
   		<pathelement location="${dir.lib.freedom}/smtp.jar"/>
   		<pathelement location="${dir.lib.freedom}/squreness.jar"/>
   		<pathelement location="${dir.lib.freedom}/TableLayout.jar"/>
-			
 		<pathelement location="${dir.bin.freedom}"/>
-		<pathelement location="${dir.bin.freedomfw1}"/>
+		<!-- <pathelement location="${dir.bin.freedomfw1}"/> -->
 	</path>
     <target name="main" depends="compile, compress" description="Main target">
         <echo>
@@ -39,8 +38,8 @@
     </target>
   
     <target name="compile" description="Compilation target">
-        <javac srcdir="${dir.src.freedom}" encoding="ISO8859-1" refid="freedom.classpath" />
-    	<javac srcdir="${dir.src.freedomfw1}" encoding="ISO8859-1" />
+        <javac srcdir="${dir.src.freedom}" destdir="${dir.bin.freedom}" encoding="ISO8859-1" refid="freedom.classpath" />
+<!--    	<javac srcdir="${dir.src.freedomfw1}" encoding="ISO8859-1" /> -->
     </target>
   
 	<target name="delete" description="Delete jar">
