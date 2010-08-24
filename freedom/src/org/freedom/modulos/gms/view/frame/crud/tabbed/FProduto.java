@@ -234,6 +234,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	
+	private JTextFieldPad txtPrecoComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtUnidFat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -862,13 +864,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtPrecoBaseProd, 150, 140, 75, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
 
-		adicCampo( txtCustoInfoProd, 228, 140, 75, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, false );
+		adicCampo( txtCustoInfoProd, 228, 140, 70, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtPrecoComisProd, 301, 140, 75, 20, "PrecoComisProd", "Preço comis.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtComisProd, 306, 140, 75, 20, "ComisProd", "%Comis.", ListaCampos.DB_SI, true );
+		adicCampo( txtComisProd, 378, 140, 50, 20, "ComisProd", "%Comis.", ListaCampos.DB_SI, true );
 
-		adicCampo( txtQtdMinProd, 384, 140, 75, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMinProd, 431, 140, 50, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
 
-		adicCampo( txtQtdMaxProd, 462, 140, 75, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMaxProd, 484, 140, 52, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
 
 		adicCampo( txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false );
 
