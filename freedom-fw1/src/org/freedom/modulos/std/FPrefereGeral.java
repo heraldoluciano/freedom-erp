@@ -93,10 +93,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinFinanceiro = new JPanelPad();
 
 	private JPanelPad pinSimples = new JPanelPad();
+	
+	private JPanelPad pinComissionamento = new JPanelPad();
 
 	private JPanelPad pinContabil = new JPanelPad();
 
 	private JPanelPad pinFiscal = new JPanelPad();
+	
+	private JPanelPad pinOpcoesComissionamento = new JPanelPad();
+	
+	private JPanelPad pinRegrasComissionamento = new JPanelPad();
 
 	private JPanelPad pinSVV_LIC = new JPanelPad();
 
@@ -496,6 +502,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbHabiitaCustoCompra = new JCheckBoxPad("Habilita campo de custo na compra.", "S", "N");
 
 	private final JCheckBoxPad cbUsaPrecoZero = new JCheckBoxPad("Permite preço de produto Zero.", "S", "N");
+	
+	private final JCheckBoxPad cbUsaPrecoComis = new JCheckBoxPad("Usa preço fixo do produto para comissionamento por seção", "S", "N");
 
 	private final JCheckBoxPad cbUsaImgOrc = new JCheckBoxPad("Usar imagem de assinatura no orçamento.", "S", "N");
 
@@ -1059,7 +1067,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEstNeg, 7, 20, 160, 20, "EstNeg", "", true);
 		adicDB(cbEstLotNeg, 7, 40, 200, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true);
-		adicDB(cbMultiComis, 7, 80, 250, 20, "MultiComis", "", true);
+
 
 		setPainel(pinConsistenciasGeral);
 
@@ -1083,8 +1091,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
 
-		adicDB(rgSetorVenda, 7, 25, 160, 80, "SetorVenda", "Distrib. dos setores", true);
-		adicDB(rgOrdNota, 177, 25, 160, 80, "OrdNota", " Ordem de Emissão", true);
+		adicDB(rgOrdNota, 7, 25, 160, 80, "OrdNota", " Ordem de Emissão", true);
 
 		adicCampo(txtCodTipoMov3, 7, 130, 75, 20, "CodTipoMov3", "Cód.tp.mov", ListaCampos.DB_FK, txtDescTipoMov3, false);
 		adicDescFK(txtDescTipoMov3, 85, 130, 250, 20, "DescTipoMov", "Tipo de movimento para pedido.");
@@ -1108,15 +1115,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbVendaMatPrim, 5, 80, 250, 20, "VendaMatPrim", "", true);
 		adicDB(cbTravaTMNFVD, 5, 100, 268, 20, "TravaTMNFVD", "", true);
 		adicDB(cbBloqVenda, 5, 120, 265, 20, "BloqVenda", "", true);
-		adicDB(cbComisPDupl, 5, 140, 280, 20, "ComisPDupl", "", true);
-		adicDB(cbLayoutPed, 5, 160, 280, 20, "UsaLayoutPed", "", true);
-		adicDB(cbObsCliVend, 5, 180, 350, 20, "ObsCliVend", "", true);
-		adicDB(cbVerifAltParVenda, 5, 200, 350, 20, "VerifAltParcVenda", "", true);
-		adicDB(cbUsaPrecoZero, 5, 220, 350, 20, "UsaPrecoZero", "", true);
-		adicDB(cbUsaClasComis, 5, 240, 250, 20, "UsaClasComis", "", true);
-		adicDB(cbIcmsFrete, 5, 260, 260, 20, "AdicFreteBaseICM", "", true);
-		adicDB(cbGeraComisVendaOrc, 5, 280, 400, 20, "GeraComisVendaOrc", "", true);
-		adicDB(cbInfVdRemessa, 5, 300, 400, 20, "InfVdRemessa", "", true);
+
+		adicDB(cbLayoutPed, 5, 140, 280, 20, "UsaLayoutPed", "", true);
+		adicDB(cbObsCliVend, 5, 160, 288, 20, "ObsCliVend", "", true);
+		adicDB(cbVerifAltParVenda, 5, 180, 350, 20, "VerifAltParcVenda", "", true);
+		adicDB(cbUsaPrecoZero, 5, 200, 350, 20, "UsaPrecoZero", "", true);
+
+		adicDB(cbIcmsFrete, 5, 220, 260, 20, "AdicFreteBaseICM", "", true);
+		adicDB(cbGeraComisVendaOrc, 5, 240, 400, 20, "GeraComisVendaOrc", "", true);
+		adicDB(cbInfVdRemessa, 5, 260, 400, 20, "InfVdRemessa", "", true);
 
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -1204,13 +1211,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsaOrcSeq, 10, 0, 160, 20, "UsaOrcSeq", "", true);
 		adicDB(cbReCalcOrc, 10, 20, 250, 20, "ReCalcPCOrc", "", true);
 		adicDB(cbUsaImgOrc, 10, 40, 300, 20, "UsaImgAssOrc", "", true);
-		adicDB(cbUsaNomeVendOrc, 10, 60, 300, 20, "UsaNomeVendOrc", "", true);
-		adicDB(cbAdicCodOrcObsPed, 10, 80, 370, 20, "ADICORCOBSPED", "", false);
-		adicDB(cbAdicObsOrcPed, 10, 100, 370, 20, "ADICOBSORCPED", "", false);
-		adicDB(cbMostraTransp, 10, 120, 370, 20, "TabTranspOrc", "", true);
-		adicDB(cbHabVlrTotItOrc, 10, 140, 370, 20, "HabVlrTotItOrc", "", true);
-
+		
+		adicDB(cbAdicCodOrcObsPed, 10, 60, 370, 20, "ADICORCOBSPED", "", false);
+		adicDB(cbAdicObsOrcPed, 10, 80, 370, 20, "ADICOBSORCPED", "", false);
+		adicDB(cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true);
+		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
+		
 		adicDB(imgAssOrc, 405, 60, 300, 95, "ImgAssOrc", "Assinatura", false);
+		
 
 		// Financeiro
 
@@ -1266,9 +1274,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbJurosPosCalc, 510, 255, 310, 20, "JurosPosCalc", "", false);
 		adicDB(cbEstItRecAltDtVenc, 510, 275, 350, 20, "EstItRecAltDtVenc", "", false);
 		adicDB(cbLiberacaoCreGlobal, 510, 295, 350, 20, "LcRedGlobal", "", false);
-		adicDB(cbComissManut, 510, 315, 350, 20, "VDManutComObrig", "", false);
-		adicDB(cbGeraPagEmis, 510, 335, 350, 20, "GeraPagEmis", "", true);
-		adicDB(cbGeraRecEmis, 510, 355, 350, 20, "GeraRecEmis", "", true);
+
+		adicDB(cbGeraPagEmis, 510, 315, 350, 20, "GeraPagEmis", "", true);
+		adicDB(cbGeraRecEmis, 510, 335, 350, 20, "GeraRecEmis", "", true);
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
 		adic(lbFinPagar, 10, 215, 485, 80);
@@ -1308,6 +1316,34 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodMensGeral, 7, 50, 70, 20, "CodMensIcmsSimples", "Cód.Mens.", ListaCampos.DB_FK, txtDescMensGeral, false);
 		adicDescFK(txtDescMensGeral, 80, 50, 330, 20, "mens", " Mensagem para destaque de crédito de ICMS");
 
+		/** ABA DE PARAMETROS DE COMISSIONAMENTO **/
+		
+		setPainel(pinComissionamento);
+		adicTab("Comissionamento", pinComissionamento);
+		
+		adic(pinOpcoesComissionamento, 7, 10, 430, 170);
+		adic(pinRegrasComissionamento, 440, 10, 430, 170);
+		
+		pinOpcoesComissionamento.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
+		pinRegrasComissionamento.setBorder(SwingParams.getPanelLabel("Regras", Color.BLUE));
+		
+		setPainel(pinOpcoesComissionamento);
+		
+		adicDB(cbMultiComis, 5, 5, 250, 20, "MultiComis", "", true);	
+		adicDB(cbComisPDupl, 5, 25, 280, 20, "ComisPDupl", "", true);				
+		adicDB(cbUsaClasComis, 5, 45, 250, 20, "UsaClasComis", "", true);		
+		adicDB(cbUsaNomeVendOrc, 5, 65, 300, 20, "UsaNomeVendOrc", "", true);		
+		adicDB(cbComissManut, 5, 85, 350, 20, "VDManutComObrig", "", false);
+		adicDB(cbUsaPrecoComis, 5, 105, 410, 20, "UsaPrecoComis", "", false);
+		
+		setPainel(pinRegrasComissionamento);
+		
+		adicDB(rgSetorVenda, 5, 15, 160, 80, "SetorVenda", "Distrib. dos setores", true);
+
+		
+		/** FIM DE PARAMETROS DE COMISSIONAMENTO **/
+		
+		
 		// SVV
 
 		setPainel(pinSVV_LIC);
