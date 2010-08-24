@@ -58,6 +58,7 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
+import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
 import org.freedom.modulos.std.view.dialog.report.DLRVendedor;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
@@ -169,6 +170,13 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private Map<String, Object> bPref = null;
+	
+	private ListaCampos lcSecao = new ListaCampos( this, "SC" );
+	
+	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 
 	public FVendedor() {
 
@@ -177,7 +185,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		nav.setNavigation( true );
 
 		setTitulo( "Cadastro de comissionados" );
-		setAtribos( 50, 10, 440, 590 );
+		setAtribos( 50, 10, 440, 630 );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
@@ -220,6 +228,15 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcConta.setQueryCommit( false );
 		lcConta.setReadOnly( true );
 		txtNumConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
+		
+		//FK com a Secao de produção
+		
+		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
+		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
+		lcSecao.montaSql( false, "SECAO", "EQ" );
+		lcSecao.setReadOnly( true );
+		lcSecao.setQueryCommit( false );
+		txtCodSecao.setTabelaExterna( lcSecao, FSecaoProd.class.getCanonicalName() );
 	}
 
 	private void montaTela() {
@@ -261,6 +278,10 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
 		adicCampo( txtNumConta, 7, 460, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 110, 460, 262, 20, "DescConta", "Descrição da conta" );
+		
+		adicCampo( txtCodSecao, 7, 500, 100, 20, "CodSecao", "Cód. seção", ListaCampos.DB_FK, txtDescSecao, false );
+		adicDescFK( txtDescSecao, 110, 500, 262, 20, "DescSecao", "Descrição da seção" );
+
 
 		if ( (Boolean) bPref.get( "BUSCACEP" ) ) {
 			btBuscaEnd.setEnabled( true );
@@ -313,8 +334,8 @@ public class FVendedor extends FTabDados implements PostListener {
 
 		setPainel( pinComiss );
 
-		adicCampo( txtCodSetor, 7, 500, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
-		adicDescFK( txtDescSetor, 110, 500, 262, 20, "DescSetor", "Descrição do setor" );
+		adicCampo( txtCodSetor, 7, 540, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
+		adicDescFK( txtDescSetor, 110, 540, 262, 20, "DescSetor", "Descrição do setor" );
 		lcSetor.setConexao( con );
 	}
 
@@ -610,17 +631,22 @@ public class FVendedor extends FTabDados implements PostListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		bPref = getPrefere();
 
 		montaTela();
 
-		if ( ehSetorVend() )
+		if ( ehSetorVend() ) {
 			montaSetor();
+		}
+		
 		lcClComis.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcFuncao.setConexao( cn );
 		lcTipoComis.setConexao( cn );
 		lcConta.setConexao( cn );
+		lcSecao.setConexao( cn );
+		
 		setListaCampos( true, "VENDEDOR", "VD" );
 	}
 
