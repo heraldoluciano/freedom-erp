@@ -5088,7 +5088,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( StringFunctions.clearAccents( getCidCli() ).toUpperCase(), ETipo.X, 15, 0 ) );// Posição 335 a 349 - Cidade do sacado
 					line.append( format( getUfCli(), ETipo.X, 2, 0 ) );// Posição 350 a 351 - UF do sacado
 					line.append( format( StringFunctions.clearString( StringFunctions.clearAccents( getRazAva()), " " ).toUpperCase(), ETipo.X, 40, 0 ) );// Posição 352 a 391 - Sacado/Avalista ou Mensagem 2
-					line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 392 a 393 - Numero de dias para protesto
+					line.append( StringFunctions.replicate( " ", 2 ) ); // Posição 392 a 393 - Informar Brancos
 					line.append( " " ); // Posição 394 a 394 - Brancos para completar registro
 				}
 				else {
