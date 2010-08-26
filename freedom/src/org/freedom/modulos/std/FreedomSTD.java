@@ -40,6 +40,7 @@ import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.crm.view.frame.utility.FConsultaCli;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FBordero;
+import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
@@ -434,6 +435,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 601504000, 1, true, FCheque.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
