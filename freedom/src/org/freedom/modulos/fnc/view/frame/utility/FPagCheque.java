@@ -38,7 +38,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
@@ -48,14 +47,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
-import org.freedom.bmps.Icone; // import org.freedom.componentes.ObjetoHistorico;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
-import org.freedom.library.functions.Extenso;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -68,6 +67,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FTalaoCheq;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
@@ -190,8 +190,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	private enum COLS_PAG {SEL, DTEMIT, DTVENCTO, STATUS, CODCOMPRA, CODPAG, NPARC, DOCLANCA, DOCCOMPRA, 
 		VLRAPAG, NUMCONTA, CODTIPOCOB, DESCTIPOCOB, HISTPAG};
 
-	private enum COLS_CHEQ { SEL, SEQ, DTEMIT, DTVENCTO, NUMCHEQ, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA, HISTCHEQ };
-	
 	private enum SQL_PARAMS_PAG {NONE, DATAINI, DATAFIM, CODEMP, CODFILIAL, CODEMPFR, CODFILIALFR, CODFOR };
 
 	private enum SQL_PARAMS_CHEQ {NONE, CODEMP, CODFILIAL, DATAINI, DATAFIM, NUMCONTA };
@@ -407,7 +405,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		pinBotoesCheq.adic( btImpCheq, 5, 70, 30, 30 );
 		pinBotoesCheq.adic( btPrevCheq, 5, 100, 30, 30 );
 
-//		private enum COLS_CHEQ { SEL, DTEMIT, DTVENCTO, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA };
+//		private enum Cheque.COLS_CHEQ { SEL, DTEMIT, DTVENCTO, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA };
 		
 		tabCheq.adicColuna( LABEL_SEL ); 
 		tabCheq.adicColuna( "Seq." ); 
@@ -417,22 +415,22 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		tabCheq.adicColuna( "Nome favorecido" ); 
 		tabCheq.adicColuna( "Sit." ); 
 		tabCheq.adicColuna( "Valor" ); 
-		tabCheq.adicColuna( "Nº conta" ); 
+		tabCheq.adicColuna( "Nº conta" );  
 		tabCheq.adicColuna( "Histórico" ); 
 
-		tabCheq.setColunaEditavel( COLS_CHEQ.SEL.ordinal(), true );
-		tabCheq.setColunaEditavel( COLS_CHEQ.VLRCHEQ.ordinal(), true );
+		tabCheq.setColunaEditavel( Cheque.COLS_CHEQ.SEL.ordinal(), true );
+		tabCheq.setColunaEditavel( Cheque.COLS_CHEQ.VLRCHEQ.ordinal(), true );
 		
-		tabCheq.setTamColuna( 20, COLS_CHEQ.SEL.ordinal() );
-		tabCheq.setTamColuna( 70, COLS_CHEQ.SEQ.ordinal() );
-		tabCheq.setTamColuna( 90, COLS_CHEQ.DTEMIT.ordinal() );
-		tabCheq.setTamColuna( 90, COLS_CHEQ.DTVENCTO.ordinal() );
-		tabCheq.setTamColuna( 70, COLS_CHEQ.NUMCHEQ.ordinal() );
-		tabCheq.setTamColuna( 200, COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
-		tabCheq.setTamColuna( 20, COLS_CHEQ.SITCHEQ.ordinal() );
-		tabCheq.setTamColuna( 90, COLS_CHEQ.VLRCHEQ.ordinal() );
-		tabCheq.setTamColuna( 80, COLS_CHEQ.NUMCONTA.ordinal() );
-		tabCheq.setTamColuna( 250, COLS_CHEQ.HISTCHEQ.ordinal() );
+		tabCheq.setTamColuna( 20, Cheque.COLS_CHEQ.SEL.ordinal() );
+		tabCheq.setTamColuna( 70, Cheque.COLS_CHEQ.SEQ.ordinal() );
+		tabCheq.setTamColuna( 90, Cheque.COLS_CHEQ.DTEMIT.ordinal() );
+		tabCheq.setTamColuna( 90, Cheque.COLS_CHEQ.DTVENCTO.ordinal() );
+		tabCheq.setTamColuna( 70, Cheque.COLS_CHEQ.NUMCHEQ.ordinal() );
+		tabCheq.setTamColuna( 200, Cheque.COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
+		tabCheq.setTamColuna( 20, Cheque.COLS_CHEQ.SITCHEQ.ordinal() );
+		tabCheq.setTamColuna( 90, Cheque.COLS_CHEQ.VLRCHEQ.ordinal() );
+		tabCheq.setTamColuna( 80, Cheque.COLS_CHEQ.NUMCONTA.ordinal() );
+		tabCheq.setTamColuna( 250, Cheque.COLS_CHEQ.HISTCHEQ.ordinal() );
 
 		tabCheq.addTabelaEditListener( this );
 		tabCheq.addKeyListener( this );
@@ -481,7 +479,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		try {
 			carregandoTabela = true; // Evitar execução circular
 			for ( int i=0; i < tabCheq.getNumLinhas(); i++ ) {
-				tabCheq.setValor( new Boolean( true ), i, COLS_CHEQ.SEL.ordinal() );
+				tabCheq.setValor( new Boolean( true ), i, Cheque.COLS_CHEQ.SEL.ordinal() );
 			}
 		}
 		finally {
@@ -494,7 +492,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		try {
 			carregandoTabela = true;
 			for ( int i=0; i < tabCheq.getNumLinhas(); i++ ) {
-				tabCheq.setValor( new Boolean( false ), i, COLS_CHEQ.SEL.ordinal() );
+				tabCheq.setValor( new Boolean( false ), i, Cheque.COLS_CHEQ.SEL.ordinal() );
 			}
 		}
 		finally {
@@ -527,9 +525,9 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		//Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRAPAGITPAG" ) )
 		for ( int i=0; i < tabCheq.getNumLinhas(); i++ ) {
 			vlrcheq = ConversionFunctions.stringCurrencyToBigDecimal( 
-							(String) tabCheq.getValor( i, COLS_CHEQ.VLRCHEQ.ordinal() ) );
+							(String) tabCheq.getValor( i, Cheque.COLS_CHEQ.VLRCHEQ.ordinal() ) );
 			vlrtotcheq = vlrtotcheq.add( vlrcheq  );
-			if ( (Boolean) tabCheq.getValor( i, COLS_CHEQ.SEL.ordinal() ) ) {
+			if ( (Boolean) tabCheq.getValor( i, Cheque.COLS_CHEQ.SEL.ordinal() ) ) {
 				vlrtotsel = vlrtotsel.add( vlrcheq );
 			} 
 		}
@@ -665,7 +663,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 	}
 
 	private boolean validaFiltrosCheq() {
-
+		
 		boolean bRetorno = false;
 		String codbanco = txtCodbanco.getVlrString();
 		
@@ -685,7 +683,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			Funcoes.mensagemInforma( this, "Selecione uma talonário!" );
 		} 
 		else {
-			layoutCheq = getLayoutcheq( codbanco );
+			layoutCheq = Cheque.carregaLayoutCheque( codbanco, this );
 			if ( (layoutCheq == null) || ("".equals( layoutCheq )) ) {
 				Funcoes.mensagemInforma( this, 
 						"Não existe layout de cheques configurado para o banco " + 
@@ -700,29 +698,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 		return bRetorno;
 	}
 
-	private String getLayoutcheq( String codbanco ) {
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		StringBuffer sql = new StringBuffer("SELECT B.LAYOUTCHEQBANCO FROM FNBANCO B ");
-		String result = null;
-		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODBANCO=? " );
-		try {
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 3, codbanco );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				result = rs.getString( "LAYOUTCHEQBANCO" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro consultando layout de cheque!\n" + e.getMessage() );
-		}
-		return result;
-	}
+
 	
 	private int getCheqatualtalao( String numconta, int seqtalao ) throws SQLException {
 		int result = 0;
@@ -792,16 +768,16 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 							numcheqtab = rs.getInt( "NUMCHEQ" );
 						}
 						tabCheq.adicLinha();
-						tabCheq.setValor( new Boolean(true), i, COLS_CHEQ.SEL.ordinal() );
-						tabCheq.setValor( new Integer(rs.getInt( "SEQCHEQ" )), i, COLS_CHEQ.SEQ.ordinal() );
-						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCHEQ" ) ), i, COLS_CHEQ.DTEMIT.ordinal() );
-						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCTOCHEQ" ) ), i, COLS_CHEQ.DTVENCTO.ordinal() );
-						tabCheq.setValor( new Integer( numcheqtab ), i, COLS_CHEQ.NUMCHEQ.ordinal() );
-						tabCheq.setValor( rs.getString( "NOMEFAVCHEQ" ), i, COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
-						tabCheq.setValor( rs.getString( "SITCHEQ" ), i, COLS_CHEQ.SITCHEQ.ordinal() );
-						tabCheq.setValor( Funcoes.strDecimalToStrCurrency( Aplicativo.casasDecFin, rs.getString( "VLRCHEQ" ) ), i, COLS_CHEQ.VLRCHEQ.ordinal() );
-						tabCheq.setValor( rs.getString( "CONTACHEQ" ), i, COLS_CHEQ.NUMCONTA.ordinal() );
-						tabCheq.setValor( rs.getString( "HISTCHEQ" ), i, COLS_CHEQ.HISTCHEQ.ordinal() );
+						tabCheq.setValor( new Boolean(true), i, Cheque.COLS_CHEQ.SEL.ordinal() );
+						tabCheq.setValor( new Integer(rs.getInt( "SEQCHEQ" )), i, Cheque.COLS_CHEQ.SEQ.ordinal() );
+						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCHEQ" ) ), i, Cheque.COLS_CHEQ.DTEMIT.ordinal() );
+						tabCheq.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCTOCHEQ" ) ), i, Cheque.COLS_CHEQ.DTVENCTO.ordinal() );
+						tabCheq.setValor( new Integer( numcheqtab ), i, Cheque.COLS_CHEQ.NUMCHEQ.ordinal() );
+						tabCheq.setValor( rs.getString( "NOMEFAVCHEQ" ), i, Cheque.COLS_CHEQ.NOMEFAVCHEQ.ordinal() );
+						tabCheq.setValor( rs.getString( "SITCHEQ" ), i, Cheque.COLS_CHEQ.SITCHEQ.ordinal() );
+						tabCheq.setValor( Funcoes.strDecimalToStrCurrency( Aplicativo.casasDecFin, rs.getString( "VLRCHEQ" ) ), i, Cheque.COLS_CHEQ.VLRCHEQ.ordinal() );
+						tabCheq.setValor( rs.getString( "CONTACHEQ" ), i, Cheque.COLS_CHEQ.NUMCONTA.ordinal() );
+						tabCheq.setValor( rs.getString( "HISTCHEQ" ), i, Cheque.COLS_CHEQ.HISTCHEQ.ordinal() );
 					}
 
 					rs.close();
@@ -1047,67 +1023,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	}
     }
 
-    private Map<String, Object> montaMap( Vector<Object> item ) {
-    	Map<String, Object> result = new HashMap<String, Object>();
-
-    	String str = item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ).toString();
-    	result.put( "DTEMIT", str );
-
-    	str = Funcoes.dateToStrExtenso( 
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() ;
-    	result.put( "DTEMITEX", str);
-    	
-    	str = String.valueOf( Funcoes.getDiaMes(   
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ) ) ;
-    	result.put( "DIAEMIT", str );
-
-    	str = Funcoes.getMesExtenso(  
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ).toUpperCase() ;
-    	result.put( "MESEMIT", str );
-
-    	str = String.valueOf( Funcoes.getAno(   
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTEMIT.ordinal() ) ) ) ) ;
-    	result.put( "ANOEMIT", str );
-    	
-    	str = item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ).toString();
-    	result.put( "DTVENCTO", str );
-
-    	str = Funcoes.dateToStrExtenso( 
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase();
-    	result.put( "DTVENCTOEX", str );
-
-    	str = String.valueOf( Funcoes.getDiaMes(   
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ) ) ;
-    	result.put( "DIAVENCTO", str );
-
-    	str = Funcoes.getMesExtenso(  
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ).toUpperCase() ;
-    	result.put( "MESVENCTO", str );
-
-    	str = String.valueOf( Funcoes.getAno(   
-    			Funcoes.strDateToDate( (String) item.elementAt( COLS_CHEQ.DTVENCTO.ordinal() ) ) ) ) ;
-    	result.put( "ANOVENCTO", str );
-    	
-    	str = item.elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ).toString();
-    	result.put( "NUMCHEQ", str );
-
-    	str = item.elementAt( COLS_CHEQ.NOMEFAVCHEQ.ordinal() ).toString().trim().toUpperCase();
-    	result.put( "NOMEFAVCHEQ", str );
-
-    	str = "#( " + item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ).toString() +" )#" ;
-    	result.put( "VLRCHEQ", str) ;
-
-    	str = "#( " + Extenso.extenso( ConversionFunctions.stringCurrencyToBigDecimal( 
-    			(String) item.elementAt( COLS_CHEQ.VLRCHEQ.ordinal() ) ).doubleValue() , 
-    			prefs.get( "SINGMOEDA" ), prefs.get( "PLURMOEDA" ), 
-    			prefs.get( "DECSMOEDA" ), prefs.get( "DECPMOEDA" ) ).toUpperCase() + " )#";
-    	result.put( "VLRCHEQEX", str );
-
-    	str = prefs.get( "NOMEMUNIC" ).toUpperCase();
-    	result.put( "NOMEMUNIC", str );
-
-    	return result;
-    }
+   
     
     private synchronized void imprimirCheque( LinkedList<Vector<Object>> listacheq, boolean visualizar ) {
     	PreparedStatement ps = null;
@@ -1120,10 +1036,23 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	Map<String, Object> itemMap = null;
     	// imprime comprimido na coluna 2 para utiliar a linha 0
 		imp.say( 0, 2, imp.comprimido() );
+		
+		Cheque cheque = null;
+		
+		
+		
     	for ( int i=0; i<listacheq.size(); i++ ) {
+    		
+    		
     		item = listacheq.get( i );
-    		itemMap = montaMap(item); 
-    		montaLayoutCheq( imp, itemMap );
+    		
+    		Integer seqcheque = (Integer) item.elementAt( Cheque.COLS_CHEQ.SEQ.ordinal() );
+    		cheque = new Cheque( seqcheque );
+    		
+    		itemMap = cheque.montaMap(item);
+    		
+    		cheque.montaLayoutCheq( imp, itemMap );
+    		
     		imp.setPrc( 0, 0 );
     	}
     	if ( visualizar ) {
@@ -1149,12 +1078,12 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	try {
     		for ( int i=0; i<listacheq.size(); i++ ) {
     			ps = con.prepareStatement( sqlcheq.toString() );
-    			ps.setInt( 1, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.NUMCHEQ.ordinal() ) );
+    			ps.setInt( 1, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.NUMCHEQ.ordinal() ) );
     			ps.setString( 2, "ED" );
-    			ps.setBigDecimal( 3, ConversionFunctions.stringCurrencyToBigDecimal( (String) listacheq.get( i ).elementAt( COLS_CHEQ.VLRCHEQ.ordinal()+1 ) ) );
+    			ps.setBigDecimal( 3, ConversionFunctions.stringCurrencyToBigDecimal( (String) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.VLRCHEQ.ordinal()+1 ) ) );
     			ps.setInt( 4, Aplicativo.iCodEmp );
     			ps.setInt( 5, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
-    			ps.setInt( 6, (Integer) listacheq.get( i ).elementAt( COLS_CHEQ.SEQ.ordinal() ) );
+    			ps.setInt( 6, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.SEQ.ordinal() ) );
     			ps.executeUpdate();
     			ps.close();
     		}
@@ -1193,7 +1122,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			con.commit();
 			for ( int i=0; i<listacheq.size(); i++ ) {
 	 			cheqatualtalao ++;
-	 			listacheq.get( i ).add( COLS_CHEQ.NUMCHEQ.ordinal(), new Integer(cheqatualtalao) ) ;
+	 			listacheq.get( i ).add( Cheque.COLS_CHEQ.NUMCHEQ.ordinal(), new Integer(cheqatualtalao) ) ;
 			}
     	} catch ( SQLException e ) {
     		result = false;
@@ -1202,102 +1131,6 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	return result;
     }
     
-    private void montaLayoutCheq( ImprimeOS imp,  Map<String, Object> itemMap  ) {
-    	
-        String[] layout = layoutCheq.toString().split( "\n" );
-		Iterator<String> listKeys = null;
-		String key = null;
-		int lin = 0;
-		int col = 0;
-		String campo = "";
-		String valor = "";
-		String completa = "";
-		int tam = 0;
-		int pos = 0;
-		int ini = 0;
-		int posx = 0;
-		boolean imprimiu = false;
-		for ( int i=0; i<layout.length; i++ ) {
-    		// [LIN=01|COL=50|TAM=12|CAMPO=VLRCHEQ]
-    		pos = layout[i].indexOf( "LIN=" );
-    		ini = -1;
-    		if (pos>=0) {
-    			pos += 4;
-    			lin = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
-    			pos = layout[i].indexOf( "COL=", pos );
-    			if (pos>=0) {
-    				pos += 4;
-	    			col = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
-	    			pos = layout[i].indexOf( "TAM=", pos );
-	    			if (pos>=0) {
-	    				pos += 4;
-	        			tam = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
-	        			posx = pos;
-		    			pos = layout[i].indexOf( "INI=", posx );
-		    			if (pos>=0) {
-		    				pos += 4;
-		        			ini = Integer.parseInt( layout[i].substring( pos, layout[i].indexOf( "|", pos )  ) );
-		        			posx = pos;
-		    			}
-		    			pos = layout[i].indexOf( "COMPL=", posx );
-		    			if (pos>=0) {
-		    				pos += 6;
-		        			completa = layout[i].substring( pos, layout[i].indexOf( "|", pos ) );
-		    			} else {
-		    				completa = "";
-		    			}
-		    			pos = layout[i].indexOf( "CAMPO=", posx );
-		    			if (pos>=0) {
-		    				pos += 6;
-			    			campo = layout[i].substring( pos, layout[i].indexOf( "]", pos )  );
-			    			valor = itemMap.get( campo ).toString();
-		    			} else {
-			    			pos = layout[i].indexOf( "TEXTO=", posx );
-			    			if (pos>=0) {
-			    				pos += 6;
-				    			valor = layout[i].substring( pos, layout[i].indexOf( "]", pos )  );
-			    			}
-		    			}
-		    			if (ini>0) {
-		    				if ( valor.length()>=ini ) {
-		    					valor = valor.substring(ini-1);
-		    				} else {
-		    					valor = "";
-		    				}
-		    			} 
-		    			// caso o tamanho de valor seja maior que o tamanho desejado
-		    			if ( valor.length()>tam ) { 
-		    				valor = valor.substring( 0, tam );
-		    				
-		    			} // caso o valor seja menor que tam e precise de complemento 
-		    			else if ( (valor.length()<tam ) && ( !"".equals( completa ) ) ) {
-		    				valor = completaTexto( valor, tam, completa );
-		    			}
-		    			if (pos>=0) {
-		    				imp.say( lin, col, valor );
-		    				if (!imprimiu) {
-		    					imprimiu = true;
-		    				}
-		    			}
-	    			}
-    			}
-    		}
-    	}
-		if ( imprimiu ) {
-			imp.say( imp.pRow(), imp.pCol()+1, "\n" );
-		}
-    }
-    
-    private String completaTexto( String valor, int tam, String completa ) {
-    	StringBuffer valorTexto = new StringBuffer( valor );
-    	while ( valorTexto.length()<tam ) {
-    		valorTexto.append( completa );
-    	}
-    	if ( valorTexto.length()>tam ) {
-    		valorTexto.delete( tam, valorTexto.length() );
-    	}
-    	return valorTexto.toString();
-    }
     
     private boolean validaImpressora() {
     	boolean result = false;
@@ -1322,6 +1155,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		Funcoes.mensagemInforma( this, "Erro consultando impressora!\n" + e.getMessage() );
     	}
     	return result;
+    	
     }
     
     private boolean validaListapagar(LinkedList<Vector<Object>> listapagar) {
@@ -1361,13 +1195,13 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	if ( listacheq.size()>0 ) {
     		for ( int i=0; i<listacheq.size(); i++ ) {
     			item = listacheq.get( i );
-    			if ( "".equals( item.elementAt( COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
+    			if ( "".equals( item.elementAt( Cheque.COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
     				Funcoes.mensagemInforma( this, "Um item selecionado não possui conta definida!" );
     				break;
-    			} else if ( "".equals( item.elementAt( COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
+    			} else if ( "".equals( item.elementAt( Cheque.COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
     				if ( "".equals( numconta ) ) {
-    					numconta = (String) item.elementAt( COLS_CHEQ.NUMCONTA.ordinal() );
-    				} else if ( numconta.equals( item.elementAt( COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
+    					numconta = (String) item.elementAt( Cheque.COLS_CHEQ.NUMCONTA.ordinal() );
+    				} else if ( numconta.equals( item.elementAt( Cheque.COLS_CHEQ.NUMCONTA.ordinal() ) ) ) {
     					Funcoes.mensagemInforma( this, "Um item selecionado possui conta diferente dos demais!" );
     					break;
     				}
@@ -1396,7 +1230,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     	Vector<Object> item = null;
     	for (int i=0; i<tabCheq.getNumLinhas(); i++) {
     		item = (Vector<Object>) tabCheq.getLinha( i );
-    		if ( (Boolean) item.elementAt( COLS_CHEQ.SEL.ordinal() ) ) {
+    		if ( (Boolean) item.elementAt( Cheque.COLS_CHEQ.SEL.ordinal() ) ) {
     			listacheq.add( item );
     		}
     	}
@@ -1449,7 +1283,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 					(!carregandoTabela) ) {
 			calcTotaisPag();
 		} else if ( (evt.getTabela()==tabCheq) && 
-				(evt.getTabela().getColunaEditada()==COLS_CHEQ.SEL.ordinal()) && 
+				(evt.getTabela().getColunaEditada()==Cheque.COLS_CHEQ.SEL.ordinal()) && 
 					(!carregandoTabela) ) {
 			calcTotaisCheq();
 		}
