@@ -1401,7 +1401,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			 * if(codhistpag != 0) { historico = new ObjetoHistorico(codhistpag,con); } else { historico = new ObjetoHistorico(); historico.setHistoricocodificado( HISTORICO_PADRAO ); }
 			 */
 
-			if ( ( cOrig == 'M' ) & ( tabManut.getLinhaSel() > -1 ) ) { // Quando a função eh chamada da tab MANUTENÇÂO
+			if ( ( cOrig == 'M' ) && ( tabManut.getLinhaSel() > -1 ) ) { // Quando a função eh chamada da tab MANUTENÇÂO
 
 				imgStatusAt = ( (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 ) );
 
