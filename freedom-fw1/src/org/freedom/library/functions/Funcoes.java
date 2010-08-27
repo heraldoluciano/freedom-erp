@@ -3210,5 +3210,16 @@ public class Funcoes {
 
 		return ret;
 	}
+	
+    public static String completaTexto( String valor, int tam, String completa ) {
+    	StringBuffer valorTexto = new StringBuffer( valor );
+    	while ( valorTexto.length()<tam ) {
+    		valorTexto.append( completa );
+    	}
+    	if ( valorTexto.length()>tam ) {
+    		valorTexto.delete( tam, valorTexto.length() );
+    	}
+    	return valorTexto.toString();
+    }
 
 }
