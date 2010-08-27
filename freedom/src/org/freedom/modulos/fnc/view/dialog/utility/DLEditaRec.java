@@ -476,7 +476,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		int codBor = 0;
 		String dataBor = "";
-		int numConta = 0;
+		String numConta = "";
 		String obsBor = "";
 		String statusBor = "";
 		String numContaBordero = "";
@@ -499,7 +499,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 				codBor = rs.getInt( "CODBOR" );
 				dataBor = rs.getString( "DTBOR" );
-				numConta = rs.getInt( "NUMCONTA" );
+				numConta = rs.getString( "NUMCONTA" );
 				obsBor = rs.getString( "OBSBOR" );
 				statusBor = rs.getString( "STATUSBOR" );
 				numContaBordero = rs.getString( "NUMCONTABOR" );
@@ -507,7 +507,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 				txtCodBordero.setVlrInteger( codBor );
 				txtDatBordero.setVlrString( dataBor );
 				txtNumContaBor.setVlrString( numContaBordero );
-				txtNumConta.setVlrInteger( numConta );
+				txtNumConta.setVlrString( numConta );
 
 			}
 
@@ -517,7 +517,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar borderô.\n" + err.getMessage(), true, con, err );
 		}
 
 	}
