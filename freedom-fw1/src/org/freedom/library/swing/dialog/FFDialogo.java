@@ -112,28 +112,31 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 
 	public FFDialogo(Component cOrig) {
 
-		this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
 
-		cPai = cOrig;
-
-		// Gambs para tornar o form uma modal:
-
-		if (cOrig instanceof JFrame)
-			pnPai = ( ( JFrame ) cOrig ).getRootPane();
-		else if (cOrig instanceof JDialog)
-			pnPai = ( ( JDialog ) cOrig ).getRootPane();
-		else if (cOrig instanceof JInternalFrame)
-			pnPai = ( ( JInternalFrame ) cOrig ).getDesktopPane();
-		else {
-			pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
-			if (pnPai == null) {
-				Window win = SwingUtilities.getWindowAncestor(cOrig);
-				if (win instanceof JDialog)
-					pnPai = ( ( JDialog ) win ).getRootPane();
-				else if (win instanceof JFrame)
-					pnPai = ( ( JFrame ) win ).getRootPane();
+		
+			this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
+	
+			cPai = cOrig;
+	
+			// Gambs para tornar o form uma modal:
+	
+			if (cOrig instanceof JFrame)
+				pnPai = ( ( JFrame ) cOrig ).getRootPane();
+			else if (cOrig instanceof JDialog)
+				pnPai = ( ( JDialog ) cOrig ).getRootPane();
+			else if (cOrig instanceof JInternalFrame)
+				pnPai = ( ( JInternalFrame ) cOrig ).getDesktopPane();
+			else {
+				pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
+				if (pnPai == null) {
+					Window win = SwingUtilities.getWindowAncestor(cOrig);
+					if (win instanceof JDialog)
+						pnPai = ( ( JDialog ) win ).getRootPane();
+					else if (win instanceof JFrame)
+						pnPai = ( ( JFrame ) win ).getRootPane();
+				}
 			}
-		}
+	 
 
 	}
 
