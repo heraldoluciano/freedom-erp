@@ -1292,7 +1292,7 @@ public class CnabUtil extends FbnUtil {
 		/**
 		 * Código do juros de mora.<br>
 		 * 1 - Valor por dia.<br>
-		 * 2 - Taxa nensal.<br>
+		 * 2 - Taxa mensal.<br>
 		 * 3 - Isento.<br>
 		 */
 		public void setCodJuros( final int codJuros ) {
