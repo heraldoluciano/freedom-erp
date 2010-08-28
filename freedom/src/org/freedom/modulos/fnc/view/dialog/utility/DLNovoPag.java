@@ -881,15 +881,19 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private void alteraPag() {
 
-		lcItPagar.edit();
-
-		DLFechaPag dl = new DLFechaPag( owner, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );
+		DLFechaPag dl = new DLFechaPag( this, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );		
+		dl.setModalityType( ModalityType.APPLICATION_MODAL );
 		dl.setVisible( true );
+		
+		
+//		dl.execShow();
 
 		try {
 
 			if ( dl.OK ) {
 
+				lcItPagar.edit();
+				
 				txtVlrParcItPag.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
 				txtDtVencItPag.setVlrDate( (Date) dl.getValores()[ 1 ] );
 				lcItPagar.post();
