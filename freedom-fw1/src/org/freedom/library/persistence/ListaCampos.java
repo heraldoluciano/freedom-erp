@@ -1876,6 +1876,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 			bResultado = false;
 		}
 		else if (lcState == LCS_EDIT) {
+			
 			if (Funcoes.mensagemConfirma(cOwner, "Registro ainda não foi salvo! Deseja salvar?") == 0) {
 				cancel(false);
 				post();
