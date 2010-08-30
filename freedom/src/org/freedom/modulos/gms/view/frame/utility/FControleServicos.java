@@ -228,6 +228,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		montaTela();
 
 		montaListeners();
+		
+		adicToolTips();
 
 	}
 
@@ -272,6 +274,18 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		txtDataini.setVlrDate( Funcoes.getDataIniMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 
+	}
+	
+	private void adicToolTips() {
+		
+		btNovo.setToolTipText( "Nova ordem de serviço" );
+		btAtualiza.setToolTipText( "Atualize consulta" );
+		btChamado.setToolTipText( "Abrir chamado" );
+		btCompra.setToolTipText( "Gerar pedido de compra" );
+		btEditar.setToolTipText( "Editar ordem de serviço" );
+		btOrcamento.setToolTipText( "Gerar orçamento" );
+		btRma.setToolTipText( "Gerar Requisição de material" );
+		
 	}
 
 	private void montaListeners() {
