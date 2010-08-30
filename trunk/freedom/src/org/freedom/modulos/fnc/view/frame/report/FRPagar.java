@@ -452,7 +452,6 @@ public class FRPagar extends FRelatorio {
 			if ( sFiltroPag.equals( "N" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "P1" );
-				ps.setString( paramsql++, "P1" );
 				
 				if( cbParPar.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
