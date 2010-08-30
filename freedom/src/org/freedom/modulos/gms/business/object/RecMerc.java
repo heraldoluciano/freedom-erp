@@ -587,19 +587,21 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select codvend from vdcliente " );
-			sql.append( "where codemp=? and codfilial=? and codcli=?" );
+			sql.append( "select coalesce(rm.codvend,cl.codvend) codvend ");
+			sql.append( "from eqrecmerc rm left outer join vdcliente cl on " );
+			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			sql.append( "where rm.codemp=? and rm.codfilial=? and rm.ticket=? ");
 
 			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, getCodcli() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, getTicket() );
 
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				codvend = rs.getInt( 1 );
+				codvend = rs.getInt( "codvend" );
 			}
 
 			if ( codvend == null ) {
