@@ -61,6 +61,7 @@ import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 
 public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxListener, CarregaListener, PostListener, InsertListener {
 
@@ -229,6 +230,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextAreaPad txaObsItOS = new JTextAreaPad();
 
 	private JTextAreaPad txaObsItRecMerc = new JTextAreaPad();
+	
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JScrollPane spnDescItRecMerc = new JScrollPane( txaDescItRecMerc );
 
@@ -295,6 +300,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private ListaCampos lcProc = new ListaCampos( this, "TP" );
 
 	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
+	
+	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 
 	// *** Botões
 
@@ -451,6 +458,11 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		pnRodapeSuplemento.add( btSair, BorderLayout.EAST );
 
 		pinRodapeDividido.add( pnRodapeSuplemento );
+		
+		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
+		btChamado.setToolTipText( "Abrir novo chamado" );
+
+		
 
 	}
 
@@ -477,7 +489,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 //		adic( lbStatus, 620, 20, 123, 60 );
 
 		adicCampo( txtCodAtend, 7, 60, 60, 20, "CodAtendRec", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
-		adicDescFK( txtNomeAtend, 70, 60, 245, 20, "NomeAtend", "Nome do Atendente" );
+		adicDescFK( txtNomeAtend, 70, 60, 243, 20, "NomeAtend", "Nome do Atendente" );
+
+		adicCampo( txtCodVend, 316, 60, 67, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, false );
+		adicDescFK( txtNomeVend, 386, 60, 290, 20, "NomeVend", "Nome do comissionado" );
 
 		
 		setListaCampos( true, "RECMERC", "EQ" );
@@ -715,8 +730,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tabItOS.adicColuna( "" );
 		
 		tabItOS.setTamColuna( 20, 0 );
-		tabItOS.setTamColuna( 70, 1 );
-		tabItOS.setTamColuna( 200, 2 );
+		tabItOS.setTamColuna( 65, 1 );
+		tabItOS.setTamColuna( 190, 2 );
 		tabItOS.setColunaInvisivel( 3 );
 		tabItOS.setColunaInvisivel( 4 );
 		tabItOS.setTamColuna( 50, 5 );
@@ -821,6 +836,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcCli.add( new GuardaCampo( txtSiglaUF, "SiglaUF", "UF", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
 
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
@@ -969,6 +985,16 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS2.setQueryCommit( false );
 		lcProdItOS2.setReadOnly( true );
 		txtRefProdItOS.setTabelaExterna( lcProdItOS2, FProduto.class.getCanonicalName() );
+		
+		// FK Vendedor
+		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Venda", ListaCampos.DB_PK, false ) );
+		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		lcVendedor.setWhereAdic( "ATIVOCOMIS='S'" );
+		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
+		lcVendedor.setQueryCommit( false );
+		lcVendedor.setReadOnly( true );
+		txtCodVend.setTabelaExterna( lcVendedor, FVendedor.class.getCanonicalName() );
+
 
 	}
 
@@ -1165,6 +1191,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS.setConexao( cn );
 		lcProdItOS2.setConexao( cn );
 		lcItRecMercItOS.setConexao( cn );
+		lcVendedor.setConexao( cn );
 
 		getPreferencias();
 
