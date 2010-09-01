@@ -212,7 +212,10 @@ public class FRetCnab extends FRetFBN {
 							list.add( regHeader );
 							break;
 						case '1' :
-							RegT400 reg1 = cnabutil.new RegT400( line );
+//							RegT400 reg1 = cnabutil.new RegT400( line );
+							RegT400 reg1 = cnabutil.new RegT400(  );
+							reg1.setCodBanco( txtCodBanco.getVlrString() );
+							reg1.parseLine( line );
 							list.add( reg1 );
 
 							if ( reg1 == null || !regHeader.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
@@ -328,6 +331,7 @@ public class FRetCnab extends FRetFBN {
 					}
 					else if ( reg instanceof RegT400 ) {
 						regT400 = (RegT400) reg;
+						regT400.setCodBanco( txtCodBanco.getVlrString() );
 
 						int[] chaveRec = getChaveReceber( regT400 );
 						rec = findReceber( chaveRec[ 0 ], chaveRec[ 1 ], false );
@@ -522,13 +526,23 @@ public class FRetCnab extends FRetFBN {
 	private int[] getChaveReceber( final RegT400 regT400 ) {
 
 		int[] chave = new int[ 2 ];
-
-		if ( regT400 != null ) {
-
-			String codrec = regT400.getIdentTitEmp().trim();
-
-			chave[ 0 ] = Integer.parseInt( codrec.substring( 0, codrec.length() - 2 ) );
-			chave[ 1 ] = Integer.parseInt( codrec.substring( codrec.length() - 2 ) );
+		
+		String codrec = "";
+		
+		try {
+		
+			
+			if ( regT400 != null ) {
+	
+				codrec = regT400.getIdentTitEmp().trim();
+				
+				chave[ 0 ] = Integer.parseInt( codrec.substring( 0, codrec.length() - 2 ) );
+				chave[ 1 ] = Integer.parseInt( codrec.substring( codrec.length() - 2 ) );
+			}
+			
+		}
+		catch (Exception e) {
+			System.out.println("Registro com identificação inválida!" + codrec);
 		}
 
 		return chave;
