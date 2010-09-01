@@ -4567,7 +4567,7 @@ public class CnabUtil extends FbnUtil {
 			this();
 			parseLine( line );
 		}
-
+		
 		public String getAgencia() {
 
 			return agencia;
@@ -5143,7 +5143,7 @@ public class CnabUtil extends FbnUtil {
 					}
 					else { // Padrão CNAB 400
 
-						if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro
+						if ( "1".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
 							setCodCarteira( Integer.parseInt( line.substring( 107, 108 ) ) ); // Posição 108 a 108 - Código da carteira
 							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 109 - Código das ocorrências (vide pg.45)
@@ -5158,9 +5158,22 @@ public class CnabUtil extends FbnUtil {
 							setVlrDesc( strToBigDecimal( line.substring( 240, 253 ) ) );
 
 							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) );
+							
+//							setVlrPago( strToBigDecimal( line.substring( 305, 318 ) ) );
+							
 							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) );
 							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) );
-							setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
+							
+							if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {							
+								setDataCred( stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) );
+							}
+							else {
+								setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
+							}
+							
+							System.out.println( "Rejeição...." + line.substring( 86,88 ));
+							
+							
 
 						}
 						else {
