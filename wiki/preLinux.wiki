@@ -11,14 +11,16 @@
 Em sistemas linux é muito comum o uso da maquina virtual java OpenJDK porem o Freedom rodando com a OpenJDK pode apresentar algum comportamento anormal. Deste modo segue o procedimento de instalação da maquina virtual da sun:
 
 
-No ubuntu 10.04 a Canonical retirou os packages da Sun do respositorio principal, Multiverse, para incentivar o uso do OpenJDK. De modo que devemos adicionar o Lucid antes de prosseguir com a instação.
+No ubuntu 10.04 a Canonical retirou os packages da Sun do repositório principal, Multiverse, para incentivar o uso do OpenJDK. De modo que devemos adicionar o Lucid antes de prosseguir com a instalação.
+
 {{{
 sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
-}}} 
-Em seguida atualize com o comando update seus repositórios que faz com que o apt-get verifique todos os repositórios disponíveis e baixe a lista com os pacotes disponíveis em cada um. Baixando assim a lista do respositorio que acabamos de adicionar.
+}}}
+ 
+Em seguida atualize com o comando update seus repositórios que faz com que o apt-get verifique todos os repositórios disponíveis e baixe a lista com os pacotes disponíveis em cada um. Baixando assim a lista do repositório que acabamos de adicionar.
 {{{
 sudo apt-get update
-}}
+}}}
 
 Em seguida instale o Java
 {{{
