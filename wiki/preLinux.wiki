@@ -8,6 +8,8 @@
 =Java 1.5 ou superior=
 ==Debian/Ubuntu==
 
+IMPORTANTE: O Freedom só funciona corretamente com a maquina virtual da Sun. OpenJDK e similares, não funciona corretamente.
+
 A maneira correta de instalar o Java da Sun numa máquina Debian é através do java-package, que constrói o .deb a partir do .bin da Sun, da IBM ou do Blackdown. Dessa forma, outros pacotes que dependem do JRE serão corretamente instalados, além de ficar mais fácil o controle sobre as versões.
 
 Para instalar o java-package em distribuições baseadas no Debian:
