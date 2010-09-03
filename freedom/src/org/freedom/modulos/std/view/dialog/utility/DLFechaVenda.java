@@ -72,6 +72,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
+import org.freedom.modulos.std.business.component.ComissaoEspecial;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener, CarregaListener {
 
@@ -79,7 +80,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final int ABA_FECHAMENTO = 0;
 
-	private final int ABA_FERETE = 1;
+	private final int ABA_FRETE = 1;
 
 	private final int ABA_ADIC = 2;
 
@@ -536,7 +537,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( rgFreteVD, "TipoFreteVD", "Tipo", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtConhecFreteVD, "ConhecFreteVD", "Conhec.", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtPlacaFreteVD, "PlacaFreteVD", "Placa", ListaCampos.DB_SI, false ) );
-		lcFreteVD.add( new GuardaCampo( txtUFFreteVD, "UFFreteVD", "Placa", ListaCampos.DB_SI, true ) );
+		lcFreteVD.add( new GuardaCampo( txtUFFreteVD, "UFFreteVD", "UF", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtVlrFreteVD, "VlrFreteVD", "Valor", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtQtdFreteVD, "QtdFreteVD", "Qtd.", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtPesoBrutVD, "PesoBrutVD", "Peso bruto", ListaCampos.DB_SI, true ) );
@@ -1173,6 +1174,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tpn.setEnabledAt( 3, false );
 					tpn.setEnabledAt( 4, false );
 					tpn.setSelectedIndex( 1 );
+					
 				}
 				// adicional
 				else if ( (Boolean) oPrefs[ 1 ] ) {
@@ -1195,12 +1197,17 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 
 				break;
-			case ABA_FERETE :
+			case ABA_FRETE :
 
 				if ( (Boolean) oPrefs[ 0 ] ) {
 					lcFreteVD.edit();
 				}
 				// adicional
+				
+				if(txtPlacaFreteVD.getVlrString()==null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
+					txtPlacaFreteVD.setVlrString( "*******" );	
+				}
+				
 				if ( (Boolean) oPrefs[ 1 ] ) {
 					tpn.setEnabledAt( 0, false );
 					tpn.setEnabledAt( 1, false );
@@ -1236,6 +1243,17 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			default :
 
 				gravaVenda();
+				
+				if ( (Boolean) oPrefs[ 6 ] ) {
+				
+					/*************COMISSIONAMENTO ESPECIAL*****************/
+					
+					ComissaoEspecial comissao_especial = new ComissaoEspecial( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString(), txtVlrLiqVenda.getVlrBigDecimal(), txtDtEmisRec.getVlrDate(), txtDtEmisRec.getVlrDate() );
+					
+					comissao_especial.processaComissao();
+					
+					/******************************************************/
+				}
 
 				bRet = finaliza();
 		}
@@ -1245,13 +1263,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private Object[] prefs() {
 
-		Object[] ret = new Object[ 6 ];
+		Object[] ret = new Object[ 7 ];
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 
-			ps = con.prepareStatement( "SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES, CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM, SOMAVOLUMES, CODHISTREC, COALESCE(ESPECIALCOMIS,'N') ESPECIALCOMIS FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -1265,6 +1283,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				ret[ 3 ] = new Boolean( rs.getString( "ADICFRETEBASEICM" ).trim().equals( "S" ) );
 				ret[ 4 ] = new Boolean( rs.getString( "SOMAVOLUMES" ).trim().equals( "S" ) );
 				ret[ 5 ] = new Integer( rs.getInt( "CODHISTREC" ) );
+				ret[ 6 ] = new Boolean( rs.getString( "ESPECIALCOMIS" ).trim().equals( "S" ) );
 
 			}
 
@@ -1272,6 +1291,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			ps.close();
 
 			con.commit();
+			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
@@ -1679,11 +1699,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if(cevt.getListaCampos() == lcTran) {
-			if(txtPlacaFreteVD.getVlrString()==null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
+		if(txtPlacaFreteVD.getVlrString()==null || "".equals( txtPlacaFreteVD.getVlrString() ) ) {
 				txtPlacaFreteVD.setVlrString( "*******" );	
-			}
-		}
+		}		
 		
 	}
 
