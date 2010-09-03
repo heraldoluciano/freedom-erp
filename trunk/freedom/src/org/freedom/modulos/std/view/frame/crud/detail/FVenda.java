@@ -3261,11 +3261,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
 				
-				if (txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO )){
-					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_SERVICE ) );
+				if (txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO.getValue() )){
+					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, true ) );
 					
 				} else {
-					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT ) );
+					setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
 				}
 
 			}
@@ -3748,6 +3748,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItCompra.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
-		setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT ) );
+		setNfecf( new NFEConnectionFactory( con, AbstractNFEFactory.TP_NF_OUT, false ) );
 	}
 }
