@@ -53,11 +53,14 @@ public class NFEConnectionFactory implements NFEListener {
 	private StringBuilder messagesError = new StringBuilder();
 
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
+	
+	private boolean service;
 
-	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF ) {
+	public NFEConnectionFactory( final DbConnection conFreedom, Constant TP_NF, boolean service ) {
 
 		this.con = conFreedom;
-
+		this.service = service;
+		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
 		}
@@ -81,6 +84,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setConSys( getCon() );
 					getObjNFEFactory().setConNFE( getConNFE() );
 					getObjNFEFactory().setTpNF( getTpNF() );
+					getObjNFEFactory().setService( isService() );
 
 				}
 				else {
@@ -117,6 +121,11 @@ public class NFEConnectionFactory implements NFEListener {
 		return tpNF;
 	}
 
+	
+	public boolean isService(){
+		return service;		
+	}
+	
 	public void setConNFE( DbConnection conNFE ) {
 
 		this.conNFE = conNFE;
@@ -188,6 +197,7 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setKey( Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, Integer docvenda ) {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, docvenda, getDirNFE() );
+		
 		getObjNFEFactory().setKey( key );
 
 	}
@@ -195,6 +205,7 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setKey( Integer codemp, Integer codfilial, Integer codcompra, Integer doccompra ) {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, codcompra, doccompra, getDirNFE() );
+		
 		getObjNFEFactory().setKey( key );
 
 	}
