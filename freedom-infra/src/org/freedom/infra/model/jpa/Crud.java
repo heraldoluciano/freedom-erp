@@ -1,25 +1,8 @@
 package org.freedom.infra.model.jpa;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
-import oracle.toplink.essentials.exceptions.DatabaseException;
-
-import org.apache.log4j.Logger;
-import org.freedom.infra.util.crypt.SimpleCrypt;
-import org.freedom.infra.util.ini.ManagerIni;
-import org.freedom.infra.util.logger.FreedomLogger;
 
 public class Crud {
-
+/*
 	public static final int PERSIST_FRAMEWORK_TOPLINK = 1;
 
 	public static final int DEFAULT_CHANGES = 5;
@@ -30,11 +13,11 @@ public class Crud {
 
 	private final Map<String, String> properties;
 
-	private EntityManagerFactory managerFactory = null;
+//	private EntityManagerFactory managerFactory = null;
 
-	private EntityManager manager = null;
+//	private EntityManager manager = null;
 
-	private EntityTransaction transaction = null;
+	//private EntityTransaction transaction = null;
 
 	private Logger logger = null;
 
@@ -82,6 +65,8 @@ public class Crud {
 		}
 		manager = managerFactory.createEntityManager();
 		transaction = manager.getTransaction();
+		
+		
 	}
 
 	protected boolean reConnect(final Throwable exception) {
@@ -407,4 +392,6 @@ public class Crud {
 
 		return list;
 	}
+	
+	*/
 }
