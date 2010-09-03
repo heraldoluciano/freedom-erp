@@ -99,7 +99,14 @@ public class CtrlMultiComis implements CarregaListener {
 			for ( ItemComis itemcomis : listComis ) {
 				itemcomis.limpa();
 			}
-			ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " + "VC.SEQITRC, VC.CODVEND, VC.PERCVC " + "FROM VDVENDACOMIS VC " + "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND " + "VC." + cpTipovenda + "=? AND VC." + cpCodvenda + "=?" );
+			ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " 
+					+ "VC.SEQITRC, VC.CODVEND, VC.PERCVC " 
+					+ "FROM VDVENDACOMIS VC " 
+					+ "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND " 
+					+ "VC." + cpTipovenda + "=? AND VC." 
+					+ cpCodvenda 
+					+ "=?" );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VD" + vendacomis ) );
 			ps.setString( 3, tipovenda );
