@@ -36,6 +36,8 @@ public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
 
+	private boolean service = false;
+	
 	private DbConnection conSys = null;
 
 	private DbConnection conNFE = null;
@@ -54,18 +56,22 @@ public abstract class AbstractNFEFactory {
 
 	public static final Constant TP_NF_BOTH = new Constant("Ambos", new Integer(3));
 	
-	public static final Constant TP_NF_SERVICE = new Constant("Serviço", new Integer(4));
-
 	public enum SYSTEM {
 		FREEDOM
 	};
 
-	public AbstractNFEFactory() 
-	{
-	}
+	public AbstractNFEFactory(){}
 
 	public boolean isValid() {
 		return valid;
+	}
+
+	public void setService(boolean service) {
+		this.service = service;
+	}
+
+	public boolean isService() {
+		return service;
 	}
 
 	public void setValid(boolean valid) {
@@ -147,7 +153,12 @@ public abstract class AbstractNFEFactory {
 
 		fireAfterValidSend();
 
-		if (isValid()) {
+		/*
+		 * Verifica se a nota fiscal é válida.
+		 * Notas Fiscal de serviço não são enviadas pelo runSend.
+		 * :TODO REAVALIAR RUNSEND
+		 */
+		if (isValid() && !isService()) {
 
 			fireBeforeRunSend();
 
