@@ -54,6 +54,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	protected Vector<String> vLabs = new Vector<String>();
 	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
 	protected String nfe = "";
+	protected String nfse = "";
 	protected String strBanco = "";
 	protected String strBanconfe = "";
 	protected String strDriver = "";
