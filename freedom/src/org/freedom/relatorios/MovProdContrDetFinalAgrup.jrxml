@@ -68,9 +68,15 @@ order by 3]]></queryString>
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
 	</variable>
 	<variable name="FORMULA" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$V{QTDMOVPROD}==null?($F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))):
-($V{QTDMOVPROD}.divide($V{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)))]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))]]></initialValueExpression>
+		<variableExpression><![CDATA[$V{QTDFINALPRODOP}.floatValue()>0 ? 
+$V{QTDMOVPROD}==null?($F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))):
+($V{QTDMOVPROD}.divide($V{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)))
+:
+new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{QTDFINALPRODOP}.floatValue()>0 ? 
+$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
+:
+new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="QTDMOVPROD" class="java.math.BigDecimal" resetType="Group" resetGroup="CODPROD" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
