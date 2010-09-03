@@ -27,7 +27,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Vector;
-
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -101,6 +100,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 	protected boolean execConexao(String sUsu, String sSenha) {
 
 		nfe = Aplicativo.getParameter("nfe");
+		nfse = Aplicativo.getParameter("nfse");
 
 		strBanco = Aplicativo.getParameter("banco");
 		strDriver = Aplicativo.getParameter("driver");
@@ -108,8 +108,8 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		try {
 			Class.forName(strDriver);
 		}
-		catch (java.lang.ClassNotFoundException e) {
-			Funcoes.mensagemErro(this, "Driver nao foi encontrado:\n" + strDriver + "\n" + e.getMessage());
+		catch (java.lang.ClassNotFoundException e) { 
+			Funcoes.mensagemErro(this, "Driver não foi encontrado:\n" + strDriver + "\n" + e.getMessage());
 			return false;
 		}
 
@@ -147,9 +147,18 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				return false;
 			}
 		}
+		// Nota fiscal eletrônica de serviços
+		if("S".equalsIgnoreCase(nfse)) {
+			
+			
+			
+			
+			
+		}
 
 		txtUsuario.setAtivo(false);
 		txpSenha.setEditable(false);
+		
 		return true;
 	}
 
