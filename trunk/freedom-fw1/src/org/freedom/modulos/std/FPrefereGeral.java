@@ -504,6 +504,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbUsaPrecoZero = new JCheckBoxPad("Permite preço de produto Zero.", "S", "N");
 	
 	private final JCheckBoxPad cbUsaPrecoComis = new JCheckBoxPad("Usa preço fixo do produto para comissionamento por seção", "S", "N");
+	
+	private final JCheckBoxPad cbEspecialComis = new JCheckBoxPad("Usa comissionamento especial", "S", "N");
 
 	private final JCheckBoxPad cbUsaImgOrc = new JCheckBoxPad("Usar imagem de assinatura no orçamento.", "S", "N");
 
@@ -1335,6 +1337,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsaNomeVendOrc, 5, 65, 300, 20, "UsaNomeVendOrc", "", true);		
 		adicDB(cbComissManut, 5, 85, 350, 20, "VDManutComObrig", "", false);
 		adicDB(cbUsaPrecoComis, 5, 105, 410, 20, "UsaPrecoComis", "", false);
+		adicDB(cbEspecialComis, 5, 125, 410, 20, "EspecialComis", "", false);
 		
 		setPainel(pinRegrasComissionamento);
 		
