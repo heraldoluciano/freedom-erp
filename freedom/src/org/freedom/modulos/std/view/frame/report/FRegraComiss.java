@@ -52,6 +52,8 @@ public class FRegraComiss extends FDetalhe {
 	private JTextFieldFK txtDescTipoVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtPercComis = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 3 );
+	
+	private JTextFieldPad txtPercComisGeral = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 3 );
 
 	private JTextFieldPad txtSeqComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -96,7 +98,7 @@ public class FRegraComiss extends FDetalhe {
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		
 		lcVend.setDinWhereAdic( "CODTIPOVEND = #N", txtCodTipoVend );
-		lcVend.setDinWhereAdic( "CODSECAO = #S", txtCodSecao );
+//		lcVend.setDinWhereAdic( "CODSECAO = #S", txtCodSecao );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
@@ -110,7 +112,11 @@ public class FRegraComiss extends FDetalhe {
 		adicCampo( txtDescRegrComis, 90, 20, 350, 20, "DescRegrComis", "Descrição da regra de comissionamento", ListaCampos.DB_SI, true );
 
 		adicCampo( txtCodSecao, 7, 60, 80, 20, "CodSecao", "Cód.seção", ListaCampos.DB_FK, txtDescSecao, false );
-		adicDescFK( txtDescSecao, 90, 60, 350, 20, "DescSecao", "Descrição da seção" );
+		adicDescFK( txtDescSecao, 90, 60, 250, 20, "DescSecao", "Descrição da seção" );
+		
+		adicCampo( txtPercComisGeral, 343, 60, 97, 20, "PercComisGeral", "%Comis.", ListaCampos.DB_SI, false );
+		
+		
 
 		setListaCampos( true, "REGRACOMIS", "VD" );
 		

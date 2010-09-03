@@ -12,6 +12,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.HashMap;
 
