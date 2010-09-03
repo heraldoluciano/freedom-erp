@@ -358,14 +358,56 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " + "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere
-				+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
-				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " + " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
-				+ "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+		//Query sem o left outer join... anterior ao mecanismo de comissionamento especial
+
+		/*		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " 
+			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " 
+			+ "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " 
+			+ "WHERE " 
+			+ sWhere			
+			+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " 
+			+ ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) 
+			+ " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" 
+			+ sStatus 
+			+ " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "				
+			+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " 
+			+ " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " 
+			+ " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
+			+ "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+		 */
+
+		// Query com left outer join, (comissionamento especial não é atrelado ao contas a receber.
+		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,COALESCE(R.DOCREC,VE.DOCVENDA) DOCREC,COALESCE(ITR.NPARCITREC,1) NPARCITREC, " 
+			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND "
+
+			+ "FROM VDCLIENTE CL, VDVENDEDOR V , VDCOMISSAO C "
+
+			+ "LEFT OUTER JOIN FNITRECEBER ITR ON "
+			+ "ITR.CODEMP = C.CODEMPRC AND ITR.CODFILIAL = C.CODFILIALRC AND ITR.CODREC=C.CODREC AND ITR.NPARCITREC=C.NPARCITREC "
+
+			+ "LEFT OUTER JOIN FNRECEBER R ON "
+			+ "R.CODEMP = C.CODEMPRC AND R.CODFILIAL = C.CODFILIALRC AND R.CODREC=C.CODREC  "
+
+			+ "LEFT OUTER JOIN VDVENDA VE ON "			
+			+ "VE.CODEMP = C.CODEMPVE AND VE.CODFILIAL = C.CODFILIALVE AND VE.CODVENDA=C.CODVENDA AND VE.TIPOVENDA=C.TIPOVENDA "
+
+			+ "WHERE " + sWhere			
+			+ ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + " BETWEEN ? AND ? " 
+
+			+ sStatus 
+
+			+ "  AND C.CODEMP=? AND C.CODFILIAL=? AND CL.CODCLI=COALESCE(R.CODCLI,VE.CODCLI) AND CL.CODEMP=COALESCE(R.CODEMPCL,VE.CODEMPCL) AND CL.CODFILIAL=COALESCE(R.CODFILIALCL,VE.CODFILIALCL) " 
+
+			+ " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
+
+			+ "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+
+
 
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			System.out.println( "SQL COMIS: " + sSQL );
+
 			if ( !txtCodVend.getText().trim().equals( "" ) ) {
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
@@ -377,6 +419,7 @@ public class FManutComis extends FFilho implements ActionListener {
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
 			ResultSet rs = ps.executeQuery();
+
 			tab.limpa();
 			bVlrTot = new BigDecimal( "0.0" );
 			bVlrTot.setScale( 3 );
@@ -416,6 +459,7 @@ public class FManutComis extends FFilho implements ActionListener {
 			ps.close();
 			con.commit();
 		} catch ( SQLException err ) {
+			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro na consulta!" + err.getMessage(), true, con, err );
 		}
 	}
