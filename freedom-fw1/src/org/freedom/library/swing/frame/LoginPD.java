@@ -129,9 +129,10 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		}
 
 		if ("S".equalsIgnoreCase(nfe)) {
-
+			
 			strBanconfe = Aplicativo.getParameter("banconfe");
-
+			Aplicativo.strBancoNFE = strBanconfe;
+			
 			try {
 				props.put("user", sUsu);
 				props.put("password", sSenha);
@@ -146,14 +147,6 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				e.printStackTrace();
 				return false;
 			}
-		}
-		// Nota fiscal eletrônica de serviços
-		if("S".equalsIgnoreCase(nfse)) {
-			
-			
-			
-			
-			
 		}
 
 		txtUsuario.setAtivo(false);

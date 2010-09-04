@@ -81,7 +81,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public DbConnection con = null; // Variavel de conexao com o banco de dados
 
-	public DbConnection con_nfe = null; // Variavel de conexao com o banco de
+	public DbConnection con_nfe = null; // Variavel de conexao com o banco deconNFE
 	// dados de nfe
 
 	public static FPrincipal telaPrincipal = null;
@@ -125,6 +125,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int iNumEst = 0;
 
 	public static String strBanco = "";
+	
+	public static String strBancoNFE = "";
 
 	public static String strDriver = "";
 
@@ -841,6 +843,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
 			iCodFilialPad = lgBanco.getFilialPad();
+			
 			try {
 				conRetorno = lgBanco.getConection();
 				con_nfe = lgBanco.conNFE;
