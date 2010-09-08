@@ -23,12 +23,10 @@
 
 package org.freedom.modulos.fnc.view.frame.crud.tabbed;
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Dimension;
 import java.util.Vector;
-
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -59,6 +57,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 	private JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtNumContaCV = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescContaCV = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldPad txtDataConta = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -96,6 +98,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
 	private ListaCampos lcRestricoes = new ListaCampos( this, "" );
+	
+	private ListaCampos lcContaVinculada = new ListaCampos( this, "" );
+	
+	private ListaCampos lcContaCV = new ListaCampos( this, "CV" );
 
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
@@ -104,20 +110,36 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JPanelPad pinCamposGeral = new JPanelPad( 430, 400 );
 
 	private JPanelPad pinCamposContabil = new JPanelPad( 430, 400 );
+	
+	private JPanelPad pinCamposRestricoes = new JPanelPad( 430, 400 );
+	
+	private JPanelPad pinCamposContasVinculadas = new JPanelPad( 430, 400 );
 
 	private JPanelPad pnRestricoes = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnContasVinculadas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinDetRestricoes = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinDetContasVinculadas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTablePad tbRestricoes = new JTablePad();
+	
+	private JTablePad tbContasVinculadas = new JTablePad();
 
 	private JScrollPane spnRestricoes = new JScrollPane( tbRestricoes );
+	
+	private JScrollPane spnContasVinculadas = new JScrollPane( tbContasVinculadas );
 
 	private JPanelPad pinNavRestricoes = new JPanelPad( 680, 30 );
+	
+	private JPanelPad pinNavContasVinculadas = new JPanelPad( 680, 30 );
 
-	private JPanelPad pinCamposRestricoes = new JPanelPad( 430, 400 );
+	private JPanelPad pinNavCamposRestricoes = new JPanelPad( 430, 400 );
 
 	private Navegador navRestricoes = new Navegador( true );
+	
+	private Navegador navContaVinculada = new Navegador( true );
 
 	private JTextFieldPad txtIDUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -136,12 +158,18 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	public FConta() {
 
 		super( false );
+		
 		setTitulo( "Cadastro de Contas" );
 		setAtribos( 50, 50, 420, 380 );
-
+		
 		lcRestricoes.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcRestricoes );
+		lcContaVinculada.setMaster( lcCampos );
+		
+		lcCampos.adicDetalhe( lcRestricoes );		
+		lcCampos.adicDetalhe( lcContaVinculada );
+		
 		lcRestricoes.setTabela( tbRestricoes );
+		lcContaVinculada.setTabela( tbContasVinculadas );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -172,7 +200,17 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		txtIDUsu.setFK( true );
 		txtIDUsu.setNomeCampo( "IDUsu" );
 		txtIDUsu.setTabelaExterna( lcUsu, FUsuario.class.getCanonicalName() );
-
+		
+		lcContaCV.add( new GuardaCampo( txtNumContaCV, "NumConta", "Num.Conta", ListaCampos.DB_PK, txtDescContaCV, false ) );
+		lcContaCV.add( new GuardaCampo( txtDescContaCV, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcContaCV.montaSql( false, "CONTA", "FN" );
+		lcContaCV.setQueryCommit( false );
+		lcContaCV.setReadOnly( true );
+		txtNumContaCV.setFK( true );
+		txtNumContaCV.setNomeCampo( "numconta" );
+		txtNumContaCV.setTabelaExterna( lcContaCV, null );
+		
+		
 		lcHist.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
 		lcHist.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
 		lcHist.montaSql( false, "HISTPAD", "FN" );
@@ -235,15 +273,15 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		setListaCampos( false, "CONTA", "FN" );
 		lcCampos.setQueryInsert( false );
 
+		/********************
+		 * ABA RESTRIÇÕES *
+		 ********************/
 		setPainel( pinDetRestricoes, pnRestricoes );
 
 		pinDetRestricoes.setPreferredSize( new Dimension( 430, 80 ) );
 		pinDetRestricoes.add( pinNavRestricoes, BorderLayout.SOUTH );
 		pinDetRestricoes.add( pinCamposRestricoes, BorderLayout.CENTER );
-
-		/********************
-		 * ABA RESTRIÇÕES *
-		 ********************/
+		
 		setListaCampos( lcRestricoes );
 		setNavegador( navRestricoes );
 
@@ -267,6 +305,46 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		tbRestricoes.setTamColuna( 280, 1 );
 
 		chbRestritoTipoMov.addCheckBoxListener( this );
+		
+		
+		/*********************
+		 * Contas Vinculadas *
+		 *********************/
+		
+		setPainel( pinDetContasVinculadas, pnContasVinculadas );
+		adicTab( "Contas Vinculadas", pnContasVinculadas );
+		
+	
+		pinDetContasVinculadas.setPreferredSize( new Dimension( 430, 80 ) );
+		pinDetContasVinculadas.add( pinNavContasVinculadas, BorderLayout.SOUTH );
+		pinDetContasVinculadas.add( pinCamposContasVinculadas, BorderLayout.CENTER );
+
+		setListaCampos( lcContaVinculada );
+		setNavegador( navContaVinculada );
+
+		pnContasVinculadas.add( pinDetContasVinculadas, BorderLayout.SOUTH );
+		pnContasVinculadas.add( spnContasVinculadas, BorderLayout.CENTER );
+		pinNavContasVinculadas.adic( navContaVinculada, 0, 0, 270, 25 );
+
+		setPainel( pinCamposContasVinculadas );
+
+		adicCampo( txtNumContaCV, 7, 20, 80, 20, "NumContaCV", "Num.Conta", ListaCampos.DB_PF, txtDescContaCV, true );
+		adicDescFK( txtDescContaCV, 90, 20, 250, 20, "DescConta", "Nome da conta vinculada" );
+
+		setListaCampos( false, "CONTAVINCULADA", "FN" );
+		
+		lcContaVinculada.setQueryInsert( false );
+		
+		lcContaVinculada.setQueryCommit( false );
+
+		lcContaVinculada.montaTab();
+
+		txtNumContaCV.setTabelaExterna( lcContaCV, null );
+		txtNumContaCV.setNomeCampo( "NumConta" ); 
+		
+		tbContasVinculadas.setTamColuna( 80, 0 );
+		tbContasVinculadas.setTamColuna( 280, 1 );
+
 
 	}
 
@@ -285,12 +363,16 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcBanco.setConexao( cn );
 		lcMoeda.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcRestricoes.setConexao( cn );
 		lcUsu.setConexao( cn );
 		lcHist.setConexao( cn );
+		lcContaCV.setConexao( cn );
+		lcContaVinculada.setConexao( cn );
+		
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
