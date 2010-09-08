@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -48,7 +47,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
@@ -333,6 +331,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		c.setLayout( new BorderLayout() );
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( tpn, BorderLayout.CENTER );
+		
+		
 		btSair.setPreferredSize( new Dimension( 90, 30 ) );
 
 		pnLegenda.setPreferredSize( new Dimension( 700, 50 ) );
@@ -1664,7 +1664,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) );
 					iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, 6 ) );
 
-					sVals = new String[ 15 ];
+					sVals = new String[ 17 ];
 
 					dl = new DLEditaPag( this, imgStatusAt != imgPago );
 
@@ -1680,6 +1680,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sVals[ 9 ] = (String) tabManut.getValor( iLin, 13 );
 					sVals[ 10 ] = (String) tabManut.getValor( iLin, 12 );
 					sVals[ 11 ] = (String) tabManut.getValor( iLin, 15 );
+
 					/*
 					 * if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) { if ( "".equals( ( (String) tabManut.getValor( iLin, 23 ) ).trim() ) ) { historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) ); historico.setDocumento( tabManut.getValor(
 					 * iLin, 8 ).toString().trim() ); historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() ); historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 16).toString() )); sVals[ 12 ] = historico.getHistoricodecodificado(); } else { sVals[ 12 ] = (String)
@@ -1689,6 +1690,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sVals[ 13 ] = (String) tabManut.getValor( iLin, 21 );
 					sVals[ 14 ] = (String) tabManut.getValor( iLin, 14 );
 
+					// Cod. pagar e nparc para carregar lista de cheques
+					sVals[ 15 ] = (String) tabManut.getValor( iLin, 5 );
+					sVals[ 16 ] = (String) tabManut.getValor( iLin, 6 );
+
+					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
 					dl.setConexao( con );
