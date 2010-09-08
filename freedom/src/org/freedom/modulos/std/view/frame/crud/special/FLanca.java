@@ -48,6 +48,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,7 +81,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 	private JLabelPad lbPeriodo = new JLabelPad( " Período" );
 
-	private JPanelPad pinSaldo = new JPanelPad( 310, 50 );
+	private JPanelPad pinSaldo = new JPanelPad( 400, 50 );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -116,13 +117,19 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 	private JLabelPad lbDataSaldo = new JLabelPad( "Data" );
 
-	private JLabelPad lbVlrSaldo = new JLabelPad( "Saldo" );
+	private JLabelPad lbSaldo = new JLabelPad( "Saldo" );
+	
+	private JLabelPad lbSaldoComposto = new JLabelPad( "Saldo Composto" );
 
 	private JLabelPad lbAtualSaldo = new JLabelPad( "Atualiza" );
 
 	private JLabelPad lbDataSaldoVal = new JLabelPad( "" );
 
-	private JLabelPad lbVlrSaldoVal = new JLabelPad( "" );
+//	private JLabelPad lbVlrSaldo = new JLabelPad( "" );
+	
+	private JTextFieldPad txtVlrSaldo = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin ) ;
+	
+	private JTextFieldPad txtVlrSaldoComposto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin ) ;
 
 	private JLabelPad lbAtualSaldoVal = new JLabelPad( "NÃO" );
 
@@ -173,7 +180,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		pinCab.adic( pinLbPeriodo, 10, 2, 51, 15 );
 		pinCab.adic( pinPeriodo, 7, 10, 260, 44 );
 		pinCab.adic( pinLbSaldo, 270, 2, 46, 15 );
-		pinCab.adic( pinSaldo, 270, 10, 326, 44 );
+		
+		pinCab.adic( pinSaldo, 270, 10, 400, 44 );
 
 		pinPeriodo.adic( txtDataini, 7, 10, 100, 20 );
 		pinPeriodo.adic( lbA, 110, 10, 7, 20 );
@@ -181,16 +189,30 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		pinPeriodo.adic( btExec, 220, 5, 30, 30 );
 
 		lbDataSaldoVal.setForeground( new Color( 0, 140, 0 ) );
-		lbVlrSaldoVal.setForeground( new Color( 0, 140, 0 ) );
+		txtVlrSaldo.setEditable( false );
+		txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
+		txtVlrSaldo.setBackground( null );
+//		lbVlrSaldo.setBorder( null );
+		
+		txtVlrSaldoComposto.setEditable( false );
+		txtVlrSaldoComposto.setBackground( null );
+//		lbVlrSaldoComposto.setBorder( null );
+		txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );		
 		lbAtualSaldoVal.setForeground( new Color( 0, 140, 0 ) );
 
 		pinSaldo.adic( lbDataSaldo, 7, 6, 50, 15 );
 		pinSaldo.adic( lbDataSaldoVal, 7, 21, 100, 15 );
-		pinSaldo.adic( lbVlrSaldo, 110, 6, 50, 15 );
-		pinSaldo.adic( lbVlrSaldoVal, 110, 21, 97, 15 );
-		pinSaldo.adic( lbAtualSaldo, 210, 6, 50, 15 );
-		pinSaldo.adic( lbAtualSaldoVal, 210, 21, 57, 15 );
-		pinSaldo.adic( btCalcSaldo, 285, 5, 30, 30 );
+		
+		pinSaldo.adic( lbSaldo, 80, 6, 50, 15 );		
+		pinSaldo.adic( txtVlrSaldo, 80, 21, 87, 15 );
+
+		pinSaldo.adic( lbSaldoComposto, 175, 6, 100, 15 );		
+		pinSaldo.adic( txtVlrSaldoComposto, 175, 21, 97, 15 );
+
+		pinSaldo.adic( lbAtualSaldo, 290, 6, 50, 15 );
+		pinSaldo.adic( lbAtualSaldoVal, 290, 21, 57, 15 );
+		
+		pinSaldo.adic( btCalcSaldo, 360, 5, 30, 30 );
 
 		btSair.setPreferredSize( new Dimension( 100, 31 ) );
 
@@ -254,6 +276,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 	}
 
+	private void mostraSaldoComposto(boolean mostra) {
+		
+		txtVlrSaldoComposto.setVisible( mostra );
+		lbSaldoComposto.setVisible( mostra );
+		
+	}
+	
 	private void montaTabela( Date dini, Date dfim ) {
 
 		tab.limpa();
@@ -293,6 +322,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 			ps.close();
 			// con.commit();
 			atualizaSaldo();
+			atualizaSaldoComposto();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
 		}
@@ -336,6 +366,69 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		}
 	}
 
+	private void atualizaSaldoComposto() {
+
+		int iCodEmp = 0;
+		int iCodFilial = 0;
+		StringBuilder sql = new StringBuilder();
+ 
+		sql.append( "select	cv.numconta, "); 
+		
+		sql.append( "sum(( ");
+		
+		sql.append( "	select s.saldosl from fnsaldolanca s ");
+		sql.append( "	where s.codplan=ct2.codplan and s.codemp=ct2.codemppn and s.codfilial=ct2.codfilialpn and s.codemppn=ct2.codemppn and ");
+		sql.append( "	s.codfilialpn=ct2.codfilialpn and s.datasl=");
+		sql.append( "	(select max(s1.datasl) ");		
+		sql.append( "		from fnsaldolanca s1 where s1.datasl <= ? and s1.codplan=s.codplan ");
+		sql.append( "		and s1.codemp=s.codemp and s1.codfilial=s.codfilial and s1.codemppn=s.codemppn and s1.codfilialpn=s.codfilialpn ");
+		sql.append( "	)" );
+
+		sql.append( ")) saldovinculado ");
+		
+		sql.append( "from fncontavinculada cv, fnconta ct2, fnconta ct1 ");
+		sql.append( "where ct2.codemp=cv.codempcv and ct2.codfilial=cv.codfilialcv and ct2.numconta=cv.numcontacv ");
+		sql.append( "and  ct1.codemppn=? and ct1.codfilialpn=? and ct1.codplan=? ");
+		sql.append( "and ct1.numconta=cv.numconta and ct1.codemp=cv.codemp and ct1.codfilial=cv.codfilial ");
+		sql.append( "group by 1 ");  
+		
+		try {
+			iCodEmp = Aplicativo.iCodEmp;
+			iCodFilial = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+			ps.setDate( 1, Funcoes.dateToSQLDate( dFimLanca ) );
+			ps.setInt( 2, iCodEmp );
+			ps.setInt( 3, iCodFilial );
+			ps.setString( 4, sCodPlan );	
+			
+			System.out.println("Query do saldo composto:" + sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				BigDecimal SaldoComposto = txtVlrSaldo.getVlrBigDecimal();
+				
+				SaldoComposto = SaldoComposto.add( rs.getBigDecimal( "SaldoVinculado" ) );
+				
+				txtVlrSaldoComposto.setVlrBigDecimal( SaldoComposto );
+				mostraSaldoComposto( true );
+			}
+			else {
+				txtVlrSaldoComposto.setVlrBigDecimal( new BigDecimal(0) );
+				mostraSaldoComposto( false );
+			}
+			
+			rs.close();
+			ps.close();
+			// con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar o saldo composto!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
 	private void atualizaSaldo() {
 
 		int iCodEmp = 0;
@@ -358,12 +451,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				lbDataSaldoVal.setText( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSl" ) ) );
-				lbVlrSaldoVal.setText( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "SaldoSl" ) ) );
+//				lbVlrSaldo.setText( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "SaldoSl" ) ) );
+				txtVlrSaldo.setVlrBigDecimal( rs.getBigDecimal( "SaldoSl" ) );
 				lbAtualSaldoVal.setText( "SIM" );
 			}
 			else {
 				lbDataSaldoVal.setText( "" );
-				lbVlrSaldoVal.setText( "" );
+				txtVlrSaldo.setText( "" );
 				lbAtualSaldoVal.setText( "SEM" );
 			}
 			rs.close();
@@ -617,8 +711,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 			}
 		}
 		else if ( evt.getSource() == btCalcSaldo ) {
-			if ( validaPeriodo() )
+			if ( validaPeriodo() ) {
 				atualizaSaldo();
+				atualizaSaldoComposto();
+			}
 		}
 	}
 
