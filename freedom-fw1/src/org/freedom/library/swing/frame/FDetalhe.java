@@ -23,7 +23,6 @@
 package org.freedom.library.swing.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -101,7 +100,7 @@ public class FDetalhe extends FDados {
 		nav.setName("Mestre");
 		navRod.setName("Detalhe");
 
-		navRod.setBackground(Color.RED);
+//		navRod.setBackground(Color.RED);
 
 		pnNavCab.add(nav, BorderLayout.WEST);
 
