@@ -130,7 +130,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	private JTextFieldPad txtFoneFavCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JCheckBoxPad cbPreDatCheq = new JCheckBoxPad( "Pré-datado", "Sim", "Não" );
+	private JCheckBoxPad cbPreDatCheq = new JCheckBoxPad( "Pré-datado", "S", "N" );
 
 	private JComboBoxPad cbTipoCheq = null;
 
@@ -152,7 +152,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		nav.setNavigation( true );
 
-		setTitulo( "Bordero" );
+		setTitulo( "Cheque" );
 		setAtribos( 50, 50, 690, 490 );
 
 		montaListaCampos();
@@ -173,6 +173,14 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	}
 
+	public void exec( int seqcheq ) {
+
+		txtSeqCheq.setVlrInteger( seqcheq );
+		
+		lcCampos.carregaDados();
+		
+	}
+	
 	private void montaCombos() {
 
 		montaCbTipoCheque();
