@@ -107,7 +107,7 @@ public class FPais extends FDados implements ActionListener {
 			imp.montaCab();
 			imp.setTitulo( "Relatório de paises cadastrados" );
 
-			String sSQL = "SELECT CODPAIS,NOMEPAIS,SIGLAPAIS,DDIPAIS FROM SGPAIS ORDER BY NOMEPAIS";
+			String sSQL = "SELECT CODPAIS,NOMEPAIS,SIGLA2CPAIS,DDIPAIS FROM SGPAIS ORDER BY NOMEPAIS";
 
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
@@ -137,7 +137,7 @@ public class FPais extends FDados implements ActionListener {
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodPais" ) != null ? rs.getString( "CodPais" ) : "" );
 				imp.say( 15, rs.getString( "NomePais" ) != null ? rs.getString( "NomePais" ) : "" );
-				imp.say( 80, rs.getString( "SiglaPais" ) != null ? rs.getString( "SiglaPais" ) : "" );
+				imp.say( 80, rs.getString( "Sigla2cPais" ) != null ? rs.getString( "Sigla2cPais" ) : "" );
 				imp.say( 100, rs.getString( "DDIPais" ) != null ? rs.getString( "DDIPais" ) : "" );
 
 			}
