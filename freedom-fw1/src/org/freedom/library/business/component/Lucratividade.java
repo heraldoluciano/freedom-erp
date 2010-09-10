@@ -544,7 +544,7 @@ public class Lucratividade {
 
 		try {
 
-			if (getTotfat() != null) {
+			if (getTotfat() != null) { 
 				
 				if(getTotfat().compareTo(new BigDecimal(0))>0) {
 				
@@ -554,10 +554,11 @@ public class Lucratividade {
 					perclucro = ( vlrlucro.multiply(new BigDecimal(100)) ).divide(getTotfat(), 0, BigDecimal.ROUND_DOWN);
 	
 					setVlrlucro(vlrlucro);
+					
 				}
-				else {				
-					setPerclucrvenda(perclucro);
-				}
+								
+				setPerclucrvenda(perclucro);
+				
 			}
 
 		}
