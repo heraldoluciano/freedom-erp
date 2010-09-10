@@ -457,7 +457,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 			}
 			else {
 				lbDataSaldoVal.setText( "" );
-				txtVlrSaldo.setText( "" );
+				txtVlrSaldo.setVlrBigDecimal( new BigDecimal(0) );
 				lbAtualSaldoVal.setText( "SEM" );
 			}
 			rs.close();
