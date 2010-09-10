@@ -108,7 +108,7 @@ public final class ConversionFunctions {
 
 		try {
 
-			if (strvalue == null) {
+			if ((strvalue == null) || ("".equals(strvalue.trim()))) {
 				return new BigDecimal("0");
 			}
 
