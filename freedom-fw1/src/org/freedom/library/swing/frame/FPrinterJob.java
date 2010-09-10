@@ -280,9 +280,17 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 
-			System.out.println(FPrinterJob.class.getResourceAsStream("/org/freedom/" + sLayout));
+			String root_dir = "";
+			
+			if(sLayout.indexOf("/")!=0) {
+				root_dir = "/org/freedom/";
+			}
+			
+			System.out.println(FPrinterJob.class.getResourceAsStream( root_dir + sLayout));
 
-			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/" + sLayout), hParam, jrRS);
+			
+			
+			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, jrRS);
 
 			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
 			this.setContentPane(viewer);
@@ -298,6 +306,8 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			err.printStackTrace();
 		}
 	}
+	
+	
 
 	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con) {
 		this(sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null);
