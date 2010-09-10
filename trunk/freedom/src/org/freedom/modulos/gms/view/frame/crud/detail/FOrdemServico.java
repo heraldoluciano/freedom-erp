@@ -1443,6 +1443,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 				testaNumSerie();
 			}
 		}
+		if ( pevt.getListaCampos() == lcItRecMercItOS ) {
+//			lcItRecMercItOS.carregaDados();
+			reprocessaTabItOs();
+		}
 
 	}
 
