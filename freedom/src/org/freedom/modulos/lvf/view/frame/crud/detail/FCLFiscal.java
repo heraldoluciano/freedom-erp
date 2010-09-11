@@ -113,10 +113,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JPanelPad panelFUNRURALCampos = new JPanelPad( 500, 80 );
 
-	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
-
-	private JPanelPad panelISSCampos = new JPanelPad( 500, 80 );
-
 	private JPanelPad panelIR = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelIRCampos = new JPanelPad( 500, 80 );
@@ -128,6 +124,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JPanelPad panelII = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelIICampos = new JPanelPad( 500, 80 );
+	
+	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
+
+	private JPanelPad panelISSCampos = new JPanelPad( 500, 80 );
+
 
 	private JPanelPad panelNomeComum = new JPanelPad( new BorderLayout() );
 
@@ -239,8 +240,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldFK txtDescSitTribISS = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 
-	private JTextFieldPad txtAliqIssFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
-
 	private JTextFieldPad txtVlrIssUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtCodSitTribIR = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -270,6 +269,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldFK txtDescSitTribII = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 
 	private JTextFieldPad txtAliqIiFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
+	private JTextFieldPad txtAliqISSFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
@@ -332,6 +333,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
 
 	private ListaCampos lcSitTribIPI = new ListaCampos( this, "SI" );
+	
+	private ListaCampos lcSitTribISS = new ListaCampos( this, "IS" );
 
 	private ListaCampos lcSitTribPIS = new ListaCampos( this, "SP" );
 
@@ -373,7 +376,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtAliqCofinsFisc.setAtivo( false );
 
 		txtVlrIssUnidTrib.setAtivo( false );
-		txtAliqIssFisc.setAtivo( false );
+//		txtAliqISSFisc.setAtivo( false );
 		txtVlrIrUnidTrib.setAtivo( false );
 		txtAliqIrFisc.setAtivo( true );
 		txtVlrCsUnidTrib.setAtivo( false );
@@ -631,6 +634,17 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI, FSitTrib.class.getCanonicalName() );
 
+		lcSitTribISS.add( new GuardaCampo( txtCodSitTribISS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
+		lcSitTribISS.add( new GuardaCampo( txtImpSitTribISS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
+		lcSitTribISS.add( new GuardaCampo( txtDescSitTribISS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
+		lcSitTribISS.setWhereAdic( "IMPSITTRIB='IS'" );
+		lcSitTribISS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos
+		lcSitTribISS.setQueryCommit( false );
+		lcSitTribISS.setReadOnly( true );
+		txtCodSitTribISS.setTabelaExterna( lcSitTribISS, FSitTrib.class.getCanonicalName() );
+		txtImpSitTribISS.setTabelaExterna( lcSitTribISS, FSitTrib.class.getCanonicalName() );
+
+		
 		lcPais.setUsaME( false );
 		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
 		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
@@ -805,7 +819,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setPainel( panelIPICampos );
 
 		adicCampo( txtCodSitTribIPI, 7, 20, 80, 20, "CodSitTribIPI", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
-		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_SI, false );
 		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 		adicDB( cbTpCalcIPI, 7, 60, 200, 20, "TpCalcIPI", "Tipo de cálculo", false );
 
@@ -818,7 +832,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setPainel( panelPISCampos );
 
 		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
-		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_SI, false );
 		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, true );
 		adicCampo( txtVlrPisUnidTrib, 90, 60, 99, 20, "VlrPisUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
@@ -829,7 +843,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setPainel( panelCOFINSCampos );
 
 		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );
-		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
 		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 
 		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, true );
@@ -842,18 +856,17 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		adicCampo( txtAliqFunRuralFisc, 7, 20, 80, 20, "AliqFunRuralFisc", "Aliq.FunRural", ListaCampos.DB_SI, null, false );
 
-		// // ********** ABA ISS **/
-		//				
-		// tpnGeral.addTab( "ISS", panelISS );
-		// setPainel( panelISSCampos );
-		// tpnGeral.setEnabledAt( 5, false );
-		//		
-		// adicCampo( txtCodSitTribISS, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_SI, txtDescSitTribISS, false );
-		// adicCampoInvisivel( txtImpSitTribISS, "ImpSitTribCOF", "Imposto", ListaCampos.DB_SI, false );
-		// adicDescFK( txtDescSitTribISS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
-		//	
-		// adicCampo( txtAliqIssFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );
-		// adicCampo( txtVlrIssUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
+		// ********** ABA ISS **/
+						
+		 tpnGeral.addTab( "ISS", panelISS );
+		 setPainel( panelISSCampos );
+		 tpnGeral.setEnabledAt( 5, false );
+				
+		 adicCampo( txtCodSitTribISS, 7, 20, 80, 20, "CodSitTribISS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribISS, false );
+		 adicCampoInvisivel( txtImpSitTribISS, "ImpSitTribISS", "Imposto", ListaCampos.DB_SI, false );
+		 adicDescFK( txtDescSitTribISS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
+			
+		 adicCampo( txtAliqISSFisc, 7, 60, 80, 20, "AliqISSFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );
 		//		
 		// ********** ABA IR **/
 
@@ -876,7 +889,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		// tpnGeral.setEnabledAt( 8, false );
 		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
 
-		//			
+		
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
 
@@ -1177,6 +1190,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.setConexao( con );
 		lcSitTribPIS.setConexao( con );
 		lcSitTribIPI.setConexao( con );
+		lcSitTribISS.setConexao( con );
 		lcPais.setConexao( con );
 		lcUF.setConexao( con );
 		lcServico.setConexao( con );
