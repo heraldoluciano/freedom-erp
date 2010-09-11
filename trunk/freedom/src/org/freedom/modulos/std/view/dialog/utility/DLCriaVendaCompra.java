@@ -66,12 +66,13 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener {
 		}
 
 		// Se for uma compra ou venda e deve ser confirmado o codigo
-		if ( ( "V".equals( tipo ) ) && confirmacodigo ) {
+//		if ( ( "V".equals( tipo ) ) && confirmacodigo ) {
+		if ( "V".equals( tipo ) ) {
 
 			adic( new JLabelPad( "Deseja criar " + labeltipo + " agora?" ), 7, 15, 220, 20 );
 
 			adic( new JLabelPad( "Nº Pedido" ), 7, 40, 80, 20 );
-			adic( txtNewCod, 87, 40, 120, 20 );
+			adic( txtNewCod, 87, 40, 120, 20 ); 
 		}
 
 		// Se for uma compra
