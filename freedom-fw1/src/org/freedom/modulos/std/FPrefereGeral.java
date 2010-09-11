@@ -190,6 +190,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtCodTipoMovS = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodTipoMov3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
@@ -256,6 +258,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescTipoMov2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldFK txtDescTipoMovS = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescTipoMov3 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
@@ -592,6 +596,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 
 	private ListaCampos lcTipoMov2 = new ListaCampos(this, "T2");
+	
+	private ListaCampos lcTipoMovS = new ListaCampos(this, "TS");
 
 	private ListaCampos lcTipoMov3 = new ListaCampos(this, "T3");
 
@@ -784,6 +790,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov2.setQueryCommit(false);
 		lcTipoMov2.setReadOnly(true);
 		txtCodTipoMov2.setTabelaExterna(lcTipoMov2, null);
+
+		lcTipoMovS.add(new GuardaCampo(txtCodTipoMovS, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMovS.add(new GuardaCampo(txtDescTipoMovS, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMovS.montaSql(false, "TIPOMOV", "EQ");
+		lcTipoMovS.setQueryCommit(false);
+		lcTipoMovS.setReadOnly(true);
+		txtCodTipoMovS.setTabelaExterna(lcTipoMovS, null);
 
 		lcTipoMov3.add(new GuardaCampo(txtCodTipoMov3, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
 		lcTipoMov3.add(new GuardaCampo(txtDescTipoMov3, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
@@ -1200,7 +1213,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoMov2, 7, 25, 90, 20, "CodTipoMov2", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMov2, 100, 25, 300, 20, "DescTipoMov", "Tipo de movimento para orçamentos.");
 
-		adicCampo(txtDescClassOrc, 403, 25, 322, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodTipoMovS, 403, 25, 50, 20, "CodTipoMovS", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
+		adicDescFK(txtDescTipoMovS, 456, 25, 270, 20, "DescTipoMov", "Tipo de movimento para orçamentos (Serviço)");
+		
+		adicCampo(txtDescClassOrc, 403, 185, 322, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false);
 		adicCampo(txtDescOrc, 403, 65, 322, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false);
 
 		adicCampo(txtTitOrcTxt01, 403, 105, 322, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false);
@@ -1367,7 +1383,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodTipoFor, 7, 25, 90, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoForFT, false);
 		adicDescFK(txtDescTipoFor, 100, 25, 300, 20, "DescTipoFor", "Descrição do tipo de fornecedor");
 		adicCampo(txtCodTipoMov5, 7, 65, 90, 20, "CodTipoMov5", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false);
-		adicDescFK(txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento");
+		adicDescFK(txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento 5");
 		adicCampo(txtCodTipoCli, 7, 105, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, false);
 		adicDescFK(txtDescTipoCli, 100, 105, 300, 20, "DescTipoCli", "Descrição do tipo de Cliente");
 
@@ -1579,14 +1595,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(pnOpcoesOrc, 7, 265, 720, 190);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
-		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento");
+		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV");
 		adicCampo(txtCodPlanoPag2, 7, 105, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag2, false);
 		adicDescFK(txtDescPlanoPag2, 100, 105, 300, 20, "DescPlanoPag", "Descrição do plano de pagamento");
 		adicCampo(txtCodCli, 7, 145, 90, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtDescCli, false);
 		adicDescFK(txtDescCli, 100, 145, 300, 20, "NomeCli", "Nome do cliente");
 
-		adicCampo(txtPrazo, 403, 145, 322, 20, "Prazo", "Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false);
-		adicCampo(txtDiasVencOrc, 403, 185, 322, 20, "DiasVencOrc", "Dias para vencimento do orçamento", ListaCampos.DB_SI, false);
+		adicCampo(txtPrazo, 403, 145, 161, 20, "Prazo", "Prazo de entrega", ListaCampos.DB_SI, false);
+		adicCampo(txtDiasVencOrc, 567, 145, 158, 20, "DiasVencOrc", "Dias vencto. orçamento", ListaCampos.DB_SI, false);
 
 		setPainel(pnOpcoesOrc);
 
@@ -1751,6 +1767,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcFor.setConexao(cn);
 		lcTipoMov.setConexao(cn);
 		lcTipoMov2.setConexao(cn);
+		lcTipoMovS.setConexao(cn);
 		lcTipoMov3.setConexao(cn);
 		lcTipoMov4.setConexao(cn);
 		lcTipoMov5.setConexao(cn);
