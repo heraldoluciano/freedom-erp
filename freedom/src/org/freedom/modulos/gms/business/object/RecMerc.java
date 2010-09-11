@@ -1333,7 +1333,7 @@ public class RecMerc implements java.io.Serializable {
 		
 	}
 	
-	public Vector<Integer> gerarRmas( ) {
+	public Vector<Integer> geraRmas( ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
