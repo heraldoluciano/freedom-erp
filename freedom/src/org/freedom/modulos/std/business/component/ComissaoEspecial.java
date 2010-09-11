@@ -305,11 +305,12 @@ public class ComissaoEspecial {
 				
 				ps.execute();
 				
+				con.commit();
+				ps.close();
 				
 			}
 			
-			con.commit();
-			ps.close();
+			
 			
 		}
 		catch (Exception e) {
