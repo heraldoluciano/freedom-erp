@@ -1000,7 +1000,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							Vector<Integer> rmas = recmerc.gerarRmas( );
+							Vector<Integer> rmas = recmerc.geraRmas( );
 
 							
 							if ( rmas != null && rmas.size() > 0 ) {
