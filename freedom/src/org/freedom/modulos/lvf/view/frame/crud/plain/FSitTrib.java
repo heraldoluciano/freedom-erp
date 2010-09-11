@@ -74,6 +74,7 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 		vImpTribLabs.addElement( "COFINS" );
 		vImpTribLabs.addElement( "IR" );
 		vImpTribLabs.addElement( "Contrib.Social" );
+		vImpTribLabs.addElement( "ISS" );
 
 		Vector<String> vImpTribVals = new Vector<String>();
 		vImpTribVals.addElement( "IC" );
@@ -82,7 +83,8 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 		vImpTribVals.addElement( "CO" );
 		vImpTribVals.addElement( "IR" );
 		vImpTribVals.addElement( "CS" );
-
+		vImpTribVals.addElement( "IS" );
+ 
 		rgImpSitTrib = new JRadioGroup<String, String>( 2, 3, vImpTribLabs, vImpTribVals );
 
 		adic( new JLabelPad( "Imposto" ), 7, 0, 403, 20 );
