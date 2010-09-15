@@ -1295,6 +1295,36 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		return rs;
 	}
+	
+	private Integer getNumItensRMA() {
+
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		Integer ret = 0;
+		
+		try {
+			sql.append( "SELECT COUNT(*) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				ret = rs.getInt( 1 );
+			}
+			
+			rs = ps.executeQuery();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return ret;
+	}
 
 	private boolean temDistrib() {
 
@@ -1348,7 +1378,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		boolean ret = true;
 
 		try {
-			ret = ( (ResultSet) itensRma() ).getFetchSize() > 0;
+//			ret = ( (ResultSet) itensRma() ).getFetchSize() > 0;
+			ret = getNumItensRMA() > 0;
+			
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
