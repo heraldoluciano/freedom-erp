@@ -70,6 +70,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -83,6 +84,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.view.dialog.utility.DLItensEstruturaProd;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -287,6 +289,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private boolean bBuscaOPS = false;
 
+	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Inserir ítens dinamicamente?", "S", "N" );
+	
 	private boolean bnovo = false;
 
 	// painel
@@ -300,6 +304,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private String SitOp = "";
 
 	private HashMap<String, Object> prefere = null;
+	
+	private JPanelPad pnAdicEstrutura = new JPanelPad();
+	
+	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
 
 	public FOP( int codOp, int seqOp ) {
 
@@ -332,6 +340,20 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btObs2.setVisible( true );
 		btReprocessaItens.setVisible( false );
 
+		//pnRodape.remove( btSair );
+		pnRodape.removeAll();
+		
+		pnAdicEstrutura.setBorder( null );
+
+		pnRodape.add( navRod, BorderLayout.WEST );
+		
+		pnRodape.add( btSair, BorderLayout.EAST );
+		
+		pnRodape.add( pnAdicEstrutura, BorderLayout.CENTER );
+		pnAdicEstrutura.adic( btAdicProdutoEstrutura, 0, 0, 30, 26 );
+		btAdicProdutoEstrutura.setEnabled( false );
+		
+		
 		pnMaster.remove( spTab );
 
 		tpnAbas.addTab( "Previsão", spSimu );
@@ -350,8 +372,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btObs.setToolTipText( "Motivo do cancelamento" );
 		btObs2.setToolTipText( "Observação" );
 		btReprocessaItens.setToolTipText( "Reprocessar itens" );
-
-		pinCab.adic( pinQuantidades, 5, 130, 550, 65 );
+		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
+		
+		pinCab.adic( pinQuantidades, 5, 125, 550, 50 );
 		pinCab.adic( pinBotCab, 560, 5, 35, 190 );
 
 		pinBotCab.adic( btLote, 0, 0, 30, 30 );
@@ -484,6 +507,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
 
+		adicDB( cbEstDinamica, 5, 175, 200, 20, "estdinamica", "", true );
+		
 		setPainel( pinQuantidades );
 
 		adicCampo( txtQtdSugProdOP, 7, 20, 130, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
@@ -491,7 +516,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampo( txtQtdFinalProdOP, 273, 20, 130, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.prevista
 		txtQtdDistOp.setSoLeitura( true );
 		adicCampo( txtQtdDistOp, 406, 20, 130, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
-
+		
+		cbEstDinamica.setVlrString( "N" );
+		
 		setListaCampos( true, "OP", "PP" );
 
 		txtCodTpMov.setAtivo( false );
@@ -525,7 +552,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btRatearItem.addActionListener( this );
 		btDistrb.addActionListener( this );
 		btCancela.addActionListener( this );
-
+		btAdicProdutoEstrutura.addActionListener( this );
+		
 		txtQtdSugProdOP.addFocusListener( this );
 		txtSeqEst.addFocusListener( this );
 
@@ -2094,6 +2122,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		else if ( evt.getSource() == btReprocessaItens ) {
 			reprocessaItens();
 		}
+		else if ( evt.getSource() == btAdicProdutoEstrutura ) {
+			buscaEstrutura();
+		}
 	}
 
 	private void observacao() {
@@ -2614,6 +2645,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				tpnAbas.setSelectedIndex( 1 );
 				tpnAbas.setEnabledAt( 0, false );
 
+				btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
+				
 			}
 
 			if ( ( cevt.getListaCampos() == lcProdEstCod ) || ( cevt.getListaCampos() == lcProdEstRef ) ) {
@@ -2694,6 +2727,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ratearOp();
 				geraRMA();
 			}
+			
+			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
+			
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			btRMA.setEnabled( liberaRMA() );
@@ -2710,6 +2746,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( txtSeqOP.getVlrString().trim().equals( "" ) ) {
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 			}
+			
 		}
 	}
 
@@ -2762,4 +2799,74 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		lcCampos.carregaDados();
 	}
+	
+	private void buscaEstrutura() {
+		
+		try {
+		
+			DLItensEstruturaProd dl = new DLItensEstruturaProd();
+			
+			dl.setCodemp( Aplicativo.iCodEmp );
+			dl.setCodemppd( Aplicativo.iCodEmp );
+			
+			dl.setCodfilial( ListaCampos.getMasterFilial( "EQPRODUTO" ) );			
+			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			
+			dl.setCodprod( txtCodProdEst.getVlrInteger() );
+			dl.carregaItens();
+			
+			dl.setVisible( true );
+			
+			
+			if ( dl.OK ) {
+				
+				Vector<HashMap<String,Object>> valores = dl.getValores();
+				HashMap<String,Object> item = new HashMap<String, Object>();
+				
+				Integer codprod = null;
+				String refprod = null;
+				BigDecimal qtditest = null;
+				
+				for(int i=0; i< valores.size(); i++) {
+					
+					item = valores.elementAt( i );
+					
+					codprod = (Integer) item.get( DLItensEstruturaProd.ITENS.CODPRODPD.name() );
+					refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
+					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
+					/*
+					lcItRecMercItOS.insert( true );
+					
+					txtCodProdItOS.setVlrInteger( codprod );
+					txtRefProdItOS.setVlrString( refprod );
+					
+					if(comRef()) {
+
+						lcProdItOS2.carregaDados();
+						
+					}
+					else {
+						
+						lcProdItOS.carregaDados();
+						
+					}
+					
+					txtQtdItOSItOS.setVlrBigDecimal( qtditest );
+					
+					lcItRecMercItOS.post();
+				*/	
+				}
+			}
+			dl.dispose();
+
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	
 }
