@@ -138,7 +138,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 			}
 			else if ( tipo == TIPO_RECMERC ) {
 
-				sql.append( ", t1.codrecmerc, t1.coditrecmerc, t1.seqitserie from eqitrecmercserie t1 " );
+				sql.append( ", t1.ticket, t1.coditrecmerc, t1.seqitserie from eqitrecmercserie t1 " );
 
 			}
 
@@ -153,7 +153,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 				sql.append( "and t1.codvenda=? and t1.coditvenda=? and t1.tipovenda='V'" );
 			}
 			else if ( tipo == TIPO_RECMERC ) {
-				sql.append( "and t1.codrecmerc=? and t1.coditrecmerc=? " );
+				sql.append( "and t1.ticket=? and t1.coditrecmerc=? " );
 			}
 
 			sql.append( "order by 5, 6, 1 " );
@@ -217,7 +217,7 @@ public class DLSerieGrid extends FFDialogo implements MouseListener, TabelaSelLi
 				sql.append( " codvenda=? and coditvenda=? and tipovenda='V' " );
 			}
 			else if ( tipo == TIPO_RECMERC ) {
-				sql.append( " codrecmerc=? and coditrecmerc=? " );
+				sql.append( " ticket=? and coditrecmerc=? " );
 			}
 
 			sql.append( " and seqitserie=? " );
