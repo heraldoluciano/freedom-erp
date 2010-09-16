@@ -1383,8 +1383,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCodProd.requestFocus();
 		btCopiar.addActionListener( this );
 		
-		txtDescProd.iTamanho = Integer.parseInt( sPrefs[eprefs.TAMDESCPROD.ordinal()] );
-
+		if(sPrefs!=null) {
+			txtDescProd.iTamanho = Integer.parseInt( sPrefs[eprefs.TAMDESCPROD.ordinal()] );
+		}
+		
 	}
 
 	private void buscaEstoque() {
@@ -1503,10 +1505,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		try {
 
 			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS, P.TAMDESCPROD " 
-				 + "FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F, SGPAIS PA " 
+				 + "FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F left outer join SGPAIS PA "
+				 + "on pa.codpais=f.codpais "				 
 				 + "WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP AND " 
-				 + "F.CODEMP=E.CODEMP AND F.CODFILIAL=? AND " 
-				 + "PA.CODPAIS=F.CODPAIS";
+				 + "F.CODEMP=E.CODEMP AND F.CODFILIAL=?";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
