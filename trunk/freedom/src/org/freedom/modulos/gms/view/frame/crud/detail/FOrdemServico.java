@@ -1351,7 +1351,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		// Tela para cadastramento da série para quantidade maior que 1
 		else {
 
-			// abreDlSerieMuitiplos();
+			 abreDlSerieMuitiplos();
 
 		}
 
@@ -1369,7 +1369,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		dl.setCodfilialpd( lcProd.getCodFilial() );
 		dl.setCodprod( txtCodProd.getVlrInteger() );
 		dl.setDescprod( txtDescProd.getVlrString().trim() );
-
+		dl.setTipo( DLSerieGrid.TIPO_RECMERC );
+		
 		dl.setConexao( con );
 		dl.setVisible( true );
 		HashMap<String, Integer> retorno = null;
