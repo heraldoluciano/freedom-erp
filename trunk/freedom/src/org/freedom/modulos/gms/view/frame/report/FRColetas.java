@@ -181,7 +181,7 @@ public class FRColetas extends FRelatorio {
 
 		sql.append( "select " );
 		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.numserie " );
 		sql.append( "from " );
 		sql.append( "eqrecmerc rm " );
 		sql.append( "left outer join vdcliente cl on " );
@@ -265,7 +265,7 @@ public class FRColetas extends FRelatorio {
 
 			sql.append( "select " );
 			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, " );
+			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie , " );
 
 			sql.append( "pd.descprod, rm.ticket " );
 
