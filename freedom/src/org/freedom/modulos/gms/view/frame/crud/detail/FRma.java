@@ -1,5 +1,4 @@
 /**
- * @version 14/07/2003 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  *         Projeto: Freedom <BR>
  *         Pacote: org.freedom.modulos.gms <BR>
@@ -145,6 +144,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSeqOF = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtRefProdItRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldFK txtDescProdItRecMerc = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private JTextFieldFK txtDescFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -476,13 +483,28 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		adicCampo( txtAnoCC, 160, 60, 50, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK, true );
 		adicCampo( txtCodCC, 213, 60, 200, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK, txtDescCC, true );
 		adicDescFK( txtDescCC, 416, 60, 207, 20, "DescCC", "Descrição do centro de custos" );
+
 		adicCampoInvisivel( txtSitRma, "sitrma", "Sit.Rma.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSitAprovRma, "sitaprovrma", "Sit.Ap.Rma.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSitExpRma, "sitexprma", "Sit.Exp.Rma.", ListaCampos.DB_SI, false );
 		adicDBLiv( txaMotivoCancRma, "motivocancrma", "Motivo do cancelamento", false );
 		adicDBLiv( txaMotivoRma, "MotivoRma", "Observações", false );
-		adic( new JLabelPad( "Observações" ), 7, 80, 100, 20 );
-		adic( spnMotivo, 7, 100, 617, 90 );
+		
+		adicCampo( txtTicket, 7, 100, 60, 20, "Ticket", "Ticket", ListaCampos.DB_SI, false );
+		adicCampo( txtCodItRecMerc, 70, 100, 47, 20, "CodItRecMerc", "It.Rec.", ListaCampos.DB_SI, false );		
+		
+		pinCabRma.adic( new JLabelPad("Ref.Prod."), 120, 80, 90, 20 );
+		pinCabRma.adic( txtRefProdItRecMerc, 120, 100, 90, 20 );
+		
+		pinCabRma.adic( new JLabelPad("Descrição do produto"), 213, 80, 200, 20 );
+		pinCabRma.adic( txtDescProdItRecMerc, 213, 100, 200, 20 );
+		
+		pinCabRma.adic( new JLabelPad("Cliente"), 416, 80, 200, 20 );
+		pinCabRma.adic( txtRazCli, 416, 100, 200, 20 );
+		
+		adic( new JLabelPad( "Observações" ), 7, 120, 100, 20 );
+		adic( spnMotivo, 7, 140, 617, 50 );
+
 		adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
 
@@ -710,6 +732,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		txtCodOP.setAtivo( !bHab );
 		txtSeqOP.setAtivo( !bHab );
 		txtSeqOF.setAtivo( !bHab );
+		
 	}
 
 	private void desabAprov( boolean bHab ) {
@@ -778,6 +801,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		siStItAprov = txtSitAprovItRma.getVlrString();
 		sSitItExp = txtSitExpItRma.getVlrString();
 		sSitItRma = txtSitItRma.getVlrString();
+		
 		boolean bStatusTravaTudo = ( ( sSitItRma.equals( "AF" ) ) || ( sSitItRma.equals( "EF" ) ) || ( sSitItRma.equals( "CA" ) ) );
 		boolean bStatusTravaExp = ( !sSitItRma.equals( "AF" ) || sSitItExp.equals( "CA" ) );
 
@@ -874,6 +898,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		if ( cevt.getListaCampos() == lcCampos ) {
 			cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
 			cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
+			
+			if(txtTicket.getVlrInteger()>0) {
+				carregaInfoOS();
+			}
+			
 		}
 
 	}
@@ -966,6 +995,46 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		return bRet;
 	}
 
+	private void carregaInfoOS() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			sql.append( "select rm.ticket, ir.coditrecmerc, ir.refprod, cl.razcli, pd.descprod " );
+			sql.append( "from eqrecmerc rm, eqitrecmerc ir, vdcliente cl, eqproduto pd " );
+			sql.append( "where " );
+			sql.append( "rm.codemp=ir.codemp and rm.codfilial=ir.codfilial and rm.ticket=ir.ticket and ");
+			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli and ");
+			sql.append( "pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and " );
+			sql.append( "ir.codemp=? and ir.codfilial=? and ir.ticket=? and ir.coditrecmerc=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+			ps.setInt( 4, txtCodItRecMerc.getVlrInteger());
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+
+				txtRefProdItRecMerc.setVlrString( rs.getString( "refprod" ) );
+				txtRazCli.setVlrString( rs.getString( "razcli" ) );
+				txtDescProdItRecMerc.setVlrString( rs.getString( "descprod" ) );
+				
+				txtTicket.setEditable( false );
+				txtCodItRecMerc.setEditable( false );
+				
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp )
@@ -1048,6 +1117,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		ResultSet rs = null;
 		DLRPedido dl = new DLRPedido( sOrdRMA, true );
 
+		dl.setTipo( "G" );
+		
 		dl.setConexao( con );
 		dl.setVisible( true );
 
@@ -1079,9 +1150,13 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			sql.append( " (SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP AND U.CODEMP=R.CODEMPUE AND U.CODFILIAL=R.CODFILIALUE)," );
 
 			sql.append( " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP" );
-
-			sql.append( " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND" );
-
+			
+			sql.append( " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND " );
+			
+//			sql.append( " LEFT OUTER JOIN EQRECMERC RM ON RM.CODEMP=R.CODEMPOS AND RM.CODFILIAL=R.CODFILIALOS AND RM.TICKET=R.TICKET " );
+			
+//			sql.append( " LEFT OUTER JOIN VDCLIENTE CL ON CL.CODEMP=RM.CODEMPCL AND CL.CODFILIAL=RM.CODFILIALCL AND CL.CODCLI=RM.CODCLI " );
+			
 			sql.append( " WHERE" );
 
 			sql.append( " R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?" );
@@ -1323,6 +1398,16 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "RESUMIDO", new Boolean( isResum ) );
+
+		if(txtTicket.getVlrInteger()>0) {
+			
+			hParam.put( "TICKET", txtTicket.getVlrInteger() );
+			hParam.put( "REFPRODITRECMERC", txtRefProdItRecMerc.getVlrString() );
+			hParam.put( "DESCPRODITRECMERC", txtDescProdItRecMerc.getVlrString() );
+			hParam.put( "RAZCLIOS", txtRazCli.getVlrString() );
+			
+		}
+		
 
 		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
 
@@ -1569,3 +1654,10 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	}
 
 }
+
+
+
+
+
+
+
