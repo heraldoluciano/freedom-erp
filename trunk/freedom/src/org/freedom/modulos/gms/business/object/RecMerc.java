@@ -1350,10 +1350,38 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
-			sql.append( "select codrma from eqgerarmaossp(?,?,?,?) group by 1" );
+			sql.append( "select codrma from eqgerarmaossp(?,?,?) group by 1" );
 
 			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, getTicket() );
+			
+			rs = ps.executeQuery();
+			
+			int i= 0;
+			int numrmas = 0;
+			
+			while (rs.next()) {
+				
+				ret.add( rs.getInt( "CODRMA" ) );
+				numrmas ++;
+				
+			}
+			
+			ps.close();
+			
+			if(numrmas>0) {
+				Funcoes.mensagemInforma( orig, "RMA " + Funcoes.vectorToString( ret, "," ) + " gerada com sucesso!!!" );
+			}
+			else {
+				Funcoes.mensagemInforma( orig, "Nenhuma RMA foi gerada!!!" );
+			}
 
+			/*
 			if(itens!=null && itens.size()>0) {
 
 				int i= 0;
@@ -1368,11 +1396,6 @@ public class RecMerc implements java.io.Serializable {
 					
 					if(numitensrma>0) {
 					
-						ps = con.prepareStatement( sql.toString() );
-	
-						ps.setInt( 1, Aplicativo.iCodEmp );
-						ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
-						ps.setInt( 3, getTicket() );
 						
 						
 						Integer coditrecmerc = (Integer)item.get( COLS_ITRECMERC.CODITRECMERC.name() );
@@ -1394,18 +1417,13 @@ public class RecMerc implements java.io.Serializable {
 
 				}
 				
-				if(numrmas>0) {
-					Funcoes.mensagemInforma( orig, "RMAs (" + Funcoes.vectorToString( ret, "," ) + ") geradas com sucesso!!!" );
-				}
-				else {
-					Funcoes.mensagemInforma( orig, "Nenhuma RMA foi gerada!!!" );
-				}
+				
 				
 			}
 			else {
 				Funcoes.mensagemErro( orig, "Nenhum item de Ordem de serviço encontrado!" );				
 			}
-			
+			*/
 			
 
 		} catch ( Exception e ) {
