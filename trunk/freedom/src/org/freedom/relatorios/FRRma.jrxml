@@ -43,6 +43,10 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="RESUMIDO" isForPrompting="true" class="java.lang.Boolean"/>
+	<parameter name="TICKET" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="REFPRODITRECMERC" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="RAZCLIOS" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DESCPRODITRECMERC" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT  WHERE IT.CODEMP=R.CODEMP AND 
 IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),R.CODRMA,R.DTINS,R.SITRMA,
 R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA,
@@ -221,14 +225,16 @@ ORDER BY R.CODRMA,P.CODPROD;]]></queryString>
 					<reportElement
 						x="71"
 						y="59"
-						width="114"
+						width="201"
 						height="12"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODOP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TICKET}==null ?
+($F{CODOP}.toString() + "  /  " + $F{SEQOP}.toString()) :
+($P{TICKET}.toString() + "  /  " + $P{REFPRODITRECMERC} + "-" + $P{DESCPRODITRECMERC} )]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -237,32 +243,6 @@ ORDER BY R.CODRMA,P.CODPROD;]]></queryString>
 						width="24"
 						height="12"
 						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[C.C.:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="195"
-						y="30"
-						width="24"
-						height="12"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[C.C.:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="195"
-						y="44"
-						width="24"
-						height="12"
-						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
@@ -281,32 +261,6 @@ ORDER BY R.CODRMA,P.CODPROD;]]></queryString>
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODCC}.trim() + " - " + $F{DESCCC}.trim()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="195"
-						y="59"
-						width="43"
-						height="12"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Seq. OP.:]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="240"
-						y="59"
-						width="166"
-						height="12"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Short"><![CDATA[$F{SEQOP}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -422,6 +376,34 @@ ORDER BY R.CODRMA,P.CODPROD;]]></queryString>
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="276"
+						y="59"
+						width="30"
+						height="12"
+						key="staticText-27">
+							<printWhenExpression><![CDATA[$P{RAZCLIOS}!=null]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cliente:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="309"
+						y="59"
+						width="228"
+						height="12"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZCLIOS}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
