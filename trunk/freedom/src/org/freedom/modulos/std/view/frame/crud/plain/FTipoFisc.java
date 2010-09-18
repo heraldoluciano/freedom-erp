@@ -30,17 +30,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.dialog.report.DLRTipoFiscCli;
 
 public class FTipoFisc extends FDados implements ActionListener {
@@ -78,29 +86,66 @@ public class FTipoFisc extends FDados implements ActionListener {
 	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "Imp.ICMS", "S", "N" );
 
 	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N" );
+	
+	private ListaCampos lcTipoMovOC = new ListaCampos( this, "OC" );
+
+	private JTextFieldPad txtCodTipoMovOC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoMovOC = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 
 	public FTipoFisc() {
 
 		super();
 		setTitulo( "Tipos Fiscais" );
-		setAtribos( 50, 50, 350, 330 );
+		setAtribos( 50, 50, 370, 330 );
 
+		
+		/***************************************
+		 * Tipo de movimento de compra *
+		 **************************************/
+
+		lcTipoMovOC.add( new GuardaCampo( txtCodTipoMovOC, "CodTipoMov", "Cód.Tipo.Mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMovOC.add( new GuardaCampo( txtDescTipoMovOC, "DescTipoMov", "Tipo de movimento para orçamento", ListaCampos.DB_SI, false ) );
+		lcTipoMovOC.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovOC.setWhereAdic( "ESTIPOMOV='" + TipoMov.SAIDA.getValue() + "'" );
+		lcTipoMovOC.setQueryCommit( false );
+		lcTipoMovOC.setReadOnly( true );
+		txtCodTipoMovOC.setTabelaExterna( lcTipoMovOC, FTipoMov.class.getCanonicalName() );
+		
 		adicCampo( txtCod, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_PK, true );
-		adicCampo( txtDesc, 90, 20, 230, 20, "DescFiscCli", "Descrição fiscal do cliente", ListaCampos.DB_SI, true );
-		adicDB( cbIPIimp, 7, 60, 70, 20, "IMPIPITF", "", false );
-		adicDB( cbIPIcalc, 7, 80, 80, 20, "CALCIPITF", "", false );
-		adicDB( cbPISimp, 105, 60, 75, 20, "IMPPISTF", "", false );
-		adicDB( cbPIScalc, 105, 80, 80, 20, "CALCPISTF", "", false );
-		adicDB( cbConfisimp, 205, 60, 100, 20, "IMPCOFINSTF", "", false );
-		adicDB( cbConfiscalc, 205, 80, 100, 20, "CALCCOFINSTF", "", false );
-		adicDB( cbContribimp, 7, 120, 95, 20, "IMPCSOCIALTF", "", false );
-		adicDB( cbContribcalc, 7, 140, 95, 20, "CALCCSOCIALTF", "", false );
-		adicDB( cbIRimp, 105, 120, 100, 20, "IMPIRTF", "", false );
-		adicDB( cbIRcalc, 105, 140, 100, 20, "CALCIRTF", "", false );
-		adicDB( cbISSimp, 205, 120, 100, 20, "IMPISSTF", "", false );
-		adicDB( cbISScalc, 205, 140, 100, 20, "CALCISSTF", "", false );
-		adicDB( cbICMSimp, 7, 175, 100, 20, "IMPICMSTF", "", false );
-		adicDB( cbICMScalc, 7, 195, 100, 20, "CALCICMSTF", "", false );
+		adicCampo( txtDesc, 90, 20, 250, 20, "DescFiscCli", "Descrição fiscal do cliente", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtCodTipoMovOC, 7, 60, 80, 20, "CodTipoMovOC", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovOC, false );
+		adicDescFK( txtDescTipoMovOC, 90, 60, 250, 20, "DescTipoMov", "Tipo de movimento padrão para orçamento" );
+		txtCodTipoMovOC.setFK( true );
+		txtCodTipoMovOC.setNomeCampo( "CodTipoMov" );
+
+		JLabelPad separacao = new JLabelPad();
+		separacao.setBorder( BorderFactory.createEtchedBorder() );
+		adic( separacao, 7, 90, 335, 2 );
+
+		adicDB( cbIPIimp, 7, 100, 70, 20, "IMPIPITF", "", false );
+		adicDB( cbIPIcalc, 7, 120, 80, 20, "CALCIPITF", "", false );
+		
+		adicDB( cbPISimp, 115, 100, 75, 20, "IMPPISTF", "", false );
+		adicDB( cbPIScalc, 115, 120, 80, 20, "CALCPISTF", "", false );
+		
+		adicDB( cbConfisimp, 225, 100, 100, 20, "IMPCOFINSTF", "", false );
+		adicDB( cbConfiscalc, 225, 120, 100, 20, "CALCCOFINSTF", "", false );
+		
+		adicDB( cbContribimp, 7, 150, 95, 20, "IMPCSOCIALTF", "", false );
+		adicDB( cbContribcalc, 7, 170, 95, 20, "CALCCSOCIALTF", "", false );
+		
+		adicDB( cbIRimp, 115, 150, 100, 20, "IMPIRTF", "", false );
+		adicDB( cbIRcalc, 115, 170, 100, 20, "CALCIRTF", "", false );
+
+		adicDB( cbISSimp, 225, 150, 100, 20, "IMPISSTF", "", false );
+		adicDB( cbISScalc, 225, 170, 100, 20, "CALCISSTF", "", false );
+		
+		adicDB( cbICMSimp, 7, 200, 100, 20, "IMPICMSTF", "", false );
+		adicDB( cbICMScalc, 7, 220, 100, 20, "CALCICMSTF", "", false );
+		
 
 		setListaCampos( true, "TIPOFISCCLI", "LF" );
 
@@ -246,4 +291,14 @@ public class FTipoFisc extends FDados implements ActionListener {
 			}
 		}
 	}
+	
+	public void setConexao( DbConnection cn ) { // throws ExceptionSetConexao {
+
+		super.setConexao( cn );
+
+		lcTipoMovOC.setConexao( cn );
+
+	}
+
+	
 }
