@@ -52,7 +52,10 @@ import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipal;
@@ -268,6 +271,15 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 		comp.addKeyListener(this);
 		pin.adic(comp, X, Y, Larg, Alt);
 	}
+	
+	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label) {
+		JLabelPad lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y - 20, Larg, 20);
+		adic(comp, X, Y, Larg, Alt);
+		return lbTmp;
+
+	}
+
 
 	public void adicInvisivel(Component comp) {
 		comp.addKeyListener(this);
