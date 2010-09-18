@@ -112,6 +112,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 	private JButtonPad btFinAprovRMA = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
 
 	private JButtonPad btExpedirRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
+	
+	private JButtonPad btExpedirItemRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
 
 	private JButtonPad btFinExpRMA = new JButtonPad( "Finaliz. exp.", Icone.novo( "btFechaVenda.gif" ) );
 
@@ -537,6 +539,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		btCancelaRMA.setToolTipText( "Cancelar todos os ítens." );
 		btCancelaItem.setToolTipText( "Cancelar ítem." );
 		btExpedirRMA.setToolTipText( "Expedir todos os ítens." );
+		btExpedirItemRMA.setToolTipText( "Expedir ítem." );
 		btMotivoCancelaRMA.setToolTipText( "Motivo do cancelamento da RMA." );
 		btMotivoCancelaItem.setToolTipText( "Motivo do cancelamento do ítem." );
 		btMotivoPrior.setToolTipText( "Motivo da prioridade do ítem." );
@@ -555,6 +558,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		btCancelaRMA.addActionListener( this );
 		btCancelaItem.addActionListener( this );
 		btExpedirRMA.addActionListener( this );
+		btExpedirItemRMA.addActionListener( this );
 		btMotivoCancelaRMA.addActionListener( this );
 		btMotivoCancelaItem.addActionListener( this );
 		btMotivoPrior.addActionListener( this );
@@ -569,7 +573,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private void montaDetalhe() {
 
-		setAltDet( 125 );
+		setAltDet( 130 );
 		pinDet = new JPanelPad( 740, 122 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -645,11 +649,23 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		pinBotDet.adic( btCancelaItem, 0, 0, 110, 28 );
 		pinBotDet.adic( btMotivoCancelaItem, 0, 29, 110, 28 );
 		pinBotDet.adic( btMotivoPrior, 0, 58, 110, 28 );
-		pinDet.adic( pinBotDet, 630, 1, 114, 90 );
+		pinBotDet.adic( btExpedirItemRMA, 0, 87, 110, 28 );
+		
+		pinDet.adic( pinBotDet, 630, 1, 115, 120 );
+		
+		
 		lSitItRma = new JLabelPad();
 		lSitItRma.setForeground( Color.WHITE );
 		pinLb.adic( lSitItRma, 31, 0, 110, 20 );
-		pinDet.adic( pinLb, 630, 91, 114, 24 );
+		
+
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 118, 30 ) );
+		navEast.adic( pinLb, 0, 0 , 118, 24 );
+
+		navEast.tiraBorda();
+		pnNavCab.add( navEast, BorderLayout.EAST );
+
 	}
 
 	private void buscaInfoUsuAtual() {
@@ -769,6 +785,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		if ( txtSitExpRma.getVlrString().equals( "ET" ) ) {
 			btExpedirRMA.setEnabled( false );
+			btExpedirItemRMA.setEnabled( false );
 			btFinExpRMA.setEnabled( !bHab );
 		}
 		else if ( bHab ) {
@@ -776,8 +793,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		btExpedirRMA.setEnabled( !bHab );
+		btExpedirItemRMA.setEnabled( !bHab );
 		txtQtdExpRma.setNaoEditavel( bHab );
-		// txtCodLote.setNaoEditavel(bHab);
+
 	}
 
 	public void carregaWhereAdic() {
@@ -1092,7 +1110,6 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		else if ( evt.getSource() == btExpedirRMA ) {
 			lcCampos.setState( ListaCampos.LCS_EDIT );
 			if ( Funcoes.mensagemConfirma( null, "Deseja Expedir todos os ítens da RMA?\n Caso você não tenha informado as quantidades\n a serem expedidas" + " estará expedindo as quantidades aprovadas!" ) == JOptionPane.OK_OPTION ) {
-				;
 				txtSitExpRma.setVlrString( "ET" );
 				nav.btSalvar.doClick();
 			}
@@ -1105,6 +1122,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				nav.btSalvar.doClick();
 			}
 		}
+		else if ( evt.getSource() == btExpedirItemRMA ) {
+			lcDet.setState( ListaCampos.LCS_EDIT );
+			if ( Funcoes.mensagemConfirma( null, "Confirma a expedição do ítem selecionado?!" ) == JOptionPane.OK_OPTION ) {
+				txtSitExpItRma.setVlrString( "ET" );
+				navRod.btSalvar.doClick();
+			}
+		}
+
 
 		super.actionPerformed( evt );
 	}
