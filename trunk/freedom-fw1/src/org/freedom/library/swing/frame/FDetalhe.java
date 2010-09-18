@@ -64,7 +64,7 @@ public class FDetalhe extends FDados {
 
 	public JPanelPad pnNavCab = new JPanelPad(JPanelPad.TP_JPANEL, blNavCab);
 
-	private JPanelPad pnBordNavCab = new JPanelPad(JPanelPad.TP_JPANEL, glNavCab);
+	protected JPanelPad pnBordNavCab = new JPanelPad(JPanelPad.TP_JPANEL, glNavCab);
 
 	public JPanelPad pnCliCab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
