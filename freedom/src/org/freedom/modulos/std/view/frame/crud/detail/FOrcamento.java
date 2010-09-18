@@ -1265,7 +1265,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		else if ( Orcamento.STATUS_PRODUZIDO.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_PRODUZIDO.getName() );
-			lbStatus.setBackground( Color.MAGENTA );
+			lbStatus.setBackground( new Color(123,83,83) );
 			lbStatus.setVisible( true );
 		}
 		else if ( Orcamento.STATUS_CANCELADO.getValue().equals( txtStatusOrc.getVlrString() ) ) {
@@ -1301,6 +1301,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sql.append( "p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag " );
 			sql.append( "order by vo.codvenda, vo.coditvenda" );
 
+//select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag,it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and it.codemp=vo.codemp and it.codfilial=vo.codfilial and it.codvenda=vo.codvenda and it.tipovenda=vo.tipovenda and it.coditvenda=vo.coditvenda and v.codemp=it.codemp and v.codfilial=it.codfilial and v.codvenda=it.codvenda and v.tipovenda=it.tipovenda and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag 
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
