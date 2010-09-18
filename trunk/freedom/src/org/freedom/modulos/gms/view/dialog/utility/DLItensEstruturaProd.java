@@ -77,7 +77,7 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 			con = Aplicativo.getInstace().getConexao();
 		}
 		
-		setAtribos( 520, 320 );
+		setAtribos( 520, 520 );
 		setResizable( true );
 		montaListeneres();
  
