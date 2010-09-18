@@ -504,7 +504,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Rural", "S", "N" );
 
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
-
+	
 	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	private JButtonPad btMapa = new JButtonPad( Icone.novo( "btMapa.png" ) );
