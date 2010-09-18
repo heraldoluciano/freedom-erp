@@ -115,6 +115,8 @@ public class RecMerc implements java.io.Serializable {
 	
 	private String solicitante = null;
 	
+	private String status = null;
+	
 	private enum COLS_ITRECMERC {
 		CODEMP, CODFILIAL, TICKET, CODITRECMERC, CODEMPPD, REFPROD, CODFILIALPD, CODPROD, CODEMPNS, CODFILIALNS, NUMSERIE, GARANTIA, QTDITRECMERC, OBSITRECMERC,
 		NUMITENSRMA, NUMITENS, NUMITENSCHAMADO;
@@ -700,7 +702,7 @@ public class RecMerc implements java.io.Serializable {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
 			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete, " );
-			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret " );
+			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret, rm.status " );
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
@@ -749,6 +751,7 @@ public class RecMerc implements java.io.Serializable {
 				setDtprevret( Funcoes.sqlDateToDate( rs.getDate( "dtprevret" )) );
 				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );
 				setSolicitante( rs.getString( "solicitante" ) );
+				setStatus(rs.getString( "status" ));
 			}
 
 //			con.commit();
@@ -777,7 +780,7 @@ public class RecMerc implements java.io.Serializable {
 
 			geraCodCompra();
 
-			codplanopag = getPlanoPag();
+			codplanopag = buscaPlanoPag();
 
 			if ( codplanopag == null ) {
 				return null;
@@ -1025,7 +1028,7 @@ public class RecMerc implements java.io.Serializable {
 		return ret;
 	}
 	
-	public Integer geraOrcamento(HashMap<Short, String> tipoprodserv) {
+	public Integer geraOrcamento(HashMap<Object, Object> parametros) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1043,14 +1046,20 @@ public class RecMerc implements java.io.Serializable {
 
 			geraCodVend();
 
-			geraCodTipoMovOrc( "S".equals( tipoprodserv.get( DLTipoProdServOrc.SERVICOS )));
-
+			geraCodTipoMovOrc( "S".equals( parametros.get( DLTipoProdServOrc.SERVICOS )));
+			
 			if ( oPrefs == null ) {
 				geraPrefereOrc();
 			}
 
-			codplanopag = getPlanoPag();
+			codplanopag = (Integer) parametros.get( "CODPLANOPAG" );
+			
+//			codplanopag = buscaPlanoPag();
 
+			if ( codplanopag == null ) {
+				codplanopag = buscaPlanoPag();
+			}
+			
 			if ( codplanopag == null ) {
 				return null;
 			}
@@ -1093,7 +1102,13 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
 			ps.setInt( param++, getCodtipomov() );
 
-			ps.setString( param++, Orcamento.STATUS_ABERTO.getValue().toString() );
+			if(getStatus().equals( StatusOS.OS_PRONTO.getValue() )) {
+				ps.setString( param++, Orcamento.STATUS_PRODUZIDO.getValue().toString() );	
+			}
+			else {
+				ps.setString( param++, Orcamento.STATUS_ABERTO.getValue().toString() );
+			}
+			
 
 			ps.execute();
 
@@ -1102,7 +1117,7 @@ public class RecMerc implements java.io.Serializable {
 
 			/** GERANDO OS ITENS DO ORCAMENTO **/
 			
-			geraItemOrc( getCodorc(), tipoprodserv );			
+			geraItemOrc( getCodorc(), parametros );			
 			
 			/***********************************/
 
@@ -1622,7 +1637,7 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
-	public Integer geraItemOrc( Integer codorc, HashMap<Short,String> tipoprodservorc ) {
+	public Integer geraItemOrc( Integer codorc, HashMap<Object,Object> tipoprodservorc ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1643,9 +1658,9 @@ public class RecMerc implements java.io.Serializable {
 			ps.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ps.setInt( 6, getCodorc() );
 			
-			ps.setString( 7, tipoprodservorc.get( DLTipoProdServOrc.COMPONENTES ) );
-			ps.setString( 8, tipoprodservorc.get( DLTipoProdServOrc.SERVICOS ) );
-			ps.setString( 9, tipoprodservorc.get( DLTipoProdServOrc.NOVOS ) );
+			ps.setString( 7, (String) tipoprodservorc.get( DLTipoProdServOrc.COMPONENTES ) );
+			ps.setString( 8, (String) tipoprodservorc.get( DLTipoProdServOrc.SERVICOS ) );
+			ps.setString( 9, (String )tipoprodservorc.get( DLTipoProdServOrc.NOVOS ) );
 
 			ps.execute();
 			ps.close();
@@ -1659,8 +1674,8 @@ public class RecMerc implements java.io.Serializable {
 		return getCodorc();
 
 	}
-
-	private Integer getPlanoPag() {
+	
+	private Integer buscaPlanoPag() {
 
 		Integer codplanopag = null;
 
@@ -1957,6 +1972,18 @@ public class RecMerc implements java.io.Serializable {
 	public void setDtprevret( Date dtprevret ) {
 	
 		this.dtprevret = dtprevret;
+	}
+
+	
+	public String getStatus() {
+	
+		return status;
+	}
+
+	
+	public void setStatus( String status ) {
+	
+		this.status = status;
 	}
 
 }
