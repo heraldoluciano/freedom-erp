@@ -799,24 +799,28 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		return codplanopag;
 	}
 	
-	private HashMap<Short, String> getTipoProdServOrc() {
+	private HashMap<Object, Object> getInfoOrc() {
 		
-		HashMap<Short, String> ret = new HashMap<Short, String>();
+		HashMap<Object, Object> ret = new HashMap<Object, Object>();
 		
 		try {
 
 			DLTipoProdServOrc dl = new DLTipoProdServOrc( this );
+			dl.setCodcli( (Integer) tabDet.getValor( tabDet.getSelectedRow(), DETALHAMENTO.CODCLI.ordinal() ));
+			
 			dl.setVisible( true );
-
+			
 			if ( dl.OK ) {
 		
 				ret.put( DLTipoProdServOrc.COMPONENTES, dl.getComponentes() );
 				ret.put( DLTipoProdServOrc.SERVICOS, dl.getServicos() );
 				ret.put( DLTipoProdServOrc.NOVOS, dl.getNovos() );
+				ret.put( "CODPLANOPAG", dl.getPlanoPag() );
 				
 				dl.dispose();
 			}
 			else {
+				ret = null;
 				dl.dispose();
 			}
 
@@ -921,7 +925,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				// Se já nao houver orçamento .. deve gerar...
 				if ( "".equals( codorcgrid ) || null == codorcgrid ) {
 
-					
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 					recmerc = new RecMerc( this, ticket, con );
@@ -935,8 +938,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					){
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							Integer codorc = recmerc.geraOrcamento(getTipoProdServOrc());
-
+							HashMap<Object, Object> parametros = getInfoOrc();
+							
+							Integer codorc = null;
+							
+							if(parametros != null) {
+								codorc = recmerc.geraOrcamento(parametros);
+							}
+							
 							if ( codorc != null && codorc > 0 ) {
 
 								abreorcamento( codorc );
