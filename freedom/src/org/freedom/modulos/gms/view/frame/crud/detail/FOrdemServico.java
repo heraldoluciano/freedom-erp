@@ -186,7 +186,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-
+	
 	private JTextFieldFK txtDtFabricSerie = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtDtValidSerie = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
@@ -215,8 +215,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private JTextFieldPad txtCodAlmoxProdItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	// private JTextFieldPad txtStatus = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
+	private JTextFieldPad txtCodFiscCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldFK txtDescFiscCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private JTextAreaPad txaDescItRecMerc = new JTextAreaPad();
@@ -302,6 +304,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private ListaCampos lcNumSerie = new ListaCampos( this, "NS" );
 	
 	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
+	
+	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
 
 	// *** Botões
 
@@ -484,7 +488,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampo( txtDtEnt, 532, 20, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrevRet, 605, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
 
-		adicDB( cbStatus, 678, 20, 115, 20, "Status", "Status", false );
+		adicDB( cbStatus, 678, 20, 120, 20, "Status", "Status", false );
 
 //		adic( lbStatus, 620, 20, 123, 60 );
 
@@ -494,6 +498,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampo( txtCodVend, 316, 60, 67, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, false );
 		adicDescFK( txtNomeVend, 386, 60, 290, 20, "NomeVend", "Nome do comissionado" );
 
+		adicDescFK( txtDescFiscCli, 679, 60, 120, 20, "DescTipoFisc", "Tipo Fiscal" );
 		
 		setListaCampos( true, "RECMERC", "EQ" );
 		lcCampos.setQueryInsert( true );
@@ -837,6 +842,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcCli.add( new GuardaCampo( txtCodMunic, "CodMunic", "Cód.Mun.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email do cliente.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodFiscCli, "CodFiscCli", "Cód.Fisc.", ListaCampos.DB_FK, false ) );
 
 		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
 		txtCodCli.setNomeCampo( "CodCli" );
@@ -920,6 +926,16 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcAtendente.setReadOnly( true );
 		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
 
+		
+		// Tipo fiscal do cliente
+		lcTipoFiscCli.add( new GuardaCampo( txtCodFiscCli, "CodFiscCli", "Cod.Fisc.Cli.", ListaCampos.DB_PK, false ) );
+		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição do tipo fiscal do cliente", ListaCampos.DB_SI, false ) );
+		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
+		lcTipoFiscCli.setQueryCommit( false );
+		lcTipoFiscCli.setReadOnly( true );
+		txtCodFiscCli.setTabelaExterna( lcTipoFiscCli, null );
+		
+		
 		/***************
 		 * PROCESSOS *
 		 ***************/
@@ -1192,6 +1208,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS2.setConexao( cn );
 		lcItRecMercItOS.setConexao( cn );
 		lcVendedor.setConexao( cn );
+		lcTipoFiscCli.setConexao( cn );
 
 		getPreferencias();
 
@@ -1704,4 +1721,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	
 
 }
+
+
+
 
