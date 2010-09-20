@@ -266,70 +266,43 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 		setPainel( pinCampos );
 
-		adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
-		adic( txtCodFor, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
-		adic( txtDescFor, 90, 20, 197, 20 );
-		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
-		adic( txtCodPlanoPag, 290, 20, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 200, 20 );
-		adic( txtDescPlanoPag, 373, 20, 200, 20 );
+		adic( txtCodFor, 7, 20, 80, 20, "Cód.for." );	
+		adic( txtDescFor, 90, 20, 197, 20, "Razão social do fornecedor" );
+	
+		adic( txtCodPlanoPag, 290, 20, 80, 20, "Cód.p.pag." );
+		adic( txtDescPlanoPag, 373, 20, 200, 20, "Descrição do plano de pagto." );
 
-		adic( new JLabelPad( "Cód.Tip.Cob." ), 7, 40, 250, 20 );
-		adic( txtCodTipoCob, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição Tipo Cobrança" ), 90, 40, 200, 20 );
-		adic( txtDescTipoCob, 90, 60, 197, 20 );
+		adic( txtCodBanco, 7, 60, 80, 20, "Cód.banco" );
+		adic( txtDescBanco, 90, 60, 197, 20, "Nome do banco" );
 
-		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
-		adic( txtCodBanco, 290, 60, 80, 20 );
-		adic( txtDescBanco, 373, 60, 200, 20 );
+		adic( txtCodConta, 290, 60, 80, 20, "Nº Conta" );		
+		adic( txtDescConta, 373, 60, 197, 20, "Descrição da conta" );
 
-		adic( new JLabelPad( "Cód.catg." ), 7, 80, 80, 20 );
-		adic( txtCodPlan, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 90, 80, 250, 20 );
-		adic( txtDescPlan, 90, 100, 197, 20 );
-
-		adic( new JLabelPad( "Cód.c.c." ), 290, 80, 80, 20 );
-		adic( txtCodCC, 290, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 373, 80, 200, 20 );
-		adic( txtDescCC, 373, 100, 200, 20 );
-
-		adic( new JLabelPad( "Nº Conta" ), 7, 120, 80, 20 );
-		adic( txtCodConta, 7, 140, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 120, 200, 20 );
-		adic( txtDescConta, 90, 140, 197, 20 );
-
-		adic( new JLabelPad( "Dt.Emissão" ), 290, 120, 80, 20 );
-		adic( txtDtEmisPag, 290, 140, 80, 20 );
-
-		adic( new JLabelPad( "Documento" ), 373, 120, 100, 20 );
-		adic( txtDocPag, 373, 140, 100, 20 );
+		adic( txtCodTipoCob, 7, 100, 80, 20, "Cód.Tip.Cob." );		
+		adic( txtDescTipoCob, 90, 100, 197, 20, "Descrição do tipo de cobrança" );
 		
-		adic( new JLabelPad( "Valor original" ), 476, 120, 97, 20 );
-		adic( txtVlrParcPag, 476, 140, 97, 20 );
+		adic( txtCodCC, 290, 100, 80, 20, "Cód.c.c." );
+		adic( txtDescCC, 373, 100, 200, 20,"Descrição do centro de custo" );
+
+		adic( txtCodPlan, 7, 140, 80, 20, "Cód.categ." );
+		adic( txtDescPlan, 90, 140, 197, 20, "Descrição da categoria" );
+		
+		adic( txtDtEmisPag, 290, 140, 80, 20, "Dt.Emissão" );
+
+		adic( txtDocPag, 373, 140, 100, 20, "Documento" );
+		adic( txtVlrParcPag, 476, 140, 97, 20, "Valor original" );
 
 		adic( lbObs, 7, 160 , 300, 20 );
 		adic( txtObs, 7, 180, 565, 20 );
 		
 		pnRetencoes.setBorder(SwingParams.getPanelLabel("Retenções", Color.RED));		
 		
-		pnRetencoes.adic( new JLabelPad( "Vlr.base IRRF" ), 7, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrBaseIRRF, 7, 20, 90, 20 );
-
-		pnRetencoes.adic( new JLabelPad( "Vlr.base INSS" ), 100, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrBaseINSS, 100, 20, 90, 20 );
-
-		pnRetencoes.adic( new JLabelPad( "Valor IRRF" ), 193, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrRetIRRF, 193, 20, 90, 20 );
-
-		pnRetencoes.adic( new JLabelPad( "Valor INSS" ), 286, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrRetINSS, 286, 20, 90, 20 );
-		
-		pnRetencoes.adic( new JLabelPad( "Tot.Desc." ), 379, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrDescPag, 379, 20, 90, 20 );
-
-		pnRetencoes.adic( new JLabelPad( "Tot.Líquido" ), 472, 0, 90, 20 );
-		pnRetencoes.adic( txtVlrAPagPag, 472, 20, 90, 20 );
+		pnRetencoes.adic( txtVlrBaseIRRF, 7, 20, 90, 20, "Vlr.base IRRF" );
+		pnRetencoes.adic( txtVlrBaseINSS, 100, 20, 90, 20, "Vlr.base INSS" );
+		pnRetencoes.adic( txtVlrRetIRRF, 193, 20, 90, 20, "Valor IRRF" );
+		pnRetencoes.adic( txtVlrRetINSS, 286, 20, 90, 20, "Valor INSS" );
+		pnRetencoes.adic( txtVlrDescPag, 379, 20, 90, 20, "Tot.Desc." );
+		pnRetencoes.adic( txtVlrAPagPag, 472, 20, 90, 20, "Tot.Líquido" );
 		
 		pnPag.add( pinCab, BorderLayout.NORTH );
 		pnPag.add( spnTab, BorderLayout.CENTER );
