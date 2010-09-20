@@ -185,8 +185,6 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 
-	private JButtonPad btIniProdAgrup = new JButtonPad( Icone.novo( "btIniProd.png" ) );
-	
 
 	// Enums
 
@@ -257,7 +255,6 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		btSelectAllAgrup.addActionListener( this );
 		btDeselectAllAgrup.addActionListener( this );
 		btLimparGridAgrup.addActionListener( this );
-		btIniProdAgrup.addActionListener( this );
 
 		btBuscar.addActionListener( this );
 
@@ -588,9 +585,6 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		else if ( e.getSource() == btIniProdDet ) {
 			processaOPS( true );
 		}
-		else if ( e.getSource() == btIniProdAgrup ) {
-			processaOPS( false );
-		}
 
 	}
 
@@ -744,7 +738,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 
 		if ( Funcoes.mensagemConfirma( this, "Confirma o processamento dos itens selecionados?" ) == JOptionPane.YES_OPTION ) {
 			if ( det ) {
-				geraOPSDet();
+				geraOPS();
 			}
 			else {
 
@@ -752,7 +746,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		}
 	}
 
-	private void geraOPSDet() {
+	private void geraOPS() {
 
 		StringBuffer sql = new StringBuffer();
 		sql.append( "select codopret,seqopret " );
