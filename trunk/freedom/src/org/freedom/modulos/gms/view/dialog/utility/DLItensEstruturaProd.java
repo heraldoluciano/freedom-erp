@@ -62,11 +62,13 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 	private Integer codfilialpd;
 
 	private String descprod;
+	
+	private Integer seqest;
 
 	private int tipo;
 
 	public enum ITENS {
-		SELECAO, SEQITEST, CODPRODPD, REFPRODPD,  DESCPROD, QTDITEST;
+		SELECAO, SEQITEST, CODPRODPD, REFPRODPD,  DESCPROD, QTDITEST, CODFASE, RMAAUTOITEST;
 	}
 
 	public DLItensEstruturaProd() {
@@ -102,6 +104,8 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 		tabItens.adicColuna( "Ref.Prod." );
 		tabItens.adicColuna( "Descrição do produto" );
 		tabItens.adicColuna( "Qtd." );
+		tabItens.adicColuna( "Cod.Fase" );
+		tabItens.adicColuna( "Gera RMA" );
 
 		tabItens.setTamColuna( 30, ITENS.SELECAO.ordinal() );
 		tabItens.setTamColuna( 30, ITENS.SEQITEST.ordinal() );
@@ -110,6 +114,9 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 		tabItens.setTamColuna( 200, ITENS.DESCPROD.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.QTDITEST.ordinal() ); 
 
+		tabItens.setColunaInvisivel( ITENS.CODFASE.ordinal() );
+		tabItens.setColunaInvisivel( ITENS.RMAAUTOITEST.ordinal() );
+		
 		tabItens.setColunaEditavel( ITENS.SELECAO.ordinal(), true );
 		tabItens.setColunaEditavel( ITENS.QTDITEST.ordinal(), true );
 
@@ -123,22 +130,29 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "select ie.seqitest, ie.codprodpd, ie.refprodpd, pd.descprod, ie.qtditest " );
+			// Se a sequência de estrutura não foi informada, deve considerar a sequencia nro. 1
+			if(getSeqest()==null) {
+				setSeqest( 1 );
+			}
 
+			sql.append( "select ie.seqitest, ie.codprodpd, ie.refprodpd, pd.descprod, ie.qtditest, " );
+			
+			sql.append( "ie.codempfs, ie.codfilialfs, ie.codfase, ie.rmaautoitest ");
+			
 			sql.append( "from ppitestrutura ie, eqproduto pd " );
 			
 			sql.append( "where pd.codprod=ie.codprodpd and pd.codfilial=ie.codfilialpd and pd.codemp=ie.codemppd and " );
 			
 			sql.append( "ie.codemp=? and ie.codfilial=? and ie.codprod=? and ie.seqest=? " );
 
-			sql.append( "order by ie.seqitest " );
+			sql.append( "order by ie.codfase, ie.seqitest " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, getCodemp() );
 			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getCodProd() ); 
-			ps.setInt( 4, 1 ); 
+			ps.setInt( 4, getSeqest() ); 
 
 			ResultSet rs = ps.executeQuery();
 
@@ -161,6 +175,10 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 				tabItens.setValor( rs.getString( ITENS.DESCPROD.name() ), row, ITENS.DESCPROD.ordinal() );
 
 				tabItens.setValor( rs.getBigDecimal( ITENS.QTDITEST.name() ), row, ITENS.QTDITEST.ordinal() );
+				 
+				tabItens.setValor( rs.getInt( ITENS.CODFASE.name() ), row, ITENS.CODFASE.ordinal() );
+				tabItens.setValor( rs.getString( ITENS.RMAAUTOITEST.name() ), row, ITENS.RMAAUTOITEST.ordinal() );
+				
 
 				row++;
 			}
@@ -269,6 +287,18 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 		this.descprod = descprod;
 	}
 
+	
+	public Integer getSeqest() {
+	
+		return seqest;
+	}
+
+	
+	public void setSeqest( Integer seqest ) {
+	
+		this.seqest = seqest;
+	}
+
 	public Vector<HashMap<String,Object>> getValores() {
 		
 		Vector<HashMap<String,Object>> ret = new Vector<HashMap<String,Object>>();
@@ -286,6 +316,10 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 					item.put( ITENS.CODPRODPD.name(), tabItens.getValor( i, ITENS.CODPRODPD.ordinal() ) );
 					item.put( ITENS.REFPRODPD.name(), tabItens.getValor( i, ITENS.REFPRODPD.ordinal() ) );
 					item.put( ITENS.QTDITEST.name(), tabItens.getValor( i, ITENS.QTDITEST.ordinal() ) );
+					item.put( ITENS.CODFASE.name(), tabItens.getValor( i, ITENS.CODFASE.ordinal() ) );
+					item.put( "GERARMA", tabItens.getValor( i, ITENS.RMAAUTOITEST.ordinal() ) );
+					
+					
 			
 					ret.addElement( item );
 				}
@@ -371,3 +405,7 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 	}
 
 }
+
+
+
+
