@@ -56,7 +56,8 @@ import org.freedom.modulos.pcp.view.frame.report.FREstruturaItem;
 import org.freedom.modulos.pcp.view.frame.report.FRProducao;
 import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
 import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
-import org.freedom.modulos.pcp.view.frame.utility.FPMP;
+import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
+import org.freedom.modulos.pcp.view.frame.utility.FPMP_Push;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FInventario;
 import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
@@ -68,8 +69,8 @@ import org.freedom.modulos.std.view.frame.report.FRInvPeps;
 import org.freedom.modulos.std.view.frame.report.FRMovProd;
 import org.freedom.modulos.std.view.frame.report.FRSaldoLote;
 import org.freedom.modulos.std.view.frame.report.FRVencLote;
-import org.freedom.modulos.std.view.frame.utility.FConsPreco;
 import org.freedom.modulos.std.view.frame.utility.FConsEstoque;
+import org.freedom.modulos.std.view.frame.utility.FConsPreco;
 import org.freedom.modulos.std.view.frame.utility.FKardex;
 import org.freedom.modulos.std.view.frame.utility.FProcessaEQ;
 
@@ -105,7 +106,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 200100000, 1, true, FOP.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Simulação de OP", "Simulação de OP", 'S', 200200000, 1, true, FSimulaOP.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Acompanhamento da produção", "Acompanhamento da produção", 'o', 200300000, 1, true, FAcompanhaProd.class );
-		addOpcao( 200000000, TP_OPCAO_ITEM, "Planejamento mestre da produção", "Planejamento mestre da produção", 'P', 200400000, 1, true, FPMP.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Planejamento mestre da produção (Pull)", "Planejamento mestre da produção (Pull)", 'P', 200400000, 1, true, FPMP_Pull.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Planejamento mestre da produção (Push)", "Planejamento mestre da produção (Push)", 'P', 200500000, 1, true, FPMP_Push.class );
 		addSeparador( 200000000 );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Contra Prova", "Contra prova", 'P', 200400000, 1, true, FContraProva.class );
 		addSeparador( 200000000 );
@@ -146,7 +148,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addBotao( "btRma.gif", "Requisição de material", "Requisição de material", 200200000, FRma.class );
 		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
 		addBotao( "btAcompanhaProd.png", "Acompanhamento da produção", "Acompanhamento da produção", 200300000, FAcompanhaProd.class );
-		addBotao( "btPCP.png", "Planejamento mestre da produção", "Planejamento da produção", 200400000, FPMP.class );
+		addBotao( "btPMP_pull.png", "Planejamento mestre da produção", "Planejamento da produção (Pull)", 200400000, FPMP_Pull.class );
+		addBotao( "btPMP_push.gif", "Planejamento mestre da produção", "Planejamento da produção (Push)", 200500000, FPMP_Push.class );
 
 		ajustaMenu();
 
