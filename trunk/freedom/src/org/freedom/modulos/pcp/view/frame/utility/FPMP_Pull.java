@@ -63,13 +63,13 @@ import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 /**
- * Tela para planejamento mestre da produção.
+ * Tela para planejamento mestre da produção. (Sistema de produção Puxada (Push System). Baseada nos pedidos.
  * 
  * @author Setpoint Informática Ltda./Anderson Sanchez
  * @version 03/12/2009
  */
 
-public class FPMP extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
+public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener, ChangeListener {
 
 	// *** Variáveis estáticas
 
@@ -217,7 +217,7 @@ public class FPMP extends FFilho implements ActionListener, TabelaSelListener, M
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
 
-	public FPMP() {
+	public FPMP_Pull() {
 
 		super( false );
 
