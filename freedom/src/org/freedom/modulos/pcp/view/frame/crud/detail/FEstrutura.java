@@ -178,6 +178,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad( "Mod.lote da OP principal", "S", "N" );
 
 	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
+	
+	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Estrutura dinâmica?", "S", "N" );
 
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Rma", "S", "N" );
 
@@ -356,6 +358,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFK( txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote" );
 		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
 		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
+		adicDB( cbEstDinamica, 485, 80, 250, 20, "ESTDINAMICA", "", true );
 
 		setPainel( pinCabObservacao );
 		GridLayout go = (GridLayout) pinCabObservacao.getLayout();

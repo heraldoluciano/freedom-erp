@@ -199,9 +199,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtSldLoteRat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private ListaCampos lcProdEstCod = new ListaCampos( this, "PD" );
+	private ListaCampos lcEstruturaCod = new ListaCampos( this, "PD" );
 
-	private ListaCampos lcProdEstRef = new ListaCampos( this, "PD" );
+	private ListaCampos lcEstruturaRef = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcProdDetCod = new ListaCampos( this, "PD" );
 
@@ -354,7 +354,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pnRodape.add( pnAdicEstrutura, BorderLayout.CENTER );
 		pnAdicEstrutura.adic( btAdicProdutoEstrutura, 0, 0, 30, 26 );
 		btAdicProdutoEstrutura.setEnabled( false );
-		
+		cbEstDinamica.setEnabled( false );
 		
 		pnMaster.remove( spTab );
 
@@ -436,38 +436,40 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcTipoMov.setReadOnly( true );
 		txtCodTpMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 
-		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_PK, txtDescEst, true ) );
-		lcProdEstCod.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
-		lcProdEstCod.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
-		lcProdEstCod.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false ) );
-		lcProdEstCod.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
-		lcProdEstCod.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
-		lcProdEstCod.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
-		lcProdEstCod.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_PK, txtDescEst, true ) );
+		lcEstruturaCod.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
+		lcEstruturaCod.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaCod.add( new GuardaCampo( cbEstDinamica, "EstDinamica", "", ListaCampos.DB_SI, false ) );
 
-		lcProdEstCod.setWhereAdic( "ATIVOEST='S'" );
-		lcProdEstCod.montaSql( false, "ESTRUTURA", "PP" );
-		lcProdEstCod.setQueryCommit( false );
-		lcProdEstCod.setReadOnly( true );
-		txtCodProdEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
-		txtSeqEst.setTabelaExterna( lcProdEstCod, FEstrutura.class.getCanonicalName() );
+		lcEstruturaCod.setWhereAdic( "ATIVOEST='S'" );
+		lcEstruturaCod.montaSql( false, "ESTRUTURA", "PP" );
+		lcEstruturaCod.setQueryCommit( false );
+		lcEstruturaCod.setReadOnly( true );
+		txtCodProdEst.setTabelaExterna( lcEstruturaCod, FEstrutura.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcEstruturaCod, FEstrutura.class.getCanonicalName() );
 		txtCodProdEst.setNomeCampo( "codprod" );
 
-		lcProdEstRef.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true ) );
-		lcProdEstRef.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
-		lcProdEstRef.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_SI, true ) );
-		lcProdEstRef.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
-		lcProdEstRef.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
-		lcProdEstRef.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
-		lcProdEstRef.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
-		lcProdEstRef.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaRef.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true ) );
+		lcEstruturaRef.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
+		lcEstruturaRef.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_SI, true ) );
+		lcEstruturaRef.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
+		lcEstruturaRef.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaRef.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
+		lcEstruturaRef.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
+		lcEstruturaRef.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
+		lcEstruturaRef.add( new GuardaCampo( cbEstDinamica, "EstDinamica", "", ListaCampos.DB_SI, false ) );
 
-		lcProdEstRef.setWhereAdic( "ATIVOEST='S'" );
-		lcProdEstRef.montaSql( false, "ESTRUTURA", "PP" );
-		lcProdEstRef.setQueryCommit( false );
-		lcProdEstRef.setReadOnly( true );
-		txtRefProdEst.setTabelaExterna( lcProdEstRef, FEstrutura.class.getCanonicalName() );
-		txtSeqEst.setTabelaExterna( lcProdEstRef, FEstrutura.class.getCanonicalName() );
+		lcEstruturaRef.setWhereAdic( "ATIVOEST='S'" );
+		lcEstruturaRef.montaSql( false, "ESTRUTURA", "PP" );
+		lcEstruturaRef.setQueryCommit( false );
+		lcEstruturaRef.setReadOnly( true );
+		txtRefProdEst.setTabelaExterna( lcEstruturaRef, FEstrutura.class.getCanonicalName() );
+		txtSeqEst.setTabelaExterna( lcEstruturaRef, FEstrutura.class.getCanonicalName() );
 		txtRefProdEst.setNomeCampo( "refprod" );
 
 		setListaCampos( lcCampos );
@@ -527,8 +529,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
-		lcProdEstCod.addCarregaListener( this );
-		lcProdEstRef.addCarregaListener( this );
+		lcEstruturaCod.addCarregaListener( this );
+		lcEstruturaRef.addCarregaListener( this );
 		lcLoteProdEst.addCarregaListener( this );
 		lcModLote.addCarregaListener( this );
 
@@ -2602,10 +2604,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		else if ( campo.getSource() == txtSeqEst ) {
 			if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
-				lcProdEstRef.carregaDados();
+				lcEstruturaRef.carregaDados();
 			}
 			else {
-				lcProdEstCod.carregaDados();
+				lcEstruturaCod.carregaDados();
 			}
 		}
 
@@ -2652,7 +2654,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 			}
 
-			if ( ( cevt.getListaCampos() == lcProdEstCod ) || ( cevt.getListaCampos() == lcProdEstRef ) ) {
+			if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
 
 				carregaProduto();
 
@@ -2661,7 +2663,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 
 				if ( ( txtCodLoteProdEst.getVlrString().equals( "" ) ) && ( txtUsaLoteEst.getVlrString().equals( "S" ) ) ) {
-					txtCodLoteProdEst.setVlrString( getLote( lcProdEstCod, txtCodProdEst, false ) );
+					txtCodLoteProdEst.setVlrString( getLote( lcEstruturaCod, txtCodProdEst, false ) );
 					txtDtValidOP.setAtivo( false );
 
 					lcLoteProdEst.setDinWhereAdic( "CODPROD=#N AND (VENCTOLOTE >= #D)", txtCodProdEst );
@@ -2775,8 +2777,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		super.setConexao( cn );
 		prefere = getPrefere( cn );
 		montaTela();
-		lcProdEstCod.setConexao( cn );
-		lcProdEstRef.setConexao( cn );
+		lcEstruturaCod.setConexao( cn );
+		lcEstruturaRef.setConexao( cn );
 		lcProdDetCod.setConexao( cn );
 		lcProdDetRef.setConexao( cn );
 		lcTipoMov.setConexao( cn );
