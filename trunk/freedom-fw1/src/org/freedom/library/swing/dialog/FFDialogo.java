@@ -52,8 +52,6 @@ import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
