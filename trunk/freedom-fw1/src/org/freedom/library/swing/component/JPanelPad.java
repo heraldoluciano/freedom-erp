@@ -71,6 +71,14 @@ public class JPanelPad extends JPanel {
 		this(new Dimension(Larg, Alt));
 	}
 
+	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label) {
+		JLabelPad lbTmp = new JLabelPad(label);
+		adic(lbTmp, X, Y - 20, Larg, 20);
+		adic(comp, X, Y, Larg, Alt);
+		return lbTmp;
+
+	}
+	
 	public void adic(Component comp, int x, int y, int larg, int alt) {
 		comp.setBounds(x, y, larg, alt);
 		lpn.add(comp, JLayeredPane.DEFAULT_LAYER);
