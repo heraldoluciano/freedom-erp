@@ -25,9 +25,13 @@
 package org.freedom.modulos.grh.view.frame.crud.tabbed;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -39,21 +43,26 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.component.PainelImagem;
+import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
 import org.freedom.modulos.grh.view.frame.crud.plain.FDepto;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -207,6 +216,18 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private JComboBoxPad cbSexo = null;
 
+	public static Constant STATUS_ADMITIDO = new Constant( "Admitido" , "AD"); 
+
+	public static Constant STATUS_DEMITIDO = new Constant( "Demitido", "DE" );
+	
+	public static Constant STATUS_FERIAS = new Constant( "Férias", "EF" );
+	
+	public static Constant STATUS_MATERNIDADE = new Constant( "Licença maternidade", "LM" );
+	
+	public static Constant STATUS_AFASTADO = new Constant( "Afastamento INSS", "AI" );
+	
+	public static Constant STATUS_APOSENTADO = new Constant( "Aposentado", "AP" );
+
 	public FEmpregado() {
 
 		super();
@@ -322,7 +343,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		adicCampo( txtDtAdmissao, 297, 20, 71, 20, "DtAdmissao", "Data admis.", ListaCampos.DB_SI, true );
 		adicDB( fotoEmpr, 380, 20, 100, 133, "FotoEmpr", "Foto ( 3 x 4 )", false );
 		adicCampo( txtApelido, 7, 60, 110, 20, "ApelidoEmpr", "Apelido", ListaCampos.DB_SI, true );
-		adicDB( cbSexo, 120, 60, 120, 20, "SexoEmpr", "Sexo", true );
+		adicDB( cbSexo, 120, 60, 120, 20, "SexoEmpr", "Sexo", false );
 		adicCampo( txtDataNasc, 243, 60, 85, 20, "DtNascEmpr", "Data de nasc.", ListaCampos.DB_SI, false );
 		adic( new JLabelPad( "Idade" ), 331, 40, 45, 20 );
 		adic( txtIdade, 331, 60, 40, 20 );
@@ -361,7 +382,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		adicDescFK( txtCbo, 415, 420, 68, 20, "CboFunc", "CBO" );
 		adicCampo( txtCodDepto, 7, 460, 60, 20, "CodDep", "Cód.Dept.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescDepto, 71, 460, 412, 20, "DescDepto", "Descrição do departamento" );
-		adicDB( cbStatus, 7, 500, 100, 20, "StatusEmpr", "Status", true );
+		adicDB( cbStatus, 7, 500, 100, 20, "StatusEmpr", "Status", false );
 		adicCampo( txtDtDemissao, 110, 500, 90, 20, "DtDemissaoEmpr", "Data Demissão", ListaCampos.DB_SI, false );
 
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
@@ -469,28 +490,80 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private void imprimir( boolean bVisualizar ) {
 
-		FPrinterJob dlGr = null;
-		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		StringBuilder sql = new StringBuilder();
+		StringBuilder where_status = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+		try {
 
-		dlGr = new FPrinterJob( "relatorios/EmprResumido.jasper", "Relatório Resumido", "", this, hParam, con, null, false );
+			DLREmpregado dl = new DLREmpregado( this, con );
+			dl.setVisible( true );
 
-		if ( bVisualizar ) {
-			dlGr.setVisible( true );
+
+			if ( dl.OK ) {
+
+
+				sql.append( "select rp.matempr, rp.nomeempr, rp.foneempr, rp.dtadmissao, rp.emailempr, rp.codfunc, dp.coddep, " );
+				sql.append( "fu.descfunc, dp.descdep " );
+				sql.append( "from rhempregado rp, rhfuncao fu, rhdepto dp " );
+				sql.append( "where   " );
+				sql.append( "fu.codemp=rp.codempfo and fu.codfilial=rp.codfilialfo and fu.codfunc=rp.codfunc " );
+				sql.append( "and dp.codemp=rp.codempdp and dp.codfilial=rp.codfilialdp and dp.coddep=rp.coddep and " );
+				sql.append( "rp.codemp=? and rp.codfilial=? " );
+
+				Vector<Object> vstatus = new Vector<Object>();
+
+				if( dl.isAdmitido() ) 		vstatus.addElement( STATUS_ADMITIDO.getValue() ) ;
+				if( dl.isDemitido() ) 		vstatus.addElement( STATUS_DEMITIDO.getValue() ) ;
+				if( dl.isFerias() ) 		vstatus.addElement( STATUS_FERIAS.getValue() ) ;
+				if( dl.isAfastado() ) 		vstatus.addElement( STATUS_AFASTADO.getValue() ) ;
+				if( dl.isMaternidade() )	vstatus.addElement( STATUS_MATERNIDADE.getValue() ) ;
+				if( dl.isAposentado() )	 	vstatus.addElement( STATUS_APOSENTADO.getValue() ) ;
+				
+				sql.append( " and rp.statusempr in ( '" + Funcoes.vectorToString( vstatus, "','" ) + "' ) " );
+				
+				sql.append( "order by + " + dl.getOrdem() );
+
+				ps = con.prepareStatement( sql.toString() );
+
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+
+				rs = ps.executeQuery();
+
+				FPrinterJob dlGr = null;
+				HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+				hParam.put( "CODEMP", Aplicativo.iCodEmp );
+				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+
+				dlGr = new FPrinterJob( "relatorios/EmprResumido.jasper","Relação de Empregados","",rs,hParam,this,null); 
+
+				if ( bVisualizar ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					try {
+						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					} catch ( Exception e ) {
+						e.printStackTrace();
+						Funcoes.mensagemErro( this, "Erro ao abrir relátorio!" + e.getMessage(), true, con, e );
+					}
+				}
+
+			}	 
+
 		}
-		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception e ) {
-				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
-			}
+		catch (Exception e) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
 		}
+
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
+
 
 		if ( cevt.getListaCampos() == lcCampos ) {
 
@@ -500,5 +573,97 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
+	}
+
+	private class DLREmpregado extends FFDialogo {
+
+		private static final long serialVersionUID = 1l;
+
+		private final JTextFieldPad txtCodCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+		private final JTextFieldPad txtNomeEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+		private final JTextFieldPad txtNomeDe = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+		private final JTextFieldPad txtNomeAte = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+		
+		private final JCheckBoxPad cbAdmitido = new JCheckBoxPad( STATUS_ADMITIDO.getName(), "S", "N" );//AD
+		private final JCheckBoxPad cbDemitido = new JCheckBoxPad( STATUS_DEMITIDO.getName(), "S", "N" );//AD
+		private final JCheckBoxPad cbFerias = new JCheckBoxPad( STATUS_FERIAS.getName(), "S", "N" );//AD
+		private final JCheckBoxPad cbMaternidade = new JCheckBoxPad( STATUS_MATERNIDADE.getName(), "S", "N" );//AD
+		private final JCheckBoxPad cbAfastado = new JCheckBoxPad( STATUS_AFASTADO.getName(), "S", "N" );//AD
+		private final JCheckBoxPad cbAposentado = new JCheckBoxPad( STATUS_APOSENTADO.getName(), "S", "N" );//AD
+		
+		private JRadioGroup<String, String> rgOrdem = null;
+
+		DLREmpregado( Component cOrig, DbConnection cn ) {
+
+			super( cOrig ); 
+			
+			setTitulo( "Relatório de Empregados" );
+			setAtribos( 355, 260 );
+			setConexao( cn );
+
+			adic( new JLabelPad( "Ordem :" ), 10, 10, 320, 20 );
+
+			Vector<String> vLabs = new Vector<String>();
+			Vector<String> vVals = new Vector<String>();
+
+			vLabs.addElement( "Nome" );
+			vLabs.addElement( "Matrícula" );
+			vLabs.addElement( "Admissão" );
+
+			vVals.addElement( "RP.NOMEEMPR" );
+			vVals.addElement( "RP.matempr" );
+			vVals.addElement( "RP.DTADMISSAO" );
+			
+			rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
+			rgOrdem.setVlrString( "N" );
+			
+			adic( rgOrdem, 10, 30, 320, 30 );
+
+			JPanelPad pnStatus = new JPanelPad();
+			pnStatus.setBorder( SwingParams.getPanelLabel( "Status", Color.blue ) );
+			
+			adic(pnStatus, 7, 70, 325, 100);
+			
+			pnStatus.adic( cbAdmitido, 10, 5, 150, 20 );
+			pnStatus.adic( cbDemitido, 165, 5, 150, 20 );
+			pnStatus.adic( cbFerias, 10, 25, 150, 20 );
+			pnStatus.adic( cbMaternidade, 165, 25, 150, 20 );
+			pnStatus.adic( cbAfastado, 10, 45, 150, 20 );
+			pnStatus.adic( cbAposentado, 165, 45, 150, 20 );
+			
+			cbAdmitido.setVlrString( "S" );
+
+		}
+		
+		public Boolean isAdmitido() {
+			return "S".equals(cbAdmitido.getVlrString());
+		}
+		public Boolean isDemitido() {
+			return "S".equals(cbDemitido.getVlrString());
+		}
+		public Boolean isFerias() {
+			return "S".equals(cbFerias.getVlrString());
+		}
+		public Boolean isMaternidade() {
+			return "S".equals(cbMaternidade.getVlrString());
+		}
+		public Boolean isAfastado() {
+			return "S".equals(cbAfastado.getVlrString());
+		}
+		public Boolean isAposentado() {
+			return "S".equals(cbAposentado.getVlrString());
+		}
+		public String getNomeDe() {
+			return txtNomeDe.getVlrString();
+		}
+		public String getNomeAte() {
+			return txtNomeAte.getVlrString();
+		}
+		public String getOrdem() {
+			return rgOrdem.getVlrString();
+		}
 	}
 }
