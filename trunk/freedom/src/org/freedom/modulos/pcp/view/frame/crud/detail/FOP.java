@@ -330,6 +330,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			setTelaPrim( Aplicativo.telaPrincipal );
 		}
 
+		nav.setNavigation( true );
+		
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
@@ -553,6 +555,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btDistrb.addActionListener( this );
 		btCancela.addActionListener( this );
 		btAdicProdutoEstrutura.addActionListener( this );
+		
 		
 		txtQtdSugProdOP.addFocusListener( this );
 		txtSeqEst.addFocusListener( this );
@@ -2800,6 +2803,92 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcCampos.carregaDados();
 	}
 	
+	private Integer getSeqItOP() {
+		
+		Integer ret = 1;
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+		
+			sql.append( "select coalesce(max(io.seqitop),0) + 1 from ppitop io ");
+			sql.append( "where io.codemp=? and io.codfilial=? and io.codop=? and io.seqop=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			
+			
+			if(rs.next()) {
+				ret = rs.getInt( 1 );
+			}
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret; 
+	}
+	
+	private void insereItOpDinamica(Integer codfase, Integer codprod, String refprod, BigDecimal qtditop, String gerarma) {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;		
+		
+		try {
+			
+			sql.append( "insert into ppitop (" );
+			
+			sql.append( "codemp, codfilial, codop, seqop, seqitop, ");
+			sql.append( "codempfs, codfilialfs, codfase, ");
+			sql.append( "codemppd, codfilialpd, codprod, refprod, ");
+			sql.append( "qtditop, gerarma ");
+			
+			sql.append( ") values ( ");
+			
+			sql.append( "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			Integer iparam = 1;
+			
+			ps.setInt( iparam++, lcCampos.getCodEmp() );
+			ps.setInt( iparam++, lcCampos.getCodFilial() );
+			ps.setInt( iparam++, txtCodOP.getVlrInteger() );
+			ps.setInt( iparam++, txtSeqOP.getVlrInteger() );
+			ps.setInt( iparam++, getSeqItOP() );
+			
+			ps.setInt( iparam++, lcCampos.getCodEmp() );
+			ps.setInt( iparam++, lcCampos.getCodFilial() );
+			ps.setInt( iparam++, codfase );
+			
+			ps.setInt( iparam++, lcCampos.getCodEmp() );
+			ps.setInt( iparam++, lcCampos.getCodFilial() );
+			ps.setInt( iparam++, codprod );
+			ps.setString( iparam++, refprod );
+			
+			ps.setBigDecimal( iparam++, qtditop );
+			ps.setString( iparam++, gerarma );
+			
+			ps.execute();
+			
+			con.commit();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void buscaEstrutura() {
 		
 		try {
@@ -2813,6 +2902,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			
 			dl.setCodprod( txtCodProdEst.getVlrInteger() );
+			dl.setSeqest( txtSeqEst.getVlrInteger() );
 			dl.carregaItens();
 			
 			dl.setVisible( true );
@@ -2826,6 +2916,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				Integer codprod = null;
 				String refprod = null;
 				BigDecimal qtditest = null;
+				Integer codempfs = null;
+				Integer codfilialfs = null;
+				Integer codfase = null;
+				String gerarma = null;
 				
 				for(int i=0; i< valores.size(); i++) {
 					
@@ -2834,6 +2928,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					codprod = (Integer) item.get( DLItensEstruturaProd.ITENS.CODPRODPD.name() );
 					refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
 					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
+					
+					codfase = (Integer) item.get( DLItensEstruturaProd.ITENS.CODFASE.name() );
+					
+					gerarma = (String) item.get( "GERARMA" );
+					
+					insereItOpDinamica( codfase, codprod, refprod, qtditest, gerarma );
+					
 					/*
 					lcItRecMercItOS.insert( true );
 					
@@ -2856,6 +2957,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					lcItRecMercItOS.post();
 				*/	
 				}
+				lcCampos.carregaDados();
 			}
 			dl.dispose();
 
@@ -2870,3 +2972,4 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	
 }
+
