@@ -79,11 +79,11 @@ import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
+import org.freedom.modulos.gms.view.dialog.report.DLRProduto;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FEstrutura;
-import org.freedom.modulos.std.view.dialog.report.DLRProduto;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FCaixa;
@@ -1616,6 +1616,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			sWhere.append( sWhere.length() > 0 ? " AND " : "" );
 			sWhere.append( "TIPOPROD = '" + sValores[ 13 ] + "'" );
 		}
+		
+		if ( sValores[ 14 ].length() > 0 ) {
+			sWhere.append( sWhere.length() > 0 ? " AND " : "" );
+			sWhere.append( "CODSECAO = '" + sValores[ 14 ] + "'" );
+			imp.addSubTitulo( "SEÇÃO = " + sValores[ 15 ] );
+		}
 
 		if ( "C".equals( sValores[ 6 ] ) ) {
 
@@ -1684,8 +1690,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 					imp.say( 34, rs.getString( "Codgrup" ) );
 					imp.say( 48, "Custo:" );
 					imp.say( 55, rs.getString( "custoMPMprod" ) );
-					imp.say( 71, "Preço base:" );
-					imp.say( 83, rs.getString( "precobaseprod" ) );
+					imp.say( 71, "Preço base:" ); 
+					imp.say( 83, Funcoes.bdToStr( rs.getBigDecimal( "precobaseprod" ),Aplicativo.casasDecPre ).toString());
 					imp.say( 99, "Saldo:" );
 					imp.say( 106, rs.getString( "sldprod" ) );
 					imp.say( 121, "Un.:" );
@@ -1718,7 +1724,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		else if ( "R".equals( sValores[ 6 ] ) ) {
 
-			sSQL.append( "SELECT CODPROD,DESCPROD,CODUNID, SLDLIQPROD, PRECOBASEPROD FROM EQPRODUTO" );
+			sSQL.append( "SELECT CODPROD,DESCPROD,CODUNID, SLDLIQPROD, PRECOBASEPROD, REFPROD FROM EQPRODUTO" );
 			sSQL.append( sWhere.length() > 0 ? " WHERE " : "" );
 			sSQL.append( sWhere );
 			sSQL.append( " ORDER BY " + dl.getValores()[ 0 ] );
@@ -1761,7 +1767,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 						imp.say( 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
-						imp.say( 3, "Código:" );
+						
+						if("REFPROD".equals(sValores[0])) {
+							imp.say( 3, "Refer.:" );
+						}
+						else {
+							imp.say( 3, "Código:" );
+						}
 						imp.say( 12, "|" );
 						imp.say( 13, "Descrição:" );
 						imp.say( 70, "|" );
@@ -1778,15 +1790,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
-					imp.say( 4, rs.getString( "CodProd" ) );
+					if("REFPROD".equals(sValores[0])) {
+						imp.say( 4, (rs.getString( "RefProd" )).substring( 0,5 ) );
+					}
+					else {
+						imp.say( 4, rs.getString( "CodProd" ) );
+					}
 					imp.say( 12, "|" );
 					imp.say( 13, rs.getString( "DescProd" ) != null ? rs.getString( "Descprod" ).substring( 0, 50 ) : "" );
 					imp.say( 70, "|" );
 					imp.say( 72, rs.getString( "codunid" ) );
 					imp.say( 95, "|" );
-					imp.say( 97, rs.getString( "sldliqprod" ) );
+					imp.say( 97, Funcoes.bdToStr( rs.getBigDecimal( "sldliqprod" ),Aplicativo.casasDec ).toString());
 					imp.say( 117, "|" );
-					imp.say( 120, rs.getString( "Precobaseprod" ) );
+					imp.say( 120, Funcoes.bdToStr( rs.getBigDecimal( "precobaseprod" ),Aplicativo.casasDecPre ).toString());
 					imp.say( 135, "|" );
 
 					And.atualiza( iContaReg++ );
