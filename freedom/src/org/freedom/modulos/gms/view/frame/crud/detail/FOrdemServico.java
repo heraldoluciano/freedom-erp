@@ -309,6 +309,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	// *** Botões
 
+	private JButtonPad btTroca = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
 	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
@@ -465,7 +467,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
 		btChamado.setToolTipText( "Abrir novo chamado" );
-
+		btTroca.setToolTipText( "Troca de produto" );
 		
 
 	}
@@ -483,7 +485,9 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		adicCampo( txtCodCli, 70, 20, 60, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtRazCli, 133, 20, 180, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtSolicitante, 316, 20, 214, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, false );
+		adicCampo( txtSolicitante, 316, 20, 141, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtDocRecMerc, 460, 20, 70, 20, "DocRecMerc", "Documento", ListaCampos.DB_SI, false );
 
 		adicCampo( txtDtEnt, 532, 20, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtDtPrevRet, 605, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
@@ -555,16 +559,16 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		}
 
-		adicDescFK( txtDescProd, 113, 20, 270, 20, "DescProd", "Descrição do Produto" );
+		adicDescFK( txtDescProd, 113, 20, 287, 20, "DescProd", "Descrição do Produto" );
 
 		adicCampo( txtQtdItOS, 7, 60, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
 		// txtQtdItOS.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
 
 		lbNumSerie = adicCampo( txtNumSerie, 55, 60, 103, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
-		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 161, 60, 80, 20, "DtFabricSerie", "Fabricação" );
-		lbDtValidSerie = adicDescFK( txtDtValidSerie, 244, 60, 80, 20, "DtFabricSerie", " Validade" );
-
+		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 161, 60, 75, 20, "DtFabricSerie", "Fabricação" );
+		lbDtValidSerie = adicDescFK( txtDtValidSerie, 239, 60, 75, 20, "DtValidSerie", " Validade" );
+		
 		lbNumSerie.setVisible( false );
 		lbDtFabricSerie.setVisible( false );
 		lbDtValidSerie.setVisible( false );
@@ -577,8 +581,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
 		adicCampoInvisivel( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc", ListaCampos.DB_SI, true );
 
-		adicDB( cbGarantia, 330, 60, 80, 20, "garantia", "Garantia", false );
+		adicDB( cbGarantia, 315, 60, 55, 20, "garantia", "Garantia", false );
 
+		adic( btTroca, 376, 54, 24, 24 );
+		
 		txtStatusItRecMerc.setSoLeitura( true );
 
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
@@ -801,6 +807,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btChamado.addActionListener( this );
+		btTroca.addActionListener( this );
 		btAdicProdutoEstrutura.addActionListener( this );
 		txtNumSerie.addFocusListener( this );
 		txtQtdItOS.addFocusListener( this );
@@ -1028,6 +1035,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else if ( evt.getSource() == btAdicProdutoEstrutura ) {
 			buscaEstrutura();
 		}
+		else if ( evt.getSource() == btTroca ) {
+			trocaProduto();
+		}
+
 
 
 		super.actionPerformed( evt );
@@ -1047,7 +1058,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			
 			dl.setCodprod( txtCodProd.getVlrInteger() );
-			dl.carregaItens();
+			dl.carregaItens(false);
 			
 			dl.setVisible( true );
 			
@@ -1717,10 +1728,101 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			e.printStackTrace();
 		}
 	}
+	
+	private void trocaProduto() {
+		
+		try {
+		
+			DLItensEstruturaProd dl = new DLItensEstruturaProd();
+			
+			dl.setCodemp( Aplicativo.iCodEmp );
+			dl.setCodemppd( Aplicativo.iCodEmp );
+			
+			dl.setCodfilial( ListaCampos.getMasterFilial( "EQPRODUTO" ) );			
+			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			
+			dl.setCodprod( txtCodProd.getVlrInteger() );
+			dl.carregaItens(true);
+			
+			dl.setVisible( false );
+			
+			if ( dl.OK ) {
+				
+				Vector<HashMap<String,Object>> valores = dl.getValores();
+				HashMap<String,Object> item = new HashMap<String, Object>();
+				
+				Integer codprod = null;
+				String refprod = null;
+				BigDecimal qtditest = null;
+				
+				for(int i=0; i< valores.size(); i++) {
+					
+					item = valores.elementAt( i );
+					
+					codprod = (Integer) item.get( DLItensEstruturaProd.ITENS.CODPRODPD.name() );
+					refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
+					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
+					
+					lcItRecMercItOS.insert( true );
+					
+					txtCodProdItOS.setVlrInteger( codprod );
+					txtRefProdItOS.setVlrString( refprod );
+					
+					if(comRef()) {
+
+						lcProdItOS2.carregaDados();
+						
+					}
+					else {
+						
+						lcProdItOS.carregaDados();
+						
+					}
+					
+					txtQtdItOSItOS.setVlrBigDecimal( qtditest );
+					
+					lcItRecMercItOS.post();
+					
+				}
+			}
+			dl.dispose();
+			
+			// Adicionando cópia do produto principal
+
+			lcItRecMercItOS.insert( true );
+			
+			txtCodProdItOS.setVlrInteger( txtCodProd.getVlrInteger() );
+			txtRefProdItOS.setVlrString( txtRefProd.getVlrString() );
+			
+			if(comRef()) {
+
+				lcProdItOS2.carregaDados();
+				
+			}
+			else {
+				
+				lcProdItOS.carregaDados();
+				
+			}
+			
+			txtQtdItOSItOS.setVlrBigDecimal( txtQtdItOS.getVlrBigDecimal() );
+			
+			lcItRecMercItOS.post();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
 		
 	
 
 }
+
+
 
 
 
