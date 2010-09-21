@@ -2905,7 +2905,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 			dl.setCodprod( txtCodProdEst.getVlrInteger() );
 			dl.setSeqest( txtSeqEst.getVlrInteger() );
-			dl.carregaItens();
+			dl.carregaItens(false);
 			
 			dl.setVisible( true );
 			
