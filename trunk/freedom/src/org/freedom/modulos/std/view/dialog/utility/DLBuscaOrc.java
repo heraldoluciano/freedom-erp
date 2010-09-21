@@ -777,7 +777,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				rs = ps.executeQuery();
 				tabOrc.limpa();
 				while ( rs.next() ) {
-					if ( rs.getString( 8 ).equals( "OL" ) ) {
+					if ( rs.getString( 8 ).equals( "OL" ) || rs.getString( 8 ).equals( "OP" ) ) {
 						vVals = new Vector<Object>();
 						vVals.addElement( new Boolean( true ) );
 						vVals.addElement( new Integer( rs.getInt( "CodOrc" ) ) );
