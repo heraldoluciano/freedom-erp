@@ -124,7 +124,7 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 
 	}
 
-	public void carregaItens() {
+	public void carregaItens(boolean servico) {
 
 		try {
 
@@ -145,8 +145,12 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 			
 			sql.append( "ie.codemp=? and ie.codfilial=? and ie.codprod=? and ie.seqest=? " );
 
+			if(servico) {
+				sql.append( " and pd.tipoprod='S' and ie.rmaautoitest='S' ");
+			}
+			
 			sql.append( "order by ie.codfase, ie.seqitest " );
-
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, getCodemp() );
@@ -164,7 +168,7 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 
 				tabItens.adicLinha();
 
-				tabItens.setValor( new Boolean( false ), row, ITENS.SELECAO.ordinal() );
+				tabItens.setValor( new Boolean( servico ), row, ITENS.SELECAO.ordinal() );
 
 				tabItens.setValor( rs.getInt( ITENS.SEQITEST.name() ), row, ITENS.SEQITEST.ordinal() );
 
@@ -181,6 +185,10 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 				
 
 				row++;
+			}
+			
+			if(servico) {
+				btOK.doClick();
 			}
 
 
@@ -341,8 +349,8 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 
 		super.setConexao( cn );
 
-		setTitulo( "Números de série para o produto " + getDescprod() + " desta compra." );
-		carregaItens();
+		setTitulo( "Estrutura do produto: " + getDescprod() );
+//		carregaItens();
 
 	}
 
