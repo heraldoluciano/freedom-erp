@@ -40,6 +40,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -67,10 +68,12 @@ public class FRColetas extends FRelatorio {
 	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JRadioGroup<?, ?> rgTipo = null;
-
+	
 	private ListaCampos lcSecao = new ListaCampos( this );
 
 	private ListaCampos lcCliente = new ListaCampos( this );
+	
+	private JCheckBoxPad cbFinalizados = new JCheckBoxPad( "Itens finalizados", "S", "N" );
 
 	private boolean comref = false;
 
@@ -81,7 +84,7 @@ public class FRColetas extends FRelatorio {
 	public FRColetas() {
 
 		setTitulo( "Coletas por dia" );
-		setAtribos( 80, 80, 380, 280 );
+		setAtribos( 80, 80, 380, 380 );
 
 		txtDescSecao.setAtivo( false );
 		txtRazCli.setAtivo( false );
@@ -89,12 +92,14 @@ public class FRColetas extends FRelatorio {
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 
-		vLabs.addElement( "Grafico" );
-		vLabs.addElement( "Texto" );
-		vVals.addElement( "G" );
-		vVals.addElement( "T" );
+		vLabs.addElement( "Seção" );
+		vLabs.addElement( "Cliente" );
+		vLabs.addElement( "Data" );
+		vVals.addElement( "S" );
+		vVals.addElement( "C" );
+		vVals.addElement( "D" );
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
-		rgTipo.setVlrString( "T" );
+		rgTipo.setVlrString( "S" );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
@@ -125,10 +130,16 @@ public class FRColetas extends FRelatorio {
 		pnPeriodo.adic( new JLabelPad( "Até:" ), 135, 05, 30, 20 );
 		pnPeriodo.adic( txtDatafim, 170, 05, 90, 20 );
 
+		JPanelPad pnTipo = new JPanelPad();
+		pnTipo.setBorder( SwingParams.getPanelLabel( "Tipo", Color.BLACK, TitledBorder.LEFT ) );
+
+		adic( pnTipo, 4, 70, 325, 70 );
+		pnTipo.adic( rgTipo, 3, 3, 300, 30 );
+		
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
 
-		adic( pnFiltros, 4, 75, 325, 120 );
+		adic( pnFiltros, 4, 145, 325, 150 );
 
 		pnFiltros.adic( new JLabelPad( "Cód.Seção" ), 4, 5, 70, 20 );
 		pnFiltros.adic( txtCodSecao, 4, 25, 70, 20 );
@@ -141,6 +152,8 @@ public class FRColetas extends FRelatorio {
 
 		pnFiltros.adic( new JLabelPad( "Razão social do cliente" ), 77, 45, 230, 20 );
 		pnFiltros.adic( txtRazCli, 77, 65, 230, 20 );
+		
+		pnFiltros.adic( cbFinalizados, 2, 95, 230, 20 );
 
 	}
 
@@ -160,12 +173,18 @@ public class FRColetas extends FRelatorio {
 			diario = true;
 		}
 
-		if ( cliente ) {
-			imprimirCliente( visualizar );
+		if("S".equals( rgTipo.getVlrString() )){
+			if ( cliente ) {
+				imprimirCliente( visualizar );
+			}
+			else if ( diario ) {
+				imprimirDiarioPorSecao( visualizar );
+			}
 		}
-		else if ( diario ) {
-			imprimirDiario( visualizar );
+		else if( "C".equals( rgTipo.getVlrString() ) || ("D".equals( rgTipo.getVlrString() )) ){
+			imprimirDiarioPorClienteData( visualizar );
 		}
+		
 
 	}
 
@@ -199,6 +218,10 @@ public class FRColetas extends FRelatorio {
 		sql.append( "where " );
 		sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
 
+		if( "N".equals( cbFinalizados.getVlrString()) ) {
+			sql.append( " and it.statusitrecmerc not in ('FN','PT') " );
+		}
+		
 		if ( txtCodCli.getVlrInteger() > 0 ) {
 			sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
 		}
@@ -207,7 +230,7 @@ public class FRColetas extends FRelatorio {
 			sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 		}
 
-		sql.append( "order by it.coditrecmerc " );
+		sql.append( "order by pd.refprod " );
 
 		try {
 
@@ -251,7 +274,104 @@ public class FRColetas extends FRelatorio {
 
 	}
 
-	public void imprimirDiario( boolean visualizar ) {
+	public void imprimirDiarioPorClienteData( boolean visualizar ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sCab2 = new StringBuffer();
+
+		int param = 1;
+
+		try {
+
+			sql.append( "select " );
+			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
+			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+			sql.append( "from " );
+			sql.append( "eqrecmerc rm " );
+			sql.append( "left outer join vdcliente cl on " );
+			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			sql.append( "left outer join sgmunicipio mn on " );
+			sql.append( "mn.codpais=cl.codpais and mn.siglauf=cl.siglauf and mn.codmunic=cl.codmunic " );
+			sql.append( "left outer join vdvendedor vd on " );
+			sql.append( "vd.codemp=rm.codempvd and vd.codfilial=rm.codfilialvd and vd.codvend=rm.codvend " );
+			sql.append( "left outer join eqitrecmerc it on " );
+			sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
+			sql.append( "left outer join eqproduto pd on " );
+			sql.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod " );
+			sql.append( "left outer join eqsecao se on " );
+			sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
+			sql.append( "where " );
+			sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
+
+			if( "N".equals( cbFinalizados.getVlrString()) ) {
+				sql.append( " and it.statusitrecmerc  not in ('FN','PT') " );
+			}
+
+			
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
+			}
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+
+		//	sql.append( "group by 1,2,3,4 " );
+
+			if( "C".equals(rgTipo.getVlrString()) ) {			
+				sql.append( "order by rm.codcli, pd.refprod " );
+			}
+			else if( "D".equals(rgTipo.getVlrString()) ) {
+				sql.append( "order by pd.refprod " );
+			}
+			
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodFilial );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				ps.setInt( param++, lcCliente.getCodEmp() );
+				ps.setInt( param++, lcCliente.getCodFilial() );
+				ps.setInt( param++, txtCodCli.getVlrInteger() );
+
+				sCab2.append( "Cliente: " + txtRazCli.getVlrString() + "\n" );
+			}
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );
+				ps.setString( param++, txtCodSecao.getVlrString() );
+
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
+			}
+
+			rs = ps.executeQuery();
+
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+
+	
+	public void imprimirDiarioPorSecao( boolean visualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -294,10 +414,15 @@ public class FRColetas extends FRelatorio {
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
+			
+			if( "N".equals( cbFinalizados.getVlrString()) ) {
+				sql.append( " and it.statusitrecmerc not in ('FN','PT') " );
+			}
+
 
 		//	sql.append( "group by 1,2,3,4 " );
 
-			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, it.codprod " );
+			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, pd.refprod " );
 
 			ps = con.prepareStatement( sql.toString() );
 
@@ -348,12 +473,21 @@ public class FRColetas extends FRelatorio {
 
 		FPrinterJob dlGr = null;
 
-		if ( diario ) {
-			dlGr = new FPrinterJob( "layout/rel/REL_COLETA_01.jasper", "Relação de Coletas", sCab, rs, hParam, this );
+		if("S".equals(rgTipo.getVlrString())) {
+			if ( diario ) {
+				dlGr = new FPrinterJob( "layout/rel/REL_COLETA_01.jasper", "Relação de Coletas", sCab, rs, hParam, this );
+			}
+			else if ( cliente ) {
+				dlGr = new FPrinterJob( "layout/rel/REL_COLETA_CLI.jasper", "Relação de Coletas por Cliente", sCab, rs, hParam, this );
+			}
 		}
-		else if ( cliente ) {
-			dlGr = new FPrinterJob( "layout/rel/REL_COLETA_CLI.jasper", "Relação de Coletas por Cliente", sCab, rs, hParam, this );
+		else if("C".equals(rgTipo.getVlrString())) {
+			dlGr = new FPrinterJob( "layout/col/COL_PD.jasper", "Coleta", sCab, rs, hParam, this );
 		}
+		else if("D".equals(rgTipo.getVlrString())) {
+			dlGr = new FPrinterJob( "layout/rel/REL_COLETA_GERAL.jasper", "Relação de Coletas", sCab, rs, hParam, this );
+		}
+		
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
