@@ -36,16 +36,16 @@
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
+	<queryString><![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
+B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB,
 MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA,
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT
+CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
-FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
+FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO
 WHERE
 C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI
 AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL
@@ -55,16 +55,19 @@ AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.COD
 AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL
 AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO
 AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
-AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA
+AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA
 AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
-AND MB.CODEMP=60 AND MB.CODFILIAL=1 AND MB.CODMODBOL=1
-AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]></queryString>
+AND ITR.STATUSITREC IN ('R1','RL','RB')
+AND MB.CODEMP=71 AND MB.CODFILIAL=1 AND MB.CODMODBOL=1
+AND R.CODEMP=71 AND R.CODFILIAL=1 AND R.CODREC=6700 
+AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB]]></queryString>
 
 	<field name="DVCONVCOB" class="java.lang.String"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Long"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
+	<field name="PREIMPMODBOL" class="java.lang.String"/>
 	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
 	<field name="VLRMULTA" class="java.math.BigDecimal"/>
 	<field name="DOCREC" class="java.lang.Long"/>
@@ -73,6 +76,7 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]></q
 	<field name="LOGOBANCO01" class="java.io.InputStream"/>
 	<field name="LOGOBANCO02" class="java.io.InputStream"/>
 	<field name="LOGOBANCO03" class="java.io.InputStream"/>
+	<field name="LOGOBANCO04" class="java.io.InputStream"/>
 	<field name="CODCARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
@@ -105,7 +109,9 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]></q
 	<field name="INSTPAGMODBOL" class="java.lang.String"/>
 	<field name="CONVCOB" class="java.lang.String"/>
 	<field name="DESCPONT" class="java.lang.String"/>
-	<field name="LOGOBANCO04" class="java.io.InputStream"/>
+	<field name="INSCCLI" class="java.lang.String"/>
+	<field name="OBS" class="java.lang.String"/>
+	<field name="VARIACAOCARTCOB" class="java.lang.String"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -1299,7 +1305,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[($F{VLRPARCITREC}==null?new BigDecimal(0): $F{VLRPARCITREC})]]></textFieldExpression>
 				</textField>
-				<image  scaleImage="RetainShape" vAlign="Middle" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="0"
@@ -1791,7 +1797,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 						key="line-54"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
-				<image  scaleImage="RetainShape" vAlign="Middle" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="113"
@@ -1802,7 +1808,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO03}]]></imageExpression>
 				</image>
-				<image  scaleImage="RetainShape" vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="RetainShape" vAlign="Middle" hAlign="Center" isUsingCache="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="375"
 						y="154"
@@ -1886,7 +1892,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 
 (  ) Outros (anotar no verso)]]></text>
 				</staticText>
-				<image  scaleImage="RetainShape" vAlign="Middle" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="452"
