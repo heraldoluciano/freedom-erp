@@ -860,7 +860,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 						
 		 tpnGeral.addTab( "ISS", panelISS );
 		 setPainel( panelISSCampos );
-		 tpnGeral.setEnabledAt( 5, false );
+//		 tpnGeral.setEnabledAt( 5, false );
 				
 		 adicCampo( txtCodSitTribISS, 7, 20, 80, 20, "CodSitTribISS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribISS, false );
 		 adicCampoInvisivel( txtImpSitTribISS, "ImpSitTribISS", "Imposto", ListaCampos.DB_SI, false );
