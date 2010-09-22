@@ -160,8 +160,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JButtonPad btConsPgto = new JButtonPad( Icone.novo( "btConsPgto.gif" ) );
 
-	private JButtonPad btBuscaOrc = new JButtonPad( "Busca Orçamento", Icone.novo( "btVenda2.gif" ) );
+	private JButtonPad btBuscaOrc = new JButtonPad( "Orçamento", Icone.novo( "btVenda2.gif" ) );
 
+	private JButtonPad btDevolucaoConserto = new JButtonPad( "Devolução", Icone.novo( "btRetorno.gif" ) );
+	
 	private JButtonPad btAltComis = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -512,7 +514,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean NF_EMITIDA = false;
 
-	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN
@@ -550,7 +552,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		tpnCab.addTab( "Comissão", pinCabComis );
 
-		btBuscaOrc.setPreferredSize( new Dimension( 170, 0 ) );
+		btBuscaOrc.setPreferredSize( new Dimension( 80, 0 ) );
+		btDevolucaoConserto.setPreferredSize( new Dimension( 80, 0 ) );
 		// pnNavCab.add( btBuscaOrc, BorderLayout.EAST );
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
@@ -733,6 +736,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btFechaVenda.setToolTipText( "Fechar a venda (F4)" );
 		btConsPgto.setToolTipText( "Consulta pagamentos (F5)" );
 		btObs.setToolTipText( "Observações (Ctrl + O)" );
+		btBuscaOrc.setToolTipText( "Busca orçamentos" );
+		btDevolucaoConserto.setToolTipText( "Devolução de consertos" );
 
 		// Desativa as os TextFields para que os usuários não possam mexer
 
@@ -771,6 +776,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btConsPgto.addActionListener( this );
 		btObs.addActionListener( this );
 		btBuscaOrc.addActionListener( this );
+		btDevolucaoConserto.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
@@ -1182,8 +1188,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
 		pnAdicionalCab.add( btBuscaOrc );
-		pnAdicionalCab.setBackground( Color.BLUE );
+//		pnAdicionalCab.setBackground( Color.BLUE );
 
+		pnAdicionalCab.add( btDevolucaoConserto );
+		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
 		lbStatus.setFont( SwingParams.getFontboldmed() );
@@ -3724,6 +3732,133 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	private void geraDevolucaoServico() {
+		
+		StringBuilder 		sql	= new StringBuilder();
+		PreparedStatement 	ps 	= null;
+		ResultSet 			rs 	= null;
+		
+		try {
+		
+			// Variáveis do cabeçalho
+			Integer codcli 			= txtCodCli.getVlrInteger();
+			Integer codtipomov 		= 501;
+			Integer codplanopag 	= 1;
+			Integer codvend 		= txtCodVend.getVlrInteger();
+			Integer codclcomis 		= txtCodClComis.getVlrInteger();
+			Date 	dtemitvenda 	= txtDtEmitVenda.getVlrDate();
+			Date 	dtsaidavenda 	= txtDtSaidaVenda.getVlrDate();
+			
+			// Variáveis do detalhe
+			Integer		codprod 		= null;
+			String 		refprod			= null;
+			BigDecimal	qtditvenda		= null;
+			
+			// Query para busca do ítem a ser devolvido (ítem coletado na ordem de serviço)
+			sql.append("select ");
+			sql.append("rm.codemppd, rm.codfilialpd, rm.codprod, rm.refprod, rm.qtditrecmerc ");			
+			// Busca o orçamento que originou a venda atual
+			sql.append("from ");
+			sql.append("vdvendaorc vo ");
+			// Verifica qual ordem de serviço originou o orçamento
+			sql.append("left outer join eqitrecmercitositorc iro on ");
+			sql.append("iro.codempoc=vo.codempor and iro.codfilial=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc ");
+			// Busca informações da ordem de serviço vinculada ao orçamento
+			sql.append("left outer join eqitrecmerc rm on ");
+			sql.append("rm.codemp=iro.codemp and rm.codfilial=iro.codfilial and rm.ticket=iro.ticket and rm.coditrecmerc=iro.coditrecmerc ");
+			// Busca informações do produto a ser devolvido
+			sql.append("left outer join eqproduto pd on ");
+			sql.append("pd.codemp=rm.codemppd and pd.codfilial=rm.codfilialpd and pd.codprod=rm.codprod ");
+			
+			sql.append("where ");
+			sql.append("vo.codemp=? and vo.codfilial=? and vo.codvenda=? and vo.tipovenda=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt	( 1, lcCampos.getCodEmp() 			);
+			ps.setInt	( 2, lcCampos.getCodFilial() 		);
+			ps.setInt	( 3, txtCodVenda.getVlrInteger() 	);
+			ps.setString( 4, txtTipoVenda.getVlrString() 	);
+			
+			rs = ps.executeQuery();
+			
+			for( int i = 0; rs.next(); i++ ) {
+				
+				// Se for a primeira vez n=no loop... deve inserir o cabeçalho da venda
+				if( i == 0 ) {
+				
+					// Inserindo cabeçalho (Venda)
+					
+					lcCampos.insert( true );
+				
+					txtCodCli.setVlrInteger( codcli );
+					lcCli.carregaDados();
+					
+					txtTipoMov.setVlrInteger( codtipomov );
+					lcTipoMov.carregaDados();
+					
+					txtDtEmitVenda.setVlrDate( dtemitvenda );
+					txtDtSaidaVenda.setVlrDate( dtsaidavenda );
+					
+					txtCodPlanoPag.setVlrInteger( codplanopag );
+					lcPlanoPag.carregaDados();
+					
+					txtCodVend.setVlrInteger( codvend );
+					lcVendedor.carregaDados();
+					
+					txtClasComis.setVlrInteger( codclcomis );
+					
+					txtPercComisVenda.setVlrBigDecimal( new BigDecimal( 0 ) );
+					
+//					lcCampos.post();
+					
+				}
+				
+				// Inserindo detalhe (Ítens de venda)
+				
+				lcDet.insert( true );
+				
+				codprod 	= rs.getInt			( "codprod" );
+				refprod		= rs.getString		( "refprod" );
+				qtditvenda	= rs.getBigDecimal	( "" );
+
+				
+				txtCodProd.setVlrInteger( codprod );
+				
+				if ( (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ) {
+					
+					txtRefProd.setVlrString( refprod );
+					txtCodProd.setVlrInteger( codprod );
+					
+					lcProd2.carregaDados();
+					
+				}
+				else {
+					
+					txtCodProd.setVlrInteger( codprod );
+					txtRefProd.setVlrString( refprod );
+				
+					lcProd.carregaDados();
+					
+				}
+				
+				txtQtdItVenda.setVlrBigDecimal( qtditvenda );
+				
+				calcVlrProd();
+				calcImpostos( true );
+
+				lcDet.post();
+				
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
