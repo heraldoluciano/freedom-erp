@@ -28,6 +28,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -51,6 +52,10 @@ public class FPrefereGMS extends FTabDados {
 	private ListaCampos lcTipoMovCP = new ListaCampos( this, "TC" );
 
 	private ListaCampos lcTipoRecMercOS = new ListaCampos( this, "TO" );
+	
+	private ListaCampos lcTipoMovDS = new ListaCampos( this, "DS" );
+	
+	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad("Usar preço da peça no orçamento de serviços", "S", "N");
 
 	/****************
 	 * Fields *
@@ -71,6 +76,11 @@ public class FPrefereGMS extends FTabDados {
 	private JTextFieldPad txtCodTipoRecMercOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoRecMercOS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtCodTipoMovDS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoMovDS = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 	
 	/****************
 	 * Paineis *
@@ -143,6 +153,19 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercOS.setQueryCommit( false );
 		lcTipoRecMercOS.setReadOnly( true );
 		txtCodTipoRecMercOS.setTabelaExterna( lcTipoRecMercOS, FTipoRecMerc.class.getCanonicalName() );
+		
+		/*****************************************************************
+		 * Tipo de movimento para devolução de peças consertadas serviço *
+		 *****************************************************************/
+
+		lcTipoMovDS.add( new GuardaCampo( txtCodTipoMovDS, "CodTipoMov", "Cód.Tipo.Mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMovDS.add( new GuardaCampo( txtDescTipoMovDS, "DescTipoMov", "Tipo de movimento para devolução de conserto", ListaCampos.DB_SI, false ) );
+		lcTipoMovDS.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovDS.setWhereAdic( "ESTIPOMOV='" + TipoMov.SAIDA.getValue() + "'" );
+		lcTipoMovDS.setQueryCommit( false );
+		lcTipoMovDS.setReadOnly( true );
+		txtCodTipoMovDS.setTabelaExterna( lcTipoMovDS, FTipoMov.class.getCanonicalName() );
+
 
 	}
 
@@ -174,6 +197,14 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoRecMercOS.setFK( true );
 		txtCodTipoRecMercOS.setNomeCampo( "CodTipoRecMerc" );
 		
+		adicCampo( txtCodTipoMovDS, 7, 60, 70, 20, "CodTipoMovDS", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMovDS, false );
+		adicDescFK( txtDescTipoMovDS, 80, 60, 330, 20, "DescTipoMov", "Tipo de movimento para devolução de conserto" );
+		txtCodTipoMovDS.setFK( true );
+		txtCodTipoMovDS.setNomeCampo( "CodTipoRecMerc" );
+
+		adicDB( cbUsaPrecoPecaServ, 7, 90, 350, 20, "usaprecopecaserv", "", false );
+		
+		
 		setPainel( pinCompra );
 		adicTab( "Compra", pinCompra );
 		
@@ -191,6 +222,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercCM.setConexao( cn );
 		lcTipoRecMercOS.setConexao( cn );
 		lcTipoMovCP.setConexao( cn );
+		lcTipoMovDS.setConexao( cn );
 
 		try {
 			lcCampos.carregaDados();
