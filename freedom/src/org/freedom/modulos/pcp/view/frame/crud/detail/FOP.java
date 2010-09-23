@@ -366,7 +366,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pnRodape.add( btSair, BorderLayout.EAST );
 		
 		pnRodape.add( pnAdicEstrutura, BorderLayout.CENTER );
-		pnAdicEstrutura.adic( btAdicProdutoEstrutura, 0, 0, 30, 26 );
+		
+		pnAdicEstrutura.adic( btPrevimp, 0, 0, 30, 26 );
+		pnAdicEstrutura.adic( btImp, 30, 0, 30, 26 );
+		pnAdicEstrutura.adic( btAdicProdutoEstrutura, 60, 0, 30, 26 );
+		
 		btAdicProdutoEstrutura.setEnabled( false );
 		cbEstDinamica.setEnabled( false );
 		
@@ -2188,9 +2192,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 					hParam.put( "CODEMP", Aplicativo.iCodEmp );
-					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "PPOP" ) );
 					hParam.put( "CODOP", txtCodOP.getVlrInteger() );
-					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );
+					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );					
 					hParam.put( "SUBREPORT_DIR", "org/freedom/layout/op/" );
 					hParam.put( "ORDEM", ordem );
 
