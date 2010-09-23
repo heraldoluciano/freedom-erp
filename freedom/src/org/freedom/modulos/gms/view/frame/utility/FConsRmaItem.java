@@ -575,7 +575,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 				imp.say( imp.pRow() + 0, 0, "|" + tab.getValor( iLin, 1 ) );
 				imp.say( imp.pRow() + 0, 15, "| " + tab.getValor( iLin, 2 ) );
-				imp.say( imp.pRow() + 0, 29, "| " + vSitRMA.elementAt( iLin ).toString() );
+//				imp.say( imp.pRow() + 0, 29, "| " + vSitRMA.elementAt( iLin ).toString() );
 				String sMotivo = "" + tab.getValor( iLin, 3 );
 				imp.say( imp.pRow() + 0, 45, "| " + sMotivo.substring( 0, sMotivo.length() > 89 ? 89 : sMotivo.length() ).trim() );
 				imp.say( imp.pRow() + 0, 135, "| " );
