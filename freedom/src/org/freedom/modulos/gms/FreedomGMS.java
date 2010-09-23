@@ -55,6 +55,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FPrefereGMS;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.gms.view.frame.report.FRColetas;
+import org.freedom.modulos.gms.view.frame.report.FRComisProd;
 import org.freedom.modulos.gms.view.frame.report.FRFreteRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRPesoRecMerc;
 import org.freedom.modulos.gms.view.frame.report.FRPrecoMedioRecMerc;
@@ -66,6 +67,18 @@ import org.freedom.modulos.gms.view.frame.utility.FConsSol;
 import org.freedom.modulos.gms.view.frame.utility.FConsSolItem;
 import org.freedom.modulos.gms.view.frame.utility.FControleRecMerc;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FContraProva;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
+import org.freedom.modulos.pcp.view.frame.crud.plain.FSimulaOP;
+import org.freedom.modulos.pcp.view.frame.report.FRAnalise;
+import org.freedom.modulos.pcp.view.frame.report.FRCertAnalise;
+import org.freedom.modulos.pcp.view.frame.report.FRContraProva;
+import org.freedom.modulos.pcp.view.frame.report.FREstruturaItem;
+import org.freedom.modulos.pcp.view.frame.report.FRProducao;
+import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
+import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
+import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
+import org.freedom.modulos.pcp.view.frame.utility.FPMP_Push;
 import org.freedom.modulos.std.FPrefereGeral;
 import org.freedom.modulos.std.view.frame.crud.detail.FModGrade;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -124,8 +137,8 @@ import org.freedom.modulos.std.view.frame.report.FRVendasItem;
 import org.freedom.modulos.std.view.frame.report.FRomaneio;
 import org.freedom.modulos.std.view.frame.utility.FAprovCancOrc;
 import org.freedom.modulos.std.view.frame.utility.FCancVenda;
-import org.freedom.modulos.std.view.frame.utility.FConsPreco;
 import org.freedom.modulos.std.view.frame.utility.FConsEstoque;
+import org.freedom.modulos.std.view.frame.utility.FConsPreco;
 import org.freedom.modulos.std.view.frame.utility.FImpTabFor;
 import org.freedom.modulos.std.view.frame.utility.FKardex;
 import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
@@ -306,11 +319,41 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'A', 700500000, 1, true, FCRM.class );
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 700600000, 1, true, FChamado.class );
+		addSeparador( 700000000 );
+		addOpcao( 700000000, TP_OPCAO_MENU, "Listagens", "", 'L', 700700000, 1, false, null );
+		addOpcao( 700700000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 700701000, 2, true, FRComisProd.class );
 
+		
+		
+		
+		addOpcao( -1, TP_OPCAO_MENU, "Produção", "", 'P', 800000000, 0, false, null );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 800100000, 1, true, FOP.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Simulação de OP", "Simulação de OP", 'S', 800200000, 1, true, FSimulaOP.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Acompanhamento da produção", "Acompanhamento da produção", 'o', 800300000, 1, true, FAcompanhaProd.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Planejamento mestre da produção (Pull)", "Planejamento mestre da produção (Pull)", 'P', 800400000, 1, true, FPMP_Pull.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Planejamento mestre da produção (Push)", "Planejamento mestre da produção (Push)", 'P', 800500000, 1, true, FPMP_Push.class );
+		addSeparador( 800000000 );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Contra Prova", "Contra prova", 'P', 800400000, 1, true, FContraProva.class );
+		addSeparador( 800000000 );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'R', 800500000, 1, true, FRma.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P', 800600000, 1, true, FConsRMA.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i', 800700000, 1, true, FConsRmaItem.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 800800000, 1, true, FBaixaRMACodBar.class );
+		addSeparador( 800000000 );
+		addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800900000, 1, false, null );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Certificação de análise", "Certificação de análise", 'C', 800900100, 1, true, FRCertAnalise.class );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Análises", "Análises", 'C', 800900200, 1, true, FRAnalise.class );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Contra-Provas", "Contra-Provas", 'C', 800900300, 1, true, FRContraProva.class );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 800900400, 1, true, FRProducao.class );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 800900500, 1, true, FREstruturaItem.class );
+
+		
+		
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101010, FCliente.class );
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100102020, FFornecedor.class );
 		addBotao( "btRma.gif", "Requisição de material", "Requisição de material", 300900000, FRma.class );
+		addBotao( "btOP.gif", "Ordens de Produção", "Ordens de Produção", 800100000, FOP.class );
 		addBotao( "btsoliccp.gif", "Solicitação de Compra", "Solicitação de Compra", 200100000, FSolicitacaoCompra.class );
 
 		addBotao( "btEntrada.png", "Compra", "Compras", 200600000, FCompra.class );
