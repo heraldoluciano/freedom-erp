@@ -425,7 +425,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 			
 			sql.append( "from eqproduto pd, ppestrutura es ");
 			sql.append( "where ");
-			sql.append( "pd.ativoprod='S' and pd.sldprod<pd.qtdminprod and pd.tipoprod='F' and pd.codemp=? and pd.codfilial=? and ");
+			sql.append( "pd.ativoprod='S' and pd.sldprod < pd.qtdminprod and pd.tipoprod='F' and pd.codemp=? and pd.codfilial=? and ");
 
 			sql.append( "es.codemp=pd.codemp and es.codfilial=pd.codfilial and es.codprod = pd.codprod ");
 			
