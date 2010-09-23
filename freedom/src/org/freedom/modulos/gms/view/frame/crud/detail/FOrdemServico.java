@@ -16,8 +16,11 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -45,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.object.Prioridade;
@@ -57,6 +61,7 @@ import org.freedom.modulos.gms.view.dialog.utility.DLSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.utility.FControleServicos;
+import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
@@ -162,6 +167,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtQtdItOS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtNroDiasValid = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtQtdItOSItOS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -309,11 +316,20 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	// *** Botões
 
+	
 	private JButtonPad btTroca = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	
+	private JButtonPad btTrocaTudo = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
+	
+	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento2.gif" ) );
+	
+	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.gif" ) );
 	
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
-	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
+	private JButtonPad btEstrutura = new JButtonPad( Icone.novo( "btEstProduto.gif" ) );
+	
+	private JButtonPad btOP = new JButtonPad( Icone.novo( "btOP.gif" ) );
 	
 	private ImageIcon img_os_servico = Icone.novo( "os_servico_18x18.png" );
 	
@@ -345,7 +361,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	// *** Tela do Painel de controle
 
-	private FControleServicos tela_mae = null;
+	private FFilho tela_mae = null;
 
 	public FOrdemServico() {
 
@@ -355,7 +371,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		setTitulo( "Ordem de Serviço" );
 
-		setAtribos( 50, 50, 837, 480 );
+		setAtribos( 50, 50, 937, 580 );
 
 		configuraCampos();
 		montaListaCampos();
@@ -385,7 +401,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		atualizaStatusItOS();
 		
 		btChamado.setEnabled( false );
-		btAdicProdutoEstrutura.setEnabled( false );
+		btEstrutura.setEnabled( false );
+		btOP.setEnabled( false );
 		
 	}
 	
@@ -454,7 +471,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		pnBordRod.removeAll();
 		pnBordRod.add( pinRodapeDividido );
-
+		
 		pinRodapeDividido.add( pnRodape );
 		pnRodape.remove( btSair );
 
@@ -465,9 +482,22 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		pinRodapeDividido.add( pnRodapeSuplemento );
 		
-		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
+		btEstrutura.setToolTipText( "Busca itens da estrutura" );
 		btChamado.setToolTipText( "Abrir novo chamado" );
 		btTroca.setToolTipText( "Troca de produto" );
+		btTrocaTudo.setToolTipText( "Troca todos os produtos" );
+		btRMA.setToolTipText( "Gera RMA" );
+		btOrcamento.setToolTipText( "Gera Orçamento" );
+		btOP.setToolTipText( "Gerar ordem de produção" );
+
+		JPanelPad pnBotoesCab = new JPanelPad();
+		pnBotoesCab.setBorder( null );
+		
+		pnBotoesCab.adic( btTrocaTudo, 145 , 0, 30, 26 );
+		pnBotoesCab.adic( btOrcamento, 175 , 0, 30, 26 );
+		pnBotoesCab.adic( btRMA, 205 , 0, 30, 26 );
+		
+		pnNavCab.add( pnBotoesCab );
 		
 
 	}
@@ -484,25 +514,25 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampoInvisivel( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.T.", ListaCampos.DB_FK, true );
 
 		adicCampo( txtCodCli, 70, 20, 60, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
-		adicDescFK( txtRazCli, 133, 20, 180, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtSolicitante, 316, 20, 141, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, false );
+		adicDescFK( txtRazCli, 133, 20, 300, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtSolicitante, 436, 20, 240, 20, "Solicitante", "Solicitante", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtDocRecMerc, 460, 20, 70, 20, "DocRecMerc", "Documento", ListaCampos.DB_SI, false );
+		adicCampo( txtDocRecMerc, 679, 20, 80, 20, "DocRecMerc", "Documento", ListaCampos.DB_SI, false );
 
-		adicCampo( txtDtEnt, 532, 20, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
-		adicCampo( txtDtPrevRet, 605, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
+		adicCampo( txtDtEnt, 764, 20, 70, 20, "DtEnt", "Dt.Entrada", ListaCampos.DB_SI, true );
+		adicCampo( txtDtPrevRet, 837, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
 
-		adicDB( cbStatus, 678, 20, 120, 20, "Status", "Status", false );
+		adicDB( cbStatus, 764, 60, 142, 20, "Status", "Status", false );
 
 //		adic( lbStatus, 620, 20, 123, 60 );
 
 		adicCampo( txtCodAtend, 7, 60, 60, 20, "CodAtendRec", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
-		adicDescFK( txtNomeAtend, 70, 60, 243, 20, "NomeAtend", "Nome do Atendente" );
+		adicDescFK( txtNomeAtend, 70, 60, 293, 20, "NomeAtend", "Nome do Atendente" );
 
-		adicCampo( txtCodVend, 316, 60, 67, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, false );
-		adicDescFK( txtNomeVend, 386, 60, 290, 20, "NomeVend", "Nome do comissionado" );
+		adicCampo( txtCodVend, 366, 60, 67, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtNomeVend, false );
+		adicDescFK( txtNomeVend, 436, 60, 240, 20, "NomeVend", "Nome do comissionado" );
 
-		adicDescFK( txtDescFiscCli, 679, 60, 120, 20, "DescTipoFisc", "Tipo Fiscal" );
+		adicDescFK( txtDescFiscCli, 679, 60, 80, 20, "DescTipoFisc", "Tipo Fiscal" );
 		
 		setListaCampos( true, "RECMERC", "EQ" );
 		lcCampos.setQueryInsert( true );
@@ -559,7 +589,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		}
 
-		adicDescFK( txtDescProd, 113, 20, 287, 20, "DescProd", "Descrição do Produto" );
+		adicDescFK( txtDescProd, 113, 20, 337, 20, "DescProd", "Descrição do Produto" );
 
 		adicCampo( txtQtdItOS, 7, 60, 45, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
 
@@ -581,9 +611,9 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicDescFKInvisivel( txtDescProcRecMerc, "DescProcRecMerc", "Descrição do processo" );
 		adicCampoInvisivel( txtCodTipoRecMercDet, "CodTipoRecMerc", "Cod.Tp.Rec.Merc", ListaCampos.DB_SI, true );
 
-		adicDB( cbGarantia, 315, 60, 55, 20, "garantia", "Garantia", false );
+		adicDB( cbGarantia, 365, 60, 55, 20, "garantia", "Garantia", false );
 
-		adic( btTroca, 376, 54, 24, 24 );
+		adic( btTroca, 426, 54, 24, 24 );
 		
 		txtStatusItRecMerc.setSoLeitura( true );
 
@@ -635,7 +665,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 		}
 
-		adicDescFK( txtDescProdItOS, 113, 20, 270, 20, "DescProd", "Descrição do Produto" );
+		adicDescFK( txtDescProdItOS, 113, 20, 335, 20, "DescProd", "Descrição do Produto" );
 
 		adicCampoInvisivel( txtRefProdItOS, "RefProdPD", "Ref.", ListaCampos.DB_FK, false );
 		
@@ -650,9 +680,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampoInvisivel( txtGeraNovo, "GeraNovo", "Gera novo", ListaCampos.DB_SI, false );
 		
 		pnAdicItOS.adic( btChamado, 0, 0, 30, 26 );
-		pnAdicItOS.adic( btAdicProdutoEstrutura, 30, 0, 30, 26 );
+		pnAdicItOS.adic( btEstrutura, 30, 0, 30, 26 );
+		pnAdicItOS.adic( btOP, 60, 0, 30, 26 );
 		
-		adic( lbStatusItOS, 280, 55, 100, 30 );
+		adic( lbStatusItOS, 350, 55, 100, 30 );
 		
 		setListaCampos( true, "ITRECMERCITOS", "EQ" );
 
@@ -710,15 +741,13 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private void ajustaTabelaDetalhe() {
 
-		tab.setRowHeight( 21 );
-
 		tab.setTamColuna( 30, 0 );
 		tab.setTamColuna( 40, 1 );
-		tab.setTamColuna( 210, 2 );
+		tab.setTamColuna( 200, 2 );
 		tab.setTamColuna( 50, 4 );
-		tab.setTamColuna( 50, 9 );
+		tab.setTamColuna( 40, 9 );
 
-		tab.setColunaInvisivel( 3 );
+//		tab.setColunaInvisivel( 3 );
 		tab.setColunaInvisivel( 5 );
 		tab.setColunaInvisivel( 6 );
 		tab.setColunaInvisivel( 7 );
@@ -729,6 +758,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		tab.setColunaInvisivel( 13 );
 		tab.setColunaInvisivel( 14 );
 	//	tab.setColunaInvisivel( 15 );
+		
+		tab.setRowHeight( 21 );
 
 	}
 
@@ -742,7 +773,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		tabItOS.setTamColuna( 20, 0 );
 		tabItOS.setTamColuna( 65, 1 );
-		tabItOS.setTamColuna( 190, 2 );
+		tabItOS.setTamColuna( 240, 2 );
 		tabItOS.setColunaInvisivel( 3 );
 		tabItOS.setColunaInvisivel( 4 );
 		tabItOS.setTamColuna( 50, 5 );
@@ -808,7 +839,12 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		btPrevimp.addActionListener( this );
 		btChamado.addActionListener( this );
 		btTroca.addActionListener( this );
-		btAdicProdutoEstrutura.addActionListener( this );
+		btTrocaTudo.addActionListener( this );
+		btEstrutura.addActionListener( this );
+		btOP.addActionListener( this );
+		btRMA.addActionListener( this );
+		btOrcamento.addActionListener( this );
+		
 		txtNumSerie.addFocusListener( this );
 		txtQtdItOS.addFocusListener( this );
 		txtDocRecMerc.addKeyListener( this );
@@ -976,6 +1012,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS.add( new GuardaCampo( txtCodAlmoxProdItOS, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProdItOS.add( new GuardaCampo( txtCLoteProdItOS, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProdItOS.add( new GuardaCampo( txtSerieProdItOS, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		lcProdItOS.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias valid", ListaCampos.DB_SI, false ) );
 
 		lcProdItOS.setWhereAdic( "ATIVOPROD='S'" );
 		lcProdItOS.montaSql( false, "PRODUTO", "EQ" );
@@ -1000,6 +1037,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		lcProdItOS2.add( new GuardaCampo( txtCodAlmoxProdItOS, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProdItOS2.add( new GuardaCampo( txtCLoteProdItOS, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProdItOS2.add( new GuardaCampo( txtSerieProdItOS, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		lcProdItOS2.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias valid", ListaCampos.DB_SI, false ) );
 
 		txtRefProdItOS.setNomeCampo( "RefProd" );
 		txtRefProdItOS.setListaCampos( lcItRecMercItOS );
@@ -1032,19 +1070,57 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else if ( evt.getSource() == btChamado ) {
 			novoChamado();
 		}
-		else if ( evt.getSource() == btAdicProdutoEstrutura ) {
+		else if ( evt.getSource() == btEstrutura ) {
 			buscaEstrutura();
 		}
 		else if ( evt.getSource() == btTroca ) {
 			trocaProduto();
 		}
-
-
+		else if ( evt.getSource() == btTrocaTudo ) {
+			trocaProdutoTodos();
+		}
+		else if ( evt.getSource() == btOP ) {
+			geraOP();
+		}
+		else if ( evt.getSource() == btRMA ) {
+			FControleServicos.gerarRmas(txtTicket.getVlrInteger(), null, cbStatus.getVlrString(), this);
+		}
+		else if ( evt.getSource() == btOrcamento ) {
+			FControleServicos.geraOrcamento( txtTicket.getVlrInteger(), null, cbStatus.getVlrString(), txtCodCli.getVlrInteger(), this );
+		}
 
 		super.actionPerformed( evt );
 
-	}
+	} 
 
+	private void geraOP() {
+		RecMerc recmerc = new RecMerc( this, txtTicket.getVlrInteger(), con );
+		
+		Integer codop = recmerc.geraOP( txtCodItRecMerc.getVlrInteger(), txtCodItOS.getVlrInteger(), txtCodProdItOS.getVlrInteger(),
+						txtRefProdItOS.getVlrString(), txtQtdItOSItOS.getVlrBigDecimal(), txtNroDiasValid.getVlrInteger(), 
+						txtCodAlmoxProdItOS.getVlrInteger(), "S", txtGarantia.getVlrString() ) ;
+		
+		if(codop!=null && codop>0) {
+			
+			if(Funcoes.mensagemConfirma( this, "Ordem de produção nro.:" + codop + " gerada com sucesso!Deseja abrir a ordem de produção gerada?" )== JOptionPane.YES_OPTION) {
+			
+				if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
+
+					FOP f = new FOP( codop, 0 );
+					Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
+
+				}
+				
+			}
+			
+		}  
+		else {
+			Funcoes.mensagemErro( this, "Não foi possível gerar ordem de produção para este ítem!" );
+		}
+		
+		
+	}
+	
 	private void buscaEstrutura() {
 		
 		try {
@@ -1286,7 +1362,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 			}
 			
-			btAdicProdutoEstrutura.setEnabled( "F".equals(txtTipoProd.getVlrString()) );
+			btEstrutura.setEnabled( "F".equals(txtTipoProd.getVlrString()) );
+			btOP.setEnabled( "F".equals(txtTipoProd.getVlrString()) );
 			
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
@@ -1559,12 +1636,12 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 	}
 
-	public void setTelaMae( FControleServicos tela_mae ) {
+	public void setTelaMae( FFilho tela_mae ) {
 
 		this.tela_mae = tela_mae;
 	}
 
-	public void exec( int ticket, int tiporecmerc, FControleServicos tela_mae ) {
+	public void exec( Integer ticket, Integer tiporecmerc, FFilho tela_mae ) {
 
 		try {
 
@@ -1729,10 +1806,25 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		}
 	}
 	
+	private void trocaProdutoTodos() {
+		
+		for(int i=0; tab.getNumLinhas() >i ; i++ ) {
+			
+			txtCodItRecMerc.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
+			lcDet.carregaDados();
+			
+			trocaProduto();
+			
+		}
+		
+	}
+	
 	private void trocaProduto() {
 		
 		try {
 		
+			
+			
 			DLItensEstruturaProd dl = new DLItensEstruturaProd();
 			
 			dl.setCodemp( Aplicativo.iCodEmp );
@@ -1818,7 +1910,10 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 	}
 		
-	
+
+		
+		
+		
 
 }
 
