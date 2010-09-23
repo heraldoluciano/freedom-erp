@@ -280,6 +280,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodPlanoPag2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtCodPlanoPagSV = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtPrazo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
@@ -292,6 +294,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescPlanoPag2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldFK txtDescPlanoPagSV = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescTab = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
@@ -618,6 +622,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
 
 	private ListaCampos lcPlanoPag2 = new ListaCampos(this, "PP");
+	
+	private ListaCampos lcPlanoPagSV = new ListaCampos(this, "SV");
 
 	private ListaCampos lcTabPreco = new ListaCampos(this, "TB");
 
@@ -881,6 +887,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanoPag2.setReadOnly(true);
 		txtDescPlanoPag2.setListaCampos(lcPlanoPag2);
 
+		txtCodPlanoPagSV.setNomeCampo("CodPlanoPag");
+		lcPlanoPagSV.add(new GuardaCampo(txtCodPlanoPagSV, "CodPlanoPag", "Cód.p.pag", ListaCampos.DB_PK, false));
+		lcPlanoPagSV.add(new GuardaCampo(txtDescPlanoPagSV, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPagSV.montaSql(false, "PLANOPAG", "FN");
+		lcPlanoPagSV.setReadOnly(true);
+		txtCodPlanoPagSV.setTabelaExterna(lcPlanoPagSV, null);
+		txtCodPlanoPagSV.setFK(true);
+		txtDescPlanoPagSV.setListaCampos(lcPlanoPagSV);
+
+		
 		txtCodTab.setNomeCampo("CodTab");
 		lcTabPreco.add(new GuardaCampo(txtCodTab, "CodTab", "Cód.tab.pço.", ListaCampos.DB_PK, false));
 		lcTabPreco.add(new GuardaCampo(txtDescTab, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
@@ -1256,7 +1272,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgTipoCred.setVlrString("AB");
 
 		lbFinDefinicoes.setBorder(BorderFactory.createTitledBorder("Definições"));
-		adic(lbFinDefinicoes, 7, 10, 485, 200);
+		adic(lbFinDefinicoes, 7, 10, 485, 230);
 
 		adicCampo(txtCodMoeda, 20, 50, 80, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtDescMoeda, true);
 		adicDescFK(txtDescMoeda, 100, 50, 320, 20, "SingMoeda", "Descrição da moeda corrente.");
@@ -1270,6 +1286,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodHistPag, 20, 170, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false);
 		adicDescFK(txtDescHistPag, 100, 170, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar");
 
+		adicCampo(txtCodPlanoPagSV, 20, 210, 80, 20, "CodPlanoPagSV", "Cód.Plan.Pag.", ListaCampos.DB_FK, txtDescHistPag, false);
+		adicDescFK(txtDescPlanoPagSV, 100, 210, 320, 20, "DescPlanoPag", "Descrição do plano de pagamento padrão s/valor financeiro");
+
+		
 		lbFinContas.setBorder(BorderFactory.createTitledBorder("Contas"));
 		adic(lbFinContas, 500, 10, 370, 200);
 
@@ -1297,9 +1317,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbGeraRecEmis, 510, 335, 350, 20, "GeraRecEmis", "", true);
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
-		adic(lbFinPagar, 10, 215, 485, 80);
+		adic(lbFinPagar, 10, 245, 485, 50);
 
-		adicDB(cbLancaFinContr, 17, 235, 350, 20, "LancaFinContr", "", false);
+		adicDB(cbLancaFinContr, 17, 265, 350, 20, "LancaFinContr", "", false);
 
 		lbFinLibCred.setBorder(BorderFactory.createTitledBorder("Liberação de crédito"));
 		adic(lbFinLibCred, 7, 300, 485, 90);
@@ -1780,6 +1800,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoForFT.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
 		lcPlanoPag2.setConexao(cn);
+		lcPlanoPagSV.setConexao(cn);
 		lcClasCli.setConexao(cn);
 		lcTabPreco.setConexao(cn);
 		lcCli.setConexao(cn);
