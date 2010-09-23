@@ -10,6 +10,7 @@ package org.freedom.modulos.gms.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -188,9 +189,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JButtonPad btCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 
 	private JButtonPad btOrcamento = new JButtonPad( Icone.novo( "btOrcamento.png" ) );
-	
+
 	private JButtonPad btChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
-	
+
 	private JButtonPad btRma = new JButtonPad( Icone.novo( "btRma.gif" ) );
 
 	private JTablePad tabstatus = new JTablePad();
@@ -228,7 +229,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		montaTela();
 
 		montaListeners();
-		
+
 		adicToolTips();
 
 	}
@@ -275,9 +276,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		txtDatafim.setVlrDate( Funcoes.getDataFimMes( Funcoes.getMes( new Date() ) - 1, Funcoes.getAno( new Date() ) ) );
 
 	}
-	
+
 	private void adicToolTips() {
-		
+
 		btNovo.setToolTipText( "Nova ordem de serviço" );
 		btAtualiza.setToolTipText( "Atualize consulta" );
 		btChamado.setToolTipText( "Abrir chamado" );
@@ -285,7 +286,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		btEditar.setToolTipText( "Editar ordem de serviço" );
 		btOrcamento.setToolTipText( "Gerar orçamento" );
 		btRma.setToolTipText( "Gerar Requisição de material" );
-		
+
 	}
 
 	private void montaListeners() {
@@ -350,7 +351,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			item.addElement( valor );
 			item.addElement( icon );
 			item.addElement( label );
-			
+
 			tabstatus.adicLinha( item );
 
 		}
@@ -566,13 +567,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCLI.toString().trim() ), row, DETALHAMENTO.CODCLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
-				
+
 				Vector<Integer> rmas = RecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
 				Vector<Integer> chamados = RecMerc.getChamadosOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
 
 				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );				
 				tabDet.setValor( Funcoes.vectorToString( chamados, "," ), row, DETALHAMENTO.CODCHAMADOS.ordinal() );
-				
+
 				row++; 
 
 			}
@@ -798,25 +799,25 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		}
 		return codplanopag;
 	}
-	
-	private HashMap<Object, Object> getInfoOrc() {
-		
+
+	private static HashMap<Object, Object> getInfoOrc(Integer codcli, Component corig) {
+
 		HashMap<Object, Object> ret = new HashMap<Object, Object>();
-		
+
 		try {
 
-			DLTipoProdServOrc dl = new DLTipoProdServOrc( this );
-			dl.setCodcli( (Integer) tabDet.getValor( tabDet.getSelectedRow(), DETALHAMENTO.CODCLI.ordinal() ));
-			
+			DLTipoProdServOrc dl = new DLTipoProdServOrc( corig );
+			dl.setCodcli( codcli );
+
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
-		
+
 				ret.put( DLTipoProdServOrc.COMPONENTES, dl.getComponentes() );
 				ret.put( DLTipoProdServOrc.SERVICOS, dl.getServicos() );
 				ret.put( DLTipoProdServOrc.NOVOS, dl.getNovos() );
 				ret.put( "CODPLANOPAG", dl.getPlanoPag() );
-				
+
 				dl.dispose();
 			}
 			else {
@@ -828,10 +829,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
 	}
-	
+
 
 	private void abrecompra( Integer codcompra ) {
 
@@ -843,11 +844,11 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	}
 
-	private void abreorcamento( Integer codorc ) {
+	private static void abreorcamento( Integer codorc ) {
 
-		if ( fPrim.temTela( "Orçamento" ) == false ) {
+		if ( Aplicativo.telaPrincipal.temTela( "Orçamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
-			fPrim.criatela( "Orçamento", tela, con );
+			Aplicativo.telaPrincipal.criatela( "Orçamento", tela, Aplicativo.getInstace().getConexao() );
 			tela.exec( codorc );
 		}
 
@@ -905,9 +906,35 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private void geraOrcamento() {
 
+
+		if ( tabDet.getLinhaSel() > -1 ) {
+
+			Integer codorcgrid = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() );
+			// Se já nao houver orçamento .. deve gerar...
+			if ( "".equals( codorcgrid ) || null == codorcgrid ) {
+
+				Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+				Integer codcli = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCLI.ordinal() );
+
+				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() );
+
+				FControleServicos.geraOrcamento( ticket, codorcgrid, statustxt, codcli, this );
+			}
+			else {
+				// Se já existir um orçamento deve abri-lo
+
+				abreorcamento( codorcgrid );
+
+			}
+
+		}
+
+	}
+
+	public static void geraOrcamento(Integer ticket, Integer codorcgrid, String statustxt, Integer codcli, Component corig) {
+
 		StringBuilder sql = new StringBuilder();
 
-		Integer ticket = null;
 		BigDecimal pesoliq = null;
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
@@ -918,127 +945,109 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 		try {
 
-			if ( tabDet.getLinhaSel() > -1 ) {
 
-				String codorcgrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() ).toString();
+			recmerc = new RecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
 
-				// Se já nao houver orçamento .. deve gerar...
-				if ( "".equals( codorcgrid ) || null == codorcgrid ) {
+			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+					statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
+					statustxt.equals( StatusOS.OS_PRONTO.getValue() )
+			){
+				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+					HashMap<Object, Object> parametros = getInfoOrc(codcli, corig);
 
-					recmerc = new RecMerc( this, ticket, con );
-					
-					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() );
-					
-					if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
-						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
-	 					 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
-	 					 statustxt.equals( StatusOS.OS_PRONTO.getValue() )
-					){
-						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+					Integer codorc = null;
 
-							HashMap<Object, Object> parametros = getInfoOrc();
-							
-							Integer codorc = null;
-							
-							if(parametros != null) {
-								codorc = recmerc.geraOrcamento(parametros);
-							}
-							
-							if ( codorc != null && codorc > 0 ) {
-
-								abreorcamento( codorc );
-
-							}
-						}
-
-					}
-					else {
-						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada ainda encontra-se pendente!\nPara gerar orçamento deve estar 'Em Análise'!" );
+					if(parametros != null) {
+						codorc = recmerc.geraOrcamento(parametros);
 					}
 
-				}
-				else {
-					// Se já existir um orçamento deve abri-lo
+					if ( codorc != null && codorc > 0 ) {
 
-					abreorcamento( Integer.parseInt( codorcgrid ) );
+						abreorcamento( codorc );
 
+					}
 				}
 
 			}
 			else {
-				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+				Funcoes.mensagemInforma( corig, "A Ordem de serviço selecionada ainda encontra-se pendente!\nPara gerar orçamento deve estar 'Em Análise'!" );
 			}
 
-		} catch ( Exception e ) {
+		}
+
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	private void gerarRmas() {
 
+		if ( tabDet.getLinhaSel() > -1 ) {
+
+			Integer ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+			String codrmagrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMAS.ordinal() ).toString();
+			String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() );
+
+			FControleServicos.gerarRmas(ticket, codrmagrid, statustxt, this);
+		}
+		else {
+			Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
+		}
+	}
+
+	public static void gerarRmas(Integer ticket, String codrmagrid, String statustxt, Component corig) {
+
 		StringBuilder sql = new StringBuilder();
-		Integer ticket = null;
 		PreparedStatement ps = null;
 
 		RecMerc recmerc = null;
 
 		try {
+			// Se nao houver RMA.. deve gerar...
+			if ( "".equals( codrmagrid ) || null == codrmagrid ) {
 
-			if ( tabDet.getLinhaSel() > -1 ) {
+				recmerc = new RecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
 
-				String codrmagrid = tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODRMAS.ordinal() ).toString();
+				if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
+						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+						statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+						statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
+						statustxt.equals( StatusOS.OS_PRONTO.getValue() )
+				){
 
-				// Se nao houver RMA.. deve gerar...
-				if ( "".equals( codrmagrid ) || null == codrmagrid ) {
+					if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
+						Vector<Integer> rmas = recmerc.geraRmas( );
 
-					recmerc = new RecMerc( this, ticket, con );
-					
-					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
-					
-					if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
- 						 statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
-						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
- 						 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
- 						 statustxt.equals( StatusOS.OS_PRONTO.getValue() )
-					){
 
-						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+						if ( rmas != null && rmas.size() > 0 ) {
 
-							Vector<Integer> rmas = recmerc.geraRmas( );
+							System.out.println("RMA(s) " + Funcoes.vectorToString( rmas, "," ) + " gerada(s) com sucesso...");
 
-							
-							if ( rmas != null && rmas.size() > 0 ) {
-
-								System.out.println("RMA(s) " + Funcoes.vectorToString( rmas, "," ) + " gerada(s) com sucesso...");
-
-							}
 						}
-
-					}
-					else {
-						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de RMA!\n" 
-													 + "Para gerar RMA ela deve estar em uma das situações abaixo:\n"
-													 + "'Em Análise', 'Encaminhada', 'Em andamento' ou 'Pronto' !" );
 					}
 
 				}
+				else {
+					Funcoes.mensagemInforma( corig, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de RMA!\n" 
+							+ "Para gerar RMA ela deve estar em uma das situações abaixo:\n"
+							+ "'Em Análise', 'Encaminhada', 'Em andamento' ou 'Pronto' !" );
+				}
 
 			}
-			else {
-				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );
-			}
+
+
+
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	private void gerarChamados() {
 
 		StringBuilder sql = new StringBuilder();
@@ -1059,20 +1068,20 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 					recmerc = new RecMerc( this, ticket, con );
-					
+
 					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
-					
+
 					if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
- 						 statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
-						 statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
- 						 statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() )
+							statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
+							statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
+							statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() )
 					){
 
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de chamados para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 							Vector<Integer> chamados = recmerc.gerarChamados( );
 
-							
+
 							if ( chamados != null && chamados.size() > 0 ) {
 
 								System.out.println("Chamado(s) " + Funcoes.vectorToString( chamados, "," ) + " gerado(s) com sucesso...");
@@ -1083,8 +1092,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					}
 					else {
 						Funcoes.mensagemInforma( this, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de Chamados!\n" 
-													 + "Para gerar Chamados ela deve estar em uma das situações abaixo:\n"
-													 + "'Em Análise', 'Encaminhada' ou 'Em andamento' !" );
+								+ "Para gerar Chamados ela deve estar em uma das situações abaixo:\n"
+								+ "'Em Análise', 'Encaminhada' ou 'Em andamento' !" );
 					}
 
 				}
@@ -1099,6 +1108,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		}
 
 	}
-	
+
 
 }
