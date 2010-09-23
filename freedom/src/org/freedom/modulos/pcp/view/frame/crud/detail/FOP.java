@@ -85,6 +85,8 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.modulos.gms.view.dialog.utility.DLItensEstruturaProd;
+import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
+import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -114,6 +116,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
 	private JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -256,12 +264,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public JTablePad tabRMA = new JTablePad();
 
 	public JTablePad tabOPS = new JTablePad();
+	
+	public JTablePad tabOSS = new JTablePad();
 
 	private JScrollPane spSimu = new JScrollPane( tabSimu );
 
 	public JScrollPane spRma = new JScrollPane( tabRMA );
 
 	public JScrollPane spOPS = new JScrollPane( tabOPS );
+	
+	public JScrollPane spOSS = new JScrollPane( tabOSS );
 
 	private ImageIcon imgCancelada = Icone.novo( "clVencido.gif" );
 
@@ -290,6 +302,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private boolean bBuscaOPS = false;
 
 	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Inserir ítens dinamicamente?", "S", "N" );
+	
+	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Substituição de garantia?", "S", "N" );
 	
 	private boolean bnovo = false;
 
@@ -362,6 +376,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addTab( "OP", spTab );
 		tpnAbas.addTab( "Rma", spRma );
 		tpnAbas.addTab( "OP's relacionadas", spOPS );
+		tpnAbas.addTab( "OS's relacionadas", spOSS );
+
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
 		btFinaliza.setToolTipText( "Fases/Finalização" );
@@ -445,6 +461,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcEstruturaCod.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
 		lcEstruturaCod.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
 		lcEstruturaCod.add( new GuardaCampo( cbEstDinamica, "EstDinamica", "", ListaCampos.DB_SI, false ) );
+		
 
 		lcEstruturaCod.setWhereAdic( "ATIVOEST='S'" );
 		lcEstruturaCod.montaSql( false, "ESTRUTURA", "PP" );
@@ -512,6 +529,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
 
 		adicDB( cbEstDinamica, 5, 175, 200, 20, "estdinamica", "", true );
+		adicDB( cbGarantia, 5, 175, 208, 20, "garantia", "", true );
 		
 		setPainel( pinQuantidades );
 
@@ -522,6 +540,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampo( txtQtdDistOp, 406, 20, 130, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
 		
 		cbEstDinamica.setVlrString( "N" );
+		
+		adicCampoInvisivel( txtTicket, "ticket", "Ticket", ListaCampos.DB_SI, false ); // Ticket
+		adicCampoInvisivel( txtCodItRecMerc, "coditrecmerc", "Cod.It.Rec.Merc.", ListaCampos.DB_SI, false ); // Ticket
+		adicCampoInvisivel( txtCodItOS, "coditos", "Cod.It.OS.", ListaCampos.DB_SI, false ); // Ticket
 		
 		setListaCampos( true, "OP", "PP" );
 
@@ -607,7 +629,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOPS.adicColuna( "Seq.Est." );// 4
 		tabOPS.adicColuna( "Descrição do produto" );// 5
 		tabOPS.adicColuna( "Descrição da estrutura" );// 6
-
+		
 		tabOPS.setTamColuna( 13, 0 );
 		tabOPS.setTamColuna( 50, 1 );
 		tabOPS.setTamColuna( 50, 2 );
@@ -616,6 +638,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOPS.setTamColuna( 350, 6 );
 		tabOPS.setColunaInvisivel( 5 );
 
+		tabOSS.adicColuna( "Ticket" );// 0
+		tabOSS.adicColuna( "It.Rec." );// 1
+		tabOSS.adicColuna( "It.OS." );// 2
+		tabOSS.adicColuna( "Série" );// 3
+		tabOSS.adicColuna( "Cod.Cli." );// 4
+		tabOSS.adicColuna( "Cliente" );// 5
+
+		tabOSS.setTamColuna( 40, 0 );
+		tabOSS.setTamColuna( 30, 1 );
+		tabOSS.setTamColuna( 30, 2 );
+		tabOSS.setTamColuna( 100, 3 );
+		tabOSS.setTamColuna( 50, 4 );
+		tabOSS.setTamColuna( 300, 5 );
+		
+		
 		tabRMA.addMouseListener( new MouseAdapter() {
 
 			public void mouseClicked( MouseEvent mevt ) {
@@ -633,6 +670,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					abreOps();
 			}
 		} );
+		
+		tabOSS.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent mevt ) {
+
+				if ( mevt.getSource() == tabOSS && mevt.getClickCount() == 2 )
+					abreOS();
+			}
+		} );
+
 
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
@@ -991,6 +1038,64 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql = null;
 		}
 	}
+	
+	private void getOSS() {
+
+		String codop;
+		String seqop;
+		int iLin = 0;
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			tabOSS.limpa();
+
+			if ( "".equals(txtCodOP.getVlrString()) )  {
+				return;
+			}
+
+			sql.append( "SELECT RM.TICKET, IR.CODITRECMERC, OS.CODITOS, RM.CODCLI, CL.RAZCLI, IR.NUMSERIE " );
+			sql.append( "FROM EQRECMERC RM, EQITRECMERC IR, EQITRECMERCITOS OS, VDCLIENTE CL " );
+			sql.append( "WHERE OS.CODEMP=? AND OS.CODFILIAL=? AND OS.TICKET=? AND OS.CODITRECMERC=? AND OS.CODITOS=? " );
+			sql.append( "AND IR.CODEMP=OS.CODEMP AND IR.CODFILIAL=OS.CODFILIAL AND IR.TICKET=OS.TICKET AND IR.CODITRECMERC=OS.CODITRECMERC " );
+			sql.append( "AND RM.CODEMP=IR.CODEMP AND RM.CODFILIAL=IR.CODFILIAL AND RM.TICKET=IR.TICKET " );
+			sql.append( "AND CL.CODEMP=RM.CODEMPCL AND CL.CODFILIAL=RM.CODFILIALCL AND CL.CODCLI=RM.CODCLI " );
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, txtTicket.getVlrInteger() );
+			ps.setInt( 4, txtCodItRecMerc.getVlrInteger() );
+			ps.setInt( 5, txtCodItOS.getVlrInteger() );
+			rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+
+				tabOSS.adicLinha();
+
+				tabOSS.setValor( rs.getInt( "TICKET" ) , iLin, 0 );
+				tabOSS.setValor( rs.getInt( "CODITRECMERC" ), iLin, 1 );
+				tabOSS.setValor( rs.getInt( "CODITOS" ), iLin, 2 );
+				tabOSS.setValor( rs.getInt( "NUMSERIE" ), iLin, 3 );
+				tabOSS.setValor( rs.getInt( "CODCLI" ), iLin, 4 );
+				tabOSS.setValor( rs.getString( "RAZCLI" ), iLin, 5 );
+
+				iLin++;
+
+			}
+
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela de ordens de serviço!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+	}
 
 	private boolean temCQ() {
 
@@ -1165,6 +1270,36 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			txtCodOP.setVlrInteger( codop );
 			txtSeqOP.setVlrInteger( seqop );
 			lcCampos.carregaDados();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void abreOS() {
+
+		FOrdemServico ordemservico = null;
+
+		try {
+
+			if ( tabOSS.getLinhaSel() > -1 ) {
+
+				if ( Aplicativo.telaPrincipal.temTela( FRecMerc.class.getName() ) ) {
+					ordemservico = (FOrdemServico) Aplicativo.telaPrincipal.getTela( FOrdemServico.class.getName() );
+				}
+				else {
+					ordemservico = new FOrdemServico( false );
+					Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", ordemservico, con );
+				}
+
+				int ticket = (Integer) tabOSS.getValor( tabOSS.getLinhaSel(), 0 );
+
+				ordemservico.exec( ticket, null, this );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Não há nenhum registro selecionado para edição!" );
+			}
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -2624,6 +2759,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				if ( bBuscaOPS )
 					getOPS();
 			}
+			else if ( tpnAbas.getSelectedIndex() == 4 ) {
+				getOSS();
+			}
+
 		}
 	}
 
@@ -2974,4 +3113,5 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	
 }
+
 
