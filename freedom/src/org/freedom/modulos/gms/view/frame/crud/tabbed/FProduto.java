@@ -190,6 +190,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtNroDiasValid = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
@@ -1001,6 +1003,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtQtdEmbalagem, 7, 100, 110, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );
 		adicCampo( txtCubagem, 120, 100, 110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtNroDiasValid, 7, 140, 110, 20, "NroDiasValid", "Nro. dias valid.", ListaCampos.DB_SI, false );
 
 		setListaCampos( true, "PRODUTO", "EQ" );
 
@@ -2153,3 +2157,4 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	}
 
 }
+
