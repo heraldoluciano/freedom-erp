@@ -40,7 +40,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
@@ -48,9 +50,11 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 
 public class FAcompanhaProd extends FFilho implements ActionListener, MouseListener {
@@ -63,7 +67,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	};
 
-	private JPanelPad pinCab = new JPanelPad( 0, 85 );
+	private JPanelPad pinCab = new JPanelPad( 0, 125 );
 
 	private JPanelPad pnCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -77,7 +81,9 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private JButtonPad btFiltrar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButtonPad btNovaOp = new JButtonPad( "Nova O.P.", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovaOp = new JButtonPad( Icone.novo( "btNovo.gif" ) );
+	
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	private JRadioGroup<?, ?> rgFiltro = null;
 
@@ -142,6 +148,13 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 	private Font fontLegenda = new Font( "Arial", Font.PLAIN, 9 );
 
 	private Color corLegenda = new Color( 120, 120, 120 );
+	
+	private ListaCampos lcSecao = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 
 	FOP f;
 
@@ -197,6 +210,9 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		pinCab.adic( cbPrincipal, 641, 25, 90, 20 );
 		pinCab.adic( cbRelacionada, 641, 45, 105, 20 );
 		pinCab.adic( cbBloqueada, 735, 25, 85, 20 );
+		
+		pinCab.adic( txtCodSecao, 7, 90, 80, 20, "Cód.Seção" );
+		pinCab.adic( txtDescSecao, 90, 90, 340, 20, "Descrição da seção" );
 
 		pinCab.adic( new JLabelPad( "Filtrar por: " ), 290, 1, 80, 20 );
 		pinCab.adic( rgFiltro, 290, 20, 150, 50 );
@@ -213,8 +229,12 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		lbTxtBloqueado.setFont( fontLegenda );
 		lbTxtBloqueado.setForeground( corLegenda );
 
-		pnBotoes.adic( btNovaOp, 10, 0, 130, 25 );
+		pnBotoes.adic( btNovaOp, 10, 0, 30, 25 );
+		pnBotoes.adic( btImprimir, 41, 0, 30, 25 );
 
+		btNovaOp.setToolTipText( "Nova ordem de produção" );
+		btImprimir.setToolTipText( "Imprimir relação" );
+		
 		pnBotoes.adic( lbImgPendente, 160, 4, 20, 20 );
 		pnBotoes.adic( lbTxtPendente, 180, 4, 80, 20 );
 		pnBotoes.adic( lbImgAtrasado, 240, 4, 20, 20 );
@@ -226,6 +246,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		pnBotoes.adic( lbTxtBloqueado, 500, 4, 80, 20 );
 		pnBotoes.adic( lbImgBloqueada, 480, 4, 20, 20 );
 
+		
 		tab.adicColuna( "" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Fabricação" );
@@ -263,9 +284,32 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 		btFiltrar.addActionListener( this );
 		btNovaOp.addActionListener( this );
+		btImprimir.addActionListener( this );
 		tab.addMouseListener( this );
+		
+		cbPendente.setVlrString( "S" );
+		cbAtrasada.setVlrString( "S" );
+		cbPrincipal.setVlrString( "S" );
+		cbRelacionada.setVlrString( "S" );
+		cbAtrasada.setVlrString( "S" );
+		
+		montaListaCampos();
 	}
 
+	private void montaListaCampos() {
+		
+		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
+		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
+		lcSecao.montaSql( false, "SECAO", "EQ" );
+		txtCodSecao.setNomeCampo( "CodSecao" );
+		txtCodSecao.setFK( true );
+		lcSecao.setReadOnly( true );
+		lcSecao.setQueryCommit( false );
+		txtCodSecao.setTabelaExterna( lcSecao, FSecaoProd.class.getCanonicalName() );
+
+		
+	}
+	
 	private void montaGrid() {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
@@ -274,7 +318,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			return;
 		}
 
-		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
 		StringBuffer sWhere2 = new StringBuffer();
 		StringBuilder sOrderBy = new StringBuilder();
@@ -331,26 +375,43 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			or = true;
 		}
 
-		sSQL.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST, " );
-		sSQL.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
-		sSQL.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
-		sSQL.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
-		sSQL.append( "CAST((TEMPOFIN*100/( CASE WHEN COALESCE(TEMPOTOT,0)=0 THEN 1 ELSE TEMPOTOT END  )) AS DECIMAL (15,2)) TEMPO, " );
-		sSQL.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND " + sData + " BETWEEN ? AND ?" );
-		sSQL.append( or ? "AND" : "" );
-		sSQL.append( sWhere.toString() );
-		sSQL.append( sWhere2.toString() );
-		sSQL.append( sOrderBy.toString() );
-		System.out.println( sSQL.toString() );
+		sql.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST,CODPROD,REFPROD,CODSECAO, " );
+		sql.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
+		sql.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
+		sql.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
+		sql.append( "CAST((TEMPOFIN*100/( CASE WHEN COALESCE(TEMPOTOT,0)=0 THEN 1 ELSE TEMPOTOT END  )) AS DECIMAL (15,2)) TEMPO, " );
+		sql.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " + sData + " BETWEEN ? AND ? " );
+		
+		sql.append( or ? "AND" : "" );
+		sql.append( sWhere.toString() );
+		sql.append( sWhere2.toString() );
+		
+		if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
+			
+			sql.append( " AND CODSECAO = ? " );
+			
+		}
+		
+		
+		sql.append( sOrderBy.toString() );
+		System.out.println( sql.toString() );
 
 		try {
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
+				
+				ps.setInt( 5, txtCodSecao.getVlrInteger() );
+				
+			}
+			
 			rs = ps.executeQuery();
 
 			tab.limpa();
@@ -421,7 +482,14 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 					Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
 				}
 			}
-		} catch ( Exception err ) {
+			else if ( e.getSource() == btImprimir ) {
+				
+				// Implementar
+				
+			}
+			
+		} 
+		catch ( Exception err ) {
 			Funcoes.mensagemErro( null, "Erro ao abrir OP!\n", true, con, err );
 		}
 	}
@@ -461,5 +529,15 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 	public void mouseReleased( MouseEvent e ) {
 
 	}
+	
+	public void setConexao( DbConnection cn ) {
+
+		super.setConexao( cn );
+		lcSecao.setConexao( con );
+
+	}
+
 
 }
+
+
