@@ -61,6 +61,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 public class FRPagar extends FRelatorio {
 
@@ -87,6 +88,8 @@ public class FRPagar extends FRelatorio {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
 
@@ -101,12 +104,16 @@ public class FRPagar extends FRelatorio {
 	private ListaCampos lcBanco = new ListaCampos( this );
 
 	private ListaCampos lcTipoCob = new ListaCampos( this );
+	
+	private ListaCampos lcConta = new ListaCampos( this );
 
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescCodCobrança = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -115,7 +122,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 470 );
+		setAtribos( 80, 80, 410, 530 );
 
 		montaListaCampos();
 		montaCheckBox();
@@ -163,15 +170,20 @@ public class FRPagar extends FRelatorio {
 		adic( new JLabelPad( "Cód.Banco" ), 7, 283, 80, 20 );
 		adic( txtCodBanco, 7, 305, 80, 20 );
 		adic( new JLabelPad( "Nome do banco" ), 90, 283, 300, 20 );
-		adic( txtDescBanco, 90, 305, 277, 20 );
+		adic( txtNomeBanco, 90, 305, 277, 20 );
 
-		adic( new JLabelPad( "Cód.T.Cob." ), 7, 323, 80, 20 );
-		adic( txtCodTipoCob, 7, 343, 80, 20 );
-		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 323, 300, 20 );
-		adic( txtDescCodCobrança, 90, 343, 277, 20 );
+		//Filtro da conta
 
-		adic( cbObs, 7, 365, 385, 20 );
-		adic( cbParPar, 7, 385, 360, 20 );
+		adic( txtNumConta, 7, 343, 80, 20, "Num.Conta" );
+		adic( txtDescConta, 90, 343, 277, 20, "Descrição da conta" );
+
+		adic( new JLabelPad( "Cód.T.Cob." ), 7, 363, 80, 20 );
+		adic( txtCodTipoCob, 7, 383, 80, 20 );
+		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 363, 300, 20 );
+		adic( txtDescCodCobrança, 90, 383, 277, 20 );
+
+		adic( cbObs, 7, 410, 385, 20 );
+		adic( cbParPar, 7, 430, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
@@ -203,7 +215,7 @@ public class FRPagar extends FRelatorio {
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco.", ListaCampos.DB_PK, false ) );
-		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco, null );
@@ -217,6 +229,15 @@ public class FRPagar extends FRelatorio {
 		txtCodTipoCob.setTabelaExterna( lcTipoCob, null );
 		txtCodTipoCob.setFK( true );
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		
+		lcConta.add( new GuardaCampo( txtNumConta, "numconta", "Num.Conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "descconta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setReadOnly( true );
+		txtNumConta.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
+		txtNumConta.setFK( true );
+		txtNumConta.setNomeCampo( "numconta" );
+
 
 	}
 
@@ -415,6 +436,10 @@ public class FRPagar extends FRelatorio {
 			sql.append( " AND COALESCE(CT.CODEMPBO,P.CODEMPBO)=? AND COALESCE(CT.CODFILIALBO,P.CODFILIALBO)=?" );
 			sql.append( " AND COALESCE(CT.CODBANCO,P.CODBANCO)=? " );
 		}
+		
+		if ( ! "".equals( txtNumConta.getVlrString() )  ) {
+			sql.append( " AND IT.CODEMPCA=? AND IT.CODFILIALCA=? AND IT.NUMCONTA=? " );
+		}
 
 		if ( txtCodTipoCob.getVlrInteger() > 0 ) {
 			sql.append( " AND IT.CODTIPOCOB=? AND IT.CODEMPTC=? AND IT.CODFILIALTC=? " );
@@ -502,6 +527,13 @@ public class FRPagar extends FRelatorio {
 				ps.setInt( paramsql++, txtCodBanco.getVlrInteger() );
 			}
 
+			if ( ! "".equals( txtNumConta.getVlrString() )  ) {
+				ps.setInt( paramsql++, lcConta.getCodEmp() );
+				ps.setInt( paramsql++, lcConta.getCodFilial() );
+				ps.setString( paramsql++, txtNumConta.getVlrString() );
+			}
+			
+			
 			if ( txtCodTipoCob.getVlrInteger() > 0 ) {
 				ps.setInt( paramsql++, txtCodTipoCob.getVlrInteger() );
 				ps.setInt( paramsql++, lcTipoCob.getCodEmp() );
@@ -524,13 +556,17 @@ public class FRPagar extends FRelatorio {
 		String sCab = "";
 
 		if ( sFiltroPag.equals( "N" ) ) {
-			sCab = " RELATÓRIO DE CONTAS A PAGAR ";
+			sCab = "CONTAS A PAGAR ";
 		}
 		else if ( sFiltroPag.equals( "P" ) ) {
-			sCab = " RELATÓRIO DE CONTAS PAGAS ";
+			sCab = "CONTAS PAGAS ";
 		}
 		else if ( sFiltroPag.equals( "A" ) ) {
-			sCab = " RELATÓRIO DE CONTAS A PAGAR / PAGAS ";
+			sCab = "CONTAS A PAGAR / PAGAS ";
+		}
+		
+		if ( txtNumConta.getVlrString().length() > 0 ) {
+			sCab = sCab + " - CONTA: " + txtNumConta.getVlrString() ;
 		}
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
@@ -543,7 +579,7 @@ public class FRPagar extends FRelatorio {
 		sCab += "  Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString() + "  Correção p/: " + txtDatacor.getVlrString();
 
 		if ( txtCodBanco.getVlrString().length() > 0 ) {
-			sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtDescBanco.getVlrString().trim();
+			sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtNomeBanco.getVlrString().trim();
 		}
 
 		if ( "T".equals( rgTipoRel.getVlrString() ) ) {
@@ -749,6 +785,7 @@ public class FRPagar extends FRelatorio {
 		lcPlanoPag.setConexao( cn );
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
+		lcConta.setConexao( cn );
 
 	}
 
