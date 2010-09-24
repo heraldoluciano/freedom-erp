@@ -90,6 +90,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 	private JTextFieldPad txtQtdInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtPrecoInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtSldAtualInvP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
@@ -120,6 +122,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
 	private JCheckBoxPad cbLote = new JCheckBoxPad( "Lote", "S", "N" );
+	
+	private JTextFieldPad txtLocalProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private int iPrefs[] = { 0, 0, 0 };
 
@@ -141,6 +145,9 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( cbLote, "CLoteProd", "Classifica por lote?", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cod.Almox.", ListaCampos.DB_FK, txtDescAlmox, false ) );
+		lcProd.add( new GuardaCampo( txtCustoInfoProd, "CustoInfoProd", "Custo.Informado", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtLocalProd, "LocalProd", "Local armz.", ListaCampos.DB_SI, false ) );
+		
 		lcProd.setWhereAdic( "NOT TIPOPROD = 'S' AND ATIVOPROD='S'" );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
@@ -151,6 +158,9 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_PK, txtDescProd, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( cbLote, "CLoteProd", "Classifica por lote?", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCustoInfoProd, "CustoInfoProd", "Custo.Informado", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtLocalProd, "LocalProd", "Local armz.", ListaCampos.DB_SI, false ) );
+		
 		txtRefProd.setChave( ListaCampos.DB_PK );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcProd2 );
@@ -222,7 +232,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			txtRefProd.setRequerido( true );
 			adic( new JLabelPad( "Referência" ), 7, 80, 80, 20 );
-			adic( txtRefProd, 7, 100, 80, 20 );
+			adic( txtRefProd, 7, 100, 90, 20 );
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
@@ -241,6 +251,9 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		adicDB( txtObsInv, 7, 300, 300, 80, "ObsInvP", "Observação", false );
 		lcCampos.setQueryInsert( false );
 		setListaCampos( true, "INVPROD", "EQ" );
+		
+		adic( txtLocalProd, 194, 260, 100, 20, "Local.armz." , false );
+		
 
 	}
 
@@ -409,30 +422,45 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcCampos ) {
-			if ( cevt.ok ) {
-				txtCodProd.setAtivo( false );
-				txtRefProd.setAtivo( false );
-				txtDataInvP.setAtivo( false );
-				txtCodLote.setAtivo( false );
+		try {
+			if ( cevt.getListaCampos() == lcCampos ) {
+				if ( cevt.ok ) {
+					txtCodProd.setAtivo( false );
+					txtRefProd.setAtivo( false );
+					txtDataInvP.setAtivo( false );
+					txtCodLote.setAtivo( false );
+				}
+			}
+			else if ( cevt.getListaCampos() == lcLote ) {
+				if ( !bLote )
+					setSaldo();
+			}
+			else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcAlmox ) ) {
+				setSaldo();
+					 
+				if ( ( ! (txtPrecoInvP.getVlrBigDecimal().floatValue() > 0) ) && ( txtCustoInfoProd.getVlrBigDecimal().floatValue()>0 ) ){ 
+					txtPrecoInvP.setVlrBigDecimal( txtCustoInfoProd.getVlrBigDecimal() );
+				}
+					
 			}
 		}
-		else if ( cevt.getListaCampos() == lcLote ) {
-			if ( !bLote )
-				setSaldo();
-		}
-		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcAlmox ) ) {
-			setSaldo();
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void setSaldo() {
 
-		double deSaldo[] = { 0, 0 };
-		deSaldo = buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate() );
-		txtSldAtualInvP.setVlrDouble( new Double( deSaldo[ 0 ] ) );
-		txtPrecoInvP.setVlrDouble( new Double( deSaldo[ 1 ] ) );
+		try {
+			double deSaldo[] = { 0, 0 };
+			deSaldo = buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate() );
+			txtSldAtualInvP.setVlrDouble( new Double( deSaldo[ 0 ] ) );
+			txtPrecoInvP.setVlrDouble( new Double( deSaldo[ 1 ] ) );
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -505,7 +533,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 			rs.close();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o saldo!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		} finally {
@@ -525,8 +553,45 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
 	public void afterPost( PostEvent pevt ) {
 
+		if(pevt.getListaCampos()==lcCampos) {
+			
+			if( ! "".equals(txtLocalProd.getVlrString() )) {
+				
+					
+					atualizaLocal();
+					
+				
+			}
+			
+		}
+		
 	}
 
+	private void atualizaLocal() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		try {
+			sql.append("update eqproduto set localprod=? ");
+			sql.append("where codemp=? and codfilial=? and codprod=? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setString( 1, txtLocalProd.getVlrString() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( 4, txtCodProd.getVlrInteger() );
+			
+			ps.execute();
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
