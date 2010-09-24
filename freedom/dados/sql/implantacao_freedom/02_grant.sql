@@ -395,4 +395,6 @@ GRANT EXECUTE ON PROCEDURE eqitrecmercseriesp TO "ADM";
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SGPREFERE8 TO ROLE "ADM";
 
+grant select, delete, insert, update on "VDSETORROTA" to "ADM";
+
 COMMIT WORK;
