@@ -35,6 +35,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.DLLoading;
 
@@ -122,6 +123,22 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		comp.addKeyListener(this);
 		pinCli.adic(comp, iX, iY, iLarg, iAlt);
 	}
+	
+	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label) {
+
+		if (setArea)
+			setAreaComp();
+		comp.addKeyListener(this);
+		
+		JLabelPad lbTmp = new JLabelPad(label);
+		pinCli.adic(lbTmp, X, Y - 20, Larg, 20);
+		pinCli.adic(comp, X, Y, Larg, Alt);
+		
+		return lbTmp;
+
+	}
+
+	
 
 	/**
 	 * 
