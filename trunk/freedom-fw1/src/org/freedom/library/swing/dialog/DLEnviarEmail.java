@@ -345,6 +345,7 @@ public class DLEnviarEmail extends FFDialogo {
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.host", txtHost.getVlrString());
+		props.put("mail.smtp.port", txtPort.getVlrString());
 
 		Session session = Session.getInstance(props, null);
 
