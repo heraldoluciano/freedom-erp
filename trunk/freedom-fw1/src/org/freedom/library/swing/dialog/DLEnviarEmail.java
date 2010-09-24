@@ -342,19 +342,23 @@ public class DLEnviarEmail extends FFDialogo {
 	private boolean enviarNaoAutenticado() throws Exception {
 
 		boolean retorno = false;
+		
 		Properties props = new Properties();
+		
 		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.host", txtHost.getVlrString());
 		props.put("mail.smtp.port", txtPort.getVlrString());
+		props.put("mail.smtp.host", txtHost.getVlrString());
 
 		Session session = Session.getInstance(props, null);
 
 		MimeMessage msg = getMessage(session);
 
 		if (msg != null) {
+			
 			setStatus("Enviando e-mail...");
 			Transport.send(msg);
 			retorno = true;
+			
 		}
 		return retorno;
 	}
