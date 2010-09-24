@@ -44,6 +44,8 @@
 	<parameter name="COM_SALDO" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["S"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="COMREF" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select codprod, refprod, codfabprod, codbarprod, descprod, sldprod, 0.00 as precoprod, 'N' as imppreco 
 from eqrelpepssp(49,1,cast('today' as date),null,null,null,null,null,null,null,null,null,null)
 where ativoprod='S']]></queryString>
@@ -176,6 +178,22 @@ where ativoprod='S']]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="95"
+						y="49"
+						width="464"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Emissor-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
+				</textField>
 			</band>
 		</title>
 		<pageHeader>
@@ -184,23 +202,6 @@ where ativoprod='S']]></queryString>
 		</pageHeader>
 		<columnHeader>
 			<band height="18"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="2"
-						y="4"
-						width="35"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-1"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Código]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
@@ -471,6 +472,19 @@ where ativoprod='S']]></queryString>
 						key="line-49"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="4"
+						width="35"
+						height="11"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? "Ref.Prod." : "Cód.Prod."]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
@@ -486,7 +500,7 @@ where ativoprod='S']]></queryString>
 					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? $F{REFPROD} : $F{CODPROD}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
