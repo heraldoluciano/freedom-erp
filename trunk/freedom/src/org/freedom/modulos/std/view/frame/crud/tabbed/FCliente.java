@@ -424,6 +424,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtNomeUFCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtSiglaUFEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtPercDescCli = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
 	private JTextFieldFK txtNomeUFEnt = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
@@ -571,7 +573,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
-	private ListaCampos lcSetor = null;
+	private ListaCampos lcSetor = new ListaCampos( this, "SR" );
 
 	private ListaCampos lcClas = new ListaCampos( this, "CC" );
 
@@ -751,6 +753,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
+
+		/***************
+		 * SETOR       *
+		 **************/
+		
+		txtCodSetor.setNomeCampo( "codsetor" );
+		lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false ) );
+		lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
+		lcSetor.montaSql( false, "SETOR", "VD" );
+		lcSetor.setReadOnly( true );
+		lcSetor.setQueryCommit( false );
+		txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
+		txtCodSetor.setListaCampos( lcSetor );
+		txtDescSetor.setListaCampos( lcSetor );
 
 		/***************
 		 * MUNICIPIO *
@@ -1073,6 +1089,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
 
+		adicCampo( txtPercDescCli, 7, 460, 80, 20, "PercDescCli", "% Desconto", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodSetor, 7, 500, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
+		adicDescFK( txtDescSetor, 90, 500, 237, 20, "DescSetor", "Descrição do setor" );
+		
 		// Adicionar botão para agrupamento de clientes
 
 		btGrpCli.setToolTipText( "Clientes agrupados" );
@@ -1430,20 +1451,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		btSetaQtdDez.addActionListener( this );
 		btMudaTudo.addActionListener( this );
 
-		if ( (Boolean) bPref.get( "SETORVENDA" ) ) {
-			lcSetor = new ListaCampos( this, "SR" );
-			lcSetor.add( new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false ) );
-			lcSetor.add( new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false ) );
-			lcSetor.montaSql( false, "SETOR", "VD" );
-			lcSetor.setQueryCommit( false );
-			lcSetor.setReadOnly( true );
-			txtCodSetor.setTabelaExterna( lcSetor, FSetor.class.getCanonicalName() );
-
-			adicCampo( txtCodSetor, 7, 300, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true );
-			adicDescFK( txtDescSetor, 90, 300, 237, 20, "DescSetor", "Descrição do setor" );
-		}
-
 		setPainel( pinCliFor, pnCliFor );
+		
 		adicTab( "Cliente x Fornecedor", pnCliFor );
 		setListaCampos( lcClixFor );
 
