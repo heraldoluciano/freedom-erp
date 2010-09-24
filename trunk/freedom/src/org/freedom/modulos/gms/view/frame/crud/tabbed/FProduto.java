@@ -119,7 +119,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pnCodAcess = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pnMedidas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pnOutros = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pnServico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -374,6 +374,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JRadioGroup<?, ?> rgAbaixCust = null;
 
 	private JCheckBoxPad cbLote = null;
+	
+	private JCheckBoxPad cbDescCli = new JCheckBoxPad( "Permite desconto do cliente", "S", "N" );
 
 	private JCheckBoxPad cbReceita = null;
 
@@ -435,7 +437,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pinRodCodAcess = new JPanelPad( 650, 120 );
 
-	private JPanelPad pinMedidas = new JPanelPad( 650, 120 );
+	private JPanelPad pinOutros = new JPanelPad( 650, 120 );
 	
 	private JPanelPad pinServico = new JPanelPad( 650, 120 );
 
@@ -987,10 +989,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		setListaCampos( true, "PRODUTO", "EQ" );
 
-		// Medidas
+		// Outros
 
-		setPainel( pinMedidas, pnMedidas );
-		adicTab( "Medidas", pnMedidas );
+		setPainel( pinOutros, pnOutros );
+		adicTab( "Outros", pnOutros );
+		
+		JPanelPad pnMedidas = new JPanelPad();
+		pnMedidas.setBorder( SwingParams.getPanelLabel( "Medidas", Color.BLUE ) );
+		
+		pinOutros.adic( pnMedidas, 5, 5, 500, 200 );
+		setPainel( pnMedidas );
+		
 		adicCampo( txtPesoBrutProd, 7, 20, 110, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
 		adicCampo( txtPesoLiqProd, 120, 20, 110, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
 
@@ -1003,9 +1012,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtQtdEmbalagem, 7, 100, 110, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );
 		adicCampo( txtCubagem, 120, 100, 110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );
-		
-		adicCampo( txtNroDiasValid, 7, 140, 110, 20, "NroDiasValid", "Nro. dias valid.", ListaCampos.DB_SI, false );
 
+		JPanelPad pnOutros = new JPanelPad();
+		pnOutros.setBorder( SwingParams.getPanelLabel( "Outros", Color.BLUE ) );
+
+		pinOutros.adic( pnOutros, 5, 210, 500, 200 );
+		setPainel( pnOutros );
+
+		adicCampo( txtNroDiasValid, 7, 20, 110, 20, "NroDiasValid", "Nro. dias valid.", ListaCampos.DB_SI, false );
+		adicDB( cbDescCli, 5, 50, 200, 20, "desccli", "", false );
+		
+		
 		setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Serviçox
