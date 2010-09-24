@@ -95,6 +95,8 @@ public class FRContaEstoque extends FRelatorio {
 
 	private JCheckBoxPad cbPrecoFracionado = new JCheckBoxPad( "Preço fracionado", "S", "N" );
 
+	private HashMap<String, Object> prefere = null;
+	
 	public FRContaEstoque() {
 
 		setTitulo( "Relatório de Giro de estoque" );
@@ -225,6 +227,8 @@ public class FRContaEstoque extends FRelatorio {
 				sql.append( "order by cu.descprod " );
 			}
 
+			System.out.println("SQL:" + sql.toString());
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			int iparam = 1;
@@ -233,7 +237,7 @@ public class FRContaEstoque extends FRelatorio {
 			ps.setInt( iparam++, Aplicativo.iCodFilial );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 
-			if ( txtCodGrup.getVlrInteger() > 0 ) {
+			if ( txtCodGrup.getVlrString()!=null && !"".equals( txtCodGrup.getVlrString() )) {
 				ps.setInt( iparam++, lcGrup.getCodEmp() );
 				ps.setInt( iparam++, lcGrup.getCodFilial() );
 				ps.setString( iparam++, txtCodGrup.getVlrString() );
@@ -268,8 +272,16 @@ public class FRContaEstoque extends FRelatorio {
 			hParam.put( "DATA", txtDataini.getVlrDate() );
 			hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel" );
 			hParam.put( "COM_SALDO", cbComSaldo.getVlrString() );
+			
+			hParam.put( "COMREF", comRef() ? "S" : "N" );			
 
-			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_CONTA_ESTOQUE.jasper", "Relatório de Contagem de estoque", "", rs, hParam, this );
+			StringBuilder scab = new StringBuilder();
+			
+			if ( txtCodGrup.getVlrString()!=null && !"".equals( txtCodGrup.getVlrString() )) {
+				scab.append( "Grupo:" + txtDescGrup.getVlrString() );
+			}
+			
+			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_CONTA_ESTOQUE.jasper", "Relatório de Contagem de estoque", scab.toString(), rs, hParam, this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
@@ -283,7 +295,47 @@ public class FRContaEstoque extends FRelatorio {
 			err.printStackTrace();
 		}
 	}
+	
+	private void getPreferencias() {
 
+		StringBuilder sql = new StringBuilder();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			prefere = new HashMap<String, Object>();
+
+			sql.append( "select pf1.usarefprod, coalesce(pf8.codtiporecmerccm,0) codtiporecmerc " );
+			sql.append( "from sgprefere1 pf1 left outer join sgprefere8 pf8 " );
+			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
+			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );
+				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
+			}
+
+			con.commit();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean comRef() {
+
+		return ( (Boolean) prefere.get( "usarefprod" ) ).booleanValue();
+	}
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
@@ -294,6 +346,8 @@ public class FRContaEstoque extends FRelatorio {
 
 		lcPlanoPag1.carregaDados();
 		lcTabPreco.carregaDados();
+		
+		getPreferencias();
 
 	}
 
