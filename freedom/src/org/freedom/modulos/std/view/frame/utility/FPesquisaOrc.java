@@ -25,6 +25,7 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -130,12 +131,14 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private ListaCampos lcCaixa = new ListaCampos( this );
 
 	private ListaCampos lcUsu = new ListaCampos( this );
+	
+	private JButtonPad btFaturaOrc = new JButtonPad( "Faturamento", Icone.novo( "btVenda.gif" ) );
 
 	public FPesquisaOrc() {
 
 		super( false );
 		setTitulo( "Pesquisa Orçamentos" );
-		setAtribos( 20, 20, 625, 500 );
+		setAtribos( 20, 20, 825, 500 );
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "D" );
@@ -186,7 +189,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		pnCli.add( pinCab, BorderLayout.NORTH );
 		pnCli.add( spnTab, BorderLayout.CENTER );
 
-		adicBotaoSair();
+//		adicBotaoSair();
 
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -283,7 +286,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		tab.setTamColuna( 100, 10 );
 		tab.setTamColuna( 100, 11 );
 		tab.setTamColuna( 100, 12 );
-
+		
+		tab.setRowHeight( 21 );
+		
 		tab.addMouseListener( new MouseAdapter() {
 
 			public void mouseClicked( MouseEvent mevt ) {
@@ -300,7 +305,11 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		btConsVenda.setToolTipText( "Busca venda." );
 
 		cbAgrupar.setVlrString( "S" );
+		
+		pnRodape.removeAll();
 
+		adicBotaoSair();
+		
 	}
 
 	/**
