@@ -90,6 +90,8 @@ public class FFilho extends JInternalFrame implements InternalFrameListener, IFi
 	public String strTemp = "";
 
 	public DbConnection con = null;
+	
+	public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 
 	public FFilho(boolean comScroll) {
 		/* Construtor da classe. */
@@ -192,7 +194,6 @@ public class FFilho extends JInternalFrame implements InternalFrameListener, IFi
 
 	public JPanelPad adicBotaoSair() {
 		Container c = getContentPane();
-		JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 		pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 		pnRod.setPreferredSize(new Dimension(110, 30));
 		btSair.setPreferredSize(new Dimension(110, 30));
