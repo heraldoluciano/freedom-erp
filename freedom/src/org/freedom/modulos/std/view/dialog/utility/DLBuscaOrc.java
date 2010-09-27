@@ -58,6 +58,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
@@ -185,11 +187,16 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		sTipoVenda = tipo;
 
-		if ( sTipoVenda.equals( "V" ) ) {
+		
+		
+		if ( sTipoVenda.equals( "V" ) && vd instanceof org.freedom.modulos.std.view.frame.crud.detail.FVenda ) {
 			vendaSTD = (org.freedom.modulos.std.view.frame.crud.detail.FVenda) vd;
 		}
 		else if ( sTipoVenda.equals( "E" ) ) {
 			vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
+		}
+		else if ( vd instanceof FPesquisaOrc ) {
+			vendaSTD = null;
 		}
 
 		setTitulo( "Nova venda de orçamento", this.getClass().getName() );
@@ -536,6 +543,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 	}
 
+	public void CarregaOrcamento(Integer codorc) {
+		
+		txtCodOrc.setVlrInteger( codorc );
+		lcOrc.carregaDados();
+		btBusca.doClick();
+		btExec.doClick();
+		
+	}
+	
 	private boolean gerar() {
 
 		PreparedStatement ps = null;
@@ -557,8 +573,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				boolean usaPedSeq = prefs[ 0 ];
 				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda );
 
-				if ( sTipoVenda.equals( "V" ) && !usaPedSeq ) {
+				if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
 					diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
+				}
+				else if (vendaSTD == null && sTipoVenda.equals( "V" )) {
+					//xxxdiag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
 				}
 
 				diag.setVisible( true );
@@ -683,8 +702,17 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						return false;
 					}
 					if ( Funcoes.mensagemConfirma( null, "Venda '" + iCodVenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
-						vendaSTD.exec( iCodVenda );
-						dispose();
+						if(vendaSTD == null && sTipoVenda.equals( "V" )) {
+							vendaSTD = new FVenda();
+							Aplicativo.telaPrincipal.criatela( "Venda", vendaSTD, con );
+							vendaSTD.exec( iCodVenda );
+							this.dispose();
+						}
+						else {
+							vendaSTD.exec( iCodVenda );
+							dispose();
+						}
+						
 					}
 				}
 				// PDV
