@@ -35,6 +35,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.gms.view.frame.report.FRComisProd;
 import org.freedom.modulos.gms.view.frame.utility.FConsRMA;
 import org.freedom.modulos.gms.view.frame.utility.FConsRmaItem;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FContraProva;
@@ -122,6 +123,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Contra-Provas", "Contra-Provas", 'C', 200900300, 1, true, FRContraProva.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 200900400, 1, true, FRProducao.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 200900500, 1, true, FREstruturaItem.class );
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 200900600, 1, true, FRComisProd.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000, 1, true, FKardex.class );
