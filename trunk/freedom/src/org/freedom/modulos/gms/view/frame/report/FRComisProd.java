@@ -184,29 +184,30 @@ public class FRComisProd extends FRelatorio {
 
 		try {
 
-			sql.append( "select " );
-			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie , " );
+			sql.append( "select ");
 
-			sql.append( "pd.descprod, rm.ticket " );
+			sql.append( "pd.codsecao, se.descsecao, op.dtfabrop, op.qtdfinalprodop, pd.codprod, pd.refprod, ");
+			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie, ");
+			sql.append( "pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, op.garantia ");
 
-			sql.append( "from " );
-			sql.append( "eqrecmerc rm " );
+			sql.append( "from eqproduto pd , vdregracomis rc, eqsecao se, ppop op ");
 
-			sql.append( "left outer join vdcliente cl on " );
-			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli " );
+			sql.append( "left outer join eqrecmerc rm on ");
+			sql.append( "rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket ");
 
-			sql.append( "left outer join eqitrecmerc it on " );
-			sql.append( "it.codemp=rm.codemp and it.codfilial=rm.codfilial and it.ticket=rm.ticket " );
+			sql.append( "left outer join vdcliente cl on ");
+			sql.append( "cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli ");
 
-			sql.append( "left outer join eqproduto pd on " );
-			sql.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod " );
+			sql.append( "left outer join eqitrecmerc it on ");
+			sql.append( "it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc ");
 
-			sql.append( "left outer join eqsecao se on " );
-			sql.append( "se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao " );
+			sql.append( "where "); 
 
-			sql.append( "where " );
-			sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
+			sql.append( "pd.codemp=op.codemp and pd.codfilial=op.codfilial and pd.codprod=op.codprod ");
+			sql.append( "and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao ");
+			sql.append( "and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao ");
+			sql.append( "and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
+			sql.append( "and op.sitop='FN' " );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
@@ -216,8 +217,8 @@ public class FRComisProd extends FRelatorio {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 			
-			if( "N".equals( cbFinalizados.getVlrString()) ) {
-				sql.append( " and it.statusitrecmerc not in ('FN','PT') " );
+			if( "S".equals( cbFinalizados.getVlrString()) ) {
+				sql.append( " and op.sitop = 'FN' " );
 			}
 
 
@@ -252,7 +253,7 @@ public class FRComisProd extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "/layout/rel/REL_COMIS_PROD.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_COMIS_PROD_DET.jasper" );
 
 			rs.close();
 			ps.close();
