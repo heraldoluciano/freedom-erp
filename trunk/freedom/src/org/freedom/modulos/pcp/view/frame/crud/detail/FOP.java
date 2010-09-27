@@ -533,7 +533,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
 
 		adicDB( cbEstDinamica, 5, 175, 200, 20, "estdinamica", "", true );
-		adicDB( cbGarantia, 5, 175, 208, 20, "garantia", "", true );
+		adicDB( cbGarantia, 208, 175, 208, 20, "garantia", "", true );
 		
 		setPainel( pinQuantidades );
 
