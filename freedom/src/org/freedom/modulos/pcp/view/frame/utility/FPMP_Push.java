@@ -768,14 +768,21 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 					try {
 						ps = con.prepareStatement( sql.toString() );
 
-						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "D" );
-						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );
-						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );
-						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );
+						ps.setString( PROCEDUREOP.TIPOPROCESS.ordinal() + 1, "C" );//x
+						ps.setInt( PROCEDUREOP.CODEMPOP.ordinal() + 1, Aplicativo.iCodEmp );//x
+						ps.setInt( PROCEDUREOP.CODFILIALOP.ordinal() + 1, Aplicativo.iCodFilial );//x
+						ps.setNull( PROCEDUREOP.CODOP.ordinal() + 1, Types.INTEGER );//x
 						ps.setNull( PROCEDUREOP.SEQOP.ordinal() + 1, Types.INTEGER );
 						ps.setInt( PROCEDUREOP.CODEMPPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODEMPPD.ordinal() ) );
 						ps.setInt( PROCEDUREOP.CODFILIALPD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODFILIALPD.ordinal() ) );
 						ps.setInt( PROCEDUREOP.CODPROD.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.CODPROD.ordinal() ) );
+						
+						ps.setNull( PROCEDUREOP.CODEMPOC.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODFILIALOC.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.CODORC.ordinal() + 1, Types.INTEGER );
+						ps.setNull( PROCEDUREOP.TIPOORC.ordinal() + 1, Types.CHAR );
+						ps.setNull( PROCEDUREOP.CODITORC.ordinal() + 1, Types.INTEGER );
+						
 						ps.setBigDecimal( PROCEDUREOP.QTDSUGPRODOP.ordinal() + 1, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) );
 						ps.setDate( PROCEDUREOP.DTFABROP.ordinal() + 1, Funcoes.strDateToSqlDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ) );
 						ps.setInt( PROCEDUREOP.SEQEST.ordinal() + 1, (Integer) tabDet.getValor( i, DETALHAMENTO.SEQEST.ordinal() ) );
