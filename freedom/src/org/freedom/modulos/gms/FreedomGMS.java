@@ -321,10 +321,6 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 700600000, 1, true, FChamado.class );
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_MENU, "Listagens", "", 'L', 700700000, 1, false, null );
-		addOpcao( 700700000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 700701000, 2, true, FRComisProd.class );
-
-		
-		
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Produção", "", 'P', 800000000, 0, false, null );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 800100000, 1, true, FOP.class );
@@ -346,6 +342,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Contra-Provas", "Contra-Provas", 'C', 800900300, 1, true, FRContraProva.class );
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 800900400, 1, true, FRProducao.class );
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 800900500, 1, true, FREstruturaItem.class );
+		addOpcao( 800900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 800900600, 1, true, FRComisProd.class );
 
 		
 		
