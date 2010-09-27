@@ -25,7 +25,6 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +58,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
@@ -301,14 +301,23 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		btBusca.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btConsVenda.addActionListener( this );
-
+		btFaturaOrc.addActionListener( this );
+		btSair.addActionListener( this );
+		
 		btConsVenda.setToolTipText( "Busca venda." );
-
+		btFaturaOrc.setToolTipText( "Faturar orçamento" );
+		
 		cbAgrupar.setVlrString( "S" );
 		
-		pnRodape.removeAll();
+	//	pnRodape.removeAll();
+		
+		JPanelPad pnBotoes = new JPanelPad(new BorderLayout());
+		pnBotoes.add( btFaturaOrc, BorderLayout.WEST );
+		pnBotoes.add( btSair, BorderLayout.EAST);
+		getTela().add( pnBotoes, BorderLayout.SOUTH	 );
 
-		adicBotaoSair();
+		
+		
 		
 	}
 
@@ -660,8 +669,32 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
+		else if( evt.getSource() == btSair ) {
+			dispose();
+		}
+		else if( evt.getSource() == btFaturaOrc ) {
+			
+			faturar();
+			
+		}
 	}
 
+	private void faturar() {
+		try {
+			if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
+				DLBuscaOrc tela = new DLBuscaOrc( this, "V" );
+				tela.setConexao( con );
+				Integer codorc = (Integer) tab.getValor( tab.getSelectedRow(), 1 );
+				
+				tela.CarregaOrcamento( codorc );
+				Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
