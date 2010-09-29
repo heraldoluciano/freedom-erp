@@ -1164,7 +1164,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			vNParcBaixa.clear();
 			tabBaixa.limpa();
 
-			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC," );
+			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC,R.DOCREC," );
 			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC," );
 			sSQL.append( "IR.VLRAPAGITREC,IR.NUMCONTA,IR.VLRDESCITREC," );
 			sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
@@ -1221,7 +1221,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabBaixa.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITREC" ) ), i, EColTabBaixa.DTVENC.ordinal() );
 				tabBaixa.setValor( rs.getInt( "CODREC" ), i, EColTabBaixa.CODREC.ordinal() );
 				tabBaixa.setValor( rs.getInt( "NPARCITREC" ), i, EColTabBaixa.NPARCITREC.ordinal() );
-				tabBaixa.setValor( ( rs.getString( "DOCLANCAITREC" ) != null ? rs.getString( "DOCLANCAITREC" ) : String.valueOf( rs.getInt( "DOCVENDA" ) ) ), i, EColTabBaixa.DOC.ordinal() );
+
+				String doc = ( (rs.getString( "DocLancaItRec" ) != null && ! "".equals( rs.getString( "DocLancaItRec" ))) ? 
+								rs.getString( "DocLancaItRec" ) : 
+							 ( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) + "/" + rs.getString( "NParcItRec" ) : "" ) );
+				
+				tabBaixa.setValor( doc, i, EColTabBaixa.DOC.ordinal() );
+				
 				tabBaixa.setValor( rs.getInt( "CODVENDA" ), i, EColTabBaixa.CODVENDA.ordinal() );
 				tabBaixa.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPARCITREC" ) ), i, EColTabBaixa.VLRPARC.ordinal() );
 				tabBaixa.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTPAGOITREC" ) ), i, EColTabBaixa.DTPAGTO.ordinal() );
