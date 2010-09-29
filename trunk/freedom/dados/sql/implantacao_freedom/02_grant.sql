@@ -397,4 +397,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON SGPREFERE8 TO ROLE "ADM";
 
 grant select, delete, insert, update on "VDSETORROTA" to "ADM";
 
+GRANT EXECUTE ON PROCEDURE ppgeraop TO "ADM";
+grant select, delete, insert, update ON sgprefere5 to "ADM";
+grant select, delete, insert, update ON ppestrufase to "ADM";
+grant select, delete, insert, update ON ppopfase to "ADM";
+grant select, delete, insert, update ON ppop to "ADM";
+grant select, delete, insert, update ON ppopitorc to "ADM";
+grant select, delete, insert, update ON ppprocessaoptmp to "ADM";
+
+
 COMMIT WORK;
