@@ -237,7 +237,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 				}
 				else {
 					
-					sql.append( "select st.codsetor, st.descsetor, rt.sequencia, rt.codcli, cl.razcli, cl.contcli ");
+					sql.append( "select st.codsetor, st.descsetor, rt.sequencia, rt.codcli, cl.razcli, cl.contclient contcli ");
 					sql.append( "from vdsetor st, vdsetorrota rt, vdcliente cl ");
 					sql.append( "where st.codemp=? and st.codfilial=? ");
 					sql.append( "and rt.codemp=st.codemp and rt.codfilial=st.codfilial and rt.codsetor=st.codsetor ");
