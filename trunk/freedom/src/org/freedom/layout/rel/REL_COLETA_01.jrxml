@@ -32,7 +32,7 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
 se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, cast(pd.codprod as char(13)) codprod, pd.refprod,
-pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie
+pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie, it.garantia
 from
 eqrecmerc rm
 left outer join vdcliente cl on
@@ -60,6 +60,7 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 	<field name="CODCLI" class="java.lang.Long"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="NUMSERIE" class="java.lang.String"/>
+	<field name="GARANTIA" class="java.lang.String"/>
 
 	<variable name="QTDTOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITRECMERC}]]></variableExpression>
@@ -213,7 +214,7 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 					<reportElement
 						x="128"
 						y="17"
-						width="153"
+						width="146"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -226,9 +227,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="340"
+						x="348"
 						y="17"
-						width="30"
+						width="29"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -241,9 +242,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="373"
+						x="378"
 						y="17"
-						width="157"
+						width="152"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -271,9 +272,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="284"
+						x="276"
 						y="17"
-						width="52"
+						width="49"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -519,7 +520,7 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 					<reportElement
 						x="128"
 						y="2"
-						width="154"
+						width="147"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -532,9 +533,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="339"
+						x="347"
 						y="2"
-						width="31"
+						width="30"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -547,9 +548,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="373"
+						x="378"
 						y="2"
-						width="157"
+						width="152"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -564,9 +565,9 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="285"
+						x="277"
 						y="2"
-						width="52"
+						width="49"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -576,6 +577,23 @@ order by rm.dtent, rm.codcli, it.codprod]]></queryString>
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMSERIE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="328"
+						y="2"
+						width="18"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-7">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{GARANTIA}))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["[G]"]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
