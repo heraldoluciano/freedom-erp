@@ -18,6 +18,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.background"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.object"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.utility"/>
