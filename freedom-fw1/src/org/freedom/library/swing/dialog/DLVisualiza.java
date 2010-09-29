@@ -145,6 +145,10 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 
 	}
 
+	public void setEnabledBotaoImp( boolean enabledBotaoImp ) {
+		btImp.setEnabled( enabledBotaoImp );
+	}
+	
 	public void actionPerformed(ActionEvent evt) {
 		String sConteudo = "";
 		if (evt.getSource() == btSair)
