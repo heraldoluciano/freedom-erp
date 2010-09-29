@@ -288,8 +288,6 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			
 			System.out.println(FPrinterJob.class.getResourceAsStream( root_dir + sLayout));
 
-			
-			
 			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, jrRS);
 
 			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
