@@ -42,7 +42,7 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[select st.codsetor, st.descsetor, rt.sequencia, rt.codcli, cl.razcli, cl.contcli 
+	<queryString><![CDATA[select st.codsetor, st.descsetor, rt.sequencia, rt.codcli, cl.razcli, cl.contclient cl.contcli 
 from vdsetor st, vdsetorrota rt, vdcliente cl 
 where st.codemp=71 and st.codfilial=1 
 and rt.codemp=st.codemp and rt.codfilial=st.codfilial and rt.codsetor=st.codsetor 
@@ -80,7 +80,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="79"
+						x="68"
 						y="3"
 						width="176"
 						height="18"
@@ -99,7 +99,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 						mode="Transparent"
 						x="261"
 						y="3"
-						width="87"
+						width="76"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -114,9 +114,9 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="356"
+						x="423"
 						y="3"
-						width="87"
+						width="51"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -131,9 +131,9 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="450"
+						x="481"
 						y="3"
-						width="81"
+						width="55"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -168,7 +168,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="75"
+						x="65"
 						y="1"
 						width="0"
 						height="23"
@@ -186,7 +186,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="352"
+						x="418"
 						y="1"
 						width="0"
 						height="23"
@@ -195,7 +195,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="447"
+						x="477"
 						y="1"
 						width="0"
 						height="23"
@@ -211,10 +211,36 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="340"
+						y="1"
+						width="0"
+						height="23"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="344"
+						y="3"
+						width="71"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-10"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Assinatura]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="83"  isSplitAllowed="true" >
+			<band height="104"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
@@ -231,7 +257,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						mode="Transparent"
 						x="14"
-						y="24"
+						y="46"
 						width="40"
 						height="18"
 						forecolor="#000000"
@@ -248,7 +274,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						mode="Transparent"
 						x="164"
-						y="24"
+						y="46"
 						width="68"
 						height="18"
 						forecolor="#000000"
@@ -265,7 +291,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="80"
+						y="100"
 						width="533"
 						height="0"
 						forecolor="#000000"
@@ -276,7 +302,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<line direction="TopDown">
 					<reportElement
 						x="57"
-						y="38"
+						y="60"
 						width="99"
 						height="0"
 						key="line-23"/>
@@ -285,7 +311,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<line direction="TopDown">
 					<reportElement
 						x="233"
-						y="38"
+						y="60"
 						width="99"
 						height="0"
 						key="line-24"/>
@@ -295,7 +321,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						mode="Transparent"
 						x="344"
-						y="24"
+						y="46"
 						width="56"
 						height="18"
 						forecolor="#000000"
@@ -311,7 +337,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<line direction="TopDown">
 					<reportElement
 						x="403"
-						y="38"
+						y="60"
 						width="99"
 						height="0"
 						key="line-25"/>
@@ -321,7 +347,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						mode="Transparent"
 						x="14"
-						y="46"
+						y="69"
 						width="59"
 						height="18"
 						forecolor="#000000"
@@ -337,12 +363,46 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				<line direction="TopDown">
 					<reportElement
 						x="75"
-						y="60"
+						y="83"
 						width="99"
 						height="0"
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="14"
+						y="22"
+						width="95"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-11"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Data da viagem:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="109"
+						y="13"
+						width="248"
+						height="27"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-12"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[______/______/______]]></text>
+				</staticText>
 			</band>
 			</groupFooter>
 		</group>
@@ -541,7 +601,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						x="6"
 						y="7"
-						width="63"
+						width="56"
 						height="21"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -552,9 +612,9 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="81"
+						x="68"
 						y="7"
-						width="174"
+						width="187"
 						height="21"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -567,7 +627,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 					<reportElement
 						x="261"
 						y="7"
-						width="86"
+						width="77"
 						height="21"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -608,7 +668,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="447"
+						x="477"
 						y="0"
 						width="0"
 						height="34"
@@ -617,7 +677,7 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="352"
+						x="418"
 						y="0"
 						width="0"
 						height="34"
@@ -635,11 +695,20 @@ and cl.codemp=rt.codempcl and cl.codfilial=rt.codfilialcl and cl.codcli=rt.codcl
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="75"
+						x="65"
 						y="0"
 						width="0"
 						height="34"
 						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="340"
+						y="0"
+						width="0"
+						height="34"
+						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
