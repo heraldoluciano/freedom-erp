@@ -2799,8 +2799,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 						}
 
-						if ( iDiasPE < rs.getInt( 57 ) ) {
-							iDiasPE = rs.getInt( 57 );
+						if ( iDiasPE < rs.getInt( "DIASPE" ) ) {
+							iDiasPE = rs.getInt( "DIASPE" );
 						}
 
 					}
@@ -3386,7 +3386,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
 			}
-			else if ( statusvenda.equals( "P1" ) ) {
+			else if ( statusvenda.equals( "P1" ) || statusvenda.equals( "V1" )) {
 				lbStatus.setText( "PENDENTE" );
 				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
