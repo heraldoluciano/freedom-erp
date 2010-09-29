@@ -107,6 +107,8 @@ public class ImprimeOS implements ActionListener {
 	boolean bImpGrafica = false;
 
 	boolean bImpComprimido = false; // Flag para indicar se a impressão vai ser
+	
+	private boolean enabledBotaoImp = true;
 
 	// comprimida
 
@@ -164,6 +166,14 @@ public class ImprimeOS implements ActionListener {
 
 	public int getMargem() {
 		return this.margem;
+	}
+
+	public boolean isEnabledBotaoImp() {
+		return enabledBotaoImp;
+	}
+
+	public void setEnabledBotaoImp(boolean enabledBotaoImp) {
+		this.enabledBotaoImp = enabledBotaoImp;
 	}
 
 	public void setImpEject(boolean bImpEject) {
@@ -257,6 +267,7 @@ public class ImprimeOS implements ActionListener {
 		dlPrevGraf.setLocation(Aplicativo.telaPrincipal.dpArea.getLocationOnScreen());
 		dlPrevGraf.toFront();
 		// dlPrevGraf.setNomeImp(sImpressora);
+		dlPrevGraf.setEnabledBotaoImp( isEnabledBotaoImp() );		
 		dlPrevGraf.setVisible(true);
 	}
 
@@ -267,6 +278,7 @@ public class ImprimeOS implements ActionListener {
 		dlPrev.setLocation(Aplicativo.telaPrincipal.dpArea.getLocationOnScreen());
 		dlPrev.toFront();
 		dlPrev.setNomeImp(sImpressora);
+		dlPrev.setEnabledBotaoImp( isEnabledBotaoImp() );
 		dlPrev.setVisible(true);
 
 	}
