@@ -3038,7 +3038,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 		try {
 		
-			DLItensEstruturaProd dl = new DLItensEstruturaProd();
+			DLItensEstruturaProd dl = new DLItensEstruturaProd(txtQtdPrevProdOP.getVlrBigDecimal());
 			
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
