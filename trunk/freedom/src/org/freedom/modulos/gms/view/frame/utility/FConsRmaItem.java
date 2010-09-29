@@ -594,7 +594,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				}
 
 				if ( tab.getValor( iLin, 9 ) != null ) {
-					bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
+				//	bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
 				}
 
 				if ( imp.pRow() >= linPag ) {

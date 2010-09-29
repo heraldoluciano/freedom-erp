@@ -909,7 +909,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 		if ( tabDet.getLinhaSel() > -1 ) {
 
-			Integer codorcgrid = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal() );
+			String codorcgrid = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODORC.ordinal()  );
 			// Se já nao houver orçamento .. deve gerar...
 			if ( "".equals( codorcgrid ) || null == codorcgrid ) {
 
@@ -918,12 +918,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() );
 
-				FControleServicos.geraOrcamento( ticket, codorcgrid, statustxt, codcli, this );
+				FControleServicos.geraOrcamento( ticket, null, statustxt, codcli, this );
 			}
 			else {
 				// Se já existir um orçamento deve abri-lo
 
-				abreorcamento( codorcgrid );
+				abreorcamento( Integer.parseInt( codorcgrid ) );
 
 			}
 
@@ -1015,12 +1015,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 						statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
 						statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
-						statustxt.equals( StatusOS.OS_PRONTO.getValue() )
+						statustxt.equals( StatusOS.OS_PRONTO.getValue() ) ||
+						statustxt.equals( StatusOS.OS_ORCAMENTO.getValue() )
 				){
 
 					if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Vector<Integer> rmas = recmerc.geraRmas( );
+//						Vector<Integer> rmas = recmerc.geraRmasPorItem( );
+						Vector<Integer> rmas = recmerc.geraRmasPorOS() ;
 
 
 						if ( rmas != null && rmas.size() > 0 ) {
