@@ -1129,7 +1129,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		try {
 		
-			DLItensEstruturaProd dl = new DLItensEstruturaProd();
+			DLItensEstruturaProd dl = new DLItensEstruturaProd(null);
 			
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
@@ -1367,8 +1367,6 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			}
 			
 			btEstrutura.setEnabled( "F".equals(txtTipoProd.getVlrString()) );
-			btOP.setEnabled( "F".equals(txtTipoProd.getVlrString()) );
-			
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
 			// lcItRecMercItOS.carregaItens();
@@ -1384,6 +1382,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		else if ( cevt.getListaCampos() == lcItRecMercItOS ) {
 			atualizaStatusItOS();
 			reprocessaTabItOs();
+			btOP.setEnabled( "F".equals(txtTipoProdItOS.getVlrString()) );
 		}
 		else if ( cevt.getListaCampos() == lcProdItOS || cevt.getListaCampos() == lcProdItOS2 ) {
 			// Ser for um serviço deve ativar o botão de chamados
@@ -1840,7 +1839,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		try {
 			
-			DLItensEstruturaProd dl = new DLItensEstruturaProd();
+			DLItensEstruturaProd dl = new DLItensEstruturaProd(null);
 			
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
