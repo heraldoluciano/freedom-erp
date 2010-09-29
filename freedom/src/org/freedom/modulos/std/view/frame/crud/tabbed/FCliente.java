@@ -256,6 +256,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtContCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtContCliCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldPad txtContCliEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -998,6 +1002,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
 
+
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
 
 		adic( btAtEntrega, 400, 15, 30, 30 );
@@ -1010,6 +1015,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
 			adicCampo( txtCodMunicEnt, 7, 220, 70, 20, "CodMunicEnt", "Cod.munic.", ListaCampos.DB_FK, txtDescMunEnt, false );
 			adicDescFK( txtDescMunEnt, 80, 220, 290, 20, "NomeMunicEnt", "Nome do municipio" );
+			adicCampo( txtContCliEnt, 7, 260, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 
 		}
 		else {
@@ -1017,6 +1023,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicDescFK( txtDescPaisEnt, 80, 180, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidEnt, 7, 140, 120, 20, "CidEnt", "Cidade", ListaCampos.DB_SI, false );
 			adicCampo( txtUFEnt, 130, 140, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false );
+			adicCampo( txtContCliEnt, 7, 180, 260, 20, "ContCliEnt", "Contato para entrega", ListaCampos.DB_SI, false );
 		}
 
 		pinCob = new JPanelPad( 500, 290 );
@@ -1051,13 +1058,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			adicDescFK( txtNomeUFCob, 80, 180, 290, 20, "NomeUFCob", "Nome UF" );
 			adicCampo( txtCodMunicCob, 7, 220, 70, 20, "CodMunicCob", "Cod.munic.", ListaCampos.DB_FK, txtDescMunCob, false );
 			adicDescFK( txtDescMunCob, 80, 220, 290, 20, "NomeMunicCob", "Nome do municipio" );
+			adicCampo( txtContCliCob, 7, 260, 260, 20, "ContCliCob", "Contato para cobrança", ListaCampos.DB_SI, false );
 
 		}
 		else {
 			adicCampo( txtCodPaisCob, 7, 180, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
 			adicDescFK( txtDescPaisCob, 80, 180, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtCidCob, 7, 140, 120, 20, "CidCob", "Cidade", ListaCampos.DB_SI, false );
-			adicCampo( txtUFCob, 130, 140, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
+			adicCampo( txtUFCob, 130, 180, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false );
 		}
 
 		// Venda:
