@@ -474,9 +474,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 
 			while ( rs.next() ) {
 
-				tabDet.adicLinha();
-				tabDet.setColColor( -1, DETALHAMENTO.DTFABROP.ordinal(), Color.WHITE, Color.RED );
-				tabDet.setColColor( -1, DETALHAMENTO.QTDAPROD.ordinal(), Color.WHITE, Color.RED );
+				
 
 				BigDecimal qtdreserv = new BigDecimal( 0 );
 
@@ -494,54 +492,61 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 				totqtdemprod = totqtdemprod.add( qtdemprod );
 				totqtdaprod = totqtdaprod.add( qtdaprod );
 
-				tabDet.setValor( new Boolean( false ), row, DETALHAMENTO.MARCACAO.ordinal() );
+				if(qtdaprod.floatValue() > 0) {
+					tabDet.adicLinha();
+					tabDet.setColColor( -1, DETALHAMENTO.DTFABROP.ordinal(), Color.WHITE, Color.RED );
+					tabDet.setColColor( -1, DETALHAMENTO.QTDAPROD.ordinal(), Color.WHITE, Color.RED );
+					
+					tabDet.setValor( new Boolean( false ), row, DETALHAMENTO.MARCACAO.ordinal() );
+					
+					if ( qtdreq.floatValue() > 0 )  {
+						imgColuna = imgUrgente;
+					}
+					else {
+						imgColuna = imgNormal;
+					}
+						
+					tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
+					
+					tabDet.setValor( Funcoes.dateToStrDate( new Date() ), row, DETALHAMENTO.DTFABROP.ordinal() );
+					tabDet.setValor( rs.getInt( DETALHAMENTO.CODEMPPD.toString() ), row, DETALHAMENTO.CODEMPPD.ordinal() );
+					tabDet.setValor( rs.getInt( DETALHAMENTO.CODFILIALPD.toString() ), row, DETALHAMENTO.CODFILIALPD.ordinal() );
+					tabDet.setValor( rs.getInt( DETALHAMENTO.CODPROD.toString() ), row, DETALHAMENTO.CODPROD.ordinal() );
+					tabDet.setValor( rs.getString( DETALHAMENTO.REFPROD.toString() ), row, DETALHAMENTO.REFPROD.ordinal() );
+					tabDet.setValor( rs.getInt( DETALHAMENTO.SEQEST.toString() ), row, DETALHAMENTO.SEQEST.ordinal() );
+					tabDet.setValor( rs.getString( DETALHAMENTO.DESCPROD.toString().trim() ), row, DETALHAMENTO.DESCPROD.ordinal() );
+					
+					tabDet.setValor( qtdminimo, row, DETALHAMENTO.QTDMINPROD.ordinal() );
+					tabDet.setValor( qtdestoque, row, DETALHAMENTO.QTDESTOQUE.ordinal() );
+					tabDet.setValor( qtdreq, row, DETALHAMENTO.QTDREQ.ordinal() );				
+					tabDet.setValor( qtdemprod, row, DETALHAMENTO.QTDEMPROD.ordinal() );
+					tabDet.setValor( qtdaprod, row, DETALHAMENTO.QTDAPROD.ordinal() );
+	
+					row++;
+	
+				}
+	
+	
+				if ( totqtdaprod.floatValue() < 0 ) {
+					totqtdaprod = new BigDecimal( 0 );
+				}
+	
+				txtQtdRequisitada.setVlrBigDecimal( totqtdreq );
+				txtQtdEstoque.setVlrBigDecimal( totqtdestoq );
 				
-				if ( qtdreq.floatValue() > 0 )  {
-					imgColuna = imgUrgente;
+				if(txtCodProd.getVlrInteger()>0) {
+				
+					txtQtdProducao.setVlrBigDecimal( totqtdemprod );
+					txtQtdProduzir.setVlrBigDecimal( totqtdaprod );
+	
 				}
 				else {
-					imgColuna = imgNormal;
-				}
 					
-				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
-				
-				tabDet.setValor( Funcoes.dateToStrDate( new Date() ), row, DETALHAMENTO.DTFABROP.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODEMPPD.toString() ), row, DETALHAMENTO.CODEMPPD.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFILIALPD.toString() ), row, DETALHAMENTO.CODFILIALPD.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODPROD.toString() ), row, DETALHAMENTO.CODPROD.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.REFPROD.toString() ), row, DETALHAMENTO.REFPROD.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.SEQEST.toString() ), row, DETALHAMENTO.SEQEST.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.DESCPROD.toString().trim() ), row, DETALHAMENTO.DESCPROD.ordinal() );
-				
-				tabDet.setValor( qtdminimo, row, DETALHAMENTO.QTDMINPROD.ordinal() );
-				tabDet.setValor( qtdestoque, row, DETALHAMENTO.QTDESTOQUE.ordinal() );
-				tabDet.setValor( qtdreq, row, DETALHAMENTO.QTDREQ.ordinal() );				
-				tabDet.setValor( qtdemprod, row, DETALHAMENTO.QTDEMPROD.ordinal() );
-				tabDet.setValor( qtdaprod, row, DETALHAMENTO.QTDAPROD.ordinal() );
-
-				row++;
-
+					txtQtdProducao.setVlrString( "-" );
+					txtQtdProduzir.setVlrString( "-" );				
+				}
 			}
-
-
-			if ( totqtdaprod.floatValue() < 0 ) {
-				totqtdaprod = new BigDecimal( 0 );
-			}
-
-			txtQtdRequisitada.setVlrBigDecimal( totqtdreq );
-			txtQtdEstoque.setVlrBigDecimal( totqtdestoq );
 			
-			if(txtCodProd.getVlrInteger()>0) {
-			
-				txtQtdProducao.setVlrBigDecimal( totqtdemprod );
-				txtQtdProduzir.setVlrBigDecimal( totqtdaprod );
-
-			}
-			else {
-				
-				txtQtdProducao.setVlrString( "-" );
-				txtQtdProduzir.setVlrString( "-" );				
-			}
 			// Permitindo reordenação
 			if ( row > 0 ) {
 				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>( tabDet.getModel() );
