@@ -7,15 +7,14 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
-
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
@@ -1513,7 +1512,59 @@ public class RecMerc implements java.io.Serializable {
 
 	}
 
-	public Vector<Integer> geraRmas() {
+	
+	public Vector<Integer> geraRmasPorOS( ) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		Vector<Integer> ret = new Vector<Integer>();
+		ResultSet rs = null;
+
+		try {
+
+			sql.append( "select codrma from eqgerarmaossp(?,?,?,?) group by 1" );
+
+			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 3, getTicket() );
+			ps.setNull( 4, Types.INTEGER );
+			
+			rs = ps.executeQuery();
+			
+			int i= 0;
+			int numrmas = 0;
+			
+			while (rs.next()) {
+				
+				ret.add( rs.getInt( "CODRMA" ) );
+				numrmas ++;
+				
+			}
+			
+			ps.close();
+			
+			if(numrmas>0) {
+				Funcoes.mensagemInforma( orig, "RMA " + Funcoes.vectorToString( ret, "," ) + " gerada com sucesso!!!" );
+			}
+			else {
+				Funcoes.mensagemInforma( orig, "Nenhuma RMA foi gerada!!!" );
+			}
+
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, con, e );
+			setCodcompra( null );
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+	
+	public Vector<Integer> geraRmasPorItemx() {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
