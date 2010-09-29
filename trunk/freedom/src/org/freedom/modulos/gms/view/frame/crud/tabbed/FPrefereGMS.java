@@ -55,6 +55,8 @@ public class FPrefereGMS extends FTabDados {
 	
 	private ListaCampos lcTipoMovDS = new ListaCampos( this, "DS" );
 	
+	private ListaCampos lcProdServ = new ListaCampos( this, "SE" );
+	
 	private JCheckBoxPad cbUsaPrecoPecaServ = new JCheckBoxPad("Usar preço da peça no orçamento de serviços", "S", "N");
 
 	/****************
@@ -91,6 +93,13 @@ public class FPrefereGMS extends FTabDados {
 	private JPanelPad pinOS = new JPanelPad();
 	
 	private JPanelPad pinCompra = new JPanelPad();
+	
+	private JTextFieldPad txtCodProdServ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtRefProdServ = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldFK txtDescProdServ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	
 	public FPrefereGMS() {
 
@@ -165,7 +174,21 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoMovDS.setQueryCommit( false );
 		lcTipoMovDS.setReadOnly( true );
 		txtCodTipoMovDS.setTabelaExterna( lcTipoMovDS, FTipoMov.class.getCanonicalName() );
-
+		
+		/*****************************************************************
+		 * Serviço padrão *
+		 *****************************************************************/
+		lcProdServ.add( new GuardaCampo( txtCodProdServ, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdServ, false ) );
+		lcProdServ.add( new GuardaCampo( txtRefProdServ, "refprod", "referencia", ListaCampos.DB_SI, false ) );
+		lcProdServ.add( new GuardaCampo( txtDescProdServ, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false ) );
+		
+		lcProdServ.setWhereAdic( "TIPOPROD='S'" );
+		
+		lcProdServ.montaSql( false, "PRODUTO", "EQ" );
+		lcProdServ.setQueryCommit( false );
+		lcProdServ.setReadOnly( true );
+		txtCodProdServ.setTabelaExterna( lcProdServ, FProduto.class.getCanonicalName() );
+		txtCodProdServ.setNomeCampo( "codprod" );
 
 	}
 
@@ -202,8 +225,14 @@ public class FPrefereGMS extends FTabDados {
 		txtCodTipoMovDS.setFK( true );
 		txtCodTipoMovDS.setNomeCampo( "CodTipoRecMerc" );
 
-		adicDB( cbUsaPrecoPecaServ, 7, 90, 350, 20, "usaprecopecaserv", "", false );
+		adicCampo( txtCodProdServ, 7, 100, 70, 20, "CodProdSe", "Cód.Serv.", ListaCampos.DB_FK, txtDescProdServ, false );
+		adicDescFK( txtDescProdServ, 80, 100, 330, 20, "DescProd", "Descrição do serviço padrão" );
+		txtCodProdServ.setFK( true );
+		txtCodProdServ.setNomeCampo( "CodProd" );
+
 		
+		
+		adicDB( cbUsaPrecoPecaServ, 7, 130, 350, 20, "usaprecopecaserv", "", false );		
 		
 		setPainel( pinCompra );
 		adicTab( "Compra", pinCompra );
@@ -223,6 +252,7 @@ public class FPrefereGMS extends FTabDados {
 		lcTipoRecMercOS.setConexao( cn );
 		lcTipoMovCP.setConexao( cn );
 		lcTipoMovDS.setConexao( cn );
+		lcProdServ.setConexao( cn );
 
 		try {
 			lcCampos.carregaDados();
