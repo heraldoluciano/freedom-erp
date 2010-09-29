@@ -1056,6 +1056,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
     		imp.setPrc( 0, 0 );
     	}
     	if ( visualizar ) {
+    		imp.setEnabledBotaoImp( false );
     		imp.preview( this );
     	} else 	if ( ajustaNumcheq( listacheq, numconta, seqtalao ) ) {
    			imp.print();
