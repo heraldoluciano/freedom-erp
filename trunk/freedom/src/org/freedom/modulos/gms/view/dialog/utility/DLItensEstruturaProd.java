@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,15 +67,21 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 	private Integer seqest;
 
 	private int tipo;
+	
+	private BigDecimal qtdprod = new BigDecimal(1);
 
 	public enum ITENS {
 		SELECAO, SEQITEST, CODPRODPD, REFPRODPD,  DESCPROD, QTDITEST, CODFASE, RMAAUTOITEST;
 	}
 
-	public DLItensEstruturaProd() {
+	public DLItensEstruturaProd(BigDecimal qtdprodp) {
 
 		super();
-
+		
+		if(qtdprodp != null) {
+			qtdprod = qtdprodp;
+		}
+		
 		if(con==null) {
 			con = Aplicativo.getInstace().getConexao();
 		}
@@ -178,7 +185,11 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 				
 				tabItens.setValor( rs.getString( ITENS.DESCPROD.name() ), row, ITENS.DESCPROD.ordinal() );
 
-				tabItens.setValor( rs.getBigDecimal( ITENS.QTDITEST.name() ), row, ITENS.QTDITEST.ordinal() );
+				BigDecimal qtditest = rs.getBigDecimal( ITENS.QTDITEST.name());
+				
+				qtditest.multiply( qtdprod );
+				
+				tabItens.setValor( qtditest, row, ITENS.QTDITEST.ordinal() );
 				 
 				tabItens.setValor( rs.getInt( ITENS.CODFASE.name() ), row, ITENS.CODFASE.ordinal() );
 				tabItens.setValor( rs.getString( ITENS.RMAAUTOITEST.name() ), row, ITENS.RMAAUTOITEST.ordinal() );
