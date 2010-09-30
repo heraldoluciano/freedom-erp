@@ -157,7 +157,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Pesquisa Requisições de material" );
-		setAtribos( 10, 10, 555, 480 );
+		setAtribos( 10, 10, 900, 600 );
 
 		txtDtIni.setRequerido( true );
 		txtDtFim.setRequerido( true );
@@ -305,28 +305,30 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		tab.adicColuna( "Cód.OP." );// 4
 		tab.adicColuna( "Aprov." );// 5
 		tab.adicColuna( "Exp." );// 6
-		tab.adicColuna( "Dt. requisição" );// 7
-		tab.adicColuna( "Qt. requerida" );// 8
-		tab.adicColuna( "Dt. aprovação" );// 9
-		tab.adicColuna( "Qt. aprovada" );// 10
-		tab.adicColuna( "Dt. expedição" );// 11
-		tab.adicColuna( "Qt. expedida" );// 12
+		tab.adicColuna( "Dt.req." );// 7
+		tab.adicColuna( "Qt.req." );// 8
+		tab.adicColuna( "Dt.aprov." );// 9
+		tab.adicColuna( "Qt.aprov." );// 10
+		tab.adicColuna( "Dt.exp." );// 11
+		tab.adicColuna( "Qt.exp." );// 12
 		tab.adicColuna( "Saldo" );// 13
 
-		tab.setTamColuna( 12, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 70, 2 );
-		tab.setTamColuna( 150, 3 );
-		tab.setTamColuna( 70, 4 );
-		tab.setTamColuna( 40, 5 );
-		tab.setTamColuna( 40, 6 );
-		tab.setTamColuna( 90, 7 );
-		tab.setTamColuna( 90, 8 );
-		tab.setTamColuna( 90, 9 );
-		tab.setTamColuna( 90, 10 );
-		tab.setTamColuna( 90, 11 );
-		tab.setTamColuna( 90, 12 );
-		tab.setTamColuna( 90, 13 );
+		tab.setTamColuna( 12, 0 );//0
+		tab.setTamColuna( 70, 1 );//1
+		tab.setTamColuna( 70, 2 );//2
+		tab.setTamColuna( 200, 3 );//3
+		tab.setTamColuna( 70, 4 );//4
+		tab.setTamColuna( 40, 5 );//5
+		tab.setTamColuna( 40, 6 );//6
+		tab.setTamColuna( 60, 7 );//7
+		tab.setTamColuna( 60, 8 );//8
+		tab.setTamColuna( 75, 9 );//9
+		tab.setTamColuna( 60, 10 );//10
+		tab.setTamColuna( 60, 11 );//11
+		tab.setTamColuna( 60, 12 );//12
+		tab.setTamColuna( 60, 13 );//13
+		
+		tab.setRowHeight( 20 );
 
 		btBusca.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -448,8 +450,14 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		if ( usuario )
 			where += " AND (R.IDUSU=?) ";
 
-		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA," + "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA," + "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP " + "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
-				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA " + "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD " + "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " + where;
+		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA," 
+					+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA," 
+					+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP " 
+					+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+					+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA " 
+					+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD AND PD.TIPOPROD<>'S' " 
+					+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " 
+					+ where;
 
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -503,6 +511,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 				tab.setValor( imgColuna, iLin, 0 );// SitItRma
 				tab.setValor( new Integer( rs.getInt( 1 ) ), iLin, 1 );// CodRma
+				
 				tab.setValor( rs.getString( 2 ) == null ? "" : rs.getString( 2 ) + "", iLin, 2 );// CodProd
 				tab.setValor( rs.getString( 4 ) == null ? "" : rs.getString( 4 ).trim() + "", iLin, 3 );// DescProd
 				tab.setValor( rs.getString( 15 ) == null ? "" : rs.getString( 15 ) + "", iLin, 4 );// Cod OP
@@ -634,7 +643,9 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 	private void getAprova() {
 
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " + "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " 
+					+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
