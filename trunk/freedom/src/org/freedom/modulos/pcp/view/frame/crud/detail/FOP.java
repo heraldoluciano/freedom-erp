@@ -3038,7 +3038,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 		try {
 		
-			DLItensEstruturaProd dl = new DLItensEstruturaProd(txtQtdPrevProdOP.getVlrBigDecimal());
+			DLItensEstruturaProd dl = new DLItensEstruturaProd(txtQtdSugProdOP.getVlrBigDecimal());
 			
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
@@ -3074,33 +3074,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
 					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
 					
+					
+					
 					codfase = (Integer) item.get( DLItensEstruturaProd.ITENS.CODFASE.name() );
 					
 					gerarma = (String) item.get( "GERARMA" );
 					
 					insereItOpDinamica( codfase, codprod, refprod, qtditest, gerarma );
 					
-					/*
-					lcItRecMercItOS.insert( true );
-					
-					txtCodProdItOS.setVlrInteger( codprod );
-					txtRefProdItOS.setVlrString( refprod );
-					
-					if(comRef()) {
-
-						lcProdItOS2.carregaDados();
-						
-					}
-					else {
-						
-						lcProdItOS.carregaDados();
-						
-					}
-					
-					txtQtdItOSItOS.setVlrBigDecimal( qtditest );
-					
-					lcItRecMercItOS.post();
-				*/	
+				
 				}
 				lcCampos.carregaDados();
 			}
