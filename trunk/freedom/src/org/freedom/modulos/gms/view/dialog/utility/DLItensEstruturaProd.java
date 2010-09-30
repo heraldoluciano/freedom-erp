@@ -187,7 +187,9 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 
 				BigDecimal qtditest = rs.getBigDecimal( ITENS.QTDITEST.name());
 				
-				qtditest.multiply( qtdprod );
+				qtditest = qtditest.multiply( qtdprod );
+				
+				qtditest.setScale( 2 );
 				
 				tabItens.setValor( qtditest, row, ITENS.QTDITEST.ordinal() );
 				 
