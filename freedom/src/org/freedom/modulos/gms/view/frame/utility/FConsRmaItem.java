@@ -32,12 +32,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
@@ -55,6 +58,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.view.dialog.report.DLRRelRmaItem;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 
 public class FConsRmaItem extends FFilho implements ActionListener {
@@ -152,6 +157,10 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	boolean bAprova = false;
 
 	private Vector<?> vSitRMA = new Vector<Object>();
+
+	private HashMap<String, Object> prefere = null;
+	
+	private String ordem_rel = "R.CODRMA";
 
 	public FConsRmaItem() {
 
@@ -299,8 +308,8 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		txtDtFim.setVlrDate( new Date() );
 
 		tab.adicColuna( "" );// 0
-		tab.adicColuna( "Cód.rma." );// 1
-		tab.adicColuna( "Cód.prod." );// 2
+		tab.adicColuna( "Rma." );// 1
+		tab.adicColuna( "Prod." );// 2
 		tab.adicColuna( "Descrição do produto" );// 3
 		tab.adicColuna( "Cód.OP." );// 4
 		tab.adicColuna( "Aprov." );// 5
@@ -314,8 +323,8 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		tab.adicColuna( "Saldo" );// 13
 
 		tab.setTamColuna( 12, 0 );//0
-		tab.setTamColuna( 70, 1 );//1
-		tab.setTamColuna( 70, 2 );//2
+		tab.setTamColuna( 50, 1 );//1
+		tab.setTamColuna( 50, 2 );//2
 		tab.setTamColuna( 200, 3 );//3
 		tab.setTamColuna( 70, 4 );//4
 		tab.setTamColuna( 40, 5 );//5
@@ -327,7 +336,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		tab.setTamColuna( 60, 11 );//11
 		tab.setTamColuna( 60, 12 );//12
 		tab.setTamColuna( 60, 13 );//13
-		
+
 		tab.setRowHeight( 20 );
 
 		btBusca.addActionListener( this );
@@ -375,11 +384,72 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
 	}
 
-	/**
-	 * Carrega os valores para a tabela de consulta. Este método é executado após carregar o ListaCampos da tabela.
-	 */
-	private void carregaTabela() {
+	private void processaTabela(ResultSet rs) {
 
+		int iLin = 0;
+
+		tab.limpa();
+		vSitRMA = new Vector<Object>();
+		try {
+
+			while ( rs.next() ) {
+				tab.adicLinha();
+
+				String sitRMA = rs.getString( 5 );
+				String sitAprovRMA = rs.getString( 6 );
+				String sitExpRMA = rs.getString( 7 );
+				if ( sitRMA.equalsIgnoreCase( "PE" ) ) {
+					imgColuna = imgPendente;
+				}
+				else if ( sitRMA.equalsIgnoreCase( "CA" ) ) {
+					imgColuna = imgCancelada;
+				}
+				else if ( sitExpRMA.equals( "EP" ) || sitExpRMA.equals( "ET" ) ) {
+					imgColuna = imgExpedida;
+				}
+				else if ( sitAprovRMA.equals( "AP" ) || sitAprovRMA.equals( "AT" ) ) {
+					imgColuna = imgAprovada;
+				}
+
+				tab.setValor( imgColuna, iLin, 0 );// SitItRma
+				tab.setValor( new Integer( rs.getInt( 1 ) ), iLin, 1 );// CodRma
+
+				if( (Boolean) prefere.get( "USAREFPROD" )) {
+					tab.setValor( rs.getString( "REFPROD" ) == null ? "" : rs.getString( "REFPROD" ) + "", iLin, 2 );// CodProd
+				}
+				else {
+					tab.setValor( rs.getString( 2 ) == null ? "" : rs.getString( 2 ) + "", iLin, 2 );// CodProd
+				}
+
+				tab.setValor( rs.getString( 4 ) == null ? "" : rs.getString( 4 ).trim() + "", iLin, 3 );// DescProd
+				tab.setValor( rs.getString( 15 ) == null ? "" : rs.getString( 15 ) + "", iLin, 4 );// Cod OP
+				tab.setValor( rs.getString( 6 ) == null ? "" : rs.getString( 6 ) + "", iLin, 5 );// SitAprov
+				tab.setValor( rs.getString( 7 ) == null ? "" : rs.getString( 7 ) + "", iLin, 6 );// SitExp
+				tab.setValor( rs.getString( 8 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 8 ) ) + "", iLin, 7 );// Dt Req
+				tab.setValor( rs.getString( 9 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 9 ) ) + "", iLin, 9 );// Dt Aprov
+				tab.setValor( rs.getString( 10 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 10 ) ) + "", iLin, 11 );// Dt Exp
+				tab.setValor( rs.getString( 11 ) == null ? "" : rs.getString( 11 ) + "", iLin, 8 );// Qtd Req
+				tab.setValor( rs.getString( 12 ) == null ? "" : rs.getString( 12 ) + "", iLin, 10 );// Qtd Aprov
+				tab.setValor( rs.getString( 13 ) == null ? "" : rs.getString( 13 ) + "", iLin, 12 );// Qdt Exp
+				tab.setValor( rs.getString( 14 ) == null ? "" : rs.getString( 14 ) + "", iLin, 13 );// Saldo Prod
+
+				iLin++;
+
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void carregaTabela() {
+		processaTabela( executaQuery());
+	}
+
+	private ResultSet executaQuery() {
+
+		ResultSet rs = null;
 		String where = "";
 		boolean usaOr = false;
 		boolean usaWhere = false;
@@ -451,13 +521,15 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			where += " AND (R.IDUSU=?) ";
 
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA," 
-					+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA," 
-					+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP " 
-					+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
-					+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA " 
-					+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD AND PD.TIPOPROD<>'S' " 
-					+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " 
-					+ where;
+			+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA," 
+			+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP, PD.CODSECAO, SC.DESCSECAO, IT.CODITRMA "
+			+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+			+ "left outer join eqsecao sc on "
+			+ "sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao "
+			+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA " 
+			+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD AND PD.TIPOPROD<>'S' " 
+			+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " 
+			+ where + " order by " + ordem_rel;
 
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -484,57 +556,18 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				ps.setString( param++, txtCodUsu.getVlrString() );
 			}
 
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 
-			int iLin = 0;
-
-			tab.limpa();
-			vSitRMA = new Vector<Object>();
-			while ( rs.next() ) {
-				tab.adicLinha();
-
-				String sitRMA = rs.getString( 5 );
-				String sitAprovRMA = rs.getString( 6 );
-				String sitExpRMA = rs.getString( 7 );
-				if ( sitRMA.equalsIgnoreCase( "PE" ) ) {
-					imgColuna = imgPendente;
-				}
-				else if ( sitRMA.equalsIgnoreCase( "CA" ) ) {
-					imgColuna = imgCancelada;
-				}
-				else if ( sitExpRMA.equals( "EP" ) || sitExpRMA.equals( "ET" ) ) {
-					imgColuna = imgExpedida;
-				}
-				else if ( sitAprovRMA.equals( "AP" ) || sitAprovRMA.equals( "AT" ) ) {
-					imgColuna = imgAprovada;
-				}
-
-				tab.setValor( imgColuna, iLin, 0 );// SitItRma
-				tab.setValor( new Integer( rs.getInt( 1 ) ), iLin, 1 );// CodRma
-				
-				tab.setValor( rs.getString( 2 ) == null ? "" : rs.getString( 2 ) + "", iLin, 2 );// CodProd
-				tab.setValor( rs.getString( 4 ) == null ? "" : rs.getString( 4 ).trim() + "", iLin, 3 );// DescProd
-				tab.setValor( rs.getString( 15 ) == null ? "" : rs.getString( 15 ) + "", iLin, 4 );// Cod OP
-				tab.setValor( rs.getString( 6 ) == null ? "" : rs.getString( 6 ) + "", iLin, 5 );// SitAprov
-				tab.setValor( rs.getString( 7 ) == null ? "" : rs.getString( 7 ) + "", iLin, 6 );// SitExp
-				tab.setValor( rs.getString( 8 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 8 ) ) + "", iLin, 7 );// Dt Req
-				tab.setValor( rs.getString( 9 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 9 ) ) + "", iLin, 9 );// Dt Aprov
-				tab.setValor( rs.getString( 10 ) == null ? "" : StringFunctions.sqlDateToStrDate( rs.getDate( 10 ) ) + "", iLin, 11 );// Dt Exp
-				tab.setValor( rs.getString( 11 ) == null ? "" : rs.getString( 11 ) + "", iLin, 8 );// Qtd Req
-				tab.setValor( rs.getString( 12 ) == null ? "" : rs.getString( 12 ) + "", iLin, 10 );// Qtd Aprov
-				tab.setValor( rs.getString( 13 ) == null ? "" : rs.getString( 13 ) + "", iLin, 12 );// Qdt Exp
-				tab.setValor( rs.getString( 14 ) == null ? "" : rs.getString( 14 ) + "", iLin, 13 );// Saldo Prod
-
-				iLin++;
-
-			}
-
-			con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
+
+		return rs;
+
 	}
+
 
 	private void imprimir( boolean bVisualizar ) {
 
@@ -543,94 +576,140 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
 		boolean bImpCot = false;
 
-		/*
-		 * bImpCot = Funcoes.mensagemConfirma(this, "Deseja imprimir informações de cotações de preço?") == 0 ? true : false;
-		 */
+		DLRRelRmaItem dl = new DLRRelRmaItem();
 
 		try {
-			imp.limpaPags();
-			for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
-				if ( imp.pRow() == 0 ) {
-					imp.montaCab();
-					imp.setTitulo( "Relatório de Requisições de material" );
-					imp.addSubTitulo( "Relatório de Requisições de material" );
-					imp.impCab( 136, true );
-					// imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say( imp.pRow() + 0, 0, "| Rma." );
-					imp.say( imp.pRow() + 0, 15, "| Emissão" );
-					imp.say( imp.pRow() + 0, 29, "| Situação" );
-					imp.say( imp.pRow() + 0, 45, "| Motivo." );
-					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 
-					if ( bImpCot ) {
-						imp.say( imp.pRow() + 0, 0, "| Nro. Pedido" );
-						imp.say( imp.pRow() + 0, 15, "| Nro. Nota" );
-						imp.say( imp.pRow() + 0, 29, "| Data Fat." );
-						imp.say( imp.pRow() + 0, 41, "| " );
-						imp.say( imp.pRow() + 0, 56, "| " );
-						imp.say( imp.pRow() + 0, 87, "| Vlr. Item Fat." );
-						imp.say( imp.pRow() + 0, 105, "| " );
-						imp.say( imp.pRow() + 0, 124, "| " );
-						imp.say( imp.pRow() + 0, 135, "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-
-					}
-
-					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-
-				}
-
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "|" + tab.getValor( iLin, 1 ) );
-				imp.say( imp.pRow() + 0, 15, "| " + tab.getValor( iLin, 2 ) );
-//				imp.say( imp.pRow() + 0, 29, "| " + vSitRMA.elementAt( iLin ).toString() );
-				String sMotivo = "" + tab.getValor( iLin, 3 );
-				imp.say( imp.pRow() + 0, 45, "| " + sMotivo.substring( 0, sMotivo.length() > 89 ? 89 : sMotivo.length() ).trim() );
-				imp.say( imp.pRow() + 0, 135, "| " );
-
-				if ( bImpCot ) {
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 2, "|" + tab.getValor( iLin, 2 ) );
-					imp.say( imp.pRow() + 0, 15, "|" + tab.getValor( iLin, 3 ) );
-					imp.say( imp.pRow() + 0, 29, "|" );
-					imp.say( imp.pRow() + 0, 41, "|" );
-					imp.say( imp.pRow() + 0, 56, "|" );
-					imp.say( imp.pRow() + 0, 87, "|" + tab.getValor( iLin, 12 ) );
-					imp.say( imp.pRow() + 0, 105, "|" );
-					imp.say( imp.pRow() + 0, 124, "|" );
-					imp.say( imp.pRow() + 0, 135, "|" );
-				}
-
-				if ( tab.getValor( iLin, 9 ) != null ) {
-				//	bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
-				}
-
-				if ( imp.pRow() >= linPag ) {
-					imp.incPags();
-					imp.eject();
-				}
+			dl.setVisible( true );
+			if ( dl.OK == false ) {
+				dl.dispose();
+				return;
 			}
 
-			imp.say( imp.pRow() + 1, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-			imp.eject();
+			if ( "T".equals( dl.getTipo() ) ) {
 
-			imp.fechaGravacao();
+				try {
+					imp.limpaPags();
+					for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
+						if ( imp.pRow() == 0 ) {
+							imp.montaCab();
+							imp.setTitulo( "Relatório de Requisições de material" );
+							imp.addSubTitulo( "Relatório de Requisições de material" );
+							imp.impCab( 136, true );
+							// imp.say(imp.pRow()+1,0,""+imp.comprimido());
+							imp.say( imp.pRow() + 0, 0, "| Rma." );
+							imp.say( imp.pRow() + 0, 15, "| Emissão" );
+							imp.say( imp.pRow() + 0, 29, "| Situação" );
+							imp.say( imp.pRow() + 0, 45, "| Motivo." );
+							imp.say( imp.pRow() + 0, 135, "|" );
+							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 
-			con.commit();
+							if ( bImpCot ) {
+								imp.say( imp.pRow() + 0, 0, "| Nro. Pedido" );
+								imp.say( imp.pRow() + 0, 15, "| Nro. Nota" );
+								imp.say( imp.pRow() + 0, 29, "| Data Fat." );
+								imp.say( imp.pRow() + 0, 41, "| " );
+								imp.say( imp.pRow() + 0, 56, "| " );
+								imp.say( imp.pRow() + 0, 87, "| Vlr. Item Fat." );
+								imp.say( imp.pRow() + 0, 105, "| " );
+								imp.say( imp.pRow() + 0, 124, "| " );
+								imp.say( imp.pRow() + 0, 135, "|" );
+								imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de orçamentos!\n" + err.getMessage(), true, con, err );
+							}
+
+							imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+
+						}
+
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, "|" + tab.getValor( iLin, 1 ) );
+						imp.say( imp.pRow() + 0, 15, "| " + tab.getValor( iLin, 2 ) );
+						//				imp.say( imp.pRow() + 0, 29, "| " + vSitRMA.elementAt( iLin ).toString() );
+						String sMotivo = "" + tab.getValor( iLin, 3 );
+						imp.say( imp.pRow() + 0, 45, "| " + sMotivo.substring( 0, sMotivo.length() > 89 ? 89 : sMotivo.length() ).trim() );
+						imp.say( imp.pRow() + 0, 135, "| " );
+
+						if ( bImpCot ) {
+							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+							imp.say( imp.pRow() + 0, 2, "|" + tab.getValor( iLin, 2 ) );
+							imp.say( imp.pRow() + 0, 15, "|" + tab.getValor( iLin, 3 ) );
+							imp.say( imp.pRow() + 0, 29, "|" );
+							imp.say( imp.pRow() + 0, 41, "|" );
+							imp.say( imp.pRow() + 0, 56, "|" );
+							imp.say( imp.pRow() + 0, 87, "|" + tab.getValor( iLin, 12 ) );
+							imp.say( imp.pRow() + 0, 105, "|" );
+							imp.say( imp.pRow() + 0, 124, "|" );
+							imp.say( imp.pRow() + 0, 135, "|" );
+						}
+
+						if ( tab.getValor( iLin, 9 ) != null ) {
+							//	bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
+						}
+
+						if ( imp.pRow() >= linPag ) {
+							imp.incPags();
+							imp.eject();
+						}
+					}
+
+					imp.say( imp.pRow() + 1, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+					imp.eject();
+
+					imp.fechaGravacao();
+
+					con.commit();
+
+					if ( bVisualizar ) {
+						imp.preview( this );
+					}
+					else {
+						imp.print();
+					}
+
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro consulta tabela de orçamentos!\n" + err.getMessage(), true, con, err );
+				}				
+
+			}
+			else if ( "G".equals( dl.getTipo() ) ) {
+				
+				ordem_rel = dl.getValor();
+				
+				imprimirGrafico( bVisualizar, executaQuery() );
+
+			}
+
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+
+	}
+
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "COMREF", (Boolean) prefere.get( "USAREFPROD" ) ? "S" : "N" );
+		
+		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_RMA_ITEM.jasper", "Expedição de RMA", null, rs, hParam, this );
 
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de itens de RMA!" + err.getMessage(), true, con, err );
+			}
 		}
 	}
 
+	
 	private void abreRma() {
 
 		int iRma = ( (Integer) tab.getValor( tab.getLinhaSel(), 1 ) ).intValue();
@@ -644,8 +723,8 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private void getAprova() {
 
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " 
-					+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
-		
+			+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -706,24 +785,35 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 	}
 
-	private int buscaVlrPadrao() {
+	private HashMap<String, Object> getPrefere() {
 
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		HashMap<String, Object> ret = new HashMap<String, Object>();
+
+		String sSQL = "SELECT ANOCENTROCUSTO, USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+
 		try {
+
 			PreparedStatement ps = con.prepareStatement( sSQL );
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
 			ResultSet rs = ps.executeQuery();
-			if ( rs.next() )
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
+
+			if ( rs.next() ) {
+				ret.put( "ANOCENTROCUSTO", rs.getInt( "ANOCENTROCUSTO" ));
+				ret.put( "USAREFPROD", "S".equals(rs.getString( "USAREFPROD"  )) );
+			}	
+
 			rs.close();
 			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage() );
+
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar preferencias.\n" + err.getMessage() );
 		}
 
-		return iRet;
+		return ret;
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -735,7 +825,10 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		lcProd.setConexao( cn );
 		lcUsuario.setConexao( cn );
 		lcCC.setConexao( cn );
-		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaVlrPadrao() );
+
+		prefere = getPrefere();
+
+		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + ( Integer ) prefere.get( "ANOCENTROCUSTO" ) ) ;
 		habCampos();
 	}
 }
