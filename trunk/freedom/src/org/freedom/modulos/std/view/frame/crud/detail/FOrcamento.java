@@ -844,7 +844,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	// com ou sem Referência sendo PK;
 	private void montaDetalhe() {
 
-		setAltDet( 100 );
+		setAltDet( 100 ); 
 		pinDet = new JPanelPad( 740, 100 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
@@ -869,6 +869,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		adicDescFK( txtDescProd, 110, 20, ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USALOTEORC.ordinal() ] ) ? 187 : 277 ), 20, "DescProd", "Descrição do produto" );
 
+		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
+		
 		if ( (Boolean) oPrefs[ Orcamento.PrefOrc.USALOTEORC.ordinal() ] ) {
 			adicCampo( txtCodLote, 300, 20, 88, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		}
@@ -894,7 +896,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicDescFK( txtDescAlmoxItOrc, 454, 60, 249, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicDescFK( txtSldLiqProd, 706, 60, 57, 20, "SldLiqProd", "Saldo" );
 
-		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
