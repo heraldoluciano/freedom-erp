@@ -931,6 +931,41 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	}
 
+	private static Integer procuraOrcOs(Integer ticket) {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		DbConnection con = null;
+		ResultSet rs = null;
+		Integer ret = null;
+		
+		try {
+			con = Aplicativo.getInstace().getConexao();
+			
+			sql.append( "select first 1 io.codorc from eqitrecmercitositorc io where io.codemp=? and io.codfilial=? and io.ticket=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( 3, ticket );
+			
+			rs = ps.executeQuery();
+			
+			
+			if(rs.next()) {
+				ret = rs.getInt( 1 );
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
 	public static void geraOrcamento(Integer ticket, Integer codorcgrid, String statustxt, Integer codcli, Component corig) {
 
 		StringBuilder sql = new StringBuilder();
@@ -959,14 +994,31 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 					Integer codorc = null;
 
-					if(parametros != null) {
-						codorc = recmerc.geraOrcamento(parametros);
+					if(codorcgrid == null) {
+						codorcgrid = procuraOrcOs( ticket );
 					}
+					
+					if(codorcgrid == null) {
+					
+						if(parametros != null) {
+							codorc = recmerc.geraOrcamento(parametros, null);
+						}
+	
+						if ( codorc != null && codorc > 0 ) {
+	
+							abreorcamento( codorc );
+	
+						}
+					}
+					else {
 
-					if ( codorc != null && codorc > 0 ) {
-
-						abreorcamento( codorc );
-
+						if ( Funcoes.mensagemConfirma( corig, "Já existe o orçamento de nro.: " + codorcgrid + " para este ticket!\n" +
+								"Confirma o reprocessamento de orçamento?" ) == JOptionPane.YES_OPTION ) {
+							
+							codorc = recmerc.geraOrcamento(parametros, codorcgrid);
+							
+						}
+						
 					}
 				}
 

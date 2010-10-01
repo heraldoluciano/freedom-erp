@@ -53,6 +53,7 @@ import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -159,8 +160,10 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private Vector<?> vSitRMA = new Vector<Object>();
 
 	private HashMap<String, Object> prefere = null;
-	
+
 	private String ordem_rel = "R.CODRMA";
+
+	private JRadioGroup<?, ?> rgTipoRMA = null;
 
 	public FConsRmaItem() {
 
@@ -270,15 +273,29 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		JLabelPad lbStatus = new JLabelPad( " Filtrar:" );
 		lbStatus.setOpaque( true );
 
+		Vector<String> vValsTR = new Vector<String>();
+		Vector<String> vLabsTR = new Vector<String>();
+		vLabsTR.addElement( "Material de Coleta" );
+		vLabsTR.addElement( "Material de produção" );
+		vLabsTR.addElement( "Todos" );
+
+		vValsTR.addElement( "C" );
+		vValsTR.addElement( "P" );
+		vValsTR.addElement( "T" );
+
+		rgTipoRMA = new JRadioGroup<String, String>( 3, 1, vLabsTR, vValsTR );
+
 		pinCab.adic( new JLabelPad( "Período:" ), 7, 5, 50, 20 );
 		pinCab.adic( txtDtIni, 7, 25, 95, 20 );
 		pinCab.adic( new JLabelPad( "Até" ), 111, 25, 27, 20 );
 		pinCab.adic( txtDtFim, 139, 25, 95, 20 );
 
-		pinCab.adic( new JLabelPad( "Cód.usu." ), 237, 5, 70, 20 );
-		pinCab.adic( txtCodUsu, 237, 25, 80, 20 );
-		pinCab.adic( new JLabelPad( "Nome do usuário" ), 320, 5, 153, 20 );
-		pinCab.adic( txtNomeUsu, 320, 25, 163, 20 );
+
+		pinCab.adic( txtCodUsu, 237, 25, 80, 20, "Cód.usu." );		
+		pinCab.adic( txtNomeUsu, 320, 25, 163, 20, "Nome do usuário" );
+
+		pinCab.adic( rgTipoRMA, 500, 20, 200, 60 );
+
 
 		pinCab.adic( new JLabelPad( "Cód.prod." ), 7, 45, 80, 20 );
 		pinCab.adic( txtCodProd, 7, 65, 80, 20 );
@@ -421,7 +438,21 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 					tab.setValor( rs.getString( 2 ) == null ? "" : rs.getString( 2 ) + "", iLin, 2 );// CodProd
 				}
 
-				tab.setValor( rs.getString( 4 ) == null ? "" : rs.getString( 4 ).trim() + "", iLin, 3 );// DescProd
+				String descprod = rs.getString( 4 ) == null ? "" : rs.getString( 4 ).trim() + ""; 
+				
+				String numserie = rs.getString( "numserie" );
+				
+				if(numserie.length()>0) {				
+					descprod = descprod + " ( " + numserie + " ) ";
+				}
+				
+				if("S".equals(rs.getString("garantia") ) ) {
+					
+					descprod = descprod + "[G]";
+					
+				}
+				
+				tab.setValor( descprod , iLin, 3 );// DescProd
 				tab.setValor( rs.getString( 15 ) == null ? "" : rs.getString( 15 ) + "", iLin, 4 );// Cod OP
 				tab.setValor( rs.getString( 6 ) == null ? "" : rs.getString( 6 ) + "", iLin, 5 );// SitAprov
 				tab.setValor( rs.getString( 7 ) == null ? "" : rs.getString( 7 ) + "", iLin, 6 );// SitExp
@@ -485,6 +516,9 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			}
 			usaWhere = true;
 		}
+		else {
+			where = where + " and (SitExpItRma in ('PE','EP')) ";
+		}
 		if ( cbCanceladas.getVlrString().equals( "S" ) ) {
 			if ( where.trim().equals( "" ) ) {
 				where = " SitItRma ='CA'";
@@ -520,15 +554,51 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		if ( usuario )
 			where += " AND (R.IDUSU=?) ";
 
+		if("P".equals(rgTipoRMA.getVlrString())) {			
+			where = where + " and (r.codop is not null) ";			
+		}
+		else if("C".equals(rgTipoRMA.getVlrString())) {
+			where = where + " and (it.ticket is not null) ";
+		}
+		/*
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA," 
 			+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA," 
 			+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP, PD.CODSECAO, SC.DESCSECAO, IT.CODITRMA "
 			+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 			+ "left outer join eqsecao sc on "
+
 			+ "sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao "
 			+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA " 
 			+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD AND PD.TIPOPROD<>'S' " 
 			+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " 
+			+ where + " order by " + ordem_rel;
+		 */
+		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA, "
+			+ " IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA, "
+			+ " IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP, PD.CODSECAO, SC.DESCSECAO, IT.CODITRMA, "
+			+ " coalesce(ir.numserie,'') numserie, coalesce(ir.garantia,'N') garantia "
+
+			+ " FROM EQITRMA IT "
+
+			+ " left outer join EQRMA R on "
+			+ " R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
+
+			+ " inner join EQPRODUTO PD on "
+			+ " PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD AND PD.TIPOPROD<>'S' "
+
+			+ " left outer join eqsecao sc on "
+			+ " sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao "
+
+			+ " left outer join ppop op on "
+			+ " op.codemp=r.codempof and op.codfilial=r.codfilialof and op.codop=r.codop and op.seqop=r.seqop "
+
+			+ " left outer join eqitrecmerc ir on "
+			+ " ir.codemp=op.codempos and ir.codfilial=op.codfilialos and ir.ticket=op.ticket and ir.coditrecmerc=op.coditrecmerc "
+
+			+ " WHERE "
+
+			+ " ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
+
 			+ where + " order by " + ordem_rel;
 
 		try {
@@ -673,9 +743,9 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 			}
 			else if ( "G".equals( dl.getTipo() ) ) {
-				
+
 				ordem_rel = dl.getValor();
-				
+
 				imprimirGrafico( bVisualizar, executaQuery() );
 
 			}
@@ -684,8 +754,8 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 
 	}
 
@@ -694,7 +764,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "COMREF", (Boolean) prefere.get( "USAREFPROD" ) ? "S" : "N" );
-		
+
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_RMA_ITEM.jasper", "Expedição de RMA", null, rs, hParam, this );
 
 		if ( bVisualizar ) {
@@ -709,7 +779,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
 	}
 
-	
+
 	private void abreRma() {
 
 		int iRma = ( (Integer) tab.getValor( tab.getLinhaSel(), 1 ) ).intValue();
@@ -832,3 +902,4 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		habCampos();
 	}
 }
+
