@@ -453,7 +453,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE FROM VDITORCAMENTO IT, EQPRODUTO P " );
 					sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
 					sql.append( "AND P.CODEMP=IT.CODEMPPD AND ");
-					sql.append( "((IT.ACEITEITORC='S' AND IT.EMITITORC='N' AND IT.APROVITORC='S') OR (IT.SITPRODITORC='PD' and IT.APROVITORC='S')) ");
+					sql.append( "((IT.ACEITEITORC='S' AND IT.EMITITORC='N' AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR (IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.EMITITORC='N')) ");
 					sql.append( "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
 					sql.append( "(" + scodorcs + ") " );
 					sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
