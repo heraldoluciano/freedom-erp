@@ -200,7 +200,7 @@ public class FRColetas extends FRelatorio {
 
 		sql.append( "select " );
 		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.numserie " );
+		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.numserie, it.garantia " );
 		sql.append( "from " );
 		sql.append( "eqrecmerc rm " );
 		sql.append( "left outer join vdcliente cl on " );
@@ -288,7 +288,7 @@ public class FRColetas extends FRelatorio {
 
 			sql.append( "select " );
 			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.garantia, it.numserie " );
 			sql.append( "from " );
 			sql.append( "eqrecmerc rm " );
 			sql.append( "left outer join vdcliente cl on " );
@@ -322,7 +322,7 @@ public class FRColetas extends FRelatorio {
 		//	sql.append( "group by 1,2,3,4 " );
 
 			if( "C".equals(rgTipo.getVlrString()) ) {			
-				sql.append( "order by rm.codcli, pd.refprod " );
+				sql.append( "order by rm.codcli, rm.ticket, pd.refprod " );
 			}
 			else if( "D".equals(rgTipo.getVlrString()) ) {
 				sql.append( "order by pd.refprod " );
@@ -387,7 +387,7 @@ public class FRColetas extends FRelatorio {
 			sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
 			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie , " );
 
-			sql.append( "pd.descprod, rm.ticket " );
+			sql.append( "pd.descprod, rm.ticket, it.garantia " );
 
 			sql.append( "from " );
 			sql.append( "eqrecmerc rm " );
