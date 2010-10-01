@@ -107,7 +107,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 
 		super( false );
 
-		setAtribos( 50, 50, 600, 450 );
+		setAtribos( 50, 50, 850, 450 );
 
 		Container c = getTela();
 
@@ -168,6 +168,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 		tab.setTamColuna( 70, 9 );
 		tab.setTamColuna( 90, 10 );
 		tab.setTamColuna( 100, 11 );
+		
+		tab.setRowHeight( 21 );
 
 		txtEntrada.addFocusListener( this );
 		btSair.addActionListener( this );
@@ -578,8 +580,6 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 							buscaItemDistribuido();
 						}
 
-						txtEntrada.requestFocus();
-
 					}
 					else if ( iCampos == 3 ) {
 
@@ -607,11 +607,17 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 								sResto = sResto.substring( sResto.indexOf( "#" ) + 1 );
 							}
 							buscaItemRMA();
-						}	
+						}
+						
+					
+						
 					}
 					else {
 						Funcoes.mensagemInforma( this, "Entrada inválida!\nNúmero de campos incoerente." + Funcoes.contaChar( sTexto, '#' ) );
 					}
+					
+					txtEntrada.requestFocus();
+					
 				}
 				else {
 					Funcoes.mensagemInforma( this, "Entrada inválida!\nTexto em branco." );
