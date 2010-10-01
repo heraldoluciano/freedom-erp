@@ -2194,7 +2194,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					evt.cancela();
 					return;
 				}
-				if ( txtPrecoItOrc.getVlrBigDecimal().floatValue() <= 0 ) {
+				if ( txtPrecoItOrc.getVlrBigDecimal().floatValue() < 0 ) {
 					Funcoes.mensagemInforma( this, "Preço invalido!" );
 					evt.cancela();
 					return;
