@@ -307,6 +307,9 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 500500000, TP_OPCAO_ITEM, "Preço médio/diário", "Preço médio/diário", 'P', 500501200, 2, true, FRPrecoMedioRecMerc.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Expedição", "", 'x', 600000000, 0, false, null );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm', 600100000, 1, true, FConsRMA.class );	
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Pesquisa item de Rma", "Pesquisa item de requisição de material", 'i', 600200000, 1, true, FConsRmaItem.class );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 600300000, 1, true, FBaixaRMACodBar.class );		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 700100000, 1, true, FControleServicos.class );
