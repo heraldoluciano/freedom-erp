@@ -236,113 +236,120 @@ public class FRemCnab extends FRemFBN {
 	private RegT400 getRegT400( final StuffRec rec, int seqregistro ) throws ExceptionCnab {
 
 		RegT400 reg = cnabutil.new RegT400();
-		Banco banco = null;
-
-		if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-			banco = new BancodoBrasil();
-		}
-		else if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
-			banco = new Bradesco();
-		}
-
-		reg.setCodBanco( txtCodBanco.getVlrString() );
-		reg.setLoteServico( loteServico );
-		reg.setTipoOperacao( "R" );
-		reg.setFormaLancamento( "00" );
-		reg.setTipoInscEmp( 2 );
-		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
-		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
-		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
-		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
-		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
-		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
-		reg.setDigAgConta( null );
-		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
-		reg.setMsg1( null );
-		reg.setMsg2( null );
-		reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
-		reg.setDataRemRet( Calendar.getInstance().getTime() );
-		reg.setDataCred( null );
-				
-		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 		
-		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
+		try {
 
-		reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
-
-		reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
-
-		if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-			reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
+			Banco banco = null;
+	
+			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+				banco = new BancodoBrasil();
+			}
+			else if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+				banco = new Bradesco();
+			}
+	
+			reg.setCodBanco( txtCodBanco.getVlrString() );
+			reg.setLoteServico( loteServico );
+			reg.setTipoOperacao( "R" );
+			reg.setFormaLancamento( "00" );
+			reg.setTipoInscEmp( 2 );
+			reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+			reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
+			reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+			reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+			reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+			reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+			reg.setDigAgConta( null );
+			reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
+			reg.setMsg1( null );
+			reg.setMsg2( null );
+			reg.setNrRemRet( (Integer) prefs.get( FbnUtil.EPrefs.NROSEQ ) );
+			reg.setDataRemRet( Calendar.getInstance().getTime() );
+			reg.setDataCred( null );
+					
+			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
+			
+			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
+	
+			reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
+	
+			reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+	
+			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+				reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
+			}
+			else {
+				reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
+			}
+			
+			reg.setVlrPercMulta( new BigDecimal( 0 ) );
+			
+			reg.setVariacaoCarteira( (String) infocarteira.get( "VARIACAO" ) );
+	
+			reg.setCodMovimento( codMovimento );
+	
+			reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
+	
+			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
+	
+			reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+	
+			reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
+	
+			reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
+	
+			reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
+	
+			reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
+	
+			reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
+	
+			reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
+	
+			reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
+	
+			reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
+	
+			reg.setVlrAbatimento( new BigDecimal( 0 ) );
+			
+			reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
+			
+			reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
+	
+			String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
+	
+			reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal() ] ) );
+	
+			if ( 2 == reg.getTipoInscCli() ) {
+				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
+			}
+			else if ( 1 == reg.getTipoInscCli() ) {
+				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
+			}
+			else {
+				reg.setTipoInscCli( 0 );
+				reg.setCpfCnpjCli( "0" );
+			}
+	
+			reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
+			reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" : dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
+	
+			// reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
+			reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
+			reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
+			reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
+	
+			reg.setTipoInscAva( 0 );
+			reg.setCpfCnpjAva( null );
+			reg.setRazAva( null );
+	
+			reg.setMsg1( null );
+			reg.setMsg2( null );
+			reg.setSeqregistro( seqregistro );
 		}
-		else {
-			reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
+		catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		reg.setVlrPercMulta( new BigDecimal( 0 ) );
-		
-		reg.setVariacaoCarteira( (String) infocarteira.get( "VARIACAO" ) );
-
-		reg.setCodMovimento( codMovimento );
-
-		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
-
-		reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
-
-		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
-
-		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
-
-		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
-
-		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
-
-		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
-
-		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
-
-		reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
-
-		reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
-
-		reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
-
-		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		
-		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
-		
-		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
-
-		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
-
-		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal() ] ) );
-
-		if ( 2 == reg.getTipoInscCli() ) {
-			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-		}
-		else if ( 1 == reg.getTipoInscCli() ) {
-			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-		}
-		else {
-			reg.setTipoInscCli( 0 );
-			reg.setCpfCnpjCli( "0" );
-		}
-
-		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
-		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
-
-		// reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
-		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
-		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
-		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
-
-		reg.setTipoInscAva( 0 );
-		reg.setCpfCnpjAva( null );
-		reg.setRazAva( null );
-
-		reg.setMsg1( null );
-		reg.setMsg2( null );
-		reg.setSeqregistro( seqregistro );
 
 		return reg;
 	}
