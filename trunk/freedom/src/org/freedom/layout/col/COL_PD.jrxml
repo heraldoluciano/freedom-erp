@@ -32,7 +32,7 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, 
 pd.codprod, pd.refprod, pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, 
-vd.nomevend, mn.nomemunic 
+vd.nomevend, mn.nomemunic, it.garantia, it.numserie 
 from eqrecmerc rm 
 left outer join vdcliente cl on cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl 
 and cl.codcli=rm.codcli left outer join sgmunicipio mn on mn.codpais=cl.codpais 
@@ -61,6 +61,8 @@ order by it.coditrecmerc]]></queryString>
 	<field name="DOCRECMERC" class="java.lang.Long"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="NOMEMUNIC" class="java.lang.String"/>
+	<field name="GARANTIA" class="java.lang.String"/>
+	<field name="NUMSERIE" class="java.lang.String"/>
 
 	<variable name="QTDTOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITRECMERC}]]></variableExpression>
@@ -80,8 +82,8 @@ order by it.coditrecmerc]]></queryString>
 			</band>
 			</groupFooter>
 		</group>
-		<group  name="CLIENTE" >
-			<groupExpression><![CDATA[$F{CODCLI}]]></groupExpression>
+		<group  name="CLIENTE" isStartNewPage="true" >
+			<groupExpression><![CDATA[$F{CODCLI} + "-" + $F{TICKET}]]></groupExpression>
 			<groupHeader>
 			<band height="71"  isSplitAllowed="true" >
 				<staticText>
@@ -220,7 +222,7 @@ order by it.coditrecmerc]]></queryString>
 					<reportElement
 						x="124"
 						y="49"
-						width="295"
+						width="199"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -233,9 +235,9 @@ order by it.coditrecmerc]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="428"
+						x="444"
 						y="49"
-						width="47"
+						width="34"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -285,6 +287,36 @@ order by it.coditrecmerc]]></queryString>
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="328"
+						y="50"
+						width="52"
+						height="11"
+						forecolor="#010101"
+						backcolor="#FFFFFF"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Série]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="401"
+						y="50"
+						width="40"
+						height="11"
+						forecolor="#010101"
+						backcolor="#FFFFFF"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Doc.]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -491,7 +523,7 @@ order by it.coditrecmerc]]></queryString>
 					<reportElement
 						x="124"
 						y="2"
-						width="295"
+						width="199"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -504,9 +536,9 @@ order by it.coditrecmerc]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="428"
+						x="444"
 						y="1"
-						width="47"
+						width="34"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -516,6 +548,53 @@ order by it.coditrecmerc]]></queryString>
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCRECMERC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="2"
+						width="41"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCRECMERC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="381"
+						y="2"
+						width="18"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-8">
+							<printWhenExpression><![CDATA[new Boolean("S".equals($F{GARANTIA}))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["[G]"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="329"
+						y="2"
+						width="51"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMSERIE}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
