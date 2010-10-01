@@ -1192,7 +1192,55 @@ public class RecMerc implements java.io.Serializable {
 		return ret;
 	}
 
-	public Integer geraOrcamento( HashMap<Object, Object> parametros ) {
+	public Integer excluiOrcOS(Integer codorc) {
+		
+		Integer ret = 0;
+
+		try {
+
+			StringBuilder sql_item = new StringBuilder();
+
+			sql_item.append( "delete from vditorcamento where codemp=? and codfilial=? and codorc=? " );
+			
+			StringBuilder sql_orc = new StringBuilder();
+
+			sql_item.append( "delete from vdorcamento where codemp=? and codfilial=? and codorc=? " );
+
+			
+			// Apagando itens de orçamento
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_item.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+			ps.setInt( 3, codorc );
+
+			ps.executeUpdate();
+
+			ps.close();
+			con.commit();
+
+			// Apagando cabeçalho do orçamento
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_orc.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+			ps.setInt( 3, codorc );
+
+			ret = ps.executeUpdate();
+
+			ps.close();
+			con.commit();
+			
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1206,6 +1254,12 @@ public class RecMerc implements java.io.Serializable {
 
 		try {
 
+			if(codorc_atu !=null) {
+				
+				excluiOrcOS( codorc_atu );
+				
+			}
+			
 			geraCodOrc();
 
 			geraCodVend();
