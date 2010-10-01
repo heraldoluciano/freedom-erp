@@ -150,6 +150,36 @@ public class StatusOS implements java.io.Serializable {
 
 	}
 	
+	public static Vector<String> getLabelsItOS() {
+
+		Vector<String> ret = new Vector<String>();
+
+		ret.add( IT_OS_NAO_SALVO.getName() );
+		ret.add( IT_OS_PENDENTE.getName() );
+		ret.add( IT_OS_ENCAMINHADO.getName() );
+		ret.add( IT_OS_EM_ANDAMENTO.getName() );
+		ret.add( IT_OS_CONCLUIDO.getName() );
+
+		return ret;
+
+	}
+
+	public static Vector<Object> getValoresItOS() {
+
+		Vector<Object> ret = new Vector<Object>();
+
+		ret.add( IT_OS_NAO_SALVO.getValue() );
+		ret.add( IT_OS_PENDENTE.getValue() );
+		ret.add( IT_OS_ENCAMINHADO.getValue() );
+		ret.add( IT_OS_EM_ANDAMENTO.getValue() );
+		ret.add( IT_OS_CONCLUIDO.getValue() );
+
+		return ret;
+
+	}
+	
+	
+	
 	public static void atualizaStatusItOS( String status, JLabelPad lbstatus ) {
 
 		lbstatus.setForeground( Color.WHITE );

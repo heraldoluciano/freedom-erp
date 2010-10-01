@@ -358,6 +358,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	// ** Combobox
 
 	private JComboBoxPad cbStatus = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
+	
+	private JComboBoxPad cbStatusItOS = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 
 	// *** Tela do Painel de controle
 
@@ -542,6 +544,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	private void montaCombos() {
 
 		cbStatus.setItens( StatusOS.getLabels(), StatusOS.getValores() );
+		
+		cbStatusItOS.setItens( StatusOS.getLabelsItOS(), StatusOS.getValoresItOS() );
 
 	}
 
@@ -678,6 +682,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampoInvisivel( txtGeraChamado, "GeraChamado", "Gera chamado", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtGeraRMA, "GeraRma", "Gera RMA", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtGeraNovo, "GeraNovo", "Gera novo", ListaCampos.DB_SI, false );
+		
+		adicDB( cbStatusItOS, 247, 60, 100, 20, "StatusItOS", "Status", false );
 		
 		pnAdicItOS.adic( btChamado, 0, 0, 30, 26 );
 		pnAdicItOS.adic( btEstrutura, 30, 0, 30, 26 );
@@ -859,6 +865,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 
 		cbStatus.addComboBoxListener( this );
+		cbStatusItOS.addComboBoxListener( this );
 	}
 
 	private void montaListaCampos() {
