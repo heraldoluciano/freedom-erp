@@ -3770,6 +3770,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	@ SuppressWarnings ( "unchecked" )
 	private void geraDevolucaoServico() {
 
 		StringBuilder 		sql	= new StringBuilder();
@@ -3843,60 +3844,95 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setString( 4, txtTipoVenda.getVlrString() 	);
 
 			rs = ps.executeQuery();
+			
+			Vector<HashMap<String,Object>> itens_devolucao = new Vector<HashMap<String,Object>>();
+			
+			HashMap<String, Object> item_devolucao = new HashMap<String, Object>();
+
+			//Loop no result set ....
+			
 			int i = 0;
 			
 			while( rs.next() ) {
-
-				// Se for a primeira vez n=no loop... deve inserir o cabeçalho da venda
-				if( i == 0 ) {
-
-					// Inserindo cabeçalho (Venda)
-
-					lcCampos.insert( true );
-					
-					docrecmerc = rs.getInt( "docrecmerc" );
-					dtentrada  = rs.getDate( "dtent" );
-
-					txtCodCli.setVlrInteger( codcli );
-					lcCli.carregaDados();
-
-					txtCodTipoMov.setVlrInteger( codtipomov );
-					lcTipoMov.carregaDados();
-
-					txtDtEmitVenda.setVlrDate( dtemitvenda );
-					txtDtSaidaVenda.setVlrDate( dtsaidavenda );
-
-					txtCodPlanoPag.setVlrInteger( codplanopag );
-					lcPlanoPag.carregaDados();
-
-					txtCodVend.setVlrInteger( codvend );
-					lcVendedor.carregaDados();
-
-					txtClasComis.setVlrInteger( codclcomis );
-
-					txtPercComisVenda.setVlrBigDecimal( new BigDecimal( 0 ) );
-					
-					obsvenda.append( "RETORNO DE MERCADORIA REFERENTE A NOTA FISCAL DE ENTRADA NRO " );
-					obsvenda.append( docrecmerc );
-					obsvenda.append( " DE " );
-					obsvenda.append( Funcoes.dateToStrDate( dtentrada ) );
-					
-					txtObsVenda.setVlrString( obsvenda.toString() );
-
-					lcCampos.post();
-
-				}
-
-				// Inserindo detalhe (Ítens de venda)
-
-				lcDet.insert( true );
-
+				
 				codprod 	= rs.getInt			( "codprod" );
 				refprod		= rs.getString		( "refprod" );
 				qtditvenda	= rs.getBigDecimal	( "qtditrecmerc" );
 				numserie	= rs.getString		( "numserie" );
 				
+				docrecmerc = rs.getInt( "docrecmerc" );
+				dtentrada  = rs.getDate( "dtent" );
+				
+				item_devolucao.put( "codprod", codprod);
+				item_devolucao.put( "refprod", refprod);
+				item_devolucao.put( "qtditrecmerc", qtditvenda);
+				item_devolucao.put( "numserie", numserie);
+				
+				itens_devolucao.add( (HashMap<String,Object>) item_devolucao.clone() );
+				
+				i++;
+				
+			}
 
+			con.commit();
+			
+
+			if(i==0) {
+				Funcoes.mensagemInforma( this, "Não foi encontrada nenhuma ordem de serviço para devolução!" );
+				return;
+			}
+			
+			// Inserindo cabeçalho (Venda)
+
+			lcCampos.insert( true );
+
+			txtCodCli.setVlrInteger( codcli );
+			lcCli.carregaDados();
+
+			txtCodTipoMov.setVlrInteger( codtipomov );
+			lcTipoMov.carregaDados();
+
+			txtDtEmitVenda.setVlrDate( dtemitvenda );
+			txtDtSaidaVenda.setVlrDate( dtsaidavenda );
+
+			txtCodPlanoPag.setVlrInteger( codplanopag );
+			lcPlanoPag.carregaDados();
+
+			txtCodVend.setVlrInteger( codvend ); 
+			lcVendedor.carregaDados();
+
+			txtClasComis.setVlrInteger( codclcomis );
+
+			txtPercComisVenda.setVlrBigDecimal( new BigDecimal( 0 ) );
+			
+			obsvenda.append( "RETORNO DE MERCADORIA REFERENTE A NOTA FISCAL DE ENTRADA NRO " );
+			obsvenda.append( docrecmerc );
+			obsvenda.append( " DE " );
+			obsvenda.append( Funcoes.dateToStrDate( dtentrada ) );
+			
+			txtObsVenda.setVlrString( obsvenda.toString() );
+
+			lcCampos.post();
+
+			// Zerando variáveis do detalhe
+			codprod 		= null;
+			refprod			= null;
+			qtditvenda		= null;
+			numserie		= null;			
+			
+
+			
+			for( int i2 = 0; i2<itens_devolucao.size();i2++) {
+				
+				lcDet.insert( true );
+
+				item_devolucao = itens_devolucao.elementAt( i2 );  	
+				
+				codprod 	= (Integer)		item_devolucao.get( "codprod" );
+				refprod		= (String)		item_devolucao.get( "refprod" );
+				qtditvenda	= (BigDecimal)	item_devolucao.get( "qtditrecmerc" );
+				numserie	= (String) 		item_devolucao.get( "numserie" );
+				
 				txtCodProd.setVlrInteger( codprod );
 
 				if ( (Boolean) oPrefs[ POS_PREFS.USAREFPROD.ordinal() ] ) {
@@ -3923,15 +3959,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				calcImpostos( true );
 
 				lcDet.post();
-
-				i++;
+				
 			}
 			
-			con.commit();			
-
-			if(i==0) {
-				Funcoes.mensagemInforma( this, "Não foi encontrada nenhuma ordem de serviço para devolução!" );
-			}
 
 
 		}
