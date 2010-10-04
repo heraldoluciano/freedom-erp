@@ -3818,6 +3818,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			// Verifica qual ordem de serviço originou o orçamento
 			sql.append("left outer join eqitrecmercitositorc iro on ");
 			sql.append("iro.codempoc=vo.codempor and iro.codfilial=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc ");
+			sql.append("and iro.coditorc=vo.coditorc ");
 			// Busca informações do item da ordem de serviço vinculada ao orçamento
 			sql.append("left outer join eqitrecmerc rm on ");
 			sql.append("rm.codemp=iro.codemp and rm.codfilial=iro.codfilial and rm.ticket=iro.ticket and rm.coditrecmerc=iro.coditrecmerc ");
