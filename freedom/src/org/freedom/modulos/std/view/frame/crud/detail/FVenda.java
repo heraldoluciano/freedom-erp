@@ -3844,6 +3844,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			rs = ps.executeQuery();
 			int i = 0;
+			
 			while( rs.next() ) {
 
 				// Se for a primeira vez n=no loop... deve inserir o cabeçalho da venda
@@ -3925,6 +3926,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				i++;
 			}
+			
+			con.commit();			
 
 			if(i==0) {
 				Funcoes.mensagemInforma( this, "Não foi encontrada nenhuma ordem de serviço para devolução!" );
