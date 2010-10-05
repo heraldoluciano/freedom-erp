@@ -1539,7 +1539,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sVals[ 1 ] = txtRazForBaixa.getVlrString();
 				sVals[ 2 ] = "".equals( vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( iLin );
 				sVals[ 3 ] = "".equals( vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( iLin );
-				sVals[ 4 ] = txtDoc.getVlrString();
+//				sVals[ 4 ] = txtDoc.getVlrString();
+				sVals[ 4 ] = (String) tabBaixa.getValor( iLin, 3 );
+				
 				sVals[ 5 ] = txtDtEmisBaixa.getVlrString();
 				sVals[ 6 ] = (String) tabBaixa.getValor( iLin, 1 );
 				sVals[ 7 ] = (String) tabBaixa.getValor( iLin, 5 );
