@@ -1,0 +1,5 @@
+type
+bin
+cd incoming
+put ..\disco\win\*.exe
+quit
