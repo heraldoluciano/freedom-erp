@@ -173,7 +173,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 			sSQL = "SELECT APROVORC FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE4" ) );
 			rs = ps.executeQuery();
 
 			if ( rs.next() )
