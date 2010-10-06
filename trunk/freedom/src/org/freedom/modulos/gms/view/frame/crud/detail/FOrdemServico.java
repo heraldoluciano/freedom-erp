@@ -406,6 +406,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		btEstrutura.setEnabled( false );
 		btOP.setEnabled( false );
 		
+		txtGarantia.setVlrString( "N" );
+		
 	}
 	
 	
@@ -1109,7 +1111,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		
 		Integer codop = recmerc.geraOP( txtCodItRecMerc.getVlrInteger(), txtCodItOS.getVlrInteger(), txtCodProdItOS.getVlrInteger(),
 						txtRefProdItOS.getVlrString(), txtQtdItOSItOS.getVlrBigDecimal(), txtNroDiasValid.getVlrInteger(), 
-						txtCodAlmoxProdItOS.getVlrInteger(), "S", txtGarantia.getVlrString() ) ;
+						txtCodAlmoxProdItOS.getVlrInteger(), "S", "S".equals(txtGarantia.getVlrString()) ? "S" : "N" ) ;
 		
 		if(codop!=null && codop>0) {
 			
