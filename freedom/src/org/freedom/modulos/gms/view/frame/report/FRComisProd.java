@@ -167,7 +167,7 @@ public class FRComisProd extends FRelatorio {
 			imprimirPorItem( visualizar );
 		}
 		else if( "T".equals( rgTipo.getVlrString() )) {
-//			imprimirPorTecnico( visualizar );
+			imprimirPorTecnico( visualizar );
 		}
 
 	}
@@ -267,6 +267,97 @@ public class FRComisProd extends FRelatorio {
 			System.gc();
 		}
 	}
+	
+	public void imprimirPorTecnico( boolean visualizar ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sCab2 = new StringBuffer();
+
+		int param = 1;
+
+		try { 
+
+			sql.append( "select ");
+
+			sql.append( "se.codsecao, se.descsecao, rc.perccomisgeral/100 perccomisgeral, ");
+
+			sql.append( "sum( case when op.garantia='S' then ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else ");
+			sql.append( "((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao ");
+			sql.append( ", vd.nomevend, irc.perccomisitrc/100 percomisvendedor ");
+
+			sql.append( "from eqproduto pd , vdregracomis rc, vditregracomis irc, eqsecao se, ppop op ");
+
+			sql.append( "left outer join eqrecmerc rm on ");
+			sql.append( "rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket ");
+
+			sql.append( "left outer join eqitrecmerc it on ");
+			sql.append( "it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc ");
+
+			sql.append( "inner join vdvendedor vd on ");
+			sql.append( "vd.codemp=irc.codempvd and vd.codfilial = irc.codfilialvd and vd.codvend=irc.codvend ");
+
+			sql.append( "where ");
+
+			sql.append( "pd.codemp=op.codemp and pd.codfilial=op.codfilial and pd.codprod=op.codprod ");
+			sql.append( "and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao ");
+			sql.append( "and irc.codemp=rc.codemp and irc.codfilial=rc.codfilial and irc.codregrcomis=rc.codregrcomis ");
+			sql.append( "and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao ");
+			sql.append( "and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
+			sql.append( "and op.sitop='FN' ");
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
+			}
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+			
+			if( "S".equals( cbFinalizados.getVlrString()) ) {
+				sql.append( " and op.sitop = 'FN' " );
+			}
+
+			sql.append( "group by 1,2,3,5,6" );
+			
+//			sql.append( "order by pd.codsecao, op.dtfabrop " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodFilial );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );
+				ps.setString( param++, txtCodSecao.getVlrString() );
+
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
+			}
+
+			rs = ps.executeQuery();
+
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_COMIS_PROD_TEC.jasper" );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef , String rel ) {
 
