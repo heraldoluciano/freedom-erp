@@ -41,17 +41,22 @@
 	<parameter name="CODCONTR" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT CT.codcontr,IC.qtditcontr,sum(((atd.horaatendofin-ATD.horaatendo)/3600)) qtdhoras,
- IC.vlritcontr VALOR,
-IC.vlritcontrexced VALOREXCEDENTE
+	<parameter name="CODITCONTR" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT CT.codcontr, IC.qtditcontr, sum(((atd.horaatendofin-ATD.horaatendo)/3600)) qtdhoras, IC.vlritcontr VALOR, IC.vlritcontrexced VALOREXCEDENTE
 FROM VDITCONTRATO IC, VDCONTRATO CT, atatendimento ATD
- WHERE IC.CODEMP = CT.CODEMP AND IC.CODFILIAL = CT.CODFILIAL AND IC.codcontr=CT.codcontr
- AND ATD.codemp=$P{CODEMP} AND ATD.CODFILIAL=$P{CODFILIAL} AND ATD.codcli=$P{CODCLI} and atd.codcontr=$P{CODCONTR}
- AND CT.codempcl=ATD.codempcl AND CT.codfilialcl=ATD.codfilialcl AND CT.codcli=ATD.CODCLI
- AND CT.codemp=ATD.codempct AND CT.CODFILIAL=ATD.CODFILIALCT AND CT.codcontr=ATD.codcontr
- AND IC.coditcontr=ATD.coditcontr
- and atd.dataatendo between $P{DTINI} and $P{DTFIM} and ATD.STATUSATENDO='AA'
- group by 1,2,4,5]]></queryString>
+WHERE IC.CODEMP = CT.CODEMP AND IC.CODFILIAL = CT.CODFILIAL AND IC.codcontr=CT.codcontr
+AND ATD.codemp=$P{CODEMP} AND ATD.CODFILIAL=$P{CODFILIAL} AND ATD.codcli=$P{CODCLI} and atd.codcontr=$P{CODCONTR}
+AND CT.codempcl=ATD.codempcl AND CT.codfilialcl=ATD.codfilialcl AND CT.codcli=ATD.CODCLI
+AND CT.codemp=ATD.codempct AND CT.CODFILIAL=ATD.CODFILIALCT AND CT.codcontr=ATD.codcontr
+AND IC.coditcontr=ATD.coditcontr
+and atd.dataatendo between $P{DTINI} and $P{DTFIM} and ATD.STATUSATENDO='AA' 
+and atd.coditcontr=$P{CODITCONTR}
+
+
+
+group by 1,2,4,5]]></queryString>
 
 	<field name="CODCONTR" class="java.lang.Integer"/>
 	<field name="QTDITCONTR" class="java.math.BigDecimal"/>

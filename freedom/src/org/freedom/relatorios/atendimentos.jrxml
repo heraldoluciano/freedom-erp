@@ -54,6 +54,8 @@
 	<parameter name="DESCCONTR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CONEXAO" isForPrompting="false" class="java.lang.Object"/>
 	<parameter name="CLIENTE" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CODITCONTR" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="DESCITCONTR" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo,
 a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, 
 a.statusatendo, '' descchamado, 0 codchamado
@@ -330,6 +332,50 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 			</band>
 			</groupFooter>
 		</group>
+		<group  name="subrelatorio" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="6"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="153"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="6"
+						width="786"
+						height="143"
+						key="subreport-1"
+						stretchType="RelativeToTallestObject"
+						isPrintWhenDetailOverflows="true"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODCLI">
+						<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DTINI">
+						<subreportParameterExpression><![CDATA[$P{DTINI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DTFIM">
+						<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODITCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODITCONTR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_contrato.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -401,6 +447,22 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$P{DTINI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="152"
+						y="32"
+						width="500"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DESCITCONTR} ]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -674,35 +736,7 @@ $F{OBSATENDO}.trim()]]></textFieldExpression>
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="159"  isSplitAllowed="true" >
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="6"
-						width="786"
-						height="130"
-						key="subreport-1"/>
-					<subreportParameter  name="CODEMP">
-						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CODFILIAL">
-						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CODCLI">
-						<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CODCONTR">
-						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DTINI">
-						<subreportParameterExpression><![CDATA[$P{DTINI}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DTFIM">
-						<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
-					</subreportParameter>
-					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_contrato.jasper"]]></subreportExpression>
-				</subreport>
+			<band height="15"  isSplitAllowed="true" >
 			</band>
 		</lastPageFooter>
 		<summary>
