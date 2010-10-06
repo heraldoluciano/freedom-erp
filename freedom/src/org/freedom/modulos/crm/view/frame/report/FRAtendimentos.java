@@ -66,10 +66,14 @@ public class FRAtendimentos extends FRelatorio {
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtDescItContr = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -91,7 +95,9 @@ public class FRAtendimentos extends FRelatorio {
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
-	private ListaCampos lcContr = new ListaCampos( this );
+	private ListaCampos lcContr = new ListaCampos( this, "" );
+	
+	private ListaCampos lcItContr = new ListaCampos( this );
 
 	private JCheckBoxPad cbTodos = new JCheckBoxPad( "Todos os atendimentos", "S", "N" );
 
@@ -104,7 +110,7 @@ public class FRAtendimentos extends FRelatorio {
 	public FRAtendimentos() {
 
 		setTitulo( "Relatório de atendimentos" );
-		setAtribos( 80, 80, 350, 300 );
+		setAtribos( 80, 80, 350	, 360 );
 
 		montaListaCampos();
 		montaTela();
@@ -128,26 +134,23 @@ public class FRAtendimentos extends FRelatorio {
 
 		adic( lbPeriodo, 7, 1, 80, 20 );
 		adic( lbLinha, 5, 10, 310, 45 );
-		adic( new JLabelPad( "De:" ), 15, 25, 20, 20 );
-		adic( txtDataini, 38, 25, 95, 20 );
-		adic( new JLabelPad( "Até:" ), 145, 25, 35, 20 );
-		adic( txtDatafim, 178, 25, 95, 20 );
-		adic( new JLabelPad( "Cód.Cli" ), 7, 60, 80, 20 );
-		adic( txtCodCli, 7, 80, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 250, 20 );
-		adic( txtRazCli, 90, 80, 225, 20 );
+		
+		adic( txtDataini, 38, 25, 95, 20, "De:" );		
+		adic( txtDatafim, 178, 25, 95, 20, "Até:" );		
 
-		adic( new JLabelPad( "Cód.Contr." ), 7, 110, 80, 20 );
-		adic( txtCodContr, 7, 130, 80, 20 );
-		adic( new JLabelPad( "Descrição do contrato" ), 90, 110, 250, 20 );
-		adic( txtDescContr, 90, 130, 225, 20 );
+		adic( txtCodCli, 7, 80, 80, 20, "Cód.Cli" );		
+		adic( txtRazCli, 90, 80, 225, 20, "Razão social do cliente" );
 
-		adic( new JLabelPad( "Cód.Atend." ), 7, 150, 80, 20 );
-		adic( txtCodAtend, 7, 170, 80, 20 );
-		adic( new JLabelPad( "Nome do atendente" ), 90, 150, 250, 20 );
-		adic( txtNomeAtend, 90, 170, 225, 20 );
+		adic( txtCodContr, 7, 130, 80, 20, "Cód.Contr." );
+		adic( txtDescContr, 90, 130, 225, 20, "Descrição do contrato" );
+		
+		adic( txtCodItContr, 7, 170, 80, 20, "Cód.It.Contr." );
+		adic( txtDescItContr, 90, 170, 225, 20, "Descrição do ítem de contrato" );
+		
+		adic( txtCodAtend, 7, 210, 80, 20, "Cód.Atend." );
+		adic( txtNomeAtend, 90, 210, 225, 20, "Nome do atendente" );
 
-		adic( cbTodos, 7, 200, 300, 20 );
+		adic( cbTodos, 7, 250, 300, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -177,6 +180,20 @@ public class FRAtendimentos extends FRelatorio {
 		txtCodContr.setTabelaExterna( lcContr, FContrato.class.getCanonicalName() );
 		txtCodContr.setFK( true );
 		txtCodContr.setNomeCampo( "CodContr" );
+		
+		
+		// Item de Contrato
+
+		lcItContr.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );
+		lcItContr.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PF, false ) );
+		lcItContr.add( new GuardaCampo( txtDescItContr, "DescItContr", "Descrição do ítem de contrato", ListaCampos.DB_SI, false ) );
+		lcItContr.montaSql( false, "ITCONTRATO", "VD" );
+		lcItContr.setReadOnly( true );
+		lcItContr.setDinWhereAdic( "CODCONTR=#N ", txtCodContr );
+		txtCodItContr.setTabelaExterna( lcItContr, FContrato.class.getCanonicalName() );
+		txtCodItContr.setFK( true );
+		txtCodItContr.setNomeCampo( "CodItContr" );
+
 
 		// Atendente
 
@@ -221,6 +238,11 @@ public class FRAtendimentos extends FRelatorio {
 		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
 			sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
 		}
+		
+		if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
+			sql.append( " and a.coditcontr=? " );
+		}
+		
 		else if ( "N".equals( cbTodos.getVlrString() ) ) {
 			sql.append( " and a.codcontr is null " );
 		}
@@ -248,6 +270,11 @@ public class FRAtendimentos extends FRelatorio {
 				ps.setInt( iparam++, lcContr.getCodFilial() );
 				ps.setInt( iparam++, txtCodContr.getVlrInteger() );
 			}
+			
+			if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
+				ps.setInt( iparam++, txtCodItContr.getVlrInteger() );
+			}
+			
 			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
 				ps.setInt( iparam++, lcCli.getCodEmp() );
 				ps.setInt( iparam++, lcCli.getCodFilial() );
@@ -284,7 +311,9 @@ public class FRAtendimentos extends FRelatorio {
 		hParam.put( "DTINI", txtDataini.getVlrDate() );
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
+		hParam.put( "CODITCONTR", txtCodItContr.getVlrInteger() );
 		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
+		hParam.put( "DESCITCONTR", txtDescItContr.getVlrString() );
 		hParam.put( "CONEXAO", con.getConnection() );
 
 		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
@@ -313,6 +342,7 @@ public class FRAtendimentos extends FRelatorio {
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcContr.setConexao( cn );
+		lcItContr.setConexao( cn );
 		lcAtend.setConexao( cn );
 	}
 
