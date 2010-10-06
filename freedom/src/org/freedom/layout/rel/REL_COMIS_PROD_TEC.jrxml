@@ -31,77 +31,44 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
-pd.codsecao, se.descsecao, pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral,  ir.perccomisitrc/100 perccomisitrc, 
-sum((rc.perccomisgeral/100) * (ir.perccomisitrc/100)) perccomisfinal, sum((op.qtdfinalprodop * pd.precocomisprod)) vlrfinal,
-vd.nomevend, sum(op.qtdfinalprodop) qtdfinalprodop
 
-from ppop op
+se.codsecao, se.descsecao, rc.perccomisgeral/100 perccomisgeral,
 
-inner join eqproduto pd on
-pd.codemp=op.codemp and pd.codfilial=op.codfilial and pd.codprod=op.codprod
+sum( case when op.garantia='S' then ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else
+((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao
+, vd.nomevend, irc.perccomisitrc/100 percomisvendedor
 
-inner join vdregracomis rc on
-rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao
-
-inner join eqsecao se on
-se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao
+from eqproduto pd , vdregracomis rc, vditregracomis irc, eqsecao se, ppop op
 
 left outer join eqrecmerc rm on
 rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket
 
-left outer join vdcliente cl on
-cl.codemp=rm.codempcl and cl.codfilial=rm.codfilialcl and cl.codcli=rm.codcli
-
 left outer join eqitrecmerc it on
 it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc
 
-left outer join vditregracomis ir on
-ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codregrcomis=rc.codregrcomis
-
-left outer join vdvendedor vd on
-vd.codemp=ir.codempvd and vd.codfilial=ir.codfilialvd and vd.codvend=ir.codvend
+inner join vdvendedor vd on
+vd.codemp=irc.codempvd and vd.codfilial = irc.codfilialvd and vd.codvend=irc.codvend
 
 where
 
-op.dtfabrop between '2010-01-01' and '2011-01-01'
+pd.codemp=op.codemp and pd.codfilial=op.codfilial and pd.codprod=op.codprod
+and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao
+and irc.codemp=rc.codemp and irc.codfilial=rc.codfilial and irc.codregrcomis=rc.codregrcomis
+and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao
+and op.codemp=71 and op.codfilial=1 and op.dtfabrop between '2010-01-01' and '2011-01-01'
 and op.sitop='FN'
 
-group by 1,2,3,4,5,6
+and se.codsecao='H'
 
-order by pd.codsecao]]></queryString>
+group by 1,2,3,5,6]]></queryString>
 
 	<field name="CODSECAO" class="java.lang.String"/>
 	<field name="DESCSECAO" class="java.lang.String"/>
-	<field name="PRECOCOMISPROD" class="java.math.BigDecimal"/>
 	<field name="PERCCOMISGERAL" class="java.math.BigDecimal"/>
-	<field name="PERCCOMISITRC" class="java.math.BigDecimal"/>
+	<field name="COMISSECAO" class="java.math.BigDecimal"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
-	<field name="QTDFINALPRODOP" class="java.math.BigDecimal"/>
+	<field name="PERCOMISVENDEDOR" class="java.math.BigDecimal"/>
 
-	<variable name="QTDTOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
-	</variable>
-	<variable name="QTDTOTSECAO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
-	</variable>
-	<variable name="VLRTOTITCOMIS" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{QTDFINALPRODOP}.multiply( $F{PRECOCOMISPROD} )]]></variableExpression>
-	</variable>
-	<variable name="VLRITCOMIS" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$V{VLRTOTITCOMIS}.multiply($F{PERCCOMISGERAL})]]></variableExpression>
-	</variable>
-	<variable name="PRECOCOMISPROD" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{PRECOCOMISPROD}]]></variableExpression>
-	</variable>
-	<variable name="VLRTOTITCOMIS_SECAO" class="java.math.BigDecimal" resetType="Group" resetGroup="SECAO" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRITCOMIS_TEC}]]></variableExpression>
-	</variable>
-	<variable name="VLRITCOMIS_SECAO" class="java.math.BigDecimal" resetType="Group" resetGroup="SECAO" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRITCOMIS_TEC}]]></variableExpression>
-	</variable>
-	<variable name="VLRITCOMIS_TEC" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$V{VLRITCOMIS}.multiply($F{PERCCOMISITRC})]]></variableExpression>
-	</variable>
 
 		<group  name="TOTAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -114,7 +81,7 @@ order by pd.codsecao]]></queryString>
 			</band>
 			</groupFooter>
 		</group>
-		<group  name="SECAO" isStartNewPage="true" >
+		<group  name="SECAO" >
 			<groupExpression><![CDATA[$F{CODSECAO}]]></groupExpression>
 			<groupHeader>
 			<band height="56"  isSplitAllowed="true" >
@@ -315,7 +282,7 @@ order by pd.codsecao]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRITCOMIS_SECAO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{COMISSECAO}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -445,7 +412,7 @@ order by pd.codsecao]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PERCCOMISITRC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PERCOMISVENDEDOR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -475,7 +442,7 @@ order by pd.codsecao]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRITCOMIS_TEC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{COMISSECAO}.multiply($F{PERCOMISVENDEDOR})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

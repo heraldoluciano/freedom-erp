@@ -79,15 +79,16 @@ order by pd.refprod]]></queryString>
 	<variable name="QTDTOTSECAO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
 	</variable>
-	<variable name="VLRTOTITCOMIS" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{QTDFINALPRODOP}.multiply( $F{PRECOCOMISPROD} )]]></variableExpression>
+	<variable name="VLRTOTITCOMIS" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$F{QTDFINALPRODOP}.multiply( $V{PRECOCOMISPROD} )]]></variableExpression>
 	</variable>
 	<variable name="VLRITCOMIS" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$V{VLRTOTITCOMIS}.multiply($F{PERCCOMISGERAL})]]></variableExpression>
 	</variable>
-	<variable name="PRECOCOMISPROD" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA["N".equals($F{GARANTIA}) ? $F{PRECOCOMISPROD} :
-$F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
+	<variable name="PRECOCOMISPROD" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA["S".equals($F{GARANTIA}) ?  
+$F{PRECOCOMISPROD}.multiply(new BigDecimal(-1)) :
+$F{PRECOCOMISPROD}]]></variableExpression>
 	</variable>
 	<variable name="VLRTOTITCOMIS_SECAO" class="java.math.BigDecimal" resetType="Group" resetGroup="SECAO" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRTOTITCOMIS}]]></variableExpression>
@@ -241,7 +242,7 @@ $F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
 					<reportElement
 						x="52"
 						y="13"
-						width="477"
+						width="412"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -282,6 +283,21 @@ $F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
 					</textElement>
 				<text><![CDATA[Valor comis.]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00 %" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="475"
+						y="13"
+						width="53"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PERCCOMISGERAL}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -547,9 +563,9 @@ $F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="330"
-						y="1"
-						width="26"
+						x="327"
+						y="2"
+						width="30"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -558,9 +574,9 @@ $F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{GARANTIA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals($F{GARANTIA}) ? "[G]" : ""]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="402"
 						y="2"
@@ -575,7 +591,7 @@ $F{PRECOCOMISPROD}.multiply(new BigDecimal(-1))]]></variableExpression>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRTOTITCOMIS}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="475"
 						y="2"
