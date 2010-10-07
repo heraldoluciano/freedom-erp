@@ -64,6 +64,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
@@ -290,6 +291,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 
+	private JTextAreaPad txaObsItRec = new JTextAreaPad( 250 );
+	
 	private int icodTran = 0;
 
 	private String modeloBoleto = "";
@@ -625,6 +628,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcItReceber.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_FK, txtDescCartCobItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtNumContaitrec, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescContaitrec, false ) );
 		lcItReceber.add( new GuardaCampo( cbDescPont, "DescPont", "Desc.Pont", ListaCampos.DB_SI, false ) );
+		lcItReceber.add( new GuardaCampo( txaObsItRec, "ObsItRec", "Obs.", ListaCampos.DB_SI, false ) );
+		
 		lcItReceber.montaSql( false, "ITRECEBER", "FN" );
 		lcItReceber.setQueryCommit( false );
 		txtNParcItRec.setListaCampos( lcItReceber );
@@ -1034,8 +1039,18 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		DLFechaParcela dl = new DLFechaParcela( this, con );
 
-		Object[] valores = new Object[] { txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), cbDescPont.getVlrString(),
-				txtDtPrevItRec.getVlrDate() };
+		Object[] valores = new Object[] { 
+				txtVlrParcItRec.getVlrBigDecimal(), 
+				txtDtVencItRec.getVlrDate(), 
+				txtVlrDescItRec.getVlrBigDecimal(), 
+				txtCodTipoCobItRec.getVlrInteger(), 
+				txtCodBancoItRec.getVlrString(), 
+				txtCodCartCobItRec.getVlrString(), 
+				cbDescPont.getVlrString(),
+				txtDtPrevItRec.getVlrDate(),
+				txaObsItRec.getVlrString()
+				
+		};
 
 		dl.setValores( valores );
 		dl.setVisible( true );
@@ -1052,6 +1067,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			txtCodBancoItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.BANCO.ordinal() ] );
 			txtCodCartCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );
 			cbDescPont.setVlrString( (String) valores[ DLFechaParcela.EFields.DESCPONT.ordinal() ] );
+			txaObsItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.OBSITREC.ordinal() ] );
 
 			txtAltUsuRec.setVlrString( "S" );
 

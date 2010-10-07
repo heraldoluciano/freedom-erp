@@ -33,12 +33,15 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 
 import java.util.Date;
+
+import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -76,12 +79,14 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 	private ListaCampos lcCartCob = new ListaCampos( this, "BO" );
 
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
+	
+	private JTextAreaPad txaObsItRec = new JTextAreaPad( 250 );
 
 	public DLFechaParcela( Component cOrig, DbConnection cn ) {
 
 		super( cOrig );
 		setTitulo( "Parcela" );
-		setAtribos( 100, 100, 345, 275 );
+		setAtribos( 100, 100, 345, 375 );
 		setConexao( cn );
 
 		montaListaCampos();
@@ -161,6 +166,10 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		adic( txtDescCartCob, 90, 140, 230, 20 );
 		adic( cbDescPont, 7, 165, 200, 20 );
 		cbDescPont.setVlrString( "S" );
+		
+		adic(new JScrollPane(txaObsItRec), 7, 210, 313, 70, "Observações");
+		
+		
 	}
 
 	public void setValores( Object[] args ) {
@@ -176,6 +185,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 			txtCodBanco.setVlrString( (String) args[ EFields.BANCO.ordinal() ] );
 			txtCodCartCob.setVlrString( (String) args[ EFields.CARTCOB.ordinal() ] );
 			cbDescPont.setVlrString( (String) args[ EFields.DESCPONT.ordinal() ] );
+			txaObsItRec.setVlrString( (String) args[ EFields.OBSITREC.ordinal() ] );
 
 			if ( txtVlrDescItRec.getVlrBigDecimal() == null ) {
 				txtVlrDescItRec.setAtivo( false );
@@ -186,6 +196,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 			lcCartCob.carregaDados();
 			txtCodBanco.setVlrString( codbanco );
 			lcBanco.carregaDados();
+			
 		}
 	}
 
@@ -201,6 +212,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		oRetorno[ DLFechaParcela.EFields.DESCPONT.ordinal() ] = cbDescPont.getVlrString();
 		// oRetorno[ DLFechaParcela.EFields.CODCONTA.ordinal() ] = txt.getVlrString();
 		oRetorno[ DLFechaParcela.EFields.DATAPREV.ordinal() ] = txtDtPrevItRec.getVlrDate();
+		oRetorno[ DLFechaParcela.EFields.OBSITREC.ordinal() ] = txaObsItRec.getVlrString();
 
 		return oRetorno;
 	}
@@ -276,6 +288,6 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 
 	public enum EFields {
 
-		VALOR, DATA, DESCONTO, TIPOCOB, BANCO, CARTCOB, DESCPONT, DATAPREV
+		VALOR, DATA, DESCONTO, TIPOCOB, BANCO, CARTCOB, DESCPONT, DATAPREV, OBSITREC
 	}
 }
