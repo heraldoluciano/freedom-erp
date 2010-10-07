@@ -47,6 +47,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 
 /**
@@ -69,6 +70,10 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JPanelPad panelDetalhe = new JPanelPad();
 
 	private JTextFieldPad txtSeqCheq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodEmpCH = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodFilialCH = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodBanc = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
@@ -77,6 +82,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JTextFieldPad txtAgenciaCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtNomeBanc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtDtEmitCheq = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -87,6 +94,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JTextFieldPad txtNomeEmitCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNomeFavCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtObsPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 
 	private JTextFieldPad txtNumCheq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -94,11 +103,13 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JTextFieldFK txtCodPag = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDocPag = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtNParcPag = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNParcPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtVlrParcItRec = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
@@ -129,7 +140,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JTextFieldPad txtFoneEmitCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtFoneFavCheq = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-
+	
 	private JCheckBoxPad cbPreDatCheq = new JCheckBoxPad( "Pré-datado", "S", "N" );
 
 	private JComboBoxPad cbTipoCheq = null;
@@ -145,6 +156,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private ListaCampos lcItPagar = new ListaCampos( this, "" );
 
 	private ListaCampos lcPagar = new ListaCampos( this, "" );
+	
+	protected final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
 	public FCheque() {
 
@@ -153,13 +166,14 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		nav.setNavigation( true );
 
 		setTitulo( "Cheque" );
-		setAtribos( 50, 50, 690, 490 );
+		setAtribos( 50, 50, 690, 540 );
 
 		montaListaCampos();
 		montaTela();
 		montaCombos();
 
 		lcDet.addCarregaListener( this );
+		lcCampos.addCarregaListener( this );
 		lcItPagar.addCarregaListener( this );
 
 		lcDet.addInsertListener( this );
@@ -205,6 +219,11 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	private void montaListaCampos() {
 
+//		lcDet.setMaster( lcCampos );
+
+//		lcCampos.adicDetalhe( lcDet ); 
+		
+
 		lcConta.setUsaME( false );
 		lcConta.add( new GuardaCampo( txtContaCheq, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -212,6 +231,23 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		lcConta.setReadOnly( true );
 		txtContaCheq.setTabelaExterna( lcConta, FConta.class.getCanonicalName() );
 		txtContaCheq.setFK( true );
+		txtContaCheq.setNomeCampo( "numconta" );
+		
+		/***************
+		 * FNBANCO *
+		 ***************/
+		
+		lcBanco.add( new GuardaCampo( txtCodBanc, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanc, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
+		lcBanco.setReadOnly( true );
+		txtCodBanc.setNomeCampo( "CodBanco" );
+		txtCodBanc.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
+		txtCodBanc.setListaCampos( lcBanco );
+		txtCodBanc.setFK( true );
+//		txtNomeBanco.setListaCampos( lcBanco );
+
 
 		// Itens de contas a pagar
 
@@ -240,6 +276,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_PK, txtDocPag, false ) );
 		lcPagar.add( new GuardaCampo( txtDocPag, "DocPag", "Documento", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtCodFor, "CodFor", "Cod.For.", ListaCampos.DB_SI, false ) );
+		lcPagar.add( new GuardaCampo( txtObsPag, "ObsPag", "Obs.", ListaCampos.DB_SI, false ) );
 		lcPagar.montaSql( false, "PAGAR", "FN" );
 		lcPagar.setQueryCommit( false );
 		lcPagar.setReadOnly( true );
@@ -263,7 +301,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		cbTipoCheq = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 		cbSitCheq = new JComboBoxPad( null, null, JComboBoxPad.TP_STRING, 2, 0 );
 
-		setAltCab( 260 );
+		setAltCab( 324 );
+//		lcCampos.setSigla( "CH" ); 
 		setListaCampos( lcCampos );
 		setPainel( panelMaster, pnCliCab );
 
@@ -282,27 +321,34 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		adic( pnInfoCheque, 5, 0, 663, 70 );
 		adic( pnDatas, 563, 70, 105, 150 );
 		adic( pnEmitente, 5, 70, 555, 74 );
-		adic( pnFavorecido, 5, 144, 555, 74 );
+		adic( pnFavorecido, 5, 144, 555, 76 );
 
 		/** INFORMACOES DO CHEQUE **/
 		setPainel( pnInfoCheque );
 
 		adicCampo( txtSeqCheq, 7, 15, 40, 20, "seqcheq", "Seq.", ListaCampos.DB_PK, true );
-		adicCampo( txtCodBanc, 50, 15, 40, 20, "codbanc", "Banco", ListaCampos.DB_SI, true );
+		adicCampo( txtCodBanc, 50, 15, 40, 20, "codbanc", "Banco", ListaCampos.DB_FK, true );
 		adicCampo( txtContaCheq, 93, 15, 70, 20, "Contacheq", "Nº Conta", ListaCampos.DB_FK, txtDescConta, true );
-		adicCampo( txtNumCheq, 166, 15, 60, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrCheq, 229, 15, 75, 20, "VlrCheq", "Valor", ListaCampos.DB_SI, true );
-		adicDB( cbTipoCheq, 307, 15, 125, 20, "tipocheq", "Tipo", false );
-		adicDB( cbSitCheq, 435, 15, 112, 20, "sitcheq", "Status", false );
+		
+		adicCampo( txtAgenciaCheq, 166, 15, 50, 20, "AgenciaCheq", "Agencia", ListaCampos.DB_SI, true );
+	
+		
+		adicCampo( txtNumCheq, 219, 15, 60, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrCheq, 282, 15, 75, 20, "VlrCheq", "Valor", ListaCampos.DB_SI, true );
+		adicDB( cbTipoCheq, 360, 15, 145, 20, "tipocheq", "Tipo", false );
+		adicDB( cbSitCheq, 508, 15, 137, 20, "sitcheq", "Status", false );
+		
+		txtCodBanc.setNomeCampo( "codbanco" );
+		txtContaCheq.setNomeCampo( "numconta" );
 
-		adicDB( cbPreDatCheq, 558, 15, 86, 20, "predatcheq", "", true );
+//		adicDB( cbPreDatCheq, 558, 15, 86, 20, "predatcheq", "", true );
 
 		/** INFORMACOES DE DATAS **/
 		setPainel( pnDatas );
 
 		adicCampo( txtDtEmitCheq, 4, 15, 85, 20, "DtEmitCheq", "Emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtVenctoCheq, 4, 55, 85, 20, "DtVenctoCheq", "Vencimento", ListaCampos.DB_SI, true );
-		adicCampo( txtDtCompCheq, 4, 95, 85, 20, "DtCompCheq", "Compensação", ListaCampos.DB_SI, true );
+		adicCampo( txtDtCompCheq, 4, 95, 85, 20, "DtCompCheq", "Compensação", ListaCampos.DB_SI, false );
 
 		/** INFORMACOES DO EMITENTE **/
 		setPainel( pnEmitente );
@@ -323,8 +369,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		adicCampo( txtFoneFavCheq, 469, 15, 68, 20, "foneFavcheq", "Fone", ListaCampos.DB_SI, false );
 
 		setPainel( panelMaster, pnCliCab );
-
-		// adicDB( txaHistCheq, 7, 100, 539, 60, "histcheq", "Histórico", false );
+		
+		adicDB( txaHistCheq, 7, 238, 660, 40, "histcheq", "Histórico", true );
 
 		setListaCampos( true, "CHEQUE", "FN" );
 		lcCampos.setQueryInsert( false );
@@ -336,8 +382,9 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		adicCampo( txtCodPag, 7, 20, 50, 20, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false );
 		adicDescFK( txtDocPag, 60, 20, 70, 20, "docpag", "Documento" );
-		adicCampo( txtNParcPag, 133, 20, 50, 20, "NParcPag", "Parcela", ListaCampos.DB_PF, false );
+		adicCampo( txtNParcPag, 133, 20, 50, 20, "NParcPag", "Parcela", ListaCampos.DB_PK, false );
 
+		
 		adicDescFK( txtDtVencItPag, 186, 20, 75, 20, "DtVencItPag", "Vencimento" );
 		adicDescFK( txtDtPagoItPag, 264, 20, 75, 20, "DtPagoItPag", "Dt.Pagto." );
 
@@ -346,8 +393,14 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		adicDescFK( txtVlrApagItRec, 488, 20, 70, 20, "VlrApagItRec", "Vlr.Aberto" );
 
 		adic( lbStatus, 561, 20, 103, 20 );
+		
+		txtCodPag.setNomeCampo( "CodPag" );
+		txtNParcPag.setNomeCampo( "NParcPag" );
 
-		setListaCampos( true, "PAGCHEQ", "FN" );
+		adicCampoInvisivel( txtCodEmpCH, "codempch", "codempch", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodFilialCH, "codfilialch", "codfilialch", ListaCampos.DB_SI, false );
+
+		setListaCampos( false, "PAGCHEQ", "FN" );
 		lcDet.setQueryInsert( false );
 
 		montaTab();
@@ -368,6 +421,9 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
+		
+		tab.setColunaInvisivel( 2 );//codempch
+		tab.setColunaInvisivel( 3 );//codfilialch
 	}
 
 	private void showStatus() {
@@ -450,7 +506,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	public void afterCarrega( CarregaEvent e ) {
 
 		showStatus();
-
+		
 		if ( e.getListaCampos() == lcDet ) {
 			lcPagar.carregaDados();
 		}
@@ -464,6 +520,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	public void afterInsert( InsertEvent e ) {
 
+		
 	}
 
 	public void beforeDelete( DeleteEvent e ) {
@@ -476,6 +533,19 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	}
 
 	@ Override
+	
+	public void beforePost( PostEvent e ) {
+
+		super.beforePost( e );
+
+		if(e.getListaCampos() == lcDet ) {
+			txtCodEmpCH.setVlrInteger( lcCampos.getCodEmp() );
+			txtCodFilialCH.setVlrInteger( lcCampos.getCodFilial() );
+		}
+
+	}
+	
+
 	public void afterPost( PostEvent e ) {
 
 		super.afterPost( e );
@@ -489,6 +559,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		lcConta.setConexao( con );
 		lcItPagar.setConexao( con );
 		lcPagar.setConexao( con );
+		lcBanco.setConexao( con );
 
 	}
 
