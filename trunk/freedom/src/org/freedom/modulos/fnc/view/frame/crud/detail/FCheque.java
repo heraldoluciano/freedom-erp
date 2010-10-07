@@ -380,10 +380,9 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtCodPag, 7, 20, 50, 20, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false );
+		adicCampo( txtCodPag, 7, 20, 50, 20, "CodPag", "Cód.pag.", ListaCampos.DB_PK, false );		
+		adicCampo( txtNParcPag, 133, 20, 50, 20, "NParcPag", "Parcela", ListaCampos.DB_PF, false );
 		adicDescFK( txtDocPag, 60, 20, 70, 20, "docpag", "Documento" );
-		adicCampo( txtNParcPag, 133, 20, 50, 20, "NParcPag", "Parcela", ListaCampos.DB_PK, false );
-
 		
 		adicDescFK( txtDtVencItPag, 186, 20, 75, 20, "DtVencItPag", "Vencimento" );
 		adicDescFK( txtDtPagoItPag, 264, 20, 75, 20, "DtPagoItPag", "Dt.Pagto." );
