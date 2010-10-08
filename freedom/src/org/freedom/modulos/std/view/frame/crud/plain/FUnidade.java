@@ -33,6 +33,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
@@ -47,6 +48,8 @@ public class FUnidade extends FDados implements ActionListener {
 	private JTextFieldPad txtDescUnidade = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtCasasDec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JCheckBoxPad cbCalcVolEmb = new JCheckBoxPad( "Calcula volumes p/embalagem", "S", "N" );
 
 	public FUnidade() {
 
@@ -56,6 +59,9 @@ public class FUnidade extends FDados implements ActionListener {
 		adicCampo( txtCodUnidade, 7, 20, 110, 20, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescUnidade, 120, 20, 300, 20, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, true );
 		adicCampo( txtCasasDec, 7, 60, 110, 20, "CasasDec", "Casas decimais", ListaCampos.DB_SI, true );
+		
+		adicDB( cbCalcVolEmb, 120, 60, 300, 20, "calcvolemb", "", false );
+		
 		setListaCampos( true, "UNIDADE", "EQ" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
