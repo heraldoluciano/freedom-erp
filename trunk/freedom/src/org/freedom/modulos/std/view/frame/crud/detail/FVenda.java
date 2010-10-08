@@ -1507,10 +1507,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		try {
 
-			sql.append( "select (iv.qtditvenda / coalesce(pd.qtdembalagem,1) ) volumes  " );
-			sql.append( "from vditvenda iv, eqproduto pd " );
+			sql.append( "select ");
+			sql.append( "(case when coalesce(un.calcvolemb,'N')='S' then ");
+			sql.append(" (iv.qtditvenda / coalesce(pd.qtdembalagem,1) ) else " );
+			sql.append(" iv.qtditvenda end) " );
+			sql.append(" volumes  " );
+			sql.append( "from vditvenda iv, eqproduto pd, equnidade un " );
 			sql.append( "where " );
 			sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and " );
+			sql.append( "un.codemp=pd.codempud and un.codfilial=pd.codfilialud and pd.codunid=pd.codunid and " );
+			
 			sql.append( "iv.codemp=? and iv.codfilial=? and iv.codvenda=? and iv.tipovenda=? " );
 
 			ps = con.prepareStatement( sql.toString() );
@@ -1553,6 +1559,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	}
 	 */
+	
+	
 	public Vector<Object> getParansDesconto() {
 
 		Vector<Object> param = new Vector<Object>();
