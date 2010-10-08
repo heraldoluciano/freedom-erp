@@ -54,6 +54,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRRecPag;
 import org.freedom.modulos.fnc.view.frame.report.FRReceber;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberMes;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberSetor;
+import org.freedom.modulos.fnc.view.frame.utility.FConsultaCheque;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
 import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
@@ -213,6 +214,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 401400000, 2, true, FTipoCob.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 401500000, 1, true, FTalaoCheq.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 401600000, 1, true, FCheque.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Consulta cheques", "Consulta cheques", 's', 401700000, 1, true, FConsultaCheque.class );
 		
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
