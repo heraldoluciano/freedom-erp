@@ -273,7 +273,7 @@ public class FRemCnab extends FRemFBN {
 	
 			reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 	
-			reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+			reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
 	
 			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
 				reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
