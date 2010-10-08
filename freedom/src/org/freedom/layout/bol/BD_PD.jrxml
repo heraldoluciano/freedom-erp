@@ -1981,7 +1981,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="6"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL} + "\n" + "\n" + $F{OBS}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
