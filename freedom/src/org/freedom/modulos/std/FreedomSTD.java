@@ -57,6 +57,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRRecPag;
 import org.freedom.modulos.fnc.view.frame.report.FRReceber;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberMes;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberSetor;
+import org.freedom.modulos.fnc.view.frame.utility.FConsultaCheque;
 import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
 import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
@@ -436,6 +437,7 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 601504000, 1, true, FCheque.class );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Consulta cheques", "Consulta cheques", 's', 601505000, 1, true, FConsultaCheque.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
