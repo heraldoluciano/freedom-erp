@@ -67,16 +67,8 @@ order by 3]]></queryString>
 	<variable name="TOTQTD" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
 	</variable>
-	<variable name="FORMULA" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$V{QTDFINALPRODOP}.floatValue()>0 ? 
-$V{QTDMOVPROD}==null?($F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))):
-($V{QTDMOVPROD}.divide($V{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)))
-:
-new BigDecimal(0)]]></variableExpression>
-		<initialValueExpression><![CDATA[$V{QTDFINALPRODOP}.floatValue()>0 ? 
-$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
-:
-new BigDecimal(0)]]></initialValueExpression>
+	<variable name="FORMULA" class="java.math.BigDecimal" resetType="Group" incrementType="Column" resetGroup="CODPROD" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))]]></variableExpression>
 	</variable>
 	<variable name="QTDMOVPROD" class="java.math.BigDecimal" resetType="Group" resetGroup="CODPROD" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
@@ -265,7 +257,7 @@ new BigDecimal(0)]]></initialValueExpression>
 					</textElement>
 				<text><![CDATA[Densidade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="30"
@@ -327,12 +319,12 @@ new BigDecimal(0)]]></initialValueExpression>
 					</textElement>
 				<text><![CDATA[Concentração Final:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Group" evaluationGroup="CODPROD"  hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="353"
 						y="31"
 						width="70"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"/>
@@ -358,7 +350,7 @@ new BigDecimal(0)]]></initialValueExpression>
 					</textElement>
 				<text><![CDATA[% Fórmula]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="423"
 						y="31"
