@@ -1070,6 +1070,22 @@ public class Funcoes {
 		return result;
 	}
 
+	public static String arrayTraceToString(StackTraceElement[] lista, String sep, Integer lines) {
+		String result = "";
+		
+		if(lines == null || lines > lista.length ) {
+			lines = lista.length;
+		}
+		
+		if (lines > 0) {
+			result = lista[0].toString(); // start with the first element
+			for (int i = 1; i < lines; i++) {
+				result = result + sep + lista[i];
+			}
+		}
+		return result;
+	}
+	
 	public static String vectorToString(Vector<?> lista, String sep) {
 		String result = "";
 		if (lista.size() > 0) {
@@ -1080,6 +1096,7 @@ public class Funcoes {
 		}
 		return result;
 	}
+
 
 	public static String adicionaEspacos(String sTexto, int iTamanho) {
 		int iTamIni = 0;
