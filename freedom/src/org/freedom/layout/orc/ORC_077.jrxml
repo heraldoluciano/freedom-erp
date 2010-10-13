@@ -116,7 +116,7 @@ MC.CODPAIS=C.CODPAIS AND MC.SIGLAUF=C.SIGLAUF AND MC.CODMUNIC=C.CODMUNIC]]></que
 						<subreportParameterExpression><![CDATA[$F{CODORC}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="TITULO">
-						<subreportParameterExpression><![CDATA["PEDIDO N°"]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA["ORÇAMENTO N°"]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="USUARIO">
 						<subreportParameterExpression><![CDATA[$P{USUARIO}]]></subreportParameterExpression>
