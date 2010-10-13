@@ -107,6 +107,10 @@ public class Cheque {
 		getInfoPrefs();
 
 	}
+	
+	public Cheque( ) {
+		
+	}
 
 	private void getInfoCheque() {
 
