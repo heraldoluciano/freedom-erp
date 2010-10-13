@@ -26,6 +26,7 @@ package org.freedom.modulos.fnc.view.dialog.report;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JInternalFrame;
 
@@ -69,8 +70,10 @@ public class DLImpReciboPag extends FDialogo {
 	private JInternalFrame owner = null;
 	
 	private ListaCampos lcCheque = new ListaCampos( this );
+	
+	private Vector<String> numscheques = null;
 
-	public DLImpReciboPag( JInternalFrame owner, DbConnection con, int codRec, int parcRec ) {
+	public DLImpReciboPag( JInternalFrame owner, DbConnection con, int codRec, int parcRec, Vector<String> numschequesp ) {
 
 		super();
 		
@@ -81,7 +84,8 @@ public class DLImpReciboPag extends FDialogo {
 		this.codPag = codRec;
 		this.parcPag = parcRec;
 		this.owner = owner;
-
+		this.numscheques = numschequesp;
+		
 		montaListaCampos();
 		montaTela();
 
@@ -114,6 +118,10 @@ public class DLImpReciboPag extends FDialogo {
 		
 		adic( new JLabelPad( "Cheque" ), 7, 50, 80, 20 );
 		adic( txtNumCheque, 7, 70, 80, 20 );
+		
+		if(numscheques!=null && numscheques.size()>0) {
+			txtNumCheque.setVlrString( numscheques.elementAt( 0 ) );
+		}
 		
 		
 	}
