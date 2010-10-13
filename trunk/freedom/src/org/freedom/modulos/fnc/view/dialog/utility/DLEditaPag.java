@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
@@ -49,6 +50,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 
 public class DLEditaPag extends FFDialogo implements CarregaListener {
@@ -334,42 +336,81 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 		return iRet;
 	}
+	
+	public static Vector<Cheque> buscaCheques(Integer codpag, Integer nparcpag) {
 
-	private int carregaCheques() {
-
-		int iRet = 0;
+		Vector<Cheque> ret = new Vector<Cheque>();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 
+		DbConnection conn = Aplicativo.getInstace().getConexao();
+		
 		try {
 
 			sql.append( "select ch.vlrcheq, ch.numcheq, ch.sitcheq, ch.seqcheq, pc.codpag, ch.dtemitcheq, ch.dtvenctocheq from fnpagcheq pc, fncheque ch " );
 			sql.append( "where ch.codemp=pc.codempch and ch.codfilial=pc.codfilialch and ch.seqcheq=pc.seqcheq " );
 			sql.append( "and pc.codemp=? and pc.codfilial=? and pc.codpag=? and pc.nparcpag=?" );
 
-			ps = con.prepareStatement( sql.toString() );
+			ps = conn.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 3, txtCodPag.getVlrInteger() );
-			ps.setInt( 4, txtNParcPag.getVlrInteger() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
+			ps.setInt( 3, codpag );
+			ps.setInt( 4, nparcpag );
 
 			rs = ps.executeQuery();
+			
+			
+			while (rs.next()) {
+				
+				Cheque cheque = new Cheque();
+				
+				cheque.setVlrcheq( rs.getBigDecimal( "vlrcheq" ));
+				cheque.setNumcheq( rs.getInt( "numcheq" ));
+				cheque.setSitcheq( rs.getString( "sitcheq" ));
+				cheque.setSeqcheq( rs.getInt( "seqcheq" ));
+				cheque.setDtemitcheq( rs.getDate( "dtemitcheq" ));
+				cheque.setDtvenctocheq( rs.getDate( "dtvenctocheq" ));
+
+				ret.add( cheque );
+				
+			}
+			
+		} 
+		catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( null, "Erro ao buscar cheques para o pagmento.\n" + err.getMessage(), true, conn, err );
+		}
+
+		return ret;
+		
+	}
+
+
+	private int carregaCheques() {
+
+		int iRet = 0;
+
+		try {
+
+
+			Vector<Cheque> cheques = buscaCheques( txtCodPag.getVlrInteger(),  txtNParcPag.getVlrInteger() );
 
 			tabCheques.limpa();
 
-			for ( int i = 0; rs.next(); i++ ) {
+			for ( int i = 0; cheques.size() > i; i++ ) {
 
 				tabCheques.adicLinha();
+				Cheque cheque = (Cheque) cheques.get( i );
 
-				tabCheques.setValor( rs.getInt( enum_grid_cheques.SEQCHEQ.name() ), i, enum_grid_cheques.SEQCHEQ.ordinal() );
-				tabCheques.setValor( rs.getInt( enum_grid_cheques.NUMCHEQ.name() ), i, enum_grid_cheques.NUMCHEQ.ordinal() );
-				tabCheques.setValor( rs.getDate( enum_grid_cheques.DTEMITCHEQ.name() ), i, enum_grid_cheques.DTEMITCHEQ.ordinal() );
-				tabCheques.setValor( rs.getDate( enum_grid_cheques.DTVENCTOCHEQ.name() ), i, enum_grid_cheques.DTVENCTOCHEQ.ordinal() );
-				tabCheques.setValor( Funcoes.bdToStr( rs.getBigDecimal( enum_grid_cheques.VLRCHEQ.name() ), Aplicativo.casasDecFin ), i, enum_grid_cheques.VLRCHEQ.ordinal() );
-				tabCheques.setValor( rs.getString( enum_grid_cheques.SITCHEQ.name() ), i, enum_grid_cheques.SITCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getSeqcheq(), i, enum_grid_cheques.SEQCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getNumcheq(), i, enum_grid_cheques.NUMCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getDtemitcheq(), i, enum_grid_cheques.DTEMITCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getDtvenctocheq(), i, enum_grid_cheques.DTVENCTOCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getVlrcheq(), i, enum_grid_cheques.VLRCHEQ.ordinal() );
+				tabCheques.setValor( cheque.getSitcheq(), i, enum_grid_cheques.SITCHEQ.ordinal() );
 
 			}
 			
@@ -379,13 +420,11 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 				tpn.addTab( "Cheques", pnCheques );
 			}
 
-			rs.close();
-			ps.close();
-
-			con.commit();
-		} catch ( SQLException err ) {
+						
+		} 
+		catch ( Exception err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar cheques do pagamento.\n" + err.getMessage(), true, con, err );
 		}
 
 		return iRet;
