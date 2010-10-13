@@ -268,6 +268,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			modelo.setValueAt(obj, lin, col);
 		}
 	}
+	
 
 	public Object getValor(int lin, int col) {
 
