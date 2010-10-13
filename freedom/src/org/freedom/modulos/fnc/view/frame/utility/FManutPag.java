@@ -321,7 +321,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private Map<String, Integer> prefere = null;
 
-
 	public enum enum_tab_manut { IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, VLRPARCITPAG, 
 		DTPAGOITPAG, VLRPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRDEVITPAG, VLRADICITPAG, VLRAPAGITPAG, 
 		VLRCANCITPAG, NUMCONTA, DESCPLAN, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODCOMPRA, CODPLAN, CODCC, DTITPAG   };
@@ -1765,122 +1764,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					dl.setVisible( true );
 
 					if ( dl.OK && imgStatusAt != imgPago) {
-
-						sRets = dl.getValores();
-
-						sql.append( "UPDATE FNITPAGAR SET " );
-						sql.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?," );
-						sql.append( "CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
-						sql.append( "DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=?," );
-						sql.append( "VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?," );
-						sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? " );
-						sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
-
+						
 						try {
-
-							ps = con.prepareStatement( sql.toString() );
-
-							if ( "".equals( sRets[ 0 ].trim() ) ) {
-								ps.setNull( 1, Types.CHAR );
-								ps.setNull( 2, Types.INTEGER );
-								ps.setNull( 3, Types.INTEGER );
-							}
-							else {
-								ps.setString( 1, sRets[ 0 ] );
-								ps.setInt( 2, Aplicativo.iCodEmp );
-								ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-							}
-							if ( "".equals( sRets[ 1 ].trim() ) ) {
-								ps.setNull( 4, Types.CHAR );
-								ps.setNull( 5, Types.INTEGER );
-								ps.setNull( 6, Types.INTEGER );
-							}
-							else {
-								ps.setString( 4, sRets[ 1 ] );
-								ps.setInt( 5, Aplicativo.iCodEmp );
-								ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-							}
-							if ( "".equals( sRets[ 2 ].trim() ) ) {
-								ps.setNull( 7, Types.INTEGER );
-								ps.setNull( 8, Types.CHAR );
-								ps.setNull( 9, Types.INTEGER );
-								ps.setNull( 10, Types.INTEGER );
-							}
-							else {
-								ps.setInt( 7, iAnoCC );
-								ps.setString( 8, sRets[ 2 ] );
-								ps.setInt( 9, Aplicativo.iCodEmp );
-								ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
-							}
-							if ( "".equals( sRets[ 3 ].trim() ) ) {
-								ps.setNull( 11, Types.CHAR );
-							}
-							else {
-								ps.setString( 11, sRets[ 3 ] );
-							}
-							if ( "".equals( sRets[ 4 ].trim() ) ) {
-								ps.setNull( 12, Types.DECIMAL );
-							}
-							else {
-								ps.setBigDecimal( 12, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 4 ] ) );
-							}
-							if ( "".equals( sRets[ 5 ].trim() ) ) {
-								ps.setNull( 13, Types.DECIMAL );
-							}
-							else {
-								ps.setBigDecimal( 13, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 5 ] ) );
-							}
-							if ( "".equals( sRets[ 6 ].trim() ) ) {
-								ps.setNull( 14, Types.DECIMAL );
-							}
-							else {
-								ps.setBigDecimal( 14, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 6 ] ) );
-							}
-							if ( "".equals( sRets[ 7 ].trim() ) ) {
-								ps.setNull( 15, Types.DECIMAL );
-							}
-							else {
-								ps.setBigDecimal( 15, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 7 ] ) );
-							}
-							if ( "".equals( sRets[ 8 ].trim() ) ) {
-								ps.setNull( 16, Types.DECIMAL );
-							}
-							else {
-								ps.setDate( 16, Funcoes.strDateToSqlDate( sRets[ 8 ] ) );
-							}
-							if ( "".equals( sRets[ 9 ].trim() ) ) {
-								ps.setNull( 17, Types.CHAR );
-							}
-							else {
-								ps.setString( 17, sRets[ 9 ] );
-							}
-							if ( "".equals( sRets[ 10 ].trim() ) ) {
-								ps.setNull( 18, Types.INTEGER );
-								ps.setNull( 19, Types.INTEGER );
-								ps.setNull( 20, Types.INTEGER );
-							}
-							else {
-								ps.setInt( 18, Integer.parseInt( sRets[ 10 ] ) );
-								ps.setInt( 19, Aplicativo.iCodEmp );
-								ps.setInt( 20, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
-							}
-							if ( "".equals( sRets[ 11 ].trim() ) ) {
-								ps.setNull( 21, Types.DECIMAL );
-							}
-							else {
-								ps.setBigDecimal( 21, ConversionFunctions.stringCurrencyToBigDecimal( sRets[ 11 ] ) );
-							}
-
-							ps.setInt( 22, iCodPag );
-							ps.setInt( 23, iNParcPag );
-							ps.setInt( 24, Aplicativo.iCodEmp );
-							ps.setInt( 25, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-
-							ps.executeUpdate();
-
-							con.commit();
 							
-						} catch ( SQLException err ) {
+							dl.salvaPag();
+					
+							
+						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro ao editar parcela!\n" + err.getMessage(), true, con, err );
 							err.printStackTrace();
 						}
@@ -2262,6 +2152,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 		}
 
+		@ SuppressWarnings ( "unchecked" )
 		private void impRecibo() {
 
 			DLImpReciboPag dl = null;
@@ -2271,7 +2162,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 
-			dl = new DLImpReciboPag( this, con, Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 5 ).toString()), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 6 ).toString()) );
+			dl = new DLImpReciboPag( this, con, Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ).toString()), 
+												Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ).toString()),
+												(Vector<String>) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()));
 
 			dl.setVisible( true );
 
