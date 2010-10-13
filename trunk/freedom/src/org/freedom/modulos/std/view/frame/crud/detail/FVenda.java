@@ -1515,7 +1515,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sql.append( "from vditvenda iv, eqproduto pd, equnidade un " );
 			sql.append( "where " );
 			sql.append( "pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod and " );
-			sql.append( "un.codemp=pd.codempud and un.codfilial=pd.codfilialud and pd.codunid=pd.codunid and " );
+			sql.append( "un.codemp=pd.codempud and un.codfilial=pd.codfilialud and un.codunid=pd.codunid and " );
 			
 			sql.append( "iv.codemp=? and iv.codfilial=? and iv.codvenda=? and iv.tipovenda=? " );
 
