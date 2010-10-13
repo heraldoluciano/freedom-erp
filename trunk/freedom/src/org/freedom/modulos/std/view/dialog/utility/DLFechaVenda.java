@@ -102,6 +102,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JPanelPad pinInfEspec = new JPanelPad( 0, 0 );
 
 	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtCodVendaDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtVlrDescItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
@@ -184,6 +186,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtStatusVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtTipoVendaDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -242,6 +246,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JRadioGroup<?, ?> rgFreteVD;
 
 	private final ListaCampos lcVenda = new ListaCampos( this );
+	
+	private final ListaCampos lcVendaDoc = new ListaCampos( this );
 
 	private final ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
@@ -314,6 +320,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private Historico historico = null;
 
 	private JTextFieldPad txtDocVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDocVendaDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtObsrec = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 
@@ -535,6 +543,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodPlanoPag.setListaCampos( lcVenda );
 		txtNumConta.setListaCampos( lcVenda );
 
+		// Lista Campos Auxiliar para atualização do numero do documento
+		lcVendaDoc.add( new GuardaCampo( txtTipoVendaDoc, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
+		lcVendaDoc.add( new GuardaCampo( txtCodVendaDoc, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
+		lcVendaDoc.add( new GuardaCampo( txtDocVendaDoc, "DocVenda", "N doc.", ListaCampos.DB_SI, false ) );
+
+		lcVendaDoc.montaSql( false, "VENDA", "VD" );
+		lcVendaDoc.setConexao( cn );
+		txtCodVendaDoc.setNomeCampo( "CodVenda" );
+		
 		lcFreteVD.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
 		lcFreteVD.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
 		lcFreteVD.add( new GuardaCampo( rgFreteVD, "TipoFreteVD", "Tipo", ListaCampos.DB_SI, true ) );
@@ -608,7 +625,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcReceber.add( new GuardaCampo( txtAltUsuRec, "AltUsuRec", "Usu.alt.", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtDtEmisRec, "DataRec", "Dt.emissão", ListaCampos.DB_SI, true ) );
 		lcReceber.add( new GuardaCampo( txtDocRec, "DocRec", "N.doc.", ListaCampos.DB_SI, true ) );
+		lcReceber.add( new GuardaCampo( txtObsrec, "obsrec", "Obs.", ListaCampos.DB_SI, false));
 
+		lcReceber.setQueryCommit( true );
 		lcReceber.montaSql( false, "RECEBER", "FN" );
 		lcReceber.setConexao( cn );
 		txtCodRec.setListaCampos( lcReceber );
@@ -670,7 +689,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		txtTipoVenda.setVlrString( "V" );
 		txtCodVenda.setVlrInteger( iCodVenda );
+		
 		lcVenda.carregaDados();
+		
+		txtTipoVendaDoc.setVlrString( "V" );
+		txtCodVendaDoc.setVlrInteger( iCodVenda );
+		
+		lcVendaDoc.carregaDados();
 
 		getDadosCli();
 
@@ -936,6 +961,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		try {
 
+			lcVendaDoc.carregaDados();
+			
 			Integer codhistrec = null;
 
 			codhistrec = (Integer) oPrefs[ 5 ];
@@ -949,11 +976,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			}
 
 			historico.setData( txtDtEmisRec.getVlrDate() );
-			historico.setDocumento( txtDocVenda.getVlrString() );
+			historico.setDocumento( txtDocVendaDoc.getVlrString() );
 			historico.setPortador( txtDescCli.getVlrString() );
 			historico.setValor( txtVlrLiqVenda.getVlrBigDecimal() );
 			historico.setHistoricoant( "" );
+			
 			txtObsrec.setVlrString( historico.getHistoricodecodificado() );
+			txaObsItRec.setVlrString( historico.getHistoricodecodificado() );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -974,7 +1003,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 			lcVenda.edit();
 
-			geraHistoricoRec();
+//			geraHistoricoRec();
 
 			if ( "V2".equals( txtStatusVenda.getVlrString() ) ) {
 
@@ -998,9 +1027,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private void gravaVenda() {
 
 		if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
-
-			geraHistoricoRec();
-
+			
 			txtPlacaFreteVD.getVlrString();
 			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
 				lcFreteVD.post();
@@ -1016,10 +1043,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtStatusVenda.setVlrString( "V2" );
 			}
 
+//			geraHistoricoRec();
+			
 			lcVenda.post();
 			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {
 				lcAuxVenda.post();
 			}
+			
 		}
 
 		int iCodRec = getCodRec();
@@ -1029,7 +1059,22 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			if ( "S".equals( cbEmiteRecibo.getVlrString() ) ) {
 				gravaImpRecibo( iCodRec, 1, new Boolean( true ) );
 			}
+			
 			lcReceber.carregaDados();
+			lcReceber.edit();
+
+			if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
+
+				geraHistoricoRec();
+
+				lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
+				lcReceber.carregaDados();
+				lcItReceber.carregaDados();
+				
+			}
+
+			
+			
 		}
 	}
 
