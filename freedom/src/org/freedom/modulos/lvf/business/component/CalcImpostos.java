@@ -115,7 +115,9 @@ public class CalcImpostos {
 
 		try {
 
-			setVlrbaseipiit( getVlrprod().setScale( casasDecFin, BigDecimal.ROUND_UP ) );
+			BigDecimal baseipi = getVlrprod().subtract( getVlrdescit() );
+			
+			setVlrbaseipiit( baseipi.setScale( casasDecFin, BigDecimal.ROUND_UP ) );
 			setVlripiit( getVlrbaseipiit().multiply( getAliqipifisc().divide( cem ) ) );
 
 		} catch ( Exception e ) {
