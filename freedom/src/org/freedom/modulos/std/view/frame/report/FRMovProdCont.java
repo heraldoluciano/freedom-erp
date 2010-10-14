@@ -1,5 +1,10 @@
 package org.freedom.modulos.std.view.frame.report;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -11,15 +16,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.SwingConstants;
-
-import net.sf.jasperreports.engine.JasperPrintManager;
 
 public class FRMovProdCont extends FRelatorio {
 
