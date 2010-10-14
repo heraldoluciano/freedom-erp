@@ -107,7 +107,11 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JLabelPad lbAtivoCli = new JLabelPad( "Ativo", SwingConstants.CENTER );
 
-	private JButtonPad btBuscar = new JButtonPad( "Buscar vendas", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Buscar cheques", Icone.novo( "btExecuta.gif" ) );
+	
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	
+	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	// *** Vendas
 
@@ -139,7 +143,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
-	private ListaCampos lcProd = new ListaCampos( this );
+	private ListaCampos lcBanco = new ListaCampos( this );
 
 	private boolean carregandoVendas = false;
 
@@ -164,7 +168,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		montaTela();
 
 		lcCliente.addCarregaListener( this );
-		lcProd.addCarregaListener( this );
+
 		btBuscar.addActionListener( this );
 		tabCheques.addTabelaSelListener( this );
 		tabCheques.addMouseListener( this );
@@ -191,14 +195,17 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
+		
+		
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setTabelaExterna( lcBanco, null );
+		txtCodBanco.setFK( true );
+		txtCodBanco.setNomeCampo( "CodBanco" );
 
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProd, null );
-		txtCodProd.setNomeCampo( "CodProd" );
-		txtCodProd.setFK( true );
-		lcProd.setReadOnly( true );
-		lcProd.montaSql( false, "PRODUTO", "EQ" );
+
 
 	}
 
@@ -586,16 +593,12 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			}
 			buscaCheques();
 		}
-		if ( lcProd == e.getListaCampos() ) {
-			buscaCheques();
-		}
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcCliente.setConexao( con );
-		lcProd.setConexao( con );
 
 	}
 }
