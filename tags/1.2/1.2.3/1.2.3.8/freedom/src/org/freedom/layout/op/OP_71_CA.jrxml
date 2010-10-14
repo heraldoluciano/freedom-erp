@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="OP_25_CA"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="783"
+		 pageHeight="90"
+		 columnWidth="783"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="TITULO" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
+		<defaultValueExpression ><![CDATA["RELATÓRIO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(7)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USUARIO" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["Usuario vazio"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGOEMP" isForPrompting="false" class="java.lang.Object"/>
+	<queryString><![CDATA[SELECT E.FONEEMP,E.FAXEMP,E.FOTOEMP,E.CNPJEMP,P.NOMERESP,P.IDENTPROFRESP,P.CARGORESP,
+P.IMGASSRESP
+FROM SGEMPRESA E, SGPREFERE5 P
+WHERE E.CODEMP=$P{CODEMP}]]></queryString>
+
+	<field name="FONEEMP" class="java.lang.String"/>
+	<field name="FAXEMP" class="java.lang.String"/>
+	<field name="FOTOEMP" class="java.io.InputStream"/>
+	<field name="CNPJEMP" class="java.lang.String"/>
+	<field name="NOMERESP" class="java.lang.String"/>
+	<field name="IDENTPROFRESP" class="java.lang.String"/>
+	<field name="CARGORESP" class="java.lang.String"/>
+	<field name="IMGASSRESP" class="java.io.InputStream"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="65"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="2"
+						y="10"
+						width="88"
+						height="54"
+						forecolor="#FFFFFF"
+						backcolor="#FFFFFF"
+						key="image-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="92"
+						y="47"
+						width="118"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fax : " + ($F{FAXEMP}!= null ? $F{FAXEMP}:"")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="92"
+						y="6"
+						width="119"
+						height="17"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="14" isBold="true"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="92"
+						y="36"
+						width="118"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Telefone : " + ($F{FONEEMP}!= null ? $F{FONEEMP}.substring(0,3) + $F{FONEEMP}.substring(3,12) :"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="92"
+						y="25"
+						width="118"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["C.N.P.J: " + ($F{CNPJEMP}!= null ? $F{CNPJEMP}.substring(0,2) + "." +
+$F{CNPJEMP}.substring(2,5) + "." + 
+$F{CNPJEMP}.substring(5,8) + "/" +
+$F{CNPJEMP}.substring(8,12) + "-" +
+$F{CNPJEMP}.substring(12,14): "" )]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement
+						x="211"
+						y="20"
+						width="189"
+						height="44"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="212"
+						y="6"
+						width="187"
+						height="14"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Etiqueta Contra Prova]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="406"
+						y="33"
+						width="140"
+						height="10"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMERESP}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="406"
+						y="53"
+						width="140"
+						height="11"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTPROFRESP}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="406"
+						y="43"
+						width="140"
+						height="10"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CARGORESP}.trim()]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="406"
+						y="31"
+						width="140"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
