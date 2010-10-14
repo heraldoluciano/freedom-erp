@@ -22,6 +22,7 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -41,13 +42,16 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
+import org.freedom.library.swing.util.SwingParams;
+import org.freedom.library.type.StringDireita;
+import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 
 /**
  * Consulta cheques emitidos/recebidos.
@@ -63,7 +67,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelMaster = new JPanelPad( 700, 140 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 100 );
 
 	private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -73,7 +77,9 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	private JPanelPad panelTabTotais = new JPanelPad( 700, 60 );
 
-	private JPanelPad panelGridCheques = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+//	private JPanelPad panelGridCheques = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+	
+	private JPanelPad panelGridCheques = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout(  ) );
 
 	private JPanelPad panelTabCheques = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -141,11 +147,33 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	// *** Listacampos
 
-	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
-
 	private ListaCampos lcBanco = new ListaCampos( this );
 
 	private boolean carregandoVendas = false;
+	
+	private Vector<String> vValsData = new Vector<String>();
+
+	private Vector<String> vLabsData = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgData = null;
+	
+	private ListaCampos lcConta = new ListaCampos( this );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtNomeFav = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private ListaCampos lcFor = new ListaCampos( this );
+
+
 
 	private enum enum_grid_cheques {
 		SITCHEQ, SEQCHEQ, CODBANC, AGENCIACHEQ, CONTACHEQ, NUMCHEQ, NOMEEMITCHEQ, NOMEFAVCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, DTCOMPCHEQ, TIPOCHEQ, VLRCHEQ ;
@@ -159,7 +187,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 		super( false );
 		setTitulo( "Consulta cheques", this.getClass().getName() );
-		setAtribos( 20, 20, 780, 600 );
+		setAtribos( 20, 20, 860, 600 );
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
 		setLocation( x, y );
@@ -167,7 +195,6 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		montaListaCampos();
 		montaTela();
 
-		lcCliente.addCarregaListener( this );
 
 		btBuscar.addActionListener( this );
 		tabCheques.addTabelaSelListener( this );
@@ -177,26 +204,15 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
-		periodo.set( Calendar.YEAR, periodo.get( Calendar.YEAR ) - 1 );
+		periodo.set( Calendar.MONTH, periodo.get( Calendar.MONTH ) - 1 );
 		txtDataini.setVlrDate( periodo.getTime() );
+		
+
+		
 	}
 
 	private void montaListaCampos() {
 
-		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtEmailCli, "EmailCli", "E-Mail", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtContCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtAtivoCli, "AtivoCli", "ativo", ListaCampos.DB_SI, false ) );
-		txtCodCli.setTabelaExterna( lcCliente, null );
-		txtCodCli.setNomeCampo( "CodCli" );
-		txtCodCli.setFK( true );
-		lcCliente.setReadOnly( true );
-		lcCliente.montaSql( false, "CLIENTE", "VD" );
-		
-		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
@@ -204,55 +220,73 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
+		
+		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cod.Banco", ListaCampos.DB_FK, false ) );	
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setReadOnly( true );
+		txtNumConta.setTabelaExterna( lcConta, null );
+		txtNumConta.setFK( true );
+		txtNumConta.setNomeCampo( "NumConta" );
 
 
+		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 
+		lcFor.montaSql( false, "FORNECED", "CP" );
+		lcFor.setQueryCommit( false );
+		lcFor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFor, null );
+		txtCodFor.setFK( true );
+		txtCodFor.setNomeCampo( "CodFor" );
+
+		
+		
 	}
 
 	private void montaTela() {
 
+		vValsData.addElement( "E" );
+		vValsData.addElement( "V" );
+		vValsData.addElement( "C" );
+		
+		vLabsData.addElement( "Emissão" );
+		vLabsData.addElement( "Vencimento" );
+		vLabsData.addElement( "Compensação" );
+		
+		rgData = new JRadioGroup<String, String>( 3, 1, vLabsData, vValsData );
+		rgData.setVlrString( "E" );
+		
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
 
 		// ***** Cabeçalho
 
-		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
-		periodo.setOpaque( true );
-		JLabel borda = new JLabel();
-		borda.setBorder( BorderFactory.createEtchedBorder() );
-/*
-		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
-		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
-		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 5, 340, 20 );
-		panelMaster.adic( txtRazCli, 70, 25, 340, 20 );
+		JPanelPad periodo = new JPanelPad();
+		periodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLUE ) );
+		
+		panelMaster.adic( periodo, 620, 0, 220, 60 );
+		
+		periodo.adic( txtDataini, 7, 5, 70, 20 );
+		periodo.adic( new JLabel( "até", SwingConstants.CENTER ), 80, 5, 40, 20 );
+		periodo.adic( txtDatafim, 120, 5, 70, 20 );
+		
+		panelMaster.adic( btBuscar, 622, 60, 215, 30 );
+		
+		panelMaster.adic( txtCodBanco, 7, 20, 70, 20, "Cod.Banc." );
+		panelMaster.adic( txtDescBanco, 80, 20, 150, 20, "Nome do banco" );
 
-		panelMaster.adic( new JLabelPad( "Contato" ), 413, 5, 100, 20 );
-		panelMaster.adic( txtContCli, 413, 25, 100, 20 );
+		panelMaster.adic( txtCodFor, 233, 20, 70, 20, "Cod.For." );
+		panelMaster.adic( txtRazFor, 306, 20, 170, 20, "Razão do fornecedor" );
+		panelMaster.adic( txtNomeFav, 233, 60, 243, 20 ,"Nome do favorecido");
 
-		panelMaster.adic( new JLabelPad( "DDD" ), 7, 45, 60, 20 );
-		panelMaster.adic( txtDDDCli, 7, 65, 60, 20 );
-		panelMaster.adic( new JLabelPad( "Fone" ), 70, 45, 75, 20 );
-		panelMaster.adic( txtFoneCli, 70, 65, 75, 20 );
-		panelMaster.adic( new JLabelPad( "e-mail" ), 148, 45, 262, 20 );
-		panelMaster.adic( txtEmailCli, 148, 65, 262, 20 );
+		panelMaster.adic( txtNumConta, 7, 60, 70, 20, "Conta" );
+		panelMaster.adic( txtDescConta, 80, 60, 150, 20, "Nome da conta" );
 
-		panelMaster.adic( lbAtivoCli, 413, 65, 100, 20 );
-
-		panelMaster.adic( new JLabelPad( "Cód.Prod." ), 7, 85, 60, 20 );
-		panelMaster.adic( txtCodProd, 7, 105, 60, 20 );
-		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 85, 340, 20 );
-		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
-*/
-		panelMaster.adic( periodo, 540, 0, 60, 20 );
-		panelMaster.adic( borda, 530, 10, 220, 45 );
-		panelMaster.adic( txtDataini, 540, 25, 80, 20 );
-		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 25, 40, 20 );
-		panelMaster.adic( txtDatafim, 660, 25, 80, 20 );
-
-		panelMaster.adic( btBuscar, 530, 60, 220, 30 );
-
-		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
-
+		panelMaster.adic( rgData, 490, 8, 130, 83 );
+		
 		lbAtivoCli.setOpaque( true );
 		lbAtivoCli.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbAtivoCli.setBackground( GREEN );
@@ -271,12 +305,14 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 		panelTotais.add( panelTabTotais, BorderLayout.NORTH );
 		panelTotais.add( panelGridCheques, BorderLayout.CENTER );
-		panelGridCheques.add( panelTabCheques );
-		panelGridCheques.add( panelTabContasPagas );
+//		panelGridCheques.add( panelTabCheques );
+//		panelGridCheques.add( panelTabContasPagas );
+		panelGridCheques.add( panelTabCheques, BorderLayout.CENTER );
+		panelGridCheques.add( panelTabContasPagas, BorderLayout.SOUTH );
 
 		panelTabCheques.setBorder( BorderFactory.createTitledBorder( "Cheques" ) );
 		panelTabContasPagas.setBorder( BorderFactory.createTitledBorder( "Contas pagas" ) );
-		panelTabContasPagas.setPreferredSize( new Dimension( 700, 120 ) );
+		panelTabContasPagas.setPreferredSize( new Dimension( 700, 100 ) );
 /*
 		panelTabVendas.adic( new JLabelPad( "Última Compra" ), 10, 10, 100, 20 );
 		panelTabVendas.adic( txtUltimaCompra, 10, 30, 100, 20 );
@@ -288,7 +324,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		panelTabVendas.adic( txtTotalAberto, 359, 30, 120, 20 );
 */
 		Color statusColor = new Color( 111, 106, 177 );
-		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
+		Font statusFont = new Font( "Tohoma", Font.PLAIN, 11 );
 
 //		panelTabTotais.adic( new JLabelPad( imgCancelado ), 600, 5, 20, 15 );
 		JLabelPad canceladas = new JLabelPad( "canceladas" );
@@ -308,8 +344,6 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		faturadas.setFont( statusFont );
 	//	panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
 
-//		SITCHEQ, SEQCHEQ, CODBANC, AGENCIACHEQ, CONTACHEQ, NUMCHEQ, NOMEEMITCHEQ, NOMEFAVCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, DTCOMPCHEQ, TIPOCHEQ, VLRCHEQ ;
-		
 		tabCheques.adicColuna( "" );			// SITCHQ
 		tabCheques.adicColuna( "Seq." );		// SEQCHEQ
 		tabCheques.adicColuna( "Banco" );		// CODBANC
@@ -318,29 +352,27 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		tabCheques.adicColuna( "Cheque" );		// NUMCHEQ
 		tabCheques.adicColuna( "Emitente" );	// NOMEEMITCHEQ
 		tabCheques.adicColuna( "Favorecido" );	// NOMEFAVCHEQ
-		tabCheques.adicColuna( "Emissão" );		// DTEMITCHEQ
-		tabCheques.adicColuna( "Vencimento" );	// DTVENCTOCHEQ
-		tabCheques.adicColuna( "Compensação" );	// DTCOMPCHEQ
+		tabCheques.adicColuna( "Emiss." );		// DTEMITCHEQ
+		tabCheques.adicColuna( "Vencto." );		// DTVENCTOCHEQ
+		tabCheques.adicColuna( "Compens." );	// DTCOMPCHEQ
 		tabCheques.adicColuna( "Tipo" );		// TIPOCHEQ
 
 		tabCheques.setTamColuna( 20		,enum_grid_cheques.SITCHEQ.ordinal() );
 		tabCheques.setTamColuna( 30		,enum_grid_cheques.SEQCHEQ.ordinal() );
-		tabCheques.setTamColuna( 50		,enum_grid_cheques.CODBANC.ordinal() );
-		tabCheques.setTamColuna( 60		,enum_grid_cheques.AGENCIACHEQ.ordinal() );
-		tabCheques.setTamColuna( 80		,enum_grid_cheques.CONTACHEQ.ordinal() );
-		tabCheques.setTamColuna( 60		,enum_grid_cheques.NUMCHEQ.ordinal() );
-		tabCheques.setTamColuna( 200	,enum_grid_cheques.NOMEEMITCHEQ.ordinal() );
-		tabCheques.setTamColuna( 200	,enum_grid_cheques.NOMEFAVCHEQ.ordinal() );
-		tabCheques.setTamColuna( 70		,enum_grid_cheques.DTEMITCHEQ.ordinal() );
-		tabCheques.setTamColuna( 70		,enum_grid_cheques.DTVENCTOCHEQ.ordinal() );
-		tabCheques.setTamColuna( 70		,enum_grid_cheques.DTCOMPCHEQ.ordinal() );
-		tabCheques.setTamColuna( 60		,enum_grid_cheques.TIPOCHEQ.ordinal() );
+		tabCheques.setTamColuna( 40		,enum_grid_cheques.CODBANC.ordinal() );
+		tabCheques.setTamColuna( 50		,enum_grid_cheques.AGENCIACHEQ.ordinal() );
+		tabCheques.setTamColuna( 45		,enum_grid_cheques.CONTACHEQ.ordinal() );
+		tabCheques.setTamColuna( 50		,enum_grid_cheques.NUMCHEQ.ordinal() );
+		tabCheques.setTamColuna( 185	,enum_grid_cheques.NOMEEMITCHEQ.ordinal() );
+		tabCheques.setTamColuna( 185	,enum_grid_cheques.NOMEFAVCHEQ.ordinal() );
+		tabCheques.setTamColuna( 60		,enum_grid_cheques.DTEMITCHEQ.ordinal() );
+		tabCheques.setTamColuna( 60		,enum_grid_cheques.DTVENCTOCHEQ.ordinal() );
+		tabCheques.setTamColuna( 60		,enum_grid_cheques.DTCOMPCHEQ.ordinal() );
+		tabCheques.setTamColuna( 30		,enum_grid_cheques.TIPOCHEQ.ordinal() );
 
+		tabCheques.setRowHeight( 21 );
+		
 		panelTabCheques.add( new JScrollPane( tabCheques ) );
-
-		
-//		STATUSITPAG, CODFOR, RAZFOR, CODPAG, NPARCPAG, DOCLANCAITPAG, OBSITPAG, DTITPAG, DTVENCITPAG, DTPAGOITPAG, VLRPARCITPAG, VLRPAGOITPAG, VLRAPAGITPAG ;
-		
 		
 		tabContasPagas.adicColuna( "" 				);			//	STATUSITPAG
 		tabContasPagas.adicColuna( "Cód.For." 		);			//	CODFOR	
@@ -350,26 +382,28 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		tabContasPagas.adicColuna( "Doc." 			);			//	DOCLANCAITPAG
 		tabContasPagas.adicColuna( "Obs." 			);			//	OBSITPAG
 		tabContasPagas.adicColuna( "Emissão" 		);			//	DTITPAG
-		tabContasPagas.adicColuna( "Vencimento" 	);			//	DTVENCITPAG
-		tabContasPagas.adicColuna( "Pagamento" 		);			//	DTPAGOITPAG
+		tabContasPagas.adicColuna( "Vencto." 		);			//	DTVENCITPAG
+		tabContasPagas.adicColuna( "Dt.Pgto." 		);			//	DTPAGOITPAG
 		tabContasPagas.adicColuna( "Vlr.orig." 		);			//	VLRPARCITPAG
 		tabContasPagas.adicColuna( "Vlr.pago" 		);			//	VLRPAGOITPAG
 		tabContasPagas.adicColuna( "Vlr.a.pag." 	);			//	VLRPAGITPAG
 
-		tabContasPagas.setTamColuna( 30		, enum_grid_contas_pagas.STATUSITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 20		, enum_grid_contas_pagas.STATUSITPAG.ordinal() );
 		tabContasPagas.setTamColuna( 50		, enum_grid_contas_pagas.CODFOR.ordinal() );
-		tabContasPagas.setTamColuna( 200	, enum_grid_contas_pagas.RAZFOR.ordinal() );
-		tabContasPagas.setTamColuna( 70		, enum_grid_contas_pagas.CODPAG.ordinal() );
-		tabContasPagas.setTamColuna( 50		, enum_grid_contas_pagas.NPARCPAG.ordinal() );
-		tabContasPagas.setTamColuna( 70		, enum_grid_contas_pagas.DOCLANCAITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 80		, enum_grid_contas_pagas.OBSITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 80		, enum_grid_contas_pagas.DTITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 90		, enum_grid_contas_pagas.DTVENCITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 90		, enum_grid_contas_pagas.DTPAGOITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 90		, enum_grid_contas_pagas.VLRPARCITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 90		, enum_grid_contas_pagas.VLRPAGOITPAG.ordinal() );
-		tabContasPagas.setTamColuna( 90		, enum_grid_contas_pagas.VLRAPAGITPAG.ordinal() );		
+		tabContasPagas.setTamColuna( 145	, enum_grid_contas_pagas.RAZFOR.ordinal() );
+		tabContasPagas.setTamColuna( 55		, enum_grid_contas_pagas.CODPAG.ordinal() );
+		tabContasPagas.setTamColuna( 45		, enum_grid_contas_pagas.NPARCPAG.ordinal() );
+		tabContasPagas.setTamColuna( 45		, enum_grid_contas_pagas.DOCLANCAITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 100	, enum_grid_contas_pagas.OBSITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.DTITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.DTVENCITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.DTPAGOITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.VLRPARCITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.VLRPAGOITPAG.ordinal() );
+		tabContasPagas.setTamColuna( 60		, enum_grid_contas_pagas.VLRAPAGITPAG.ordinal() );		
 
+		tabContasPagas.setRowHeight( 21 );
+		
 		panelTabContasPagas.add( new JScrollPane( tabContasPagas ) );
 
 		// ***** Rodapé
@@ -391,8 +425,55 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			sql.append( "ch.dtvenctocheq, ch.dtcompcheq, ch.tipocheq, ch.vlrcheq ");
 			sql.append( "from fncheque ch ");
 			sql.append( "where ");
-			sql.append( "ch.codemp=? and ch.codfilial=? ");
-			sql.append( "order by ch.dtemitcheq, ch.numcheq " );
+			sql.append( "ch.codemp=? and ch.codfilial=? and ");
+			
+			if("E".equals(rgData.getVlrString())){
+				sql.append( "ch.dtemitcheq ");
+			}
+			else if("V".equals(rgData.getVlrString())){
+				sql.append( "ch.dtvenctocheq ");
+			}
+			else if("C".equals(rgData.getVlrString())){
+				sql.append( "ch.dtcompcheq "); 	
+			}
+			
+			sql.append( " between ? and ? ");
+			
+			if( txtCodBanco.getVlrString().length()>0 ) {
+				
+				sql.append( " and ch.codempbo=? and ch.codfilialbo=? and ch.codbanc=? " );
+				
+			}
+			
+			if( txtNumConta.getVlrString().length()>0 ) {
+				
+				sql.append( " and ch.contacheq=? " );
+				
+			}
+
+			if( txtCodFor.getVlrInteger()>0 ) {
+				sql.append( "and ch.seqcheq in (" );
+				sql.append( "select pc.seqcheq ");
+				sql.append( "from  fnpagcheq pc, fnpagar pg ");
+				sql.append( "where pg.codemp=pc.codemp and pg.codfilial=pc.codfilial and pg.codpag=pc.codpag ");
+				sql.append( "and pg.codempfr=? and pg.codfilialfr=? and pg.codfor=? ) "); 
+				
+			}
+			
+			if(txtNomeFav.getVlrString().length()>0) {
+				
+				sql.append( " and ch.nomefavcheq ");
+				
+				if(txtNomeFav.getVlrString().indexOf( "%" )>-1) {					
+					sql.append( " like ? " );					
+				}
+				else {
+					sql.append( " = ? " );
+				}				
+				
+			}
+			
+			sql.append( " order by ch.dtemitcheq, ch.numcheq " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -400,7 +481,36 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
-
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate()) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate()) );
+			
+			if( txtCodBanco.getVlrString().length()>0 ) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( iparam++, txtCodBanco.getVlrString() );
+	
+				
+			}
+			
+			if( txtNumConta.getVlrString().length()>0 ) {
+				
+				ps.setString( iparam++, txtNumConta.getVlrString() );
+				
+			}
+			
+			if( txtCodFor.getVlrInteger()>0 ) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+				ps.setInt( iparam++, txtCodFor.getVlrInteger() );
+				
+			}
+			
+			if(txtNomeFav.getVlrString().length()>0) {
+				ps.setString( iparam++, txtNomeFav.getVlrString() );
+			}
+			
 			ResultSet rs = ps.executeQuery();
 
 			carregandoVendas = true;
@@ -413,8 +523,9 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 				tabCheques.adicLinha();
 				
-				tabCheques.setValor( imgColuna, row, enum_grid_cheques.SITCHEQ.ordinal() );
+				//tabCheques.setValor( imgColuna, row, enum_grid_cheques.SITCHEQ.ordinal() );
 				
+				tabCheques.setValor( rs.getString( enum_grid_cheques.SITCHEQ.name()), row, enum_grid_cheques.SITCHEQ.ordinal() );				
 				tabCheques.setValor( rs.getInt( enum_grid_cheques.SEQCHEQ.name() ), row, enum_grid_cheques.SEQCHEQ.ordinal() );
 				tabCheques.setValor( rs.getString( enum_grid_cheques.CODBANC.name() ), row, enum_grid_cheques.CODBANC.ordinal() );
 				tabCheques.setValor( rs.getString( enum_grid_cheques.AGENCIACHEQ.name() ), row, enum_grid_cheques.AGENCIACHEQ.ordinal() );
@@ -457,7 +568,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			sql.append( "and fr.codemp=pg.codempfr and fr.codfilial=pg.codfilialfr and fr.codfor=pg.codfor ");
 			sql.append( "and pc.codemp=ip.codemp and pc.codfilial=ip.codfilial and pc.codpag=ip.codpag and pc.nparcpag=ip.nparcpag ");
 			sql.append( "and pc.codempch=? and pc.codfilial=? and pc.seqcheq=? " );
-
+			
 			sql.append( "order by ip.dtitpag " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -488,9 +599,10 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 				tabContasPagas.setValor( rs.getDate( enum_grid_contas_pagas.DTITPAG.name() ), row, enum_grid_contas_pagas.DTITPAG.ordinal() );
 				tabContasPagas.setValor( rs.getDate( enum_grid_contas_pagas.DTVENCITPAG.name() ), row, enum_grid_contas_pagas.DTVENCITPAG.ordinal() );
 				tabContasPagas.setValor( rs.getDate( enum_grid_contas_pagas.DTPAGOITPAG.name() ), row, enum_grid_contas_pagas.DTPAGOITPAG.ordinal() );
-				tabContasPagas.setValor( rs.getBigDecimal( enum_grid_contas_pagas.VLRPARCITPAG.name() ), row, enum_grid_contas_pagas.VLRPARCITPAG.ordinal() );
-				tabContasPagas.setValor( rs.getBigDecimal( enum_grid_contas_pagas.VLRPAGOITPAG.name() ), row, enum_grid_contas_pagas.VLRPAGOITPAG.ordinal() );
-				tabContasPagas.setValor( rs.getBigDecimal( enum_grid_contas_pagas.VLRAPAGITPAG.name() ), row, enum_grid_contas_pagas.VLRAPAGITPAG.ordinal() );
+
+				tabContasPagas.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_grid_contas_pagas.VLRPARCITPAG.name() ) )), row, enum_grid_contas_pagas.VLRPARCITPAG.ordinal() );
+				tabContasPagas.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_grid_contas_pagas.VLRPAGOITPAG.name() ) )), row, enum_grid_contas_pagas.VLRPAGOITPAG.ordinal() );
+				tabContasPagas.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_grid_contas_pagas.VLRAPAGITPAG.name() ) )), row, enum_grid_contas_pagas.VLRAPAGITPAG.ordinal() );
 
 				row++;
 			}
@@ -521,26 +633,15 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 		if ( e.getClickCount() == 2 ) {
 			if ( e.getSource() == tabCheques && tabCheques.getLinhaSel() > -1 ) {
-				FVenda venda = null;
-				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+				FCheque cheque = null;
+				if ( Aplicativo.telaPrincipal.temTela( FCheque.class.getName() ) ) {
+					cheque = (FCheque) Aplicativo.telaPrincipal.getTela( FCheque.class.getName() );
 				}
 				else {
-					venda = new FVenda();
-					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
+					cheque = new FCheque();
+					Aplicativo.telaPrincipal.criatela( "Cheque", cheque, con );
 				}
-//				venda.exec( (Integer) tabCheques.getValor( tabCheques.getLinhaSel(), enum_grid_cheques.CODVENDA.ordinal() ), (String) tabCheques.getValor( tabCheques.getLinhaSel(), enum_grid_cheques.TIPOVENDA.ordinal() ) );
-			}
-			else if ( e.getSource() == tabContasPagas && tabContasPagas.getLinhaSel() > -1 ) {
-				FVenda venda = null;
-				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-				}
-				else {
-					venda = new FVenda();
-					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
-				}
-	//			venda.exec( (Integer) tabCheques.getValor( tabCheques.getLinhaSel(), enum_grid_cheques.CODVENDA.ordinal() ), (Integer) tabContasPagas.getValor( tabContasPagas.getLinhaSel(), enum_grid_contas_pagas.ITEM.ordinal() ), (String) tabContasPagas.getValor( tabContasPagas.getLinhaSel(), enum_grid_contas_pagas.TIPOVENDA.ordinal() ) );
+				cheque.exec( (Integer) tabCheques.getValor( tabCheques.getLinhaSel(), enum_grid_cheques.SEQCHEQ.ordinal() ) );
 			}
 		}
 	}
@@ -582,23 +683,14 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	public void afterCarrega( CarregaEvent e ) {
 
-		if ( lcCliente == e.getListaCampos() ) {
-			if ( "S".equals( txtAtivoCli.getVlrString().trim() ) ) {
-				lbAtivoCli.setText( "Ativo" );
-				lbAtivoCli.setBackground( GREEN );
-			}
-			else {
-				lbAtivoCli.setText( "Inativo" );
-				lbAtivoCli.setBackground( Color.RED );
-			}
-			buscaCheques();
-		}
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcCliente.setConexao( con );
+		lcBanco.setConexao( con );
+		lcConta.setConexao( con );
+		lcFor.setConexao( con );
 
 	}
 }
