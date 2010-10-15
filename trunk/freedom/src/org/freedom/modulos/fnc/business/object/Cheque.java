@@ -22,17 +22,17 @@ import org.freedom.library.swing.frame.Aplicativo;
 
 public class Cheque {
 
-	private static final Constant TIPO_CHEQUE_PAG = new Constant( "Pago/Fornecedor", "PF" );
+	public static final Constant TIPO_CHEQUE_PAG = new Constant( "Pago/Fornecedor", "PF" );
 
-	private static final Constant TIPO_CHEQUE_REC = new Constant( "Recebido/Cliente", "RC" );
+	public static final Constant TIPO_CHEQUE_REC = new Constant( "Recebido/Cliente", "RC" );
 
-	private static final Constant SIT_CHEQUE_CADASTRADO = new Constant( "Cadastrado", "CA" );
+	public static final Constant SIT_CHEQUE_CADASTRADO = new Constant( "Cadastrado", "CA" );
 
-	private static final Constant SIT_CHEQUE_EMITIDO = new Constant( "Emitido", "ED" );
+	public static final Constant SIT_CHEQUE_EMITIDO = new Constant( "Emitido", "ED" );
 
-	private static final Constant SIT_CHEQUE_COMPENSADO = new Constant( "Compensado", "CD" );
+	public static final Constant SIT_CHEQUE_COMPENSADO = new Constant( "Compensado", "CD" );
 
-	private static final Constant SIT_CHEQUE_DEVOLVIDO = new Constant( "Devolvido", "DV" );
+	public static final Constant SIT_CHEQUE_DEVOLVIDO = new Constant( "Devolvido", "DV" );
 
 	private Integer seqcheq;
 
