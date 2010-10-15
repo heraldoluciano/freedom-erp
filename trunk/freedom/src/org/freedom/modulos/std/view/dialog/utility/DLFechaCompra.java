@@ -24,6 +24,7 @@
 package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -38,6 +39,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -60,6 +63,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
+import org.freedom.library.swing.util.SwingParams;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener {
 
@@ -192,11 +196,39 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JPanelPad pinLbICMS = new JPanelPad();
 
 	private JPanelPad pinICMS = new JPanelPad();
+	
+	private ListaCampos lcConta = new ListaCampos( this, "CT" );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final ListaCampos lcPlan = new ListaCampos( this, "PN" );
+	
+	private final ListaCampos lcCC = new ListaCampos( this, "CC" );
+	
+	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private final JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+
+	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+
+	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private Map<String, Integer> prefere = null;
 
 	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes, boolean NFe ) {
 
 		super( cOrig );
 		setConexao( cn );
+		
+		prefere = getPrefere();
+		
+		txtAnoCC.setVlrInteger( prefere.get( "anocc" ) );
 
 		if ( NFe ) {
 			cbEmiteNota.setText( "Emite NFE?" );
@@ -204,7 +236,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo( "Fechar Compra" );
-		setAtribos( 560, 570 );
+		setAtribos( 560, 610 );
 
 		this.volumes = volumes;
 
@@ -256,9 +288,54 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcBanco.setConexao( cn );
 		txtCodBanco.setTabelaExterna( lcBanco, null );
 		txtCodBanco.setFK( true );
+		
+		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Num.Conta", ListaCampos.DB_PK, txtDescConta, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setQueryCommit( false );
+		lcConta.setReadOnly( true );
+		txtNumConta.setFK( true );
+		txtNumConta.setNomeCampo( "numconta" );
+		txtNumConta.setTabelaExterna( lcConta, null );	
+		lcConta.setConexao( cn );
+		
+		
+		/************************
+		 * FNPLANEJAMENTO       *
+		 ************************/
+		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
+		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
+		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
+		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
+		lcPlan.setReadOnly( true );
+		txtCodPlan.setTabelaExterna( lcPlan, null );
+		txtCodPlan.setFK( true );
+		txtCodPlan.setNomeCampo( "CodPlan" );
+		lcPlan.setConexao( cn );
+		
+		/***************
+		 * FNCC        *
+		 ***************/
+		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false ) );
+		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, false ) );
+		lcCC.setReadOnly( true );
+		lcCC.setQueryCommit( false );
+		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + prefere.get( "anocc" ) );
+		lcCC.montaSql( false, "CC", "FN" );
+		txtCodCC.setTabelaExterna( lcCC, null );
+		txtCodCC.setFK( true );
+		txtCodCC.setNomeCampo( "CodCC" );
+		txtAnoCC.setTabelaExterna( lcCC, null );
+		txtAnoCC.setFK( true );
+		txtAnoCC.setNomeCampo( "AnoCC" );
+		lcCC.setConexao( cn );
 
 		txtCodCompra.setNomeCampo( "CodCompra" );
+		
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag, null );
+		
 		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "N.pedido", ListaCampos.DB_PK, false ) );
 		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V.compra", ListaCampos.DB_SI, false ) );
@@ -279,6 +356,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtQtdFreteCompra, "QtdFreteCompra", "Qtd. de volumes na compra", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrBaseICMS, "VlrBaseICMSCompra", "Vlr. Base do ICMS", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrBaseICMSST, "VlrBaseICMSSTCompra", "Vlr. Base do ICMS ST", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtNumConta, "NumConta", "Nro.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
+		lcCompra.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) ); 
+		lcCompra.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
+		lcCompra.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
 
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
@@ -332,131 +413,96 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.carregaDados();
 
 		setPainel( pinFecha );
-		adic( new JLabelPad( "Cód.pag." ), 7, 0, 60, 20 );
-		adic( txtCodPlanoPag, 7, 20, 60, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 70, 0, 200, 20 );
-		adic( txtDescPlanoPag, 70, 20, 200, 20 );
 
-		adic( new JLabelPad( "Cód.t.cob." ), 273, 0, 60, 20 );
-		adic( txtCodTipoCob, 273, 20, 60, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 336, 0, 200, 20 );
-		adic( txtDescTipoCob, 336, 20, 200, 20 );
+		adic( txtCodPlanoPag, 		7,  20,  60, 20, "Cód.pag." );
+		adic( txtDescPlanoPag, 	   70,  20, 200, 20, "Descrição do plano de pagto." );
 
-		adic( new JLabelPad( "Cód.bco." ), 7, 40, 60, 20 );
-		adic( txtCodBanco, 7, 60, 60, 20 );
-		adic( new JLabelPad( "Descrição do Banco" ), 70, 40, 200, 20 );
-		adic( txtDescBanco, 70, 60, 200, 20 );
+		adic( txtCodTipoCob, 	  273,  20,  60, 20, "Cód.t.cob." );
+		adic( txtDescTipoCob, 	  336,  20, 200, 20, "Descrição do tipo de cobrança" );
 
+		adic( txtCodBanco, 			7,  60,  60, 20, "Cód.banc." );
+		adic( txtDescBanco, 	   70,  60, 200, 20, "Descrição do Banco" );
+
+		adic( txtNumConta, 		  273,  60,  60, 20, "Conta" );
+		adic( txtDescConta, 	  336,  60, 200, 20, "Descrição da conta" );
+		
+		adic( txtCodPlan, 			7, 100,  60, 20, "Cód.Cat." );
+		adic( txtDescPlan, 		   70, 100, 200, 20, "Descrição da categoria" );
+
+		adic( txtCodCC, 		  273, 100,  60, 20, "Cod.CC." );
+		adic( txtDescCC, 		  336, 100, 200, 20, "Descrição do centro de custo" );
+
+		/**********************
+		 * ADICIONANDO QUADROS
+		 **********************/
+		
+		adic( pinValores,	 	    7, 140, 326, 110 );
+		adic( pinFrete, 		  336, 140, 200, 110 );
+		adic( pinTrib, 			    7, 265, 326, 110 );
+		adic( pinICMS, 		      336, 265, 200, 110 );
+		adic( pinCusto, 		    7, 390, 326, 90 );
+		adic( pinImp, 			  336, 390, 200, 90 );
+		
 		
 		/**********************
 		 * Quadro de valores
 		 **********************/
 
-		pinLbValores.adic( new JLabelPad( "   Valores " ), 0, 0, 70, 15 );
-		pinLbValores.tiraBorda();
-
-		adic( pinLbValores, 20, 92, 60, 15 );
-		adic( pinValores, 7, 100, 326, 110 );
-
-		pinValores.adic( new JLabelPad( "% Desc." ), 7, 10, 60, 20 );
-		pinValores.adic( txtPercDescCompra, 7, 30, 60, 20 );
-
-		pinValores.adic( new JLabelPad( "Vlr.Desc." ), 70, 10, 80, 20 );
-		pinValores.adic( txtVlrDescCompra, 70, 30, 80, 20 );
-
-		pinValores.adic( new JLabelPad( "Vlr.Frete" ), 153, 10, 80, 20 );
-		pinValores.adic( txtVlrFreteCompra, 153, 30, 80, 20 );
-
-		pinValores.adic( new JLabelPad( "Vlr.Compra" ), 236, 10, 80, 20 );
-		pinValores.adic( txtVlrLiqCompra, 236, 30, 77, 20 );
-
-		pinValores.adic( new JLabelPad( "% Adic." ), 7, 50, 60, 20 );
-		pinValores.adic( txtPercAdicCompra, 7, 70, 60, 20 );
-
-		pinValores.adic( new JLabelPad( "Vlr.Adic." ), 70, 50, 80, 20 );
-		pinValores.adic( txtVlrAdicCompra, 70, 70, 80, 20 );
-
-		// pinValores.adic( new JLabelPad( "Vlr.ICMS" ), 153, 50, 80, 20 );
-		// pinValores.adic( txtVlrICMSCompra, 153, 70, 80, 20 );
-
-		pinValores.adic( new JLabelPad( "Vlr.IPI" ), 153, 50, 80, 20 );
-		pinValores.adic( txtVlrIPICompra, 153, 70, 80, 20 );
-
+		pinValores.setBorder( SwingParams.getPanelLabel( "Valores", Color.BLACK ) );
+		
+		pinValores.adic( txtPercDescCompra,    7, 20, 60, 20, "% Desc." 	);
+		pinValores.adic( txtVlrDescCompra, 	  70, 20, 80, 20, "Vlr.Desc." 	);
+		pinValores.adic( txtVlrFreteCompra,	 153, 20, 80, 20, "Vlr.Frete" 	);
+		pinValores.adic( txtVlrLiqCompra, 	 236, 20, 77, 20, "Vlr.Compra"	);
+		pinValores.adic( txtPercAdicCompra,	   7, 60, 60, 20, "% Adic." 	);
+		pinValores.adic( txtVlrAdicCompra,	  70, 60, 80, 20, "Vlr.Adic." 	);
+		pinValores.adic( txtVlrIPICompra, 	 153, 60, 80, 20, "Vlr.IPI" 	);
+		
 		/**********************
 		 * Quadro Frete
 		 **********************/
 
-		pinLbFrete.adic( new JLabelPad( "   Frete " ), 0, 0, 70, 15 );
-		pinLbFrete.tiraBorda();
-
-		adic( pinLbFrete, 349, 92, 60, 15 );
-		adic( pinFrete, 336, 100, 200, 110 );
-
-		pinFrete.adic( rgFreteVD, 7, 20, 182, 30 );
-
-		pinFrete.adic( new JLabelPad( "Volumes" ), 7, 50, 80, 20 );
-		pinFrete.adic( txtQtdFreteCompra, 7, 70, 80, 20 );
+		pinFrete.setBorder( SwingParams.getPanelLabel( "Frete", Color.BLACK ) );
+		
+		pinFrete.adic( rgFreteVD, 				7, 10, 178, 30 );
+		pinFrete.adic( txtQtdFreteCompra, 		7, 60, 90, 20, "Volumes" );
 
 		/**********************
 		 * Quadro Tributação
 		 **********************/
 
-		pinLbTrib.adic( new JLabelPad( "   Tributação " ), 0, 0, 90, 15 );
-		pinLbTrib.tiraBorda();
-
-		adic( pinLbTrib, 20, 218, 90, 15 );
-		adic( pinTrib, 7, 225, 326, 110 );
-
-		/*
-		 * pinTrib.adic( cbAdicFreteBase, 7, 10, 320, 20 ); pinTrib.adic( cbAdicAdicBase, 7, 30, 320, 20 ); pinTrib.adic( cbAdicIPIBase, 7, 50, 320, 20 );
-		 */
-
+		pinTrib.setBorder( SwingParams.getPanelLabel( "Tributação", Color.BLACK ) );
+		
 		/**********************
 		 * ICMS
 		 **********************/
 
-		pinLbICMS.adic( new JLabelPad( "   ICMS " ), 0, 0, 90, 15 );
-		pinLbICMS.tiraBorda();
+		pinICMS.setBorder( SwingParams.getPanelLabel( "ICMS", Color.BLACK ) );
+		
+		pinICMS.adic( txtVlrBaseICMS	,   	7, 20, 90, 20, "Base calc." 	);
+		pinICMS.adic( txtVlrBaseICMSST	, 	  100, 20, 80, 20, "Base calc. ST" 	);
 
-		adic( pinLbICMS, 349, 218, 90, 15 );
-		adic( pinICMS, 336, 225, 200, 110 );
-
-		pinICMS.adic( new JLabelPad( "Base calc." ), 7, 10, 90, 20 );
-		pinICMS.adic( txtVlrBaseICMS, 7, 30, 90, 20 );
-		pinICMS.adic( new JLabelPad( "Vlr.ICMS" ), 7, 50, 90, 20 );
-		pinICMS.adic( txtVlrICMSCompra, 7, 70, 90, 20 );
-
-		pinICMS.adic( new JLabelPad( "Base calc. ST" ), 100, 10, 90, 20 );
-		pinICMS.adic( txtVlrBaseICMSST, 100, 30, 90, 20 );
-		pinICMS.adic( new JLabelPad( "Vlr.ICMS ST" ), 100, 50, 90, 20 );
-		pinICMS.adic( txtVlrICMSST, 100, 70, 90, 20 );
+		pinICMS.adic( txtVlrICMSCompra	,   	7, 60, 90, 20, "Vlr.ICMS" 		);
+		pinICMS.adic( txtVlrICMSST		, 	  100, 60, 80, 20, "Vlr.ICMS ST" 	);
 
 		/******************************
 		 * Quadro Composição do custo
 		 ******************************/
 
-		pinLbCusto.adic( new JLabelPad( "   Composição do custo " ), 0, 0, 150, 15 );
-		pinLbCusto.tiraBorda();
-
-		adic( pinLbCusto, 20, 340, 150, 15 );
-		adic( pinCusto, 7, 350, 326, 90 );
-
-		pinCusto.adic( cbAdicFreteCusto, 7, 10, 280, 20 );
-		pinCusto.adic( cbAdicAdicCusto, 7, 30, 280, 20 );
+		pinCusto.setBorder( SwingParams.getPanelLabel( "Composição do custo", Color.BLACK ) );
+		
+		pinCusto.adic( cbAdicFreteCusto	, 		7, 10, 280, 20 );
+		pinCusto.adic( cbAdicAdicCusto	,	 	7, 30, 280, 20 );
 
 		/**********************
 		 * Quadro Emissão
 		 **********************/
 
-		pinLbImp.adic( new JLabelPad( "   Emissão " ), 0, 0, 90, 15 );
-		pinLbImp.tiraBorda();
-
-		adic( pinLbImp, 349, 340, 90, 15 );
-		adic( pinImp, 336, 350, 200, 90 );
-
-		pinImp.adic( cbEmitePedido, 7, 10, 180, 20 );
-		pinImp.adic( cbEmiteNota, 7, 30, 180, 20 );
-		pinImp.adic( cbFinalizar, 7, 50, 180, 20 );
+		pinImp.setBorder( SwingParams.getPanelLabel( "Emissão", Color.BLACK ) );
+		
+		pinImp.adic( cbEmitePedido				, 7, 0, 180, 20 );
+		pinImp.adic( cbEmiteNota				, 7, 20, 180, 20 );
+		pinImp.adic( cbFinalizar				, 7, 40, 180, 20 );
 
 		/********** FIM DOS QUADROS ***********/
 
@@ -477,6 +523,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtQtdFreteCompra.setVlrBigDecimal( volumes );
 
 		lcCompra.edit();
+		
 	}
 
 	private void adicVlrFrete() {
@@ -489,6 +536,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			if ( Funcoes.mensagemConfirma( null, "Deseja adicionar o valor do frete no valor total?" ) == JOptionPane.YES_OPTION ) {
 
 				txtVlrLiqCompra.setVlrBigDecimal( bdVlrCompra.add( bdVlrFrete ) );
+				 
 			}
 		}
 	}
@@ -498,6 +546,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcItPagar.edit();
 		DLFechaPag dl = new DLFechaPag( DLFechaCompra.this, txtVlrParcItPag.getVlrBigDecimal(), txtDtVencItPag.getVlrDate() );
 		dl.setVisible( true );
+		
 		if ( dl.OK ) {
 			txtVlrParcItPag.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
 			txtDtVencItPag.setVlrDate( (Date) dl.getValores()[ 1 ] );
@@ -540,6 +589,46 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			Funcoes.mensagemErro( this, "Erro ao buscar o código da conta a Pagar!\n" + err.getMessage(), true, con, err );
 		}
 		return iRetorno;
+	}
+	
+	private Map<String, Integer> getPrefere() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer anocc = null;
+		Integer codhistpag = null;
+
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
+
+		try {
+
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistpag = rs.getInt( "CODHISTPAG" );
+			}
+
+			retorno.put( "codhistrec", codhistpag );
+			retorno.put( "anocc", anocc );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			ps = null;
+			rs = null;
+		}
+		return retorno;
 	}
 
 	private boolean getVerificaUsu() {
