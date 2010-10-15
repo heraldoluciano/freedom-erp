@@ -78,6 +78,8 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JCheckBoxPad cbAtivaConta = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad( "Todos os usuários?", "S", "N" );
+	
+	private JCheckBoxPad cbContaCheque = new JCheckBoxPad( "Conta p/cheques", "S", "N" );
 
 	private Vector<String> vValsTipo = new Vector<String>();
 
@@ -326,10 +328,11 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		pnContasVinculadas.add( spnContasVinculadas, BorderLayout.CENTER );
 		pinNavContasVinculadas.adic( navContaVinculada, 0, 0, 270, 25 );
 
-		setPainel( pinCamposContasVinculadas );
+		setPainel( pinCamposContasVinculadas ); 
 
 		adicCampo( txtNumContaCV, 7, 20, 80, 20, "NumContaCV", "Num.Conta", ListaCampos.DB_PF, txtDescContaCV, true );
-		adicDescFK( txtDescContaCV, 90, 20, 250, 20, "DescConta", "Nome da conta vinculada" );
+		adicDescFK( txtDescContaCV, 90, 20, 150, 20, "DescConta", "Nome da conta vinculada" );
+		adicDB( cbContaCheque, 243, 20, 120, 20, "contacheque", "", false);
 
 		setListaCampos( false, "CONTAVINCULADA", "FN" );
 		
