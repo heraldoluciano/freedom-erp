@@ -1819,7 +1819,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							try {
 
 								ps = con.prepareStatement( "DELETE FROM FNPAGAR WHERE CODPAG=? AND CODEMP=? AND CODFILIAL=?" );
-								ps.setInt( 1, Integer.parseInt( (String) tabManut.getValor( tabManut.getLinhaSel(), 5 ) ) );
+								ps.setInt( 1, Integer.parseInt( (String) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ) ) );
 								ps.setInt( 2, Aplicativo.iCodEmp );
 								ps.setInt( 3, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 
