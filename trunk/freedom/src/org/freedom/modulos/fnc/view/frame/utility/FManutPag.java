@@ -1867,8 +1867,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 							int iLin = tabManut.getLinhaSel();
 
-							iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) );
-							iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, 6 ) );
+							iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() ) );
+							iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() ) );
 
 							try {
 
@@ -2116,8 +2116,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						DLCancItem dlCanc = new DLCancItem( this );
 						dlCanc.setVisible( true );
 						if ( dlCanc.OK ) {
-							codpag = ( Integer.parseInt( tabManut.getValor( sel, 5 ).toString() ) );
-							nparcitpag = ( Integer.parseInt( tabManut.getValor( sel, 6 ).toString() ) );
+							codpag = ( Integer.parseInt( tabManut.getValor( sel, enum_tab_manut.CODPAG.ordinal() ).toString() ) );
+							nparcitpag = ( Integer.parseInt( tabManut.getValor( sel, enum_tab_manut.NPARCPAG.ordinal() ).toString() ) );
 							execCancItem( codpag, nparcitpag, dlCanc.getValor() );
 							carregaGridManut();
 						}
