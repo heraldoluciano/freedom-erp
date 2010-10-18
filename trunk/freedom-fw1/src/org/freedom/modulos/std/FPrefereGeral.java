@@ -329,6 +329,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldFK txtDescPlanDR = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
+	private JTextFieldPad txtCodPlanPC = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+
+	private JTextFieldFK txtDescPlanPC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private final String opcoes = "Opções";
@@ -578,6 +582,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcHistPag = new ListaCampos(this, "HISTPAG");
 
 	private ListaCampos lcPlanJR = new ListaCampos(this, "JR");
+	
+	private ListaCampos lcPlanPC = new ListaCampos(this, "PC");
 
 	private ListaCampos lcPlanJP = new ListaCampos(this, "JP");
 
@@ -970,6 +976,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDR.setReadOnly(true);
 		txtCodPlanDR.setTabelaExterna(lcPlanDR, null);
 
+		
+		lcPlanPC.add(new GuardaCampo(txtCodPlanPC, "CodPlan", "Cód.Plan.JP.", ListaCampos.DB_PK, false));
+		lcPlanPC.add(new GuardaCampo(txtDescPlanPC, "DescPlan", "Descrição do Planejamento", ListaCampos.DB_SI, false));
+		lcPlanPC.setWhereAdic("TIPOPLAN = 'D' AND NIVELPLAN = 6");
+		lcPlanPC.montaSql(false, "PLANEJAMENTO", "FN");
+		lcPlanPC.setQueryCommit(false);
+		lcPlanPC.setReadOnly(true);
+		txtCodPlanPC.setTabelaExterna(lcPlanPC, null);
+
+		
 		// Email NFE
 		lcEmailNF.add(new GuardaCampo(txtCodEmailNF, "CodEmail", "Cód.Email", ListaCampos.DB_PK, null, false));
 		lcEmailNF.add(new GuardaCampo(txtDescEmailNF, "DescEmail", "Descrição do Email", ListaCampos.DB_SI, null, false));
@@ -1291,7 +1307,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		
 		lbFinContas.setBorder(BorderFactory.createTitledBorder("Contas"));
-		adic(lbFinContas, 500, 10, 370, 200);
+		adic(lbFinContas, 500, 10, 370, 240);
 
 		adicCampo(txtCodPlanJR, 510, 50, 100, 20, "CodPlanJR", "Cód.Plan.JR.", ListaCampos.DB_FK, txtDescPlanJR, false);
 		adicDescFK(txtDescPlanJR, 613, 50, 240, 20, "DescPlan", "Planejamento para juros recebidos");
@@ -1305,16 +1321,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtCodPlanDR, 510, 170, 100, 20, "CodPlanDR", "Cód.Plan.DR.", ListaCampos.DB_FK, txtDescPlanDR, false);
 		adicDescFK(txtDescPlanDR, 613, 170, 240, 20, "DescPlan", "Planejamento para descontos obtidos");
 
+		adicCampo(txtCodPlanPC, 510, 210, 100, 20, "CodPlanPC", "Cód.Plan.PC.", ListaCampos.DB_FK, txtDescPlanDR, false);
+		adicDescFK(txtDescPlanPC, 613, 210, 240, 20, "DescPlan", "Planejamento p/pagto com cheques");
+
 		lbFinOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(lbFinOpcoes, 500, 215, 370, 175);
+		adic(lbFinOpcoes, 500, 255, 370, 175);
 
-		adicDB(cbAltItRecImpBol, 510, 235, 310, 20, "AtBancoImpBol", "", false);
-		adicDB(cbJurosPosCalc, 510, 255, 310, 20, "JurosPosCalc", "", false);
-		adicDB(cbEstItRecAltDtVenc, 510, 275, 350, 20, "EstItRecAltDtVenc", "", false);
-		adicDB(cbLiberacaoCreGlobal, 510, 295, 350, 20, "LcRedGlobal", "", false);
+		adicDB(cbAltItRecImpBol, 510, 275, 310, 20, "AtBancoImpBol", "", false);
+		adicDB(cbJurosPosCalc, 510, 295, 310, 20, "JurosPosCalc", "", false);
+		adicDB(cbEstItRecAltDtVenc, 510, 315, 350, 20, "EstItRecAltDtVenc", "", false);
+		adicDB(cbLiberacaoCreGlobal, 510, 335, 350, 20, "LcRedGlobal", "", false);
 
-		adicDB(cbGeraPagEmis, 510, 315, 350, 20, "GeraPagEmis", "", true);
-		adicDB(cbGeraRecEmis, 510, 335, 350, 20, "GeraRecEmis", "", true);
+		adicDB(cbGeraPagEmis, 510, 355, 350, 20, "GeraPagEmis", "", true);
+		adicDB(cbGeraRecEmis, 510, 375, 350, 20, "GeraRecEmis", "", true);
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
 		adic(lbFinPagar, 10, 245, 485, 50);
@@ -1815,6 +1834,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanJP.setConexao(cn);
 		lcPlanDC.setConexao(cn);
 		lcPlanDR.setConexao(cn);
+		lcPlanPC.setConexao(cn);
 		lcEmailNF.setConexao(cn);
 
 		lcCampos.carregaDados();
