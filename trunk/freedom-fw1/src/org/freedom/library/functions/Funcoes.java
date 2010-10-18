@@ -2074,27 +2074,34 @@ public class Funcoes {
 			return "";
 		String texto = "";
 		int i2 = 0;
-		if (( sVal.length() > 0 ) & ( sMasc.length() > 0 ) & ( sMasc.length() > sVal.length() )) {
-			char[] va = sVal.toCharArray();
-			char[] ma = sMasc.toCharArray();
-			for (int i = 0; i < sVal.length(); i++) {
-				if (ma[i2] == '#') {
-					texto += va[i];
-				}
-				else {
-					texto += ma[i2];
-
-					if (!Character.isDigit(ma[i2])) {
+		
+		try {
+		
+			if (( sVal.length() > 0 ) & ( sMasc.length() > 0 ) & ( sMasc.length() > sVal.length() )) {
+				char[] va = sVal.toCharArray();
+				char[] ma = sMasc.toCharArray();
+				for (int i = 0; i < sVal.length(); i++) {
+					if (ma[i2] == '#') {
 						texto += va[i];
-						i2++;
 					}
-
+					else {
+						texto += ma[i2];
+	
+						if (!Character.isDigit(ma[i2])) {
+							texto += va[i];
+							i2++;
+						}
+	
+					}
+					i2++;
 				}
-				i2++;
 			}
+			else
+				texto = sVal;
 		}
-		else
-			texto = sVal;
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return texto;
 	}
 
