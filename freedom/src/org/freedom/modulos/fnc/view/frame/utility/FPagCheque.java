@@ -399,6 +399,8 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			tabPagar.setTamColuna( 150, COLS_PAG.CODPLAN.ordinal() );
 			tabPagar.setTamColuna( 150, COLS_PAG.CODCC.ordinal() );
 			tabPagar.setTamColuna( 60, COLS_PAG.DTITPAG.ordinal() );
+			
+			tabPagar.setColunaEditavel( COLS_PAG.SEL.ordinal(), true );
 
 			tabPagar.addTabelaEditListener( this );
 			
@@ -560,7 +562,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			//Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VLRAPAGITPAG" ) )
 			for ( int i=0; i < tabPagar.getNumLinhas(); i++ ) {
 				vlrapag = ConversionFunctions.stringCurrencyToBigDecimal( 
-						(String) tabPagar.getValor( i, COLS_PAG.VLRAPAGITPAG.ordinal() ) );
+						(String) tabPagar.getValor( i, COLS_PAG.VLRAPAGITPAG.ordinal() ).toString() );
 				vlrtotapag = vlrtotapag.add( vlrapag  );
 				if ( (Boolean) tabPagar.getValor( i, COLS_PAG.SEL.ordinal() ) ) {
 					vlrtotsel = vlrtotsel.add( vlrapag );
