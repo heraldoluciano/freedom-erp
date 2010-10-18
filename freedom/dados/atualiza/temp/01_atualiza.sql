@@ -3,7 +3,7 @@ SET NAMES NONE;
 
 SET SQL DIALECT 3;
 
-CONNECT 'localhost:/opt/firebird/dados/desenv/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.3.8/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 SET AUTODDL ON;
 
