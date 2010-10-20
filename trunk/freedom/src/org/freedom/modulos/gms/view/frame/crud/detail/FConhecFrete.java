@@ -552,6 +552,14 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 			Funcoes.mensagemErro( this, e.getMessage(), true, con, e );
 		}
 	}
+	
+	public void exec( int codfrete ) {
+
+		txtCodFrete.setVlrInteger( codfrete );
+		
+		lcCampos.carregaDados();
+		
+	}
 
 	private void atualizaFrete( Integer codvenda, String tipovenda, boolean soma ) {
 
