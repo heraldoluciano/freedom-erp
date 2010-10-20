@@ -53,7 +53,7 @@ from fnitreceber ir, fnreceber rc, vdcliente cl
 where
 ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec
 and cl.codemp=rc.codempcl and cl.codfilial=rc.codfilialcl and cl.codcli=rc.codcli
-and ir.statusitrec not in('RP') and rc.codempcl=66 and rc.codfilialcl=1 and rc.codcli=2
+and ir.statusitrec not in('RP') and rc.codempcl=3 and rc.codfilialcl=1 and rc.codcli=690
 order by 1, 3 desc]]></queryString>
 
 	<field name="CODCLI" class="java.lang.Integer"/>
