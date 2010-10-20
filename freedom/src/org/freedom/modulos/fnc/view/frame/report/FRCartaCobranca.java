@@ -83,6 +83,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCnpjCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
 
 		lcCli.montaSql( false, "CLIENTE", "VD" );
@@ -152,7 +153,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				ps.setInt( param++, lcCli.getCodEmp() );
-				ps.setInt( param++, lcCli.getCodFilial() );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 				ps.setInt( param++, txtCodCli.getVlrInteger() );
 
 			}
@@ -184,14 +185,14 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 		hParam.put( "ENDEMP", Aplicativo.empresa.getEnderecoCompleto() );
 		hParam.put( "CIDFILIAL", Aplicativo.empresa.getCidFilial() );
 
-		Juros calcjuros = new Juros();
+		Juros calcjuros = new Juros(); 
 
-		hParam.put( "CALCJUROS", calcjuros );
+		hParam.put( "CALCJUROS", calcjuros ); 
 
 		EmailBean mail = Aplicativo.getEmailBean();
-		mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+		mail.setPara( txtEmailCli.getVlrString() );
 
-		dlGr = new FPrinterJob( "layout/orc/ORC_PD.jasper", null, null, this, hParam, con, mail );
+		dlGr = new FPrinterJob( "layout/rel/REL_CARTA_COB_01.jasper", "Carta de cobrançaa", sCab, rs, hParam, this, mail );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -200,9 +201,10 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do relatório de carta de cobrança!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão do relatório de carta de cobrança!" + err.getMessage(), true, con, err );				
 			}
 		}
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
