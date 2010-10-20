@@ -31,6 +31,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,9 +65,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
+import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
-public class FManutConFrete extends FFilho implements ActionListener {
+public class FManutConFrete extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -141,7 +144,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 
 		super( false );
 
-		setTitulo( "Controle de Conhecimento de Frete" );
+		setTitulo( "Pagamento de Frete" );
 		setAtribos( 50, 50, 740, 430 );
 
 		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.Transp.", ListaCampos.DB_PK, txtNomeTran, true ) );
@@ -162,6 +165,7 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		btGerarPagamentos.addActionListener( this );
 		btExcluirPagamentos.addActionListener( this );
 		btSair.addActionListener( this );
+		tab.addMouseListener( this );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDataFim.setVlrDate( cPeriodo.getTime() );
@@ -171,6 +175,9 @@ public class FManutConFrete extends FFilho implements ActionListener {
 		cbPendentes.setVlrString( "S" );
 		cbEmPagamento.setVlrString( "N" );
 		cbPagos.setVlrString( "N" );
+		
+		
+		
 	}
 
 	private void montaTela() {
@@ -717,4 +724,46 @@ public class FManutConFrete extends FFilho implements ActionListener {
 			calcValorSelecionado();
 		}
 	}
+	
+	public void mouseClicked( MouseEvent e ) {
+
+		if ( e.getClickCount() == 2 ) {
+			if ( e.getSource() == tab && tab.getLinhaSel() > -1 ) {
+				FConhecFrete frete = null;
+				if ( Aplicativo.telaPrincipal.temTela( FConhecFrete.class.getName() ) ) {
+					frete = (FConhecFrete) Aplicativo.telaPrincipal.getTela( FConhecFrete.class.getName() );
+				}
+				else {
+					frete = new FConhecFrete();
+					Aplicativo.telaPrincipal.criatela( "Conhecimento de frete", frete, con );
+				}
+				frete.exec( (Integer) tab.getValor( tab.getLinhaSel(), 2 ) );
+			}
+		}
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
