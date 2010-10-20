@@ -746,7 +746,9 @@ public class FRemCnab extends FRemFBN {
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "REPORT_CONNECTION", con );
+			hParam.put( "REPORT_CONNECTION", con.getConnection() );
+			hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+			
 
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
 
