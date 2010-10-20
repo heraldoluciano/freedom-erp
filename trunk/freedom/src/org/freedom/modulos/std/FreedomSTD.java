@@ -373,7 +373,7 @@ public class FreedomSTD extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Pagar", "", 'P', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Comissão", "Comissão", 'C', 400100000, 1, true, FManutComis.class );
-		addOpcao( 400000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'F', 400200000, 1, true, FManutConFrete.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Pagamento de Frete", "Pagamento de Frete", 'F', 400200000, 1, true, FManutConFrete.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a pagar", 'M', 400300000, 1, true, FManutPag.class );
 		addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 400400000, 1, false, null );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 400401000, 2, true, FRPagar.class );
