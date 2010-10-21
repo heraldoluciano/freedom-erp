@@ -385,7 +385,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		return ret;
 	}
 	
-	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbaseirrf, BigDecimal valorbaseinss) {
+	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbaseirrf, BigDecimal valorbaseinss, BigDecimal valorinss, BigDecimal vlrdep) {
 		
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
@@ -407,7 +407,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "order by ir.teto ");
 			
 			ps = con.prepareStatement( sql.toString() );
-			ps.setBigDecimal( 1, valorbaseirrf );
+			
+			BigDecimal baseirrf_final = valorbaseirrf;
+			
+			baseirrf_final = baseirrf_final.subtract( valorinss );
+			baseirrf_final = baseirrf_final.subtract( vlrdep );
+			
+			ps.setBigDecimal( 1, baseirrf_final );
 			
 			rs = ps.executeQuery( );
 			
@@ -435,13 +441,15 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			/*** reduzindo a base****/
 			
-			//Reduzindo dependentes
-			valorbaseirrf = valorbaseirrf.subtract( reducaodependente.multiply( new BigDecimal(nrodepend) ) );
-			
 			//Reduzindo INSS pagoc
 			if(valorbaseinss!=null && valorbaseinss.compareTo( new BigDecimal( 0 ))>0 ) {
 				valorbaseirrf = valorbaseirrf.subtract( getVlrINSS( valororiginal, valorbaseinss, null ) );
 			}
+			
+			//Reduzindo dependentes
+			valorbaseirrf = valorbaseirrf.subtract( reducaodependente.multiply( new BigDecimal(nrodepend) ) );
+			
+		
 			// Calcula IRRF sem dedução da tabela
 			ret = valorbaseirrf.multiply( aliquota.divide( cem ) );
 			
@@ -516,7 +524,10 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 				percbaseirrf = txtPercBaseIRRF.getVlrBigDecimal();
 				vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
-				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss );
+				
+				// Valor colocado de forma fixa... deve ser substituido urgentemente!
+				
+				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69) );
 				
 				txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
 				txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
