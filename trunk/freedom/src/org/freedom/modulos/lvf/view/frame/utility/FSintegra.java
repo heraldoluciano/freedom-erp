@@ -459,6 +459,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		String cnpjcli = "";
 		String insccli = "";
 		String cnpjfor = "";
+		String cpffor = "";
 		String inscfor = "";
 
 		ResultSet rs;
@@ -480,16 +481,16 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "SUM(LF.VLRICMSLF) AS VLRICMSLF," );
 				sSql.append( "SUM(LF.VLRISENTASICMSLF) AS VLRISENTASICMSLF," );
 				sSql.append( "SUM(LF.VLROUTRASICMSLF) AS VLROUTRASICMSLF," );
-				sSql.append( "LF.CODNAT,LF.CODMODNOTA,F.CNPJFOR,F.INSCFOR,LF.SITUACAOLF " );
+				sSql.append( "LF.CODNAT,LF.CODMODNOTA,F.CNPJFOR,f.cpffor, F.INSCFOR,LF.SITUACAOLF, F.PESSOAFOR " );
 				sSql.append( "FROM LFLIVROFISCAL LF,CPFORNECED F " );
 				sSql.append( "WHERE LF.DTESLF BETWEEN ? AND ? AND " );
 				sSql.append( "LF.CODEMP=? AND LF.CODFILIAL=? AND " );
 				sSql.append( "F.CODFOR=LF.CODEMITLF AND F.CODEMP=LF.CODEMPET AND " );
-				sSql.append( "F.CODFILIAL=LF.CODFILIALET AND LF.TIPOLF='E' AND F.PESSOAFOR='J' " );
+				sSql.append( "F.CODFILIAL=LF.CODFILIALET AND LF.TIPOLF='E' "); // eMISSÃO DE NOTA DE COMPRA DE FORNECEDOR PESSOA FISICA... AND F.PESSOAFOR='J' " );
 
 				// Incluído de acordo com o íten 11.1.3 do manual do sintegra.
 
-				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21 " );
+				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21,22,23 " );
 				sSql.append( "ORDER BY LF.DTESLF,LF.DOCINILF" );
 				ps = con.prepareStatement( sSql.toString() );
 				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
@@ -512,7 +513,21 @@ public class FSintegra extends FFilho implements ActionListener {
 					}
 
 					/* 01 */sBuffer.append( "50" );
-					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjfor, 14 ) );
+					if("J".equals( rs.getString( "PESSOAFOR" ) )) {
+						
+						cnpjfor = rs.getString( "CNPJFOR" );
+						
+						/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjfor, 14 ) );
+					
+					}
+					else {
+						
+						cpffor = rs.getString( "CPFFOR" );
+						
+						/* 02 */sBuffer.append( StringFunctions.strZero( cpffor, 14 ));
+						
+					}
+				
 					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( StringFunctions.clearString( inscfor ), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
@@ -1061,7 +1076,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "IC.VLRLIQITCOMPRA,IC.VLRBASEICMSITCOMPRA," );
 				
 				sSql.append( "IC.PERCICMSITCOMPRA,IC.VLRBASEICMSITCOMPRA,IC.VLRIPIITCOMPRA," );
-				sSql.append( "CF.ORIGFISC, CF.CODTRATTRIB, C.CODCOMPRA " );
+				sSql.append( "CF.ORIGFISC, CF.CODTRATTRIB, C.CODCOMPRA, F.CPFFOR, F.PESSOAFOR " );
 				sSql.append( "FROM CPCOMPRA C,CPFORNECED F,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P, LFITCLFISCAL CF " );
 				sSql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " );
 				sSql.append( "IC.CODCOMPRA=C.CODCOMPRA AND  IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " );
@@ -1069,7 +1084,8 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND " );
 				sSql.append( "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " );
 				sSql.append( "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND " );
-				sSql.append( "TM.FISCALTIPOMOV='S' AND F.PESSOAFOR='J' ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA" );
+				sSql.append( "TM.FISCALTIPOMOV='S' "); // COMPRAS DE PESSOA FISICA DEVEM ENTRAR... F.PESSOAFOR='J' " +
+				sSql.append( "ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA" );
 
 				ps = con.prepareStatement( sSql.toString() );
 				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
@@ -1088,7 +1104,15 @@ public class FSintegra extends FFilho implements ActionListener {
 					}
 
 					/* 01 */sBuffer.append( "54" );
+					
+					
+					if("J".equals( rs.getString( "PESSOAFOR" ) )) {
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
+					}
+					else {
+					/* 02 */sBuffer.append( StringFunctions.strZero( rs.getString( "CPFFOR" ), 14 ) );
+					}
+					
 					/* 03 */sBuffer.append( StringFunctions.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );
 					// sBuffer.append( "  "); //Subsérie
@@ -1600,16 +1624,33 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSqlConsumidor = "";
 
 				if ( cbEntrada.getVlrString().equals( "S" ) ) {
-					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " + "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF, CPFORNECED F "
-							+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " + "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " + "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
-							+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND "
-							+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND " + "TM.FISCALTIPOMOV='S' AND TM.FISCALTIPOMOV='S'";
+					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," 
+						+ "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
+						+ "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF, CPFORNECED F "
+						+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " 
+						+ "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "
+						+ "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
+						+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " 
+						+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND "
+						+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND "
+							
+							//+ F.PESSOAFOR='J' AND " //Retirado , pois existem clientes que emitem nota fiscal de compra de pessoa física
+							
+							+ "TM.FISCALTIPOMOV='S' ";
 				}
 				if ( cbSaida.getVlrString().equals( "S" ) ) {
-					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC, 0), " + "COALESCE(CF.ALIQLFISC, 0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " + "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF "
-							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " + "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND "
-							+ "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " + "( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND "
-							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' ";
+					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC, 0), " 
+						+ "COALESCE(CF.ALIQLFISC, 0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
+						+ "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF "
+							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
+							+ "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " 
+							+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND "
+							+ "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
+							+ "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
+							+ "( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND "
+							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
+							//+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' ";
+							+ "CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC AND TM.FISCALTIPOMOV='S' ";
 
 					// Amarrado com o ítem padrão da classificação fiscal pois não deve repetir de acordo com as vendas as alíquotas
 					// Informadas devem ser as correspondetes a vendas / ou compras dentro do estado.
