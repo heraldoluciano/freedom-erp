@@ -194,7 +194,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		sql.append( "cp.dtentcompra, rm.dtent, cp.codfor, ");
 		sql.append( "(select nomefor from cpforneced where codemp=cp.codempfr and codfilial=cp.codfilialfr and codfor=cp.codfor) nomefor , "); 
 		sql.append( "br.nomebairro, al.descalmox, ic.qtditcompra, ");
-		sql.append( "rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra ");
+		sql.append( "rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra, rm.mediaamostragem ");
 		sql.append( "from ");
 		sql.append( "cpcompra cp ");
 // Substituido por subselect por problemas de perfornce da query
