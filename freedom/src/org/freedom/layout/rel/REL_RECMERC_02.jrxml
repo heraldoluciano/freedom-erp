@@ -31,7 +31,7 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
 cp.dtentcompra, rm.dtent, cp.codfor, fr.nomefor, br.nomebairro, al.descalmox, ic.qtditcompra,
-rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra
+rm.rendaamostragem, ic.precoitcompra, ic.vlrproditcompra, rm.mediaamostragem 
 from
 cpcompra cp left outer join cpforneced fr on
 fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor
@@ -55,6 +55,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 	<field name="RENDAAMOSTRAGEM" class="java.lang.Integer"/>
 	<field name="PRECOITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRPRODITCOMPRA" class="java.math.BigDecimal"/>
+	<field name="MEDIAAMOSTRAGEM" class="java.math.BigDecimal"/>
 
 	<variable name="pesocumuladototal" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITCOMPRA}]]></variableExpression>
@@ -76,6 +77,12 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 	</variable>
 	<variable name="fatorrendatot" class="java.math.BigDecimal" resetType="Group" resetGroup="diario" calculation="Sum">
 		<variableExpression><![CDATA[$V{fatorrenda}]]></variableExpression>
+	</variable>
+	<variable name="mediarendatot" class="java.math.BigDecimal" resetType="Group" resetGroup="diario" calculation="Sum">
+		<variableExpression><![CDATA[$V{mediarenda}]]></variableExpression>
+	</variable>
+	<variable name="mediarenda" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[($F{QTDITCOMPRA}.multiply(new BigDecimal($F{MEDIAAMOSTRAGEM}.doubleValue())))]]></variableExpression>
 	</variable>
 
 		<group  name="diario" >
@@ -101,7 +108,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="625"
+						x="630"
 						y="3"
 						width="46"
 						height="11"
@@ -139,16 +146,16 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="733"
+						x="732"
 						y="4"
-						width="44"
+						width="48"
 						height="11"
-						key="textField-17"/>
+						key="textField-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{fatorrendatot}.divide($V{pesocumuladodiario}, BigDecimal.ROUND_CEILING)]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{mediarendatot}.divide($V{pesocumuladodiario}, BigDecimal.ROUND_CEILING)]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -316,7 +323,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<reportElement
 						x="172"
 						y="7"
-						width="92"
+						width="87"
 						height="12"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -327,7 +334,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="346"
+						x="338"
 						y="7"
 						width="37"
 						height="12"
@@ -340,7 +347,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="266"
+						x="260"
 						y="7"
 						width="77"
 						height="12"
@@ -353,7 +360,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="385"
+						x="378"
 						y="7"
 						width="30"
 						height="12"
@@ -366,33 +373,33 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="418"
+						x="427"
 						y="7"
 						width="35"
 						height="12"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Preço]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="457"
+						x="463"
 						y="7"
 						width="52"
 						height="12"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Vlr.Total]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="511"
+						x="517"
 						y="7"
 						width="52"
 						height="12"
@@ -405,20 +412,20 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="567"
+						x="571"
 						y="7"
 						width="52"
 						height="12"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Vlr.acum.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="621"
+						x="625"
 						y="7"
 						width="56"
 						height="12"
@@ -431,7 +438,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="679"
+						x="683"
 						y="7"
 						width="44"
 						height="12"
@@ -444,7 +451,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</staticText>
 				<staticText>
 					<reportElement
-						x="726"
+						x="728"
 						y="7"
 						width="54"
 						height="12"
@@ -490,7 +497,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<reportElement
 						x="172"
 						y="2"
-						width="92"
+						width="84"
 						height="11"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -501,7 +508,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="267"
+						x="259"
 						y="2"
 						width="78"
 						height="11"
@@ -514,7 +521,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="347"
+						x="338"
 						y="2"
 						width="37"
 						height="11"
@@ -525,48 +532,35 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITCOMPRA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="386"
-						y="2"
-						width="30"
-						height="11"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Arial" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{RENDAAMOSTRAGEM}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="420"
+						x="429"
 						y="2"
 						width="33"
 						height="11"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="458"
+						x="464"
 						y="2"
 						width="51"
 						height="11"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPRODITCOMPRA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="512"
+						x="518"
 						y="2"
 						width="51"
 						height="11"
@@ -579,29 +573,42 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="568"
+						x="573"
 						y="2"
 						width="51"
 						height="11"
 						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{vlracumuladototal}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="626"
+						x="636"
 						y="2"
 						width="43"
 						height="11"
 						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Right">
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{precomediototal}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="379"
+						y="2"
+						width="44"
+						height="11"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{MEDIAAMOSTRAGEM}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
