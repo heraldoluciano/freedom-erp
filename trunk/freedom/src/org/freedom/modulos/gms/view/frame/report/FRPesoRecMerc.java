@@ -201,7 +201,7 @@ public class FRPesoRecMerc extends FRelatorio {
 		sql.append( "(select first 1 coalesce(ra.pesoamost, 0) from eqrecamostragem ra ");
 		sql.append( "where ra.codemp=rm.codemp and ra.codfilial=rm.codfilial and rm.ticket=ra.ticket ");
 		sql.append( "order by ra.coditrecmerc desc, ra.codamostragem desc ");
-		sql.append( ") peso ");
+		sql.append( ") peso, rm.mediaamostragem ");
 		sql.append( "from ");
 		sql.append( "eqrecmerc rm ");
 		sql.append( "left outer join vdtransp tr on ");
