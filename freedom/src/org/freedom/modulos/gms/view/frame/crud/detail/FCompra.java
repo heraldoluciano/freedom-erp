@@ -2303,9 +2303,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
-		else if ( statuscompra.length() > 0 && ( statuscompra.equals( "P2" ) || statuscompra.equals( "P3" ) ) ) {
+		else if ( statuscompra.length() > 0 && statuscompra.equals( "P2" )  ) {
 			lbStatus.setText( "EM ABERTO" );
 			lbStatus.setBackground( Color.ORANGE );
+			lbStatus.setVisible( true );
+		}
+		else if ( statuscompra.length() > 0 && statuscompra.equals( "P3" )  ) {
+			lbStatus.setText( "FINALIZADO" );
+			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
 		}
 		else if ( statuscompra.equals( "P1" ) ) {
