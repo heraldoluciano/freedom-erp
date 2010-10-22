@@ -29,6 +29,7 @@ import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.util.AbstractCalcRenda;
@@ -47,6 +48,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPassword;
+import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FBairro;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.gms.business.object.RecMerc;
@@ -226,6 +228,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private AbstractCalcRenda classplugin = null;
 
 	private AbstractCalcRenda objplugin = null;
+	
+	private boolean atualizaPesoManual = false;
 
 	public FRecMerc() {
 
@@ -296,15 +300,17 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		tabPesagem = new JTablePad();
 		tabPesagem.setRowHeight( 21 );
 
+		tabPesagem.adicColuna( "Seq." );
 		tabPesagem.adicColuna( "Data" );
 		tabPesagem.adicColuna( "Hora" );
 		tabPesagem.adicColuna( "Peso 1" );
 		tabPesagem.adicColuna( "Peso 2" );
 
-		tabPesagem.setTamColuna( 60, 0 );
-		tabPesagem.setTamColuna( 50, 1 );
-		tabPesagem.setTamColuna( 100, 2 );
+		tabPesagem.setColunaInvisivel( 0 );
+		tabPesagem.setTamColuna( 60, 1 );
+		tabPesagem.setTamColuna( 50, 2 );
 		tabPesagem.setTamColuna( 100, 3 );
+		tabPesagem.setTamColuna( 100, 4 );
 
 	}
 
@@ -753,7 +759,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				}
 			}
 			else {
-				Funcoes.mensagemInforma( this, "Processo ja foi finalizado" );
+				
+				if(atualizaPesoManual) {
+					AtualizaAmostra();
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Processo ja foi finalizado" );
+				}
 				ret = false;
 			}
 
@@ -1082,6 +1094,60 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			e.printStackTrace();
 		}
 	}
+	
+	
+	private void AtualizaAmostra() {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		Integer codamostragem = 0;
+		ResultSet rs = null;
+
+		try {
+
+			sql = new StringBuilder();
+
+			sql.append( "update eqrecamostragem set pesoamost=?, pesoamost2=? " );
+			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? and codamostragem=? ");
+
+			
+			int i = 0;
+			
+			while( tabPesagem.getNumLinhas() > i ) {
+			
+				codamostragem = (Integer) tabPesagem.getValor( i , 0 );
+			
+				txtPeso1.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( ( (StringDireita) tabPesagem.getValor( i, 3 ) ).toString() ) );
+				txtPeso2.setVlrBigDecimal( ConversionFunctions.stringCurrencyToBigDecimal( ( (StringDireita) tabPesagem.getValor( i, 4 ) ).toString() ) );
+				
+				ps = con.prepareStatement( sql.toString() );
+
+				ps.setBigDecimal( 1, txtPeso1.getVlrBigDecimal() );
+				ps.setBigDecimal( 2, txtPeso2.getVlrBigDecimal() );
+
+				ps.setInt( 3, lcDet.getCodEmp() );
+				ps.setInt( 4, lcDet.getCodFilial() );
+				ps.setInt( 5, txtTicket.getVlrInteger() );
+				ps.setInt( 6, txtCodItRecMerc.getVlrInteger() );
+				ps.setInt( 7, codamostragem );
+
+				ps.execute();
+
+				
+				i++;
+			}
+
+			con.commit();
+			
+			lcDet.edit();
+			lcDet.post();
+		
+			lcDet.carregaDados();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
 
 	public void focusGained( FocusEvent e ) {
 
@@ -1108,7 +1174,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "select " );
-			sql.append( "pesoamost,pesoamost2, dataamost, horaamost " );
+			sql.append( "codamostragem, pesoamost,pesoamost2, dataamost, horaamost " );
 			sql.append( "from eqrecamostragem " );
 			sql.append( "where codemp=? and codfilial=? and ticket=? and coditrecmerc=? " );
 
@@ -1135,11 +1201,16 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 				tabPesagem.adicLinha();
 
-				tabPesagem.setValor( rs.getDate( "dataamost" ), row, 0 );
-				tabPesagem.setValor( rs.getString( "horaamost" ), row, 1 );
-				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ), 2 ), row, 2 );
-				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost2" ), 2 ), row, 3 );
+				tabPesagem.setValor( rs.getInt( "codamostragem" ), row, 0 );
+				tabPesagem.setValor( rs.getDate( "dataamost" ), row, 1 );
+				tabPesagem.setValor( rs.getString( "horaamost" ), row, 2 );
+				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost" ), 2 ), row, 3 );
+				tabPesagem.setValor( Funcoes.bdToStr( rs.getBigDecimal( "pesoamost2" ), 2 ), row, 4 );
 
+//				tabPesagem.setValor( rs.getBigDecimal( "pesoamost" ).setScale( 0 ), row, 3 );
+//				tabPesagem.setValor( rs.getBigDecimal( "pesoamost2" ).setScale( 0 ), row, 4 );
+
+				
 				row++;
 
 			}
@@ -1265,7 +1336,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			else {
 
 				mostraRenda( false );
-
+				
 			}
 
 		}
@@ -1434,9 +1505,18 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		txtRendaAmostragem.setAtivo( libera );
 		txtMediaAmostragem.setAtivo( libera );
-	
 		
 	}
+	
+	private void liberaPeso( boolean libera){
+
+		tabPesagem.setColunaEditavel( 3, libera );
+		tabPesagem.setColunaEditavel( 4, libera );
+		
+		atualizaPesoManual = libera;
+	
+	}
+
 	
 	private void liberaCampo( boolean libera ) {
 
@@ -1444,7 +1524,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		fpw.execShow();
 
 		if ( fpw.OK ) {
-			liberaRenda(libera);
+			liberaRenda(libera);			
+			liberaPeso(libera);
 		}
 
 		fpw.dispose();
