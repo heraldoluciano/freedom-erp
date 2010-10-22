@@ -1,5 +1,6 @@
 /**
  * @version 08/12/2000 <BR>
+
  * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  * 
  *         Projeto: Freedom <BR>
@@ -36,10 +37,12 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
@@ -52,6 +55,14 @@ public class FRVendasCli extends FRelatorio {
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private ListaCampos lcVendedor = new ListaCampos( this );
+	
 
 	private JCheckBoxPad cbListaFilial = new JCheckBoxPad( "Listar vendas das filiais ?", "S", "N" );
 
@@ -74,6 +85,7 @@ public class FRVendasCli extends FRelatorio {
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -128,18 +140,33 @@ public class FRVendasCli extends FRelatorio {
 		adic( txtDataini, 37, 30, 90, 20 );
 		adic( new JLabelPad( "Até:" ), 140, 30, 30, 20 );
 		adic( txtDatafim, 175, 30, 90, 20 );
-		adic( rgTipo, 7, 60, 261, 30 );
-		adic( new JLabelPad( "Ordem" ), 7, 90, 50, 20 );
-		adic( rgOrdem, 7, 110, 261, 30 );
-		adic( cbDesc, 7, 145, 250, 20 );
-		adic( cbListaFilial, 7, 165, 200, 20 );
-		adic( rgFaturados, 7, 190, 120, 70 );
-		adic( rgFinanceiro, 148, 190, 120, 70 );
-
+		
+		adic( new JLabelPad( "Cód." ), 7, 60, 70, 20 );
+		adic( txtCodVend, 7, 80, 70, 20 );
+		adic( new JLabelPad( "Nome Vendedor" ), 80, 60, 190, 20 );
+		adic( txtNomeVend, 80, 80, 190, 20 );
+		
+		adic( rgTipo, 7, 120, 261, 30 );
+		adic( new JLabelPad( "Ordem" ), 7, 150, 50, 20 );
+		adic( rgOrdem, 7, 170, 261, 30 );
+		adic( cbDesc, 7, 205, 250, 20 );
+		adic( cbListaFilial, 7, 225, 200, 20 );
+		adic( rgFaturados, 7, 250, 120, 70 );
+		adic( rgFinanceiro, 148, 250, 120, 70 );
+		
+		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód. Vend.", ListaCampos.DB_PK, false ) );
+		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do Vendedor", ListaCampos.DB_SI, false ) );
+		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
+		lcVendedor.setReadOnly( true );
+		txtCodVend.setTabelaExterna( lcVendedor, null );
+		txtCodVend.setFK( true );
+		txtCodVend.setNomeCampo( "CodVend" );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-
+		
+		int param = 1;
+		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -197,26 +224,32 @@ public class FRVendasCli extends FRelatorio {
 			else if ( rgOrdem.getVlrString().equals( "V" ) ) {
 				sOrdem = "S".equals( cbDesc.getVlrString() ) ? "5 DESC" : "5";
 			}
-
+			
 			sSQL.append( "SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA) AS VALOR " );
 			sSQL.append( "FROM VDVENDA V, VDCLIENTE C, EQTIPOMOV TM " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
 			sSQL.append( "AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI " );
 			sSQL.append( "AND V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV " );
 			sSQL.append( "AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' " );
+			if ( txtCodVend.getVlrInteger() > 0 ){
+				sSQL.append( "AND V.CODVEND=? " );
+			}
 			sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( " GROUP BY V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI" );
 			sSQL.append( " ORDER BY " + sOrdem );
-
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			rs = ps.executeQuery();
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			if ( txtCodVend.getVlrInteger() > 0 ){
+				ps.setInt( param++, txtCodVend.getVlrInteger() );
+			}
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );	
 
+			rs = ps.executeQuery();
+			
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
 				imprimirTexto( bVisualizar, rs, sCab.toString() );
 			}
@@ -257,7 +290,15 @@ public class FRVendasCli extends FRelatorio {
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Vendas por Cliente" );
-			imp.addSubTitulo( "VENDAS  -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			
+			if ( txtCodVend.getVlrInteger() <= 0 )
+			{
+				imp.addSubTitulo( "VENDAS -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			}
+			else
+			{
+				imp.addSubTitulo( "VENDAS REALIZADAS POR : " + txtNomeVend.getVlrString() + " -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			}
 			imp.addSubTitulo( sCab.toString() );
 
 			while ( rs.next() ) {
@@ -333,5 +374,6 @@ public class FRVendasCli extends FRelatorio {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		lcVendedor.setConexao( cn );
 	}
 }
