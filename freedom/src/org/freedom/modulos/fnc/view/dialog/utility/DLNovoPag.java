@@ -459,6 +459,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			System.out.println("Valor IRRF:" + ret);
 			
+			// Se for menor de 10 não deve realizar a retenção.
+			if(ret.floatValue()<=10.00f) {
+				
+				ret = new BigDecimal(0);
+				
+			}			
+			
 			ps.close();
 			rs.close();
 			con.commit();
