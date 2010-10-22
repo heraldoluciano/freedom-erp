@@ -3389,11 +3389,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			}
-			else if ( statusvenda.length() > 0 && ( statusvenda.equals( "P2" ) || statusvenda.equals( "P3" ) ) ) {
+			else if ( statusvenda.length() > 0 && ( statusvenda.equals( "P2" ) ) ) {
 				lbStatus.setText( "EM ABERTO" );
 				lbStatus.setBackground( Color.ORANGE );
 				NF_EMITIDA = false;
 			}
+			else if ( statusvenda.length() > 0 && ( statusvenda.equals( "P3" ) ) ) {
+				lbStatus.setText( "PED.EMITIDO" );
+				lbStatus.setBackground( Color.GREEN );
+				NF_EMITIDA = true;
+			}			
 			else if ( statusvenda.equals( "P1" ) || statusvenda.equals( "V1" )) {
 				lbStatus.setText( "PENDENTE" );
 				lbStatus.setBackground( Color.ORANGE );
