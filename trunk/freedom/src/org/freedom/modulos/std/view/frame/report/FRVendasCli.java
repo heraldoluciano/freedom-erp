@@ -291,14 +291,15 @@ public class FRVendasCli extends FRelatorio {
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Vendas por Cliente" );
 			
-			if ( txtCodVend.getVlrInteger() <= 0 )
-			{
-				imp.addSubTitulo( "VENDAS -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
-			}
-			else
+			if ( txtCodVend.getVlrInteger() > 0 )
 			{
 				imp.addSubTitulo( "VENDAS REALIZADAS POR : " + txtNomeVend.getVlrString() + " -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 			}
+			else
+			{
+				imp.addSubTitulo( "VENDAS -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			}
+
 			imp.addSubTitulo( sCab.toString() );
 
 			while ( rs.next() ) {
