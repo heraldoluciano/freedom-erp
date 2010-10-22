@@ -1139,10 +1139,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			con.commit();
 			
-			lcDet.edit();
-			lcDet.post();
+//			lcDet.edit();
+//			lcDet.post();
 		
-			lcDet.carregaDados();
+			montaTabPesagem();
+			
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
