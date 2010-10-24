@@ -134,7 +134,8 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 		super( false );
 
 		setTitulo( "Aprovação ou cancelamento de orçamentos" );
-		setAtribos( 15, 30, 796, 380 );
+		//setAtribos( 15, 30, 796, 380 );
+		setAtribos( 15, 30, 950, 380 );
 
 		btRecarregar.setToolTipText( "Recarregar ítens" );
 		btConfirmar.setToolTipText( "Confirmar aprovação ou cancelamento dos ítens selecionados?" );
@@ -231,6 +232,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 		tab.adicColuna( "" );
 		tab.adicColuna( "Autoriz." );
 		tab.adicColuna( "Validade" );
+		tab.adicColuna( "Observação" );
 
 		tab.setTamColuna( 35, 0 );
 		tab.setTamColuna( 35, 1 );
@@ -244,6 +246,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 		tab.setTamColuna( 20, 9 );
 		tab.setTamColuna( 65, 10 );
 		tab.setTamColuna( 75, 11 );
+		tab.setTamColuna( 150, 12 );
 
 		tab.setColunaEditavel( 0, true );
 		tab.setColunaEditavel( 1, true );
@@ -515,9 +518,14 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 	public void montaTab() {
 
 		bRecalcula = false;
-		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC) VLRACEITE," + "IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC "
+		/*String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC) VLRACEITE," + "IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC "
 				+ "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  " + "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " + "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND "
-				+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
+				+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";*/
+		
+		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC) VLRACEITE," + "IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC, IT.OBSITORC "
+		+ "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  " + "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " + "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND "
+		+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
+		
 		bVlrAceito = new BigDecimal( "0.0" );
 		bVlrAprovado = new BigDecimal( "0.0" );
 		bVlrTotal = new BigDecimal( "0.0" );
@@ -586,7 +594,9 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 				}
 				else
 					vVals.addElement( Funcoes.sqlDateToDate( rs.getDate( "VENCAUTORIZORC" ) ) );
-
+				
+				vVals.addElement( rs.getString( "OBSITORC" ) != null ? ( rs.getString( "OBSITORC" ).trim() ) : "" );
+				
 				bVlrTotal = bVlrTotal.add( new BigDecimal( rs.getString( "VLRACEITE" ) ) );
 
 				txtVlrAceito.setVlrBigDecimal( bVlrAceito );
