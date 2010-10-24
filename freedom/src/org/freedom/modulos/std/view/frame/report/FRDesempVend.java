@@ -107,7 +107,9 @@ public class FRDesempVend extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-
+		
+		int param = 1;
+		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -117,39 +119,34 @@ public class FRDesempVend extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
-		StringBuffer sWhere1 = new StringBuffer();
 
 		try {
-
-			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
-
-				sWhere1.append( ( "AND V.CODVEND= " + txtCodVend.getVlrString() ) );
-			}
-
 			sSQL.append( "SELECT V.CODVEND, V.NOMEVEND, " );
-			sSQL.append( "SUM((SELECT COUNT(*) FROM VDVENDA VD2 " );
-			sSQL.append( "WHERE VD2.CODEMPVD=V.CODEMP AND VD2.CODFILIALVD=V.CODFILIAL AND " );
-			sSQL.append( "VD2.CODVEND=V.CODVEND AND VD2.DTEMITVENDA BETWEEN ? AND ? )) TOTVENDCOMIS, " );
-			sSQL.append( "SUM( VD.VLRLIQVENDA ) TOTVENDAS, " );
-			sSQL.append( "SUM( VI.QTDITVENDA ) QTDITENS, " );
-			sSQL.append( "SUM(  VD.VLRLIQVENDA )/SUM( VI.QTDITVENDA ) ITEMMEDIO " );
+			sSQL.append( "COUNT( DISTINCT VD.CODVENDA) TOTVENDCOMIS, " );
+			sSQL.append( "SUM( DISTINCT VD.VLRLIQVENDA ) TOTVENDAS, " );
+			sSQL.append( "COUNT( VI.CODVENDA ) QTDITENS, " );
+			sSQL.append( "(SUM( DISTINCT VD.VLRLIQVENDA )/COUNT( VI.CODVENDA )) ITEMMEDIO " );
 			sSQL.append( "FROM VDVENDEDOR V, VDVENDA VD, VDITVENDA VI " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.CODEMP=VD.CODEMPVD AND " );
 			sSQL.append( "V.CODFILIAL=VD.CODFILIALVD AND V.CODVEND=VD.CODVEND AND " );
 			sSQL.append( "VD.CODVENDA=VI.CODVENDA AND VD.CODFILIAL=VI.CODFILIAL AND " );
 			sSQL.append( "VD.CODVENDA=VI.CODVENDA AND " );
 			sSQL.append( "VD.DTEMITVENDA BETWEEN  ? AND ? " );
-			sSQL.append( sWhere1.toString() );
-			sSQL.append( "GROUP BY 1,2 " );
+			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+				sSQL.append( "AND VD.CODVEND=? " );
+			}
+			sSQL.append( " GROUP BY 1,2 " );
 
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+				ps.setInt( param++, txtCodVend.getVlrInteger().intValue() );
+			}
+		
 			rs = ps.executeQuery();
 
 			imprimirGrafico( bVisualizar, rs, sCab.toString() );
