@@ -32,9 +32,8 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select
 
-pd.codsecao, se.descsecao, op.dtfabrop, op.qtdfinalprodop, pd.codprod, pd.refprod,
-pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie,
-pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, coalesce(op.garantia,'N') garantia
+pd.codsecao, se.descsecao, sum(op.qtdfinalprodop) qtdfinalprodop, pd.codprod, pd.refprod,
+pd.descprod, pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, op.garantia 
 
 from eqproduto pd , vdregracomis rc, eqsecao se, ppop op
 
@@ -56,19 +55,14 @@ and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.cod
 and op.dtfabrop between '2010-01-01' and '2011-01-01'
 and op.sitop='FN'
 
-order by pd.refprod]]></queryString>
+group by 1,2,4,5,6, 7,8,9]]></queryString>
 
 	<field name="CODSECAO" class="java.lang.String"/>
 	<field name="DESCSECAO" class="java.lang.String"/>
-	<field name="DTFABROP" class="java.sql.Date"/>
 	<field name="QTDFINALPRODOP" class="java.math.BigDecimal"/>
-	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="TICKET" class="java.lang.Long"/>
-	<field name="CODCLI" class="java.lang.Long"/>
-	<field name="RAZCLI" class="java.lang.String"/>
-	<field name="NUMSERIE" class="java.lang.String"/>
 	<field name="PRECOCOMISPROD" class="java.math.BigDecimal"/>
 	<field name="PERCCOMISGERAL" class="java.math.BigDecimal"/>
 	<field name="GARANTIA" class="java.lang.String"/>
@@ -291,7 +285,9 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-11"/>
+						key="textField-11">
+							<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
