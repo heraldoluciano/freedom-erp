@@ -736,15 +736,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.adicColuna( "Parc." ); 						// NPARCPAG
 			tabManut.adicColuna( "Doc.lanc" ); 						// DOC
 			tabManut.adicColuna( "Compra" ); 						// DOCCOMPRA
-			tabManut.adicColuna( "Valor parc." ); 					// VLRPARCITPAG
+			tabManut.adicColuna( "Valor" ); 						// VLRPARCITPAG
 			tabManut.adicColuna( "Dt.pagto." ); 					// DTPAGOITPAG
-			tabManut.adicColuna( "Valor pago" ); 					// VLRPAGOITPAG
-			tabManut.adicColuna( "Valor desc." ); 					// VLRDESCITPAG
-			tabManut.adicColuna( "Valor juros" );					// VLRJUROSITPAG
-			tabManut.adicColuna( "Valor devolução" ); 				// VLRDEVITPAG
-			tabManut.adicColuna( "Valor adic" ); 					// VLRADICITPAG
-			tabManut.adicColuna( "Valor aberto" ); 					// VLRAPAGITPAG
-			tabManut.adicColuna( "Valor cancelado" ); 				// VLRCANCITPAG
+			tabManut.adicColuna( "Pago" ); 							// VLRPAGOITPAG
+			tabManut.adicColuna( "Desconto" ); 						// VLRDESCITPAG
+			tabManut.adicColuna( "Juros" );							// VLRJUROSITPAG
+			tabManut.adicColuna( "Devolução" ); 					// VLRDEVITPAG
+			tabManut.adicColuna( "Adicional" ); 					// VLRADICITPAG
+			tabManut.adicColuna( "Aberto" ); 						// VLRAPAGITPAG
+			tabManut.adicColuna( "Cancelado" ); 					// VLRCANCITPAG
 			tabManut.adicColuna( "Conta" ); 						// NUMCONTA
 			tabManut.adicColuna( "Categoria" ); 					// DESCPLAN
 			tabManut.adicColuna( "Centro de custo" ); 				// DESCC
@@ -754,7 +754,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.adicColuna( "Cod.Plan" ); 						// CODPLAN
 			tabManut.adicColuna( "Cod.CC" ); 						// CODCC
 			tabManut.adicColuna( "Dt.It.Pag" ); 					// DTITPAG
-
 
 			tabManut.setTamColuna( 0,	enum_tab_manut.IMGSTATUS.ordinal()  );			
 			tabManut.setTamColuna( 60, 	enum_tab_manut.DTVENCITPAG.ordinal() );	
