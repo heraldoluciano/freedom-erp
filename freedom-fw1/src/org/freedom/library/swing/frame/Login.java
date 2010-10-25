@@ -98,7 +98,14 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		int iWidth = ic.getIconWidth();
 		int iHeight = ic.getIconHeight();
 
-		setAtribos(iWidth + 7, iHeight + 193);
+		
+		if (SystemFunctions.getOS() == SystemFunctions.OS_WINDOWS && SystemFunctions.getWindowsVersion()==SystemFunctions.OS_VERSION_WINDOWS_SEVEN) {
+			setAtribos(iWidth + 17, iHeight + 203);
+		} 
+		else {
+			setAtribos(iWidth + 7, iHeight + 193);
+		}
+
 
 		lbImg.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
