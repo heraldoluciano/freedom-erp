@@ -30,6 +30,12 @@ public class SystemFunctions {
 	public static final int OS_LINUX = 0;
 
 	public static final int OS_WINDOWS = 1;
+	
+	public static final int OS_VERSION_WINDOWS_XP = 10;
+	
+	public static final int OS_VERSION_WINDOWS_VISTA = 11;
+	
+	public static final int OS_VERSION_WINDOWS_SEVEN = 12;
 
 	/**
 	 * 
@@ -46,6 +52,33 @@ public class SystemFunctions {
 		}
 		else if (system.indexOf("windows") > -1) {
 			ret = OS_WINDOWS;
+		}
+
+		return ret;
+
+	}
+	
+	/**
+	 * 
+	 * @return A version of operational system windows.<BR>
+	 */
+	public static int getWindowsVersion() {
+
+		int ret = -1;
+
+		final String system = System.getProperty("os.name").toLowerCase();
+
+		if (system.indexOf("windows") > -1) {
+		
+			if (System.getProperty("os.name").indexOf("xp") >-1 ) {
+				ret = OS_VERSION_WINDOWS_XP; 
+			}
+			else if (System.getProperty("os.name").indexOf("vista") >-1 ) {
+				ret = OS_VERSION_WINDOWS_VISTA; 
+			}
+			else if (System.getProperty("os.name").indexOf("7") >-1 ) {
+				ret = OS_VERSION_WINDOWS_SEVEN; 
+			}
 		}
 
 		return ret;
