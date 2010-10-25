@@ -709,7 +709,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 				if ( lcPagar.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcPagar.post();
 				}
-				if ( cbEmitePedido.getVlrString().trim().equals( "S" ) ) {
+				if ( cbEmitePedido.getVlrString().trim().equals( "S" ) || (cbFinalizar.equals( "S" )) || (cbEmiteNota.getVlrString().trim().equals( "N" ))  ) {
 					lcCompra.edit();
 					txtStatusCompra.setVlrString( "P3" );
 					if ( !lcCompra.post() ) {
