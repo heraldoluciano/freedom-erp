@@ -186,9 +186,9 @@ public class FRComisProd extends FRelatorio {
 
 			sql.append( "select ");
 
-			sql.append( "pd.codsecao, se.descsecao, op.dtfabrop, op.qtdfinalprodop, pd.codprod, pd.refprod, ");
-			sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, it.numserie, ");
-			sql.append( "pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, op.garantia ");
+			sql.append( "pd.codsecao, se.descsecao, sum(op.qtdfinalprodop) qtdfinalprodop, pd.codprod, pd.refprod, ");
+//			sql.append( "pd.codsecao, se.descsecao, op.qtdfinalprodop, pd.codprod, pd.refprod, ");
+			sql.append( "pd.descprod, pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, coalesce(op.garantia,'N') garantia " );
 
 			sql.append( "from eqproduto pd , vdregracomis rc, eqsecao se, ppop op ");
 
@@ -222,9 +222,7 @@ public class FRComisProd extends FRelatorio {
 			}
 
 
-		//	sql.append( "group by 1,2,3,4 " );
-
-			sql.append( "order by pd.codsecao, rm.dtent, rm.codcli, pd.refprod " );
+			sql.append( "group by 1, 2, 4, 5, 6, 7, 8, 9 " );
 
 			ps = con.prepareStatement( sql.toString() );
 
