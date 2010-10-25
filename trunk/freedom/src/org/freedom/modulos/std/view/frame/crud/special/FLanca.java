@@ -32,7 +32,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -46,24 +62,10 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
+import org.freedom.modulos.fnc.business.object.Cheque;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
+import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
-
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.swing.BorderFactory;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-
-import org.freedom.bmps.Icone;
 
 public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
@@ -150,6 +152,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 	private Date dIniLanca = null;
 
 	private Date dFimLanca = null;
+	
+	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) ); 
+	
+	private enum enum_tab_lanca {  CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
 
 	public FLanca() {
 
@@ -216,7 +222,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 		btSair.setPreferredSize( new Dimension( 100, 31 ) );
 
-		pnNav.setPreferredSize( new Dimension( 210, 30 ) );
+		pnNav.setPreferredSize( new Dimension( 240, 30 ) );
 
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.add( btSair, BorderLayout.EAST );
@@ -229,6 +235,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		pnNav.add( btNovo );
 		pnNav.add( btExcluir );
 		pnNav.add( btEditar );
+		pnNav.add( btAbreCheque );
+		
+		btAbreCheque.setEnabled( false );
 
 		tab.adicColuna( "NºLanç." );
 		tab.adicColuna( "Data" );
@@ -238,22 +247,52 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		tab.adicColuna( "Nº doc." );
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Histórico" );
+		tab.adicColuna( "Cheques" );
+		tab.adicColuna( "Cod.Pag." );
+		tab.adicColuna( "N.Parc.Pag." );
+		tab.adicColuna( "Seq.Cheque" );
 
-		tab.setTamColuna( 60, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 20, 2 );
-		tab.setTamColuna( 30, 3 );
-		tab.setTamColuna( 72, 4 );
-		tab.setTamColuna( 65, 5 );
-		tab.setTamColuna( 80, 6 );
-		tab.setTamColuna( 342, 7 );
+		tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
+		tab.setTamColuna( 70, enum_tab_lanca.DATASUBLANCA.ordinal() );
+		tab.setTamColuna( 20, enum_tab_lanca.TRANSFLANCA.ordinal() );
+		tab.setTamColuna( 30, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+		tab.setTamColuna( 72, enum_tab_lanca.NUMCONTA.ordinal() );
+		tab.setTamColuna( 65, enum_tab_lanca.DOCLANCA.ordinal() );
+		tab.setTamColuna( 80, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+		tab.setTamColuna( 287, enum_tab_lanca.HISTBLANCA.ordinal() );		
+		tab.setTamColuna( 55, enum_tab_lanca.CHEQUES.ordinal() );
 
+		tab.setColunaInvisivel( enum_tab_lanca.CODPAG.ordinal() );
+		tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
+		tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
+		
+		
 		tab.addMouseListener( new MouseAdapter() {
 
+			@ SuppressWarnings ( "unchecked" )
 			public void mouseClicked( MouseEvent mevt ) {
 
-				if ( mevt.getSource() == tab && mevt.getClickCount() == 2 )
+				if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
 					editar();
+				}
+				else if ( mevt.getSource() == tab && mevt.getClickCount() == 1 ) {
+					
+					btAbreCheque.setEnabled( false );
+					
+					if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
+						
+						Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
+						
+						if(seqcheq!=null) {
+							Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
+							
+							if(seqcheque>0) {
+								btAbreCheque.setEnabled( true );
+							}
+						}
+					}
+					
+				}
 			}
 		} );
 
@@ -267,6 +306,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		btExcluir.addActionListener( this );
 		btExec.addActionListener( this );
 		btCalcSaldo.addActionListener( this );
+		btAbreCheque.addActionListener( this );
 		tpn.addChangeListener( this );
 
 		Calendar cPeriodo = Calendar.getInstance();
@@ -286,46 +326,122 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 	private void montaTabela( Date dini, Date dfim ) {
 
 		tab.limpa();
-		String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, L.TRANSFLANCA, S.ORIGSUBLANCA," + "L.DOCLANCA,S.VLRSUBLANCA,L.HISTBLANCA," + "(SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " + "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
-				+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " + "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " + "C.CODFILIAL=S1.CODFILIALPN ) NUMCONTA FROM FNSUBLANCA S," + " FNLANCA L WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
-				+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" + " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" + " ORDER BY S.DATASUBLANCA,S.CODLANCA";
+		
+		String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," 
+			+ "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," 
+			+ "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " 
+			+ "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
+			+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " 
+			+ "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " 
+			+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG "
+			+ " FROM FNSUBLANCA S, FNLANCA L " 
+			+ " WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
+			+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" 
+			+ " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" 
+			+ " ORDER BY S.DATASUBLANCA,S.CODLANCA";
+		
 		try {
-			// System.out.println(sSQL);
+			
+			
 			PreparedStatement ps = con.prepareStatement( sSQL );
+			
 			ps.setDate( 1, Funcoes.dateToSQLDate( dini ) );
-			// System.out.println(""+Funcoes.dateToSQLDate(dini));
 			ps.setDate( 2, Funcoes.dateToSQLDate( dfim ) );
-			// System.out.println(""+Funcoes.dateToSQLDate(dfim));
 			ps.setString( 3, sCodPlan );
-			// System.out.println(sCodPlan);
-
 			ps.setInt( 4, Aplicativo.iCodEmp );
-			// System.out.println(""+Aplicativo.iCodEmp);
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-			// System.out.println(ListaCampos.getMasterFilial("FNSUBLANCA"));
 
 			ResultSet rs = ps.executeQuery();
+
 			for ( int i = 0; rs.next(); i++ ) {
+				
+				
 				tab.adicLinha();
-				tab.setValor( rs.getString( "CodLanca" ), i, 0 );
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSubLanca" ) ), i, 1 );
-				tab.setValor( rs.getString( "TransfLanca" ) != null ? rs.getString( "TransfLanca" ) : "", i, 2 );
-				if ( rs.getString( "TransfLanca" ).trim().equals( "S" ) ) {
-					tab.setValor( rs.getString( 8 ) != null ? rs.getString( 8 ) : "", i, 4 );
+				
+				tab.setValor( rs.getString( enum_tab_lanca.CODLANCA.name() ), i, enum_tab_lanca.CODLANCA.ordinal() );
+				
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_lanca.DATASUBLANCA.name() ) ), i, enum_tab_lanca.DATASUBLANCA.ordinal() );
+				
+				tab.setValor( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ), i, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				
+				if ( "S".equals( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ) ) ) {
+					tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal() );
 				}
-				tab.setValor( rs.getString( "OrigSubLanca" ) != null ? rs.getString( "OrigSubLanca" ) : "", i, 3 );
-				tab.setValor( rs.getString( "DocLanca" ) != null ? rs.getString( "DocLanca" ) : "", i, 5 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VlrSubLanca" ) ), i, 6 );
-				tab.setValor( rs.getString( "HistBLanca" ) != null ? rs.getString( "HistBLanca" ) : "", i, 7 );
+				
+				tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+				
+				tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal() );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+				tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal() );				
+				
+				tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal() );
+				tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal() );
+				
+				Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_lanca.CODPAG.name()), rs.getInt( enum_tab_lanca.NPARCPAG.name() ));
+				
+				if( cheques.size()>0 ) {
+					
+					Vector<String> numcheques = new Vector<String>();
+					Vector<String> seqcheques = new Vector<String>();
+					
+					for ( int ic = 0; cheques.size() > ic; ic++ ) {
+
+						Cheque cheque = (Cheque) cheques.get( ic );
+						numcheques.add( cheque.getNumcheq().toString() );
+						seqcheques.add( cheque.getSeqcheq().toString() );
+
+					}
+					
+					tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal() );
+					tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal() );
+					
+				}
+				
 			}
+			
 			rs.close();
 			ps.close();
-			// con.commit();
+
 			atualizaSaldo();
 			atualizaSaldoComposto();
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
 		}
+	}
+	
+	@ SuppressWarnings ( "unchecked" )
+	private void abreCheque() {
+
+		if ( tab.getLinhaSel() > -1 ) {
+
+			Integer seqcheque = null;
+			Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
+			
+			if(seqcheq!=null) {
+				seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
+			}
+
+			if(seqcheque!=null) {
+			
+				FCheque tela = null;
+				
+				if ( Aplicativo.telaPrincipal.temTela( FCheque.class.getName() ) ) {
+					tela = (FCheque) Aplicativo.telaPrincipal.getTela( FCheque.class.getName() );
+				}
+				else {
+					tela = new FCheque();
+					Aplicativo.telaPrincipal.criatela( "Cheque", tela, con );
+				}
+				
+				if(seqcheque>0) {
+					tela.exec( seqcheque );
+				}
+			}
+			
+		}
+
 	}
 
 	private void montaTabs() {
@@ -719,6 +835,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 				atualizaSaldoComposto();
 			}
 		}
+		else if(evt.getSource() == btAbreCheque ) {
+			abreCheque( );
+		}
+		
 	}
 
 	public void stateChanged( ChangeEvent cevt ) {
