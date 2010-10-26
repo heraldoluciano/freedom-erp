@@ -74,6 +74,8 @@ public class FRColetas extends FRelatorio {
 	private ListaCampos lcCliente = new ListaCampos( this );
 	
 	private JCheckBoxPad cbFinalizados = new JCheckBoxPad( "Itens finalizados", "S", "N" );
+	
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad( "Apenas pendentes", "S", "N" );
 
 	private boolean comref = false;
 
@@ -153,7 +155,9 @@ public class FRColetas extends FRelatorio {
 		pnFiltros.adic( new JLabelPad( "Razão social do cliente" ), 77, 45, 230, 20 );
 		pnFiltros.adic( txtRazCli, 77, 65, 230, 20 );
 		
-		pnFiltros.adic( cbFinalizados, 2, 95, 230, 20 );
+		pnFiltros.adic( cbFinalizados, 2, 95, 130, 20 );
+		
+		pnFiltros.adic( cbPendentes, 155, 95, 230, 20 );
 
 	}
 
@@ -218,7 +222,10 @@ public class FRColetas extends FRelatorio {
 		sql.append( "where " );
 		sql.append( "rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? " );
 
-		if( "N".equals( cbFinalizados.getVlrString()) ) {
+		if( "S".equals( cbPendentes.getVlrString()) ) {
+			sql.append( " and it.statusitrecmerc not in ('FN') " );
+		}
+		else if( "N".equals( cbFinalizados.getVlrString()) ) {
 			sql.append( " and it.statusitrecmerc not in ('FN','PT') " );
 		}
 		
