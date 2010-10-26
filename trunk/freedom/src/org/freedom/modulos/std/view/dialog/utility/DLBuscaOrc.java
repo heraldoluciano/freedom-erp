@@ -772,7 +772,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						txtCodCli.requestFocus();
 						return;
 					}
-					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
+					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC IN ('OL','FP') ";
 				}
 				else if ( rgBusca.getVlrString().equals( "O" ) && txtCodConv.getText().trim().length() > 0 ) {
 					iCod = txtCodConv.getVlrInteger().intValue();
@@ -781,7 +781,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						txtCodConv.requestFocus();
 						return;
 					}
-					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
+					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC IN ('OL','FP') ";
 					bConv = true;
 				}
 				else if ( iCod == -1 ) {
@@ -794,10 +794,19 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 			try {
 
-				sSQL = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) + "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " + "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-						+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " + "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " + "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," + "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," + "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " + "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
-						+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " + "FROM VDORCAMENTO O" + sWhere + " ORDER BY O.CODORC";
+				sSQL = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) 
+				+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
+				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
+						+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
+						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " 
+						+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"
+						+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
+						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
+						+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
+						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
+						+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " 
+						+ "FROM VDORCAMENTO O" 
+						+ sWhere + " ORDER BY O.CODORC";
 
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, iCod );
@@ -806,7 +815,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				rs = ps.executeQuery();
 				tabOrc.limpa();
 				while ( rs.next() ) {
-					if ( rs.getString( 8 ).equals( "OL" ) || rs.getString( 8 ).equals( "OP" ) ) {
+					if ( rs.getString( 8 ).equals( "OL" ) || rs.getString( 8 ).equals( "OP" ) || rs.getString( 8 ).equals( "FP" )) {
 						vVals = new Vector<Object>();
 						vVals.addElement( new Boolean( true ) );
 						vVals.addElement( new Integer( rs.getInt( "CodOrc" ) ) );
