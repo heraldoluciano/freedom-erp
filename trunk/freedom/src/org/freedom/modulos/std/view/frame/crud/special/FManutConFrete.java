@@ -397,7 +397,7 @@ public class FManutConFrete extends FFilho implements ActionListener, MouseListe
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFTRE" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataIni.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
 			ps.setInt( 5, txtCodFor.getVlrInteger() );
