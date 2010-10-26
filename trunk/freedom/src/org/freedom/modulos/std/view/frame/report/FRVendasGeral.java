@@ -74,6 +74,8 @@ public class FRVendasGeral extends FRelatorio {
 	private JRadioGroup<?, ?> rgFaturados = null;
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
 
 	private Vector<String> vLabsFat = new Vector<String>();
 
@@ -83,6 +85,10 @@ public class FRVendasGeral extends FRelatorio {
 
 	private Vector<String> vValsFin = new Vector<String>();
 
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+	
 	private JRadioGroup<?, ?> rgTipo = null;
 
 	private JRadioGroup<?, ?> rgData = null;
@@ -102,7 +108,7 @@ public class FRVendasGeral extends FRelatorio {
 	public FRVendasGeral() {
 
 		setTitulo( "Vendas em Geral" );
-		setAtribos( 80, 80, 325, 400 );
+		setAtribos( 80, 80, 325, 460 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -126,6 +132,15 @@ public class FRVendasGeral extends FRelatorio {
 		vValsFin.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
 
 		vLabs1.addElement( "Texto" );
 		vLabs1.addElement( "Grafico" );
@@ -186,7 +201,10 @@ public class FRVendasGeral extends FRelatorio {
 		adic( rgTipo, 7, 190, 265, 30 );
 		adic( rgFaturados, 7, 230, 120, 70 );
 		adic( rgFinanceiro, 153, 230, 120, 70 );
-		adic( cbVendaCanc, 7, 310, 200, 20 );
+		
+		adic( rgEmitidos, 7, 310, 120, 70 );
+		
+		adic( cbVendaCanc, 145, 310, 180, 20 );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -244,6 +262,15 @@ public class FRVendasGeral extends FRelatorio {
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+		}
+		
+		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+			sWhere2 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
+			sCab += sCab.length() > 0 ? " - SO EMITIDOS" : "SO EMITIDOS";
+		}
+		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+			sWhere2 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+			sCab += sCab.length() > 0 ? " - NAO EMITIDOS" : "NAO EMITIDOS";
 		}
 
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
