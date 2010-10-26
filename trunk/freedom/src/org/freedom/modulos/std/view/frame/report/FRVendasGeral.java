@@ -75,8 +75,6 @@ public class FRVendasGeral extends FRelatorio {
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
 	
-	private JRadioGroup<?, ?> rgEmitidos = null;
-
 	private Vector<String> vLabsFat = new Vector<String>();
 
 	private Vector<String> vValsFat = new Vector<String>();
@@ -85,6 +83,8 @@ public class FRVendasGeral extends FRelatorio {
 
 	private Vector<String> vValsFin = new Vector<String>();
 
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
 	private Vector<String> vLabsEmit = new Vector<String>();
 
 	private Vector<String> vValsEmit = new Vector<String>();
@@ -268,7 +268,7 @@ public class FRVendasGeral extends FRelatorio {
 			sWhere2 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
 			sCab += sCab.length() > 0 ? " - SO EMITIDOS" : "SO EMITIDOS";
 		}
-		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+		else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
 			sWhere2 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
 			sCab += sCab.length() > 0 ? " - NAO EMITIDOS" : "NAO EMITIDOS";
 		}
