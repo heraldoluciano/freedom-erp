@@ -24,7 +24,7 @@
  */
 
 package org.freedom.modulos.std.view.frame.report;
-
+	
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -56,14 +56,12 @@ public class FRVendasCli extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private ListaCampos lcVendedor = new ListaCampos( this );
 	
-
 	private JCheckBoxPad cbListaFilial = new JCheckBoxPad( "Listar vendas das filiais ?", "S", "N" );
 
 	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "S", "N" );
@@ -75,11 +73,17 @@ public class FRVendasCli extends FRelatorio {
 	private JRadioGroup<?, ?> rgFaturados = null;
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
 
 	public FRVendasCli() {
 
 		setTitulo( "Vendas por Cliente" );
-		setAtribos( 80, 80, 340, 390 );
+		setAtribos( 80, 80, 340, 480 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -132,6 +136,15 @@ public class FRVendasCli extends FRelatorio {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
 
 		cbDesc.setVlrString( "S" );
 
@@ -153,6 +166,7 @@ public class FRVendasCli extends FRelatorio {
 		adic( cbListaFilial, 7, 225, 200, 20 );
 		adic( rgFaturados, 7, 250, 120, 70 );
 		adic( rgFinanceiro, 148, 250, 120, 70 );
+		adic( rgEmitidos, 7, 330, 120, 70 );
 		
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód. Vend.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do Vendedor", ListaCampos.DB_SI, false ) );
@@ -177,8 +191,8 @@ public class FRVendasCli extends FRelatorio {
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		String sOrdem = "";
-		String sWhere1 = null;
-		String sWhere2 = null;
+		String sWhere1 = "";
+		String sWhere2 = "";
 
 		try {
 
@@ -193,9 +207,9 @@ public class FRVendasCli extends FRelatorio {
 				}
 				sCab.append( "NAO FATURADO" );
 			}
-			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
+		/*	else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-			}
+			}*/
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
@@ -211,8 +225,17 @@ public class FRVendasCli extends FRelatorio {
 				}
 				sCab.append( "NAO FINANCEIRO" );
 			}
-			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
+	/*		else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}*/
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
+				sCab.append( " SO EMITIDOS ");
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( " NAO EMITIDOS " );
 			}
 
 			if ( rgOrdem.getVlrString().equals( "C" ) ) {
@@ -231,20 +254,25 @@ public class FRVendasCli extends FRelatorio {
 			sSQL.append( "AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI " );
 			sSQL.append( "AND V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV " );
 			sSQL.append( "AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' " );
+			
 			if ( txtCodVend.getVlrInteger() > 0 ){
 				sSQL.append( "AND V.CODVEND=? " );
 			}
+			
 			sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( " GROUP BY V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI" );
 			sSQL.append( " ORDER BY " + sOrdem );
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			
 			if ( txtCodVend.getVlrInteger() > 0 ){
 				ps.setInt( param++, txtCodVend.getVlrInteger() );
 			}
+			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );	
 
