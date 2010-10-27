@@ -1017,9 +1017,11 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				ps.setInt( 5, Aplicativo.iCodEmp );
 				ps.setInt( 6, ListaCampos.getMasterFilial( "FNCHEQUE" ));
 				ps.setInt( 7, seqcheq );
+				
+				count += ps.executeUpdate();
 			}
 
-			count += ps.executeUpdate();
+			
 			return count;
 		}
 
