@@ -1543,7 +1543,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-				ps.setString( 3, "M" ); // Custo MPM
+//				ps.setString( 3, "M" ); // Custo MPM
+				ps.setString( 3, "P" ); // Custo PEPS
 				ps.setDate( 4, Funcoes.dateToSQLDate( Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) ) );
 				ps.setInt( 5, Aplicativo.iCodEmp );
 				ps.setInt( 6, Aplicativo.iCodFilial );
