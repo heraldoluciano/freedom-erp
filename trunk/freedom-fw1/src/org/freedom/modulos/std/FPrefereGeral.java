@@ -660,6 +660,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, String> rgTipoCustoLuc = null;
 
 	private JCheckBoxPad cbInfAdicProdNFE = new JCheckBoxPad("Adiciona descrição completa do produto na NFE.", "S", "N");
+	
+	private JCheckBoxPad cbExibeParcObsDanfe = new JCheckBoxPad("Desdobramento de parcelas nas observações da DANFE.", "S", "N");
 
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
@@ -1537,17 +1539,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 
 		setPainel(pinNFe);
-		adic(pnNFeOpcoes, 7, 298, 370, 120);
+		adic(pnNFeOpcoes, 7, 298, 370, 140);
 
 		setPainel(pnNFeOpcoes);
 
 		adicDB(cbInfAdicProdNFE, 7, 0, 370, 30, "InfAdProdNfe", "", false);
+		adicDB(cbExibeParcObsDanfe, 7, 25, 370, 30, "ExibeParcObsDanfe", "", false);
 
-		adicCampo(txtCodEmailNF, 7, 55, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
-		adicDescFK(txtDescEmailNF, 70, 55, 250, 20, "DescEmail", "Descrição do email padrão");
+		adicCampo(txtCodEmailNF, 7, 75, 60, 20, "CodEmailNF", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNF, false);
+		adicDescFK(txtDescEmailNF, 70, 75, 250, 20, "DescEmail", "Descrição do email padrão");
 		txtCodEmailNF.setNomeCampo("CodEmail");
 
-		/*****************
+		/***************** 
 		 * Recursos *
 		 *****************/
 
