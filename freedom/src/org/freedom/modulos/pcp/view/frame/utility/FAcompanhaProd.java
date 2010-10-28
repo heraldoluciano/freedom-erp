@@ -38,8 +38,6 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
