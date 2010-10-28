@@ -32,12 +32,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -54,7 +55,11 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
+import org.freedom.modulos.pcp.business.object.StatusOP;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 
 public class FAcompanhaProd extends FFilho implements ActionListener, MouseListener {
@@ -63,11 +68,11 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private enum ecolAcompanhamentos {
 
-		SITOP, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, QTDSUG, QTDPREV, QTDTOTAL, TEMPOTOTAL, TOTALFASE
+		SITOP, SITATRASO, DTEMITOP, DTFABROP, CODOP, SEQOP, REFPROD, DESCEST, QTDSUG, QTDPREV, QTDTOTAL, TEMPOTOTAL, TOTALFASE
 
 	};
 
-	private JPanelPad pinCab = new JPanelPad( 0, 125 );
+	private JPanelPad pinCab = new JPanelPad( 0, 145 );
 
 	private JPanelPad pnCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -97,7 +102,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private JCheckBoxPad cbFinalizada = new JCheckBoxPad( "Finalizada", "S", "N" );
 
-	private JCheckBoxPad cbAtrasada = new JCheckBoxPad( "Atrasada", "S", "N" );
+	private JCheckBoxPad cbAtrasadas = new JCheckBoxPad( "Atrasadas", "S", "N" );
 
 	private JCheckBoxPad cbPrincipal = new JCheckBoxPad( "Principal", "S", "N" );
 
@@ -117,7 +122,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private JLabelPad lbTxtFinalizada = new JLabelPad( "Finalizada" );
 
-	private JLabelPad lbTxtAtrasado = new JLabelPad( "Atrasada" );
+//	private JLabelPad lbTxtAtrasado = new JLabelPad( "Atrasada" );
 
 	private JLabelPad lbTxtCancelado = new JLabelPad( "Cancelada" );
 
@@ -127,7 +132,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private ImageIcon imgFinalizada = Icone.novo( "clEfetivado.gif" );
 
-	private ImageIcon imgAtrasado = Icone.novo( "clVencido.gif" );
+	private ImageIcon imgAtrasada = Icone.novo( "op_atrasada_10x10.png" );
 
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
 
@@ -137,14 +142,18 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 	private JLabelPad lbImgFinalizada = new JLabelPad( imgFinalizada );
 
-	private JLabelPad lbImgAtrasado = new JLabelPad( imgAtrasado );
+	private JLabelPad lbImgAtrasado = new JLabelPad( imgAtrasada );
 
 	private JLabelPad lbImgCancelado = new JLabelPad( imgCancelado );
 
 	private JLabelPad lbImgBloqueada = new JLabelPad( imgBloqueado );
 
 	private ImageIcon imgStatus = null;
-
+	
+	private ImageIcon imgStatus_atraso = null;
+	
+	private ImageIcon imgBranco = Icone.novo( "clBranco.gif" );
+	
 	private Font fontLegenda = new Font( "Arial", Font.PLAIN, 9 );
 
 	private Color corLegenda = new Color( 120, 120, 120 );
@@ -154,7 +163,10 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 	
 	private JTextFieldFK txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
+	private JTablePad tabstatus = new JTablePad();
+	
+	private JScrollPane scpStatus = new JScrollPane( tabstatus );
 
 	FOP f;
 
@@ -177,16 +189,6 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 		pnRod.add( pnBotoes, BorderLayout.CENTER );
 
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
-		lbPeriodo.setOpaque( true );
-
-		JLabelPad lbLinhaStatus = new JLabelPad();
-		lbLinhaStatus.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbStatus1 = new JLabelPad( "Status:" );
-		lbStatus1.setOpaque( true );
-
 		vValsData.addElement( "F" );
 		vValsData.addElement( "E" );
 		vLabsData.addElement( "Fabricação" );
@@ -195,63 +197,57 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		rgFiltro = new JRadioGroup<String, String>( 2, 1, vLabsData, vValsData );
 		rgFiltro.setVlrString( "F" );
 
-		pinCab.adic( lbPeriodo, 0, 0, 80, 20 );
-		pinCab.adic( lbLinha, 5, 20, 280, 50 );
-		pinCab.adic( lbStatus1, 445, 0, 80, 20 );
-		pinCab.adic( lbLinhaStatus, 445, 20, 380, 50 );
-		pinCab.adic( new JLabelPad( "De:" ), 10, 35, 30, 20 );
-		pinCab.adic( txtDataini, 35, 35, 97, 20 );
-		pinCab.adic( new JLabelPad( "Até:" ), 140, 35, 37, 20 );
-		pinCab.adic( txtDatafim, 165, 35, 100, 20 );
-		pinCab.adic( cbCancelada, 460, 25, 90, 20 );
-		pinCab.adic( cbFinalizada, 460, 45, 90, 20 );
-		pinCab.adic( cbPendente, 548, 25, 90, 20 );
-		pinCab.adic( cbAtrasada, 548, 45, 90, 20 );
-		pinCab.adic( cbPrincipal, 641, 25, 90, 20 );
-		pinCab.adic( cbRelacionada, 641, 45, 105, 20 );
-		pinCab.adic( cbBloqueada, 735, 25, 85, 20 );
+		JPanelPad pnPeriodo = new JPanelPad();
+		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK ) );		
 		
-		pinCab.adic( txtCodSecao, 7, 90, 80, 20, "Cód.Seção" );
-		pinCab.adic( txtDescSecao, 90, 90, 340, 20, "Descrição da seção" );
+		pinCab.adic(pnPeriodo, 5, 5, 280, 80 );
+		
+		pnPeriodo.adic( new JLabelPad( "De:" ), 10, 10, 30, 20 );
+		pnPeriodo.adic( txtDataini, 35, 10, 87, 20 );
+		pnPeriodo.adic( new JLabelPad( "Até:" ), 130, 10, 37, 20 );
+		pnPeriodo.adic( txtDatafim, 155, 10, 87, 20 );
+		
+		JPanelPad pnTipoOP = new JPanelPad();
+		pnTipoOP.setBorder( SwingParams.getPanelLabel( "Tipo", Color.BLACK ) );
+		
+		pinCab.adic( pnTipoOP, 445, 5, 150, 90 );
 
-		pinCab.adic( new JLabelPad( "Filtrar por: " ), 290, 1, 80, 20 );
-		pinCab.adic( rgFiltro, 290, 20, 150, 50 );
-		pinCab.adic( btFiltrar, 835, 20, 40, 50 );
+		pnTipoOP.adic( new JLabelPad(imgAtrasada), 3, 3, 12, 12 );
+		pnTipoOP.adic( cbAtrasadas, 15, 0, 90, 20 );
 
-		lbTxtPendente.setFont( fontLegenda );
-		lbTxtFinalizada.setFont( fontLegenda );
-		lbTxtCancelado.setFont( fontLegenda );
-		lbTxtAtrasado.setFont( fontLegenda );
-		lbTxtPendente.setForeground( corLegenda );
-		lbTxtFinalizada.setForeground( corLegenda );
-		lbTxtAtrasado.setForeground( corLegenda );
-		lbTxtCancelado.setForeground( corLegenda );
-		lbTxtBloqueado.setFont( fontLegenda );
-		lbTxtBloqueado.setForeground( corLegenda );
+		pnTipoOP.adic( cbPrincipal, 15, 20, 90, 20 );
+		pnTipoOP.adic( cbRelacionada, 15, 40, 105, 20 );
 
+		
+		pinCab.adic( scpStatus, 605, 13, 150, 80 );
+		
+		pinCab.adic( txtCodSecao, 7, 110, 80, 20, "Cód.Seção" );
+		pinCab.adic( txtDescSecao, 90, 110, 340, 20, "Descrição da seção" );
+
+		
+		JPanelPad pnTipoData = new JPanelPad();
+		pnTipoData.setBorder( SwingParams.getPanelLabel( "Filtrar por:", Color.BLACK ) );
+		
+		pinCab.adic(pnTipoData, 290,5,150,80);
+		
+		pnTipoData.adic( rgFiltro, 5, 0, 130, 50 );
+		
+		pinCab.adic( btFiltrar, 760, 13, 30, 79 );
+
+	
 		pnBotoes.adic( btNovaOp, 10, 0, 30, 25 );
 		pnBotoes.adic( btImprimir, 41, 0, 30, 25 );
 
 		btNovaOp.setToolTipText( "Nova ordem de produção" );
 		btImprimir.setToolTipText( "Imprimir relação" );
 		
-		pnBotoes.adic( lbImgPendente, 160, 4, 20, 20 );
-		pnBotoes.adic( lbTxtPendente, 180, 4, 80, 20 );
-		pnBotoes.adic( lbImgAtrasado, 240, 4, 20, 20 );
-		pnBotoes.adic( lbTxtAtrasado, 260, 4, 90, 20 );
-		pnBotoes.adic( lbImgCancelado, 320, 4, 20, 20 );
-		pnBotoes.adic( lbTxtCancelado, 340, 4, 90, 20 );
-		pnBotoes.adic( lbTxtFinalizada, 420, 4, 80, 20 );
-		pnBotoes.adic( lbImgFinalizada, 400, 4, 20, 20 );
-		pnBotoes.adic( lbTxtBloqueado, 500, 4, 80, 20 );
-		pnBotoes.adic( lbImgBloqueada, 480, 4, 20, 20 );
-
-		
+		tab.adicColuna( "" );
 		tab.adicColuna( "" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Fabricação" );
 		tab.adicColuna( "O.P." );
 		tab.adicColuna( "Seq." );
+		tab.adicColuna( "Cod.Pd." );
 		tab.adicColuna( "Descrição do produto" );
 		tab.adicColuna( "Qtd sug." );
 		tab.adicColuna( "Qtd prev." );
@@ -260,16 +256,20 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		tab.adicColuna( "Fase" );
 
 		tab.setTamColuna( 10, ecolAcompanhamentos.SITOP.ordinal() );
+		tab.setTamColuna( 10, ecolAcompanhamentos.SITATRASO.ordinal() );
 		tab.setTamColuna( 68, ecolAcompanhamentos.DTEMITOP.ordinal() );
 		tab.setTamColuna( 68, ecolAcompanhamentos.DTFABROP.ordinal() );
 		tab.setTamColuna( 45, ecolAcompanhamentos.CODOP.ordinal() );
 		tab.setTamColuna( 28, ecolAcompanhamentos.SEQOP.ordinal() );
-		tab.setTamColuna( 370, ecolAcompanhamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 50, ecolAcompanhamentos.REFPROD.ordinal() );
+		tab.setTamColuna( 300, ecolAcompanhamentos.DESCEST.ordinal() );
 		tab.setTamColuna( 62, ecolAcompanhamentos.QTDSUG.ordinal() );
 		tab.setTamColuna( 62, ecolAcompanhamentos.QTDPREV.ordinal() );
 		tab.setTamColuna( 62, ecolAcompanhamentos.QTDTOTAL.ordinal() );
 		tab.setTamColuna( 40, ecolAcompanhamentos.TOTALFASE.ordinal() );
 		tab.setTamColuna( 55, ecolAcompanhamentos.TEMPOTOTAL.ordinal() );
+		
+		tab.setRowHeight( 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 
@@ -287,13 +287,15 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		btImprimir.addActionListener( this );
 		tab.addMouseListener( this );
 		
-		cbPendente.setVlrString( "S" );
-		cbAtrasada.setVlrString( "S" );
+		cbAtrasadas.setVlrString( "S" );
 		cbPrincipal.setVlrString( "S" );
 		cbRelacionada.setVlrString( "S" );
-		cbAtrasada.setVlrString( "S" );
 		
 		montaListaCampos();
+		
+		montaGridStatus();
+		carregaStatus();
+		
 	}
 
 	private void montaListaCampos() {
@@ -310,110 +312,190 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		
 	}
 	
-	private void montaGrid() {
+	private void montaGridStatus() {
 
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+		tabstatus.adicColuna( "" ); // Selecao
+		tabstatus.adicColuna( "Cod." ); // Codigo
+		tabstatus.adicColuna( "" ); // Imagem
+		tabstatus.adicColuna( "Status" ); // Descrição
 
-			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
-			return;
-		}
+		tabstatus.setTamColuna( 10, 0 );
 
-		StringBuffer sql = new StringBuffer();
-		StringBuffer sWhere = new StringBuffer();
-		StringBuffer sWhere2 = new StringBuffer();
-		StringBuilder sOrderBy = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		boolean or = false;
-		boolean order = false;
-		String sData = "";
+		tabstatus.setColunaInvisivel( 1 );
 
-		if ( "S".equals( cbCancelada.getVlrString() ) ) {
+		tabstatus.setTamColuna( 10, 2 );
+		tabstatus.setTamColuna( 100, 3 );
 
-			sWhere.append( ( or ? "OR" : "" ) + " SITOP='CA' " );
-			or = true;
-		}
-		if ( "S".equals( cbFinalizada.getVlrString() ) ) {
+		tabstatus.setRowHeight( 15 );
 
-			sWhere.append( ( or ? "OR" : "" ) + " SITOP='FN' " );
-			or = true;
-		}
-		if ( "S".equals( cbAtrasada.getVlrString() ) ) {
+		tabstatus.setColunaEditavel( 0, new Boolean( true ) );
 
-			sWhere.append( ( or ? "OR" : "" ) + " (SITOP='PE' AND DTFABROP < CAST( 'NOW' AS DATE )) " );
-			or = true;
-		}
-		if ( "S".equals( cbPendente.getVlrString() ) ) {
+	}
+	
+	private void carregaStatus() {
 
-			sWhere.append( ( or ? "OR" : "" ) + "  SITOP='PE' " );
-			or = true;
-		}
-		if ( "F".equals( rgFiltro.getVlrString() ) ) {
-			sData = "DTFABROP";
-		}
-		else if ( "E".equals( rgFiltro.getVlrString() ) ) {
-			sData = "DTEMITOP";
-		}
-		if ( "S".equals( cbPrincipal.getVlrString() ) && !"S".equals( cbRelacionada.getVlrString() ) ) {
+		Vector<Object> valores = StatusOP.getValores();
+		Vector<String> labels = StatusOP.getLabels();
+		Vector<ImageIcon> icones = new Vector<ImageIcon>();
 
-			sWhere2.append( " AND SEQOP=0" );
-		}
-		if ( "S".equals( cbRelacionada.getVlrString() ) ) {
+		Vector<Object> item = null;
 
-			sOrderBy.append( "AND SEQOP<>0 ORDER BY CODOP, SEQOP" );
-			order = true;
+		for ( int i = 0; i < valores.size(); i++ ) {
+
+			item = new Vector<Object>();
+
+			String valor = valores.elementAt( i ).toString();
+			String label = labels.elementAt( i );
+			ImageIcon icon = StatusOP.getImagem( valor, StatusOP.IMG_TAMANHO_P );
+
+			if ( StatusOP.OP_FINALIZADA.getValue().equals( valor ) ) {
+				item.addElement( new Boolean( false ) );
+			}
+			else {
+				item.addElement( new Boolean( true ) );
+			}
+
+			item.addElement( valor );
+			item.addElement( icon );
+			item.addElement( label );
+
+			tabstatus.adicLinha( item );
 
 		}
-		if ( "S".equals( cbPrincipal.getVlrString() ) && "S".equals( cbRelacionada.getVlrString() ) ) {
 
-			sOrderBy.append( order ? "" : "AND SEQOP<>0 ORDER BY CODOP, SEQOP" );
-		}
+	}
 
-		if ( "S".equals( cbBloqueada.getVlrString() ) ) {
-
-			sWhere.append( ( or ? "OR" : "" ) + " SITOP='BL' " );
-			or = true;
-		}
-
-		sql.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST,CODPROD,REFPROD,CODSECAO, " );
-		sql.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
-		sql.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
-		sql.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
-		sql.append( "CAST((TEMPOFIN*100/( CASE WHEN COALESCE(TEMPOTOT,0)=0 THEN 1 ELSE TEMPOTOT END  )) AS DECIMAL (15,2)) TEMPO, " );
-		sql.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
-		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " + sData + " BETWEEN ? AND ? " );
+	
+	private ResultSet execConsulta() {
+		ResultSet ret = null;
 		
-		sql.append( or ? "AND" : "" );
-		sql.append( sWhere.toString() );
-		sql.append( sWhere2.toString() );
-		
-		if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
-			
-			sql.append( " AND CODSECAO = ? " );
-			
-		}
-		
-		
-		sql.append( sOrderBy.toString() );
-		System.out.println( sql.toString() );
-
 		try {
 
-			ps = con.prepareStatement( sql.toString() );
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+	
+				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+				return null;
+			}
+	
+			StringBuffer sql = new StringBuffer();
+			StringBuffer sWhere = new StringBuffer();
+			StringBuffer sWhere2 = new StringBuffer();
+			StringBuilder sOrderBy = new StringBuilder();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			boolean or = false;
+			boolean order = false;
+			String sData = "";
+	
+		
+			sql.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST,CODPROD,REFPROD,CODSECAO, REFPROD, " );
+			sql.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
+			sql.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
+			sql.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
+			sql.append( "CAST((TEMPOFIN*100/( CASE WHEN COALESCE(TEMPOTOT,0)=0 THEN 1 ELSE TEMPOTOT END  )) AS DECIMAL (15,2)) TEMPO, " );
+			sql.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
 			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			if ( "F".equals( rgFiltro.getVlrString() ) ) {
+				sData = "DTFABROP";
+			}
+			else if ( "E".equals( rgFiltro.getVlrString() ) ) {
+				sData = "DTEMITOP";
+			}
+			
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " + sData + " BETWEEN ? AND ? " );
+			
+		
 			
 			if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
 				
-				ps.setInt( 5, txtCodSecao.getVlrInteger() );
+				sql.append( " AND CODSECAO = ? " );
 				
 			}
 			
-			rs = ps.executeQuery();
+			StringBuffer status = new StringBuffer( "" );
+	
+			boolean primeiro = true;
+			
+			for ( int i = 0; i < tabstatus.getNumLinhas(); i++ ) {
+	
+				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
+	
+					if ( primeiro ) {
+						sql.append( " and sitop in (" );
+					}
+					else {
+						sql.append( "," );
+					}
+	
+					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
+	
+					primeiro = false;
+				}
+	
+				if ( i == tabstatus.getNumLinhas() - 1 && !primeiro ) {
+					sql.append( " ) " );
+				}
+	
+			}
+			
+			
+			if ( "S".equals( cbAtrasadas.getVlrString() ) ) {
+	
+				sql.append( " and (SITOP='PE' AND DTFABROP < CAST( 'NOW' AS DATE )) " );
+				
+			}
+			
+			if (!( "S".equals( cbPrincipal.getVlrString() ) && "S".equals( cbRelacionada.getVlrString() )) ) {
+	
+				if ( "S".equals( cbRelacionada.getVlrString() ) ) {
+	
+					sql.append( "AND SEQOP<>0 " );			
+	
+				}
+				else {
+					sql.append( "AND SEQOP=0 " );
+				}
+		
+				
+			}
+			
+			sql.append( sOrderBy.toString() );
+			System.out.println( sql.toString() );
 
+	
+
+			ps = con.prepareStatement( sql.toString() );
+			
+			int iparam = 1;
+			
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
+				
+				ps.setString( iparam++, txtCodSecao.getVlrString() );
+				
+			}
+			
+			ret = ps.executeQuery();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	private void montaGrid() {
+
+		try {
+
+			ResultSet rs = execConsulta();
+			
 			tab.limpa();
 
 			boolean atrasado = false;
@@ -423,32 +505,32 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 				Date dtatual = Funcoes.getDataPura( new Date() );
 
 				atrasado = dtfab.before( dtatual );
-
-				if ( rs.getString( "SITOP" ).equals( "PE" ) ) {
-
-					if ( atrasado ) {
-						imgStatus = imgAtrasado;
+				
+				
+				
+				if(StatusOP.OP_PENDENTE.getValue().equals( rs.getString( "SITOP" ) )) { 
+				
+					if(atrasado) {
+						imgStatus_atraso = imgAtrasada;
 					}
 					else {
-						imgStatus = imgPendente;
+						imgStatus_atraso = imgBranco;
 					}
 				}
-				else if ( rs.getString( "SITOP" ).equals( "CA" ) ) {
-					imgStatus = imgCancelado;
+				else {
+					imgStatus_atraso = imgBranco;
 				}
-				else if ( rs.getString( "SITOP" ).equals( "FN" ) ) {
-					imgStatus = imgFinalizada;
-				}
-				else if ( rs.getString( "SITOP" ).equals( "BL" ) ) {
-					imgStatus = imgBloqueado;
-				}
+
+				imgStatus = StatusOP.getImagem( rs.getString( "SITOP" ), StatusOS.IMG_TAMANHO_P );
 
 				tab.adicLinha();
 				tab.setValor( imgStatus, i, ecolAcompanhamentos.SITOP.ordinal() );
+				tab.setValor( imgStatus_atraso, i, ecolAcompanhamentos.SITATRASO.ordinal() );
 				tab.setValor( rs.getDate( "DTEMITOP" ), i, ecolAcompanhamentos.DTEMITOP.ordinal() );
 				tab.setValor( rs.getDate( "DTFABROP" ), i, ecolAcompanhamentos.DTFABROP.ordinal() );
 				tab.setValor( rs.getInt( "CODOP" ), i, ecolAcompanhamentos.CODOP.ordinal() );
 				tab.setValor( rs.getInt( "SEQOP" ), i, ecolAcompanhamentos.SEQOP.ordinal() );
+				tab.setValor( rs.getString( "REFPROD" ), i, ecolAcompanhamentos.REFPROD.ordinal() );
 				tab.setValor( rs.getString( "DESCEST" ), i, ecolAcompanhamentos.DESCEST.ordinal() );
 				tab.setValor( rs.getBigDecimal( "QTDSUG" ), i, ecolAcompanhamentos.QTDSUG.ordinal() );
 				tab.setValor( rs.getBigDecimal( "QTDPREV" ), i, ecolAcompanhamentos.QTDPREV.ordinal() );
@@ -484,7 +566,17 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			}
 			else if ( e.getSource() == btImprimir ) {
 				
-				// Implementar
+				FPrinterJob dlGr = null;
+				HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+				hParam.put( "CODEMP", Aplicativo.iCodEmp );
+				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "PPOP" ) );
+				hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+				hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+
+				dlGr = new FPrinterJob( "layout/rel/REL_ACOMP_PROD_01.jasper", "Relatório de acompanhamento da produção", "", execConsulta(), hParam, this );
+
+				dlGr.setVisible( true );
 				
 			}
 			
