@@ -26,6 +26,7 @@ package org.freedom.modulos.fnc.library.swing.frame;
 
 import java.awt.Cursor;
 import java.awt.FileDialog;
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,10 +40,12 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
+import org.freedom.bmps.Icone;
 import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.business.component.CnabUtil;
 import org.freedom.modulos.fnc.business.component.CnabUtil.Receber;
@@ -52,6 +55,8 @@ import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegHeader;
 import org.freedom.modulos.fnc.business.component.CnabUtil.RegT400;
+import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec.EColRet;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
 
 public class FRetCnab extends FRetFBN {
@@ -59,10 +64,17 @@ public class FRetCnab extends FRetFBN {
 	private static final long serialVersionUID = 1l;
 
 	public final CnabUtil cnabutil = new CnabUtil();
+	
+	private final JButtonPad btCategorizar = new JButtonPad( Icone.novo( "btCategorizar.gif" ) );
 
 	public FRetCnab() {
 
 		super( FPrefereFBB.TP_CNAB );
+		
+		btCategorizar.addActionListener( this );
+		btCategorizar.setToolTipText( "Categorizar títulos" );
+		panelFuncoes.adic( btCategorizar, 5, 110, 30, 30 );
+		
 	}
 
 	/*
@@ -546,6 +558,105 @@ public class FRetCnab extends FRetFBN {
 		}
 
 		return chave;
+	}
+	
+	public void actionPerformed( ActionEvent e ) {
+
+		super.actionPerformed( e );
+		
+		if ( e.getSource() == btCategorizar ) {
+			categorizar();
+		}
+	}
+	
+	private void categorizar() {
+		
+		Integer codrec;
+		Integer nparcrec;
+		String codplan;
+		String codcc;
+		Integer anocc;
+		
+		int linha = 0;
+		
+		Object[] oRetorno = new Object[ EColRet.values().length ];		
+		StringBuilder sql = new StringBuilder();
+		
+		PreparedStatement ps = null;
+		
+		try {
+
+			// Montando SQL para atualização dos registros.
+			sql.append( "update fnitreceber set " );
+			sql.append( "codemppn=?, codfilialpn=?, codplan=?, codempcc=?, codfilialcc=?, codcc=?, anocc=? " );
+			sql.append( "where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
+		
+			// Criando dialog para entrada dos dados
+			
+			DLCategorizaRec dl = new DLCategorizaRec( this );			
+			dl.setConexao( con );			
+			dl.setVisible( true );
+			
+			// Carregando dados informados.
+			if ( dl.OK ) {
+				
+				oRetorno = dl.getValores();
+				
+			}
+			
+			// Iterando registros selecionados no grid para realização da atualização...
+			
+			
+			while(tab.getNumLinhas()>linha) {
+			
+				
+				if( (Boolean) tab.getValor( linha, EColTab.SEL.ordinal() ) ) {
+					
+					codrec = (Integer) tab.getValor( linha, EColTab.CODREC.ordinal() );
+					nparcrec = (Integer) tab.getValor( linha, EColTab.NRPARC.ordinal() );
+					
+					codplan = (String) oRetorno[DLCategorizaRec.EColRet.CODPLAN.ordinal()];
+					codcc = (String) oRetorno[DLCategorizaRec.EColRet.CODCC.ordinal()];
+					anocc = (Integer) oRetorno[DLCategorizaRec.EColRet.ANOCC.ordinal()];
+					
+					ps = con.prepareStatement( sql.toString() );
+					
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );					
+					ps.setString( 3, codplan );
+					
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "FNCC" ) );					
+					ps.setString( 6, codcc );
+					ps.setInt( 7, anocc );
+					
+					ps.setInt( 8, Aplicativo.iCodEmp );
+					ps.setInt( 9, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+					ps.setInt( 10, codrec );
+					ps.setInt( 11, nparcrec );
+					
+					// Aplicando alterações no banco de dados...
+					ps.executeUpdate();
+					
+					//Aplicando alterações no grid... 
+					tab.setValor( codplan, linha, EColTab.CODPLAN.ordinal() );
+					tab.setValor( codcc, linha, EColTab.CODCC.ordinal() );
+					
+					
+				}
+				
+				linha++;
+				
+			}
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }
