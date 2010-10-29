@@ -1529,12 +1529,13 @@ public class FSintegra extends FFilho implements ActionListener {
 				// REGISTRO 74 INVENTARIO
 
 				sql.append( "SELECT P.CODPROD,P.REFPROD, P.SALDO, P.VLRESTOQ, '1' CODPOSSE, F.CNPJFILIAL, F.INSCFILIAL, F.SIGLAUF " );
-				sql.append( "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, SGFILIAL F " );
+				sql.append( "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, SGFILIAL F, EQPRODUTO PD " );
 				sql.append( "WHERE P.SALDO > 0 " );
 				sql.append( "AND F.CODEMP=? AND F.CODFILIAL=? " );
+				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' " ); 
 
 				if ( vProd75.size() > 0 ) {
-					sql.append( " AND P.CODPROD IN ( " + Funcoes.vectorToString( vProd75, "," ) + ")" );
+//					sql.append( " AND P.CODPROD IN ( " + Funcoes.vectorToString( vProd75, "," ) + ")" );
 				}
 
 				sql.append( "ORDER BY " + ( sUsaRefProd.equals( "S" ) ? "P.REFPROD" : "p.CODPROD" ) );
@@ -1548,6 +1549,8 @@ public class FSintegra extends FFilho implements ActionListener {
 				ps.setDate( 4, Funcoes.dateToSQLDate( Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) ) );
 				ps.setInt( 5, Aplicativo.iCodEmp );
 				ps.setInt( 6, Aplicativo.iCodFilial );
+				ps.setInt( 7, Aplicativo.iCodEmp );
+				ps.setInt( 8, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 
 				rs = ps.executeQuery();
 				lbAnd.setText( "Gerando registro de inventário..." );
@@ -1611,6 +1614,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		String sSqlEntrada = "";
 		String sSqlSaida = "";
 		String sSqlConsumidor = "";
+		String sSqlInventario = "";
 		int iParam = 1;
 		int cont = 0;
 
@@ -1663,7 +1667,20 @@ public class FSintegra extends FFilho implements ActionListener {
 							+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "
 							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' ";
 
-				if ( !sSqlEntrada.equals( "" ) )
+				
+				if ( cbInventario.getVlrString().equals( "S" ) ) {
+					sSqlInventario = "SELECT P.CODPROD,P.REFPROD, p.descprod, COALESCE(CF.ALIQIPIFISC,0),COALESCE(CF.ALIQLFISC,0), PD.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC "
+								   + "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, LFITCLFISCAL CF, eqproduto pd "
+								   + "WHERE P.SALDO > 0 "
+								   + "and pd.codemp=? and pd.codfilial=? and pd.codprod=p.codprod AND PD.ATIVOPROD='S' "
+ 								   + "AND CF.CODFISC=Pd.CODFISC AND CF.CODEMP=Pd.CODEMPFC AND CF.CODFILIAL=Pd.CODFILIALFC "
+ 								   + "AND CF.GERALFISC='S'  ";
+
+				}	
+				
+
+				
+				if ( !sSqlEntrada.equals( "" ) ) 
 					sSql.append( sSqlEntrada );
 
 				if ( !sSqlSaida.equals( "" ) )
@@ -1672,7 +1689,13 @@ public class FSintegra extends FFilho implements ActionListener {
 				if ( !sSqlConsumidor.equals( "" ) )
 					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlConsumidor );
 
+				if ( !sSqlInventario.equals( "" ) )
+					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlInventario );
+
+				
+
 				sSql.append( " GROUP BY 1,2,3,4,5,6,7,8,9 " );
+				
 
 				System.out.println( "reg75:" + sSql.toString() );
 
@@ -1696,6 +1719,18 @@ public class FSintegra extends FFilho implements ActionListener {
 					ps.setInt( iParam++, iCodEmp );
 					ps.setInt( iParam++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 				}
+				if ( !sSqlInventario.equals( "" ) ) { 
+					 
+					ps.setInt( iParam++, iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+					ps.setString( iParam++, "P" );
+					ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+					ps.setInt( iParam++, iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+					
+				}
+				
+				
 				rs = ps.executeQuery();
 				lbAnd.setText( "Gerando Tabela de Produtos de entradas e saídas..." );
 
