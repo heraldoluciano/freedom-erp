@@ -82,7 +82,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private final JPanelPad panelFuncoes = new JPanelPad();
+	protected final JPanelPad panelFuncoes = new JPanelPad();
 
 	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -98,7 +98,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	protected final JButtonPad btEdita = new JButtonPad( Icone.novo( "btEditar.gif" ) );
+	protected final JButtonPad btEditar = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
@@ -189,14 +189,14 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
 		btImporta.addActionListener( this );
-		btEdita.addActionListener( this );
+		btEditar.addActionListener( this );
 		btBaixar.addActionListener( this );
 		btImporta.addKeyListener( this );
 		tab.addMouseListener( this );
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
-		btEdita.setToolTipText( "Editar" );
+		btEditar.setToolTipText( "Editar" );
 		btBaixar.setToolTipText( "Aplicar baixa" );
 	}
 
@@ -221,7 +221,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		panelFuncoes.setPreferredSize( new Dimension( 45, 50 ) );
 		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
-		panelFuncoes.adic( btEdita, 5, 75, 30, 30 );
+		panelFuncoes.adic( btEditar, 5, 75, 30, 30 );
 
 		lbStatus.setForeground( Color.BLUE );
 
@@ -787,7 +787,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		else if ( e.getSource() == btImporta ) {
 			execImportar();
 		}
-		else if ( e.getSource() == btEdita ) {
+		else if ( e.getSource() == btEditar ) {
 			edit();
 		}
 		else if ( e.getSource() == btBaixar ) {
