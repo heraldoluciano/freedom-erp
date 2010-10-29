@@ -4915,7 +4915,14 @@ public class CnabUtil extends FbnUtil {
 
 			try {
 
-				line.append( "1" );
+				if (getCodConvBanco().length()<7) {
+					// Convênios menores que 1.000.000
+					line.append( "1" ); // Tipo de registro 1	
+				} else {
+					// Convênios maiorer que 1.000.000
+					line.append( "7"); // Tipo de registro 7
+				}
+				
 
 				/*************************************************/
 				/**                                             **/
@@ -4930,19 +4937,33 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );//022 a 022 - Digito da agencia
 					line.append( format( getConta(), ETipo.$9, 8, 0 ) );//023 a 030 - Numero da conta corrente
 					line.append( format( getDigConta(), ETipo.X, 1, 0 ) );//031 a 031 - Digito da conta corrente
-					line.append( format( getCodConvBanco(), ETipo.X, 6, 0 ) );//032 a 037 - Convenio
-					line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
-					line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Posição 063 a 073 - Nosso numero
-					line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 074 a 074 - Digito verificador do nosso numero
-					line.append( "00" ); // Posição 075 a 076 - Numero da prestacao informar zeros
-					line.append( "00" ); // Posição 077 a 078 - Grupo de valor informar zeros
-					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 079 a 081 - Preencher com brancos
-					line.append( " " );// Posição 082 a 082 -Indicativo de mensagem Preencher com brancos
-					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 083 a 085 - Preencher com brancos
-					line.append( format( getVariacaoCarteira(), ETipo.X, 3, 0 ) ); // Posição 086 a 088 - Variacao da carteira
-					line.append( "0" ); // Posição 089 a 089 - Conta caução
-					line.append( "00000" ); // Posição 090 a 094 - Codigo de responsabilidade 
-					line.append( "0" ); // Posição 095 a 095 - Digito do codigo de responsabilidade
+					if (getCodConvBanco().length()<7) {
+						line.append( format( getCodConvBanco(), ETipo.X, 6, 0 ) );//032 a 037 - Convenio
+					} else {
+						line.append( format( getCodConvBanco(), ETipo.X, 7, 0 ) );//032 a 038 - Convenio
+					}
+					line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Convênio < 1.000.000 = Posição 38 a 62 - Nro de controle do participante (nosso numero)
+																			    // Convênio >= 1.000.000 = Posição 39 a 63	
+					if (getCodConvBanco().length()<7) {
+						// Convênio < 1.000.000
+						line.append( format( getIdentTitulo(), ETipo.X, 11, 0 ) ); // Convênio < 1.000.000 = Posição 063 a 073 - Nosso numero
+						line.append( format( getDigNossoNumero(), ETipo.$9, 1, 0 ) ); // Posição 074 a 074 - Digito verificador do nosso numero
+					} else {
+						// Convênio >= 1.000.000
+						line.append( format( getIdentTitulo(), ETipo.X, 17, 0 ) ); // Convênio >= 1.000.000 = Posição 064 a 080 - Nosso numero
+					}
+																				// Convênio >= 1.000.000 = Posição 064 a 074 - Nosso numero
+					line.append( "00" ); // Conv. < 100.000.00 = Posição 075 a 076 / Conv >= 1.000.000 = Posição 081 a 082 - Numero da prestacao informar zeros
+					line.append( "00" ); // Posição 077 a 078 / 083 a 084 - Grupo de valor informar zeros
+					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 079 a 081 / 085 a 087 - Preencher com brancos
+					line.append( " " );// Posição 082 a 082 / 088 a 088 -Indicativo de mensagem Preencher com brancos
+					line.append( StringFunctions.replicate( " ", 3 ) );// Posição 083 a 085 / 089 a 091 - Preencher com brancos
+					line.append( format( getVariacaoCarteira(), ETipo.X, 3, 0 ) ); // Posição 086 a 088 / 092 a 094 - Variacao da carteira
+					line.append( "0" ); // Posição 089 a 089 / 095 a 095 - Conta caução
+					if (getCodConvBanco().length()<7) {
+						line.append( "00000" ); // Posição 090 a 094 - Codigo de responsabilidade
+						line.append( "0" ); // Posição 095 a 095 - Digito do codigo de responsabilidade
+					} 
 					line.append( "000000" ); // Posição 096 a 101 - Numero do borderô
 					line.append( StringFunctions.replicate( " ", 5 ) );// Posição 102 a 106 - Tipo de cobrança Preencher com brancos
 					line.append( StringFunctions.strZero( getCodCarteira() + "", 2 ) ); // Posição 107 a 108 - Código da Carteira de cobranca

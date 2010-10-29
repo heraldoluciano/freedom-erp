@@ -273,12 +273,16 @@ public class FRemCnab extends FRemFBN {
 	
 			reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 	
-			reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+			if (reg.getCodConvBanco().length()<7) {
+				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+			} else {
+				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), false ), 17) );
+			}
 	
-			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()<7) ) {
 				reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
 			}
-			else {
+			else if ( ! Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
 				reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
 			}
 			
