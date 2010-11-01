@@ -30,8 +30,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +67,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
-public class FLanca extends FFilho implements ActionListener, ChangeListener {
+public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -160,6 +160,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 	public FLanca() {
 
 		super( false );
+		
 		setTitulo( "Lançamentos Financeiros" );
 		setAtribos( 50, 25, 767, 350 );
 
@@ -175,18 +176,19 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 		tpn.setTabLayoutPolicy( JTabbedPanePad.SCROLL_TAB_LAYOUT );
 		tpn.setPreferredSize( new Dimension( 600, 30 ) );
+		
 		pnCentro.add( tpn, BorderLayout.SOUTH );
 		pnCentro.add( spnTab, BorderLayout.CENTER );
 
 		pinLbPeriodo.adic( lbPeriodo, 0, 0, 51, 15 );
 		pinLbPeriodo.tiraBorda();
+		
 		pinLbSaldo.adic( lbPinSaldo, 0, 0, 46, 15 );
 		pinLbSaldo.tiraBorda();
 
 		pinCab.adic( pinLbPeriodo, 10, 2, 51, 15 );
 		pinCab.adic( pinPeriodo, 7, 10, 260, 44 );
-		pinCab.adic( pinLbSaldo, 270, 2, 46, 15 );
-		
+		pinCab.adic( pinLbSaldo, 270, 2, 46, 15 );		
 		pinCab.adic( pinSaldo, 270, 10, 400, 44 );
 
 		pinPeriodo.adic( txtDataini, 7, 10, 100, 20 );
@@ -198,11 +200,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		txtVlrSaldo.setEditable( false );
 		txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
 		txtVlrSaldo.setBackground( null );
-//		lbVlrSaldo.setBorder( null );
 		
 		txtVlrSaldoComposto.setEditable( false );
 		txtVlrSaldoComposto.setBackground( null );
-//		lbVlrSaldoComposto.setBorder( null );
+
 		txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );		
 		lbAtualSaldoVal.setForeground( new Color( 0, 140, 0 ) );
 
@@ -266,36 +267,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
 		tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
 		
+		tab.addMouseListener( this );
 		
-		tab.addMouseListener( new MouseAdapter() {
-
-			@ SuppressWarnings ( "unchecked" )
-			public void mouseClicked( MouseEvent mevt ) {
-
-				if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
-					editar();
-				}
-				else if ( mevt.getSource() == tab && mevt.getClickCount() == 1 ) {
-					
-					btAbreCheque.setEnabled( false );
-					
-					if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
-						
-						Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
-						
-						if(seqcheq!=null) {
-							Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
-							
-							if(seqcheque>0) {
-								btAbreCheque.setEnabled( true );
-							}
-						}
-					}
-					
-				}
-			}
-		} );
-
 		btSair.addActionListener( this );
 		btPrim.addActionListener( this );
 		btAnt.addActionListener( this );
@@ -307,9 +280,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 		btExec.addActionListener( this );
 		btCalcSaldo.addActionListener( this );
 		btAbreCheque.addActionListener( this );
+		
 		tpn.addChangeListener( this );
 
 		Calendar cPeriodo = Calendar.getInstance();
+		
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
@@ -854,5 +829,55 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener {
 
 		super.setConexao( cn );
 		montaTabs();
+	}
+
+	public void mouseClicked( MouseEvent mevt ) {
+
+		if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
+			editar();
+		}
+		else if ( mevt.getSource() == tab && mevt.getClickCount() == 1 ) {
+					
+			btAbreCheque.setEnabled( false );
+					
+			if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
+						
+				Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
+						
+				if(seqcheq!=null) {
+					Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
+							
+					if(seqcheque>0) {
+						btAbreCheque.setEnabled( true );
+					}
+				}
+			}
+					
+		}
+		
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
