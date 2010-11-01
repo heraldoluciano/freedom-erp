@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -196,7 +197,7 @@ public class FRInvPeps extends FRelatorio {
 		int linPag = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		double deCustoTot = 0;
+		BigDecimal bdCustoTot = new BigDecimal(0);
 		double deSldProd = 0;
 
 		try {
@@ -334,7 +335,9 @@ public class FRInvPeps extends FRelatorio {
 					imp.say( imp.pRow() + 0, 135, "|" );
 
 					deSldProd += rs.getDouble( "SLDPROD" );
-					deCustoTot += rs.getDouble( "CUSTOTOT" );
+					BigDecimal custo = rs.getBigDecimal( "CUSTOTOT" ); 
+//					bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin ) );
+					bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_FLOOR ) );
 
 				}
 
@@ -353,7 +356,7 @@ public class FRInvPeps extends FRelatorio {
 				imp.say( imp.pRow() + 0, 0, "| TOTAL" );
 				imp.say( imp.pRow() + 0, 95, "|" + Funcoes.adicEspacosEsquerda( Funcoes.arredDouble( deSldProd, 2 ) + "", 8 ) );// 19
 				imp.say( imp.pRow() + 0, 106, "|" ); // 18
-				imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, deCustoTot + "" ) );// 17
+				imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, bdCustoTot + "" ) );// 17
 				imp.say( imp.pRow() + 0, 135, "|" );
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
@@ -382,7 +385,7 @@ public class FRInvPeps extends FRelatorio {
 			imp = null;
 			ps = null;
 			rs = null;
-			deCustoTot = 0;
+			bdCustoTot = null;
 			deSldProd = 0;
 			linPag = 0;
 		}
