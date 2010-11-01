@@ -149,8 +149,12 @@ public class FRVendasItem extends FRelatorio {
 
 		vLabs3.addElement( "Código" );
 		vLabs3.addElement( "Descrição" );
+		vLabs3.addElement( "Quant." );
+		
 		vVals3.addElement( "C" );
 		vVals3.addElement( "D" );
+		vVals3.addElement( "QD" );
+		
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
 		rgOrdem.setVlrString( "D" );
 
@@ -319,10 +323,16 @@ public class FRVendasItem extends FRelatorio {
 				sOrdem = comref ? "P.REFPROD" : "P.CODPROD";
 				sOrdenado = "\nORDENADO POR " + ( comref ? "REFERENCIA" : "CODIGO" );
 			}
-			else {
+			else if ( sOrdem.equals( "D" ) ) {
 				sOrdem = "P.DESCPROD";
 				sOrdenado = "\nORDENADO POR DESCRICAO";
 			}
+			else if ( sOrdem.equals( "QD" ) ) {
+				sOrdem = " 5 desc ";
+				sOrdenado = "\nORDENADO POR QUANTIDADE";
+			}
+
+			
 
 			sCab2.append( sOrdenado );
 
