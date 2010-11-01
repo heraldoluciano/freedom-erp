@@ -220,10 +220,12 @@ public class FreedomFNC extends AplicativoPD {
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
 		addBotao( "btContaReceber.gif", "Contas a receber", "Manutenção de contas a receber", 300100000, FManutRec.class );
 		addBotao( "btLancamentoFin.gif", "Lançamentos financeiros", "Lançamentos", 400600000, FLanca.class );
-
+		addBotao( "btRemessaCNAB.png", "Remessa CNAB", "Remessa CNAB", 300302010, FRemCnab.class );
+		addBotao( "btRetornoCNAB.png", "Retorno CNAB", "Retorno CNAB", 300302020, FRetCnab.class );
+		
 		ajustaMenu();
 
-		nomemodulo = "Financeiro";
+		nomemodulo = "Financeiro"; 
 
 	}
 
