@@ -269,7 +269,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JButtonPad btFechaOrc = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButtonPad btExp = new JButtonPad( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiaOrcamento = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -429,7 +429,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrc.setToolTipText( "Imprime orçamento padrão" );
 		btOrcTst.setToolTipText( "Imprime orçamento assinado" );
 		btOrcTst2.setToolTipText( "Imprime contrato de locação" );
-		btExp.setToolTipText( "Copia orçamento." );
+		btCopiaOrcamento.setToolTipText( "Copia orçamento." );
 
 		// Desativa as os TextFields para que os usuários não fussem
 		txtVlrDescOrc.setAtivo( false );
@@ -461,7 +461,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrcTst.addActionListener( this );
 		btOrcTst2.addActionListener( this );
 
-		btExp.addActionListener( this );
+		btCopiaOrcamento.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
@@ -828,7 +828,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		JPanelPad navEast = new JPanelPad();
 		navEast.setPreferredSize( new Dimension( 230, 30 ) );
 		navEast.adic( lbStatus, 12, 3, 180, 20 );
-		navEast.adic( btExp, 200, 0, 28, 25 );
+		navEast.adic( btCopiaOrcamento, 200, 0, 28, 25 );
 		navEast.tiraBorda();
 		pnNavCab.add( navEast, BorderLayout.EAST );
 
@@ -1412,7 +1412,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	private void exportar() {
+	private void copiaOrcamento() {
 
 		DLCopiaOrc dl = null;
 
@@ -1438,15 +1438,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.setInt( 4, iVals[ 1 ] );
 			ps.setInt( 5, iVals[ 0 ] );
 			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					txtCodOrc.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 					lcCampos.carregaDados();
 				}
 			}
+			
 			rs.close();
 			ps.close();
 			con.commit();
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o orçamento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -2023,6 +2026,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dl.dispose();
 			atualizaLucratividade();
 		}
+		else if ( kevt.getSource() == txtCodPlanoPag ) {// Como este é o
+			// ultimo campo da
+			// aba de orçamento
+			// então abre a tab
+			// transportadora.
+			if ( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) {
+				tpnCab.setSelectedIndex( 1 );
+				tpnCab.doLayout();
+				txtCodTran.requestFocus();
+			}
+		}
 
 		super.keyPressed( kevt );
 	}
@@ -2092,8 +2106,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		}
-		else if ( evt.getSource() == btExp ) {
-			exportar();
+		else if ( evt.getSource() == btCopiaOrcamento ) {
+			copiaOrcamento();
 		}
 		super.actionPerformed( evt );
 	}
