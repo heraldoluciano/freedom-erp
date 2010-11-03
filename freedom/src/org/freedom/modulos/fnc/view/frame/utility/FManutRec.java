@@ -80,6 +80,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixa;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
@@ -139,7 +140,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pnTabManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinBotoesManut = new JPanelPad( 40, 130 );
+	private JPanelPad pinBotoesManut = new JPanelPad( 70, 70 );
 
 	private JPanelPad pinManut = new JPanelPad( 500, 155 );
 
@@ -264,6 +265,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JButtonPad btCarregaVenda = new JButtonPad( "Consulta venda", Icone.novo( "btSaida.gif" ) );
 
 	private JButtonPad btHistorico = new JButtonPad( Icone.novo( "btTelefone.png" ) );
+	
+	private JButtonPad btRenegRec = new JButtonPad( Icone.novo( "btRenegRec.png" ) );
 
 	private JButtonPad btBordero = new JButtonPad( Icone.novo( "clPriorAlta.gif" ) );
 
@@ -783,16 +786,19 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( new JLabelPad( "Data emissão " ), 633, 100, 100, 20 );
 		pinManut.adic( txtDtEmitManut, 633, 120, 100, 20 );
 
-		pinBotoesManut.adic( btCarregaBaixasMan, 3, 3, 30, 30 );
-		pinBotoesManut.adic( btBaixaManut, 3, 30, 30, 30 );
-		pinBotoesManut.adic( btEditManut, 3, 60, 30, 30 );
-		pinBotoesManut.adic( btNovoManut, 3, 90, 30, 30 );
-		pinBotoesManut.adic( btEstorno, 3, 120, 30, 30 );
-		pinBotoesManut.adic( btExcluirManut, 3, 150, 30, 30 );
-		pinBotoesManut.adic( btCancItem, 3, 180, 30, 30 );
-		pinBotoesManut.adic( btImpBol, 3, 210, 30, 30 );
-		pinBotoesManut.adic( btHistorico, 3, 240, 30, 30 );
-		pinBotoesManut.adic( btBordero, 3, 270, 30, 30 );
+		pinBotoesManut.adic( btCarregaBaixasMan, 3,   3, 30, 30 );
+		pinBotoesManut.adic( btBaixaManut, 		 3,  34, 30, 30 );
+		pinBotoesManut.adic( btEditManut, 		 3,  65, 30, 30 );
+		pinBotoesManut.adic( btNovoManut, 		 3,  96, 30, 30 );
+		pinBotoesManut.adic( btHistorico, 		 3, 127, 30, 30 );
+		pinBotoesManut.adic( btRenegRec, 		 3, 158, 30, 30 );
+		
+		pinBotoesManut.adic( btBordero, 		34,   3, 30, 30 );
+		pinBotoesManut.adic( btEstorno, 		34,  34, 30, 30 );
+		pinBotoesManut.adic( btExcluirManut, 	34,  65, 30, 30 );
+		pinBotoesManut.adic( btCancItem,		34,  96, 30, 30 );
+		pinBotoesManut.adic( btImpBol, 			34, 127, 30, 30 );
+		
 
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "St." ); // 1
@@ -880,6 +886,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btCarregaBaixasMan.addActionListener( this );
 		btHistorico.addActionListener( this );
 		btBordero.addActionListener( this );
+		btRenegRec.addActionListener( this );
 		tpn.addChangeListener( this );
 
 		tabManut.addMouseListener( new MouseAdapter() {
@@ -2501,6 +2508,59 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			e.printStackTrace();
 		}
 	}
+	
+	private void renegRec() {
+
+		try {
+
+			DLRenegRec renegociacao = new DLRenegRec();
+			List<DLRenegRec.GridRenegRec> gridRenegociacao = new ArrayList<DLRenegRec.GridRenegRec>();
+
+			ResultSet rs = getResultSetManut( true, true );
+			DLRenegRec.GridRenegRec grid = null;
+
+			while ( rs.next() ) {
+
+				grid = renegociacao.new GridRenegRec();
+				
+				grid.setStatus( rs.getString( "STATUSITREC" ) );
+				grid.setDataVencimento( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) );
+				grid.setCodigoReceber( rs.getInt( "CODREC" ) );
+				grid.setParcela( rs.getInt( "NPARCITREC" ) );
+				grid.setDocumentoLancamento( rs.getString( "DOCLANCAITREC" ) != null ? rs.getString( "DOCLANCAITREC" ) : ( rs.getString( "DOCREC" ) != null ? rs.getString( "DOCREC" ) + "/" + rs.getString( "NPARCITREC" ) : "" ) );
+				grid.setCodigoCliente( rs.getInt( "CODCLI" ) );
+				grid.setRazaoCliente( rs.getString( "RAZCLI" ) );
+				grid.setDocumentoVenda( rs.getString( "DOCVENDA" ) );
+				grid.setValorParcela( rs.getBigDecimal( "VLRPARCITREC" ) );
+				grid.setDataPagamento( Funcoes.sqlDateToDate( rs.getDate( "DTPAGOITREC" ) ) );
+				grid.setValorPago( rs.getBigDecimal( "VLRPAGOITREC" ) );
+				grid.setValorDesconto( rs.getBigDecimal( "VLRDESCITREC" ) );
+				grid.setValorJuros( rs.getBigDecimal( "VLRJUROSITREC" ) );
+				grid.setValorAReceber( rs.getBigDecimal( "VLRAPAGITREC" ) );
+				grid.setConta( rs.getString( "NUMCONTA" ) );
+				grid.setDescricaoConta( rs.getString( "DESCCONTA" ) );
+				grid.setPlanejamento( rs.getString( "CODPLAN" ) );
+				grid.setDescricaoPlanejamento( rs.getString( "DESCPLAN" ) );
+				grid.setBanco( rs.getString( "CODBANCO" ) );
+				grid.setNomeBanco( rs.getString( "NOMEBANCO" ) );
+				grid.setObservacao( rs.getString( "OBSITREC" ) );
+
+				gridRenegociacao.add( grid );
+			}
+
+			con.commit();
+
+			renegociacao.setConexao( con );
+			renegociacao.carregaGrid( gridRenegociacao );
+
+			renegociacao.setVisible( true );
+			renegociacao.dispose();
+			
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
 
 	public void setRec( int codigoRecebimento ) {
 
@@ -2569,6 +2629,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		else if ( evt.getSource() == btBordero ) {
 			abreBordero();
 		}
+		else if ( evt.getSource() == btRenegRec ) {
+			renegRec();
+		}
+
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
