@@ -69,8 +69,9 @@ public class SystemFunctions {
 		final String system = System.getProperty("os.name").toLowerCase();
 
 		if (system.indexOf("windows") > -1) {
-		
-			if (System.getProperty("os.name").indexOf("xp") >-1 ) {
+		    ret = OS_VERSION_WINDOWS_XP;
+		    
+/*			if (System.getProperty("os.name").indexOf("xp") >-1 ) {
 				ret = OS_VERSION_WINDOWS_XP; 
 			}
 			else if (System.getProperty("os.name").indexOf("vista") >-1 ) {
@@ -78,7 +79,7 @@ public class SystemFunctions {
 			}
 			else if (System.getProperty("os.name").indexOf("7") >-1 ) {
 				ret = OS_VERSION_WINDOWS_SEVEN; 
-			}
+			}*/
 		}
 
 		return ret;
