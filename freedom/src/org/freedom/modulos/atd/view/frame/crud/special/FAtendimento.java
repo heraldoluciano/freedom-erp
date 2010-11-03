@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Comentários sobre a classe...
+ *         Tela de controle de atendimentos.
  * 
  */
 
@@ -34,9 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
