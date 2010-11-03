@@ -2026,7 +2026,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dl.dispose();
 			atualizaLucratividade();
 		}
-		else if ( kevt.getSource() == txtCodPlanoPag ) {// Como este é o
+		else if ( kevt.getSource() == txtCodPlanoPag && kevt.getKeyCode() == KeyEvent.VK_ENTER ) {// Como este é o
 			// ultimo campo da
 			// aba de orçamento
 			// então abre a tab
