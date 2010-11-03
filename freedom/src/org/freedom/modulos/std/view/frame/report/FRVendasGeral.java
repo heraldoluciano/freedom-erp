@@ -442,12 +442,12 @@ public class FRVendasGeral extends FRelatorio {
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
-			imp.say( imp.pRow(), 100, "+Acressimo:" );
+			imp.say( imp.pRow(), 100, "+Acréscimo:" );
 			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalAcres ) );
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
-			imp.say( imp.pRow(), 100, "=Valor liquido:" );
+			imp.say( imp.pRow(), 100, "=Valor líquido:" );
 			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalLiq ) );
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
