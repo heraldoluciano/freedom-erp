@@ -336,7 +336,16 @@ public class FRemCnab extends FRemFBN {
 			}
 	
 			reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
-			reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" : dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
+			
+			String logradouro = dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim();
+			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ] ;
+			String bairro = dadosCliente[ DadosCliente.BAIRCLI.ordinal() ];
+			
+			String endereco_completo = logradouro + ( numero!=null ? ", " + numero : "" ) + ( bairro!=null ? " - " + bairro : "" ); 
+			
+			reg.setEndCli( endereco_completo ); 
+			
+//			reg.setEndCli( ( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" : dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
 	
 			// reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
 			reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
