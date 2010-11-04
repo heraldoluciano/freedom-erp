@@ -449,7 +449,14 @@ public class CnabUtil extends FbnUtil {
 						line.append( getDigAgencia() );// Posição 031 a 031 - Digito verificador da agencia
 						line.append( StringFunctions.strZero(getConta(),8 ));// Posição 032 a 039 - Numero da conta
 						line.append( getDigConta());// Posição 040 a 040 - Digito verificador da conta
-						line.append( StringFunctions.strZero( getCodConvBanco(), 6 ) );// Posição 027 a 046 - Código da Empresa
+						
+						if (getCodConvBanco().length()<7) {
+						
+							line.append( StringFunctions.strZero( getCodConvBanco(), 6 ) );// Posição 041 a 046 - Código da Empresa
+						}
+						else {
+							line.append( StringFunctions.strZero( "", 6 ) );// Posição 041 a 046 - Preencher com zeros
+						}
 						
 						
 					}
@@ -464,7 +471,17 @@ public class CnabUtil extends FbnUtil {
 					
 					if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
 						line.append( StringFunctions.strZero( getSequenciaArq()+"", 7 ) );// Posição 101 a 107 - Sequencial da remessa
-						line.append( StringFunctions.replicate( " ", 287 ) ); // Posição 108 a 394 - Espaço em branco
+						
+						if (getCodConvBanco().length()<7) {
+							line.append( StringFunctions.replicate( " ", 287 ) ); // Posição 108 a 394 - Espaço em branco
+						}
+						else {
+							line.append( StringFunctions.replicate( " ", 22 ) ); // Posição 108 a 130 - Espaço em branco
+							line.append( format( getCodConvBanco(), ETipo.X, 7, 0 ) ); // Posição 130 a 136 - Codigo do convenio lider 
+							line.append( StringFunctions.replicate( " ", 258 ) ); // Posição 136 a 394 - Espaço em branco
+							//xxx
+							
+						}
 					}
 					else {
 						line.append( StringFunctions.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branc
@@ -5049,7 +5066,8 @@ public class CnabUtil extends FbnUtil {
 				/*
 				 * 01-Dulicata; 02-Nota Promissoria; 03-Nota de seguro 04-Cobrança seriada 05-Recibo 10-Letras de câmbio 11-Nota de débito 12-Duplicata de serv. 99-Outros;
 				 */
-				line.append( format( "01", ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
+				line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
+//				line.append( format( "01", ETipo.$9, 2, 0 ) ); // Posição 148 a 149 - Espécie de Título (Implementada de forma fixa pois difere do código no padrão cnab 240
 
 				line.append( "N" ); // Posição 150 a 150 - Identificação (Sempre "N");
 
