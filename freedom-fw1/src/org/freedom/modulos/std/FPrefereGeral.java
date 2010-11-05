@@ -358,6 +358,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JLabelPad lbFinPagar = new JLabelPad();
 
 	private JLabelPad lbFinLibCred = new JLabelPad();
+	
+	private JLabelPad lbTPNossoNumero = new JLabelPad();
 
 	private JLabelPad lbFinDefinicoes = new JLabelPad();
 
@@ -368,6 +370,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JLabelPad lbPrcCont = new JLabelPad();
 
 	private JRadioGroup<String, String> rgTipoValidOrc = null;
+	
+	private JRadioGroup<String, String> rgTpNossoNumero = null;
 
 	private JRadioGroup<String, String> rgTipoPrecoCusto = null;
 
@@ -676,7 +680,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		super();
 
 		setTitulo("Preferências Gerais");
-		setAtribos(30, 40, 900, 580);
+		setAtribos(30, 40, 900, 590);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -1057,6 +1061,23 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsTpValidOrc1.addElement("N");
 		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
+		
+		Vector<String> vLabsTpNossoNumero = new Vector<String>();
+		Vector<String> vValsTpNossoNumero = new Vector<String>();
+		
+		vLabsTpNossoNumero.addElement("Documento");
+		vLabsTpNossoNumero.addElement("Cod.Receber");
+		vLabsTpNossoNumero.addElement("Sequencial único");
+		
+		vValsTpNossoNumero.addElement("D");
+		vValsTpNossoNumero.addElement("R");
+		vValsTpNossoNumero.addElement("S");
+		
+		rgTpNossoNumero = new JRadioGroup<String, String>(1, 3, vLabsTpNossoNumero, vValsTpNossoNumero);
+		rgTpNossoNumero.setVlrString("D");
+		
+		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
+		rgTipoValidOrc.setVlrString("D");
 
 		Vector<Integer> vValsTipo = new Vector<Integer>();
 		Vector<String> vLabsTipo = new Vector<String>();
@@ -1348,6 +1369,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgLibCred, 20, 325, 220, 55, "PrefCred", "", true);
 		adicDB(rgTipoCred, 243, 325, 235, 55, "TipoPrefCred", "", true);
 
+		lbTPNossoNumero.setBorder(BorderFactory.createTitledBorder("Tipo do nosso número (boletos/remessa)"));
+		adic(lbTPNossoNumero, 7, 395, 485, 70);
+
+		adicDB(rgTpNossoNumero, 20, 420, 452, 30, "tpnossonumero", "", true);			
+		
+		
 		// Contabil
 
 		setPainel(pinContabil);
