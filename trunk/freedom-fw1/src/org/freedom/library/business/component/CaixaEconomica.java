@@ -48,6 +48,12 @@ public class CaixaEconomica extends Banco {
 
 	private long fatvenc = 0;
 
+	private String tpnossonumero = "D";
+	
+	private long doc = 0;
+	
+	private long seq = 0;
+	
 	private long nparc = 0;
 
 	private long rec = 0;
@@ -56,7 +62,8 @@ public class CaixaEconomica extends Banco {
 
 	private String convenio = "";
 
-	public CaixaEconomica(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String conta, String carteira,
+	public CaixaEconomica(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, String agencia, String conta, String carteira,
 			String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -66,6 +73,9 @@ public class CaixaEconomica extends Banco {
 		setAgencia(agencia);
 		setCarteira(carteira);
 		setFatvenc(fatvenc);
+		setTpnossonumero(tpnossonumero);
+		setDoc(doc);
+		setSeq(seq);
 		setRec(rec);
 		setNparc(nparc);
 		setModalidade(modalidade);
@@ -223,11 +233,11 @@ public class CaixaEconomica extends Banco {
 		return null;
 	}
 
-	public String getNumCli(String modalidade, String convenio, Long rec, Long nparc) {
+	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		retorno.append(getNumCli(rec, nparc, 9));
+		retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 9));
 
 		return retorno.toString();
 	}
@@ -270,7 +280,7 @@ public class CaixaEconomica extends Banco {
 
 		String nn = "";
 
-		nn = strZero(geraNossoNumero(getModalidade(), getConvenio(), getRec(), getNparc()), 14);
+		nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc()), 14);
 
 		if (nn.length() > 14) {
 			nn = nn.substring(0, 14);
@@ -293,6 +303,30 @@ public class CaixaEconomica extends Banco {
 
 	public void setRec(long rec) {
 		this.rec = rec;
+	}
+
+	public String getTpnossonumero() {
+		return tpnossonumero;
+	}
+
+	public void setTpnossonumero(String tpnossonumero) {
+		this.tpnossonumero = tpnossonumero;
+	}
+
+	public long getDoc() {
+		return doc;
+	}
+
+	public void setDoc(long doc) {
+		this.doc = doc;
+	}
+
+	public long getSeq() {
+		return seq;
+	}
+
+	public void setSeq(long seq) {
+		this.seq = seq;
 	}
 
 	public String getModalidade() {
@@ -330,13 +364,17 @@ public class CaixaEconomica extends Banco {
 		return numero;
 	}
 
-	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String conta,
+	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, 
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, String agencia, String conta,
 			String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
 		setValorTitulo(vlrtitulo);
 		setCodcli(convenio);
 		setConvenio(convenio);
+		setTpnossonumero(tpnossonumero);
+		setDoc(doc);
+		setSeq(seq);
 		setAgencia(agencia);
 		setCarteira(carteira);
 		setFatvenc(fatvenc);
@@ -465,19 +503,22 @@ public class CaixaEconomica extends Banco {
 		return Banco.CAIXA_ECONOMICA;
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, true);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, final Long nparc) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, comdigito, false);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		retorno.append(getNumCli(modalidade, convenio, rec, nparc));
+		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
 		return retorno.toString();
 	}

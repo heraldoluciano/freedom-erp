@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 public class BancodoBrasil extends Banco {
 
-	public String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, final Long rec,
+	public String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, 
+			final String tpnossonumero, final Long doc, final Long seq, final Long rec,
 			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade) {
 
 		final StringBuffer barcode = new StringBuffer();
@@ -17,7 +18,7 @@ public class BancodoBrasil extends Banco {
 		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero(modalidade, 2);
-		final String bufNossoNumero = geraNossoNumero(bufModalidade, bufConvenio, rec, nparc, false);
+		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
 		final String bufAgencia = strZero(getCodSig(agencia)[0], 4);
 		final String bufConta = strZero(getCodSig(conta)[0], 8);
 		final String bufCarteira = strZero(carteira, 2);
@@ -144,15 +145,15 @@ public class BancodoBrasil extends Banco {
 		return retorno.toString();
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, true);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, comdigito, false);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
@@ -160,7 +161,7 @@ public class BancodoBrasil extends Banco {
 			retorno.append(convenio);
 		}
 
-		retorno.append(getNumCli(modalidade, convenio, rec, nparc));
+		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
 		if (comdigito && ( convenio.length() == 4 || convenio.length() == 6 )) {
 
@@ -202,21 +203,21 @@ public class BancodoBrasil extends Banco {
 		return retorno;
 	}
 
-	public String getNumCli(String modalidade, String convenio, Long rec, Long nparc) {
+	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
 		final StringBuffer retorno = new StringBuffer();
 
 		if ("21".equals(modalidade)) {
-			retorno.append(getNumCli(rec, nparc, 17));
+			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 17));
 		}
 		else if (convenio.length() <= 4) {
-			retorno.append(getNumCli(rec, nparc, 6));
+			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 6));
 		}
 		else if (convenio.length() == 6) {
-			retorno.append(getNumCli(rec, nparc, 5));
+			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 5));
 		}
 		else {
-			retorno.append(getNumCli(rec, nparc, 10));
+			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 10));
 		}
 
 		return retorno.toString();

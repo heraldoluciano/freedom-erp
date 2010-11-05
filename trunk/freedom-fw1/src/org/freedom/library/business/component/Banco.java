@@ -12,22 +12,26 @@ public abstract class Banco {
 
 	// private static String codBar = "";
 
-	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, final Long rec,
+	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, 
+			final String tpnossonumero, final Long doc, final Long seq, final Long rec,
 			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade);
 
 	public abstract String geraCodBar();
 
 	public abstract String geraLinhaDig(final String codbar, final Long fatvenc, final BigDecimal vlrtitulo);
 
-	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc);
+	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
+			final Long seq, final Long rec, final Long nparc);
 
-	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito);
+	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
+			final Long seq, final Long rec, final Long nparc, final boolean comdigito);
 
-	public abstract String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco);
+	public abstract String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, 
+			final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco);
 
 	public abstract String[] getCodSig(String codigo);
 
-	public abstract String getNumCli(String modalidade, String convenio, Long rec, Long nparc);
+	public abstract String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc);
 
 	public abstract String digVerif(final String codigo, final int modulo);
 
@@ -68,28 +72,46 @@ public abstract class Banco {
 		return retorno.toString();
 	}
 
-	public static String getNumCli(Long rec, Long nparc, int tam) {
+	public static Long geraNumcli(final String tpnossonumero, final Long doc, final Long seq, final Long rec ) {
+		Long numcli = null;
+		if ( "D".equals(tpnossonumero) ) {  // Documento 
+			numcli = doc;
+		} else if ( "R".equals(tpnossonumero) ) { // Código do receber
+			numcli = rec;
+		} else if ( "S".equals(tpnossonumero) ) { // Sequencial
+			numcli = seq;
+		}
+		return numcli;
+	}
+	
+	public static String getNumCli(String tpnossonumero, Long doc, Long seq, Long rec, Long nparc, int tam) {
 
 		final StringBuffer retorno = new StringBuffer();
-
-		if (rec == null) {
-			retorno.append(strZero("0", tam - 2));
+		final Long numcli = geraNumcli(tpnossonumero, doc, seq, rec);
+        int reduznparc = 2;
+        if ( "S".equals(tpnossonumero) ) {
+        	reduznparc = 0;
+        }
+        
+		if (numcli == null) {
+			retorno.append(strZero("0", tam - reduznparc));
 		}
-		else if (rec.toString().length() > tam - 2) {
+		else if (numcli.toString().length() > tam - reduznparc) {
 			// Remover caracteres a mais da esquerda para direita
-			retorno.append(rec.toString().substring(rec.toString().length() - ( tam - 2 )));
+			retorno.append(numcli.toString().substring(numcli.toString().length() - ( tam - reduznparc )));
 		}
 		else {
-			retorno.append(strZero(rec.toString(), tam - 2));
+			retorno.append(strZero(numcli.toString(), tam - reduznparc));
 		}
 
-		if (nparc == null) {
-			retorno.append("00");
+		if (reduznparc==2) {
+			if (nparc == null) {
+				retorno.append("00");
+			}
+			else {
+				retorno.append(strZero(nparc.toString(), reduznparc));
+			}
 		}
-		else {
-			retorno.append(strZero(nparc.toString(), 2));
-		}
-
 		return retorno.toString();
 	}
 

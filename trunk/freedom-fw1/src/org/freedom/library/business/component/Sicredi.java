@@ -34,6 +34,12 @@ public class Sicredi extends Banco {
 	private long nparc = 0;
 
 	private long rec = 0;
+	
+	private String tpnossonumero = "D";
+	
+	private long doc = 0;
+	
+	private long seq = 0;
 
 	private String modalidade = "";
 
@@ -252,11 +258,11 @@ public class Sicredi extends Banco {
 		return null;
 	}
 
-	public String getNumCli(String modalidade, String convenio, Long rec, Long nparc) {
+	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		retorno.append(getNumCli(rec, nparc, 9));
+		retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 9));
 
 		return retorno.toString();
 	}
@@ -297,7 +303,7 @@ public class Sicredi extends Banco {
 
 	public String getNossoNumero() {
 
-		String nn = strZero(geraNossoNumero(getModalidade(), getConvenio(), getRec(), getNparc()), 11);
+		String nn = strZero(geraNossoNumero(getTpnossonumero(), getModalidade(), getConvenio(), getDoc(), getSeq(), getRec(), getNparc()), 11);
 
 		// String nn = "11922200667";
 
@@ -306,6 +312,30 @@ public class Sicredi extends Banco {
 		}
 
 		return nn;
+	}
+
+	public String getTpnossonumero() {
+		return tpnossonumero;
+	}
+
+	public void setTpnossonumero(String tpnossonumero) {
+		this.tpnossonumero = tpnossonumero;
+	}
+
+	public long getDoc() {
+		return doc;
+	}
+
+	public void setDoc(long doc) {
+		this.doc = doc;
+	}
+
+	public long getSeq() {
+		return seq;
+	}
+
+	public void setSeq(long seq) {
+		this.seq = seq;
 	}
 
 	public long getNparc() {
@@ -361,7 +391,8 @@ public class Sicredi extends Banco {
 		return numero;
 	}
 
-	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String conta,
+	public String geraCodBar(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, String tpnossonumero, Long doc, Long seq, 
+			Long rec, Long nparc, String agencia, String conta,
 			String carteira, String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
@@ -371,7 +402,7 @@ public class Sicredi extends Banco {
 		setAgencia(agencia);
 		setCarteira(carteira);
 		setFatvenc(fatvenc);
-
+    
 		return getNumero() + String.valueOf(getMoeda()) + String.valueOf(getCampo4()) + String.valueOf(getCampo5()) + getCampoLivre();
 	}
 
@@ -487,19 +518,19 @@ public class Sicredi extends Banco {
 		return Banco.BRADESCO;
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, true);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito) {
-		return geraNossoNumero(modalidade, convenio, rec, nparc, comdigito, false);
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
+		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
 	}
 
-	public String geraNossoNumero(final String modalidade, final String convenio, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		retorno.append(getNumCli(modalidade, convenio, rec, nparc));
+		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
 		return retorno.toString();
 	}
