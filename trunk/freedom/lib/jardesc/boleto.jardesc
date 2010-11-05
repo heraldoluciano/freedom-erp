@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
 <jardesc>
-    <jar path="freedom/lib/boleto.jar"/>
+    <jar path="freedom/lib/lib_externo/boleto.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/boleto.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
