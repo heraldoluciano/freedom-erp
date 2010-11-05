@@ -153,8 +153,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Sel." );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Cód.cli." );
+		tab.adicColuna( "Doc." );
+		tab.adicColuna( "Seq.rec." );
 		tab.adicColuna( "Cód.rec." );
-		tab.adicColuna( "Doc" );
 		tab.adicColuna( "Nro.Parc." );
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Emissão" );
@@ -173,8 +174,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 20, EColTab.COL_SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.COL_RAZCLI.ordinal() );
 		tab.setTamColuna( 70, EColTab.COL_CODCLI.ordinal() );
-		tab.setTamColuna( 70, EColTab.COL_CODREC.ordinal() );
 		tab.setTamColuna( 80, EColTab.COL_DOCREC.ordinal() );
+		tab.setTamColuna( 80, EColTab.COL_SEQREC.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_CODREC.ordinal() );
 		tab.setTamColuna( 70, EColTab.COL_NRPARC.ordinal() );
 		tab.setTamColuna( 70, EColTab.COL_VLRAPAG.ordinal() );
 		tab.setTamColuna( 70, EColTab.COL_DTREC.ordinal() );
@@ -400,14 +402,15 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
 			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB, I.CONVCOB, " );
-			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB " );
-			sql.append( "FROM SGPREFERE6 P, SGFILIAL E, " );
+			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO " );
+			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
 			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
 			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
 			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND P1.CODEMP=E.CODEMP AND P1.CODFILIAL=? " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -416,6 +419,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
 			ps.setString( 5, txtCodBanco.getVlrString() );
 			ps.setString( 6, TIPO_FEBRABAN );
+		    ps.setInt( 7, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -473,7 +477,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.CONVCOB, rs.getString( EPrefs.CONVCOB.toString() ) );
 				prefs.put( EPrefs.ACEITE, rs.getString( EPrefs.ACEITE.toString() ) );
 				prefs.put( EPrefs.PADRAOCNAB, rs.getString( EPrefs.PADRAOCNAB.toString() ) );
-
+				prefs.put( EPrefs.TPNOSSONUMERO, rs.getString( EPrefs.TPNOSSONUMERO.toString() ) );
+				
 				retorno = true;
 			}
 			else {
@@ -514,7 +519,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sWhere.append( "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) " );
 		}
 
-		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
+		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.SEQNOSSONUMERO, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
 		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI " );
@@ -578,8 +583,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( new Boolean( true ), i, EColTab.COL_SEL.ordinal() );
 				tab.setValor( rs.getString( "RAZCLI" ), i, EColTab.COL_RAZCLI.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, EColTab.COL_CODCLI.ordinal() );
-				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, EColTab.COL_CODREC.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "DOCREC" ) ), i, EColTab.COL_DOCREC.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "SEQNOSSONUMERO" ) ), i, EColTab.COL_SEQREC.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, EColTab.COL_CODREC.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, EColTab.COL_NRPARC.ordinal() );
 				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, EColTab.COL_VLRAPAG.ordinal() );
 				tab.setValor( rs.getDate( "DTITREC" ), i, EColTab.COL_DTREC.ordinal() );
@@ -659,11 +665,18 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				hsRec.add( new FbnUtil().new StuffRec(
 				/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
 				/* 1 */(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
-				/* 2 */new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), (String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
-						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
-						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), (String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
-						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
-						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ) } ) );
+				/* 2 */new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
+						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
+						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), 
+						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), 
+						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
+						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
+						String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) )
+						} ) );
 			}
 		}
 		if ( retorno ) {
@@ -975,7 +988,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	enum EColTab {
 
-		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_CODREC, COL_DOCREC, COL_NRPARC, COL_VLRAPAG, COL_DTREC, COL_DTVENC, COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET, COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, COL_CNPJCLI, COL_CARTEIRA;
+		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_DOCREC, COL_SEQREC, COL_CODREC, COL_NRPARC, COL_VLRAPAG, COL_DTREC, COL_DTVENC, 
+		COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET, COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, COL_CNPJCLI, COL_CARTEIRA;
 	}
 
 }
