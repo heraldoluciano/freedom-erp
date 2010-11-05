@@ -831,6 +831,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		montaTabs();
 	}
 
+	@ SuppressWarnings ( "unchecked" )
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
@@ -842,7 +843,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					
 			if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
 						
-				Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
+				Vector<String> seqcheq = (Vector<String>) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
 						
 				if(seqcheq!=null) {
 					Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
