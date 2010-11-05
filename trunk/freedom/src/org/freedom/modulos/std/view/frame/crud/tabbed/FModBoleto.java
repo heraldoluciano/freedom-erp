@@ -30,8 +30,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -43,6 +45,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -55,6 +58,7 @@ import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
+import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FCartCob;
@@ -85,6 +89,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private final JPanelPad panelCamposBancos = new JPanelPad();
 
 	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldFK txtSeqNossoNumero = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -147,6 +153,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
 
 	private final ListaCampos lcItModBol = new ListaCampos( this );
+	
+	private JButtonPad btAjustaSeqNossoNumero = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	public FModBoleto() {
 
@@ -189,6 +197,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		ckAceite.setVlrString( "N" );
 
 		ckPreImp.setVlrString( "S" );
+		
+		btAjustaSeqNossoNumero.setToolTipText( "Ajustar sequencia." );
+		
+		btAjustaSeqNossoNumero.addActionListener( this );
 
 		setImprimir( true );
 
@@ -449,6 +461,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		adicCampo( txtCodConta, 7, 70, 80, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 90, 70, 283, 20, "DescConta", "Descrição da conta" );
 
+		txtSeqNossoNumero.setSoLeitura( true );
+		
+		adicCampo( txtSeqNossoNumero, 376, 70, 120, 20, "SeqNossoNumero", "Seq.(Nosso Número)", ListaCampos.DB_SI , false );
+
+		adic( btAjustaSeqNossoNumero, 499, 65, 26, 26 );
+		
 		adic( navBancos, 0, 105, 270, 30 );
 
 		setListaCampos( false, "ITMODBOLETO", "FN" );
@@ -457,6 +475,75 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 		pnGeral.add( pinCab );
 
+	}
+	
+	private void ajustaSeqNossoNumero() {
+		
+		StringBuilder sql = new StringBuilder();
+		JTextFieldPad txtReset = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+		int alterado = 0;
+		
+		PreparedStatement ps = null;
+		
+		try {
+
+			// Mondando sql para atualização da sequencia.
+			sql.append("update fnitmodboleto set seqnossonumero=? ");
+			sql.append("where codemp=? and codfilial=? and codmodbol=? and ");
+			sql.append("codempbo=? and codfilialbo=? and codbanco=? and ");
+			sql.append("codempcb=? and codfilialcb=? and codcartcob=? ");
+
+			// Gerando dialog para captura do novo numero
+			FFDialogo dlReset = new FFDialogo( this );
+			dlReset.setTitulo( "Ajustar Numeração" );
+			dlReset.setAtribos( 280, 140 );
+			dlReset.adic( new JLabelPad("Seq:"), 7, 5, 100, 20 );
+			dlReset.adic( txtReset, 7, 25, 100, 20 );
+			
+			dlReset.setVisible( true );
+			
+			if ( dlReset.OK ) {
+				
+				if(Funcoes.mensagemConfirma( this, "Confirma o ajuste na sequência?" ) == JOptionPane.YES_OPTION ) {
+				
+					// Setando parametros para query de atualização da sequencia.
+					ps = con.prepareStatement( sql.toString() );
+					
+					ps.setInt( 1, txtReset.getVlrInteger() );
+					
+					ps.setInt( 2, lcSeq.getCodEmp() );
+					ps.setInt( 3, lcSeq.getCodFilial() );				
+					ps.setInt( 4, txtCodModBol.getVlrInteger() );
+					
+					ps.setInt( 5, lcBanco.getCodEmp() );
+					ps.setInt( 6, lcBanco.getCodFilial() );
+					ps.setString( 7, txtCodBanco.getVlrString() );
+					
+					ps.setInt( 8, lcCartCob.getCodEmp() );
+					ps.setInt( 9, lcCartCob.getCodFilial() );
+					ps.setString( 10, txtCodCartCob.getVlrString() );
+					
+					alterado = ps.executeUpdate();
+				
+				}
+				
+				
+			}
+			
+			dlReset.dispose();
+			
+			if(alterado>0) {
+				Funcoes.mensagemInforma( this, "Sequencia alterada com sucesso!" );
+			}
+			
+			lcSeq.carregaDados();
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	@ Override
@@ -523,6 +610,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		else if ( evt.getSource() == btPrevimp ) {
 
 			imprimir( true );
+		}
+		else if(evt.getSource()==btAjustaSeqNossoNumero) {
+			ajustaSeqNossoNumero();
 		}
 
 		super.actionPerformed( evt );
