@@ -129,7 +129,7 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
 		sSQL.append( "C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC " );
+		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero " );
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
 		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO " );
 		sSQL.append( "WHERE " );
@@ -172,17 +172,49 @@ public class DLImpBoletoRec extends FDialogo {
 	}
 
 	private HashMap<String, Object> getParametros() {
-
+		
+		StringBuilder sql = new StringBuilder();
 		HashMap<String, Object> parametros = new HashMap<String, Object>();
-		Empresa empresa = new Empresa( con );
+		
+		try {
 
-		parametros.put( "CODEMP", Aplicativo.iCodEmp );
-		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
+			// Carregando parametros da empresa
 
-		if ( Aplicativo.empresa != null ) {
-			parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
-			parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+			Empresa empresa = new Empresa( con );
+	
+			parametros.put( "CODEMP", Aplicativo.iCodEmp );
+			parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			parametros.put( "IMPDOC", txtImpInst.getVlrString() );
+	
+			if ( Aplicativo.empresa != null ) {
+				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+			}
+
+			// Carregando parametros preferênciais
+			
+			sql.append( "SELECT P.TPNOSSONUMERO FROM SGPREFERE1 P " );
+			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				
+				parametros.put( "TPNOSSONUMERO", rs.getString( "TPNOSSONUMERO" ) );
+			
+			}
+			
+			rs.close();
+			ps.close();			
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return parametros;
