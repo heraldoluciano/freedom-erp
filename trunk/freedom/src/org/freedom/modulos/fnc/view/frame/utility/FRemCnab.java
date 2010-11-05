@@ -271,12 +271,17 @@ public class FRemCnab extends FRemFBN {
 			
 			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 	
-			reg.setIdentTitEmp( Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
+			reg.setIdentTitEmp( Banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (long) rec.getDocrec(), (long) rec.getSeqrec(), 
+					(long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 	
 			if (reg.getCodConvBanco().length()<7) {
-				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
+				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
+						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
+						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ), 11 ) );
 			} else {
-				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(), Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), false ), 17) );
+				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
+						Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ) ,
+						Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), false ), 17) );
 			}
 	
 			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()<7) ) {
@@ -294,7 +299,9 @@ public class FRemCnab extends FRemFBN {
 	
 			reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 	
-			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
+			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), 
+					(String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+					Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 	
 			reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 	
@@ -392,13 +399,17 @@ public class FRemCnab extends FRemFBN {
 
 		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 		
-		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ) );
+		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
+				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ) );
 		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
-		reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
+		reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
+				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
+				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
 		reg.setAgenciaCob( null );
@@ -420,7 +431,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		reg.setIdentTitEmp( "0" + Banco.getNumCli( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) + "0" );
+		reg.setIdentTitEmp( "0" + Banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ) , (long) rec.getDocrec(), (long) rec.getSeqrec(), 
+				(long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) + "0" );
 		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
 		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );
