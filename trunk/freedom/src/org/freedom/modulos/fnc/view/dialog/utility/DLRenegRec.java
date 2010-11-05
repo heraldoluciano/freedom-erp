@@ -59,7 +59,7 @@ public class DLRenegRec extends FDialogo {
 
 	private JTablePad tabReceber = new JTablePad();
 
-	private JButtonPad btGerarBordero = new JButtonPad( "Gerar Bordero", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btGerarBordero = new JButtonPad( "Gerar negociação", Icone.novo( "btExecuta.gif" ) );
 
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
