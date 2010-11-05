@@ -931,6 +931,7 @@ public class FRBoleto extends FRelatorio {
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
+		parametros.put( "TPNOSSONUMERO", tpnossonumero );
 
 		if ( Aplicativo.empresa != null ) {
 			parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
