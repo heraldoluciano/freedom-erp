@@ -7,7 +7,7 @@ public class FbnUtil {
 	}
 
 	public enum EColrec {
-		CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRAPAG, PESSOACLI, CPFCLI, CNPJCLI, CODMOVIMENTO, DOCREC, DTREC, NRPARCPAG
+		CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRAPAG, PESSOACLI, CPFCLI, CNPJCLI, CODMOVIMENTO, DOCREC, DTREC, NRPARCPAG, SEQREC
 	}
 
 	public enum EParcela {
@@ -15,7 +15,9 @@ public class FbnUtil {
 	}
 
 	public enum EPrefs {
-		CODBANCO, NOMEBANCO, CODCONV, NOMEEMP, NOMEEMPCNAB, VERLAYOUT, IDENTSERV, CONTACOMPR, IDENTAMBCLI, IDENTAMBBCO, NROSEQ, AGENCIA, DIGAGENCIA, NUMCONTA, DIGCONTA, DIGAGCONTA, CNPFEMP, FORCADTIT, TIPODOC, IDENTEMITBOL, IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, MDECOB, CONVCOB, ACEITE, PADRAOCNAB;
+		CODBANCO, NOMEBANCO, CODCONV, NOMEEMP, NOMEEMPCNAB, VERLAYOUT, IDENTSERV, CONTACOMPR, IDENTAMBCLI, IDENTAMBBCO, NROSEQ, AGENCIA, 
+		DIGAGENCIA, NUMCONTA, DIGCONTA, DIGAGCONTA, CNPFEMP, FORCADTIT, TIPODOC, IDENTEMITBOL, IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, 
+		CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, MDECOB, CONVCOB, ACEITE, PADRAOCNAB, TPNOSSONUMERO;
 	}
 
 	public enum ETipo {
@@ -69,6 +71,8 @@ public class FbnUtil {
 
 		private Integer docrec = null;
 
+		private Integer seqrec = null;
+		
 		private String chaveComp = null;
 
 		public StuffRec( Integer codRec, Integer nParcItRec, String[] args ) {
@@ -80,6 +84,9 @@ public class FbnUtil {
 			this.stfArgs = args;
 			if ( args.length > EColrec.DOCREC.ordinal() ) {
 				docrec = new Integer( args[ EColrec.DOCREC.ordinal() ] );
+			}
+			if ( args.length > EColrec.SEQREC.ordinal() ) {
+				seqrec = new Integer( args[ EColrec.SEQREC.ordinal() ] );
 			}
 		}
 
@@ -96,6 +103,18 @@ public class FbnUtil {
 		public Integer getDocrec() {
 
 			return this.docrec;
+		}
+
+		
+		public Integer getSeqrec() {
+		
+			return seqrec;
+		}
+
+		
+		public void setSeqrec( Integer seqrec ) {
+		
+			this.seqrec = seqrec;
 		}
 
 		public Integer getNParcitrec() {
