@@ -36,6 +36,9 @@
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TPNOSSONUMERO" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["D"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
 B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
@@ -43,7 +46,8 @@ MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMIT
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, '' VARIACAOCARTCOB 
+CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, '' VARIACAOCARTCOB,
+ITR.SEQNOSSONUMERO, ITR.CODREC  
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
 FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
 WHERE
@@ -105,6 +109,8 @@ AND R.CODEMP=3 AND R.CODFILIAL=1 AND R.CODREC = 116 AND ITR.nparcitrec = 1]]></q
 	<field name="CONVCOB" class="java.lang.String"/>
 	<field name="DESCPONT" class="java.lang.String"/>
 	<field name="VARIACAOCARTCOB" class="java.lang.String"/>
+	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
+	<field name="CODREC" class="java.lang.Integer"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -116,7 +122,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long($F{FATVENC}.longValue()), $F{VLRPARCITREC},  $F{CONVCOB}, new Long($F{DOCREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long($F{FATVENC}.longValue()), $F{VLRPARCITREC},  $F{CONVCOB}, $P{TPNOSSONUMERO} , new Long($F{DOCREC}.longValue()) , new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Page" calculation="Nothing">
@@ -126,7 +132,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{NPARCITREC}.longValue()), true, true )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $P{TPNOSSONUMERO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), true, true )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraLinhaDig( $V{CODBAR}, new Long($F{FATVENC}.longValue()), $F{VLRPARCITREC} )]]></variableExpression>
@@ -141,7 +147,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 :$V{LINHADIG}]]></variableExpression>
 	</variable>
 	<variable name="DOCUMENTO" class="java.lang.String" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{NPARCITREC}.longValue()) )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()) )]]></variableExpression>
 	</variable>
 	<variable name="BOLETO" class="java.lang.Object" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></variableExpression>
