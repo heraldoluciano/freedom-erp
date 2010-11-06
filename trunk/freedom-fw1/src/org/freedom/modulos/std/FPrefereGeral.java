@@ -386,10 +386,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, String> rgCodBar = null;
 
 	private JRadioGroup<String, String> rgTipoCred = null;
-
+	
 	private JComboBoxPad cbSisContabil = null;
 
 	private JComboBoxPad cbTamDescProd = null;
+
+	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos", "S", "N");
 
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad("Usa referência.", "S", "N");
 
@@ -1076,6 +1078,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgTpNossoNumero = new JRadioGroup<String, String>(1, 3, vLabsTpNossoNumero, vValsTpNossoNumero);
 		rgTpNossoNumero.setVlrString("D");
 		
+		cbImpDocBol.setVlrString("N");
+		
 		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
 
@@ -1357,6 +1361,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbGeraPagEmis, 510, 355, 350, 20, "GeraPagEmis", "", true);
 		adicDB(cbGeraRecEmis, 510, 375, 350, 20, "GeraRecEmis", "", true);
+		adicDB(cbImpDocBol, 510, 395, 350, 20, "ImpDocBol", "", true);			
+
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
 		adic(lbFinPagar, 10, 245, 485, 50);
@@ -1373,7 +1379,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(lbTPNossoNumero, 7, 395, 485, 70);
 
 		adicDB(rgTpNossoNumero, 20, 420, 452, 30, "tpnossonumero", "", true);			
-		
 		
 		// Contabil
 
