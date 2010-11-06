@@ -39,6 +39,9 @@
 	<parameter name="TPNOSSONUMERO" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["D"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IMPDOCBOL" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
 B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
@@ -152,6 +155,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 	<variable name="BOLETO" class="java.lang.Object" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></variableExpression>
 		<initialValueExpression><![CDATA[new org.freedom.library.business.component.BancodoBrasil()]]></initialValueExpression>
+	</variable>
+	<variable name="DOCUMENTOIMP" class="java.lang.String" resetType="Page" calculation="Nothing">
+		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):$V{DOCUMENTO}]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -1565,7 +1571,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTO},10)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTOIMP},10)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
