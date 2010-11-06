@@ -789,7 +789,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTO},10)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTOIMP},10)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
