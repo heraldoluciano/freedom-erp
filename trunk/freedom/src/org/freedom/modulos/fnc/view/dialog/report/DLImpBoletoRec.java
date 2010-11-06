@@ -193,7 +193,7 @@ public class DLImpBoletoRec extends FDialogo {
 
 			// Carregando parametros preferênciais
 			
-			sql.append( "SELECT P.TPNOSSONUMERO FROM SGPREFERE1 P " );
+			sql.append( "SELECT COALESCE(P.TPNOSSONUMERO,'D') TPNOSSONUMERO, COALESCE(P.IMPDOCBOL,'N') IMPDOCBOL FROM SGPREFERE1 P " );
 			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 
 			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
@@ -206,6 +206,7 @@ public class DLImpBoletoRec extends FDialogo {
 			if ( rs.next() ) {
 				
 				parametros.put( "TPNOSSONUMERO", rs.getString( "TPNOSSONUMERO" ) );
+				parametros.put( "IMPDOCBOL", rs.getString( "IMPDOCBOL" ) );
 			
 			}
 			
