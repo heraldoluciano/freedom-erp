@@ -791,7 +791,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btEditManut, 		 3,  65, 30, 30 );
 		pinBotoesManut.adic( btNovoManut, 		 3,  96, 30, 30 );
 		pinBotoesManut.adic( btHistorico, 		 3, 127, 30, 30 );
-		pinBotoesManut.adic( btRenegRec, 		 3, 158, 30, 30 );
+//		pinBotoesManut.adic( btRenegRec, 		 3, 158, 30, 30 );
 		
 		pinBotoesManut.adic( btBordero, 		34,   3, 30, 30 );
 		pinBotoesManut.adic( btEstorno, 		34,  34, 30, 30 );
