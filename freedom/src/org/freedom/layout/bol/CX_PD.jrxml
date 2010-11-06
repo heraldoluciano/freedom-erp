@@ -39,6 +39,9 @@
 	<parameter name="TPNOSSONUMERO" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["D"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IMPDOCBOL" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
 B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
@@ -155,6 +158,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 	</variable>
 	<variable name="SIGLACARTEIRA" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getSiglaCarteiraBanco()]]></variableExpression>
+	</variable>
+	<variable name="DOCUMENTOIMP" class="java.lang.String" resetType="Page" calculation="Nothing">
+		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):String.valueOf(new Integer($V{DOCUMENTO}))]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -1317,7 +1323,7 @@ Autenticação mecânica]]></text>
 					</textElement>
 				<text><![CDATA[Nº do Documento:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="93"
 						y="153"
@@ -1328,7 +1334,7 @@ Autenticação mecânica]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[new Integer($V{DOCUMENTO})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
