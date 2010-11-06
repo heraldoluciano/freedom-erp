@@ -405,5 +405,9 @@ grant select, delete, insert, update ON ppop to "ADM";
 grant select, delete, insert, update ON ppopitorc to "ADM";
 grant select, delete, insert, update ON ppprocessaoptmp to "ADM";
 
+grant select, delete, insert, update ON fnrenegrec to "ADM";
+grant select, delete, insert, update ON fnitrenegrec to "ADM";
+GRANT EXECUTE ON PROCEDURE fngeraseqnossonumero TO "ADM";
+
 
 COMMIT WORK;
