@@ -165,6 +165,8 @@ public class FRBoleto extends FRelatorio {
 	private boolean bAltParcela = false;
 	
 	private String tpnossonumero = "D";
+	
+	private String impdocbol = "N";
 
 	private JTablePad tbBoletos = new JTablePad();
 
@@ -789,7 +791,7 @@ public class FRBoleto extends FRelatorio {
 
 		try {
 
-			String sql = "SELECT TPNOSSONUMERO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			String sql = "SELECT TPNOSSONUMERO, IMPDOCBOL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 
 			PreparedStatement ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -799,6 +801,7 @@ public class FRBoleto extends FRelatorio {
 
 			if ( rs.next() ) {
 				tpnossonumero = rs.getString( "TPNOSSONUMERO" );
+				impdocbol = rs.getString( "IMPDOCBOL" );
 			}
 
 			rs.close();
@@ -811,6 +814,9 @@ public class FRBoleto extends FRelatorio {
 		
 		if ( tpnossonumero == null ) {
 			tpnossonumero = "D";
+		}
+		if ( impdocbol == null ) {
+			impdocbol = "N";
 		}
 	}
 	
@@ -932,6 +938,7 @@ public class FRBoleto extends FRelatorio {
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
 		parametros.put( "TPNOSSONUMERO", tpnossonumero );
+		parametros.put( "IMPDOCBOL", impdocbol );
 
 		if ( Aplicativo.empresa != null ) {
 			parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
