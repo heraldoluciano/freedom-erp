@@ -36,6 +36,9 @@
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TPNOSSONUMERO" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["D"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
 B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB,
@@ -43,7 +46,8 @@ MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMIT
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC
+CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, 
+C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, ITR.SEQNOSSONUMERO 
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
 FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO
 WHERE
@@ -64,13 +68,13 @@ AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB
 
 	<field name="DVCONVCOB" class="java.lang.String"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
-	<field name="NPARCITREC" class="java.lang.Long"/>
+	<field name="NPARCITREC" class="java.lang.Integer"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
 	<field name="PREIMPMODBOL" class="java.lang.String"/>
 	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
 	<field name="VLRMULTA" class="java.math.BigDecimal"/>
-	<field name="DOCREC" class="java.lang.Long"/>
+	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="CODBANCO" class="java.lang.String"/>
 	<field name="DVBANCO" class="java.lang.String"/>
 	<field name="LOGOBANCO01" class="java.io.InputStream"/>
@@ -86,14 +90,14 @@ AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB
 	<field name="CPFCLI" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="ENDCLI" class="java.lang.String"/>
-	<field name="NUMCLI" class="java.lang.Long"/>
+	<field name="NUMCLI" class="java.lang.Integer"/>
 	<field name="COMPLCLI" class="java.lang.String"/>
 	<field name="CEPCLI" class="java.lang.String"/>
 	<field name="BAIRCLI" class="java.lang.String"/>
 	<field name="CIDCLI" class="java.lang.String"/>
 	<field name="UFCLI" class="java.lang.String"/>
 	<field name="ENDCOB" class="java.lang.String"/>
-	<field name="NUMCOB" class="java.lang.Long"/>
+	<field name="NUMCOB" class="java.lang.Integer"/>
 	<field name="COMPLCOB" class="java.lang.String"/>
 	<field name="CEPCOB" class="java.lang.String"/>
 	<field name="BAIRCOB" class="java.lang.String"/>
@@ -101,7 +105,7 @@ AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB
 	<field name="UFCOB" class="java.lang.String"/>
 	<field name="CODMOEDA" class="java.lang.String"/>
 	<field name="PESSOACLI" class="java.lang.String"/>
-	<field name="FATVENC" class="java.lang.Long"/>
+	<field name="FATVENC" class="java.lang.Integer"/>
 	<field name="CODFBNMOEDA" class="java.lang.String"/>
 	<field name="AGENCIACONTA" class="java.lang.String"/>
 	<field name="NUMCONTA" class="java.lang.String"/>
@@ -112,7 +116,8 @@ AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB
 	<field name="INSCCLI" class="java.lang.String"/>
 	<field name="OBS" class="java.lang.String"/>
 	<field name="VARIACAOCARTCOB" class="java.lang.String"/>
-	<field name="CODREC" class="java.lang.Long"/>
+	<field name="CODREC" class="java.lang.Integer"/>
+	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -137,15 +142,15 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNossoNumeroFormatted()]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraLinhaDig( $V{CODBAR}, new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC} )]]></variableExpression>
 		<initialValueExpression><![CDATA["012345678901234567890123456789012345678901234567"]]></initialValueExpression>
 	</variable>
 	<variable name="DOCUMENTO" class="java.lang.String" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})) )]]></variableExpression>
 	</variable>
 	<variable name="BOLETO" class="java.lang.Object" resetType="Page" calculation="Nothing">
-		<variableExpression><![CDATA[new org.freedom.library.business.component.Bradesco( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC},  $F{CONVCOB}, $F{CODREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
-		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Bradesco( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC},  $F{CONVCOB}, $F{CODREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></initialValueExpression>
+		<variableExpression><![CDATA[new org.freedom.library.business.component.Bradesco( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC}, $P{TPNOSSONUMERO}, $F{CONVCOB}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Bradesco( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC}, $P{TPNOSSONUMERO}, $F{CONVCOB}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></initialValueExpression>
 	</variable>
 	<variable name="LINHADIGEXT" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[$V{LINHADIG}.length()>=47
@@ -997,7 +1002,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : ((Long) $F{NUMCLI}) + "" )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : String.valueOf($F{NUMCLI}) )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2067,7 +2072,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : ((Long) $F{NUMCLI}) + "" )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : String.valueOf($F{NUMCLI}) )]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -2756,6 +2761,24 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 						key="line-80"/>
 					<graphicElement stretchType="NoStretch" pen="Dotted"/>
 				</line>
+				<frame>					<reportElement
+						x="591"
+						y="118"
+						width="0"
+						height="0"
+						key="frame-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+				</frame>				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="113"
+						y="399"
+						width="0"
+						height="0"
+						key="image-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[]]></imageExpression>
+				</image>
 			</band>
 		</detail>
 		<columnFooter>
