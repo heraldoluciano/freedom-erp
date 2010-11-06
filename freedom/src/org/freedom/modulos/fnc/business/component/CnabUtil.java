@@ -1178,6 +1178,8 @@ public class CnabUtil extends FbnUtil {
 		private Date dtJuros;
 
 		private BigDecimal vlrJurosTaxa;
+		
+		//private BigDecimal vlrJuros;
 
 		private int codDesc;
 
@@ -1657,6 +1659,18 @@ public class CnabUtil extends FbnUtil {
 
 			this.vlrJurosTaxa = vlrJurosTaxa;
 		}
+
+/*		public BigDecimal getVlrJuros() {
+
+			return vlrJuros;
+		}
+
+		public void setVlrJuros( final BigDecimal vlrJuros ) {
+
+			this.vlrJuros = vlrJuros;
+		} */
+		
+		
 
 		public BigDecimal getVlrpercConced() {
 
@@ -4198,6 +4212,26 @@ public class CnabUtil extends FbnUtil {
 			return codProtesto;
 		}
 
+		public BigDecimal calcVlrJuros(int codjur, BigDecimal vlrapagar, BigDecimal perc) {
+			/**
+			 * Código do juros de mora.<br>
+			 * 1 - Valor por dia.<br>
+			 * 2 - Taxa mensal.<br>
+			 * 3 - Isento.<br>
+			 */
+			BigDecimal retorno = new BigDecimal(0);
+			if (vlrapagar!=null && perc!=null && 
+					perc.doubleValue()>0 && vlrapagar.doubleValue()>0 && 
+					(codjur==1 || codjur==2) ) {
+				if (codjur==1) {
+				    retorno = vlrapagar.multiply( perc ).divide( new BigDecimal(100) );
+				} else if (codjur==2) {
+				    retorno = vlrapagar.multiply( perc ).divide( new BigDecimal(100) ).divide( new BigDecimal(30) );
+				}
+			}
+			return retorno;
+		}
+		
 		/**
 		 * Código para protesto.<br>
 		 * 1 - Dias corridos.<br>
@@ -5087,7 +5121,7 @@ public class CnabUtil extends FbnUtil {
 				}
 
 				if ( 1 == getCodJuros() ) { // Se Juros/Mora diária
-					line.append( format( getVlrJurosTaxa(), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
+					line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
 				}
 				else {
 					line.append( StringFunctions.replicate( "0", 13 ) ); // Posição 161 a 173 - (Se não for do tipo mora diária) Mora por dia de atraso
