@@ -49,6 +49,9 @@ public class Bradesco extends Banco {
 		super();
 	}
 
+	//Bradesco(String, String, String, Long, BigDecimal, String, String, 
+	//	Long, Long, String, String, String, String
+	
 	public Bradesco(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String tpnossonumero, String convenio,
 			Long doc, Long seq, Long rec, Long nparc, String agencia, String contap, String carteira,
 			String modalidade) {
