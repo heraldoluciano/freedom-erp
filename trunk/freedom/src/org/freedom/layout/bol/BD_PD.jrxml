@@ -39,6 +39,9 @@
 	<parameter name="TPNOSSONUMERO" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["D"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IMPDOCBOL" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
 B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB,
@@ -166,6 +169,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 	</variable>
 	<variable name="CARTNOSSONUMERO" class="java.lang.String" resetType="Page" calculation="Nothing">
 		<variableExpression><![CDATA[$V{SIGLACARTEIRA} + "/" + $V{NOSSONUMERO}]]></variableExpression>
+	</variable>
+	<variable name="DOCUMENTOIMP" class="java.lang.String" resetType="Page" calculation="Nothing">
+		<variableExpression><![CDATA["S".equals($P{IMPDOCBOL})?String.valueOf($F{DOCREC})+"/"+String.valueOf($F{NPARCITREC}):String.valueOf(new Integer($V{DOCUMENTO}))]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -803,7 +809,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[new Integer($V{DOCUMENTO})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1212,7 +1218,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 						x="43"
 						y="60"
 						width="62"
-						height="8"
+						height="9"
 						key="staticText-36"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
@@ -1231,7 +1237,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[new Integer($V{DOCUMENTO})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -2257,7 +2263,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[new Integer($V{DOCUMENTO})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
