@@ -299,10 +299,13 @@ public class FRemCnab extends FRemFBN {
 	
 			reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 	
-			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), 
+			if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
+				reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
+			} else {
+				reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), 
 					(String) prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 					Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
-	
+			}
 			reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 	
 			reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
@@ -407,9 +410,13 @@ public class FRemCnab extends FRemFBN {
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
-		reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
+		if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
+			reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
+		} else {		
+			reg.setDocCobranca( banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
 				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
+		}
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
 		reg.setAgenciaCob( null );
