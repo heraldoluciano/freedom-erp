@@ -402,7 +402,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
 			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB, I.CONVCOB, " );
-			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO " );
+			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO, P1.IMPDOCBOL " );
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
 			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
@@ -478,6 +478,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.ACEITE, rs.getString( EPrefs.ACEITE.toString() ) );
 				prefs.put( EPrefs.PADRAOCNAB, rs.getString( EPrefs.PADRAOCNAB.toString() ) );
 				prefs.put( EPrefs.TPNOSSONUMERO, rs.getString( EPrefs.TPNOSSONUMERO.toString() ) );
+				prefs.put( EPrefs.IMPDOCBOL, rs.getString( EPrefs.IMPDOCBOL.toString() ) );
 				
 				retorno = true;
 			}
