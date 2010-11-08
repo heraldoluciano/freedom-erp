@@ -513,7 +513,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sWhere.append( "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) " );
 		}
 		else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
-			sWhere.append( "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='01' ) " );
+			sWhere.append( "AND ( FR.SITREMESSA='01' ) " );
 		}
 		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
 			sWhere.append( "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) " );
