@@ -81,7 +81,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 		txtCodVenda.setVlrString( String.valueOf( iCodVenda ) );
 		txtTipoVenda.setVlrString( sTipoVenda );
 		setTitulo( "Consulta de Venda" );
-		setAtribos( 120, 140, 500, 300 );
+		setAtribos( 120, 140, 750, 300 );
 
 		setToFrameLayout();
 
@@ -138,22 +138,24 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 		lcVenda.carregaDados();
 
 		tabConsulta.adicColuna( "Item" );
-		tabConsulta.adicColuna( "Ref.prod." );
+		tabConsulta.adicColuna( "Ref." );
 		tabConsulta.adicColuna( "Descrição" );
+		tabConsulta.adicColuna( "Observações" );
 		tabConsulta.adicColuna( "Cód.lote" );
 		tabConsulta.adicColuna( "Quant." );
 		tabConsulta.adicColuna( "Preço" );
 		tabConsulta.adicColuna( "Desc" );
 		tabConsulta.adicColuna( "Vl.liq" );
 
-		tabConsulta.setTamColuna( 50, 0 );
-		tabConsulta.setTamColuna( 70, 1 );
-		tabConsulta.setTamColuna( 180, 2 );
-		tabConsulta.setTamColuna( 70, 3 );
-		tabConsulta.setTamColuna( 80, 4 );
-		tabConsulta.setTamColuna( 100, 5 );
-		tabConsulta.setTamColuna( 100, 6 );
-		tabConsulta.setTamColuna( 100, 7 );
+		tabConsulta.setTamColuna( 30, 0 );
+		tabConsulta.setTamColuna( 50, 1 );
+		tabConsulta.setTamColuna( 140, 2 );
+		tabConsulta.setTamColuna( 180, 3 );
+		tabConsulta.setTamColuna( 50, 4 );
+		tabConsulta.setTamColuna( 70, 5 );
+		tabConsulta.setTamColuna( 70, 6 );
+		tabConsulta.setTamColuna( 70, 7 );
+		tabConsulta.setTamColuna( 70, 8 );
 
 		carregaGridConsulta();
 	}
@@ -167,7 +169,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 		try {
 
 			sSQL.append( "SELECT IT.CODITVENDA, P.DESCPROD, IT.QTDITVENDA," );
-			sSQL.append( "IT.PRECOITVENDA,IT.VLRLIQITVENDA,IT.CODLOTE,IT.VLRDESCITVENDA, IT.REFPROD " );
+			sSQL.append( "IT.PRECOITVENDA,IT.VLRLIQITVENDA,IT.CODLOTE,IT.VLRDESCITVENDA, IT.REFPROD, IT.OBSITVENDA " );
 			sSQL.append( "FROM VDITVENDA IT, EQPRODUTO P " );
 			sSQL.append( "WHERE IT.CODVENDA=? AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.TIPOVENDA=? " );
 			sSQL.append( "AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " );
@@ -187,11 +189,13 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 				tabConsulta.setValor( String.valueOf( rs.getInt( "CodItVenda" ) ), i, 0 );
 				tabConsulta.setValor( String.valueOf( rs.getString( "RefProd" ) ), i, 1 );
 				tabConsulta.setValor( ( rs.getString( "DescProd" ) != null ? rs.getString( "DescProd" ) : "" ), i, 2 );
-				tabConsulta.setValor( ( rs.getString( "CodLote" ) != null ? rs.getString( "CodLote" ) : "" ), i, 3 );
-				tabConsulta.setValor( ( rs.getString( "QtdItVenda" ) != null ? rs.getString( "QtdItVenda" ) : "" ), i, 4 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "PrecoItVenda" ) ), i, 5 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrDescItVenda" ) ), i, 6 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrLiqItVenda" ) ), i, 7 );
+				tabConsulta.setValor( ( rs.getString( "obsitvenda" ) != null ? rs.getString( "obsitvenda" ) : "" ), i, 3 );
+				
+				tabConsulta.setValor( ( rs.getString( "CodLote" ) != null ? rs.getString( "CodLote" ) : "" ), i, 4 );
+				tabConsulta.setValor( ( rs.getString( "QtdItVenda" ) != null ? rs.getString( "QtdItVenda" ) : "" ), i, 5 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "PrecoItVenda" ) ), i, 6 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrDescItVenda" ) ), i, 7 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 13, 2, rs.getString( "VlrLiqItVenda" ) ), i, 8 );
 			}
 
 			rs.close();
