@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FRResumoDiario extends FRelatorio {
 
@@ -64,6 +65,10 @@ public class FRResumoDiario extends FRelatorio {
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
+	
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JRadioGroup<?, ?> rgTipo = null;
 
@@ -74,11 +79,20 @@ public class FRResumoDiario extends FRelatorio {
 	private JRadioGroup<?, ?> rgFormato = null;
 
 	private ListaCampos lcVend = new ListaCampos( this );
+	
+	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+
 
 	public FRResumoDiario() {
 
 		setTitulo( "Resumo Diario" );
-		setAtribos( 80, 80, 329, 420 );
+		setAtribos( 80, 80, 329, 480 );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -123,6 +137,16 @@ public class FRResumoDiario extends FRelatorio {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -137,25 +161,42 @@ public class FRResumoDiario extends FRelatorio {
 		txtDatafim.setVlrDate( new Date() );
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		
+		
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
+		txtCodCli.setNomeCampo( "CodCli" );
+		txtCodCli.setFK( true );
+		lcCli.setReadOnly( true );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
+
 
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
 		adic( lbLinha, 60, 15, 210, 2 );
-		adic( new JLabelPad( "De:" ), 7, 30, 30, 20 );
-		adic( txtDataini, 32, 30, 97, 20 );
-		adic( new JLabelPad( "Até:" ), 140, 30, 30, 20 );
-		adic( txtDatafim, 170, 30, 100, 20 );
 
-		adic( new JLabelPad( "Cód.comiss." ), 7, 60, 210, 20 );
-		adic( txtCodVend, 7, 80, 70, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 80, 60, 210, 20 );
-		adic( txtDescVend, 80, 80, 190, 20 );
+		adic( new JLabelPad("De:"), 10, 30, 97, 20  );
+		adic( txtDataini, 32, 30, 97, 20  );
+		
+		adic( new JLabelPad("Até:"), 140, 30, 100, 20  );
+		adic( txtDatafim, 170, 30, 100, 20  );
 
-		adic( rgTipo, 7, 115, 265, 30 );
-		adic( rgFormato, 7, 155, 265, 30 );
-		adic( rgFaturados, 7, 200, 120, 70 );
-		adic( rgFinanceiro, 153, 200, 120, 70 );
-		adic( cbVendaCanc, 7, 280, 200, 20 );
+		adic( txtCodVend, 7, 80, 70, 20, "Cód.comiss." );
+		adic( txtDescVend, 80, 80, 190, 20,"Nome do comissionado" );
+		
+		adic( txtCodCli, 7, 120, 70, 20, "Cód.Cli" );
+		adic( txtNomeCli, 80, 120, 190, 20, "Nome do cliente" );
 
+		adic( rgTipo, 			7, 		155, 	265, 	30 );
+		adic( rgFormato, 		7, 		205, 	265, 	30 );
+		adic( rgFaturados, 		7, 		240, 	120, 	70 );
+
+		adic( rgFinanceiro, 	153, 	240, 	120, 	70 );
+		
+		
+		adic( rgEmitidos,		 7,		320, 	120, 	70 );
+		adic( cbVendaCanc, 		153, 	320, 	200, 	20 );
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -221,6 +262,20 @@ public class FRResumoDiario extends FRelatorio {
 				sWhere.append( " AND V.CODFILIALVD=" );
 				sWhere.append( lcVend.getCodFilial() );
 				sCab.append( "\nCOMISS.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim() );
+			}
+			
+			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
+				sWhere.append (" AND V.CODCLI = " + txtCodCli.getVlrInteger());;
+				sCab.append("\nCLIENTE: " + txtNomeCli.getVlrInteger());;
+			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere.append(" AND V.STATUSVENDA IN ('V2','V3','P3') " );
+				sCab.append(" EMITIDOS " );
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere.append(" AND V.STATUSVENDA NOT IN ('V2','V3','P3') ");
+				sCab.append( "NAO EMITIDOS" );
 			}
 
 			if ( rgFormato.getVlrString().equals( "D" ) ) {
@@ -512,5 +567,6 @@ public class FRResumoDiario extends FRelatorio {
 
 		super.setConexao( cn );
 		lcVend.setConexao( con );
+		lcCli.setConexao( con );
 	}
 }

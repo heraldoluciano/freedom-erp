@@ -99,11 +99,19 @@ public class FRVendasItem extends FRelatorio {
 	private ListaCampos lcMarca = new ListaCampos( this );
 
 	private boolean comref = false;
+	
+	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
 
 	public FRVendasItem() {
 
 		setTitulo( "Vendas por Item" );
-		setAtribos( 80, 80, 620, 380 );
+		setAtribos( 80, 80, 620, 440 );
 
 		txtDescVend.setAtivo( false );
 		txtDescGrup.setAtivo( false );
@@ -155,6 +163,15 @@ public class FRVendasItem extends FRelatorio {
 		vVals3.addElement( "D" );
 		vVals3.addElement( "QD" );
 		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+		
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
 		rgOrdem.setVlrString( "D" );
 
@@ -197,25 +214,34 @@ public class FRVendasItem extends FRelatorio {
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 
 		adic( lbLinha, 7, 25, 273, 55, "Periodo:" );
-		adic( txtDataini, 45, 40, 90, 20, "De:" );
-		adic( txtDatafim, 180, 40, 90, 20, "Até:" );
+		
+		adic( new JLabelPad("De:"), 15, 40, 90, 20);
+		adic( txtDataini, 45, 40, 90, 20 );
+		
+		adic( new JLabelPad("Até:"), 150, 40, 90, 20 );
+		adic( txtDatafim, 180, 40, 90, 20 );
+		
 		adic( rgOrdem, 295, 25, 273, 30, "Ordenado por:" );
+		
 		adic( rgTipo, 295, 65, 273, 30 );
+		
 		adic( txtCodVend, 7, 120, 70, 20, "Cód.comiss." );
 		adic( txtDescVend, 80, 120, 200, 20, "Nome do comissionado" );
 		adic( txtCodGrup, 295, 120, 70, 20, "Cód.grupo" );
 		adic( txtDescGrup, 368, 120, 200, 20, "Descrição do grupo" );
 		adic( txtCodCli, 7, 160, 70, 20, "Cód.cli." );
-		adic( new JLabelPad( "Razão social do cliente" ), 80, 140, 200, 20 );
-		adic( txtRazCli, 80, 160, 200, 20 );
-		adic( new JLabelPad( "Cód.marca" ), 295, 140, 200, 20 );
-		adic( txtCodMarca, 295, 160, 70, 20 );
-		adic( new JLabelPad( "Descrição da marca" ), 368, 140, 200, 20 );
-		adic( txtDescMarca, 368, 160, 200, 20 );
-		adic( rgFaturados, 7, 200, 125, 70 );
-		adic( rgFinanceiro, 157, 200, 125, 70 );
-		adic( cbListaFilial, 295, 205, 250, 20 );
-		adic( cbVendaCanc, 295, 235, 200, 20 );
+		
+		adic( txtRazCli, 80, 160, 200, 20, "Razão social do cliente" );		
+		adic( txtCodMarca, 295, 160, 70, 20, "Cód.marca" );		
+		adic( txtDescMarca, 368, 160, 200, 20, "Descrição da marca" );
+		
+		adic( rgFaturados, 		7, 		200, 	125, 	70 );
+		adic( rgFinanceiro, 	157, 	200, 	125, 	70 );
+		adic( rgEmitidos, 		7, 		280, 	125, 	70 );
+		
+		adic( cbListaFilial, 	295, 	200, 	200, 	20 );
+		adic( cbVendaCanc, 		295, 	225, 	200, 	20 );		
+		adic( cbObsItVenda,  	295,	250, 	200, 	20 );
 
 	}
 
@@ -315,8 +341,18 @@ public class FRVendasItem extends FRelatorio {
 				sOrdenado = "\nORDENADO POR " + ( comref ? "REFERENCIA" : "CODIGO" );
 			}
 			else if ( sOrdem.equals( "D" ) ) {
-				sOrdem = "P.DESCPROD";
-				sOrdenado = "\nORDENADO POR DESCRICAO";
+
+				if( "N".equals( cbObsItVenda.getVlrString() )) {	
+				
+					sOrdem = "P.DESCPROD";
+					sOrdenado = "\nORDENADO POR DESCRICAO";
+				}
+				else {
+					sOrdem = "IT.OBSITVENDA";
+					sOrdenado = "\nORDENADO POR OBSERVAÇÃO DO ITEM";
+				}
+				
+				
 			}
 			else if ( sOrdem.equals( "QD" ) ) {
 				sOrdem = " 5 desc ";
@@ -328,7 +364,17 @@ public class FRVendasItem extends FRelatorio {
 			sCab2.append( sOrdenado );
 
 			if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getText().trim().length() > 0 ) ) {
-				sSQL.append( "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				
+				sSQL.append( "SELECT P.CODPROD,P.REFPROD,");
+								
+				if( "N".equals( cbObsItVenda.getVlrString() )) {
+					sSQL.append( "P.DESCPROD,");
+				}
+				else {
+					sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
+				}
+				
+				sSQL.append( "P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
 				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P " );
 				sSQL.append( "WHERE P.CODPROD=IT.CODPROD AND IT.CODVENDA=V.CODVENDA " );
 				sSQL.append( sWhere );
@@ -343,29 +389,61 @@ public class FRVendasItem extends FRelatorio {
 				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 				sSQL.append( " GROUP BY " );
 				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) );
-				sSQL.append( "P.DESCPROD,P.CODUNID " );
+				
+				if( "N".equals( cbObsItVenda.getVlrString() )) {				
+					sSQL.append( "P.DESCPROD,P.CODUNID " );
+				}
+				else { 
+					sSQL.append( "IT.OBSITVENDA, P.CODUNID " );
+				}
+				
 				sSQL.append( "ORDER BY " + sOrdem );
 				listaFilial = true;
 			}
 			else {
-				sSQL.append( "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				sSQL.append( "SELECT P.CODPROD,P.REFPROD,");
+				
+				if( "N".equals( cbObsItVenda.getVlrString() )) {
+					sSQL.append( "P.DESCPROD,");
+				}
+				else {
+					sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
+				}
+				
+				sSQL.append("P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
 				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM,VDITVENDA IT, EQPRODUTO P " );
 				sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? " );
 				sSQL.append( "AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD " );
 				sSQL.append( "AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.CODVENDA=IT.CODVENDA " );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN ('S','N') " );
+				
 				sSQL.append( sWhere );
 				sSQL.append( sWhere1 );
 				sSQL.append( sWhere2 );
 				sSQL.append( sWhere3 );
+				
 				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 				sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
 				sSQL.append( "GROUP BY " );
+				
+				
 				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) );
-				sSQL.append( "P.DESCPROD,P.CODUNID " );
+
+				if( "N".equals( cbObsItVenda.getVlrString() )) {				
+					sSQL.append( "P.DESCPROD,P.CODUNID " );
+				}
+				else {
+					sSQL.append( "IT.OBSITVENDA, P.CODUNID " );
+				}
+				
 				sSQL.append( "ORDER BY " + sOrdem );
+				
+				
+				
 			}
 
+			System.out.println("SQL:" + sSQL.toString());
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			if ( !listaFilial ) {
 				ps.setInt( paran++, Aplicativo.iCodEmp );
