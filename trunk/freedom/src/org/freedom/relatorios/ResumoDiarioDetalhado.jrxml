@@ -75,10 +75,10 @@ FROM VDVENDA V]]></queryString>
 		<variableExpression><![CDATA[$V{TOTVLRDESC}]]></variableExpression>
 	</variable>
 	<variable name="TOTGERVLRLIQ" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOTVLRLIQ}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRLIQVENDA}]]></variableExpression>
 	</variable>
 	<variable name="TOTGERVLRPROD" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOTVLRPROD}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPRODVENDA}]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
