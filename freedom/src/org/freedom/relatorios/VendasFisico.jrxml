@@ -90,7 +90,10 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 		<variableExpression><![CDATA[$F{QTDITVENDA}.multiply( $V{VLRUNITLUCRO} )]]></variableExpression>
 	</variable>
 	<variable name="MARGEM" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
-		<variableExpression><![CDATA[new BigDecimal( $V{VLRTOTLUCRO}.floatValue() / ( $F{VLRLIQITVENDA}.floatValue() / 100 ) )]]></variableExpression>
+		<variableExpression><![CDATA[//new BigDecimal( $V{VLRTOTLUCRO}.floatValue() / ( $F{VLRLIQITVENDA}.floatValue() / 100 ) )
+$F{VLRLIQITVENDA}.floatValue() > 0 ?
+new BigDecimal( $V{VLRTOTLUCRO}.floatValue() / ( $F{VLRLIQITVENDA}.floatValue() / 100 ) ) :
+new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="TOTGRUPOVENDA" class="java.math.BigDecimal" resetType="Group" resetGroup="GRUPO" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQITVENDA}]]></variableExpression>
@@ -492,7 +495,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 						mode="Transparent"
 						x="252"
 						y="101"
-						width="35"
+						width="27"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -502,12 +505,12 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Unitário]]></text>
+				<text><![CDATA[Unit.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="290"
+						x="285"
 						y="101"
 						width="43"
 						height="12"
@@ -524,9 +527,9 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="506"
+						x="490"
 						y="101"
-						width="29"
+						width="44"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -536,12 +539,12 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Margen]]></text>
+				<text><![CDATA[Margem]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="422"
+						x="413"
 						y="101"
 						width="35"
 						height="12"
@@ -553,14 +556,14 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Unitário]]></text>
+				<text><![CDATA[Unit.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="460"
+						x="449"
 						y="101"
-						width="43"
+						width="39"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -570,7 +573,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Vlr. Total]]></text>
+				<text><![CDATA[Vlr.Tot.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -592,7 +595,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="337"
+						x="329"
 						y="101"
 						width="35"
 						height="12"
@@ -609,7 +612,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="375"
+						x="367"
 						y="101"
 						width="43"
 						height="12"
@@ -626,7 +629,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="361"
+						x="358"
 						y="86"
 						width="32"
 						height="12"
@@ -719,7 +722,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="252"
+						x="250"
 						y="2"
 						width="35"
 						height="14"
@@ -732,9 +735,9 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="290"
+						x="286"
 						y="2"
-						width="43"
+						width="40"
 						height="14"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -745,7 +748,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="337"
+						x="329"
 						y="2"
 						width="35"
 						height="14"
@@ -758,7 +761,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="375"
+						x="367"
 						y="2"
 						width="43"
 						height="14"
@@ -771,22 +774,9 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="506"
+						x="492"
 						y="2"
-						width="29"
-						height="14"
-						key="textField-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{MARGEM}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="506"
-						y="2"
-						width="29"
+						width="36"
 						height="14"
 						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -797,7 +787,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="422"
+						x="412"
 						y="2"
 						width="35"
 						height="14"
@@ -810,9 +800,9 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="460"
+						x="449"
 						y="2"
-						width="43"
+						width="39"
 						height="14"
 						key="textField-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
