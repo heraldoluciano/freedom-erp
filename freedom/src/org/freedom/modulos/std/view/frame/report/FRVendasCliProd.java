@@ -43,6 +43,7 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -82,12 +83,26 @@ public class FRVendasCliProd extends FRelatorio {
 	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this );
+	
+	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgFaturados = null;
+
+	private JRadioGroup<?, ?> rgFinanceiro = null;
+
+
 
 	public FRVendasCliProd() {
 
 		super( false );
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 355, 320 );
+		setAtribos( 50, 50, 355, 350 );
 
 		montaRadioGrupo();
 		montaListaCampos();
@@ -103,6 +118,8 @@ public class FRVendasCliProd extends FRelatorio {
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "G" );
+		
+
 	}
 
 	private void montaListaCampos() {
@@ -167,7 +184,9 @@ public class FRVendasCliProd extends FRelatorio {
 		adic( txtNomeComiss, 100, 170, 227, 20 );
 
 		adic( rgTipo, 7, 210, 320, 30 );
-
+		
+		adic( cbObsItVenda,  	7,	250, 	200, 	20 );
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -192,7 +211,16 @@ public class FRVendasCliProd extends FRelatorio {
 
 		try {
 
-			sSQL.append( "select razcli_ret razcli, codcli_ret codcli, descprod_ret descprod, codprod_ret codprod, " );
+			sSQL.append( "select razcli_ret razcli, codcli_ret codcli, ");
+			
+			if( "N".equals( cbObsItVenda.getVlrString() )) {
+				sSQL.append( "descprod_ret descprod, ");
+			}
+			else {
+				sSQL.append( "coalesce(obsitvenda_ret,descprod_ret) as descprod, ");
+			}
+			
+			sSQL.append( "codprod_ret codprod, " );
 			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda " );
 			sSQL.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
 
@@ -259,7 +287,7 @@ public class FRVendasCliProd extends FRelatorio {
 		boolean printCliente = true;
 
 		try {
-
+ 
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.verifLinPag();

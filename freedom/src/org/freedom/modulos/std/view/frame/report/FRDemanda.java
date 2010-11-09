@@ -291,10 +291,19 @@ public class FRDemanda extends FRelatorio {
 		if ( !sWhere.trim().equals( "" ) )
 			sWhere = " WHERE " + sWhere;
 
-		sSQL = "SELECT P.CODMARCA, P.CODGRUP,P.CODPROD, " + "P.REFPROD, P.DESCPROD, P.DESCGRUP," + "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " + "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM " + "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " + sWhere + " ORDER BY " + sOrdem;
+		sSQL = "SELECT P.CODMARCA, P.CODGRUP,P.CODPROD, " 
+			+ "P.REFPROD, P.DESCPROD, P.DESCGRUP," 
+			+ "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " 
+			+ "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM " 
+			+ "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " 
+			+ sWhere 
+			+ " ORDER BY " 
+			+ sOrdem;
 
 		try {
 
+			System.out.println("SQL:" + sSQL.toString());
+			
 			PreparedStatement ps = con.prepareStatement( sSQL );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );

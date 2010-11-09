@@ -192,12 +192,10 @@ public class FRVendasGeral extends FRelatorio {
 		adic( new JLabelPad( "Nome do comissionado" ), 80, 100, 210, 20 );
 		adic( txtDescVend, 80, 120, 190, 20 );
 
-		adic( new JLabelPad( "Cód.Cli" ), 7, 140, 210, 20 );
-		adic( txtCodCli, 7, 160, 70, 20 );
 
-		adic( new JLabelPad( "Descrição do cliente" ), 80, 140, 190, 20 );
+		adic( txtCodCli, 7, 160, 70, 20, "Cód.Cli" );
+		adic( txtNomeCli, 80, 160, 190, 20, "Nome do cliente" );
 
-		adic( txtNomeCli, 80, 160, 190, 20 );
 		adic( rgTipo, 7, 190, 265, 30 );
 		adic( rgFaturados, 7, 230, 120, 70 );
 		adic( rgFinanceiro, 153, 230, 120, 70 );
@@ -228,6 +226,7 @@ public class FRVendasGeral extends FRelatorio {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sWhere4 = "";
 		String sCab = "";
 
 		if ( txtCodVend.getText().trim().length() > 0 ) {
@@ -265,16 +264,17 @@ public class FRVendasGeral extends FRelatorio {
 		}
 		
 		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
-			sWhere2 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
+			sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
 			sCab += sCab.length() > 0 ? " - SO EMITIDOS" : "SO EMITIDOS";
 		}
 		else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
-			sWhere2 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+			sWhere4 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
 			sCab += sCab.length() > 0 ? " - NAO EMITIDOS" : "NAO EMITIDOS";
 		}
 
-		if ( cbVendaCanc.getVlrString().equals( "N" ) )
+		if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+		}
 
 		sSQL.append( "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA," );
 		sSQL.append( "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG," );
@@ -285,9 +285,11 @@ public class FRVendasGeral extends FRelatorio {
 		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
 		sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 		sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
+		
 		sSQL.append( sWhere );
 		sSQL.append( sWhere1 );
 		sSQL.append( sWhere2 );
+		sSQL.append( sWhere4 );
 		sSQL.append( sWhere3 );
 
 		if ( "E".equals( rgData.getVlrString() ) ) {
@@ -310,6 +312,8 @@ public class FRVendasGeral extends FRelatorio {
 		sSQL.append( ", V.DOCVENDA " );
 
 		try {
+			System.out.print( "SQL:" + sSQL.toString() );
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );

@@ -78,7 +78,7 @@ public class FRVendasDet extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JCheckBoxPad cbVendaSubcli = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
+	private JCheckBoxPad cbVendaSubcli = new JCheckBoxPad( "Listar sub-clientes", "S", "N" );
 
 	private JRadioGroup<String, String> rgTipo = null;
 
@@ -91,6 +91,14 @@ public class FRVendasDet extends FRelatorio {
 	private ListaCampos lcProd = new ListaCampos( this );
 
 	private ListaCampos lcVend = new ListaCampos( this );
+	
+	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
 
 	public FRVendasDet() {
 
@@ -130,6 +138,16 @@ public class FRVendasDet extends FRelatorio {
 		vVals2.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+
 
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -190,11 +208,16 @@ public class FRVendasDet extends FRelatorio {
 		adic( new JLabelPad( "Usuário" ), 140, 180, 132, 20 );
 		adic( txtIdUsu, 140, 200, 132, 20 );
 
-		adic( rgTipo, 7, 230, 265, 30 );
-		adic( rgFaturados, 7, 265, 120, 70 );
-		adic( rgFinanceiro, 153, 265, 120, 70 );
-		adic( cbVendaSubcli, 7, 340, 200, 20 );
-		adic( cbVendaCanc, 7, 360, 230, 20 );
+		adic( rgTipo, 		7, 		230, 	265, 	30 );
+		adic( rgFaturados, 	7, 		265, 	120, 	70 );
+		adic( rgFinanceiro, 153,	265, 	120, 	70 );
+		adic( rgEmitidos,	7,		340, 	120, 	70 );
+		
+		
+		adic( cbVendaSubcli, 153,	340, 	200, 	20 );
+		adic( cbVendaCanc, 	 153,	360, 	230, 	20 );
+		adic( cbObsItVenda,  153,	380, 	230, 	20 );
+
 
 	}
 
@@ -305,7 +328,16 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( "	  WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " );
 			sSQL.append( "	  AND VO.CODVENDA=IT.CODVENDA AND VO.CODITVENDA=IT.CODITVENDA AND VO.TIPOVENDA=IT.TIPOVENDA ) AS CODORC, " );
 			sSQL.append( "V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," );
-			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD,IT.CODLOTE," );
+			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,");
+			
+			if( "N".equals( cbObsItVenda.getVlrString() )) {
+				sSQL.append( "P.DESCPROD,");
+			}
+			else {
+				sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
+			}
+			
+			sSQL.append( "IT.CODLOTE," );
 			sSQL.append( "IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA " );
 			sSQL.append( "FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM  " );
 			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " );
