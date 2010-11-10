@@ -49,9 +49,11 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 
-public class FPrefereFBB extends FTabDados implements CarregaListener {
+public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -197,6 +199,16 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 	public static final String TP_CNAB = "02";
 
+	// Espécie do título
+	private Vector<String> vLabs5;
+	
+	private Vector<Integer> vVals5;
+
+	// Instrução de protesto / juros
+	private Vector<String> vLabs8 = new Vector<String>();
+	
+	private Vector<Integer> vVals8 = new Vector<Integer>();
+
 	public FPrefereFBB() {
 
 		setTitulo( "Preferências Gerais" );
@@ -308,55 +320,13 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals4.addElement( 2 );
 		cbDistribuicao = new JComboBoxPad( vLabs4, vVals4, JComboBoxPad.TP_INTEGER, 1, 0 );
 
-		Vector<String> vLabs5 = new Vector<String>();
-		Vector<Integer> vVals5 = new Vector<Integer>();
-		vLabs5.addElement( "CH- Cheque" );
-		vLabs5.addElement( "DM- Duplicata mercantil" );
-		vLabs5.addElement( "DMI- Duplic. mercantil p/indic." );
-		vLabs5.addElement( "DS- Duplicata de serviço" );
-		vLabs5.addElement( "DSI- Duplic. de serviço p/indic." );
-		vLabs5.addElement( "DR- Duplicata rural" );
-		vLabs5.addElement( "LC- Letra de cambio" );
-		vLabs5.addElement( "NCC- Nota de crédito comercial" );
-		vLabs5.addElement( "NCE- Nota de crédito a exportação" );
-		vLabs5.addElement( "NCI- Nota de crédito indústria" );
-		vLabs5.addElement( "NCR- Nota de crédito rural" );
-		vLabs5.addElement( "NP- Nota promissória" );
-		vLabs5.addElement( "NPR- Nota promissória rural" );
-		vLabs5.addElement( "TM- Triplicata mercantíl" );
-		vLabs5.addElement( "TS- Triplicata de serviço" );
-		vLabs5.addElement( "NS- Nota de seguro" );
-		vLabs5.addElement( "RC- Recibo" );
-		vLabs5.addElement( "FAT- Fatura" );
-		vLabs5.addElement( "ND- Nota de débito" );
-		vLabs5.addElement( "AP- Apolice de seguro" );
-		vLabs5.addElement( "ME- Mensalidade escolar" );
-		vLabs5.addElement( "PC- Parcela de consórcio" );
-		vLabs5.addElement( "Outros" );
-		vVals5.addElement( 1 );
-		vVals5.addElement( 2 );
-		vVals5.addElement( 3 );
-		vVals5.addElement( 4 );
-		vVals5.addElement( 5 );
-		vVals5.addElement( 6 );
-		vVals5.addElement( 7 );
-		vVals5.addElement( 8 );
-		vVals5.addElement( 9 );
-		vVals5.addElement( 10 );
-		vVals5.addElement( 11 );
-		vVals5.addElement( 12 );
-		vVals5.addElement( 13 );
-		vVals5.addElement( 14 );
-		vVals5.addElement( 15 );
-		vVals5.addElement( 16 );
-		vVals5.addElement( 17 );
-		vVals5.addElement( 18 );
-		vVals5.addElement( 19 );
-		vVals5.addElement( 20 );
-		vVals5.addElement( 21 );
-		vVals5.addElement( 22 );
-		vVals5.addElement( 99 );
+		// Espécio do título
+        geraEspecieTitulo( "240", false );
 		cbEspecieTitulo = new JComboBoxPad( vLabs5, vVals5, JComboBoxPad.TP_INTEGER, 2, 0 );
+
+		// Instrução de protesto
+        geraProtesto("240", false);
+		cbProtesto = new JComboBoxPad( vLabs8, vVals8, JComboBoxPad.TP_INTEGER, 1, 0 );
 
 		Vector<String> vLabs6 = new Vector<String>();
 		Vector<Integer> vVals6 = new Vector<Integer>();
@@ -386,16 +356,6 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals7.addElement( 6 );
 		cbDesconto = new JComboBoxPad( vLabs7, vVals7, JComboBoxPad.TP_INTEGER, 1, 0 );
 
-		Vector<String> vLabs8 = new Vector<String>();
-		Vector<Integer> vVals8 = new Vector<Integer>();
-		vLabs8.addElement( "Dias corridos" );
-		vLabs8.addElement( "Dias utéis" );
-		vLabs8.addElement( "Não protestar" );
-		vVals8.addElement( 1 );
-		vVals8.addElement( 2 );
-		vVals8.addElement( 3 );
-		cbProtesto = new JComboBoxPad( vLabs8, vVals8, JComboBoxPad.TP_INTEGER, 1, 0 );
-
 		Vector<String> vLabs9 = new Vector<String>();
 		Vector<Integer> vVals9 = new Vector<Integer>();
 		vLabs9.addElement( "Baixar / Devolver" );
@@ -419,9 +379,176 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals11.addElement( "240" );
 		vVals11.addElement( "400" );
 		cbPadraoCNAB = new JComboBoxPad( vLabs11, vVals11, JComboBoxPad.TP_STRING, 1, 0 );
+		cbPadraoCNAB.addComboBoxListener( this );
 
 	}
 
+	private void geraProtesto( final String cnab, final boolean troca) {
+		vLabs8 = new Vector<String>();
+		vVals8 = new Vector<Integer>();
+		if ("240".equals( cnab )) { 
+			vLabs8.addElement( "Dias corridos" );
+			vLabs8.addElement( "Dias utéis" );
+			vLabs8.addElement( "Não protestar" );
+			vVals8.addElement( 1 );
+			vVals8.addElement( 2 );
+			vVals8.addElement( 3 );
+		} else {
+			vLabs8.addElement( "00 - Sem instruções" );
+			vLabs8.addElement( "01 - Cobrar juros (Disp. se inf. vlr. a ser cobr. p/ dia atraso)" );
+			vLabs8.addElement( "03 - Protestar no 3o dia útil após vencido" );
+			vLabs8.addElement( "04 - Protestar no 4o dia útil após vencido" );
+			vLabs8.addElement( "05 - Protestar no 5o dia útil após vencido" );
+			vLabs8.addElement( "10 - Protestar no 10o dia corrido após vencido" );
+			vLabs8.addElement( "15 - Protestar no 15o dia corrido após vencido" );
+			vLabs8.addElement( "20 - Protestar no 20o dia corrido após vencido" );
+			vLabs8.addElement( "25 - Protestar no 25o dia corrido após vencido" );
+			vLabs8.addElement( "30 - Protestar no 30o dia corrido após vencido" );
+			vLabs8.addElement( "45 - Protestar no 45o dia corrido após vencido" );
+			vLabs8.addElement( "06 - Indica Protesto em dias corridos, com prazo de 6 a 29, 35 ou 40 dias corridos" );
+			vLabs8.addElement( "07 - Não protestar" );
+			vLabs8.addElement( "22 - Conceder desconto só até a data estipulada" );
+			vVals8.addElement( 0 );
+			vVals8.addElement( 1 );
+			vVals8.addElement( 3 );
+			vVals8.addElement( 4 );
+			vVals8.addElement( 5 );
+			vVals8.addElement( 10 );
+			vVals8.addElement( 15 );
+			vVals8.addElement( 20 );
+			vVals8.addElement( 25 );
+			vVals8.addElement( 30 );
+			vVals8.addElement( 45 );
+			vVals8.addElement( 06 );
+			vVals8.addElement( 07 );
+			vVals8.addElement( 22 );
+			
+		   /* - 00 - Sem de instruções
+			- 01 - Cobrar juros (Dispensável se informado o valor a ser cobrado por dia de
+			atraso).
+			- 03 - Protestar no 3o dia útil após vencido
+			- 04 - Protestar no 4o dia útil após vencido
+			- 05 - Protestar no 5o dia útil após vencido
+			- 10 - Protestar no 10o dia corrido após vencido
+			- 15 - Protestar no 15o dia corrido após vencido
+			- 20 - Protestar no 20o dia corrido após vencido
+			- 25 - Protestar no 25o dia corrido após vencido
+			- 30 - Protestar no 30o dia corrido após vencido
+			- 45 - Protestar no 45o dia corrido após vencido
+			- 06 - Indica Protesto em dias corridos, com prazo de 6 a 29, 35 ou 40 dias
+			Corridos.
+			- Obrigatório impostar, nas posições 392 a 393 o prazo de protesto
+			desejado: 6 a 29, 35 ou 40 dias.
+			- 07 - Não protestar
+			- 22 - Conceder desconto só até a data estipulada */	
+		}
+		if (troca) {
+			cbProtesto.setItensGeneric( vLabs8, vVals8 );
+		}
+
+	}
+	private void geraEspecieTitulo( final String cnab, final boolean troca ) {
+		vLabs5 = new Vector<String>();
+		vVals5 = new Vector<Integer>();
+		if ( "240".equals( cnab ) ) {
+			vLabs5.addElement( "CH- Cheque" );
+			vLabs5.addElement( "DM- Duplicata mercantil" );
+			vLabs5.addElement( "DMI- Duplic. mercantil p/indic." );
+			vLabs5.addElement( "DS- Duplicata de serviço" );
+			vLabs5.addElement( "DSI- Duplic. de serviço p/indic." );
+			vLabs5.addElement( "DR- Duplicata rural" );
+			vLabs5.addElement( "LC- Letra de cambio" );
+			vLabs5.addElement( "NCC- Nota de crédito comercial" );
+			vLabs5.addElement( "NCE- Nota de crédito a exportação" );
+			vLabs5.addElement( "NCI- Nota de crédito indústria" );
+			vLabs5.addElement( "NCR- Nota de crédito rural" );
+			vLabs5.addElement( "NP- Nota promissória" );
+			vLabs5.addElement( "NPR- Nota promissória rural" );
+			vLabs5.addElement( "TM- Triplicata mercantíl" );
+			vLabs5.addElement( "TS- Triplicata de serviço" );
+			vLabs5.addElement( "NS- Nota de seguro" );
+			vLabs5.addElement( "RC- Recibo" );
+			vLabs5.addElement( "FAT- Fatura" );
+			vLabs5.addElement( "ND- Nota de débito" );
+			vLabs5.addElement( "AP- Apolice de seguro" );
+			vLabs5.addElement( "ME- Mensalidade escolar" );
+			vLabs5.addElement( "PC- Parcela de consórcio" );
+			vLabs5.addElement( "Outros" );
+			vVals5.addElement( 1 );
+			vVals5.addElement( 2 );
+			vVals5.addElement( 3 );
+			vVals5.addElement( 4 );
+			vVals5.addElement( 5 );
+			vVals5.addElement( 6 );
+			vVals5.addElement( 7 );
+			vVals5.addElement( 8 );
+			vVals5.addElement( 9 );
+			vVals5.addElement( 10 );
+			vVals5.addElement( 11 );
+			vVals5.addElement( 12 );
+			vVals5.addElement( 13 );
+			vVals5.addElement( 14 );
+			vVals5.addElement( 15 );
+			vVals5.addElement( 16 );
+			vVals5.addElement( 17 );
+			vVals5.addElement( 18 );
+			vVals5.addElement( 19 );
+			vVals5.addElement( 20 );
+			vVals5.addElement( 21 );
+			vVals5.addElement( 22 );
+			vVals5.addElement( 99 );
+		} else {
+/*			00 - informado nos registros com comando 97-Despesas de Sustação de Protesto
+			nas posições 109/110 desde que o titulo não conste mais da existência
+			01 -duplicata mercantil
+			02 - nota promissória
+			03 - nota de seguro
+			05 - recibo
+			08 - letra de cambio
+			09 - warrant
+			10 - cheque
+			12 - duplicata de serviço
+			13 - nota de debito
+			15 - apólice de seguro
+			25 - divida ativa da União
+			26 - divida ativa de Estado
+			27 - divida ativa de Município */
+
+			vLabs5.addElement( "DM- Duplicata mercantil" );
+			vLabs5.addElement( "NP- Nota promissória" );
+			vLabs5.addElement( "NS- Nota de seguro" );
+			vLabs5.addElement( "RC- Recibo" );
+			vLabs5.addElement( "LC- Letra de cambio" );
+			vLabs5.addElement( "WT- Warrant" );
+			vLabs5.addElement( "CQ- Cheque" );
+			vLabs5.addElement( "DS- Duplicata de serviço" );
+			vLabs5.addElement( "ND- Nota de débito" );
+			vLabs5.addElement( "AP- Apolice de seguro" );
+			vLabs5.addElement( "DAU- Divida ativa da União" );
+			vLabs5.addElement( "DAE- Divida ativa do Estado" );
+			vLabs5.addElement( "DAM- Divida ativa do Município" );
+			vVals5.addElement( 1 );
+			vVals5.addElement( 2 );
+			vVals5.addElement( 3 );
+			vVals5.addElement( 5 );
+			vVals5.addElement( 8 );
+			vVals5.addElement( 9 );
+			vVals5.addElement( 10 );
+			vVals5.addElement( 12 );
+			vVals5.addElement( 13 );
+			vVals5.addElement( 15 );
+			vVals5.addElement( 25 );
+			vVals5.addElement( 26 );
+			vVals5.addElement( 27 );
+			
+		}
+
+		if ( troca ) {
+			cbEspecieTitulo.setItensGeneric( vLabs5, vVals5);
+		}
+		
+	}
+	
 	private void montaListaCampos() {
 
 		/**********************
@@ -652,4 +779,12 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		lcCampos.carregaDados();
 	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if ( evt.getComboBoxPad()==cbPadraoCNAB ) {
+			geraEspecieTitulo( evt.getComboBoxPad().getVlrString(), true );
+			geraProtesto( evt.getComboBoxPad().getVlrString(), true );
+		}
+	}
+	
 }
