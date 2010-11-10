@@ -5120,7 +5120,7 @@ public class CnabUtil extends FbnUtil {
 					
 				}
 
-				if ( 1 == getCodJuros() ) { // Se Juros/Mora diária
+				if ( (getCodJuros()==1) || (getCodJuros()==2) ) { // Se Juros/Mora diária
 					line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
 				}
 				else {
