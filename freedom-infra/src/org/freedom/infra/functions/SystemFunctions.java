@@ -29,13 +29,16 @@ public class SystemFunctions {
 
 	public static final int OS_LINUX = 0;
 
-	public static final int OS_WINDOWS = 1;
+	public static final int OS_WINDOWS = 1;	
+
+	public static final int OS_OSX = 3;
 	
 	public static final int OS_VERSION_WINDOWS_XP = 10;
 	
 	public static final int OS_VERSION_WINDOWS_VISTA = 11;
 	
 	public static final int OS_VERSION_WINDOWS_SEVEN = 12;
+	
 
 	/**
 	 * 
@@ -53,6 +56,10 @@ public class SystemFunctions {
 		else if (system.indexOf("windows") > -1) {
 			ret = OS_WINDOWS;
 		}
+		else if (system.indexOf("mac os x") > -1) {
+			ret = OS_OSX;
+		}
+		
 
 		return ret;
 
