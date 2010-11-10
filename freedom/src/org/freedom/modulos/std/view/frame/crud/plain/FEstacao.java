@@ -227,17 +227,20 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		vLabPortasBal.addElement( "<Selecione uma porta>" );
 
-		if ( SystemFunctions.OS_LINUX == SystemFunctions.getOS() ) {
+		if ( SystemFunctions.OS_LINUX == SystemFunctions.getOS() || SystemFunctions.OS_OSX == SystemFunctions.getOS()) {
 			vLabPortasBal.addElement( "/dev/ttyS0" );
 			vLabPortasBal.addElement( "/dev/ttyS1" );
 			vLabPortasBal.addElement( "/dev/ttyS2" );
 			vLabPortasBal.addElement( "/dev/ttyS3" );
+			vLabPortasBal.addElement( "/dev/ttyUSB0" );
+			vLabPortasBal.addElement( "/dev/ttyUSB1" );
 		}
 		else {
 			vLabPortasBal.addElement( "COM1" );
 			vLabPortasBal.addElement( "COM2" );
 			vLabPortasBal.addElement( "COM3" );
-			vLabPortasBal.addElement( "COM4" );
+			vLabPortasBal.addElement( "COM4" );			
+			vLabPortasBal.addElement( "COM4" );		
 		}
 
 		vValPortasBal.addElement( -1 );
@@ -245,6 +248,12 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		vValPortasBal.addElement( 1 );
 		vValPortasBal.addElement( 2 );
 		vValPortasBal.addElement( 3 );
+		
+		if ( SystemFunctions.OS_LINUX == SystemFunctions.getOS() || SystemFunctions.OS_OSX == SystemFunctions.getOS()) {
+			vValPortasBal.addElement( 20 );
+			vValPortasBal.addElement( 21 );
+		}
+		
 
 		vLabSpeedBal.addElement( "2400" );
 		vLabSpeedBal.addElement( "4800" );
