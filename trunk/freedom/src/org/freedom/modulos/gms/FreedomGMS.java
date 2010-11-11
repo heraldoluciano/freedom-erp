@@ -51,6 +51,7 @@ import org.freedom.modulos.gms.view.frame.crud.plain.FAtribuicao;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FAtribUsu;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
+import org.freedom.modulos.gms.view.frame.crud.special.FTesteJava;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FPrefereGMS;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
@@ -338,6 +339,8 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P', 800600000, 1, true, FConsRMA.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i', 800700000, 1, true, FConsRmaItem.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 800800000, 1, true, FBaixaRMACodBar.class );
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Teste Java", "Teste Java", 'T', 800800200, 1, true, FTesteJava.class );
+		
 		addSeparador( 800000000 );
 		addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800900000, 1, false, null );
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Certificação de análise", "Certificação de análise", 'C', 800900100, 1, true, FRCertAnalise.class );
@@ -347,8 +350,6 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 800900500, 1, true, FREstruturaItem.class );
 		addOpcao( 800900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 800900600, 1, true, FRComisProd.class );
 
-		
-		
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100304010, FPrefereGeral.class );
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101010, FCliente.class );
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100102020, FFornecedor.class );
