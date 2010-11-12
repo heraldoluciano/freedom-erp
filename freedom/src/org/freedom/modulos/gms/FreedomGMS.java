@@ -51,7 +51,6 @@ import org.freedom.modulos.gms.view.frame.crud.plain.FAtribuicao;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FAtribUsu;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
-import org.freedom.modulos.gms.view.frame.crud.special.FTesteJava;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FPrefereGMS;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
