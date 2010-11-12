@@ -339,7 +339,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P', 800600000, 1, true, FConsRMA.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i', 800700000, 1, true, FConsRmaItem.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras", "Baixa RMA", 'B', 800800000, 1, true, FBaixaRMACodBar.class );
-		addOpcao( 800000000, TP_OPCAO_ITEM, "Teste Java", "Teste Java", 'T', 800800200, 1, true, FTesteJava.class );
+//		addOpcao( 800000000, TP_OPCAO_ITEM, "Teste Java", "Teste Java", 'T', 800800200, 1, true, FTesteJava.class );
 		
 		addSeparador( 800000000 );
 		addOpcao( 800000000, TP_OPCAO_MENU, "Listagens", "", 'L', 800900000, 1, false, null );
