@@ -59,6 +59,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColcli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EParcela;
@@ -84,7 +85,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JPanelPad panelFuncoes = new JPanelPad();
 
-	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+//	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelStatus = new JPanelPad(  );
 
 	protected final JTablePad tab = new JTablePad();
 
@@ -103,10 +106,14 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
 	protected final JLabel lbStatus = new JLabel();
+	
+	protected final JLabel lbValorSelecionado = new JLabel();
 
 	protected final ImageIcon imgRejEntrada = Icone.novo( "clRejEntrada.gif" );
 
 	protected final ImageIcon imgRejBaixa = Icone.novo( "clRejBaixa.gif" );
+	
+	protected final ImageIcon imgBaixado = Icone.novo( "clPago2.gif");
 
 	protected final ImageIcon imgAdvert = Icone.novo( "clAdvertencia.gif" );
 
@@ -117,6 +124,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected final ImageIcon imgIndefinido = Icone.novo( "clIndefinido.gif" );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
+	
+	protected BigDecimal vlrselecionado = null;
 
 	public FRetFBN( final String tipoFebraban ) {
 
@@ -161,6 +170,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Tp" );
 		tab.adicColuna( "Cód.Retorno" );
 		tab.adicColuna( "Menssagem de retorno" );
+		tab.adicColuna( "St.It.Rec" );
 
 		tab.setTamColuna( 22, EColTab.STATUS.ordinal() );
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
@@ -183,6 +193,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 200, EColTab.TIPOFEBRABAN.ordinal() );
 		tab.setTamColuna( 100, EColTab.CODRET.ordinal() );
 		tab.setTamColuna( 250, EColTab.MENSSAGEM.ordinal() );
+		tab.setTamColuna( 50, EColTab.STATUSITREC.ordinal() );
 
 		tab.setColunaEditavel( EColTab.SEL.ordinal(), true );
 
@@ -224,9 +235,12 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		panelFuncoes.adic( btEditar, 5, 75, 30, 30 );
 
 		lbStatus.setForeground( Color.BLUE );
+		lbValorSelecionado.setForeground( Color.BLUE );
 
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
-		panelStatus.add( lbStatus, BorderLayout.WEST );
+//		panelStatus.add( lbStatus, BorderLayout.WEST );
+		panelStatus.adic( lbStatus, 0, 0, 200, 20 );
+		panelStatus.adic( lbValorSelecionado, 203, 0, 200, 20 );
 
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
@@ -780,9 +794,12 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 		if ( e.getSource() == btSelTudo ) {
 			selecionaTudo();
+			calcSelecionado();
 		}
 		else if ( e.getSource() == btSelNada ) {
 			selecionaNada();
+			calcSelecionado();
+			
 		}
 		else if ( e.getSource() == btImporta ) {
 			execImportar();
@@ -816,9 +833,38 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			if ( e.getClickCount() == 2 ) {
 				edit();
 			}
+			
+			calcSelecionado();
+			
 		}
 	}
 
+	protected void calcSelecionado() {
+		
+		try {
+			
+			vlrselecionado = new BigDecimal( 0 );
+			
+			for(int i=0; tab.getNumLinhas() > i; i++) {
+				
+				if((Boolean) tab.getValor( i, EColTab.SEL.ordinal() )) {
+
+					String strvalor = ((StringDireita) tab.getValor( i, EColTab.VLRPAG.ordinal())).toString() ;
+					BigDecimal bdvalor = ConversionFunctions.stringToBigDecimal( strvalor );
+					
+					vlrselecionado = vlrselecionado.add(bdvalor);
+				}
+				
+			}
+			
+			lbValorSelecionado.setText( Funcoes.bdToStr( vlrselecionado, Aplicativo.casasDecFin ).toString() );
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void mouseEntered( MouseEvent e ) {
 
 	}
@@ -842,7 +888,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	}
 
 	protected enum EColTab {
-		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM;
+		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM, STATUSITREC;
 
 	};
 
@@ -851,3 +897,4 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	};
 
 }
+
