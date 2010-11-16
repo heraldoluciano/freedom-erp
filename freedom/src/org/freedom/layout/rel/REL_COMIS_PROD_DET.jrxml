@@ -90,6 +90,9 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 	<variable name="VLRITCOMIS_SECAO" class="java.math.BigDecimal" resetType="Group" resetGroup="SECAO" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRITCOMIS}]]></variableExpression>
 	</variable>
+	<variable name="VLRITCOMIS_UNIT" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{PRECOCOMISPROD}.multiply($F{PERCCOMISGERAL})]]></variableExpression>
+	</variable>
 
 		<group  name="TOTAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -120,15 +123,15 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				</rectangle>
 				<staticText>
 					<reportElement
-						x="358"
+						x="378"
 						y="35"
-						width="42"
+						width="58"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Valor unit.]]></text>
@@ -249,24 +252,9 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="402"
+						x="458"
 						y="35"
-						width="63"
-						height="11"
-						forecolor="#010101"
-						backcolor="#FFFFFF"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Valor tot.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="470"
-						y="35"
-						width="58"
+						width="70"
 						height="11"
 						forecolor="#010101"
 						backcolor="#FFFFFF"
@@ -310,21 +298,6 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="53"
-						y="8"
-						width="59"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOT}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						x="3"
@@ -354,24 +327,9 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="412"
+						x="460"
 						y="8"
-						width="53"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRTOTITCOMIS_SECAO}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="475"
-						y="8"
-						width="53"
+						width="68"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -499,9 +457,9 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 			<band height="15"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="358"
+						x="378"
 						y="2"
-						width="42"
+						width="58"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -510,7 +468,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{PRECOCOMISPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRITCOMIS_UNIT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -570,28 +528,13 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals($F{GARANTIA}) ? "[G]" : ""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals($F{GARANTIA}) ? "Sim" : "Não"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="402"
+						x="463"
 						y="2"
-						width="63"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRTOTITCOMIS}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="475"
-						y="2"
-						width="53"
+						width="65"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
