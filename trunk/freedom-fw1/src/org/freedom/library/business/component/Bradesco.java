@@ -57,6 +57,7 @@ public class Bradesco extends Banco {
 			String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
+		setTpnossonumero(tpnossonumero);
 		setValorTitulo(vlrtitulo);
 		setCodcli(convenio);
 		setConvenio(convenio);
