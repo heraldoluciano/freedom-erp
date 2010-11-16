@@ -336,6 +336,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							// tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
 
 							row++;
 							rec = null;
@@ -374,10 +375,15 @@ public class FRetCnab extends FRetFBN {
 							else if ( "RB".equals( tiporet ) ) {
 								imgret = imgRejBaixa;
 							}
+							
+							if("RP".equals( rec.getStatus() )) {
+								imgret = imgBaixado;
+							}
 
 							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
-							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
 
+							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 && new Boolean( rec.getValorApagar().floatValue() > 0.00 )), row, EColTab.SEL.ordinal() );
+							
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -396,16 +402,19 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( regT400.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
-
+							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
+							
+							
 							row++;
 							rec = null;
 						}
-
+ 
 					}
 
 				}
 				if ( row > 0 ) {
 					lbStatus.setText( "     Tabela carregada ..." );
+					calcSelecionado();
 				}
 				else if ( header != null ) {
 					lbStatus.setText( "     Arquivo lido ..." );
@@ -453,7 +462,7 @@ public class FRetCnab extends FRetFBN {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT " );
 			sql.append( "  IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.VLRAPAGITREC, IR.DTITREC, IR.DTVENCITREC," );
-			sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI " );
+			sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI, IR.STATUSITREC " );
 			sql.append( "FROM " );
 			sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 			sql.append( "WHERE " );
@@ -469,7 +478,7 @@ public class FRetCnab extends FRetFBN {
 			}
 
 			sql.append( "  AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
-			sql.append( "  AND IR.STATUSITREC!='RP' " );
+		//	sql.append( "  AND IR.STATUSITREC!='RP' " );
 
 			try {
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -495,6 +504,8 @@ public class FRetCnab extends FRetFBN {
 					receber.setCentrocusto( rs.getString( "CODCC" ) );
 					receber.setCodcliente( rs.getInt( "CODCLI" ) );
 					receber.setRazcliente( rs.getString( "RAZCLI" ) );
+					receber.setStatus( rs.getString( "STATUSITREC" ) );					
+					
 				}
 
 				rs.close();
