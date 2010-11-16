@@ -3772,6 +3772,8 @@ public class CnabUtil extends FbnUtil {
 		private int codcliente;
 
 		private String razcliente;
+		
+		private String status;
 
 		public Receber() {
 
@@ -3781,6 +3783,18 @@ public class CnabUtil extends FbnUtil {
 
 			setCodrec( arg0 );
 			setNrparcrec( arg1 );
+		}
+
+		
+		public String getStatus() {
+		
+			return status;
+		}
+
+		
+		public void setStatus( String status ) {
+		
+			this.status = status;
 		}
 
 		public Receber( String arg ) {
