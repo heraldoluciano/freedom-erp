@@ -67,9 +67,11 @@ public class FRVendasFisico extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 	
-	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	private JCheckBoxPad cbPorConserto = new JCheckBoxPad( "Por item de O.S", "S", "N" );
 
 	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private JRadioGroup<?, ?> rgTipoCusto = null;
 
 	private JRadioGroup<?, ?> rgOrdem = null;
 
@@ -93,8 +95,8 @@ public class FRVendasFisico extends FRelatorio {
 
 	public FRVendasFisico() {
 
-		setTitulo( "Fechamento Fisico de Vendas" );
-		setAtribos( 80, 80, 325, 500 );
+		setTitulo( "Físico de Vendas" );
+		setAtribos( 80, 80, 325, 540 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -111,7 +113,17 @@ public class FRVendasFisico extends FRelatorio {
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
-		rgTipo.setVlrString( "T" );
+		rgTipo.setVlrString( "G" );
+
+		Vector<String> vLabsCusto = new Vector<String>();
+		Vector<String> vValsCusto = new Vector<String>();
+		
+		vLabsCusto.addElement( "MPM" );
+		vLabsCusto.addElement( "Informado" );
+		vValsCusto.addElement( "ncustompm" );
+		vValsCusto.addElement( "ncustoinfo" );
+		rgTipoCusto = new JRadioGroup<String, String>( 1, 2, vLabsCusto, vValsCusto );
+		rgTipoCusto.setVlrString( "I" );
 
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
@@ -191,17 +203,29 @@ public class FRVendasFisico extends FRelatorio {
 		
 		adic( rgOrdem, 			7, 		180, 	273, 	30 ); 
 		adic( rgTipo, 			7, 		220, 	273, 	30 );
+		adic( rgTipoCusto,		7, 		260, 	273, 	30 );
 		
-		adic( rgFaturados, 		7, 		255, 	125, 	70 );
-		adic( rgFinanceiro, 	156, 	255, 	125, 	70 );
+		adic( rgFaturados, 		7, 		295, 	125, 	70 );
+		adic( rgFinanceiro, 	156, 	295, 	125, 	70 );
 		
-		adic( rgEmitidos,		 7,		330, 	125, 	70 );
-		adic( cbVendaCanc, 		153, 	330, 	200, 	20 );
-		adic( cbObsItVenda,		153, 	350, 	200, 	20 );
+		adic( rgEmitidos,		 7,		370, 	125, 	70 );
+		adic( cbVendaCanc, 		153, 	370, 	200, 	20 );
+		adic( cbPorConserto,	153, 	390, 	200, 	20 );
+		
+	}
+	
+	public void imprimir( boolean bVisualizar ) {
+		
+		if("S".equals( cbPorConserto.getVlrString() )) {
+			imprimirPorConserto( bVisualizar );
+		}
+		else {
+			imprimirPorVenda( bVisualizar );
+		}
 		
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimirPorVenda( boolean bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -300,12 +324,7 @@ public class FRVendasFisico extends FRelatorio {
 			sSQL.append( "SELECT SUBSTRING(P.CODGRUP FROM 1 FOR 4) as GRUPO," );
 			sSQL.append( "P.CODEMP, P.CODFILIAL, P.CODPROD,P.REFPROD," );
 			
-			if( "N".equals( cbObsItVenda.getVlrString() )) {
-				sSQL.append( "P.DESCPROD,");
-			}
-			else {
-				sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
-			}
+			sSQL.append( "P.DESCPROD,");
 			
 			sSQL.append( "G.DESCGRUP, " );
 
@@ -314,7 +333,7 @@ public class FRVendasFisico extends FRelatorio {
 			sSQL.append( "coalesce((SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null)),0) AS CUSTOMPMPROD " );
 
 			sSQL.append( ",IT.CODITVENDA," );
-			
+			 
 			sSQL.append( "coalesce(SUM(IT.QTDITVENDA),0) QTDITVENDA, coalesce(SUM(IT.VLRDESCITVENDA),0) VLRDESCITVENDA, coalesce(SUM(IT.VLRLIQITVENDA),0) VLRLIQITVENDA " );
 			
 			sSQL.append( "FROM VDVENDA V,VDITVENDA IT,EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM " );
@@ -371,6 +390,193 @@ public class FRVendasFisico extends FRelatorio {
 		}
 	}
 
+	public void imprimirPorConserto( boolean bVisualizar ) {
+
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			return;
+		}
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
+
+		/**
+		 * @version 24/01/2008 <BR>
+		 *          "Inicialização de variáveis com valor branco" - Implementação realizada por
+		 * @author Pedro Henrique (pedro.enrique.contech@gmail.com) <BR>
+		 *         Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)
+		 */
+
+		String sWhere1 = "";
+		String sWhere2 = "";
+		String sWhere3 = "";
+		String sWhere4 = "";
+
+		try {
+			
+			boolean usareferencia = comRef();
+
+			if ( "S".equals( rgFaturados.getVlrString() ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab.append( "FATURADO" );
+			}
+			else if ( "N".equals( rgFaturados.getVlrString() ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FATURADO" );
+			}
+			else if ( "A".equals( rgFaturados.getVlrString() ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
+
+			if ( "S".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "FINANCEIRO" );
+			}
+			else if ( "N".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FINANCEIRO" );
+			}
+			else if ( "A".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+
+			if ( "N".equals( cbVendaCanc.getVlrString() ) ) {
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			}
+
+			if ( txtCodVend.getText().trim().length() > 0 ) {
+				sWhere.append( " AND V.CODVEND=" );
+				sWhere.append( txtCodVend.getText().trim() );
+				sWhere.append( " AND V.CODEMPVD=" );
+				sWhere.append( Aplicativo.iCodEmp );
+				sWhere.append( " AND V.CODFILIALVD=" );
+				sWhere.append( lcVend.getCodFilial() );
+				if ( sCab.length() > 0 ) {
+					sCab.append( "\n" );
+				}
+				sCab.append( "Representante : " );
+				sCab.append( txtCodVend.getVlrString() );
+				sCab.append( " - " );
+				sCab.append( txtDescVend.getText().trim() );
+			}
+			
+			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
+				sWhere.append (" AND V.CODCLI = " + txtCodCli.getVlrInteger());;
+				sCab.append("\nCLIENTE: " + txtNomeCli.getVlrInteger());;
+			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sCab.append(" EMITIDOS " );
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere4 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( "NAO EMITIDOS" );
+			}
+
+			sSQL.append( "select ");
+//			sSQL.append( "coalesce(pd2.codgrup, pd1.codgrup) codgrup, ");
+			sSQL.append( "substring(coalesce(pd2.codgrup, pd1.codgrup) from 1 for 4) grupo, ");
+			sSQL.append( "coalesce(pd2.codemp, pd1.codemp) codemp , coalesce(pd2.codfilial, pd1.codfilial) codfilial, ");
+			sSQL.append( "coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(pd2.refprod,pd1.refprod) refprod, ");
+			sSQL.append( "coalesce(pd2.descprod,pd1.descprod) descprod, coalesce(g2.descgrup,g1.descgrup) descgrup, ");
+			sSQL.append( "(coalesce((select first 1 ");
+			
+			sSQL.append( rgTipoCusto.getVlrString() );
+			
+ 			sSQL.append(" from eqprodutosp01(pd2.codemp, pd2.codfilial, pd2.codprod,null,null,null)),0)) custompmprod, ");
+			sSQL.append( "iv.coditvenda, ");
+			sSQL.append( "coalesce(sum(iv.qtditvenda),0) qtditvenda, ");
+			sSQL.append( "coalesce(sum(iv.vlrdescitvenda),0) vlrdescitvenda, ");
+			sSQL.append( "coalesce(sum(iv.vlrliqitvenda),0) vlrliqitvenda ");
+
+			sSQL.append( "from eqtipomov tm, vdvenda v, vditvenda iv "); 
+			sSQL.append( "left outer join eqproduto pd1 on ");
+			sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+			sSQL.append( "left outer join eqgrupo g1 on ");
+			sSQL.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
+			sSQL.append( "left outer join vdvendaorc vo on ");
+			sSQL.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+			sSQL.append( "left outer join eqitrecmercitositorc iro on ");
+			sSQL.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
+			sSQL.append( "left outer join eqitrecmerc ir on ");
+			sSQL.append( "ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc ");
+			sSQL.append( "left outer join eqproduto pd2 on ");
+			sSQL.append( "pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod ");
+			sSQL.append( "left outer join eqgrupo g2 on ");
+			sSQL.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
+			
+			sSQL.append( "where V.DTEMITVENDA BETWEEN ? AND ? AND Iv.CODEMP=? AND Iv.CODFILIAL=? and ");
+			sSQL.append( "tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov " );
+			sSQL.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda " );
+						
+			sSQL.append( sWhere );
+			sSQL.append( sWhere1 );
+			sSQL.append( sWhere2 );
+			sSQL.append( sWhere3 ); 
+			sSQL.append( sWhere4 );			
+
+			sSQL.append( "AND iv.QTDITVENDA > 0 " );
+			sSQL.append( "AND (V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + ") " );
+			sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
+			
+			sSQL.append( "group by 1, 2, 3, 4, 5, 6, 7 , Pd2.codemp, pd2.codfilial, pd2.codprod, 9 " ); 
+			sSQL.append( "ORDER BY 1," ); 
+			sSQL.append( "C".equals( rgOrdem.getVlrString() ) ? comRef() ? "5" : "4" : "6" );
+			
+			System.out.println("SQL por conserto:" + sSQL.toString());
+			
+			ps = con.prepareStatement( sSQL.toString() );
+
+			int iparam = 1;
+
+			// ps.setInt( 1, Aplicativo.iCodEmp );
+			// ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+
+	
+			
+			rs = ps.executeQuery();
+			
+			if ( "T".equals( rgTipo.getVlrString() ) ) {
+				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString(), 130 ), usareferencia );
+			}
+			else if ( "G".equals( rgTipo.getVlrString() ) ) {
+				imprimirGrafico( bVisualizar, rs, sCab.toString() ); 
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro consulta ao relatório de vendas fisico!" + err.getMessage() );
+		} finally {
+			System.gc();
+		}
+	}
+
+	
+	
+	
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab, boolean usareferencia ) {
 
 		String sCodGrup = null;
@@ -382,9 +588,6 @@ public class FRVendasFisico extends FRelatorio {
 
 		try {
 
-			
-			
-			
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.limpaPags();
