@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,6 +67,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.view.dialog.utility.DLIdentCli;
@@ -80,6 +82,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final String TIPO_FEBRABAN;
 
+	protected final JLabel lbValorSelecionado = new JLabel();
+
 	private JPanelPad panelRodape = null;
 
 	private final JPanelPad panelRemessa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -90,7 +94,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	private final JPanelPad panelFuncoes = new JPanelPad();
 
-	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelStatus = new JPanelPad( );
 
 	private final JPanelPad panelImp = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
 
@@ -137,6 +141,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	public Map<Enum<EPrefs>, Object> prefs = new HashMap<Enum<EPrefs>, Object>();
 
 	protected String where = "";
+
+	protected BigDecimal vlrselecionado = null;
 
 	public FRemFBN( final String tipofebraban ) {
 
@@ -332,9 +338,14 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
 
 		lbStatus.setForeground( Color.BLUE );
+		
+		lbValorSelecionado.setForeground( Color.BLUE );
 
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
-		panelStatus.add( lbStatus, BorderLayout.WEST );
+//		panelStatus.add( lbStatus, BorderLayout.WEST );
+		panelStatus.adic( lbStatus, 0, 0, 200, 20 );
+		panelStatus.adic( lbValorSelecionado, 303, 0, 200, 20 );
+
 
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
@@ -419,7 +430,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
 			ps.setString( 5, txtCodBanco.getVlrString() );
 			ps.setString( 6, TIPO_FEBRABAN );
-		    ps.setInt( 7, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -479,7 +490,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.PADRAOCNAB, rs.getString( EPrefs.PADRAOCNAB.toString() ) );
 				prefs.put( EPrefs.TPNOSSONUMERO, rs.getString( EPrefs.TPNOSSONUMERO.toString() ) );
 				prefs.put( EPrefs.IMPDOCBOL, rs.getString( EPrefs.IMPDOCBOL.toString() ) );
-				
+
 				retorno = true;
 			}
 			else {
@@ -499,6 +510,32 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 
 		return retorno;
+	}
+
+	protected void calcSelecionado() {
+
+		try {
+
+			vlrselecionado = new BigDecimal( 0 );
+
+			for(int i=0; tab.getNumLinhas() > i; i++) {
+
+				if((Boolean) tab.getValor( i, EColTab.COL_SEL.ordinal() )) {
+
+					String strvalor = ((StringDireita) tab.getValor( i, EColTab.COL_VLRAPAG.ordinal())).toString() ;
+					BigDecimal bdvalor = ConversionFunctions.stringToBigDecimal( strvalor );
+
+					vlrselecionado = vlrselecionado.add(bdvalor);
+				}
+
+			}
+
+			lbValorSelecionado.setText( Funcoes.bdToStr( vlrselecionado, Aplicativo.casasDecFin ).toString() );
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	protected ResultSet executeQuery() throws SQLException {
@@ -617,6 +654,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			if ( "2".equals( rgTipoRemessa.getVlrString() ) ) {
 				selecionaNada();
 			}
+			
+			calcSelecionado();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" + e.getMessage() );
@@ -664,19 +703,19 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) } ) );
 				hsRec.add( new FbnUtil().new StuffRec(
-				/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
-				/* 1 */(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
-				/* 2 */new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
-						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
-						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
-						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
-						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), 
-						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
-						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), 
-						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), 
-						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
-						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
-						String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) )
+						/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
+						/* 1 */(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
+						/* 2 */new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
+								(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+								Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
+								ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), 
+								(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
+								(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), 
+								String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), 
+								Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
+								String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
+								String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) )
 						} ) );
 			}
 		}
@@ -948,9 +987,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 		else if ( evt.getSource() == btSelTudo ) {
 			selecionaTudo();
+			calcSelecionado();
 		}
 		else if ( evt.getSource() == btSelNada ) {
 			selecionaNada();
+			calcSelecionado();
 		}
 		else if ( evt.getSource() == btExporta ) {
 			execExporta();
