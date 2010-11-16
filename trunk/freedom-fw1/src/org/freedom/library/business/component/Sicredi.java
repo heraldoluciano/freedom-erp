@@ -49,11 +49,12 @@ public class Sicredi extends Banco {
 		super();
 	}
 
-	public Sicredi(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String contap, String carteira,
+	public Sicredi(String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String tpnossonumero, String convenio, Long rec, Long nparc, String agencia, String contap, String carteira,
 			String modalidade) {
 
 		setMoeda(new Integer(codmoeda).intValue());
 		setValorTitulo(vlrtitulo);
+		setTpnossonumero(tpnossonumero);
 		setCodcli(convenio);
 		setConvenio(convenio);
 		setAgencia(agencia);
