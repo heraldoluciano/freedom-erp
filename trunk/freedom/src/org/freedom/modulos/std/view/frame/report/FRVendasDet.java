@@ -69,6 +69,8 @@ public class FRVendasDet extends FRelatorio {
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -92,7 +94,7 @@ public class FRVendasDet extends FRelatorio {
 
 	private ListaCampos lcVend = new ListaCampos( this );
 	
-	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	private JCheckBoxPad cbPorConserto = new JCheckBoxPad( "Por item de O.S", "S", "N" );
 	
 	private JRadioGroup<?, ?> rgEmitidos = null;
 	
@@ -158,7 +160,9 @@ public class FRVendasDet extends FRelatorio {
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		
 		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
@@ -213,15 +217,24 @@ public class FRVendasDet extends FRelatorio {
 		adic( rgFinanceiro, 153,	265, 	120, 	70 );
 		adic( rgEmitidos,	7,		340, 	120, 	70 );
 		
-		
 		adic( cbVendaSubcli, 153,	340, 	200, 	20 );
 		adic( cbVendaCanc, 	 153,	360, 	230, 	20 );
-		adic( cbObsItVenda,  153,	380, 	230, 	20 );
-
+		adic( cbPorConserto,  153,	380, 	230, 	20 );
 
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+		
+		if("S".equals( cbPorConserto.getVlrString() )) {
+			imprimirPorConserto( bVisualizar );
+		}
+		else {
+			imprimirPorVenda( bVisualizar );
+		}
+		
+	}
+	
+	public void imprimirPorVenda( boolean bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -330,7 +343,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( "V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," );
 			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,");
 			
-			if( "N".equals( cbObsItVenda.getVlrString() )) {
+			if( "N".equals( cbPorConserto.getVlrString() )) {
 				sSQL.append( "P.DESCPROD,");
 			}
 			else {
@@ -360,6 +373,176 @@ public class FRVendasDet extends FRelatorio {
 			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			rs = ps.executeQuery();
+
+			if ( "T".equals( rgTipo.getVlrString() ) ) {
+				imprimirTexto( bVisualizar, rs, sCab.toString(), bComRef );
+			}
+			else if ( "G".equals( rgTipo.getVlrString() ) ) {
+				imprimirGrafico( bVisualizar, rs, sCab.toString(), bComRef );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+	}
+	
+	public void imprimirPorConserto( boolean bVisualizar ) {
+
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			return;
+		}
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		String sWhere1 = null;
+		String sWhere2 = null;
+		String sWhere3 = "";
+		String sWhere4 = "";
+		String sWhere5 = "";
+		String sWhere6 = "";
+		String sWhere7 = "";
+
+		boolean bComRef = comRef();
+
+		try {
+
+			if ( rgFaturados.getVlrString().equals( "S" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab.append( "FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
+
+			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			}
+			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
+				if ( sCab.length() > 0 ) {
+					sCab.append( "\n" );
+				}
+				if ( cbVendaSubcli.getVlrString().equals( "S" ) ) {
+					sWhere6 = " AND C.CODPESQ=" + txtCodCli.getVlrInteger().intValue() + " ";
+					sCab.append( "Cliente principal: " );
+				}
+				else {
+					sWhere4 = " AND C.CODCLI=" + txtCodCli.getVlrInteger().intValue() + " ";
+					sCab.append( "Cliente : " );
+				}
+				sCab.append( txtRazCli.getVlrString() );
+			}
+			if ( txtCodProd.getVlrInteger().intValue() > 0 ) {
+				sWhere5 = " AND coalesce(pd2.CODPROD,pd1.codprod)=" + txtCodProd.getVlrInteger().intValue() + " ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( "\n" );
+				}
+				sCab.append( "Produto : " );
+				sCab.append( txtDescProd.getVlrString() );
+			}
+			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+				sWhere5 = " AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( "\n" );
+				}
+				sCab.append( "Comissionado :" );
+				sCab.append( txtNomeVend.getVlrString() );
+			}
+			if ( !"".equals( txtCidCli.getVlrString().trim() ) ) {
+				sWhere7 = " AND C.CIDCLI='" + txtCidCli.getVlrString().trim() + "'";
+
+				sCab.append( " - CID.:  " );
+				sCab.append( txtCidCli.getVlrString() );
+			}
+
+			if ( !"".equals( txtIdUsu.getVlrString().trim() ) ) {
+				sWhere7 = " AND V.IDUSUINS='" + txtIdUsu.getVlrString().trim().toUpperCase() + "'";
+
+				sCab.append( " - USU.:  " );
+				sCab.append( txtIdUsu.getVlrString().trim().toUpperCase() );
+			}
+
+			sSQL.append( "SELECT VO.CODORC, " );
+			
+			sSQL.append( "V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," );
+			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,coalesce(pd2.CODPROD,pd1.codprod) codprod, coalesce(pd2.REFPROD,pd1.refprod) refprod,");
+			
+			sSQL.append( "coalesce(pd2.DESCPROD,pd1.descprod) descprod,");
+			
+			sSQL.append( "Iv.CODLOTE," );
+			sSQL.append( "Iv.QTDITVENDA,Iv.PRECOITVENDA,Iv.VLRDESCITVENDA,Iv.VLRLIQITVENDA " );
+			
+			sSQL.append( "from fnplanopag pp, vdcliente c, eqtipomov tm, vdvenda v, vditvenda iv "); 
+			sSQL.append( "left outer join eqproduto pd1 on ");
+			sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+			sSQL.append( "left outer join eqgrupo g1 on ");
+			sSQL.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
+			sSQL.append( "left outer join vdvendaorc vo on ");
+			sSQL.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+			sSQL.append( "left outer join eqitrecmercitositorc iro on ");
+			sSQL.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
+			sSQL.append( "left outer join eqitrecmerc ir on ");
+			sSQL.append( "ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc ");
+			sSQL.append( "left outer join eqproduto pd2 on ");
+			sSQL.append( "pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod ");
+			sSQL.append( "left outer join eqgrupo g2 on ");
+			sSQL.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
+			
+			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " );
+			sSQL.append( "AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
+			sSQL.append( "AND Iv.CODEMP=V.CODEMP AND Iv.CODFILIAL=V.CODFILIAL AND Iv.CODVENDA=V.CODVENDA AND Iv.TIPOVENDA=V.TIPOVENDA " );
+			
+			sSQL.append( sWhere1 );
+			sSQL.append( sWhere2 );
+			sSQL.append( sWhere3 );
+			sSQL.append( sWhere4 );
+			sSQL.append( sWhere5 );
+			sSQL.append( sWhere6 );
+			sSQL.append( sWhere7 );
+			
+			sSQL.append( "ORDER BY V.CODVENDA,Iv.CODITVENDA,V.DTEMITVENDA" );
+
+			ps = con.prepareStatement( sSQL.toString() );
+			
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			
 			rs = ps.executeQuery();
 
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
