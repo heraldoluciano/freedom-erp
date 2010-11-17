@@ -100,7 +100,13 @@ public class FRMediaItem extends FRelatorio {
 	private ListaCampos lcMarca = new ListaCampos( this );
 
 	private ListaCampos lcVend = new ListaCampos( this );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
 
+	private Vector<String> vValsEmit = new Vector<String>();
+	
 	public FRMediaItem() {
 
 		setTitulo( "Media de vendas por item" );
@@ -159,6 +165,16 @@ public class FRMediaItem extends FRelatorio {
 		vValsFin.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
@@ -191,13 +207,18 @@ public class FRMediaItem extends FRelatorio {
 		adic( new JLabelPad( "Cód.comiss." ), 7, 205, 200, 20 );
 		adic( txtCodVend, 7, 225, 70, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 80, 205, 200, 20 );
+		
 		adic( txtDescVend, 80, 225, 200, 20 );
-		adic( rgFaturados, 7, 250, 120, 75 );
-		adic( rgFinanceiro, 158, 250, 120, 75 );
-		adic( lbLinha4, 7, 335, 273, 2 );
-		adic( lbOrdem, 7, 345, 80, 15 );
-		adic( rgOrdem, 7, 370, 273, 30 );
-		adic( cbVendaCanc, 7, 410, 200, 20 );
+
+		adic( lbOrdem, 7, 250, 80, 15 );
+		adic( rgOrdem, 7, 275, 273, 30 );
+
+		adic( rgFaturados, 		  7,	315, 	120, 	75 );
+		adic( rgFinanceiro, 	158, 	315, 	120, 	75 );		
+		adic( rgEmitidos,		  7,	395, 	120, 	70 );
+		
+		adic( cbVendaCanc, 158, 395, 200, 20 );
+
 
 	}
 
@@ -232,6 +253,7 @@ public class FRMediaItem extends FRelatorio {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sWhere4 = "";
 		String sFiltroVend = "";
 		String sCab = "";
 		String sCab1 = "";
@@ -240,12 +262,14 @@ public class FRMediaItem extends FRelatorio {
 		String sCodProd = "";
 		String sSubCab = "";
 		String sSubWhere = "";
+		
 		double dQtd[] = new double[ 12 ];
 		int iPos = 68;
 		int iAno = txtAnofim.getVlrInteger().intValue();
 		int iMes = txtMesfim.getVlrInteger().intValue();
 		int iNumMes = txtNumMes.getVlrInteger().intValue();
 		int iNumItens = 0;
+		
 		if ( iAno < 1 ) {
 			Funcoes.mensagemInforma( this, "Ano inválido!" );
 			return;
@@ -301,29 +325,55 @@ public class FRMediaItem extends FRelatorio {
 
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+		
+		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+			sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+		}
+		else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+			sWhere4 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+		}
 
 		int iSoma = 0;
 		String sOr = "";
+		
 		for ( int i = 0; i < iNumMes; i++ ) {
+			
 			cIni.set( Calendar.MONTH, cIni.get( Calendar.MONTH ) + 1 );
+			
 			if ( txtCodVend.getText().trim().length() > 0 ) {
 				sFiltroVend = " V" + ( i + 2 ) + ".CODVEND = " + txtCodVend.getText().trim();
 				String sTmp = "REPR.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
-				sFiltroVend += " AND V" + ( i + 2 ) + ".CODEMPVD=" + Aplicativo.iCodEmp + " AND V" + ( i + 2 ) + ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
+				sFiltroVend += " AND V" + ( i + 2 ) + ".CODEMPVD=" + Aplicativo.iCodEmp + " AND V" + ( i + 2 ) 
+				+ ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
 				sCab = sTmp;
 			}
-			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n" + " EQTIPOMOV TM WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
-					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV" + sWhere1 + sWhere2 + sWhere3 + " AND TM.CODEMP=V.CODEMPTM" + " AND TM.CODFILIAL=V.CODFILIALTM" + " AND TM.TIPOMOV IN ('VD','PV','VT','SE')" + " AND V.DTEMITVENDA BETWEEN '" + Funcoes.dateToStrDB( cIni.getTime() ) + "' AND '"
-					+ Funcoes.dateToStrDB( Funcoes.periodoMes( cIni.get( Calendar.MONTH ) + 1, cIni.get( Calendar.YEAR ) )[ 1 ] ) + "')";
+			
+			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n" 
+				+ " EQTIPOMOV TM WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) 
+				+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
+				+ " AND TM.CODTIPOMOV=V.CODTIPOMOV" 
+				+ sWhere1 
+				+ sWhere2 
+				+ sWhere3
+				+ sWhere4 
+				+ " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM" 
+				+ " AND TM.TIPOMOV IN ('VD','PV','VT','SE') AND V.DTEMITVENDA BETWEEN '" 
+				+ Funcoes.dateToStrDB( cIni.getTime() ) 
+				+ "' AND '"
+				+ Funcoes.dateToStrDB( Funcoes.periodoMes( cIni.get( Calendar.MONTH ) + 1, cIni.get( Calendar.YEAR ) )[ 1 ] ) + "')";
+			
+			
 			sSubWhere += sOr + "EXISTS (SELECT IT" + ( i + 2 ) + ".CODPROD FROM VDITVENDA IT" + ( i + 2 ) + ",\n" + "VDVENDA V" + ( i + 2 ) + " WHERE " + sFiltroVend + "V" + ( i + 2 ) + ".FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " AND IT"
 					+ ( i + 2 ) + ".CODPROD = P.CODPROD\n" + " AND V" + ( i + 2 ) + ".CODVENDA = IT" + ( i + 2 ) + ".CODVENDA\n" + " AND V" + ( i + 2 ) + ".TIPOVENDA = IT" + ( i + 2 ) + ".TIPOVENDA\n" + " AND V" + ( i + 2 ) + ".DTEMITVENDA BETWEEN '" + Funcoes.dateToStrDB( cIni.getTime() )
 					+ "' AND '" + Funcoes.dateToStrDB( Funcoes.periodoMes( cIni.get( Calendar.MONTH ) + 1, cIni.get( Calendar.YEAR ) )[ 1 ] ) + "')";
-			sSubCab += " | " + StringFunctions.strZero( "" + ( cIni.get( Calendar.MONTH ) + 1 ), 2 );
-			sSubCab += "/" + ( cIni.get( Calendar.YEAR ) );
+			sSubCab += "| " + StringFunctions.strZero( "" + ( cIni.get( Calendar.MONTH ) + 1 ), 2 ) ;
+			sSubCab += "/" + ( cIni.get( Calendar.YEAR ) ) + " ";
 			sOr = " OR ";
 			iSoma++;
 		}
-		sSubCab += " | Media    ";
+		
+		sSubCab += "|Media       |";
+		
 		if ( txtCodGrup.getText().trim().length() > 0 ) {
 			sWhere += "P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%' AND ";
 			sCab = "GRUPO: " + txtDescGrup.getText().trim();
@@ -333,7 +383,10 @@ public class FRMediaItem extends FRelatorio {
 			sCab = "MARCA: " + txtDescMarca.getText().trim();
 		}
 
-		String sSQL = "SELECT P." + sCodProd + ",P.DESCPROD,P.SLDPROD,P.DTULTCPPROD,P.QTDULTCPPROD\n" + sSubSel + " FROM EQPRODUTO P" + sWhere + " (" + sSubWhere + ") ORDER BY " + sOrder;
+		String sSQL = "SELECT P." + sCodProd + ",P.DESCPROD,P.SLDPROD,P.DTULTCPPROD,P.QTDULTCPPROD\n" 
+		+ sSubSel + " FROM EQPRODUTO P" 
+		+ sWhere + " (" + sSubWhere + ") ORDER BY " + sOrder;
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		System.out.println( sSQL );
@@ -361,11 +414,10 @@ public class FRMediaItem extends FRelatorio {
 					imp.say( imp.pRow() + 0, 16, "  Desc. Produto                            " );
 					imp.say( imp.pRow() + 0, 59, "| Estoque  " );
 					imp.say( imp.pRow() + 0, 70, "| Dt.Ult.Cp. " );
-					imp.say( imp.pRow() + 0, 83, "| Q.Ult.Cp " );
+					imp.say( imp.pRow() + 0, 83, "| Q.Ult.Cp |" );
 					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|  " );
-					imp.say( imp.pRow() + 0, 4, sSubCab );
+					imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+					imp.say( imp.pRow() + 1, 0, sSubCab );
 					imp.say( imp.pRow() + 0, 135, "|" );
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
@@ -378,30 +430,41 @@ public class FRMediaItem extends FRelatorio {
 					imp.say( imp.pRow() + 0, 70, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DTULTCPPROD" ) ) + " " );
 				}
 				else {
-					imp.say( imp.pRow() + 0, 70, "|            " );
+					imp.say( imp.pRow() + 0, 70, "|    N/C   " );
 				}
-				imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "QTDULTCPPROD" ) ) + " " );
+				
+				imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "QTDULTCPPROD" ) ) + "  " );
 				imp.say( imp.pRow() + 0, 135, "|" );
+				imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "|  " );
+				
 				double dSomaItem = 0;
 				double dMediaItem = 0;
-				iPos = 4;
+
+				iPos = 0;
+				
 				for ( int i = 0; i < iSoma; i++ ) {
-					imp.say( imp.pRow() + 0, iPos, " | " + Funcoes.strDecimalToStrCurrency( 7, 0, rs.getString( 6 + i ) != null ? rs.getString( 6 + i ) : " " ) );
+					
+					imp.say( imp.pRow() + 0, iPos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, rs.getString( 6 + i ) != null ? rs.getString( 6 + i ) : "0" ) + " " );
 					dQtd[ i ] += rs.getDouble( 6 + i );
 					dSomaItem += rs.getDouble( 6 + i );
 					iPos += 10;
+					
 				}
+				
 				dMediaItem = dSomaItem / iNumMes;
+				
 				imp.say( imp.pRow() + 0, iPos, " | " + Funcoes.strDecimalToStrCurrency( 7, 0, "" + dMediaItem ) );
+				imp.say( imp.pRow() + 0, 94, "|" );
 				imp.say( imp.pRow() + 0, 135, "|" );
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+				
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.incPags();
 					imp.eject();
 				}
+				
 				iNumItens++;
 			}
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
@@ -413,7 +476,7 @@ public class FRMediaItem extends FRelatorio {
 			for ( int i = 0; i < iSoma; i++ ) {
 				BigDecimal bVal = new BigDecimal( dQtd[ i ] );
 				bVal = bVal.setScale( 1 );
-				imp.say( imp.pRow() + 0, iPos, "| tst" + Funcoes.strDecimalToStrCurrency( 7, 0, "" + bVal ) );
+				imp.say( imp.pRow() + 0, iPos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, "" + bVal ) );
 				iPos += 10;
 			}
 
