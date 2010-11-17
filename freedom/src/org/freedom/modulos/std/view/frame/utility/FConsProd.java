@@ -49,6 +49,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -164,6 +165,8 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 	private ListaCampos lcMarca = new ListaCampos( this, "MC" );
 
 	private ListaCampos lcGrup = new ListaCampos( this, "GP" );
+	
+	private JCheckBoxPad cbPorConserto = new JCheckBoxPad( "Por item de O.S", "S", "N" );
 
 	private boolean bPrefs[] = null;
 
@@ -372,6 +375,9 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		pinLbPeriodoVenda.tiraBorda();
 		pinPeriodoVenda.adic( pinLbPeriodoVenda, 10, 2, 51, 15 );
 		pinPeriodoVenda.adic( pinPeriodoVendaCab, 7, 10, 260, 44 );
+		
+		pinPeriodoVenda.adic(cbPorConserto, 300, 20, 120, 20);
+		
 		pnVendas.add( pinPeriodoVenda, BorderLayout.NORTH );
 		pnVendas.add( spnVendas, BorderLayout.CENTER );
 
@@ -484,7 +490,20 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 
 	}
 
-	private void carregaVendas() {
+	
+	public void carregaVendas( ) {
+		
+		if("S".equals( cbPorConserto.getVlrString() )) {
+			carregaVendasPorConserto();
+		}
+		else {
+			carregaVendasPorVenda();
+		}
+		
+	}
+
+	
+	private void carregaVendasPorVenda() {
 
 		if ( validaPeriodoVenda() ) {
 			String sSQL2 = "SELECT IT.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA,IT.PRECOITVENDA,IT.VLRICMSITVENDA," + "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.CODCLI,C.RAZCLI,V.DOCVENDA," + "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA, IT.TIPOVENDA "
@@ -495,6 +514,89 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 			try {
 				tabVendas.limpa();
 				PreparedStatement ps = con.prepareStatement( sSQL2 );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+
+				// Alterado o parâmetro do ListaCampos.getMasterFilial de "EQPRODUTO" para "VDVENDA"
+				// pois não se trata de uma tabela compartilhada entre filiais, gerando como retorno o ID da filial
+				// que está em uso, sendo usado na clausula where da instrução de pesquisa dos registros de compra e venda
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+
+				ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+				ps.setDate( 4, Funcoes.dateToSQLDate( txtDtVdIni.getVlrDate() ) );
+				ps.setDate( 5, Funcoes.dateToSQLDate( txtDtVdFim.getVlrDate() ) );
+				ResultSet rs = ps.executeQuery();
+
+				for ( int i = 0; rs.next(); i++ ) {
+					tabVendas.adicLinha();
+
+					tabVendas.setValor( new Integer( rs.getInt( "CODVENDA" ) ), i, 0 );
+					tabVendas.setValor( rs.getString( "DOCVENDA" ), i, 1 );
+					tabVendas.setValor( rs.getString( "CODCLI" ), i, 2 );
+					tabVendas.setValor( rs.getString( "RAZCLI" ), i, 3 );
+					tabVendas.setValor( new Integer( rs.getInt( "CODITVENDA" ) ), i, 4 );
+
+					tabVendas.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITVENDA" ) ), i, 5 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "QTDITVENDA" ) ), i, 6 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRPRODITVENDA" ) ), i, 7 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRDESCITVENDA" ) ), i, 8 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRADICITVENDA" ) ), i, 9 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRLIQITVENDA" ) ), i, 10 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRICMSITVENDA" ) ), i, 11 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRIPIITVENDA" ) ), i, 12 );
+					tabVendas.setValor( rs.getString( "TIPOVENDA" ), i, 13 );
+
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+
+			} catch ( SQLException err ) {
+				System.out.println( "Erro ao montar a tabela de vendas/produto!\n" + err.getMessage() );
+				err.printStackTrace();
+			}
+		}
+	}
+	
+	private void carregaVendasPorConserto() {
+
+		StringBuilder sSQL = new StringBuilder("");
+		
+		if ( validaPeriodoVenda() ) {
+			
+			sSQL.append( "select iv.codvenda, iv.coditvenda, vd.dtemitvenda, iv.precoitvenda, iv.vlricmsitvenda, " );
+			sSQL.append( "iv.vlripiitvenda, iv.vlrliqitvenda, iv.vlrdescitvenda, coalesce(pd2.codprod,pd1.codprod) codprod, ");
+			sSQL.append( "coalesce(pd2.refprod, pd1.refprod) refprod, c.codcli, c.razcli, vd.docvenda, iv.vlrproditvenda, iv.vlradicitvenda, iv.qtditvenda, iv.tipovenda ");
+			
+			sSQL.append( "from vdcliente c, vdvenda vd, vditvenda iv "); 
+			sSQL.append( "left outer join eqproduto pd1 on ");
+			sSQL.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+			sSQL.append( "left outer join eqgrupo g1 on ");
+			sSQL.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
+			sSQL.append( "left outer join vdvendaorc vo on ");
+			sSQL.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+			sSQL.append( "left outer join eqitrecmercitositorc iro on ");
+			sSQL.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
+			sSQL.append( "left outer join eqitrecmerc ir on ");
+			sSQL.append( "ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc ");
+			sSQL.append( "left outer join eqproduto pd2 on ");
+			sSQL.append( "pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod ");
+			sSQL.append( "left outer join eqgrupo g2 on ");
+			sSQL.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
+			
+			sSQL.append( "WHERE Iv.CODEMP=? AND Iv.CODFILIAL=? ");
+			sSQL.append( "AND coalesce(pd2.codprod,pd1.codprod) = ? ");				
+			
+			sSQL.append( "AND Vd.DTEMITVENDA BETWEEN ? AND ? ");
+			sSQL.append( "AND Vd.CODVENDA=Iv.CODVENDA AND Vd.CODEMP=Iv.CODEMP AND Vd.CODFILIAL=Iv.CODFILIAL AND Vd.TIPOVENDA=Iv.TIPOVENDA ");
+			sSQL.append( "AND C.CODCLI=Vd.CODCLI AND C.CODEMP=Vd.CODEMPCL AND C.CODFILIAL=Vd.CODFILIALCL ");
+			
+			sSQL.append( " ORDER BY Vd.DTEMITVENDA DESC" );
+			
+			
+			System.out.println( sSQL.toString() );
+			try {
+				tabVendas.limpa();
+				PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 
 				// Alterado o parâmetro do ListaCampos.getMasterFilial de "EQPRODUTO" para "VDVENDA"
@@ -1007,17 +1109,16 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 
 	private void montaTela() {
 
-		pinCab.adic( new JLabelPad( "Cód.prod." ), 7, 0, 60, 20 );
 		pinCab.adic( new JLabelPad( "Descrição do produto" ), 80, 0, 200, 20 );
 
 		if ( bPrefs[ 0 ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
-			pinCab.adic( txtRefProd, 7, 20, 70, 20 );
+			pinCab.adic( txtRefProd, 7, 20, 70, 20, "Ref.Prod." );
 			txtRefProd.requestFocus();
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
-			pinCab.adic( txtCodProd, 7, 20, 70, 20 );
+			pinCab.adic( txtCodProd, 7, 20, 70, 20,"Cód.Prod." );
 			txtCodProd.requestFocus();
 		}
 
