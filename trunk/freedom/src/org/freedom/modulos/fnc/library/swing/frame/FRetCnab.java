@@ -217,15 +217,27 @@ public class FRetCnab extends FRetFBN {
 				else { // Padrão CNAB 400
 
 					tipo = line.charAt( 0 );
-
+					RegT400 reg1 = null;
 					switch ( tipo ) {
 						case '0' :
 							regHeader = cnabutil.new RegHeader( line );
 							list.add( regHeader );
 							break;
-						case '1' :
+						case '1' :  // Cnab 400 convênio menor que 1.000.000
 //							RegT400 reg1 = cnabutil.new RegT400( line );
-							RegT400 reg1 = cnabutil.new RegT400(  );
+							reg1 = cnabutil.new RegT400(  );
+							reg1.setCodBanco( txtCodBanco.getVlrString() );
+							reg1.parseLine( line );
+							list.add( reg1 );
+
+							if ( reg1 == null || !regHeader.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+								Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
+								return false;
+							}
+							break;
+						case '7' :  // Cnab 400 convênio acima de 1.000.000
+//							RegT400 reg1 = cnabutil.new RegT400( line );
+							reg1 = cnabutil.new RegT400(  );
 							reg1.setCodBanco( txtCodBanco.getVlrString() );
 							reg1.parseLine( line );
 							list.add( reg1 );

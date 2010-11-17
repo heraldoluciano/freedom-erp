@@ -5260,8 +5260,26 @@ public class CnabUtil extends FbnUtil {
 							
 							System.out.println( "Rejeição...." + line.substring( 86,88 ));
 							
-							
+						} else if ( "7".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
 
+							setIdentTitEmp( line.substring( 38, 63 ) ); // Posição 39 a 63 - Nro Controle do Participante
+							setCodCarteira( Integer.parseInt( line.substring( 107, 109 ) ) ); // Posição 108 a 109 - Código da carteira
+							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
+							setVlrOutrasDesp( strToBigDecimal( line.substring( 188, 201 ) ) ); // 189 a 201 - Outras despesas
+							setVlrJurosMulta( strToBigDecimal( line.substring( 201, 214 ) ) ); // 202 a 214 - Juros do desconto
+							setVlrIOF( strToBigDecimal( line.substring( 214, 227 ) ) ); // 215 a 227 - IOF do desconto
+							setVlrAbatimento( strToBigDecimal( line.substring( 227, 240 ) ) ); // 228 a 240 - Valor do abatimento
+							setVlrDesc( strToBigDecimal( line.substring( 240, 253 ) ) ); // 241 a 253 - Desconto concedido 
+							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) ); // 254 a 266 - Valor recebido (valor recebido parcial)
+							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) ); // 267 a 279 - Juros de mora
+							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) ); // 280 a 292 - Outros recebimentos
+							if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {							
+								setDataCred( stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) ); // 176 a 181 - Data do crédito (DDMMAAAA)
+							}
+							else {
+								setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
+							}
+							System.out.println( "Rejeição...." + line.substring( 86,88 ));
 						}
 						else {
 							Funcoes.mensagemErro( null, "Erro na leitura do arquivo de retorno.\nNão é um registro de transação válido para o padrão CNAB 400!" );
