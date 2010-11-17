@@ -252,6 +252,7 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere5 = "";
 		String sWhere6 = "";
 		String sWhere7 = "";
+		String sWhere8 = "";
 
 		boolean bComRef = comRef();
 
@@ -335,6 +336,15 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( " - USU.:  " );
 				sCab.append( txtIdUsu.getVlrString().trim().toUpperCase() );
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere8 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sCab.append(" EMITIDOS " );
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere8 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( "NAO EMITIDOS" );
+			}
 
 			sSQL.append( "SELECT " );
 			sSQL.append( "	( SELECT VO.CODORC FROM VDVENDAORC VO " );
@@ -343,12 +353,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( "V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," );
 			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,");
 			
-			if( "N".equals( cbPorConserto.getVlrString() )) {
-				sSQL.append( "P.DESCPROD,");
-			}
-			else {
-				sSQL.append( "coalesce(IT.OBSITVENDA,p.descprod) AS DESCPROD, ");
-			}
+			sSQL.append( "P.DESCPROD,");
 			
 			sSQL.append( "IT.CODLOTE," );
 			sSQL.append( "IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA " );
@@ -359,6 +364,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 			sSQL.append( "AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA " );
 			sSQL.append( "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " );
+			
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
@@ -366,6 +372,8 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( sWhere5 );
 			sSQL.append( sWhere6 );
 			sSQL.append( sWhere7 );
+			sSQL.append( sWhere8 );
+			
 			sSQL.append( "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA" );
 
 			ps = con.prepareStatement( sSQL.toString() );
@@ -410,6 +418,7 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere5 = "";
 		String sWhere6 = "";
 		String sWhere7 = "";
+		String sWhere8 = "";
 
 		boolean bComRef = comRef();
 
@@ -493,6 +502,16 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( " - USU.:  " );
 				sCab.append( txtIdUsu.getVlrString().trim().toUpperCase() );
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere8 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sCab.append(" EMITIDOS " );
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere8 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( "NAO EMITIDOS" );
+			}
+
 
 			sSQL.append( "SELECT VO.CODORC, " );
 			
@@ -533,6 +552,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( sWhere5 );
 			sSQL.append( sWhere6 );
 			sSQL.append( sWhere7 );
+			sSQL.append( sWhere8 );
 			
 			sSQL.append( "ORDER BY V.CODVENDA,Iv.CODITVENDA,V.DTEMITVENDA" );
 
