@@ -27,7 +27,10 @@
 	<parameter name="USUARIO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="LOGOEMP" isForPrompting="false" class="java.lang.Object"/>
 	<parameter name="TITULO" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[select vd.codvend, ve.nomevend, it.codprod, pd.descprod, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, vd.codcli, cl.nomecli, vd.docvenda, vd.dtemitvenda
+	<parameter name="COMREF" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select vd.codvend, ve.nomevend, it.codprod, pd.descprod, pd.refprod, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, vd.codcli, cl.nomecli, vd.docvenda, vd.dtemitvenda
 from vditvenda it, eqproduto pd, vdvenda vd, vdcliente cl, vdvendedor ve
 where
 it.codemp=vd.codemp and it.codfilial=vd.codfilial and it.codvenda=vd.codvenda and it.tipovenda=vd.tipovenda and
@@ -41,6 +44,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="REFPROD" class="java.lang.String"/>
 	<field name="QTDITVENDA" class="java.math.BigDecimal"/>
 	<field name="PRECOITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITVENDA" class="java.math.BigDecimal"/>
@@ -452,9 +456,9 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="32"
+						x="46"
 						y="0"
-						width="151"
+						width="137"
 						height="11"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -615,14 +619,14 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 					<reportElement
 						x="3"
 						y="0"
-						width="25"
+						width="37"
 						height="11"
 						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODPROD}.toString().trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? $F{REFPROD} : $F{CODPROD}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -658,7 +662,7 @@ and not substr(vd.statusvenda,1,1)='C']]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="29"
+						x="42"
 						y="0"
 						width="0"
 						height="12"
