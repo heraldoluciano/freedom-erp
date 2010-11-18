@@ -94,10 +94,12 @@ public class FRComisProd extends FRelatorio {
 
 		vLabs.addElement( "Por Ítem" );
 		vLabs.addElement( "Por Técnico" );
+		vLabs.addElement( "Detalhado" );
 		vVals.addElement( "I" );
 		vVals.addElement( "T" );
+		vVals.addElement( "D" );
 		
-		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
 		rgTipo.setVlrString( "I" );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
@@ -169,6 +171,9 @@ public class FRComisProd extends FRelatorio {
 		else if( "T".equals( rgTipo.getVlrString() )) {
 			imprimirPorTecnico( visualizar );
 		}
+		else if( "D".equals( rgTipo.getVlrString() )) {
+			imprimirTecnicoDetalhado( visualizar );
+		}
 
 	}
 
@@ -235,7 +240,7 @@ public class FRComisProd extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
-			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				ps.setInt( param++, lcCliente.getCodEmp() );
@@ -346,6 +351,89 @@ public class FRComisProd extends FRelatorio {
 			rs = ps.executeQuery();
 
 			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_COMIS_PROD_TEC.jasper" );
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+	
+	public void imprimirTecnicoDetalhado( boolean visualizar ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sql = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sCab2 = new StringBuffer();
+
+		int param = 1;
+
+		try { 
+
+			sql.append( "select ");
+			sql.append( "vd.codvend, vd.nomevend, ");
+			sql.append( "rc.perccomisgeral/100 perccomisgeral, ");
+			sql.append( "se.codsecao, se.descsecao, ");
+			sql.append( "sum( case when op.garantia='S' then ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
+			sql.append( "else ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao , ");
+			sql.append( "irc.perccomisitrc/100 percomisvendedor, ");
+			sql.append( "coalesce(vd.vlrabono,0) vlrabono, coalesce(vd.vlrdesconto,0) vlrdesconto ");
+
+			sql.append( "from eqproduto pd , vdregracomis rc, vditregracomis irc, eqsecao se, ppop op ");
+			sql.append( "left outer join eqrecmerc rm on rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket ");
+			sql.append( "left outer join eqitrecmerc it on it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket ");
+			sql.append( "and it.coditrecmerc=op.coditrecmerc ");
+			sql.append( "inner join vdvendedor vd on vd.codemp=irc.codempvd and vd.codfilial = irc.codfilialvd ");
+			sql.append( "and vd.codvend=irc.codvend where pd.codemp=op.codemp and pd.codfilial=op.codfilial ");
+			sql.append( "and pd.codprod=op.codprod and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc ");
+			sql.append( "and rc.codsecao=pd.codsecao and irc.codemp=rc.codemp and irc.codfilial=rc.codfilial ");
+			sql.append( "and irc.codregrcomis=rc.codregrcomis and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc ");
+			sql.append( "and se.codsecao=pd.codsecao and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
+
+			if ( txtCodCli.getVlrInteger() > 0 ) {
+				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
+			}
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+			
+			if( "S".equals( cbFinalizados.getVlrString()) ) {
+				sql.append( " and op.sitop = 'FN' " );
+			}
+
+			sql.append( "group by 1,2,3,4,5,7,8,9 ");
+			sql.append( "order by 2"); 
+			
+			System.out.println( " SQL: " + sql.toString() );
+			
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodFilial );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );
+				ps.setString( param++, txtCodSecao.getVlrString() );
+
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
+			}
+
+			rs = ps.executeQuery();
+
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_COMIS_PROD_TEC_DET.jasper" );
 
 			rs.close();
 			ps.close();
