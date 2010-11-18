@@ -410,6 +410,19 @@ public class FRComisProd extends FRelatorio {
 			}
 
 			sql.append( "group by 1,2,3,4,5,7,8,9 ");
+			
+			sql.append( "union ");
+			sql.append( "select ");
+			sql.append( "vd.codvend, vd.nomevend, ");
+			sql.append( "cast(0.00 as decimal(15,5)) perccomisgeral, ");
+			sql.append( "cast('' as varchar(13)) codsecao, cast('' as char(50)) descsecao, ");
+			sql.append( "cast(0.00 as decimal(15,5)) comissecao, ");
+			sql.append( "cast(0.00 as decimal(15,5)) percomisvendedor, ");
+			sql.append( "cast(coalesce(vd.vlrabono,0.00) as decimal(15,5)) vlrabono, ");
+			sql.append( "cast(coalesce(vd.vlrdesconto,0.00) as decimal(15,5)) vlrdesconto ");
+			sql.append( "from vdvendedor vd ");
+			sql.append( "where vd.vlrabono>0 and vd.codsecao is null ");
+			
 			sql.append( "order by 2"); 
 			
 			System.out.println( " SQL: " + sql.toString() );
