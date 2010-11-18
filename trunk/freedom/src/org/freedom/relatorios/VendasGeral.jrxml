@@ -70,6 +70,118 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 	<field name="CODCLI" class="java.lang.Long"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 
+	<variable name="vlrdesconto" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{VLRDESCVENDA}.floatValue() > 0 ? $F{VLRDESCVENDA} : $F{VLRDESCITVENDA}]]></variableExpression>
+	</variable>
+	<variable name="VLRPRODVENDA_TOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPRODVENDA}]]></variableExpression>
+	</variable>
+	<variable name="vlrdesconto_tot" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{vlrdesconto}]]></variableExpression>
+	</variable>
+	<variable name="VLRLIQVENDA_TOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRLIQVENDA}]]></variableExpression>
+	</variable>
+
+		<group  name="total" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="40"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="29"
+						width="539"
+						height="0"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="8"
+						width="0"
+						height="21"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="539"
+						y="8"
+						width="0"
+						height="22"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="7"
+						width="539"
+						height="0"
+						key="line-33"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="3"
+						y="13"
+						width="60"
+						height="11"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Totais:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="12"
+						width="62"
+						height="12"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRPRODVENDA_TOT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="365"
+						y="12"
+						width="43"
+						height="12"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{vlrdesconto_tot}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="414"
+						y="12"
+						width="55"
+						height="12"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRLIQVENDA_TOT}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -160,20 +272,20 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<staticText>
 					<reportElement
-						x="3"
+						x="9"
 						y="86"
-						width="60"
+						width="37"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Data de Saida]]></text>
+				<text><![CDATA[Saida]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="70"
+						x="55"
 						y="86"
 						width="48"
 						height="11"
@@ -186,22 +298,22 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</staticText>
 				<staticText>
 					<reportElement
-						x="127"
+						x="110"
 						y="86"
-						width="48"
+						width="33"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Cód. Cli]]></text>
+				<text><![CDATA[Cód.Cli]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="181"
+						x="153"
 						y="86"
-						width="144"
+						width="140"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -212,9 +324,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</staticText>
 				<staticText>
 					<reportElement
-						x="329"
+						x="299"
 						y="86"
-						width="47"
+						width="61"
 						height="11"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -225,7 +337,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</staticText>
 				<staticText>
 					<reportElement
-						x="382"
+						x="366"
 						y="86"
 						width="42"
 						height="11"
@@ -238,9 +350,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</staticText>
 				<staticText>
 					<reportElement
-						x="429"
+						x="415"
 						y="86"
-						width="39"
+						width="52"
 						height="11"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -251,7 +363,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="67"
+						x="55"
 						y="83"
 						width="0"
 						height="17"
@@ -278,7 +390,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="124"
+						x="106"
 						y="83"
 						width="0"
 						height="17"
@@ -296,7 +408,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="178"
+						x="149"
 						y="83"
 						width="0"
 						height="17"
@@ -305,7 +417,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="380"
+						x="362"
 						y="83"
 						width="0"
 						height="17"
@@ -314,7 +426,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="427"
+						x="413"
 						y="83"
 						width="0"
 						height="17"
@@ -348,7 +460,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="327"
+						x="296"
 						y="83"
 						width="0"
 						height="17"
@@ -387,7 +499,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 			<band height="17"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="67"
+						x="55"
 						y="0"
 						width="0"
 						height="17"
@@ -414,7 +526,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="124"
+						x="106"
 						y="0"
 						width="0"
 						height="17"
@@ -423,7 +535,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="178"
+						x="149"
 						y="0"
 						width="0"
 						height="17"
@@ -432,7 +544,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="380"
+						x="362"
 						y="0"
 						width="0"
 						height="17"
@@ -441,7 +553,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="427"
+						x="413"
 						y="0"
 						width="0"
 						height="17"
@@ -459,7 +571,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="327"
+						x="296"
 						y="0"
 						width="0"
 						height="17"
@@ -479,7 +591,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 					<reportElement
 						x="2"
 						y="2"
-						width="62"
+						width="50"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -490,9 +602,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="69"
+						x="57"
 						y="2"
-						width="53"
+						width="45"
 						height="12"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -503,9 +615,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="127"
+						x="110"
 						y="2"
-						width="49"
+						width="35"
 						height="12"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -516,9 +628,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="181"
+						x="153"
 						y="2"
-						width="144"
+						width="140"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -529,9 +641,9 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="329"
+						x="299"
 						y="2"
-						width="47"
+						width="61"
 						height="12"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -542,7 +654,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="382"
+						x="366"
 						y="2"
 						width="43"
 						height="12"
@@ -551,13 +663,13 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRDESCVENDA}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{vlrdesconto}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="429"
+						x="415"
 						y="2"
-						width="39"
+						width="54"
 						height="12"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -582,7 +694,7 @@ V.DTSAIDAVENDA BETWEEN '01.01.2006' AND '01.01.2007' AND V.FLAG IN ('S','N')ORDE
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="50"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
