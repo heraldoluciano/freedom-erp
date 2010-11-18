@@ -70,7 +70,7 @@ group by 1,2,4,5,6, 7,8,9]]></queryString>
 	<variable name="QTDTOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
 	</variable>
-	<variable name="QTDTOTSECAO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="QTDTOTSECAO" class="java.math.BigDecimal" resetType="Group" resetGroup="SECAO" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
 	</variable>
 	<variable name="VLRTOTITCOMIS" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
@@ -101,7 +101,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="7"  isSplitAllowed="true" >
+			<band height="9"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -285,7 +285,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="44"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
@@ -339,6 +339,21 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRITCOMIS_SECAO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="60"
+						y="8"
+						width="49"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOTSECAO}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>

@@ -77,11 +77,11 @@ group by 1,2,3,5,6]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="7"  isSplitAllowed="true" >
+			<band height="9"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
-		<group  name="SECAO" minHeightToStartNewPage="100" >
+		<group  name="SECAO" minHeightToStartNewPage="150" >
 			<groupExpression><![CDATA[$F{CODSECAO}]]></groupExpression>
 			<groupHeader>
 			<band height="56"  isSplitAllowed="true" >
@@ -199,7 +199,7 @@ group by 1,2,3,5,6]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="44"  isSplitAllowed="true" >
+			<band height="29"  isSplitAllowed="true" >
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
