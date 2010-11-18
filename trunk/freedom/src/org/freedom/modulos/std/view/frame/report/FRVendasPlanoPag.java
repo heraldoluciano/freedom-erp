@@ -61,12 +61,19 @@ public class FRVendasPlanoPag extends FRelatorio {
 	private JRadioGroup<String, String> rgFaturados = null;
 
 	private JRadioGroup<String, String> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+
 
 	public FRVendasPlanoPag() {
 
 		super( false );
 		setTitulo( "Vendas por plano de pagamento" );
-		setAtribos( 80, 80, 330, 310 );
+		setAtribos( 80, 80, 330, 380 );
 
 		montaRadioGrups();
 		montaTela();
@@ -115,6 +122,18 @@ public class FRVendasPlanoPag extends FRelatorio {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+
+		
+		
 	}
 
 	private void montaTela() {
@@ -135,6 +154,7 @@ public class FRVendasPlanoPag extends FRelatorio {
 		adic( cbDesc, 7, 125, 300, 20 );
 		adic( rgFaturados, 7, 160, 145, 70 );
 		adic( rgFinanceiro, 160, 160, 145, 70 );
+		adic( rgEmitidos, 7, 240, 145, 70 );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -150,6 +170,7 @@ public class FRVendasPlanoPag extends FRelatorio {
 		StringBuffer sCab = new StringBuffer();
 		String sWhere1 = null;
 		String sWhere2 = null;
+		String sWhere3 = "";
 
 		try {
 
@@ -185,8 +206,19 @@ public class FRVendasPlanoPag extends FRelatorio {
 			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere3 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sCab.append(" EMITIDOS " );
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere3 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( "NAO EMITIDOS" );
+			}
 
-			sSQL.append( "SELECT P.CODPLANOPAG, P.DESCPLANOPAG, SUM( V.VLRLIQVENDA ) AS VALORVD " );
+
+			sSQL.append( "SELECT P.CODPLANOPAG, P.DESCPLANOPAG, SUM( V.VLRLIQVENDA ) AS VALORVD, " );
+			sSQL.append( "SUM( V.vlrprodvenda ) AS valorbruto, SUM( V.vlrdescvenda ) AS vlrdescvenda, SUM( V.vlrdescitvenda ) AS vlrdescitvenda ");
 			sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
 			sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
@@ -195,6 +227,7 @@ public class FRVendasPlanoPag extends FRelatorio {
 			sSQL.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
+			sSQL.append( sWhere3 );
 			sSQL.append( "GROUP BY P.CODPLANOPAG, P.DESCPLANOPAG " );
 			sSQL.append( "ORDER BY " );
 			sSQL.append( rgOrdem.getVlrString() + " " + cbDesc.getVlrString() );
