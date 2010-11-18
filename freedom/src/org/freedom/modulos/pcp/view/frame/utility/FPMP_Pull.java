@@ -22,6 +22,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.Vector;
@@ -59,8 +60,10 @@ import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
+
 
 /**
  * Tela para planejamento mestre da produção. (Sistema de produção Puxada (Push System). Baseada nos pedidos.
@@ -180,6 +183,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcProd = new ListaCampos( this );
+	
+	private ListaCampos lcProd2 = new ListaCampos( this );
 
 	// *** Botões
 
@@ -202,6 +207,8 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	private JButtonPad btSimulaAgrupamentoAgrup = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 
 	private JButtonPad btIniProdAgrup = new JButtonPad( Icone.novo( "btIniProd.png" ) );
+	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	// Enums
 
@@ -244,9 +251,44 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		cbPend.setVlrString( "S" );
 	}
 
+	private boolean comRef() {
+
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			rs = ps.executeQuery();
+			
+			if ( rs.next() )
+				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
+					bRetorno = true;
+			
+			
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return bRetorno;
+	}
+
+	
 	private void montaListaCampos() {
 
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd.setWhereAdic( "TIPOPROD='F'" );
 		txtCodProd.setTabelaExterna( lcProd, null );
@@ -255,6 +297,20 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, true ) );
+		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
+
+		txtRefProd.setNomeCampo( "RefProd" );
+
+		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
+		lcProd2.montaSql( false, "PRODUTO", "EQ" );
+		lcProd2.setQueryCommit( false );
+		lcProd2.setReadOnly( true );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
+
+		
+		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		txtCodCli.setTabelaExterna( lcCliente, null );
@@ -297,8 +353,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 		// ***** Cabeçalho
 
-		panelMaster.adic( new JLabelPad( "Cód.Prod." ), 7, 0, 60, 20 );
-		panelMaster.adic( txtCodProd, 7, 20, 60, 20 );
+		
+		if(comRef()) {
+			panelMaster.adic( txtRefProd, 7, 20, 60, 20, "Referência" );
+		}
+		else {
+			panelMaster.adic( txtCodProd, 7, 20, 60, 20, "Cód.Prod." );
+			
+		}
+		
 		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 0, 340, 20 );
 		panelMaster.adic( txtDescProd, 70, 20, 340, 20 );
 
@@ -1090,9 +1153,11 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcCliente.setConexao( con );
 		lcProd.setConexao( con );
-
+		lcProd2.setConexao( con );
+		
 	}
 
 	public void valorAlterado( TabelaEditEvent evt ) {
