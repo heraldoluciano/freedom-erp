@@ -612,9 +612,18 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		try {
 			
 			sql.append( "update fnsaldolanca set fechado=? ");
-			sql.append( "where codemp=? and codfilial=? and codemppn=? and codfilialpn=? and codplan=? and datasl>=? and fechado<>? ");
+			sql.append( "where codemp=? and codfilial=? and codemppn=? and codfilialpn=? and codplan=? and datasl");
 			
-			ps = con.prepareStatement( sql.toString() );
+			if("S".equals( cbFechado.getVlrString())) {
+				sql.append( "<=? ");
+			}
+			else {
+				sql.append( ">=? ");
+			}
+			
+			sql.append( "and fechado<>? ");
+			
+			ps = con.prepareStatement( sql.toString() ); 
 			
 			ps.setString( 1, cbFechado.getVlrString() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
