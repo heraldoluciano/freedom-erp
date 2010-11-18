@@ -468,7 +468,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
  
 		sql.append( "select	cv.numconta, "); 
 		
-		sql.append( "sum(( ");
+		sql.append( "coalesce(sum(( ");
 		
 		sql.append( "	select s.saldosl from fnsaldolanca s ");
 		sql.append( "	where s.codplan=ct2.codplan and s.codemp=ct2.codemppn and s.codfilial=ct2.codfilialpn and s.codemppn=ct2.codemppn and ");
@@ -478,7 +478,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		sql.append( "		and s1.codemp=s.codemp and s1.codfilial=s.codfilial and s1.codemppn=s.codemppn and s1.codfilialpn=s.codfilialpn ");
 		sql.append( "	)" );
 
-		sql.append( ")) saldovinculado ");
+		sql.append( ")),0) saldovinculado ");
 		
 		sql.append( "from fncontavinculada cv, fnconta ct2, fnconta ct1 ");
 		sql.append( "where ct2.codemp=cv.codempcv and ct2.codfilial=cv.codfilialcv and ct2.numconta=cv.numcontacv ");
