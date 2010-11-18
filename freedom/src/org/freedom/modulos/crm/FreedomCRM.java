@@ -89,6 +89,7 @@ import org.freedom.modulos.std.view.frame.report.FRVendasFisico;
 import org.freedom.modulos.std.view.frame.report.FRVendasGeral;
 import org.freedom.modulos.std.view.frame.report.FRVendasItem;
 import org.freedom.modulos.std.view.frame.report.FRVendasPlanoPag;
+import org.freedom.modulos.std.view.frame.report.FRVendasTipoMov;
 import org.freedom.modulos.std.view.frame.report.FRVendasVend;
 import org.freedom.modulos.std.view.frame.utility.FAprovCancOrc;
 import org.freedom.modulos.std.view.frame.utility.FConsPreco;
@@ -185,6 +186,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Desempenho por vendedor", "Desempenho por vendedor", 'v', 401001600, 2, true, FRDesempVend.class );
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Vendas por vendedor", "Vendas por vendedor", 'v', 401001700, 2, true, FRVendasVend.class );
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Vendas canceladas", "Vendas canceladas", 'v', 401001800, 2, true, FRVendasCanc.class );
+		addOpcao( 401000000, TP_OPCAO_ITEM, "Ultimas Vendas por Tipo de Movimento", "Ultimas Vendas por Tipo de Movimento", 'l', 401001900, 2, true, FRVendasTipoMov.class );
 		addSeparador( 401000000 );
 		addOpcao( 401000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 401001700, 2, true, FROrcamento.class );
 		addSeparador( 301000000 );
