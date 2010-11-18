@@ -144,6 +144,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbGeraRecEmis = new JCheckBoxPad("Gera contas a receber a partir da data de emissão.", "S", "N");
 
+	private JCheckBoxPad cbFechaCaixa = new JCheckBoxPad("Habilitar bloqueio de caixas", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1079,6 +1081,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgTpNossoNumero.setVlrString("D");
 		
 		cbImpDocBol.setVlrString("N");
+		cbFechaCaixa.setVlrString("N");
 		
 		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
@@ -1352,7 +1355,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescPlanPC, 613, 210, 240, 20, "DescPlan", "Planejamento p/pagto com cheques");
 
 		lbFinOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(lbFinOpcoes, 500, 255, 370, 175);
+		adic(lbFinOpcoes, 500, 255, 370, 195);
 
 		adicDB(cbAltItRecImpBol, 510, 275, 310, 20, "AtBancoImpBol", "", false);
 		adicDB(cbJurosPosCalc, 510, 295, 310, 20, "JurosPosCalc", "", false);
@@ -1361,7 +1364,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbGeraPagEmis, 510, 355, 350, 20, "GeraPagEmis", "", true);
 		adicDB(cbGeraRecEmis, 510, 375, 350, 20, "GeraRecEmis", "", true);
-		adicDB(cbImpDocBol, 510, 395, 350, 20, "ImpDocBol", "", true);			
+		adicDB(cbImpDocBol, 510, 395, 350, 20, "ImpDocBol", "", true);
+		adicDB(cbFechaCaixa, 510, 415, 350, 20, "FechaCaixa", "", true);
 
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
