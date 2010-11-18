@@ -83,30 +83,18 @@ group by 1,2,3,5,6]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="7"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="1"
-						y="4"
-						width="534"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch" pen="Dotted"/>
-				</line>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
 		<group  name="VENDEDOR" minHeightToStartNewPage="100" >
 			<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
 			<groupHeader>
-			<band height="54"  isSplitAllowed="true" >
+			<band height="47"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="3"
-						y="30"
+						y="22"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -121,7 +109,7 @@ group by 1,2,3,5,6]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="13"
+						y="5"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -136,7 +124,7 @@ group by 1,2,3,5,6]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="53"
-						y="13"
+						y="5"
 						width="216"
 						height="11"
 						forecolor="#000000"
@@ -151,7 +139,7 @@ group by 1,2,3,5,6]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="42"
+						y="34"
 						width="47"
 						height="11"
 						forecolor="#010101"
@@ -166,7 +154,7 @@ group by 1,2,3,5,6]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="115"
-						y="29"
+						y="21"
 						width="53"
 						height="11"
 						forecolor="#000000"
@@ -178,22 +166,10 @@ group by 1,2,3,5,6]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRABONO}]]></textFieldExpression>
 				</textField>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="1"
-						y="8"
-						width="534"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch" pen="Dotted"/>
-				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="66"  isSplitAllowed="true" >
+			<band height="72"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="3"
@@ -314,6 +290,18 @@ group by 1,2,3,5,6]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCOMIS}.add($F{VLRABONO}).subtract($F{VLRDESCONTO})]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="69"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -420,7 +408,19 @@ group by 1,2,3,5,6]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="10"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="8"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
