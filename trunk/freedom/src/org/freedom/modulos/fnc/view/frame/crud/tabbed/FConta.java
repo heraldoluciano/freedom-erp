@@ -1,39 +1,56 @@
 /**
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 28/11/2010 Anderson Sanchez <BR> 
  * 
- *         Projeto: Freedom <BR>
+ * Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
- *         Classe:
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe:
+ *         
  * @(#)FConta.java <BR>
  * 
- *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- *                 na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- *                 Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
- *                 sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- *                 Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- *                 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *                 de acordo com os termos da LPG-PC <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                 Comentários sobre a classe...
+ * Tela para cadastro e manutenção de contas.
+ * 
  */
 
 package org.freedom.modulos.fnc.view.frame.crud.tabbed;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Date;
 import java.util.Vector;
+
 import javax.swing.JScrollPane;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -41,13 +58,14 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
 
-public class FConta extends FTabDados implements CheckBoxListener, RadioGroupListener {
+public class FConta extends FTabDados implements CheckBoxListener, RadioGroupListener, CarregaListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,13 +80,19 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JTextFieldFK txtDescContaCV = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	
+	private JTextFieldPad txtSaldoSL = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDataConta = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDataIniSaldo = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDataFimSaldo = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-
+	
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -80,6 +104,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad( "Todos os usuários?", "S", "N" );
 	
 	private JCheckBoxPad cbContaCheque = new JCheckBoxPad( "Conta p/cheques", "S", "N" );
+	
+	private JCheckBoxPad cbFechado = new JCheckBoxPad( "Fechado", "S", "N" );
+	
+	private JTextFieldPad txtDataSL = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private Vector<String> vValsTipo = new Vector<String>();
 
@@ -98,7 +126,9 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private ListaCampos lcMoeda = new ListaCampos( this, "MA" );
 
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
-
+	
+	private JTextFieldPad txtCodPlanSL = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
 	private ListaCampos lcRestricoes = new ListaCampos( this, "" );
 	
 	private ListaCampos lcContaVinculada = new ListaCampos( this, "" );
@@ -116,33 +146,49 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 	private JPanelPad pinCamposRestricoes = new JPanelPad( 430, 400 );
 	
 	private JPanelPad pinCamposContasVinculadas = new JPanelPad( 430, 400 );
+	
+	private JPanelPad pinCamposFechamentoDet = new JPanelPad( 430, 400 );
+	
+	private JPanelPad pinCamposFechamentoCab = new JPanelPad( 430, 400 );
 
 	private JPanelPad pnRestricoes = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pnContasVinculadas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnFechamento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinDetRestricoes = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad pinDetContasVinculadas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinDetFechamento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
+	private JPanelPad pinCabFechamento = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
 	private JTablePad tbRestricoes = new JTablePad();
 	
 	private JTablePad tbContasVinculadas = new JTablePad();
+	
+	private JTablePad tabSaldoLanca = new JTablePad();
 
 	private JScrollPane spnRestricoes = new JScrollPane( tbRestricoes );
 	
 	private JScrollPane spnContasVinculadas = new JScrollPane( tbContasVinculadas );
+	
+	private JScrollPane spnSaldoLanca = new JScrollPane( tabSaldoLanca );
 
 	private JPanelPad pinNavRestricoes = new JPanelPad( 680, 30 );
 	
 	private JPanelPad pinNavContasVinculadas = new JPanelPad( 680, 30 );
+	
+	private JPanelPad pinNavFechamento = new JPanelPad( 680, 30 );
 
 	private JPanelPad pinNavCamposRestricoes = new JPanelPad( 430, 400 );
 
 	private Navegador navRestricoes = new Navegador( true );
 	
 	private Navegador navContaVinculada = new Navegador( true );
-
+	
 	private JTextFieldPad txtIDUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -157,6 +203,12 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
+	private enum enum_tab_saldo_lanca { CODEMP, CODFILIAL, CODEMPPN, CODFILIALPN, CODPLAN, DATASL, SALDOSL, FECHADO  };
+	
+	private JButtonPad btCarregaSaldo = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
+	
+	private JButtonPad btSalvarFechamento = new JButtonPad( Icone.novo( "btSalvar.gif" ) );
+	
 	public FConta() {
 
 		super( false );
@@ -166,6 +218,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		
 		lcRestricoes.setMaster( lcCampos );
 		lcContaVinculada.setMaster( lcCampos );
+		
+		lcPlan.addCarregaListener( this );
+		btCarregaSaldo.addActionListener( this );
+		btSalvarFechamento.addActionListener( this );
 		
 		lcCampos.adicDetalhe( lcRestricoes );		
 		lcCampos.adicDetalhe( lcContaVinculada );
@@ -315,7 +371,6 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		
 		setPainel( pinDetContasVinculadas, pnContasVinculadas );
 		adicTab( "Contas Vinculadas", pnContasVinculadas );
-		
 	
 		pinDetContasVinculadas.setPreferredSize( new Dimension( 430, 80 ) );
 		pinDetContasVinculadas.add( pinNavContasVinculadas, BorderLayout.SOUTH );
@@ -341,16 +396,135 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		lcContaVinculada.setQueryCommit( false );
 
 		lcContaVinculada.montaTab();
-
+		
 		txtNumContaCV.setTabelaExterna( lcContaCV, null );
 		txtNumContaCV.setNomeCampo( "NumConta" ); 
 		
 		tbContasVinculadas.setTamColuna( 80, 0 );
 		tbContasVinculadas.setTamColuna( 280, 1 );
+		
+		
+		/*********************
+		 * Fechamento        *
+		 *********************/
+		
+		setPainel( pinDetFechamento, pnFechamento );
+		adicTab( "Fechamento", pnFechamento );
+	
+		pinDetFechamento.setPreferredSize( new Dimension( 430, 80 ) );
+		pinCabFechamento.setPreferredSize( new Dimension( 430, 60 ) );
+		
+		pinDetFechamento.add( pinNavFechamento, BorderLayout.SOUTH );
+		pinDetFechamento.add( pinCamposFechamentoDet, BorderLayout.CENTER );
+		
+		pinCabFechamento.add( pinCamposFechamentoCab, BorderLayout.CENTER );
+		
+		pnFechamento.add( pinCabFechamento, BorderLayout.NORTH );
+		pnFechamento.add( pinDetFechamento, BorderLayout.SOUTH );
+		pnFechamento.add( spnSaldoLanca, BorderLayout.CENTER );
+		pinNavFechamento.adic( btSalvarFechamento, 0, 0, 25, 25 );
 
+		setPainel( pinCamposFechamentoDet ); 
 
+		txtDataSL.setSoLeitura( true );
+		txtSaldoSL.setSoLeitura( true );
+		
+		txtDataIniSaldo.setVlrDate( new java.util.Date() );
+		txtDataFimSaldo.setVlrDate( new java.util.Date() );
+		
+		pinCamposFechamentoCab.adic(txtDataIniSaldo, 7, 20, 100, 20, "Data Inicial");
+		pinCamposFechamentoCab.adic(txtDataFimSaldo, 110, 20, 100, 20, "Data Final");
+		
+		pinCamposFechamentoCab.adic( btCarregaSaldo, 220, 15, 30, 30 );
+		
+		pinCamposFechamentoDet.adic( txtDataSL, 7, 20, 80, 20, "Data"); 		
+		pinCamposFechamentoDet.adic( txtSaldoSL, 90, 20, 80, 20, "Saldo" );
+		pinCamposFechamentoDet.adic( cbFechado, 173, 20, 120, 20, "" );
+ 
+		montaTabSaldoLanca();
+				
+		tabSaldoLanca.addMouseListener( this );
+		
+		
 	}
 
+	private void montaTabSaldoLanca() {
+				
+		tabSaldoLanca.adicColuna( "Cod.Emp." );
+		tabSaldoLanca.adicColuna( "Cod.Filial" );
+		tabSaldoLanca.adicColuna( "Cod.Emp.PN." );
+		tabSaldoLanca.adicColuna( "Cod.Filial PN." );
+		tabSaldoLanca.adicColuna( "Cod.Plan." );
+		tabSaldoLanca.adicColuna( "Data" );
+		tabSaldoLanca.adicColuna( "Saldo" );
+		tabSaldoLanca.adicColuna( "Fechado" );
+		
+		tabSaldoLanca.setColunaInvisivel( enum_tab_saldo_lanca.CODEMP.ordinal() );
+		tabSaldoLanca.setColunaInvisivel( enum_tab_saldo_lanca.CODFILIAL.ordinal() );
+		tabSaldoLanca.setColunaInvisivel( enum_tab_saldo_lanca.CODEMPPN.ordinal() );
+		tabSaldoLanca.setColunaInvisivel( enum_tab_saldo_lanca.CODFILIALPN.ordinal() );
+		tabSaldoLanca.setTamColuna( 120, enum_tab_saldo_lanca.CODPLAN.ordinal() );
+		tabSaldoLanca.setTamColuna( 80, enum_tab_saldo_lanca.DATASL.ordinal() );
+		tabSaldoLanca.setTamColuna( 80, enum_tab_saldo_lanca.SALDOSL.ordinal() );
+		tabSaldoLanca.setTamColuna( 50, enum_tab_saldo_lanca.FECHADO.ordinal() );
+	
+		
+	}
+	
+	private void carregaTabSaldoLanca () {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			sql.append( "select codemp, codfilial, codemppn, codfilialpn, codplan, datasl, saldosl, fechado " );
+			sql.append("from fnsaldolanca ");
+			sql.append("where codemp=? and codfilial=? and codemppn=? and codfilialpn=? and codplan=? and datasl between ? and ? ");
+			sql.append( "order by datasl" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSALDOLANCA" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNSALDOLANCA" ) );
+			ps.setString( 5, txtCodPlan.getVlrString() );
+			
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataIniSaldo.getVlrDate()) );
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataFimSaldo.getVlrDate()) );
+			
+			rs = ps.executeQuery( );
+			
+			int i = 0;
+			
+			tabSaldoLanca.limpa();
+			
+			while (rs.next()) {
+				
+				tabSaldoLanca.adicLinha();
+				
+				tabSaldoLanca.setValor( rs.getInt( enum_tab_saldo_lanca.CODEMP.name() ), i, enum_tab_saldo_lanca.CODEMP.ordinal() );
+				tabSaldoLanca.setValor( rs.getInt( enum_tab_saldo_lanca.CODFILIAL.name() ), i, enum_tab_saldo_lanca.CODFILIAL.ordinal() );
+				tabSaldoLanca.setValor( rs.getInt( enum_tab_saldo_lanca.CODEMPPN.name() ), i, enum_tab_saldo_lanca.CODEMPPN.ordinal() );				
+				tabSaldoLanca.setValor( rs.getInt( enum_tab_saldo_lanca.CODFILIALPN.name() ), i, enum_tab_saldo_lanca.CODFILIALPN.ordinal() );
+				tabSaldoLanca.setValor( rs.getString( enum_tab_saldo_lanca.CODPLAN.name() ), i, enum_tab_saldo_lanca.CODPLAN.ordinal() );
+				Date datasl = rs.getDate( enum_tab_saldo_lanca.DATASL.name() );
+				tabSaldoLanca.setValor( datasl , i ,enum_tab_saldo_lanca.DATASL.ordinal() );
+				tabSaldoLanca.setValor( rs.getBigDecimal( enum_tab_saldo_lanca.SALDOSL.name() ), i, enum_tab_saldo_lanca.SALDOSL.ordinal() );
+				tabSaldoLanca.setValor( rs.getString( enum_tab_saldo_lanca.FECHADO.name() ), i, enum_tab_saldo_lanca.FECHADO.ordinal() );
+				
+				i++;
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void valorAlterado( CheckBoxEvent evt ) {
 
 		if ( evt.getCheckBox() == chbRestritoTipoMov ) {
@@ -392,4 +566,113 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 		}
 
 	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if(cevt.getListaCampos()==lcPlan) {
+			carregaTabSaldoLanca();
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseClicked( MouseEvent mevt ) {
+
+		if ( mevt.getSource() == tabSaldoLanca && mevt.getClickCount() == 2 ) {
+			carregaSaldoLanca();
+		}
+
+		
+	}
+	
+	private void carregaSaldoLanca() {
+		
+		try {
+			
+			txtDataSL.setVlrDate( (java.util.Date) tabSaldoLanca.getValor( tabSaldoLanca.getLinhaSel(), enum_tab_saldo_lanca.DATASL.ordinal() ) );
+			txtCodPlanSL.setVlrString( (String) tabSaldoLanca.getValor( tabSaldoLanca.getLinhaSel(), enum_tab_saldo_lanca.CODPLAN.ordinal() ) );
+			txtSaldoSL.setVlrBigDecimal( (BigDecimal) tabSaldoLanca.getValor( tabSaldoLanca.getLinhaSel(), enum_tab_saldo_lanca.SALDOSL.ordinal() ) );
+			cbFechado.setVlrString( (String) tabSaldoLanca.getValor( tabSaldoLanca.getLinhaSel(), enum_tab_saldo_lanca.FECHADO.ordinal() ) );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void atualizaFechamentoCaixa() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "update fnsaldolanca set fechado=? ");
+			sql.append( "where codemp=? and codfilial=? and codemppn=? and codfilialpn=? and codplan=? and datasl>=? and fechado<>? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setString( 1, cbFechado.getVlrString() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNSALDOLANCA" ) );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, lcPlan.getCodFilial() );
+			ps.setString( 6, txtCodPlan.getVlrString() );
+			
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDataSL.getVlrDate() ) );
+			ps.setString( 8, cbFechado.getVlrString() );
+			
+			ps.executeUpdate();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		carregaTabSaldoLanca();
+		
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void actionPerformed( ActionEvent evt ) {
+
+		if ( evt.getSource() == btCarregaSaldo ) {
+			carregaTabSaldoLanca();
+		}
+		else if ( evt.getSource() == btSalvarFechamento ) {
+			atualizaFechamentoCaixa();
+		}
+
+		super.actionPerformed( evt );
+	}
+	
 }
+
+
