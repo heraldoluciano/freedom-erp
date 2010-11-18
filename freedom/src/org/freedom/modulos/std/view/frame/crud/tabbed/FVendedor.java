@@ -150,6 +150,10 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtVlrAbono = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -265,8 +269,12 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicCampo( txtFaxVend, 177, 220, 77, 20, "FaxVend", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDCelVend, 257, 220, 40, 20, "DDDCelVend", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelVend, 300, 220, 72, 20, "CelVend", "Cel", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailVend, 7, 260, 100, 20, "EmailVend", "E-Mail", ListaCampos.DB_SI, false );
+		adicCampo( txtPercComVend, 110, 260, 50, 20, "PercComVend", "%Comis.", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtVlrAbono, 163, 260, 60, 20, "VlrAbono", "Abono", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDesconto, 226, 260, 60, 20, "VlrDesconto", "Desconto", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.comis.for.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.", ListaCampos.DB_FK, txtDescPlan, false );
 		adicDescFK( txtDescPlan, 110, 300, 262, 20, "DescPlan", "Descrição do planejamento" );
