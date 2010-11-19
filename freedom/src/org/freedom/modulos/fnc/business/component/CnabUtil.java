@@ -5265,16 +5265,17 @@ public class CnabUtil extends FbnUtil {
 							setIdentTitEmp( line.substring( 38, 63 ) ); // Posição 39 a 63 - Nro Controle do Participante
 							setCodCarteira( Integer.parseInt( line.substring( 107, 109 ) ) ); // Posição 108 a 109 - Código da carteira
 							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 110 - Código das ocorrências (vide pg.45)
+							setVlrPago( strToBigDecimal( line.substring( 152, 165 ) ) ); // 153 a 165 - Valor do título 
 							setVlrOutrasDesp( strToBigDecimal( line.substring( 188, 201 ) ) ); // 189 a 201 - Outras despesas
 							setVlrJurosMulta( strToBigDecimal( line.substring( 201, 214 ) ) ); // 202 a 214 - Juros do desconto
 							setVlrIOF( strToBigDecimal( line.substring( 214, 227 ) ) ); // 215 a 227 - IOF do desconto
 							setVlrAbatimento( strToBigDecimal( line.substring( 227, 240 ) ) ); // 228 a 240 - Valor do abatimento
 							setVlrDesc( strToBigDecimal( line.substring( 240, 253 ) ) ); // 241 a 253 - Desconto concedido 
-							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) ); // 254 a 266 - Valor recebido (valor recebido parcial)
+							//setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) ); // 254 a 266 - Valor recebido (valor recebido parcial)
 							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) ); // 267 a 279 - Juros de mora
 							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) ); // 280 a 292 - Outros recebimentos
 							if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {							
-								setDataCred( stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) ); // 176 a 181 - Data do crédito (DDMMAAAA)
+								setDataCred( stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) ); // 111 a 116 - Data de liquidação (DDMMAA) 
 							}
 							else {
 								setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
