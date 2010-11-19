@@ -69,7 +69,7 @@ order by it.coditrecmerc]]></queryString>
 	<variable name="QTDTOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITRECMERC}]]></variableExpression>
 	</variable>
-	<variable name="QTDTOTSECAO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="QTDTOTSETOR" class="java.math.BigDecimal" resetType="Group" resetGroup="SETOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITRECMERC}]]></variableExpression>
 	</variable>
 
@@ -227,7 +227,9 @@ order by it.coditrecmerc]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODSETOR} + " - " + $F{DESCSETOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODSETOR} == null ?
+"Setor indefinido" :
+($F{CODSETOR} + " - " + $F{DESCSETOR})]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -273,7 +275,7 @@ order by it.coditrecmerc]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOT}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDTOTSETOR}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -302,6 +304,32 @@ order by it.coditrecmerc]]></queryString>
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch" pen="2Point"/>
 				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="CLIENTE" >
+			<groupExpression><![CDATA[$F{CODCLI}]]></groupExpression>
+			<groupHeader>
+			<band height="14"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="1"
+						width="111"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODCLI} + " - " + $F{RAZCLI}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
