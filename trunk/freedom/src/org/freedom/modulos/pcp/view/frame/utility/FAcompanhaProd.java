@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
+import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.business.object.StatusOP;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 
@@ -165,6 +167,16 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 	private JTablePad tabstatus = new JTablePad();
 	
 	private JScrollPane scpStatus = new JScrollPane( tabstatus );
+	
+	private ListaCampos lcProd = new ListaCampos( this );
+	
+	private ListaCampos lcProd2 = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	FOP f;
 
@@ -223,6 +235,15 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		pinCab.adic( txtDescSecao, 90, 110, 340, 20, "Descrição da seção" );
 
 		
+		if(comRef()) {
+			pinCab.adic( txtRefProd, 433, 110, 80, 20, "Referência" );
+		}
+		else {
+			pinCab.adic( txtCodProd, 433, 110, 80, 20, "Cód.Prod." );		
+		}
+
+		pinCab.adic( txtDescProd, 516, 110, 340, 20, "Descrição do produto" );
+
 		JPanelPad pnTipoData = new JPanelPad();
 		pnTipoData.setBorder( SwingParams.getPanelLabel( "Filtrar por:", Color.BLACK ) );
 		
@@ -296,6 +317,40 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		
 	}
 
+	private boolean comRef() {
+
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			rs = ps.executeQuery();
+			
+			if ( rs.next() )
+				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
+					bRetorno = true;
+			
+			
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return bRetorno;
+	}
+
+	
 	private void montaListaCampos() {
 		
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
@@ -306,6 +361,29 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		lcSecao.setReadOnly( true );
 		lcSecao.setQueryCommit( false );
 		txtCodSecao.setTabelaExterna( lcSecao, FSecaoProd.class.getCanonicalName() );
+		
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd.setWhereAdic( "TIPOPROD='F'" );
+		txtCodProd.setTabelaExterna( lcProd, null );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProd.setReadOnly( true );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
+
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
+		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
+
+		txtRefProd.setNomeCampo( "RefProd" );
+
+		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
+		lcProd2.montaSql( false, "PRODUTO", "EQ" );
+		lcProd2.setQueryCommit( false );
+		lcProd2.setReadOnly( true );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
+
 
 		
 	}
@@ -383,8 +461,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			ResultSet rs = null;
 			boolean or = false;
 			boolean order = false;
-			String sData = "";
-	
+			String sData = "";	
 		
 			sql.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST,CODPROD,REFPROD,CODSECAO, REFPROD, " );
 			sql.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
@@ -407,6 +484,12 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
 				
 				sql.append( " AND CODSECAO = ? " );
+				
+			}
+			
+			if( txtCodProd.getVlrInteger()>0  ) {
+				
+				sql.append( " AND  CODPROD=? " );
 				
 			}
 			
@@ -460,8 +543,6 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			sql.append( sOrderBy.toString() );
 			System.out.println( sql.toString() );
 
-	
-
 			ps = con.prepareStatement( sql.toString() );
 			
 			int iparam = 1;
@@ -474,6 +555,12 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			if(txtCodSecao.getVlrString()!=null && !"".equals( txtCodSecao.getVlrString()) ) {
 				
 				ps.setString( iparam++, txtCodSecao.getVlrString() );
+				
+			}
+			
+			if( txtCodProd.getVlrInteger()>0  ) {
+				
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
 				
 			}
 			
@@ -497,6 +584,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 			tab.limpa();
 
 			boolean atrasado = false;
+			
 			for ( int i = 0; rs.next(); i++ ) {
 
 				Date dtfab = Funcoes.getDataPura( Funcoes.sqlDateToDate( rs.getDate( "DTFABROP" ) ) );
@@ -623,7 +711,10 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcSecao.setConexao( con );
+		lcProd.setConexao( con );
+		lcProd2.setConexao( con );
 
 	}
 
