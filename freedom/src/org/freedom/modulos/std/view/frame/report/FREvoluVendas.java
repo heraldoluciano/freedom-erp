@@ -79,11 +79,21 @@ public class FREvoluVendas extends FRelatorio {
 	private ListaCampos lcCli = new ListaCampos( this, "TI" );
 
 	private JCheckBoxPad cbVendas = new JCheckBoxPad( "Só vendas?", "S", "N" );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+	
+	private JRadioGroup<String, String> rgFaturados = null;
+
+	private JRadioGroup<String, String> rgFinanceiro = null;
 
 	public FREvoluVendas() {
 
 		setTitulo( "Evolução de vendas" );
-		setAtribos( 80, 80, 330, 380 );
+		setAtribos( 80, 80, 330, 520 );
 
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo do cliente", ListaCampos.DB_SI, false ) );
@@ -143,6 +153,44 @@ public class FREvoluVendas extends FRelatorio {
 		rgGrafico.setVlrString( "B" );
 		rgGrafico.setBorder( BorderFactory.createEmptyBorder() );
 		adic( rgGrafico, 42, 193, 200, 82 );
+		
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
+		
+		vLabs1.addElement( "Faturado" );
+		vLabs1.addElement( "Não Faturado" );
+		vLabs1.addElement( "Ambos" );
+		vVals1.addElement( "S" );
+		vVals1.addElement( "N" );
+		vVals1.addElement( "A" );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabs1, vVals1 );
+		rgFaturados.setVlrString( "S" );
+
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
+
+		vLabs2.addElement( "Financeiro" );
+		vLabs2.addElement( "Não Finaceiro" );
+		vLabs2.addElement( "Ambos" );
+		vVals2.addElement( "S" );
+		vVals2.addElement( "N" );
+		vVals2.addElement( "A" );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
+		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+		
+		adic( rgFaturados, 	7, 		285, 	120, 	70 );
+		adic( rgFinanceiro, 153,	285, 	120, 	70 );
+		adic( rgEmitidos,	7,		360, 	120, 	70 );
+		
 
 	}
 
@@ -163,13 +211,14 @@ public class FREvoluVendas extends FRelatorio {
 
 		try {
 
-			ps = con.prepareStatement( "SELECT * FROM VDEVOLUVENDAS(?,?,?,?,?,?,?)" );
+			ps = con.prepareStatement( "SELECT * FROM VDEVOLUVENDAS(?,?,?,?,?,?,?,?,?,?)" );
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilialMz );
 			ps.setDate( 3, dataIni );
 			ps.setDate( 4, dataFim );
-
-			if ( !"".equals( txtCodTipoCli.getVlrString() ) && "".equals( txtCodCli.getVlrString() ) ) {
+			
+					if ( !"".equals( txtCodTipoCli.getVlrString() ) && "".equals( txtCodCli.getVlrString() ) ) {
 
 				ps.setInt( 5, Integer.parseInt( txtCodTipoCli.getVlrString() ) );
 				ps.setNull( 6, Types.INTEGER );
@@ -194,6 +243,10 @@ public class FREvoluVendas extends FRelatorio {
 			}
 
 			ps.setString( 7, cbVendas.getVlrString() );
+			
+			ps.setString( 8, rgFaturados.getVlrString() );
+			ps.setString( 9, rgFinanceiro.getVlrString() );
+			ps.setString( 10, rgEmitidos.getVlrString() );
 
 			rs = ps.executeQuery();
 
