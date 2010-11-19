@@ -221,7 +221,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtSldAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtDtUltCpProd = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, casasDec );
+	private JTextFieldPad txtDtUltEntrada = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, casasDec );
 
 	private JTextFieldPad txtSldConsigProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -807,7 +807,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCustoPEPSProd.setSoLeitura( true );
 		txtSldProd.setSoLeitura( true );
 		txtSldResProd.setSoLeitura( true );
-		txtDtUltCpProd.setSoLeitura( true );
+		txtDtUltEntrada.setSoLeitura( true );
 		txtSldConsigProd.setSoLeitura( true );
 		txtSldLiqProd.setSoLeitura( true );
 
@@ -893,7 +893,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adic( new JLabelPad( "Almoxarifado" ), 7, 200, 87, 20 );
 		adic( txtAlmox, 7, 220, 76, 20 );
-		adicCampo( txtDtUltCpProd, 86, 220, 86, 20, "DtUltCpProd", "Ultima compra", ListaCampos.DB_SI, false );
+		adic( new JLabelPad( "Última entrada" ), 86, 200, 86, 20 );
+		adic( txtDtUltEntrada, 86, 220, 86, 20 );
 		adic( new JLabelPad( "Custo MPM" ), 175, 200, 87, 20 );
 		adic( txtCustoMPMAlmox, 175, 220, 76, 20 );
 		adic( new JLabelPad( "Custo PEPS" ), 254, 200, 87, 20 );
@@ -1440,8 +1441,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND SP.CODALMOX = ?";
 			}
 
-			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " + "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " + "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " + "FROM EQPRODUTO P, EQSALDOPROD SP "
-					+ "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " + "P.CODEMPGP=? AND P.CODFILIALGP=? AND " + sFiltro + " AND " + sWhere + " ORDER BY P.DESCPROD ";
+			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " 
+				+ "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " 
+				+ "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " 
+				+ "FROM EQPRODUTO P, EQSALDOPROD SP "
+				+ "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " 
+				+ "P.CODEMPGP=? AND P.CODFILIALGP=? AND " 
+				+ sFiltro + " AND " + sWhere + " ORDER BY P.DESCPROD ";
 
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -1475,6 +1481,54 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			Funcoes.mensagemErro( this, "Erro ao carregar saldos por almoxarifado!\n" + err.getMessage() );
 		} finally {
 			sSQL = null;
+		}
+
+	}
+	
+	private void buscaUltimaEntrada() {
+
+		ResultSet rs = null;
+		String sWhere = "";
+		StringBuilder sql = new StringBuilder();
+
+		int iParam = 1;
+
+		try {
+			
+			sql.append( "select first 1 mp.dtmovprod from eqmovprod mp " );
+			sql.append( "where mp.tipomovprod='E' ");
+			sql.append( "and codemppd=? and codfilialpd=? and codprod=? ");
+			sql.append( "and codemp=? and codfilial=? ");
+			sql.append( "order by mp.dtmovprod desc, mp.codmovprod desc ");
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( iParam++, Aplicativo.iCodEmp );
+			ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( iParam++, txtCodProd.getVlrInteger() );
+			ps.setInt( iParam++, Aplicativo.iCodEmp );
+			ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQMOVPROD" ) );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				txtDtUltEntrada.setVlrDate( rs.getDate( "dtmovprod" ) );
+			}
+			else {
+				txtDtUltEntrada.setVlrString( "" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar data da ultima entrada!\n" + err.getMessage() );
+		} 
+		finally {
+			sql = null;
 		}
 
 	}
@@ -2022,7 +2076,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 				buscaEstoque();
 				CustosProd custos = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
-
+				buscaUltimaEntrada();
+				
 				txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
 				txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
 				txtCustoPEPSAlmox.setVlrBigDecimal( custos.getCustoPEPSAlmox() );
