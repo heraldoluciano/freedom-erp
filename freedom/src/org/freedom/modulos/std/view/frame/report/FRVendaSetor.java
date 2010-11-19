@@ -2,23 +2,23 @@
  * @version 24/03/2004 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  * 
- *         Projeto: Freedom <BR>
+ * Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
- *         Classe:
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe:
  * @(#)FRVendaSetor.java <BR>
  * 
- *                       Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- *                       modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- *                       na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- *                       Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
- *                       sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- *                       Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- *                       Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *                       de acordo com os termos da LPG-PC <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                       Comentários sobre a classe...
+ *  Tela para extração do relatório de vendas por setor.
  * 
  */
 
@@ -30,7 +30,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.functions.StringFunctions;
@@ -46,6 +45,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
+
 
 public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
@@ -146,6 +146,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private ListaCampos lcCliente = new ListaCampos( this );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this );
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+	
+	private boolean bPref = false;
+	
+	private JCheckBoxPad cbPorConserto = new JCheckBoxPad( "Por item de O.S", "S", "N" );
 
 	public FRVendaSetor() {
 
@@ -160,7 +170,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		txtDataini.setRequerido( true );
 		txtDatafim.setRequerido( true );
 
-		cbMovEstoque.setVlrString( "S" );
+		cbMovEstoque.setVlrString( "N" );
 		cbCliPrinc.setVlrString( "S" );
 
 		vLabsFat.addElement( "Faturado" );
@@ -198,6 +208,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		vValOrdemRel.addElement( "C" );
 		rgOrdemRel = new JRadioGroup<String, String>( 3, 1, vLabOrdemRel, vValOrdemRel );
 
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
+		
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ), "txtSiglaMarca" );
@@ -296,12 +315,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic( new JLabelPad( "Descrição do tipo de cliente" ), 396, 220, 190, 20 );
 		adic( txtDescTipoCli, 396, 240, 190, 20 );
 
-		adic( rgFaturados, 7, 270, 130, 70 );
-		adic( rgFinanceiro, 160, 270, 130, 70 );
-
-		adic( cbMovEstoque, 313, 272, 200, 20 );
-		adic( cbCliPrinc, 313, 292, 300, 20 );
-		adic( cbVendaCanc, 313, 312, 200, 20 );
+		adic( rgFaturados, 7, 230, 130, 70 );		
+		adic( rgFinanceiro, 160, 230, 130, 70 );
+		adic( rgEmitidos, 7, 310, 130, 70 );
+		
+		adic( cbMovEstoque, 160, 310, 200, 20 );
+		adic( cbCliPrinc, 160, 330, 300, 20 );
+		adic( cbVendaCanc, 160, 350, 200, 20 );
+		adic( cbPorConserto,  160,	370, 	200, 	20 );
 
 	}
 
@@ -319,7 +340,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 		else if ( "P".equals( rgTipoRel.getVlrString() ) ) {
 
-			impProduto( bVisualizar );
+			
+			
+			if("S".equals( cbPorConserto.getVlrString() )) {
+				impConserto( bVisualizar );
+			}
+			else {
+				impProduto( bVisualizar );
+			}
+			
+			
 		}
 		else if ( "C".equals( rgTipoRel.getVlrString() ) ) {
 
@@ -530,6 +560,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sWhere4 = "";
 		String sWhereTM = "";
 		String sCab = "";
 		String sFrom = "";
@@ -619,6 +650,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros1.append( "SO MOV.ESTOQUE" );
 				sWhereTM = cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "";
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sFiltros1.append( " EMITIDOS " );
+			}
 
 			if ( !sCodMarca.equals( "" ) ) {
 				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
@@ -639,7 +675,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros1.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
-				sWhere.append( "AND VD.CODSETOR=? " );
+	
+				if ( bPref ) {
+					sWhere.append( "AND C1.CODSETOR=? " );
+				}
+				else {
+					sWhere.append( "AND VD.CODSETOR=? " );
+				}
+
+//				sWhere.append( "AND VD.CODSETOR=? " );
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
 				sFiltros2.append( " SETOR: " );
 				sFiltros2.append( iCodSetor );
@@ -662,16 +706,18 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
 					sFrom = ", VDCLIENTE C1, VDCLIENTE C2 ";
 				}
-				else {
-					// sWhere.append( "AND C1.CODCLI=? " );
-					sWhere.append( "AND V.CODCLI=? " );
-				}
+				
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
 				sFiltros2.append( " CLI.: " );
 				sFiltros2.append( iCodCli );
 				sFiltros2.append( "-" );
 				sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 			}
+			else {
+				sFrom = ",VDCLIENTE C1 ";
+				sWhere.append( "AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL AND C1.CODCLI=V.CODCLI " );
+			}
+
 			if ( iCodTipoCli != 0 ) {
 
 				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
@@ -714,7 +760,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				imp.addSubTitulo( sCab );
 			}
 
-			sSQL.append( "SELECT VD.CODSETOR," + "CAST(SUBSTR(CAST(V.DTEMITVENDA AS CHAR(10)),1,7) AS CHAR(7)) ANO_MES," );
+			sSQL.append( "SELECT ");
+			
+			if ( bPref ) {
+				sSQL.append( "C1.CODSETOR, " );	
+			}
+			else {
+				sSQL.append( "VD.CODSETOR, " );
+			}
+			
+			sSQL.append( "CAST(SUBSTR(CAST(V.DTEMITVENDA AS CHAR(10)),1,7) AS CHAR(7)) ANO_MES," );
 			sSQL.append( "G.CODGRUP,G.SIGLAGRUP,V.CODVEND,SUM(VLRLIQITVENDA) VLRVENDA " );
 			sSQL.append( "FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, EQTIPOMOV TM " );
 			sSQL.append( sFrom );
@@ -722,7 +777,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
 			sSQL.append( "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND " );
 			sSQL.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND " );
-			sSQL.append( "VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND " );
+			sSQL.append( "VD.CODVEND=V.CODVEND AND ");
+					
+			if ( bPref ) {
+				sSQL.append( "C1.CODSETOR IS NOT NULL AND " );	
+			}
+			else {
+				sSQL.append( "VD.CODSETOR IS NOT NULL AND " );
+			}
+
 			sSQL.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
 			sSQL.append( "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND " );
 			sSQL.append( "G.CODFILIAL=P.CODFILIALGP AND " );
@@ -732,6 +795,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
+			sSQL.append( sWhere4 );
 			sSQL.append( sCodGrup1.equals( "" ) ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP " );
 			sSQL.append( sWhere );
 			sSQL.append( "GROUP BY 1,2,3,4,5" );
@@ -1087,6 +1151,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sWhere4 = "";
 		String sWhereTM = "";
 		String sCab = "";
 		String sFrom = "";
@@ -1150,6 +1215,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros1.append( "SO MOV.ESTOQUE" );
 				sWhereTM = ( cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "" );
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sFiltros1.append( " EMITIDOS " );
+			}
 
 			if ( !sCodMarca.equals( "" ) ) {
 				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
@@ -1170,7 +1240,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros1.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
-				sWhere.append( "AND VD.CODSETOR=? " );
+				
+				if ( bPref ) {
+					sWhere.append( "AND C1.CODSETOR=? " );
+				}
+				else {
+					sWhere.append( "AND VD.CODSETOR=? " );
+				}
+				
 				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
 				sFiltros2.append( " SETOR: " );
 				sFiltros2.append( iCodSetor );
@@ -1204,6 +1281,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sFiltros2.append( "-" );
 					sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 				}
+			}
+			else {
+				sFrom = ",VDCLIENTE C1 ";
+				sWhere.append( "AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL AND C1.CODCLI=V.CODCLI " );
 			}
 			if ( iCodTipoCli != 0 ) {
 				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
@@ -1257,7 +1338,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sSql.append( "AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
 				sSql.append( "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND " );
 				sSql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND " );
-				sSql.append( "VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND " );
+				
+				sSql.append( "VD.CODVEND=V.CODVEND AND ");
+
+				if ( bPref ) {
+					sSql.append( "C1.CODSETOR IS NOT NULL AND " );	
+				}
+				else {
+					sSql.append( "VD.CODSETOR IS NOT NULL AND " );
+				}
+
 				sSql.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
 				sSql.append( "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND " );
 				sSql.append( "G.CODFILIAL=P.CODFILIALGP AND " );
@@ -1267,6 +1357,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sSql.append( sWhere1 );
 				sSql.append( sWhere2 );
 				sSql.append( sWhere3 );
+				sSql.append( sWhere4 );
 				sSql.append( sCodGrup1.equals( "" ) ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP " );
 				sSql.append( sWhere );
 				sSql.append( "GROUP BY 1,2,3" );
@@ -1404,7 +1495,415 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 
 	}
+	
+	private void impConserto( boolean bVisualizar ) {
 
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSql = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
+		String sWhere1 = "";
+		String sWhere2 = "";
+		String sWhere3 = "";
+		String sWhere4 = "";
+		String sWhereTM = "";
+		String sCab = "";
+		String sFrom = "";
+		String sCodMarca = null;
+		String sCodGrup1 = null;
+		String sCodGrup2 = null;
+		StringBuffer sFiltros1 = new StringBuffer();
+		StringBuffer sFiltros2 = new StringBuffer();
+		;
+		ImprimeOS imp = null;
+		int iCodSetor = 0;
+		int iCodVend = 0;
+		int iCodCli = 0;
+		int iCodTipoCli = 0;
+		int linPag = 0;
+		int iParam = 1;
+		double deVlrTotal = 0;
+		double deQtdTotal = 0;
+
+		try {
+
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
+			imp.montaCab();
+			imp.setTitulo( "Relatorio de Vendas por Setor x Produto" );
+			imp.limpaPags();
+
+			sCodMarca = txtCodMarca.getVlrString().trim();
+			sCodGrup1 = txtCodGrup1.getVlrString().trim();
+			sCodGrup2 = txtCodGrup2.getVlrString().trim();
+			iCodSetor = txtCodSetor.getVlrInteger().intValue();
+			iCodVend = txtCodVend.getVlrInteger().intValue();
+			iCodCli = txtCodCli.getVlrInteger().intValue();
+			iCodTipoCli = txtCodTipoCli.getVlrInteger().intValue();
+
+			if ( rgFaturados.getVlrString().equals( "S" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab = "SO FATURADO";
+			}
+			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				sCab = "NAO FATURADO";
+			}
+			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
+
+			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				sCab += sCab.length() > 0 ? " - SO FINANCEIRO" : "SO FINANCEIRO";
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				sCab += sCab.length() > 0 ? " - NAO FINANCEIRO" : "NAO FINANCEIRO";
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+
+			if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
+				sFiltros1.append( "SO MOV.ESTOQUE" );
+				sWhereTM = ( cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "" );
+			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sFiltros1.append( " EMITIDOS " );
+			}
+
+			if ( !sCodMarca.equals( "" ) ) {
+				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( "M.: " );
+				sFiltros1.append( txtDescMarca.getText().trim() );
+			}
+			if ( !sCodGrup1.equals( "" ) ) {
+				sWhere.append( "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? " );
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( "G.: " );
+				sFiltros1.append( txtDescGrup1.getText().trim() );
+			}
+			if ( !sCodGrup2.equals( "" ) ) {
+				sWhere.append( "AND ( NOT P.CODGRUP=? ) " );
+				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
+				sFiltros1.append( " EXCL. G.: " );
+				sFiltros1.append( txtDescGrup2.getText().trim() );
+			}
+			if ( iCodSetor != 0 ) {
+				
+				if ( bPref ) {
+					sWhere.append( "AND C1.CODSETOR=? " );
+				}
+				else {
+					sWhere.append( "AND VD.CODSETOR=? " );
+				}
+				
+				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
+				sFiltros2.append( " SETOR: " );
+				sFiltros2.append( iCodSetor );
+				sFiltros2.append( "-" );
+				sFiltros2.append( txtDescSetor.getVlrString().trim() );
+			}
+			if ( iCodVend != 0 ) {
+				sWhere.append( "AND V.CODVEND=? " );
+				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
+				sFiltros2.append( " REPR.: " );
+				sFiltros2.append( iCodVend );
+				sFiltros2.append( "-" );
+				sFiltros2.append( txtNomeVend.getVlrString().trim() );
+			}
+			if ( iCodCli != 0 ) {
+				if ( iCodCli != 0 ) {
+					if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
+						sWhere.append( "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND " );
+						sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
+						sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
+						sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
+						sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
+						sFiltros2.append( "AGRUP. CLI. PRINC." );
+					}
+					else {
+						sWhere.append( "AND V.CODCLI=? " );
+					}
+					sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
+					sFiltros2.append( " CLI.: " );
+					sFiltros2.append( iCodCli );
+					sFiltros2.append( "-" );
+					sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
+				}
+			}
+			else {
+				sFrom = ",VDCLIENTE C1 ";
+				sWhere.append( "AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL AND C1.CODCLI=V.CODCLI " );
+			}
+			if ( iCodTipoCli != 0 ) {
+				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
+					sWhere.append( "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND " );
+					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
+					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
+					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
+					sFiltros2.append( "AGRUP. CLI. PRINC." );
+				}
+				else {
+					if ( sFrom.equals( "" ) ) {
+						sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
+						sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
+						sWhere.append( "AND TC.CODTIPOCLI=? " );
+						sFrom = ",VDCLIENTE C1, VDTIPOCLI TC ";
+					}
+					else {
+						sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
+						sWhere.append( "AND TC.CODTIPOCLI=? " );
+						sFrom = ", VDTIPOCLI TC " + sFrom;
+					}
+				}
+				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
+				sFiltros2.append( " TP.CLI.: " );
+				sFiltros2.append( iCodTipoCli );
+				sFiltros2.append( "-" );
+				sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
+			}
+
+			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			}
+
+			if ( sFiltros1.length() > 0 ) {
+				imp.addSubTitulo( sFiltros1.toString() );
+			}
+			if ( sFiltros2.length() > 0 ) {
+				imp.addSubTitulo( sFiltros2.toString() );
+			}
+			if ( sCab.length() > 0 ) {
+				imp.addSubTitulo( sCab );
+			}
+
+			try {
+
+				sSql.append( "SELECT coalesce(pd2.descprod,pd1.descprod) descprod,coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(Pd2.REFPROD, pd1.refprod) refprod,SUM(IV.QTDITVENDA) QTDVENDA ,SUM(IV.VLRLIQITVENDA) VLRVENDA " );
+				
+				sSql.append( "FROM VDVENDEDOR VD " );
+				sSql.append( sFrom );
+				sSql.append( " ,eqtipomov tm, vdvenda v, vditvenda iv "); 
+				sSql.append( "left outer join eqproduto pd1 on ");
+				sSql.append( "pd1.codemp=iv.codemppd and pd1.codfilial=iv.codfilialpd and pd1.codprod=iv.codprod ");
+				sSql.append( "left outer join eqgrupo g1 on ");
+				sSql.append( "g1.codemp=pd1.codempgp and g1.codfilial=pd1.codfilialgp and g1.codgrup=pd1.codgrup ");
+				sSql.append( "left outer join vdvendaorc vo on ");
+				sSql.append( "vo.codemp=iv.codemp and vo.codfilial=iv.codfilial and vo.codvenda=iv.codvenda and vo.tipovenda=iv.tipovenda and vo.coditvenda=iv.coditvenda ");
+				sSql.append( "left outer join eqitrecmercitositorc iro on ");
+				sSql.append( "iro.codempoc=vo.codempor and iro.codfilialoc=vo.codfilialor and iro.codorc=vo.codorc and iro.tipoorc=vo.tipoorc and iro.coditorc=vo.coditorc ");
+				sSql.append( "left outer join eqitrecmerc ir on ");
+				sSql.append( "ir.codemp=iro.codemp and ir.codfilial=iro.codfilial and ir.ticket=iro.ticket and ir.coditrecmerc=iro.coditrecmerc ");
+				sSql.append( "left outer join eqproduto pd2 on ");
+				sSql.append( "pd2.codemp=ir.codemppd and pd2.codfilial=ir.codfilialpd and pd2.codprod=ir.codprod ");
+				sSql.append( "left outer join eqgrupo g2 on ");
+				sSql.append( "g2.codemp=pd2.codempgp and g2.codfilial=pd2.codfilialgp and g2.codgrup=pd2.codgrup " );
+				
+				sSql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
+				sSql.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+				sSql.append( "AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
+				sSql.append( "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND " );
+				sSql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND " );
+				
+				sSql.append( "VD.CODVEND=V.CODVEND AND ");
+
+				if ( bPref ) {
+					sSql.append( "C1.CODSETOR IS NOT NULL AND " );	
+				}
+				else {
+					sSql.append( "VD.CODSETOR IS NOT NULL AND " );
+				}
+
+//				sSql.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
+//				sSql.append( "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND " );
+	//			sSql.append( "G.CODFILIAL=P.CODFILIALGP AND " );
+				sSql.append( "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " );
+				sSql.append( "TM.CODTIPOMOV=V.CODTIPOMOV " );
+
+				sSql.append( sWhereTM );
+				sSql.append( sWhere1 );
+				sSql.append( sWhere2 );
+				sSql.append( sWhere3 );
+				sSql.append( sWhere4 );
+				
+				sSql.append( sCodGrup1.equals( "" ) ? " AND COALESCE(PD2.CODGRUP,PD1.CODGRUP)=COALESCE(G2.CODGRUP,G1.CODGRUP) " : " AND SUBSTR(COALESCE(PD2.CODGRUP,PD1.CODGRUP),1," + sCodGrup1.length() + ")=COALESCE(G2.CODGRUP,G1.CODGRUP) " );
+				
+				sSql.append( sWhere );
+				
+				sSql.append( " GROUP BY 1,2,3" );
+				sSql.append( " ORDER BY 1,2,3" );
+
+				System.out.println("SQL:" + sSql.toString());
+				
+				ps = con.prepareStatement( sSql.toString() );
+				
+				ps.setInt( iParam++, Aplicativo.iCodEmp );
+				ps.setInt( iParam++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				
+				if ( !sCodMarca.equals( "" ) ) {
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQMARCA" ) );
+					ps.setString( iParam++, sCodMarca );
+				}
+				if ( !sCodGrup1.equals( "" ) ) {
+					ps.setInt( iParam++, Aplicativo.iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+					ps.setString( iParam++, sCodGrup1 + ( sCodGrup1.length() < TAM_GRUPO ? "%" : "" ) );
+				}
+				if ( !sCodGrup2.equals( "" ) ) {
+					ps.setString( iParam++, sCodGrup2 );
+				}
+				if ( iCodSetor != 0 ) {
+					ps.setInt( iParam++, iCodSetor );
+				}
+				if ( iCodVend != 0 ) {
+					ps.setInt( iParam++, iCodVend );
+				}
+				if ( iCodCli != 0 ) {
+					ps.setInt( iParam++, iCodCli );
+				}
+				if ( iCodTipoCli != 0 ) {
+					ps.setInt( iParam++, iCodTipoCli );
+				}
+
+				
+				
+				rs = ps.executeQuery();
+
+				while ( rs.next() ) {
+
+					if ( imp.pRow() >= ( linPag - 1 ) ) {
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+						imp.incPags();
+						imp.eject();
+					}
+
+					if ( imp.pRow() == 0 ) {
+
+						imp.impCab( 136, true );
+
+						imp.say( 0, imp.comprimido() );
+						imp.say( 1, "|" );
+						imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+						imp.say( 136, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 1, "| DESCRICAO DO PRODUTO" );
+						imp.say( 55, "| CODIGO" );
+						imp.say( 67, "| QUANTIDADE" );
+						imp.say( 81, "|     VALOR" );
+						imp.say( 99, "|" );
+						imp.say( 136, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+					}
+
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 1, "|" );
+					imp.say( 4, Funcoes.adicionaEspacos( rs.getString( 1 ), 50 ) + " |" );
+					imp.say( 56, Funcoes.adicEspacosEsquerda( rs.getString( 2 ), 10 ) + " |" );
+					imp.say( 70, Funcoes.adicEspacosEsquerda( String.valueOf( rs.getDouble( 4 ) ), 10 ) + " |" );
+					imp.say( 83, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 5 ) ) + " |" );
+					imp.say( 136, "|" );
+
+					deQtdTotal += rs.getDouble( 4 );
+					deVlrTotal += rs.getDouble( 5 );
+
+				}
+
+				// Fim da impressão do total por setor
+
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 1, "| TOTAL" );
+				imp.say( 67, "| " + Funcoes.strDecimalToStrCurrency( 11, 2, String.valueOf( deQtdTotal ) ) );
+				imp.say( 81, "| " + Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( deVlrTotal ) ) + " |" );
+				imp.say( 136, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+				imp.eject();
+				imp.fechaGravacao();
+
+				rs.close();
+				ps.close();
+
+				con.commit();
+
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			}
+
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSql = null;
+			sWhere = null;
+			sWhere1 = null;
+			sWhere2 = null;
+			sWhere3 = null;
+			sWhereTM = null;
+			sCab = null;
+			sFrom = null;
+			sCodMarca = null;
+			sCodGrup1 = null;
+			sCodGrup2 = null;
+			sFiltros1 = null;
+			sFiltros2 = null;
+			imp = null;
+			System.gc();
+		}
+
+	}
+
+	private boolean getPrefere() {
+
+		boolean retorno = false;
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				retorno = rs.getString( "SETORVENDA" ) != null && "CA".indexOf( rs.getString( "SETORVENDA" ) ) >= 0;
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+
+		return retorno;
+	}
+	
 	private void impCliente( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
@@ -1414,6 +1913,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sWhere4 = "";
 		String sWhereTM = "";
 		String sCab = "";
 		String sFrom = "";
@@ -1481,6 +1981,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 			}
+			
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
+				sFiltros1.append( " EMITIDOS " );
+			}
 
 			if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
 				sFiltros1.append( "SO MOV.ESTOQUE" );
@@ -1506,7 +2011,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros1.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
-				sWhere.append( "AND VD.CODSETOR=? " );
+				
+				if ( bPref ) {
+					sWhere.append( "AND C.CODSETOR=? " );
+				}
+				else {
+					sWhere.append( "AND VD.CODSETOR=? " );
+				}
+				
 				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
 				sFiltros2.append( " SETOR: " );
 				sFiltros2.append( iCodSetor );
@@ -1591,7 +2103,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sSql.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
 				sSql.append( "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND " );
 				sSql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND " );
-				sSql.append( "VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND " );
+				sSql.append( "VD.CODVEND=V.CODVEND AND ");
+				
+				if ( bPref ) {
+					sSql.append( "C.CODSETOR IS NOT NULL AND " );	
+				}
+				else {
+					sSql.append( "VD.CODSETOR IS NOT NULL AND " );
+				}
+				
 				sSql.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
 				sSql.append( "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND " );
 				sSql.append( "G.CODFILIAL=P.CODFILIALGP AND " );
@@ -1809,6 +2329,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcMarca.setConexao( cn );
 		lcGrup1.setConexao( cn );
 		lcGrup2.setConexao( cn );
@@ -1816,6 +2337,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		lcVendedor.setConexao( cn );
 		lcCliente.setConexao( cn );
 		lcTipoCli.setConexao( cn );
+		
+		bPref = getPrefere();
+		
 	}
 
 }
