@@ -42,24 +42,43 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[SELECT V.CODVEND, V.NOMEVEND,
-SUM((SELECT COUNT(*) FROM VDVENDA VD2
-WHERE VD2.CODEMPVD=V.CODEMP AND VD2.CODFILIALVD=V.CODFILIAL AND
-VD2.CODVEND=V.CODVEND AND VD2.DTEMITVENDA BETWEEN '01.01.2008' AND '15.01.2008' )) 
-TOTVENDCOMIS,SUM( VD.VLRLIQVENDA ) TOTVENDAS,SUM( VI.QTDITVENDA ) QTDITENS,
-SUM( VD.VLRLIQVENDA )/SUM( VI.QTDITVENDA ) ITEMMEDIO FROM VDVENDEDOR V, VDVENDA VD,
-VDITVENDA VI WHERE V.CODEMP=6 AND V.CODFILIAL=1 AND V.CODEMP=VD.CODEMPVD AND
-V.CODFILIAL=VD.CODFILIALVD AND V.CODVEND=VD.CODVEND AND VD.CODVENDA=VI.CODVENDA AND 
-VD.CODFILIAL=VI.CODFILIAL AND VD.CODVENDA=VI.CODVENDA AND VD.DTEMITVENDA BETWEEN '01.01.2008' 
-AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
+	<queryString><![CDATA[SELECT P.CODPLANOPAG, P.DESCPLANOPAG, SUM( V.VLRLIQVENDA ) AS VALORVD,
+SUM( V.vlrprodvenda ) AS VALORbruto, SUM( V.vlrdescvenda ) AS VLRdescvenda, SUM( V.vlrdescitvenda ) AS VLRdescitvenda 
+FROM FNPLANOPAG P, VDVENDA V
+WHERE V.CODEMP='4' AND V.CODFILIAL='1' AND P.CODPLANOPAG=V.CODPLANOPAG AND
+V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND
+P.CODFILIALPN=V.CODFILIAL AND V.DTEMITVENDA BETWEEN '01.01.2000' AND '01.03.2008'
+GROUP BY P.CODPLANOPAG, P.DESCPLANOPAG
+ORDER BY P.CODPLANOPAG]]></queryString>
 
-	<field name="CODVEND" class="java.lang.Long"/>
+	<field name="CODVEND" class="java.lang.Integer"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
-	<field name="TOTVENDCOMIS" class="java.lang.Long"/>
+	<field name="TOTVENDCOMIS" class="java.math.BigDecimal"/>
 	<field name="TOTVENDAS" class="java.math.BigDecimal"/>
+	<field name="VLRMEDVENDA" class="java.math.BigDecimal"/>
 	<field name="QTDITENS" class="java.math.BigDecimal"/>
 	<field name="ITEMMEDIO" class="java.math.BigDecimal"/>
 
+	<variable name="SUMTOTVENDAS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTVENDCOMIS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUMTOTALTRANS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTVENDAS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUMVLRMEDIOTRANS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRMEDVENDA}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUMTOTALITENSVENDA" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDITENS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUMVALORMEDIOITEM" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{ITEMMEDIO}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -68,7 +87,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="7"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
@@ -81,6 +100,151 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="149"
+						y="16"
+						width="390"
+						height="0"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="153"
+						y="3"
+						width="53"
+						height="12"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUMTOTALTRANS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="222"
+						y="3"
+						width="53"
+						height="12"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUMTOTVENDAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="307"
+						y="3"
+						width="53"
+						height="12"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUMVLRMEDIOTRANS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="395"
+						y="3"
+						width="53"
+						height="12"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUMTOTALITENSVENDA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="475"
+						y="3"
+						width="53"
+						height="12"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUMVALORMEDIOITEM}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="149"
+						y="1"
+						width="0"
+						height="16"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="539"
+						y="0"
+						width="0"
+						height="17"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="458"
+						y="1"
+						width="0"
+						height="16"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="382"
+						y="1"
+						width="0"
+						height="16"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="284"
+						y="1"
+						width="0"
+						height="15"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="209"
+						y="0"
+						width="0"
+						height="17"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="82"
+						y="3"
+						width="65"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-8"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[ Total Geral:]]></text>
+				</staticText>
 			</band>
 			</groupFooter>
 		</group>
@@ -268,42 +432,20 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="151"
-						y="73"
-						width="50"
-						height="12"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" size="9" isBold="false"/>
-					</textElement>
-				<text><![CDATA[Horas trab.]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="204"
-						y="70"
-						width="0"
-						height="20"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="206"
-						y="73"
-						width="53"
+						x="152"
+						y="74"
+						width="54"
 						height="12"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Tot. vendas]]></text>
+				<text><![CDATA[Total Vendas]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="263"
+						x="209"
 						y="70"
 						width="0"
 						height="20"
@@ -312,20 +454,20 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="268"
-						y="73"
-						width="50"
+						x="212"
+						y="74"
+						width="69"
 						height="12"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Nº trans.]]></text>
+				<text><![CDATA[Total Transações]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="321"
+						x="284"
 						y="70"
 						width="0"
 						height="20"
@@ -334,20 +476,20 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="325"
-						y="73"
-						width="41"
-						height="12"
+						x="385"
+						y="74"
+						width="70"
+						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Nº itens]]></text>
+				<text><![CDATA[Tot. Ítens Vendas]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="370"
+						x="382"
 						y="70"
 						width="0"
 						height="20"
@@ -356,44 +498,20 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="372"
-						y="73"
-						width="52"
+						x="287"
+						y="74"
+						width="92"
 						height="12"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Venda média
-]]></text>
+				<text><![CDATA[Valor Médio Transação]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="427"
-						y="70"
-						width="0"
-						height="20"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="432"
-						y="73"
-						width="49"
-						height="12"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Vendas p/ hora
-]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="483"
+						x="458"
 						y="70"
 						width="0"
 						height="20"
@@ -402,16 +520,16 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="485"
+						x="465"
 						y="74"
-						width="49"
-						height="12"
+						width="68"
+						height="11"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Item médio]]></text>
+				<text><![CDATA[Valor Médio Ítem]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -459,16 +577,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="204"
-						y="0"
-						width="0"
-						height="18"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="263"
+						x="209"
 						y="0"
 						width="0"
 						height="18"
@@ -477,7 +586,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="321"
+						x="284"
 						y="0"
 						width="0"
 						height="18"
@@ -486,7 +595,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="370"
+						x="382"
 						y="0"
 						width="0"
 						height="18"
@@ -495,16 +604,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="427"
-						y="0"
-						width="0"
-						height="18"
-						key="line-20"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="483"
+						x="458"
 						y="0"
 						width="0"
 						height="18"
@@ -514,7 +614,7 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="4"
-						y="2"
+						y="3"
 						width="28"
 						height="13"
 						key="textField-1"/>
@@ -522,12 +622,12 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODVEND}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODVEND}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="37"
-						y="2"
+						y="3"
 						width="111"
 						height="12"
 						key="textField-2"/>
@@ -539,8 +639,8 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="206"
-						y="1"
+						x="153"
+						y="3"
 						width="53"
 						height="12"
 						key="textField-3"/>
@@ -552,9 +652,9 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="325"
-						y="2"
-						width="41"
+						x="396"
+						y="3"
+						width="52"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -565,9 +665,9 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="484"
-						y="2"
-						width="50"
+						x="475"
+						y="3"
+						width="53"
 						height="12"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -578,21 +678,34 @@ AND '15.01.2008' GROUP BY 1,2 ORDER BY V.CODVEND]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="268"
-						y="2"
-						width="50"
+						x="222"
+						y="3"
+						width="53"
 						height="12"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{TOTVENDCOMIS}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTVENDCOMIS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="306"
+						y="3"
+						width="54"
+						height="12"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMEDVENDA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
