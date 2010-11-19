@@ -351,7 +351,7 @@ public class FRColetas extends FRelatorio {
 				sql.append( "order by pd.refprod " );
 			}
 			else if( "R".equals(rgTipo.getVlrString()) ) {
-				sql.append( "order by sr.codsetor, pd.refprod " );
+				sql.append( "order by sr.codsetor, cl.codcli, pd.refprod " );
 			}
 
 			
