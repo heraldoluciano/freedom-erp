@@ -37,9 +37,9 @@
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODORC" isForPrompting="false" class="java.lang.Long"/>
+	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[SELECT F.NOMEFILIAL,F.ENDFILIAL,F.NUMFILIAL,F.EMAILFILIAL,F.DDDFILIAL, 
-F.FONEFILIAL,M.NOMEMUNIC,F.SIGLAUF,F.CEPFILIAL,E.FOTOEMP
+F.FONEFILIAL,M.NOMEMUNIC,F.SIGLAUF,F.CEPFILIAL,E.FOTOEMP, F.BAIRFILIAL
 FROM SGFILIAL F,SGEMPRESA E, SGMUNICIPIO M
 WHERE F.CODEMP=$P{CODEMP} AND F.CODFILIAL=$P{CODFILIAL} AND  
 E.CODEMP=F.CODEMP AND
@@ -47,7 +47,7 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 
 	<field name="NOMEFILIAL" class="java.lang.String"/>
 	<field name="ENDFILIAL" class="java.lang.String"/>
-	<field name="NUMFILIAL" class="java.lang.Long"/>
+	<field name="NUMFILIAL" class="java.lang.Integer"/>
 	<field name="EMAILFILIAL" class="java.lang.String"/>
 	<field name="DDDFILIAL" class="java.lang.String"/>
 	<field name="FONEFILIAL" class="java.lang.String"/>
@@ -55,6 +55,7 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 	<field name="SIGLAUF" class="java.lang.String"/>
 	<field name="CEPFILIAL" class="java.lang.String"/>
 	<field name="FOTOEMP" class="java.io.InputStream"/>
+	<field name="BAIRFILIAL" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -69,10 +70,10 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="5"
-						y="3"
-						width="149"
-						height="81"
+						x="0"
+						y="1"
+						width="179"
+						height="83"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
@@ -83,7 +84,7 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="166"
+						x="181"
 						y="9"
 						width="350"
 						height="30"
@@ -92,16 +93,16 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 						key="Empresa-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="18" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="19" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEFILIAL}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="166"
-						y="45"
-						width="149"
+						x="207"
+						y="42"
+						width="199"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -110,14 +111,14 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDFILIAL}.trim() + ", " + $F{NUMFILIAL} + "  " + $F{BAIRFILIAL}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="387"
-						y="63"
-						width="145"
+						x="374"
+						y="61"
+						width="117"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -128,28 +129,12 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAILFILIAL}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="166"
-						y="63"
-						width="77"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Empresa-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Cidade : " + ($F{NOMEMUNIC}!=null?$F{NOMEMUNIC}:"")]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="285"
-						y="63"
-						width="100"
+						x="270"
+						y="61"
+						width="103"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -158,30 +143,14 @@ M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC]]></queryS
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Fone : " + $F{DDDFILIAL}+ "-" + ($F{FONEFILIAL}!=null?$F{FONEFILIAL}.substring(0,4) + "-" + $F{FONEFILIAL}.substring(4):"")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fone : " + "(" + $F{DDDFILIAL}.trim() + ")" + " " + ($F{FONEFILIAL}!=null?$F{FONEFILIAL}.substring(0,4) + "-" + $F{FONEFILIAL}.substring(4):"")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="244"
-						y="63"
-						width="38"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Empresa-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["UF : " + $F{SIGLAUF}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="319"
-						y="45"
-						width="97"
+						x="408"
+						y="42"
+						width="113"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -237,6 +206,22 @@ $F{CEPFILIAL}.trim().substring(0,5)
 						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="209"
+						y="61"
+						width="60"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEMUNIC}.trim() + " - " + $F{SIGLAUF}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
