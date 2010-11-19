@@ -329,7 +329,7 @@ $F{CEPCLI}.substring(5)
 :
 "")
 +
-"-" + $F{CIDCLI} + "-" + $F{ESTCLI}]]></textFieldExpression>
+"-" + $F{CIDCLI}.trim() + "-" + $F{ESTCLI}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
