@@ -271,8 +271,7 @@ public class FRemCnab extends FRemFBN {
 
 			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 
-			reg.setIdentTitEmp( Banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (long) rec.getDocrec(), (long) rec.getSeqrec(), 
-					(long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
+			reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 
 			if (reg.getCodConvBanco().length()<7) {
 				reg.setIdentTitulo( StringFunctions.strZero( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), reg.getCodConvBanco(),
@@ -438,8 +437,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		reg.setIdentTitEmp( "0" + Banco.getNumCli( (String) prefs.get( EPrefs.TPNOSSONUMERO ) , (long) rec.getDocrec(), (long) rec.getSeqrec(), 
-				(long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) + "0" );
+		reg.setIdentTitEmp( Banco.getIdentTitEmp((long) rec.getCodrec(), (long) rec.getNParcitrec(), 14 ) );
 		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
 		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );
