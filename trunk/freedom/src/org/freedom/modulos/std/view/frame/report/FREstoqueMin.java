@@ -198,22 +198,63 @@ public class FREstoqueMin extends FRelatorio {
 			sTmp = StringFunctions.replicate( " ", 67 - ( sTmp.length() / 2 ) ) + sTmp;
 			sCab += sTmp + StringFunctions.replicate( " ", 133 - sTmp.length() ) + " |";
 		}
+/*
+		String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD," 
+			+ "P.SLDLIQPROD,P.QTDMINPROD,CAST((P.QTDMINPROD-P.SLDLIQPROD) AS DECIMAL(6,2)) QTDFALTA," 
+			+ "P.CUSTOMPMPROD,CAST((P.SLDLIQPROD*P.CUSTOMPMPROD) AS DECIMAL(12,2)) VLRESTOQUE," 
+			+ "CAST((P.QTDMINPROD-P.SLDLIQPROD)*P.CUSTOMPMPROD AS DECIMAL(12,2)) VLRFALTA," 
+			+ "G.DESCGRUP,P.DTULTCPPROD "
+			+ "FROM EQPRODUTO P,EQGRUPO G "
+			+ "WHERE G.CODGRUP=P.CODGRUP AND P.SLDLIQPROD<P.QTDMINPROD " 
+			+ " AND P.ATIVOPROD='S' " 
+			+ sWhere 
+			+ " ORDER BY " 
+			+ sOrdem;
+*/
+		
+		String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD," 
+			
+			+ "cast((select custounit from eqcustoprodsp(P.CODEMP,P.codfilial,P.codprod, cast('TODAY' AS DATE),'M',null,null,null,'S')) as decimal(15,2)) SLDLIQPROD,"
+			
+			+ "P.QTDMINPROD,"
 
-		String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD," + "P.SLDLIQPROD,P.QTDMINPROD,(P.QTDMINPROD-P.SLDLIQPROD)," + "P.CUSTOMPMPROD,(P.SLDLIQPROD*P.CUSTOMPMPROD)," + "(P.QTDMINPROD-P.SLDLIQPROD)*P.CUSTOMPMPROD," + "G.DESCGRUP,P.DTULTCPPROD FROM EQPRODUTO P,EQGRUPO G "
-				+ "WHERE G.CODGRUP=P.CODGRUP AND P.SLDLIQPROD<P.QTDMINPROD " + " AND P.ATIVOPROD='S' " + sWhere + " ORDER BY " + sOrdem;
+			+ "cast((select custounit from eqcustoprodsp(P.CODEMP,P.codfilial,P.codprod,"
+			+ "cast('TODAY' AS DATE),'M',null,null,null,'S')) as decimal (15,2)) custompmpprod,"
 
+			+ "G.DESCGRUP,"
+			+ "(select first 1 mp.dtmovprod from eqmovprod mp where mp.tipomovprod='E' and codemppd=p.codemp and codfilialpd=p.codfilial and codprod=p.codprod "
+			+ " and codemp=p.codemp and codfilial=p.codfilial order by mp.dtmovprod desc, mp.codmovprod desc) DTULTCPPROD "
+			+ "FROM EQPRODUTO P,EQGRUPO G "
+			+ "WHERE G.CODGRUP=P.CODGRUP AND P.SLDLIQPROD<P.QTDMINPROD " 
+			+ " AND P.ATIVOPROD='S' " 
+			+ sWhere 
+			+ " ORDER BY " 
+			+ sOrdem;
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		try {
+			
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
+			
 			imp.limpaPags();
 			imp.montaCab();
 			imp.setTitulo( "Relatorio de Estoque Abaixo do Minímo" );
 			imp.addSubTitulo( sCab );
 			imp.addSubTitulo( sOrdenado );
+			
 			boolean hasData = false;
+			
 			while ( rs.next() ) {
+				
+				bSldLiqProd = new BigDecimal( "0" );
+				bQtdMinProd = new BigDecimal( "0" );
+				bQtdFaltaProd = new BigDecimal( "0" );
+				bVlrFaltaProd = new BigDecimal( "0" );
+				bVlrEstoqProd = new BigDecimal( "0" );
+				
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
@@ -254,31 +295,57 @@ public class FREstoqueMin extends FRelatorio {
 					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 				}
 
+				if ( rs.getString( "sldliqprod" ) != null ) {
+					bSldLiqProd = bSldLiqProd.add( rs.getBigDecimal( "sldliqprod" ) );
+				}
+				if ( rs.getString( "qtdminprod" ) != null ) {
+					bQtdMinProd = bQtdMinProd.add( new BigDecimal( rs.getString( "qtdminprod" ) ) );
+				}
+				if ( rs.getString( "sldliqprod" ) != null && rs.getString( "qtdminprod" ) != null ) {
+					bQtdFaltaProd = bQtdMinProd.subtract( bSldLiqProd );
+				}
+				if ( rs.getString( "sldliqprod" ) != null && rs.getString( "custompmpprod" ) != null ) {
+					bVlrEstoqProd = bSldLiqProd.add( rs.getBigDecimal( "custompmpprod" ) );
+				}
+				if ( rs.getBigDecimal( "sldliqprod" ) != null && rs.getBigDecimal( "custompmpprod" ) != null && rs.getBigDecimal( "qtdminprod" ) != null 
+						&& rs.getBigDecimal( "custompmpprod" ).floatValue()>0 
+				) {
+					bVlrFaltaProd = (bQtdMinProd.subtract( bSldLiqProd )).multiply( rs.getBigDecimal( "custompmpprod" )  );
+					if(bVlrFaltaProd.floatValue()<=0)
+						bVlrFaltaProd = new BigDecimal(0);
+				}
+
 				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 				imp.say( imp.pRow(), 0, "| " + Funcoes.copy( rs.getString( "Codgrup" ), 0, 14 ) + "| " + Funcoes.copy( rs.getString( "Refprod" ), 0, 13 ) + "| " + Funcoes.copy( rs.getString( "Descprod" ), 0, 34 ) + "| "
-						+ ( rs.getDate( "DtUltCpProd" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtUltCpProd" ) ) : "          " ) + "| " + Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( "sldliqprod" ) ) + "|"
-						+ Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( "qtdminprod" ) ) + "|" + Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( 7 ) ) + "|" + Funcoes.strDecimalToStrCurrency( 9, 2, rs.getString( "custompmprod" ) ) + "|"
-						+ Funcoes.strDecimalToStrCurrency( 11, 2, rs.getString( 9 ) ) + "|" + Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( 10 ) ) + "|" );
 
-				if ( rs.getString( "sldliqprod" ) != null )
-					bSldLiqProd = bSldLiqProd.add( new BigDecimal( rs.getString( "sldliqprod" ) ) );
-				if ( rs.getString( "qtdminprod" ) != null )
-					bQtdMinProd = bQtdMinProd.add( new BigDecimal( rs.getString( "qtdminprod" ) ) );
-				if ( rs.getString( 7 ) != null )
-					bQtdFaltaProd = bQtdFaltaProd.add( new BigDecimal( rs.getString( 7 ) ) );
-				if ( rs.getString( 9 ) != null )
-					bVlrEstoqProd = bVlrEstoqProd.add( new BigDecimal( rs.getString( 9 ) ) );
-				if ( rs.getString( 10 ) != null )
-					bVlrFaltaProd = bVlrFaltaProd.add( new BigDecimal( rs.getString( 10 ) ) );
+						+ ( rs.getDate( "DtUltCpProd" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtUltCpProd" ) ) : "          " ) + "| " 
+						
+						+ Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( "sldliqprod" ) ) + "|"
+						+ Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( "qtdminprod" ) ) + "|" 
+//						+ Funcoes.strDecimalToStrCurrency( 6, 0, rs.getString( 7 X) ) + "|"
+						+ Funcoes.strDecimalToStrCurrency( 6, 0, bQtdFaltaProd + "" ) + "|" 
+						+ Funcoes.strDecimalToStrCurrency( 9, 2, rs.getString( "custompmpprod" ) ) + "|"
+
+						+ Funcoes.strDecimalToStrCurrency( 11, 2, bVlrEstoqProd + "" ) + "|" 
+						+ Funcoes.strDecimalToStrCurrency( 10, 2, bVlrFaltaProd + "" ) + "|" );
 
 			}
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			
 			imp.say( imp.pRow(), 0, "| " + Funcoes.copy( " ", 0, 14 ) + "| " + StringFunctions.replicate( " ", 13 ) + "| " + StringFunctions.replicate( " ", 34 ) + "| TOTAL     | " + Funcoes.strDecimalToStrCurrency( 6, 0, "" + bSldLiqProd ) + "|"
-					+ Funcoes.strDecimalToStrCurrency( 6, 0, "" + bQtdMinProd ) + "|" + Funcoes.strDecimalToStrCurrency( 6, 0, "" + bQtdFaltaProd ) + "|" + StringFunctions.replicate( " ", 9 ) + "|" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bVlrEstoqProd ) + "|"
+					
+					+ Funcoes.strDecimalToStrCurrency( 6, 0, "" + bQtdMinProd ) + "|" 
+					+ Funcoes.strDecimalToStrCurrency( 6, 0, "" + bQtdFaltaProd ) 
+					
+					+ "|" + StringFunctions.replicate( " ", 9 ) + "|" 
+					
+					+ Funcoes.strDecimalToStrCurrency( 10, 2, "" + bVlrEstoqProd ) + "|"
 					+ Funcoes.strDecimalToStrCurrency( 10, 2, "" + bVlrFaltaProd ) + "|" );
+		
+			
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
 
