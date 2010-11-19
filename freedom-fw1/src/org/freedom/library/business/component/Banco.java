@@ -37,6 +37,13 @@ public abstract class Banco {
 
 	public abstract String digVerif(final String codigo, final int modulo, final boolean digx);
 
+	public static String getIdentTitEmp(final Long rec, final Long nparc, final int tam) {
+		final StringBuffer retorno = new StringBuffer();
+		retorno.append( strZero(String.valueOf(rec),tam-3) );
+		retorno.append( strZero(String.valueOf(nparc),3) );
+		return retorno.toString();
+	}
+	
 	public static String geraVlrtitulo(final BigDecimal vlrtitulo) {
 
 		String retorno = null;
