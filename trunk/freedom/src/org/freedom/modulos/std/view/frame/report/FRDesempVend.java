@@ -29,6 +29,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -39,6 +40,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -58,12 +60,31 @@ public class FRDesempVend extends FRelatorio {
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcVend = new ListaCampos( this );
+	
+	private JRadioGroup<?, ?> rgFaturados = null;
 
+	private JRadioGroup<?, ?> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgEmitidos = null;
+	
+	private Vector<String> vLabsFatu = new Vector<String>();
+
+	private Vector<String> vValsFatu = new Vector<String>();
+	
+	private Vector<String> vLabsFinan = new Vector<String>();
+
+	private Vector<String> vValsFinan = new Vector<String>();
+		
+	private Vector<String> vLabsEmit = new Vector<String>();
+
+	private Vector<String> vValsEmit = new Vector<String>();
+
+	
 	public FRDesempVend() {
 
 		super( false );
 		setTitulo( "Desempenho por vendedor" );
-		setAtribos( 80, 80, 330, 200 );
+		setAtribos( 80, 80, 330, 350 );
 
 		montaListaCampos();
 		montaTela();
@@ -93,6 +114,33 @@ public class FRDesempVend extends FRelatorio {
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
+		
+		vLabsFatu.addElement( "Faturado" );
+		vLabsFatu.addElement( "Não Faturado" );
+		vLabsFatu.addElement( "Ambos" );
+		vValsFatu.addElement( "S" );
+		vValsFatu.addElement( "N" );
+		vValsFatu.addElement( "A" );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabsFatu, vValsFatu );
+		rgFaturados.setVlrString( "S" );
+
+		vLabsFinan.addElement( "Financeiro" );
+		vLabsFinan.addElement( "Não Finaceiro" );
+		vLabsFinan.addElement( "Ambos" );
+		vValsFinan.addElement( "S" );
+		vValsFinan.addElement( "N" );
+		vValsFinan.addElement( "A" );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFinan, vValsFinan );
+		rgFinanceiro.setVlrString( "S" );
+		
+		vLabsEmit.addElement( "Emitidos" );
+		vLabsEmit.addElement( "Não emitidos" );
+		vLabsEmit.addElement( "Ambos" );
+		vValsEmit.addElement( "S" );
+		vValsEmit.addElement( "N" );
+		vValsEmit.addElement( "A" );
+		rgEmitidos = new JRadioGroup<String, String>( 3, 1, vLabsEmit, vValsEmit );
+		rgEmitidos.setVlrString( "A" );
 
 		adic( lbPeriodo, 17, 10, 80, 20 );
 		adic( lbLinha, 7, 20, 300, 45 );
@@ -103,6 +151,10 @@ public class FRDesempVend extends FRelatorio {
 		adic( txtCodVend, 7, 85, 60, 20 );
 		adic( new JLabelPad( "Nome do vendedor" ), 70, 65, 200, 20 );
 		adic( txtDescVend, 70, 85, 235, 20 );
+		
+		adic( rgFaturados, 7, 115, 120, 70 );
+		adic( rgFinanceiro, 148, 115, 120, 70 );
+		adic( rgEmitidos, 7, 195, 120, 70 );
 
 	}
 
@@ -119,22 +171,65 @@ public class FRDesempVend extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
+		String sWhere1 = "";
+		String sWhere2 = "";
 
 		try {
-			sSQL.append( "SELECT V.CODVEND, V.NOMEVEND, " );
-			sSQL.append( "COUNT( DISTINCT VD.CODVENDA) TOTVENDCOMIS, " );
-			sSQL.append( "SUM( DISTINCT VD.VLRLIQVENDA ) TOTVENDAS, " );
-			sSQL.append( "COUNT( VI.CODVENDA ) QTDITENS, " );
-			sSQL.append( "(SUM( DISTINCT VD.VLRLIQVENDA )/COUNT( VI.CODVENDA )) ITEMMEDIO " );
-			sSQL.append( "FROM VDVENDEDOR V, VDVENDA VD, VDITVENDA VI " );
-			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.CODEMP=VD.CODEMPVD AND " );
-			sSQL.append( "V.CODFILIAL=VD.CODFILIALVD AND V.CODVEND=VD.CODVEND AND " );
-			sSQL.append( "VD.CODVENDA=VI.CODVENDA AND VD.CODFILIAL=VI.CODFILIAL AND " );
-			sSQL.append( "VD.CODVENDA=VI.CODVENDA AND " );
-			sSQL.append( "VD.DTEMITVENDA BETWEEN  ? AND ? " );
+			
+			if ( rgFaturados.getVlrString().equals( "S" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab.append( "FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FATURADO" );
+			}
+			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FINANCEIRO" );
+			}
+			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND VD.STATUSVENDA IN ('V2','V3','P3') ";
+				sCab.append( " SO EMITIDOS ");
+			}
+			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND VD.STATUSVENDA NOT IN ('V2','V3','P3') ";
+				sCab.append( " NAO EMITIDOS " );
+			}
+			
+			sSQL.append( "SELECT V.CODVEND, V.NOMEVEND, " ); 
+			sSQL.append( "COUNT(DISTINCT VD.CODVENDA) AS TOTVENDCOMIS, " ); 
+			sSQL.append( "SUM(VI.VLRLIQITVENDA) AS TOTVENDAS, " );
+			sSQL.append( "COUNT(VI.CODITVENDA) AS QTDITENS, " );
+			sSQL.append( "(SUM(VI.VLRLIQITVENDA)/COUNT(VI.CODITVENDA)) AS ITEMMEDIO " );
+			sSQL.append( "FROM VDVENDA VD " );
+			sSQL.append( "LEFT OUTER JOIN VDVENDEDOR V ON V.CODVEND = VD.CODVEND " );
+			sSQL.append( "LEFT OUTER JOIN VDITVENDA VI ON VI.CODVENDA = VD.CODVENDA " );
+			sSQL.append( "LEFT OUTER JOIN EQTIPOMOV TM ON VD.CODEMPTM=TM.CODEMP AND VD.CODFILIALTM=TM.CODFILIAL AND VD.CODTIPOMOV=TM.CODTIPOMOV " );
+			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
+			sSQL.append( "NOT SUBSTR(VD.STATUSVENDA,1,1)='C' AND " );
+			sSQL.append( "VD.DTEMITVENDA BETWEEN ? AND ? " ); 
+			
 			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
 				sSQL.append( "AND VD.CODVEND=? " );
 			}
+			
+			sSQL.append( sWhere1 );
+			sSQL.append( sWhere2 );
+			
 			sSQL.append( " GROUP BY 1,2 " );
 
 			ps = con.prepareStatement( sSQL.toString() );
