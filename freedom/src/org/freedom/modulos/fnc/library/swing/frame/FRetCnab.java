@@ -539,6 +539,7 @@ public class FRetCnab extends FRetFBN {
 	private int[] getChaveReceber( final Reg3T reg3T ) {
 
 		int[] chave = new int[ 2 ];
+		Integer numdigidenttit = (Integer) prefs.get( "NUMDIGITENTTIT" );
 
 		if ( reg3T != null ) {
 
@@ -546,10 +547,32 @@ public class FRetCnab extends FRetFBN {
 			String tmp = "";
 
 			try {
+				
 				tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();
-				chave[ 0 ] = Integer.parseInt( tmp.substring( 0, tmp.length() - 3 ) );
-				chave[ 1 ] = Integer.parseInt( tmp.substring( tmp.length() - 3 ) );
-			} catch ( Exception e ) {
+				
+				if(numdigidenttit>0){
+
+					Integer idoc = Integer.parseInt( tmp );
+					
+					String sdoc = idoc.toString();
+					
+					String schave0 = sdoc.substring( 0, numdigidenttit );
+					String schave1 = sdoc.substring( numdigidenttit );
+					
+					chave[ 0 ] = Integer.parseInt( schave0 );
+					chave[ 1 ] = Integer.parseInt( schave1 );
+					
+				}
+				else{
+
+					chave[ 0 ] = Integer.parseInt( tmp.substring( 0, tmp.length() - 3 ) );
+					chave[ 1 ] = Integer.parseInt( tmp.substring( tmp.length() - 3 ) );
+					
+				}
+				
+				
+			} 
+			catch ( Exception e ) {
 				Funcoes.mensagemInforma( null, "Não existe identificação do titulo no arquivo de retorno!" );
 			}
 
@@ -564,6 +587,8 @@ public class FRetCnab extends FRetFBN {
 		
 		String codrec = "";
 		
+		Integer numdigidenttit = (Integer) prefs.get( "NUMDIGITENTTIT" );
+		
 		try {
 		
 			
@@ -571,8 +596,26 @@ public class FRetCnab extends FRetFBN {
 	
 				codrec = regT400.getIdentTitEmp().trim();
 				
-				chave[ 0 ] = Integer.parseInt( codrec.substring( 0, codrec.length() - 3 ) );
-				chave[ 1 ] = Integer.parseInt( codrec.substring( codrec.length() - 3 ) );
+				if(numdigidenttit>0){
+
+					Integer idoc = Integer.parseInt( codrec );
+					
+					String sdoc = idoc.toString();
+					
+					String schave0 = sdoc.substring( 0, numdigidenttit );
+					String schave1 = sdoc.substring( numdigidenttit );
+					
+					chave[ 0 ] = Integer.parseInt( schave0 );
+					chave[ 1 ] = Integer.parseInt( schave1 );
+					
+				}
+				else{
+					
+					chave[ 0 ] = Integer.parseInt( codrec.substring( 0, codrec.length() - 2 ) );
+					chave[ 1 ] = Integer.parseInt( codrec.substring( codrec.length() - 2 ) );
+					
+				}
+	
 			}
 			
 		}
