@@ -38,14 +38,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -85,8 +84,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JPanelPad panelFuncoes = new JPanelPad();
 
-//	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+	//	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private final JPanelPad panelStatus = new JPanelPad(  );
 
 	protected final JTablePad tab = new JTablePad();
@@ -106,13 +105,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
 	protected final JLabel lbStatus = new JLabel();
-	
+
 	protected final JLabel lbValorSelecionado = new JLabel();
 
 	protected final ImageIcon imgRejEntrada = Icone.novo( "clRejEntrada.gif" );
 
 	protected final ImageIcon imgRejBaixa = Icone.novo( "clRejBaixa.gif" );
-	
+
 	protected final ImageIcon imgBaixado = Icone.novo( "clPago2.gif");
 
 	protected final ImageIcon imgAdvert = Icone.novo( "clAdvertencia.gif" );
@@ -124,12 +123,15 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected final ImageIcon imgIndefinido = Icone.novo( "clIndefinido.gif" );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
-	
+
 	protected BigDecimal vlrselecionado = null;
+
+	protected HashMap<String, Object> prefs = null;
 
 	public FRetFBN( final String tipoFebraban ) {
 
 		super( false );
+		
 		setTitulo( "Leitura do arquivo de retorno" );
 		setAtribos( 10, 10, 780, 540 );
 
@@ -238,7 +240,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		lbValorSelecionado.setForeground( Color.BLUE );
 
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
-//		panelStatus.add( lbStatus, BorderLayout.WEST );
+		//		panelStatus.add( lbStatus, BorderLayout.WEST );
 		panelStatus.adic( lbStatus, 0, 0, 200, 20 );
 		panelStatus.adic( lbValorSelecionado, 203, 0, 200, 20 );
 
@@ -602,6 +604,46 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 
+	protected HashMap<String,Object> getPrefere() {
+
+		HashMap<String,Object> ret = new HashMap<String,Object>();
+
+		try {
+
+			int count = 0;
+
+
+			StringBuilder sSQL = new StringBuilder();
+
+			sSQL.append( "select coalesce(numdigidenttit,0) numdigidenttit " );
+			sSQL.append( "from sgprefere1 p1 " );
+			sSQL.append( "where p1.codemp=? and p1.codfilial=? " );
+
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret.put( "NUMDIGITENTTIT", rs.getInt( "numdigidenttit" ));
+
+			}
+
+			con.commit();
+
+		} 
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar prefências do sistema!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+
+
 	protected boolean baixaReceber() {
 
 		boolean retorno = false;
@@ -799,7 +841,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		else if ( e.getSource() == btSelNada ) {
 			selecionaNada();
 			calcSelecionado();
-			
+
 		}
 		else if ( e.getSource() == btImporta ) {
 			execImportar();
@@ -833,38 +875,38 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			if ( e.getClickCount() == 2 ) {
 				edit();
 			}
-			
+
 			calcSelecionado();
-			
+
 		}
 	}
 
 	protected void calcSelecionado() {
-		
+
 		try {
-			
+
 			vlrselecionado = new BigDecimal( 0 );
-			
+
 			for(int i=0; tab.getNumLinhas() > i; i++) {
-				
+
 				if((Boolean) tab.getValor( i, EColTab.SEL.ordinal() )) {
 
 					String strvalor = ((StringDireita) tab.getValor( i, EColTab.VLRPAG.ordinal())).toString() ;
 					BigDecimal bdvalor = ConversionFunctions.stringToBigDecimal( strvalor );
-					
+
 					vlrselecionado = vlrselecionado.add(bdvalor);
 				}
-				
+
 			}
-			
+
 			lbValorSelecionado.setText( Funcoes.bdToStr( vlrselecionado, Aplicativo.casasDecFin ).toString() );
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void mouseEntered( MouseEvent e ) {
 
 	}
@@ -884,7 +926,10 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcBanco.setConexao( cn );
+		prefs = getPrefere();
+		
 	}
 
 	protected enum EColTab {
