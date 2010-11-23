@@ -678,13 +678,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodEmailNF = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 
 	private JTextFieldFK txtDescEmailNF = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+	
+	private JTextFieldPad txtNumDigIdentTit = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
 
 	public FPrefereGeral() {
 
 		super();
 
 		setTitulo("Preferências Gerais");
-		setAtribos(30, 40, 900, 590);
+		setAtribos(30, 40, 900, 660);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -1382,7 +1384,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lbTPNossoNumero.setBorder(BorderFactory.createTitledBorder("Tipo do nosso número (boletos/remessa)"));
 		adic(lbTPNossoNumero, 7, 395, 485, 70);
 
-		adicDB(rgTpNossoNumero, 20, 420, 452, 30, "tpnossonumero", "", true);			
+		adicDB(rgTpNossoNumero, 20, 420, 452, 30, "tpnossonumero", "", true);	
+		
+		adicCampo(txtNumDigIdentTit, 7, 490, 100, 20, "NumDigIdentTit", "Nr.Dig.Ident.Tit.", ListaCampos.DB_SI, false);
+		
 		
 		// Contabil
 
