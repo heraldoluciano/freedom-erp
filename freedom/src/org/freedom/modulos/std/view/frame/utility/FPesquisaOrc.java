@@ -42,6 +42,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -58,8 +60,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
-import org.freedom.modulos.std.business.component.Orcamento;
-import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.std.view.dialog.report.DLRPesquisaOrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -105,10 +107,6 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private JCheckBoxPad cbAberto = new JCheckBoxPad( "Aberto", "S", "N" );
 
 	private JCheckBoxPad cbAgrupar = new JCheckBoxPad( "Agrupar ítens", "S", "N" );
-	
-	private JCheckBoxPad cbInfoFatu = new JCheckBoxPad( "Inf. Faturamento", "S", "N" );
-	
-	private JCheckBoxPad cbItensOrc = new JCheckBoxPad( "Ítens Orç.", "S", "N" );
 
 	private JCheckBoxPad cbImpresso = new JCheckBoxPad( "Impresso", "S", "N" );
 
@@ -258,8 +256,6 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		pinCab.adic( btBusca, 280, 200, 145, 30 );
 		pinCab.adic( btPrevimp, 437, 200, 145, 30 );
-		pinCab.adic( cbItensOrc, 600, 188, 165, 30 );
-		pinCab.adic( cbInfoFatu, 600, 214, 220, 20 );
 
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
@@ -322,11 +318,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		JPanelPad pnBotoes = new JPanelPad(new BorderLayout());
 		pnBotoes.add( btFaturaOrc, BorderLayout.WEST );
 		pnBotoes.add( btSair, BorderLayout.EAST);
-		getTela().add( pnBotoes, BorderLayout.SOUTH	 );
-
-		
-		
-		
+		getTela().add( pnBotoes, BorderLayout.SOUTH	 );		
 	}
 
 	/**
@@ -490,8 +482,94 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		}
 	}
 	
-
 	private void imprimir( boolean bVisualizar ) {
+
+		String sOrdem = "";
+		String sInfoFatu = "";
+		String sItensOrc = "";
+		
+		DLRPesquisaOrcamento dlo = new DLRPesquisaOrcamento();
+		dlo.setVisible( true );
+		
+		if ( dlo.OK == false ) {
+			dlo.dispose();
+			return;
+		}
+		if ( dlo.getModo().equals( "G" ) ) {
+			//sOrdem = dlo.getOrdem();
+			sInfoFatu = dlo.getInfoFatu();
+			sItensOrc = dlo.getItensOrc();
+			imprimeGrafico( bVisualizar, sInfoFatu, sItensOrc );
+		}
+		else if ( dlo.getModo().equals( "T" ) ) {
+			//sOrdem = dlo.getOrdem();
+			sInfoFatu = dlo.getInfoFatu();
+			sItensOrc = dlo.getItensOrc();
+			imprimeTexto( bVisualizar, sInfoFatu, sItensOrc );
+		}
+	}
+	
+	public void imprimeGrafico( boolean bVisualizar, String sInfoFatu, String sItensOrc ) {
+
+		String sqlIn = "";
+		StringBuilder sql = new StringBuilder();
+		
+		for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
+			if (iLin == 0)
+				sqlIn = sqlIn + "( " + tab.getValor( iLin, 1 );
+			else
+				sqlIn = sqlIn + "," + tab.getValor( iLin, 1 );
+		}
+		
+		sqlIn = sqlIn + " )" ;
+		
+		try {
+		    
+		    sql.append( "SELECT " );
+		    sql.append( " O.CODORC, VO.CODVENDA, O.DTORC, O.CODCLI, C.NOMECLI, C.CIDCLI, C.UFCLI, " );
+		    sql.append( " O.PRAZOENTORC, I.CODITORC, I.CODPROD, P.DESCPROD, I.QTDITORC, P.CODUNID " );
+		    sql.append( " FROM  VDORCAMENTO O " );
+		    sql.append( " LEFT OUTER JOIN VDITORCAMENTO I ON I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODORC=O.CODORC AND I.TIPOORC=O.TIPOORC " );
+		    sql.append( " LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=I.CODORC AND VO.CODEMPOR=I.CODEMP AND VO.CODFILIALOR=I.CODFILIAL AND VO.CODITORC=I.CODITORC " );
+		    sql.append( " LEFT OUTER JOIN EQPRODUTO P ON P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
+		    sql.append( " LEFT OUTER JOIN VDCLIENTE C ON C.CODFILIAL=O.CODFILIALCL AND C.CODEMP=O.CODEMPCL AND C.CODCLI=O.CODCLI " );
+		    sql.append( " WHERE O.CODEMP=? AND O.CODFILIAL=? AND " );
+		    sql.append( " O.CODORC IN "+sqlIn );
+		    sql.append( " ORDER BY O.CODORC,I.CODITORC " );
+		    
+		    PreparedStatement ps = con.prepareStatement( sql.toString() );
+		    
+		    int param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRPesquisaOrcamentos.jasper", "Orçamentos", "", rs, null, this );
+			
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de desempenho por vendedor!" + err.getMessage(), true, con, err );
+				}
+			}
+			
+			
+		} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro na consulta à tabela de orçamentos!\n" + err.getMessage(), true, con, err );
+		} finally {
+	
+		}
+		
+	}
+	
+
+	private void imprimeTexto( boolean bVisualizar, String sInfoFatu, String sItensOrc ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
@@ -502,7 +580,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			
 			imp.montaCab();
 			
-			if ( "S".equals( cbItensOrc.getVlrString() ) ) {
+			if ( "S".equals( sItensOrc.toString() ) ) {
 				
 				imp.setTitulo( "Relatório de Orçamentos (Informações Detalhadas)" );
 				imp.limpaPags();
@@ -624,7 +702,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 						imp.say( imp.pRow() + 0, 136, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 	
-						if( "S".equals( cbInfoFatu.getVlrString() ) ) {
+						if( "S".equals( sInfoFatu.toString() ) ) {
 							imp.say( imp.pRow() + 0, 1, "| Nro. Pedido" );
 							imp.say( imp.pRow() + 0, 15, "| Nro. Nota" );
 							imp.say( imp.pRow() + 0, 29, "| Data Fat." );
@@ -651,7 +729,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 					imp.say( imp.pRow() + 0, 124, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 11 ) + "", 12 ) );
 					imp.say( imp.pRow() + 0, 136, "|" );
 	
-					if ( "S".equals( cbInfoFatu.getVlrString() ) ) {
+					if ( "S".equals( sInfoFatu.toString() ) ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 2, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 2 ) + "", 8 ) );
 						imp.say( imp.pRow() + 0, 15, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 3 ) + "", 8 ) );
