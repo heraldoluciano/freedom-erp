@@ -58,6 +58,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.business.component.Orcamento;
+import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
@@ -103,6 +105,10 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private JCheckBoxPad cbAberto = new JCheckBoxPad( "Aberto", "S", "N" );
 
 	private JCheckBoxPad cbAgrupar = new JCheckBoxPad( "Agrupar ítens", "S", "N" );
+	
+	private JCheckBoxPad cbInfoFatu = new JCheckBoxPad( "Inf. Faturamento", "S", "N" );
+	
+	private JCheckBoxPad cbItensOrc = new JCheckBoxPad( "Ítens Orç.", "S", "N" );
 
 	private JCheckBoxPad cbImpresso = new JCheckBoxPad( "Impresso", "S", "N" );
 
@@ -252,6 +258,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		pinCab.adic( btBusca, 280, 200, 145, 30 );
 		pinCab.adic( btPrevimp, 437, 200, 145, 30 );
+		pinCab.adic( cbItensOrc, 600, 188, 165, 30 );
+		pinCab.adic( cbInfoFatu, 600, 214, 220, 20 );
 
 		txtDtIni.setVlrDate( new Date() );
 		txtDtFim.setVlrDate( new Date() );
@@ -338,7 +346,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		boolean caixa = txtCodCaixa.getVlrInteger().intValue() > 0;
 		boolean usuario = txtIdUsu.getVlrString().trim().length() > 0;
 
-		where.append( " AND " + ( "V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC " ) + "BETWEEN ? AND ?" );
+		where.append( " AND " + ( "V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC " ) + "BETWEEN ? AND ? " );
 
 		if ( !txtValorMenor.getVlrString().equals( "" ) && !txtValorMaior.getVlrString().equals( "" ) ) {
 			where.append( " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal() );
@@ -399,42 +407,33 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			where.append( " AND O.IDUSUINS=? " );
 		}
 
+		sql.append( "SELECT" );
+		
+		if ( "S".equals( cbAgrupar.getVlrString() ) )
+			sql.append( " DISTINCT" );
+		sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
+		sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," );
+		
 		if ( "S".equals( cbAgrupar.getVlrString() ) ) {
-			sql.append( "SELECT" );
-			sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
-			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,'-' VENCAUTORIZORC,'-' NUMAUTORIZORC," );
-			sql.append( "  CL.CIDCLI,'-' APROVITORC,O.VLRLIQORC VLRLIQITORC," );
-			sql.append( "  '-' CODVENDA,'-' DOCVENDA,'-' VLRLIQVENDA " );
-			sql.append( "FROM" );
-			sql.append( "  VDORCAMENTO O, VDCLIENTE CL " );
-			// sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " );
-			// sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " );
-			// sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
-			sql.append( "WHERE" );
-			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " );
-			// sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
-			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
-			sql.append( where );
-			sql.append( "ORDER BY 2" );
+			sql.append( "  CL.CIDCLI,IT.APROVITORC,O.VLRLIQORC VLRLIQITORC," );
+			sql.append( "  VO.CODVENDA,VD.DOCVENDA,VD.vlrliqvenda VLRLIQITVENDA " );
 		}
 		else {
-			sql.append( "SELECT" );
-			sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
-			sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," );
 			sql.append( "  CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC," );
 			sql.append( "  VO.CODVENDA,VD.DOCVENDA,IVD.VLRLIQITVENDA " );
-			sql.append( "FROM" );
-			sql.append( "  VDORCAMENTO O, VDCLIENTE CL, VDITORCAMENTO IT " );
-			sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " );
-			sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " );
-			sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
-			sql.append( "WHERE" );
-			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " );
-			sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
-			sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
-			sql.append( where );
-			sql.append( "ORDER BY 2" );
 		}
+		
+		sql.append( "FROM" );
+		sql.append( "  VDORCAMENTO O, VDCLIENTE CL, VDITORCAMENTO IT " );
+		sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " );
+		sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " );
+		sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
+		sql.append( "WHERE" );
+		sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " );
+		sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
+		sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
+		sql.append( where );
+		sql.append( "ORDER BY 2" );
 
 		try {
 
@@ -490,86 +489,191 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "Erro ao pesquisar orçamentos!\n" + e.getMessage(), true, con, e );
 		}
 	}
+	
 
 	private void imprimir( boolean bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
+		StringBuilder sql = new StringBuilder();
 
 		try {
 			int linPag = imp.verifLinPag() - 1;
-			boolean bImpFat = false;
-
-			bImpFat = Funcoes.mensagemConfirma( this, "Deseja imprimir informações de faturamento do orçamento?" ) == 0 ? true : false;
-
+			
 			imp.montaCab();
-			imp.setTitulo( "Relatório de Orçamentos" );
-			imp.limpaPags();
-
-			for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 136, false );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 1, "| N.ORC." );
-					imp.say( imp.pRow() + 0, 15, "| Emissão" );
-					imp.say( imp.pRow() + 0, 29, "| Validade." );
-					imp.say( imp.pRow() + 0, 41, "| Autoriz." );
-					imp.say( imp.pRow() + 0, 56, "| Nome" );
-					imp.say( imp.pRow() + 0, 87, "| Vlr. Item Orc." );
-					imp.say( imp.pRow() + 0, 105, "| Cidade" );
-					imp.say( imp.pRow() + 0, 124, "| Telefone   " );
-					imp.say( imp.pRow() + 0, 136, "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-
-					if ( bImpFat ) {
-						imp.say( imp.pRow() + 0, 1, "| Nro. Pedido" );
-						imp.say( imp.pRow() + 0, 15, "| Nro. Nota" );
-						imp.say( imp.pRow() + 0, 29, "| Data Fat." );
-						imp.say( imp.pRow() + 0, 41, "| " );
-						imp.say( imp.pRow() + 0, 56, "| " );
-						imp.say( imp.pRow() + 0, 87, "| Vlr. Item Fat." );
-						imp.say( imp.pRow() + 0, 105, "| " );
-						imp.say( imp.pRow() + 0, 124, "| " );
-						imp.say( imp.pRow() + 0, 137, "|" );
+			
+			if ( "S".equals( cbItensOrc.getVlrString() ) ) {
+				
+				imp.setTitulo( "Relatório de Orçamentos (Informações Detalhadas)" );
+				imp.limpaPags();
+				imp.impCab( 136, false );
+				
+				int controle = 0;
+				
+				for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
+					controle = iLin;
+					if ( tab.getNumLinhas() == iLin + 1 )
+						controle = 0;
+					if ( ! tab.getValor( controle+1, 1 ).equals(tab.getValor( iLin, 1 ))) {
+						imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 1, 0, StringFunctions.replicate( "-", 136 ) );
+						imp.say( imp.pRow() + 1, 1, "| N.ORC.: " + tab.getValor( iLin, 1 ) + " " );
+						imp.say( imp.pRow() + 0, 17, "| PEDIDO: " + tab.getValor( iLin, 3 ) + " " );
+						imp.say( imp.pRow() + 0, 34, "| EMISSAO: " + tab.getValor( iLin, 6 ) + " " );
+						imp.say( imp.pRow() + 0, 56, "| CLIENTE: " + tab.getValor( iLin, 5 ) + " ");
+							
+						imp.say( imp.pRow() + 0, 136, "|" );
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow(), 1, "ÍTENS ORÇAMENTO" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 1, "IT" );
+						imp.say( 6, "|   CÓDIGO" );
+						imp.say( 19, "|                     DESCRIÇÃO" );
+						imp.say( 72, "| UN" );
+						imp.say( 77, "|    QUANT." );
+						imp.say( 91, "|   V.UNIT." );
+						imp.say( 105, "|   V.LIQ." );
+						imp.say( 119, "|     V.TOTAL" );
+	
+						sql.append( "SELECT " );
+						sql.append( " O.CODORC, O.CODCLI, O.VLRLIQORC, O.PRAZOENTORC, C.CIDCLI, C.UFCLI, I.CODITORC, I.CODPROD, " ); 
+						sql.append( " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRLIQITORC, P.REFPROD, P.DESCPROD, P.CODUNID " );
+						sql.append( " FROM " ); 
+						sql.append( " VDORCAMENTO O, VDITORCAMENTO I, " ); 
+						sql.append( " VDCLIENTE C, EQPRODUTO P " );
+						sql.append( " WHERE " ); 
+						sql.append( " O.CODEMP=? AND " ); 
+						sql.append( " O.CODFILIAL=? AND " ); 
+						sql.append( " O.CODORC=? AND " );
+					    sql.append( " C.CODEMP=O.CODEMPCL AND " ); 
+					    sql.append( " C.CODFILIAL=O.CODFILIALCL AND " ); 
+					    sql.append( " C.CODCLI=O.CODCLI AND " );
+					    sql.append( " I.CODEMP=O.CODEMP AND " );
+					    sql.append( " I.CODFILIAL=O.CODFILIAL AND " );
+					    sql.append( " I.CODORC=O.CODORC AND " );
+					    sql.append( " I.TIPOORC=O.TIPOORC AND " );
+					    sql.append( " P.CODEMP=I.CODEMPPD AND " );
+					    sql.append( " P.CODFILIAL=I.CODFILIALPD AND " ); 
+					    sql.append( " P.CODPROD=I.CODPROD " );
+					    sql.append( " ORDER BY I.CODITORC, P.REFPROD,P.DESCPROD " );
+						
+					    PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+						int param = 1;
+
+						ps.setInt( param++, Aplicativo.iCodEmp );
+						ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+						ps.setString( param++, tab.getValor( iLin, 1 ).toString() );
+						
+						ResultSet rs = ps.executeQuery();
+
+						while ( rs.next() ) {
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, rs.getString( "CODITORC" ).trim() );
+							imp.say( 12, rs.getString( "CODPROD" ).trim() );
+							imp.say( 25, rs.getString( "DESCPROD" ).trim() );
+							imp.say( 74, Funcoes.copy( rs.getString( "CODUNID" ).trim(), 2 ) );
+							imp.say( 76, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "QTDITORC" ) ) );
+							imp.say( 92, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "PRECOITORC" ) ) );
+							imp.say( 106, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VLRPRODITORC" ) ) );
+							imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VLRLIQITORC" ) ) );
+
+						}
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );
+						
+						con.commit();
+						sql.setLength( 0 );
+	
+						if ( tab.getValor( iLin, 9 ) != null )
+							bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
+	
+						if ( imp.pRow() >= linPag ) {
+							imp.incPags();
+							imp.eject();
+						}
 					}
-
-					imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
 				}
-
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 2, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 1 ) + "", 8 ) );
-				imp.say( imp.pRow() + 0, 15, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 6 ) + "", 8 ) );
-				imp.say( imp.pRow() + 0, 29, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 7 ) + "", 10 ) );
-				imp.say( imp.pRow() + 0, 41, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 8 ) + "", 13 ) );
-				imp.say( imp.pRow() + 0, 56, "|" + Funcoes.copy( tab.getValor( iLin, 5 ) + "", 25 ) );
-				imp.say( imp.pRow() + 0, 87, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 9 ) + "", 15 ) );
-				imp.say( imp.pRow() + 0, 105, "|" + Funcoes.copy( tab.getValor( iLin, 10 ) + "", 10 ) );
-				imp.say( imp.pRow() + 0, 124, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 11 ) + "", 12 ) );
-				imp.say( imp.pRow() + 0, 136, "|" );
-
-				if ( bImpFat ) {
+			}
+			else
+			{
+				boolean bImpFat = false;
+				
+				imp.setTitulo( "Relatório de Orçamentos" );
+				imp.limpaPags();
+					
+				for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
+					if ( imp.pRow() == 0 ) {
+						imp.impCab( 136, false );
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 1, "| N.ORC." );
+						imp.say( imp.pRow() + 0, 15, "| Emissão" );
+						imp.say( imp.pRow() + 0, 29, "| Validade." );
+						imp.say( imp.pRow() + 0, 41, "| Autoriz." );
+						imp.say( imp.pRow() + 0, 56, "| Nome" );
+						imp.say( imp.pRow() + 0, 87, "| Vlr. Item Orc." );
+						imp.say( imp.pRow() + 0, 105, "| Cidade" );
+						imp.say( imp.pRow() + 0, 124, "| Telefone   " );
+						imp.say( imp.pRow() + 0, 136, "|" );
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+	
+						if( "S".equals( cbInfoFatu.getVlrString() ) ) {
+							imp.say( imp.pRow() + 0, 1, "| Nro. Pedido" );
+							imp.say( imp.pRow() + 0, 15, "| Nro. Nota" );
+							imp.say( imp.pRow() + 0, 29, "| Data Fat." );
+							imp.say( imp.pRow() + 0, 41, "| " );
+							imp.say( imp.pRow() + 0, 56, "| " );
+							imp.say( imp.pRow() + 0, 87, "| Vlr. Item Fat." );
+							imp.say( imp.pRow() + 0, 105, "| " );
+							imp.say( imp.pRow() + 0, 124, "| " );
+							imp.say( imp.pRow() + 0, 137, "|" );
+							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						}
+	
+						imp.say( imp.pRow() + 0, 0, StringFunctions.replicate( "-", 136 ) );
+					}
+	
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 2, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 2 ) + "", 8 ) );
-					imp.say( imp.pRow() + 0, 15, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 3 ) + "", 8 ) );
-					imp.say( imp.pRow() + 0, 29, "|" );
-					imp.say( imp.pRow() + 0, 41, "|" );
-					imp.say( imp.pRow() + 0, 56, "|" );
-					imp.say( imp.pRow() + 0, 87, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 12 ) + "", 15 ) );
-					imp.say( imp.pRow() + 0, 105, "|" );
-					imp.say( imp.pRow() + 0, 124, "|" );
-					imp.say( imp.pRow() + 0, 137, "|" );
-				}
-
-				imp.say( imp.pRow() + 1, 0, "+ " + StringFunctions.replicate( "-", 133 ) );
-				imp.say( imp.pRow() + 0, 136, "+" );
-
-				if ( tab.getValor( iLin, 9 ) != null )
-					bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
-
-				if ( imp.pRow() >= linPag ) {
-					imp.incPags();
-					imp.eject();
+					imp.say( imp.pRow() + 0, 2, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 1 ) + "", 8 ) );
+					imp.say( imp.pRow() + 0, 15, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 6 ) + "", 8 ) );
+					imp.say( imp.pRow() + 0, 29, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 7 ) + "", 10 ) );
+					imp.say( imp.pRow() + 0, 41, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 8 ) + "", 13 ) );
+					imp.say( imp.pRow() + 0, 56, "|" + Funcoes.copy( tab.getValor( iLin, 5 ) + "", 25 ) );
+					imp.say( imp.pRow() + 0, 87, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 9 ) + "", 15 ) );
+					imp.say( imp.pRow() + 0, 105, "|" + Funcoes.copy( tab.getValor( iLin, 10 ) + "", 10 ) );
+					imp.say( imp.pRow() + 0, 124, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 11 ) + "", 12 ) );
+					imp.say( imp.pRow() + 0, 136, "|" );
+	
+					if ( "S".equals( cbInfoFatu.getVlrString() ) ) {
+						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+						imp.say( imp.pRow() + 0, 2, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 2 ) + "", 8 ) );
+						imp.say( imp.pRow() + 0, 15, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 3 ) + "", 8 ) );
+						imp.say( imp.pRow() + 0, 29, "|" );
+						imp.say( imp.pRow() + 0, 41, "|" );
+						imp.say( imp.pRow() + 0, 56, "|" );
+						imp.say( imp.pRow() + 0, 87, "|" + Funcoes.alinhaDir( tab.getValor( iLin, 12 ) + "", 15 ) );
+						imp.say( imp.pRow() + 0, 105, "|" );
+						imp.say( imp.pRow() + 0, 124, "|" );
+						imp.say( imp.pRow() + 0, 137, "|" );
+					}
+	
+					imp.say( imp.pRow() + 1, 0, "+ " + StringFunctions.replicate( "-", 133 ) );
+					imp.say( imp.pRow() + 0, 136, "+" );
+	
+					if ( tab.getValor( iLin, 9 ) != null )
+						bTotalLiq = bTotalLiq.add( new BigDecimal( Funcoes.strCurrencyToDouble( "" + tab.getValor( iLin, 9 ) ) ) );
+	
+					if ( imp.pRow() >= linPag ) {
+						imp.incPags();
+						imp.eject();
+					}
 				}
 			}
 
