@@ -82,6 +82,7 @@ public class FRetCnab extends FRetFBN {
 	 * 
 	 * @see org.freedom.modulos.fnc.FRetFBN#execImportar()
 	 */
+	@ SuppressWarnings ( "unused" )
 	@ Override
 	public boolean execImportar() {
 
