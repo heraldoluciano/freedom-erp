@@ -286,7 +286,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		Calendar cPeriodo = Calendar.getInstance();
 		
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
-		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
+		cPeriodo.set( Calendar.DAY_OF_YEAR, cPeriodo.get( Calendar.DAY_OF_YEAR ) - 7 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
 	}
