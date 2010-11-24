@@ -192,7 +192,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 		EmailBean mail = Aplicativo.getEmailBean();
 		mail.setPara( txtEmailCli.getVlrString() );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_CARTA_COB_01.jasper", "Carta de cobrançaa", sCab, rs, hParam, this, mail );
+		dlGr = new FPrinterJob( "layout/rel/REL_CARTA_COB_01.jasper", "Carta de cobrança", sCab, rs, hParam, this, mail );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
