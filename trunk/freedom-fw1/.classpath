@@ -20,5 +20,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/dsgebrazilutils.jar"/>
+	<classpathentry kind="lib" path="lib/commons-digester.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
