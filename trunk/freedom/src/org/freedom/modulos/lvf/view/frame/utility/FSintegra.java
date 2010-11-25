@@ -1533,10 +1533,9 @@ public class FSintegra extends FFilho implements ActionListener {
 				sql.append( "WHERE P.SALDO > 0 " );
 				sql.append( "AND F.CODEMP=? AND F.CODFILIAL=? " );
 				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' " ); 
-
-				if ( vProd75.size() > 0 ) {
-//					sql.append( " AND P.CODPROD IN ( " + Funcoes.vectorToString( vProd75, "," ) + ")" );
-				}
+			
+				// Filtro para não incluir produtos do patrimônio. 
+				sql.append( "and pd.tipoprod<>'O' " ); 
 
 				sql.append( "ORDER BY " + ( sUsaRefProd.equals( "S" ) ? "P.REFPROD" : "p.CODPROD" ) );
 
@@ -1638,10 +1637,13 @@ public class FSintegra extends FFilho implements ActionListener {
 						+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " 
 						+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND "
 						+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND "
-							
-							//+ F.PESSOAFOR='J' AND " //Retirado , pois existem clientes que emitem nota fiscal de compra de pessoa física
-							
-							+ "TM.FISCALTIPOMOV='S' ";
+						+ "TM.FISCALTIPOMOV='S' "
+						// Filtro para não incluir produtos do patrimônio. 
+						+"and p.tipoprod<>'O' "; 
+
+					
+					
+					
 				}
 				if ( cbSaida.getVlrString().equals( "S" ) ) {
 					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC, 0), " 
@@ -1654,18 +1656,30 @@ public class FSintegra extends FFilho implements ActionListener {
 							+ "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
 							+ "( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND "
 							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
-							//+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' ";
-							+ "CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC AND TM.FISCALTIPOMOV='S' ";
+							+ "CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC AND TM.FISCALTIPOMOV='S' "
+							// Filtro para não incluir produtos do patrimônio. 
+							+"and p.tipoprod<>'O' "; 
+
 
 					// Amarrado com o ítem padrão da classificação fiscal pois não deve repetir de acordo com as vendas as alíquotas
 					// Informadas devem ser as correspondetes a vendas / ou compras dentro do estado.
 
 				}
 				if ( cbConsumidor.getVlrString().equals( "S" ) && ( sConvenio.equals( "1" ) ) ) // IV.PERCICMSITVENDA
-					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " + "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF "
-							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " + "C.PESSOACLI='F' AND V.TIPOVENDA='V' AND "
-							+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "
-							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' ";
+					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," 
+						+ "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
+						+ "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF "
+							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
+							+ "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " 
+							+ "C.PESSOACLI='F' AND V.TIPOVENDA='V' AND "
+							+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " 
+							+ "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
+							+ "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "
+							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
+							+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND TM.FISCALTIPOMOV='S' "
+							// Filtro para não incluir produtos do patrimônio. 
+							+"and p.tipoprod<>'O' "; 
+
 
 				
 				if ( cbInventario.getVlrString().equals( "S" ) ) {
@@ -1674,7 +1688,10 @@ public class FSintegra extends FFilho implements ActionListener {
 								   + "WHERE P.SALDO > 0 "
 								   + "and pd.codemp=? and pd.codfilial=? and pd.codprod=p.codprod AND PD.ATIVOPROD='S' "
  								   + "AND CF.CODFISC=Pd.CODFISC AND CF.CODEMP=Pd.CODEMPFC AND CF.CODFILIAL=Pd.CODFILIALFC "
- 								   + "AND CF.GERALFISC='S'  ";
+ 								   + "AND CF.GERALFISC='S' "
+ 									// Filtro para não incluir produtos do patrimônio. 
+ 									+"and pd.tipoprod<>'O' "; 
+
 
 				}	
 				
