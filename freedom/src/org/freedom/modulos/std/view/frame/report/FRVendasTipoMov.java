@@ -57,6 +57,8 @@ public class FRVendasTipoMov extends FRelatorio {
 	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "DESC", "" );
 
 	private JRadioGroup<String, String> rgOrdem = null;
+	
+	private JRadioGroup<?, ?> rgFormato = null;
 
 	private JRadioGroup<String, String> rgFaturados = null;
 
@@ -73,7 +75,7 @@ public class FRVendasTipoMov extends FRelatorio {
 
 		super( false );
 		setTitulo( "Vendas por tipo de movimento" );
-		setAtribos( 80, 80, 330, 380 );
+		setAtribos( 80, 80, 330, 430 );
 
 		montaRadioGrups();
 		montaTela();
@@ -87,6 +89,16 @@ public class FRVendasTipoMov extends FRelatorio {
 	}
 
 	private void montaRadioGrups() {
+		
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
+
+		vLabs1.addElement( "Detalhado" );
+		vLabs1.addElement( "Resumido" );
+		vVals1.addElement( "D" );
+		vVals1.addElement( "R" );
+		rgFormato = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgFormato.setVlrString( "D" );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -149,12 +161,13 @@ public class FRVendasTipoMov extends FRelatorio {
 		adic( txtDataini, 17, 35, 125, 20 );
 		adic( new JLabelPad( "à", SwingConstants.CENTER ), 142, 35, 30, 20 );
 		adic( txtDatafim, 172, 35, 125, 20 );
-		adic( new JLabelPad( "Ordem" ), 7, 70, 50, 20 );
-		adic( rgOrdem, 7, 90, 300, 30 );
-		adic( cbDesc, 7, 125, 300, 20 );
-		adic( rgFaturados, 7, 160, 145, 70 );
-		adic( rgFinanceiro, 160, 160, 145, 70 );
-		adic( rgEmitidos, 7, 240, 145, 70 );
+		adic( rgFormato, 7,	70, 300, 30 );
+		adic( new JLabelPad( "Ordem" ), 7, 100, 50, 20 );
+		adic( rgOrdem, 7, 120, 300, 30 );
+		adic( cbDesc, 7, 155, 300, 20 );
+		adic( rgFaturados, 7, 180, 145, 70 );
+		adic( rgFinanceiro, 160, 180, 145, 70 );
+		adic( rgEmitidos, 7, 260, 145, 70 );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -216,19 +229,34 @@ public class FRVendasTipoMov extends FRelatorio {
 				sCab.append( "NAO EMITIDOS" );
 			}
 
-
-			sSQL.append( "SELECT TM.CODTIPOMOV, TM.DESCTIPOMOV, SUM( V.VLRLIQVENDA ) AS VALORVD, " );
-			sSQL.append( "SUM( V.vlrprodvenda ) AS valorbruto, SUM( V.vlrdescvenda ) AS vlrdescvenda, SUM( V.vlrdescitvenda ) AS vlrdescitvenda ");
-			sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM " );
-			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
-			sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
-			sSQL.append( "V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV AND " );
+			if ( "D".equals( rgFormato.getVlrString() ) ) {
+				sSQL.append( "SELECT TM.CODTIPOMOV, TM.DESCTIPOMOV, V.DOCVENDA, V.CODVENDA, V.DTEMITVENDA, " );
+				sSQL.append( "SUM( V.vlrprodvenda ) AS VALORBRUTO, C.RAZCLI ");
+				sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM, VDCLIENTE C " );
+				sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
+				sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
+				sSQL.append( "V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV AND " );
+				sSQL.append( "C.CODCLI = V.CODCLI AND V.VLRPRODVENDA > 0 AND " );
+			}else{
+				sSQL.append( "SELECT TM.CODTIPOMOV, TM.DESCTIPOMOV, SUM( V.VLRLIQVENDA ) AS VALORVD, " );
+				sSQL.append( "SUM( V.vlrprodvenda ) AS valorbruto, SUM( V.vlrdescvenda ) AS vlrdescvenda, SUM( V.vlrdescitvenda ) AS vlrdescitvenda ");
+				sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM " );
+				sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
+				sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
+				sSQL.append( "V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV AND " );
+			}
+			
 			sSQL.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );
 			sSQL.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
+			
 			sSQL.append( "GROUP BY TM.CODTIPOMOV, TM.DESCTIPOMOV " );
+			if( "D".equals( rgFormato.getVlrString() )){
+				sSQL.append( ", V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, C.RAZCLI " );
+			}
+			
 			sSQL.append( "ORDER BY " );
 			sSQL.append( rgOrdem.getVlrString() + " " + cbDesc.getVlrString() );
 
@@ -254,8 +282,15 @@ public class FRVendasTipoMov extends FRelatorio {
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasTipoMov.jasper", "Vendas por plano de pagamento", sCab, rs, null, this );
+		FPrinterJob dlGr = null;
 
+		if ( "D".equals( rgFormato.getVlrString() ) ) {
+			dlGr = new FPrinterJob( "relatorios/VendasTipoMovDetalhado.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+		}
+		else if ( "R".equals( rgFormato.getVlrString() ) ) {
+			dlGr = new FPrinterJob( "relatorios/VendasTipoMov.jasper", "Vendas por plano de pagamento", sCab, rs, null, this );
+		}
+		
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
