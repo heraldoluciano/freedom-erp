@@ -562,9 +562,11 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			
 		} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro na consulta à tabela de orçamentos!\n" + err.getMessage(), true, con, err );
-		} finally {
-	
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 		
 	}
 	
