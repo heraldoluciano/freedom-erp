@@ -120,7 +120,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVEND}==null?"Vendedor indeterminado": ($F{CODVEND}.toString() + " - " + $F{NOMEVEND})]]></textFieldExpression>
 				</textField>
@@ -155,7 +155,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CIDVEND}]]></textFieldExpression>
 				</textField>
@@ -219,7 +219,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{FONEVEND}==null? "" :( "(" + $F{DDDFONEVEND}.trim() + ") " + $F{FONEVEND}.substring(0,4) + "-" + $F{FONEVEND}.substring(4)   )]]></textFieldExpression>
 				</textField>
@@ -312,7 +312,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left">
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{COUNT_CLI_VEND} + " clientes para o vendedor " + ($F{NOMEVEND} == null ? "indeterminado" : $F{NOMEVEND} ) + "."]]></textFieldExpression>
 				</textField>
@@ -375,7 +375,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Times-Roman" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -437,7 +437,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 			</textField>
@@ -450,7 +450,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 			</textField>
@@ -463,7 +463,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CIDCLI}]]></textFieldExpression>
 			</textField>
@@ -476,7 +476,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{FONECLI}==null? "" :( "(" + $F{DDDCLI}.trim() + ") " + $F{FONECLI}.substring(0,4) + "-" + $F{FONECLI}.substring(4)   )]]></textFieldExpression>
 			</textField>
@@ -489,7 +489,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{ULTIMA_VENDA}]]></textFieldExpression>
 			</textField>
@@ -523,7 +523,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DOC_ULTIMA_VENDA}]]></textFieldExpression>
 			</textField>
@@ -536,7 +536,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{FAXCLI}==null? "" : ( "(" + $F{DDDFAXCLI}.trim() + ") " + $F{FAXCLI}.substring(0,4) + "-" + $F{FAXCLI}.substring(4)   )]]></textFieldExpression>
 			</textField>
@@ -549,7 +549,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CELCLI}==null? "" : ( "(" + $F{DDDCELCLI}.trim() + ") " + $F{CELCLI}.substring(0,4) + "-" + $F{CELCLI}.substring(4)   )]]></textFieldExpression>
 			</textField>
@@ -562,7 +562,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECLI}]]></textFieldExpression>
 			</textField>
@@ -604,7 +604,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -617,7 +617,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
@@ -646,7 +646,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{REPORT_COUNT} + " clientes no total."]]></textFieldExpression>
 			</textField>
