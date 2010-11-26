@@ -32,8 +32,8 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import javax.swing.SwingConstants;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -80,6 +80,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private static final String APLIC_FISCO_NFE = "3";
 
+	private static final String VERSAO_NFE_1 = "100";
+
+	private static final String VERSAO_NFE_2 = "200";
+	
 	private JPanelPad pinVenda = new JPanelPad(690, 220);
 
 	private JPanelPad pinGeral = new JPanelPad(330, 200);
@@ -390,7 +394,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, String> rgTipoCred = null;
 	
 	private JComboBoxPad cbSisContabil = null;
+	
+	private JComboBoxPad cbVersaoNFE = null;
 
+	private JComboBoxPad cbRegimeNFE = null;
+	
 	private JComboBoxPad cbTamDescProd = null;
 
 	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos", "S", "N");
@@ -1112,6 +1120,35 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		cbSisContabil = new JComboBoxPad(vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0);
 
+		
+		Vector<String> vLabsVersaoNFE = new Vector<String>();
+		Vector<String> vValsVersaoNFE = new Vector<String>();
+
+		vLabsVersaoNFE.addElement("<--Selecione-->");
+		vLabsVersaoNFE.addElement(AbstractNFEFactory.VERSAO_LAYOUT_NFE_01.getName());
+		vLabsVersaoNFE.addElement(AbstractNFEFactory.VERSAO_LAYOUT_NFE_02.getName());
+		vValsVersaoNFE.addElement("000");
+		vValsVersaoNFE.addElement(AbstractNFEFactory.VERSAO_LAYOUT_NFE_01.getValue().toString());
+		vValsVersaoNFE.addElement(AbstractNFEFactory.VERSAO_LAYOUT_NFE_02.getValue().toString());
+
+		cbVersaoNFE = new JComboBoxPad(vLabsVersaoNFE, vValsVersaoNFE, JComboBoxPad.TP_STRING, 6, 0);
+		
+		
+		Vector<String> vLabsRegimeNFE = new Vector<String>();
+		Vector<String> vValsRegimeNFE = new Vector<String>();
+
+		vLabsRegimeNFE.addElement("<--Selecione-->");
+		vLabsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_SIMPLES.getName());
+		vLabsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_SIMPLES_EX.getName());
+		vLabsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_NORMAL.getName());
+		vValsRegimeNFE.addElement("0");
+		vValsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_SIMPLES.getValue().toString());
+		vValsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_SIMPLES_EX.getValue().toString());
+		vValsRegimeNFE.addElement(AbstractNFEFactory.REGIME_TRIB_NFE_NORMAL.getValue().toString());
+
+		
+		cbRegimeNFE = new JComboBoxPad(vLabsRegimeNFE, vValsRegimeNFE, JComboBoxPad.TP_STRING, 1, 0);
+		
 		// Geral
 
 		setPainel(pinGeral);
@@ -1561,8 +1598,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(btDirNfeWin, 333, 62, 20, 20);
 		adic(btDirNfeLin, 333, 102, 20, 20);
 
-		adicCampo(txtVerProcNfe, 4, 142, 350, 20, "VerProcNfe", "Versão do Aplicativo", ListaCampos.DB_SI, false);
-
+		adicCampo(txtVerProcNfe, 4, 142, 105, 20, "VerProcNfe", "Versão/Aplicativo", ListaCampos.DB_SI, false);
+		adicDB(cbVersaoNFE, 112, 142, 100, 20, "VersaoNFE", "Versão da NFE", false);
+		adicDB(cbRegimeNFE, 215, 142, 130, 20, "RegimeTribNFE", "Regime trib.", false);
+		
+		
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder(SwingParams.getPanelLabel("Parâmetros", Color.BLUE));
 		setPainel(pinNFe);
