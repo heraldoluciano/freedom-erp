@@ -228,10 +228,9 @@ public class FRVendasTipoMov extends FRelatorio {
 				sWhere3 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
 				sCab.append( "NAO EMITIDOS" );
 			}
-
 			if ( "D".equals( rgFormato.getVlrString() ) ) {
 				sSQL.append( "SELECT TM.CODTIPOMOV, TM.DESCTIPOMOV, V.DOCVENDA, V.CODVENDA, V.DTEMITVENDA, " );
-				sSQL.append( "SUM( V.vlrprodvenda ) AS VALORBRUTO, C.RAZCLI ");
+				sSQL.append( "SUM( V.vlrliqvenda ) AS VALORLIQUIDO, C.RAZCLI ");
 				sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM, VDCLIENTE C " );
 				sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
 				sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
