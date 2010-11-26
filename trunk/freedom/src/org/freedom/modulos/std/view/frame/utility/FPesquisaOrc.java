@@ -511,17 +511,77 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	
 	public void imprimeGrafico( boolean bVisualizar, String sInfoFatu, String sItensOrc ) {
 
-		String sqlIn = "";
 		StringBuilder sql = new StringBuilder();
-		
-		for ( int iLin = 0; iLin < tab.getNumLinhas(); iLin++ ) {
-			if (iLin == 0)
-				sqlIn = sqlIn + "( " + tab.getValor( iLin, 1 );
-			else
-				sqlIn = sqlIn + "," + tab.getValor( iLin, 1 );
+		StringBuilder where = new StringBuilder();
+		StringBuilder status = new StringBuilder();
+
+		boolean bUsaOr = false;
+		boolean bUsaWhere = false;
+		boolean cliente = txtCodCli.getVlrInteger().intValue() > 0;
+		boolean comissionado = txtCodComis.getVlrInteger().intValue() > 0;
+		boolean caixa = txtCodCaixa.getVlrInteger().intValue() > 0;
+		boolean usuario = txtIdUsu.getVlrString().trim().length() > 0;
+
+		where.append( " AND " + ( "V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC " ) + "BETWEEN ? AND ? " );
+
+		if ( !txtValorMenor.getVlrString().equals( "" ) && !txtValorMaior.getVlrString().equals( "" ) ) {
+			where.append( " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal() );
+			where.append( " AND IT.VLRLIQITORC <= " + txtValorMaior.getVlrBigDecimal() );
 		}
-		
-		sqlIn = sqlIn + " )" ;
+
+		if ( "S".equals( cbAberto.getVlrString() ) ) {
+			status.append( "'*','OA'" );
+		}
+		if ( "S".equals( cbImpresso.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OC'" );
+		}
+		if ( "S".equals( cbLiberado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OL'" );
+		}
+		if ( "S".equals( cbFaturadoParcial.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'FP'" );
+		}
+		if ( "S".equals( cbFaturado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OV'" );
+		}
+		if ( "S".equals( cbProduzido.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OP'" );
+		}
+		if ( "S".equals( cbCancelado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'CA'" );
+		}
+
+		if ( status.length() > 0 ) {
+			where.append( " AND O.STATUSORC IN(" + status.toString() + ") " );
+		}
+
+		if ( cliente ) {
+			where.append( " AND O.CODEMPCL=? AND O.CODFILIALCL=? AND O.CODCLI=? " );
+		}
+		if ( comissionado ) {
+			where.append( " AND O.CODEMPVD=? AND O.CODFILIALVD=? AND O.CODVEND=? " );
+		}
+		if ( usuario ) {
+			where.append( " AND O.IDUSUINS=? " );
+		}
 		
 		try {
 		    
@@ -533,17 +593,34 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		    sql.append( " LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=I.CODORC AND VO.CODEMPOR=I.CODEMP AND VO.CODFILIALOR=I.CODFILIAL AND VO.CODITORC=I.CODITORC " );
 		    sql.append( " LEFT OUTER JOIN EQPRODUTO P ON P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
 		    sql.append( " LEFT OUTER JOIN VDCLIENTE C ON C.CODFILIAL=O.CODFILIALCL AND C.CODEMP=O.CODEMPCL AND C.CODCLI=O.CODCLI " );
-		    sql.append( " WHERE O.CODEMP=? AND O.CODFILIAL=? AND " );
-		    sql.append( " O.CODORC IN "+sqlIn );
+		    sql.append( " WHERE O.CODEMP=? AND O.CODFILIAL=? " );
+		    sql.append( where );
 		    sql.append( " ORDER BY O.CODORC,I.CODITORC " );
 		    
 		    PreparedStatement ps = con.prepareStatement( sql.toString() );
-		    
 		    int param = 1;
-			
+
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+
+			if ( cliente ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, lcCli.getCodFilial() );
+				ps.setInt( param++, txtCodCli.getVlrInteger().intValue() );
+			}
+			if ( comissionado ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, lcComis.getCodFilial() );
+				ps.setInt( param++, txtCodComis.getVlrInteger().intValue() );
+			}
+			/*
+			 * if ( caixa ) { ps.setInt( param++, Aplicativo.iCodEmp ); ps.setInt( param++, lcCaixa.getCodFilial() ); ps.setInt( param++, txtCodCaixa.getVlrInteger().intValue() ); }
+			 */
+			if ( usuario ) {
+				ps.setInt( param++, txtIdUsu.getVlrInteger().intValue() );
+			}
 			ResultSet rs = ps.executeQuery();
 			
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRPesquisaOrcamentos.jasper", "Orçamentos", "", rs, null, this );
