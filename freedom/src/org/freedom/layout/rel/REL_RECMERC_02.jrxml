@@ -84,7 +84,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pesocumuladodiario}]]></textFieldExpression>
 				</textField>
@@ -97,7 +97,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{vlracumuladototaldiario}]]></textFieldExpression>
 				</textField>
@@ -116,7 +116,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pesocumuladodiario}]]></textFieldExpression>
 				</textField>
@@ -129,7 +129,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{mediarendatot}.divide($V{pesocumuladodiario}, BigDecimal.ROUND_CEILING)]]></textFieldExpression>
 				</textField>
@@ -163,7 +163,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -176,7 +176,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -189,7 +189,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 			</textField>
@@ -202,7 +202,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
@@ -215,7 +215,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
@@ -241,7 +241,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Data]]></text>
 			</staticText>
@@ -260,7 +260,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Nome do fornecedor]]></text>
 			</staticText>
@@ -273,7 +273,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Local de carga]]></text>
 			</staticText>
@@ -286,7 +286,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Peso]]></text>
 			</staticText>
@@ -299,7 +299,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Loca de descarga]]></text>
 			</staticText>
@@ -312,7 +312,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Renda]]></text>
 			</staticText>
@@ -325,7 +325,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Preço]]></text>
 			</staticText>
@@ -338,7 +338,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Vlr.Total]]></text>
 			</staticText>
@@ -351,7 +351,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Peso acum.]]></text>
 			</staticText>
@@ -364,7 +364,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Vlr.acum.]]></text>
 			</staticText>
@@ -377,7 +377,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Preço medio]]></text>
 			</staticText>
@@ -390,7 +390,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Acum./dia]]></text>
 			</staticText>
@@ -403,7 +403,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Renda.med.]]></text>
 			</staticText>
@@ -420,7 +420,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTENT}]]></textFieldExpression>
 			</textField>
@@ -433,7 +433,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEFOR}]]></textFieldExpression>
 			</textField>
@@ -446,7 +446,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEBAIRRO}]]></textFieldExpression>
 			</textField>
@@ -459,7 +459,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCALMOX}]]></textFieldExpression>
 			</textField>
@@ -472,7 +472,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDITCOMPRA}]]></textFieldExpression>
 			</textField>
@@ -485,7 +485,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 			</textField>
@@ -498,7 +498,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODITCOMPRA}]]></textFieldExpression>
 			</textField>
@@ -511,7 +511,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{pesocumuladototal}]]></textFieldExpression>
 			</textField>
@@ -524,7 +524,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{vlracumuladototal}]]></textFieldExpression>
 			</textField>
@@ -537,7 +537,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{precomediototal}]]></textFieldExpression>
 			</textField>
@@ -550,7 +550,7 @@ where cp.codemp=70 and cp.codfilial=1 and cp.dtentcompra between '2010-01-01' an
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MEDIAAMOSTRAGEM}]]></textFieldExpression>
 			</textField>
