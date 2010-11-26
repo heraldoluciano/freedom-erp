@@ -1600,6 +1600,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
+		
 		final int COL_75_CODPROD = 1;
 		final int COL_75_REFPROD = 2;
 		final int COL_75_DESCPROD = 3;
@@ -1609,6 +1610,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		final int COL_75_ORIGFISC = 7;
 		final int COL_75_CODTRATTRIB = 8;
 		final int COL_75_CODNCM = 9;
+		
 		String sConvenio = rgConvenio.getVlrString();
 		String sSqlEntrada = "";
 		String sSqlSaida = "";
