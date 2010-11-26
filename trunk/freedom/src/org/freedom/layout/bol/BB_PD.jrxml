@@ -286,7 +286,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Local de pagamento]]></text>
 			</staticText>
@@ -299,7 +299,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Cedente]]></text>
 			</staticText>
@@ -312,7 +312,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Data do Documento]]></text>
 			</staticText>
@@ -325,7 +325,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Uso do Banco]]></text>
 			</staticText>
@@ -338,7 +338,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Instruções :]]></text>
 			</staticText>
@@ -351,7 +351,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nº do Documento]]></text>
 			</staticText>
@@ -364,7 +364,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Espécie Doc.]]></text>
 			</staticText>
@@ -377,7 +377,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Aceite]]></text>
 			</staticText>
@@ -390,7 +390,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Data do Processamento]]></text>
 			</staticText>
@@ -403,7 +403,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Carteira]]></text>
 			</staticText>
@@ -416,7 +416,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Espécie]]></text>
 			</staticText>
@@ -429,7 +429,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Quantidade]]></text>
 			</staticText>
@@ -442,7 +442,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
@@ -455,7 +455,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Vencimento]]></text>
 			</staticText>
@@ -468,7 +468,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Agência / Código Cedente]]></text>
 			</staticText>
@@ -481,7 +481,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Valor cobrado]]></text>
 			</staticText>
@@ -494,7 +494,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Outros acréscimos]]></text>
 			</staticText>
@@ -507,7 +507,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(+) Juros / Multa]]></text>
 			</staticText>
@@ -520,7 +520,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(-) Outros deduções]]></text>
 			</staticText>
@@ -533,7 +533,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(-) Desconto / Abatimento]]></text>
 			</staticText>
@@ -546,7 +546,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Valor do Documento]]></text>
 			</staticText>
@@ -559,7 +559,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nosso Número]]></text>
 			</staticText>
@@ -572,7 +572,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Sacado :]]></text>
 			</staticText>
@@ -585,7 +585,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Sacador / Avalista :]]></text>
 			</staticText>
@@ -598,7 +598,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Código de baixa]]></text>
 			</staticText>
@@ -611,7 +611,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Autenticação mecânica]]></text>
 			</staticText>
@@ -624,7 +624,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Ficha de Compensação]]></text>
 			</staticText>
@@ -637,7 +637,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CODBANCO}!=null
   ?
@@ -654,7 +654,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{LINHADIGEXT}]]></textFieldExpression>
 			</textField>
@@ -667,7 +667,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCLPMODBOL}]]></textFieldExpression>
 			</textField>
@@ -680,7 +680,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -693,7 +693,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
@@ -706,7 +706,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTOIMP},10)]]></textFieldExpression>
 			</textField>
@@ -719,7 +719,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ESPDOC}]]></textFieldExpression>
 			</textField>
@@ -732,7 +732,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ACEITE}]]></textFieldExpression>
 			</textField>
@@ -745,7 +745,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
@@ -758,7 +758,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} +
 ($F{VARIACAOCARTCOB}!=null ?
@@ -774,7 +774,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODMOEDA}]]></textFieldExpression>
 			</textField>
@@ -787,7 +787,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[X]]></text>
 			</staticText>
@@ -800,7 +800,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
@@ -813,7 +813,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 			</textField>
@@ -826,7 +826,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{VLRPARCITREC}==null?new BigDecimal(0): $F{VLRPARCITREC})]]></textFieldExpression>
 			</textField>
@@ -841,7 +841,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{VLRDESCITREC}.floatValue()==0?null:$F{VLRDESCITREC})]]></textFieldExpression>
 			</textField>
@@ -854,7 +854,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{VLRMULTA}.floatValue()==0?null:$F{VLRMULTA})]]></textFieldExpression>
 			</textField>
@@ -867,7 +867,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL}]]></textFieldExpression>
 			</textField>
@@ -880,7 +880,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim() + "  " + ($F{PESSOACLI}.equals("F") ? "CPF: " + $V{CPFCLIF} : "CNPJ: " + $V{CNPJCLIF} )]]></textFieldExpression>
 			</textField>
@@ -893,7 +893,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : ((Integer) $F{NUMCLI}) + "" )]]></textFieldExpression>
 			</textField>
@@ -906,7 +906,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CEPCLI}.length()<=5?$F{CEPCLI}+"-000":$F{CEPCLI}.substring(0,5)+"-"+$F{CEPCLI}.substring(5))]]></textFieldExpression>
 			</textField>
@@ -919,7 +919,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CIDCLI}==null?"":$F{CIDCLI}.trim() + "  " ) + ( $F{UFCLI}==null? "" : ( $F{UFCLI}) )]]></textFieldExpression>
 			</textField>
@@ -962,7 +962,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Recibo do Sacado]]></text>
 			</staticText>
@@ -993,7 +993,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Recibo de Entrega]]></text>
 			</staticText>
@@ -1006,7 +1006,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CODBANCO}!=null
   ?
@@ -1023,7 +1023,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CODBANCO}!=null
   ?
@@ -1064,7 +1064,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Vencimento]]></text>
 			</staticText>
@@ -1077,7 +1077,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
@@ -1090,7 +1090,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Agência / Código Cedente]]></text>
 			</staticText>
@@ -1103,7 +1103,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 			</textField>
@@ -1116,7 +1116,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Espécie]]></text>
 			</staticText>
@@ -1129,7 +1129,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODMOEDA}]]></textFieldExpression>
 			</textField>
@@ -1142,7 +1142,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Quantidade]]></text>
 			</staticText>
@@ -1185,7 +1185,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Vencimento]]></text>
 			</staticText>
@@ -1198,7 +1198,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
@@ -1211,7 +1211,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Agência / Código Cedente]]></text>
 			</staticText>
@@ -1224,7 +1224,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 			</textField>
@@ -1237,7 +1237,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Espécie]]></text>
 			</staticText>
@@ -1250,7 +1250,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODMOEDA}]]></textFieldExpression>
 			</textField>
@@ -1263,7 +1263,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Quantidade]]></text>
 			</staticText>
@@ -1294,7 +1294,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Valor do Documento]]></text>
 			</staticText>
@@ -1307,7 +1307,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
 			</textField>
@@ -1320,7 +1320,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(-) Desconto / Abatimento]]></text>
 			</staticText>
@@ -1333,7 +1333,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(+) Juros / Multa]]></text>
 			</staticText>
@@ -1364,7 +1364,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Valor cobrado]]></text>
 			</staticText>
@@ -1377,7 +1377,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nosso Número]]></text>
 			</staticText>
@@ -1390,7 +1390,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nº do Documento]]></text>
 			</staticText>
@@ -1403,7 +1403,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.freedom.infra.functions.StringFunctions.strZero($V{DOCUMENTOIMP},10)]]></textFieldExpression>
 			</textField>
@@ -1416,7 +1416,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[(=) Valor do Documento]]></text>
 			</staticText>
@@ -1429,7 +1429,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
 			</textField>
@@ -1460,7 +1460,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="5" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Cedente]]></text>
 			</staticText>
@@ -1479,7 +1479,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 			</textField>
@@ -1492,7 +1492,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Sacado]]></text>
 			</staticText>
@@ -1511,7 +1511,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Assinatura do Recebedor]]></text>
 			</staticText>
@@ -1524,7 +1524,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Arial" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="5" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Autenticação mecânica]]></text>
 			</staticText>
@@ -1537,7 +1537,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="6" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Nosso Número]]></text>
 			</staticText>
@@ -1580,7 +1580,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
@@ -1593,7 +1593,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
@@ -1606,7 +1606,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
@@ -1631,7 +1631,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="5" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Sacado]]></text>
 			</staticText>
@@ -1644,7 +1644,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="Arial" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -1657,7 +1657,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Arial" size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 			</textField>
@@ -1672,7 +1672,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Ref. duplic. " + $F{DOCREC}.toString().trim() + "/" + $F{NPARCITREC}.toString().trim()]]></textFieldExpression>
 			</textField>
@@ -1687,7 +1687,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Desconto de R$ "]]></textFieldExpression>
 			</textField>
@@ -1702,7 +1702,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITREC}]]></textFieldExpression>
 			</textField>
@@ -1717,7 +1717,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["para pagamento até "]]></textFieldExpression>
 			</textField>
@@ -1732,7 +1732,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
