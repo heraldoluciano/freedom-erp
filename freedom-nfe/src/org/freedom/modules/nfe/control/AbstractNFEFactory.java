@@ -56,6 +56,16 @@ public abstract class AbstractNFEFactory {
 
 	public static final Constant TP_NF_BOTH = new Constant("Ambos", new Integer(3));
 	
+	public static final Constant VERSAO_LAYOUT_NFE_01 = new Constant("NFE 1.0", "1.10" );
+	
+	public static final Constant VERSAO_LAYOUT_NFE_02 = new Constant("NFE 2.0", "2.00" );
+
+	public static final Constant REGIME_TRIB_NFE_SIMPLES = new Constant("Simples Nacional", "1" );
+	
+	public static final Constant REGIME_TRIB_NFE_SIMPLES_EX = new Constant("Simples Nacional - Excesso de sumlimite de receita bruta", "2"  );
+	
+	public static final Constant REGIME_TRIB_NFE_NORMAL = new Constant("Regime Normal", "3" );
+	
 	public enum SYSTEM {
 		FREEDOM
 	};
