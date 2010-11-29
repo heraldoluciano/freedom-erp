@@ -41,6 +41,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -64,7 +66,7 @@ import org.freedom.modulos.std.view.dialog.report.DLRConsProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 
-public class FConsProd extends FRelatorio implements ActionListener, ChangeListener {
+public class FConsProd extends FRelatorio implements ActionListener, ChangeListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -145,6 +147,8 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 	private JTextFieldFK txtDtUltCp = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtQtUltCp = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrUltCp = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtDtCpIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -204,6 +208,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
 		lcProd.add( new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtQtUltCp, "QtdUltCpProd", "Qt.cp.", ListaCampos.DB_SI, false ) );
+		//lcProd.add( new GuardaCampo( txtVlrUltCp, "VlrUltCpProd", "Qt.cp.", ListaCampos.DB_SI, false ) );
 
 		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		txtCodProd.setNomeCampo( "CodProd" );
@@ -222,6 +227,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
 		lcProd2.add( new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtQtUltCp, "QtdUltCpProd", "Qt.cp.", ListaCampos.DB_SI, false ) );
+		//lcProd2.add( new GuardaCampo( txtVlrUltCp, "VlrUltCpProd", "Vlr.cp.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 		txtRefProd.setNomeCampo( "RefProd" );
@@ -257,16 +263,18 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		lcFisc.setQueryCommit( false );
 		txtCodFisc.setTabelaExterna( lcFisc, null );
 
-		pinCab.adic( txtDescProd, 80, 20, 197, 20 );
-		pinCab.adic( new JLabelPad( "Saldo" ), 280, 0, 87, 20 );
-		pinCab.adic( txtSldProd, 280, 20, 87, 20 );
-		pinCab.adic( new JLabelPad( "Preço base" ), 370, 0, 87, 20 );
-		pinCab.adic( txtPrecoBaseProd, 370, 20, 87, 20 );
-		pinCab.adic( new JLabelPad( "Dt.ult.comp." ), 460, 0, 80, 20 );
-		pinCab.adic( txtDtUltCp, 460, 20, 80, 20 );
-		pinCab.adic( new JLabelPad( "Qt.ult.comp." ), 543, 0, 80, 20 );
-		pinCab.adic( txtQtUltCp, 543, 20, 87, 20 );
-
+		pinCab.adic( txtDescProd, 80, 20, 180, 20 );
+		pinCab.adic( new JLabelPad( "Saldo" ), 260, 0, 60, 20 );
+		pinCab.adic( txtSldProd, 260, 20, 60, 20 );
+		pinCab.adic( new JLabelPad( "Preço base" ), 325, 0, 70, 20 );
+		pinCab.adic( txtPrecoBaseProd, 325, 20, 70, 20 );
+		pinCab.adic( new JLabelPad( "Dt.ult.comp." ), 400, 0, 80, 20 );
+		pinCab.adic( txtDtUltCp, 400, 20, 80, 20 );
+		pinCab.adic( new JLabelPad( "Qt.ult.comp." ), 480, 0, 60, 20 );
+		pinCab.adic( txtQtUltCp, 480, 20, 60, 20 );
+		pinCab.adic( new JLabelPad( "Vlr.ult.comp." ), 550, 0, 80, 20 );
+		pinCab.adic( txtVlrUltCp, 550, 20, 80, 20 );
+		
 		pinCab.adic( new JLabelPad( "Local armz." ), 7, 40, 100, 20 );
 		pinCab.adic( txtLocalProd, 7, 60, 100, 20 );
 		pinCab.adic( new JLabelPad( "Cód.unid." ), 110, 40, 200, 20 );
@@ -344,6 +352,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		tabCompras.adicColuna( "Item" );
 		tabCompras.adicColuna( "Data" );
 		tabCompras.adicColuna( "Qtd.It." );
+		tabCompras.adicColuna( "Vlr.Compra" );
 		tabCompras.adicColuna( "Vlr.prod." );
 		tabCompras.adicColuna( "Vlr.desc." );
 		tabCompras.adicColuna( "Vlr.adic." );
@@ -363,6 +372,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		tabCompras.setTamColuna( 75, 9 );
 		tabCompras.setTamColuna( 75, 10 );
 		tabCompras.setTamColuna( 75, 11 );
+		tabCompras.setTamColuna( 75, 12 );
 
 		// Tab Vendas
 
@@ -393,6 +403,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		tabVendas.adicColuna( "Item" );
 		tabVendas.adicColuna( "Data" );
 		tabVendas.adicColuna( "Qtd.It." );
+		tabVendas.adicColuna( "Vlr.Venda" );
 		tabVendas.adicColuna( "Vlr.prod." );
 		tabVendas.adicColuna( "Vlr.desc." );
 		tabVendas.adicColuna( "Vlr.adic." );
@@ -414,10 +425,12 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		tabVendas.setTamColuna( 75, 10 );
 		tabVendas.setTamColuna( 75, 11 );
 		tabVendas.setTamColuna( 75, 12 );
-		tabVendas.setColunaInvisivel( 13 );
+		tabVendas.setTamColuna( 75, 13 );
+		tabVendas.setColunaInvisivel( 14 );
 
 		tpn.addChangeListener( this );
-
+		lcProd2.addCarregaListener( this );
+		
 		txtCodProd.addKeyListener( new KeyAdapter() {
 
 			public void keyPressed( KeyEvent kevt ) {
@@ -462,8 +475,10 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 
 	private void carregaProdFor() {
 
-		String sSQL1 = "SELECT PF.CODFOR,PF.REFPRODFOR,F.RAZFOR FROM CPPRODFOR PF,CPFORNECED F " + "WHERE PF.CODEMP=? AND PF.CODFILIAL = ? AND PF.CODPROD=? " + "AND F.CODFOR = PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL ";
-		System.out.println( sSQL1 );
+		String sSQL1 = "SELECT PF.CODFOR,PF.REFPRODFOR,F.RAZFOR FROM CPPRODFOR PF,CPFORNECED F ";
+		sSQL1 += "WHERE PF.CODEMP=? AND PF.CODFILIAL = ? AND PF.CODPROD=? ";
+		sSQL1 += "AND F.CODFOR = PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL ";
+		//System.out.println( sSQL1 );
 		try {
 			tabFor.limpa();
 			PreparedStatement ps = con.prepareStatement( sSQL1 );
@@ -506,9 +521,12 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 	private void carregaVendasPorVenda() {
 
 		if ( validaPeriodoVenda() ) {
-			String sSQL2 = "SELECT IT.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA,IT.PRECOITVENDA,IT.VLRICMSITVENDA," + "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.CODCLI,C.RAZCLI,V.DOCVENDA," + "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA, IT.TIPOVENDA "
-					+ "FROM VDVENDA V,VDITVENDA IT,VDCLIENTE C " + "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND V.DTEMITVENDA BETWEEN ? AND ? AND "
-					+ "V.CODVENDA=IT.CODVENDA AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.TIPOVENDA=IT.TIPOVENDA AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " + "ORDER BY V.DTEMITVENDA DESC";
+			String sSQL2 = "SELECT IT.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA,IT.PRECOITVENDA,IT.VLRICMSITVENDA,";
+			sSQL2 += "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.CODCLI,C.RAZCLI,V.DOCVENDA,";
+			sSQL2 += "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA, IT.TIPOVENDA ";
+			sSQL2 += "FROM VDVENDA V,VDITVENDA IT,VDCLIENTE C " + "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND V.DTEMITVENDA BETWEEN ? AND ? AND ";
+			sSQL2 += "V.CODVENDA=IT.CODVENDA AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.TIPOVENDA=IT.TIPOVENDA AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL ";
+			sSQL2 += "AND C.CODFILIAL=V.CODFILIALCL " + "ORDER BY V.DTEMITVENDA DESC";
 
 			System.out.println( sSQL2 );
 			try {
@@ -537,13 +555,14 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 
 					tabVendas.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITVENDA" ) ), i, 5 );
 					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "QTDITVENDA" ) ), i, 6 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRPRODITVENDA" ) ), i, 7 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRDESCITVENDA" ) ), i, 8 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRADICITVENDA" ) ), i, 9 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRLIQITVENDA" ) ), i, 10 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRICMSITVENDA" ) ), i, 11 );
-					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRIPIITVENDA" ) ), i, 12 );
-					tabVendas.setValor( rs.getString( "TIPOVENDA" ), i, 13 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "PRECOITVENDA" ) ), i, 7 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRPRODITVENDA" ) ), i, 8 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRDESCITVENDA" ) ), i, 9 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRADICITVENDA" ) ), i, 10 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRLIQITVENDA" ) ), i, 11 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRICMSITVENDA" ) ), i, 12 );
+					tabVendas.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRIPIITVENDA" ) ), i, 13 );
+					tabVendas.setValor( rs.getString( "TIPOVENDA" ), i, 14 );
 
 				}
 				rs.close();
@@ -643,9 +662,13 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 	private void carregaCompras() {
 
 		if ( validaPeriodoCompra() ) {
-			String sSQL3 = "SELECT IT.CODCOMPRA,IT.CODITCOMPRA,C.DTENTCOMPRA,IT.PRECOITCOMPRA,IT.VLRICMSITCOMPRA," + "IT.VLRIPIITCOMPRA,IT.VLRLIQITCOMPRA,IT.VLRDESCITCOMPRA,IT.CODPROD,IT.VLRPRODITCOMPRA,IT.VLRADICITCOMPRA,IT.QTDITCOMPRA,"
-					+ "C.DOCCOMPRA,F.RAZFOR  FROM CPCOMPRA C,CPITCOMPRA IT,CPFORNECED F " + "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND C.DTENTCOMPRA BETWEEN ? AND ? AND "
-					+ "C.CODCOMPRA=IT.CODCOMPRA AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR " + "ORDER BY C.DTENTCOMPRA DESC";
+			String sSQL3 = "SELECT IT.CODCOMPRA,IT.CODITCOMPRA,C.DTENTCOMPRA,IT.PRECOITCOMPRA,IT.VLRICMSITCOMPRA,";
+			sSQL3 += "IT.VLRIPIITCOMPRA,IT.VLRLIQITCOMPRA,IT.VLRDESCITCOMPRA,IT.CODPROD,IT.VLRPRODITCOMPRA,IT.VLRADICITCOMPRA,IT.QTDITCOMPRA,";
+			sSQL3 += "C.DOCCOMPRA,F.RAZFOR  FROM CPCOMPRA C,CPITCOMPRA IT,CPFORNECED F ";
+			sSQL3 += "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND C.DTENTCOMPRA BETWEEN ? AND ? AND ";
+			sSQL3 += "C.CODCOMPRA=IT.CODCOMPRA AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR ";
+			sSQL3 += "ORDER BY C.DTENTCOMPRA DESC";
+			
 			System.out.println( sSQL3 );
 			try {
 				tabCompras.limpa();
@@ -667,12 +690,13 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 					tabCompras.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTENTCOMPRA" ) ), i, 4 );
 
 					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "QTDITCOMPRA" ) ), i, 5 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRPRODITCOMPRA" ) ), i, 6 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRDESCITCOMPRA" ) ), i, 7 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRADICITCOMPRA" ) ), i, 8 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRLIQITCOMPRA" ) ), i, 9 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRICMSITCOMPRA" ) ), i, 10 );
-					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRIPIITCOMPRA" ) ), i, 11 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "PRECOITCOMPRA" ) ), i, 6 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRPRODITCOMPRA" ) ), i, 7 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRDESCITCOMPRA" ) ), i, 8 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRADICITCOMPRA" ) ), i, 9 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRLIQITCOMPRA" ) ), i, 10 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRICMSITCOMPRA" ) ), i, 11 );
+					tabCompras.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( "VLRIPIITCOMPRA" ) ), i, 12 );
 
 				}
 				rs.close();
@@ -696,7 +720,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 		}
 		super.actionPerformed( evt );
 	}
-
+	
 	public void imprimir( boolean bVisualizar ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
@@ -1166,6 +1190,62 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 			bRetorno = true;
 		}
 		return bRetorno;
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		this.carregaDadosUltimaEntrada();
+	}
+	
+	private void carregaDadosUltimaEntrada(){
+		ResultSet rs = null;
+		String sWhere = "";
+		StringBuilder sql = new StringBuilder();
+
+		int iParam = 1;
+
+		try {
+			
+			sql.append( "select first 1 mp.dtmovprod, mp.qtdmovprod, mp.precomovprod from eqmovprod mp " );
+			sql.append( "where mp.tipomovprod='E' ");
+			sql.append( "and codemppd=? and codfilialpd=? and codprod=? ");
+			sql.append( "and codemp=? and codfilial=? ");
+			sql.append( "order by mp.dtmovprod desc, mp.codmovprod desc ");
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( iParam++, Aplicativo.iCodEmp );
+			ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( iParam++, txtCodProd.getVlrInteger() );
+			ps.setInt( iParam++, Aplicativo.iCodEmp );
+			ps.setInt( iParam++, ListaCampos.getMasterFilial( "EQMOVPROD" ) );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				txtDtUltCp.setVlrDate( rs.getDate( "dtmovprod" ) );
+				txtQtUltCp.setVlrBigDecimal( rs.getBigDecimal( "qtdmovprod" ) );
+				txtVlrUltCp.setVlrBigDecimal( rs.getBigDecimal( "precomovprod" ) );
+			}else {
+				txtDtUltCp.setVlrString( "" );
+				txtQtUltCp.setVlrString( "" );
+				txtVlrUltCp.setVlrString( "" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar dados da ultima entrada!\n" + err.getMessage() );
+		} 
+		finally {
+			sql = null;
+		}
 	}
 
 }
