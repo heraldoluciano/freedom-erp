@@ -522,9 +522,12 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 				+ "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  " + "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " + "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND "
 				+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";*/
 		
-		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC) VLRACEITE," + "IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC, IT.OBSITORC "
-		+ "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  " + "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " + "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND "
-		+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
+		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,((IT.QTDITORC*IT.PRECOITORC)-IT.VLRDESCITORC) VLRACEITE," 			
+			+ "IT.VLRLIQITORC VLRAPROVADO,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC, IT.CANCITORC, IT.OBSITORC "
+			+ "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  " 
+			+ "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD " 
+			+ "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND "
+			+ "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
 		
 		bVlrAceito = new BigDecimal( "0.0" );
 		bVlrAprovado = new BigDecimal( "0.0" );
@@ -537,7 +540,9 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 		tab.limpa();
 
 		try {
+			
 			PreparedStatement ps = con.prepareStatement( sSQL );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setInt( 3, txtCodOrc.getVlrInteger().intValue() );
@@ -551,7 +556,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 
 				if ( rs.getString( "ACEITEITORC" ).trim().equals( "S" ) ) {
 					vVals.addElement( new Boolean( true ) );
-					bVlrAceito = bVlrAceito.add( new BigDecimal( rs.getString( 4 ) ) );
+					bVlrAceito = bVlrAceito.add( rs.getBigDecimal( "VLRACEITE" ) );
 				}
 				else {
 					vVals.addElement( new Boolean( false ) );
@@ -559,7 +564,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 
 				if ( rs.getString( "APROVITORC" ).trim().equals( "S" ) ) {
 					vVals.addElement( new Boolean( true ) );
-					bVlrAprovado = bVlrAprovado.add( new BigDecimal( rs.getString( 4 ) ) );
+					bVlrAprovado = bVlrAprovado.add( rs.getBigDecimal( "VLRACEITE" ) );
 				}
 				else {
 					vVals.addElement( new Boolean( false ) );
