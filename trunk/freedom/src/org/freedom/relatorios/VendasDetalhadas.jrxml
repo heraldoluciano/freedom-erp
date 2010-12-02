@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VendasDetalhadas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="76"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -164,7 +164,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					</graphicElement>
 				</line>
 				<staticText>
-					<reportElement key="staticText-1" x="0" y="4" width="31" height="12"/>
+					<reportElement key="staticText-1" x="0" y="4" width="36" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -190,7 +190,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<text><![CDATA[Doc]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-3" x="269" y="4" width="25" height="12"/>
+					<reportElement key="staticText-3" x="269" y="4" width="30" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -203,7 +203,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<text><![CDATA[Saída]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-4" x="174" y="4" width="38" height="12"/>
+					<reportElement key="staticText-4" x="174" y="4" width="43" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -216,7 +216,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<text><![CDATA[Emissão]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-5" x="351" y="4" width="50" height="12"/>
+					<reportElement key="staticText-5" x="348" y="4" width="58" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -294,7 +294,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-6" x="0" y="19" width="31" height="12"/>
+					<reportElement key="staticText-6" x="0" y="19" width="36" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -346,7 +346,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]>
 					<text><![CDATA[Descrição do item]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-9" x="494" y="37" width="41" height="12"/>
+					<reportElement key="staticText-9" x="493" y="37" width="41" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
