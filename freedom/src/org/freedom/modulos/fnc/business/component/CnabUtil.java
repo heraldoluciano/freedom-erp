@@ -5058,7 +5058,9 @@ public class CnabUtil extends FbnUtil {
 					// fim da idendificação
 
 					line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
-					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco
+					
+					line.append(StringFunctions.replicate( "0", 3 ) ); // Posição 63 a 65 - Nro do banco para débito em conta
+					//line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco
 
 					if ( getVlrPercMulta().floatValue() > 0 ) {
 						line.append( "2" ); // Posição 66 a 66 - Se = 2 considerar multa se = 0 sem multa.
