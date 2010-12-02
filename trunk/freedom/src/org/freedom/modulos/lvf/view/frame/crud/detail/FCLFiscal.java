@@ -339,6 +339,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcSitTribPIS = new ListaCampos( this, "SP" );
 
 	private ListaCampos lcSitTribCOF = new ListaCampos( this, "SC" );
+	
+	private JCheckBoxPad cbRetensaoISS = new JCheckBoxPad( "Recolhimento de ISS pelo cliente?", "S", "N" );
 
 	public FCLFiscal() {
 
@@ -867,6 +869,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		 adicDescFK( txtDescSitTribISS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 			
 		 adicCampo( txtAliqISSFisc, 7, 60, 80, 20, "AliqISSFisc", "Aliq. ISS", ListaCampos.DB_SI, null, false );
+		 adicDB( cbRetensaoISS, 7, 100, 250, 20, "RetensaoISS", "", false );
 		//		
 		// ********** ABA IR **/
 
