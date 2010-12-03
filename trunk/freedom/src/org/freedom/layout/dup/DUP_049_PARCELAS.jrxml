@@ -8,88 +8,14 @@
 	<parameter name="CODFILIAL" class="java.lang.Integer"/>
 	<parameter name="CODMODBOL" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC, ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL,
-        ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-        B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03,
-        B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB,
-        MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA,
-        C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
-        C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
-        C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-        CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS,
-        TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero
-        FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
-        FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO
-        WHERE
-        C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI
-        AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL
-        AND F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL
-        AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
-        AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO
-        AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL
-        AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO
-        AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
-        AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA
-        AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
-        AND ITR.STATUSITREC IN ('R1','RL','RB')
-        AND MB.CODEMP=$P{CODEMP} AND MB.CODFILIAL=$P{CODFILIAL}
-        AND R.CODEMP=$P{CODEMP} AND R.CODFILIAL=$P{CODFILIAL}
-        AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB
-        AND TCO.CODCARTCOB=ITR.CODCARTCOB
-        AND R.CODREC=$P{CODREC}  AND MB.CODMODBOL=$P{CODMODBOL}]]>
+		<![CDATA[SELECT ITR.NPARCITREC, ITR.VLRPARCITREC, itr.dtvencitrec
+FROM fnitreceber itr
+WHERE
+ITR.CODEMP=$P{CODEMP} AND ITR.CODFILIAL=$P{CODFILIAL} AND ITR.CODREC=$P{CODREC} ]]>
 	</queryString>
-	<field name="DVCONVCOB" class="java.lang.String"/>
-	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Integer"/>
-	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
-	<field name="PREIMPMODBOL" class="java.lang.String"/>
-	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
-	<field name="VLRMULTA" class="java.math.BigDecimal"/>
-	<field name="DOCREC" class="java.lang.Integer"/>
-	<field name="CODBANCO" class="java.lang.String"/>
-	<field name="DVBANCO" class="java.lang.String"/>
-	<field name="LOGOBANCO01" class="java.lang.Object"/>
-	<field name="LOGOBANCO02" class="java.lang.Object"/>
-	<field name="LOGOBANCO03" class="java.lang.Object"/>
-	<field name="LOGOBANCO04" class="java.lang.Object"/>
-	<field name="CODCARTCOB" class="java.lang.String"/>
-	<field name="ESPDOC" class="java.lang.String"/>
-	<field name="ACEITE" class="java.lang.String"/>
-	<field name="MDECOB" class="java.lang.String"/>
-	<field name="DTEMITVENDA" class="java.sql.Date"/>
-	<field name="RAZCLI" class="java.lang.String"/>
-	<field name="CPFCLI" class="java.lang.String"/>
-	<field name="CNPJCLI" class="java.lang.String"/>
-	<field name="ENDCLI" class="java.lang.String"/>
-	<field name="NUMCLI" class="java.lang.Integer"/>
-	<field name="COMPLCLI" class="java.lang.String"/>
-	<field name="CEPCLI" class="java.lang.String"/>
-	<field name="BAIRCLI" class="java.lang.String"/>
-	<field name="CIDCLI" class="java.lang.String"/>
-	<field name="UFCLI" class="java.lang.String"/>
-	<field name="ENDCOB" class="java.lang.String"/>
-	<field name="NUMCOB" class="java.lang.Integer"/>
-	<field name="COMPLCOB" class="java.lang.String"/>
-	<field name="CEPCOB" class="java.lang.String"/>
-	<field name="BAIRCOB" class="java.lang.String"/>
-	<field name="CIDCOB" class="java.lang.String"/>
-	<field name="UFCOB" class="java.lang.String"/>
-	<field name="CODMOEDA" class="java.lang.String"/>
-	<field name="PESSOACLI" class="java.lang.String"/>
-	<field name="FATVENC" class="java.lang.Integer"/>
-	<field name="CODFBNMOEDA" class="java.lang.String"/>
-	<field name="AGENCIACONTA" class="java.lang.String"/>
-	<field name="NUMCONTA" class="java.lang.String"/>
-	<field name="DESCLPMODBOL" class="java.lang.String"/>
-	<field name="INSTPAGMODBOL" class="java.lang.String"/>
-	<field name="CONVCOB" class="java.lang.String"/>
-	<field name="DESCPONT" class="java.lang.String"/>
-	<field name="INSCCLI" class="java.lang.String"/>
-	<field name="OBS" class="java.lang.String"/>
-	<field name="VARIACAOCARTCOB" class="java.lang.String"/>
-	<field name="CODREC" class="java.lang.Integer"/>
-	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
+	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
