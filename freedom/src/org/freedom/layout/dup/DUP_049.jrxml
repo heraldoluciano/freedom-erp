@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="247"/>
+	<property name="ireport.y" value="231"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -149,20 +149,17 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 			<band splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="12" splitType="Stretch">
+			<band height="30" splitType="Stretch">
 				<subreport>
-					<reportElement key="subreport-1" x="0" y="0" width="567" height="12"/>
-					<subreportParameter name="CODMODBOL">
-						<subreportParameterExpression><![CDATA[$P{CODMODBOL}]]></subreportParameterExpression>
-					</subreportParameter>
+					<reportElement key="subreport-1" x="0" y="4" width="567" height="26"/>
 					<subreportParameter name="CODFILIAL">
 						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="CODREC">
-						<subreportParameterExpression><![CDATA[$P{CODREC}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODREC">
+						<subreportParameterExpression><![CDATA[$P{CODREC}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "DUP_049_PARCELAS.jasper"]]></subreportExpression>
