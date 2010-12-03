@@ -122,14 +122,14 @@ public class DLImpBoletoRec extends FDialogo {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		sSQL.append( "SELECT FIRST 1 IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, R.VLRREC, MB.PREIMPMODBOL, " );
+		sSQL.append( "SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL, " );
 		sSQL.append( "ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO, " );
 		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB, " );
 		sSQL.append( "MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA, " );
 		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
 		sSQL.append( "C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero " );
+		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero, r.vlrrec " );
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
 		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO " );
 		sSQL.append( "WHERE " );
@@ -145,7 +145,7 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC " );
 		sSQL.append( "AND ITR.STATUSITREC IN ('R1','RL','RB') " );
 		sSQL.append( "AND MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=?" );
-		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?  " );
+		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=? AND ITR.nparcitrec=? " );
 		sSQL.append( "AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB ");
 
 		try {
@@ -159,7 +159,7 @@ public class DLImpBoletoRec extends FDialogo {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 6, codRec );
-			//ps.setInt( 7, parcRec );
+			ps.setInt( 7, parcRec );
 			rs = ps.executeQuery();
 
 			imprimeGrafico( true, rs );
@@ -188,6 +188,7 @@ public class DLImpBoletoRec extends FDialogo {
 			parametros.put( "CODMODBOL", txtCodModBol.getVlrInteger() );
 			parametros.put( "CODREC", codRec );
 			parametros.put( "SUBREPORT_DIR", "org/freedom/layout/dup/" );
+			parametros.put( "REPORT_CONNECTION", con.getConnection() );
 	
 			if ( Aplicativo.empresa != null ) {
 				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
