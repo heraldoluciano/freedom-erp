@@ -122,7 +122,7 @@ public class DLImpBoletoRec extends FDialogo {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		sSQL.append( "SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL, " );
+		sSQL.append( "SELECT FIRST 1 IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, R.VLRREC, MB.PREIMPMODBOL, " );
 		sSQL.append( "ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO, " );
 		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB, " );
 		sSQL.append( "MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA, " );
@@ -145,7 +145,7 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC " );
 		sSQL.append( "AND ITR.STATUSITREC IN ('R1','RL','RB') " );
 		sSQL.append( "AND MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=?" );
-		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=? AND ITR.nparcitrec=? " );
+		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?  " );
 		sSQL.append( "AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB ");
 
 		try {
@@ -159,7 +159,7 @@ public class DLImpBoletoRec extends FDialogo {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 6, codRec );
-			ps.setInt( 7, parcRec );
+			//ps.setInt( 7, parcRec );
 			rs = ps.executeQuery();
 
 			imprimeGrafico( true, rs );
@@ -185,6 +185,9 @@ public class DLImpBoletoRec extends FDialogo {
 			parametros.put( "CODEMP", Aplicativo.iCodEmp );
 			parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 			parametros.put( "IMPDOC", txtImpInst.getVlrString() );
+			parametros.put( "CODMODBOL", txtCodModBol.getVlrInteger() );
+			parametros.put( "CODREC", codRec );
+			parametros.put( "SUBREPORT_DIR", "org/freedom/layout/dup/" );
 	
 			if ( Aplicativo.empresa != null ) {
 				parametros.put( "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
