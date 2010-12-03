@@ -80,9 +80,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private static final String APLIC_FISCO_NFE = "3";
 
-	private static final String VERSAO_NFE_1 = "100";
+//	private static final String VERSAO_NFE_1 = "100";
 
-	private static final String VERSAO_NFE_2 = "200";
+//	private static final String VERSAO_NFE_2 = "200";
 	
 	private JPanelPad pinVenda = new JPanelPad(690, 220);
 
@@ -149,6 +149,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JCheckBoxPad cbGeraRecEmis = new JCheckBoxPad("Gera contas a receber a partir da data de emissão.", "S", "N");
 
 	private JCheckBoxPad cbFechaCaixa = new JCheckBoxPad("Habilitar bloqueio de caixas", "S", "N");
+
+	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático", "S", "N");
 	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
@@ -1092,6 +1094,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 		cbImpDocBol.setVlrString("N");
 		cbFechaCaixa.setVlrString("N");
+		cbFechaCaixaAuto.setVlrString("N");
 		
 		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
@@ -1394,7 +1397,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescPlanPC, 613, 210, 240, 20, "DescPlan", "Planejamento p/pagto com cheques");
 
 		lbFinOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(lbFinOpcoes, 500, 255, 370, 195);
+		adic(lbFinOpcoes, 500, 255, 370, 215);
 
 		adicDB(cbAltItRecImpBol, 510, 275, 310, 20, "AtBancoImpBol", "", false);
 		adicDB(cbJurosPosCalc, 510, 295, 310, 20, "JurosPosCalc", "", false);
@@ -1405,6 +1408,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbGeraRecEmis, 510, 375, 350, 20, "GeraRecEmis", "", true);
 		adicDB(cbImpDocBol, 510, 395, 350, 20, "ImpDocBol", "", true);
 		adicDB(cbFechaCaixa, 510, 415, 350, 20, "FechaCaixa", "", true);
+		adicDB(cbFechaCaixaAuto, 510, 435, 350, 20, "FechaCaixaAuto", "", true);
 
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
