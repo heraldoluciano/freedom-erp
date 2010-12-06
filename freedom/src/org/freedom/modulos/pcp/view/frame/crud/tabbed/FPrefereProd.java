@@ -87,6 +87,8 @@ public class FPrefereProd extends FTabDados {
 	private final JCheckBoxPad cbExcluiRma = new JCheckBoxPad( "Permite excluir RMA de outro usuário?", "S", "N" );
 
 	private final JCheckBoxPad cbHabConvCp = new JCheckBoxPad( "Permite a conversão de produtos na compra?", "S", "N" );
+	
+	private final JCheckBoxPad cbProdEtapas = new JCheckBoxPad( "Permite finalização em etapas?", "S", "N" );
 
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -96,7 +98,7 @@ public class FPrefereProd extends FTabDados {
 
 		super();
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 754, 445 );
+		setAtribos( 50, 50, 754, 485 );
 
 		montaListaCampos();
 		montaTela();
@@ -164,8 +166,9 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtCodTipoMov, 7, 60, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 90, 60, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
 		adicDB( cbSitOP, 7, 100, 333, 30, "SITPADOP", "Status padrão para OP", true );
+		adicDB( cbProdEtapas, 7, 140, 333, 30, "PRODETAPAS", "", true );
 
-		pinGeral.adic( pinOp, 7, 5, 358, 165 );
+		pinGeral.adic( pinOp, 7, 5, 358, 205 );
 
 		/*************** Parametros RMA *******************************/
 
@@ -186,7 +189,7 @@ public class FPrefereProd extends FTabDados {
 		adic( new JLabelPad( "Meses para descarte de contra prova" ), 7, 90, 300, 20 );
 		adicCampo( txtNDiaMes, 7, 110, 100, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 
-		pinGeral.adic( pinCQ, 7, 175, 358, 165 );
+		pinGeral.adic( pinCQ, 7, 215, 358, 165 );
 
 		/*************** Conversão de produtos *******************************/
 
