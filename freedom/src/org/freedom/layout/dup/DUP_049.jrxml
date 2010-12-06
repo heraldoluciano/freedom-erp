@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DUP_049" pageWidth="595" pageHeight="800" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="231"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -144,6 +144,59 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 	<variable name="VLREXTENSO" class="java.lang.String">
 		<variableExpression><![CDATA[org.freedom.library.functions.Extenso.extenso($F{VLRREC}.doubleValue(),"real", "reais", "centavo", "centavos")]]></variableExpression>
 	</variable>
+	<group name="COBRANCA">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="95">
+				<line>
+					<reportElement key="line-12" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="85" forecolor="#006699"/>
+				</line>
+				<line>
+					<reportElement key="line-12" stretchType="RelativeToBandHeight" x="566" y="0" width="1" height="85" forecolor="#006699"/>
+				</line>
+				<rectangle radius="4">
+					<reportElement key="rectangle-6" x="9" y="8" width="551" height="70" forecolor="#666666"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="0" y="84" width="566" height="1" forecolor="#006699"/>
+				</line>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-20" x="13" y="24" width="536" height="45"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL} + "\n" + "\n" + $F{OBS}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-30" x="12" y="11" width="134" height="11"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[INSTRUÇÕES DE COBRANÇA]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="3" width="566" height="1" forecolor="#006699"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
 	<group name="CABECALHO">
 		<groupHeader>
 			<band splitType="Stretch"/>
@@ -151,7 +204,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<groupFooter>
 			<band height="30" splitType="Stretch">
 				<subreport>
-					<reportElement key="subreport-1" x="0" y="4" width="567" height="26"/>
+					<reportElement key="subreport-1" x="9" y="2" width="551" height="26"/>
 					<subreportParameter name="CODFILIAL">
 						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -164,6 +217,12 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "DUP_049_PARCELAS.jasper"]]></subreportExpression>
 				</subreport>
+				<line>
+					<reportElement key="line-12" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="30" isPrintWhenDetailOverflows="true" forecolor="#006699"/>
+				</line>
+				<line>
+					<reportElement key="line-12" stretchType="RelativeToBandHeight" x="566" y="0" width="1" height="30" forecolor="#006699"/>
+				</line>
 			</band>
 		</groupFooter>
 	</group>
@@ -180,13 +239,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="476" splitType="Stretch">
-			<rectangle radius="4">
-				<reportElement key="rectangle-1" x="0" y="1" width="567" height="475" forecolor="#006699"/>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</graphicElement>
-			</rectangle>
+		<band height="410" splitType="Stretch">
 			<rectangle radius="4">
 				<reportElement key="rectangle-5" x="139" y="91" width="421" height="232" forecolor="#666666"/>
 				<graphicElement>
@@ -194,7 +247,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</rectangle>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement key="image-3" x="2" y="2" width="262" height="79"/>
+				<reportElement key="image-3" x="2" y="3" width="262" height="79"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -879,38 +932,31 @@ $F{CPFCLI}.substring(9)
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DOCREC}.toString()+"/"+$F{NPARCITREC}.toString()]]></textFieldExpression>
 			</textField>
-			<rectangle radius="4">
-				<reportElement key="rectangle-6" x="8" y="392" width="551" height="75" forecolor="#666666"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineStyle="Solid"/>
-				</graphicElement>
-			</rectangle>
 			<staticText>
-				<reportElement key="staticText-30" x="13" y="394" width="134" height="11"/>
+				<reportElement key="staticText-16" x="9" y="395" width="552" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[INSTRUÇÕES DE COBRANÇA]]></text>
+				<text><![CDATA[PARCELAMENTO]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-20" x="13" y="405" width="536" height="56"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL} + "\n" + "\n" + $F{OBS}]]></textFieldExpression>
-			</textField>
+			<line>
+				<reportElement key="line-22" x="0" y="0" width="567" height="1" forecolor="#006699" backcolor="#999999"/>
+			</line>
+			<line>
+				<reportElement key="line-12" x="0" y="0" width="1" height="410" forecolor="#006699"/>
+			</line>
+			<line>
+				<reportElement key="line-12" x="566" y="0" width="1" height="410" forecolor="#006699"/>
+			</line>
+			<line>
+				<reportElement key="line-22" x="0" y="390" width="566" height="1" forecolor="#006699" backcolor="#999999"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
@@ -920,13 +966,6 @@ $F{CPFCLI}.substring(9)
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="3" splitType="Stretch">
-			<line direction="BottomUp">
-				<reportElement key="line-3" x="0" y="2" width="567" height="1"/>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
-		</band>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
