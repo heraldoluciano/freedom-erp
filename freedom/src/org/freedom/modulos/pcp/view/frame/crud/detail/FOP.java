@@ -252,6 +252,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private Integer iCodTpMov = null;
+	
+	private boolean entrada_parcial = false;
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 33 );
 
@@ -266,6 +268,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public JTablePad tabOPS = new JTablePad();
 	
 	public JTablePad tabOSS = new JTablePad();
+	
+	public JTablePad tabEntradaParcial = new JTablePad();
 
 	private JScrollPane spSimu = new JScrollPane( tabSimu );
 
@@ -275,6 +279,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 	public JScrollPane spOSS = new JScrollPane( tabOSS );
 
+	public JScrollPane spEntradaParcial = new JScrollPane( tabEntradaParcial );
+	
 	private ImageIcon imgCancelada = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgExpedida = Icone.novo( "clPago.gif" );
@@ -381,7 +387,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addTab( "Rma", spRma );
 		tpnAbas.addTab( "OP's relacionadas", spOPS );
 		tpnAbas.addTab( "OS's relacionadas", spOSS );
-
+		
+		
+		if ( (Boolean) prefere.get( "PRODETAPAS" ) ) {
+		
+			tpnAbas.addTab( "Entradas parciais", spEntradaParcial );
+		}
+		
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
 		btFinaliza.setToolTipText( "Fases/Finalização" );
@@ -656,6 +668,19 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOSS.setTamColuna( 50, 4 );
 		tabOSS.setTamColuna( 300, 5 );
 		
+		tabEntradaParcial.adicColuna( "Seq." );// 0
+		tabEntradaParcial.adicColuna( "Data" );// 1
+		tabEntradaParcial.adicColuna( "Hora" );// 2
+		tabEntradaParcial.adicColuna( "Qtd." );// 3
+		tabEntradaParcial.adicColuna( "Obs." );// 4
+		tabEntradaParcial.adicColuna( "Usuário" );// 5
+
+		tabEntradaParcial.setTamColuna( 40, 0 );
+		tabEntradaParcial.setTamColuna( 70, 1 );
+		tabEntradaParcial.setTamColuna( 70, 2 );
+		tabEntradaParcial.setTamColuna( 100, 3 );
+		tabEntradaParcial.setTamColuna( 150, 4 );
+		tabEntradaParcial.setTamColuna( 100, 5 );
 		
 		tabRMA.addMouseListener( new MouseAdapter() {
 
@@ -1100,6 +1125,65 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql = null;
 		}
 	}
+	
+	private void getEntradaParcial() {
+
+		String codop;
+		String seqop;
+		int iLin = 0;
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			tabEntradaParcial.limpa();
+
+			if ( "".equals(txtCodOP.getVlrString()) )  {
+				return;
+			}
+
+			sql.append( "select et.seqent, et.dtent, et.qtdent,et.hent,obsent,idusuins from ppopentrada et " );
+			sql.append( "where et.codemp=? and et.codfilial=? and et.codop=? and et.seqop=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			
+			
+			rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+
+				tabEntradaParcial.adicLinha();
+
+				tabEntradaParcial.setValor( rs.getInt( "seqent" ) , iLin, 0 );
+				tabEntradaParcial.setValor( rs.getDate( "dtent" ), iLin, 1 );
+				tabEntradaParcial.setValor( rs.getTime( "hent" ), iLin, 2 );
+				tabEntradaParcial.setValor( rs.getBigDecimal( "qtdent" ), iLin, 3 );				
+				tabEntradaParcial.setValor( rs.getString( "obsent" ), iLin, 4 );
+				tabEntradaParcial.setValor( rs.getString( "idusuins" ), iLin, 5 );
+				
+				iLin++;
+
+			}
+
+			con.commit();
+			
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela de entradas parciais!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		} 
+		finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+	}
 
 	private boolean temCQ() {
 
@@ -1144,11 +1228,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			try {
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
 				rs = ps.executeQuery();
 				if ( rs.next() ) {
-					if ( rs.getString( 1 ) != null )
+					if ( rs.getString( 1 ) != null ) {
 						iCodTpMov = new Integer( rs.getInt( 1 ) );
+					}
 					else {
 						iCodTpMov = new Integer( 0 );
 						Funcoes.mensagemInforma( null, "Não existe um tipo de movimento padrão para OP definido nas preferências!" );
@@ -2672,7 +2757,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		ResultSet rs = null;
 		try {
 
-			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
+			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
 
@@ -2688,6 +2773,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( rs.next() ) {
 				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
 				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
+				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
 			}
 			else {
 				retorno.put( "USAREFPROD", new Boolean( false ) );
@@ -2766,6 +2852,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			else if ( tpnAbas.getSelectedIndex() == 4 ) {
 				getOSS();
 			}
+			else if ( tpnAbas.getSelectedIndex() == 5 ) {
+				getEntradaParcial();
+			}
+	
 
 		}
 	}
@@ -2773,8 +2863,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
+			
 			bBuscaRMA = false;
 			bBuscaOPS = false;
+			
 		}
 	}
 
@@ -2783,6 +2875,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		String sSitOp = txtSitOp.getVlrString();
 
 		try {
+			
 			if ( cevt.getListaCampos() == lcCampos ) {
 				bloqueiaOp();
 
