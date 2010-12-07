@@ -1472,10 +1472,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		String sMotvProir = rgPriod.getVlrString();
 		if ( pevt.getListaCampos() == lcDet ) {
-			if ( txtQtdAprovRma.floatValue() > txtQtdItRma.floatValue() ) {
-				Funcoes.mensagemInforma( null, "Quantidade aprovada maior que a requerida!" );
-				pevt.getListaCampos().cancelPost();
-			}
+			// Validação desnecessária
+			//if ( txtQtdAprovRma.floatValue() > txtQtdItRma.floatValue() ) {
+				//Funcoes.mensagemInforma( null, "Quantidade aprovada maior que a requerida!" );
+				//pevt.getListaCampos().cancelPost();
+			//}
 			if ( txtQtdExpRma.floatValue() > txtQtdAprovRma.floatValue() ) {
 				Funcoes.mensagemInforma( null, "Quantidade expedida maior que a aprovada!" );
 				pevt.getListaCampos().cancelPost();
