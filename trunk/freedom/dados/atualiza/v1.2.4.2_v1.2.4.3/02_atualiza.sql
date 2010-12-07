@@ -3,5 +3,4 @@
 update sgprefere1 set fechacaixa = 'N';
 update fnsaldolanca set fechado = 'N';
 
-
 commit;
