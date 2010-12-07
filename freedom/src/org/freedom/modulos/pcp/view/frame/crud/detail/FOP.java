@@ -94,6 +94,7 @@ import org.freedom.modulos.pcp.business.object.ModLote;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
 import org.freedom.modulos.pcp.view.dialog.utility.DLDistrib;
+import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOPParcial;
 import org.freedom.modulos.pcp.view.dialog.utility.DLObsJust;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -1395,16 +1396,144 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	}
 
+	
+	private Integer getSeqEntradaParcial(){
+		Integer ret = 1;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			sql.append("select coalesce(max(seqent),0) + 1 seq from ppopentrada where codemp=? and codfilial=? and codop=? and seqop=?");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4,txtSeqOP.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				ret = rs.getInt( "seq" );
+				
+			}
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	
+	private void insereEntradaParcial(BigDecimal qtdent, String obsent) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "insert into ppopentrada (codemp, codfilial, codop, seqop, seqent, dtent, qtdent, obsent ) " );
+			sql.append( "values (?,?,?,?,?,?,?,?)" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			
+			ps.setInt( 5, getSeqEntradaParcial() );
+			ps.setDate( 6, Funcoes.dateToSQLDate( new Date() ) );
+			
+			ps.setBigDecimal( 7, qtdent );
+			ps.setString( 8, obsent );
+			
+			ps.execute();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void deletaEntradaParcial( Integer seqent ) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append( "delete from ppopentrada where codemp=? and codfilial=? and codop=? and seqop=? and seqent=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			ps.setInt( 5, seqent );
+			
+			ps.execute();			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void finalizaOP() {
 
-		if ( fPrim.temTela( "Fases da OP" ) == false ) {
-			int codop = txtCodOP.getVlrInteger().intValue();
-			int seqop = txtSeqOP.getVlrInteger().intValue();
-			int seqest = txtSeqEst.getVlrInteger().intValue();
+		// Se a aba de entrada parcial estiver selecioada... 
+		
+		if ( tpnAbas.getSelectedIndex() == 5 ) {		
+			
+			 if("FN".equals( txtSitOp.getVlrString())) {
+				 
+				 Funcoes.mensagemInforma( this, "Não é possível realizar novas entradas, pois a O.P está finalizada! " );				 
+				 
+			 }
+			 else {
+			 			
+				DLFinalizaOPParcial dl = new DLFinalizaOPParcial( this, txtQtdPrevProdOP.getVlrBigDecimal().subtract( txtQtdFinalProdOP.getVlrBigDecimal() ) );
+				
+				dl.setVisible( true );
+	 
+				if ( dl.OK == false ) {
+					dl.dispose();
+					return;
+				}
+	
+				BigDecimal qtdent = dl.getQtdEnt();
+				String obsent = dl.getObs();
+				
+				insereEntradaParcial( qtdent, obsent );
+				
+				lcCampos.carregaDados();
+				
+				tpnAbas.setSelectedIndex( 5 );
+				
+			 }
+			
+		}
+		else {
+			if ( fPrim.temTela( "Fases da OP" ) == false ) {
+				int codop = txtCodOP.getVlrInteger().intValue();
+				int	seqop = txtSeqOP.getVlrInteger().intValue();
+				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-			FOPFase tela = new FOPFase( codop, seqop, seqest, this );
-			fPrim.criatela( "Fases da OP", tela, con );
-			tela.setConexao( con );
+				FOPFase tela = new FOPFase( codop, seqop, seqest, this );
+				fPrim.criatela( "Fases da OP", tela, con );
+				tela.setConexao( con );
+			}
 		}
 
 	}
@@ -2625,7 +2754,31 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		try {
 
-			if ( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
+			if ( tpnAbas.getSelectedIndex() == 5 ) {		
+				
+				Integer seqent = (Integer) tabEntradaParcial.getValor( tabEntradaParcial.getSelectedRow(), 0 );
+				
+				if( seqent>0 ) {
+					
+					if(Funcoes.mensagemConfirma( this, "Confirma a exclusão da entrada de produção?" )==JOptionPane.YES_OPTION) {
+					
+						deletaEntradaParcial( seqent );
+					
+						lcCampos.carregaDados();
+						
+						tpnAbas.setSelectedIndex( 5 );
+						
+					}
+					
+				}
+				else {
+					
+					Funcoes.mensagemInforma( this, "Selecione uma entrada para exclusão!" );
+					
+				}
+				 
+			}
+			else if ( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
 
 				dl = new DLJustCanc();
 				dl.setVisible( true );
