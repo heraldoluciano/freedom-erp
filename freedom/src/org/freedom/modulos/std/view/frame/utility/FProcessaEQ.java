@@ -49,6 +49,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -91,6 +92,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	}
 
 	boolean bRunProcesso = false;
+	
+	HashMap<String, Object> prefs = null;
 
 	int iFilialMov = 0;
 
@@ -143,9 +146,55 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 
 		lcProd.addCarregaListener( this );
 		btProcessar.addActionListener( this );
+		
+	//	prefs = getPrefere( con );
+		
+		
 		state( "Aguardando..." );
 	}
 
+	private HashMap<String, Object> getPrefere( DbConnection con ) {
+
+		HashMap<String, Object> retorno = new HashMap<String, Object>();
+		boolean[] bRetorno = new boolean[ 1 ];
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+
+			sql.append( "SELECT coalesce(prodetapas,'S') prodetapas from SGPREFERE5 P5 " );
+			sql.append( "WHERE P5.CODEMP=? AND P5.CODFILIAL=?" );
+
+			bRetorno[ 0 ] = false;
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );			
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
+			}
+			else {
+				retorno.put( "PRODETAPAS", new Boolean( false ) );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		return retorno;
+	}
+	
 	private void processarTudo() {
 
 		String sSQL = null;
@@ -185,6 +234,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				}
 			}
 		} catch ( SQLException err ) {
+			err.printStackTrace();
 			Funcoes.mensagemErro( null, "Não foi possível processar um produto.\n" + "Ultimo processado: '" + iUltProd + "'.\n" + err.getMessage(), true, con, err );
 		} finally {
 			sSQL = null;
@@ -288,7 +338,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT," 
 						+ "I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," 
 						+ "I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " 
-						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX, null as seqent  " 
+						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX, CAST(NULL AS SMALLINT) as seqent  " 
 						+ "FROM EQINVPROD I "
 						+ "WHERE I.CODEMP=? AND I.CODPROD = ?" + sWhereInventario;
 
@@ -300,12 +350,13 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, " 
 						+ "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," 
 						+ "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " 
-						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX, null as seqent " 
+						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX, CAST(NULL AS SMALLINT) as seqent " 
 						+ "FROM CPCOMPRA C,CPITCOMPRA IC "
 						+ "WHERE IC.CODCOMPRA=C.CODCOMPRA AND " 
 						+ "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND IC.QTDITCOMPRA > 0 AND " 
 						+ "C.CODEMP=? AND IC.CODPROD = ?" + sWhereCompra;
 
+				
 				sSQLOP = "SELECT 'O' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," 
 						+ "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," 
 						+ "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," 
@@ -313,34 +364,36 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"
 						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
 						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
-						+ "O.DTFABROP DTPROC, O.CODOP DOCPROC, 'N' FLAG, " 
-						+ "O.QTDFINALPRODOP QTDPROC, " 
+						+ "coalesce(oe.dtent,O.DTFABROP) DTPROC, " 
+						+ "O.CODOP DOCPROC, 'N' FLAG, " 
+						+ "coalesce(oe.qtdent,O.QTDFINALPRODOP) QTDPROC, " 
 						+ "( SELECT SUM(PD.CUSTOMPMPROD) FROM PPITOP IT, EQPRODUTO PD "
 						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " 
 						+ "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " 
 						+ "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND " 
 						+ "PD.CODPROD=IT.CODPROD) CUSTOPROC, " 
-						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX, null as seqent " 
+						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX, oe.seqent "  
 						+ "FROM PPOP O "
+						+ " left outer join ppopentrada oe on oe.codemp=o.codemp and oe.codfilial=o.codfilial and oe.codop=o.codop and oe.seqop=o.seqop " 
 						+ "WHERE O.QTDFINALPRODOP > 0 AND " 
 						+ "O.CODEMP=? AND O.CODPROD = ?" + sWhereOP;
-
+						
 				sSQLRMA = "SELECT 'R' TIPOPROC, IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, " 
-						+ "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " 
-						+ "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " 
-						+ "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, "
-						+ "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, " 
-						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
-						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
-						+ "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " 
-						+ "RMA.CODRMA DOCPROC, 'N' FLAG, "
-						+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," 
-						+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX, null as seqent  " 
-						+ "FROM EQRMA RMA ,EQITRMA IT " 
-						+ "WHERE IT.CODRMA=RMA.CODRMA AND " 
-						+ "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " 
-						+ "IT.QTDITRMA > 0 AND "
-						+ "RMA.CODEMP=? AND IT.CODPROD = ?" + sWhereRMA;
+					+ "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " 
+					+ "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " 
+					+ "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, "
+					+ "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, " 
+					+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
+					+ "CAST(NULL AS CHAR(4)) CODNAT, " 
+					+ "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " 
+					+ "RMA.CODRMA DOCPROC, 'N' FLAG, "
+					+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," 
+					+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX, CAST(NULL AS SMALLINT) as seqent  " 
+					+ "FROM EQRMA RMA ,EQITRMA IT " 
+					+ "WHERE IT.CODRMA=RMA.CODRMA AND " 
+					+ "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " 
+					+ "IT.QTDITRMA > 0 AND "
+					+ "RMA.CODEMP=? AND IT.CODPROD = ?" + sWhereRMA;
 
 				sSQLVenda = "SELECT 'V' TIPOPROC, IV.CODEMPPD, IV.CODFILIALPD, IV.CODPROD," 
 						+ "IV.CODEMPLE, IV.CODFILIALLE, IV.CODLOTE," 
@@ -350,7 +403,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " 
 						+ "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " 
 						+ "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " 
-						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX, null as seqent  " 
+						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX, CAST(NULL AS SMALLINT) as seqent  " 
 						+ "FROM VDVENDA V ,VDITVENDA IV "
 						+ "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND " 
 						+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " 
@@ -361,7 +414,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					state( sProd + "Iniciando reconstrução..." );
 					sSQL = sSQLInventario + " UNION ALL " + sSQLCompra + " UNION ALL " + sSQLOP + " UNION ALL " 
 					  + sSQLRMA + " UNION ALL " + sSQLVenda + " ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
-					// System.out.println(sSQL);
+					System.out.println(sSQL);
 					ps = con.prepareStatement( sSQL );
 					ps.setInt( paramCons.CODEMPIV.ordinal(), Aplicativo.iCodEmp );
 					//ps.setInt( paramCons.CODFILIALIV.ordinal(), ListaCampos.getMasterFilial( "EQINVPROD" ) );
@@ -401,6 +454,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					con.rollback();
 				}
 			} catch ( SQLException err ) {
+				err.printStackTrace();
 				Funcoes.mensagemErro( null, "Erro ao relizar procedimento!\n" + err.getMessage(), true, con, err );
 			}
 
