@@ -145,15 +145,19 @@ public class BancodoBrasil extends Banco {
 		return retorno.toString();
 	}
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, final Long nparc) {
 		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, true);
 	}
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito) {
 		return geraNossoNumero(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc, comdigito, false);
 	}
 
-	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, final Long doc, final Long seq, final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco) {
+	public String geraNossoNumero(final String tpnossonumero, final String modalidade, final String convenio, 
+			final Long doc, final Long seq, final Long rec, 
+			final Long nparc, final boolean comdigito, final boolean comtraco) {
 
 		final StringBuffer retorno = new StringBuffer();
 
