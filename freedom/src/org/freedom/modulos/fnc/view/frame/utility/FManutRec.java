@@ -1251,6 +1251,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabBaixa.setValor( rs.getString( "DESCCC" ) != null ? rs.getString( "DESCCC" ) : "", i, EColTabBaixa.DESCCC.ordinal() );
 				tabBaixa.setValor( rs.getInt( "NPARCITREC" ), i, EColTabBaixa.NPARCITREC.ordinal() );
 				tabBaixa.setValor( rs.getString( "OBSITREC" ) != null ? rs.getString( "OBSITREC" ) : "", i, EColTabBaixa.OBS.ordinal() );
+				
+				tabBaixa.setValor( rs.getString( "CODPLAN" ), i, EColTabBaixa.CODPLAN.ordinal() );
+				
 
 				sCodBanco = rs.getString( "CODBANCO" );
 
