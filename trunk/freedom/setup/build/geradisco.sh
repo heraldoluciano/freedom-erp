@@ -4,10 +4,10 @@
 VERSION=$1
 
 fn_get_version() {
-    if [ -Z $VERSION ]; then
+    if [ -z $VERSION ]; then
        echo "Entre com o número da versão: "
        read VERSION
-       if [ -Z $VERSION ]; then
+       if [ -z $VERSION ]; then
           echo "Versão não selecionada !"
           fn_end_script
        fi
