@@ -24,7 +24,7 @@ public abstract class Contabil {
 
 	protected static final String RETURN = String.valueOf(( char ) 13) + String.valueOf(( char ) 10);
 
-	protected static final String SEPDIR = ( SystemFunctions.getOS() == SystemFunctions.OS_LINUX ? "/" : "\\" );
+	protected static final String SEPDIR = ( SystemFunctions.getOS() == SystemFunctions.OS_LINUX || SystemFunctions.getOS() == SystemFunctions.OS_OSX  ? "/" : "\\" );
 
 	public static final String SET_SIZE_ROWS = "SET_SIZE_ROWS";
 
