@@ -1034,7 +1034,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		JPanelPad pnMedidas = new JPanelPad();
 		pnMedidas.setBorder( SwingParams.getPanelLabel( "Medidas", Color.BLUE ) );
 		
-		pinOutros.adic( pnMedidas, 5, 5, 500, 200 );
+		pinOutros.adic( pnMedidas, 5, 5, 650, 160 );
 		setPainel( pnMedidas );
 		
 		adicCampo( txtPesoBrutProd, 7, 20, 110, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
@@ -1053,23 +1053,19 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		JPanelPad pnOutros = new JPanelPad();
 		pnOutros.setBorder( SwingParams.getPanelLabel( "Outros", Color.BLUE ) );
 
-		pinOutros.adic( pnOutros, 5, 210, 500, 200 );
+		pinOutros.adic( pnOutros, 5, 180, 650, 200 );
 		setPainel( pnOutros );
 
-		adicCampo( txtNroDiasValid, 7, 20, 110, 20, "NroDiasValid", "Nro. dias valid.", ListaCampos.DB_SI, false );
-		adicDB( cbDescCli, 5, 50, 200, 20, "desccli", "", false );
 		
-		//xxx
-		//adicDB( rgTipo, 540, 20, 115, 140, "TipoProd", "Tipo:", true );
-//		adicCampo( txtPrazoEnt, 263, 500, 80, 20, "CodPE", "Cód.p/entrega", ListaCampos.DB_FK, txtDescGrup, false );
-//		adicDescFK( txtDescPrazoEnt, 346, 500, 190, 20, "DescPE", "Descrição do prazo de entrega" );
-//		adicDescFK( txtDias, 539, 500, 110, 20, "DiasPE", "Dias p/entrega" );
-//		adicCampo( txtCodSecao, 263, 380, 80, 20, "CodSecao", "Cód. seção", ListaCampos.DB_FK, txtDescSecao, false );
-//		adicDescFK( txtDescSecao, 346, 380, 303, 20, "DescSecao", "Descrição da seção" );
-//		adicCampo( txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false );
-
-
+		adicCampo( txtPrazoEnt, 5, 20, 80, 20, "CodPE", "Cód.p/entrega", ListaCampos.DB_FK, txtDescGrup, false );
+		adicDescFK( txtDescPrazoEnt, 88, 20, 190, 20, "DescPE", "Descrição do prazo de entrega" );
+		adicDescFK( txtDias, 281, 20, 110, 20, "DiasPE", "Dias p/entrega" );
 		
+		adicCampo( txtCodSecao, 5, 60, 80, 20, "CodSecao", "Cód. seção", ListaCampos.DB_FK, txtDescSecao, false );
+		adicDescFK( txtDescSecao, 88, 60, 303, 20, "DescSecao", "Descrição da seção" );
+
+		adicCampo( txtLocalProd, 5, 100, 165, 20, "LocalProd", "Local de armazenamento", ListaCampos.DB_SI, false );
+		adicDB( cbDescCli, 5, 140, 200, 20, "desccli", "", false );
 		
 		setListaCampos( true, "PRODUTO", "EQ" );
 
