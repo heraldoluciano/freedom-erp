@@ -1154,7 +1154,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
 			
-			
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
@@ -1163,7 +1162,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				tabEntradaParcial.setValor( rs.getInt( "seqent" ) , iLin, 0 );
 				tabEntradaParcial.setValor( rs.getDate( "dtent" ), iLin, 1 );
-				tabEntradaParcial.setValor( rs.getTime( "hent" ), iLin, 2 );
+				tabEntradaParcial.setValor( rs.getTime( "hent" ).toString(), iLin, 2 );
 				tabEntradaParcial.setValor( rs.getBigDecimal( "qtdent" ), iLin, 3 );				
 				tabEntradaParcial.setValor( rs.getString( "obsent" ), iLin, 4 );
 				tabEntradaParcial.setValor( rs.getString( "idusuins" ), iLin, 5 );
@@ -1431,15 +1430,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 	
 	
-	private void insereEntradaParcial(BigDecimal qtdent, String obsent) {
+	private void insereEntradaParcial(BigDecimal qtdent, String obsent, Date dtent, String hent) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		
 		try {
 			
-			sql.append( "insert into ppopentrada (codemp, codfilial, codop, seqop, seqent, dtent, qtdent, obsent ) " );
-			sql.append( "values (?,?,?,?,?,?,?,?)" );
+			sql.append( "insert into ppopentrada (codemp, codfilial, codop, seqop, seqent, dtent, hent, qtdent, obsent ) " );
+			sql.append( "values (?,?,?,?,?,?,?,?,?)" );
 			
 			ps = con.prepareStatement( sql.toString() );
 			
@@ -1449,10 +1448,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
 			
 			ps.setInt( 5, getSeqEntradaParcial() );
-			ps.setDate( 6, Funcoes.dateToSQLDate( new Date() ) );
-			
-			ps.setBigDecimal( 7, qtdent );
-			ps.setString( 8, obsent );
+			ps.setDate( 6, Funcoes.dateToSQLDate( dtent ) );
+			ps.setTime( 7, Funcoes.strTimeTosqlTime( hent ) );
+
+			ps.setBigDecimal( 8, qtdent );
+			ps.setString( 9, obsent );
 			
 			ps.execute();
 			
@@ -1514,8 +1514,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 				BigDecimal qtdent = dl.getQtdEnt();
 				String obsent = dl.getObs();
+				Date dtent = dl.getDtEnt();
+				String hent = dl.getHEnt();
 				
-				insereEntradaParcial( qtdent, obsent );
+				insereEntradaParcial( qtdent, obsent, dtent, hent );
 				
 				lcCampos.carregaDados();
 				
