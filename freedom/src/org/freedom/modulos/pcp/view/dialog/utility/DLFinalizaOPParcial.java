@@ -26,6 +26,8 @@ import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.swing.JScrollPane;
 
@@ -43,6 +45,10 @@ public class DLFinalizaOPParcial extends FFDialogo {
 
 	private JTextFieldPad txtQtdEnt = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
+	private JTextFieldPad txtDtEnt = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtHEnt = new JTextFieldPad( JTextFieldPad.TP_TIME, 5, 0 );
+	
 	private JTextAreaPad txaObsEnt = new JTextAreaPad();
 
 	private JLabelPad lObsEnt = new JLabelPad( "Observações" );
@@ -62,8 +68,14 @@ public class DLFinalizaOPParcial extends FFDialogo {
 		adic( txtQtdPrevOP, 7, 25, 110, 20, "Qtd. prevista" );
 		adic( txtQtdEnt, 120, 25, 110, 20, "Qtd. produzida:" );
 
-		adic( lObsEnt, 7, 45, 300, 20 );
-		adic( new JScrollPane( txaObsEnt ), 7, 65, 222, 140 );
+		adic( txtDtEnt, 7, 65, 110, 20, "Data" );
+		adic( txtHEnt, 120, 65, 110, 20, "Hora" );
+
+		adic( lObsEnt, 7, 85, 220, 20 );
+		adic( new JScrollPane( txaObsEnt ), 7, 105, 222, 110 );
+		
+		txtDtEnt.setVlrDate( new Date() );
+		txtHEnt.setVlrTime( new Date() );
 
 	}
 
@@ -79,6 +91,16 @@ public class DLFinalizaOPParcial extends FFDialogo {
 	public String getObs() {
 
 		return txaObsEnt.getVlrString();
+	}
+	
+	public Date getDtEnt() {
+
+		return txtDtEnt.getVlrDate();
+	}
+	
+	public String getHEnt() {
+
+		return txtHEnt.getVlrString();
 	}
 	
 	public void keyPressed( KeyEvent kevt ) {
