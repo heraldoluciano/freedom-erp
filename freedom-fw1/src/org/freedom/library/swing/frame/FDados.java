@@ -488,17 +488,12 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	}
 	
 	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label) {
-		boolean bScroll = false;
 		JLabelPad lbTmp = null;
-
-		bScroll = true;
-
+		
 		lbTmp = new JLabelPad(label);
 		adic(lbTmp, X, Y - 20, Larg, 20);
-		if (bScroll)
-			adic(new JScrollPane(comp), X, Y, Larg, Alt);
-		else
-			adic(comp, X, Y, Larg, Alt);
+	
+		adic(comp, X, Y, Larg, Alt);
 
 		return lbTmp;
 	}
