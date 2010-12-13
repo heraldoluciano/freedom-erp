@@ -191,7 +191,7 @@ public class FRComisProd extends FRelatorio {
 
 			sql.append( "select ");
 
-			sql.append( "pd.codsecao, se.descsecao, sum(op.qtdfinalprodop) qtdfinalprodop, pd.codprod, pd.refprod, ");
+			sql.append( "pd.codsecao, se.descsecao, sum(coalesce(en.qtdent, op.qtdfinalprodop)) qtdfinalprodop, pd.codprod, pd.refprod, ");
 //			sql.append( "pd.codsecao, se.descsecao, op.qtdfinalprodop, pd.codprod, pd.refprod, ");
 			sql.append( "pd.descprod, pd.precocomisprod, rc.perccomisgeral/100 perccomisgeral, case when coalesce(op.garantia,'N')='' then 'N' else op.garantia end garantia " );
 
@@ -205,14 +205,17 @@ public class FRComisProd extends FRelatorio {
 
 			sql.append( "left outer join eqitrecmerc it on ");
 			sql.append( "it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc ");
+			
+			sql.append( "left outer join ppopentrada en on ");
+			sql.append( "en.codemp=op.codemp and en.codfilial=op.codfilial and en.codop=op.codop and en.seqop=op.seqop ");
 
 			sql.append( "where "); 
 
 			sql.append( "pd.codemp=op.codemp and pd.codfilial=op.codfilial and pd.codprod=op.codprod ");
 			sql.append( "and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao ");
 			sql.append( "and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao ");
-			sql.append( "and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
-			sql.append( "and op.sitop='FN' " );
+			sql.append( "and op.codemp=? and op.codfilial=? and coalesce(en.dtent,op.dtfabrop) between ? and ? ");
+			sql.append( "and op.sitop<>'CA' " );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
@@ -291,8 +294,8 @@ public class FRComisProd extends FRelatorio {
 
 			sql.append( "se.codsecao, se.descsecao, rc.perccomisgeral/100 perccomisgeral, ");
 
-			sql.append( "sum( case when op.garantia='S' then ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else ");
-			sql.append( "((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao ");
+			sql.append( "sum( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 else ");
+			sql.append( "((coalesce(qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao ");
 			sql.append( ", vd.nomevend, irc.perccomisitrc/100 percomisvendedor ");
 
 			sql.append( "from eqproduto pd , vdregracomis rc, vditregracomis irc, eqsecao se, ppop op ");
@@ -301,7 +304,10 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket ");
 
 			sql.append( "left outer join eqitrecmerc it on ");
-			sql.append( "it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc ");
+			sql.append( "it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket and it.coditrecmerc=op.coditrecmerc ");		
+			
+			sql.append( "left outer join ppopentrada en on ");
+			sql.append( "en.codemp=op.codemp and en.codfilial=op.codfilial and en.codop=op.codop and en.seqop=op.seqop ");
 
 			sql.append( "inner join vdvendedor vd on ");
 			sql.append( "vd.codemp=irc.codempvd and vd.codfilial = irc.codfilialvd and vd.codvend=irc.codvend ");
@@ -312,8 +318,8 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc and rc.codsecao=pd.codsecao ");
 			sql.append( "and irc.codemp=rc.codemp and irc.codfilial=rc.codfilial and irc.codregrcomis=rc.codregrcomis ");
 			sql.append( "and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao ");
-			sql.append( "and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
-			sql.append( "and op.sitop='FN' ");
+			sql.append( "and op.codemp=? and op.codfilial=? and coalesce(en.dtent,op.dtfabrop) between ? and ? ");
+			sql.append( "and op.sitop<>'CA' ");
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
@@ -381,7 +387,7 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "vd.codvend, vd.nomevend, ");
 			sql.append( "rc.perccomisgeral/100 perccomisgeral, ");
 			sql.append( "se.codsecao, se.descsecao, ");
-			sql.append( "sum( case when op.garantia='S' then ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
+			sql.append( "sum( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
 			sql.append( "else ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao , ");
 			sql.append( "irc.perccomisitrc/100 percomisvendedor, ");
 			sql.append( "coalesce(vd.vlrabono,0) vlrabono, coalesce(vd.vlrdesconto,0) vlrdesconto ");
@@ -390,12 +396,17 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "left outer join eqrecmerc rm on rm.codemp=op.codempos and rm.codfilial=op.codfilialos and rm.ticket=op.ticket ");
 			sql.append( "left outer join eqitrecmerc it on it.codemp=op.codempos and it.codfilial=op.codfilialos and it.ticket=op.ticket ");
 			sql.append( "and it.coditrecmerc=op.coditrecmerc ");
+			
+			sql.append( "left outer join ppopentrada en on ");
+			sql.append( "en.codemp=op.codemp and en.codfilial=op.codfilial and en.codop=op.codop and en.seqop=op.seqop ");
+			
 			sql.append( "inner join vdvendedor vd on vd.codemp=irc.codempvd and vd.codfilial = irc.codfilialvd ");
 			sql.append( "and vd.codvend=irc.codvend where pd.codemp=op.codemp and pd.codfilial=op.codfilial ");
 			sql.append( "and pd.codprod=op.codprod and rc.codempsc=pd.codempsc and rc.codfilialsc=pd.codfilialsc ");
 			sql.append( "and rc.codsecao=pd.codsecao and irc.codemp=rc.codemp and irc.codfilial=rc.codfilial ");
 			sql.append( "and irc.codregrcomis=rc.codregrcomis and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc ");
-			sql.append( "and se.codsecao=pd.codsecao and op.codemp=? and op.codfilial=? and op.dtfabrop between ? and ? ");
+			sql.append( "and se.codsecao=pd.codsecao and op.codemp=? and op.codfilial=? and coalesce(en.qtdent, op.dtfabrop) between ? and ? ");
+			sql.append( "and op.sitop<>'CA' ");
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
