@@ -345,23 +345,6 @@ public class EbsContabil extends Contabil {
 			entrada.setSubSerie(null);
 			entrada.setVariacaoCfop(1);
 
-			/*StringBuilder sqlCFOP = new StringBuilder();
-			sqlCFOP.append("select ic.codnat from cpitcompra ic ");
-			sqlCFOP.append("where ic.codemp=? and ic.codfilial=? and ic.codcompra=? order by ic.coditcompra");
-
-			PreparedStatement psCFOP = con.prepareStatement(sqlCFOP.toString());
-			psCFOP.setInt(1, Aplicativo.iCodEmp);
-			psCFOP.setInt(2, ListaCampos.getMasterFilial("CPITCOMPRA"));
-			psCFOP.setInt(3, rs.getInt("codcompra"));
-
-			ResultSet rsCFOP = psCFOP.executeQuery();
-
-			if (rsCFOP.next()) {
-				entrada.setCfop(Integer.parseInt(rsCFOP.getString("codnat")));
-			}
-			rsCFOP.close();
-			psCFOP.close();*/
-
 			entrada.setCfop( Integer.valueOf( getCfopCompra(rs.getInt("codcompra")) ));
 			entrada.setClassificacaoIntegracao(0);
 			entrada.setClassificacaoIntegracao2(0);
