@@ -62,7 +62,7 @@ public abstract class AbstractNFEFactory {
 
 	public static final Constant REGIME_TRIB_NFE_SIMPLES = new Constant("Simples Nacional", "1" );
 	
-	public static final Constant REGIME_TRIB_NFE_SIMPLES_EX = new Constant("Simples Nacional - Excesso de sumlimite de receita bruta", "2"  );
+	public static final Constant REGIME_TRIB_NFE_SIMPLES_EX = new Constant("Simples Nacional - Excesso de sublimite de receita bruta", "2"  );
 	
 	public static final Constant REGIME_TRIB_NFE_NORMAL = new Constant("Regime Normal", "3" );
 	
