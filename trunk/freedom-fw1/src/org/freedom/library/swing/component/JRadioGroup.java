@@ -24,6 +24,7 @@ package org.freedom.library.swing.component;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -130,6 +131,31 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 		setTipo();
 
 	}
+	
+	public void setFont(Font fonte) {
+		
+		try {
+			
+			AbstractButton rbTmp = null;
+			
+			for (Enumeration<AbstractButton> e = bg.getElements(); e.hasMoreElements();) {
+				
+				rbTmp = e.nextElement();
+				
+				if (rbTmp != null) {
+					rbTmp.setFont(fonte);
+				}
+				
+			}
+					
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 
 	public void novo() {
 
