@@ -25,6 +25,7 @@
 package org.freedom.modulos.gms.view.frame.report;
 
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 
 public class FRFreteRecMerc extends FRelatorio {
 
@@ -127,7 +129,144 @@ public class FRFreteRecMerc extends FRelatorio {
 
 	}
 
+	
+	private HashMap<String,BigDecimal> getCalculaRetencoes() {
+		
+		HashMap<String,BigDecimal> ret = new HashMap<String, BigDecimal>();
+		
+		BigDecimal cem = new BigDecimal( 100 );
+		
+		BigDecimal percbaseinss = null;
+		BigDecimal percbaseirrf = null;
+		BigDecimal percoutros = null;
+		BigDecimal vlrbaseinss = null;
+		BigDecimal vlrbaseirrf = null;
+		
+		BigDecimal vlrinss = null;
+		BigDecimal vlrirrf = null;
+		BigDecimal vlroriginal = null;
+		
+		Boolean calcinss = false;
+		Boolean calcirrf = false;
+		Boolean calcoutros = false;
+		
+		Integer nrodepend = null;
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			
+			sql.append("select ");
+			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
+	
+			sql.append( "from ");
+			sql.append( "eqrecmerc rm ");
+			sql.append( "left outer join vdtransp tr on ");
+			sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
+			
+			sql.append( "left outer join cpforneced fo on ");
+			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
+			
+			sql.append( "left outer join cptipofor tf on ");
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");		
+			
+			sql.append( "right outer join lffrete fr on ");
+			sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
+	
+			sql.append( "where ");
+	
+			sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+	
+			sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
+			
+			
+			StringBuilder where = new StringBuilder();
+		
+			sql.append( " group by 2,3,4,5,6,7,8 " );
+				
+			ps = con.prepareStatement( sql.toString() );
+
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( 5, lcTransp.getCodEmp() );
+			ps.setInt( 6, lcTransp.getCodFilial() );
+			ps.setInt( 7, txtCodTran.getVlrInteger() );
+			
+			
+			
+			rs = ps.executeQuery();
+			
+			
+			if(rs.next()) {
+			
+				
+				calcinss = "S".equals( rs.getString( "RetencaoINSS" ));
+				calcirrf = "S".equals( rs.getString( "RetencaoIRRF" ));
+				calcoutros = "S".equals( rs.getString( "RetencaoIRRF" ));
+				nrodepend = rs.getInt( "nrodependfor" );
+				
+				vlroriginal = rs.getBigDecimal( "vlrfrete" );
+				
+				//Se deve calcular a retenção de INSS...
+				if( calcinss ) {
+					
+					percbaseinss = rs.getBigDecimal( "PercBaseINSS" );					
+					
+					vlrbaseinss = (vlroriginal.multiply( percbaseinss )).divide( cem );
+					
+					// Se deve calcular a retenção de outros tributos junto com o INSS
+					if(calcoutros) {
+						percoutros = rs.getBigDecimal( "PercRetOutros" );
+					}
+					
+					vlrinss = DLNovoPag.getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );
+					
+					// Carregando campos...
+				//	txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
+				//	txtVlrBaseINSS.setVlrBigDecimal( vlrbaseinss );
+				//	txtVlrRetINSS.setVlrBigDecimal( vlrinss );
+								
+				}
+				
+				//Se deve calcular a retenção de INSS...
+				if( calcirrf ) {
+	
+					percbaseirrf = rs.getBigDecimal( "PercBaseIRRF" );
+					vlrbaseirrf = (vlroriginal.multiply( percbaseirrf )).divide( cem );
+					
+					// Valor colocado de forma fixa... deve ser substituido urgentemente!
+					
+					vlrirrf = DLNovoPag.getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69), nrodepend );
+					
+				}
+			}
+			
+			ret.put( "VLRINSS", vlrinss );
+			ret.put( "VLRIRRF", vlrirrf );
+			
+			con.commit();
+			ps.close();
+			rs.close();
+				
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
 	public void imprimir( boolean visualizar ) {
+		
+		
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
@@ -138,7 +277,31 @@ public class FRFreteRecMerc extends FRelatorio {
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 		StringBuffer sCab = new StringBuffer();		
-
+		
+		BigDecimal vlrinss = null;
+		BigDecimal vlrirrf = null;
+		
+		try {
+		
+			/*********CALCULO DE RETENCOES**********/
+				
+			if ( "S".equals( cbPendentes.getVlrString() ) ) {
+		
+				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
+				
+				vlrinss = retensoes.get( "VLRINSS" );
+				vlrirrf = retensoes.get( "VLRIRRF" );
+				
+			}
+			
+			/***********FIM**********************/
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		int param = 1;
 
 		sql.append( "select ");
@@ -221,11 +384,13 @@ public class FRFreteRecMerc extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
 			if ( txtCodTran.getVlrInteger() > 0 ) {
+				
 				ps.setInt( param++, lcTransp.getCodEmp() );
 				ps.setInt( param++, lcTransp.getCodFilial() );
 				ps.setInt( param++, txtCodTran.getVlrInteger() );
 
 				sCab.append( "Transportador: " + txtNomeTran.getVlrString() + "\n" );
+				
 			}
 
 			System.out.println( "SQL:" + sql.toString() );
@@ -240,13 +405,23 @@ public class FRFreteRecMerc extends FRelatorio {
 
 		}
  
-		imprimirGrafico( visualizar, rs, sCab.toString() );
+		imprimirGrafico( visualizar, rs, sCab.toString(), vlrinss, vlrirrf );
 
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, BigDecimal vlrinss, BigDecimal vlrirrf ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		
+		if(vlrinss == null) {
+			vlrinss = new BigDecimal(0);
+		}
+		if(vlrirrf == null) {
+			vlrirrf = new BigDecimal(0);
+		}	
+		
+		hParam.put( "VLRINSS", vlrinss );
+		hParam.put( "VLRIRRF", vlrirrf );
 
 		FPrinterJob dlGr = null;
 
