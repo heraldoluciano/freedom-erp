@@ -326,14 +326,14 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 	}
 	
-	private BigDecimal getVlrINSS(BigDecimal valororiginal, BigDecimal valorbase, BigDecimal peroutros) {
+	public static BigDecimal getVlrINSS(BigDecimal valororiginal, BigDecimal valorbase, BigDecimal peroutros, Integer nrodepend) {
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		BigDecimal aliquota = null;
-		Integer nrodepend = 0;
+		
 		BigDecimal cem = new BigDecimal(100);
 		
 		try {
@@ -344,14 +344,12 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "inss.teto >= ? ");
 			sql.append( "order by inss.teto ");
 			
-			ps = con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 			ps.setBigDecimal( 1, valororiginal );
 			
 			rs = ps.executeQuery( );
 			
 			if (rs.next()) {
-				
-				nrodepend = txtNroDependFor.getVlrInteger();
 				
 				aliquota = rs.getBigDecimal( "aliquota" );
 				
@@ -375,7 +373,6 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			ps.close();
 			rs.close();
-			con.commit();
 						
 		}
 		catch (Exception e) {
@@ -385,7 +382,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		return ret;
 	}
 	
-	private BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbaseirrf, BigDecimal valorbaseinss, BigDecimal valorinss, BigDecimal vlrdep) {
+	public static BigDecimal getVlrIRRF(BigDecimal valororiginal, BigDecimal valorbaseirrf, BigDecimal valorbaseinss, BigDecimal valorinss, BigDecimal vlrdep, Integer nrodepend) {
 		
 		BigDecimal ret = null;
 		StringBuilder sql = new StringBuilder();
@@ -395,7 +392,6 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		BigDecimal aliquota = null;
 		BigDecimal reducaodependente = null;
 		BigDecimal deducao = new BigDecimal( 0 );
-		Integer nrodepend = 0;
 		BigDecimal cem = new BigDecimal(100);
 		
 		try {
@@ -406,7 +402,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "ir.teto >= ? ");
 			sql.append( "order by ir.teto ");
 			
-			ps = con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 			
 			BigDecimal baseirrf_final = valorbaseirrf;
 			
@@ -419,7 +415,6 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			if (rs.next()) {
 				
-				nrodepend = txtNroDependFor.getVlrInteger();
 				
 				deducao = rs.getBigDecimal( "deducao" );
 				
@@ -443,7 +438,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			//Reduzindo INSS pagoc
 			if(valorbaseinss!=null && valorbaseinss.compareTo( new BigDecimal( 0 ))>0 ) {
-				valorbaseirrf = valorbaseirrf.subtract( getVlrINSS( valororiginal, valorbaseinss, null ) );
+				valorbaseirrf = valorbaseirrf.subtract( getVlrINSS( valororiginal, valorbaseinss, null, nrodepend ) );
 			}
 			
 			//Reduzindo dependentes
@@ -468,7 +463,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			
 			ps.close();
 			rs.close();
-			con.commit();
+		
 			
 		}
 		catch (Exception e) {
@@ -496,6 +491,8 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		Boolean calcirrf = false;
 		Boolean calcoutros = false;
 		
+		Integer nrodepend = txtNroDependFor.getVlrInteger();
+		
 		try {
 			
 			
@@ -517,7 +514,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 					percoutros = txtPercRetOutros.getVlrBigDecimal();
 				}
 				
-				vlrinss = getVlrINSS( vlroriginal, vlrbaseinss, percoutros );
+				vlrinss = getVlrINSS( vlroriginal, vlrbaseinss, percoutros, nrodepend );
 				
 				// Carregando campos...
 				txtPercBaseINSS.setVlrBigDecimal( percbaseinss );
@@ -534,7 +531,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 				
 				// Valor colocado de forma fixa... deve ser substituido urgentemente!
 				
-				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69) );
+				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69), nrodepend );
 				
 				txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
 				txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
