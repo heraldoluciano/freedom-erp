@@ -177,7 +177,7 @@ public class FRProducao extends FRelatorio {
 
 		try {
 
-			sql.append( "select op.codprod, pd.descprod, pd.codunid, sum(coalesce(en.qtdent, op.qtdfinalprodop)) as qtdfinalprodop " );
+			sql.append( "select op.codprod, pd.refprod, pd.descprod, pd.codunid, sum(coalesce(en.qtdent, op.qtdfinalprodop)) as qtdfinalprodop " );
 			sql.append( "from eqproduto pd, ppop op " );
 			sql.append( "left outer join ppopentrada en on en.codemp=op.codemp and en.codfilial=op.codfilial and en.codop=op.codop and en.seqop=op.seqop " );
 			sql.append( "where " );
@@ -203,8 +203,8 @@ public class FRProducao extends FRelatorio {
 
 			}
 
-			sql.append( "group by op.codprod, pd.descprod, pd.codunid " );
-			sql.append( "order by pd.descprod " );
+			sql.append( "group by op.codprod, pd.refprod, pd.descprod, pd.codunid " );
+			sql.append( "order by pd.refprod, pd.descprod " );
 
 			sql.append( sWhere.toString() );
 
