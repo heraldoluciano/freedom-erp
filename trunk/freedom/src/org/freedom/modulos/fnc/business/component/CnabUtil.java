@@ -4980,14 +4980,17 @@ public class CnabUtil extends FbnUtil {
 
 			try {
 
-				if (getCodConvBanco().length()<7) {
+				if( getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL ) && (getCodConvBanco().length()>=7) ) {
+					
 					// Convênios menores que 1.000.000
-					line.append( "1" ); // Tipo de registro 1	
-				} else {
-					// Convênios maiorer que 1.000.000
-					line.append( "7"); // Tipo de registro 7
+					line.append( "7" ); // Tipo de registro 1	
+					
 				}
+				else {
+					
+					line.append( "1" ); // Tipo de registro 1	
 				
+				}
 
 				/*************************************************/
 				/**                                             **/
