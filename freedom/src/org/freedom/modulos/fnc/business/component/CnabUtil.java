@@ -5005,6 +5005,7 @@ public class CnabUtil extends FbnUtil {
 					line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );//022 a 022 - Digito da agencia
 					line.append( format( getConta(), ETipo.$9, 8, 0 ) );//023 a 030 - Numero da conta corrente
 					line.append( format( getDigConta(), ETipo.X, 1, 0 ) );//031 a 031 - Digito da conta corrente
+					
 					if (getCodConvBanco().length()<7) {
 						line.append( format( getCodConvBanco(), ETipo.X, 6, 0 ) );//032 a 037 - Convenio
 					} else {
