@@ -706,6 +706,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
 					sFrom = ", VDCLIENTE C1, VDCLIENTE C2 ";
 				}
+				else {
+					sWhere.append( " and CODCLI=? " );
+				}
 				
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
 				sFiltros2.append( " CLI.: " );
@@ -830,7 +833,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					ps.setInt( iParam++, iCodVend );
 				}
 				if ( iCodCli != 0 ) {
-					ps.setInt( iParam++, iCodCli );
+				
+						ps.setInt( iParam++, iCodCli );
+					
 				}
 				if ( iCodTipoCli != 0 ) {
 					ps.setInt( iParam++, iCodTipoCli );
