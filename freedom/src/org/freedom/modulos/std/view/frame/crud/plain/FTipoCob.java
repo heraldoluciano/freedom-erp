@@ -66,7 +66,7 @@ public class FTipoCob extends FDados implements ActionListener {
 
 	private JTextFieldPad txtSeqtalao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
 
-	private ListaCampos lcConta = new ListaCampos( this, "" );
+	private ListaCampos lcConta = new ListaCampos( this, "CT" );
 
 	private ListaCampos lcTalaoCheq = new ListaCampos( this, "" );
 	
@@ -142,7 +142,7 @@ public class FTipoCob extends FDados implements ActionListener {
 		adic( borda, 7, 165, 420, 4 );
 		adicCampo( txtNumconta, 7, 195, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescconta, 90, 195, 230, 20, "Descconta", "Descrição da conta" );
-		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_FK, false);
+		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_SI, false);
 		
 	}
 
