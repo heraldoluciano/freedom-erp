@@ -138,16 +138,18 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 			
 			AbstractButton rbTmp = null;
 			
-			for (Enumeration<AbstractButton> e = bg.getElements(); e.hasMoreElements();) {
-				
-				rbTmp = e.nextElement();
-				
-				if (rbTmp != null) {
-					rbTmp.setFont(fonte);
-				}
-				
-			}
+			if(bg!=null){
+				for (Enumeration<AbstractButton> e = bg.getElements(); e.hasMoreElements();) {
 					
+					rbTmp = e.nextElement();
+					
+					if (rbTmp != null) {
+						rbTmp.setFont(fonte);
+					}
+					
+				}
+			}
+						
 			
 		}
 		catch (Exception e) {
