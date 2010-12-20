@@ -344,7 +344,7 @@ public class FRComisProd extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
-			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				ps.setInt( param++, lcSecao.getCodEmp() );
@@ -388,7 +388,7 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "rc.perccomisgeral/100 perccomisgeral, ");
 			sql.append( "se.codsecao, se.descsecao, ");
 			sql.append( "sum( case when op.garantia='S' then ((coalesce(en.qtdent,qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) * -1 ");
-			sql.append( "else ((qtdfinalprodop * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao , ");
+			sql.append( "else ( (coalesce(en.qtdent,op.qtdfinalprodop) * pd.precocomisprod ) * (rc.perccomisgeral/100)) end ) comissecao , ");
 			sql.append( "irc.perccomisitrc/100 percomisvendedor, ");
 			sql.append( "coalesce(vd.vlrabono,0.00) vlrabono, coalesce(vd.vlrdesconto,0.00) vlrdesconto ");
 
@@ -407,6 +407,7 @@ public class FRComisProd extends FRelatorio {
 			sql.append( "and irc.codregrcomis=rc.codregrcomis and se.codemp=pd.codempsc and se.codfilial=pd.codfilialsc ");
 			sql.append( "and se.codsecao=pd.codsecao and op.codemp=? and op.codfilial=? and coalesce(en.dtent, op.dtfabrop) between ? and ? ");
 			sql.append( "and op.sitop<>'CA' ");
+			
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codempcl=? and rm.codfilialcl=? and rm.codcli=? " );
@@ -445,7 +446,7 @@ public class FRComisProd extends FRelatorio {
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
-			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) );
+			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				ps.setInt( param++, lcSecao.getCodEmp() );
