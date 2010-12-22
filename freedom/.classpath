@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.x"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlnf.jar"/>
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
@@ -14,7 +14,6 @@
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
 	<classpathentry kind="lib" path="lib/barbecue.jar"/>
-	<classpathentry kind="lib" path="lib/jaybird-full.jar"/>
 	<classpathentry kind="lib" path="lib/dsn.jar"/>
 	<classpathentry kind="lib" path="lib/imap.jar"/>
 	<classpathentry kind="lib" path="lib/pop3.jar"/>
@@ -32,5 +31,9 @@
 	<classpathentry kind="lib" path="lib/poi.jar"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
 	<classpathentry kind="lib" path="lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports-fonts.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-digester.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/setpoint-sped"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
