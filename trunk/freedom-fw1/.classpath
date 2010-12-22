@@ -21,7 +21,6 @@
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/dsgebrazilutils.jar"/>
 	<classpathentry kind="lib" path="lib/commons-digester.jar"/>
-	<classpathentry kind="lib" path="lib/jasperreports-fonts.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
