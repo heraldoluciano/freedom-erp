@@ -110,6 +110,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		}
 		catch (java.lang.ClassNotFoundException e) { 
 			Funcoes.mensagemErro(this, "Driver não foi encontrado:\n" + strDriver + "\n" + e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 
