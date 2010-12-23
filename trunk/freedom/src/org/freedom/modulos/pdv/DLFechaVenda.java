@@ -736,7 +736,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
-			ps.setObject( 3, txtVlrPago.getVlrBigDecimal() );
+			ps.setObject( 3, txtVlrCupom.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
 			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
 			ps.setString( 6, Aplicativo.strUsuario );
