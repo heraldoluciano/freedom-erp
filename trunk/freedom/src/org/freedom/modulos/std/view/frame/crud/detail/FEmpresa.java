@@ -24,14 +24,20 @@
 
 package org.freedom.modulos.std.view.frame.crud.detail;
 
+import java.util.Vector;
+
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.pojos.Constant;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
@@ -136,6 +142,22 @@ public class FEmpresa extends FDetalhe {
 	private JTextFieldPad txtInscMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JTextFieldPad txtCNAE = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	
+	private JComboBoxPad cbPerfilFilial = null;
+	
+	public Constant PERFIL_FILIAL_A = new Constant( "Perfil A", "A" );
+	
+	public Constant PERFIL_FILIAL_B = new Constant( "Perfil B", "B" );
+	
+	public Constant PERFIL_FILIAL_C = new Constant( "Perfil C", "C" );
+	
+	public Constant INDICADOR_ATIVIDADE_IND = new Constant( "Industrial ou equiparado a industria", "0" );
+	
+	public Constant INDICADOR_ATIVIDADE_OUTROS = new Constant( "Outros", "1" );
+	
+	private JComboBoxPad cbIndAtivFilial = null;
+	
+	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 
 	public FEmpresa() {
 
@@ -152,10 +174,42 @@ public class FEmpresa extends FDetalhe {
 	private void montaTela() {
 
 		setAltCab( 210 );
-		setAltDet( 375 );
+		setAltDet( 385 );
 
 		pinCab = new JPanelPad( 440, 60 );
 		setPainel( pinCab, pnCliCab );
+		
+		
+		Vector<String> vLabsPerfil = new Vector<String>();
+		Vector<String> vValsPerfil = new Vector<String>();
+
+		vLabsPerfil.addElement("<--Selecione-->");
+		
+		vLabsPerfil.addElement( PERFIL_FILIAL_A.getName() );
+		vLabsPerfil.addElement( PERFIL_FILIAL_B.getName() );
+		vLabsPerfil.addElement( PERFIL_FILIAL_C.getName() );
+		
+		vValsPerfil.addElement("");		
+		vValsPerfil.addElement( PERFIL_FILIAL_A.getValue().toString() );
+		vValsPerfil.addElement( PERFIL_FILIAL_B.getValue().toString() );
+		vValsPerfil.addElement( PERFIL_FILIAL_C.getValue().toString() );
+
+		cbPerfilFilial = new JComboBoxPad( vLabsPerfil, vValsPerfil, JComboBoxPad.TP_STRING, 1, 0);
+
+		Vector<String> vLabsIndAtiv = new Vector<String>();
+		Vector<String> vValsIndAtiv = new Vector<String>();
+
+		vLabsIndAtiv.addElement("<--Selecione-->");
+		
+		vLabsIndAtiv.addElement( INDICADOR_ATIVIDADE_IND.getName() );
+		vLabsIndAtiv.addElement( INDICADOR_ATIVIDADE_OUTROS.getName() );
+		
+		vValsIndAtiv.addElement("");		
+		vValsIndAtiv.addElement( INDICADOR_ATIVIDADE_IND.getValue().toString() );
+		vValsIndAtiv.addElement( INDICADOR_ATIVIDADE_OUTROS.getValue().toString() );
+		
+		cbIndAtivFilial = new JComboBoxPad( vLabsIndAtiv, vValsIndAtiv, JComboBoxPad.TP_STRING, 1, 0);
+		
 
 		lcDet.setUsaME( false );
 
@@ -175,7 +229,33 @@ public class FEmpresa extends FDetalhe {
 		setListaCampos( true, "EMPRESA", "SG" );
 
 		pinDet = new JPanelPad( 600, 80 );
-		setPainel( pinDet, pnDet );
+	//	setPainel( pinDet, pnDet );
+		
+		
+		
+		
+		
+		
+		
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "Geral", pinDet );
+
+		setListaCampos( lcDet );
+		setPainel( pinDet );
+		setAltDet( 130 );
+		setNavegador( navRod );
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodFilial, 7, 20, 60, 20, "CodFilial", "Cód.Filial", ListaCampos.DB_PK, true );
@@ -211,13 +291,17 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtPercSimples, 397, 260, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodPais, 7, 300, 50, 20, "CodPais", "Cd.país", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescPais, 60, 300, 177, 20, "DescPais", "Nome do país" );
+		adicDescFK( txtDescPais, 60, 300, 80, 20, "DescPais", "Nome do país" );
 
-		adicCampo( txtSiglaUF, 240, 300, 50, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );
-		adicDescFK( txtNomeUF, 293, 300, 186, 20, "NomeUF", "Nome UF" );
+		adicCampo( txtSiglaUF, 143, 300, 30, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );
+		adicDescFK( txtNomeUF, 176, 300, 140, 20, "NomeUF", "Nome UF" );
 
-		adicCampo( txtCodMunic, 7, 340, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescMun, 60, 340, 177, 20, "NomeMunic", "Nome do municipio" );
+		adicCampo( txtCodMunic, 319, 300, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun, 372, 300, 110, 20, "NomeMunic", "Municipio" );
+		
+		adicDB( cbPerfilFilial, 7, 340, 200, 20, "PerfilFIlial", "Perfil SPED", false );
+		
+		adicDB( cbIndAtivFilial, 210, 340, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
@@ -246,6 +330,9 @@ public class FEmpresa extends FDetalhe {
 		tab.setTamColuna( 60, 17 );
 		tab.setTamColuna( 40, 18 );
 		tab.setTamColuna( 80, 19 );
+		
+		
+		
 
 	}
 
@@ -297,5 +384,9 @@ public class FEmpresa extends FDetalhe {
 		lcPais.setConexao( cn );
 		lcMunic.setConexao( cn );
 		lcUF.setConexao( cn );
+		
+		txtCodEmp.setVlrInteger( Aplicativo.iCodEmp );
+		lcCampos.carregaDados();
+		
 	}
 }
