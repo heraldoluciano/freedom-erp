@@ -159,6 +159,8 @@ public class FRFreteRecMerc extends FRelatorio {
 		try {
 			
 			
+			/*
+			
 			sql.append("select ");
 			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
 	
@@ -186,7 +188,45 @@ public class FRFreteRecMerc extends FRelatorio {
 			StringBuilder where = new StringBuilder();
 		
 			sql.append( " group by 2,3,4,5,6,7,8 " );
-				
+			*/
+			
+			
+			
+			sql.append( "select ");
+			sql.append( "sum(fr.vlrfrete) vlrfrete, coalesce(fo.nrodependfor,0) nrodependfor, tf.retencaoinss, tf.retencaoirrf, tf.percbaseinss, tf.percbaseirrf, tf.percretoutros, tf.retencaooutros ");
+
+			sql.append( "from ");
+			sql.append( "eqrecmerc rm ");
+			sql.append( "left outer join vdtransp tr on ");
+			sql.append( "tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran ");
+			sql.append( "left outer join sgbairro br on ");
+			sql.append( "br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro ");
+			sql.append( "right outer join lffrete fr on ");
+			sql.append( "fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket ");
+			
+			sql.append( "left outer join cpforneced fo on ");
+			sql.append( "fo.codemp=tr.codempfr and fo.codfilial=tr.codfilialfr and fo.codfor=tr.codfor ");
+			
+			sql.append( "left outer join cptipofor tf on ");
+			sql.append( "tf.codemp=fo.codemptf and tf.codfilial=fo.codfilialtf and tf.codtipofor=fo.codtipofor ");	
+
+			sql.append( "where ");
+
+			sql.append( " rm.codemp=? and rm.codfilial=? and rm.dtent between ? and ? ");
+
+			if ( txtCodTran.getVlrInteger() > 0 ) {
+				sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
+			}
+			if ( "S".equals( cbPendentes.getVlrString() ) ) {
+				sql.append( " and fr.codpag is null" );
+			}
+			
+			sql.append( " group by 2,3,4,5,6,7,8 " );
+			
+			
+		
+			
+			
 			ps = con.prepareStatement( sql.toString() );
 
 			
