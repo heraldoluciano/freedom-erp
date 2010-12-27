@@ -42,6 +42,7 @@ import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 public class FEmpresa extends FDetalhe {
 
@@ -50,6 +51,10 @@ public class FEmpresa extends FDetalhe {
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JPanelPad pinDetTrib = new JPanelPad();
+	
+	private JPanelPad pinDetContador = new JPanelPad();
 
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -117,7 +122,7 @@ public class FEmpresa extends FDetalhe {
 
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 
-	private JCheckBoxPad cbContribIPI = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbContribIPI = new JCheckBoxPad( "Contribuinte IPI", "S", "N" );
 
 	private PainelImagem imFotoEmp = new PainelImagem( 65000 );
 
@@ -158,6 +163,14 @@ public class FEmpresa extends FDetalhe {
 	private JComboBoxPad cbIndAtivFilial = null;
 	
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
+	
+	private ListaCampos lcFor = new ListaCampos( this, "CO" );
+	
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	public FEmpresa() {
 
@@ -166,16 +179,16 @@ public class FEmpresa extends FDetalhe {
 
 		lcCampos.setUsaME( false );
 
-		montaTela();
 		montaListaCampos();
+		montaTela();
+		
 
 	}
 
 	private void montaTela() {
 
 		setAltCab( 210 );
-		setAltDet( 385 );
-
+		
 		pinCab = new JPanelPad( 440, 60 );
 		setPainel( pinCab, pnCliCab );
 		
@@ -229,12 +242,8 @@ public class FEmpresa extends FDetalhe {
 		setListaCampos( true, "EMPRESA", "SG" );
 
 		pinDet = new JPanelPad( 600, 80 );
-	//	setPainel( pinDet, pnDet );
-		
-		
-		
-		
-		
+		pinDetTrib = new JPanelPad( 600, 80 );
+		pinDetContador = new JPanelPad( 600, 80 );
 		
 		
 		pnDet.add( tpnGeral );
@@ -242,19 +251,8 @@ public class FEmpresa extends FDetalhe {
 
 		setListaCampos( lcDet );
 		setPainel( pinDet );
-		setAltDet( 130 );
+		setAltDet( 360 );
 		setNavegador( navRod );
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		setListaCampos( lcDet );
 		setNavegador( navRod );
@@ -280,29 +278,48 @@ public class FEmpresa extends FDetalhe {
 
 		adicCampo( txtCodDistFilial, 193, 220, 67, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
 		adicDB( cbMatriz, 265, 220, 72, 20, "MzFilial", "Sede", false );
-		adicDB( cbSimples, 336, 220, 75, 20, "SimplesFilial", "Fiscal", false );
-		adicDB( cbContribIPI, 416, 220, 80, 20, "ContribIPIFilial", "Contrib. IPI", false );
-
-		adicCampo( txtPercPIS, 7, 260, 75, 20, "PercPISFilial", "% PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCofins, 85, 260, 75, 20, "PercCofinsFilial", "% COFINS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIR, 163, 260, 75, 20, "PercIRFilial", "% IR", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCSocial, 241, 260, 75, 20, "PercCSocialFilial", "% Cont.social", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIssFilial, 319, 260, 75, 20, "PercISSFilial", "% ISS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercSimples, 397, 260, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
-
-		adicCampo( txtCodPais, 7, 300, 50, 20, "CodPais", "Cd.país", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescPais, 60, 300, 80, 20, "DescPais", "Nome do país" );
-
-		adicCampo( txtSiglaUF, 143, 300, 30, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );
-		adicDescFK( txtNomeUF, 176, 300, 140, 20, "NomeUF", "Nome UF" );
-
-		adicCampo( txtCodMunic, 319, 300, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescMun, 372, 300, 110, 20, "NomeMunic", "Municipio" );
 		
-		adicDB( cbPerfilFilial, 7, 340, 200, 20, "PerfilFIlial", "Perfil SPED", false );
-		
-		adicDB( cbIndAtivFilial, 210, 340, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 
+		adicCampo( txtCodPais, 7, 260, 50, 20, "CodPais", "Cd.país", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescPais, 60, 260, 80, 20, "DescPais", "Nome do país" );
+
+		adicCampo( txtSiglaUF, 143, 260, 30, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );
+		adicDescFK( txtNomeUF, 176, 260, 140, 20, "NomeUF", "Nome UF" );
+
+		adicCampo( txtCodMunic, 319, 260, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun, 372, 260, 110, 20, "NomeMunic", "Municipio" );
+		
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "Tributação", pinDetTrib );
+
+		setListaCampos( lcDet );
+		setPainel( pinDetTrib );
+		
+		adicDB( cbSimples, 7, 20, 90, 20, "SimplesFilial", "", false );
+		adicDB( cbContribIPI, 100, 20, 120, 20, "ContribIPIFilial", "", false );
+
+		adicCampo( txtPercPIS, 7, 60, 75, 20, "PercPISFilial", "% PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCofins, 85, 60, 75, 20, "PercCofinsFilial", "% COFINS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIR, 163, 60, 75, 20, "PercIRFilial", "% IR", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCSocial, 241, 60, 75, 20, "PercCSocialFilial", "% Cont.social", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIssFilial, 319, 60, 75, 20, "PercISSFilial", "% ISS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercSimples, 397, 60, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
+		
+		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED", false );
+		
+		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
+
+
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "Contabilidade", pinDetContador );
+
+	//	setListaCampos( lcDet );
+		setPainel( pinDetContador );
+		
+		adicCampo( txtCodFor, 7, 20, 60, 20, "codfor", "Cod.for.", ListaCampos.DB_FK, txtNomeFor, false );
+		adicDescFK( txtNomeFor, 70, 20, 250, 20, "NomeFOr", "Nome do fornecedor (contabilista)" );		
+		
+		
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
 		montaTab();
@@ -375,15 +392,37 @@ public class FEmpresa extends FDetalhe {
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais, FPais.class.getCanonicalName() );
+		
+		/*************************
+		 * FORNECEDOR (CONTADOR) *
+		 *************************/
+		
+		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFor.add( new GuardaCampo( txtNomeFor, "NomeFor", "nome do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 
+	//	lcFor.add( new GuardaCampo( txtCNPJFor, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+	//	lcFor.add( new GuardaCampo( txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false ) );
+	//	lcFor.add( new GuardaCampo( txtEmailFor, "EmailFor", "Email", ListaCampos.DB_SI, false ) );
+
+		lcFor.montaSql( false, "FORNECED", "CP" );
+		lcFor.setQueryCommit( false );
+		lcFor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFor, FFornecedor.class.getCanonicalName() );
+		
+		
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcPais.setConexao( cn );
 		lcMunic.setConexao( cn );
 		lcUF.setConexao( cn );
+		lcFor.setConexao( cn );
+		
 		
 		txtCodEmp.setVlrInteger( Aplicativo.iCodEmp );
 		lcCampos.carregaDados();
