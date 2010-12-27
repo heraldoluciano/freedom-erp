@@ -33,7 +33,6 @@
 	<classpathentry kind="lib" path="lib/commons-discovery.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports-fonts.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-digester.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/setpoint-sped"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
