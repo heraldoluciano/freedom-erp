@@ -4240,7 +4240,8 @@ public class CnabUtil extends FbnUtil {
 				if (codjur==1) {
 				    retorno = vlrapagar.multiply( perc ).divide( new BigDecimal(100) );
 				} else if (codjur==2) {
-				    retorno = vlrapagar.multiply( perc ).divide( new BigDecimal(100) ).divide( new BigDecimal(30) );
+				    retorno = vlrapagar.multiply( perc ).divide( new BigDecimal(100) ) ;
+				    retorno = retorno.divide( new BigDecimal(30), BigDecimal.ROUND_HALF_UP );
 				}
 			}
 			return retorno;
