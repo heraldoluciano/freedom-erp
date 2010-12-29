@@ -668,6 +668,7 @@ public class FRemCnab extends FRemFBN {
 
 				} catch ( IOException ioError ) {
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
+					ioError.printStackTrace();
 					lbStatus.setText( "" );
 					return retorno;
 				}
@@ -753,10 +754,12 @@ public class FRemCnab extends FRemFBN {
 			System.out.println( "[ " + regs + " ] registros gravados." );
 		} catch ( ExceptionCnab e ) {
 			Funcoes.mensagemErro( this, e.getMessage() );
+			e.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
 		} catch ( IOException ioError ) {
 			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
+			ioError.printStackTrace();
 			lbStatus.setText( "" );
 			retorno = false;
 		}
