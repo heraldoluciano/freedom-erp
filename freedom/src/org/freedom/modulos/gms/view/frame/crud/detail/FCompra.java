@@ -83,6 +83,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FObservacao;
+
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
@@ -143,6 +144,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabObs03 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinCabObs04 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pinCabInfCompl = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinCabSolCompra = new JPanelPad();
 
@@ -329,12 +332,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtIdentContainer = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtLocDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldPad txtNumAcDraw = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );	
 
 	private JTextFieldPad txtNAdicao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldPad txtSeqAdic = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldPad txtDescDI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -425,6 +432,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextAreaPad txaObs03 = new JTextAreaPad();
 
 	private JTextAreaPad txaObs04 = new JTextAreaPad();
+	
+	private JTextAreaPad txaInfCompl = new JTextAreaPad();
 
 	private JScrollPane spnObs01 = new JScrollPane( txaObs01 );
 
@@ -433,6 +442,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JScrollPane spnObs03 = new JScrollPane( txaObs03 );
 
 	private JScrollPane spnObs04 = new JScrollPane( txaObs04 );
+	
+	private JScrollPane spnInfCompl = new JScrollPane( txaInfCompl );
 
 	private JButtonPad btBuscaCompra = new JButtonPad( "Busca Pedido", Icone.novo( "btEntrada.png" ) );
 
@@ -509,7 +520,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs03, "Obs03", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs04, "Obs04", labelobs01cp == null ? "Observações" : labelobs01cp, false );
+		adicDBLiv( txaInfCompl, "InfCompl", "Informações complementares (fisco)" , false );
 
+		
 		if ( abaTransp.equals( "S" ) ) {
 			setListaCampos( lcCampos );
 			setPainel( pinCabTransp );
@@ -529,7 +542,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicCampo( txtCodPaisDesembDI, 394, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
 			adicDescFK( txtDescPaisDesembDI, 467, 25, 227, 20, "NomePais", "Nome do país" );
 
-			adicCampo( txtLocDesembDI, 7, 65, 384, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
+			adicCampo( txtLocDesembDI, 7, 65, 200, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
+
+			adicCampo( txtNumAcDraw, 210, 65, 181, 20, "NumAcDraw", "Ato (DrawBack)", ListaCampos.DB_SI, false );
 
 			adicCampo( txtSiglaUFDesembDI, 394, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
 			adicDescFK( txtNomeUFDEsembDI, 467, 65, 227, 20, "NomeUF", "Nome UF" );
@@ -850,6 +865,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			pinCabObs04.add( spnObs04 );
 			tpnCab.addTab( labelobs04cp.trim(), pinCabObs04 );
 		}
+		
+		pinCabInfCompl.add( spnInfCompl );
+		tpnCab.addTab( "Inf.Compl (Fisco)", pinCabInfCompl );
+		
 	}
 
 	private void adicListeners() {
@@ -1927,6 +1946,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				else if ( sValores[ 3 ].equals( "S" ) ) {
 					imprimir( true, txtCodCompra.getVlrInteger().intValue() );
 				}
+				
+				// Gerando informacoes complementares (fisco)
+				
+				geraInfoCompl();
 
 				lcCampos.post();
 
@@ -2929,5 +2952,57 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 
 	}
+	
+	private void geraInfoCompl() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs_inf_compl = null;
+		StringBuilder  inf_compl = new StringBuilder("");
+		String separador = " - ";
+		
+		try {
+			
+			sql.append("select coalesce(me.mens,'') inf_compl ");
 
+			sql.append("from cpitcompra ic ");
+			sql.append("left outer join lfitclfiscal icl on ");
+			sql.append("icl.codemp=ic.codempif and icl.codfilial=ic.codfilialif and icl.codfisc=ic.codfisc and icl.coditfisc=ic.coditfisc ");
+			sql.append("left outer join lfmensagem me on ");
+			sql.append("me.codemp=icl.codempme and me.codfilial=icl.codfilialme and me.codmens=icl.codmens ");
+
+			sql.append("where ");
+			sql.append("ic.codemp=? and ic.codfilial=? and ic.codcompra=? ");
+						
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 3, txtCodCompra.getVlrInteger() );
+			
+			rs_inf_compl = ps.executeQuery();
+			
+			int count = 0;
+			
+			while (rs_inf_compl.next()) {
+			
+				if (count>0) {
+					inf_compl.append(separador);	
+				}
+				
+				inf_compl.append(rs_inf_compl.getString("inf_compl"));
+				count++;
+			
+			}
+
+			txaInfCompl.setVlrString( inf_compl.toString() );
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
 }
