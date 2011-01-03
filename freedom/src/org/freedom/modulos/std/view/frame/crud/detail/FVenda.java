@@ -388,6 +388,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private JTextFieldPad txtObsVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
 
+	private JTextFieldPad txtInfCompl = new JTextFieldPad( JTextFieldPad.TP_STRING, 10000, 0 );
+	
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad( "Imp.ped.", "S", "N" );
 
 	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad( "Imp.NF", "S", "N" );
@@ -1047,7 +1049,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrISSVenda, 525, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 
 		adicCampoInvisivel( txtObsVenda, "obsvenda", "Obs.", ListaCampos.DB_SI, false );
-		
+
+		adicCampoInvisivel( txtInfCompl, "infcompl", "Inf.Compl.", ListaCampos.DB_SI, false );
+
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
 		lcCampos.setWhereAdicMax( "TIPOVENDA='V'" );
 		setListaCampos( true, "VENDA", "VD" );
@@ -2289,6 +2293,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) && ( (Boolean) oPrefs[ POS_PREFS.BLOQVENDA.ordinal() ] ) ) {
 					bloqvenda();
 				}
+				
+				// Gerando informações fiscis complementares 
+				
+				geraInfoCompl();
+				
+				
 			}
 
 			tpnCab.setSelectedIndex( 0 );
@@ -2297,6 +2307,67 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void geraInfoCompl() {
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs_inf_compl = null;
+		StringBuilder  inf_compl = new StringBuilder("");
+		String separador = " - ";
+		
+		try {
+			
+			sql.append("select coalesce(me.mens,'') inf_compl ");
+
+			sql.append("from vditvenda iv ");
+			sql.append("left outer join lfitclfiscal icl on ");
+			sql.append("icl.codemp=iv.codempif and icl.codfilial=iv.codfilialif and icl.codfisc=iv.codfisc and icl.coditfisc=iv.coditfisc ");
+			sql.append("left outer join lfmensagem me on ");
+			sql.append("me.codemp=icl.codempme and me.codfilial=icl.codfilialme and me.codmens=icl.codmens ");
+
+			sql.append("where ");
+			sql.append("iv.codemp=? and iv.codfilial=? and iv.codvenda=? and iv.tipovenda=? ");
+			
+			sql.append("union ");
+
+			sql.append("select coalesce(me1.mens,'') inf_compl from sgprefere1 pf ");
+			sql.append("left outer join lfmensagem me1 on me1.codemp=pf.codempms and me1.codfilial=pf.codfilialms and me1.codmens=pf.codmensicmssimples "); 
+			sql.append("where pf.codemp=? and pf.codfilial=? " );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 3, txtCodVenda.getVlrInteger() );
+			ps.setString( 4, txtTipoVenda.getVlrString() );
+			
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, Aplicativo.iCodFilial );
+			
+			rs_inf_compl = ps.executeQuery();
+			
+			int count = 0;
+			
+			while (rs_inf_compl.next()) {
+			
+				if (count>0) {
+					inf_compl.append(separador);	
+				}
+				
+				inf_compl.append(rs_inf_compl.getString("inf_compl"));
+				
+				count++;
+			}
+
+			txtInfCompl.setVlrString( inf_compl.toString() );
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private String getLayoutPedido( String tipopedido ) {
@@ -3922,7 +3993,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			obsvenda.append( docrecmerc );
 			obsvenda.append( " DE " );
 			obsvenda.append( Funcoes.dateToStrDate( dtentrada ) );
-			
+
+			txtInfCompl.setVlrString( obsvenda.toString() );
 			txtObsVenda.setVlrString( obsvenda.toString() );
 
 			lcCampos.post();
