@@ -273,7 +273,7 @@ public class FRSaldoLote extends FRelatorio {
 				}
 				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 				imp.say( imp.pRow(), 0, "| " + ( sCampo.equals( "REFPROD" ) ? rs.getString( "REFPROD" ) : Funcoes.alinhaDir( rs.getInt( "CODPROD" ), 13 ) ) );
-				imp.say( imp.pRow(), 16, "| " + rs.getString( "DESCPROD" ) );
+				imp.say( imp.pRow(), 16, "| " + rs.getString( "DESCPROD" ).substring( 0,50 ) );
 				imp.say( imp.pRow(), 69, "| " + rs.getString( "CODLOTE" ) );
 				imp.say( imp.pRow(), 85, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "VENCTOLOTE" ) ) );
 				imp.say( imp.pRow(), 98, "| " + Funcoes.strDecimalToStrCurrency( 15, 1, rs.getString( "SLDLIQLOTE" ) ) );
