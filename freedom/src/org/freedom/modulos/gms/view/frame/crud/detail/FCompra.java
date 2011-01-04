@@ -76,6 +76,7 @@ import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -341,7 +342,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtDescDI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
-	
+	private JRadioGroup<?, ?> rgTipoDocImp = null;
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -497,6 +498,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtVlrIPICompra.setAtivo( false );
 		txtVlrDescCompra.setAtivo( false );
 		txtVlrLiqCompra.setAtivo( false );
+		
+		Vector<String> vValsTipoDocImp = new Vector<String>();
+
+		Vector<String> vLabsTipoDocImp = new Vector<String>();
+		
+		vValsTipoDocImp.addElement( "0" );
+		vValsTipoDocImp.addElement( "1" );
+		vLabsTipoDocImp.addElement( "DI" );
+		vLabsTipoDocImp.addElement( "DSI" );
+		rgTipoDocImp = new JRadioGroup<String, String>( 2, 1, vLabsTipoDocImp, vValsTipoDocImp );
+		
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
@@ -534,20 +546,22 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			setPainel( pinCabImportacao );
 
-			adicCampo( txtNroDI, 7, 25, 85, 20, "NroDI", "Nro. da DI", ListaCampos.DB_SI, false );
-			adicCampo( txtDtRegDI, 95, 25, 70, 20, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, false );
-			adicCampo( txtDtDesembDI, 168, 25, 70, 20, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, false );
-			adicCampo( txtIdentContainer, 241, 25, 150, 20, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, false );
+			adicDB( rgTipoDocImp, 7, 25, 97, 61, "TipoDocImp", "Tipo Documento", false );
+			
+			adicCampo( txtNroDI, 107, 25, 85, 20, "NroDI", "Nro. da DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtRegDI, 195, 25, 70, 20, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtDesembDI, 268, 25, 70, 20, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, false );
+			adicCampo( txtIdentContainer, 341, 25, 150, 20, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, false );
 
-			adicCampo( txtCodPaisDesembDI, 394, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
-			adicDescFK( txtDescPaisDesembDI, 467, 25, 227, 20, "NomePais", "Nome do país" );
+			adicCampo( txtCodPaisDesembDI, 494, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
+			adicDescFK( txtDescPaisDesembDI, 567, 25, 170, 20, "NomePais", "Nome do país" );
 
-			adicCampo( txtLocDesembDI, 7, 65, 200, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
+			adicCampo( txtLocDesembDI, 107, 65, 231, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );
 
-			adicCampo( txtNumAcDraw, 210, 65, 181, 20, "NumAcDraw", "Ato (DrawBack)", ListaCampos.DB_SI, false );
+			adicCampo( txtNumAcDraw, 341, 65, 150, 20, "NumAcDraw", "Ato (DrawBack)", ListaCampos.DB_SI, false );
 
-			adicCampo( txtSiglaUFDesembDI, 394, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
-			adicDescFK( txtNomeUFDEsembDI, 467, 65, 227, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtSiglaUFDesembDI, 494, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
+			adicDescFK( txtNomeUFDEsembDI, 567, 65, 170, 20, "NomeUF", "Nome UF" );
 
 		}
 
