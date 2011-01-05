@@ -63,6 +63,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
 import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FModDocFisc;
 import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
@@ -102,6 +103,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JTextFieldPad txtDescTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodModDocFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldPad txtCodSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -112,6 +115,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JTextFieldPad txtIDUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtDescModNota = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldFK txtDescModDocFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtDescSerie = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -168,6 +173,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private ListaCampos lcUsu = new ListaCampos( this, "US" );
 
 	private ListaCampos lcModNota = new ListaCampos( this, "MN" );
+	
+	private ListaCampos lcModDocFisc = new ListaCampos( this, "DF" );
 
 	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
 
@@ -202,6 +209,14 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcModNota.setQueryCommit( false );
 		lcModNota.setReadOnly( true );
 		txtCodModNota.setTabelaExterna( lcModNota, FModNota.class.getCanonicalName() );
+
+
+		lcModDocFisc.add( new GuardaCampo( txtCodModDocFisc, "CodModDocFisc", "Cód.md.doc.fisc.", ListaCampos.DB_PK, false ) );
+		lcModDocFisc.add( new GuardaCampo( txtDescModDocFisc, "DescModDocFisc", "Descrição do modelo de documento fiscal", ListaCampos.DB_SI, false ) );
+		lcModDocFisc.montaSql( false, "MODDOCFISC", "LF" );
+		lcModDocFisc.setQueryCommit( false );
+		lcModDocFisc.setReadOnly( true );
+		txtCodModDocFisc.setTabelaExterna( lcModDocFisc, FModDocFisc.class.getCanonicalName() );
 
 		lcSerie.add( new GuardaCampo( txtCodSerie, "Serie", "Cód.serie", ListaCampos.DB_PK, false ) );
 		lcSerie.add( new GuardaCampo( txtDescSerie, "DocSerie", "Nº. doc", ListaCampos.DB_SI, false ) );
@@ -301,7 +316,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDescFK( txtDescRegraComis, 90, 265, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
 		adicCampo( txtCodTran, 7, 305, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescTran, 90, 305, 250, 20, "DescTran", "Descrição da transportadora" );
+		adicCampo( txtCodModDocFisc, 7, 345, 80, 20, "CodModDocFisc", "Cód.md.doc.fisc.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescModDocFisc, 90, 345, 250, 20, "DescModDocFisc", "Descrição do modelo de documento fiscal " );
 
+		
 		separador1.setBorder( BorderFactory.createEtchedBorder() );
 		adic( separador1, 350, 4, 2, 380 );
 
@@ -424,8 +442,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcTipoMov.setConexao( cn );
 		lcModNota.setConexao( cn );
+		lcModDocFisc.setConexao( cn );		
 		lcSerie.setConexao( cn );
 		lcTab.setConexao( cn );
 		lcRestricoes.setConexao( cn );
