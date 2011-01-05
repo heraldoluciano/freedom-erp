@@ -83,6 +83,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 
 	private final JTextFieldPad txtVlrFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
+	private final JTextFieldPad txtVlrSegFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
 	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
@@ -159,15 +161,16 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 		adicCampo( txtMarcaFreteVD, 7, 60, 110, 20, "MarcaFreteVd", "Marca", ListaCampos.DB_SI, true );
 		adicCampo( txtPercVendaFreteVD, 120, 60, 110, 20, "PercVendaFreteVd", "Perc.vd.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescTran, 91, 100, 265, 20, "NomeTran", "Descrição da tansportador" );
+		adicDescFK( txtDescTran, 91, 100, 267, 20, "NomeTran", "Descrição da tansportador" );
 		adicCampo( txtConhecFreteVD, 7, 140, 90, 20, "ConhecFreteVd", "Conhec.frete", ListaCampos.DB_SI, false );
 		adicCampo( txtPlacaFreteVD, 99, 140, 100, 20, "PlacaFreteVd", "Placa", ListaCampos.DB_SI, true );
 		adicCampo( txtUFFreteVD, 202, 140, 44, 20, "UfFreteVd", "UF.", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrFreteVD, 248, 140, 107, 20, "VlrFreteVd", "Valor", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrFreteVD, 248, 140, 56, 20, "VlrFreteVd", "Valor", ListaCampos.DB_SI, true );		
+		adicCampo( txtVlrSegFreteVD, 307, 140, 51, 20, "VlrSegFreteVd", "Seguro", ListaCampos.DB_SI, true );	 	
 		adicCampo( txtQtdFreteVD, 7, 180, 90, 20, "QtdFreteVd", "Volumes", ListaCampos.DB_SI, true );
 		adicCampo( txtPesoBrutVD, 100, 180, 77, 20, "PesoBrutVd", "P.bruto", ListaCampos.DB_SI, true );
 		adicCampo( txtPesoLiqVD, 180, 180, 77, 20, "PesoLiqVd", "P.liq.", ListaCampos.DB_SI, true );
-		adicCampo( txtEspFreteVD, 260, 180, 95, 20, "EspFreteVd", "Especie", ListaCampos.DB_SI, true );
+		adicCampo( txtEspFreteVD, 260, 180, 98, 20, "EspFreteVd", "Especie", ListaCampos.DB_SI, true );
 
 		adic( panelIcms, -1, 210, 390, 100 );
 		panelIcms.setBorder( BorderFactory.createEmptyBorder() );
