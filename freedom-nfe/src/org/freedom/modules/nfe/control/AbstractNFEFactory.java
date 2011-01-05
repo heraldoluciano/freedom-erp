@@ -66,6 +66,25 @@ public abstract class AbstractNFEFactory {
 	
 	public static final Constant REGIME_TRIB_NFE_NORMAL = new Constant("Regime Normal", "3" );
 	
+	// Constantes par aidentificação das situações do documento fiscal eletrônico
+	public static final Constant SIT_DOC_REGULAR = new Constant("Documento regular", "00"); 
+	
+	public static final Constant SIT_DOC_REGULAR_EXP = new Constant("Documento regular expontâneo", "01"); 
+	
+	public static final Constant SIT_DOC_CANCELADO = new Constant("Documento cancelado", "02"); 
+	
+	public static final Constant SIT_DOC_CANCELADO_EXP = new Constant("Documento cancelado expontâneo", "03"); 
+	
+	public static final Constant SIT_DOC_NFE_DENEGADA = new Constant("NFE Denegada", "04"); 
+	
+	public static final Constant SIT_DOC_NFE_NRO_INUTILIZ = new Constant("NFE Numeração inutilizada", "05"); 
+	
+	public static final Constant SIT_DOC_COMPLEMENTAR = new Constant("Documento fiscal complementar", "06"); 
+	
+	public static final Constant SIT_DOC_COMPLEMENTAR_EXP = new Constant("Documento fiscal complementar expontâneo", "07"); 
+	
+	public static final Constant SIT_DOC_REGIME_ESPECIAL = new Constant("Documento emitido com base em Regime Especial ou Norma Específica", "08"); 
+	
 	public enum SYSTEM {
 		FREEDOM
 	};
