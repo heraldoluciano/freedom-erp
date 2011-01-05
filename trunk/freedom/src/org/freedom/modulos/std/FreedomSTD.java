@@ -75,6 +75,7 @@ import org.freedom.modulos.grh.view.frame.crud.special.FTabelaIRRF;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FCLFiscal;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FNBM;
 import org.freedom.modulos.lvf.view.frame.crud.detail.FNCM;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FModDocFisc;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FServico;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FSitTrib;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
@@ -303,7 +304,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100290000, 2, true, FCancVendaOrc.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100310000, 2, true, FPrefereGeral.class );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100320000, 2, true, FSerie.class );
+		addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100320000, 2, true, FSerie.class );	
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100330000, 2, true, FModNota.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências Vendas Consignadas", "Preferências Vendas Consignadas", 'V', 100340000, 2, true, FPrefereConsig.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100400000, 1, false, null );
@@ -483,6 +484,9 @@ public class FreedomSTD extends AplicativoPD {
 		
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 800900000, 1, true, FTabelaIRRF.class );
 		addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 800160000, 1, true, FTabelaINSS.class );
+		
+		addOpcao( 800000000, TP_OPCAO_ITEM, "Modelo de Doc. Fiscais", "Modelo de Doc. Fiscais", 'i', 800170000, 2, true, FModDocFisc.class );
+		
 
 		addSeparador( 800000000 );
 
