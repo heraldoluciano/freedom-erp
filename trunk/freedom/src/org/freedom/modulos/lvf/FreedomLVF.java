@@ -29,6 +29,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FModDocFisc;
 import org.freedom.modulos.lvf.view.frame.crud.plain.FTabICMS;
 import org.freedom.modulos.lvf.view.frame.report.FRIcms;
 import org.freedom.modulos.lvf.view.frame.report.FRIcmsNcm;
@@ -43,6 +44,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FEstacao;
 import org.freedom.modulos.std.view.frame.crud.plain.FImpressora;
 import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
+import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
 import org.freedom.modulos.std.view.frame.crud.plain.FPapel;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoCli;
@@ -100,6 +102,9 @@ public class FreedomLVF extends AplicativoPD {
 		addOpcao( 800600000, TP_OPCAO_ITEM, "PIS/COFINS", "Mov. PIS/COFINS", 'P', 200605000, 2, true, FRPisCofins.class );
 		addOpcao( 200600000, TP_OPCAO_ITEM, "Movimentação com PIS e COFINS", "Movimentação com PIS e COFINS", 'P', 200603000, 2, true, FRMovPisCofins.class );
 
+		addOpcao( 200600000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 200607000, 2, true, FModNota.class );
+		addOpcao( 200600000, TP_OPCAO_ITEM, "Modelo de Doc. Fiscais", "Modelo de Doc. Fiscais", 'i', 200608000, 2, true, FModDocFisc.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Registro de Entrada", "Registro de Entrada", 'E', 300100000, 1, true, FRRegitroEntrada.class );
 
