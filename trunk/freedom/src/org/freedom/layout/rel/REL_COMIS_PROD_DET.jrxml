@@ -289,9 +289,12 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="67" splitType="Stretch">
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="76" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" isUsingCache="false">
-				<reportElement key="image-1" mode="Transparent" x="5" y="0" width="70" height="63" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+				<reportElement key="image-1" mode="Transparent" x="3" y="5" width="70" height="63" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -304,7 +307,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Empresa-1" mode="Opaque" x="80" y="13" width="397" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa-1" mode="Opaque" x="78" y="18" width="397" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -317,7 +320,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="false">
-				<reportElement key="Data-1" mode="Transparent" x="441" y="0" width="92" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Data-1" mode="Transparent" x="439" y="5" width="92" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -330,7 +333,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Titulo-1" mode="Opaque" x="80" y="0" width="357" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Titulo-1" mode="Opaque" x="78" y="5" width="357" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -343,7 +346,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Emissor-3" mode="Opaque" x="396" y="33" width="135" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Emissor-3" mode="Opaque" x="394" y="38" width="135" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -356,7 +359,7 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="Emissor-4" mode="Opaque" x="80" y="33" width="310" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Emissor-4" mode="Opaque" x="78" y="38" width="310" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -369,9 +372,6 @@ $F{PRECOCOMISPROD}]]></variableExpression>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>

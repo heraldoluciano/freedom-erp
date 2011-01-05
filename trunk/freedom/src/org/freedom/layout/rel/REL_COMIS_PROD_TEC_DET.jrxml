@@ -59,13 +59,13 @@ group by 1,2,3,5,6]]>
 	<variable name="TOTALCOMIS" class="java.math.BigDecimal" resetType="Group" resetGroup="VENDEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{COMISSECAO}.multiply($F{PERCOMISVENDEDOR})]]></variableExpression>
 	</variable>
-	<variable name="VLRABONO_TOT" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="VLRABONO_TOT" class="java.math.BigDecimal" incrementType="Group" incrementGroup="VENDEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRABONO}]]></variableExpression>
 	</variable>
 	<variable name="PREMIO_TOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{COMISSECAO}.multiply($F{PERCOMISVENDEDOR})]]></variableExpression>
 	</variable>
-	<variable name="VLRDESCONTO_TOT" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="VLRDESCONTO_TOT" class="java.math.BigDecimal" incrementType="Group" incrementGroup="VENDEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRDESCONTO}]]></variableExpression>
 	</variable>
 	<group name="TOTAL">
@@ -95,7 +95,7 @@ group by 1,2,3,5,6]]>
 					<text><![CDATA[Abono]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-9" x="3" y="5" width="47" height="11" forecolor="#010101" backcolor="#FFFFFF"/>
+					<reportElement key="staticText-9" x="184" y="4" width="56" height="11" forecolor="#010101" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -108,7 +108,7 @@ group by 1,2,3,5,6]]>
 					<text><![CDATA[Funcionário:]]></text>
 				</staticText>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement key="textField" x="53" y="5" width="216" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement key="textField" x="243" y="4" width="216" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -145,6 +145,19 @@ group by 1,2,3,5,6]]>
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRABONO}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="Emissor-4" mode="Opaque" x="3" y="5" width="165" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
