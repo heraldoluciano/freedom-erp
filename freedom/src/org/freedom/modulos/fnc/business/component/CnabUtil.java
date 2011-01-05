@@ -5281,8 +5281,9 @@ public class CnabUtil extends FbnUtil {
 							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) ); // 254 a 266 - Valor recebido (valor recebido parcial)
 							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) ); // 267 a 279 - Juros de mora
 							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) ); // 280 a 292 - Outros recebimentos
-							if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {							
-								setDataCred( stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) ); // 111 a 116 - Data de liquidação (DDMMAA) 
+							if(getCodBanco().equals( BancodoBrasil.BANCO_DO_BRASIL )) {
+								setDataCred( stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) ); // 176 a 181 - Data de crédito (DDMMAA) 
+								//setDataCred( stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) ); // 111 a 116 - Data de liquidação (DDMMAA) 
 							}
 							else {
 								setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
