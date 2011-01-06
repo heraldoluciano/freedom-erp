@@ -147,6 +147,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabObs04 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
 	private JPanelPad pinCabInfCompl = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pinNfe = new JPanelPad( );
 
 	private JPanelPad pinCabSolCompra = new JPanelPad();
 
@@ -471,6 +473,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtCodItFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+
 
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
@@ -512,7 +516,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 160 );
+		setAltCab( 195 );
 		setPainel( pinCabCompra );
 
 		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
@@ -526,7 +530,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
 		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );
+		adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "Chave de acesso NFe", ListaCampos.DB_SI, false );
 
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp == null ? "Observações" : labelobs01cp, false );
 		adicDBLiv( txaObs02, "Obs02", labelobs01cp == null ? "Observações" : labelobs01cp, false );
@@ -2316,12 +2320,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				getCustoProd();
 			}
 		}
-		else if ( cevt.getListaCampos() == lcModNota ) {
+		/*else if ( cevt.getListaCampos() == lcModNota ) {
 			// Caso seja nota fiscal eletrônica deve aparecer o campo de para chave da nota fiscal
-			/*
-			 * if( "E".equals( txtTipoModNota.getVlrString() ) ) { lbChaveNfe.setText( "Chave de acesso NFe" ); setAltCab( 195 ); setSize( 770, 535 ); } else { lbChaveNfe.setText( "" ); setAltCab( 160 ); setSize( 770, 500 ); }
-			 */
-		}
+			
+			 if( "E".equals( txtTipoModNota.getVlrString() ) ) { 
+				 lbChaveNfe.setText( "Chave de acesso NFe" ); 
+				 setAltCab( 195 ); 
+				 setSize( 770, 535 ); } 
+			 else { lbChaveNfe.setText( "" ); setAltCab( 160 ); 
+			 setSize( 770, 500 ); }
+			
+		}*/
 
 		String statuscompra = txtStatusCompra.getVlrString().trim();
 
