@@ -73,6 +73,8 @@ public class FTipoCob extends FDados implements ActionListener {
 	private ListaCampos lcTalaoCheq = new ListaCampos( this, "" );
 	
 	private JRadioGroup<?, ?> rgTipoFebraban = null;
+	
+	private JRadioGroup<?, ?> rgTipoSPED = null;
 
 	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobraça?", "S", "N" );
 
@@ -80,7 +82,7 @@ public class FTipoCob extends FDados implements ActionListener {
 
 		super();
 		setTitulo( "Cadastro de Tipo de Cobrança" );
-		setAtribos( 50, 50, 480, 320 );
+		setAtribos( 50, 50, 480, 360 );
 		
 		lcConta.add( new GuardaCampo( txtNumconta, "Numconta", "Número conta", ListaCampos.DB_PK, txtDescconta, false ) );
 		lcConta.add( new GuardaCampo( txtDescconta, "Descconta", "Descriçao do conta", ListaCampos.DB_SI, null, false ) );
@@ -127,7 +129,27 @@ public class FTipoCob extends FDados implements ActionListener {
 		vValsTipoFebraban.addElement( "01" );
 		vValsTipoFebraban.addElement( "02" );
 
-		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabsTipoFebraban, vValsTipoFebraban );
+		rgTipoFebraban = new JRadioGroup<String, String>( 1, 4, vLabsTipoFebraban, vValsTipoFebraban );
+		
+		
+		/*********************
+		 * TIPO SPED		 *
+		 *********************/
+
+		Vector<String> vLabsTipoSPED = new Vector<String>();
+		Vector<String> vValsTipoSPED = new Vector<String>();
+
+		vLabsTipoSPED.addElement( "Duplicata" );
+		vLabsTipoSPED.addElement( "Cheque" );
+		vLabsTipoSPED.addElement( "Promissória" );
+		vLabsTipoSPED.addElement( "Recibo" );
+		vValsTipoSPED.addElement( "00" );
+		vValsTipoSPED.addElement( "01" );
+		vValsTipoSPED.addElement( "02" );
+		vValsTipoSPED.addElement( "03" );
+
+		rgTipoSPED = new JRadioGroup<String, String>( 1, 4, vLabsTipoSPED, vValsTipoSPED );
+		
 	}
 
 	private void montaTela() {
@@ -137,15 +159,17 @@ public class FTipoCob extends FDados implements ActionListener {
 		adicCampo( txtDuplCob, 278, 20, 70, 20, "DuplCob", "Duplicata", ListaCampos.DB_SI, false );
 		adicCampo( txtDiasProv, 351, 20, 75, 20, "NroDiasComp", "Dias Comp.", ListaCampos.DB_SI, false );
 		adicDB( rgTipoFebraban, 7, 70, 416, 30, "TipoFebraban", "Tipo de cob. FEBRABAN ou forma de pagto.", false );
-		adicDB( cbObriCartCob, 7, 110, 416, 20, "ObrigCartCob", "", true );
-		adic( new JLabelPad( "Informações para impressão de cheques" ), 7, 145, 420, 20 );
+		adicDB( rgTipoSPED, 7, 125, 416, 30, "TipoSPED", "Tipo de cob. SPED", false );
+		
+		adicDB( cbObriCartCob, 7, 180, 416, 20, "ObrigCartCob", "", true );
+		adic( new JLabelPad( "Informações para impressão de cheques" ), 7, 165, 420, 20 );
 		
 		JLabelPad borda = new JLabelPad();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 165, 420, 4 );
-		adicCampo( txtNumconta, 7, 195, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescconta, 90, 195, 230, 20, "Descconta", "Descrição da conta" );
-		adicCampo( txtSeqtalao, 330, 195, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_SI, false);
+		adic( borda, 7, 215, 420, 4 );
+		adicCampo( txtNumconta, 7, 245, 80, 20, "Numconta", "Número conta", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescconta, 90, 245, 230, 20, "Descconta", "Descrição da conta" );
+		adicCampo( txtSeqtalao, 330, 245, 90, 20, "Seqtalao", "Seq. talonário", ListaCampos.DB_SI, false);
 		
 	}
 
