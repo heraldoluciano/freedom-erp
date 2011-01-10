@@ -308,6 +308,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JRadioGroup<String, String> rgTpRedIcmsFisc = null;
 
+	private JRadioGroup<String, String> rgIndApurIPI = null;
+
 	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
 
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
@@ -362,7 +364,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		rgTipoFisc.setVlrString( "TT" );
 		rgTipoST.setVlrString( "SI" );
 		rgTpRedIcmsFisc.setVlrString( "B" );
-
+		rgIndApurIPI.setVlrString( "0" );
+		
 		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
@@ -536,6 +539,20 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		cbTpCalcIPI = new JComboBoxPad( vLabsTpCalcIPI, vValsTpCalcIPI, JComboBoxPad.TP_STRING, 1, 0 );
 
 		cbTpCalcIPI.addComboBoxListener( this );
+		
+		
+		/** Indicador de apuracao do IPI*/
+
+		Vector<String> vLabsIndApurIPI = new Vector<String>();
+		Vector<String> vValsIndApurIPI = new Vector<String>();
+
+		vLabsIndApurIPI.addElement( "Mensal" );
+		vLabsIndApurIPI.addElement( "Decendial" );
+		
+		vValsIndApurIPI.addElement( "0" );
+		vValsIndApurIPI.addElement( "1" );
+		
+		rgIndApurIPI = new JRadioGroup<String, String>( 1, 2, vLabsIndApurIPI, vValsIndApurIPI );
 	}
 
 	private void montaListaCampos() {
@@ -828,6 +845,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtAliqIPIFisc, 7, 100, 98, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIpiUnidTrib, 108, 100, 99, 20, "VlrIPIUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 
+		adicDB( rgIndApurIPI, 7, 140, 200, 30, "IndApurIPI", "Período de apuração", false );
+
+		
 		// ********** ABA PIS **/
 
 		tpnGeral.addTab( "PIS", panelPIS );
