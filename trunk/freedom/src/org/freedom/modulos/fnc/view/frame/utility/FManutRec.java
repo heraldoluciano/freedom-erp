@@ -79,10 +79,10 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
 import org.freedom.modulos.fnc.view.dialog.utility.DLConsultaBaixa;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec;
-import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
-import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
+import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
+import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 
@@ -142,7 +142,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pinBotoesManut = new JPanelPad( 70, 70 );
 
-	private JPanelPad pinManut = new JPanelPad( 500, 155 );
+	private JPanelPad pinManut = new JPanelPad( 800, 155 );
 
 	private JPanelPad pnManut = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -213,6 +213,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldPad txtTotalCancelado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtTotalEmBordero = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtTotalRenegociado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtTotalEmRenegociacao = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtDocManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -234,7 +238,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JPanelPad pinFiltroStatus = new JPanelPad( 300, 150 );
+	private JPanelPad pinFiltroStatus = new JPanelPad( 350, 150 );
 
 	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
@@ -279,6 +283,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad( "Canceladas", "S", "N" );
 
 	private JCheckBoxPad cbEmBordero = new JCheckBoxPad( "Descontados", "S", "N" );
+	
+	private JCheckBoxPad cbRenegociado = new JCheckBoxPad( "Renegociados", "S", "N" );
+	
+	private JCheckBoxPad cbEmRenegociacao = new JCheckBoxPad( "Em Reneg.", "S", "N" );
 
 	private JRadioGroup<?, ?> rgData = null;
 
@@ -335,6 +343,16 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private ImageIcon imgCancelado2 = Icone.novo( "clCancelado2.gif" );
 
 	private ImageIcon imgBordero = Icone.novo( "clEstrela.gif" );
+	
+	private ImageIcon imgRenegociado = Icone.novo( "clRenegociado.png" );
+	
+	private ImageIcon imgEmRenegociacao = Icone.novo( "btRenegRec.png" );
+	
+	private ImageIcon imgRenegociadoVencido = Icone.novo( "clVencido3.gif" );
+	
+	private ImageIcon imgRenegociadoPago = Icone.novo( "clPago3.gif" );
+	
+	private ImageIcon imgRenegociadoNaoVencido = Icone.novo( "clNaoVencido3.gif" );
 
 	private JLabelPad lbVencido = new JLabelPad( "Vencido", imgVencido, SwingConstants.LEFT );
 
@@ -347,6 +365,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JLabelPad lbCancelado = new JLabelPad( "Cancelado", imgCancelado, SwingConstants.LEFT );
 
 	private JLabelPad lbEmBordero = new JLabelPad( "Bordero", imgBordero, SwingConstants.LEFT );
+	
+	private JLabelPad lbRenegociado = new JLabelPad( "Renegociados", imgRenegociado, SwingConstants.LEFT );
+	
+	private JLabelPad lbEmRenegociacao = new JLabelPad( "Em Reneg.", imgEmRenegociacao, SwingConstants.LEFT );
 
 	private ImageIcon imgColuna = null;
 
@@ -360,7 +382,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
-		setAtribos( 20, 20, 800, 570 );
+		setAtribos( 20, 20, 940, 570 );
 
 		cbAReceber.setVlrString( "S" );
 
@@ -380,6 +402,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btCarregaVenda.setToolTipText( "Consulta venda" );
 		btHistorico.setToolTipText( "Histório de contatos" );
 		btBordero.setToolTipText( "Adiantamento de recebivéis" );
+		btRenegRec.setToolTipText( "Renegociação de Titulos" );
 
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
@@ -387,7 +410,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		c.add( tpn, BorderLayout.CENTER );
 		btSair.setPreferredSize( new Dimension( 90, 40 ) );
 
-		pnLegenda.setPreferredSize( new Dimension( 700, 40 ) );
+		pnLegenda.setPreferredSize( new Dimension( 800, 40 ) );
 		pnLegenda.setLayout( null );
 
 		lbVencido.setBounds( 5, 0, 90, 17 );
@@ -402,7 +425,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalCancelado.setBounds( 385, 18, 90, 18 );
 		lbEmBordero.setBounds( 480, 0, 90, 17 );
 		txtTotalEmBordero.setBounds( 480, 18, 90, 18 );
-
+		lbRenegociado.setBounds( 573, 0, 90, 17 );
+		txtTotalRenegociado.setBounds( 573, 18, 90, 18 );
+		lbEmRenegociacao.setBounds( 665, 0, 90, 17 );
+		txtTotalEmRenegociacao.setBounds( 665, 18, 90, 18 );
+		
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido );
 		pnLegenda.add( lbParcial );
@@ -415,6 +442,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pnLegenda.add( txtTotalCancelado );
 		pnLegenda.add( lbEmBordero );
 		pnLegenda.add( txtTotalEmBordero );
+		pnLegenda.add( lbRenegociado );
+		pnLegenda.add( txtTotalRenegociado );
+		pnLegenda.add( lbEmRenegociacao );
+		pnLegenda.add( txtTotalEmRenegociacao );
 
 		txtTotalVencido.setSoLeitura( true );
 		txtTotalParcial.setSoLeitura( true );
@@ -422,6 +453,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalVencer.setSoLeitura( true );
 		txtTotalCancelado.setSoLeitura( true );
 		txtTotalEmBordero.setSoLeitura( true );
+		txtTotalRenegociado.setSoLeitura( true );
+		txtTotalEmRenegociacao.setSoLeitura( true );
 
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 500, 42 ) );
@@ -740,13 +773,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinFiltroStatus.adic( cbAReceber, 5, 0, 90, 20 );
 		pinFiltroStatus.adic( cbRecebidas, 5, 20, 90, 20 );
 		pinFiltroStatus.adic( cbEmBordero, 5, 40, 120, 20 );
+		pinFiltroStatus.adic( cbEmRenegociacao, 220, 0, 120, 20 );
 		pinFiltroStatus.adic( cbRecParcial, 107, 0, 120, 20 );
 		pinFiltroStatus.adic( cbCanceladas, 107, 20, 120, 20 );
+		pinFiltroStatus.adic( cbRenegociado, 107, 40, 120, 20 );
 
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 520, 0, 100, 20 );
-		pinManut.adic( pinFiltroStatus, 520, 20, 210, 65 );
+		pinManut.adic( pinFiltroStatus, 520, 20, 330, 65 );
 
-		pinManut.adic( btCarregaGridManut, 744, 55, 30, 30 );
+		pinManut.adic( btCarregaGridManut, 855, 55, 30, 30 );
 
 		lcCliFiltro.add( new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliFiltro.add( new GuardaCampo( txtRazCliFiltro, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -791,7 +826,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btEditManut, 		 3,  65, 30, 30 );
 		pinBotoesManut.adic( btNovoManut, 		 3,  96, 30, 30 );
 		pinBotoesManut.adic( btHistorico, 		 3, 127, 30, 30 );
-//		pinBotoesManut.adic( btRenegRec, 		 3, 158, 30, 30 );
+		pinBotoesManut.adic( btRenegRec, 		 3, 158, 30, 30 );
 		
 		pinBotoesManut.adic( btBordero, 		34,   3, 30, 30 );
 		pinBotoesManut.adic( btEstorno, 		34,  34, 30, 30 );
@@ -1281,10 +1316,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
 
-		return getResultSetManut( bAplicFiltros, false );
+		return getResultSetManut( bAplicFiltros, false, false );
 	}
 
-	private ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero ) throws SQLException {
+	private ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero, boolean renegociveis ) throws SQLException {
 
 		ResultSet rs = null;
 
@@ -1313,11 +1348,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			// sWhereManut.append( rgData.getVlrString().equals( "V" ) ? "IR.DTVENCITREC" : "IR.DTITREC" );
 			sWhereManut.append( " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?" );
 
-			if ( "S".equals( cbRecebidas.getVlrString() ) || "S".equals( cbAReceber.getVlrString() ) || "S".equals( cbRecParcial.getVlrString() ) || "S".equals( cbCanceladas.getVlrString() ) || "S".equals( cbEmBordero.getVlrString() ) ) {
+			if ( "S".equals( cbRecebidas.getVlrString() ) || "S".equals( cbAReceber.getVlrString() ) || "S".equals( cbRecParcial.getVlrString() ) || 
+					"S".equals( cbCanceladas.getVlrString() ) || "S".equals( cbEmBordero.getVlrString() )  || "S".equals( cbRenegociado.getVlrString() ) || 
+					"S".equals( cbEmRenegociacao.getVlrString() ) ) {
 
 				boolean bStatus = false;
 
-				if ( "S".equals( cbRecebidas.getVlrString() ) ) {
+				if ( "S".equals( cbRecebidas.getVlrString() ) && !renegociveis) {
 					sWhereStatus.append( "IR.STATUSITREC='RP'" );
 					bStatus = true;
 				}
@@ -1329,12 +1366,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RL' " : " IR.STATUSITREC='RL' " );
 					bStatus = true;
 				}
-				if ( "S".equals( cbCanceladas.getVlrString() ) ) {
-					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='CR'" : " IR.STATUSITREC='CR'" );
+				if ( "S".equals( cbCanceladas.getVlrString() ) && !renegociveis) {
+					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='CR'" : " IR.STATUSITREC='CR' " );
 					bStatus = true;
 				}
 				if ( "S".equals( cbEmBordero.getVlrString() ) ) {
-					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RB'" : " IR.STATUSITREC='RB'" );
+					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RB'" : " IR.STATUSITREC='RB' " );
+					bStatus = true;
+				}
+				if ( "S".equals( cbRenegociado.getVlrString() ) && !renegociveis) {
+					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RN'" : " IR.STATUSITREC='RN' " );
+					bStatus = true;
+				}
+				if ( "S".equals( cbEmRenegociacao.getVlrString() ) && !renegociveis) {
+					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RR'" : " IR.STATUSITREC='RR' " );
+					bStatus = true;
 				}
 
 				sWhereManut.append( " AND (" );
@@ -1369,6 +1415,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if ( bordero ) {
 				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " );
 				sWhereManut.append( "WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " );
+				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
+			}
+			
+			if( renegociveis ){
+				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITRENEGREC B " );
+				sWhereManut.append( "WHERE B.CODEMPIR=IR.CODEMP AND B.CODFILIALIR=IR.CODFILIAL AND " );
 				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 			}
 		}
@@ -1449,6 +1501,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			BigDecimal bdTotVencer = new BigDecimal( "0.00" );
 			BigDecimal bdTotCancelado = new BigDecimal( "0.00" );
 			BigDecimal bdTotBordero = new BigDecimal( "0.00" );
+			BigDecimal bdTotRenegociado = new BigDecimal( "0.00" );
+			BigDecimal bdTotEmRenegociacao = new BigDecimal( "0.00" );
 
 			tabManut.limpa();
 
@@ -1470,6 +1524,28 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				else if ( "RP".equals( rs.getString( "StatusItRec" ) ) && bdVlrAReceber.floatValue() == 0 ) {
 					imgColuna = rs.getString( "ATEND" ) == null ? imgPago : imgPago2;
 					bdTotRecebido = bdTotRecebido.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
+				}
+				else if ( "RN".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = imgRenegociado;
+					bdTotRenegociado = bdTotRenegociado.add( rs.getBigDecimal( "VLRPARCITREC" ) );
+				}
+				else if ( "RR".equals( rs.getString( "StatusItRec" ) ) ) {
+					
+					if ( bdVlrRecebido.floatValue() > 0 ) {
+						imgColuna = rs.getString( "ATEND" ) == null ? imgPagoParcial : imgPagoParcial2;
+						bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
+					}
+					else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoVencido;
+						bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VLRPARCITREC" ) );
+					}
+					else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
+						imgColuna = imgRenegociadoNaoVencido;
+						bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VlrApagItRec" ) );
+					}
+					
+					//imgColuna = imgRenegociadoNaoVencido;
+					//bdTotEmRenegociacao = bdTotEmRenegociacao.add( rs.getBigDecimal( "VLRPARCITREC" ) );
 				}
 				else if ( bdVlrRecebido.floatValue() > 0 ) {
 					imgColuna = rs.getString( "ATEND" ) == null ? imgPagoParcial : imgPagoParcial2;
@@ -1532,6 +1608,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			txtTotalVencer.setVlrBigDecimal( bdTotVencer );
 			txtTotalCancelado.setVlrBigDecimal( bdTotCancelado );
 			txtTotalEmBordero.setVlrBigDecimal( bdTotBordero );
+			txtTotalRenegociado.setVlrBigDecimal( bdTotRenegociado );
+			txtTotalEmRenegociacao.setVlrBigDecimal( bdTotEmRenegociacao );
 
 			con.commit();
 
@@ -2473,7 +2551,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			DLBordero bordero = new DLBordero();
 			List<DLBordero.GridBordero> gridBordero = new ArrayList<DLBordero.GridBordero>();
 
-			ResultSet rs = getResultSetManut( true, true );
+			ResultSet rs = getResultSetManut( true, true, false );
 			DLBordero.GridBordero grid = null;
 
 			while ( rs.next() ) {
@@ -2516,14 +2594,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 	
-	private void renegRec() {
+	private void abreRenegocReceb() {
 
 		try {
 
 			DLRenegRec renegociacao = new DLRenegRec();
 			List<DLRenegRec.GridRenegRec> gridRenegociacao = new ArrayList<DLRenegRec.GridRenegRec>();
 
-			ResultSet rs = getResultSetManut( true, true );
+			ResultSet rs = getResultSetManut( true, false, true );
 			DLRenegRec.GridRenegRec grid = null;
 
 			while ( rs.next() ) {
@@ -2559,6 +2637,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			renegociacao.setConexao( con );
 			renegociacao.carregaGrid( gridRenegociacao );
+			renegociacao.txtCodCli.setVlrInteger( txtCodCliFiltro.getVlrInteger() );
 
 			renegociacao.setVisible( true );
 			renegociacao.dispose();
@@ -2637,7 +2716,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			abreBordero();
 		}
 		else if ( evt.getSource() == btRenegRec ) {
-			renegRec();
+			if(txtCodCliFiltro.getText().trim().equals( "" ) ){
+				Funcoes.mensagemInforma( this, "Selecione um cliente para renegocição." );
+				return;
+			}
+			abreRenegocReceb();
 		}
 
 	}
