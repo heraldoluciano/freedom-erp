@@ -97,7 +97,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 	private ListaCampos lcConta = new ListaCampos( this, "CC" );
 
-	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
+	//private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
 	private ListaCampos lcItReceber = new ListaCampos( this, "RC" );
 

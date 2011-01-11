@@ -525,7 +525,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 	private void setCarteira() {
 
-		if ( ( txtCodBanco.getVlrString() != null && txtCodBanco.getVlrString().trim().length() > 0 ) && ( txtCodCartCob.getVlrString() != null && txtCodCartCob.getVlrString().trim().length() > 0 ) ) {
+		if ( ( txtCodBanco.getVlrString() != null && txtCodBanco.getVlrString().trim().length() > 0 ) && 
+				( txtCodCartCob.getVlrString() != null && txtCodCartCob.getVlrString().trim().length() > 0 ) ) {
 
 			try {
 
@@ -709,7 +710,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 			historico.setHistoricoant( txtObs.getVlrString() );
 
 			txtObs.setVlrString( historico.getHistoricodecodificado() );
-
 		}
 	}
 
