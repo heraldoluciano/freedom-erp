@@ -45,6 +45,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.lvf.view.frame.crud.plain.FTratTrib;
 import org.freedom.modulos.pdv.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -165,6 +166,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	private JTextFieldFK txtCodFor = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtChaveCTe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
 
 	private JButtonPad btAtualizaConhecimentos = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 
@@ -187,6 +190,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	private ListaCampos lcCompra = new ListaCampos( this, " " );
 
 	private ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
+	
+	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
 
 	public Navegador navDetCompra = new Navegador( true );
 
@@ -199,6 +204,10 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	private Integer oldCodVenda = null;
 
 	private String oldTipoVenda = null;
+	
+	private JTextFieldPad txtCodTratTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
+	private JTextFieldFK txtDescTratTrib = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	public FConhecFrete() {
 
@@ -381,13 +390,25 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		txtCodFor.setFK( true );
 		lcFornecedor.montaSql( false, "FORNECED", "CP" );
 		lcFornecedor.setReadOnly( true );
+		
+		/****************
+		 * FORNECEDOR *
+		 ****************/
+
+		lcTratTrib.add( new GuardaCampo( txtCodTratTrib, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_PK, null, false ) );
+		lcTratTrib.add( new GuardaCampo( txtDescTratTrib, "DescTratTrib", "Descrição do tratamento tributario", ListaCampos.DB_SI, null, false ) );
+		lcTratTrib.montaSql( false, "TRATTRIB", "LF" );
+		lcTratTrib.setQueryCommit( false );
+		lcTratTrib.setReadOnly( true );
+		txtCodTratTrib.setTabelaExterna( lcTratTrib, FTratTrib.class.getCanonicalName() );
+
 	}
 
 	private void montaTela() {
 
 		setListaCampos( lcCampos );
 		setPainel( panelCabecalho, pnCliCab );
-		setAltCab( 250 );
+		setAltCab( 290 );
 
 		adicCampo( txtCodFrete, 7, 20, 90, 20, "CodFrete", "Cód.Frete", ListaCampos.DB_PK, true );
 		adicCampo( txtSerieFrete, 100, 20, 50, 20, "Serie", "Serie", ListaCampos.DB_SI, false );
@@ -422,6 +443,11 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		adicCampo( txtVlrICMSFrete, 213, 180, 100, 20, "VlrICMSFrete", "Vlr.ICMS", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrBaseICMSFrete, 316, 180, 100, 20, "VlrBaseICMSFrete", "Vlr.Base ICMS", ListaCampos.DB_SI, false );
 
+		adicCampo( txtChaveCTe, 7, 220, 408, 20, "ChaveCte", "Chave CT-e", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodTratTrib, 418, 220, 50, 20, "CodTratTrib", "Cód.trat.", ListaCampos.DB_FK, txtDescTratTrib, false );
+		adicDescFK( txtDescTratTrib, 471, 220, 225, 20, "DescTratTrib", "Descrição da tratamento tributário" );
+		
 		adic( btAtualizaConhecimentos, 661, 165, 30, 30 );
 
 		setListaCampos( true, "FRETE", "LF" );
@@ -884,5 +910,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		lcDetCompra.setConexao( con );
 		lcCompra.setConexao( con );
 		lcFornecedor.setConexao( con );
+		lcTratTrib.setConexao( con );
+		
 	}
 }
