@@ -185,10 +185,12 @@ public class EbsContabil extends Contabil {
 			sql.append("C.FONECLI FONE,");
 			sql.append("C.COMPLCLI COMPLEMENTO, ");
 			sql.append("C.CODCLICONTAB CODCONTAB, ");
+			sql.append("U.CODUF, ");
 			sql.append("C.PRODRURALCLI PRODRURAL ");
 			sql.append("FROM VDCLIENTE C ");
 			sql.append("LEFT OUTER JOIN SGMUNICIPIO M ");
 			sql.append("ON M.CODPAIS=C.CODPAIS AND M.SIGLAUF=C.SIGLAUF AND M.CODMUNIC=C.CODMUNIC ");
+			sql.append("INNER JOIN SGUF U ON U.SIGLAUF = M.SIGLAUF ");
 			sql.append("WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?");
 		}
 		else if (tipo == 'F') {
@@ -209,10 +211,12 @@ public class EbsContabil extends Contabil {
 			sql.append("F.FONEFOR FONE,");
 			sql.append("F.COMPLFOR COMPLEMENTO, ");
 			sql.append("F.CODFORCONTAB CODCONTAB, ");
+			sql.append("U.CODUF, ");
 			sql.append("'N' PRODRURAL ");
 			sql.append("FROM CPFORNECED F ");
 			sql.append("LEFT OUTER JOIN SGMUNICIPIO M ");
 			sql.append("ON M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC ");
+			sql.append("INNER JOIN SGUF U ON U.SIGLAUF = M.SIGLAUF ");
 			sql.append("WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=?");
 		}
 
@@ -252,6 +256,8 @@ public class EbsContabil extends Contabil {
 				System.out.println("Erro ao formatar telefone do cliente/fornecedor[" + rs.getString("RAZAO").trim() + "]:\n" + e.getMessage());
 			}
 			emitenteDestinatario.setComplemento(rs.getString("COMPLEMENTO"));
+			
+			emitenteDestinatario.setIbge(rs.getString("CODUF")+rs.getString("CODMUNIC"));
 
 			emitenteDestinatario.setContaCliente(0);
 			emitenteDestinatario.setHistoricoCliente(0);
