@@ -60,6 +60,8 @@ public class EmitenteDestinatarioVO {
 
 	private int sequencial;
 	
+	private String ibge;
+	
 	public EmitenteDestinatarioVO() {
 	}
 
@@ -258,6 +260,14 @@ public class EmitenteDestinatarioVO {
 	public void setSequencial(int sequencial) {
 		this.sequencial = sequencial;
 	}
+	
+	public String getIbge() {
+		return ibge;
+	}
+
+	public void setIbge(String ibge) {
+		this.ibge = ibge;
+	}
 
 	@Override
 	public String toString() {
@@ -279,7 +289,7 @@ public class EmitenteDestinatarioVO {
 		emitenteDestinatario.append(EbsContabil.format(getBairro(), 20));
 		emitenteDestinatario.append(EbsContabil.format(getCidade(), 20));
 		emitenteDestinatario.append(EbsContabil.format(getCep(), 8));
-		emitenteDestinatario.append(EbsContabil.format(getMunicipio(), 4));
+		emitenteDestinatario.append(EbsContabil.format(0, 4));
 		emitenteDestinatario.append(EbsContabil.format(getDdd(), 3));
 		emitenteDestinatario.append(EbsContabil.format(getTelefone(), 10));
 		emitenteDestinatario.append(EbsContabil.format(getContaCliente(), 6));
@@ -292,10 +302,15 @@ public class EmitenteDestinatarioVO {
 		emitenteDestinatario.append(EbsContabil.format(getComplemento(), 20));
 		emitenteDestinatario.append(EbsContabil.format(getSuframa(), 9));
 		emitenteDestinatario.append(EbsContabil.format(getPais(), 5));
+		//IBGE
+		emitenteDestinatario.append(" ");
+		emitenteDestinatario.append(EbsContabil.format(getIbge(), 7));
+		
 		emitenteDestinatario.append(EbsContabil.format(" ", 207));
 		emitenteDestinatario.append(EbsContabil.format(" ", 5));
 		emitenteDestinatario.append(EbsContabil.format(getSequencial(), 6));
 
 		return emitenteDestinatario.toString();
 	}
+
 }
