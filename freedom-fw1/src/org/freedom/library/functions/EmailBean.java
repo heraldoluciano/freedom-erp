@@ -26,6 +26,7 @@ public class EmailBean {
 	private String senha;
 	private String de;
 	private String para;
+	private String copia;
 	private String autentica;
 	private String ssl;
 	private String emailresp;
@@ -43,6 +44,14 @@ public class EmailBean {
 	public void setAssinatura(String assinatura) {
 
 		this.assinatura = assinatura;
+	}
+
+	public String getCopia() {
+		return copia;
+	}
+
+	public void setCopia(String copia) {
+		this.copia = copia;
 	}
 
 	public String getFormato() {
@@ -264,7 +273,7 @@ public class EmailBean {
 
 			InternetAddress[] address = null;
 
-			address = new InternetAddress[] { new InternetAddress(email.getPara().trim()) };
+			address = new InternetAddress[] { new InternetAddress(email.getPara().trim()), new InternetAddress(email.getCopia().trim()) };
 
 			msg.setRecipients(Message.RecipientType.TO, address);
 			msg.setSubject(email.getAssunto().trim());
