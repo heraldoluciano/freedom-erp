@@ -84,6 +84,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 	private JTextFieldPad txtCpfTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 
 	private JTextFieldPad txtInscTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtEmailTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldPad txtEmailNfeTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtNroPisTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -183,7 +187,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 
 		super();
 		setTitulo( "Cadastro de Tranportadoras" );
-		setAtribos( 50, 50, 580, 580 );
+		setAtribos( 50, 50, 580, 620 ); 
 
 		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
@@ -281,6 +285,10 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 			adicCampo( txtUFTran, 7, 340, 75, 20, "UFTran", "UF", ListaCampos.DB_SI, false );
 			adicCampo( txtCidTran, 85, 340, 250, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false );
 		}
+		
+		adicCampo( txtEmailTran, 7, 460, 300, 20, "EmailTran", "Email da transportadora", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailNfeTran, 7, 500, 300, 20, "EmailNfeTran", "Email para envio da NFe", ListaCampos.DB_SI, false );
+		
 
 		/****************************************************************
 		 * 
