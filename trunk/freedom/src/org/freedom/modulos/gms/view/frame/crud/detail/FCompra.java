@@ -280,7 +280,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldFK txtDescNat = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldFK txtVenctoLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -724,16 +724,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false ) );
 		lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcLote.add( new GuardaCampo( txtDescLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false ) );
+		lcLote.add( new GuardaCampo( txtVenctoLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false ) );
 		lcLote.setDinWhereAdic( "CODPROD=#N", txtCodProd );
 		lcLote.setAutoLimpaPK( false );
 		lcLote.montaSql( false, "LOTE", "EQ" );
 		lcLote.setQueryCommit( false );
 		lcLote.setReadOnly( true );
 		txtCodLote.setTabelaExterna( lcLote, null );
-		txtDescLote.setListaCampos( lcLote );
-		txtDescLote.setNomeCampo( "VenctoLote" );
-		txtDescLote.setLabel( "Vencimento" );
+		txtVenctoLote.setListaCampos( lcLote );
+		txtVenctoLote.setNomeCampo( "VenctoLote" );
+		txtVenctoLote.setLabel( "Vencimento" );
 
 		// FK do número de série
 
@@ -1032,7 +1032,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
 
-		lbCodLote = adicCampo( txtCodLote, 7, 100, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
+		lbCodLote = adicCampo( txtCodLote, 7, 100, 117, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtVenctoLote, false );
 		lbNumSerie = adicCampo( txtNumSerie, 127, 100, 150, 20, "NumSerieTmp", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 
 		lbNumSerie.setVisible( false );
@@ -2455,7 +2455,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
-			if(txtDescLote.getVlrDate().compareTo( new Date() ) < 0){
+			if(txtVenctoLote.getVlrDate().compareTo( new Date() ) < 0){
 				Funcoes.mensagemInforma( this,  "Lote Vencido.");
 				pevt.cancela();
 			}
