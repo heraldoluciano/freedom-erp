@@ -2455,15 +2455,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
-			if(txtVenctoLote.getVlrDate().compareTo( new Date() ) < 0){
-				Funcoes.mensagemInforma( this,  "Lote Vencido.");
-				pevt.cancela();
-			}
-			
 			txtRefProd.setVlrString( txtRefProd.getText() ); // ??? que que é isso.
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				if ( !testaCodLote() ) {
-					pevt.cancela();
+					txtCodLote.requestFocus();
+					throw new RuntimeException();
+					//pevt.cancela();
 				}
 			}
 			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItCompra.getVlrBigDecimal().floatValue() == 1 ) {
@@ -2486,6 +2483,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				else {
 					pevt.cancela();
 				}
+			}
+			
+			if(txtVenctoLote.getVlrDate() != null &&
+					txtVenctoLote.getVlrDate().compareTo( new Date() ) < 0){
+				Funcoes.mensagemInforma( this,  "Lote Vencido.");
+				txtCodLote.requestFocus();
+				throw new RuntimeException();
+				//pevt.cancela();
 			}
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
