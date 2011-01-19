@@ -942,6 +942,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		// Post Listeners
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
+		lcDet.addInsertListener( this );
 
 	}
 
@@ -2402,7 +2403,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	public void beforeInsert( InsertEvent e ) {
-
 	}
 
 	public void afterInsert( InsertEvent e ) {
@@ -2455,6 +2455,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
+			if(txtDescLote.getVlrDate().compareTo( new Date() ) < 0){
+				Funcoes.mensagemInforma( this,  "Lote Vencido.");
+				pevt.cancela();
+			}
+			
 			txtRefProd.setVlrString( txtRefProd.getText() ); // ??? que que é isso.
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				if ( !testaCodLote() ) {
