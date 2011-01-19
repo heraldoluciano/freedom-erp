@@ -238,8 +238,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtDirNfeLin = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtDtVenctoNfe = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldPad txtDtVenctoEfd = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 
 	private JTextFieldPad txtKeyLicNfe = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
+	
+	private JTextFieldPad txtKeyLicEfd = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
 
 	private JTextFieldPad txtDescClassCp = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
@@ -1575,7 +1579,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		 *****************/
 
 		setPainel(pinNFe);
-		adicTab("NF-e", pinNFe);
+		adicTab("SPED ( NF-e/EFD )", pinNFe);
 
 		JPanelPad pnNFeCod = new JPanelPad();
 		pnNFeCod.setBorder(SwingParams.getPanelLabel("Codificação Padrão", Color.BLUE));
@@ -1617,8 +1621,20 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false);
 		adicDB(rgFormatoDANFE, 7, 75, 370, 30, "FormatoDanfe", "Formato da DANFE", false);
 		adicDB(rgProcEmiNFE, 7, 130, 370, 50, "ProcEmiNfe", "Processo de emissão", false);
-		adicDB(txtDtVenctoNfe, 7, 202, 100, 20, "DtVenctoNfe", "Vencimento NFE", false);
-		adicDB(txtKeyLicNfe, 7, 242, 370, 20, "KeyLicNfe", "Chave de licenciamento NFE", false);
+		
+		
+		JPanelPad pnLicenciamento = new JPanelPad();
+		pnLicenciamento.setBorder(SwingParams.getPanelLabel("Licenciamento", Color.BLUE));
+		setPainel(pinNFe);
+		adic(pnLicenciamento, 380, 298, 395, 140);
+
+		setPainel(pnLicenciamento);
+		
+		adicDB(txtDtVenctoNfe, 7, 20, 100, 20, "DtVenctoNfe", "Vencimento NFE", false);
+		adicDB(txtKeyLicNfe, 110, 20, 260, 20, "KeyLicNfe", "Chave de licenciamento NFE", false);
+
+		adicDB(txtDtVenctoEfd, 7, 70, 100, 20, "DtVenctoEfd", "Vencimento EFD", false);
+		adicDB(txtKeyLicEfd, 110, 70, 260, 20, "KeyLicEfd", "Chave de licenciamento SPED-EFD", false);
 
 		JPanelPad pnNFeOpcoes = new JPanelPad();
 		pnNFeOpcoes.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
