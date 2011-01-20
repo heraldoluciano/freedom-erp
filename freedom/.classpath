@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry kind="lib" path="lib/squareness.jar"/>
 	<classpathentry kind="lib" path="lib/jdt-compiler.jar"/>
-	<classpathentry kind="lib" path="/freedom-ecf/lib/comm.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
@@ -34,5 +33,7 @@
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports-fonts.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-digester.jar"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/ilf-gpl.jar"/>
+	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
