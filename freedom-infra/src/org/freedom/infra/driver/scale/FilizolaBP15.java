@@ -32,9 +32,9 @@ public class FilizolaBP15 extends AbstractScale {
 
 		this.com = com;
 
-		FilizolaBP15.TIMEOUT_READ = 1000;
+		FilizolaBP15.TIMEOUT_READ = 2000;
 
-		TIMEOUT_ACK = 500;
+		TIMEOUT_ACK = 1500;
 
 		serialParams.setTimeout(timeout);
 		serialParams.setBauderate(baudrate);
