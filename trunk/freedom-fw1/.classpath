@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/dsgebrazilutils.jar"/>
 	<classpathentry kind="lib" path="lib/commons-digester.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
+	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
