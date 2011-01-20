@@ -409,5 +409,7 @@ grant select, delete, insert, update ON fnrenegrec to "ADM";
 grant select, delete, insert, update ON fnitrenegrec to "ADM";
 GRANT EXECUTE ON PROCEDURE fngeraseqnossonumero TO "ADM";
 
+GRANT DELETE, INSERT, SELECT, UPDATE, REFERENCES ON LFMODDOCFISC TO ROLE "ADM";
+
 
 COMMIT WORK;
