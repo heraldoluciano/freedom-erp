@@ -3466,7 +3466,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				NF_EMITIDA = true;
 				lbStatus.setText( "EMITIDA" );
 
-				lbStatus.setBackground( new Color( 45, 190, 60 ) );
+				lbStatus.setBackground( SwingParams.getVerdeFreedom() );
 			}
 			else if ( statusvenda.length() > 0 && statusvenda.equals( "P2" ) ) {
 				lbStatus.setText( "EM ABERTO" );
