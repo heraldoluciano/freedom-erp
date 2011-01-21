@@ -1,2679 +1,2873 @@
-<html>
-<body>
-<p class="p1">1.2.4.3</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body><p class="p1">1.2.4.4</p>
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
+      <td class="td1" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td2">
+      <td class="td2" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td3">
+      <td class="td3" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td4">
+      <td class="td4" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td5">
+      <td class="td5" valign="middle">13/12/2010</td>
+      <td class="td6" valign="middle">Novidade</td>
+      <td class="td7" valign="middle">Inclusão de campo de data e hora na entrada OPs parciais.</td>
+      <td class="td8" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td5" valign="middle">14/12/2010</td>
+      <td class="td6" valign="middle">Novidade</td>
+      <td class="td7" valign="middle">Implementações nos relatórios de comissionamento por produtividade, contemplando as entradas parciais de OPs.</td>
+      <td class="td8" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td5" valign="middle">14/12/2010</td>
+      <td class="td6" valign="middle">Novidade</td>
+      <td class="td7" valign="middle">Inclusão de coluna para referência do produto no relatório de produção.</td>
+      <td class="td8" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td5" valign="top">14/12/2010</td>
+      <td class="td6" valign="top">Novidade</td>
+      <td class="td7" valign="top">Calculo de INSS e IRRF no relatório de fretes de recebimento de mercadorias</td>
+      <td class="td8" valign="top">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td9" valign="middle">15/12/2010</td>
+      <td class="td10" valign="middle">Correção</td>
+      <td class="td11" valign="middle">Problema no código do registro de detalhe da remessa cnab para outros
+bancos além do banco do brasil (o código do registro estava sendo
+informado erroneamente)</td>
+      <td class="td12" valign="middle">Correção realizada</td>
+    </tr>
+    
+    <tr>
+      <td class="td9" valign="middle">15/12/2010</td>
+      <td class="td10" valign="middle">Novidade</td>
+      <td class="td11" valign="middle">Implementação
+de trigger para geraçnao da data de previsionamento de contas a receber
+de acordo com o número de dias definidos no tipo de recebimento.</td>
+      <td class="td12" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">23/12/2010</td>
+      <td class="td14" valign="middle">Correção</td>
+      <td class="td15" valign="middle">Correção no cálculo do troco no módulo PDV</td>
+      <td class="td16" valign="middle">Correção realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">23/12/2010</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação de novos campos na tabela de filiais para contemplar informações necessárias para o módulo Setpoint SPED EFD.</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">27/12/2010</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação
+de campo no cadastro de fornecedores, para informar a identificação do
+concelho regional (medicina, administração, contabilidade, engenharia)</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">03/01/2011</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação de tabela para modelos de documentos fiscias, e vinculo com tabela de tipos de movimento (exigência SPED)</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    
+    <tr>
+      <td class="td13" valign="middle">06/01/2011</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação de campo para chave da nfe na tela de compras</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">10/01/2011</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação de campo para tipo de apuração de IPI na tela de itens de classificações fiscais (exegência SPED)</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td13" valign="middle">12/01/2011</td>
+      <td class="td14" valign="middle">Novidade</td>
+      <td class="td15" valign="middle">Criação
+de campos para chave da CTe e situação tributária do ICMS na tela de
+lançamento de conhecimentos de frete (exigência SPED)</td>
+      <td class="td16" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td17" valign="middle">17/01/2011</td>
+      <td class="td18" valign="middle">Novidade</td>
+      <td class="td19" valign="middle">Criação de campo de email no cadastro de transportadoras.</td>
+      <td class="td20" valign="middle">Implementação realizada</td>
+    </tr>
+    <tr>
+      <td class="td17" valign="middle">21/01/2011</td>
+      <td class="td18" valign="middle">Novidade</td>
+      <td class="td19" valign="middle">Desenvolvimento de mecanismo para renegociação de títulos do contas a receber.</td>
+      <td class="td20" valign="middle">Implementação realizada</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+  </tbody>
+</table><br><p class="p1">1.2.4.3</p>
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
+  <tbody>
+    <tr>
+      <td class="td1" valign="middle">
+        <p class="p2"><b>Data</b></p>
+      </td>
+      <td class="td2" valign="middle">
+        <p class="p2"><b>Tipo</b></p>
+      </td>
+      <td class="td3" valign="middle">
+        <p class="p2"><b>Problema/Necessidade</b></p>
+      </td>
+      <td class="td4" valign="middle">
+        <p class="p2"><b>Solução</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="td5" valign="middle">
         <p class="p1">16/11/2010</p>
       </td>
-      <td valign="middle" class="td6">
+      <td class="td6" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td7">
+      <td class="td7" valign="middle">
         <p class="p1">Visualizar o total de títulos selecionados na tela de remessa CNAB.</p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p1">Criação de rodapé na tela para informando o valor total de títulos selecionados.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td5">
+      <td class="td5" valign="middle">
         <p class="p1">16/11/2010</p>
       </td>
-      <td valign="middle" class="td6">
+      <td class="td6" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td7">
+      <td class="td7" valign="middle">
         <p class="p1">Visualização das garantias concedidas, de forma agrupada, no relatório de comissionamento por produtividade.</p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td5">
+      <td class="td5" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td6">
+      <td class="td6" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td7">
+      <td class="td7" valign="middle">
         <p class="p1">Visualizar os produtos consertados nos relatórios de venda.</p>
       </td>
-      <td valign="middle" class="td8">
-        <p class="p1">Criação de opção nos relatórios de venda, para listar o produto consertado quando as vendas forem realizadas a partir de ordens de serviço.</p>
+      <td class="td8" valign="middle">
+        <p class="p1">Criação
+de opção nos relatórios de venda, para listar o produto consertado
+quando as vendas forem realizadas a partir de ordens de serviço.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td5">
+      <td class="td5" valign="top">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="top" class="td6">
+      <td class="td6" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td7">
+      <td class="td7" valign="top">
         <p class="p1">Arquivos de remessa e retorno CNAB Banco do Brasil para convênios de 7 posições.</p>
       </td>
-      <td valign="top" class="td8">
+      <td class="td8" valign="top">
         <p class="p1">Implementações realizadas para homologação de acordo com layout para estes convênios.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td9">
+      <td class="td9" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td10">
+      <td class="td10" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td11">
+      <td class="td11" valign="middle">
         <p class="p1">Bloquear lançamentos financeiros em datas retroativas, a fim de evitar distorções no saldo.</p>
       </td>
-      <td valign="middle" class="td12">
+      <td class="td12" valign="middle">
         <p class="p1">Criação de mecanismo para fechamento dos diários dos caixas.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td9">
+      <td class="td9" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td10">
+      <td class="td10" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td11">
+      <td class="td11" valign="middle">
         <p class="p1">Relatório de coletas por setor.</p>
       </td>
-      <td valign="middle" class="td12">
+      <td class="td12" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td9">
+      <td class="td9" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td10">
+      <td class="td10" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td11">
+      <td class="td11" valign="middle">
         <p class="p1">Campos para abono e desconto no cadastro de vendedores para uso no relatório de comissionamento por produtividade.</p>
       </td>
-      <td valign="middle" class="td12">
+      <td class="td12" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Inclusão de totalizadores e colunas para desconto, nos relatórios de vendas detalhadas e vendas geral.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Criação de relatório de vendas por tipo de movimento.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Ajustes na consulta do relatório de desempenho por vendedor.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">18/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Criação de filtro para produto na tela de acompanhamento da produção.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">19/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Acerto na data da ultima entrada em estoque na tela de cadastro de produtos.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">19/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Inclusão de agrupamento por cliente no relatório de coletas por setor.</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">19/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Criação de novo layout de orçamento (078)</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td13">
+      <td class="td13" valign="middle">
         <p class="p1">24/11/2010</p>
       </td>
-      <td valign="middle" class="td14">
+      <td class="td14" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td15">
+      <td class="td15" valign="middle">
         <p class="p1">Atualização das bibliotecas de relatórios gráficos para versão atualizada do JasperReports/iReport (3.7.6)</p>
       </td>
-      <td valign="middle" class="td16">
+      <td class="td16" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">24/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Criação de relatório de orçamentos na tela de "Pesquisa Orçamentos"</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">25/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Filtrar produtos do tipo patrimônio nos registros 74 e 75 do Sintegra.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">26/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Criação de parâmetros nas preferências do módulo Standard para determinar a versão do layout NFE (1.4 ou 2.0).</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">26/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Criação de opção "detalhado" para relatório de vendas por tipo de movimento.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">26/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Novos ajustes na geração do registro 75 do Sintegra.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">29/11/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Implementação na tela de consulta de produtos, incluindo data, quantidade e custo da ultima compra.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">02/12/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Inclusão de campo no cadastro de classificações fiscais para informar se há retenção de ISS na venda.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">03/12/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Implementação para o fechamento de ordens de produção em etapas.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td17">
+      <td class="td17" valign="middle">
         <p class="p1">07/12/2010</p>
       </td>
-      <td valign="middle" class="td18">
+      <td class="td18" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td19">
+      <td class="td19" valign="middle">
         <p class="p1">Implementação para permitir a aprovação de quantidade superior a solicitada na RMA.</p>
       </td>
-      <td valign="middle" class="td20">
+      <td class="td20" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.4.2</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">08/11/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Problema ao filtrar titulos exportados na tela de remessa CNAB</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Acerto na aplicação de filtros.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">10/11/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Instruções de protesto padrão CNAB 400.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Criação de novos códigos as preferências Febraban a fim de contemplar novas instruções de protesto.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">11/11/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Opção para acesso a comm usb em sistemas linux.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">12/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Novo layout de orçamento</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">ORC_078.jasper</p>
       </td>
     </tr>
   </tbody>
 </table>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td27">
+      <td class="td27" valign="middle">
         <p class="p1">1.2.4.1</p>
       </td>
     </tr>
   </tbody>
 </table>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Erros nos filtros da tela de acompanhamento de produção</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Criação de botão na tela de lançamentos fiananceiros para abertura da tela de cadastro do cheque vinculado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">29/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Problemas no registro 74 e 75 do Sintegra.</p>
       </td>
-      <td valign="middle" class="td26">
-        <p class="p1">Implementações para geração do registro de inventário (74) para todos os produtos em estoque e não apenas os movimentados no período. Ajuste para utilização do custo PEPS para valores contidos no registro 74.</p>
+      <td class="td26" valign="middle">
+        <p class="p1">Implementações
+para geração do registro de inventário (74) para todos os produtos em
+estoque e não apenas os movimentados no período. Ajuste para utilização
+do custo PEPS para valores contidos no registro 74.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">29/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Boletos e remessa BB para convências de 7 posições.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Implementações para homologação de remessa e retorno BB de 400 bytes para convênios de 7 posições.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">29/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Categorização de vários títulos de uma só vez.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Criação de botão na tela de retorno de remessa CNAB permitindo a categorização de vários títulos selecionados.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">01/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Arredondamento no relatório de inventário.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação do arredondamento adequado, compatibilizando com os totais informados no registro 74 do Sintegra.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">01/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Ordenação do relatório de vendas por ítem.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação de nova opção de ordenação por quantidade.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">01/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Botões para acesso rápido a opções de remessa e retorno CNAB (Módulo Financeiro)</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">03/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Problema na cópia de orçamentos.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação para não realizar a cópia dos status dos orçamentos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">05/11/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Opções para geração de "Nosso Número".</p>
       </td>
-      <td valign="top" class="td26">
-        <p class="p1">Criação de opção preferência para geração do "Nosso Número" (Boletos/Remessa) de acordo com o código do contas a receber, Numero do documento ou sequencial único.</p>
+      <td class="td26" valign="top">
+        <p class="p1">Criação
+de opção preferência para geração do "Nosso Número" (Boletos/Remessa)
+de acordo com o código do contas a receber, Numero do documento ou
+sequencial único.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.4.0</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td28">
+      <td class="td28" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td29">
+      <td class="td29" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/10/2010</p>
       </td>
-      <td valign="middle" class="td30">
+      <td class="td30" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Consultar cheque em pagamentos do financeiro.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Criação de botão na tela de lançamentos fiananceiros para abertura da tela de cadastro do cheque vinculado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/10/2010</p>
       </td>
-      <td valign="middle" class="td30">
+      <td class="td30" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Correções diversas...</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td30">
+      <td class="td30" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.3.9</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">15/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Categorização de informações financeiras no fechamento de compra</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Criação de campos para preenchimento das informações financeiras no fechamento de compras.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">16/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Realizar a baixa de título automáticamente ao emitir cheque de pagamento.</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Criação de mecanismo para baixa do título em conta especial para o controle de cheques.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">18/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Realizar transferência automática entre contas, ao compensar cheque de pagamento.</p>
       </td>
-      <td valign="middle" class="td35">
-        <p class="p1">Criação de mecanismo para realização de transferência automática entre conta de controle e conta real bancária, na compensação do cheque.</p>
+      <td class="td35" valign="middle">
+        <p class="p1">Criação
+de mecanismo para realização de transferência automática entre conta de
+controle e conta real bancária, na compensação do cheque.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.3.8</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td36">
+      <td class="td36" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td37">
+      <td class="td37" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td38">
+      <td class="td38" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">11/10/2010</p>
       </td>
-      <td valign="middle" class="td39">
+      <td class="td39" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Erro no cálculo da formula no relatório de movimentação de produtos controlados.</p>
       </td>
-      <td valign="middle" class="td41">
+      <td class="td41" valign="middle">
         <p class="p1">Implementação do calculo da formula de acordo com quantidade total em relatório do tipo agrupado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">13/10/2010</p>
       </td>
-      <td valign="middle" class="td39">
+      <td class="td39" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Exibição dos numeros dos cheques no grid de manutenção de contas a pagar.</p>
       </td>
-      <td valign="middle" class="td41">
+      <td class="td41" valign="middle">
         <p class="p1">Implementação de nova coluna do grid, contendo os numeros dos cheques utilizados para pagamento.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">13/10/2010</p>
       </td>
-      <td valign="middle" class="td39">
+      <td class="td39" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Inclusão de observações do contas a receber no layout de duplicata 049</p>
       </td>
-      <td valign="middle" class="td41">
+      <td class="td41" valign="middle">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">13/10/2010</p>
       </td>
-      <td valign="top" class="td39">
+      <td class="td39" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td40">
+      <td class="td40" valign="top">
         <p class="p1">Erro no calculo de volumes na venda.</p>
       </td>
-      <td valign="top" class="td41">
+      <td class="td41" valign="top">
         <p class="p1">Correção efetuada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">13/10/2010</p>
       </td>
-      <td valign="top" class="td39">
+      <td class="td39" valign="top">
         <p class="p1">Noviadade</p>
       </td>
-      <td valign="top" class="td40">
-        <p class="p1">Implementação para carregamento do número do cheque na tela de seleção do layout de recibo de pagamento, quando efetuado com cheque.</p>
+      <td class="td40" valign="top">
+        <p class="p1">Implementação
+para carregamento do número do cheque na tela de seleção do layout de
+recibo de pagamento, quando efetuado com cheque.</p>
       </td>
-      <td valign="top" class="td41">
+      <td class="td41" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">13/10/2010</p>
       </td>
-      <td valign="top" class="td39">
+      <td class="td39" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td40">
+      <td class="td40" valign="top">
         <p class="p1">Implementaçções para geração das observações do contas a receber de acordo com documento definitivo (NF/RPS)</p>
       </td>
-      <td valign="top" class="td41">
+      <td class="td41" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">14/10/2010</p>
       </td>
-      <td valign="top" class="td39">
+      <td class="td39" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td40">
+      <td class="td40" valign="top">
         <p class="p1">Cálculo do IPI desconsiderando o desconto concedido no ítem.</p>
       </td>
-      <td valign="top" class="td41">
+      <td class="td41" valign="top">
         <p class="p1">Implementação no calculo da base do IPI considerando o desconto concedido.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">14/10/2010</p>
       </td>
-      <td valign="top" class="td39">
+      <td class="td39" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td40">
-        <p class="p1">Gerando boletos em duplicidade na tela de emissão de boletos/recibos em lote, quando existem mais de uma carteira de cobrança com o mesmo código.</p>
+      <td class="td40" valign="top">
+        <p class="p1">Gerando
+boletos em duplicidade na tela de emissão de boletos/recibos em lote,
+quando existem mais de uma carteira de cobrança com o mesmo código.</p>
       </td>
-      <td valign="top" class="td41">
+      <td class="td41" valign="top">
         <p class="p1">Correção efetuada.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.3.7</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td42">
+      <td class="td42" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td43">
+      <td class="td43" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">05/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td44">
+      <td class="td44" valign="middle">
         <p class="p1">Erro na busca de preferências em banco de dados com multiplas filiais.</p>
       </td>
-      <td valign="middle" class="td45">
+      <td class="td45" valign="middle">
         <p class="p1">Correção no parâmetro do código da filial na consulta de preferências.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">06/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td44">
+      <td class="td44" valign="middle">
         <p class="p1">Relatório de comissionamento por produtividade por técnico.</p>
       </td>
-      <td valign="middle" class="td45">
+      <td class="td45" valign="middle">
         <p class="p1">Criação do relatório em Produção/Listagems/Comissionamento/produtividade.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">06/10/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Correção</p>
       </td>
-      <td valign="middle" class="td44">
+      <td class="td44" valign="middle">
         <p class="p1">Erros na tela de cadastramento de cheques.</p>
       </td>
-      <td valign="middle" class="td45">
+      <td class="td45" valign="middle">
         <p class="p1">Implementação de correções na tela de cadastramento de cheques.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">06/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td44">
-        <p class="p1">Em empresas que utilizamo mais de uma série de notas fiscais, o numero de identificação do título em boletos/remessa do bradesco se repete, causando rejeição de arquivos.</p>
+      <td class="td44" valign="top">
+        <p class="p1">Em
+empresas que utilizamo mais de uma série de notas fiscais, o numero de
+identificação do título em boletos/remessa do bradesco se repete,
+causando rejeição de arquivos.</p>
       </td>
-      <td valign="top" class="td45">
-        <p class="p1">Implementação no mecanismo de geração do "nosso número" utilizando como base o código do contas a receber (código unico), ao invés no numero do documento (nota fiscal) evitando duplicidade de códigos.</p>
+      <td class="td45" valign="top">
+        <p class="p1">Implementação
+no mecanismo de geração do "nosso número" utilizando como base o código
+do contas a receber (código unico), ao invés no numero do documento
+(nota fiscal) evitando duplicidade de códigos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">06/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td44">
+      <td class="td44" valign="top">
         <p class="p1">Inclusão de observações do título nos boletos do bradesco</p>
       </td>
-      <td valign="top" class="td45">
+      <td class="td45" valign="top">
         <p class="p1">Impressão das observações do título em conjunto com as instruções de cobrança.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">08/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td44">
+      <td class="td44" valign="top">
         <p class="p1">Flag no cadastramento de unidades de medida, a fim de habilitar a contagem de volumes de acordo com a quantidade por embalagem</p>
       </td>
-      <td valign="top" class="td45">
-        <p class="p1">Criação do flag e implementação no mecanismo de calculo de volumes para utilização dessa informação no momento do cálculo de volumes.</p>
+      <td class="td45" valign="top">
+        <p class="p1">Criação
+do flag e implementação no mecanismo de calculo de volumes para
+utilização dessa informação no momento do cálculo de volumes.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">11/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td44">
+      <td class="td44" valign="top">
         <p class="p1">Erro no cálculo da formula no relatório de movimentação de produtos controlados.</p>
       </td>
-      <td valign="top" class="td45">
+      <td class="td45" valign="top">
         <p class="p1">Acerto no calculo da forma para relatório agrupado, utilizando a quantidade total como base para o cálculo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">11/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td44">
+      <td class="td44" valign="top">
         <p class="p1">Inclusão de observações no layout de duplicata 049</p>
       </td>
-      <td valign="top" class="td45">
+      <td class="td45" valign="top">
         <p class="p1">Impressão das observações do título em conjunto com as instruções de cobrança.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.3.6</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">04/10/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Criação de mecanismo para geração de nota de devolução de produtos em conserto.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Implementação de botão na tela de venda, para geração automática de nota de devolução para venda de serviços advinda do mecanismo de ordens de serviço (GMS).</p>
+      <td class="td35" valign="top">
+        <p class="p1">Implementação
+de botão na tela de venda, para geração automática de nota de devolução
+para venda de serviços advinda do mecanismo de ordens de serviço (GMS).</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Mecanismo para baixa de ítens de RMA de forma prática.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de relatório de ítens de RMA com código de barras codificado para execução da baixa.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">29/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Exibir observações de ítens de orçamento.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de coluna no grid da tela de orçamento para exibição das observações do ítem.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">29/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Erro ao imprimir pedido de venda.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Correção na query de busca de informações do pedido de venda.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">27/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Opção para facilitar o faturamento de orçamentos.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de botão na tela de pesquisa de orçamentos, para faturar orçamento selecionado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Filtro de conta nos relatórios de contas a receber/pagar.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de campo para filtro da conta para o relatório.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Impressão de relatório de clientes por setor a fim de identificar uma sequencia para rota de visitação.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Criação da tabela de rotas, vinculada ao setor do cliente, para definição da sequencia de visitação e impressão de relatório de rota/setor.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Criação
+da tabela de rotas, vinculada ao setor do cliente, para definição da
+sequencia de visitação e impressão de relatório de rota/setor.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Visualizar referência do produto no relatório de contágem de estoque.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação da coluna no relatório, para exibição quando cliente utilizar a referência como padrão.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Campo para definir o percentual padrão de desconto para um cliente.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Criação de campo no cadastro de clientes, para definição do desconto padrão, implementação no mecanismo de busca de preços, para aplicar o desconto padrão quando houver.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Criação
+de campo no cadastro de clientes, para definição do desconto padrão,
+implementação no mecanismo de busca de preços, para aplicar o desconto
+padrão quando houver.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Mecanismo para atualizar o local de armazenamento dos produtos no momento do lançamento do inventário de estoque.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de campo na tela de inventário para atualização do campo do local de armazenamento do produto.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Campo para anular o desconto padrão do cliente no produto.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Criação de flag na tela de cadastro de produtos, para desabilitar o desconto padrão dos clientes, para determinados produtos especiais.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Criação
+de flag na tela de cadastro de produtos, para desabilitar o desconto
+padrão dos clientes, para determinados produtos especiais.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Gerar ordem de produção a partir de ítem de ordem de serviço.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Criação de mecanismo na tela de cadastramento de ordens de serviço para permitir a geração de uma ordem de produção a partir de um ítem.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Criação
+de mecanismo na tela de cadastramento de ordens de serviço para
+permitir a geração de uma ordem de produção a partir de um ítem.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Criação de mecanismo para estruturas de produção dinâmicas.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Criação de flag no cadastro de estruturas de produto indicando se a estrutura é dinâmica. Neste caso a ordem de produção não irá carregar todos os ítens da estrutura automáticamente, permitindo a livre seleção dos componentes utilizados.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Criação
+de flag no cadastro de estruturas de produto indicando se a estrutura é
+dinâmica. Neste caso a ordem de produção não irá carregar todos os
+ítens da estrutura automáticamente, permitindo a livre seleção dos
+componentes utilizados.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">20/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Criação de tela para o Planejamento Mestre de Produção baseado no sistema de produção empurrada (Push System)</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de tela para sugestão de produção, baseada nos estoques mínimos e nas requisições de material pendentes.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">18/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Geração de orçamentos baseados em ordens de serviço.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de mecanismo para escolha do tipo de orçamento a ser gerado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
-        <p class="p1">Geração de Requisições de material baseadas em ordens  de serviço.</p>
+      <td class="td34" valign="top">
+        <p class="p1">Geração de Requisições de material baseadas em ordens&nbsp; de serviço.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de mecanismo para geração de requisição de material com base nos ítens necessários para execução da ordem de serviço.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">26/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Nota fiscal eletrônica de serviço para o município de Nova Friburgo.</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Implementações para permitir a integração do FreedomSTD com o módulo SetpointNFE, referente a notas fiscais eletrôncas de serviço para o municipio de Nova Friburgo/RJ.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Implementações
+para permitir a integração do FreedomSTD com o módulo SetpointNFE,
+referente a notas fiscais eletrôncas de serviço para o municipio de
+Nova Friburgo/RJ.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">01/09/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Exibição dos cheques vinculados a um pagamento.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de aba na tela de visualização de informações do pagamento, para exibição dos cheques vinculados ao pagamento.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Vincular saldo de uma ou mais contas e exibir na forma de saldo composto.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de mecanismo para vinculo entre contas e exibição do saldo composto na tela de lançamentos financeiros.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">28/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Arquivos de retorno CNAB 400 Banco do Brasil.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Leitura de arquivos de retorno CNAB padrão 400 Bytes do banco do brasil, para baixa automática de títulos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">1.2.3.5</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">28/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Travamento de telas de dialogo sobrepostas na edição de vencimentos/valores de novas contas a pagar.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Correção para evitar o problema de travamento.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">27/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Erro ao inseir contas a pagar com histórico maior que 100 caracteres.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Disponibilização de 250 caracteres para campo de histórico de contas a pagar.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">27/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Tela para visualização/Edição de dados de cheques.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Criação da tela para visualização/edição e impressão de cheques.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">25/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Erro na homologação de arquivo de remessa BB padao CNAB400/CBR641</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Acerto na geração do nosso número no arquivo de remessa.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">25/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Alteração do tamanho do campo do código da carteira de cobrança CNAB na tela de cadastro de carteiras de cobrança.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Tamanho aumentado de 1 para 2 caracteres.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">25/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Criação de campo na tela de cadastro de comissionados, para vínculo com seção de produção (Comissionamento especial)</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Reorganização da tela de preferências gerais com criação de aba para centralização dos parâmetros de comissionamento.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
-        <p class="p1">Criação de campo na tela de cadastro de produtos, para informar valor fixo de base para comissionamento especial por seção de produção.</p>
+      <td class="td26" valign="top">
+        <p class="p1">Criação
+de campo na tela de cadastro de produtos, para informar valor fixo de
+base para comissionamento especial por seção de produção.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
   </tbody>
 </table>
-<p class="p1">  1.2.3.4</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<p class="p1">&nbsp; 1.2.3.4</p>
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Atualização dos preços de pedidos de compra pendentes ao lançar nova cotação no período vigente.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação de mecanismo no salvamento de nova cotação.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Alteração no layout de recibo de contas a pagar para impressão em expandido em impressoras matriciais.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação realisada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Liberação de alteração de valor no contas a receber.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação de liberação no campo de valor para permitir alterações.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Novo Layout de duplicatas DUP_049.jasper</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação de layout</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Correção</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Implementação no layout de arquivo de remessa de cobranças do banco do brasil (CNAB 400)</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Alterações no layout conforme manual fornecido pelo banco.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Implementação de mecanismo para geração de RMA a partir de Ordem de Serviço.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação do mecanismo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">21/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
-        <p class="p1">Implementação de mecanismo para escolha do tipo de orçamento a ser gerado a partir de Ordem de serviço (peças/serviços ou novo item).</p>
+      <td class="td34" valign="top">
+        <p class="p1">Implementação
+de mecanismo para escolha do tipo de orçamento a ser gerado a partir de
+Ordem de serviço (peças/serviços ou novo item).</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação do mecanismo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">20/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Implementação de calculos de retentenção de INSS e IRRF no pagamento de fornecedores autônomos.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação do mecanismo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">19/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Bug</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Acerto no mecanismo de processamento de saldos do financeiro.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Problema corrigido.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">18/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Filtro por código do contas a pagar na aba de manutenção.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">17/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Emissão de cheques para pagamentos</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação do mecanismo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">16/08/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Campo para variação da carteira de cobrança.</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação realizada.</p>
       </td>
     </tr>
   </tbody>
 </table>
-<p class="p1">  1.2.3.3</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<p class="p1">&nbsp; 1.2.3.3</p>
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td37">
+      <td class="td37" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td29">
+      <td class="td29" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">28/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Ao excluir registros com vinculos, identificar a origem do vínculo.</p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Implementação na mensagem incluindo a tabela vinculada. E a mensagem original de erro do banco de dados.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">01/08/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Impressão de recibos de pagamentos.</p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Implementação de mecanismo para impressão de recibos pré-impressos para pagamentos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">02/08/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Relatório de entradas de material com peso.</p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Módulo GMS/Recimento de mercadorias/Listagems/Relação de entradas/peso</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.3.2</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Funcionamento do F2 na tela de geração de compra a partir de pedidos de compra.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Correção no mecanismo para funcionamento adequado da função de F2.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Mecanismo para busca de preços a partir de cotações aprovadas, no mecanismo de geração de compra a partir de pedidos de compra.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Busca de preços de cotações validas, bem como validação bloqueio de preços não aprovados.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Implementação na tela de fechamento de venda, para preenchimento automático da placa da transportadora, volumes, marca, UF.</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Busca de informações da venda e da transmportadora, para composição das informações do frete.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Campo para a inscrição municipal do cliente.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Criação do campo na tela de cadastro de clientes.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Campo para chave de licenciamento nos itens de contrato/projeto.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Criação do campo na tela de cadastro de contratos/projetos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">27/07/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Erro no calculo de tributos de compras e vendas.</p>
       </td>
-      <td valign="top" class="td26">
-        <p class="p1">Implementação no cálculo de tributos, limpando variável referente a classificação fiscal do produto antes da realização dos calculos.</p>
+      <td class="td26" valign="top">
+        <p class="p1">Implementação
+no cálculo de tributos, limpando variável referente a classificação
+fiscal do produto antes da realização dos calculos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">26/07/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Definição do número de casas decimais para preço dos produtos.</p>
       </td>
-      <td valign="top" class="td26">
+      <td class="td26" valign="top">
         <p class="p1">Criação de preferência para definir o número de casas decimais a serem utilizadas para preço.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.3.1</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td46">
+      <td class="td46" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td4">
+      <td class="td4" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td4">
+      <td class="td4" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td47">
+      <td class="td47" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">22/07/2010</p>
       </td>
-      <td valign="middle" class="td47">
+      <td class="td47" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p1">Erro no mecanismod e reprecessamento de estoque em empresas com mais de 1 filial.</p>
       </td>
-      <td valign="middle" class="td8">
+      <td class="td8" valign="middle">
         <p class="p1">Correção no mecanismo de reprocessamento.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.3.0</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">22/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Integração OS / CRM</p>
       </td>
-      <td valign="middle" class="td34">
-        <p class="p1">Implementação de integração entre o mecanimos de Ordens de Serviço e o mecanismo de lançamento de chamados/atendimentos do módulo CRM.</p>
+      <td class="td34" valign="middle">
+        <p class="p1">Implementação
+de integração entre o mecanimos de Ordens de Serviço e o mecanismo de
+lançamento de chamados/atendimentos do módulo CRM.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.9</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td48">
+      <td class="td48" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td23">
+      <td class="td23" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td49">
+      <td class="td49" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
-        <p class="p1">14/07/2010 </p>
+      <td class="td50" valign="middle">
+        <p class="p1">14/07/2010&nbsp;</p>
       </td>
-      <td valign="middle" class="td25">
-        <p class="p1">Ajuste </p>
+      <td class="td25" valign="middle">
+        <p class="p1">Ajuste&nbsp;</p>
       </td>
-      <td valign="middle" class="td26">
-        <p class="p1">Ajuste no mecanismo de validação de versão para bloquear acesso a versões diferentes entre banco de dados e aplicação quando o parâmetro "validaversao" for omitido. </p>
+      <td class="td26" valign="middle">
+        <p class="p1">Ajuste
+no mecanismo de validação de versão para bloquear acesso a versões
+diferentes entre banco de dados e aplicação quando o parâmetro
+"validaversao" for omitido.&nbsp;</p>
       </td>
-      <td valign="middle" class="td51">
-        <p class="p1">Lógica implementada. </p>
+      <td class="td51" valign="middle">
+        <p class="p1">Lógica implementada.&nbsp;</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
-        <p class="p1">19/07/2010 </p>
+      <td class="td50" valign="middle">
+        <p class="p1">19/07/2010&nbsp;</p>
       </td>
-      <td valign="middle" class="td25">
-        <p class="p1">Erro </p>
+      <td class="td25" valign="middle">
+        <p class="p1">Erro&nbsp;</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Problema na ferramenta de troca de número de documento de compras.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td51">
-        <p class="p1">Implementação no mecanismo, atualizando o registro para manutenção antes de trocar o numero de documento de compra. </p>
+      <td class="td51" valign="middle">
+        <p class="p1">Implementação no mecanismo, atualizando o registro para manutenção antes de trocar o numero de documento de compra.&nbsp;</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">19/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p1">Código do email padrão para envio de XML da nota fiscal eletrônica.</p>
       </td>
-      <td valign="middle" class="td51">
+      <td class="td51" valign="middle">
         <p class="p1">Criação de FK para tabela de emails.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td51">
+      <td class="td51" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td26">
+      <td class="td26" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td51">
+      <td class="td51" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.8</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td48">
+      <td class="td48" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td52">
+      <td class="td52" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td37">
+      <td class="td37" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td53">
+      <td class="td53" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
-        <p class="p1">12/07/2010 </p>
+      <td class="td50" valign="middle">
+        <p class="p1">12/07/2010&nbsp;</p>
       </td>
-      <td valign="middle" class="td54">
-        <p class="p1">Correção </p>
+      <td class="td54" valign="middle">
+        <p class="p1">Correção&nbsp;</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Erro calculo do ICMS em venda com desconto no valor total e redução na base do ICMS.</p>
       </td>
-      <td valign="middle" class="td55">
-        <p class="p1">Implementação de acerto no rateio de valor total do desconto e frete. </p>
+      <td class="td55" valign="middle">
+        <p class="p1">Implementação de acerto no rateio de valor total do desconto e frete.&nbsp;</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
-        <p class="p1">12/07/2010 </p>
+      <td class="td50" valign="middle">
+        <p class="p1">12/07/2010&nbsp;</p>
       </td>
-      <td valign="middle" class="td54">
-        <p class="p1">Novidade </p>
+      <td class="td54" valign="middle">
+        <p class="p1">Novidade&nbsp;</p>
       </td>
-      <td valign="middle" class="td40">
-        <p class="p1">Procedure para facilitar depuração de ações de procedures e triggers. </p>
+      <td class="td40" valign="middle">
+        <p class="p1">Procedure para facilitar depuração de ações de procedures e triggers.&nbsp;</p>
       </td>
-      <td valign="middle" class="td55">
-        <p class="p1">SGDEBUG </p>
+      <td class="td55" valign="middle">
+        <p class="p1">SGDEBUG&nbsp;</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">12/07/2010</p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Flexibilização das regras de CFOP</p>
       </td>
-      <td valign="middle" class="td55">
+      <td class="td55" valign="middle">
         <p class="p1">Criação de amarração entre regra de CFOP e item de classificação fiscal.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">13/07/2010</p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Filtro por tipos de clientes no relatUio de ultimas vendas por cliente/produto.</p>
       </td>
-      <td valign="middle" class="td55">
+      <td class="td55" valign="middle">
         <p class="p1">Inclusão do filtro.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="middle" class="td55">
+      <td class="td55" valign="middle">
         <p class="p3"><br></p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.7</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">28/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Novo campo para imagem para papel timbrado na tela de cadastro de filiais.</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Criação do campo conforme a necessidade descrita.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">28/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Ao abrir ordem de serviço.</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Acerto no nome do campo de referencia do produto no lista campos.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Implementação de mecanismo para carregamento automático da sequencia de pesagem de acordo com o status do recebimento.</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td35">
-        <p class="p1">Implementação de mecanismo para carregamento de produto padrão no recebimento de mercadorias de acordo com o tipo de recebimento.</p>
+      <td class="td35" valign="top">
+        <p class="p1">Implementação
+de mecanismo para carregamento de produto padrão no recebimento de
+mercadorias de acordo com o tipo de recebimento.</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Problema na captura do peso em balanças do tipo BCI 10000.</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p1">Alteração no driver da balança BCI 10000 para inclusão de um zero a mais no peso.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Sistema não valida CPF de fornecedores.</p>
       </td>
-      <td valign="top" class="td34">
-        <p class="p1">Implementação de mecanismo de validação do CPF dos fornecedores pessoa física, no cadastro de fornecedores de acordo com preferência do usuário.</p>
+      <td class="td34" valign="top">
+        <p class="p1">Implementação
+de mecanismo de validação do CPF dos fornecedores pessoa física, no
+cadastro de fornecedores de acordo com preferência do usuário.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Criação do campo para cadastramento do pis/pasep/inss no cadastro de transportadores.</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">30/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Alteração</p>
       </td>
-      <td valign="top" class="td35">
+      <td class="td35" valign="top">
         <p class="p1">Alterações no layout do ticket de pesagem:</p>
         <p class="p1">Supressão do salto de linhas no layout.</p>
       </td>
-      <td valign="top" class="td34">
+      <td class="td34" valign="top">
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">07/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td35">
-        <p class="p1">Ao Abrir Orderm de Serviço/Recebimento de mercadoria. Erro ocorre quando existe mais de um tipo de recebimento de mercadoria com vários processos.</p>
+      <td class="td35" valign="middle">
+        <p class="p1">Ao
+Abrir Orderm de Serviço/Recebimento de mercadoria. Erro ocorre quando
+existe mais de um tipo de recebimento de mercadoria com vários
+processos.</p>
       </td>
-      <td valign="middle" class="td34">
-        <p class="p1">Acerto no parâmetro da classe GuardaCampos relativo ao tipo do campo. Alteração de ListaCampos.DB_SI  para ListaCampos.DB_PF.</p>
+      <td class="td34" valign="middle">
+        <p class="p1">Acerto
+no parâmetro da classe GuardaCampos relativo ao tipo do campo.
+Alteração de ListaCampos.DB_SI&nbsp; para ListaCampos.DB_PF.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">07/07/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">No calculo de previsão de tributos para orçaamentos, quando o cadastro da classificação fiscal utiliza caracteres não numéricos.</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Acerto no tipo do campo "CODFISC" na procedure LFBUSCAPREVTRIBORC.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.6</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td32">
+      <td class="td32" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td33">
+      <td class="td33" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">24/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td34">
-        <p class="p1">Ao incluir um produto que em sua classificação fiscal possua Marg. Vlr. Agregado não esta sendo carregado para o campo MARGEMVLAGRITVENDA da table VDITVENDA.</p>
+      <td class="td34" valign="middle">
+        <p class="p1">Ao
+incluir um produto que em sua classificação fiscal possua Marg. Vlr.
+Agregado não esta sendo carregado para o campo MARGEMVLAGRITVENDA da
+table VDITVENDA.</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Correção na classe CalcImpostos.</p>
         <p class="p1">"Contribuição de Paulo Bueno"</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">25/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Sinalização de chamados em atendimento no grid da tela de atendimentos.</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Criação de coluna com icone indicativo de atividade no chamado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">25/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Diversas funcionalidades referentes ao controle de chamados e atendimentos.</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Adequações no layout e mudança no nome ta tela de atendimentos para CRM;</p>
         <p class="p3"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">25/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Permitir conclusão de chamado ao lançar atendimento.</p>
       </td>
-      <td valign="middle" class="td35">
+      <td class="td35" valign="middle">
         <p class="p1">Flag na tela de lançamento de atendimentos, indicando se o atendimento deve concluir o chamado.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">25/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td34">
+      <td class="td34" valign="middle">
         <p class="p1">Criação de flags para manutenção do contas a pagar.</p>
       </td>
-      <td valign="middle" class="td35">
-        <p class="p1">Inclusão dos flags nas tabelas de contas a pagar, para permitir a atualização de campos sem que os triggers sejam disparados. Coluna (emmanut)</p>
+      <td class="td35" valign="middle">
+        <p class="p1">Inclusão
+dos flags nas tabelas de contas a pagar, para permitir a atualização de
+campos sem que os triggers sejam disparados. Coluna (emmanut)</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.5</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td22">
+      <td class="td22" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td56">
+      <td class="td56" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td57">
+      <td class="td57" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">21/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td58">
+      <td class="td58" valign="middle">
         <p class="p1">Implementação na tela de painel de controle de<span class="Apple-converted-space">&nbsp;</span></p>
-        <p class="p1"> recebimento de mercadorias.</p>
+        <p class="p1">&nbsp;recebimento de mercadorias.</p>
       </td>
-      <td valign="middle" class="td59">
+      <td class="td59" valign="middle">
         <p class="p1">Criacao de novos filtros e imagens de referencia</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">21/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Erro</p>
       </td>
-      <td valign="middle" class="td58">
+      <td class="td58" valign="middle">
         <p class="p1">Erro em grids com valores nulos.</p>
       </td>
-      <td valign="middle" class="td59">
-        <p class="p1">Implementação na classe JTablePad  inserindo valor branco ""<span class="Apple-converted-space">&nbsp;</span></p>
+      <td class="td59" valign="middle">
+        <p class="p1">Implementação na classe JTablePad&nbsp; inserindo valor branco ""<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">quando o método setValor() contiver um valor nulo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">21/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td58">
+      <td class="td58" valign="middle">
         <p class="p1">Permitir alteração do preco do item<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">de compra na tela de busca de pedidos.</p>
       </td>
-      <td valign="middle" class="td59">
+      <td class="td59" valign="middle">
         <p class="p1">Liberacao do grid para edição;<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">Alteração na procedure de geração de compra<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">a partir de pedido, incluindo parâmetro</p>
-        <p class="p1"> para pegar o preço do grid.</p>
+        <p class="p1">&nbsp;para pegar o preço do grid.</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">21/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td58">
+      <td class="td58" valign="middle">
         <p class="p1">Campo CNAE no cadastro de clientes.</p>
       </td>
-      <td valign="middle" class="td59">
+      <td class="td59" valign="middle">
         <p class="p1">Criação de tabela SGCNAE e FK para o cadastro de clientes;</p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td24">
+      <td class="td24" valign="middle">
         <p class="p1">21/06/2010</p>
       </td>
-      <td valign="middle" class="td25">
+      <td class="td25" valign="middle">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="middle" class="td58">
+      <td class="td58" valign="middle">
         <p class="p1">Script para população da tabela SGCNAE</p>
       </td>
-      <td valign="middle" class="td59">
+      <td class="td59" valign="middle">
         <p class="p1">dados/sql/implantacao/16_insert_sgcnae.sql</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Funcionamento inadequado da tela de bloqueio/desbloqueio de compras.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Implementação na chamada da procedure CPBLOQCOMPRASP, passando o parâmetro do código</p>
         <p class="p1">da filial corretamente.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td58">
-        <p class="p1">Problema ao utilizar a aba de baixa de contas  a pagar (Erro multiplas rows in single select)</p>
+      <td class="td58" valign="top">
+        <p class="p1">Problema ao utilizar a aba de baixa de contas&nbsp; a pagar (Erro multiplas rows in single select)</p>
       </td>
-      <td valign="top" class="td59">
-        <p class="p1">Implementação na query de seleção das parcelas do título. A amarração do título com o centro de custo não utilizava o ano de referência do centro de custo.</p>
+      <td class="td59" valign="top">
+        <p class="p1">Implementação
+na query de seleção das parcelas do título. A amarração do título com o
+centro de custo não utilizava o ano de referência do centro de custo.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Problema ao habilitar multiplos almoxarifados em empresa com<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">multiplas filiais.<span class="Apple-converted-space">&nbsp;</span></p>
         <p class="p1">A dialog para seleção do almoxarifado não abria em uma das filiais.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Implementação na query da dialog DLBuscaProd para parametrização correta do campo código da filial.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">22/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Falha no reprocessamento de estoque em empresas com multiplas filiais com produtos compartilhados.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Implementação no mecanismo de reprocessamento para parametrização correta do campo código da filial.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Tela para manutenção da tabela SGCNAE</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Criação de formulário em: Arquivo/Tabelas/Clientes/Atividades CNAE</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Exibição do release notes da versão na tela de Ajuda/Sobre</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Implementação no layout da tela e leitura do arquivo html.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Erro</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Erro ao gerar orçamento a partir de ordem de serviço, quando logado utilizando usuário diferente do sysdba.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Inclusão de grant para o grupo ADM na procedure vdadicitorcrecmercsp.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">23/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Ao gerar orçamento a partir de ordem de serviço nâo é possível detectar qual o orçamento gerado.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Inclusão de coluna no grid informando o código do orçamento gerado;</p>
         <p class="p1">Abertura automática da tela de orçamento após geração;</p>
         <p class="p1">Abertura do orçamento no botão orçamento da tela de painel de controle de ordens de serviço.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Quando selecionada a listagem de produtos compra / venda multiplas filiais, os dados eram gerais de todas as filiais.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Criação de filtro para utilização da consulta de compra / venda produtos para multiplas filiais.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">24/06/2010</p>
       </td>
-      <td valign="top" class="td25">
+      <td class="td25" valign="top">
         <p class="p1">Novidade</p>
       </td>
-      <td valign="top" class="td58">
+      <td class="td58" valign="top">
         <p class="p1">Relatório de chamados.</p>
       </td>
-      <td valign="top" class="td59">
+      <td class="td59" valign="top">
         <p class="p1">Criação de relatório de chamados no padrão jasper report com acesso através da tela de atendimentos na aba chamados.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.2.4</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td46">
+      <td class="td46" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td60">
+      <td class="td60" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td29">
+      <td class="td29" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td21">
+      <td class="td21" valign="middle">
         <p class="p4"><br></p>
       </td>
-      <td valign="middle" class="td46">
+      <td class="td46" valign="middle">
         <p class="p4"><br></p>
       </td>
-      <td valign="middle" class="td60">
+      <td class="td60" valign="middle">
         <p class="p4"><br></p>
       </td>
-      <td valign="middle" class="td29">
+      <td class="td29" valign="middle">
         <p class="p4"><br></p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">16/06/2010</p>
       </td>
-      <td valign="middle" class="td47">
+      <td class="td47" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td61">
+      <td class="td61" valign="top">
         <p class="p1">Erro na montagem do grid de vendas e itens de vendas na tela de Consulta de Clientes.</p>
       </td>
-      <td valign="top" class="td31">
+      <td class="td31" valign="top">
         <p class="p1">Uso da função "coalesce" nas consultas de vendas e itens de vendas.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">17/06/2010</p>
       </td>
-      <td valign="middle" class="td47">
+      <td class="td47" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td61">
+      <td class="td61" valign="top">
         <p class="p1">Implementações no driver da balança hidrostática BCI 10000</p>
       </td>
-      <td valign="top" class="td31">
+      <td class="td31" valign="top">
         <p class="p1">Acerto no numero de casas decimais do campo peso.</p>
       </td>
     </tr>
     <tr>
-      <td valign="top" class="td24">
+      <td class="td24" valign="top">
         <p class="p1">17/06/2010</p>
       </td>
-      <td valign="middle" class="td47">
+      <td class="td47" valign="middle">
         <p class="p3"><br></p>
       </td>
-      <td valign="top" class="td61">
-        <p class="p1">Erro na tela de venda em bases de dados que possuem vendas de PDV e normais. Quando há vendas de tipos diferentes com o mesmo código o sistema realizava o update nas duas.</p>
+      <td class="td61" valign="top">
+        <p class="p1">Erro
+na tela de venda em bases de dados que possuem vendas de PDV e normais.
+Quando há vendas de tipos diferentes com o mesmo código o sistema
+realizava o update nas duas.</p>
       </td>
-      <td valign="top" class="td31">
+      <td class="td31" valign="top">
         <p class="p1">Anexado o campo txtTipoVenda no listacampos da venda com o flag de PK.</p>
       </td>
     </tr>
   </tbody>
 </table>
 <p class="p1">Versão 1.2.3.3</p>
-<table style="width: 677px;" border="1" cellpadding="2" cellspacing="0" cellspacing="0" cellpadding="0" class="t1">
+<table style="width: 677px;" class="t1" border="1" cellpadding="2" cellspacing="0">
   <tbody>
     <tr>
-      <td valign="middle" class="td48">
+      <td class="td48" valign="middle">
         <p class="p2"><b>Data</b></p>
       </td>
-      <td valign="middle" class="td52">
+      <td class="td52" valign="middle">
         <p class="p2"><b>Tipo</b></p>
       </td>
-      <td valign="middle" class="td37">
+      <td class="td37" valign="middle">
         <p class="p2"><b>Problema/Necessidade</b></p>
       </td>
-      <td valign="middle" class="td29">
+      <td class="td29" valign="middle">
         <p class="p2"><b>Solução</b></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">28/07/2010<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p1">Novidade<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Ao excluir registros com vinculos, identificar a origem do vinculo.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Implementação na mensagem incluindo a tabela vinculada. E a mensagem original de erro do banco de dados.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">01/08/2010<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p1">Novidade<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Impressão de recebos de pagamentos.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Implementação de mecanismo para impressão de recibos pré-impressos para pagamentos.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
     </tr>
     <tr>
-      <td valign="middle" class="td50">
+      <td class="td50" valign="middle">
         <p class="p1">02/08/2010<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td54">
+      <td class="td54" valign="middle">
         <p class="p1">Novidade<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td40">
+      <td class="td40" valign="middle">
         <p class="p1">Relatório de entradas de material com peso.<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
-      <td valign="middle" class="td31">
+      <td class="td31" valign="middle">
         <p class="p1">Módulo GMS/Recimento de mercadorias/Listagems/Relação de entradas/peso<span class="Apple-converted-space">&nbsp;</span></p>
       </td>
     </tr>
   </tbody>
 </table>
-</body>
-</html>
+</body></html>
