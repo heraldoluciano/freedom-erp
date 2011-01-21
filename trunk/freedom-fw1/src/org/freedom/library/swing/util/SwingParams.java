@@ -29,6 +29,8 @@ public class SwingParams {
 	public static int TAMANHO_FONTE = 0;
 
 	public static Color COR_FUNDO_BARRA_BOTOES = new Color(238, 238, 238);
+	
+	public static Color COR_VERDE_FREEDOM = new Color( 45, 190, 60 );
 
 	public static Font getFontpad() {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_PAD + TAMANHO_FONTE);
@@ -77,6 +79,10 @@ public class SwingParams {
 	public static Border getPanelLabel(String label, Color cortitulo) {
 		Border border = getPanelLabel(label, cortitulo, TitledBorder.DEFAULT_JUSTIFICATION);
 		return border;
+	}
+
+	public static Color getVerdeFreedom() {
+		return COR_VERDE_FREEDOM;
 	}
 
 }
