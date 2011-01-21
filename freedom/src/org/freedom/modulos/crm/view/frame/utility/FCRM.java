@@ -85,11 +85,11 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 public class FCRM extends FFilho implements CarregaListener, ActionListener, FocusListener, JComboBoxListener, KeyListener, ChangeListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int ABA_NONE= -1;
-	
+
 	private static final int ABA_CHAMADO = 0;
-	
+
 	private static final int ABA_ATENDIMENTO = 1;
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
@@ -100,7 +100,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 120 );
 
-	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 120 );
+	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 200 );
 
 	private JPanelPad pnAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -201,7 +201,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JButtonPad btNovoAtendimento = new JButtonPad( Icone.novo( "btNovo.gif" ) );
-	
+
 	private JButtonPad btNovoChamado = new JButtonPad( Icone.novo( "btChamado.png" ) );
 
 	private JButtonPad btAtualizaChamados = new JButtonPad( Icone.novo( "btAtualiza.gif" ) );
@@ -279,8 +279,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI
 	}
-
-	// Construção padrão para tela de atendimento
+	
+	private JLabelPad lbStatus = new JLabelPad();
+	
+	private HashMap<String, Object> prefere = null;
 
 	public FCRM() {
 
@@ -291,8 +293,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		tipoatendo = "A"; // Setando o tipo de atendimento para "A" de atendimento;
 
-		pnCabCli.setPreferredSize( new Dimension( 500, 155 ) );
+		pnCabCli.setPreferredSize( new Dimension( 500, 175 ) );
 
+		prefere = getPrefere();
+		
 		montaListaCamposAtend();
 		montaTela();
 
@@ -797,48 +801,32 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinCabCli.add( pinCli, BorderLayout.CENTER );
 		pinCli.setBorder( SwingParams.getPanelLabel( "Filtro de cliente", Color.blue ) );
 
-		pinCli.adic( new JLabelPad( "Cód.Cli." ), 10, 0, 50, 20 );
-		pinCli.adic( txtCodCli, 10, 20, 50, 20 );
-
-		pinCli.adic( new JLabelPad( "Razão social do cliente" ), 63, 0, 200, 20 );
-		pinCli.adic( txtRazCli, 63, 20, 412, 20 );
-
-		pinCli.adic( new JLabelPad( "Contato" ), 478, 0, 237, 20 );
-		pinCli.adic( txtContatoCli, 478, 20, 237, 20 );
-
-		pinCli.adic( new JLabelPad( "DDD" ), 10, 40, 50, 20 );
-		pinCli.adic( txtDDDCli, 10, 60, 40, 20 );
-
-		pinCli.adic( new JLabelPad( "Telefone" ), 63, 40, 100, 20 );
-		pinCli.adic( txtFoneCli, 63, 60, 100, 20 );
-
-		pinCli.adic( new JLabelPad( "DDD" ), 166, 40, 50, 20 );
-		pinCli.adic( txtDDDFax, 166, 60, 50, 20 );
-
-		pinCli.adic( new JLabelPad( "Fax" ), 219, 40, 100, 20 );
-		pinCli.adic( txtFaxCli, 219, 60, 100, 20 );
-
-		pinCli.adic( new JLabelPad( "DDD" ), 322, 40, 50, 20 );
-		pinCli.adic( txtDDDCel, 322, 60, 50, 20 );
-
-		pinCli.adic( new JLabelPad( "Celular" ), 375, 40, 100, 20 );
-		pinCli.adic( txtCelCli, 375, 60, 100, 20 );
-
-		pinCli.adic( new JLabelPad( "Email" ), 478, 40, 237, 20 );
-		pinCli.adic( txtEmailCli, 478, 60, 237, 20 );
-
-		pinCli.adic( new JLabelPad( "Endereço" ), 10, 80, 362, 20 );
-		pinCli.adic( txtEndCli, 10, 100, 362, 20 );
-
-		pinCli.adic( new JLabelPad( "Numero" ), 375, 80, 100, 20 );
-		pinCli.adic( txtNumCli, 375, 100, 100, 20 );
-
-		pinCli.adic( new JLabelPad( "Cidade" ), 478, 80, 100, 20 );
-		pinCli.adic( txtCidCli, 478, 100, 169, 20 );
-
-		pinCli.adic( new JLabelPad( "UF" ), 650, 80, 60, 20 );
-		pinCli.adic( txtUfCli, 650, 100, 65, 20 );
-
+		pinCli.adic( txtCodCli, 	10, 	20, 	50, 	20, "Cód.Cli." 					);
+		pinCli.adic( txtRazCli, 	63, 	20, 	312, 	20, "Razão social do cliente" 	);
+		
+		pinCli.adic( lbStatus, 		378, 	20, 	97, 	20, "Situação"					);
+		
+		pinCli.adic( txtContatoCli, 478, 	20, 	237, 	20, "Contato" 					);
+		pinCli.adic( txtDDDCli, 	10, 	60, 	50, 	20, "DDD" 						);	
+		pinCli.adic( txtFoneCli, 	63, 	60, 	100, 	20, "Telefone" 					);
+		pinCli.adic( txtDDDFax, 	166, 	60, 	50, 	20, "DDD" 						);
+		pinCli.adic( txtFaxCli, 	219, 	60, 	100, 	20, "Fax" 						);
+		pinCli.adic( txtDDDCel, 	322, 	60, 	50, 	20, "DDD" 						);
+		pinCli.adic( txtCelCli, 	375, 	60, 	100, 	20, "Celular"					);
+		pinCli.adic( txtEmailCli, 	478, 	60, 	237, 	20, "Email" 					);
+		pinCli.adic( txtEndCli, 	10, 	100, 	362, 	20, "Endereço"  				);
+		pinCli.adic( txtNumCli, 	375, 	100, 	100, 	20, "Número" 					);
+		pinCli.adic( txtCidCli, 	478, 	100, 	169, 	20, "Cidade"					);
+		pinCli.adic( txtUfCli, 		650, 	100, 	65, 	20, "UF" 						);
+		
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setFont( SwingParams.getFontboldmed() );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
+		lbStatus.setOpaque( true );
+		lbStatus.setText( "" );
+		lbStatus.setBackground( Color.GRAY );
+		
+	
 	}
 
 	private void adicBotoes() {
@@ -1380,10 +1368,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		carregaAtendimentos();
 	}
-	
+
 	private void novoChamado() {
 		try {
-			
+
 			FChamado chamado = null;
 			Integer codcli = null;
 
@@ -1396,16 +1384,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 
 			if(txtCodCli.getVlrInteger()<1) {
-			
+
 				if( tpnAbas.getSelectedIndex() == ABA_CHAMADO) {
-				
+
 					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), GridChamado.CODCLI.ordinal() );
-				
+
 				}
 				else if( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO) {
-					
+
 					codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), 11 );
-				
+
 				}
 
 			}
@@ -1413,12 +1401,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				codcli = txtCodCli.getVlrInteger();
 			}
 
-					
+
 			chamado.novo();
-				
+
 			chamado.setCodCli( codcli );
-			
-			
+
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1443,6 +1431,23 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>" );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 			carregaChamados();
+			
+			if( (Boolean) prefere.get( "MOSTRACLIATRASO" ) && emAtraso() ) {
+				
+				lbStatus.setText( "Atraso!" );
+				lbStatus.setBackground( Color.RED );
+				
+				
+			}
+			else {
+				
+
+				lbStatus.setText( "Normal" );
+				lbStatus.setBackground( SwingParams.getVerdeFreedom() );
+				
+				
+			}
+			
 		}
 	}
 
@@ -1717,6 +1722,100 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		// TODO Auto-generated method stub
 
+	}
+
+	private boolean emAtraso() {
+
+		boolean bRetorno = true;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			// Se for devolução não deve verificar parcelas em aberto...
+
+			String sSQL = "SELECT SRETORNO FROM FNCHECAPGTOATRASOSP(?,?,?)";
+
+			ps = con.prepareStatement( sSQL );
+			
+			ps.setInt( 1, txtCodCli.getVlrInteger() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, Aplicativo.iCodFilial );
+			
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				
+				bRetorno = "S".equals(  rs.getString( "SRETORNO" ) );
+				
+			}
+			else {
+				Funcoes.mensagemErro( this, "Não foi possível checar os pagamentos do cliente!" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+
+		} 
+		catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Não foi possível verificar os pagamentos do cliente!\n" + err.getMessage(), true, con, err );
+		}
+
+		return bRetorno;
+
+	}
+	
+	private HashMap<String, Object> getPrefere() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "select MOSTRACLIATRASO, BLOQATENDCLIATRASO FROM sgprefere3 WHERE CODEMP=? AND CODFILIAL=? ";
+		
+		HashMap<String, Object> ret = new HashMap<String, Object>();
+		
+		try {
+			
+			con = Aplicativo.getInstace().getConexao();
+			ps = con.prepareStatement( sSQL );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+
+			rs = ps.executeQuery();
+
+			vValsTipo.clear();
+			vLabsTipo.clear();
+
+			vValsTipo.addElement( -1 );
+			vLabsTipo.addElement( "<Todos>" );
+
+			while ( rs.next() ) {
+				
+				ret.put( "MOSTRACLIATRASO", "S".equals( rs.getString( "MOSTRACLIATRASO" ) ));
+				ret.put( "BLOQATENDCLIATRASO", "S".equals( rs.getString( "MOSTRACLIATRASO" ) ));
+				
+			}
+			
+			rs.close();
+			ps.close();
+			
+			con.commit();
+		
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar preferencias!\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			ps = null;
+			rs = null;
+		}
+		
+		return ret;
+		
 	}
 
 }
