@@ -131,7 +131,7 @@ public class FreedomCRM extends AplicativoPD {
 		// addSeparador( 100100000 );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null );
-		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências Gerais.", "Pref. Gerais", 'G', 100201000, 2, true, FPrefere.class );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM.", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100300000, 1, false, null );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Importação de Contatos", "Importação de contatos", 'I', 100301000, 2, true, FImportaCto.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout", "Cadastro de org.freedom.layout", 'C', 100302000, 2, true, FTipoImp.class );
