@@ -825,6 +825,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lbStatus.setOpaque( true );
 		lbStatus.setText( "" );
 		lbStatus.setBackground( Color.LIGHT_GRAY );
+		lbStatus.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
 		
 	
 	}
