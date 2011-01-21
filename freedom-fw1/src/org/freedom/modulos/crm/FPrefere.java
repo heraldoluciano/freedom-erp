@@ -36,9 +36,13 @@ public class FPrefere extends FTabDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad panelGeral = new JPanelPad();
+	private JPanelPad panelCampanhas = new JPanelPad();
+	
+	private JPanelPad panelEmail = new JPanelPad();
+	
+	private JPanelPad panelAtendimentos = new JPanelPad();
 
-	private JPanelPad panelMail = new JPanelPad();
+	private JPanelPad pnEmail = new JPanelPad();
 
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
 
@@ -55,6 +59,10 @@ public class FPrefere extends FTabDados {
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horario automático no atendimento?", "S", "N");
+	
+	private JCheckBoxPad cbMostraCliAtraso = new JCheckBoxPad("Mostra clientes em atraso no painel de controle ?", "S", "N");
+	
+	private JCheckBoxPad cbBloqueiaCliAtraso = new JCheckBoxPad("Bloquear atendimentos para clientes em atraso ?", "S", "N");
 
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
@@ -63,29 +71,53 @@ public class FPrefere extends FTabDados {
 	public FPrefere() {
 
 		super();
-		setTitulo("Preferências");
+		setTitulo("Preferências CRM");
 		setAtribos(50, 50, 450, 375);
 
 		montaListaCampos();
 
-		adicTab("Geral", panelGeral);
 
-		setPainel(panelGeral);
+		/******************
+		 * ABA EMAIL
+		 *****************/
+		
+		adicTab("Campanhas", panelCampanhas);
+
+		setPainel(panelCampanhas);
 
 		adicCampo(txtCodAtivCE, 10, 30, 80, 20, "CodAtivCE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivCE, false);
-		adicDescFK(txtDescAtivCE, 93, 30, 320, 20, "DescAtiv", "Atividade padrão para capanha enviada");
+		adicDescFK(txtDescAtivCE, 93, 30, 320, 20, "DescAtiv", "Atividade padrão para campanha enviada");
 		adicCampo(txtCodAtivTE, 10, 70, 80, 20, "CodAtivTE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivTE, false);
 		adicDescFK(txtDescAtivTE, 93, 70, 320, 20, "DescAtiv", "Atividade padrão para tentativa de envio de campanha");
 
-		adicDB(cbAutoHorario, 10, 100, 405, 20, "AUTOHORATEND", "", false);
+	
+		/******************
+		 * ABA EMAIL
+		 *****************/
 
-		panelMail.setBorder(BorderFactory.createTitledBorder("Servidor para envio de email"));
-		adic(panelMail, 10, 140, 405, 120);
-		setPainel(panelMail);
+		adicTab("Email", panelEmail);
+		
+		setPainel(panelEmail);
+				
+		pnEmail.setBorder(BorderFactory.createTitledBorder("Servidor para envio de email"));
+		adic(pnEmail, 10, 10, 405, 120);
+		setPainel(pnEmail);
 		adicCampo(txtSmtpMail, 10, 20, 190, 20, "SmtpMail", "SMTP", ListaCampos.DB_SI, false);
 		adicCampo(txtUserMail, 10, 60, 190, 20, "UserMail", "Usuario", ListaCampos.DB_SI, false);
 		adicCampo(txpPassMail, 203, 60, 180, 20, "PassMail", "Senha", ListaCampos.DB_SI, false);
+		
+		/******************
+		 * ABA ATENDIMENTOS
+		 *****************/
 
+		adicTab("Atendimentos", panelAtendimentos);
+
+		setPainel(panelAtendimentos);
+		
+		adicDB(cbAutoHorario, 10, 10, 405, 20, "AUTOHORATEND", "", false);
+		adicDB(cbMostraCliAtraso, 10, 30, 405, 20, "MOSTRACLIATRASO", "", false);
+		adicDB(cbBloqueiaCliAtraso, 10, 50, 405, 20, "BLOQATENDCLIATRASO", "", false);
+		
 		setListaCampos(false, "PREFERE3", "SG");
 
 		nav.setAtivo(0, false);
