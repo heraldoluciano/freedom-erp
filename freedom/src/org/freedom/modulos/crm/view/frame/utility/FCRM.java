@@ -824,7 +824,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setOpaque( true );
 		lbStatus.setText( "" );
-		lbStatus.setBackground( Color.GRAY );
+		lbStatus.setBackground( Color.LIGHT_GRAY );
 		
 	
 	}
@@ -1439,12 +1439,18 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				
 				
 			}
-			else {
+			else if( (Boolean) prefere.get( "MOSTRACLIATRASO" )){
 				
 
 				lbStatus.setText( "Normal" );
 				lbStatus.setBackground( SwingParams.getVerdeFreedom() );
 				
+				
+			}
+			else {
+				
+				lbStatus.setText( "" );
+				lbStatus.setBackground( Color.LIGHT_GRAY );
 				
 			}
 			
