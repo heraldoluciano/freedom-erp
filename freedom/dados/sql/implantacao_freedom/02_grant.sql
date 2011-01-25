@@ -402,6 +402,7 @@ grant select, delete, insert, update ON sgprefere5 to "ADM";
 grant select, delete, insert, update ON ppestrufase to "ADM";
 grant select, delete, insert, update ON ppopfase to "ADM";
 grant select, delete, insert, update ON ppop to "ADM";
+grant select, delete, insert, update ON ppopentrada to "ADM";
 grant select, delete, insert, update ON ppopitorc to "ADM";
 grant select, delete, insert, update ON ppprocessaoptmp to "ADM";
 
@@ -418,7 +419,7 @@ GRANT SELECT ON FNITRECEBER TO PROCEDURE FNCHECAPGTOATRASOSP;
 GRANT SELECT ON FNRECEBER TO PROCEDURE FNCHECAPGTOATRASOSP;
 
 
-GRANT EXECUTE ON PROCEDURE FNCHECAPGTOATRASOSP TO ADM;
+
 
 
 COMMIT WORK;
