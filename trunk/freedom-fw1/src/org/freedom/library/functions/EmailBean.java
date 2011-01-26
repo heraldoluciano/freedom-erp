@@ -273,8 +273,16 @@ public class EmailBean {
 
 			InternetAddress[] address = null;
 
-			address = new InternetAddress[] { new InternetAddress(email.getPara().trim()), new InternetAddress(email.getCopia().trim()) };
+			if(email.getCopia()!=null && !email.getCopia().trim().equals("")) {
+			
+				address = new InternetAddress[] { new InternetAddress(email.getPara().trim()), new InternetAddress(email.getCopia().trim()) };
 
+			}
+			else {
+				address = new InternetAddress[] { new InternetAddress(email.getPara().trim()) };
+
+			}
+				
 			msg.setRecipients(Message.RecipientType.TO, address);
 			msg.setSubject(email.getAssunto().trim());
 
