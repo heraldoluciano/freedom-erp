@@ -10,6 +10,7 @@ package org.freedom.modulos.crm.view.frame.utility;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
@@ -275,14 +277,18 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JCheckBoxPad cbEmAtendimento = new JCheckBoxPad( "Só em atendimento?", "S", "N" );
 
 	private boolean financeiro = false;
+	
+	final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI, DETCHAMADO
 	}
 	
 	private JLabelPad lbStatus = new JLabelPad();
 	
 	private HashMap<String, Object> prefere = null;
+	
+	private JTextAreaPad txtDialog = new JTextAreaPad();
 
 	public FCRM() {
 
@@ -302,6 +308,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		adicFiltrosAtend();
 		adicFiltrosChamado();
+		
+		criaTelaMensagem();
 
 	}
 
@@ -756,6 +764,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "" );
 		tabchm.adicColuna( "Em atendimento" );
 		tabchm.adicColuna( "codcli" ); // Oculto
+		tabchm.adicColuna( "Detalhamento do chamado" ); // Oculto;
 
 		tabchm.setTamColuna( 60, GridChamado.DTCHAMADO.ordinal() );
 		tabchm.setTamColuna( 20, GridChamado.PRIORIDADE.ordinal() );
@@ -769,6 +778,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.setTamColuna( 20, GridChamado.EM_ATENDIMENTO.ordinal() );
 		tabchm.setTamColuna( 140, GridChamado.DADOS_ATENDIMENTO.ordinal() );
 		tabchm.setColunaInvisivel( GridChamado.CODCLI.ordinal() );
+		tabchm.setColunaInvisivel( GridChamado.DETCHAMADO.ordinal() );
 
 		tabchm.setRowHeight( 20 );
 
@@ -925,7 +935,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		tabatd.addMouseListener( this );
 		tabchm.addMouseListener( this );
-
+		
 	}
 
 	private void adicRodape() {
@@ -1113,7 +1123,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ch.codcli, ch.solicitante, " );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
-			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento " );
+			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento, ch.detchamado " );
 			sql.append( "from crchamado ch, crtipochamado tc " );
 			sql.append( "where tc.codemp=ch.codemptc and tc.codfilial=ch.codfilialtc and tc.codtpchamado=ch.codtpchamado " );
 			sql.append( "and ch.codemp=? and ch.codfilial=? " );
@@ -1291,6 +1301,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 						tabchm.setValor( chamado_parado, i, GridChamado.EM_ATENDIMENTO.ordinal() );
 						tabchm.setValor( "", i, GridChamado.DADOS_ATENDIMENTO.ordinal() );
 					}
+					
+					tabchm.setValor( rs.getString( GridChamado.DETCHAMADO.name() ), i, GridChamado.DETCHAMADO.ordinal() );
 
 					row++;
 
@@ -1690,26 +1702,65 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 ) {
+		if ( mevt.getSource() == tabatd && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
 			visualizaAtend();
 		}
 		else if ( mevt.getSource() == tabchm && mevt.getClickCount() == 1 ) {
-			txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
-			txtCodAtendenteAtendimento.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
-			txtDatainiAtend.setVlrString( "" );
-			txtDatafimAtend.setVlrString( "" );
-			lcAtendenteAtendimento.carregaDados();
-			lcChamado.carregaDados();
+			
+			
+			
+			if (mevt.getModifiers() == MouseEvent.BUTTON3_MASK && tabchm.getLinhaSel()>-1) {
+
+				dlMensagem.setVisible(true);
+				txtDialog.setText( (String) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.DETCHAMADO.ordinal() ) );
+				
+			}
+			else if(tabchm.getLinhaSel()>-1) { 
+			
+				txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), GridChamado.CODCHAMADO.ordinal() ) );
+				txtCodAtendenteAtendimento.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
+				txtDatainiAtend.setVlrString( "" );
+				txtDatafimAtend.setVlrString( "" );
+				lcAtendenteAtendimento.carregaDados();
+				lcChamado.carregaDados();
+				
+				
+			}
+			
 		}
-		else if ( mevt.getSource() == tabchm && mevt.getClickCount() == 2 ) {
+		else if ( mevt.getSource() == tabchm && mevt.getClickCount() == 2  && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
 			visualizaCham();
 		}
 
 	}
+	
+	public void criaTelaMensagem() {
+		
+		try {
+			
+			dlMensagem.setSize(300, 150);
+			dlMensagem.setLocationRelativeTo(dlMensagem);
+			dlMensagem.setTitle("");
+			 
+			txtDialog.setBackground( Color.YELLOW );			
+			txtDialog.setBorder( null );
+			
+			Container c = dlMensagem.getContentPane();
+			
+			txtDialog.setEditable(false);
+			
+			JScrollPane spnTxt = new JScrollPane(txtDialog);
+			
+			c.setLayout(new BorderLayout());		
+			c.add(spnTxt, BorderLayout.CENTER);
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	public void mouseEntered( MouseEvent arg0 ) {
-
-		// TODO Auto-generated method stub
+	public void mouseEntered( MouseEvent mevt ) {
 
 	}
 
@@ -1725,9 +1776,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	}
 
-	public void mouseReleased( MouseEvent arg0 ) {
-
-		// TODO Auto-generated method stub
+	public void mouseReleased( MouseEvent mevt ) {
 
 	}
 
@@ -1764,7 +1813,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			ps.close();
 
 			con.commit();
-
 
 		} 
 		catch ( SQLException err ) {
