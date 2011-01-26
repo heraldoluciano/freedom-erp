@@ -71,6 +71,7 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
+import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener, PostListener {
@@ -490,6 +491,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
+	public void beforePost( PostEvent pevt ) {
+		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+				txtCodChamado.setVlrInteger( Integer.parseInt( lcCampos.getNovoCodigo().trim()) );
+		}
+	}
+	
 	public void afterPost( PostEvent pevt ) {
 
 		if(txtCodAtend.getVlrInteger()>0 
