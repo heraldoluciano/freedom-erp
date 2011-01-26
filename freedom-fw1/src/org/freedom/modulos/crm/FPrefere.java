@@ -56,6 +56,10 @@ public class FPrefere extends FTabDados {
 
 	private JTextFieldFK txtDescAtivCE = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
+	private JTextFieldPad txtCodEmailNC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldFK txtDescEmailNC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
 	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horario automático no atendimento?", "S", "N");
@@ -67,6 +71,8 @@ public class FPrefere extends FTabDados {
 	private ListaCampos lcAtivTE = new ListaCampos(this, "TE");
 
 	private ListaCampos lcAtivCE = new ListaCampos(this, "CE");
+	
+	private ListaCampos lcEmailNC = new ListaCampos( this, "NC" );
 
 	public FPrefere() {
 
@@ -118,6 +124,9 @@ public class FPrefere extends FTabDados {
 		adicDB(cbMostraCliAtraso, 10, 30, 405, 20, "MOSTRACLIATRASO", "", false);
 		adicDB(cbBloqueiaCliAtraso, 10, 50, 405, 20, "BLOQATENDCLIATRASO", "", false);
 		
+		adicCampo(txtCodEmailNC, 7, 100, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
+		adicDescFK(txtDescEmailNC, 90, 100, 320, 20, "DescEmail", "Email para notificação de chamados");
+		
 		setListaCampos(false, "PREFERE3", "SG");
 
 		nav.setAtivo(0, false);
@@ -139,14 +148,32 @@ public class FPrefere extends FTabDados {
 		lcAtivTE.setReadOnly(true);
 		lcAtivTE.setQueryCommit(false);
 		txtCodAtivTE.setTabelaExterna(lcAtivTE, null);
+		
+		// Email Campanha
+		lcEmailNC.add( new GuardaCampo( txtCodEmailNC, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
+		lcEmailNC.add( new GuardaCampo( txtDescEmailNC, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
+		lcEmailNC.montaSql( false, "EMAIL", "TK" );
+		lcEmailNC.setQueryCommit( false );
+		lcEmailNC.setReadOnly( true );
+		txtCodEmailNC.setTabelaExterna(lcEmailNC, null);
+		
+		
+		txtCodEmailNC.setNomeCampo( "CodEmail" );
+		txtCodEmailNC.setPK( true );
+		txtCodEmailNC.setListaCampos( lcEmailNC );
+		
 	}
 
 	public void setConexao(DbConnection cn) {
 
 		super.setConexao(cn);
+		
 		lcAtivCE.setConexao(cn);
 		lcAtivTE.setConexao(cn);
+		lcEmailNC.setConexao(cn);
+		
 		lcCampos.carregaDados();
-
+	
+		
 	}
 }
