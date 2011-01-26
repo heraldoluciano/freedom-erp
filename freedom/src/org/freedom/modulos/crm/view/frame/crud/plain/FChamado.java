@@ -29,8 +29,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
@@ -40,8 +48,15 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
+import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.SMTPAuthenticator;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.business.component.ProcessoSec;
+import org.freedom.library.functions.EmailBean;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JComboBoxPad;
@@ -50,6 +65,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
@@ -57,7 +73,7 @@ import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener {
+public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,14 +104,16 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldFK txtEmailAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextAreaPad txaDetChamado = new JTextAreaPad( 1000 );
 
@@ -132,7 +150,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcItRecMercItOS = new ListaCampos( this, "OS" );
 
 	private FDados telanterior = null;
-	
+
 	public FChamado() {
 
 		super();
@@ -185,19 +203,20 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicCampo( txtCodAtend, 7, 140, 80, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
 		adicDescFK( txtNomeAtend, 90, 140, 250, 20, "NomeAtend", "Nome do atendente designado" );
 
+
 		txtDtConclusao.setEditable( false );
 
 		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", false );
 		adicDBLiv( txaObsChamado, "ObsChamado", "Observações", false );
 
-//		adicCampo( txtTicket, 432, 140, 80, 20, "Ticket", "Ticket", ListaCampos.DB_FK, false );
-//		adicCampo( txtCodItRecMerc, 515, 140, 80, 20, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
-//		adicCampo( txtCodItOS, 598, 140, 80, 20, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
-		
+		//		adicCampo( txtTicket, 432, 140, 80, 20, "Ticket", "Ticket", ListaCampos.DB_FK, false );
+		//		adicCampo( txtCodItRecMerc, 515, 140, 80, 20, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
+		//		adicCampo( txtCodItOS, 598, 140, 80, 20, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
+
 		adicCampoInvisivel( txtTicket, "Ticket", "Ticket", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItRecMerc, "CodItRecMerc", "Cod.It.Rec.Merc.", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItOS, "CodItOS", "Cod.It.OS", ListaCampos.DB_FK, false );
-		
+
 		setListaCampos( true, "CHAMADO", "CR" );
 
 		panelGeral.add( panelDetalhamento, BorderLayout.CENTER );
@@ -237,8 +256,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtCodAtend.setTabelaExterna( lcAtend, FAtendente.class.getCanonicalName() );
 		txtCodAtend.setFK( true );
 		txtCodAtend.setNomeCampo( "CodAtend" );
-		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ), "txtCodVendx" );
-		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ), "txtCodVendx" );
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtend.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ));
+		lcAtend.add( new GuardaCampo( txtEmailAtend, "EmailAtend", "Email", ListaCampos.DB_SI, false ) );
+
 		lcAtend.montaSql( false, "ATENDENTE", "AT" );
 		lcAtend.setReadOnly( true );
 
@@ -246,11 +267,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtTicket.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
 		txtCodItRecMerc.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
 		txtCodItOS.setTabelaExterna( lcItRecMercItOS, FAtendente.class.getCanonicalName() );
-		
+
 		txtTicket.setFK( true );
 		txtCodItRecMerc.setFK( true );
 		txtCodItOS.setFK( true );
-//		txtCodAtend.setNomeCampo( "CodAtend" );
+		//		txtCodAtend.setNomeCampo( "CodAtend" );
 
 		lcItRecMercItOS.add( new GuardaCampo( txtTicket, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
 		lcItRecMercItOS.add( new GuardaCampo( txtCodItRecMerc, "CodItRecMerc", "Cod.it.rec.merc.", ListaCampos.DB_PK, false ) );
@@ -258,7 +279,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcItRecMercItOS.montaSql( false, "ITRECMERCITOS", "EQ" );
 		lcItRecMercItOS.setReadOnly( true );
 
-		
+
 	}
 
 	private void montaCombos() {
@@ -273,14 +294,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 
-	
+
 	public void exec( Integer codchamado ) {
 
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
 		}
-		
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -291,7 +312,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcTipoChamado.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcItRecMercItOS.setConexao( cn );
-		
+
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
@@ -324,7 +345,132 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtDtChamado.setVlrDate( new Date() );
 		txtDtPrevisao.setVlrDate( new Date() );
 		txtQtdHorasPrev.setVlrInteger( new Integer( 1 ) );
+
 		cbStatus.setVlrString( "PE" );
+
+	}
+
+	private synchronized void notificar() {
+
+		EmailBean emailpad = createEmailBean();
+
+		try {
+
+			EmailBean email = emailpad.getClone();
+			email.setPara( txtEmailAtend.getVlrString() );
+
+			// email.setPara( "anderson@stpinf.com" );
+
+			Properties props = new Properties();
+			props.put( "mail.transport.protocol", "smtp" );
+			props.put( "mail.smtp.host", email.getHost().trim() );
+
+			Authenticator authenticator = null;
+
+			if ( "S".equals( email.getAutentica() ) ) {
+				props.put( "mail.smtp.port", email.getPorta() );
+				props.put( "mail.smtp.auth", "true" );
+				props.put( "mail.smtp.socketFactory.class", "javax.net.SocketFactory" );
+				props.put( "mail.smtp.quitwait", "false" );
+				authenticator = new SMTPAuthenticator( email.getUsuario().trim(), email.getSenha().trim() );
+			}
+			if ( "S".equals( email.getSsl() ) ) {
+				props.put( "mail.smtp.starttls.enable", "true" );
+			}
+
+			Session session = Session.getInstance( props, authenticator );
+
+			try {
+
+				MimeMessage msg = EmailBean.getMessage( session, email );
+
+				String corpo = email.getCorpo();
+
+				corpo = corpo.replaceAll( "#CODCHAMADO#", txtCodChamado.getVlrString() );
+				corpo = corpo.replaceAll( "#DESCCHAMADO#", txtDescChamado.getVlrString() );
+				corpo = corpo.replaceAll( "#DETCHAMADO#", txaDetChamado.getVlrString() );
+				corpo = corpo.replaceAll( "#CODCLI#", txtCodCli.getVlrString() );
+				corpo = corpo.replaceAll( "#RAZCLI#", txtRazCli.getVlrString() );
+
+				msg.setContent( corpo, email.getFormato() );
+
+
+				DLLoading loading = new DLLoading();
+
+				try {
+
+					if ( msg != null ) {
+						loading.start();
+						Transport.send( msg );
+					}
+
+				}
+				catch (Exception e) {
+					loading.stop();
+					Funcoes.mensagemErro(this, "Erro ao enviar pedido!\n" + e.getMessage(), true, con, e);
+					e.printStackTrace();
+				}
+				finally {
+					loading.stop();
+
+				}
+
+			} 
+			catch ( Exception e ) {
+				e.printStackTrace();
+			} 
+			finally {
+				System.gc();
+			}
+
+
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
+	public EmailBean createEmailBean() {
+
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		EmailBean email = new EmailBean();
+		sql.append( "SELECT CM.HOSTSMTP, CM.USAAUTSMTP, CM.USASSL, CM.PORTASMTP, CM.USUARIOREMET, CM.SENHAREMET, CM.EMAILREMET, CM.EMAILRESP, " );
+		sql.append( "EM.ASSUNTO, EM.CORPO, EM.FORMATO, EM.CHARSET " );
+		sql.append( "FROM TKCONFEMAIL CM, TKEMAIL EM, SGPREFERE3 P3 " );
+		sql.append( "WHERE CM.CODEMP=EM.CODEMPCM AND CM.CODFILIAL=EM.CODFILIAL AND CM.CODCONFEMAIL=EM.CODCONFEMAIL  " );
+		sql.append( "AND EM.CODEMP=P3.CODEMPNC AND EM.CODFILIAL=P3.CODFILIALNC AND EM.CODEMAIL=P3.CODEMAILNC " );
+		sql.append( "AND P3.CODEMP=? AND P3.CODFILIAL=? " );
+
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "TKEMAIL" ) );
+
+
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				email.setHost( rs.getString( "HOSTSMTP" ) );
+				email.setAutentica( rs.getString( "USAAUTSMTP" ) );
+				email.setSsl( rs.getString( "USASSL" ) );
+				email.setPorta( rs.getInt( "PORTASMTP" ) );
+				email.setUsuario( rs.getString( "USUARIOREMET" ) );
+				email.setSenha( rs.getString( "SENHAREMET" ) );
+				email.setDe( rs.getString( "EMAILREMET" ) );
+				email.setEmailResp( rs.getString( "EMAILRESP" ) );
+				email.setAssunto( rs.getString( "ASSUNTO" ) );
+				email.setCorpo( rs.getString( "CORPO" ) );
+				email.setFormato( rs.getString( "FORMATO" ) );
+				email.setCharset( rs.getString( "CHARSET" ) );
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de emial!\n" + e.getMessage() );
+		}
+		return email;
 
 	}
 
@@ -344,66 +490,94 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
+	public void afterPost( PostEvent pevt ) {
+
+		if(txtCodAtend.getVlrInteger()>0 
+				&& ! Chamado.CHAMADO_CANCELADO.getValue().equals( cbStatus.getVlrString()) 
+				&& ! Chamado.CHAMADO_CONCLUIDO.getValue().equals( cbStatus.getVlrString()) )
+
+		{
+
+			ProcessoSec pSec = new ProcessoSec(500, new Processo() {
+
+				public void run() {	}
+				
+			}, new Processo() {
+
+				public void run() {
+
+					notificar();
+				}
+			});
+
+			pSec.iniciar();
+
+
+		}	
+
+
+	}
+
 	public void novo() {
 		lcCampos.insert( true );
 	}
-	
+
 	public void setCodCli(Integer codcli) {
 		txtCodCli.setVlrInteger( codcli );
 		lcCli.carregaDados();
 	}
-	
+
 	public void setDescChamado(String descchamado) {
 		txtDescChamado.setVlrString( descchamado );
 	}
-	
+
 	public void setDetChamado(String detchamado) {
 		txaDetChamado.setVlrString( detchamado );		
 	}
-	
+
 	public void setSolicitante(String solicitante) {
 		txtSolicitante.setVlrString( solicitante );
 	}
-	
+
 	public void setCodAtend(Integer codatend) {
 		txtCodAtend.setVlrInteger( codatend );
 		lcAtend.carregaDados();
 	}
-	
+
 	public void setPrioridade(Integer prioridade) {
 		cbPrioridade.setVlrInteger( prioridade );
 	}
-	
+
 	public void setCodTpChamado(Integer codtpchamado) {
 		cbTpChamado.setVlrInteger( codtpchamado );
 		txtCodTpChamado.setVlrInteger( codtpchamado );
-		
+
 		lcTipoChamado.carregaDados();
 	}
-	
+
 	public void setDtChamado(Date dtchamado) {
 		txtDtChamado.setVlrDate( dtchamado );
 	}
-	
+
 	public void setDtPrevisao(Date dtprevisao) {
 		txtDtPrevisao.setVlrDate( dtprevisao );
 	}
-	
+
 	public void setQtdHorasPrevisao(BigDecimal qtdhorasprevisao) {
 		txtQtdHorasPrev.setVlrBigDecimal( qtdhorasprevisao );
 	}
-	
+
 	public void setItOS(Integer ticket, Integer coditrecmerc, Integer coditos) {
 		txtTicket.setVlrInteger( ticket );
 		txtCodItRecMerc.setVlrInteger( coditrecmerc );
 		txtCodItOS.setVlrInteger( coditos );
 		lcItRecMercItOS.carregaDados();
 	}
-	
+
 	public void setTelaAnterior(FDados telaant) {
 		this.telanterior = telaant;
 	}
-	
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
@@ -416,5 +590,5 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
-	
+
 }
