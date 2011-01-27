@@ -71,7 +71,6 @@ import org.freedom.library.swing.frame.FDados;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
-import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener, PostListener {
