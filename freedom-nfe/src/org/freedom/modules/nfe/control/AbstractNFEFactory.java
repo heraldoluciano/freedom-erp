@@ -48,7 +48,7 @@ public abstract class AbstractNFEFactory {
 
 	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
 
-	private static Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
+	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
 	
 	public static final Constant TP_NF_IN = new Constant("Entrada", new Integer(0));
 
@@ -154,7 +154,7 @@ public abstract class AbstractNFEFactory {
 		this.tpNF = tpNF;
 	}
 
-	public static Constant getTpNF() {
+	public Constant getTpNF() {
 		return tpNF;
 	}
 
