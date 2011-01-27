@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
-	<classpathentry kind="lib" path="lib/barbecue.jar"/>
 	<classpathentry kind="lib" path="lib/dsn.jar"/>
 	<classpathentry kind="lib" path="lib/imap.jar"/>
 	<classpathentry kind="lib" path="lib/pop3.jar"/>
@@ -35,5 +34,6 @@
 	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full.jar"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/ilf-gpl.jar"/>
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/barbecue.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
