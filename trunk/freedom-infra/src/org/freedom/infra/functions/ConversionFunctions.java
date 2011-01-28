@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Blob;
 import java.sql.Time;
 import java.util.Calendar;
@@ -266,12 +267,43 @@ public final class ConversionFunctions {
 	}
 	
 	public static String bigDecimalToStr(BigDecimal vlr) {
+
+		return bigDecimalToStr(vlr, null, null);
+
+	}
+	
+	public static String bigDecimalToStr(BigDecimal vlr, Integer casasdec, Integer roundtype) {
 		String retorno = null;
+		
+		if(roundtype!=null && casasdec!=null ) {
+			vlr = vlr.setScale(casasdec, roundtype);
+			
+		}
+		else if(casasdec!=null) {
+			vlr = vlr.setScale(casasdec);
+		}
+		
+		
 		if (vlr == null) {
 			retorno = "0";
 		}
 		else {
 			retorno = String.valueOf(vlr);
+			
+			retorno = retorno.replace('.', ',');
+			
+			if(casasdec!=null) {
+				
+				String inteiro = retorno.substring(0, retorno.indexOf(','));
+				
+				String decimal = retorno.substring(retorno.indexOf(','));
+				
+				decimal = decimal.substring(0, casasdec+1 );
+				
+				retorno = inteiro + decimal;
+				
+			}
+			
 		}
 		return retorno;
 	}
