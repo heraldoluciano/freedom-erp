@@ -61,7 +61,7 @@ fn_executa()
 
   unzip -o ./freedom.zip -d /
 
-  mkdir --parents /opt/firebird/dados/desenv/
+  mkdir -p /opt/firebird/dados/desenv/
 
   $CMD_GBAK -C -R -P 4096 /tmp/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb
 
