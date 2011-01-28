@@ -1039,7 +1039,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			BigDecimal[] argsComis = getItComis( iCodItOrc );
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA " );
+			sql.append( "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA, TIPOFISC " );
 			sql.append( "FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -1093,7 +1093,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				txtValorIcms.setVlrBigDecimal( rs.getBigDecimal( "VlrICMSItVenda" ) );
 				txtValorTotalItem.setVlrBigDecimal( rs.getBigDecimal( "VlrLiqItVenda" ) == null ? new BigDecimal( 0 ) : rs.getBigDecimal( "VlrLiqItVenda" ) );
 				txtQtdadeItem.setVlrBigDecimal( txtQtdade.getVlrBigDecimal() );
-
+				txtTipoFisc.setVlrString( rs.getString("TipoFisc") );
+				
 				tbItem.adicLinha( new Object[] { new Integer( iCodItVenda ), txtCodProd.getVlrString().trim(), txtDescProd.getVlrString(), txtQtdade.getVlrBigDecimal(), txtPreco.getVlrBigDecimal(), txtAliqIcms.getVlrBigDecimal(), txtBaseCalc.getVlrBigDecimal(), txtValorIcms.getVlrBigDecimal(), "",
 						txtCodConv.getVlrInteger().intValue() > 0 ? txtCodConv.getVlrString() : "" } );
 
