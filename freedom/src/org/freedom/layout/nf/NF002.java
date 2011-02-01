@@ -38,8 +38,8 @@ public class NF002 extends Layout {
 		boolean bFat = true;
 		boolean bjatem = false;
 		boolean bvlriss = true;
-		final int MAXLINE = 26;
-		final int MAXPROD = 20;
+		final int MAXLINE = 29;
+		final int MAXPROD = 12;
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iProdImp = 0;
@@ -120,7 +120,7 @@ public class NF002 extends Layout {
 
 				// Imprime os dados do item no corpo da nota
 
-				Vector<?> vDesc = Funcoes.strToVectorSilabas( itens.getString( NF.C_OBSITPED ) == null || itens.getString( NF.C_OBSITPED ).equals( "" ) ? ( itens.getString( NF.C_DESCPROD ).trim() ) : itens.getString( NF.C_OBSITPED ), 46 );
+				Vector<?> vDesc = Funcoes.strToVectorSilabas( itens.getString( NF.C_OBSITPED ) == null || itens.getString( NF.C_OBSITPED ).equals( "" ) ? ( itens.getString( NF.C_DESCPROD ).trim() ) : itens.getString( NF.C_OBSITPED ), 60 );
 
 				for ( int iConta = 0; ( ( iConta < 20 ) && ( vDesc.size() > iConta ) ); iConta++ ) {
 
@@ -162,7 +162,7 @@ public class NF002 extends Layout {
 
 					// Imprime totais
 
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 7, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 					imp.say( 28, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( cab.getFloat( NF.C_PERCISS ) ) + " %" ) );
 					imp.say( 44, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
