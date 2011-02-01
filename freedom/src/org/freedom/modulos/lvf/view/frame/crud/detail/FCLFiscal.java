@@ -366,7 +366,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		rgTpRedIcmsFisc.setVlrString( "B" );
 		rgIndApurIPI.setVlrString( "0" );
 		
-		rgTipoST.setAtivo( false );
+		//rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
 		// rgTpRedIcmsFisc.setAtivo( false );
@@ -1085,11 +1085,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 				// Substituição tributária
 				if ( "10".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
-					rgTipoST.setAtivo( true );
+					//rgTipoST.setAtivo( true );
 					rgTipoFisc.setVlrString( "FF" );
 				}
 				else {
-					rgTipoST.setAtivo( false );
+					//rgTipoST.setAtivo( false );
 
 					// Tributado integralmente
 					if ( "00".equals( txtCodTratTrib.getVlrString() ) ) {
@@ -1159,11 +1159,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		if ( e.getSource() == rgTipoFisc ) {
 			if ( "FF".equals( rgTipoFisc.getVlrString() ) ) { // Caso seja substituição tributária
-				rgTipoST.setAtivo( true );
+				//rgTipoST.setAtivo( true );
 			}
 			else {
-				rgTipoST.setVlrString( "SI" );
-				rgTipoST.setAtivo( false );
+				//rgTipoST.setVlrString( "SI" );
+				//rgTipoST.setAtivo( false );
 			}
 		}
 		else if ( e.getSource() == rgTipoST || e.getSource() == rgTipoFisc ) {
