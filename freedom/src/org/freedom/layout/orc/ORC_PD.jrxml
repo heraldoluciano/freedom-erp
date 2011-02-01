@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC_PD" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -74,6 +74,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]>
 		<band height="38" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="5" y="3" width="527" height="35"/>
+				<subreportParameter name="CODFILIAL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 				</subreportParameter>
