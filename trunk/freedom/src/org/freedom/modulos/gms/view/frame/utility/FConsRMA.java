@@ -105,7 +105,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 	private JTextFieldPad txtCodProdOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRefProdOP = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProdOP = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTablePad tab = new JTablePad();
 

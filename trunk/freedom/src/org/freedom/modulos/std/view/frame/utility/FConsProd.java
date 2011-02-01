@@ -118,7 +118,7 @@ public class FConsProd extends FRelatorio implements ActionListener, ChangeListe
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtSldProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 

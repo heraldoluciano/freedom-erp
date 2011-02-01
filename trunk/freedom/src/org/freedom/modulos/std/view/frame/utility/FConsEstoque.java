@@ -59,7 +59,7 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtSld = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
 

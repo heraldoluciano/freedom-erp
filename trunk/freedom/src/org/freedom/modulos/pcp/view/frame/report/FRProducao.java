@@ -60,9 +60,9 @@ public class FRProducao extends FRelatorio {
 
 	private JTextFieldFK txtDescProdATE = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtRefProdDE = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldFK txtRefProdDE = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldFK txtRefProdATE = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldFK txtRefProdATE = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 

@@ -71,7 +71,7 @@ public class FModGrade extends FDetalhe {
 
 	private JTextFieldFK txtDescVarG = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
