@@ -366,12 +366,14 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		rgTpRedIcmsFisc.setVlrString( "B" );
 		rgIndApurIPI.setVlrString( "0" );
 		
-		//rgTipoST.setAtivo( false );
+		/*
+		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
-		// rgTpRedIcmsFisc.setAtivo( false );
+		rgTpRedIcmsFisc.setAtivo( false );
 		txtRedFisc.setAtivo( false );
 		rgTipoFisc.setAtivo( false );
+		*/
 		txaDescServ.setAtivo( false );
 		txtVlrIpiUnidTrib.setAtivo( false );
 		txtAliqIPIFisc.setAtivo( false );
@@ -1172,7 +1174,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				cbModBCICMSST.setAtivo( true );
 			}
 			else {
-				txtMargemVlAgr.setVlrBigDecimal( new BigDecimal( 0 ) );
+			//	txtMargemVlAgr.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtMargemVlAgr.setAtivo( false );
 				cbModBCICMSST.setAtivo( false );
 			}
