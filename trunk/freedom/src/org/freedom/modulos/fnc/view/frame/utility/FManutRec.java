@@ -2222,6 +2222,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					Funcoes.mensagemInforma( this, "Parcela já foi baixada!" );
 					return;
 				}
+				
+				if ( imgStatusAt == imgRenegociado ) {
+
+					Funcoes.mensagemInforma( this, "Parcela renegociada!" );
+					return;
+				}
 
 				int iLin = tabManut.getLinhaSel();
 
