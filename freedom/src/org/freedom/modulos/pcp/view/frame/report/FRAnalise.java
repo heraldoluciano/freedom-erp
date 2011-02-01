@@ -62,7 +62,7 @@ public class FRAnalise extends FRelatorio {
 
 	private JTextFieldFK txtDataOP = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 

@@ -208,7 +208,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	private JButtonPad btIniProdAgrup = new JButtonPad( Icone.novo( "btIniProd.png" ) );
 	
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	// Enums
 

@@ -96,7 +96,7 @@ public class FPrefereGMS extends FTabDados {
 	
 	private JTextFieldPad txtCodProdServ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRefProdServ = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProdServ = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtDescProdServ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 

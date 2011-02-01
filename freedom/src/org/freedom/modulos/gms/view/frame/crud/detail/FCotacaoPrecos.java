@@ -121,11 +121,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtCodProd2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtCodProd2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 20, 0 );
 
-	private JTextFieldPad txtRefProd2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProd2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 

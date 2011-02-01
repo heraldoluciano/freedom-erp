@@ -123,7 +123,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtCodProdItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtRefProdItem = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProdItem = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtDescProdItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -139,7 +139,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtRMA = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtRefProdEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtRefProdEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodModLote = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

@@ -53,7 +53,7 @@ public class FREstruturaItem extends FRelatorio {
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private ListaCampos lcProdDE = new ListaCampos( this );
 
