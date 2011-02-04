@@ -2609,7 +2609,7 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 				bRetorno = true;
 			}
 			catch (SQLException err) {
-				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados da tabela: " + sTabela + "\n" + err.getMessage());
+				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados! \nTabela: " + sTabela + "\n" + "Campo: " + comp.getNomeCampo() + "\nTipo de erro: " + err.getMessage());
 				err.printStackTrace();
 				return false;
 			}
