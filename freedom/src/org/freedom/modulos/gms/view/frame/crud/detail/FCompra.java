@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -2487,9 +2489,29 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			if(txtVenctoLote.getVlrDate() != null &&
 					txtVenctoLote.getVlrDate().compareTo( new Date() ) < 0){
-				Funcoes.mensagemInforma( this,  "Lote Vencido.");
-				txtCodLote.requestFocus();
-				throw new RuntimeException();
+				boolean permiteRevalidarLote = this.permiteRevalidarLote(con.getConnection());
+				
+				if(permiteRevalidarLote){
+					int retorno = Funcoes.mensagemConfirma( this,  "Lote Vencido. Deseja Revalidar?");
+				
+					if(retorno == JOptionPane.YES_OPTION){
+						DLLote dl = new DLLote( this, txtCodLote.getText(), txtCodProd.getText(), txtDescProd.getText(), txtVenctoLote.getVlrDate(),  con );
+						dl.setVisible( true );
+						if ( dl.OK ) {
+							txtCodLote.setVlrString( dl.getValor() );
+							lcLote.carregaDados();
+						}
+						dl.dispose();
+
+					}else{
+						txtCodLote.requestFocus();	
+						throw new RuntimeException();
+					}
+				}else{
+					Funcoes.mensagemInforma( this, "Lote Vencido." );
+					txtCodLote.requestFocus();	
+					throw new RuntimeException();
+				}
 				//pevt.cancela();
 			}
 		}
@@ -2502,6 +2524,25 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			novo = true;
 		}
 
+	}
+	
+	private boolean permiteRevalidarLote(Connection con){
+		String sSql = "SELECT REVALIDARLOTECOMPRA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = con.prepareStatement( sSql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			return rs.getBoolean( "REVALIDARLOTECOMPRA" );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private boolean getGuiaTraf() {
