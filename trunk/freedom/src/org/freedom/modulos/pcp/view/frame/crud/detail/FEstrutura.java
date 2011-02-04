@@ -63,6 +63,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.dialog.report.DLREstrutura;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FFase;
@@ -90,6 +91,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinDetItens = new JPanelPad( 590, 110 );
+	
+	private JPanelPad pinSubProd = new JPanelPad( 590, 110 );
 
 	private JPanelPad pinDetEstrAnalise = new JPanelPad( 590, 110 );
 
@@ -119,13 +122,21 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtSeqItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtSeqItemSP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProdItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodProdItemSP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtRefProdItem = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
+	private JTextFieldPad txtRefProdItemSP = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private JTextFieldFK txtDescProdItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldFK txtDescProdItemSP = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProdDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -135,7 +146,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtEspecificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtQtdMat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtQtdItEstSP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtRMA = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -187,8 +200,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Qtd. variável?", "S", "N" );
 
+	private JCheckBoxPad cbQtdVariavelItemSP = new JCheckBoxPad( "Qtd. variável?", "S", "N" );
+	
 	private JCheckBoxPad cbQtdFixaItem = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
 
+	private JCheckBoxPad cbQtdFixaItemSP = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
+	
 	private JCheckBoxPad cbEmitCert = new JCheckBoxPad( "Certificado?", "S", "N" );
 
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
@@ -200,6 +217,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTablePad tabEstru = new JTablePad();
 
 	private JTablePad tabDist = new JTablePad();
+	
+	private JTablePad tabSubProd = new JTablePad();
 
 	private JTablePad tabQuali = new JTablePad();
 
@@ -208,6 +227,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JScrollPane spQuali = new JScrollPane( tabQuali );
 
 	private JScrollPane spDist = new JScrollPane( tabDist );
+	
+	private JScrollPane spSubProd = new JScrollPane( tabSubProd );
 
 	private JScrollPane spEstru = new JScrollPane( tabEstru );
 
@@ -219,7 +240,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private ListaCampos lcProdItem = new ListaCampos( this, "PD" );
 
+	private ListaCampos lcProdItemSP = new ListaCampos( this, "PD" );
+	
 	private ListaCampos lcProdItemRef = new ListaCampos( this, "PD" );
+	
+	private ListaCampos lcProdItemRefSP = new ListaCampos( this, "PD" );
 
 	private ListaCampos lcFase = new ListaCampos( this, "FS" );
 
@@ -232,6 +257,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcDetDistrib = new ListaCampos( this );
 
 	private ListaCampos lcEstDistrib = new ListaCampos( this, "DE" );
+	
+	private ListaCampos lcSubProd = new ListaCampos( this, "" );
 
 	private ListaCampos lcTipoRec = new ListaCampos( this, "TR" );
 
@@ -258,6 +285,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		tpnAbas.addTab( "Itens X Fase", spItens );
 		tpnAbas.addTab( "Controle de qualidade", spQuali );
 		tpnAbas.addTab( "Distribuição X Fase", spDist );
+		tpnAbas.addTab( "Sub-produto", spSubProd );
 
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
@@ -275,6 +303,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDet.adicDetalhe( lcDetDistrib );
 		lcDetEstrAnalise.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetEstrAnalise );
+
+		lcSubProd.setMaster( lcDet );
+		lcDet.adicDetalhe( lcSubProd );
 
 		// txtQtdMat.addKeyListener( this );
 
@@ -315,8 +346,32 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItem.setQueryCommit( false );
 		lcProdItem.setReadOnly( true );
 		txtCodProdItem.setTabelaExterna( lcProdItem, FProduto.class.getCanonicalName() );
+		
+		
+		lcProdItemSP.add( new GuardaCampo( txtCodProdItemSP, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
+		lcProdItemSP.add( new GuardaCampo( txtDescProdItemSP, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdItemSP.add( new GuardaCampo( txtRefProdItemSP, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		lcProdItemSP.setWhereAdic( "TIPOPROD='"+ TipoProd.SUB_PRODUTO.getValue()  +"' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
+
+		lcProdItemSP.montaSql( false, "PRODUTO", "EQ" );
+		lcProdItemSP.setQueryCommit( false );
+		lcProdItemSP.setReadOnly( true );
+		txtCodProdItemSP.setTabelaExterna( lcProdItemSP, FProduto.class.getCanonicalName() );
+
 		// txtDescProdItem.setListaCampos( lcDetItens );
 
+		lcProdItemRefSP.add( new GuardaCampo( txtRefProdItemSP, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
+		lcProdItemRefSP.add( new GuardaCampo( txtDescProdItemSP, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProdItemRefSP.add( new GuardaCampo( txtCodProdItemSP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );
+		lcProdItemSP.setWhereAdic( "TIPOPROD='"+ TipoProd.SUB_PRODUTO.getValue()  +"' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
+
+		lcProdItemRefSP.montaSql( false, "PRODUTO", "EQ" );
+		lcProdItemRefSP.setQueryCommit( false );
+		lcProdItemRefSP.setReadOnly( true );
+		txtRefProdItemSP.setTabelaExterna( lcProdItemRefSP, FProduto.class.getCanonicalName() );
+		// txtRefProdItem.setListaCampos( lcDetItens );
+		
+		
 		lcProdItemRef.add( new GuardaCampo( txtRefProdItem, "RefProd", "Referência", ListaCampos.DB_PK, false ) );
 		lcProdItemRef.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdItemRef.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );
@@ -326,7 +381,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItemRef.setQueryCommit( false );
 		lcProdItemRef.setReadOnly( true );
 		txtRefProdItem.setTabelaExterna( lcProdItemRef, FProduto.class.getCanonicalName() );
-		// txtRefProdItem.setListaCampos( lcDetItens );
 
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
@@ -438,7 +492,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdMat, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItEst, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 
 		adicDB( cbRmaAutoItEst, 10, 60, 80, 20, "RmaAutoItEst", "", true );
 		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
@@ -484,7 +538,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.montaTab();
 
 		// Fim Detalhe Distribuição
-
+		
 		setAltDet( 210 );
 		setPainel( pinDetFases, pnDet );
 		setListaCampos( lcDet );
@@ -540,6 +594,47 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		// lcDetEstrAnalise.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ));
 
 		// fim controle de qualidade
+		
+		
+		// Detalhe Itens SubProd
+
+		setPainel( pinSubProd );
+		setListaCampos( lcSubProd );
+		setNavegador( navRod );
+
+		adicCampo( txtSeqItemSP, 7, 20, 40, 20, "SeqItEstSp", "Item", ListaCampos.DB_PK, true );
+
+		if ( comRef() ) {
+			adicCampoInvisivel( txtRefProdItemSP, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItemSP, true );
+			adicCampoInvisivel( txtCodProdItemSP, "CodProdPD", "Cód.Prod.", ListaCampos.DB_SI, true );
+
+			adic( txtRefProdItemSP, 50, 20, 77, 20, "Referência" );
+			
+			txtRefProdItemSP.setRequerido( true );
+			txtRefProdItemSP.setPK( true );
+			txtRefProdItemSP.setFK( true );
+			txtRefProdItemSP.setNomeCampo( "refprod" );
+		}
+		else {
+			adicCampo( txtCodProdItemSP, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItemSP, false );
+			adicCampoInvisivel( txtRefProdItemSP, "RefProdPD", "Referência", ListaCampos.DB_SI, true );
+			
+			txtCodProdItemSP.setNomeCampo( "codprod" );
+		}
+
+		adicDescFK( txtDescProdItemSP, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtQtdItEstSP, 460, 20, 100, 20, "QtdItEstSP", "Qtd.", ListaCampos.DB_SI, true );
+
+		adicDB( cbQtdVariavelItemSP, 210, 60, 100, 20, "QtdVariavel", "", true );
+		adicDB( cbQtdFixaItemSP, 330, 60, 100, 20, "QtdFixa", "", true );
+
+		setListaCampos( true, "ITESTRUTURASUBPROD", "PP" );
+		lcSubProd.setQueryInsert( false );
+		lcSubProd.setTabela( tabSubProd );
+		lcSubProd.montaTab();
+
+
+		// Fim subprod
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -934,6 +1029,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				navRod.setListaCampos( lcDetDistrib );
 				navRod.setAtivo( 6, false );
 			}
+			else if ( tpnAbas.getSelectedIndex() == 4 ) { // Aba subprod
+				setAltDet( 110 );
+				pnDet.removeAll();
+				setPainel( pinSubProd, pnDet );
+				setListaCampos( lcSubProd );
+				pnDet.repaint();
+				navRod.setListaCampos( lcSubProd );
+				navRod.setAtivo( 6, false );
+			}
 		}
 	}
 
@@ -1099,13 +1203,16 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcEstDistrib.setConexao( cn );
 		lcTpAnalise.setConexao( cn );
 		lcDetEstrAnalise.setConexao( cn );
+		lcSubProd.setConexao( cn );
+		lcProdItemSP.setConexao( cn );
+		lcProdItemRefSP.setConexao( cn );
 		lcUnid.setConexao( cn );
 
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
 
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER && kevt.getSource() == txtQtdMat ) {
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER && kevt.getSource() == txtQtdItEst ) {
 
 			if ( lcDetItens.getStatus() == ListaCampos.LCS_INSERT ) {
 
