@@ -25,6 +25,11 @@ package org.freedom.modulos.gms.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Date;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -33,10 +38,6 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
 
 public class DLLote extends FFDialogo {
 
@@ -69,13 +70,23 @@ public class DLLote extends FFDialogo {
 	private JLabelPad lbDiasAvisoLote = new JLabelPad( "Dias para aviso" );
 
 	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 );
+	
+	private Boolean revalidarLote = false;
 
 	public static final int LOTE_VALIDO = 0;
 
 	public static final int LOTE_INVALIDO = -1;
 
 	public DLLote( Component cOrig, String sCodLote, String sCodProd, String sDescProd, DbConnection cn ) {
-
+		this( cOrig, sCodLote, sCodProd, sDescProd, null, cn );
+		
+		this.revalidarLote = false;
+		
+		txtCodLote.setEditable( true );
+		txtCodLote.requestFocus();
+	}
+	
+	public DLLote( Component cOrig, String sCodLote, String sCodProd, String sDescProd, Date sDataLote, DbConnection cn ) {
 		super( cOrig );
 		setConexao( cn );
 		setTitulo( "Lote" );
@@ -105,57 +116,107 @@ public class DLLote extends FFDialogo {
 		txtCodLote.setVlrString( sCodLote );
 		txtCodProd.setVlrString( sCodProd );
 		txtDescProd.setVlrString( sDescProd );
+		txtVenctoLote.setVlrDate( sDataLote );
 
-		txtCodLote.requestFocus();
+		txtDataINILote.requestFocus();
+		txtCodLote.setEditable( false );
+		
+		this.revalidarLote = true;
 	}
 
 	private boolean gravaLote() {
-
 		boolean bRet = false;
-		String sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE, QTDPRODLOTE, DIASAVISOLOTE) VALUES(?,?,?,?,?,?,?,?)";
+		
+		String sSQL = null;
 		PreparedStatement ps = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
-			ps.setString( 3, txtCodLote.getText().trim() );
-			ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
+		
+		
+		if(revalidarLote){
+			sSQL = "UPDATE EQLOTE SET DINILOTE = ?, VENCTOLOTE = ?, QTDPRODLOTE = ?, DIASAVISOLOTE = ? ";
+			sSQL += "WHERE CODEMP = ? AND CODFILIAL = ? AND CODLOTE = ? AND CODPROD = ?";
+			ps = null;
+			try {
+				ps = con.prepareStatement( sSQL );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "EQLOTE" ) );
+				ps.setString( 7, txtCodLote.getText().trim() );
+				ps.setInt( 8, txtCodProd.getVlrInteger().intValue() );
 
-			if ( txtDataINILote.getVlrString().equals( "" ) )
-				ps.setNull( 5, Types.DATE );
-			else
-				ps.setDate( 5, Funcoes.dateToSQLDate( txtDataINILote.getVlrDate() ) );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtVenctoLote.getVlrDate() ) );
+				if ( txtDataINILote.getVlrString().equals( "" ) )
+					ps.setNull( 1, Types.DATE );
+				else
+					ps.setDate( 1, Funcoes.dateToSQLDate( txtDataINILote.getVlrDate() ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( txtVenctoLote.getVlrDate() ) );
 
-			if ( txtQtdProdLote.getVlrBigDecimal() == null ) {
-				ps.setNull( 7, Types.DECIMAL );
-			}
-			else {
-				ps.setBigDecimal( 7, txtQtdProdLote.getVlrBigDecimal() );
-			}
+				if ( txtQtdProdLote.getVlrBigDecimal() == null ) {
+					ps.setNull( 3, Types.DECIMAL );
+				}
+				else {
+					ps.setBigDecimal( 3, txtQtdProdLote.getVlrBigDecimal() );
+				}
 
-			if ( txtDiasAvisoLote.getVlrInteger() == null ) {
-				ps.setInt( 8, 0 );
-			}
-			else {
-				ps.setInt( 8, txtDiasAvisoLote.getVlrInteger() );
-			}
+				if ( txtDiasAvisoLote.getVlrInteger() == null ) {
+					ps.setInt( 4, 0 );
+				}
+				else {
+					ps.setInt( 4, txtDiasAvisoLote.getVlrInteger() );
+				}
 
-			ps.executeUpdate();
-			ps.close();
-			con.commit();
-			bRet = true;
-		} catch ( SQLException err ) {
-			if ( err.getErrorCode() == ListaCampos.FB_PK_DUPLA )
-				Funcoes.mensagemErro( this, "Este lote já existe!" );
-			else
-				Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela EQLOTE!\n" + err.getMessage(), true, con, err );
+				ps.executeUpdate();
+				ps.close();
+				con.commit();
+				bRet = true;
+			} catch ( SQLException err ) {
+				if ( err.getErrorCode() == ListaCampos.FB_PK_DUPLA )
+					Funcoes.mensagemErro( this, "Este lote já existe!" );
+				else
+					Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela EQLOTE!\n" + err.getMessage(), true, con, err );
+			}
+		}else{
+			sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE, QTDPRODLOTE, DIASAVISOLOTE) VALUES(?,?,?,?,?,?,?,?)";
+			ps = null;
+			try {
+				ps = con.prepareStatement( sSQL );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
+				ps.setString( 3, txtCodLote.getText().trim() );
+				ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
+
+				if ( txtDataINILote.getVlrString().equals( "" ) )
+					ps.setNull( 5, Types.DATE );
+				else
+					ps.setDate( 5, Funcoes.dateToSQLDate( txtDataINILote.getVlrDate() ) );
+				ps.setDate( 6, Funcoes.dateToSQLDate( txtVenctoLote.getVlrDate() ) );
+
+				if ( txtQtdProdLote.getVlrBigDecimal() == null ) {
+					ps.setNull( 7, Types.DECIMAL );
+				}
+				else {
+					ps.setBigDecimal( 7, txtQtdProdLote.getVlrBigDecimal() );
+				}
+
+				if ( txtDiasAvisoLote.getVlrInteger() == null ) {
+					ps.setInt( 8, 0 );
+				}
+				else {
+					ps.setInt( 8, txtDiasAvisoLote.getVlrInteger() );
+				}
+
+				ps.executeUpdate();
+				ps.close();
+				con.commit();
+				bRet = true;
+			} catch ( SQLException err ) {
+				if ( err.getErrorCode() == ListaCampos.FB_PK_DUPLA )
+					Funcoes.mensagemErro( this, "Este lote já existe!" );
+				else
+					Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela EQLOTE!\n" + err.getMessage(), true, con, err );
+			}
 		}
 		return bRet;
 	}
 
 	public String getValor() {
-
 		return txtCodLote.getVlrString();
 	}
 

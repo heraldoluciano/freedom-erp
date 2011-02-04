@@ -586,6 +586,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbInfCPDevolucao = new JCheckBoxPad("Informar compra na devolução ?", "S", "N");
 
 	private final JCheckBoxPad cbUsaBuscGenProdCP = new JCheckBoxPad("Busca generica do código do produto.", "S", "N");
+	
+	private final JCheckBoxPad cbRevalidarLoteCompra = new JCheckBoxPad("Permitir Revalidar Lote", "S", "N");
 
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad("Autenticar ?", "S", "N");
 
@@ -1279,6 +1281,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true);
 		adicDB(cbInfCPDevolucao, 7, 115, 300, 20, "INFCPDEVOLUCAO", "", true);
 		adicDB(cbUsaBuscGenProdCP, 7, 135, 300, 20, "USABUSCAGENPRODCP", "", true);
+		adicDB(cbRevalidarLoteCompra, 7, 155, 300, 20, "REVALIDARLOTECOMPRA", "", true);
 
 		adicCampo(txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false);
