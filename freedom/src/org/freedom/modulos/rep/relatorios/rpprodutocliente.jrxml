@@ -69,6 +69,7 @@ ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD , IP.PRECOITPED
 	<field name="QUANTIDADE" class="java.math.BigDecimal"/>
 	<field name="VLR_TOTAL" class="java.math.BigDecimal"/>
 	<field name="VLR_UNIT" class="java.math.BigDecimal"/>
+	<field name="DATAPED" class="java.util.Date"/>
 	<variable name="TOTQTD" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
 		<variableExpression><![CDATA[$F{QUANTIDADE}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal("0")]]></initialValueExpression>
@@ -209,6 +210,19 @@ ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD , IP.PRECOITPED
 						<font fontName="SansSerif" size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					</textElement>
 					<text><![CDATA[Referência]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-59" positionType="Float" mode="Transparent" x="260" y="17" width="47" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
+					</textElement>
+					<text><![CDATA[Data]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -480,7 +494,7 @@ ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD , IP.PRECOITPED
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-67" x="110" y="2" width="200" height="12"/>
+				<reportElement key="textField-67" x="110" y="2" width="148" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -543,6 +557,19 @@ ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD , IP.PRECOITPED
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-67" x="260" y="2" width="50" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATAPED}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

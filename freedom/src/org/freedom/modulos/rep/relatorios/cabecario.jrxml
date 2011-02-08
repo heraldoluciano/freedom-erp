@@ -19,6 +19,7 @@
 		<defaultValueExpression><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="DATAPED" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[SELECT RAZEMP,ENDEMP,CIDEMP,UFEMP,CEPEMP,FONEEMP,FAXEMP,EMAILEMP,FOTOEMP
 FROM SGEMPRESA
@@ -95,7 +96,7 @@ WHERE CODEMP=$P{CODEMP}]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="false">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="Data" mode="Transparent" x="445" y="25" width="80" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -106,7 +107,7 @@ WHERE CODEMP=$P{CODEMP}]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DATAPED}==null ? new Date() : $P{DATAPED}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="Titulo" mode="Transparent" x="117" y="2" width="300" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
