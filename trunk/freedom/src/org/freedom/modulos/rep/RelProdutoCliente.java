@@ -92,7 +92,7 @@ public class RelProdutoCliente extends FRelatorio {
 	public RelProdutoCliente() {
 
 		super( false );
-		setTitulo( "Relatorio de Produto por Cliente" );
+		setTitulo( "Relatorio de Produtos por Cliente" );
 		setAtribos( 100, 50, 325, 380 );
 
 		montaRadioGrupos();
@@ -239,7 +239,8 @@ public class RelProdutoCliente extends FRelatorio {
 
 			sql.append( "SELECT " );
 			sql.append( "  P.CODCLI, C.RAZCLI, IP.CODPROD, IP.REFPROD, PD.DESCPROD, " );
-			sql.append( "  SUM(IP.QTDITPED) QUANTIDADE, SUM(IP.VLRLIQITPED) VLR_TOTAL, IP.PRECOITPED VLR_UNIT " );
+			sql.append( "  SUM(IP.QTDITPED) QUANTIDADE, SUM(IP.VLRLIQITPED) VLR_TOTAL, IP.PRECOITPED VLR_UNIT, " );
+			sql.append( "P.DATAPED " );
 			sql.append( "FROM " );
 			sql.append( "  RPPEDIDO P, RPITPEDIDO IP, RPPRODUTO PD, RPCLIENTE C " );
 			sql.append( "WHERE " );
@@ -267,13 +268,13 @@ public class RelProdutoCliente extends FRelatorio {
 				descprod = txtDescProd.getVlrString();
 			}
 
-			sql.append( " GROUP BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD, IP.PRECOITPED " );
+			sql.append( " GROUP BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD, IP.PRECOITPED, P.DATAPED " );
 
 			if ( "C".equals( rgOrdem.getVlrString() ) ) {
-				sql.append( " ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD, IP.PRECOITPED " );
+				sql.append( " ORDER BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD, P.DATAPED, IP.PRECOITPED " );
 			}
 			else if ( "R".equals( rgOrdem.getVlrString() ) ) {
-				sql.append( " ORDER BY C.RAZCLI, IP.CODPROD, IP.REFPROD, P.CODCLI, PD.DESCPROD, IP.PRECOITPED " );
+				sql.append( " ORDER BY C.RAZCLI, IP.CODPROD, IP.REFPROD, P.DATAPED, P.CODCLI, PD.DESCPROD, IP.PRECOITPED " );
 			}
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
