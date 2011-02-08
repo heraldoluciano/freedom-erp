@@ -48,6 +48,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -99,6 +100,8 @@ public class RelEvolucaoVendas extends FRelatorio {
 	private final ListaCampos lcMoeda = new ListaCampos( this );
 
 	private List<Object> prefere = new ArrayList<Object>();
+	
+	private final JCheckBoxPad cbAGrupPrincipal = new JCheckBoxPad( "Agrupar cliente principal", "S", "N" );
 
 	public RelEvolucaoVendas() {
 
@@ -208,25 +211,21 @@ public class RelEvolucaoVendas extends FRelatorio {
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 175, 40, 20 );
 		adic( txtDtFim, 175, 175, 110, 20 );
 
-		adic( new JLabel( "Cód.for." ), 310, 35, 87, 20 );
-		adic( txtCodFor, 310, 55, 87, 20 );
-		adic( new JLabel( "Razão social do fornecedor" ), 400, 35, 210, 20 );
-		adic( txtRazFor, 400, 55, 210, 20 );
+		adic( txtCodFor, 		310, 	20, 	87, 	20,"Cód.for." );
+		adic( txtRazFor, 		400, 	20,    210, 	20, "Razão social do fornecedor" );
 
-		adic( new JLabel( "Cód.vend." ), 310, 75, 87, 20 );
-		adic( txtCodVend, 310, 95, 87, 20 );
-		adic( new JLabel( "Nome do vendedor" ), 400, 75, 210, 20 );
-		adic( txtNomeVend, 400, 95, 210, 20 );
+		adic( txtCodVend, 		310, 	60,	    87, 	20, "Cód.vend." );
+		adic( txtNomeVend, 		400, 	60,    210, 	20, "Nome do vendedor" );
 
-		adic( new JLabel( "Cód.cli." ), 310, 115, 87, 20 );
-		adic( txtCodCli, 310, 135, 87, 20 );
-		adic( new JLabel( "Razão social do cliente" ), 400, 115, 210, 20 );
-		adic( txtRazCli, 400, 135, 210, 20 );
+		adic( txtCodCli, 		310,   100,     87, 	20,"Cód.cli."  );
+		adic( txtRazCli, 		400,   100,    210, 	20, "Razão social do cliente" );
 
-		adic( new JLabel( "Cód.moeda" ), 310, 155, 87, 20 );
-		adic( txtCodMoeda, 310, 175, 87, 20 );
-		adic( new JLabel( "Descrição da moeda" ), 400, 155, 210, 20 );
-		adic( txtNomeMoeda, 400, 175, 210, 20 );
+		adic( txtCodMoeda, 		310,   140,     87, 	20, "Cód.moeda" );
+		adic( txtNomeMoeda, 	400,   140,    210, 	20, "Descrição da moeda"  );
+		
+		adic( cbAGrupPrincipal, 310,   180,    300, 	20, ""  );
+		
+		
 	}
 
 	@ Override
@@ -260,7 +259,13 @@ public class RelEvolucaoVendas extends FRelatorio {
 			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPCLIENTE C " );
-				where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND P.CODCLI=" + txtCodCli.getVlrInteger() + " AND C.CODCLI=P.CODCLI " );
+				
+				if( ! "S".equals( cbAGrupPrincipal.getVlrString() )){
+					where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND P.CODCLI=" + txtCodCli.getVlrInteger() + " AND C.CODCLI=P.CODCLI " );
+				}
+				else {
+					where.append( " AND C.CODEMPCP=P.CODEMPCL AND C.CODFILIALCP=P.CODFILIALCL AND C.CODCLICP=P.CODCLI AND C.CODCLICP= " + txtCodCli.getVlrString() + " "  );
+				}
 			}
 			if ( txtCodFor.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPFORNECEDOR F " );

@@ -259,6 +259,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		txtPercPagItem.addFocusListener( this );
 		txtPercIPIItem.addFocusListener( this );
+		
+		nav.setNavigation( true );
+		
 	}
 
 	private void montaRadioGrups() {

@@ -25,15 +25,12 @@
 
 package org.freedom.modulos.rep;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -50,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.library.swing.util.SwingParams;
 
 public class RPCliente extends FTabDados implements ActionListener {
 
@@ -64,9 +62,13 @@ public class RPCliente extends FTabDados implements ActionListener {
 	private final JPanelPad panelVenda = new JPanelPad();
 
 	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private final JTextFieldPad txtCodCliCP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtRazCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
+	private final JTextFieldFK txtRazCliCP = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	private final JTextFieldPad txtNomeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private final JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
@@ -142,7 +144,9 @@ public class RPCliente extends FTabDados implements ActionListener {
 	private final JButtonPad btCopiarCob = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
 
 	private final ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
-
+	
+	private final ListaCampos lcClienteCP = new ListaCampos( this, "CP" );
+	
 	private final ListaCampos lcVend = new ListaCampos( this, "VO" );
 
 	private final ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
@@ -151,7 +155,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 		super( false );
 		setTitulo( "Cadastro de tipos de clientes" );
-		setAtribos( 50, 50, 440, 400 );
+		setAtribos( 50, 50, 450, 450 );
 
 		montaListaCampos();
 
@@ -172,6 +176,8 @@ public class RPCliente extends FTabDados implements ActionListener {
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		setImprimir( true );
+		
+		nav.setNavigation( true );
 	}
 
 	private void montaListaCampos() {
@@ -186,6 +192,19 @@ public class RPCliente extends FTabDados implements ActionListener {
 		lcTipoCli.setQueryCommit( false );
 		lcTipoCli.setReadOnly( true );
 		txtCodTipoCli.setTabelaExterna( lcTipoCli, null );
+		
+
+		/********************
+		 * TIPO PRINCIPAL   *
+		 ********************/
+
+		lcClienteCP.add( new GuardaCampo( txtCodCliCP, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcClienteCP.add( new GuardaCampo( txtRazCliCP, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false ) );
+		lcClienteCP.montaSql( false, "CLIENTE", "RP" );
+		lcClienteCP.setQueryCommit( false );
+		lcClienteCP.setReadOnly( true );
+		txtCodCliCP.setTabelaExterna( lcClienteCP, null );
+		txtCodCliCP.setNomeCampo( "codcli" );
 
 		/********************
 		 * VENDEDOR *
@@ -282,33 +301,38 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adicTab( "Vendas", panelVenda );
 		setPainel( panelVenda );
 
-		JLabel comercial = new JLabel( "Comericial", SwingConstants.CENTER );
-		comercial.setOpaque( true );
-		JLabel linha1 = new JLabel();
-		linha1.setBorder( BorderFactory.createEtchedBorder() );
-		JLabel atividade = new JLabel( "Atividade", SwingConstants.CENTER );
-		atividade.setOpaque( true );
-		JLabel linha2 = new JLabel();
-		linha2.setBorder( BorderFactory.createEtchedBorder() );
+		JPanelPad pnComercial = new JPanelPad();
+		pnComercial.setBorder( SwingParams.getPanelLabel( "Comercial", Color.BLUE ) );
 
-		adic( comercial, 27, 10, 80, 20 );
-		adic( linha1, 7, 20, 403, 160 );
+		JPanelPad pnAtividade = new JPanelPad();
+		pnAtividade.setBorder( SwingParams.getPanelLabel( "Atividade", Color.BLUE ) );
 
-		adicCampo( txtCodTipoCli, 17, 60, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
-		adicDescFK( txtDescTipoCli, 110, 60, 290, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+		adic( pnComercial, 0, 0, 403, 200 );
+	
+		setPainel( pnComercial );
 
-		adicCampo( txtCodVend, 17, 100, 90, 20, "CodVend", "Cód.vend.", ListaCampos.DB_FK, txtNomeVend, true );
-		adicDescFK( txtNomeVend, 110, 100, 290, 20, "NomeVend", "Nome do vendedor" );
+		adicCampo( txtCodTipoCli, 	7, 		20, 	90, 	20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
+		adicDescFK( txtDescTipoCli, 100,	20, 	290, 	20, "DescTipoCli", "Descrição do tipo de cliente" );
 
-		adicCampo( txtCodPlanoPag, 17, 140, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
-		adicDescFK( txtDescPlanoPag, 110, 140, 290, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		adicCampo( txtCodVend, 		7, 		60, 	90, 	20, "CodVend", "Cód.vend.", ListaCampos.DB_FK, txtNomeVend, true );
+		adicDescFK( txtNomeVend, 	100, 	60, 	290, 	20, "NomeVend", "Nome do vendedor" );
 
-		adic( atividade, 27, 190, 80, 20 );
-		adic( linha2, 7, 200, 403, 50 );
+		adicCampo( txtCodPlanoPag, 	7, 		100, 	90, 	20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
+		adicDescFK( txtDescPlanoPag, 100, 	100, 	290, 	20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		
+		adicCampo( txtCodCliCP, 	 7, 	140, 	90, 	20, "CodCliCP", "Cód.Cli.", ListaCampos.DB_FK, txtRazCliCP, false );
+		adicDescFK( txtRazCliCP, 	100, 	140, 	290, 	20, "RazCli", "Razão do cliente principal" );
+		
+		txtCodCliCP.setNomeCampo( "codcli" ); 
+		
+		setPainel( panelVenda );
+		adic( pnAtividade, 0, 210, 403, 100 );
 
-		adicDB( cbAtivo, 15, 215, 300, 20, "AtivCli", "", true );
+		setPainel( pnAtividade );
+		
+		adicDB( cbAtivo, 0, 0, 300, 20, "AtivCli", "", true );
 
-		adicCampo( txtFatLucr, 7, 275, 50, 20, "FatLucr", "Fat.Luc.", ListaCampos.DB_SI, false );
+		adicCampo( txtFatLucr, 0, 40, 200, 20, "FatLucr", "Fator de lucratividade", ListaCampos.DB_SI, false );
 	}
 
 	private void copiarEndereco( final String arg ) {
@@ -417,5 +441,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		lcTipoCli.setConexao( cn );
 		lcVend.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+		lcClienteCP.setConexao( cn );
+		
 	}
 }
