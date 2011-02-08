@@ -1130,14 +1130,17 @@ $F{FONETRAN}.substring(4)
 		<band height="100" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement key="subreport-1" x="0" y="0" width="535" height="90"/>
+				<subreportParameter name="USUARIO">
+					<subreportParameterExpression><![CDATA[$P{USUARIO}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="TITULO">
 					<subreportParameterExpression><![CDATA[$P{TITULO}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="DATAPED">
+					<subreportParameterExpression><![CDATA[$F{DATAPED}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="CODEMP">
 					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="USUARIO">
-					<subreportParameterExpression><![CDATA[$P{USUARIO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="LOGOEMP">
 					<subreportParameterExpression><![CDATA[$P{LOGOEMP}]]></subreportParameterExpression>
