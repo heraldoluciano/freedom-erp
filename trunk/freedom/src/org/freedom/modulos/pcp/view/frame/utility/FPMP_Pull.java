@@ -301,15 +301,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_SI, false ) );
 
-		txtRefProd.setNomeCampo( "RefProd" );
-
+		
 		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
+		txtRefProd.setFK( true ); 
+		txtRefProd.setNomeCampo( "RefProd" );
 
-		
 		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
