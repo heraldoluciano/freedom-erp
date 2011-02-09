@@ -275,7 +275,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		rgFrete = new JRadioGroup<String, String>( 1, 2, labs, vals );
 
 		Vector<String> labs1 = new Vector<String>();
-		labs1.add( "Molote" );
+		labs1.add( "Malote" );
 		labs1.add( "Correio" );
 		labs1.add( "Fone" );
 		labs1.add( "Fax" );
