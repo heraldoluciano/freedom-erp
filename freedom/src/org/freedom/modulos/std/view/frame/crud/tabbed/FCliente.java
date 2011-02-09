@@ -390,7 +390,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
+	
 	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodPaisEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -402,7 +402,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescPaisCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodMunic = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
-
+	
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDDDMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
@@ -420,7 +420,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldFK txtDescMunCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
+	
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtSiglaUFCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -1544,6 +1544,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtNumForCli.setVlrInteger( txtNumCli.getVlrInteger() );
 		txtBairForCli.setVlrString( txtBairCli.getVlrString() );
 
+
 	}
 
 	private void buscaFornecedor() {
@@ -1621,8 +1622,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
 
 		try {
 
@@ -1646,6 +1647,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps.setString( 17, txtEndCli.getVlrString() );
 			ps.setInt( 18, txtNumCli.getVlrInteger() );
 			ps.setString( 19, txtBairCli.getVlrString() );
+			
+			ps.setString( 20, txtCodMunic.getVlrString() );
+			ps.setString( 21, txtSiglaUF.getVlrString() );
+			ps.setInt( 22, txtCodPais.getVlrInteger() );
+			
 
 			ps.executeUpdate();
 
