@@ -2538,7 +2538,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			rs = ps.executeQuery();
 			rs.next();
 			
-			return rs.getBoolean( "REVALIDARLOTECOMPRA" );
+			String revalidar = rs.getString( "REVALIDARLOTECOMPRA" );
+			return "S".equals( revalidar ) ? true : false;
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			return false;
