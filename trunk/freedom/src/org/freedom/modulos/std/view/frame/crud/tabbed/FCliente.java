@@ -1622,8 +1622,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " );
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ? ) " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR, CODMUNIC, SIGLAUF, CODPAIS, RGFOR, DDDFONEFOR, FONEFOR, FAXFOR, CELFOR ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,? ) " );
 
 		try {
 
@@ -1652,7 +1652,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps.setString( 21, txtSiglaUF.getVlrString() );
 			ps.setInt( 22, txtCodPais.getVlrInteger() );
 			ps.setString( 23, txtRgCli.getVlrString() );
-			
+			ps.setString( 24, txtDDDCli.getVlrString() );
+			ps.setString( 25, txtFoneCli.getVlrString() );
+			ps.setString( 26, txtFaxCli.getVlrString() );
+			ps.setString( 27, txtCelCli.getVlrString() );
 
 			ps.executeUpdate();
 
