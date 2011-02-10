@@ -861,11 +861,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private void montaTela() {
 
-		adicCampo( txtCodProd, 7, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodProd, 7, 20, 60, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true );
 
-		adicCampo( txtRefProd, 80, 20, 70, 20, "RefProd", "Referência", ListaCampos.DB_SI, true );
+		adicCampo( txtRefProd, 70, 20, 115, 20, "RefProd", "Referência", ListaCampos.DB_SI, true );
 
-		adicCampo( txtDescProd, 153, 20, 395, 20, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true );
+		adicCampo( txtDescProd, 188, 20, 360, 20, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true );
 
 		JPanelPad pnSaldo = new JPanelPad();
 		pnSaldo.setBorder( SwingParams.getPanelLabel( "Saldo", Color.BLUE ) );
@@ -1041,20 +1041,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		pinOutros.adic( pnMedidas, 5, 5, 650, 160 );
 		setPainel( pnMedidas );
 		
-		adicCampo( txtPesoBrutProd, 	7, 		20, 	110, 20, "PesoBrutProd"	, "Peso bruto"		, ListaCampos.DB_SI, true );
-		adicCampo( txtPesoLiqProd, 		120, 	20, 	110, 20, "PesoLiqProd"	, "Peso líquido"	, ListaCampos.DB_SI, true );
+		adicCampo( txtPesoBrutProd, 	7, 		20, 	110, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
+		adicCampo( txtPesoLiqProd, 		120, 	20, 	110, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
 
-		adicCampo( txtVlrDens, 			233, 	20, 	110, 20, "VlrDensidade"	, "Densidade"		, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrConcent, 		346, 	20, 	110, 20, "VlrConcent"	, "Concentração"	, ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDens, 			233, 	20, 	110, 20, "VlrDensidade", "Densidade", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrConcent, 		346, 	20, 	110, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
 
-		adicCampo( txtVlrCompri, 		7, 		60, 	110, 20, "Comprimento"	, "Comprimento(cm)"	, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLarg, 			120, 	60, 	110, 20, "Largura"		, "Largura(cm)"		, ListaCampos.DB_SI, false );
-		adicCampo( txtVlrEspess, 		233, 	60, 	110, 20, "Espessura"	, "Espessura(cm)"	, ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCompri, 		7, 		60, 	110, 20, "Comprimento", "Comprimento(cm)", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLarg, 			120, 	60, 	110, 20, "Largura", "Largura(cm)", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrEspess, 		233, 	60, 	110, 20, "Espessura", "Espessura(cm)", ListaCampos.DB_SI, false );
 
-		adicCampo( txtQtdEmbalagem, 	7, 		100, 	110, 20, "QtdEmbalagem"	, "Qtd. Embalagem"	, ListaCampos.DB_SI, false );
-		adicCampo( txtCubagem, 			120, 	100, 	110, 20, "Cubagem"		, "Cubagem (m3)"	, ListaCampos.DB_SI, false );		
-		adicCampo( txtNroPlanos, 		233, 	100, 	110, 20, "NroPlanos"	, "Nro. Planos"		, ListaCampos.DB_SI, false );
-		adicCampo( txtQtdPorPlano, 		346, 	100, 	110, 20, "QtdPorPlano"	, "Qtd.por plano"	, ListaCampos.DB_SI, false );
+		adicCampo( txtQtdEmbalagem, 	7, 		100, 	110, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );
+		adicCampo( txtCubagem, 			120, 	100, 	110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );		
+		adicCampo( txtNroPlanos, 		233, 	100, 	110, 20, "NroPlanos", "Nro. Planos", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdPorPlano, 		346, 	100, 	110, 20, "QtdPorPlano", "Qtd.por plano", ListaCampos.DB_SI, false );
 
 		
 		JPanelPad pnOutros = new JPanelPad();
