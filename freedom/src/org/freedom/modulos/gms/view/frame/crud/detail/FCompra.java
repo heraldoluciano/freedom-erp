@@ -2500,6 +2500,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						if ( dl.OK ) {
 							txtCodLote.setVlrString( dl.getValor() );
 							lcLote.carregaDados();
+						}else{
+							txtCodLote.requestFocus();	
+							throw new RuntimeException();	
 						}
 						dl.dispose();
 

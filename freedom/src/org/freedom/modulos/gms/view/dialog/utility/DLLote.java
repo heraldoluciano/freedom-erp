@@ -116,7 +116,7 @@ public class DLLote extends FFDialogo {
 		txtCodLote.setVlrString( sCodLote );
 		txtCodProd.setVlrString( sCodProd );
 		txtDescProd.setVlrString( sDescProd );
-		txtVenctoLote.setVlrDate( sDataLote );
+		//txtVenctoLote.setVlrDate( sDataLote );
 
 		txtDataINILote.requestFocus();
 		txtCodLote.setEditable( false );
@@ -226,12 +226,14 @@ public class DLLote extends FFDialogo {
 			if ( txtCodLote.getText().trim().length() == 0 ) {
 				Funcoes.mensagemInforma( this, "Campo Código do lote é requerido!" );
 				txtCodLote.requestFocus();
-			}
-			else if ( txtVenctoLote.getText().trim().length() == 0 ) {
+			}else if ( txtVenctoLote.getText().trim().length() == 0 ) {
 				Funcoes.mensagemInforma( this, "Campo Vencimento do lote é requerido!" );
 				txtVenctoLote.requestFocus();
-			}
-			else {
+			}else if(txtVenctoLote.getVlrDate() != null &&
+					txtVenctoLote.getVlrDate().compareTo( new Date() ) < 0){
+				Funcoes.mensagemInforma( this, "Lote Vencido!" );
+				txtVenctoLote.requestFocus();
+			}else {
 				if ( gravaLote() )
 					super.actionPerformed( evt );
 			}
