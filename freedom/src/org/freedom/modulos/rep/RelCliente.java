@@ -157,7 +157,7 @@ public class RelCliente extends FRelatorio {
 
 			sql.append( "SELECT CODCLI,RAZCLI,NOMECLI,CNPJCLI,INSCCLI, " );
 			sql.append( "ENDCLI,CIDCLI,ESTCLI,CEPCLI,BAIRCLI,DDDCLI, " );
-			sql.append( "FONECLI,FAXCLI,EMAILCLI " );
+			sql.append( "FONECLI,FAXCLI,EMAILCLI,CONTATOCLI,CELCONTATOCLI " );
 			sql.append( "FROM RPCLIENTE " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? " );
 			if ( txtCodTpCli.getVlrString().trim().length() > 0 ) {

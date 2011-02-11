@@ -137,6 +137,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 4, 2 );
 
+	private final JTextFieldPad txtContatoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private final JTextFieldPad txtCelContatoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
 	private final JCheckBoxPad cbAtivo = new JCheckBoxPad( "Cliente Ativo", "S", "N" );
 
 	private final JButtonPad btCopiarEnt = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
@@ -155,7 +159,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 		super( false );
 		setTitulo( "Cadastro de tipos de clientes" );
-		setAtribos( 50, 50, 450, 450 );
+		setAtribos( 50, 50, 450, 530 );
 
 		montaListaCampos();
 
@@ -165,6 +169,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
+		txtCelContatoCli.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );
@@ -259,6 +264,11 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 		adicCampo( txtEmailCli, 7, 270, 403, 20, "EmailCli", "E-mail", ListaCampos.DB_SI, false );
 
+		adicCampo( txtContatoCli, 7, 310, 403, 20, "ContatoCli", "Contato", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCelContatoCli, 7, 350, 172, 20, "CelContatoCli", "Celular", ListaCampos.DB_SI, false );
+
+		
 		/*******************
 		 * ENTREGA *
 		 *******************/
@@ -383,7 +393,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 			sql.append( "C.ENDCOBCLI,C.BAIRCOBCLI,C.CIDCOBCLI,C.ESTCOBCLI,C.CEPCOBCLI," );
 			sql.append( "C.ENDENTCLI,C.BAIRENTCLI,C.CIDENTCLI,C.CEPENTCLI,C.ESTENTCLI," );
 			sql.append( "C.INSCENTCLI,C.CNPJENTCLI,C.ATIVCLI," );
-			sql.append( "T.DESCTIPOCLI, V.NOMEVEND, P.DESCPLANOPAG " );
+			sql.append( "T.DESCTIPOCLI, V.NOMEVEND, P.DESCPLANOPAG, C.CONTATOCLI " );
 			sql.append( "FROM RPCLIENTE C " );
 			sql.append( "LEFT OUTER JOIN RPTIPOCLI T ON T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTIPOCLI=C.CODTIPOCLI " );
 			sql.append( "LEFT OUTER JOIN RPVENDEDOR V ON V.CODEMP=C.CODEMPVO AND V.CODFILIAL=C.CODFILIALVO AND V.CODVEND=C.CODVEND " );

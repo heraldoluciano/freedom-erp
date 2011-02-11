@@ -800,12 +800,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private FPrinterJob getPedido( final Integer codped ) {
 
-		String classLayout = "/opt/freedom/reports/pedido.jasper";
+		String classLayout = "pedido.jasper";
 
 		if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
 
-			classLayout = "/opt/freedom/reports/" + (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) + ".jasper";
+			classLayout =  (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) + ".jasper";
 		}
+		
+		classLayout = "modulos/rep/relatorios/" + classLayout;
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
@@ -819,7 +821,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
-		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, true );
+		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, false );
 	}
 
 	private void enviarPedido() {
