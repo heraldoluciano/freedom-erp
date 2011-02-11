@@ -80,6 +80,7 @@ P.CODEMP=C.CODEMPPG AND P.CODFILIAL=C.CODFILIALPG AND P.CODPLANOPAG=C.CODPLANOPA
 	<field name="DESCTIPOCLI" class="java.lang.String"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
+	<field name="CONTATOCLI" class="java.lang.String"/>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
@@ -134,7 +135,7 @@ P.CODEMP=C.CODEMPPG AND P.CODFILIAL=C.CODFILIALPG AND P.CODPLANOPAG=C.CODPLANOPA
 				<reportElement key="rectangle-8" mode="Transparent" x="0" y="189" width="535" height="45" forecolor="#CCCCFF"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-1" x="485" y="11" width="40" height="12"/>
+				<reportElement key="textField-1" x="492" y="11" width="40" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -147,7 +148,7 @@ P.CODEMP=C.CODEMPPG AND P.CODFILIAL=C.CODFILIALPG AND P.CODPLANOPAG=C.CODPLANOPA
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-2" x="85" y="11" width="300" height="12"/>
+				<reportElement key="textField-2" x="85" y="11" width="230" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -240,7 +241,7 @@ P.CODEMP=C.CODEMPPG AND P.CODFILIAL=C.CODFILIALPG AND P.CODPLANOPAG=C.CODPLANOPA
 				<text><![CDATA[Nome fantazia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" x="440" y="11" width="40" height="12"/>
+				<reportElement key="staticText-3" x="448" y="11" width="40" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -882,6 +883,32 @@ $F{CNPJENTCLI}.substring(8,12)+"-"+$F{CNPJENTCLI}.substring(12) : "")]]></textFi
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-3" x="317" y="11" width="40" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Contato]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-1" x="361" y="11" width="81" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTATOCLI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
