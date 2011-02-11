@@ -288,6 +288,17 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			
 			System.out.println(FPrinterJob.class.getResourceAsStream( root_dir + sLayout));
 
+			Object SUBREPORT_DIR = hParam.get("SUBREPORT_DIR");
+			
+			if(SUBREPORT_DIR == null) {
+				String subreport_dir = "";
+				if(sLayout.lastIndexOf("/")>0){
+					subreport_dir = root_dir.substring(1) + sLayout.substring(0, sLayout.lastIndexOf("/"));
+				}
+				
+				hParam.put("SUBREPORT_DIR", subreport_dir + "/");
+			}
+			
 			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, jrRS);
 
 			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
@@ -347,8 +358,29 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			if (hParamRel != null) {
 				hParam.putAll(hParamRel);
 			}
+			
+			
+			String root_dir = "";
+			
+			if(sLayout.indexOf("/")!=0) {
+				root_dir = "/org/freedom/";
+			}
+			
+			System.out.println(FPrinterJob.class.getResourceAsStream( root_dir + sLayout));
 
-			relJasper = JasperFillManager.fillReport(externo ? new FileInputStream(sLayout) : FPrinterJob.class.getResourceAsStream("/org/freedom/" + sLayout), hParam, con.getConnection());
+			Object SUBREPORT_DIR = hParam.get("SUBREPORT_DIR");
+			
+			if(SUBREPORT_DIR == null) {
+				String subreport_dir = "";
+				if(sLayout.lastIndexOf("/")>0){
+					subreport_dir = root_dir.substring(1) + sLayout.substring(0, sLayout.lastIndexOf("/"));
+				}
+				
+				hParam.put("SUBREPORT_DIR", subreport_dir + "/");
+			}
+			
+
+			relJasper = JasperFillManager.fillReport(externo ? new FileInputStream(sLayout) : FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, con.getConnection());
 
 			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
 			this.setContentPane(viewer);
