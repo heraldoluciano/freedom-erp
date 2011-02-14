@@ -1299,8 +1299,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtQtdPrevProdOP.setVlrBigDecimal( txtQtdSugProdOP.getVlrBigDecimal() );
 			}
 
-			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " + "P.CODUNID, IT.QTDITEST, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " + "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " + "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? "
-					+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " + "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " + "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD " + "ORDER BY IT.CODFASE, IT.SEQITEST";
+			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " 
+				+ "P.CODUNID, coalesce(IT.QTDITEST/e.qtdest,0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " 
+				+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " 
+				+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? "
+				+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " 
+				+ "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " 
+				+ "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD " 
+				+ "ORDER BY IT.CODFASE, IT.SEQITEST";
 
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1316,8 +1322,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				linha[ 1 ] = new Integer( rs.getInt( "CODPRODPD" ) );
 				linha[ 2 ] = rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ).trim() : "";
 				linha[ 3 ] = rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "";
-				linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
-				linha[ 4 ] = ( (BigDecimal) linha[ 4 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+				
+				BigDecimal qtditest = rs.getBigDecimal( "QTDITEST" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+				
+				//linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
+				linha[ 4 ] = qtditest;
+				
 				linha[ 5 ] = rs.getBigDecimal( "SLDLIQPROD" ) != null ? rs.getBigDecimal( "SLDLIQPROD" ) : new BigDecimal( 0 );
 				linha[ 5 ] = ( (BigDecimal) linha[ 5 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
 				linha[ 6 ] = "S".equals( rs.getString( "QTDFIXA" ) ) ? ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) : getQtdTotal( ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) );
