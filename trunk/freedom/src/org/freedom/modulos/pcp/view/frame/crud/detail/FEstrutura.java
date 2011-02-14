@@ -478,21 +478,21 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItem, true );
 			adicCampoInvisivel( txtCodProdItem, "CodProdPD", "Cód.Prod.", ListaCampos.DB_SI, true );
 
-			adic( new JLabelPad( "Referência" ), 50, 0, 77, 20 );
-			adic( txtRefProdItem, 50, 20, 77, 20 );
+			adic( new JLabelPad( "Referência" ), 50, 0, 115, 20 );
+			adic( txtRefProdItem, 50, 20, 115, 20 );
 			txtRefProdItem.setRequerido( true );
 			txtRefProdItem.setPK( true );
 			txtRefProdItem.setFK( true );
 			txtRefProdItem.setNomeCampo( "refprod" );
 		}
 		else {
-			adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, false );
+			adicCampo( txtCodProdItem, 50, 20, 115, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, false );
 			adicCampoInvisivel( txtRefProdItem, "RefProdPD", "Referência", ListaCampos.DB_SI, true );
 			txtCodProdItem.setNomeCampo( "codprod" );
 		}
 
-		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItEst, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProdItem, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtQtdItEst, 498, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 
 		adicDB( cbRmaAutoItEst, 10, 60, 80, 20, "RmaAutoItEst", "", true );
 		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
@@ -608,7 +608,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			adicCampoInvisivel( txtRefProdItemSP, "RefProdPD", "Referência", ListaCampos.DB_FK, txtDescProdItemSP, true );
 			adicCampoInvisivel( txtCodProdItemSP, "CodProdPD", "Cód.Prod.", ListaCampos.DB_SI, true );
 
-			adic( txtRefProdItemSP, 50, 20, 77, 20, "Referência" );
+			adic( txtRefProdItemSP, 50, 20, 115, 20, "Referência" );
 			
 			txtRefProdItemSP.setRequerido( true );
 			txtRefProdItemSP.setPK( true );
@@ -616,14 +616,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			txtRefProdItemSP.setNomeCampo( "refprod" );
 		}
 		else {
-			adicCampo( txtCodProdItemSP, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItemSP, false );
+			adicCampo( txtCodProdItemSP, 50, 20, 115, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItemSP, false );
 			adicCampoInvisivel( txtRefProdItemSP, "RefProdPD", "Referência", ListaCampos.DB_SI, true );
 			
 			txtCodProdItemSP.setNomeCampo( "codprod" );
 		}
 
-		adicDescFK( txtDescProdItemSP, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItEstSP, 460, 20, 100, 20, "QtdItEstSP", "Qtd.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProdItemSP, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtQtdItEstSP, 498, 20, 100, 20, "QtdItEstSP", "Qtd.", ListaCampos.DB_SI, true );
 
 		adicDB( cbQtdVariavelItemSP, 210, 60, 100, 20, "QtdVariavel", "", true );
 		adicDB( cbQtdFixaItemSP, 330, 60, 100, 20, "QtdFixa", "", true );
