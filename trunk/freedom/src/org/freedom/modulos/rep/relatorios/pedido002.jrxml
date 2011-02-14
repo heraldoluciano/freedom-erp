@@ -323,7 +323,7 @@ ORDER BY 1]]>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					</textElement>
-					<text><![CDATA[Referência]]></text>
+					<text><![CDATA[Referencia]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="75" y="178" width="150" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
