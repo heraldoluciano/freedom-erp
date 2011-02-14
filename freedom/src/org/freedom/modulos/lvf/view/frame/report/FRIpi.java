@@ -37,6 +37,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -50,12 +51,16 @@ public class FRIpi extends FRelatorio {
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JCheckBoxPad cbEntradas = new JCheckBoxPad( "Entradas", "S", "N" );
+	
+	private JCheckBoxPad cbSaidas = new JCheckBoxPad( "Saídas", "S", "N" );
 
 	public FRIpi() {
 
 		super( false );
 		setTitulo( "Relatório de IPI" );
-		setAtribos( 50, 50, 355, 140 );
+		setAtribos( 50, 50, 355, 200 );
 
 		montaTela();
 	}
@@ -74,11 +79,18 @@ public class FRIpi extends FRelatorio {
 		adic( txtDataini, 57, 30, 100, 20 );
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
+		
+		adic( cbEntradas, 57, 80, 120, 20);
+		adic( cbSaidas, 179,80,120,20);
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+		
+		cbEntradas.setVlrString( "S" );
+		cbSaidas.setVlrString( "S" );
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -97,19 +109,33 @@ public class FRIpi extends FRelatorio {
 
 		try {
 
-			sql.append( "SELECT V.DTEMITVENDA,T.ESTIPOMOV,SUM(V.VLRLIQVENDA), SUM(V.VLRBASEIPIVENDA) AS VALORBASEIPI,SUM(V.VLRIPIVENDA)AS VALORIPIVENDA " );
-			sql.append( "FROM VDVENDA V,EQTIPOMOV T " );
-			sql.append( "WHERE " );
-			sql.append( "V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "V.CODTIPOMOV=T.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
-			sql.append( "AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') GROUP BY V.DTEMITVENDA,T.ESTIPOMOV " );
-			sql.append( "UNION ALL " );
-			sql.append( "SELECT C.DTENTCOMPRA,T1.ESTIPOMOV,SUM(C.VLRLIQCOMPRA), " );
-			sql.append( "SUM(C.VLRBASEICMSCOMPRA),SUM(C.VLRICMSCOMPRA) " );
-			sql.append( "FROM CPCOMPRA C,EQTIPOMOV T1 " );
-			sql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND " );
-			sql.append( "C.CODTIPOMOV=T1.CODTIPOMOV AND T1.FISCALTIPOMOV='S' " );
-			sql.append( "GROUP BY C.DTENTCOMPRA,T1.ESTIPOMOV ORDER BY 1,3" );
+			if("S".equals( cbSaidas.getVlrString())) {
+			
+				sql.append( "SELECT V.DTEMITVENDA ,T.ESTIPOMOV,SUM(V.VLRLIQVENDA), SUM(V.VLRBASEIPIVENDA) AS VALORBASEIPI,SUM(V.VLRIPIVENDA)AS VALORIPIVENDA " );
+				sql.append( "FROM VDVENDA V,EQTIPOMOV T " );
+				sql.append( "WHERE " );
+				sql.append( "V.DTEMITVENDA BETWEEN ? AND ? AND " );
+				sql.append( "V.CODTIPOMOV=T.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
+				sql.append( "AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') GROUP BY V.DTEMITVENDA,T.ESTIPOMOV " );
+				
+			}
+			
+			if("S".equals( cbSaidas.getVlrString()) && "S".equals( cbEntradas.getVlrString())) {
+				
+				sql.append( "UNION ALL " );
+			
+			}
+			
+			if("S".equals( cbEntradas.getVlrString())) {
+				
+				sql.append( "SELECT C.DTENTCOMPRA DTEMITVENDA,T1.ESTIPOMOV,SUM(C.VLRLIQCOMPRA), " );
+				sql.append( "SUM(C.VLRBASEIPICOMPRA) VALORBASEIPI,SUM(C.VLRIPICOMPRA*-1) VALORIPIVENDA " );
+				sql.append( "FROM CPCOMPRA C,EQTIPOMOV T1 " );
+				sql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND " );
+				sql.append( "C.CODTIPOMOV=T1.CODTIPOMOV AND T1.FISCALTIPOMOV='S' " );
+				sql.append( "GROUP BY C.DTENTCOMPRA,T1.ESTIPOMOV ORDER BY 1,3" );
+				
+			}
 
 			/*
 			 * if(! "".equals( txtCodGrupo.getVlrString())) { if(txtCodGrupo.getVlrString().trim().length()==12) { sql.append( " and pd.codgrup = '" + txtCodGrupo.getVlrString() + "'" ); } else { sql.append( " and pd.codgrup like '" + txtCodGrupo.getVlrString() + "%'" ); }
@@ -125,10 +151,14 @@ public class FRIpi extends FRelatorio {
 
 			int param = 1;
 
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			if("S".equals( cbSaidas.getVlrString())) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			}
+			if("S".equals( cbEntradas.getVlrString())) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			}
 
 			/*
 			 * if ( txtCodCli.getVlrInteger() > 0 ) { ps.setInt( param++, lcCli.getCodEmp() ); ps.setInt( param++, lcCli.getCodFilial() ); ps.setInt( param++, txtCodCli.getVlrInteger() ); }
