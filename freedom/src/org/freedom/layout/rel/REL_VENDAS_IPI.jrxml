@@ -356,7 +356,7 @@
 			<line>
 				<reportElement key="line-40" stretchType="RelativeToBandHeight" x="389" y="0" width="1" height="14"/>
 			</line>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField" x="82" y="0" width="66" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -369,7 +369,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ESTIPOMOV}]]></textFieldExpression>
 			</textField>
-			<textField pattern="##0.00" isBlankWhenNull="false">
+			<textField pattern="##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="267" y="1" width="112" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -382,7 +382,7 @@
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALORBASEIPI}]]></textFieldExpression>
 			</textField>
-			<textField pattern="##0.00" isBlankWhenNull="false">
+			<textField pattern="##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="399" y="1" width="163" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -395,7 +395,7 @@
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALORIPIVENDA}]]></textFieldExpression>
 			</textField>
-			<textField pattern="##0.00" isBlankWhenNull="false">
+			<textField pattern="##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="160" y="0" width="96" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
