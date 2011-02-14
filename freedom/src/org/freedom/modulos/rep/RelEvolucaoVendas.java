@@ -258,13 +258,18 @@ public class RelEvolucaoVendas extends FRelatorio {
 				where.append( " AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND P.CODMOEDA='" + txtCodMoeda.getVlrString() + "' AND M.CODMOEDA=P.CODMOEDA " );
 			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
-				from.append( ", RPCLIENTE C " );
+				from.append( ", RPCLIENTE C, RPCLIENTE C2 " );
 				
 				if( ! "S".equals( cbAGrupPrincipal.getVlrString() )){
 					where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND P.CODCLI=" + txtCodCli.getVlrInteger() + " AND C.CODCLI=P.CODCLI " );
+					where.append(  "AND C.CODEMP=C2.CODEMP AND C.CODFILIAL=C2.CODFILIAL AND C.CODCLI=C2.CODCLI " );
 				}
 				else {
-					where.append( " AND C.CODEMPCP=P.CODEMPCL AND C.CODFILIALCP=P.CODFILIALCL AND C.CODCLICP=P.CODCLI AND C.CODCLICP= " + txtCodCli.getVlrString() + " "  );
+					//where.append( " AND C.CODEMPCP=P.CODEMPCL AND C.CODFILIALCP=P.CODFILIALCL AND C.CODCLICP=P.CODCLI AND C.CODCLICP= " + txtCodCli.getVlrString() + " "  );
+					where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
+					where.append( " AND C.CODEMPCP=C2.CODEMP AND C.CODFILIALCP=C2.CODFILIAL AND C.CODCLICP=C2.CODCLI " );
+					where.append( " AND C2.CODEMP=P.CODEMPCL AND C2.CODFILIAL=P.CODFILIALCL AND C2.CODCLI= " + txtCodCli.getVlrString() + " "  );
+					
 				}
 			}
 			if ( txtCodFor.getVlrString().trim().length() > 0 ) {
