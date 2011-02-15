@@ -319,7 +319,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
-	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
 
 	private final JTextFieldPad txtEndEmail = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
 
