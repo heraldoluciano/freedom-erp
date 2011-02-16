@@ -305,16 +305,16 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		txtCodChamado.setVlrInteger( codchamado );
 
-		if ( codcli > 0 ) {
-			txtCodCli.setAtivo( false );
-		}
-		else {
+		//if ( codcli > 0 ) {
+		//	txtCodCli.setAtivo( false );
+		//}
+		//else {
 			txtCodCli.setRequerido( true );
-		}
+		//}
 
-		if ( codchamado != null ) {
-			txtCodChamado.setAtivo( false );
-		}
+		//if ( codchamado != null ) {
+			//txtCodChamado.setAtivo( false );
+		//}
 
 		btRun.addActionListener( this );
 
