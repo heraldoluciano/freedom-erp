@@ -300,7 +300,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		cbContr.addComboBoxListener( this );
 
 		lcChamado.addCarregaListener( this );
-
+		lcCli.addCarregaListener( this );
 		txtCodCli.setVlrInteger( codcli );
 
 		txtCodChamado.setVlrInteger( codchamado );
@@ -892,8 +892,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		montaComboSetor();
 		montaComboStatus();
 
-		HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
-		cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+	
 
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
@@ -967,6 +966,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			// Guardando o chamado sinalizado
 			codchamado_ant = txtCodChamado.getVlrInteger();
 
+		}
+		else if (cevt.getListaCampos() == lcCli) {
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
+			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 
 	}
