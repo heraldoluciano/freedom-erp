@@ -26,7 +26,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
-
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.component.Leiaute;
@@ -144,9 +143,28 @@ public class NFApr extends Leiaute {
 
 				if ( !rs.getString( "TipoProd" ).equals( "S" ) ) {
 
-					imp.pulaLinha( 1, imp.comprimido() );
+					//imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 2, Funcoes.copy( rs.getString( "RefProd" ), 9 ) );
-					imp.say( 11, Funcoes.copy( rs.getString( "DescProd" ), 0, 45 ) );
+					//imp.say( 11, Funcoes.copy( rs.getString( "DescProd" ), 0, 45 ) );
+
+					// Imprime os dados do item no corpo da nota
+
+					Vector<?> vDescItem = Funcoes.strToVectorSilabas( rs.getString( "obsitvenda" ) == null || rs.getString( "obsitvenda" ).equals( "" ) ? ( rs.getString( "descprod" ).trim() ) : rs.getString( "obsitvenda" ), 45 );
+					String sDescItem = "";
+					
+					for ( int iConta = 0; ( ( iConta < 20 ) && ( vDescItem.size() > iConta ) ); iConta++ ) {
+
+						if ( !vDescItem.elementAt( iConta ).toString().equals( "" ) ) {
+							sDescItem = vDescItem.elementAt( iConta ).toString();
+						}
+						else {
+							sDescItem = "";
+						}
+
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 11, sDescItem );
+					}
+
 					imp.say( 57, Funcoes.copy( rs.getString( "CodBarProd" ), 0, 9 ) );
 					imp.say( 73, Funcoes.copy( rs.getString( "OrigFisc" ), 0, 1 ) + Funcoes.copy( rs.getString( "CodTratTrib" ), 0, 2 ) );
 					imp.say( 79, Funcoes.copy( rs.getString( "CodUnid" ), 4 ) );
