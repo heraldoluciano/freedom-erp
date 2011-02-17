@@ -143,7 +143,7 @@ public class NFApr extends Leiaute {
 
 				if ( !rs.getString( "TipoProd" ).equals( "S" ) ) {
 
-					//imp.pulaLinha( 1, imp.comprimido() );
+					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 2, Funcoes.copy( rs.getString( "RefProd" ), 9 ) );
 					//imp.say( 11, Funcoes.copy( rs.getString( "DescProd" ), 0, 45 ) );
 
