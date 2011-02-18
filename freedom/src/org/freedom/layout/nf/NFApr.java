@@ -163,7 +163,10 @@ public class NFApr extends Leiaute {
 
 						
 						imp.say( 11, sDescItem );
-						//imp.pulaLinha( 1, imp.comprimido() );
+					
+						if(iConta < vDescItem.size()-1)
+							imp.pulaLinha( 1, imp.comprimido() );
+					
 					}
 
 					imp.say( 57, Funcoes.copy( rs.getString( "CodBarProd" ), 0, 9 ) );
