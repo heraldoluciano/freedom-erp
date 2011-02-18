@@ -346,7 +346,7 @@ public class FRemCnab extends FRemFBN {
 				reg.setCpfCnpjCli( "0" );
 			}
 
-			reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
+			reg.setRazCli( StringFunctions.clearAccents(  dadosCliente[ DadosCliente.RAZCLI.ordinal() ] ).toUpperCase());
 
 			String logradouro = dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim();
 			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ] ;
@@ -354,7 +354,7 @@ public class FRemCnab extends FRemFBN {
 
 			String endereco_completo = logradouro + ( numero!=null ? ", " + numero : "" ) + ( bairro!=null ? " - " + bairro : "" ); 
 
-			reg.setEndCli( endereco_completo ); 
+			reg.setEndCli( StringFunctions.clearAccents( endereco_completo ).toUpperCase()); 
 
 			//			reg.setEndCli( ( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim() + ( dadosCliente[ DadosCliente.NUMCLI.ordinal() ] == null ? " " : ( ", " + dadosCliente[ DadosCliente.NUMCLI.ordinal() ].trim() ) ) ) + "-" + dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] == null ? "" : dadosCliente[ DadosCliente.BAIRCLI.ordinal() ].trim() );
 
