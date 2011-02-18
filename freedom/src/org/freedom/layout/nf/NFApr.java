@@ -161,8 +161,9 @@ public class NFApr extends Leiaute {
 							sDescItem = "";
 						}
 
-						imp.pulaLinha( 1, imp.comprimido() );
+						
 						imp.say( 11, sDescItem );
+						//imp.pulaLinha( 1, imp.comprimido() );
 					}
 
 					imp.say( 57, Funcoes.copy( rs.getString( "CodBarProd" ), 0, 9 ) );
@@ -175,7 +176,7 @@ public class NFApr extends Leiaute {
 					imp.say( 124, String.valueOf( rs.getDouble( "PercIPIItVenda" ) ) );
 
 					bigSomaProd = bigSomaProd.add( ( ( new BigDecimal( rs.getDouble( "VlrLiqItVenda" ) ) ).divide( new BigDecimal( rs.getDouble( "QtdItVenda" ) ), 2, BigDecimal.ROUND_HALF_UP ) ).multiply( new BigDecimal( rs.getDouble( "QtdItVenda" ) ) ) );
-
+					
 				}
 				else {
 					vDesc = Funcoes.strToVectorSilabas( rs.getString( "ObsItVenda" ) == null || rs.getString( "ObsItVenda" ).equals( "" ) ? ( rs.getString( "DescProd" ).trim() ) : rs.getString( "ObsItVenda" ), 70 );
