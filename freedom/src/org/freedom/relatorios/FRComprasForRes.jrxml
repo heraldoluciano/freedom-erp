@@ -45,11 +45,6 @@ C.FLAG IN ('S','N') ORDER BY C.CODFOR,C.DTEMITCOMPRA]]>
 	<field name="VLRLIQCOMPRA" class="java.math.BigDecimal"/>
 	<field name="CODCOMPRA" class="java.lang.Long"/>
 	<field name="DOCCOMPRA" class="java.lang.Long"/>
-	<field name="CODPROD" class="java.lang.Long"/>
-	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="QTDITCOMPRA" class="java.math.BigDecimal"/>
-	<field name="PRECOITCOMPRA" class="java.math.BigDecimal"/>
-	<field name="VLRLIQITCOMPRA" class="java.math.BigDecimal"/>
 	<variable name="VLRTOTICMS" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRICMSCOMPRA}]]></variableExpression>
 	</variable>
