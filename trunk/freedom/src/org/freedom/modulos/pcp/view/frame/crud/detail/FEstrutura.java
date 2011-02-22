@@ -203,6 +203,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JCheckBoxPad cbQtdVariavelItemSP = new JCheckBoxPad( "Qtd. variável?", "S", "N" );
 	
 	private JCheckBoxPad cbQtdFixaItem = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
+	
+	private JCheckBoxPad cbPermiteAjusteItEst = new JCheckBoxPad( "Permite ajuste?", "S", "N" );
 
 	private JCheckBoxPad cbQtdFixaItemSP = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
 	
@@ -498,6 +500,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
 		adicDB( cbQtdVariavelItem, 210, 60, 100, 20, "QtdVariavel", "", true );
 		adicDB( cbQtdFixaItem, 330, 60, 100, 20, "QtdFixa", "", true );
+		adicDB( cbPermiteAjusteItEst, 433, 60, 150, 20, "PermiteAjusteItEst", "", true );
 
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
