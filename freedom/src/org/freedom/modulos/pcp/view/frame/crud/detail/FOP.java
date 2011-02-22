@@ -171,6 +171,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldPad txtSeqAc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtBloqOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtPermiteAjusteItOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -800,6 +802,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSeqAc, "SeqAc", "", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBloqOp, "BloqOp", "", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtPermiteAjusteItOp, "PermiteAjusteItOp", "", ListaCampos.DB_SI, false );
+		
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -3083,15 +3087,32 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtDtValidOP.setVlrDate( txtDescLoteProdEst.getVlrDate() );
 
 			if ( cevt.getListaCampos() == lcDet ) {
+				
 				if ( txtUsaLoteDet.getVlrString().equals( "S" ) ) {
+					
 					txtCodLoteProdDet.setVlrString( getLote( lcProdDetCod, txtCodProdDet, true ) );
 					txtCodLoteProdDet.setAtivo( true );
 					lcLoteProdDet.carregaDados();
 					btRMA.setEnabled( liberaRMA() );
+					
 				}
 				else if ( ( txtUsaLoteDet.getVlrString().equals( "N" ) ) ) {
+					
 					txtCodLoteProdDet.setAtivo( false );
+					
 				}
+				
+				if( "S".equals( txtPermiteAjusteItOp.getVlrString() )) {
+					
+					txtQtdItOp.setAtivo( true );
+					
+				}
+				else {
+					
+					txtQtdItOp.setAtivo( false );
+					
+				}
+				
 				processaTab();
 			}
 
