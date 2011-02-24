@@ -169,7 +169,7 @@ public class NFApr extends Leiaute {
 					
 					}
 
-					imp.say( 57, Funcoes.copy( rs.getString( "CodBarProd" ), 0, 9 ) );
+					imp.say( 57, Funcoes.copy( rs.getString( "CodBarProd" ), 0, 13 ) );
 					imp.say( 73, Funcoes.copy( rs.getString( "OrigFisc" ), 0, 1 ) + Funcoes.copy( rs.getString( "CodTratTrib" ), 0, 2 ) );
 					imp.say( 79, Funcoes.copy( rs.getString( "CodUnid" ), 4 ) );
 					imp.say( 85, String.valueOf( rs.getDouble( "QtdItVenda" ) ) );
