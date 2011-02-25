@@ -245,6 +245,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtVlrLiqItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtDescIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtClasComis = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -595,6 +597,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcCli.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEstCli, "UfCli", "UF", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDescIpi, "DescIpi", "Desconto de IPI", ListaCampos.DB_SI, false ) );
+		
+		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );

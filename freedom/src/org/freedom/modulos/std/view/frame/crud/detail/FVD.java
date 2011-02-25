@@ -110,7 +110,7 @@ public abstract class FVD extends FDetalhe {
 	 *            array de int com os paramentros para a procedure
 	 * @return preço do produto
 	 */
-	private BigDecimal buscaPreco( int[] parametros ) {
+	protected BigDecimal buscaPreco( int[] parametros ) {
 
 		BigDecimal retorno = null;
 		String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";

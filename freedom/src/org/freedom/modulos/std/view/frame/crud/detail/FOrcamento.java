@@ -90,6 +90,7 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.lvf.business.component.CalcImpostos;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
@@ -148,6 +149,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodEnc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtDescIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodItOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -583,6 +586,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCli.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEstCli, "UfCli", "UF", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtDescIpi, "DescIpi", "Desconto de IPI", ListaCampos.DB_SI, false ) );
+		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
@@ -1914,7 +1919,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void focusGained( FocusEvent fevt ) {
 
 	}
+	
+	private void calcImpostos( boolean buscabase ) {
 
+		setCalcImpostos( buscabase );
+		getCalcImpostos();
+
+	}
+	
 	public void focusLost( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtVlrDescItOrc ) {
@@ -1940,12 +1952,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcDet.post();
 				txtCodItOrc.requestFocus();
 			}
+			
+			calcImpostos( true );
+			
 		}
 		else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || ( fevt.getSource() == txtVlrDescItOrc ) || ( fevt.getSource() == txtPercDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc ) ) {
 			calcDescIt();
 			calcVlrProd();
 			calcTot();
 			calcComis();
+			
+			calcImpostos( true );
+			
+			
 		}
 		// else if ( (fevt.getSource() == txtVlrLiqItOrc) && ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()==0 ) ) {
 		else if ( ( fevt.getSource() == txtVlrLiqItOrc ) ) {
@@ -1962,6 +1981,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcDet.edit();
 
 				focusCodprod();
+				
+				calcImpostos( true );
+				
 
 			}
 		}
@@ -2561,6 +2583,67 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	private void setCalcImpostos( boolean buscabase ) {
+
+		try {
+
+
+			impostos.setCodprod( txtCodProd.getVlrInteger() );
+			impostos.setTipotransacao( CalcImpostos.TRANSACAO_SAIDA );
+			impostos.setCoddestinatario( txtCodCli.getVlrInteger() );
+			impostos.setCodtipomov( txtCodTipoMov.getVlrInteger() );
+
+			impostos.setCodfisc( null );
+			impostos.setCoditfisc( null );
+
+			impostos.calcTratTrib();
+
+			
+			impostos.setBuscabase( buscabase );
+			impostos.setVlrprod( txtVlrProdItOrc.getVlrBigDecimal() );
+			impostos.setVlrdescit( txtVlrDescItOrc.getVlrBigDecimal() );
+
+			impostos.calcTratTrib();
+			
+			impostos.calcIPI();
+			
+
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getCalcImpostos() {
+
+		try {
+				
+				// Verifica se o cliente deve receber o desconto o IPI
+				String descipi = txtDescIpi.getVlrString();
+				
+				if( descipi == null || "".equals( descipi ) ) {
+					descipi = "N";
+				}
+				
+				if( descipi.equals( "S" ) && impostos.getAliqipifisc().compareTo( new BigDecimal(0) ) >0 ){
+					
+					BigDecimal preco_bruto = buscaPreco( getParansPreco() );
+					
+					BigDecimal preco_liquido_menos_ipi =  preco_bruto.divide( new BigDecimal(1).add (impostos.getAliqipifisc().divide( new BigDecimal(100)) ), BigDecimal.ROUND_CEILING);
+			
+					setParansPreco( preco_liquido_menos_ipi );
+					
+				}
+				
+				txtVlrIPIItOrc.setVlrBigDecimal( impostos.getVlripiit() );
+				
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
