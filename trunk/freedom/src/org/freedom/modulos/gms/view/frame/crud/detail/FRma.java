@@ -1228,6 +1228,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		ImprimeOS imp = null;
 		int linPag = 0;
+		
+		vProdCan = new Vector<String>();
+		vMotivoCan = new Vector<String>();
 
 		try {
 
