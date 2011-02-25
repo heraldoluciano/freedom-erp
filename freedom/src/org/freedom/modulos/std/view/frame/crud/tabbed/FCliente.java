@@ -629,6 +629,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private String sURLBanco = null;
 
+	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
+	
 	public FCliente() {
 
 		super();
@@ -1101,6 +1103,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		adicCampo( txtCodSetor, 7, 500, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, false );
 		adicDescFK( txtDescSetor, 90, 500, 237, 20, "DescSetor", "Descrição do setor" );
+		
+		adicDB( cbDescIpi, 7, 530, 200, 20, "DescIpi", "", false );
 		
 		// Adicionar botão para agrupamento de clientes
 
