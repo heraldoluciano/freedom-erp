@@ -207,6 +207,24 @@ public class FRColetas extends FRelatorio {
 		sql.append( "select " );
 		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
 		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.numserie, it.garantia " );
+		
+		sql.append( ", ( ");
+        
+		sql.append( "select ve.dtsaidavenda from eqitrecmercitositorc io, vdvendaorc vo, vdvenda ve ");
+		sql.append( "where io.codemp=it.codemp and io.codfilial=it.codfilial and io.ticket=it.ticket and io.coditrecmerc=it.coditrecmerc ");
+		sql.append( "and vo.codempor=io.codempoc and vo.codfilialor=io.codfilialoc and vo.codorc=io.codorc and vo.coditorc=io.coditorc ");
+		sql.append( "and ve.codemp=vo.codemp and ve.codfilial=vo.codfilial and ve.codvenda=vo.codvenda and ve.tipovenda=vo.tipovenda ");
+        
+		sql.append( ") dtsaida ");        
+		sql.append( ", ( ");
+        
+		sql.append( "select ve.docvenda from eqitrecmercitositorc io, vdvendaorc vo, vdvenda ve ");
+		sql.append( "where io.codemp=it.codemp and io.codfilial=it.codfilial and io.ticket=it.ticket and io.coditrecmerc=it.coditrecmerc ");
+		sql.append( "and vo.codempor=io.codempoc and vo.codfilialor=io.codfilialoc and vo.codorc=io.codorc and vo.coditorc=io.coditorc ");
+		sql.append( "and ve.codemp=vo.codemp and ve.codfilial=vo.codfilial and ve.codvenda=vo.codvenda and ve.tipovenda=vo.tipovenda ");
+        
+		sql.append( ") docvenda " ); 
+		
 		sql.append( "from " );
 		sql.append( "eqrecmerc rm " );
 		sql.append( "left outer join vdcliente cl on " );
