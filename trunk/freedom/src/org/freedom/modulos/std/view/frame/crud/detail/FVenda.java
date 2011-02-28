@@ -154,6 +154,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
+	private JButtonPad btDescIPI = new JButtonPad( Icone.novo( "btContasPagar.gif" ) );
+	
 	private JButtonPad btFechaVenda = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private JButtonPad btComiss = new JButtonPad( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
@@ -248,6 +250,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private JTextFieldPad txtDescIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private JTextFieldPad txtDescIpiVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldPad txtClasComis = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodMens = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -523,6 +527,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private boolean NF_EMITIDA = false;
 
 	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	
+	private boolean descontado = false;
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, 
@@ -569,14 +575,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
 		pnGImp.removeAll(); // Remove os botões de impressão para adicionar logo embaixo
-		pnGImp.setLayout( new GridLayout( 1, 4 ) ); // redimensiona o painel de impressão
+		pnGImp.setLayout( new GridLayout( 1, 5 ) ); // redimensiona o painel de impressão
 		pnGImp.setPreferredSize( new Dimension( 280, 26 ) );
 		pnGImp.add( btPrevimp );
 		pnGImp.add( btImp );
 		pnGImp.add( btFechaVenda );
 		pnGImp.add( btConsPgto );
 		pnGImp.add( btObs );// Agora o painel está maior
+		pnGImp.add( btDescIPI );// Agora o painel está maior
 
+		
+		
 		pnTot.setPreferredSize( new Dimension( 110, 200 ) ); // JPanelPad de Totais
 		pnTot.add( pinTot );
 		pnCenter.add( pnTot, BorderLayout.EAST );
@@ -750,6 +759,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btFechaVenda.setToolTipText( "Fechar a venda (F4)" );
 		btConsPgto.setToolTipText( "Consulta pagamentos (F5)" );
 		btObs.setToolTipText( "Observações (Ctrl + O)" );
+		btDescIPI.setToolTipText( "Aplicar desconto do IPI" );
 		btBuscaOrc.setToolTipText( "Busca orçamentos" );
 		btDevolucaoConserto.setToolTipText( "Devolução de consertos" );
 
@@ -789,6 +799,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btFechaVenda.addActionListener( this );
 		btConsPgto.addActionListener( this );
 		btObs.addActionListener( this );
+		btDescIPI.addActionListener( this );
 		btBuscaOrc.addActionListener( this );
 		btDevolucaoConserto.addActionListener( this );
 		btImp.addActionListener( this );
@@ -1015,6 +1026,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 
 		adicCampoInvisivel( txtStatusVenda, "StatusVenda", "Sit.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtDescIpiVenda, "DescIpiVenda", "Desc.IPI", ListaCampos.DB_SI, false );
+		
 
 		// montaMultiComis();
 
@@ -3391,6 +3404,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				}
 				lcMarca.carregaDados();
+				descontado = false;
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
@@ -3421,6 +3435,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
 				codvenda = null;
+				btDescIPI.setEnabled( "S".equals( txtDescIpi.getVlrString()) && !"S".equals( txtDescIpiVenda.getVlrString()));
 			}
 			else if ( cevt.getListaCampos() == lcCli ) {
 				if ( (Boolean) oPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
@@ -3435,6 +3450,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT && txtCodCli.getVlrInteger() != iCodCliAnt ) ) {
 					carregaPrefTipoFiscCli();
 				}
+				
+				
+				btDescIPI.setEnabled( "S".equals( txtDescIpi.getVlrString()) && !"S".equals( txtDescIpiVenda.getVlrString()));
+				
 			}
 			else if ( cevt.getListaCampos() == lcPlanoPag ) {
 				if ( (Boolean) oPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {
@@ -3554,6 +3573,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDVENDA", txtCodVenda.getVlrInteger().intValue() );
+		}
+		else if ( evt.getSource() == btDescIPI ) {
+			aplicaDescIpi();
 		}
 		else if ( evt.getSource() == btBuscaOrc ) {
 			abreBuscaOrc();
@@ -3708,6 +3730,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( !NF_EMITIDA ) {
 			setCalcImpostos( buscabase );
 			getCalcImpostos();
+//			descIPI();
 		}
 
 	}
@@ -3820,6 +3843,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			calcImpostos( true );
 			getCalcImpostos();
+			
+			
 
 			//			txtVlrDescItVenda.setAtivo( false );
 
@@ -3833,6 +3858,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				calcVlrProd();
 				calcImpostos( true );
 				txtVlrComisItVenda.setAtivo( false );
+				
 			}
 		}
 		else if ( fevt.getSource() == txtVlrDescItVenda ) {
@@ -3845,6 +3871,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			calcDescIt();
 			calcVlrProd();
 			calcImpostos( true );
+			
 		}
 		else if ( fevt.getSource() == txtVlrComisItVenda ) {
 			if ( txtVlrComisItVenda.getText().trim().length() < 1 ) {
@@ -4060,6 +4087,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 			}
 			
+			lcCampos.edit();
+			txtDescIpiVenda.setVlrString( "S" );
+			lcCampos.post();
+			
 
 
 		}
@@ -4067,6 +4098,92 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			Funcoes.mensagemErro( this, "Erro ao geração nota de devolução!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
+	}
+	
+	private void aplicaDescIpi() {
+		try {
+			
+			String descipi = txtDescIpi.getVlrString();
+			
+			if( descipi == null || "".equals( descipi ) ) {
+			
+				descipi = "N";
+				
+			}
+			
+			if( descipi.equals( "S" ) ){
+				for(int i =0; i< tab.getNumLinhas(); i++) {
+					
+					txtCodItVenda.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
+					lcDet.carregaDados();
+					
+					lcDet.edit();
+					
+					descIPI();
+					
+					calcDescIt();
+					calcVlrProd();
+	
+					calcImpostos( true );
+					getCalcImpostos();
+					
+					lcDet.post();
+					//Refazendo procecimento apos desconto do IPI
+					txtCodItVenda.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
+					lcDet.carregaDados();
+					lcDet.edit();
+	
+					calcDescIt();
+					calcVlrProd();
+	
+					calcImpostos( true );
+					getCalcImpostos();
+					
+					lcDet.post();
+	
+					
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void descIPI() {
+
+		try {
+				
+				//if(lcDet.getStatus()==ListaCampos.LCS_INSERT){
+			
+					// Verifica se o cliente deve receber o desconto o IPI
+					String descipi = txtDescIpi.getVlrString();
+					
+					if( descipi == null || "".equals( descipi ) ) {
+						descipi = "N";
+					}
+					
+					BigDecimal percipi = txtPercIPIItVenda.getVlrBigDecimal();
+					
+					if( descipi.equals( "S" ) && percipi.compareTo( new BigDecimal(0) ) >0 && !descontado){
+						
+						BigDecimal preco_bruto = txtPrecoItVenda.getVlrBigDecimal();
+						BigDecimal preco_liquido_menos_ipi =  preco_bruto.divide( new BigDecimal(1).add (percipi.divide( new BigDecimal(100)) ), BigDecimal.ROUND_CEILING);
+						
+						txtPrecoItVenda.setVlrBigDecimal( preco_liquido_menos_ipi );
+						
+						descontado = true;
+						
+					}
+					
+				//}
+				
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void setConexao( DbConnection cn ) {

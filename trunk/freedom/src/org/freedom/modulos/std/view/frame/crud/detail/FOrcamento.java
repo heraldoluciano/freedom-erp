@@ -1952,8 +1952,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcDet.post();
 				txtCodItOrc.requestFocus();
 			}
-			
-			calcImpostos( true );
+//			setCalcImpostos( true );
+		//	calcImpostos( true );
 			
 		}
 		else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || ( fevt.getSource() == txtVlrDescItOrc ) || ( fevt.getSource() == txtPercDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc ) ) {
@@ -1961,8 +1961,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			calcVlrProd();
 			calcTot();
 			calcComis();
-			
-			calcImpostos( true );
+//			setCalcImpostos( true );
+			//calcImpostos( true );
 			
 			
 		}
@@ -1974,6 +1974,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				// if ( txtVlrDescItOrc.getVlrBigDecimal().floatValue()>0 ) {
 				calcDesconto();
 				// }
+				
+//				calcImpostos( true );
 
 				lcDet.post();
 				lcDet.limpaCampos( true );
@@ -1982,7 +1984,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 				focusCodprod();
 				
-				calcImpostos( true );
+				
 				
 
 			}
@@ -2629,11 +2631,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				
 				if( descipi.equals( "S" ) && impostos.getAliqipifisc().compareTo( new BigDecimal(0) ) >0 ){
 					
-					BigDecimal preco_bruto = buscaPreco( getParansPreco() );
+//					BigDecimal preco_bruto = buscaPreco( getParansPreco() );
+					BigDecimal preco_bruto = txtVlrLiqItOrc.getVlrBigDecimal();
+
+					BigDecimal vlr_ipi = preco_bruto.subtract( preco_bruto ).multiply( impostos.getAliqipifisc().divide( new BigDecimal(100) ) );
 					
 					BigDecimal preco_liquido_menos_ipi =  preco_bruto.divide( new BigDecimal(1).add (impostos.getAliqipifisc().divide( new BigDecimal(100)) ), BigDecimal.ROUND_CEILING);
-			
+					
+					BigDecimal preco_liquido_menos_mais_desconto =  preco_liquido_menos_ipi.add( txtVlrDescItOrc.getVlrBigDecimal() );
+					
+					
 					setParansPreco( preco_liquido_menos_ipi );
+					txtVlrLiqItOrc.setVlrBigDecimal( preco_liquido_menos_ipi.add (txtVlrIPIItOrc.getVlrBigDecimal()) );
+					
 					
 				}
 				
