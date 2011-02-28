@@ -93,15 +93,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	// private static final String HISTORICO_PADRAO = "RECEBIMENTO REF. AO PED.: <DOCUMENTO>";
 
 	private enum EColTabManut {
-		IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRDEVOLUCAO, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBS, DESCPONT, SEQNOSSONUMERO
+		IMGSTATUS, STATUS, DTVENC, DTEMIT, DTPREV, CODCLI, RAZCLI, CODREC, NPARCITREC, DOCLANCA, DOCVENDA, VLRPARC, DTLIQ, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRDEVOLUCAO, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODBANCO, NOMEBANCO, CODCARTCOB, DESCCARTCOB, OBS, DESCPONT, SEQNOSSONUMERO
 	};
 
 	private enum EColTabBaixa {
-		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, CODVENDA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, OBS
+		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, CODVENDA, VLRPARC, DTLIQ, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC, DESCCC, OBS
 	};
 
 	private enum EColTabConsulta {
-		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, DTVENDA, VLRPARC, VLRDESC, VLRPAGO, DTPAGTO, DIASATRASO, VLRJUROS, VLRCANC, SERIE, CODVENDA, CODBANCO, NOMEBANCO, OBS, TV
+		IMGSTATUS, DTVENC, CODREC, NPARCITREC, DOC, DTVENDA, VLRPARC, VLRDESC, VLRPAGO, DTLIQ, DTPAGTO, DIASATRASO, VLRJUROS, VLRCANC, SERIE, CODVENDA, CODBANCO, NOMEBANCO, OBS, TV
 	};
 
 	private JTabbedPanePad tpn = new JTabbedPanePad();
@@ -533,16 +533,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabConsulta.adicColuna( "Valor parc." );// 6
 		tabConsulta.adicColuna( "Desc.fin" );// 7
 		tabConsulta.adicColuna( "Valor pago." );// 8
-		tabConsulta.adicColuna( "Dt.pagto." );// 9
-		tabConsulta.adicColuna( "Atraso" );// 10
-		tabConsulta.adicColuna( "Valor juros" );// 11
-		tabConsulta.adicColuna( "Valor cancelado" );// 12
-		tabConsulta.adicColuna( "Série" );// 13
-		tabConsulta.adicColuna( "Cód.venda" );// 14
-		tabConsulta.adicColuna( "Cód.banco" ); // 15
-		tabConsulta.adicColuna( "Nome banco" );// 16
-		tabConsulta.adicColuna( "Observações" );// 17
-		tabConsulta.adicColuna( "TV" );// 18
+		tabConsulta.adicColuna( "Dt.liq."); // 9
+		tabConsulta.adicColuna( "Dt.pagto." );// 10
+		tabConsulta.adicColuna( "Atraso" );// 11
+		tabConsulta.adicColuna( "Valor juros" );// 12
+		tabConsulta.adicColuna( "Valor cancelado" );// 13
+		tabConsulta.adicColuna( "Série" );// 14
+		tabConsulta.adicColuna( "Cód.venda" );// 15
+		tabConsulta.adicColuna( "Cód.banco" ); // 16
+		tabConsulta.adicColuna( "Nome banco" );// 17
+		tabConsulta.adicColuna( "Observações" );// 18
+		tabConsulta.adicColuna( "TV" );// 19
 
 		tabConsulta.setTamColuna( 0, EColTabConsulta.IMGSTATUS.ordinal() );// status
 		tabConsulta.setTamColuna( 90, EColTabConsulta.DTVENC.ordinal() );// venc
@@ -553,7 +554,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabConsulta.setTamColuna( 100, EColTabConsulta.VLRPARC.ordinal() );// valor
 		tabConsulta.setTamColuna( 100, EColTabConsulta.VLRDESC.ordinal() );// Desc.Fin
 		tabConsulta.setTamColuna( 100, EColTabConsulta.VLRPAGO.ordinal() );// valor pago
-		tabConsulta.setTamColuna( 120, EColTabConsulta.DTPAGTO.ordinal() );// data pagamento
+		tabConsulta.setTamColuna( 120, EColTabConsulta.DTLIQ.ordinal() );// data liquidação
+		tabConsulta.setTamColuna( 120, EColTabConsulta.DTPAGTO.ordinal() );// data pagamento/compensação
 		tabConsulta.setTamColuna( 60, EColTabConsulta.DIASATRASO.ordinal() );// atraso
 		tabConsulta.setTamColuna( 100, EColTabConsulta.VLRJUROS.ordinal() );// juros
 		tabConsulta.setTamColuna( 100, EColTabConsulta.VLRCANC.ordinal() );// cancelado
@@ -674,19 +676,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.adicColuna( "Doc." ); // 4
 		tabBaixa.adicColuna( "Pedido" ); // 5
 		tabBaixa.adicColuna( "Valor parcela" ); // 6
-		tabBaixa.adicColuna( "Data Pagamento" ); // 7
-		tabBaixa.adicColuna( "Valor pago" ); // 8
-		tabBaixa.adicColuna( "Valor desc." ); // 9
-		tabBaixa.adicColuna( "Valor juros" ); // 10
-		tabBaixa.adicColuna( "Valor aberto" ); // 11
-		tabBaixa.adicColuna( "Valor cancelado" ); // 12
-		tabBaixa.adicColuna( "Nro.Conta" ); // 13
-		tabBaixa.adicColuna( "Descrição conta" ); // 14
-		tabBaixa.adicColuna( "Cód.planej." ); // 15
-		tabBaixa.adicColuna( "Descrição planej." ); // 16
-		tabBaixa.adicColuna( "Cód.c.c." ); // 17
-		tabBaixa.adicColuna( "Descrição c.c." ); // 18
-		tabBaixa.adicColuna( "Observação" ); // 19
+		tabBaixa.adicColuna( "Data liquidação" ); // 7
+		tabBaixa.adicColuna( "Data pagamento" ); // 8
+		tabBaixa.adicColuna( "Valor pago" ); // 9
+		tabBaixa.adicColuna( "Valor desc." ); // 10
+		tabBaixa.adicColuna( "Valor juros" ); // 11
+		tabBaixa.adicColuna( "Valor aberto" ); // 12
+		tabBaixa.adicColuna( "Valor cancelado" ); // 13
+		tabBaixa.adicColuna( "Nro.Conta" ); // 14
+		tabBaixa.adicColuna( "Descrição conta" ); // 15
+		tabBaixa.adicColuna( "Cód.planej." ); // 16
+		tabBaixa.adicColuna( "Descrição planej." ); // 17
+		tabBaixa.adicColuna( "Cód.c.c." ); // 18
+		tabBaixa.adicColuna( "Descrição c.c." ); // 19
+		tabBaixa.adicColuna( "Observação" ); // 20
 
 		tabBaixa.setTamColuna( 0, EColTabBaixa.IMGSTATUS.ordinal() );
 		tabBaixa.setTamColuna( 100, EColTabBaixa.DTVENC.ordinal() );
@@ -695,6 +698,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.setTamColuna( 70, EColTabBaixa.DOC.ordinal() );
 		tabBaixa.setTamColuna( 70, EColTabBaixa.CODVENDA.ordinal() );
 		tabBaixa.setTamColuna( 100, EColTabBaixa.VLRPARC.ordinal() );
+		tabBaixa.setTamColuna( 120, EColTabBaixa.DTLIQ.ordinal() );
 		tabBaixa.setTamColuna( 120, EColTabBaixa.DTPAGTO.ordinal() );
 		tabBaixa.setTamColuna( 100, EColTabBaixa.VLRPAGO.ordinal() );
 		tabBaixa.setTamColuna( 100, EColTabBaixa.VLRDESC.ordinal() );
@@ -847,28 +851,29 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.adicColuna( "Doc.lanca" ); // 9
 		tabManut.adicColuna( "Doc.venda" ); // 10
 		tabManut.adicColuna( "Valor parc." ); // 11
-		tabManut.adicColuna( "Data pagamento" ); // 12
-		tabManut.adicColuna( "Valor.pago" ); // 13
-		tabManut.adicColuna( "Valor desconto" ); // 14
-		tabManut.adicColuna( "Valor juros" ); // 15
-		tabManut.adicColuna( "Valor devolução" ); // 16
-		tabManut.adicColuna( "Valor aberto" ); // 17
-		tabManut.adicColuna( "Valor cancelado" ); // 18
-		tabManut.adicColuna( "Nro.conta" ); // 19
-		tabManut.adicColuna( "Descrição da conta" ); // 20
-		tabManut.adicColuna( "Cód.categ." ); // 21
-		tabManut.adicColuna( "Categoria" ); // 22
-		tabManut.adicColuna( "Cód.c.c." ); // 23
-		tabManut.adicColuna( "Descrição do centro de custo" ); // 24
-		tabManut.adicColuna( "Cód.tp.cob" ); // 25
-		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 26
-		tabManut.adicColuna( "Cód.banco" ); // 27
-		tabManut.adicColuna( "Nome do banco" ); // 28
-		tabManut.adicColuna( "Cód.cart.cob." ); // 29
-		tabManut.adicColuna( "Descrição da carteira de cobrança" ); // 30
-		tabManut.adicColuna( "Observação" ); // 31
-		tabManut.adicColuna( "pontualidade" ); // 32
-		tabManut.adicColuna( "Seq.Nosso.Nro." ); // 33
+		tabManut.adicColuna( "Data liquidação" ); // 12
+		tabManut.adicColuna( "Data pagamento" ); // 13
+		tabManut.adicColuna( "Valor pago" ); // 14
+		tabManut.adicColuna( "Valor desconto" ); // 15
+		tabManut.adicColuna( "Valor juros" ); // 16
+		tabManut.adicColuna( "Valor devolução" ); // 17
+		tabManut.adicColuna( "Valor aberto" ); // 18
+		tabManut.adicColuna( "Valor cancelado" ); // 19
+		tabManut.adicColuna( "Nro.conta" ); // 20
+		tabManut.adicColuna( "Descrição da conta" ); // 21
+		tabManut.adicColuna( "Cód.categ." ); // 22
+		tabManut.adicColuna( "Categoria" ); // 23
+		tabManut.adicColuna( "Cód.c.c." ); // 24
+		tabManut.adicColuna( "Descrição do centro de custo" ); // 25
+		tabManut.adicColuna( "Cód.tp.cob" ); // 26
+		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 27
+		tabManut.adicColuna( "Cód.banco" ); // 28
+		tabManut.adicColuna( "Nome do banco" ); // 29
+		tabManut.adicColuna( "Cód.cart.cob." ); // 30
+		tabManut.adicColuna( "Descrição da carteira de cobrança" ); // 31
+		tabManut.adicColuna( "Observação" ); // 32
+		tabManut.adicColuna( "pontualidade" ); // 33
+		tabManut.adicColuna( "Seq.Nosso.Nro." ); // 34
 
 		tabManut.setTamColuna( 0, EColTabManut.IMGSTATUS.ordinal() );
 		tabManut.setColunaInvisivel( EColTabManut.STATUS.ordinal() );
@@ -883,6 +888,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 60, EColTabManut.DOCLANCA.ordinal() );
 		tabManut.setTamColuna( 60, EColTabManut.DOCVENDA.ordinal() );
 		tabManut.setTamColuna( 90, EColTabManut.VLRPARC.ordinal() );
+		tabManut.setTamColuna( 100, EColTabManut.DTLIQ.ordinal() );
 		tabManut.setTamColuna( 100, EColTabManut.DTPAGTO.ordinal() );
 		tabManut.setTamColuna( 90, EColTabManut.VLRPAGO.ordinal() );
 		tabManut.setTamColuna( 90, EColTabManut.VLRDESC.ordinal() );
@@ -1104,9 +1110,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "(SELECT SERIE FROM VDVENDA V " );
 			sSQL.append( "WHERE V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
 			sSQL.append( "AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) SERIE," );
-			sSQL.append( "R.DOCREC,R.CODVENDA,R.DATAREC,IT.VLRPARCITREC,IT.DTPAGOITREC,IT.VLRPAGOITREC," );
-			sSQL.append( "(CASE WHEN IT.DTPAGOITREC IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITREC " );
-			sSQL.append( "ELSE IT.DTPAGOITREC - IT.DTVENCITREC END ) DIASATRASO, R.OBSREC," );
+			sSQL.append( "R.DOCREC,R.CODVENDA,R.DATAREC,IT.VLRPARCITREC,IT.DTLIQITREC, IT.DTPAGOITREC,IT.VLRPAGOITREC," );
+			sSQL.append( "(CASE WHEN IT.DTLIQITREC IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITREC " );
+			sSQL.append( "ELSE IT.DTLIQITREC - IT.DTVENCITREC END ) DIASATRASO, R.OBSREC," );
 			sSQL.append( "IT.CODBANCO, (SELECT B.NOMEBANCO FROM FNBANCO B " );
 			sSQL.append( "WHERE B.CODBANCO=IT.CODBANCO AND B.CODEMP=IT.CODEMPBO AND B.CODFILIAL=IT.CODFILIALBO) NOMEBANCO," );
 			sSQL.append( "R.CODREC,IT.NPARCITREC,IT.VLRDESCITREC,IT.VLRJUROSITREC,R.TIPOVENDA,IT.VLRAPAGITREC, IT.VLRCANCITREC " );
@@ -1157,6 +1163,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabConsulta.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITREC" ) ), i, EColTabConsulta.VLRDESC.ordinal() );
 				tabConsulta.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPAGOITREC" ) ), i, EColTabConsulta.VLRPAGO.ordinal() );
 				tabConsulta.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRCANCITREC" ) ), i, EColTabConsulta.VLRCANC.ordinal() );
+				tabConsulta.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTLIQITREC" ) ), i, EColTabConsulta.DTLIQ.ordinal() );
 				tabConsulta.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTPAGOITREC" ) ), i, EColTabConsulta.DTPAGTO.ordinal() );
 				tabConsulta.setValor( rs.getInt( "DIASATRASO" ), i, EColTabConsulta.DIASATRASO.ordinal() );
 				tabConsulta.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRJUROSITREC" ) ), i, EColTabConsulta.VLRJUROS.ordinal() );
@@ -1209,7 +1216,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			tabBaixa.limpa();
 
 			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC,R.DOCREC," );
-			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC," );
+			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC," );
 			sSQL.append( "IR.VLRAPAGITREC,IR.NUMCONTA,IR.VLRDESCITREC," );
 			sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
 			sSQL.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
@@ -1274,6 +1281,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				
 				tabBaixa.setValor( rs.getInt( "CODVENDA" ), i, EColTabBaixa.CODVENDA.ordinal() );
 				tabBaixa.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPARCITREC" ) ), i, EColTabBaixa.VLRPARC.ordinal() );
+				tabBaixa.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTLIQITREC" ) ), i, EColTabBaixa.DTLIQ.ordinal() );
 				tabBaixa.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTPAGOITREC" ) ), i, EColTabBaixa.DTPAGTO.ordinal() );
 				tabBaixa.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPAGOITREC" ) ), i, EColTabBaixa.VLRPAGO.ordinal() );
 				tabBaixa.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITREC" ) ), i, EColTabBaixa.VLRDESC.ordinal() );
@@ -1429,7 +1437,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 
 		sSQL.append( "SELECT IR.DTVENCITREC,IR.DTPREVITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
-		sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
+		sSQL.append( "R.CODVENDA,IR.VLRPARCITREC, IR.DTLIQITREC, IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
 		sSQL.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
 		sSQL.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
 		sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
@@ -1574,6 +1582,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabManut.setValor( ( rs.getString( "DocLancaItRec" ) != null ? rs.getString( "DocLancaItRec" ) : ( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) + "/" + rs.getString( "NParcItRec" ) : "" ) ), i, EColTabManut.DOCLANCA.ordinal() );
 				tabManut.setValor( rs.getInt( "DOCVENDA" ), i, EColTabManut.DOCVENDA.ordinal() );// DOCVENDA
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPARCITREC" ) ), i, EColTabManut.VLRPARC.ordinal() );
+				tabManut.setValor( ( rs.getDate( "DTLIQITREC" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtLiqItRec" ) ) : "" ), i, EColTabManut.DTLIQ.ordinal() );
 				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
 
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPAGOITREC" ) ), i, EColTabManut.VLRPAGO.ordinal() );
@@ -2142,7 +2151,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 						try {
 
-							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='R1', DTPAGOITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='R1', DTPAGOITREC=null, DTLIQITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 							ps.setInt( 1, iCodRec );
 							ps.setInt( 2, iNParcItRec );
 							ps.setInt( 3, Aplicativo.iCodEmp );
