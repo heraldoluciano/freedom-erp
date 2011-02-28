@@ -1,7 +1,21 @@
+update fnreceber set emmanut='S';
+update fnreceber set dtcomprec=datarec;
+update fnreceber set emamnut='N';
+commit work;
 update fnitreceber set emmanut='S';
 update fnitreceber set dtliqitrec=dtpagoitrec;
 update fnitreceber set emamnut='N';
+commit work;
 update vdvenda set emmanut='S';
 update vdvenda set dtcompvenda=dtemitvenda;
 update vdvenda set emmanut='N';
 commit work;
+update fnlanca set emmanut='S';
+update fnlanca set dtcomplanca=datalanca;
+update fnlanca set emamnut='N';
+commit work;
+update fnsublanca set emmanut='S';
+update fnsublanca set dtcompsublanca=datasublanca;
+update fnsublanca set emmanut='N';
+commit work;
+
