@@ -3,7 +3,7 @@ update fnreceber set dtcomprec=datarec;
 update fnreceber set emamnut='N';
 commit work;
 update fnitreceber set emmanut='S';
-update fnitreceber set dtliqitrec=dtpagoitrec;
+update fnitreceber set dtliqitrec=dtpagoitrec, dtcompitrec=dataitrec;
 update fnitreceber set emamnut='N';
 commit work;
 update vdvenda set emmanut='S';
