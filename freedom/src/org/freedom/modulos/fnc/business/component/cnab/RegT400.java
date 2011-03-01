@@ -53,6 +53,8 @@ public class RegT400 extends Reg {
 	private Date dataRemRet;
 
 	private Date dataCred;
+	
+	private Date dataLiquidacao;
 
 	private int codCarteira;
 	
@@ -356,6 +358,18 @@ public class RegT400 extends Reg {
 	public void setTipoInscAva( int tipoInscAva ) {
 
 		this.tipoInscAva = tipoInscAva;
+	}
+
+	
+	public Date getDataLiquidacao() {
+	
+		return dataLiquidacao;
+	}
+
+	
+	public void setDataLiquidacao( Date dataLiquidacao ) {
+	
+		this.dataLiquidacao = dataLiquidacao;
 	}
 
 	public String getCpfCnpjAva() {
@@ -1244,13 +1258,17 @@ public class RegT400 extends Reg {
 						setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) );
 						setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
 						
+						setDataLiquidacao( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) );
+												
 						if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {							
 							setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) );
+							
 						}
 						else {
 							setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
 						}
 						
+					
 						System.out.println( "Rejeição...." + line.substring( 86,88 ));
 						
 					} else if ( "7".equals( line.substring( 0, 1 ) ) ) { // Posição 01 a 01 - Identificação do Registro DETALHE
@@ -1267,13 +1285,17 @@ public class RegT400 extends Reg {
 						setVlrPago( CnabUtil.strToBigDecimal( line.substring( 253, 266 ) ) ); // 254 a 266 - Valor recebido (valor recebido parcial)
 						setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) ); // 267 a 279 - Juros de mora
 						setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) ); // 280 a 292 - Outros recebimentos
+						
+						setDataLiquidacao( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) );
+						
 						if(getCodBanco().equals( Banco.BANCO_DO_BRASIL )) {
 							setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 175, 181 ).trim() ) ); // 176 a 181 - Data de crédito (DDMMAA) 
-							//setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) ); // 111 a 116 - Data de liquidação (DDMMAA) 
+							//setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 110, 116 ).trim() ) ); // 111 a 116 - Data de liquidação (DDMMAA) 	
 						}
 						else {
 							setDataCred( CnabUtil.stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
 						}
+						
 						System.out.println( "Rejeição...." + line.substring( 86,88 ));
 					}
 					else {
