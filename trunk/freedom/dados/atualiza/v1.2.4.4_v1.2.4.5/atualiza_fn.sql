@@ -26,5 +26,9 @@ commit work;
 update vdcomissao set emmanut='S', dtcompcomi=datacomi;
 update vdcomissao set emmanut='N';
 commit work;
+update fnpagtocomi set emmanut='S', dtcomppcomi=datapcomi;
+update fnpagtocomi set emmanut='N';
+commit work;
+
 
 
