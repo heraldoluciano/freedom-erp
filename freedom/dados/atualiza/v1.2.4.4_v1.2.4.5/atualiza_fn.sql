@@ -14,4 +14,17 @@ commit work;
 update fnsublanca set emmanut='S', dtcompsublanca=datasublanca;
 update fnsublanca set emmanut='N';
 commit work;
+update cpcompra set emmanut='S', dtcompcompra=dtemitcompra;
+update cpcompra set emmanut='N';
+commit work;
+update fnpagar set emmanut='S', dtcomppag=datapag;
+update fnpagar set emmanut='N';
+commit work;
+update fnitpagar set emmanut='S', dtcompitpag=dtitpag;
+update fnitpagar set emmanut='N';
+commit work;
+update vdcomissao set emmanut='S', dtcompcomi=datacomi;
+update vdcomissao set emmanut='N';
+commit work;
+
 
