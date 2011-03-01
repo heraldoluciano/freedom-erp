@@ -29,6 +29,13 @@ commit work;
 update fnpagtocomi set emmanut='S', dtcomppcomi=datapcomi;
 update fnpagtocomi set emmanut='N';
 commit work;
+update fnlanca set emmanut='S', dtcomplanca=datalanca;
+update fnlanca set emmanut='N';
+commit work;
+update fnsublanca set emmanut='S', dtcompsublanca=datasublanca;
+update fnsublanca set emmanut='N';
+commit work;
+
 
 
 
