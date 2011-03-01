@@ -173,6 +173,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Cód.Retorno" );
 		tab.adicColuna( "Menssagem de retorno" );
 		tab.adicColuna( "St.It.Rec" );
+		tab.adicColuna( "Dt.Liquid." );
 
 		tab.setTamColuna( 22, EColTab.STATUS.ordinal() );
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
@@ -196,7 +197,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 100, EColTab.CODRET.ordinal() );
 		tab.setTamColuna( 250, EColTab.MENSSAGEM.ordinal() );
 		tab.setTamColuna( 50, EColTab.STATUSITREC.ordinal() );
-
+		tab.setTamColuna( 70, EColTab.DTLIQITREC.ordinal() );
+		
 		tab.setColunaEditavel( EColTab.SEL.ordinal(), true );
 
 		btSelTudo.addActionListener( this );
@@ -483,6 +485,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					args[ EParcela.VLRJUROSITREC.ordinal() ] = ConversionFunctions.stringToBigDecimal( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
 					args[ EParcela.OBSITREC.ordinal() ] = (String) tab.getValor( row, EColTab.OBS.ordinal() );
 
+					args[ EParcela.DTLIQITREC.ordinal() ] = tab.getValor( row, EColTab.DTLIQITREC.ordinal() ); 
+					
 					parcela = new SiaccUtil().new StuffParcela( codrec, numparcrec, args );
 					parcelas.add( parcela );
 				}
@@ -658,7 +662,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			sSQL.append( "CODEMPCC=?,CODFILIALCC=?,ANOCC=?,CODCC=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?," );
 			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC + ?,VLRDESCITREC=?,VLRJUROSITREC=?," );
-			sSQL.append( "OBSITREC=?,STATUSITREC='RP' " );
+			sSQL.append( "OBSITREC=?,STATUSITREC='RP', DTLIQITREC=? " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 
 			PreparedStatement ps = null;
@@ -703,10 +707,14 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					else {
 						ps.setNull( 16, Types.CHAR );
 					}
-					ps.setInt( 17, Aplicativo.iCodEmp );
-					ps.setInt( 18, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 19, parcela.getCodrec() );
-					ps.setInt( 20, parcela.getNumparcrec() );
+					
+					ps.setDate( 17,Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTLIQITREC.ordinal() ] ) );
+					
+					
+					ps.setInt( 18, Aplicativo.iCodEmp );
+					ps.setInt( 19, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 20, parcela.getCodrec() );
+					ps.setInt( 21, parcela.getNumparcrec() );
 					ps.executeUpdate();
 					ps.close();
 
@@ -933,7 +941,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	}
 
 	protected enum EColTab {
-		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM, STATUSITREC;
+		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN, CODRET, MENSSAGEM, STATUSITREC, DTLIQITREC;
 
 	};
 

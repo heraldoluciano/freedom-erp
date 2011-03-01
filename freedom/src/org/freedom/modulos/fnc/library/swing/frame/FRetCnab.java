@@ -87,7 +87,6 @@ public class FRetCnab extends FRetFBN {
 	 * 
 	 * @see org.freedom.modulos.fnc.FRetFBN#execImportar()
 	 */
-	@ SuppressWarnings ( "unused" )
 	@ Override
 	public boolean execImportar() {
 
@@ -346,6 +345,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getVencimento() != null ? Funcoes.dateToStrDate( rec.getVencimento() ) : "", row, EColTab.DTVENC.ordinal() ); // Vencimento
 							tab.setValor( Funcoes.bdToStr( reg3U.getVlrPago() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
 							tab.setValor( reg3U.getDataEfetvCred() != null ? Funcoes.dateToStrDate( reg3U.getDataEfetvCred() ) : "", row, EColTab.DTPAG.ordinal() ); // Data pgto.
+							tab.setValor( reg3U.getDataEfetvCred() != null ? Funcoes.dateToStrDate( reg3U.getDataEfetvCred() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data pgto.
 							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
@@ -421,7 +421,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( regT400.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
-							
+							tab.setValor( regT400.getDataLiquidacao() != null ? Funcoes.dateToStrDate( regT400.getDataLiquidacao() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data liquidacao
 							
 							row++;
 							rec = null;
