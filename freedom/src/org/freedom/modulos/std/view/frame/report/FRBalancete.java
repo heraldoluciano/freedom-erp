@@ -36,6 +36,7 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -60,6 +61,8 @@ public class FRBalancete extends FRelatorio {
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JCheckBoxPad cbDataCompetencia = new JCheckBoxPad( "Por data de competência", "S", "N" );
 
 	private ListaCampos lcCC = new ListaCampos( this );
 
@@ -93,15 +96,14 @@ public class FRBalancete extends FRelatorio {
 		adic( txtDataini, 40, 25, 117, 20 );
 		adic( new JLabelPad( "Até:" ), 160, 25, 22, 20 );
 		adic( txtDatafim, 185, 25, 120, 20 );
-		adic( new JLabelPad( "Nº conta" ), 7, 50, 250, 20 );
-		adic( txtCodConta, 7, 70, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 50, 250, 20 );
-		adic( txtDescConta, 90, 70, 200, 20 );
-		adic( new JLabelPad( "Cód.cc." ), 7, 90, 250, 20 );
-		adic( txtCodCC, 7, 110, 80, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 90, 90, 250, 20 );
-		adic( txtDescCC, 90, 110, 200, 20 );
 
+		adic( txtCodConta, 7, 70, 80, 20, "Nº conta" );
+		adic( txtDescConta, 90, 70, 200, 20, "Descrição da conta" );
+		adic( txtCodCC, 7, 110, 80, 20, "Cód.cc."  );
+		adic( txtDescCC, 90, 110, 200, 20, "Descrição do centro de custo" );
+
+		adic( cbDataCompetencia, 7, 140, 200, 20 );
+		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -147,6 +149,8 @@ public class FRBalancete extends FRelatorio {
 		String sCodCC = txtCodCC.getVlrString().trim();
 		String sCC = "";
 		String sConta = "";
+		
+		StringBuilder sql = new StringBuilder();
 
 		BigDecimal bTotal = new BigDecimal( "0" );
 
@@ -160,11 +164,22 @@ public class FRBalancete extends FRelatorio {
 
 		imp.setTitulo( "Balancete" );
 
-		String sSQL = "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," + "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp )
-				+ " AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " + "SL.DATASUBLANCA BETWEEN ? AND ? AND " + "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL "
-				+ ( sCodConta.trim().equals( "" ) ? "" : " AND L.CODPLAN=" + "(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND C.CODFILIAL=?" + " AND C.NUMCONTA=?)" )
-				+ ( sCodCC.trim().equals( "" ) ? "" : " AND SL.CODCC=" + "(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND SL.CODFILIALCC=CC.CODFILIAL" + " AND CC.CODFILIAL=? AND CC.CODCC=?)" ) + " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=?)"
-				+ " FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" + " AND P.CODEMP=? AND P.CODFILIAL=?" + " ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN ";
+		String sSQL = "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," 
+			+ "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " 
+			+ AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp )
+			+ " AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " 
+			+ ("S".equals( cbDataCompetencia.getVlrString() ) ? "SL.DTCOMPSUBLANCA " : "SL.DATASUBLANCA " ) + " BETWEEN ? AND ? AND " 
+			+ "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL "
+			+ ( sCodConta.trim().equals( "" ) ? "" : " AND L.CODPLAN=" 
+			+ "(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND C.CODFILIAL=?" 
+			+ " AND C.NUMCONTA=?)" )
+			+ ( sCodCC.trim().equals( "" ) ? "" : " AND SL.CODCC=" 
+			+ "(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND SL.CODFILIALCC=CC.CODFILIAL" 
+			+ " AND CC.CODFILIAL=? AND CC.CODCC=?)" ) 
+			+ " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=?)"
+			+ " FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" 
+			+ " AND P.CODEMP=? AND P.CODFILIAL=?" 
+			+ " ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN ";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
