@@ -47,14 +47,19 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.fnc.business.component.CnabUtil;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Receber;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg1;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3T;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3U;
-import org.freedom.modulos.fnc.business.component.CnabUtil.RegHeader;
-import org.freedom.modulos.fnc.business.component.CnabUtil.RegT400;
+import org.freedom.modulos.fnc.business.component.cnab.CnabUtil;
+import org.freedom.modulos.fnc.business.component.cnab.Receber;
+import org.freedom.modulos.fnc.business.component.cnab.Reg;
+import org.freedom.modulos.fnc.business.component.cnab.Reg1;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3P;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3Q;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3R;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3S;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3T;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3U;
+import org.freedom.modulos.fnc.business.component.cnab.Reg5;
+import org.freedom.modulos.fnc.business.component.cnab.RegHeader;
+import org.freedom.modulos.fnc.business.component.cnab.RegT400;
 import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLCategorizaRec.EColRet;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FPrefereFBB;
@@ -168,10 +173,10 @@ public class FRetCnab extends FRetFBN {
 
 					switch ( tipo ) {
 						case '0' :
-							list.add( cnabutil.new RegHeader( line ) );
+							list.add( new RegHeader( line ) );
 							break;
 						case '1' :
-							Reg1 reg1 = cnabutil.new Reg1( line );
+							Reg1 reg1 = new Reg1( line );
 							list.add( reg1 );
 
 							if ( reg1 == null || !reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
@@ -186,22 +191,22 @@ public class FRetCnab extends FRetFBN {
 
 							switch ( seguimento ) {
 								case 'P' :
-									list.add( cnabutil.new Reg3P( line ) );
+									list.add( new Reg3P( line ) );
 									break;
 								case 'Q' :
-									list.add( cnabutil.new Reg3Q( line ) );
+									list.add( new Reg3Q( line ) );
 									break;
 								case 'R' :
-									list.add( cnabutil.new Reg3R( line ) );
+									list.add( new Reg3R( line ) );
 									break;
 								case 'S' :
-									list.add( cnabutil.new Reg3S( line ) );
+									list.add( new Reg3S( line ) );
 									break;
 								case 'T' :
-									list.add( cnabutil.new Reg3T( line ) );
+									list.add( new Reg3T( line ) );
 									break;
 								case 'U' :
-									list.add( cnabutil.new Reg3U( line ) );
+									list.add( new Reg3U( line ) );
 									break;
 								default :
 									break;
@@ -209,7 +214,7 @@ public class FRetCnab extends FRetFBN {
 
 							break;
 						case '5' :
-							list.add( cnabutil.new Reg5( line ) );
+							list.add( new Reg5( line ) );
 							break;
 						default :
 							break;
@@ -221,12 +226,12 @@ public class FRetCnab extends FRetFBN {
 					RegT400 reg1 = null;
 					switch ( tipo ) {
 						case '0' :
-							regHeader = cnabutil.new RegHeader( line );
+							regHeader = new RegHeader( line );
 							list.add( regHeader );
 							break;
 						case '1' :  // Cnab 400 convênio menor que 1.000.000
-//							RegT400 reg1 = cnabutil.new RegT400( line );
-							reg1 = cnabutil.new RegT400(  );
+//							RegT400 reg1 = new RegT400( line );
+							reg1 = new RegT400(  );
 							reg1.setCodBanco( txtCodBanco.getVlrString() );
 							reg1.parseLine( line );
 							list.add( reg1 );
@@ -237,8 +242,8 @@ public class FRetCnab extends FRetFBN {
 							}
 							break;
 						case '7' :  // Cnab 400 convênio acima de 1.000.000
-//							RegT400 reg1 = cnabutil.new RegT400( line );
-							reg1 = cnabutil.new RegT400(  );
+//							RegT400 reg1 = new RegT400( line );
+							reg1 = new RegT400(  );
 							reg1.setCodBanco( txtCodBanco.getVlrString() );
 							reg1.parseLine( line );
 							list.add( reg1 );
@@ -504,7 +509,7 @@ public class FRetCnab extends FRetFBN {
 
 				if ( rs.next() ) {
 
-					receber = cnabutil.new Receber();
+					receber = new Receber();
 
 					receber.setCodrec( rs.getInt( "CODREC" ) );
 					receber.setNrparcrec( rs.getInt( "NPARCITREC" ) );

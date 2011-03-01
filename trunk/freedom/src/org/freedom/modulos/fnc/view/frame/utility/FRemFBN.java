@@ -56,6 +56,8 @@ import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.component.BancodoBrasil;
+import org.freedom.library.business.component.Bradesco;
+import org.freedom.library.business.component.Itau;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -399,12 +401,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected boolean setPrefs() {
 
 		boolean retorno = false;
-		Banco banco = null;
+		Banco banco = this.getBanco();
 		try {
-
-			// if(Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() )) {
-			banco = new BancodoBrasil();
-			// }
 
 			StringBuilder sql = new StringBuilder();
 
@@ -452,8 +450,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					String[] agencia = banco.getCodSig( rs.getString( "AGENCIACONTA" ) );
 					prefs.put( EPrefs.AGENCIA, agencia[ 0 ] );
 					prefs.put( EPrefs.DIGAGENCIA, agencia[ 1 ] );
-				}
-				else {
+				} else {
 					prefs.put( EPrefs.AGENCIA, "" );
 					prefs.put( EPrefs.DIGAGENCIA, "" );
 				}
@@ -462,8 +459,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					String[] conta = banco.getCodSig( rs.getString( EPrefs.NUMCONTA.toString() ) );
 					prefs.put( EPrefs.NUMCONTA, conta[ 0 ] );
 					prefs.put( EPrefs.DIGCONTA, conta[ 1 ] );
-				}
-				else {
+				} else {
 					prefs.put( EPrefs.NUMCONTA, "" );
 					prefs.put( EPrefs.DIGCONTA, "" );
 				}
@@ -492,8 +488,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IMPDOCBOL, rs.getString( EPrefs.IMPDOCBOL.toString() ) );
 
 				retorno = true;
-			}
-			else {
+			} else {
 				retorno = false;
 				Funcoes.mensagemInforma( null, "Ajuste os parâmetros antes de executar!" );
 			}
@@ -549,11 +544,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
 			sWhere.append( "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) " );
-		}
-		else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
+		} else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
 			sWhere.append( "AND ( FR.SITREMESSA='01' ) " );
-		}
-		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
+		} 	else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
 			sWhere.append( "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) " );
 		}
 
@@ -646,8 +639,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			if ( i > 0 ) {
 				lbStatus.setText( "     tabela carregada com " + i + " itens..." );
-			}
-			else {
+			} else {
 				lbStatus.setText( "" );
 			}
 
@@ -668,14 +660,12 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	}
 
 	private void selecionaTudo() {
-
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( true ), i, 0 );
 		}
 	}
 
 	private void selecionaNada() {
-
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( false ), i, 0 );
 		}
@@ -692,31 +682,41 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			if ( (Boolean) vLinha.elementAt( EColTab.COL_SEL.ordinal() ) ) {
 				if ( completartabela ) {
-					if ( "".equals( (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ) ) || "".equals( (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ) ) ) {
-						if ( !completaTabela( i, (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_RAZCLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
+					if ( "".equals( (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ) ) || 
+							"".equals( (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ) ) ) {
+						
+						if ( !completaTabela( i, (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_RAZCLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
 								(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ) ) ) {
 							retorno = false;
 							break;
 						}
 					}
 				}
-				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
-						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) } ) );
+				
+				String[] stufCliArgs = new String[] { 
+						txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) };
+				
+				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ),  stufCliArgs) );
+				
+				String[] stufRecArgs = new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
+						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
+						ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), 
+						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), 
+						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
+						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
+						String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) ) };
+				
 				hsRec.add( new FbnUtil().new StuffRec(
 						/* 0 */(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ),
 						/* 1 */(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
-						/* 2 */new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
-								(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ),
-								(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
-								Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ),
-								ConversionFunctions.stringToBigDecimal( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() ) ).toString(), 
-								(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ), (String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
-								(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ), rgTipoRemessa.getVlrString(), 
-								String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ), 
-								Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
-								String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ),
-								String.valueOf( vLinha.elementAt( EColTab.COL_SEQREC.ordinal() ) )
-						} ) );
+						/* 2 */stufRecArgs ) );
 			}
 		}
 		if ( retorno ) {
@@ -735,8 +735,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		if ( retorno ) {
 			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ], (String) valores[ 3 ] );
-		}
-		else {
+		} else {
 			tab.setValor( false, linha, EColTab.COL_SEL.ordinal() );
 		}
 
@@ -746,7 +745,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tab.getValor( i, EColTab.COL_SEL.ordinal() ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, EColTab.COL_CODCLI.ordinal() ) ) ) {
+			if ( ( (Boolean) tab.getValor( i, EColTab.COL_SEL.ordinal() ) ).booleanValue() && 
+					codCli.equals( (Integer) tab.getValor( i, EColTab.COL_CODCLI.ordinal() ) ) ) {
 				tab.setValor( agenciaCli, i, EColTab.COL_AGENCIACLI.ordinal() );
 				tab.setValor( identCli, i, EColTab.COL_IDENTCLI.ordinal() );
 				tab.setValor( subTipo, i, EColTab.COL_STIPOFEBRABAN.ordinal() );
@@ -758,8 +758,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		boolean retorno = true;
 		for ( FbnUtil.StuffCli stfCli : hsCli ) {
-			retorno = updateCliente( stfCli.getCodigo(), stfCli.getArgs()[ FbnUtil.EColcli.CODBANCO.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.STIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.AGENCIACLI.ordinal() ], stfCli
-					.getArgs()[ FbnUtil.EColcli.IDENTCLI.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOREMCLI.ordinal() ] );
+			retorno = updateCliente( stfCli.getCodigo(), stfCli.getArgs()[ FbnUtil.EColcli.CODBANCO.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOFEBRABAN.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.STIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.AGENCIACLI.ordinal() ], 
+					stfCli .getArgs()[ FbnUtil.EColcli.IDENTCLI.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOREMCLI.ordinal() ] );
 			if ( !retorno ) {
 				retorno = false;
 				break;
@@ -767,7 +768,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 		if ( retorno ) {
 			for ( FbnUtil.StuffRec stfRec : hsRec ) {
-				retorno = updateReceber( stfRec.getCodrec(), stfRec.getNParcitrec(), stfRec.getArgs()[ FbnUtil.EColrec.CODBANCO.ordinal() ], stfRec.getArgs()[ FbnUtil.EColrec.TIPOFEBRABAN.ordinal() ], stfRec.getArgs()[ FbnUtil.EColrec.STIPOFEBRABAN.ordinal() ],
+				retorno = updateReceber( stfRec.getCodrec(), stfRec.getNParcitrec(), stfRec.getArgs()[ FbnUtil.EColrec.CODBANCO.ordinal() ], 
+						stfRec.getArgs()[ FbnUtil.EColrec.TIPOFEBRABAN.ordinal() ], stfRec.getArgs()[ FbnUtil.EColrec.STIPOFEBRABAN.ordinal() ],
 						stfRec.getArgs()[ FbnUtil.EColrec.SITREMESSA.ordinal() ] );
 				if ( !retorno ) {
 					retorno = false;
@@ -803,7 +805,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 
-				if ( ( !agenciaCli.equals( rs.getString( "AGENCIACLI" ) ) ) || ( !identCli.equals( rs.getString( "IDENTCLI" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) ) ) {
+				if (  !agenciaCli.equals( rs.getString( "AGENCIACLI" ) )  ||  !identCli.equals( rs.getString( "IDENTCLI" ) )  || 
+						 !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) )  ||  !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) )  {
 
 					StringBuilder sqlup = new StringBuilder();
 					sqlup.append( "UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " );
@@ -826,8 +829,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					ps.setString( 13, tipoFebraban );
 					ps.executeUpdate();
 				}
-			}
-			else {
+			} else {
 
 				StringBuilder sqlin = new StringBuilder();
 				sqlin.append( "INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " );
@@ -884,7 +886,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			if ( rs.next() ) {
 
-				if ( ( !codBanco.equals( rs.getString( "CODBANCO" ) ) ) || ( !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) ) {
+				if ( !codBanco.equals( rs.getString( "CODBANCO" ) ) || !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) || 
+						!stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) || !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) {
 
 					StringBuilder sqlup = new StringBuilder();
 					sqlup.append( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, SITREMESSA=? " );
@@ -901,8 +904,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					ps.setInt( 8, nParcitrec );
 					ps.executeUpdate();
 				}
-			}
-			else {
+			} else {
 
 				StringBuilder sqlin = new StringBuilder();
 				sqlin.append( "INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " );
@@ -964,6 +966,24 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 
 		return retorno;
+	}
+	
+	/**
+	 * @author ffrizzo
+	 * @return Banco
+	 */
+	protected Banco getBanco(){
+		if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			return new BancodoBrasil();
+		}else if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+			return new Bradesco();
+		}else if ( Banco.ITAU.equals( txtCodBanco.getVlrString() ) ) {
+			return new Itau();
+		}else if ( Banco.CAIXA_ECONOMICA.equals( txtCodBanco.getVlrString() ) ) {
+			
+		}
+		
+		return null;
 	}
 
 	abstract protected boolean execExporta();
