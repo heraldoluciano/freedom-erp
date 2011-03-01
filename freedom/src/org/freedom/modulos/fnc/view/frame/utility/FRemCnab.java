@@ -44,25 +44,23 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.business.component.Banco;
-import org.freedom.library.business.component.BancodoBrasil;
-import org.freedom.library.business.component.Bradesco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
-import org.freedom.modulos.fnc.business.component.CnabUtil;
 import org.freedom.modulos.fnc.business.component.SiaccUtil;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg1;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3P;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3Q;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3R;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg3S;
-import org.freedom.modulos.fnc.business.component.CnabUtil.Reg5;
-import org.freedom.modulos.fnc.business.component.CnabUtil.RegHeader;
-import org.freedom.modulos.fnc.business.component.CnabUtil.RegT400;
-import org.freedom.modulos.fnc.business.component.CnabUtil.RegTrailer;
+import org.freedom.modulos.fnc.business.component.cnab.CnabUtil;
+import org.freedom.modulos.fnc.business.component.cnab.Reg;
+import org.freedom.modulos.fnc.business.component.cnab.Reg1;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3P;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3Q;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3R;
+import org.freedom.modulos.fnc.business.component.cnab.Reg3S;
+import org.freedom.modulos.fnc.business.component.cnab.Reg5;
+import org.freedom.modulos.fnc.business.component.cnab.RegHeader;
+import org.freedom.modulos.fnc.business.component.cnab.RegT400;
+import org.freedom.modulos.fnc.business.component.cnab.RegTrailer;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
@@ -87,7 +85,7 @@ public class FRemCnab extends FRemFBN {
 
 		super( TIPO_FEBRABAN_CNAB );
 	}
-
+	
 	private String[] getCliente( final int codcli ) {
 
 		String[] args = new String[ 10 ];
@@ -109,7 +107,6 @@ public class FRemCnab extends FRemFBN {
 			if ( rs.next() ) {
 
 				for ( int i = 0; i < args.length - 1; i++ ) {
-
 					args[ i ] = rs.getString( i + 1 );
 				}
 
@@ -131,12 +128,13 @@ public class FRemCnab extends FRemFBN {
 
 		int carteira = 0;
 		String variacao = "";
+		String codCarteiraCnab = "";
 		HashMap<String, Object> ret = new HashMap<String, Object>();
 
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT CB.CARTCOBCNAB, CB.VARIACAOCARTCOB " );
+			sql.append( "SELECT CB.CARTCOBCNAB, CB.VARIACAOCARTCOB, CB.CODCARTCOBCNAB " );
 			sql.append( "FROM FNCARTCOB CB, FNITRECEBER IR " );
 			sql.append( "WHERE CB.CODEMPBO=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODBANCO=IR.CODBANCO AND " );
 			sql.append( "CB.CODEMP=IR.CODEMPCB AND CB.CODFILIAL=IR.CODFILIALCB AND CB.CODCARTCOB=IR.CODCARTCOB AND " );
@@ -154,11 +152,13 @@ public class FRemCnab extends FRemFBN {
 
 				carteira = rs.getInt( "CARTCOBCNAB" );
 				variacao = rs.getString( "VARIACAOCARTCOB" );
+				codCarteiraCnab = rs.getString( "CODCARTCOBCNAB" );
 
 			}
 
 			ret.put( "CARTEIRA", carteira );
 			ret.put( "VARIACAO", variacao );
+			ret.put( "CODCARTEIRACNAB", codCarteiraCnab );
 
 			rs.close();
 			ps.close();
@@ -172,7 +172,7 @@ public class FRemCnab extends FRemFBN {
 
 	private RegHeader getRegHeader() throws ExceptionCnab {
 
-		RegHeader reg = cnabutil.new RegHeader();
+		RegHeader reg = new RegHeader();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setTipoInscEmp( 2 );
@@ -203,12 +203,7 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg1 getReg1( final StuffRec rec ) throws ExceptionCnab {
 
-		Reg1 reg = cnabutil.new Reg1();
-		Banco banco = null;
-
-		if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-			banco = new BancodoBrasil();
-		}
+		Reg1 reg = new Reg1();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -235,18 +230,11 @@ public class FRemCnab extends FRemFBN {
 	// Registro de transação CNAB 400
 	private RegT400 getRegT400( final StuffRec rec, int seqregistro ) throws ExceptionCnab {
 
-		RegT400 reg = cnabutil.new RegT400();
+		RegT400 reg = new RegT400();
 
 		try {
 
-			Banco banco = null;
-
-			if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-				banco = new BancodoBrasil();
-			}
-			else if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
-				banco = new Bradesco();
-			}
+			Banco banco = this.getBanco();
 
 			reg.setCodBanco( txtCodBanco.getVlrString() );
 			reg.setLoteServico( loteServico );
@@ -270,6 +258,7 @@ public class FRemCnab extends FRemFBN {
 			HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 
 			reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
+			reg.setCodCarteiraCnab( (String)infocarteira.get( "CODCARTEIRACNAB" ) );
 
 			reg.setIdentTitEmp( Banco.getIdentTitEmp( (long) rec.getCodrec(), (long) rec.getNParcitrec(), 25 ) );
 
@@ -287,8 +276,7 @@ public class FRemCnab extends FRemFBN {
 
 			if ( ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) && (reg.getCodConvBanco().length()<7) ) {
 				reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
-			}
-			else if ( ! Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			} else if ( ! Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
 				reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );			
 			}
 
@@ -337,11 +325,9 @@ public class FRemCnab extends FRemFBN {
 
 			if ( 2 == reg.getTipoInscCli() ) {
 				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-			}
-			else if ( 1 == reg.getTipoInscCli() ) {
+			} else if ( 1 == reg.getTipoInscCli() ) {
 				reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-			}
-			else {
+			} else {
 				reg.setTipoInscCli( 0 );
 				reg.setCpfCnpjCli( "0" );
 			}
@@ -380,9 +366,9 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
 
-		Banco banco = null;
+		Banco banco = this.getBanco();
 
-		Reg3P reg = cnabutil.new Reg3P();
+		Reg3P reg = new Reg3P();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -394,23 +380,18 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
 
-		if ( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
-			banco = new BancodoBrasil();
-		}
-		else if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
-			banco = new Bradesco();
-		}
-
 		HashMap<String, Object> infocarteira = getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ); 
 
 		reg.setIdentTitulo( banco.geraNossoNumero( (String) prefs.get( EPrefs.TPNOSSONUMERO ), (String) prefs.get( EPrefs.MDECOB ), (String) prefs.get( EPrefs.CONVCOB ),
 				Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 				Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ), true ) );
+		
 		reg.setCodCarteira( (Integer) infocarteira.get( "CARTEIRA" ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
+		
 		if ( "S".equals( (String) prefs.get(  EPrefs.IMPDOCBOL ) ) ) {
 			reg.setDocCobranca( String.valueOf(rec.getDocrec())+"/"+String.valueOf(rec.getNParcitrec()) );
 		} else {		
@@ -418,6 +399,7 @@ public class FRemCnab extends FRemFBN {
 					Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getSeqrec().toString() ),
 					Long.parseLong( rec.getCodrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		}
+		
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
 		reg.setAgenciaCob( null );
@@ -426,13 +408,14 @@ public class FRemCnab extends FRemFBN {
 		reg.setAceite( ( (String) prefs.get( EPrefs.ACEITE ) ).charAt( 0 ) );
 		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
+		
 		// se for isento de juros.
 		if ( 3 == reg.getCodJuros() ) {
 			reg.setDtJuros( null );
-		}
-		else {
+		} else {
 			reg.setDtJuros( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		}
+		
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );
 		reg.setDtDesc( null );
@@ -451,7 +434,7 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg3Q getReg3Q( final StuffRec rec ) throws ExceptionCnab {
 
-		Reg3Q reg = cnabutil.new Reg3Q();
+		Reg3Q reg = new Reg3Q();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -464,11 +447,9 @@ public class FRemCnab extends FRemFBN {
 
 		if ( 2 == reg.getTipoInscCli() ) {
 			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-		}
-		else if ( 1 == reg.getTipoInscCli() ) {
+		} else if ( 1 == reg.getTipoInscCli() ) {
 			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-		}
-		else {
+		} else {
 			reg.setTipoInscCli( 0 );
 			reg.setCpfCnpjCli( "0" );
 		}
@@ -492,7 +473,7 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg3R getReg3R( final StuffRec rec ) throws ExceptionCnab {
 
-		Reg3R reg = cnabutil.new Reg3R();
+		Reg3R reg = new Reg3R();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -523,7 +504,7 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg3S getReg3S( final StuffRec rec ) throws ExceptionCnab {
 
-		Reg3S reg = cnabutil.new Reg3S();
+		Reg3S reg = new Reg3S();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -547,7 +528,7 @@ public class FRemCnab extends FRemFBN {
 	 * 
 	 * private Reg3T getReg3T( final StuffRec rec ) {
 	 * 
-	 * Reg3T reg = cnabutil.new Reg3T();
+	 * Reg3T reg = new Reg3T();
 	 * 
 	 * reg.setCodBanco( txtCodBanco.getVlrString() ); reg.setLoteServico( loteServico ); reg.setSeqLote( seqLoteServico++ ); reg.setCodMovimento( codMovimento ); reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) ); reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) ); reg.setConta(
 	 * (String) prefs.get( EPrefs.NUMCONTA ) ); reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) ); reg.setDigAgConta( null ); reg.setIdentTitBanco( Boleto.geraNossoNumero( getModalidade( txtCodBanco.getVlrInteger() ), (String)prefs.get( EPrefs.CODCONV ), Long.parseLong(
@@ -569,7 +550,7 @@ public class FRemCnab extends FRemFBN {
 	 * 
 	 * private Reg3U getReg3U( final StuffRec rec ) {
 	 * 
-	 * Reg3U reg = cnabutil.new Reg3U();
+	 * Reg3U reg = new Reg3U();
 	 * 
 	 * reg.setCodBanco( txtCodBanco.getVlrString() ); reg.setLoteServico( loteServico ); reg.setSeqLote( seqLoteServico++ ); reg.setCodMovimento( codMovimento );
 	 * 
@@ -580,7 +561,7 @@ public class FRemCnab extends FRemFBN {
 	 */
 	private Reg5 getReg5() throws ExceptionCnab {
 
-		Reg5 reg = cnabutil.new Reg5();
+		Reg5 reg = new Reg5();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -600,7 +581,7 @@ public class FRemCnab extends FRemFBN {
 
 	private RegTrailer getRegTrailer( int seqregistro ) throws ExceptionCnab {
 
-		RegTrailer reg = cnabutil.new RegTrailer();
+		RegTrailer reg = new RegTrailer();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setQtdLotes( loteServico );
@@ -626,9 +607,7 @@ public class FRemCnab extends FRemFBN {
 			if ( retorno ) {
 
 				lbStatus.setText( "     criando arquivo ..." );
-
-				FileDialog fileDialogCnab = null;
-				fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+				FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
 
 				if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
 					Calendar clhoje = new GregorianCalendar();
@@ -637,8 +616,7 @@ public class FRemCnab extends FRemFBN {
 					String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
 					String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
 					sFileName = "CB" + dia + mes + seq + ".REM";
-				}
-				else {
+				} else {
 					sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
 				}
 
@@ -789,8 +767,7 @@ public class FRemCnab extends FRemFBN {
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
-			}
-			else {
+			} else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
 
@@ -815,14 +792,9 @@ public class FRemCnab extends FRemFBN {
 					Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
 				}
 				*/
-
-
-
 			}
 			calcSelecionado();
 		}
-
-
 
 	}
 

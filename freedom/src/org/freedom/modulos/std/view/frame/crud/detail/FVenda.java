@@ -85,6 +85,7 @@ import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -127,6 +128,8 @@ import org.freedom.modulos.std.view.frame.report.FRBoleto;
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private enum ORCAMENTO {CODORCAMENTO, CODVENDA, CODCLI, RAZCLI, DTORCAMENTO, DTAPROVORC, DTVALIDADE,  CODPPAG, DESCPPAG};
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 
@@ -139,6 +142,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JPanelPad pinCabFiscal = new JPanelPad();
 
 	private JPanelPad pinCabLucratividade = new JPanelPad();
+	
+	private JPanelPad pinCabOrcamentos = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
 	private JPanelPad pnLucrGeral = new JPanelPad();
 
@@ -151,6 +156,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JPanelPad pnTot = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JTablePad tabOrcamentos = new JTablePad();
+
+	private JScrollPane spOrcamentos = new JScrollPane( tabOrcamentos );
 
 	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
@@ -1238,6 +1247,100 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		pnAdicionalCab.add( navEast );
 
+		initPinCabOrcamento();
+	}
+	
+	private void initPinCabOrcamento(){
+		tpnCab.addTab( "Orçamentos", pinCabOrcamentos );
+		pinCabOrcamentos.add( spOrcamentos, BorderLayout.CENTER );
+
+		tabOrcamentos.adicColuna( "Cód.Orc" );
+		tabOrcamentos.adicColuna( "Cod.Vend" );
+		tabOrcamentos.adicColuna( "Cod.Cli" );
+		tabOrcamentos.adicColuna( "Razão social do cliente" );
+		tabOrcamentos.adicColuna( "Orcamento" );
+		tabOrcamentos.adicColuna( "Aprovado" );
+		tabOrcamentos.adicColuna( "Validade" );
+		tabOrcamentos.adicColuna( "Cód.pag." );
+		tabOrcamentos.adicColuna( "Descrição do plano de pagamento" );
+		
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.CODORCAMENTO.ordinal() );
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.CODVENDA.ordinal() );
+		tabOrcamentos.setTamColuna( 50, ORCAMENTO.CODCLI.ordinal() );
+		tabOrcamentos.setTamColuna( 200, ORCAMENTO.RAZCLI.ordinal() );
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.DTORCAMENTO.ordinal() );
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.DTAPROVORC.ordinal() );
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.DTVALIDADE.ordinal() );
+		tabOrcamentos.setTamColuna( 80, ORCAMENTO.CODPPAG.ordinal() );
+		tabOrcamentos.setTamColuna( 200, ORCAMENTO.DESCPPAG.ordinal() );
+
+		tabOrcamentos.addMouseListener( new MouseAdapter() {
+		
+			public void mouseClicked( MouseEvent e ) {
+				if ( e.getClickCount() == 2 ) {
+					if ( e.getSource() == tabOrcamentos ) {
+						abreOrcamento();
+					}
+				}
+			}
+		} );
+	}
+	
+	private void carregaOrcamentos(){
+		tabOrcamentos.limpa();
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select distinct(orc.codorc), vdorc.codvenda, orc.codcli, vcli.razcli, orc.dtorc, orc.dtaprovorc, ");
+			sql.append( "orc.dtvencorc, orc.codplanopag, pp.descplanopag from vdorcamento orc ");
+			sql.append( "inner join vdvendaorc vdorc on (vdorc.codorc = orc.codorc and vdorc.codemp = orc.codemp and vdorc.codfilial = orc.codfilial) ");
+			sql.append( "inner join vdvenda vend on (vend.codvenda = vdorc.codvenda and vend.codemp = orc.codemp and vend.codfilial = orc.codfilial) ");
+			sql.append( "inner join vdcliente vcli on (vcli.codcli = orc.codcli and vcli.codemp = vcli.codemp and vcli.codfilial = orc.codfilial) ");
+			sql.append( "inner join fnplanopag pp on (pp.codplanopag = orc.codplanopag and pp.codemp = orc.codemp and pp.codfilial = orc.codfilial) ");
+			sql.append( "where orc.codemp =? ");
+			sql.append( "and orc.codfilial = ? ");
+			sql.append( "and vdorc.codvenda = ? ");
+			
+			PreparedStatement pstmt = con.prepareStatement( sql.toString() );
+			pstmt.setInt( 1, Aplicativo.iCodEmp );
+			pstmt.setInt( 2, lcCampos.getCodFilial() );
+			pstmt.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
+			
+			ResultSet rs = pstmt.executeQuery();
+			for ( int row = 0; rs.next(); row++ ) {
+				
+				tabOrcamentos.adicLinha();
+				
+				tabOrcamentos.setValor( rs.getInt( "codorc" ), row, ORCAMENTO.CODORCAMENTO.ordinal() );
+				tabOrcamentos.setValor( rs.getInt( "codvenda" ), row, ORCAMENTO.CODVENDA.ordinal() );
+				tabOrcamentos.setValor( rs.getInt( "codcli" ), row, ORCAMENTO.CODCLI.ordinal() );
+				tabOrcamentos.setValor( rs.getString( "razcli" ), row, ORCAMENTO.RAZCLI.ordinal() );
+				tabOrcamentos.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtorc" ) ), row, ORCAMENTO.DTORCAMENTO.ordinal() );
+				tabOrcamentos.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtaprovorc" ) ), row, ORCAMENTO.DTAPROVORC.ordinal() );
+				tabOrcamentos.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtvencorc" ) ), row, ORCAMENTO.DTVALIDADE.ordinal() );
+				tabOrcamentos.setValor( rs.getInt( "codplanopag" ), row, ORCAMENTO.CODPPAG.ordinal() );
+				tabOrcamentos.setValor( rs.getString( "descplanopag" ), row, ORCAMENTO.DESCPPAG.ordinal() );
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao consultar orçamentos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+		
+	}
+	
+	private void abreOrcamento(){
+		if ( tabOrcamentos.getLinhaSel() > -1 ) {
+			FOrcamento tela = null;
+			if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
+				tela = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
+			}
+			else {
+				tela = new FOrcamento();
+				Aplicativo.telaPrincipal.criatela( "Orçamento", tela, con );
+			}
+			tela.exec( (Integer) tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), ORCAMENTO.CODORCAMENTO.ordinal() ) );
+		}
 	}
 
 	private synchronized void focusIni() {
@@ -3131,7 +3234,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
+		if(ievt.getListaCampos() == lcCampos){
+			tabOrcamentos.limpa();
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -3436,6 +3541,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtCodVenda.setVlrString( codvenda );
 				codvenda = null;
 				btDescIPI.setEnabled( "S".equals( txtDescIpi.getVlrString()) && !"S".equals( txtDescIpiVenda.getVlrString()));
+				
+				carregaOrcamentos();
 			}
 			else if ( cevt.getListaCampos() == lcCli ) {
 				if ( (Boolean) oPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
