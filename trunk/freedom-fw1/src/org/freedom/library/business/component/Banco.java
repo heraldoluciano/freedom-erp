@@ -9,11 +9,11 @@ public abstract class Banco {
 	public final static String CAIXA_ECONOMICA = "104";
 
 	public final static String BRADESCO = "237";
+	
+	public final static String ITAU = "341";
 
-	// private static String codBar = "";
-
-	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, final String convenio, 
-			final String tpnossonumero, final Long doc, final Long seq, final Long rec,
+	public abstract String geraCodBar(final String codbanco, final String codmoeda, final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
+			final String convenio, final String tpnossonumero, final Long doc, final Long seq, final Long rec,
 			final Long nparc, final String agencia, final String conta, final String carteira, final String modalidade);
 
 	public abstract String geraCodBar();
@@ -58,21 +58,17 @@ public abstract class Banco {
 
 		if (convenio == null) {
 			bufConvenio = "000000";
-		}
-		else if (convenio.length() >= 7) {
+		} else if (convenio.length() >= 7) {
 			bufConvenio = convenio.substring(convenio.length() - 7);
-		}
-		else if (convenio.length() == 6) {
+		} else if (convenio.length() == 6) {
 			bufConvenio = convenio.substring(convenio.length() - 6);
-		}
-		else {
+		} else {
 			bufConvenio = convenio;
 		}
 
 		if (bufConvenio.length() <= 4) {
 			retorno.append(strZero(bufConvenio, 4));
-		}
-		else {
+		} else {
 			retorno.append(strZero(bufConvenio, 6));
 		}
 
@@ -102,20 +98,17 @@ public abstract class Banco {
         
 		if (numcli == null) {
 			retorno.append(strZero("0", tam - reduznparc));
-		}
-		else if (numcli.toString().length() > tam - reduznparc) {
+		} else if (numcli.toString().length() > tam - reduznparc) {
 			// Remover caracteres a mais da esquerda para direita
 			retorno.append(numcli.toString().substring(numcli.toString().length() - ( tam - reduznparc )));
-		}
-		else {
+		} else {
 			retorno.append(strZero(numcli.toString(), tam - reduznparc));
 		}
 
 		if (reduznparc==2) {
 			if (nparc == null) {
 				retorno.append("00");
-			}
-			else {
+			} else {
 				retorno.append(strZero(nparc.toString(), reduznparc));
 			}
 		}
@@ -151,19 +144,19 @@ public abstract class Banco {
 		String vlrdec = "";
 		if (valor == null) {
 			vlrcalc = new BigDecimal("0").toString();
-		}
-		else {
+		} else {
 			vlrcalc = valor.toString();
 		}
+		
 		String retorno = vlrcalc;
 		for (int i = 0; i < vlrcalc.length(); i++) {
 			if (( vlrcalc.substring(i, i + 1).equals(".") ) || ( vlrcalc.substring(i, i + 1).equals(",") )) {
 				retorno = vlrcalc.substring(0, i);
 				vlrdec = vlrcalc.substring(i + 1, vlrcalc.length());
+				
 				if (vlrdec.length() < dec) {
 					vlrdec += replicate("0", dec - vlrdec.length());
-				}
-				else if (vlrdec.length() > dec) {
+				} else if (vlrdec.length() > dec) {
 					vlrdec = vlrdec.substring(0, dec);
 				}
 				break;
