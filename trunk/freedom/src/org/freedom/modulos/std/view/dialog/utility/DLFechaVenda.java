@@ -723,12 +723,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		else {
 			lcFreteVD.setReadOnly( false );
 		}
-
+/*
 		if ( ( txtCodTran.getVlrInteger() == null ) || ( txtCodTran.getVlrInteger().intValue() == 0 ) ) {
 			txtCodTran.setVlrInteger( icodTran );
 		}
 		lcTran.carregaDados();
-
+*/
 		// Carrega o aux
 		int iCodAux = getCodAux();
 		if ( iCodAux > 0 ) {
@@ -1210,6 +1210,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 				txtCodVenda.setVlrInteger( new Integer( iCodVendaFecha ) );
 				txtTipoVenda.setVlrString( "V" );
+				
+
+				if ( ! ( txtCodTran.getVlrInteger() > 0 ) ) {
+					
+					lcFreteVD.insert( false );
+					txtCodTran.setVlrInteger( icodTran );				
+					lcTran.carregaDados();
+					
+				}
 
 				if ( cbEmiteRecibo.getVlrString().equals( "S" ) ) {
 					if ( txtCodModBol.getVlrString().equals( "" ) ) {
