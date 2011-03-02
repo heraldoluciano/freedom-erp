@@ -256,6 +256,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
+	private JTextFieldPad txtCodTranCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
 	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JRadioGroup<?, ?> rgTipoFrete = null;
@@ -587,6 +589,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCli.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEstCli, "UfCli", "UF", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtDescIpi, "DescIpi", "Desconto de IPI", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtCodTranCli, "CodTran", "Cód.Transp.", ListaCampos.DB_SI, false ) );
 		
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
@@ -2209,6 +2212,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			}
 			txtCodTpCli.setVlrInteger( new Integer( getCodTipoCli() ) );
 			lcTipoCli.carregaDados();
+		
+			if(lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
+				if ( "S".equals( oPrefs[ Orcamento.PrefOrc.ABATRANSP.ordinal() ].toString() ) ) {
+					txtCodTran.setVlrInteger( txtCodTranCli.getVlrInteger() );
+				}
+			}
+			
 		}
 		else if ( cevt.getListaCampos() == lcPlanoPag ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() ) {
@@ -2290,6 +2300,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( e.getListaCampos() == lcCampos ) {
 			lbStatus.setVisible( false );
 			tabPedidos.limpa();
+			
 		}
 	}
 
