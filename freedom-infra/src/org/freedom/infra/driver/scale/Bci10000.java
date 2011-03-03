@@ -83,7 +83,7 @@ public final class Bci10000 extends AbstractScale {
 
 			available = false;
 
-			while (reading) {
+			while ( (reading) && (!readstring) ) {
 
 				Thread.sleep(250);
 
@@ -165,75 +165,84 @@ public final class Bci10000 extends AbstractScale {
 		return time;
 	}
 
-	public void parseString() {
+	public synchronized ScaleResult parseString() {
 
-		String str = new String(AbstractScale.scalebuffer.toString());
-
+		ScaleResult result = null;
+		
 		try {
-
-			System.out.println("Leitura:" + str);
-
-			// str = str.trim();
-
-			// pega os ultimos 18 caracteres do buffer
-			if (str.length() > TAMANHO_STR_TOTAL) {
-
-				System.out.println("***Entrou no parse!");
-
-				int i = 0;
-				int charref = -1;
-
-				while (str.length() > i) {
-					charref = ( byte ) str.charAt(i);
-					System.out.println("char lido:" + charref);
-					// Localiza o caractere de referência Start Text (STX 2) e
-					// captura os
-					// carateres correspondentes ao peso
-					if (charref == STX) {
-
-						System.out.println("STX na posicao:" + i);
-
-						if (str.length() >= ( i + TAMANHO_STR_PESO )) {
-							str = str.substring(i + 4, i + TAMANHO_STR_PESO);
+			
+			//readstring = true;
+		
+			String str = new String(AbstractScale.scalebuffer.toString());
+	
+			try {
+	
+				System.out.println("Leitura:" + str);
+	
+				// str = str.trim();
+	
+				// pega os ultimos 18 caracteres do buffer
+				if (str.length() > TAMANHO_STR_TOTAL) {
+	
+					System.out.println("***Entrou no parse!");
+	
+					int i = 0;
+					int charref = -1;
+	
+					while (str.length() > i) {
+						charref = ( byte ) str.charAt(i);
+						System.out.println("char lido:" + charref);
+						// Localiza o caractere de referência Start Text (STX 2) e
+						// captura os
+						// carateres correspondentes ao peso
+						if (charref == STX) {
+	
+							System.out.println("STX na posicao:" + i);
+	
+							if (str.length() >= ( i + TAMANHO_STR_PESO )) {
+								str = str.substring(i + 4, i + TAMANHO_STR_PESO);
+							}
+							else {
+								str = str.substring(i + 4);
+							}
+	
+							break;
 						}
-						else {
-							str = str.substring(i + 4);
-						}
-
-						break;
+	
+						i++;
 					}
+	
+					System.out.println("strlimpa:" + str);
+	
+					System.out.println("Finalizou leitura!");
+	
+					System.out.println("peso lido: " + str);
+	
+					// Porta deve ser desabilitada para finalizar a leitura dos
+					// pesos da balança.
+	
+					// reading = false; // Parar a leitura se leitura estiver OK
+	
+					// Thread.currentThread().interrupt();
 
-					i++;
+					Date datahora = new Date();
+					
+					result = new ScaleResult(ConversionFunctions.stringToBigDecimal(str),
+							datahora ,
+							ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora))  );
 				}
-
-				System.out.println("strlimpa:" + str);
-
-				System.out.println("Finalizou leitura!");
-
-				System.out.println("peso lido: " + str);
-
-				// Porta deve ser desabilitada para finalizar a leitura dos
-				// pesos da balança.
-
-				// reading = false; // Parar a leitura se leitura estiver OK
-
-				// Thread.currentThread().interrupt();
-
-				setWeight(ConversionFunctions.stringToBigDecimal(str));
-				Date datahora = new Date();
-				setDate(datahora);
-
-				setTime(ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora)));
-
+				else {
+					System.out.println("***Buffer menor que o esperado (18)!");
+				}
+	
 			}
-			else {
-				System.out.println("***Buffer menor que o esperado (18)!");
+			catch (Exception e) {
+				e.printStackTrace();
 			}
-
+		} finally {
+//			readstring = false;
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		return result;
 	}
 
 	public void serialEvent(SerialPortEvent event) {
