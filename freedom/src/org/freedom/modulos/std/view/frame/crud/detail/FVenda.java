@@ -1926,7 +1926,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		if ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && (Boolean) oPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
 
-			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), fatLucro, oPrefs[ POS_PREFS.TIPOCUSTO.ordinal() ].toString(), con );
+			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), fatLucro, oPrefs[ POS_PREFS.TIPOCUSTO.ordinal() ].toString(), con, "S".equals(txtDescIpi.getVlrString()) );
 
 			/****************************
 			 * Atualizando painel geral

@@ -2357,7 +2357,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
 
-			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatluc, oPrefs[ Orcamento.PrefOrc.TIPOCUSTO.ordinal() ].toString(), con );
+			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatluc, oPrefs[ Orcamento.PrefOrc.TIPOCUSTO.ordinal() ].toString(), con, "S".equals(txtDescIpi.getVlrString()) );
 
 			/****************************
 			 * Atualizando painel geral
