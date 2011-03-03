@@ -1445,6 +1445,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 			carregaChamados();
 			
+			if(prefere == null) {
+				prefere = getPrefere();
+			}
+			
 			if( (Boolean) prefere.get( "MOSTRACLIATRASO" ) && emAtraso() ) {
 				
 				lbStatus.setText( "Atraso!" );
