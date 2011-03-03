@@ -49,6 +49,8 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 	public static final String MESSAGE_NEGATIVE_VALUE = "Escale return a negative value, try again!";
 
 	public static StringBuilder scalebuffer = new StringBuilder();
+	
+	public volatile boolean readstring = false;
 
 	protected boolean IS_BUFFERIZED = false;
 
@@ -224,6 +226,6 @@ public abstract class AbstractScale implements SerialPortEventListener, Runnable
 
 	public abstract void run();
 
-	public abstract void parseString();
+	public abstract ScaleResult parseString();
 
 }

@@ -142,7 +142,8 @@ public class FilizolaBP15 extends AbstractScale {
 	public void run() {
 	};
 
-	public void parseString() {
+	public ScaleResult parseString() {
+		return new ScaleResult();
 	};
 
 }
