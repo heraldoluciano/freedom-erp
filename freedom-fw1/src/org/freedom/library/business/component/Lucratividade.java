@@ -8,6 +8,8 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
+import com.sun.crypto.provider.DESCipher;
+
 public class Lucratividade {
 
 	private BigDecimal totfat = null;
@@ -55,7 +57,7 @@ public class Lucratividade {
 	private BigDecimal vlrcustompm = null;
 	private DbConnection con = null;
 
-	public Lucratividade(Integer codcab, String tipo, Integer item, BigDecimal fatLucro, String tipocusto, DbConnection con) {
+	public Lucratividade(Integer codcab, String tipo, Integer item, BigDecimal fatLucro, String tipocusto, DbConnection con, boolean descipi) {
 
 		this.con = con;
 
@@ -71,16 +73,16 @@ public class Lucratividade {
 		}
 		// Se for a lucratividade de um orçamento
 		else {
-			carregaOrcamento(codcab, tipo);
-			carregaItemOrcamento(codcab, tipo, item);
+			carregaOrcamento(codcab, tipo, descipi);
+			carregaItemOrcamento(codcab, tipo, item, descipi);
 
 		}
 
-		calcTotFat();
-		calcTotCusto(tipocusto);
+		calcTotFat(descipi);
+		calcTotCusto(tipocusto, descipi);
 		calcTotLucro();
 
-		calcItemFat();
+		calcItemFat(descipi);
 		calcItemCusto(tipocusto);
 		calcItemLucro();
 
@@ -288,7 +290,7 @@ public class Lucratividade {
 		this.vlririt = vlririt;
 	}
 
-	private void calcTotCusto(String tipocusto) {
+	private void calcTotCusto(String tipocusto, boolean descipi) {
 		BigDecimal calc = null;
 
 		try {
@@ -336,8 +338,9 @@ public class Lucratividade {
 
 				calc = calc.add(getVlrir());
 				System.out.println("VALOR TOT. IR: " + getVlrir());
-
+				
 				calc = calc.add(getVlripi());
+				
 				System.out.println("VALOR TOT. IPI: " + getVlripi());
 
 				setTotcusto(calc);
@@ -476,7 +479,7 @@ public class Lucratividade {
 		this.totcusto = totcusto;
 	}
 
-	private void calcTotFat() {
+	private void calcTotFat( boolean descipi ) {
 		BigDecimal calc = null;
 		try {
 
@@ -493,7 +496,9 @@ public class Lucratividade {
 					calc = calc.add(vlrfrete);
 				}
 
-				calc = calc.add(vlripi);
+				if(!descipi &&  !(fatLucro.compareTo(new BigDecimal(1)) > 0) ) {
+					calc = calc.add(vlripi);
+				}
 
 				setTotfat(calc);
 
@@ -507,7 +512,7 @@ public class Lucratividade {
 
 	}
 
-	private void calcItemFat() {
+	private void calcItemFat(boolean descipi) {
 		BigDecimal calc = null;
 		try {
 
@@ -524,8 +529,10 @@ public class Lucratividade {
 					calc = calc.add(vlrfreteit);
 				}
 
-				calc = calc.add(vlripiit);
-
+				if(!descipi &&  !(fatLucro.compareTo(new BigDecimal(1)) > 0) ) {
+					calc = calc.add(vlripiit);
+				}
+				
 				setItemfat(calc);
 
 				System.out.println("VALOR FATURADO ITEM:" + calc.toString());
@@ -1006,14 +1013,14 @@ public class Lucratividade {
 		}
 	}
 
-	private void carregaOrcamento(Integer codorc, String tipoorc) {
+	private void carregaOrcamento(Integer codorc, String tipoorc, boolean descipi) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
 		try {
 
 			sql.append("select ");
-			sql.append("coalesce(oc.vlrprodorc,0) vlrprod , coalesce(oc.vlrdescorc,0) vlrdesc, ");
+			sql.append("coalesce(oc.vlrprodorc,0) vlrprod , coalesce(oc.vlrliqorc,0) vlrliqorc, coalesce(oc.vlrdescorc,0) vlrdesc, ");
 			sql.append("coalesce(oc.vlradicorc,0) vlradic, coalesce(oc.vlrfreteorc,0) vlrfrete, ");
 			sql.append("oc.tipofrete, oc.adicfrete, ");
 			sql.append("coalesce(sum(io.vlrcomisitorc),0) as vlrcomis, ");
@@ -1042,7 +1049,7 @@ public class Lucratividade {
 			sql.append("where oc.codemp=? and oc.codfilial=? and oc.codorc=? and oc.tipoorc=? ");
 			sql.append("and io.codemp=oc.codemp and io.codfilial=oc.codfilial and io.tipoorc=oc.tipoorc and io.codorc=oc.codorc ");
 
-			sql.append("group by 1,2,3,4,5,6 ");
+			sql.append("group by 1,2,3,4,5,6,7 ");
 
 			System.out.println(sql.toString());
 
@@ -1056,6 +1063,7 @@ public class Lucratividade {
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
+				
 				setVlrprod(rs.getBigDecimal("vlrprod"));
 				setVlrdesc(rs.getBigDecimal("vlrdesc"));
 				setVlradic(rs.getBigDecimal("vlradic"));
@@ -1064,20 +1072,66 @@ public class Lucratividade {
 				setTipofrete(rs.getString("tipofrete") == null ? "F" : rs.getString("tipofrete"));
 				setAdicfrete(rs.getString("adicfrete") == null ? "N" : rs.getString("adicfrete"));
 
-				setVlrcomis(rs.getBigDecimal("vlrcomis") == null ? new BigDecimal(0) : rs.getBigDecimal("vlrcomis"));
-
 				setVlrcustouc(rs.getBigDecimal("vlrcustouc"));
 				setVlrcustompm(rs.getBigDecimal("vlrcustompm"));
 				setVlrcustopeps(rs.getBigDecimal("vlrcustopeps"));
 				setVlrcustoinfo(rs.getBigDecimal("vlrcustoinfo"));
+					
+				if(descipi) {
+				
+					
+					BigDecimal vlrliq = rs.getBigDecimal("vlrliqorc");
+					BigDecimal vlripi = rs.getBigDecimal("vlripi");
+					BigDecimal vlrpis = rs.getBigDecimal("vlrpis");
+					BigDecimal vlrcofins = rs.getBigDecimal("vlrcofins");
+					BigDecimal vlrir = rs.getBigDecimal("vlrir");
+					BigDecimal vlrcsocial = rs.getBigDecimal("vlrcsocial");
+					BigDecimal vlricms = rs.getBigDecimal("vlricms");
+					BigDecimal vlrcomis = rs.getBigDecimal("vlrcomis");
+										
+					BigDecimal aliqmedipi= vlripi.divide(vlrliq, BigDecimal.ROUND_CEILING);		
+					BigDecimal aliqmedpis = vlrpis.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					BigDecimal aliqmedcofins = vlrcofins.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					BigDecimal aliqmedir = vlrir.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					BigDecimal aliqmedcsocial = vlrcsocial.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					BigDecimal aliqmedicms = vlricms.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					BigDecimal percmedcomis = vlrcomis.divide(vlrliq, BigDecimal.ROUND_CEILING);
+					
+					BigDecimal percipi = aliqmedipi.multiply(new BigDecimal(100));
+					
+					BigDecimal preco_bruto = vlrliq;
+					BigDecimal preco_liquido_menos_ipi = preco_bruto.divide( new BigDecimal( 1 ).add( percipi.divide( new BigDecimal( 100 ) ) ), BigDecimal.ROUND_CEILING );
 
-				setVlricms(rs.getBigDecimal("vlricms"));
-				setVlripi(rs.getBigDecimal("vlripi"));
-				setVlrpis(rs.getBigDecimal("vlrpis"));
-				setVlrcofins(rs.getBigDecimal("vlrcofins"));
-				setVlrir(rs.getBigDecimal("vlrir"));
-				setVlrcsocial(rs.getBigDecimal("vlrcsocial"));
+					setVlripi( preco_bruto.subtract(preco_liquido_menos_ipi) );
 
+					setVlrpis( preco_liquido_menos_ipi.multiply(aliqmedpis) );
+					
+					setVlrcofins( preco_liquido_menos_ipi.multiply(aliqmedcofins) );
+					setVlrir( preco_liquido_menos_ipi.multiply(aliqmedir) );
+					setVlrcsocial( preco_liquido_menos_ipi.multiply(aliqmedcsocial) );
+					setVlricms( preco_liquido_menos_ipi.multiply(aliqmedicms) );
+					
+					setVlrcomis( preco_liquido_menos_ipi.multiply(percmedcomis));
+					
+				}
+				else {
+					
+					setVlrcomis(rs.getBigDecimal("vlrcomis") == null ? new BigDecimal(0) : rs.getBigDecimal("vlrcomis"));
+					
+					setVlricms(rs.getBigDecimal("vlricms"));
+					setVlripi(rs.getBigDecimal("vlripi"));
+					setVlrpis(rs.getBigDecimal("vlrpis"));
+					setVlrcofins(rs.getBigDecimal("vlrcofins"));
+					setVlrir(rs.getBigDecimal("vlrir"));
+					setVlrcsocial(rs.getBigDecimal("vlrcsocial"));
+
+					
+				}
+					
+			
+						
+				
+			
 				// implementar iss e simples futuramente
 
 			}
@@ -1093,7 +1147,8 @@ public class Lucratividade {
 		}
 	}
 
-	private void carregaItemOrcamento(Integer codorc, String tipoorc, Integer coditorc) {
+
+	private void carregaItemOrcamento(Integer codorc, String tipoorc, Integer coditorc, boolean descipi) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
@@ -1114,7 +1169,8 @@ public class Lucratividade {
 			sql.append("coalesce(pt.vlriritorc,0) vlririt, ");
 			sql.append("coalesce(pt.vlrcsocialitorc,0) vlrcsocialit, ");
 			sql.append("coalesce(pt.vlrpisitorc,0) vlrpisit, ");
-			sql.append("coalesce(pt.vlrcofinsitorc,0) vlrcofinsit ");
+			sql.append("coalesce(pt.vlrcofinsitorc,0) vlrcofinsit, ");
+			sql.append("coalesce(io.vlrliqitorc,0) vlrliqitorc ");
 
 			sql.append("from ");
 			sql.append("vditorcamento io ");
@@ -1143,20 +1199,63 @@ public class Lucratividade {
 			if (rs.next()) {
 				setVlrprodit(rs.getBigDecimal("vlrprodit"));
 				setVlrdescit(rs.getBigDecimal("vlrdescit"));
-				setVlricmsit(rs.getBigDecimal("vlricmsit"));
-				setVlrcomisit(rs.getBigDecimal("vlrcomisit"));
+				
+				
 				setVlrfreteit(rs.getBigDecimal("vlrfreteit"));
 				setVlradicit(rs.getBigDecimal("vlradicit"));
-				setVlripiit(rs.getBigDecimal("vlripiit"));
+				
+				if(descipi) {
+					
+					BigDecimal vlrliqit = rs.getBigDecimal("vlrliqitorc");
+					
+					BigDecimal percipi = rs.getBigDecimal("vlripiit").divide(vlrliqit, BigDecimal.ROUND_CEILING).multiply(new BigDecimal(100));
+					BigDecimal percpis = rs.getBigDecimal("vlrpisit").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					BigDecimal perccofins = rs.getBigDecimal("vlrcofinsit").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					BigDecimal percir = rs.getBigDecimal("vlririt").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					BigDecimal perccsocial = rs.getBigDecimal("vlrcsocialit").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					BigDecimal percicms = rs.getBigDecimal("vlricmsit").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					BigDecimal perccomis = rs.getBigDecimal("vlrcomisit").divide(vlrliqit, BigDecimal.ROUND_CEILING);
+					
+					BigDecimal preco_liquido_menos_ipi = vlrliqit.divide( new BigDecimal( 1 ).add( percipi.divide( new BigDecimal( 100 ) ) ), BigDecimal.ROUND_CEILING );
+
+					BigDecimal vlripi = vlrliqit.subtract(preco_liquido_menos_ipi); 
+					BigDecimal vlrpis = preco_liquido_menos_ipi.multiply(percpis);
+					BigDecimal vlrcofins = preco_liquido_menos_ipi.multiply(perccofins);
+					BigDecimal vlrir = preco_liquido_menos_ipi.multiply(percir);
+					BigDecimal vlrcsocial = preco_liquido_menos_ipi.multiply(perccsocial);
+					BigDecimal vlricms = preco_liquido_menos_ipi.multiply(percicms);
+					BigDecimal vlrcomisit = preco_liquido_menos_ipi.multiply(perccomis);
+					
+					setVlripiit( vlripi );
+					
+					setVlrpisit(vlrpis);
+					setVlrcofinsit(vlrcofins);
+					setVlririt(vlrir);
+					setVlrcsocialit(vlrcsocial);
+					setVlricmsit(vlricms);
+					setVlrcomisit(vlrcomisit);
+					
+				}
+				else {
+					
+					setVlrcomisit(rs.getBigDecimal("vlrcomisit"));
+					
+					setVlricmsit(rs.getBigDecimal("vlricmsit"));
+					setVlripiit(rs.getBigDecimal("vlripiit"));
+					
+					setVlrpisit(rs.getBigDecimal("vlrpisit"));
+					setVlrcofinsit(rs.getBigDecimal("vlrcofinsit"));
+					setVlririt(rs.getBigDecimal("vlririt"));
+					setVlrcsocialit(rs.getBigDecimal("vlrcsocialit"));
+					
+				}
+				
 				setVlrcustoucit(rs.getBigDecimal("vlrcustoituc"));
 				setVlrcustompmit(rs.getBigDecimal("vlrcustoitmpm"));
 				setVlrcustopepsit(rs.getBigDecimal("vlrcustoitpeps"));
 				setVlrcustoinfoit(rs.getBigDecimal("vlrcustoitinfo"));
-
-				setVlrpisit(rs.getBigDecimal("vlrpisit"));
-				setVlrcofinsit(rs.getBigDecimal("vlrcofinsit"));
-				setVlririt(rs.getBigDecimal("vlririt"));
-				setVlrcsocialit(rs.getBigDecimal("vlrcsocialit"));
+				
+				
 			}
 
 			rs.close();
