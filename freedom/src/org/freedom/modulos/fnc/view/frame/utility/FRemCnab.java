@@ -151,10 +151,10 @@ public class FRemCnab extends FRemFBN {
 			if ( rs.next() ) {
 
 				carteira = rs.getInt( "CARTCOBCNAB" );
-				variacao = rs.getString( "VARIACAOCARTCOB" );
-				codCarteiraCnab = rs.getString( "CODCARTCOB" );
+				variacao = rs.getString( "VARIACAOCARTCOB" ) != null ? rs.getString( "VARIACAOCARTCOB" ).trim() : "";
+				codCarteiraCnab = rs.getString( "CODCARTCOB" ) !=null ? rs.getString( "CODCARTCOB" ).trim() : "";
 
-			}
+			} 
 
 			ret.put( "CARTEIRA", carteira );
 			ret.put( "VARIACAO", variacao );
