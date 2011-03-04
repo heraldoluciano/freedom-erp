@@ -999,19 +999,23 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		StringBuffer sSQL = new StringBuffer();
 
 		limpaConsulta();
-		tabConsulta.limpa();
+		tabConsulta.limpa(); 
 
 		try {
 
 			// Busca totais ...
-			sSQL.append( "SELECT SUM(VLRREC),SUM(VLRPAGOREC),SUM(VLRAPAGREC),MIN(DATAREC),MAX(DATAREC) " );
-			sSQL.append( "FROM FNRECEBER " );
-			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+			sSQL.append( "select sum(ir.vlritrec), sum(ir.vlrpagoitrec), sum(ir.vlrapagitrec),MIN(DATAREC),MAX(DATAREC) " );
+			sSQL.append( "FROM FNRECEBER rc, fnitreceber ir " );
+			sSQL.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
+			sSQL.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, txtCodCli.getVlrInteger().intValue() );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 5, txtCodCli.getVlrInteger() );
+
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
