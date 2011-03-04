@@ -459,7 +459,7 @@ public class Bradesco extends Banco {
 	}
 
 	public String getCarteira() {
-		return carteira;
+		return carteira.trim();
 	}
 
 	public void setCarteira(String carteira) {
