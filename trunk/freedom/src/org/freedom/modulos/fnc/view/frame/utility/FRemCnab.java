@@ -224,6 +224,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
 		reg.setDataCred( null );
 
+		
 		return reg;
 	}
 
