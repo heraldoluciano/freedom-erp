@@ -475,6 +475,15 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 
 			sql = new StringBuilder();
+			
+			sql.append( "select sum(ir.vlritrec) total, sum(ir.vlrapagitrec) total_aberto, MIN(DATAREC), MAX(DATAREC) " );
+			sql.append( "FROM FNRECEBER rc, fnitreceber ir " );
+			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
+			
+			sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
+			sql.append( "and ir.DTvencitrec BETWEEN ? AND ? ");
+			
+			/*
 			sql.append( "SELECT SUM(V.VLRLIQVENDA) TOTAL, SUM(R.VLRAPAGREC) TOTAL_ABERTO " );
 			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNRECEBER R " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
@@ -483,20 +492,30 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			sql.append( "R.CODEMPVD=V.CODEMP AND R.CODFILIALVD=V.CODFILIAL AND R.CODVENDA=V.CODVENDA AND R.TIPOVENDA=V.TIPOVENDA " );
 			sql.append( "GROUP BY V.CODCLI " );
 
+			 */
+			
 			ps = con.prepareStatement( sql.toString() );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 7, txtCodCli.getVlrInteger() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 5, txtCodCli.getVlrInteger() );
+
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+		
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
+				
+				//txtTotalCompras.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "TOTAL" ) ) );
+				//txtTotalAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "TOTAL_ABERTO" ) ) );
+			
 				txtTotalCompras.setVlrBigDecimal( rs.getBigDecimal( "TOTAL" ) );
-				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO" ) );
+				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO"  ));
+				
 			}
 
 			if ( row > 0 ) {
