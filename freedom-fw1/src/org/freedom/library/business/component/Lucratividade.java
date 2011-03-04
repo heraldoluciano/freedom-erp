@@ -8,8 +8,6 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
 
-import com.sun.crypto.provider.DESCipher;
-
 public class Lucratividade {
 
 	private BigDecimal totfat = null;
@@ -501,7 +499,7 @@ public class Lucratividade {
 				}
 
 				setTotfat(calc);
-
+				
 				System.out.println("VALOR FATURADO:" + calc.toString());
 			}
 
