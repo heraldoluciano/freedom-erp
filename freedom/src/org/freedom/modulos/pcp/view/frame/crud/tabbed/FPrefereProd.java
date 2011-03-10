@@ -69,6 +69,10 @@ public class FPrefereProd extends FTabDados {
 	private final JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtCodTipoMovSP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private final JTextFieldFK txtDescTipoMovSP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtNDiaMes = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -93,12 +97,15 @@ public class FPrefereProd extends FTabDados {
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private final ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
+	
+	private final ListaCampos lcTipoMovSP = new ListaCampos( this, "TS" );
 
 	public FPrefereProd() {
 
 		super();
+		
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 754, 485 );
+		setAtribos( 50, 50, 754, 525 );
 
 		montaListaCampos();
 		montaTela();
@@ -165,10 +172,14 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtClass, 7, 20, 333, 20, "CLASSOP", "Classe padrão para O.P.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodTipoMov, 7, 60, 80, 20, "CODTIPOMOV", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 90, 60, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para OP" );
-		adicDB( cbSitOP, 7, 100, 333, 30, "SITPADOP", "Status padrão para OP", true );
-		adicDB( cbProdEtapas, 7, 140, 333, 30, "PRODETAPAS", "", true );
+		
+		adicCampo( txtCodTipoMovSP, 7, 100, 80, 20, "CODTIPOMOVSP", "Cod.Tip.Mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMovSP, 90, 100, 249, 20, "DESCTIPOMOV", "Descrição do tipo de movimento para subprodutos" );
+		
+		adicDB( cbSitOP, 7, 140, 333, 30, "SITPADOP", "Status padrão para OP", true );
+		adicDB( cbProdEtapas, 7, 180, 333, 30, "PRODETAPAS", "", true );
 
-		pinGeral.adic( pinOp, 7, 5, 358, 205 );
+		pinGeral.adic( pinOp, 7, 5, 358, 245 );
 
 		/*************** Parametros RMA *******************************/
 
@@ -189,7 +200,7 @@ public class FPrefereProd extends FTabDados {
 		adic( new JLabelPad( "Meses para descarte de contra prova" ), 7, 90, 300, 20 );
 		adicCampo( txtNDiaMes, 7, 110, 100, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 
-		pinGeral.adic( pinCQ, 7, 215, 358, 165 );
+		pinGeral.adic( pinCQ, 7, 255, 358, 165 );
 
 		/*************** Conversão de produtos *******************************/
 
@@ -234,13 +245,25 @@ public class FPrefereProd extends FTabDados {
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
 		txtCodTipoMov.setFK( true );
+		
+		lcTipoMovSP.add( new GuardaCampo( txtCodTipoMovSP, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMovSP.add( new GuardaCampo( txtDescTipoMovSP, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMovSP.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMovSP.setWhereAdic( " TIPOMOV='OP' " );
+		lcTipoMovSP.setQueryCommit( false );
+		lcTipoMovSP.setReadOnly( true );
+		txtCodTipoMovSP.setTabelaExterna( lcTipoMovSP, FTipoMov.class.getCanonicalName() );
+		txtCodTipoMovSP.setFK( true );
+		
 		lcCampos.setMensInserir( false );
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcTipoMov.setConexao( cn );
+		lcTipoMovSP.setConexao( cn );
 		lcCampos.carregaDados();
 	}
 }
