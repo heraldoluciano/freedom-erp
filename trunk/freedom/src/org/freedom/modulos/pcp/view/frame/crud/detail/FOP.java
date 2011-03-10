@@ -227,6 +227,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
 	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.gif" ) );
+	
+	private JButtonPad btSubProd = new JButtonPad( Icone.novo( "btSubProd.png" ) );
 
 	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
@@ -358,7 +360,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
-		setAtribos( 15, 10, 620, 600 );
+		setAtribos( 15, 10, 645, 600 );
 		setAltCab( 238 );
 
 		btObs.setVisible( false );
@@ -400,6 +402,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
 		btFinaliza.setToolTipText( "Fases/Finalização" );
+		btSubProd.setToolTipText( "Subprodutos" );
 		btRMA.setToolTipText( "Gera ou exibe RMA." );
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
@@ -412,7 +415,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
 		
 		pinCab.adic( pinQuantidades, 5, 125, 550, 50 );
-		pinCab.adic( pinBotCab, 560, 5, 35, 190 );
+		pinCab.adic( pinBotCab, 560, 5, 66, 190 );
 
 		pinBotCab.adic( btLote, 0, 0, 30, 30 );
 		pinBotCab.adic( btRMA, 0, 31, 30, 30 );
@@ -420,6 +423,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pinBotCab.adic( btDistrb, 0, 93, 30, 30 );
 		pinBotCab.adic( btFinaliza, 0, 124, 30, 30 );
 		pinBotCab.adic( btCancela, 0, 155, 30, 30 );
+		pinBotCab.adic( btSubProd, 31, 0, 30, 30 );
+		
 		pnNavCab.add( pinStatus, BorderLayout.EAST );
 		pinStatus.tiraBorda();
 		pinStatus.adic( pinLb, 38, 0, 110, 25 );
@@ -518,18 +523,18 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampo( txtDtFabProd, 475, 20, 80, 20, "dtfabrop", "Dt.Fabricação", ListaCampos.DB_SI, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
-			adicCampo( txtRefProdEst, 7, 60, 70, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
+			adicCampo( txtRefProdEst, 7, 60, 133, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
 			adicCampoInvisivel( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
 			txtCodProdEst.setFK( true );
 		}
 		else {
-			adicCampo( txtCodProdEst, 7, 60, 70, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
+			adicCampo( txtCodProdEst, 7, 60, 133, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
 			adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, null, true );
 			txtRefProdEst.setFK( true );
 		}
 
-		adicCampo( txtSeqEst, 80, 60, 60, 20, "seqest", "Seq.Est.", ListaCampos.DB_FK, txtDescEst, true );
-		adicDescFK( txtDescEst, 143, 60, 241, 20, "descprod", "Descrição da estrutura" );
+		adicCampo( txtSeqEst, 143, 60, 30, 20, "seqest", "Seq.", ListaCampos.DB_FK, txtDescEst, true );
+		adicDescFK( txtDescEst, 176, 60, 208, 20, "descprod", "Descrição da estrutura" );
 		adicDescFK( txtQtdEst, 387, 60, 85, 20, "qtdest", "Qtd.Estrutura" );
 
 		pinCab.adic( new JLabelPad( "Densidade" ), 475, 40, 80, 20 );
@@ -585,6 +590,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcDet.addCancelListener( this );
 
 		btFinaliza.addActionListener( this );
+		btSubProd.addActionListener( this );
 		btObs.addActionListener( this );
 		btObs2.addActionListener( this );
 		btReprocessaItens.addActionListener( this );
@@ -654,9 +660,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOPS.setTamColuna( 50, 2 );
 		tabOPS.setTamColuna( 65, 3 );
 		tabOPS.setTamColuna( 50, 4 );
-		tabOPS.setTamColuna( 350, 6 );
 		tabOPS.setColunaInvisivel( 5 );
-
+		tabOPS.setTamColuna( 350, 6 );
+		
 		tabOSS.adicColuna( "Ticket" );// 0
 		tabOSS.adicColuna( "It.Rec." );// 1
 		tabOSS.adicColuna( "It.OS." );// 2
@@ -783,8 +789,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Sq.", ListaCampos.DB_PK, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
-			adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
-			txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
+			adicCampo( txtRefProdDet, 60, 20, 70, 20, "RefProd", "Ref.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
+			adicCampoInvisivel( txtCodProdDet, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
+			//adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
+			//txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
 		}
 		else {
 			adic( new JLabelPad( "Referência" ), 60, 0, 70, 20 );
@@ -820,25 +828,40 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btDistrb.setEnabled( false );
 		btCancela.setEnabled( false );
 		btContrQuali.setEnabled( false );
+		btSubProd.setEnabled( false );
 
 		montaTab();
+		
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
-		tab.setTamColuna( 25, 0 ); // Seq.
-		tab.setTamColuna( 50, 1 ); // Cód.prod.
-		tab.setTamColuna( 190, 2 ); // Descrição do produto
-		tab.setTamColuna( 65, 3 ); // Lote
-		tab.setTamColuna( 65, 5 ); // Qtd.
-		tab.setTamColuna( 60, 6 ); // Qtd.rat.
-		tab.setTamColuna( 60, 7 ); // Lote.rat.
-		tab.setTamColuna( 35, 8 ); // RMA
-		tab.setTamColuna( 15, 9 ); // Acao corretiva
+		
+		tab.setTamColuna( 30, 0 ); // Seq.
+		
+		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+			tab.setTamColuna( 112, 1 ); // RefProd.
+		}
+		
+		tab.setTamColuna( 145, 2 ); // Descrição do produto
+		
+		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+			tab.setColunaInvisivel( 3 ); // Código do produto
+		}
+		
+		tab.setTamColuna( 65, 4 ); // Lote
+		tab.setColunaInvisivel( 5 ); // Não identificado
+		tab.setTamColuna( 65, 6 ); // Qtd.
+		tab.setTamColuna( 65, 7 ); // Qtd.rat.
+		tab.setTamColuna( 65, 8 ); // Lote.rat.
+		tab.setTamColuna( 50, 9 ); // RMA
+		
+		tab.setColunaInvisivel( 10 );		
+		
 		tab.setTamColuna( 13, 11 ); // Acao corretiva imagem
 		tab.setTamColuna( 13, 12 ); // Bloqueio de OP imagem
-
-		tab.setColunaInvisivel( 4 );
-		tab.setColunaInvisivel( 9 );
-		tab.setColunaInvisivel( 10 );
+	
+		tab.setColunaInvisivel( 13 );
+		
+		tab.setColunaInvisivel( 14 );
 
 	}
 
@@ -847,7 +870,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 			for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
 
-				if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
+			//	if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
+				if ( tab.getValor( i, 10 ) != null && ( !"".equals( tab.getValor( i, 10 ) ) ) && ( (Integer) ( tab.getValor( i, 10 ) ) ) > 0 ) {	
 					tab.setValor( imgItemCorrecao, i, 11 );
 				}
 				else {
@@ -2499,6 +2523,18 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		else if ( evt.getSource() == btAdicProdutoEstrutura ) {
 			buscaEstrutura();
 		}
+		else if ( evt.getSource() == btSubProd ) {
+			if ( fPrim.temTela( "Subprodutos" ) == false ) {
+				
+				int codop = txtCodOP.getVlrInteger().intValue();
+				int	seqop = txtSeqOP.getVlrInteger().intValue();
+				int seqest = txtSeqEst.getVlrInteger().intValue();
+
+				FOPSubProd tela = new FOPSubProd( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" )  );
+				fPrim.criatela( "Subprodutos", tela, con );
+				tela.setConexao( con );
+			}
+		}
 	}
 
 	private void observacao() {
@@ -2754,6 +2790,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				lSitOp.setText( SitOp );
 				pinLb.setBackground( cor( 238, 238, 238 ) );
 			}
+			
+			btSubProd.setEnabled( true );
+			
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
