@@ -34,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -55,6 +56,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
@@ -269,6 +271,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
 
 	private HashMap<String, Object> prefere = null;
+	
+	private Vector<String> vTipoExternoVal = new Vector<String>();
+	
+	private Vector<String> vTipoExternoLab = new Vector<String>();
+	
+	private JCheckBoxPad cbExternaFase = new JCheckBoxPad( "Externa", "S", "N" );
+	
+	private JRadioGroup<String, String> rgTipoExterno ;
 
 	public FEstrutura() {
 
@@ -280,6 +290,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private void montaTela() {
 
+		
 		pnMaster.remove( spTab );
 		pnMaster.remove( pnDet );
 
@@ -298,6 +309,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		pnGImp.add( btImp );
 
 		cbAtiva.setVlrString( "N" );
+		
+		vTipoExternoLab.addElement( "Envio" );
+		vTipoExternoLab.addElement( "Retorno" );
+		vTipoExternoVal.addElement( "E" );
+		vTipoExternoVal.addElement( "R" );
+		rgTipoExterno = new JRadioGroup<String, String>( 1, 2, vTipoExternoLab, vTipoExternoVal );
+		
+		rgTipoExterno.setAtivo( false );
 
 		lcDetItens.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetItens );
@@ -387,6 +406,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
 		lcFase.add( new GuardaCampo( txtTipoFase, "TipoFase", "Tipo da fase", ListaCampos.DB_SI, false ) );
+		lcFase.add( new GuardaCampo( cbExternaFase, "ExternaFase", "Externa", ListaCampos.DB_SI, false));
 		lcFase.montaSql( false, "FASE", "PP" );
 		lcFase.setQueryCommit( false );
 		lcFase.setReadOnly( true );
@@ -496,11 +516,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFK( txtDescProdItem, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdItEst, 498, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 
-		adicDB( cbRmaAutoItEst, 10, 60, 80, 20, "RmaAutoItEst", "", true );
-		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
-		adicDB( cbQtdVariavelItem, 210, 60, 100, 20, "QtdVariavel", "", true );
-		adicDB( cbQtdFixaItem, 330, 60, 100, 20, "QtdFixa", "", true );
-		adicDB( cbPermiteAjusteItEst, 433, 60, 150, 20, "PermiteAjusteItEst", "", true );
+		adicDB( cbRmaAutoItEst, 		10, 	50, 	150, 	20, "RmaAutoItEst", "", true );
+		adicDB( cbCProva, 				160, 	50, 	150, 	20, "CPROVA", "", true );
+		adicDB( cbQtdVariavelItem, 		10, 	70, 	150, 	20, "QtdVariavel", "", true );
+		adicDB( cbQtdFixaItem, 			160, 	70, 	150, 	20, "QtdFixa", "", true );
+		adicDB( cbPermiteAjusteItEst, 	310, 	50, 	150, 	20, "PermiteAjusteItEst", "", true );
+		adicDB( rgTipoExterno, 			460, 	65, 	180, 	30, "TipoExterno", "Tipo externo", false );
 
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
@@ -626,10 +647,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 
 		adicDescFK( txtDescProdItemSP, 168, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItEstSP, 498, 20, 100, 20, "QtdItEstSP", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItEstSP, 498, 20, 100, 20, "QtdItEstSP", "Qtd.Prevista", ListaCampos.DB_SI, true );
 
-		adicDB( cbQtdVariavelItemSP, 210, 60, 100, 20, "QtdVariavel", "", true );
-		adicDB( cbQtdFixaItemSP, 330, 60, 100, 20, "QtdFixa", "", true );
+//		adicDB( cbQtdVariavelItemSP, 210, 60, 100, 20, "QtdVariavel", "", true );
+//		adicDB( cbQtdFixaItemSP, 330, 60, 100, 20, "QtdFixa", "", true );
 
 		setListaCampos( true, "ITESTRUTURASUBPROD", "PP" );
 		lcSubProd.setQueryInsert( false );
@@ -1090,6 +1111,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		if ( cevt.getListaCampos() == lcUnid ) {
 			txtVlrMin.setDecimal( txtCasasDec.getVlrInteger() );
 			txtVlrMax.setDecimal( txtCasasDec.getVlrInteger() );
+		}
+		else if ( cevt.getListaCampos() == lcFase ) {
+			rgTipoExterno.setAtivo( "S".equals( cbExternaFase.getVlrString() ));
 		}
 
 	}
