@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +55,7 @@ import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
  * @version 26/08/2009
  */
 
-public class FBordero extends FDetalhe implements CarregaListener, InsertListener, DeleteListener {
+public class FBordero extends FDetalhe implements CarregaListener, InsertListener, DeleteListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,6 +94,10 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 	private JTextFieldFK txtDtVencItRec = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtStatusItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtCodDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodRecReceber = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JLabelPad lbStatus = new JLabelPad( "", SwingConstants.CENTER );
 
@@ -100,6 +106,8 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 	//private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
 	private ListaCampos lcItReceber = new ListaCampos( this, "RC" );
+	
+	private ListaCampos lcReceber = new ListaCampos( this, "RC" );
 
 	public FBordero() {
 
@@ -108,13 +116,14 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		nav.setNavigation( true );
 
 		setTitulo( "Bordero" );
-		setAtribos( 50, 50, 575, 420 );
+		setAtribos( 50, 50, 575, 500 );
 
 		montaListaCampos();
 		montaTela();
 
 		lcDet.addCarregaListener( this );
 		lcItReceber.addCarregaListener( this );
+		lcReceber.addCarregaListener( this );
 
 		lcDet.addInsertListener( this );
 		lcDet.addDeleteListener( this );
@@ -151,11 +160,25 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		txtCodRec.setTabelaExterna( lcItReceber, null );
 		txtCodRec.setFK( true );
 		txtCodRec.setNomeCampo( "CodRec" );
+		txtCodRec.addFocusListener( this );
 		txtNParcItRec.setTabelaExterna( lcItReceber, null );
 		txtNParcItRec.setFK( true );
 		txtNParcItRec.setNomeCampo( "NParcItRec" );
+		
+		
+		lcReceber.add( new GuardaCampo( txtCodDoc, "DocRec", "Doc.Rec.", ListaCampos.DB_PK, false ) );
+		lcReceber.add( new GuardaCampo( txtCodRecReceber, "CodRec", "Cod.Rec.", ListaCampos.DB_SI, false ) );
+		lcReceber.montaSql( false, "RECEBER", "FN" );
+		lcReceber.setQueryCommit( false );
+		lcReceber.setReadOnly( true );
+		txtCodDoc.setTabelaExterna( lcReceber, null );
+		txtCodDoc.setFK( true );
+		txtCodDoc.setNomeCampo( "DocRec" );
+		/*txtCodRecReceber.setTabelaExterna( lcReceber, null );
+		txtCodRecReceber.setFK( true );
+		txtCodRecReceber.setNomeCampo( "CodRec" );*/
 	}
-
+	
 	private void montaTela() {
 
 		setAltCab( 170 );
@@ -171,20 +194,23 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		setListaCampos( true, "BORDERO", "FN" );
 		lcCampos.setQueryInsert( false );
 
-		setAltDet( 100 );
+		setAltDet( 140 );
 		setPainel( panelDetalhe, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtCodRec, 7, 20, 90, 20, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true );
-		adicCampo( txtNParcItRec, 100, 20, 67, 20, "NParcItRec", "Parcela", ListaCampos.DB_PF, true );
-		adicDescFK( txtDtVencItRec, 170, 20, 120, 20, "DtVencItRec", "Vencimento" );
-		adicDescFK( txtDtPagoItRec, 293, 20, 120, 20, "DtPagoItRec", "Dt.Pagto." );
-		adic( lbStatus, 416, 20, 120, 20 );
+		panelDetalhe.adic( new JLabelPad("Doc.Rec"), 7, 0, 90, 20 );
+		panelDetalhe.adic( txtCodDoc, 7, 20, 90, 20) ;
+		
+		adicCampo( txtCodRec, 7, 60, 90, 20, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true );
+		adicCampo( txtNParcItRec, 100, 60, 67, 20, "NParcItRec", "Parcela", ListaCampos.DB_PF, true );
+		adicDescFK( txtDtVencItRec, 170, 60, 120, 20, "DtVencItRec", "Vencimento" );
+		adicDescFK( txtDtPagoItRec, 293, 60, 120, 20, "DtPagoItRec", "Dt.Pagto." );
+		adic( lbStatus, 416, 60, 120, 20 );
 
-		adicDescFK( txtVlrParcItRec, 170, 60, 120, 20, "VlrParcItRec", "Vlr.titulo" );
-		adicDescFK( txtVlrPagoItRec, 293, 60, 120, 20, "VlrPagoItRec", "Vlr.Pago" );
-		adicDescFK( txtVlrApagItRec, 416, 60, 120, 20, "VlrApagItRec", "Vlr.Aberto" );
+		adicDescFK( txtVlrParcItRec, 170, 100, 120, 20, "VlrParcItRec", "Vlr.titulo" );
+		adicDescFK( txtVlrPagoItRec, 293, 100, 120, 20, "VlrPagoItRec", "Vlr.Pago" );
+		adicDescFK( txtVlrApagItRec, 416, 100, 120, 20, "VlrApagItRec", "Vlr.Aberto" );
 
 		setListaCampos( true, "ITBORDERO", "FN" );
 		lcDet.setQueryInsert( false );
@@ -257,6 +283,28 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 			ps.executeUpdate();
 			con.commit();
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void recuperaCodDoc(){
+		if(txtCodRec.getVlrString().trim().length() == 0)
+			return;
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT DocRec FROM FNRECEBER IR WHERE CODEMP=? AND CODFILIAL = ? AND CODREC=?" );
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = con.prepareStatement( sql.toString() );
+			pstmt.setInt( 1, Aplicativo.iCodEmp );
+			pstmt.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			pstmt.setInt( 3, txtCodRec.getVlrInteger() );
+			
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next())
+				txtCodDoc.setVlrInteger( rs.getInt( 1 ) );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
@@ -335,8 +383,11 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 	}
 
 	public void afterCarrega( CarregaEvent e ) {
-
-		showStatus();
+		if(e.getListaCampos() == lcItReceber){
+			showStatus();
+		}else if(e.getListaCampos() == lcReceber){
+			txtCodRec.setVlrInteger( txtCodRecReceber.getVlrInteger() );
+		}
 	}
 
 	public void beforeInsert( InsertEvent e ) {
@@ -356,6 +407,19 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 		lbStatus.setVisible( false );
 	}
+	
+	public void focusGained( FocusEvent arg0 ) {
+		
+	}
+
+	public void focusLost( FocusEvent evt ) {
+		if(evt.getSource() == txtCodRec){
+			txtCodRecReceber.setVlrInteger( txtCodRec.getVlrInteger() );
+			recuperaCodDoc();
+			txtNParcItRec.requestFocus();
+		}
+		
+	}
 
 	@ Override
 	public void afterPost( PostEvent e ) {
@@ -369,5 +433,8 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		super.setConexao( con );
 		lcConta.setConexao( con );
 		lcItReceber.setConexao( con );
+		lcReceber.setConexao( con );
 	}
+
+	
 }
