@@ -34,6 +34,7 @@ import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
@@ -47,10 +48,12 @@ public class FFase extends FDados implements ActionListener {
 
 	private JTextFieldPad txtDescFase = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	Vector<String> vVals = new Vector<String>();
+	private Vector<String> vVals = new Vector<String>();
 
-	Vector<String> vLabs = new Vector<String>();
-
+	private Vector<String> vLabs = new Vector<String>();
+	
+	private JCheckBoxPad cbExternaFase = new JCheckBoxPad( "Externa", "S", "N" );
+	
 	private JComboBoxPad cbTipo = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 3, 0 );
 
 	public FFase() {
@@ -74,6 +77,8 @@ public class FFase extends FDados implements ActionListener {
 		adicCampo( txtCodFase, 7, 20, 70, 20, "CodFase", "Cód.fase", ListaCampos.DB_PK, true );
 		adicCampo( txtDescFase, 80, 20, 230, 20, "DescFase", "Descrição da fase", ListaCampos.DB_SI, true );
 		adicDB( cbTipo, 7, 60, 230, 24, "tipoFase", "Tipo de fase", true );
+		adicDB( cbExternaFase, 240, 60, 150, 20, "ExternaFase", "", true );
+		
 		setListaCampos( true, "FASE", "PP" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
