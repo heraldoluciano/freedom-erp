@@ -229,6 +229,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.gif" ) );
 	
 	private JButtonPad btSubProd = new JButtonPad( Icone.novo( "btSubProd.png" ) );
+	
+	private JButtonPad btRemessa = new JButtonPad( Icone.novo( "btRemessa.png" ) );
+	
+	private JButtonPad btRetorno = new JButtonPad( Icone.novo( "btRetorno.png" ) );
 
 	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
@@ -403,6 +407,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		btFinaliza.setToolTipText( "Fases/Finalização" );
 		btSubProd.setToolTipText( "Subprodutos" );
+		btRemessa.setToolTipText( "Remessa" );
+		btRetorno.setToolTipText( "Retorno" );
+		
 		btRMA.setToolTipText( "Gera ou exibe RMA." );
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
@@ -417,13 +424,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pinCab.adic( pinQuantidades, 5, 125, 550, 50 );
 		pinCab.adic( pinBotCab, 560, 5, 66, 190 );
 
-		pinBotCab.adic( btLote, 0, 0, 30, 30 );
-		pinBotCab.adic( btRMA, 0, 31, 30, 30 );
-		pinBotCab.adic( btContrQuali, 0, 62, 30, 30 );
-		pinBotCab.adic( btDistrb, 0, 93, 30, 30 );
-		pinBotCab.adic( btFinaliza, 0, 124, 30, 30 );
-		pinBotCab.adic( btCancela, 0, 155, 30, 30 );
-		pinBotCab.adic( btSubProd, 31, 0, 30, 30 );
+		pinBotCab.adic( btLote, 		0, 	0, 		30, 30 );
+		pinBotCab.adic( btRMA, 			0, 	31, 	30, 30 );
+		pinBotCab.adic( btContrQuali, 	0, 	62, 	30, 30 );
+		pinBotCab.adic( btDistrb, 		0,	93, 	30, 30 );
+		pinBotCab.adic( btFinaliza, 	0, 	124, 	30, 30 );
+		pinBotCab.adic( btCancela, 		0, 	155, 	30, 30 );
+		pinBotCab.adic( btSubProd, 		31, 0, 		30, 30 );
+		pinBotCab.adic( btRemessa, 		31, 31, 	30, 30 );
+		pinBotCab.adic( btRetorno, 		31, 62,		30, 30 );
+		
+		
 		
 		pnNavCab.add( pinStatus, BorderLayout.EAST );
 		pinStatus.tiraBorda();
@@ -594,7 +605,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btObs.addActionListener( this );
 		btObs2.addActionListener( this );
 		btReprocessaItens.addActionListener( this );
-
+		btRemessa.addActionListener( this );
+		btRetorno.addActionListener( this );
+		
 		btContrQuali.addActionListener( this );
 		btRMA.addActionListener( this );
 		btLote.addActionListener( this );
@@ -829,7 +842,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btCancela.setEnabled( false );
 		btContrQuali.setEnabled( false );
 		btSubProd.setEnabled( false );
-
+		btRemessa.setEnabled( false );
+		btRetorno.setEnabled( false );
+		
 		montaTab();
 		
 		tab.adicColuna( "" );
@@ -940,6 +955,86 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sSQL = null;
 		}
 		return sRet;
+	}
+	
+	private Boolean temRemessa() {
+		boolean ret = false;
+		
+		try {
+		
+			ret = temRemessaRetorno( "E" );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	private Boolean temRetorno() {
+		boolean ret = false;
+		
+		try {
+		
+			ret = temRemessaRetorno( "R" );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	private boolean temRemessaRetorno( String tipo ) {
+
+		boolean ret = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+
+		try {
+
+			sql.append("select first 1 ");
+			sql.append("it.tipoexterno, fs.externafase ");
+			sql.append("from ppitestrutura it, ppfase fs ");
+			sql.append("where fs.codemp=it.codempfs and fs.codfilial=it.codfilialfs and fs.codfase=it.codfase and ");
+			sql.append("it.codemp=? and it.codfilial=? and it.codprod=? and it.seqest=? and ");
+			sql.append("fs.externafase='S' and it.tipoexterno=?");
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodProdEst.getVlrInteger() );
+			ps.setInt( 4, txtSeqEst.getVlrInteger() );
+			ps.setString( 5, tipo );
+			
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				ret = true;
+				
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar remessa/retorno!\n" + err );
+		}
+		finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		return ret;
 	}
 
 	private void getRma() {
@@ -1657,8 +1752,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		Integer codProd = null;
 		try {
 			for ( int i = 0; i < lcDet.getTab().getRowCount(); i++ ) {
-				codProd = (Integer) lcDet.getTab().getValor( i, 1 );
-				codLote = "" + lcDet.getTab().getValor( i, 3 );
+				
+				if ( !(Boolean) prefere.get( "USAREFPROD" ) ) {
+					codProd = (Integer) lcDet.getTab().getValor( i, 1 );	
+				}
+				else {
+					codProd = (Integer) lcDet.getTab().getValor( i, 3 );
+				}	
+				
+				codLote = "" + lcDet.getTab().getValor( i, 4 );
+				
 
 				sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
 
@@ -3095,6 +3198,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				tpnAbas.setEnabledAt( 0, false );
 
 				btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
+				
+				btRemessa.setEnabled( temRemessa( ) );
+				btRetorno.setEnabled( temRetorno( ) );
 				
 			}
 
