@@ -96,6 +96,7 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
 import org.freedom.modulos.pcp.view.dialog.utility.DLDistrib;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOPParcial;
 import org.freedom.modulos.pcp.view.dialog.utility.DLObsJust;
+import org.freedom.modulos.pcp.view.dialog.utility.DLRemIndustria;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
@@ -2638,6 +2639,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				tela.setConexao( con );
 			}
 		}
+		else if ( evt.getSource() == btRemessa ) {
+			geraRemessa();
+		}
 	}
 
 	private void observacao() {
@@ -3419,7 +3423,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql.append( "codemp, codfilial, codop, seqop, seqitop, ");
 			sql.append( "codempfs, codfilialfs, codfase, ");
 			sql.append( "codemppd, codfilialpd, codprod, refprod, ");
-			sql.append( "qtditop, gerarma ");
+			sql.append( "qtditop, gerarma");
 			
 			sql.append( ") values ( ");
 			
@@ -3521,6 +3525,24 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 	}
 
+	private void geraRemessa() {
+		
+		try { 
+		
+			DLRemIndustria dl = new DLRemIndustria( con, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
+//			dl.carregaCampos( sValores );
+//			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
+			dl.setVisible( true );
+			if ( dl.OK ) {
+	//			lcCampos.carregaDados();
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
 
