@@ -311,4 +311,6 @@ public class FPrefereProd extends FTabDados {
 		lcTipoMovRE.setConexao( cn );
 		lcCampos.carregaDados();
 	}
+	
+	
 }
