@@ -3250,6 +3250,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		exec( codvenda, -1, tipovenda );
 	}
 
+	public void insertItem(Integer codprod, String refprod, BigDecimal qtd) {
+		
+		lcDet.insert( true );
+		txtCodProd.requestFocus();
+		txtCodProd.setVlrInteger( codprod );
+		txtRefProd.requestFocus();
+		txtRefProd.setVlrString( refprod );
+		txtQtdItVenda.requestFocus();
+		txtQtdItVenda.setVlrBigDecimal( qtd );
+		txtPrecoItVenda.requestFocus();
+		txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );
+
+		getCFOP();
+		getTratTrib();
+
+		lcDet.post();
+	}
+	
 	public void exec( int codvenda, int coditvenda, String tipovenda ) {
 
 		txtCodVenda.setVlrInteger( codvenda );
