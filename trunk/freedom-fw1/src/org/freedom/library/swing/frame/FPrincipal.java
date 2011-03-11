@@ -519,19 +519,29 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		comp.execShow();
 	}
 
-	public void criatela(String titulo, FFilho comp, DbConnection cn) {
+	public void criatela(String titulo, FFilho comp, DbConnection cn, boolean show) {
 
 		// comp.setName( nome );
 		String name = comp.getClass().getName();
 		comp.setTitulo(titulo, name);
 		dpArea.add(name, comp);
 		comp.setConexao(cn);
-		comp.execShow();
-		try {
-			comp.setSelected(true);
+		
+		if(show){
+			comp.execShow();
+		
+			try {
+				comp.setSelected(true);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		catch (Exception e) {
-		}
+		
+	}
+	
+	public void criatela(String titulo, FFilho comp, DbConnection cn) {
+		criatela(titulo, comp, cn, true);
 	}
 
 	public void criatela(String titulo, FDialogo comp, DbConnection cn) {
