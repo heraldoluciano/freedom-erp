@@ -243,6 +243,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrProdItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
 	private JTextFieldPad txtVlrBaseIPIItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 
@@ -693,6 +695,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtSerieProd, "SerieProd", "C/Série", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preco Base", ListaCampos.DB_SI, false ) );
 
 		txtCodUnid.setAtivo( false );
 		lcProd.setWhereAdic( "ATIVOPROD='S'" );
@@ -3082,5 +3085,31 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 	}
 
+	public void insertItem(Integer codprod, String refprod, BigDecimal qtd) {
+		
+		lcDet.insert( true );
+		txtCodProd.requestFocus();
+		txtCodProd.setVlrInteger( codprod );
+		txtRefProd.requestFocus();
+		txtRefProd.setVlrString( refprod );
+		txtQtdItCompra.requestFocus();
+		txtQtdItCompra.setVlrBigDecimal( qtd );
+		txtPrecoItCompra.requestFocus();
+		
+		if ( comref ) {
+			lcProd2.carregaDados();
+		}
+		else {
+			lcProd.carregaDados();
+		}
+		
+		txtPrecoItCompra.setVlrBigDecimal( txtPrecoBaseProd.getVlrBigDecimal() );
+
+		getCFOP();
+		getTratTrib();
+
+		lcDet.post();
+	}
+	
 	
 }
