@@ -97,6 +97,7 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLDistrib;
 import org.freedom.modulos.pcp.view.dialog.utility.DLFinalizaOPParcial;
 import org.freedom.modulos.pcp.view.dialog.utility.DLObsJust;
 import org.freedom.modulos.pcp.view.dialog.utility.DLRemIndustria;
+import org.freedom.modulos.pcp.view.dialog.utility.DLRetIndustria;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
@@ -2642,6 +2643,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		else if ( evt.getSource() == btRemessa ) {
 			geraRemessa();
 		}
+		else if ( evt.getSource() == btRetorno ) {
+			geraRetorno();
+		}
 	}
 
 	private void observacao() {
@@ -3542,6 +3546,26 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			e.printStackTrace();
 		}
 	}
+
+
+	private void geraRetorno() {
+		
+		try { 
+		
+			DLRetIndustria dl = new DLRetIndustria( con, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
+//			dl.carregaCampos( sValores );
+//			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
+			dl.setVisible( true );
+			if ( dl.OK ) {
+	//			lcCampos.carregaDados();
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	
 }
