@@ -1,11 +1,11 @@
 /**
- * @version 11/03/2011 <BR>
+ * @version 12/03/2011 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
  * Projeto: Freedom <BR>
  * 
  * Pacote: org.freedom.modulos.pcp <BR>
- * Classe: @(#)DLRemIndustria.java <BR>
+ * Classe: @(#)DLRetIndustria.java <BR>
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de validação e geração de saída de remessa para industrialização.
+ * Tela de validação e geração de entrada de retorno para industrialização.
  */
 
 package org.freedom.modulos.pcp.view.dialog.utility;
@@ -52,12 +52,12 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.gms.business.object.TipoMov;
+import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
-import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
-public class DLRemIndustria extends FFDialogo implements MouseListener, ActionListener {
+public class DLRetIndustria extends FFDialogo implements MouseListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -65,9 +65,9 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 	private JPanelPad pinCab = new JPanelPad( 400, 45 );
 
-	private JTablePad tabRemessa = new JTablePad();
+	private JTablePad tabRetorno = new JTablePad();
 
-	private JScrollPane spnTabRec = new JScrollPane( tabRemessa );
+	private JScrollPane spnTabRet = new JScrollPane( tabRetorno );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -101,11 +101,11 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 	private enum enumTabRemessa {
 
-		SEL, SEQ, CODPROD, REFPROD, DESCPROD, QTD, CODVENDA, SEQITOP  
+		SEL, SEQ, CODPROD, REFPROD, DESCPROD, QTD, CODCOMPRA, SEQITOP  
 
 	};
 	
-	private org.freedom.modulos.std.view.frame.crud.detail.FVenda vendaSTD = null;
+	private org.freedom.modulos.gms.view.frame.crud.detail.FCompra compraGMS = null;
 	
 	//comunidade@brasemb.or.jp 81334045211
 	
@@ -113,15 +113,14 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 	
 	private Integer seqop = null;
 
-	public DLRemIndustria( DbConnection con, Integer pcodop, Integer pseqop ) {
+	public DLRetIndustria( DbConnection con, Integer pcodop, Integer pseqop ) {
 
-		setTitulo( "Remessa para industrialização" );
+		setTitulo( "Retorno de industrialização" );
 		
 		codop = pcodop;
 		seqop = pseqop;
 		
 		setAtribos( 660, 380 );
-		
 		
 		montaTela( );
 		montaListaCampos();
@@ -168,7 +167,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 		pinCab.setPreferredSize( new Dimension( 400, 100 ) );
 		pnControl.add( pinCab, BorderLayout.NORTH );
-		pnControl.add( spnTabRec, BorderLayout.CENTER );
+		pnControl.add( spnTabRet, BorderLayout.CENTER );
 		c.add( pnControl, BorderLayout.CENTER );
 
 		setPainel( pinCab );
@@ -194,27 +193,27 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		pnBotSair.add( btCancel );
 		pnRodape.add( pnBotSair, BorderLayout.EAST );
 		
-		tabRemessa.adicColuna( "" );
-		tabRemessa.adicColuna( "Seq." );
-		tabRemessa.adicColuna( "Código" );
-		tabRemessa.adicColuna( "Referência" );
-		tabRemessa.adicColuna( "Descrição" );
-		tabRemessa.adicColuna( "Qtd." );
-		tabRemessa.adicColuna( "Cod.Remes." );
-		tabRemessa.adicColuna( "seq.it.op" );
+		tabRetorno.adicColuna( "" );
+		tabRetorno.adicColuna( "Seq." );
+		tabRetorno.adicColuna( "Código" );
+		tabRetorno.adicColuna( "Referência" );
+		tabRetorno.adicColuna( "Descrição" );
+		tabRetorno.adicColuna( "Qtd." );
+		tabRetorno.adicColuna( "Cod.Compra" );
+		tabRetorno.adicColuna( "seq.it.op" );
 		
-		tabRemessa.setTamColuna( 10, enumTabRemessa.SEL.ordinal() );
-		tabRemessa.setTamColuna( 10, enumTabRemessa.SEQ.ordinal() );
-		tabRemessa.setTamColuna( 60, enumTabRemessa.CODPROD.ordinal() );
-		tabRemessa.setTamColuna( 110, enumTabRemessa.REFPROD.ordinal() );
-		tabRemessa.setTamColuna( 300, enumTabRemessa.DESCPROD.ordinal() );
-		tabRemessa.setTamColuna( 80, enumTabRemessa.QTD.ordinal() );
-		tabRemessa.setTamColuna( 60, enumTabRemessa.CODVENDA.ordinal() );
+		tabRetorno.setTamColuna( 10, enumTabRemessa.SEL.ordinal() );
+		tabRetorno.setTamColuna( 10, enumTabRemessa.SEQ.ordinal() );
+		tabRetorno.setTamColuna( 60, enumTabRemessa.CODPROD.ordinal() );
+		tabRetorno.setTamColuna( 110, enumTabRemessa.REFPROD.ordinal() );
+		tabRetorno.setTamColuna( 300, enumTabRemessa.DESCPROD.ordinal() );
+		tabRetorno.setTamColuna( 80, enumTabRemessa.QTD.ordinal() );
+		tabRetorno.setTamColuna( 60, enumTabRemessa.CODCOMPRA.ordinal() );
 
-		tabRemessa.setColunaEditavel( enumTabRemessa.SEL.ordinal(), true );
-		tabRemessa.setColunaInvisivel( enumTabRemessa.SEQITOP.ordinal() );
+		tabRetorno.setColunaEditavel( enumTabRemessa.SEL.ordinal(), true );
+		tabRetorno.setColunaInvisivel( enumTabRemessa.SEQITOP.ordinal() );
 		
-		tabRemessa.addMouseListener( this );
+		tabRetorno.addMouseListener( this );
 
 	}
 	
@@ -225,9 +224,9 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("select ");
-		sql.append("p5.codtipomoven, tm.codplanopag ");
+		sql.append("p5.codtipomovre, tm.codplanopag ");
 		sql.append("from sgprefere5 p5, eqtipomov tm ");
-		sql.append("where tm.codemp=p5.codempen and tm.codfilial=p5.codfilialen and tm.codtipomov=p5.codtipomoven and p5.codemp=? and p5.codfilial=? ");
+		sql.append("where tm.codemp=p5.codempre and tm.codfilial=p5.codfilialre and tm.codtipomov=p5.codtipomovre and p5.codemp=? and p5.codfilial=? ");
 
 		try {
 
@@ -240,7 +239,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			int i = 0;
 			if ( rs.next() ) {
 				
-				txtCodTipoMov.setVlrInteger( rs.getInt( "codtipomoven" ) );
+				txtCodTipoMov.setVlrInteger( rs.getInt( "codtipomovre" ) );
 				txtCodPlanoPag.setVlrInteger( rs.getInt( "codplanopag" ) );
 				
 				lcTipoMov.carregaDados();
@@ -255,21 +254,6 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		}
 	}
 	
-	private BigDecimal getQtdTotal( BigDecimal arg, BigDecimal qtdprev ) {
-
-		BigDecimal ret = null;
-
-		try {
-			ret = arg.multiply( qtdprev );
-		} catch ( Exception e ) {
-			ret = new BigDecimal( 0 );
-		}
-
-		ret = ret.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
-		return ret;
-
-	}
-
 	public void carregaTabela( ) {
 
 		PreparedStatement ps = null;
@@ -284,14 +268,14 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 		sql.append("select ");
 		
-		sql.append("it.refprod, it.codprod, pd.descprod, it.qtditop, pd.codalmox, it.codvenda, it.seqitop ");
+		sql.append("it.refprod, it.codprod, pd.descprod, it.qtditop, pd.codalmox, it.codcompra, it.seqitop ");
 		
 		sql.append("from ppitop it, ppfase fs, ppop op, eqproduto pd ");
 		
 		sql.append("where fs.codemp=it.codempfs and fs.codfilial=it.codfilialfs and fs.codfase=it.codfase and ");
 		sql.append("it.codemp=op.codemp and it.codfilial=op.codfilial and it.codop=op.codop and it.seqop=op.seqop and ");
 		sql.append("pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod and ");
-		sql.append("fs.externafase='S' and it.tipoexterno='E' and ");
+		sql.append("fs.externafase='S' and it.tipoexterno='R' and ");
 		sql.append("op.codemp=? and op.codfilial=? and op.codop=? and op.seqop=? ");
 
 		try {
@@ -307,31 +291,29 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			int i = 0;
 			while ( rs.next() ) {
 
-				tabRemessa.adicLinha();
+				tabRetorno.adicLinha();
 
 				BigDecimal qtd = rs.getBigDecimal( "QTDITOP" );
 				Integer codalmox = rs.getInt( "CODALMOX" );
 				Integer codprod = rs.getInt( "CODPROD" );
-				Integer codvenda = rs.getInt( "CODVENDA") ;
+				Integer codvenda = rs.getInt( "CODCOMPRA") ;
 				Integer seqitop = rs.getInt( "SEQITOP") ;
 				
 				if(codvenda==null || codvenda<1) {
-					tabRemessa.setValor( new Boolean(true), i, enumTabRemessa.SEL.ordinal() );
+					tabRetorno.setValor( new Boolean(true), i, enumTabRemessa.SEL.ordinal() );
 				}
 				else {
-					tabRemessa.setValor( new Boolean(false), i, enumTabRemessa.SEL.ordinal() );
+					tabRetorno.setValor( new Boolean(false), i, enumTabRemessa.SEL.ordinal() );
 				}
 				
-				tabRemessa.setValor( i+1, i, enumTabRemessa.SEQ.ordinal() );
-				tabRemessa.setValor( codprod, i, enumTabRemessa.CODPROD.ordinal() );
-				tabRemessa.setValor( rs.getString( "REFPROD" ), i, enumTabRemessa.REFPROD.ordinal() );
-				tabRemessa.setValor( rs.getString( "DESCPROD" ), i, enumTabRemessa.DESCPROD.ordinal() );
-				tabRemessa.setValor( codvenda, i, enumTabRemessa.CODVENDA.ordinal() );
-				tabRemessa.setValor( seqitop, i, enumTabRemessa.SEQITOP.ordinal() );
+				tabRetorno.setValor( i+1, i, enumTabRemessa.SEQ.ordinal() );
+				tabRetorno.setValor( codprod, i, enumTabRemessa.CODPROD.ordinal() );
+				tabRetorno.setValor( rs.getString( "REFPROD" ), i, enumTabRemessa.REFPROD.ordinal() );
+				tabRetorno.setValor( rs.getString( "DESCPROD" ), i, enumTabRemessa.DESCPROD.ordinal() );
+				tabRetorno.setValor( codvenda, i, enumTabRemessa.CODCOMPRA.ordinal() );
+				tabRetorno.setValor( seqitop, i, enumTabRemessa.SEQITOP.ordinal() );
 				
-//				BigDecimal qtdcalc = "S".equals( rs.getString( "QTDFIXA" ) ) ? ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) : getQtdTotal( ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ), rs.getBigDecimal("QTDPREVPRODOP") );
-				
-				tabRemessa.setValor( qtd, i, enumTabRemessa.QTD.ordinal() );
+				tabRetorno.setValor( qtd, i, enumTabRemessa.QTD.ordinal() );
 				
 				i++;
 
@@ -359,10 +341,10 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 		if ( evt.getSource() == btOK ) {
 			if(temPendente()) {
-				gerarRemessa();
+				gerarRetorno();
 			}
 			else {
-				Funcoes.mensagemInforma( this, "Não existem ítem selecionados ou pendentes para geerar remessa!" );
+				Funcoes.mensagemInforma( this, "Não existem ítem selecionados ou pendentes para gerar retorno!" );
 			}
 		}
 		if ( evt.getSource() == btCancel ) {
@@ -373,7 +355,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( mevt.getClickCount() == 2 ) {
-			if ( mevt.getSource() == tabRemessa && tabRemessa.getLinhaSel() >= 0 ) {
+			if ( mevt.getSource() == tabRetorno && tabRetorno.getLinhaSel() >= 0 ) {
 ///				alteraQual( imgPendente.equals( tabRemessa.getValor( tabRemessa.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) );
 			}
 		}
@@ -406,7 +388,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		carregaTabela();
 	}
 	
-	private Integer getCodVenda() {
+	private Integer getCodCompra() {
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -417,12 +399,12 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		try {
 			
 //			sql.append("SELECT ISEQ FROM SPGERANUM(? , ?, 'VD') " );
-			sql.append("select coalesce(max(codvenda),0) + 1 from vdvenda where codemp=? and codfilial=? " );
+			sql.append("select coalesce(max(codcompra),0) + 1 from cpcompra where codemp=? and codfilial=? " );
 			
 			ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			
 			rs = ps.executeQuery();
 			
@@ -439,56 +421,24 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		return ret;
 	}
 	
-	private Integer getCodCli() {
-		
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = new StringBuilder();
-		
-		Integer ret = null;
-		
-		try {
-			
-			sql.append("select codcli from eqclifor where codempfr=? and codfilialfr=? and codfor=? " );
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, lcFornecedor.getCodEmp() );
-			ps.setInt( 2, lcFornecedor.getCodFilial() );
-			ps.setInt( 3, txtCodFor.getVlrInteger() );
-			
-			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				ret = rs.getInt( 1 );
-			}
-			
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
-	}
-		
-	private void gerarRemessa() {
+	private void gerarRetorno() {
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 	
 
-		sql.append("INSERT INTO VDVENDA ( " );
-		sql.append("CODEMP, CODFILIAL, CODVENDA, TIPOVENDA, ");
-		sql.append("CODEMPCL, CODFILIALCL,CODCLI, " );
+		sql.append("insert into cpcompra ( " );
+		sql.append("codemp, codfilial, codcompra, ");
+		sql.append("CODEMPFR, CODFILIALFR,CODFOR, " );
 		sql.append("CODEMPPG, CODFILIALPG,CODPLANOPAG,");
-		sql.append("CODEMPSE, CODFILIALSE,SERIE,DOCVENDA,");
-		sql.append("CODEMPTM, CODFILIALTM,CODTIPOMOV, " );
-		sql.append("DTSAIDAVENDA, DTEMITVENDA, CODEMPOP, CODFILIALOP, CODOP, SEQOP  ) " );
+		sql.append("CODEMPSE, CODFILIALSE,SERIE,DOCCOMPRA,");
+		sql.append("CODEMPTM, CODFILIALTM, CODTIPOMOV, " );
+		sql.append("DTENTCOMPRA, DTEMITCOMPRA, CODEMPOP, CODFILIALOP, CODOP, SEQOP  ) " );
 		sql.append("VALUES ( " );
-		sql.append("?, ?, ?, 'V', "); // Venda
-		sql.append("?, ?, ?, " ); // Cliente
-		sql.append("?, ?, ?, ");
+		sql.append("?, ?, ?, "); // Compra
+		sql.append("?, ?, ?, " ); // Fornecedor
+		sql.append("?, ?, ?, "); // Plano de pagamento
 		sql.append("?, ?, ?, ?, " ); //Serie
 		sql.append("?, ?, ?, " ); //TipoMov
 		
@@ -498,24 +448,24 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 
 		try {
 
-			Integer codvenda = getCodVenda();
-			Integer codcli = getCodCli();
+			Integer codcompra = getCodCompra();
+			Integer codfor = txtCodFor.getVlrInteger();
 			Integer codplanopag = txtCodPlanoPag.getVlrInteger();
 			Integer codtipomov = txtCodTipoMov.getVlrInteger();
 			
 			
-			if( codvenda == null || codvenda < 1) {
-				Funcoes.mensagemErro( this, "Não foi possível determinar um novo código para a remessa!\n Consulte o suporte técnico." );
+			if( codcompra == null || codcompra < 1) {
+				Funcoes.mensagemErro( this, "Não foi possível determinar um novo código para a compra!\n Consulte o suporte técnico." );
 				return;
 			}
 
-			if( codcli == null || codcli < 1 ) {
-				Funcoes.mensagemErro( this, "Não foi possível encontrar um cliente vinculado ao fornecedor informado!\n Verifique se existe vinculo do fornecedor com algum cliente\n ou consulte o suporte técnico." );
+			if( codfor == null || codfor < 1 ) {
+				Funcoes.mensagemErro( this, "Fornecedor não foi informado!\n Informe o fornecedor ou consulte o suporte técnico." );
 				return;
 			}
 			
 			if( codtipomov == null || codtipomov < 1 ) {
-				Funcoes.mensagemErro( this, "Informe um tipo de movimento!\n Verifique se existe um tipo de movimento para remessas definido nas preferências do módulo PCP\n ou consulte o suporte técnico." );
+				Funcoes.mensagemErro( this, "Informe um tipo de movimento!\n Verifique se existe um tipo de movimento para reterno definido nas preferências do módulo PCP\n ou consulte o suporte técnico." );
 				return;
 			}
 			
@@ -527,19 +477,19 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			String serie = TipoMov.getSerieTipoMov( codtipomov );
 			
 			if( serie == null || "".equals( serie ) ) {
-				Funcoes.mensagemErro( this, "Não foi possível determinar uma série para a remessa!\n Verifique se existe uma série vinculada ao tipo de movimento informado\n ou consulte o suporte técnico." );
+				Funcoes.mensagemErro( this, "Não foi possível determinar uma série para o retorno!\n Verifique se existe uma série vinculada ao tipo de movimento informado\n ou consulte o suporte técnico." );
 				return;
 			}
 			
 			ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setInt( 3, codvenda );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 3, codcompra );
 			
 			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 6, codcli );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( 6, codfor );
 			
 			ps.setInt( 7, Aplicativo.iCodEmp );
 			ps.setInt( 8, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
@@ -561,15 +511,13 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			
 			int inserido = ps.executeUpdate();
 			
-			
-			
 			if(inserido>0) {
-				if ( Funcoes.mensagemConfirma( null, "Remessa '" + codvenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
-					vendaSTD = new FVenda();
-					Aplicativo.telaPrincipal.criatela( "Venda", vendaSTD, con, false );
-					vendaSTD.exec( codvenda );
+				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
+					compraGMS = new FCompra();
+					Aplicativo.telaPrincipal.criatela( "Compra", compraGMS, con, false );
+					compraGMS.exec( codcompra );
 					
-					gerarItensRemessa(vendaSTD, codvenda);
+					gerarItensRetorno( compraGMS, codcompra );
 					
 					this.dispose();
 					
@@ -587,10 +535,10 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		boolean ret = false;
 		
 		try {
-			for(int i=0; i<tabRemessa.getNumLinhas(); i++) {
+			for(int i=0; i<tabRetorno.getNumLinhas(); i++) {
 		
-				Integer codvenda = (Integer) tabRemessa.getValor( i, enumTabRemessa.CODVENDA.ordinal() );
-				Boolean selecionado = (Boolean) tabRemessa.getValor( i, enumTabRemessa.SEL.ordinal() );
+				Integer codvenda = (Integer) tabRetorno.getValor( i, enumTabRemessa.CODCOMPRA.ordinal() );
+				Boolean selecionado = (Boolean) tabRetorno.getValor( i, enumTabRemessa.SEL.ordinal() );
 				
 				if(codvenda < 1 && selecionado) {
 					return true;
@@ -605,34 +553,34 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		return ret;
 	}
 	
-	private void gerarItensRemessa(FVenda fvenda, Integer pcodvenda) {
+	private void gerarItensRetorno(FCompra fcompra, Integer pcodcompra) {
 		
 		try {
 
-			for(int i=0; i<tabRemessa.getNumLinhas(); i++) {
+			for(int i=0; i<tabRetorno.getNumLinhas(); i++) {
 				
-				Integer codprod = (Integer) tabRemessa.getValor( i, enumTabRemessa.CODPROD.ordinal() );
-				String refprod = (String) tabRemessa.getValor( i, enumTabRemessa.REFPROD.ordinal() );
-				BigDecimal qtd = (BigDecimal) tabRemessa.getValor( i, enumTabRemessa.QTD.ordinal() );
+				Integer codprod = (Integer) tabRetorno.getValor( i, enumTabRemessa.CODPROD.ordinal() );
+				String refprod = (String) tabRetorno.getValor( i, enumTabRemessa.REFPROD.ordinal() );
+				BigDecimal qtd = (BigDecimal) tabRetorno.getValor( i, enumTabRemessa.QTD.ordinal() );
 				
-				Boolean selecionado = (Boolean) tabRemessa.getValor( i, enumTabRemessa.SEL.ordinal() );
-				Integer codvenda = (Integer) tabRemessa.getValor( i, enumTabRemessa.CODVENDA.ordinal() );
-				Integer seqitop = (Integer) tabRemessa.getValor( i, enumTabRemessa.SEQITOP.ordinal() );
+				Boolean selecionado = (Boolean) tabRetorno.getValor( i, enumTabRemessa.SEL.ordinal() );
+				Integer codcompra = (Integer) tabRetorno.getValor( i, enumTabRemessa.CODCOMPRA.ordinal() );
+				Integer seqitop = (Integer) tabRetorno.getValor( i, enumTabRemessa.SEQITOP.ordinal() );
 				
-				if(codvenda < 1 && selecionado) {
-					fvenda.insertItem(codprod, refprod, qtd);
+				if(codcompra < 1 && selecionado) {
+					fcompra.insertItem(codprod, refprod, qtd);
 					
-					atualizaItOP( pcodvenda, seqitop );
+					atualizaItOP( pcodcompra, seqitop );
 					
 				}
 				
 				
 			}
 			
-			fvenda.execShow();
+			fcompra.execShow();
 			
 			try {
-				fvenda.setSelected(true);
+				fcompra.setSelected(true);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -645,13 +593,13 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		}
 	}
 	
-	private void atualizaItOP(Integer codvenda, Integer seqitop) {
+	private void atualizaItOP(Integer codcompra, Integer seqitop) {
 		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 	
-		sql.append("update ppitop set codempvd=?, codfilialvd=?, codvenda=? " );
+		sql.append("update ppitop set codempcp=?, codfilialcp=?, codcompra=? " );
 		sql.append("where codemp=? and codfilial=? and codop=? and seqop=? and seqitop=?");
 
 		try {
@@ -659,8 +607,8 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			ps = con.prepareStatement( sql.toString() );
 						
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setInt( 3, codvenda );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 3, codcompra );
 			
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "PPOP" ) );
