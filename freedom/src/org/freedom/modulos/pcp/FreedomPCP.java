@@ -56,6 +56,7 @@ import org.freedom.modulos.pcp.view.frame.report.FRContraProva;
 import org.freedom.modulos.pcp.view.frame.report.FRCustoProducao;
 import org.freedom.modulos.pcp.view.frame.report.FREstruturaItem;
 import org.freedom.modulos.pcp.view.frame.report.FRProducao;
+import org.freedom.modulos.pcp.view.frame.report.FRProducaoGrupo;
 import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
 import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
@@ -125,8 +126,9 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 200900400, 1, true, FRProducao.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 200900500, 1, true, FREstruturaItem.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 200900600, 1, true, FRComisProd.class );
-		addSeparador( 200000000 );
+		addSeparador( 200900000 );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Consumo de matéria prima", "Consumo de matéria prima", 'C', 200900700, 1, true, FRConsumoMat.class );
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'g', 200900800, 1, true, FRProducaoGrupo.class );
 
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
