@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Consumo de materias primas" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
@@ -19,24 +19,26 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<field name="DESCSECAO" class="java.lang.String"/>
-	<field name="RECEPCIONADAS" class="java.math.BigDecimal"/>
-	<field name="CONSUMIDAS" class="java.math.BigDecimal"/>
+	<field name="DESCGRUP" class="java.lang.String"/>
+	<field name="PRODUZIDAS" class="java.math.BigDecimal"/>
+	<field name="VENDIDAS" class="java.math.BigDecimal"/>
 	<field name="SALDOANTERIOR" class="java.math.BigDecimal"/>
+	<field name="CODGRUP" class="java.lang.String"/>
+	<field name="SOBRAS" class="java.math.BigDecimal"/>
 	<variable name="SALDOPERIODO" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{RECEPCIONADAS}.subtract($F{CONSUMIDAS})]]></variableExpression>
+		<variableExpression><![CDATA[($F{PRODUZIDAS}.add($F{SOBRAS})).subtract($F{VENDIDAS})]]></variableExpression>
 	</variable>
 	<variable name="SALDOTOTAL" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{SALDOPERIODO}.add($F{SALDOANTERIOR})]]></variableExpression>
 	</variable>
 	<variable name="RECEPCIONADAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{RECEPCIONADAS}]]></variableExpression>
+		<variableExpression><![CDATA[$F{PRODUZIDAS}.add($F{SOBRAS})]]></variableExpression>
 	</variable>
 	<variable name="CONSUMIDAS_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{CONSUMIDAS}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VENDIDAS}]]></variableExpression>
 	</variable>
 	<variable name="SALDOPERIODO_TOT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{RECEPCIONADAS}.subtract($F{CONSUMIDAS})]]></variableExpression>
+		<variableExpression><![CDATA[($F{PRODUZIDAS}.add($F{SOBRAS})).subtract($F{VENDIDAS})]]></variableExpression>
 	</variable>
 	<variable name="SALDOTOTAL_TOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{SALDOPERIODO}.add($F{SALDOANTERIOR})]]></variableExpression>
@@ -81,7 +83,7 @@
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOTOTAL_TOT}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="242" y="6" width="100" height="22"/>
+					<reportElement x="267" y="6" width="75" height="22"/>
 				</rectangle>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement x="244" y="7" width="91" height="20"/>
@@ -191,18 +193,18 @@
 	<columnHeader>
 		<band height="45" splitType="Stretch">
 			<staticText>
-				<reportElement x="240" y="8" width="100" height="33"/>
+				<reportElement x="252" y="8" width="100" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[QUANTIDADE ADQUIRIDA]]></text>
+				<text><![CDATA[QUANTIDADE PRODUZIDA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="342" y="8" width="100" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[QUANTIDADE CONSUMIDA]]></text>
+				<text><![CDATA[QUANTIDADE VENDIDA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="546" y="8" width="98" height="33"/>
@@ -239,7 +241,7 @@
 				<textElement verticalAlignment="Top">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[ALEGAÇÃO DA MATÉRIA PRIMA]]></text>
+				<text><![CDATA[GRUPO DO PRODUTO]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-18" x="0" y="1" width="1" height="42"/>
@@ -249,24 +251,19 @@
 	<detail>
 		<band height="31" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="5" width="219" height="20"/>
+				<reportElement x="93" y="5" width="168" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCSECAO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCGRUP}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement x="241" y="5" width="94" height="20"/>
+				<reportElement x="270" y="5" width="67" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{RECEPCIONADAS}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.add($F{SOBRAS})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement x="354" y="5" width="81" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CONSUMIDAS}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="555" y="4" width="84" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDOANTERIOR}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VENDIDAS}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement x="454" y="5" width="83" height="20"/>
@@ -274,15 +271,20 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOPERIODO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="555" y="4" width="84" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDOANTERIOR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement x="655" y="4" width="90" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDOTOTAL}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="4" y="27" width="230" height="1"/>
+				<reportElement x="88" y="27" width="175" height="1"/>
 			</line>
 			<line>
-				<reportElement x="241" y="27" width="100" height="1"/>
+				<reportElement x="268" y="27" width="71" height="1"/>
 			</line>
 			<line>
 				<reportElement x="347" y="27" width="95" height="1"/>
@@ -297,13 +299,13 @@
 				<reportElement x="653" y="27" width="98" height="1"/>
 			</line>
 			<line>
-				<reportElement key="line-18" x="4" y="5" width="1" height="23"/>
+				<reportElement key="line-18" x="88" y="5" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement key="line-18" x="233" y="5" width="1" height="23"/>
+				<reportElement key="line-18" x="262" y="5" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement key="line-18" x="241" y="5" width="1" height="23"/>
+				<reportElement key="line-18" x="267" y="5" width="1" height="23"/>
 			</line>
 			<line>
 				<reportElement key="line-18" x="340" y="5" width="1" height="23"/>
@@ -331,6 +333,20 @@
 			</line>
 			<line>
 				<reportElement key="line-18" x="750" y="5" width="1" height="23"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="5" width="39" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODGRUP}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="6" y="27" width="75" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-18" x="81" y="5" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement key="line-18" x="6" y="5" width="1" height="23"/>
 			</line>
 		</band>
 	</detail>
