@@ -1693,8 +1693,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				PreparedStatement ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
-				ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
-				ps.setString( 4, (String) tab.getValor( i, 3 ) );
+
+				if ( !(Boolean) prefere.get( "USAREFPROD" ) ) {
+					ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
+				}
+				else {
+					ps.setInt( 3, ( (Integer) tab.getValor( i, 3 ) ).intValue() );
+					
+				}	
+				
+				ps.setString( 4, (String) tab.getValor( i, 4 ) );
 
 				ResultSet rs = ps.executeQuery();
 
