@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OP_25_MA" pageWidth="595" pageHeight="842" columnWidth="557" leftMargin="19" rightMargin="19" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="7.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="770"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -56,7 +56,7 @@ AND E.CODPROD=P.CODPROD]]>
 	<group name="FASE1">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
-			<band height="29" splitType="Stretch">
+			<band height="30" splitType="Stretch">
 				<line>
 					<reportElement key="line-9" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="29"/>
 				</line>
@@ -64,7 +64,7 @@ AND E.CODPROD=P.CODPROD]]>
 					<reportElement key="line-13" stretchType="RelativeToBandHeight" x="557" y="0" width="1" height="29"/>
 				</line>
 				<subreport isUsingCache="true">
-					<reportElement key="subreport-3" stretchType="RelativeToBandHeight" x="4" y="0" width="547" height="28"/>
+					<reportElement key="subreport-3" stretchType="RelativeToBandHeight" x="4" y="0" width="547" height="29"/>
 					<subreportParameter name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -79,84 +79,6 @@ AND E.CODPROD=P.CODPROD]]>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_25_FS_01.jasper"]]></subreportExpression>
-				</subreport>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch"/>
-		</groupFooter>
-	</group>
-	<group name="FASE2">
-		<groupExpression><![CDATA[]]></groupExpression>
-		<groupHeader>
-			<band height="36" splitType="Stretch">
-				<line>
-					<reportElement key="line-23" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="36"/>
-				</line>
-				<line>
-					<reportElement key="line-24" stretchType="RelativeToBandHeight" x="557" y="0" width="1" height="36"/>
-				</line>
-				<subreport isUsingCache="true">
-					<reportElement key="subreport-4" positionType="Float" stretchType="RelativeToTallestObject" x="4" y="5" width="547" height="27"/>
-					<subreportParameter name="CODOP">
-						<subreportParameterExpression><![CDATA[$P{CODOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="SEQOP">
-						<subreportParameterExpression><![CDATA[$P{SEQOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="CODEMP">
-						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="CODFILIAL">
-						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
-					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_25_FS_02.jasper"]]></subreportExpression>
-				</subreport>
-				<line>
-					<reportElement key="line-25" x="4" y="0" width="549" height="1"/>
-				</line>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch"/>
-		</groupFooter>
-	</group>
-	<group name="FASE3">
-		<groupExpression><![CDATA[]]></groupExpression>
-		<groupHeader>
-			<band splitType="Stretch"/>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch"/>
-		</groupFooter>
-	</group>
-	<group name="FASE4">
-		<groupExpression><![CDATA[]]></groupExpression>
-		<groupHeader>
-			<band height="36" splitType="Stretch">
-				<line>
-					<reportElement key="line-12" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="36"/>
-				</line>
-				<line>
-					<reportElement key="line-16" stretchType="RelativeToBandHeight" x="557" y="0" width="1" height="36"/>
-				</line>
-				<subreport isUsingCache="true">
-					<reportElement key="subreport-6" positionType="Float" stretchType="RelativeToTallestObject" x="4" y="2" width="545" height="34"/>
-					<subreportParameter name="CODOP">
-						<subreportParameterExpression><![CDATA[$P{CODOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="SEQOP">
-						<subreportParameterExpression><![CDATA[$P{SEQOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="CODEMP">
-						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter name="CODFILIAL">
-						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
-					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_25_FS_03.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupHeader>
