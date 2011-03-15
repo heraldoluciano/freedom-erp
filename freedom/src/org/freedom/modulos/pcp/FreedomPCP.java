@@ -55,6 +55,7 @@ import org.freedom.modulos.pcp.view.frame.report.FRCertAnalise;
 import org.freedom.modulos.pcp.view.frame.report.FRConsumoMat;
 import org.freedom.modulos.pcp.view.frame.report.FRContraProva;
 import org.freedom.modulos.pcp.view.frame.report.FRCustoProducao;
+import org.freedom.modulos.pcp.view.frame.report.FREncomendasProducao;
 import org.freedom.modulos.pcp.view.frame.report.FREstruturaItem;
 import org.freedom.modulos.pcp.view.frame.report.FRProducao;
 import org.freedom.modulos.pcp.view.frame.report.FRProducaoGrupo;
@@ -131,7 +132,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Consumo de matéria prima (FSC)", "Consumo de matéria prima (FSC)", 'C', 200900700, 1, true, FRConsumoMat.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção por grupo (FSC)", "Produção por grupo (FSC)", 'g', 200900800, 1, true, FRProducaoGrupo.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Balanço de produção (FSC)", "Balanço de produção (FSC)", 'g', 200900900, 1, true, FRBalancoProd.class );
-
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Ordens de produção (FSC)", "Ordens de produção (FSC)", 's', 200901000, 1, true, FREncomendasProducao.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000, 1, true, FKardex.class );
