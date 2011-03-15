@@ -63,27 +63,27 @@ public class FRBalancoProd extends FRelatorio {
 
 	boolean diario = false;
 	
-	private ListaCampos lcGrup = new ListaCampos( this );
+	private ListaCampos lcSecao = new ListaCampos( this );
 	
-	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Planos/Folhas?", "S", "N" );
 
 	public FRBalancoProd() {
 
-	setTitulo( "Relatório de consumo de matéria prima" );
+	setTitulo( "Relatório de Balançao de produção FSC" );
 		
 		setAtribos( 80, 80, 370, 250 );
 
-		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
-		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
-		lcGrup.montaSql( false, "GRUPO", "EQ" );
-		lcGrup.setReadOnly( true );
-		txtCodGrup.setTabelaExterna( lcGrup, null );
-		txtCodGrup.setFK( true );
-		txtCodGrup.setNomeCampo( "CodGrup" );
+		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
+		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
+		lcSecao.montaSql( false, "SECAO", "EQ" );
+		lcSecao.setReadOnly( true );
+		txtCodSecao.setTabelaExterna( lcSecao, null );
+		txtCodSecao.setFK( true );
+		txtCodSecao.setNomeCampo( "CodSecao" );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -103,8 +103,8 @@ public class FRBalancoProd extends FRelatorio {
 
 		adic( pnFiltros, 4, 70, 335, 85 );
 
-		pnFiltros.adic( txtCodGrup, 4, 25, 120, 20, "Cód.Grupo" );
-		pnFiltros.adic( txtDescGrup, 127, 25, 185, 20, "Descrição do grupo" );
+		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Grupo" );
+		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição do grupo" );
 
 		adic(cbPorFolha, 7, 165, 200, 20);
 		
@@ -165,7 +165,7 @@ public class FRBalancoProd extends FRelatorio {
 				sql.append(",pd.nroplanos, pd.qtdporplano");
 			}
 
-			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? " );
 			}
 			
@@ -190,12 +190,12 @@ public class FRBalancoProd extends FRelatorio {
 
 			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
-			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
-				ps.setInt( param++, lcGrup.getCodEmp() );
-				ps.setInt( param++, lcGrup.getCodFilial() );
-				ps.setString( param++, txtCodGrup.getVlrString() );
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				ps.setInt( param++, lcSecao.getCodEmp() );
+				ps.setInt( param++, lcSecao.getCodFilial() );
+				ps.setString( param++, txtCodSecao.getVlrString() );
 
-				sCab2.append( "Grupo: " + txtDescGrup.getVlrString() );
+				sCab2.append( "Grupo: " + txtDescSecao.getVlrString() );
 			}
 			
 			
@@ -271,7 +271,7 @@ public class FRBalancoProd extends FRelatorio {
 
 		super.setConexao( cn );
 
-		lcGrup.setConexao( cn );
+		lcSecao.setConexao( cn );
 
 		comref = comRef();
 	}
