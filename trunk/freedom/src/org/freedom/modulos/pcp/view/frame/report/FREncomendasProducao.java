@@ -25,7 +25,6 @@
 package org.freedom.modulos.pcp.view.frame.report;
 
 import java.awt.Color;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +32,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+
 import javax.swing.border.TitledBorder;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
