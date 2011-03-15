@@ -202,7 +202,7 @@ public class FRBalancoProd extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_PRODUCAO_GRUPO_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_BALANCO_PROD_01.jasper" );
 
 			rs.close();
 			ps.close();
