@@ -50,6 +50,7 @@ import org.freedom.modulos.pcp.view.frame.crud.plain.FTipoRec;
 import org.freedom.modulos.pcp.view.frame.crud.tabbed.FMetodoAnalitico;
 import org.freedom.modulos.pcp.view.frame.crud.tabbed.FPrefereProd;
 import org.freedom.modulos.pcp.view.frame.report.FRAnalise;
+import org.freedom.modulos.pcp.view.frame.report.FRBalancoProd;
 import org.freedom.modulos.pcp.view.frame.report.FRCertAnalise;
 import org.freedom.modulos.pcp.view.frame.report.FRConsumoMat;
 import org.freedom.modulos.pcp.view.frame.report.FRContraProva;
@@ -127,8 +128,9 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 200900500, 1, true, FREstruturaItem.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 200900600, 1, true, FRComisProd.class );
 		addSeparador( 200900000 );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Consumo de matéria prima", "Consumo de matéria prima", 'C', 200900700, 1, true, FRConsumoMat.class );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'g', 200900800, 1, true, FRProducaoGrupo.class );
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Consumo de matéria prima (FSC)", "Consumo de matéria prima (FSC)", 'C', 200900700, 1, true, FRConsumoMat.class );
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção por grupo (FSC)", "Produção por grupo (FSC)", 'g', 200900800, 1, true, FRProducaoGrupo.class );
+		addOpcao( 200900000, TP_OPCAO_ITEM, "Balanço de produção (FSC)", "Balanço de produção (FSC)", 'g', 200900900, 1, true, FRBalancoProd.class );
 
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
