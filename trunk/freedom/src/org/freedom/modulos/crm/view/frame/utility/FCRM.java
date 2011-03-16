@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -278,6 +279,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private boolean financeiro = false;
 	
+	private JTextFieldPad txtTotAtendimentos = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtTotHoraAtendimentos = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	
 	final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
@@ -317,8 +322,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosAtend.setBorder( SwingParams.getPanelLabel( "Filtros de atendimentos", Color.BLUE ) );
 
-		pinFiltrosAtend.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
-		pinFiltrosAtend.adic( txtDatainiAtend, 7, 20, 70, 20 );
+		pinFiltrosAtend.adic( new JLabelPad(  ), 7, 0, 70, 20 );
+		pinFiltrosAtend.adic( txtDatainiAtend, 7, 20, 70, 20, "Data Inicial" );
 
 		pinFiltrosAtend.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		pinFiltrosAtend.adic( txtDatafimAtend, 80, 20, 70, 20 );
@@ -331,6 +336,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosAtend.adic( new JLabelPad( "Cód.Cham." ), 409, 0, 70, 20 );
 		pinFiltrosAtend.adic( txtCodChamado, 409, 20, 70, 20 );
+		
 		pinFiltrosAtend.adic( new JLabelPad( "Descrição do chamado" ), 481, 0, 230, 20 );
 		pinFiltrosAtend.adic( txtDescChamado, 481, 20, 230, 20 );
 
@@ -346,6 +352,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		// pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
 		pinFiltrosAtend.adic( btAtualizaAtendimentos, 722, 7, 30, 76 );
 
+		txtTotAtendimentos.setAtivo( false );
+		txtTotHoraAtendimentos.setAtivo( false );
+		
+		pinFiltrosAtend.adic( txtTotAtendimentos, 755, 20, 80, 20, "Atendimentos" );
+		pinFiltrosAtend.adic( txtTotHoraAtendimentos, 755, 60, 80, 20, "Horas" );
+		
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
 		JPanelPad pnGridAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -1087,6 +1099,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				tabatd.limpa();
 				vCodAtends.clear();
 
+				BigDecimal totalhorasatendimentos = new BigDecimal(0);
+				
+				BigDecimal tempoatend = new BigDecimal(0);
+				Long horasatend = new Long(0);
+				
 				for ( int i = 0; rs.next(); i++ ) {
 					tabatd.adicLinha();
 
@@ -1103,8 +1120,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getTime( "HoraAtendoFin" ).toString(), i, 9 );
 					tabatd.setValor( rs.getInt( "CODCHAMADO" ), i, 10 );
 					tabatd.setValor( rs.getInt( "CODCLI" ), i, 11 );
-
+					
+					
+					
+					horasatend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
+					
+					totalhorasatendimentos.add( tempoatend );
+					
 				}
+				
+				
+				txtTotHoraAtendimentos.setVlrString( Funcoes.longTostrTimeHoras( horasatend ));
+				txtTotAtendimentos.setVlrInteger( tabatd.getNumLinhas() );
+				
 				rs.close();
 				ps.close();
 
