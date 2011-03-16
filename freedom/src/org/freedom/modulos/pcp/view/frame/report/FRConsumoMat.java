@@ -217,7 +217,7 @@ public class FRConsumoMat extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_CONS_MAT_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_CONSUMO_MATERIAL_01.jasper" );
 
 			rs.close();
 			ps.close();

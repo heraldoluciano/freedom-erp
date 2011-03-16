@@ -72,7 +72,7 @@ public class FREncomendasProducao extends FRelatorio {
 
 	private JTextFieldPad txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Planos/Folhas?", "S", "N" );
+	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Folhas (FSC)", "S", "N" );
 
 	public FREncomendasProducao() {
 
@@ -90,6 +90,8 @@ public class FREncomendasProducao extends FRelatorio {
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
+		
+		cbPorFolha.setVlrString( "S" );
 
 		JPanelPad pnPeriodo = new JPanelPad();
 		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
@@ -202,7 +204,7 @@ public class FREncomendasProducao extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_ENCOMENDAS_PRODUCAO_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_ENCOMENDAS_PRODUCAO_01.jasper" );
 
 			rs.close();
 			ps.close();

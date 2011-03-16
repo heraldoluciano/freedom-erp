@@ -25,6 +25,7 @@
 package org.freedom.modulos.pcp.view.frame.report;
 
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,8 +33,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+
 import javax.swing.border.TitledBorder;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -69,7 +73,7 @@ public class FRBalancoProd extends FRelatorio {
 
 	private JTextFieldPad txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Planos/Folhas?", "S", "N" );
+	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por folhas (FSC)", "S", "N" );
 
 	public FRBalancoProd() {
 
@@ -88,6 +92,8 @@ public class FRBalancoProd extends FRelatorio {
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
+		cbPorFolha.setVlrString( "S" );
+		
 		JPanelPad pnPeriodo = new JPanelPad();
 		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
 
@@ -131,43 +137,90 @@ public class FRBalancoProd extends FRelatorio {
 
 			
 			sql.append( "select ");
-			sql.append( "pd.codgrup, gp.descgrup, ");
+			sql.append( "pe.codsecao, sc.descsecao, ");
+			
+			sql.append( "sum(( ");
+			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
+			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
+			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
+			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
+			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and ");
+			sql.append( "pe.codprod=ir.codprod ");
+			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
+			sql.append( "and op.dtfabrop between ? and ? ");
+			sql.append( ")) consumidas, ");
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) / (pd.nroplanos*pd.qtdporplano) ) produzidas, ");
-				sql.append( "sum( coalesce( sp.qtditsp,0 )  / (pd.nroplanos*pd.qtdporplano) ) sobras, ");
-				sql.append( "sum( iv.qtditvenda ) / (pd.nroplanos*pd.qtdporplano) vendidas, ");
-				sql.append( "sum( ( select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S') )  / (pd.nroplanos*pd.qtdporplano) ) saldoanterior ");
-			
+
+				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) ) ");
+				sql.append( "from ppop op ");
+				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
+				sql.append( "and ope.seqop=op.seqop ");
+				sql.append( "left outer join eqproduto pd on pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod ");
+				sql.append( "where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and op.dtfabrop between ? and ? ) ) produzidas,"); 
+
 			}
 			else {
 
-				sql.append( "sum(coalesce(ope.qtdent, op.qtdfinalprodop)) produzidas, ");
-				sql.append( "sum(coalesce(sp.qtditsp,0)) sobras, ");
-				sql.append( "sum(iv.qtditvenda) vendidas, ");
-				sql.append( "sum((select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S')) ) saldoanterior ");
+				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop)  ) from ppop op ");
+				sql.append( "left outer join ppopentrada ope ");
+				sql.append( "on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ");
+				sql.append( "ope.codop=op.codop and ope.seqop=op.seqop ");
+				sql.append( "where op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and ");
+				sql.append( "op.codprod=pe.codprod ");
+				sql.append( "and op.dtfabrop between ? and ? ");
+				sql.append( ")) produzidas, ");
 
 			}
 			
-			sql.append( "from ");
-			sql.append( "ppop op ");
-			sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop and ope.seqop=op.seqop ");
-			sql.append( "left outer join eqproduto pd on pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod ");
-			sql.append( "left outer join eqsecao sc on sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao ");
-			sql.append( "left outer join vditvenda iv on iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-			sql.append( "left outer join vdvenda vd on vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
-			sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') ");
-			sql.append( "where ");
-			sql.append( "op.dtfabrop between ? and ? ");
-			sql.append( "group by 1,2 ");
+			sql.append( "coalesce(sum( ");
+			sql.append( "(select first 1 m.sldmovprod ");
+			sql.append( "from eqmovprod m, eqproduto ps ");
+			sql.append( "where m.codemppd=ps.codemp and ");
+			sql.append( "m.codfilial=ps.codfilial and ");
+			sql.append( "m.codprod=ps.codprod and ");
+			sql.append( "m.dtmovprod<=? ");
+			sql.append( "and ps.codemp=pe.codemp and ps.codfilial=pe.codfilial and ps.codprod=pe.codprod ");
+			sql.append( "and ps.tipoprod in ('F','05','06') ");
+			sql.append( "order by m.codprod, m.dtmovprod desc, m.codmovprod desc "); 
+			sql.append( " ) ");
+			sql.append( " ),0) saldoanterior, ");
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pd.nroplanos, pd.qtdporplano");
+			
+				sql.append( "sum( ( select iv.qtditvenda / (pe.nroplanos*pe.qtdporplano ) from vditvenda iv, vdvenda v ");
+			
+			}
+			else {
+			
+				sql.append( "sum( (select iv.qtditvenda from vditvenda iv, vdvenda v ");
+			
+			}
+			
+			sql.append( "where v.codemp=? and v.codfilial=? ");
+			sql.append( "and v.dtemitvenda between ? and ? ");
+			sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and ");
+			sql.append( "iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
+			sql.append( "and iv.codemppd=pe.codemp and iv.codfilialpd=pe.codfilial and ");
+			sql.append( "iv.codprod=pe.codprod ");
+			sql.append( ")) vendidas ");
+			
+			
+			sql.append( "from eqsecao sc, eqproduto pe ");
+			sql.append( "where pe.codsecao is not null and ");
+			sql.append( "sc.codemp=pe.codempsc and sc.codfilial=pe.codfilialsc and ");
+			sql.append( "sc.codsecao=pe.codsecao ");
+			
+			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				sql.append( "and pe.codsecao=? and pe.codfilialsc=? and pe.codsecao=? " );
 			}
 
-			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? " );
-			}
+			sql.append( "group by pe.codsecao, sc.descsecao ");
+					
+			if("S".equals( cbPorFolha.getVlrString())) {
+				sql.append(",pe.nroplanos, pe.qtdporplano");
+			}						
+						
 			
 			System.out.println("SQL:" + sql.toString());
 
@@ -178,15 +231,19 @@ public class FRBalancoProd extends FRelatorio {
 			cant.setTime( dtant );
 			cant.add( Calendar.DAY_OF_YEAR, -1 ); 
 			
-			ps.setDate( param++, Funcoes.dateToSQLDate( cant.getTime()) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, Aplicativo.iCodFilial );
-			
+			ps.setDate( param++, Funcoes.dateToSQLDate( cant.getTime()) );
 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
 			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
@@ -195,14 +252,12 @@ public class FRBalancoProd extends FRelatorio {
 				ps.setInt( param++, lcSecao.getCodFilial() );
 				ps.setString( param++, txtCodSecao.getVlrString() );
 
-				sCab2.append( "Grupo: " + txtDescSecao.getVlrString() );
+				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
 			}
 			
-			
-
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_BALANCO_PROD_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_BALANCO_01.jasper" );
 
 			rs.close();
 			ps.close();
@@ -223,7 +278,6 @@ public class FRBalancoProd extends FRelatorio {
 	//	hParam.put( "COMREF", bComRef ? "S" : "N" );
 
 		FPrinterJob dlGr = null;
-
 	
 		dlGr = new FPrinterJob( rel, "Relatório de consumo de matéria prima ", sCab, rs, hParam, this );
 		
