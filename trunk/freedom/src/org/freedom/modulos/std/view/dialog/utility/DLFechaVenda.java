@@ -1029,56 +1029,62 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	}
 
 	private void gravaVenda() {
+		
+		try {
 
-		if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
-			
-			txtPlacaFreteVD.getVlrString();
-			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
-				lcFreteVD.post();
-			}
-			lcVenda.edit();
-			if ( "S".equals( cbEmiteNota.getVlrString() ) ) {
-				txtStatusVenda.setVlrString( "V2" );
-			}
-			else if ( "P".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
-				txtStatusVenda.setVlrString( "P2" );
-			}
-			else if ( "V".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
-				txtStatusVenda.setVlrString( "V2" );
-			}
-
-//			geraHistoricoRec();
-			
-			lcVenda.post();
-			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {
-				lcAuxVenda.post();
-			}
-			
-		}
-
-		int iCodRec = getCodRec();
-
-		if ( iCodRec > 0 ) {
-			txtCodRec.setVlrInteger( new Integer( iCodRec ) );
-			if ( "S".equals( cbEmiteRecibo.getVlrString() ) ) {
-				gravaImpRecibo( iCodRec, 1, new Boolean( true ) );
-			}
-			
-			lcReceber.carregaDados();
-			lcReceber.edit();
-
-			if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
-
-				geraHistoricoRec();
-
-				lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
-				lcReceber.carregaDados();
-				lcItReceber.carregaDados();
+			if ( "N".equals( cbReEmiteNota.getVlrString() ) ) {
+				
+				txtPlacaFreteVD.getVlrString();
+				if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
+					lcFreteVD.post();
+				}
+				lcVenda.edit();
+				if ( "S".equals( cbEmiteNota.getVlrString() ) ) {
+					txtStatusVenda.setVlrString( "V2" );
+				}
+				else if ( "P".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
+					txtStatusVenda.setVlrString( "P2" );
+				}
+				else if ( "V".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
+					txtStatusVenda.setVlrString( "V2" );
+				}
+	
+	//			geraHistoricoRec();
+				
+				lcVenda.post();
+				if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {
+					lcAuxVenda.post();
+				}
 				
 			}
-
-			
-			
+	
+			int iCodRec = getCodRec();
+	
+			if ( iCodRec > 0 ) {
+				txtCodRec.setVlrInteger( new Integer( iCodRec ) );
+				if ( "S".equals( cbEmiteRecibo.getVlrString() ) ) {
+					gravaImpRecibo( iCodRec, 1, new Boolean( true ) );
+				}
+				
+				lcReceber.carregaDados();
+				lcReceber.edit();
+	
+				if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
+	
+					geraHistoricoRec();
+	
+					lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
+					lcReceber.carregaDados();
+					lcItReceber.carregaDados();
+					
+				}
+	
+				
+				
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
