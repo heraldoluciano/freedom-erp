@@ -69,7 +69,7 @@ public class FRProducaoGrupo extends FRelatorio {
 
 	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Planos/Folhas?", "S", "N" );
+	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Folhas (FSC)", "S", "N" );
 
 	public FRProducaoGrupo() {
 
@@ -87,6 +87,8 @@ public class FRProducaoGrupo extends FRelatorio {
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
+		
+		cbPorFolha.setVlrString( "S" );
 
 		JPanelPad pnPeriodo = new JPanelPad();
 		pnPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK, TitledBorder.LEFT ) );
@@ -158,6 +160,7 @@ public class FRProducaoGrupo extends FRelatorio {
 			sql.append( "left outer join vditvenda iv on iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
 			sql.append( "left outer join vdvenda vd on vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 			sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') ");
+			
 			sql.append( "where ");
 			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? ");
 			sql.append( "group by 1,2, pd.nroplanos, pd.qtdporplano");
@@ -199,7 +202,7 @@ public class FRProducaoGrupo extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_PRODUCAO_GRUPO_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_PRODUCAO_GRUPO_01.jasper" );
 
 			rs.close();
 			ps.close();
