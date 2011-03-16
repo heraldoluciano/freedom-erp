@@ -90,7 +90,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	
 	//Components Seleciona
 	private JPanelPad panelSelecionaActions = new JPanelPad( 42, 200 );
-	private JPanelPad panelSelecionaRod = new JPanelPad( 700, 42 );
+	private JPanelPad panelSelecionaRod = new JPanelPad( 610, 42 );
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
 	private JButtonPad btGerarRenegociaco = new JButtonPad( "Gerar Negociação", Icone.novo( "btExecuta.gif" ) );
@@ -99,8 +99,8 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	
 	//Components Gera
 	private JPanelPad pnGeraRec = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	private JPanelPad pnGeraRecDados = new JPanelPad( 700, 260 );
-	private JPanelPad pnGeraRecRod = new JPanelPad( 700, 42 );
+	private JPanelPad pnGeraRecDados = new JPanelPad( 610, 280 );
+	private JPanelPad pnGeraRecRod = new JPanelPad( 610, 42 );
 	
 	private Navegador navRec = new Navegador( false );
 	private Navegador navItRec = new Navegador( false );
@@ -177,7 +177,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	public DLRenegRec() {
 		super();
 		setTitulo( "Renegociação de Titulos" );
-		setAtribos( 700, 550 );
+		setAtribos( 610, 600 );
 		
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
@@ -264,9 +264,9 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		panelSelecionaActions.adic( btSelecionarNenhum, 3, 38, 30, 30 );
 		
 		txtTotalSelecionado.setSoLeitura( true );
-		panelSelecionaRod.adic( lbTotalSelecionado, 400, 1, 110, 17 );
-		panelSelecionaRod.adic( txtTotalSelecionado, 400, 18, 110, 18 );
-		panelSelecionaRod.adic( btGerarRenegociaco, 520, 7 ,150, 30 );
+		panelSelecionaRod.adic( lbTotalSelecionado, 310, 1, 110, 17 );
+		panelSelecionaRod.adic( txtTotalSelecionado, 310, 18, 110, 18 );
+		panelSelecionaRod.adic( btGerarRenegociaco, 430, 7 ,150, 30 );
 	}
 	
 	private void montaTabGera(){
@@ -287,7 +287,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		pnGeraRec.add( spnGera, BorderLayout.CENTER );
 		pnGeraRec.add( pnGeraRecRod, BorderLayout.SOUTH );
 		
-		pnGeraRecRod.adic( btOK, 570, 7 ,100, 30 );
+		pnGeraRecRod.adic( btOK, 480, 7 ,100, 30 );
 
 		pnGeraRecDados.adic( new JLabelPad( "Cód.p.pag." ), 7, 0, 250, 20 );
 		pnGeraRecDados.adic( txtCodPlanoPag, 7, 20, 80, 20 );
@@ -323,26 +323,25 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		pnGeraRecDados.adic( txtCodConta, 7, 140, 80, 20 );
 		pnGeraRecDados.adic( new JLabelPad( "Descrição da conta" ), 90, 120, 200, 20 );
 		pnGeraRecDados.adic( txtDescConta, 90, 140, 197, 20 );
+		
+		pnGeraRecDados.adic( new JLabelPad( "Doc." ), 290, 120, 114, 20 );
+		pnGeraRecDados.adic( txtDocRec, 290, 140, 277, 20 );
 
-		pnGeraRecDados.adic( new JLabelPad("Total Reneg."), 7, 160, 80, 20 );
-		pnGeraRecDados.adic( txtValorTotalOriginal, 7, 180, 80, 20 );
-		pnGeraRecDados.adic( new JLabelPad("Desconto"), 90, 160, 80, 20 );
-		pnGeraRecDados.adic( txtValorDesconto, 90, 180, 80, 20 );
-		pnGeraRecDados.adic( new JLabelPad("Juros"), 173, 160, 80, 20 );
-		pnGeraRecDados.adic( txtValorJuros, 173, 180, 80, 20 );
-		pnGeraRecDados.adic( new JLabelPad("Adicional"), 256, 160, 80, 20 );
-		pnGeraRecDados.adic( txtValorAdicional, 256, 180, 80, 20 );
-		pnGeraRecDados.adic( new JLabelPad("Total Liq. Reneg."), 339, 160, 80, 20 );
-		pnGeraRecDados.adic( txtValorTotalRenegociado, 339, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad( "Dt. Renegociacao" ), 7, 160, 80, 20 );
+		pnGeraRecDados.adic( txtDtReneg, 7, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad("Total Reneg."), 90, 160, 80, 20 );
+		pnGeraRecDados.adic( txtValorTotalOriginal, 90, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad("Desconto"), 173, 160, 80, 20 );
+		pnGeraRecDados.adic( txtValorDesconto, 173, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad("Juros"), 256, 160, 80, 20 );
+		pnGeraRecDados.adic( txtValorJuros, 256, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad("Adicional"), 339, 160, 80, 20 );
+		pnGeraRecDados.adic( txtValorAdicional, 339, 180, 80, 20 );
+		pnGeraRecDados.adic( new JLabelPad("Total Liq. Reneg."), 423, 160, 80, 20 );
+		pnGeraRecDados.adic( txtValorTotalRenegociado, 423, 180, 80, 20 );
 
-		pnGeraRecDados.adic( new JLabelPad( "Dt. Renegociacao" ), 7, 200, 80, 20 );
-		pnGeraRecDados.adic( txtDtReneg, 7, 220, 80, 20 );
-
-		pnGeraRecDados.adic( new JLabelPad( "Doc." ), 93, 200, 114, 20 );
-		pnGeraRecDados.adic( txtDocRec, 93, 220, 114, 20 );
-
-		pnGeraRecDados.adic( new JLabelPad( "Observações" ), 215, 200, 284, 20 );
-		pnGeraRecDados.adic( txtObs, 215, 220, 350, 20 );
+		pnGeraRecDados.adic( new JLabelPad( "Observações" ), 7, 200, 400, 20 );
+		pnGeraRecDados.adic( txtObs, 7, 220, 500, 40 );
 		
 		txtValorTotalOriginal.setEditable( false );
 		txtValorTotalRenegociado.setEditable( false );
@@ -612,7 +611,8 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 				tabSeleciona.setValor( g.getCodigoCliente(), 			row, RECEBER.CODCLI.ordinal() );
 				tabSeleciona.setValor( g.getRazaoCliente(), 			row, RECEBER.RAZCLI.ordinal() );
 				tabSeleciona.setValor( g.getDocumentoVenda(), 		row, RECEBER.DOCVENDA.ordinal() );
-				tabSeleciona.setValor( g.getValorParcela(), 			row, RECEBER.VLRPARC.ordinal() );
+				//tabSeleciona.setValor( g.getValorParcela(), 			row, RECEBER.VLRPARC.ordinal() );
+				tabSeleciona.setValor( g.getValorAReceber(), 			row, RECEBER.VLRPARC.ordinal() );
 				tabSeleciona.setValor( g.getDataPagamento(), 			row, RECEBER.DTPAGTO.ordinal() );
 				tabSeleciona.setValor( g.getValorPago(), 				row, RECEBER.VLRPAGO.ordinal() );
 				tabSeleciona.setValor( g.getValorDesconto(), 			row, RECEBER.VLRDESC.ordinal() );
