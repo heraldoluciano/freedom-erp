@@ -3096,6 +3096,49 @@ public class Funcoes {
 		return resultado.toString();
 
 	}
+	
+	public static String longTostrTimeHoras(long time) {
+		StringBuffer resultado = new StringBuffer();
+
+		// verifica quantidade de dias.
+		long dias = time / ( 1000 * 60 * 60 * 24 );
+		time = time % ( 1000 * 60 * 60 * 24 );
+		long horadia = 0;
+
+		if (dias > 0) {
+			horadia = dias * 24;
+		}
+
+		long horas = time / ( 1000 * 60 * 60 );
+		time = time % ( 1000 * 60 * 60 );
+
+		if (horas+horadia < 10) {
+			resultado.append("0");
+		}
+		resultado.append(horas + horadia);
+		resultado.append(":");
+
+		long minutos = time / ( 1000 * 60 );
+		time = time % ( 1000 * 60 );
+
+		if (minutos < 10) {
+			resultado.append("0");
+		}
+		resultado.append(minutos);
+		resultado.append(":");
+
+		// verifica quantidade de segundos.
+		long segundos = time / 1000;
+		time = time % 1000;
+
+		if (segundos < 10) {
+			resultado.append("0");
+		}
+		resultado.append(segundos);
+
+		return resultado.toString();
+
+	}
 
 	public static Date somaMes(Date dt, int imeses) {
 		Date dt2 = dt;
