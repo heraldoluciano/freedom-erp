@@ -45,6 +45,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
+import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 
 public class FRValorEstoque extends FRelatorio {
 
@@ -88,14 +89,20 @@ public class FRValorEstoque extends FRelatorio {
 	private ListaCampos lcPlanoPag1 = new ListaCampos( this );
 
 	private HashMap<String, Object> preferencias = null;
+	
+	private JTextFieldPad txtCodClas = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescClas = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private BigDecimal fatluc = new BigDecimal( 1 );
+	
+	private ListaCampos lcClas = new ListaCampos( this );
 
 	public FRValorEstoque() {
 
 		setTitulo( "Valor em estoque" );
 
-		setAtribos( 140, 40, 350, 260 );
+		setAtribos( 140, 40, 350, 300 );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -129,7 +136,15 @@ public class FRValorEstoque extends FRelatorio {
 		txtCodPlanoPag1.setTabelaExterna( lcPlanoPag1, null );
 		txtCodPlanoPag1.setFK( true );
 		txtCodPlanoPag1.setNomeCampo( "CodPlanoPag" );
-
+		
+		lcClas.add( new GuardaCampo( txtCodClas, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false ) );
+		lcClas.add( new GuardaCampo( txtDescClas, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
+		lcClas.montaSql( false, "CLASCLI", "VD" );
+		lcClas.setReadOnly( true );
+		txtCodClas.setTabelaExterna( lcClas, FClasCli.class.getCanonicalName() );
+		txtCodClas.setFK( true );
+		txtCodClas.setNomeCampo( "CodClasCli" );
+		
 		adic( lbCodGrup, 7, 10, 250, 20 );
 		adic( txtCodGrup, 7, 30, 80, 20 );
 
@@ -147,11 +162,15 @@ public class FRValorEstoque extends FRelatorio {
 
 		adic( lbDescPlanoPag1, 90, 90, 250, 20 );
 		adic( txtDescPlanoPag1, 90, 110, 216, 20 );
+		
+		adic( txtCodClas, 7, 190, 80, 20,"Cód.Clas." );
+		adic( txtDescClas, 90, 190, 216, 20, "Descrição da classificação do cliente" );
 
 		adic( rgOrdem, 7, 140, 300, 30 );
 
 		txtCodTabPreco.setVlrInteger( 1 );
 		txtCodPlanoPag1.setVlrInteger( 1 );
+		txtCodClas.setVlrString( "1" );
 
 	}
 
@@ -249,6 +268,12 @@ public class FRValorEstoque extends FRelatorio {
 
 				}
 
+				if ( ! "".equals( txtCodClas.getVlrString()) ) {
+
+					sql.append( "pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? and " );
+
+				}
+				
 				sql.append( "p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod " );
 
 				if ( txtCodGrup.getVlrInteger() > 0 ) {
@@ -299,6 +324,11 @@ public class FRValorEstoque extends FRelatorio {
 					ps.setInt( iparam++, txtCodPlanoPag1.getVlrInteger() );
 
 				}
+				if ( ! "".equals( txtCodClas.getVlrString()) ) {
+					ps.setInt( iparam++, lcClas.getCodEmp() );
+					ps.setInt( iparam++, lcClas.getCodFilial() );
+					ps.setString( iparam++, txtCodClas.getVlrString() );
+				}
 			}
 
 			if ( txtCodGrup.getVlrInteger() > 0 ) {
@@ -308,6 +338,8 @@ public class FRValorEstoque extends FRelatorio {
 			}
 
 			ResultSet rs = ps.executeQuery();
+			
+			System.out.println("SQL:" + sql.toString());
 
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
@@ -338,10 +370,12 @@ public class FRValorEstoque extends FRelatorio {
 		lcGrup.setConexao( cn );
 		lcTabPreco.setConexao( cn );
 		lcPlanoPag1.setConexao( cn );
-
+		lcClas.setConexao( cn );
+		
 		lcPlanoPag1.carregaDados();
 		lcTabPreco.carregaDados();
-
+		lcClas.carregaDados();
+		
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
