@@ -99,9 +99,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JPanelPad pinCli = new JPanelPad();
 
-	private JPanelPad pinFiltrosAtend = new JPanelPad( 510, 120 );
+	private JPanelPad pinFiltrosAtend = new JPanelPad( 510, 150 );
 
-	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 120 );
+	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 150 );
 
 	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 200 );
 
@@ -283,6 +283,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	
 	private JTextFieldPad txtTotHoraAtendimentos = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 	
+	private JTextFieldPad txtTotChamados = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private JTextFieldPad txtTotHoraChamados = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 7, 0 );
+	
 	final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
@@ -355,8 +359,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		txtTotAtendimentos.setAtivo( false );
 		txtTotHoraAtendimentos.setAtivo( false );
 		
-		pinFiltrosAtend.adic( txtTotAtendimentos, 755, 20, 80, 20, "Atendimentos" );
-		pinFiltrosAtend.adic( txtTotHoraAtendimentos, 755, 60, 80, 20, "Horas" );
+		pinFiltrosAtend.adic( txtTotAtendimentos, 7, 100, 90, 20, "Atendimentos" );
+		pinFiltrosAtend.adic( txtTotHoraAtendimentos, 107, 100, 90, 20, "Horas" );
 		
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
@@ -380,7 +384,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosChamado.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20 );
 
-		pinFiltrosChamado.adic( cbEmAtendimento, 7, 60, 200, 20 );
+		pinFiltrosChamado.adic( cbEmAtendimento, 7, 50, 200, 20 );
 
 		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
 		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20 );
@@ -396,6 +400,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosChamado.adic( scpStatus, 459, 7, 130, 77 );
 
 		pinFiltrosChamado.adic( scpPrioridade, 591, 7, 130, 77 );
+		
+		txtTotChamados.setAtivo( false );
+		txtTotHoraChamados.setAtivo( false );
+		
+		pinFiltrosChamado.adic( txtTotChamados, 7, 100, 90, 20, "Chamados" );
+		pinFiltrosChamado.adic( txtTotHoraChamados, 107, 100, 90, 20, "Horas" );
 
 		pnChm.add( pinFiltrosChamado, BorderLayout.NORTH );
 
@@ -1098,10 +1108,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 				tabatd.limpa();
 				vCodAtends.clear();
-
-				BigDecimal totalhorasatendimentos = new BigDecimal(0);
-				
-				BigDecimal tempoatend = new BigDecimal(0);
+						
 				Long horasatend = new Long(0);
 				
 				for ( int i = 0; rs.next(); i++ ) {
@@ -1121,11 +1128,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getInt( "CODCHAMADO" ), i, 10 );
 					tabatd.setValor( rs.getInt( "CODCLI" ), i, 11 );
 					
-					
-					
 					horasatend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
-					
-					totalhorasatendimentos.add( tempoatend );
 					
 				}
 				
@@ -1290,6 +1293,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private void carregaChamados() {
 
 		StringBuilder sql = new StringBuilder();
+		
+		BigDecimal totalizacaoCham = new BigDecimal(0);
 
 		if ( carregagrid ) {
 
@@ -1318,7 +1323,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabchm.setValor( rs.getString( GridChamado.DESCTPCHAMADO.name() ), i, GridChamado.DESCTPCHAMADO.ordinal() );
 
 					tabchm.setValor( rs.getInt( GridChamado.CODCLI.name() ), i, GridChamado.CODCLI.ordinal() );
-
+				
+										
 					// Se chamado estiver em atendimento
 
 					if ( rs.getString( "ematendimento" ).equals( "S" ) ) {
@@ -1331,10 +1337,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					}
 					
 					tabchm.setValor( rs.getString( GridChamado.DETCHAMADO.name() ), i, GridChamado.DETCHAMADO.ordinal() );
-
+					
+					totalizacaoCham = totalizacaoCham.add(rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ) );
+					
 					row++;
 
 				}
+				txtTotHoraChamados.setVlrBigDecimal( totalizacaoCham );
+				txtTotChamados.setVlrInteger( tabchm.getNumLinhas() );
 
 				rs.close();
 
