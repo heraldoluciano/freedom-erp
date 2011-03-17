@@ -122,8 +122,16 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JPanelPad panelCSocialCampos = new JPanelPad( 500, 80 );
 
 	private JPanelPad panelII = new JPanelPad( new GridLayout( 1, 1 ) );
+	
+	private JPanelPad panelCSOSN = new JPanelPad( new GridLayout( 1, 1 ) );
+	
+	private JPanelPad panelSimples = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelIICampos = new JPanelPad( 500, 80 );
+	
+	private JPanelPad panelCSOSNCampos = new JPanelPad( 500, 80 );
+	
+	private JPanelPad panelIISimples = new JPanelPad( 500, 80 );
 	
 	private JPanelPad panelISS = new JPanelPad( new GridLayout( 1, 1 ) );
 
@@ -327,6 +335,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcUF = new ListaCampos( this );
 
 	private ListaCampos lcServico = new ListaCampos( this );
+	
+	private ListaCampos lcCSOSN = new ListaCampos( this, "CN" );
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
@@ -343,6 +353,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcSitTribCOF = new ListaCampos( this, "SC" );
 	
 	private JCheckBoxPad cbRetensaoISS = new JCheckBoxPad( "Recolhimento de ISS pelo cliente?", "S", "N" );
+	
+	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtDescCSOSN = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
+
 
 	public FCLFiscal() {
 
@@ -690,6 +705,15 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcServico.setQueryCommit( false );
 		lcServico.setReadOnly( true );
 		txtCodServ.setTabelaExterna( lcServico, FServico.class.getCanonicalName() );
+		
+		lcCSOSN.setUsaME( false );
+		lcCSOSN.add( new GuardaCampo( txtCSOSN, "CSOSN", "CSOSN", ListaCampos.DB_PK, false ) );
+		lcCSOSN.add( new GuardaCampo( txtDescCSOSN, "DescCSOSN", "Descrição da CSOSN", ListaCampos.DB_SI, false ) );
+		lcCSOSN.montaSql( false, "CSOSN", "LF" );
+		lcCSOSN.setQueryCommit( false );
+		lcCSOSN.setReadOnly( true );
+		txtCSOSN.setTabelaExterna( lcCSOSN, FServico.class.getCanonicalName() );
+		
 	}
 
 	private void montaTela() {
@@ -913,8 +937,20 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setPainel( panelIICampos );
 		// tpnGeral.setEnabledAt( 8, false );
 		adicCampo( txtAliqIiFisc, 7, 20, 80, 20, "AliqIIFisc", "Aliq.II", ListaCampos.DB_SI, null, false );
-
 		
+		if(Aplicativo.simples) {
+		
+			tpnGeral.addTab( "Simples Nascional", panelSimples );
+			setPainel( panelCSOSNCampos );
+
+			adicCampo( txtCSOSN, 7, 20, 80, 20, "CSOSN", "CSOSN", ListaCampos.DB_FK, txtDescCSOSN, true );
+			adicDescFK( txtDescCSOSN, 90, 20, 300, 20, "DescCSOSN", "Descrição da CSOSN" );
+			
+			txtCSOSN.setRequerido( true );
+			
+		}
+			
+			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
 
@@ -959,6 +995,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		panelCSocial.add( panelCSocialCampos );
 		panelII.add( panelIICampos );
 		panelFUNRURAL.add( panelFUNRURALCampos );
+		panelSimples.add(panelCSOSNCampos);
 	}
 
 	private void copiarVariante() {
@@ -1219,6 +1256,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcPais.setConexao( con );
 		lcUF.setConexao( con );
 		lcServico.setConexao( con );
+		lcCSOSN.setConexao( con );
 	}
 
 }
