@@ -231,13 +231,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vEquipeSis.add("Robson Sanchez: Supervisão/Analise");
 		vEquipeSis.add("Anderson Sanchez: Supervisão/Desenvolvimento");
 		vEquipeSis.add("Luiz Frederico: Suporte/Testes");
-		vEquipeSis.add("Heraldo Luciano: Suporte/Testes/Documentação");
+		vEquipeSis.add("Heraldo Luciano: Consultoria/Testes/Documentação");
 		vEquipeSis.add("Sergio Murilo: Suporte/Testes");
-		vEquipeSis.add("Alan Alexandre Oliveira: Desenvolvimento");
-		vEquipeSis.add("Alexandre Marcondes: Desenvolvimento");
+		vEquipeSis.add("Alan Alexandre Oliveira: Desenvolvimento/Consultoria");
 		vEquipeSis.add("Fernando Oliveira: Desenvolvimento");
 		vEquipeSis.add("Moyzes Braz: Arte gráfica");
-
+		vEquipeSis.add("Franchelle Gomes: Suporte/Testes");
+		vEquipeSis.add("Bruno Nascimento: Desenvolvimento");
+		
 	}
 
 	protected void setEmailSuporte(String emailsuporte) {
