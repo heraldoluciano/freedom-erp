@@ -159,8 +159,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addBotao( "btRma.gif", "Requisição de material", "Requisição de material", 200200000, FRma.class );
 		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
 		addBotao( "btAcompanhaProd.png", "Acompanhamento da produção", "Acompanhamento da produção", 200300000, FAcompanhaProd.class );
-		addBotao( "btPMP_pull.png", "Planejamento mestre da produção", "Planejamento da produção (Pull)", 200400000, FPMP_Pull.class );
-		addBotao( "btPMP_push.gif", "Planejamento mestre da produção", "Planejamento da produção (Push)", 200500000, FPMP_Push.class );
+		addBotao( "btPMP_Pull.png", "Planejamento mestre da produção (Pull)", "Planejamento da produção (Pull)", 200400000, FPMP_Pull.class );
+		addBotao( "btPMP_Push.png", "Planejamento mestre da produção (Push)", "Planejamento da produção (Push)", 200500000, FPMP_Push.class );
 
 		ajustaMenu();
 
