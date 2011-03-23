@@ -944,7 +944,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			setPainel( panelCSOSNCampos );
 
 			adicCampo( txtCSOSN, 7, 20, 80, 20, "CSOSN", "CSOSN", ListaCampos.DB_FK, txtDescCSOSN, true );
-			adicDescFK( txtDescCSOSN, 90, 20, 300, 20, "DescCSOSN", "Descrição da CSOSN" );
+			adicDescFK( txtDescCSOSN, 90, 20, 500, 20, "DescCSOSN", "Descrição da CSOSN" );
 			
 			txtCSOSN.setRequerido( true );
 			
