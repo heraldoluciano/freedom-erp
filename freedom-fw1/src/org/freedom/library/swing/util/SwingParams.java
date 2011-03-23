@@ -15,6 +15,8 @@ public class SwingParams {
 	public static int FONT_SIZE_MED = 11;
 
 	public static int FONT_SIZE_PAD = 12;
+	
+	public static int FONT_SIZE_MED_MAX = 14;
 
 	public static int FONT_SIZE_MAX = 16;
 
@@ -38,6 +40,14 @@ public class SwingParams {
 
 	public static Font getFontpadmed() {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED + TAMANHO_FONTE);
+	}
+	
+	public static Font getFontpadmax() {
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MAX + TAMANHO_FONTE);
+	}
+	
+	public static Font getFontpadmedmax() {
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED_MAX + TAMANHO_FONTE);
 	}
 
 	public static Font getFontpadmin() {
