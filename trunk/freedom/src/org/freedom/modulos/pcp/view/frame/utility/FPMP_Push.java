@@ -251,7 +251,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
-
+		txtRefProd.setFK( true );
 		
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
@@ -296,17 +296,17 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 
 		
 		if(comRef()) {
-			panelMaster.adic( txtRefProd, 7, 20, 60, 20, "Referência" );
+			panelMaster.adic( txtRefProd, 7, 20, 120, 20, "Referência" );
 		}
 		else {
-			panelMaster.adic( txtCodProd, 7, 20, 60, 20, "Cód.Prod." );
+			panelMaster.adic( txtCodProd, 7, 20, 120, 20, "Cód.Prod." );
 			
 		}
 
-		panelMaster.adic( txtDescProd, 70, 20, 340, 20, "Descrição do produto" );
+		panelMaster.adic( txtDescProd, 130, 20, 400, 20, "Descrição do produto" );
 
-		panelMaster.adic( txtCodSecao, 7, 60, 60, 20, "Cód.Seção" );
-		panelMaster.adic( txtDescSecao, 70, 60, 340, 20, "Descrição da seção" );
+		panelMaster.adic( txtCodSecao, 7, 60, 120, 20, "Cód.Seção" );
+		panelMaster.adic( txtDescSecao, 130, 60, 400, 20, "Descrição da seção" );
 
 //		panelFiltros.adic( cbPend, 4, 0, 100, 20 );
 //		panelFiltros.adic( cbEmProd, 4, 30, 100, 20 );
