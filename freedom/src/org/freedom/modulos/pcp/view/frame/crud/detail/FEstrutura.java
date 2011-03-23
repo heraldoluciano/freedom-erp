@@ -348,8 +348,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdEst.add( new GuardaCampo( txtRefProdEst, "RefProd", "Referencia", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "Usa Lote", ListaCampos.DB_SI, false ) );
 		lcProdEst.add( new GuardaCampo( txtSerieProd, "SerieProd", "Usa Série", ListaCampos.DB_SI, false ) );
-
-		lcProdEst.setWhereAdic( "TIPOPROD='F' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
+		lcProdEst.setWhereAdic( "ATIVOPROD='S' AND TIPOPROD IN ('" + TipoProd.PRODUTO_ACABADO.getValue() + "','" + TipoProd.PRODUTO_INTERMEDIARIO.getValue() + "')" );
+		//lcProdEst.setWhereAdic( "TIPOPROD='F' AND CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + Aplicativo.iCodFilial );
 		lcProdEst.montaSql( false, "PRODUTO", "EQ" );
 		lcProdEst.setQueryCommit( false );
 		lcProdEst.setReadOnly( true );
