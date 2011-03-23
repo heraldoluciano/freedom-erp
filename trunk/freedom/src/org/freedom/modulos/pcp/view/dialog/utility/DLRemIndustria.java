@@ -362,7 +362,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 				gerarRemessa();
 			}
 			else {
-				Funcoes.mensagemInforma( this, "Não existem ítem selecionados ou pendentes para geerar remessa!" );
+				Funcoes.mensagemInforma( this, "Não existem itens selecionados ou pendentes para gerar remessa!" );
 			}
 		}
 		if ( evt.getSource() == btCancel ) {
