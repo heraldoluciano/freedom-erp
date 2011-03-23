@@ -49,6 +49,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -62,6 +63,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
@@ -83,7 +85,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JLabelPad lbPeriodo = new JLabelPad( " Período" );
 
-	private JPanelPad pinSaldo = new JPanelPad( 400, 50 );
+	private JPanelPad pinData = new JPanelPad( 100, 54 );
+	
+	private JPanelPad pinSaldo = new JPanelPad( 100, 54 );
+	
+	private JPanelPad pinSaldoComposto = new JPanelPad( 100, 54 );
+	
+	private JPanelPad pinAtualiza = new JPanelPad( 100, 54 );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -111,11 +119,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JLabelPad lbA = new JLabelPad( "à" );
 
-	private JLabelPad lbPinSaldo = new JLabelPad( " Saldo" );
-
 	private JPanelPad pinLbPeriodo = new JPanelPad( 53, 15 );
-
-	private JPanelPad pinLbSaldo = new JPanelPad( 45, 15 );
 
 	private JLabelPad lbDataSaldo = new JLabelPad( "Data" );
 
@@ -127,11 +131,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	private JLabelPad lbDataSaldoVal = new JLabelPad( "" );
 
-//	private JLabelPad lbVlrSaldo = new JLabelPad( "" );
+	private JTextFieldPad txtVlrSaldo = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 ) ;
 	
-	private JTextFieldPad txtVlrSaldo = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin ) ;
-	
-	private JTextFieldPad txtVlrSaldoComposto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin ) ;
+	private JTextFieldPad txtVlrSaldoComposto = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 ) ;
 
 	private JLabelPad lbAtualSaldoVal = new JLabelPad( "NÃO" );
 
@@ -155,14 +157,15 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	
 	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) ); 
 	
-	private enum enum_tab_lanca {  CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
+	private enum enum_tab_lanca {  
+		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
 
 	public FLanca() {
 
 		super( false );
 		
 		setTitulo( "Lançamentos Financeiros" );
-		setAtribos( 50, 25, 767, 350 );
+		setAtribos( 50, 25, 920, 750 );
 
 		Container c = getContentPane();
 
@@ -180,47 +183,73 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		pnCentro.add( tpn, BorderLayout.SOUTH );
 		pnCentro.add( spnTab, BorderLayout.CENTER );
 
-		pinLbPeriodo.adic( lbPeriodo, 0, 0, 51, 15 );
-		pinLbPeriodo.tiraBorda();
+
+		pinPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK ) );
 		
-		pinLbSaldo.adic( lbPinSaldo, 0, 0, 46, 15 );
-		pinLbSaldo.tiraBorda();
+		pinCab.adic( pinPeriodo, 7, 0, 270, 54 );
+		
+		pinPeriodo.adic( txtDataini, 7, 0, 100, 20 );
+		pinPeriodo.adic( lbA, 110, 0, 7, 20 );
+		pinPeriodo.adic( txtDatafim, 120, 0, 97, 20 );
+		pinPeriodo.adic( btExec, 220, 0, 30, 20 );
+		
+		btExec.setContentAreaFilled(false);
+		btExec.setBorderPainted(false);
 
-		pinCab.adic( pinLbPeriodo, 10, 2, 51, 15 );
-		pinCab.adic( pinPeriodo, 7, 10, 260, 44 );
-		pinCab.adic( pinLbSaldo, 270, 2, 46, 15 );		
-		pinCab.adic( pinSaldo, 270, 10, 400, 44 );
-
-		pinPeriodo.adic( txtDataini, 7, 10, 100, 20 );
-		pinPeriodo.adic( lbA, 110, 10, 7, 20 );
-		pinPeriodo.adic( txtDatafim, 120, 10, 97, 20 );
-		pinPeriodo.adic( btExec, 220, 5, 30, 30 );
-
+		pinCab.adic( pinData, 280, 0, 110, 54 );
+		pinData.setBorder( SwingParams.getPanelLabel( "Data", Color.BLACK ) );
+		
 		lbDataSaldoVal.setForeground( new Color( 0, 140, 0 ) );
-		txtVlrSaldo.setEditable( false );
+		lbDataSaldoVal.setFont( SwingParams.getFontboldmax() );
+		pinData.adic( lbDataSaldoVal, 7, 3, 110, 15 );
+		
+		pinCab.adic( pinSaldo, 390, 0, 120, 54 );
+		pinSaldo.setBorder( SwingParams.getPanelLabel( "Saldo", Color.BLACK ) );
+		
+		pinSaldo.adic( txtVlrSaldo, 10, 3, 100, 20 );
 		txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
+		
+		txtVlrSaldo.setBorder( null );
 		txtVlrSaldo.setBackground( null );
 		
-		txtVlrSaldoComposto.setEditable( false );
-		txtVlrSaldoComposto.setBackground( null );
-
-		txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );		
-		lbAtualSaldoVal.setForeground( new Color( 0, 140, 0 ) );
-
-		pinSaldo.adic( lbDataSaldo, 7, 6, 50, 15 );
-		pinSaldo.adic( lbDataSaldoVal, 7, 21, 100, 15 );
+		txtVlrSaldo.setFont( SwingParams.getFontboldmax() );
 		
-		pinSaldo.adic( lbSaldo, 80, 6, 50, 15 );		
-		pinSaldo.adic( txtVlrSaldo, 80, 21, 87, 15 );
-
-		pinSaldo.adic( lbSaldoComposto, 175, 6, 100, 15 );		
-		pinSaldo.adic( txtVlrSaldoComposto, 175, 21, 97, 15 );
-
+		pinCab.adic( pinSaldoComposto, 510, 0, 120, 54 );
+		pinSaldoComposto.setBorder( SwingParams.getPanelLabel( "Saldo composto", Color.BLACK ) );
+		
+		pinSaldoComposto.adic( txtVlrSaldoComposto, 10, 3, 100, 20 );
+		txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );
+		
+		txtVlrSaldoComposto.setBorder( null );
+		txtVlrSaldoComposto.setBackground( null );
+		
+		txtVlrSaldoComposto.setFont( SwingParams.getFontboldmax() );
+		
+		txtVlrSaldo.setEditable( false );
+		txtVlrSaldoComposto.setEditable( false );
+		
+		pinCab.adic( pinAtualiza, 630, 0, 120, 54 );
+		pinAtualiza.setBorder( SwingParams.getPanelLabel( "Atualizado", Color.BLACK ) );
+		pinAtualiza.adic( lbAtualSaldoVal, 10, 2, 57, 15 );
+		lbAtualSaldoVal.setFont( SwingParams.getFontboldmax() );
+		
+		pinAtualiza.adic( btCalcSaldo, 70, 0, 30, 20 );
+		
+		btCalcSaldo.setContentAreaFilled(false);
+		btCalcSaldo.setBorderPainted(false);
+		
+		
+		/*
+		
 		pinSaldo.adic( lbAtualSaldo, 290, 6, 50, 15 );
 		pinSaldo.adic( lbAtualSaldoVal, 290, 21, 57, 15 );
+		*/
 		
-		pinSaldo.adic( btCalcSaldo, 360, 5, 30, 30 );
+		//pinData.adic( btCalcSaldo, 360, 5, 30, 30 );
 
+		
+		
+		
 		btSair.setPreferredSize( new Dimension( 100, 31 ) );
 
 		pnNav.setPreferredSize( new Dimension( 240, 30 ) );
@@ -239,35 +268,41 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		pnNav.add( btAbreCheque );
 		
 		btAbreCheque.setEnabled( false );
-
+		//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
 		tab.adicColuna( "NºLanç." );
 		tab.adicColuna( "Data" );
 		tab.adicColuna( "Tsf." );
 		tab.adicColuna( "Orig." );
 		tab.adicColuna( "Conta tsf." );
+		
 		tab.adicColuna( "Nº doc." );
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Histórico" );
+
 		tab.adicColuna( "Cheques" );
 		tab.adicColuna( "Cod.Pag." );
 		tab.adicColuna( "N.Parc.Pag." );
 		tab.adicColuna( "Seq.Cheque" );
 
 		tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
-		tab.setTamColuna( 70, enum_tab_lanca.DATASUBLANCA.ordinal() );
-		tab.setTamColuna( 20, enum_tab_lanca.TRANSFLANCA.ordinal() );
-		tab.setTamColuna( 30, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+		tab.setTamColuna( 80, enum_tab_lanca.DATASUBLANCA.ordinal() );
+		tab.setTamColuna( 85, enum_tab_lanca.DOCLANCA.ordinal() );
+		tab.setTamColuna( 120, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+		tab.setTamColuna( 400, enum_tab_lanca.HISTBLANCA.ordinal() );		
 		tab.setTamColuna( 72, enum_tab_lanca.NUMCONTA.ordinal() );
-		tab.setTamColuna( 65, enum_tab_lanca.DOCLANCA.ordinal() );
-		tab.setTamColuna( 80, enum_tab_lanca.VLRSUBLANCA.ordinal() );
-		tab.setTamColuna( 287, enum_tab_lanca.HISTBLANCA.ordinal() );		
-		tab.setTamColuna( 55, enum_tab_lanca.CHEQUES.ordinal() );
+		tab.setTamColuna( 65, enum_tab_lanca.CHEQUES.ordinal() );
 
+		tab.setColunaInvisivel( enum_tab_lanca.TRANSFLANCA.ordinal() );
+		tab.setColunaInvisivel( enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+		
 		tab.setColunaInvisivel( enum_tab_lanca.CODPAG.ordinal() );
 		tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
 		tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
 		
 		tab.addMouseListener( this );
+		
+		tab.setRowHeight( 22 );
+		tab.setFont( SwingParams.getFontboldmedmax() );
 		
 		btSair.addActionListener( this );
 		btPrim.addActionListener( this );
@@ -346,7 +381,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
 				
 				tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal() );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 8, 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
 				tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal() );				
 				
 				tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal() );
@@ -503,15 +538,15 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			
 			if ( rs.next() ) {
 				
-				BigDecimal SaldoComposto = txtVlrSaldo.getVlrBigDecimal();
+				BigDecimal SaldoComposto = ConversionFunctions.stringCurrencyToBigDecimal( txtVlrSaldo.getVlrString() );
 				
 				SaldoComposto = SaldoComposto.add( rs.getBigDecimal( "SaldoVinculado" ) );
 				
-				txtVlrSaldoComposto.setVlrBigDecimal( SaldoComposto );
+				txtVlrSaldoComposto.setVlrString( Funcoes.bdToStr( SaldoComposto, Aplicativo.casasDecFin ).toString());
 				mostraSaldoComposto( true );
 			}
 			else {
-				txtVlrSaldoComposto.setVlrBigDecimal( new BigDecimal(0) );
+				txtVlrSaldoComposto.setVlrString( "0,00" );
 				mostraSaldoComposto( false );
 			}
 			
@@ -546,12 +581,12 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			if ( rs.next() ) {
 				lbDataSaldoVal.setText( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSl" ) ) );
 //				lbVlrSaldo.setText( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "SaldoSl" ) ) );
-				txtVlrSaldo.setVlrBigDecimal( rs.getBigDecimal( "SaldoSl" ) );
+				txtVlrSaldo.setVlrString( Funcoes.bdToStr( rs.getBigDecimal( "SaldoSl" ), Aplicativo.casasDecFin ).toString());
 				lbAtualSaldoVal.setText( "SIM" );
 			}
 			else {
 				lbDataSaldoVal.setText( "" );
-				txtVlrSaldo.setVlrBigDecimal( new BigDecimal(0) );
+				txtVlrSaldo.setVlrString( "0,00" );
 				lbAtualSaldoVal.setText( "SEM" );
 			}
 			rs.close();
@@ -730,7 +765,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			tab.setValor( sVals[ 2 ], iLin, 2 );
 			tab.setValor( "S", iLin, 3 );
 			if ( sVals[ 2 ].equals( "S" ) )
-				tab.setValor( sConta, iLin, 4 );
+				tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
 			else
 				tab.setValor( "", iLin, 4 );
 			tab.setValor( sVals[ 3 ], iLin, 5 );
