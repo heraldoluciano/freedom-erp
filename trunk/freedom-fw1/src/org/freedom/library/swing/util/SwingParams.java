@@ -49,6 +49,10 @@ public class SwingParams {
 	public static Font getFontpadmedmax() {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED_MAX + TAMANHO_FONTE);
 	}
+	
+	public static Font getFontboldmedmax() {
+		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_MED_MAX + TAMANHO_FONTE);
+	}
 
 	public static Font getFontpadmin() {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MIN + TAMANHO_FONTE);
