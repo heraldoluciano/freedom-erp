@@ -63,7 +63,6 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
-import org.freedom.modulos.pcp.view.frame.crud.detail.FEstrutura;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 
 /**
@@ -253,7 +252,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
-		txtRefProd.setFK( true );FEstrutura
+		txtRefProd.setFK( true );
 		
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
