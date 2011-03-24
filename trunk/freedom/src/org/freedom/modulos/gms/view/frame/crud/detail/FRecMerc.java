@@ -42,7 +42,9 @@ import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -175,6 +177,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JPanelPad pinDet = new JPanelPad();
 
 	private JPanelPad pinDetGrid = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+	
+	private JPanelPad pinCabObs = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	// *** Lista Campos
 
@@ -230,6 +234,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private AbstractCalcRenda objplugin = null;
 	
 	private boolean atualizaPesoManual = false;
+	
+	private JTextAreaPad txaObs = new JTextAreaPad();
+	
+	private JScrollPane spnObs = new JScrollPane( txaObs );
+	
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+	
+	private JPanelPad pinCabRecMerc = new JPanelPad();
+
 
 	public FRecMerc() {
 
@@ -239,7 +252,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private void montaTela() {
 
 		setTitulo( "Recepção de mercadorias" );
-		setAtribos( 50, 50, 653, 480 );
+		setAtribos( 50, 50, 653, 500 );
 
 		nav.setNavigation( true );
 
@@ -322,6 +335,15 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		pinDetGrid.add( spTab );
 		pinDetGrid.add( new JScrollPane( tabPesagem ) );
 
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Geral", pinCabRecMerc );
+
+		
+		pinCabObs.add( spnObs );
+		tpnCab.addTab( "Observações", pinCabObs );
+		
+		
+		
 		montaCabecalho();
 		montaDetalhe();
 		mostraRenda( false );
@@ -330,10 +352,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 	private void montaCabecalho() {
 
-		setAltCab( 210 );
+		setAltCab( 230 );
 
 		setListaCampos( lcCampos );
-		setPainel( pinCab, pnCliCab );
+		setPainel( pinCabRecMerc );
 
 		adicCampo( txtTicket, 7, 20, 70, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
 		adicCampo( txtPlacaTran, 80, 20, 70, 20, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, true );
@@ -366,6 +388,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 //		adicCampo( txtCodBairro, 7,180,100,20, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodBairro, "CodBairro", "Cód.Bairro", ListaCampos.DB_FK, true );
 		adicCampoInvisivel( txtStatus, "Status", "Status", ListaCampos.DB_SI, false );
+		
+		adicDBLiv( txaObs, "ObsRecMerc", "Observações" , false );
 
 		pinCab.adic( lbBairro, 500, 120, 100, 20 );
 		pinCab.adic( cbBairro, 500, 140, 100, 20 );
