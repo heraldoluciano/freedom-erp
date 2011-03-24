@@ -86,10 +86,67 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 				setText(( value == null ) ? "" : "" + value);
 			}
+			
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+					setBackground(new Color(160,170,210));
+				}
+				else {
+					
+				
+					if(row % 2 == 0) {
+						setBackground(new Color(210,215,220));
+					} 
+					else {
+						setBackground(null);
+					}
+				}
+				
+				return this;
+			}
+			
 		};
 
 		bigDecimalRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		setDefaultRenderer(BigDecimal.class, bigDecimalRenderer);
+		
+		DefaultTableCellRenderer intDecimalRenderer = new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void setValue(Object value) {
+
+				setText(( value == null ) ? "" : "" + value);
+			}
+			
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+					setBackground(new Color(160,170,210));
+				}
+				else {
+				
+					if(row % 2 == 0) {
+						setBackground(new Color(210,215,220));
+					} 
+					else {
+						setBackground(null);
+					}
+				}
+				return this;
+			}
+			
+		};
+
+		intDecimalRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+
+		
+		setDefaultRenderer(Integer.class, intDecimalRenderer);
 
 		DefaultTableCellRenderer stringDireitaRenderer = new DefaultTableCellRenderer() {
 
@@ -99,11 +156,57 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 				setText(( value == null ) ? "" : "" + value);
 			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				
+				if(isSelected) {
+					setBackground(new Color(160,170,210));
+				}
+				else {
+					if(row % 2 == 0) {
+						setBackground(new Color(210,215,220));
+					} 
+					else {
+						setBackground(null);
+					}
+				}
+				
+				return this;
+			}
+
 		};
+
+		setDefaultRenderer ( Object.class, new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+					setBackground(new Color(160,170,210));
+				}
+				else {
+				
+					if(row % 2 == 0) {
+						setBackground(new Color(210,215,220));
+					} 
+					else {
+						setBackground(null);
+					}
+				}
+				
+				return this;
+			}
+
+		});
+
 
 		stringDireitaRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		setDefaultRenderer(StringDireita.class, stringDireitaRenderer);
-
 		setDefaultEditor(Date.class, new DateEditor());
 
 	}
@@ -268,7 +371,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			modelo.setValueAt(obj, lin, col);
 		}
 	}
-	
+
 
 	public Object getValor(int lin, int col) {
 
