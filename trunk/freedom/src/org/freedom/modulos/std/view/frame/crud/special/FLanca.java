@@ -86,11 +86,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private JLabelPad lbPeriodo = new JLabelPad( " Período" );
 
 	private JPanelPad pinData = new JPanelPad( 100, 54 );
-	
+
 	private JPanelPad pinSaldo = new JPanelPad( 100, 54 );
-	
+
 	private JPanelPad pinSaldoComposto = new JPanelPad( 100, 54 );
-	
+
 	private JPanelPad pinAtualiza = new JPanelPad( 100, 54 );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -124,7 +124,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private JLabelPad lbDataSaldo = new JLabelPad( "Data" );
 
 	private JLabelPad lbSaldo = new JLabelPad( "Saldo" );
-	
+
 	private JLabelPad lbSaldoComposto = new JLabelPad( "Saldo Composto" );
 
 	private JLabelPad lbAtualSaldo = new JLabelPad( "Atualiza" );
@@ -132,7 +132,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private JLabelPad lbDataSaldoVal = new JLabelPad( "" );
 
 	private JTextFieldPad txtVlrSaldo = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 ) ;
-	
+
 	private JTextFieldPad txtVlrSaldoComposto = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 ) ;
 
 	private JLabelPad lbAtualSaldoVal = new JLabelPad( "NÃO" );
@@ -154,579 +154,552 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private Date dIniLanca = null;
 
 	private Date dFimLanca = null;
-	
+
 	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) ); 
-	
+
 	private enum enum_tab_lanca {  
 		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
 
-	public FLanca() {
+		public FLanca() {
 
-		super( false );
-		
-		setTitulo( "Lançamentos Financeiros" );
-		setAtribos( 50, 25, 920, 750 );
+			super( false );
 
-		Container c = getContentPane();
+			setTitulo( "Lançamentos Financeiros" );
+			setAtribos( 50, 25, 920, 750 );
 
-		c.setLayout( new BorderLayout() );
+			Container c = getContentPane();
 
-		pnRod.setPreferredSize( new Dimension( 600, 32 ) );
+			c.setLayout( new BorderLayout() );
 
-		c.add( pnRod, BorderLayout.SOUTH );
-		c.add( pnCentro, BorderLayout.CENTER );
-		c.add( pinCab, BorderLayout.NORTH );
+			pnRod.setPreferredSize( new Dimension( 600, 32 ) );
 
-		tpn.setTabLayoutPolicy( JTabbedPanePad.SCROLL_TAB_LAYOUT );
-		tpn.setPreferredSize( new Dimension( 600, 30 ) );
-		
-		pnCentro.add( tpn, BorderLayout.SOUTH );
-		pnCentro.add( spnTab, BorderLayout.CENTER );
+			c.add( pnRod, BorderLayout.SOUTH );
+			c.add( pnCentro, BorderLayout.CENTER );
+			c.add( pinCab, BorderLayout.NORTH );
+
+			tpn.setTabLayoutPolicy( JTabbedPanePad.SCROLL_TAB_LAYOUT );
+			tpn.setPreferredSize( new Dimension( 600, 30 ) );
+
+			pnCentro.add( tpn, BorderLayout.SOUTH );
+			pnCentro.add( spnTab, BorderLayout.CENTER );
 
 
-		pinPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK ) );
-		
-		pinCab.adic( pinPeriodo, 7, 0, 270, 54 );
-		
-		pinPeriodo.adic( txtDataini, 7, 0, 100, 20 );
-		pinPeriodo.adic( lbA, 110, 0, 7, 20 );
-		pinPeriodo.adic( txtDatafim, 120, 0, 97, 20 );
-		pinPeriodo.adic( btExec, 220, 0, 30, 20 );
-		
-		btExec.setContentAreaFilled(false);
-		btExec.setBorderPainted(false);
+			pinPeriodo.setBorder( SwingParams.getPanelLabel( "Período", Color.BLACK ) );
 
-		pinCab.adic( pinData, 280, 0, 110, 54 );
-		pinData.setBorder( SwingParams.getPanelLabel( "Data", Color.BLACK ) );
-		
-		lbDataSaldoVal.setForeground( new Color( 0, 140, 0 ) );
-		lbDataSaldoVal.setFont( SwingParams.getFontboldmax() );
-		pinData.adic( lbDataSaldoVal, 7, 3, 110, 15 );
-		
-		pinCab.adic( pinSaldo, 390, 0, 120, 54 );
-		pinSaldo.setBorder( SwingParams.getPanelLabel( "Saldo", Color.BLACK ) );
-		
-		pinSaldo.adic( txtVlrSaldo, 10, 3, 100, 20 );
-		txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
-		
-		txtVlrSaldo.setBorder( null );
-		txtVlrSaldo.setBackground( null );
-		
-		txtVlrSaldo.setFont( SwingParams.getFontboldmax() );
-		
-		pinCab.adic( pinSaldoComposto, 510, 0, 120, 54 );
-		pinSaldoComposto.setBorder( SwingParams.getPanelLabel( "Saldo composto", Color.BLACK ) );
-		
-		pinSaldoComposto.adic( txtVlrSaldoComposto, 10, 3, 100, 20 );
-		txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );
-		
-		txtVlrSaldoComposto.setBorder( null );
-		txtVlrSaldoComposto.setBackground( null );
-		
-		txtVlrSaldoComposto.setFont( SwingParams.getFontboldmax() );
-		
-		txtVlrSaldo.setEditable( false );
-		txtVlrSaldoComposto.setEditable( false );
-		
-		pinCab.adic( pinAtualiza, 630, 0, 120, 54 );
-		pinAtualiza.setBorder( SwingParams.getPanelLabel( "Atualizado", Color.BLACK ) );
-		pinAtualiza.adic( lbAtualSaldoVal, 10, 2, 57, 15 );
-		lbAtualSaldoVal.setFont( SwingParams.getFontboldmax() );
-		
-		pinAtualiza.adic( btCalcSaldo, 70, 0, 30, 20 );
-		
-		btCalcSaldo.setContentAreaFilled(false);
-		btCalcSaldo.setBorderPainted(false);
-		
-		
-		/*
-		
+			pinCab.adic( pinPeriodo, 7, 0, 270, 54 );
+
+			pinPeriodo.adic( txtDataini, 7, 0, 100, 20 );
+			pinPeriodo.adic( lbA, 110, 0, 7, 20 );
+			pinPeriodo.adic( txtDatafim, 120, 0, 97, 20 );
+			pinPeriodo.adic( btExec, 220, 0, 30, 20 );
+
+			btExec.setContentAreaFilled(false);
+			btExec.setBorderPainted(false);
+
+			pinCab.adic( pinData, 280, 0, 110, 54 );
+			pinData.setBorder( SwingParams.getPanelLabel( "Data", Color.BLACK ) );
+
+			lbDataSaldoVal.setForeground( new Color( 0, 140, 0 ) );
+			lbDataSaldoVal.setFont( SwingParams.getFontboldmax() );
+			pinData.adic( lbDataSaldoVal, 7, 3, 110, 15 );
+
+			pinCab.adic( pinSaldo, 390, 0, 120, 54 );
+			pinSaldo.setBorder( SwingParams.getPanelLabel( "Saldo", Color.BLACK ) );
+
+			pinSaldo.adic( txtVlrSaldo, 10, 3, 100, 20 );
+			txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
+
+			txtVlrSaldo.setBorder( null );
+			txtVlrSaldo.setBackground( null );
+
+			txtVlrSaldo.setFont( SwingParams.getFontboldmax() );
+
+			pinCab.adic( pinSaldoComposto, 510, 0, 120, 54 );
+			pinSaldoComposto.setBorder( SwingParams.getPanelLabel( "Saldo composto", Color.BLACK ) );
+
+			pinSaldoComposto.adic( txtVlrSaldoComposto, 10, 3, 100, 20 );
+			txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );
+
+			txtVlrSaldoComposto.setBorder( null );
+			txtVlrSaldoComposto.setBackground( null );
+
+			txtVlrSaldoComposto.setFont( SwingParams.getFontboldmax() );
+
+			txtVlrSaldo.setEditable( false );
+			txtVlrSaldoComposto.setEditable( false );
+
+			pinCab.adic( pinAtualiza, 630, 0, 120, 54 );
+			pinAtualiza.setBorder( SwingParams.getPanelLabel( "Atualizado", Color.BLACK ) );
+			pinAtualiza.adic( lbAtualSaldoVal, 10, 2, 57, 15 );
+			lbAtualSaldoVal.setFont( SwingParams.getFontboldmax() );
+
+			pinAtualiza.adic( btCalcSaldo, 70, 0, 30, 20 );
+
+			btCalcSaldo.setContentAreaFilled(false);
+			btCalcSaldo.setBorderPainted(false);
+
+
+			/*
+
 		pinSaldo.adic( lbAtualSaldo, 290, 6, 50, 15 );
 		pinSaldo.adic( lbAtualSaldoVal, 290, 21, 57, 15 );
-		*/
-		
-		//pinData.adic( btCalcSaldo, 360, 5, 30, 30 );
+			 */
 
-		
-		
-		
-		btSair.setPreferredSize( new Dimension( 100, 31 ) );
+			//pinData.adic( btCalcSaldo, 360, 5, 30, 30 );
 
-		pnNav.setPreferredSize( new Dimension( 240, 30 ) );
 
-		pnRod.setBorder( BorderFactory.createEtchedBorder() );
-		pnRod.add( btSair, BorderLayout.EAST );
-		pnRod.add( pnNav, BorderLayout.WEST );
 
-		pnNav.add( btPrim );
-		pnNav.add( btAnt );
-		pnNav.add( btProx );
-		pnNav.add( btUlt );
-		pnNav.add( btNovo );
-		pnNav.add( btExcluir );
-		pnNav.add( btEditar );
-		pnNav.add( btAbreCheque );
-		
-		btAbreCheque.setEnabled( false );
-		//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
-		tab.adicColuna( "NºLanç." );
-		tab.adicColuna( "Data" );
-		tab.adicColuna( "Tsf." );
-		tab.adicColuna( "Orig." );
-		tab.adicColuna( "Conta tsf." );
-		
-		tab.adicColuna( "Nº doc." );
-		tab.adicColuna( "Valor" );
-		tab.adicColuna( "Histórico" );
 
-		tab.adicColuna( "Cheques" );
-		tab.adicColuna( "Cod.Pag." );
-		tab.adicColuna( "N.Parc.Pag." );
-		tab.adicColuna( "Seq.Cheque" );
+			btSair.setPreferredSize( new Dimension( 100, 31 ) );
 
-		tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
-		tab.setTamColuna( 80, enum_tab_lanca.DATASUBLANCA.ordinal() );
-		tab.setTamColuna( 85, enum_tab_lanca.DOCLANCA.ordinal() );
-		tab.setTamColuna( 120, enum_tab_lanca.VLRSUBLANCA.ordinal() );
-		tab.setTamColuna( 400, enum_tab_lanca.HISTBLANCA.ordinal() );		
-		tab.setTamColuna( 72, enum_tab_lanca.NUMCONTA.ordinal() );
-		tab.setTamColuna( 65, enum_tab_lanca.CHEQUES.ordinal() );
+			pnNav.setPreferredSize( new Dimension( 240, 30 ) );
 
-		tab.setColunaInvisivel( enum_tab_lanca.TRANSFLANCA.ordinal() );
-		tab.setColunaInvisivel( enum_tab_lanca.ORIGSUBLANCA.ordinal() );
-		
-		tab.setColunaInvisivel( enum_tab_lanca.CODPAG.ordinal() );
-		tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
-		tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
-		
-		tab.addMouseListener( this );
-		
-		tab.setRowHeight( 22 );
-		tab.setFont( SwingParams.getFontboldmedmax() );
-		
-		btSair.addActionListener( this );
-		btPrim.addActionListener( this );
-		btAnt.addActionListener( this );
-		btProx.addActionListener( this );
-		btUlt.addActionListener( this );
-		btNovo.addActionListener( this );
-		btEditar.addActionListener( this );
-		btExcluir.addActionListener( this );
-		btExec.addActionListener( this );
-		btCalcSaldo.addActionListener( this );
-		btAbreCheque.addActionListener( this );
-		
-		tpn.addChangeListener( this );
+			pnRod.setBorder( BorderFactory.createEtchedBorder() );
+			pnRod.add( btSair, BorderLayout.EAST );
+			pnRod.add( pnNav, BorderLayout.WEST );
 
-		Calendar cPeriodo = Calendar.getInstance();
-		
-		txtDatafim.setVlrDate( cPeriodo.getTime() );
-		cPeriodo.set( Calendar.DAY_OF_YEAR, cPeriodo.get( Calendar.DAY_OF_YEAR ) - 7 );
-		txtDataini.setVlrDate( cPeriodo.getTime() );
+			pnNav.add( btPrim );
+			pnNav.add( btAnt );
+			pnNav.add( btProx );
+			pnNav.add( btUlt );
+			pnNav.add( btNovo );
+			pnNav.add( btExcluir );
+			pnNav.add( btEditar );
+			pnNav.add( btAbreCheque );
 
-	}
+			btAbreCheque.setEnabled( false );
+			//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
+			tab.adicColuna( "NºLanç." );
+			tab.adicColuna( "Data" );
+			tab.adicColuna( "Tsf." );
+			tab.adicColuna( "Orig." );
+			tab.adicColuna( "Conta tsf." );
 
-	private void mostraSaldoComposto(boolean mostra) {
-		
-		txtVlrSaldoComposto.setVisible( mostra );
-		lbSaldoComposto.setVisible( mostra );
-		
-	}
-	
-	private void montaTabela( Date dini, Date dfim ) {
+			tab.adicColuna( "Nº doc." );
+			tab.adicColuna( "Valor" );
+			tab.adicColuna( "Histórico" );
 
-		tab.limpa();
-		
-		String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," 
-			+ "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," 
-			+ "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " 
-			+ "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
-			+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " 
-			+ "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " 
-			+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG "
-			+ " FROM FNSUBLANCA S, FNLANCA L " 
-			+ " WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
-			+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" 
-			+ " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" 
-			+ " ORDER BY S.DATASUBLANCA,S.CODLANCA";
-		
-		try {
-			
-			
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			
-			ps.setDate( 1, Funcoes.dateToSQLDate( dini ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( dfim ) );
-			ps.setString( 3, sCodPlan );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			tab.adicColuna( "Cheques" );
+			tab.adicColuna( "Cod.Pag." );
+			tab.adicColuna( "N.Parc.Pag." );
+			tab.adicColuna( "Seq.Cheque" );
 
-			ResultSet rs = ps.executeQuery();
+			tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
+			tab.setTamColuna( 80, enum_tab_lanca.DATASUBLANCA.ordinal() );
+			tab.setTamColuna( 85, enum_tab_lanca.DOCLANCA.ordinal() );
+			tab.setTamColuna( 100, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+			tab.setTamColuna( 400, enum_tab_lanca.HISTBLANCA.ordinal() );		
+			tab.setTamColuna( 72, enum_tab_lanca.NUMCONTA.ordinal() );
+			tab.setTamColuna( 65, enum_tab_lanca.CHEQUES.ordinal() );
 
-			for ( int i = 0; rs.next(); i++ ) {
-				
-				
-				tab.adicLinha();
-				
-				tab.setValor( rs.getString( enum_tab_lanca.CODLANCA.name() ), i, enum_tab_lanca.CODLANCA.ordinal() );
-				
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_lanca.DATASUBLANCA.name() ) ), i, enum_tab_lanca.DATASUBLANCA.ordinal() );
-				
-				tab.setValor( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ), i, enum_tab_lanca.TRANSFLANCA.ordinal() );
-				
-				if ( "S".equals( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ) ) ) {
-					tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal() );
-				}
-				
-				tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
-				
-				tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal() );
-				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
-				tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal() );				
-				
-				tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal() );
-				tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal() );
-				
-				Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_lanca.CODPAG.name()), rs.getInt( enum_tab_lanca.NPARCPAG.name() ));
-				
-				if( cheques.size()>0 ) {
-					
-					Vector<String> numcheques = new Vector<String>();
-					Vector<String> seqcheques = new Vector<String>();
-					
-					for ( int ic = 0; cheques.size() > ic; ic++ ) {
+			tab.setColunaInvisivel( enum_tab_lanca.TRANSFLANCA.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.NUMCONTA.ordinal() );
 
-						Cheque cheque = (Cheque) cheques.get( ic );
-						numcheques.add( cheque.getNumcheq().toString() );
-						seqcheques.add( cheque.getSeqcheq().toString() );
+			tab.setColunaInvisivel( enum_tab_lanca.CODPAG.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
+
+			tab.addMouseListener( this );
+
+			tab.setRowHeight( 22 );
+			tab.setFont( SwingParams.getFontboldmedmax() );
+
+			btSair.addActionListener( this );
+			btPrim.addActionListener( this );
+			btAnt.addActionListener( this );
+			btProx.addActionListener( this );
+			btUlt.addActionListener( this );
+			btNovo.addActionListener( this );
+			btEditar.addActionListener( this );
+			btExcluir.addActionListener( this );
+			btExec.addActionListener( this );
+			btCalcSaldo.addActionListener( this );
+			btAbreCheque.addActionListener( this );
+
+			tpn.addChangeListener( this );
+
+			Calendar cPeriodo = Calendar.getInstance();
+
+			txtDatafim.setVlrDate( cPeriodo.getTime() );
+			cPeriodo.set( Calendar.DAY_OF_YEAR, cPeriodo.get( Calendar.DAY_OF_YEAR ) - 7 );
+			txtDataini.setVlrDate( cPeriodo.getTime() );
+
+		}
+
+		private void mostraSaldoComposto(boolean mostra) {
+
+			txtVlrSaldoComposto.setVisible( mostra );
+			lbSaldoComposto.setVisible( mostra );
+
+		}
+
+		private void montaTabela( Date dini, Date dfim ) {
+
+			tab.limpa();
+
+			String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," 
+				+ "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," 
+				+ "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " 
+				+ "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
+				+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " 
+				+ "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " 
+				+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG "
+				+ " FROM FNSUBLANCA S, FNLANCA L " 
+				+ " WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
+				+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" 
+				+ " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" 
+				+ " ORDER BY S.DATASUBLANCA,S.CODLANCA";
+
+			try {
+
+
+				PreparedStatement ps = con.prepareStatement( sSQL );
+
+				ps.setDate( 1, Funcoes.dateToSQLDate( dini ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( dfim ) );
+				ps.setString( 3, sCodPlan );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+
+				ResultSet rs = ps.executeQuery();
+
+				for ( int i = 0; rs.next(); i++ ) {
+
+
+					tab.adicLinha();
+
+					tab.setValor( rs.getString( enum_tab_lanca.CODLANCA.name() ), i, enum_tab_lanca.CODLANCA.ordinal() );
+
+					tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_lanca.DATASUBLANCA.name() ) ), i, enum_tab_lanca.DATASUBLANCA.ordinal() );
+
+					tab.setValor( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ), i, enum_tab_lanca.TRANSFLANCA.ordinal() );
+
+					if ( "S".equals( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ) ) ) {
+						tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal() );
+					}
+
+					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+
+					tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal() );
+
+					tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+					//tab.setValor( "x", i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+
+					tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal() );				
+
+					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal() );
+					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal() );
+
+					Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_lanca.CODPAG.name()), rs.getInt( enum_tab_lanca.NPARCPAG.name() ));
+
+					if( cheques.size()>0 ) {
+
+						Vector<String> numcheques = new Vector<String>();
+						Vector<String> seqcheques = new Vector<String>();
+
+						for ( int ic = 0; cheques.size() > ic; ic++ ) {
+
+							Cheque cheque = (Cheque) cheques.get( ic );
+							numcheques.add( cheque.getNumcheq().toString() );
+							seqcheques.add( cheque.getSeqcheq().toString() );
+
+						}
+
+						tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal() );
+						tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal() );
 
 					}
-					
-					tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal() );
-					tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal() );
-					
+
 				}
-				
-			}
-			
-			rs.close();
-			ps.close();
+/*
+				tab.setDefaultRenderer ( Object.class, new DefaultTableCellRenderer() {
 
-			atualizaSaldo();
-			atualizaSaldoComposto();
-			
-		} 
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
-		}
-	}
-	
-	@ SuppressWarnings ( "unchecked" )
-	private void abreCheque() {
+					private static final long serialVersionUID = 1L;
 
-		if ( tab.getLinhaSel() > -1 ) {
+					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-			Integer seqcheque = null;
-			Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
-			
-			if(seqcheq!=null) {
-				seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
-			}
+						super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-			if(seqcheque!=null) {
-			
-				FCheque tela = null;
-				
-				if ( Aplicativo.telaPrincipal.temTela( FCheque.class.getName() ) ) {
-					tela = (FCheque) Aplicativo.telaPrincipal.getTela( FCheque.class.getName() );
+						if(row % 2 == 0) {
+							setBackground(new Color(210,215,220));
+						} 
+						else {
+							setBackground(null);
+						}
+						return this;
+					}
+
 				}
-				else {
-					tela = new FCheque();
-					Aplicativo.telaPrincipal.criatela( "Cheque", tela, con );
+
+
+				);
+
+*/
+
+				rs.close();
+				ps.close();
+
+				atualizaSaldo();
+				atualizaSaldoComposto();
+
+			} 
+			catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
+			}
+		}
+
+		@ SuppressWarnings ( "unchecked" )
+		private void abreCheque() {
+
+			if ( tab.getLinhaSel() > -1 ) {
+
+				Integer seqcheque = null;
+				Vector<String> seqcheq = (Vector) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
+
+				if(seqcheq!=null) {
+					seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
 				}
-				
-				if(seqcheque>0) {
-					tela.exec( seqcheque );
+
+				if(seqcheque!=null) {
+
+					FCheque tela = null;
+
+					if ( Aplicativo.telaPrincipal.temTela( FCheque.class.getName() ) ) {
+						tela = (FCheque) Aplicativo.telaPrincipal.getTela( FCheque.class.getName() );
+					}
+					else {
+						tela = new FCheque();
+						Aplicativo.telaPrincipal.criatela( "Cheque", tela, con );
+					}
+
+					if(seqcheque>0) {
+						tela.exec( seqcheque );
+					}
 				}
+
 			}
-			
+
 		}
 
-	}
+		private void montaTabs() {
 
-	private void montaTabs() {
+			tpn.setTabPlacement( SwingConstants.BOTTOM );
+			/*
+			 * String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 "+ "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN" + " AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP" +
+			 * " AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA"+ " FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6"+ " AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN" +
+			 * " AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? ORDER BY 4";
+			 */
 
-		tpn.setTabPlacement( SwingConstants.BOTTOM );
-		/*
-		 * String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 "+ "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN" + " AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP" +
-		 * " AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA"+ " FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6"+ " AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN" +
-		 * " AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? ORDER BY 4";
-		 */
+			String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 " 
+				+ "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN " 
+				+ "AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP "
+				+ "AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA " + "FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6 " 
+				+ "AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN "
+				+ "AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? " + "AND ( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU " + "WHERE CU.CODEMP=C.CODEMP AND CU.CODFILIAL=C.CODFILIAL AND " + "CU.NUMCONTA=C.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp
+				+ " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + "AND CU.IDUSU='" + Aplicativo.strUsuario + "') ) " + "ORDER BY 4";
 
-		String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 " 
-			+ "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN " 
-			+ "AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP "
-  		    + "AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA " + "FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6 " 
-  		    + "AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN "
-			+ "AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? " + "AND ( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU " + "WHERE CU.CODEMP=C.CODEMP AND CU.CODFILIAL=C.CODFILIAL AND " + "CU.NUMCONTA=C.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp
-			+ " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + "AND CU.IDUSU='" + Aplicativo.strUsuario + "') ) " + "ORDER BY 4";
-
-		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			ResultSet rs = ps.executeQuery();
-			for ( int i = 0; rs.next(); i++ ) {
-				if ( i == 0 ) {
-					sPlanos = new String[ rs.getInt( 1 ) ];
-					sContas = new String[ rs.getInt( 1 ) ];
-				}
-				sContas[ i ] = rs.getString( "NumConta" );
-				sPlanos[ i ] = rs.getString( "CodPlan" );
-				tpn.addTab( rs.getString( "DescConta" ).trim(), new JPanelPad( JPanelPad.TP_JPANEL ) );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch ( SQLException err ) {
-			System.out.println( "Erro ao montar as tabs!\n" + err.getMessage() );
-			err.printStackTrace();
-		}
-	}
-
-	private void atualizaSaldoComposto() {
-
-		int iCodEmp = 0;
-		int iCodFilial = 0;
-		StringBuilder sql = new StringBuilder();
- 
-		sql.append( "select	cv.numconta, "); 
-		
-		sql.append( "coalesce(sum(( ");
-		
-		sql.append( "	select s.saldosl from fnsaldolanca s ");
-		sql.append( "	where s.codplan=ct2.codplan and s.codemp=ct2.codemppn and s.codfilial=ct2.codfilialpn and s.codemppn=ct2.codemppn and ");
-		sql.append( "	s.codfilialpn=ct2.codfilialpn and s.datasl=");
-		sql.append( "	(select max(s1.datasl) ");		
-		sql.append( "		from fnsaldolanca s1 where s1.datasl <= ? and s1.codplan=s.codplan ");
-		sql.append( "		and s1.codemp=s.codemp and s1.codfilial=s.codfilial and s1.codemppn=s.codemppn and s1.codfilialpn=s.codfilialpn ");
-		sql.append( "	)" );
-
-		sql.append( ")),0) saldovinculado ");
-		
-		sql.append( "from fncontavinculada cv, fnconta ct2, fnconta ct1 ");
-		sql.append( "where ct2.codemp=cv.codempcv and ct2.codfilial=cv.codfilialcv and ct2.numconta=cv.numcontacv ");
-		sql.append( "and  ct1.codemppn=? and ct1.codfilialpn=? and ct1.codplan=? ");
-		sql.append( "and ct1.numconta=cv.numconta and ct1.codemp=cv.codemp and ct1.codfilial=cv.codfilial ");
-		sql.append( "group by 1 ");  
-		
-		try {
-			iCodEmp = Aplicativo.iCodEmp;
-			iCodFilial = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-			ps.setDate( 1, Funcoes.dateToSQLDate( dFimLanca ) );
-			ps.setInt( 2, iCodEmp );
-			ps.setInt( 3, iCodFilial );
-			ps.setString( 4, sCodPlan );	
-			
-			System.out.println("Query do saldo composto:" + sql.toString());
-
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				BigDecimal SaldoComposto = ConversionFunctions.stringCurrencyToBigDecimal( txtVlrSaldo.getVlrString() );
-				
-				SaldoComposto = SaldoComposto.add( rs.getBigDecimal( "SaldoVinculado" ) );
-				
-				txtVlrSaldoComposto.setVlrString( Funcoes.bdToStr( SaldoComposto, Aplicativo.casasDecFin ).toString());
-				mostraSaldoComposto( true );
-			}
-			else {
-				txtVlrSaldoComposto.setVlrString( "0,00" );
-				mostraSaldoComposto( false );
-			}
-			
-			rs.close();
-			ps.close();
-			// con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar o saldo composto!\n" + err.getMessage(), true, con, err );
-		}
-	}
-	
-	private void atualizaSaldo() {
-
-		int iCodEmp = 0;
-		int iCodFilial = 0;
-
-		String sSQL = "SELECT S.DATASL,S.SALDOSL FROM FNSALDOLANCA S WHERE S.CODPLAN=?" + " AND S.CODEMP=? AND S.CODFILIAL=? AND S.CODEMPPN=? AND S.CODFILIALPN=?" + " AND S.DATASL=(SELECT MAX(S1.DATASL)" + " FROM FNSALDOLANCA S1 WHERE S1.DATASL <= ? AND S1.CODPLAN=S.CODPLAN"
-				+ " AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL" + " AND S1.CODEMPPN=S.CODEMPPN AND S1.CODFILIALPN=S.CODFILIALPN)";
-		try {
-			iCodEmp = Aplicativo.iCodEmp;
-			iCodFilial = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
-			PreparedStatement ps = con.prepareStatement( sSQL );
-
-			ps.setString( 1, sCodPlan );
-			ps.setInt( 2, iCodEmp );
-			ps.setInt( 3, iCodFilial );
-			ps.setInt( 4, iCodEmp );
-			ps.setInt( 5, iCodFilial );
-			ps.setDate( 6, Funcoes.dateToSQLDate( dFimLanca ) );
-
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				lbDataSaldoVal.setText( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSl" ) ) );
-//				lbVlrSaldo.setText( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "SaldoSl" ) ) );
-				txtVlrSaldo.setVlrString( Funcoes.bdToStr( rs.getBigDecimal( "SaldoSl" ), Aplicativo.casasDecFin ).toString());
-				lbAtualSaldoVal.setText( "SIM" );
-			}
-			else {
-				lbDataSaldoVal.setText( "" );
-				txtVlrSaldo.setVlrString( "0,00" );
-				lbAtualSaldoVal.setText( "SEM" );
-			}
-			rs.close();
-			ps.close();
-			// con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar o saldo!\n" + err.getMessage(), true, con, err );
-		}
-	}
-
-	private void prim() {
-
-		if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) )
-			tab.setLinhaSel( 0 );
-	}
-
-	private void ant() {
-
-		int iLin = 0;
-		if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) ) {
-			iLin = tab.getLinhaSel();
-			if ( iLin > 0 )
-				tab.setLinhaSel( iLin - 1 );
-		}
-	}
-
-	private void prox() {
-
-		int iLin = 0;
-		if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) ) {
-			iLin = tab.getLinhaSel();
-			if ( iLin < ( tab.getNumLinhas() - 1 ) )
-				tab.setLinhaSel( iLin + 1 );
-		}
-	}
-
-	private void ult() {
-
-		if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) )
-			tab.setLinhaSel( tab.getNumLinhas() - 1 );
-	}
-
-	private boolean validaPeriodo() {
-
-		boolean bRetorno = false;
-		if ( txtDataini.getText().trim().length() == 0 ) {
-		}
-		else if ( txtDataini.getText().trim().length() < 10 ) {
-			Funcoes.mensagemInforma( this, "Data inicial inválida!" );
-		}
-		else if ( txtDatafim.getText().trim().length() < 10 ) {
-			Funcoes.mensagemInforma( this, "Data final inválida!" );
-		}
-		else if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( this, "Data final inicial que a data final!" );
-		}
-		else {
-			dIniLanca = txtDataini.getVlrDate();
-			dFimLanca = txtDatafim.getVlrDate();
-			bRetorno = true;
-		}
-		return bRetorno;
-	}
-
-	private void excluir() {
-
-		if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
 			try {
-				PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
-				ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), 0 ) );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
-				ps.executeUpdate();
+				PreparedStatement ps = con.prepareStatement( sSQL );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				ResultSet rs = ps.executeQuery();
+				for ( int i = 0; rs.next(); i++ ) {
+					if ( i == 0 ) {
+						sPlanos = new String[ rs.getInt( 1 ) ];
+						sContas = new String[ rs.getInt( 1 ) ];
+					}
+					sContas[ i ] = rs.getString( "NumConta" );
+					sPlanos[ i ] = rs.getString( "CodPlan" );
+					tpn.addTab( rs.getString( "DescConta" ).trim(), new JPanelPad( JPanelPad.TP_JPANEL ) );
+				}
+				rs.close();
 				ps.close();
 				con.commit();
-				montaTabela( dIniLanca, dFimLanca );
+
 			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
+				System.out.println( "Erro ao montar as tabs!\n" + err.getMessage() );
+				err.printStackTrace();
 			}
 		}
-	}
 
-	private void novo() {
+		private void atualizaSaldoComposto() {
 
-		if ( validaPeriodo() ) {
-			Container cont = getContentPane();
-			while ( true ) {
-				if ( cont instanceof FPrincipal )
-					break;
-				cont = cont.getParent();
-			}
-			if ( ! ( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
-				FSubLanca form = new FSubLanca( null, sCodPlan, dIniLanca, dFimLanca );
-				( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
-				form.addInternalFrameListener( new InternalFrameAdapter() {
+			int iCodEmp = 0;
+			int iCodFilial = 0;
+			StringBuilder sql = new StringBuilder();
 
-					public void internalFrameClosed( InternalFrameEvent ievt ) {
+			sql.append( "select	cv.numconta, "); 
 
-						adicLanca( ( (FSubLanca) ievt.getSource() ).getValores() );
-					}
-				} );
-			}
-		}
-	}
+			sql.append( "coalesce(sum(( ");
 
-	/*
-	 * Se o lancamento nao for uma transferencia e nao ter origem nesta conta ele nao pode ser editado
-	 */
-	private void editar() {
+			sql.append( "	select s.saldosl from fnsaldolanca s ");
+			sql.append( "	where s.codplan=ct2.codplan and s.codemp=ct2.codemppn and s.codfilial=ct2.codfilialpn and s.codemppn=ct2.codemppn and ");
+			sql.append( "	s.codfilialpn=ct2.codfilialpn and s.datasl=");
+			sql.append( "	(select max(s1.datasl) ");		
+			sql.append( "		from fnsaldolanca s1 where s1.datasl <= ? and s1.codplan=s.codplan ");
+			sql.append( "		and s1.codemp=s.codemp and s1.codfilial=s.codfilial and s1.codemppn=s.codemppn and s1.codfilialpn=s.codfilialpn ");
+			sql.append( "	)" );
 
-		if ( ( tab.getLinhaSel() >= 0 ) & ( validaPeriodo() ) ) {
-			if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "N" ) ) ) {
-				Funcoes.mensagemInforma( this, "Este lançamento não pode ser editato nesta conta!" );
-			}
-			else if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "S" ) ) ) {
-				DLDataTransf dl = new DLDataTransf( this );
-				dl.setVisible( true );
-				if ( !dl.OK ) {
-					dl.dispose();
-					return;
+			sql.append( ")),0) saldovinculado ");
+
+			sql.append( "from fncontavinculada cv, fnconta ct2, fnconta ct1 ");
+			sql.append( "where ct2.codemp=cv.codempcv and ct2.codfilial=cv.codfilialcv and ct2.numconta=cv.numcontacv ");
+			sql.append( "and  ct1.codemppn=? and ct1.codfilialpn=? and ct1.codplan=? ");
+			sql.append( "and ct1.numconta=cv.numconta and ct1.codemp=cv.codemp and ct1.codfilial=cv.codfilial ");
+			sql.append( "group by 1 ");  
+
+			try {
+				iCodEmp = Aplicativo.iCodEmp;
+				iCodFilial = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
+
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+				ps.setDate( 1, Funcoes.dateToSQLDate( dFimLanca ) );
+				ps.setInt( 2, iCodEmp );
+				ps.setInt( 3, iCodFilial );
+				ps.setString( 4, sCodPlan );	
+
+				System.out.println("Query do saldo composto:" + sql.toString());
+
+				ResultSet rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+
+					BigDecimal SaldoComposto = ConversionFunctions.stringCurrencyToBigDecimal( txtVlrSaldo.getVlrString() );
+
+					SaldoComposto = SaldoComposto.add( rs.getBigDecimal( "SaldoVinculado" ) );
+
+					txtVlrSaldoComposto.setVlrString( Funcoes.bdToStr( SaldoComposto, Aplicativo.casasDecFin ).toString());
+					mostraSaldoComposto( true );
 				}
-				Date dDtNova = dl.getValor();
-				dl.dispose();
-				String sSQL = "UPDATE FNSUBLANCA SET DATASUBLANCA=? WHERE CODLANCA = ? AND CODEMP=? AND CODFILIAL=? AND CODSUBLANCA > 0";
+				else {
+					txtVlrSaldoComposto.setVlrString( "0,00" );
+					mostraSaldoComposto( false );
+				}
+
+				rs.close();
+				ps.close();
+				// con.commit();
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao atualizar o saldo composto!\n" + err.getMessage(), true, con, err );
+			}
+		}
+
+		private void atualizaSaldo() {
+
+			int iCodEmp = 0;
+			int iCodFilial = 0;
+
+			String sSQL = "SELECT S.DATASL,S.SALDOSL FROM FNSALDOLANCA S WHERE S.CODPLAN=?" + " AND S.CODEMP=? AND S.CODFILIAL=? AND S.CODEMPPN=? AND S.CODFILIALPN=?" + " AND S.DATASL=(SELECT MAX(S1.DATASL)" + " FROM FNSALDOLANCA S1 WHERE S1.DATASL <= ? AND S1.CODPLAN=S.CODPLAN"
+			+ " AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL" + " AND S1.CODEMPPN=S.CODEMPPN AND S1.CODFILIALPN=S.CODFILIALPN)";
+			try {
+				iCodEmp = Aplicativo.iCodEmp;
+				iCodFilial = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
+				PreparedStatement ps = con.prepareStatement( sSQL );
+
+				ps.setString( 1, sCodPlan );
+				ps.setInt( 2, iCodEmp );
+				ps.setInt( 3, iCodFilial );
+				ps.setInt( 4, iCodEmp );
+				ps.setInt( 5, iCodFilial );
+				ps.setDate( 6, Funcoes.dateToSQLDate( dFimLanca ) );
+
+				ResultSet rs = ps.executeQuery();
+				if ( rs.next() ) {
+					lbDataSaldoVal.setText( StringFunctions.sqlDateToStrDate( rs.getDate( "DataSl" ) ) );
+					//				lbVlrSaldo.setText( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "SaldoSl" ) ) );
+					txtVlrSaldo.setVlrString( Funcoes.bdToStr( rs.getBigDecimal( "SaldoSl" ), Aplicativo.casasDecFin ).toString());
+					lbAtualSaldoVal.setText( "SIM" );
+				}
+				else {
+					lbDataSaldoVal.setText( "" );
+					txtVlrSaldo.setVlrString( "0,00" );
+					lbAtualSaldoVal.setText( "SEM" );
+				}
+				rs.close();
+				ps.close();
+				// con.commit();
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao atualizar o saldo!\n" + err.getMessage(), true, con, err );
+			}
+		}
+
+		private void prim() {
+
+			if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) )
+				tab.setLinhaSel( 0 );
+		}
+
+		private void ant() {
+
+			int iLin = 0;
+			if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) ) {
+				iLin = tab.getLinhaSel();
+				if ( iLin > 0 )
+					tab.setLinhaSel( iLin - 1 );
+			}
+		}
+
+		private void prox() {
+
+			int iLin = 0;
+			if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) ) {
+				iLin = tab.getLinhaSel();
+				if ( iLin < ( tab.getNumLinhas() - 1 ) )
+					tab.setLinhaSel( iLin + 1 );
+			}
+		}
+
+		private void ult() {
+
+			if ( ( tab != null ) & ( tab.getNumLinhas() > 0 ) )
+				tab.setLinhaSel( tab.getNumLinhas() - 1 );
+		}
+
+		private boolean validaPeriodo() {
+
+			boolean bRetorno = false;
+			if ( txtDataini.getText().trim().length() == 0 ) {
+			}
+			else if ( txtDataini.getText().trim().length() < 10 ) {
+				Funcoes.mensagemInforma( this, "Data inicial inválida!" );
+			}
+			else if ( txtDatafim.getText().trim().length() < 10 ) {
+				Funcoes.mensagemInforma( this, "Data final inválida!" );
+			}
+			else if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( this, "Data final inicial que a data final!" );
+			}
+			else {
+				dIniLanca = txtDataini.getVlrDate();
+				dFimLanca = txtDatafim.getVlrDate();
+				bRetorno = true;
+			}
+			return bRetorno;
+		}
+
+		private void excluir() {
+
+			if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
 				try {
-					PreparedStatement ps = con.prepareStatement( sSQL );
-					ps.setDate( 1, Funcoes.dateToSQLDate( dDtNova ) );
-					ps.setInt( 2, Integer.parseInt( (String) tab.getValor( tab.getLinhaSel(), 0 ) ) );
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					ps.setInt( 4, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+					PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
+					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), 0 ) );
+					ps.setInt( 2, Aplicativo.iCodEmp );
+					ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
 					ps.executeUpdate();
 					ps.close();
 					con.commit();
+					montaTabela( dIniLanca, dFimLanca );
 				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao atualizar a data da transferência!\n" + err.getMessage(), true, con, err );
+					Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
 				}
-				tab.setValor( Funcoes.dateToStrDate( dDtNova ), tab.getLinhaSel(), 1 );
-
 			}
-			else {
+		}
+
+		private void novo() {
+
+			if ( validaPeriodo() ) {
 				Container cont = getContentPane();
 				while ( true ) {
 					if ( cont instanceof FPrincipal )
@@ -734,186 +707,241 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					cont = cont.getParent();
 				}
 				if ( ! ( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
-					FSubLanca form = new FSubLanca( (String) tab.getValor( tab.getLinhaSel(), 0 ), sCodPlan, dIniLanca, dFimLanca );
+					FSubLanca form = new FSubLanca( null, sCodPlan, dIniLanca, dFimLanca );
 					( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
 					form.addInternalFrameListener( new InternalFrameAdapter() {
 
 						public void internalFrameClosed( InternalFrameEvent ievt ) {
 
-							altLanca( ( (FSubLanca) ievt.getSource() ).getValores() );
+							adicLanca( ( (FSubLanca) ievt.getSource() ).getValores() );
 						}
 					} );
 				}
 			}
 		}
-	}
 
-	private void adicLanca( String[] sVals ) {
+		/*
+		 * Se o lancamento nao for uma transferencia e nao ter origem nesta conta ele nao pode ser editado
+		 */
+		private void editar() {
 
-		int iLin = -1;
-		if ( ( sVals[ 0 ].length() > 0 ) && ( testaCodLanca( Integer.parseInt( sVals[ 0 ] ) ) ) && ( sCodPlan.equals( sVals[ 6 ] ) ) && ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) && ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
-			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-				if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
-					tab.tiraLinha( i );
-					break;
+			if ( ( tab.getLinhaSel() >= 0 ) & ( validaPeriodo() ) ) {
+				if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "N" ) ) ) {
+					Funcoes.mensagemInforma( this, "Este lançamento não pode ser editato nesta conta!" );
+				}
+				else if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "S" ) ) ) {
+					DLDataTransf dl = new DLDataTransf( this );
+					dl.setVisible( true );
+					if ( !dl.OK ) {
+						dl.dispose();
+						return;
+					}
+					Date dDtNova = dl.getValor();
+					dl.dispose();
+					String sSQL = "UPDATE FNSUBLANCA SET DATASUBLANCA=? WHERE CODLANCA = ? AND CODEMP=? AND CODFILIAL=? AND CODSUBLANCA > 0";
+					try {
+						PreparedStatement ps = con.prepareStatement( sSQL );
+						ps.setDate( 1, Funcoes.dateToSQLDate( dDtNova ) );
+						ps.setInt( 2, Integer.parseInt( (String) tab.getValor( tab.getLinhaSel(), 0 ) ) );
+						ps.setInt( 3, Aplicativo.iCodEmp );
+						ps.setInt( 4, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+						ps.executeUpdate();
+						ps.close();
+						con.commit();
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao atualizar a data da transferência!\n" + err.getMessage(), true, con, err );
+					}
+					tab.setValor( Funcoes.dateToStrDate( dDtNova ), tab.getLinhaSel(), 1 );
+
+				}
+				else {
+					Container cont = getContentPane();
+					while ( true ) {
+						if ( cont instanceof FPrincipal )
+							break;
+						cont = cont.getParent();
+					}
+					if ( ! ( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
+						FSubLanca form = new FSubLanca( (String) tab.getValor( tab.getLinhaSel(), 0 ), sCodPlan, dIniLanca, dFimLanca );
+						( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
+						form.addInternalFrameListener( new InternalFrameAdapter() {
+
+							public void internalFrameClosed( InternalFrameEvent ievt ) {
+
+								altLanca( ( (FSubLanca) ievt.getSource() ).getValores() );
+							}
+						} );
+					}
 				}
 			}
-			tab.adicLinha();
-			iLin = tab.getNumLinhas() - 1;
-			tab.setValor( sVals[ 0 ], iLin, 0 );
-			tab.setValor( sVals[ 1 ], iLin, 1 );
-			tab.setValor( sVals[ 2 ], iLin, 2 );
-			tab.setValor( "S", iLin, 3 );
-			if ( sVals[ 2 ].equals( "S" ) )
-				tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
-			else
-				tab.setValor( "", iLin, 4 );
-			tab.setValor( sVals[ 3 ], iLin, 5 );
-			tab.setValor( sVals[ 4 ], iLin, 6 );
-			tab.setValor( sVals[ 5 ], iLin, 7 );
 		}
-		lbAtualSaldoVal.setText( "NÃO" );
-	}
 
-	private void altLanca( String[] sVals ) {
+		private void adicLanca( String[] sVals ) {
 
-		int iLin = -1;
-		if ( ( sCodPlan.equals( sVals[ 6 ] ) ) & ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) & ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
-			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-				if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
-					iLin = i;
-					break;
+			int iLin = -1;
+			if ( ( sVals[ 0 ].length() > 0 ) && ( testaCodLanca( Integer.parseInt( sVals[ 0 ] ) ) ) && ( sCodPlan.equals( sVals[ 6 ] ) ) && ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) && ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+					if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
+						tab.tiraLinha( i );
+						break;
+					}
+				}
+				tab.adicLinha();
+				iLin = tab.getNumLinhas() - 1;
+				tab.setValor( sVals[ 0 ], iLin, 0 );
+				tab.setValor( sVals[ 1 ], iLin, 1 );
+				tab.setValor( sVals[ 2 ], iLin, 2 );
+				tab.setValor( "S", iLin, 3 );
+				if ( sVals[ 2 ].equals( "S" ) )
+					tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+				else
+					tab.setValor( "", iLin, 4 );
+				tab.setValor( sVals[ 3 ], iLin, 5 );
+				tab.setValor( sVals[ 4 ], iLin, 6 );
+				tab.setValor( sVals[ 5 ], iLin, 7 );
+			}
+			lbAtualSaldoVal.setText( "NÃO" );
+		}
+
+		private void altLanca( String[] sVals ) {
+
+			int iLin = -1;
+			if ( ( sCodPlan.equals( sVals[ 6 ] ) ) & ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) & ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+					if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
+						iLin = i;
+						break;
+					}
+				}
+				tab.setValor( sVals[ 0 ], iLin, 0 );
+				tab.setValor( sVals[ 1 ], iLin, 1 );
+				tab.setValor( sVals[ 2 ], iLin, 2 );
+				tab.setValor( "S", iLin, 3 );
+				if ( sVals[ 2 ].equals( "S" ) )
+					tab.setValor( sConta, iLin, 4 );
+				tab.setValor( sVals[ 3 ], iLin, 5 );
+				tab.setValor( sVals[ 4 ], iLin, 6 );
+				tab.setValor( sVals[ 5 ], iLin, 7 );
+			}
+			lbAtualSaldoVal.setText( "NÃO" );
+		}
+
+		private boolean testaCodLanca( int iCodLanca ) {
+
+			boolean bRetorno = false;
+			try {
+				PreparedStatement ps = con.prepareStatement( "SELECT CODLANCA FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
+				ps.setInt( 1, iCodLanca );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				if ( ( ps.executeQuery() ).next() )
+					bRetorno = true;
+
+				// con.commit();
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao testar o código do lnaçamento!\n" + err.getMessage(), true, con, err );
+			}
+			return bRetorno;
+		}
+
+		public void actionPerformed( ActionEvent evt ) {
+
+			if ( evt.getSource() == btSair )
+				dispose();
+			else if ( evt.getSource() == btPrim )
+				prim();
+			else if ( evt.getSource() == btAnt )
+				ant();
+			else if ( evt.getSource() == btProx )
+				prox();
+			else if ( evt.getSource() == btUlt )
+				ult();
+			else if ( evt.getSource() == btNovo )
+				novo();
+			else if ( evt.getSource() == btEditar )
+				editar();
+			else if ( evt.getSource() == btExcluir )
+				excluir();
+			else if ( evt.getSource() == btExec ) {
+				if ( validaPeriodo() ) {
+					montaTabela( dIniLanca, dFimLanca );
 				}
 			}
-			tab.setValor( sVals[ 0 ], iLin, 0 );
-			tab.setValor( sVals[ 1 ], iLin, 1 );
-			tab.setValor( sVals[ 2 ], iLin, 2 );
-			tab.setValor( "S", iLin, 3 );
-			if ( sVals[ 2 ].equals( "S" ) )
-				tab.setValor( sConta, iLin, 4 );
-			tab.setValor( sVals[ 3 ], iLin, 5 );
-			tab.setValor( sVals[ 4 ], iLin, 6 );
-			tab.setValor( sVals[ 5 ], iLin, 7 );
+			else if ( evt.getSource() == btCalcSaldo ) {
+				if ( validaPeriodo() ) {
+					atualizaSaldo();
+					atualizaSaldoComposto();
+				}
+			}
+			else if(evt.getSource() == btAbreCheque ) {
+				abreCheque( );
+			}
+
 		}
-		lbAtualSaldoVal.setText( "NÃO" );
-	}
 
-	private boolean testaCodLanca( int iCodLanca ) {
+		public void stateChanged( ChangeEvent cevt ) {
 
-		boolean bRetorno = false;
-		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT CODLANCA FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, iCodLanca );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
-			if ( ( ps.executeQuery() ).next() )
-				bRetorno = true;
-
-			// con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao testar o código do lnaçamento!\n" + err.getMessage(), true, con, err );
-		}
-		return bRetorno;
-	}
-
-	public void actionPerformed( ActionEvent evt ) {
-
-		if ( evt.getSource() == btSair )
-			dispose();
-		else if ( evt.getSource() == btPrim )
-			prim();
-		else if ( evt.getSource() == btAnt )
-			ant();
-		else if ( evt.getSource() == btProx )
-			prox();
-		else if ( evt.getSource() == btUlt )
-			ult();
-		else if ( evt.getSource() == btNovo )
-			novo();
-		else if ( evt.getSource() == btEditar )
-			editar();
-		else if ( evt.getSource() == btExcluir )
-			excluir();
-		else if ( evt.getSource() == btExec ) {
+			sCodPlan = sPlanos[ tpn.getSelectedIndex() ];
+			sConta = sContas[ tpn.getSelectedIndex() ];
 			if ( validaPeriodo() ) {
 				montaTabela( dIniLanca, dFimLanca );
 			}
 		}
-		else if ( evt.getSource() == btCalcSaldo ) {
-			if ( validaPeriodo() ) {
-				atualizaSaldo();
-				atualizaSaldoComposto();
+
+		public void setConexao( DbConnection cn ) {
+
+			super.setConexao( cn );
+			montaTabs();
+		}
+
+		@ SuppressWarnings ( "unchecked" )
+		public void mouseClicked( MouseEvent mevt ) {
+
+			if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
+				editar();
 			}
-		}
-		else if(evt.getSource() == btAbreCheque ) {
-			abreCheque( );
-		}
-		
-	}
+			else if ( mevt.getSource() == tab && mevt.getClickCount() == 1 ) {
 
-	public void stateChanged( ChangeEvent cevt ) {
+				btAbreCheque.setEnabled( false );
 
-		sCodPlan = sPlanos[ tpn.getSelectedIndex() ];
-		sConta = sContas[ tpn.getSelectedIndex() ];
-		if ( validaPeriodo() ) {
-			montaTabela( dIniLanca, dFimLanca );
-		}
-	}
+				if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
 
-	public void setConexao( DbConnection cn ) {
+					Vector<String> seqcheq = (Vector<String>) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
 
-		super.setConexao( cn );
-		montaTabs();
-	}
+					if(seqcheq!=null) {
+						Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
 
-	@ SuppressWarnings ( "unchecked" )
-	public void mouseClicked( MouseEvent mevt ) {
-
-		if ( mevt.getSource() == tab && mevt.getClickCount() == 2 ) {
-			editar();
-		}
-		else if ( mevt.getSource() == tab && mevt.getClickCount() == 1 ) {
-					
-			btAbreCheque.setEnabled( false );
-					
-			if( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())!=null && !"".equals( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal())) ) {
-						
-				Vector<String> seqcheq = (Vector<String>) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
-						
-				if(seqcheq!=null) {
-					Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
-							
-					if(seqcheque>0) {
-						btAbreCheque.setEnabled( true );
+						if(seqcheque>0) {
+							btAbreCheque.setEnabled( true );
+						}
 					}
 				}
+
 			}
-					
+
 		}
-		
-	}
 
-	public void mouseEntered( MouseEvent arg0 ) {
+		public void mouseEntered( MouseEvent arg0 ) {
 
-		// TODO Auto-generated method stub
-		
-	}
+			// TODO Auto-generated method stub
 
-	public void mouseExited( MouseEvent arg0 ) {
+		}
 
-		// TODO Auto-generated method stub
-		
-	}
+		public void mouseExited( MouseEvent arg0 ) {
 
-	public void mousePressed( MouseEvent arg0 ) {
+			// TODO Auto-generated method stub
 
-		// TODO Auto-generated method stub
-		
-	}
+		}
 
-	public void mouseReleased( MouseEvent arg0 ) {
+		public void mousePressed( MouseEvent arg0 ) {
 
-		// TODO Auto-generated method stub
-		
-	}
+			// TODO Auto-generated method stub
+
+		}
+
+		public void mouseReleased( MouseEvent arg0 ) {
+
+			// TODO Auto-generated method stub
+
+		}
 }
