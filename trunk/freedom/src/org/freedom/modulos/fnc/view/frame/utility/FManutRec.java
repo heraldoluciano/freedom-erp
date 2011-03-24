@@ -984,20 +984,22 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			dl.dispose();
 			
 			if(dl.OK){
-				PreparedStatement ps = null;
-				
-				StringBuilder sqlDelete = new StringBuilder();
-				sqlDelete.append( "delete from fnreceber ");
-				sqlDelete.append( "where codemp = ? and codfilial = ? " );
-				sqlDelete.append( "and codrec = ?" );
-				
-				ps = con.prepareStatement( sqlDelete.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
-				ps.setInt( 3, iCodRec );
-				
-				ps.executeUpdate();
-				con.commit();
+				if( Funcoes.mensagemConfirma( this, "Confirmar exclusão da renegociação?" ) == JOptionPane.YES_OPTION){
+					PreparedStatement ps = null;
+					
+					StringBuilder sqlDelete = new StringBuilder();
+					sqlDelete.append( "delete from fnreceber ");
+					sqlDelete.append( "where codemp = ? and codfilial = ? " );
+					sqlDelete.append( "and codrec = ?" );
+					
+					ps = con.prepareStatement( sqlDelete.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, Aplicativo.iCodFilial );
+					ps.setInt( 3, iCodRec );
+					
+					ps.executeUpdate();
+					con.commit();
+				}
 			}
 	
 		} catch ( Exception e ) {

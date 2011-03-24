@@ -34,8 +34,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -149,7 +147,6 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC, VLRPARC
 	};
 	
-	private boolean renegociacao;
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
@@ -372,7 +369,6 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 			btOK.setVisible( bEdita );
 		}
 		
-		this.renegociacao = false;
 	}
 	
 	public DLEditaRec( Component cOrig, final boolean bEdita, boolean renegociacao ) {
@@ -383,7 +379,6 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 			btOK.setVisible( true );
 			btOK.setText( "Ext. Reneg." );
 			btOK.setPreferredSize(new Dimension(150, 30));
-			this.renegociacao = true;
 		}
 	}
 
@@ -451,11 +446,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if(evt.getSource() == btOK && renegociacao){
-			if( Funcoes.mensagemConfirma( this, "Confirmar exclusão da renegociação?" ) == JOptionPane.YES_OPTION){
-				super.actionPerformed( evt );	
-			}
-		}else if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
+		 if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
 			Funcoes.mensagemInforma( this, "Data do vencimento é requerido!" );
 		}else{
 			super.actionPerformed( evt );
