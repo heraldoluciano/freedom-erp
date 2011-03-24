@@ -412,30 +412,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					}
 
 				}
-/*
-				tab.setDefaultRenderer ( Object.class, new DefaultTableCellRenderer() {
-
-					private static final long serialVersionUID = 1L;
-
-					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-
-						super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-						if(row % 2 == 0) {
-							setBackground(new Color(210,215,220));
-						} 
-						else {
-							setBackground(null);
-						}
-						return this;
-					}
-
-				}
-
-
-				);
-
-*/
 
 				rs.close();
 				ps.close();
