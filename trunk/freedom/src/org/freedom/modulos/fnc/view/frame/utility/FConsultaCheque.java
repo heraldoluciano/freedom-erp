@@ -177,6 +177,8 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 	
 	private JCheckBoxPad cbDevolvido = new JCheckBoxPad( Cheque.SIT_CHEQUE_DEVOLVIDO.getName() + "s", "S", "N" );
 	
+	private JCheckBoxPad cbCancelado = new JCheckBoxPad( Cheque.SIT_CHEQUE_CANCELADO.getName() + "s", "S", "N" );
+	
 	private ListaCampos lcFor = new ListaCampos( this );
 
 
@@ -299,6 +301,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		panelMaster.adic( cbEmitido, 130, 105, 120, 20 );
 		panelMaster.adic( cbDevolvido, 260, 105, 120, 20 );
 		panelMaster.adic( cbCompensado, 390, 105, 120, 20 );
+		panelMaster.adic( cbCancelado, 510, 105, 120, 20 );
 		
 		cbCadastrado.setVlrString( "S" );
 		cbEmitido.setVlrString( "S" );
@@ -558,6 +561,9 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 			}
 			if ( "S".equals(cbCompensado.getVlrString()) ) {
 				status_cheque.addElement( Cheque.SIT_CHEQUE_COMPENSADO.getValue().toString() );
+			}
+			if ( "S".equals(cbCancelado.getVlrString()) ) {
+				status_cheque.addElement( Cheque.SIT_CHEQUE_CANCELADO.getValue().toString() );
 			}
 			
 			sql.append( " and ch.sitcheq in ('" + Funcoes.vectorToString( status_cheque, "','" ) + "') " );
