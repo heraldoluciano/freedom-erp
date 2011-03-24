@@ -33,10 +33,12 @@ public class Cheque {
 	public static final Constant SIT_CHEQUE_COMPENSADO = new Constant( "Compensado", "CD" );
 
 	public static final Constant SIT_CHEQUE_DEVOLVIDO = new Constant( "Devolvido", "DV" );
+	
+	public static final Constant SIT_CHEQUE_CANCELADO = new Constant( "Cancelado", "CN" );
 
 	private Integer seqcheq;
 
-	private String codbanc;
+	private String codbanc; 
 
 	private String agenciacheq;
 
@@ -212,6 +214,7 @@ public class Cheque {
 		ret.add( SIT_CHEQUE_COMPENSADO.getName().toString() );
 		ret.add( SIT_CHEQUE_DEVOLVIDO.getName().toString() );
 		ret.add( SIT_CHEQUE_EMITIDO.getName().toString() );
+		ret.add( SIT_CHEQUE_CANCELADO.getName().toString() );
 
 		return ret;
 
@@ -227,6 +230,7 @@ public class Cheque {
 		ret.add( SIT_CHEQUE_COMPENSADO.getValue().toString() );
 		ret.add( SIT_CHEQUE_DEVOLVIDO.getValue().toString() );
 		ret.add( SIT_CHEQUE_EMITIDO.getValue().toString() );
+		ret.add( SIT_CHEQUE_CANCELADO.getValue().toString() );
 
 		return ret;
 
