@@ -964,12 +964,42 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		DLEditaRec dl = null;
 		Object[] sVals = new Object[ 18 ];
 		try {
-			dl = new DLEditaRec( this, false );
+			
+			int iLin = tabManut.getLinhaSel();
+			ImageIcon imgStatus = (ImageIcon) tabManut.getValor( iLin, EColTabManut.IMGSTATUS.ordinal() );
+			boolean renegociacao = false;
+			if ( imgStatus == imgRenegociadoNaoVencido || imgStatus == imgRenegociadoPago ||
+					imgStatus == imgRenegociadoVencido){
+				renegociacao = true;
+			}
+			
+			Integer iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
+			//Integer iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
+			
+			dl = new DLEditaRec( this, false, renegociacao );
 			sVals = getTabManutValores();
 			dl.setConexao( con );
 			dl.setValores( sVals );
 			dl.setVisible( true );
 			dl.dispose();
+			
+			if(dl.OK){
+				PreparedStatement ps = null;
+				
+				StringBuilder sqlDelete = new StringBuilder();
+				sqlDelete.append( "delete from fnreceber ");
+				sqlDelete.append( "where codemp = ? and codfilial = ? " );
+				sqlDelete.append( "and codrec = ?" );
+				
+				ps = con.prepareStatement( sqlDelete.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setInt( 3, iCodRec );
+				
+				ps.executeUpdate();
+				con.commit();
+			}
+	
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

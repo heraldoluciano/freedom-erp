@@ -24,6 +24,7 @@
 package org.freedom.modulos.fnc.view.dialog.utility;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -32,6 +33,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -137,7 +140,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
-
+	
 	public enum EColEdit {
 		CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, CORREC, NPARCITREC
 	};
@@ -145,6 +148,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	public enum EColRet {
 		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC, VLRPARC
 	};
+	
+	private boolean renegociacao;
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
@@ -363,9 +368,23 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 			txtVlrJuros.setAtivo( bEdita );
 			txtVlrParc.setAtivo( bEdita );
 			txtCodBordero.setAtivo( bEdita );
+			cbDescPont.setEnabled( bEdita );
 			btOK.setVisible( bEdita );
 		}
-
+		
+		this.renegociacao = false;
+	}
+	
+	public DLEditaRec( Component cOrig, final boolean bEdita, boolean renegociacao ) {
+		this( cOrig, bEdita );
+		
+		if(renegociacao){
+			//btOK.setIcon( Icone.novo( "" ) );
+			btOK.setVisible( true );
+			btOK.setText( "Ext. Reneg." );
+			btOK.setPreferredSize(new Dimension(150, 30));
+			this.renegociacao = true;
+		}
 	}
 
 	public void setValores( Object[] sVals ) {
@@ -432,12 +451,20 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
+		if(evt.getSource() == btOK && renegociacao){
+			if( Funcoes.mensagemConfirma( this, "Confirmar exclusão da renegociação?" ) == JOptionPane.YES_OPTION){
+				super.actionPerformed( evt );	
+			}
+		}else if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
 			Funcoes.mensagemInforma( this, "Data do vencimento é requerido!" );
-		}
-		else {
+		}else{
 			super.actionPerformed( evt );
 		}
+	}
+	
+	private void extornaRenegociacao(){
+		StringBuilder sb = new StringBuilder();
+		
 	}
 
 	private int buscaAnoBaseCC() {
