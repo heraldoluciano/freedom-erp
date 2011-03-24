@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
@@ -32,6 +33,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -49,6 +51,7 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
+import org.freedom.modulos.fnc.view.frame.utility.FConsultaCheque;
 
 /**
  * Cadastro cheques.
@@ -537,13 +540,23 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		super.beforePost( e );
 
-		if(e.getListaCampos() == lcDet ) {
+		if(e.getListaCampos() == lcCampos ) {
+			
+			if(Cheque.SIT_CHEQUE_CANCELADO.getValue().equals( cbSitCheq.getVlrString() )) {
+				
+				if( ( Funcoes.mensagemConfirma( this, "O cancelamento do cheque implica em desvinculá-lo às contas pagas!\nConfirma o cancelamento?" ) == JOptionPane.NO_OPTION) ) {
+					e.cancela();
+				}
+				
+			}
+			
+		}
+		else if(e.getListaCampos() == lcDet ) {
 			txtCodEmpCH.setVlrInteger( lcCampos.getCodEmp() );
 			txtCodFilialCH.setVlrInteger( lcCampos.getCodFilial() );
 		}
 
 	}
-	
 
 	public void afterPost( PostEvent e ) {
 
