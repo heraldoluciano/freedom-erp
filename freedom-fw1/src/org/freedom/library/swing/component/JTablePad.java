@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -73,11 +74,19 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 	public JTablePad() {
 
 		setModel(modelo);
+
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 		setAutoResizeMode(AUTO_RESIZE_OFF);
 
 		setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo BigDecimal
+		 * 
+		 *******************************************************/
 		DefaultTableCellRenderer bigDecimalRenderer = new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 1L;
@@ -86,7 +95,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 				setText(( value == null ) ? "" : "" + value);
 			}
-			
+
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -95,8 +104,8 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 					setBackground(new Color(160,170,210));
 				}
 				else {
-					
-				
+
+
 					if(row % 2 == 0) {
 						setBackground(new Color(210,215,220));
 					} 
@@ -104,14 +113,20 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 						setBackground(null);
 					}
 				}
-				
+
 				return this;
 			}
-			
+
 		};
 
 		bigDecimalRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		setDefaultRenderer(BigDecimal.class, bigDecimalRenderer);
+
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo Integer
+		 * 
+		 *******************************************************/
 		
 		DefaultTableCellRenderer intDecimalRenderer = new DefaultTableCellRenderer() {
 
@@ -121,7 +136,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 				setText(( value == null ) ? "" : "" + value);
 			}
-			
+
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -130,7 +145,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 					setBackground(new Color(160,170,210));
 				}
 				else {
-				
+
 					if(row % 2 == 0) {
 						setBackground(new Color(210,215,220));
 					} 
@@ -140,14 +155,19 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				}
 				return this;
 			}
-			
+
 		};
 
 		intDecimalRenderer.setHorizontalAlignment(SwingConstants.LEFT);
 
-		
 		setDefaultRenderer(Integer.class, intDecimalRenderer);
 
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo StringDireita
+		 * 
+		 *******************************************************/
+		
 		DefaultTableCellRenderer stringDireitaRenderer = new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 1L;
@@ -160,7 +180,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				
+
 				if(isSelected) {
 					setBackground(new Color(160,170,210));
 				}
@@ -172,12 +192,62 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 						setBackground(null);
 					}
 				}
-				
+
 				return this;
 			}
 
 		};
+		
+		stringDireitaRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+		setDefaultRenderer(StringDireita.class, stringDireitaRenderer);
 
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo Imagem
+		 * 
+		 *******************************************************/
+		
+		DefaultTableCellRenderer imageIconRenderer = new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void setValue(Object value)	{ 
+			
+				if (value != null)	{
+					setIcon((ImageIcon)value);
+				}
+			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+					setBackground(new Color(160,170,210));
+				}
+				else {
+					if(row % 2 == 0) {
+						setBackground(new Color(210,215,220));
+					} 
+					else {
+						setBackground(null);
+					}
+				}
+
+				return this;
+			}
+
+		};
+		
+		imageIconRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		setDefaultRenderer(ImageIcon.class, imageIconRenderer);
+		
+		/*******************************************************
+		 * 
+		 * Configuração visual para demais tipos de dados
+		 * 
+		 *******************************************************/
+		
 		setDefaultRenderer ( Object.class, new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 1L;
@@ -190,7 +260,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 					setBackground(new Color(160,170,210));
 				}
 				else {
-				
+
 					if(row % 2 == 0) {
 						setBackground(new Color(210,215,220));
 					} 
@@ -198,15 +268,14 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 						setBackground(null);
 					}
 				}
-				
+
 				return this;
 			}
 
 		});
 
 
-		stringDireitaRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		setDefaultRenderer(StringDireita.class, stringDireitaRenderer);
+	
 		setDefaultEditor(Date.class, new DateEditor());
 
 	}
