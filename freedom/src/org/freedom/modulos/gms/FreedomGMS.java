@@ -86,6 +86,7 @@ import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.detail.FSimilar;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.plain.FEntrega;
 import org.freedom.modulos.std.view.frame.crud.plain.FEstacao;
 import org.freedom.modulos.std.view.frame.crud.plain.FFrete;
 import org.freedom.modulos.std.view.frame.crud.plain.FImpressora;
@@ -239,6 +240,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Cancela venda", "Cancelamento", 'C', 300200000, 1, true, FCancVenda.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Devolução de vendas", "Devolução de vendas", 'D', 300300000, 1, true, FDevolucao.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Lançamento de Frete", "Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Lançamento canhotos de entrega", "Lançamento de canhotos de entrega", 'h', 301500000, 1, true, FEntrega.class );
 		addSeparador( 300000000 );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 300500000, 1, true, FAprovCancOrc.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 300600000, 1, true, FOrcamento.class );
