@@ -137,6 +137,10 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private ListaCampos lcUsu = new ListaCampos( this );
 	
 	private JButtonPad btFaturaOrc = new JButtonPad( "Faturamento", Icone.novo( "btVenda.gif" ) );
+	
+	private enum enum_GRID_ORC { STATUS, CODORC, PED, NF, CODCLI, NOMECLI, DATA, VALIDADE, AUTORIZ, VALOR, CIDADE, FONE, VALORFATURADO };
+	
+	private enum enum_QUERY_ORC { STATUSORC, CODORC, DTORC, DTVENCORC, CODCLI, NOMECLI, FONECLI, NUMAUTORIZORC, CIDCLI, APROVITORC, VLRLIQITORC, CODVENDA, DOCVENDA, VLRLIQITVENDA };
 
 	public FPesquisaOrc() {
 
@@ -401,14 +405,18 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 		sql.append( "SELECT" );
 		
-		if ( "S".equals( cbAgrupar.getVlrString() ) )
-			sql.append( " DISTINCT" );
 		sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
-		sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," );
+		sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,");
+		/*
+		if ( ! "S".equals( cbAgrupar.getVlrString() ) ) {
+			sql.append( "'' VENCAUTORIZORC,");
+		}
+		*/
+		sql.append( "IT.NUMAUTORIZORC," );
 		
 		if ( "S".equals( cbAgrupar.getVlrString() ) ) {
-			sql.append( "  CL.CIDCLI,IT.APROVITORC,O.VLRLIQORC VLRLIQITORC," );
-			sql.append( "  VO.CODVENDA,VD.DOCVENDA,VD.vlrliqvenda VLRLIQITVENDA " );
+			sql.append( "  CL.CIDCLI,IT.APROVITORC,sum(it.VLRLIQITORC) VLRLIQITORC," );
+			sql.append( "  VO.CODVENDA,VD.DOCVENDA,sum(ivd.vlrliqitvenda) VLRLIQITVENDA " );
 		}
 		else {
 			sql.append( "  CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC," );
@@ -426,10 +434,17 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
 		sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
 		sql.append( where );
+		
+		if ( "S".equals( cbAgrupar.getVlrString() ) ) {
+			sql.append(" group by 1,2,3,4,5,6,7,8,9,10,12,13 ");
+		}
+		
 		sql.append( "ORDER BY 2" );
 
 		try {
 
+			System.out.println("SQL:" + sql.toString());
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 			int param = 1;
@@ -460,20 +475,41 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
+			
 			while ( rs.next() ) {
+				
 				tab.adicLinha();
-				tab.setValor( rs.getString( 1 ) + "", iLin, 0 );
-				tab.setValor( new Integer( rs.getInt( 2 ) ), iLin, 1 );
-				tab.setValor( rs.getString( 13 ) == null ? "-" : rs.getString( 13 ) + "", iLin, 2 );
-				tab.setValor( rs.getString( 14 ) == null ? "-" : rs.getString( 14 ) + "", iLin, 3 );
-				tab.setValor( rs.getInt( 5 ) + "", iLin, 4 );
-				tab.setValor( rs.getString( 6 ) != null ? rs.getString( 6 ) : "", iLin, 5 );
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 3 ) ), iLin, 6 );
-				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( 4 ) ), iLin, 7 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( 12 ) != null ? rs.getString( 12 ) : "" ), iLin, 9 );
-				tab.setValor( rs.getString( 9 ) != null ? rs.getString( 9 ) : "", iLin, 8 );
-				tab.setValor( rs.getString( 10 ) != null ? rs.getString( 10 ) : "", iLin, 10 );
-				tab.setValor( rs.getString( 7 ) != null ? rs.getString( 7 ).trim() : "", iLin, 11 );
+				
+				// STATUS, CODORC, PED, NF, CODCLI, NOMECLI, DATA, VALIDADE, AUTORIZ, VALOR, CIDADE, FONE, VALORFATURADO };
+				
+				// STATUSORC, CODORC, DTORC, DTVENCORC, CODCLI, NOMECLI, FONECLI, NUMAUTORIZORC, CIDCLI, APROVITORC, VLRLIQITORC, CODVENDA, DOCVENDA, VLRLIQITVENDA };
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.STATUSORC.name() ) + "", iLin, enum_GRID_ORC.STATUS.ordinal() ); 				
+				
+				tab.setValor( new Integer( rs.getInt( enum_QUERY_ORC.CODORC.name() ) ), iLin, enum_GRID_ORC.CODORC.ordinal() ); 
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.CODVENDA.name() ) == null ? "-" : rs.getString( enum_QUERY_ORC.CODVENDA.name() ) + "", iLin, enum_GRID_ORC.PED.ordinal() );
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.DOCVENDA.name() ) == null ? "-" : rs.getString( enum_QUERY_ORC.DOCVENDA.name() ) + "", iLin, enum_GRID_ORC.NF.ordinal() );
+				
+				tab.setValor( rs.getInt( enum_QUERY_ORC.CODCLI.name() ) + "", iLin, enum_GRID_ORC.CODCLI.ordinal() );
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.NOMECLI.name() ) + "", iLin, enum_GRID_ORC.NOMECLI.ordinal() );
+				
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_QUERY_ORC.DTORC.name() ) ), iLin, enum_GRID_ORC.DATA.ordinal() );
+				
+				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_QUERY_ORC.DTVENCORC.name() ) ), iLin, enum_GRID_ORC.VALIDADE.ordinal() );
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.NUMAUTORIZORC.name() ) != null ? rs.getString( enum_QUERY_ORC.NUMAUTORIZORC.name() ) : "", iLin, enum_GRID_ORC.AUTORIZ.ordinal() ); 
+				
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) : "" ), iLin, enum_GRID_ORC.VALOR.ordinal() );
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.CIDCLI.name() ) != null ? rs.getString( enum_QUERY_ORC.CIDCLI.name() ).trim() : "", iLin, enum_GRID_ORC.CIDADE.ordinal() );
+				
+				tab.setValor( rs.getString( enum_QUERY_ORC.FONECLI.name() ) != null ? rs.getString( enum_QUERY_ORC.FONECLI.name() ) : "", iLin, enum_GRID_ORC.FONE.ordinal() );
+				
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) : "" ), iLin, enum_GRID_ORC.VALORFATURADO.ordinal() );
+				
 				iLin++;
 			}
 			con.commit();
