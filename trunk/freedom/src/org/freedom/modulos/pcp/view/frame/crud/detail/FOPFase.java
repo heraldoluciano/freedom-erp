@@ -173,7 +173,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		lcProd.setUsaME( false );
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "TIPOPROD='F'" );
+		
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
