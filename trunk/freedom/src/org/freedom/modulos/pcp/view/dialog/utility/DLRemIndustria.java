@@ -561,8 +561,6 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			
 			int inserido = ps.executeUpdate();
 			
-			
-			
 			if(inserido>0) {
 				if ( Funcoes.mensagemConfirma( null, "Remessa '" + codvenda + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
 					vendaSTD = new FVenda();
@@ -651,7 +649,7 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
 	
-		sql.append("update ppitop set codempvd=?, codfilialvd=?, codvenda=? " );
+		sql.append("update ppitop set codempvd=?, codfilialvd=?, codvenda=?, tipovenda=? " );
 		sql.append("where codemp=? and codfilial=? and codop=? and seqop=? and seqitop=?");
 
 		try {
@@ -661,12 +659,13 @@ public class DLRemIndustria extends FFDialogo implements MouseListener, ActionLi
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 3, codvenda );
+			ps.setString( 4, "V" );
 			
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 6, codop );
-			ps.setInt( 7, seqop );
-			ps.setInt( 8, seqitop );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 7, codop );
+			ps.setInt( 8, seqop );
+			ps.setInt( 9, seqitop );
 			
 			ps.executeUpdate();
 			
