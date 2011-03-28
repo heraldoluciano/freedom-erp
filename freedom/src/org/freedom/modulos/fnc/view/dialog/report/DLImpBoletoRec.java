@@ -34,6 +34,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.Empresa;
+import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
@@ -43,6 +44,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
 public class DLImpBoletoRec extends FDialogo {
 
@@ -129,7 +131,13 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
 		sSQL.append( "C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero, r.vlrrec " );
+		sSQL.append( "CT.AGENCIACONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, R.CODREC, itr.seqnossonumero, r.vlrrec,mb.TxaModBol " );
+		// Implementação para permitir a impressão de boleto pré-impresso.
+		sSQL.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec,");
+		sSQL.append( "(SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, ");
+		sSQL.append( "r.codcli, c.nomecli, c.rgcli, c.fonecli, c.dddcli, r.codvenda, r.vlrapagrec, '' nomevend, '' nomevend2, '' nomevend3, '' nomevend4 ");
+				
+		
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
 		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO " );
 		sSQL.append( "WHERE " );
@@ -161,14 +169,72 @@ public class DLImpBoletoRec extends FDialogo {
 			ps.setInt( 6, codRec );
 			ps.setInt( 7, parcRec );
 			rs = ps.executeQuery();
-
-			imprimeGrafico( true, rs );
+		
+			if ( txtClassModBol.getVlrString() == null || "".equals( txtClassModBol.getVlrString() )) {
+				imprimeTexto( true, rs );
+			}
+			else {
+				imprimeGrafico( true, rs );
+			}
+			
+			
 
 		} catch ( SQLException err ) {
 
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar dados do boleto!" );
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs ) throws Exception {
+
+		String sVal = null;
+		ImprimeOS imp = null;
+		imp = new ImprimeOS( "", con );
+		imp.verifLinPag();
+		imp.setTitulo( "Boleto" );
+		String[] sNat = null;
+		
+		if ( rs.next() ) {
+			
+			sNat = new String[ 2 ];
+			sNat[ 0 ] = "" ;
+			sNat[ 1 ] = "" ;
+			sVal = FRBoleto.aplicCampos( rs, sNat, FRBoleto.getMoeda() );
+
+			if ( sVal != null ) {
+
+				String[] sLinhas = ( sVal + " " ).split( "\n" );
+
+				for ( int i = 0; i < sLinhas.length; i++ ) {
+					if ( i == 0 ) {
+						imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
+						imp.say( imp.pRow(), 0, sLinhas[ i ] );
+					}
+					else {
+						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
+					}
+				}
+			}
+		}
+
+		rs.close();
+		con.commit();
+		
+		imp.fechaGravacao();
+
+		if ( bVisualizar ) {
+			
+			imp.preview( owner );
+			
+		}
+		else {
+			imp.print();
+		}
+		
 	}
 
 	private HashMap<String, Object> getParametros() {
