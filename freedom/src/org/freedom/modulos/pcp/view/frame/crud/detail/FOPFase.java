@@ -318,7 +318,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 		if ( sTipo.equals( "CQ" ) ) {
 
-			sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND STATUS='PE' AND CODOP=? AND SEQOP=?" );
+			sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND STATUS='PE' AND CODOP=? AND SEQOP=? AND SEQEF<=?" );
 
 			try {
 
@@ -327,6 +327,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
 				ps.setInt( 3, txtCodOP.getVlrInteger() );
 				ps.setInt( 4, txtSeqOP.getVlrInteger() );
+				ps.setInt( 5, txtNumSeqOf.getVlrInteger() );
 
 				ResultSet rs = ps.executeQuery();
 
