@@ -3261,10 +3261,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtQtdItVenda.setVlrBigDecimal( qtd );
 		txtPrecoItVenda.requestFocus();
 		txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );
+		
+		calcDescIt();
+		calcVlrProd();
 
 		getCFOP();
 		getTratTrib();
 
+		calcImpostos( true );
+		getCalcImpostos();
+		
 		lcDet.post();
 	}
 	
