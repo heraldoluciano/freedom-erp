@@ -95,9 +95,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JLabelPad lbVencido = new JLabelPad( "Vencido", imgVencido, SwingConstants.LEFT );
 
-	private JLabelPad lbParcial = new JLabelPad( "Parcial", imgPagoParcial, SwingConstants.LEFT );
+	private JLabelPad lbParcial = new JLabelPad( "Pg.Parcial", imgPagoParcial, SwingConstants.LEFT );
 
-	private JLabelPad lbPago = new JLabelPad( "Pago", imgPago, SwingConstants.LEFT );
+	private JLabelPad lbPago = new JLabelPad( "Quitado", imgPago, SwingConstants.LEFT );
 
 	private JLabelPad lbVencer = new JLabelPad( "À vencer", imgNaoVencido, SwingConstants.LEFT );
 
@@ -332,6 +332,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			setAtribos( 20, 20, 840, 600 );
 
 			cbAPagar.setVlrString( "S" );
+			cbPagParcial.setVlrString( "S" );
 
 			Container c = getContentPane();
 			c.setLayout( new BorderLayout() );
@@ -989,6 +990,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					else if ( bdVlrPago > 0 ) {
 						imgColuna = imgPagoParcial;
 						bdTotParcial += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrPagoItPag" ) ).floatValue();
+			
+						if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
+							bdTotVencido += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+						}
+						else {
+							bdTotVencer += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+						}
+						
 					}
 					else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
 						imgColuna = imgVencido;
@@ -1098,6 +1107,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					else if ( bdVlrPago > 0 ) {
 						imgColuna = imgPagoParcial;
 						bdTotParcial += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrPagoItPag" ) ).floatValue();
+						
+						if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
+							bdTotVencido += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+						}
+						else {
+							bdTotVencer += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+						}
+
 					}
 					else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
 						imgColuna = imgVencido;
@@ -1313,6 +1330,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							else if ( bdVlrPago > 0 ) {
 								imgColuna = imgPagoParcial;
 								bdTotParcial += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrPagoItPag" ) ).floatValue();
+								
+								if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
+									bdTotVencido += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+								}
+								else {
+									bdTotVencer += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRApagItPag" ) ).floatValue();
+								}
+
 							}
 							else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
 								imgColuna = imgVencido;
