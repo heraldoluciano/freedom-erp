@@ -25,7 +25,6 @@
 package org.freedom.modulos.pcp.view.frame.report;
 
 import java.awt.Color;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -188,12 +187,12 @@ public class FRBalancoProd extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 			
-				sql.append( "sum( ( select iv.qtditvenda / (pe.nroplanos*pe.qtdporplano ) from vditvenda iv, vdvenda v ");
+				sql.append( "sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano ) from vditvenda iv, vdvenda v ");
 			
 			}
 			else {
 			
-				sql.append( "sum( (select iv.qtditvenda from vditvenda iv, vdvenda v ");
+				sql.append( "sum( (select sum(iv.qtditvenda) from vditvenda iv, vdvenda v ");
 			
 			}
 			
@@ -279,7 +278,7 @@ public class FRBalancoProd extends FRelatorio {
 
 		FPrinterJob dlGr = null;
 	
-		dlGr = new FPrinterJob( rel, "Relatório de consumo de matéria prima ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório Balanço de Produção (FSC) ", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {

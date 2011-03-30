@@ -135,7 +135,7 @@ public class FRConsumoMat extends FRelatorio {
 			sql.append( "pd.codsecao, sc.descsecao, ");
 			
 			//INICIO DAS COMPRAS			
-			sql.append( "( ");
+			sql.append( "coalesce(sum(( ");
 			sql.append( "select ");
 			sql.append( "sum(ic.qtditcompra) from cpitcompra ic, cpcompra cp, eqtipomov tm ");
 			sql.append( "where ");
@@ -143,22 +143,32 @@ public class FRConsumoMat extends FRelatorio {
 			sql.append( "and ic.codemppd=pd.codemp and ic.codfilialpd=pd.codfilial and ic.codprod=pd.codprod ");
 			sql.append( "and cp.codemptm=tm.codemp and cp.codfilialtm=tm.codfilial and cp.codtipomov=tm.codtipomov and tm.estoqtipomov='S' ");
 			sql.append( "and cp.codemp=? and cp.codfilial=? and cp.statuscompra in ('P2','P3','C2','C3','EP','ET') ");
-			sql.append( ") recepcionadas ");
+			
+			if( ! "".equals( txtCodSecao.getVlrString()) ) {
+			//	sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+			
+			sql.append( ")),0) recepcionadas ");
 			// FIM DAS COMPRAS
 		
 			sql.append( " , ");
 			
 			//INICIO DO CONSUMO
 			
-			sql.append( "( ");
+			sql.append( "coalesce(sum(( ");
 			sql.append( "select ");
 			sql.append( "sum(ir.qtdexpitrma) ");
 			sql.append( "from ");
 			sql.append( "eqitrma ir, eqproduto pd ");
 			sql.append( "where ");
 			sql.append( "ir.codemp=? and ir.codfilial=? and ir.dtaexpitrma between ? and ? ");
-			sql.append( "and pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and pd.codsecao='M' ");
-			sql.append( ") consumidas ");
+			sql.append( "and pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod ");
+			
+			if( ! "".equals( txtCodSecao.getVlrString()) ) {
+			//	sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+			}
+			
+			sql.append( ")),0) consumidas ");
 
 			// FIM DO CONSUMO
 			
@@ -166,20 +176,21 @@ public class FRConsumoMat extends FRelatorio {
 			
 			// ESTOQUE ANTERIOR
 			
-			sql.append( "( ");
+			sql.append( "coalesce(sum(( ");
 			sql.append( "select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S') ");
-			sql.append( ") saldoanterior ");
+			sql.append( ")),0) saldoanterior ");
 
 			// FIM ESTOQUE ANTERIOR
 			
 			sql.append( "from eqproduto pd ");
-			sql.append( "inner join eqsecao sc on sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao and pd.codsecao='M' ");
+			sql.append( "inner join eqsecao sc on sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao ");
 			sql.append( "and pd.tipoprod='M' ");
 
-			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+			if( ! "".equals( txtCodSecao.getVlrString()) ) {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 			
+			sql.append( " group by 1,2 " );
 		
 			System.out.println("SQL:" + sql.toString());
 

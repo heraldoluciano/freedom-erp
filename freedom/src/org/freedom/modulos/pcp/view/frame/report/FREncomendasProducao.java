@@ -227,7 +227,7 @@ public class FREncomendasProducao extends FRelatorio {
 		FPrinterJob dlGr = null;
 
 	
-		dlGr = new FPrinterJob( rel, "Relatório de consumo de matéria prima ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório de Ordens de Produção ", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {
@@ -237,7 +237,7 @@ public class FREncomendasProducao extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de consumo!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de ordens de produção!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
