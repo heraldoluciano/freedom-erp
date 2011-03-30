@@ -26,7 +26,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -36,7 +35,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaEditEvent;
@@ -60,7 +58,6 @@ import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
-import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
