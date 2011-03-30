@@ -26,12 +26,14 @@ package org.freedom.modulos.pcp.view.frame.crud.detail;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CancelEvent;
@@ -76,10 +78,16 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 	private JScrollPane spnFase = new JScrollPane( txaObs );
 
 	private JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCodProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtCodAlmox= new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -172,8 +180,9 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 		lcProd.setUsaME( false );
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		
+
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -190,6 +199,8 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 		adicCampo( txtQtdFinalOP, 323, 60, 100, 20, "QtdFinalProdOP", "Qtd.produzida", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtJustificqtdprod, "JUSTFICQTDPROD", "Justificativa", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtDtFabProd, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtCodTipoMov, "codtipomov", "Cod.Tipo.Mov.", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtCodAlmox, "codalmox", "Cod.Almox.", ListaCampos.DB_SI, true );
 		adic( btContraProva, 435, 55, 210, 30 );
 
 		setListaCampos( false, "OP", "PP" );
@@ -444,18 +455,188 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 			}
 
 			if ( getFinalizaProcesso() && ( txtSitFS.getVlrString().equals( "PE" ) ) ) {
+
 				DLFinalizaOP dl = new DLFinalizaOP( this, txtQtdPrevOP.getVlrBigDecimal() );
 				dl.setVisible( true );
-				if ( !dl.OK )
+
+				if ( !dl.OK ) {
 					pevt.cancela();
-				else {
-					txtQtdFinalOP.setVlrBigDecimal( dl.getValor() );
-					txtJustificqtdprod.setVlrString( dl.getObs() );
-					atualizaOP();
+					dl.dispose();
 				}
-				dl.dispose();
+				else {
+
+					BigDecimal qtdfinal = dl.getValor();
+
+					dl.dispose();
+					
+					txtQtdFinalOP.setVlrBigDecimal( qtdfinal );
+					txtJustificqtdprod.setVlrString( dl.getObs() );
+
+					atualizaOP();
+
+					BigDecimal qtdorc = getQtdOrc();
+
+					// Se a quantidade produzida for inferior a quantidade necessária para atendimento aos orçamentos
+					// Deverá gerar uma nova OP com a diferença
+
+					if(qtdorc.compareTo( qtdfinal ) > 0) {
+
+						if ( Funcoes.mensagemConfirma( null, "A quantidade produzida (" 
+								+ Funcoes.bdToStr( qtdfinal ) 
+								+ " ) é insuficiente para atender aos orçamentos vinculados (" 
+								+ Funcoes.bdToStr( qtdorc ) + " )!\n\n"
+								+ "Gostaria de gerar um Ordem de Produção complementar?"
+														
+							) == JOptionPane.YES_OPTION) {
+						
+							
+							geraOP( qtdorc.subtract( qtdfinal ));
+							
+							
+						}
+
+					}
+
+				}
+
 			}
 		}
+	}
+
+	private Integer geraCodOp() {
+
+		Integer ret = null;
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer codop_param = 1;
+
+		try {
+
+			sql.append( "select coalesce(max(codop),0) + 1 from ppop " );
+			sql.append( "where codemp=? and codfilial=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getInt( 1 );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+	
+	private Integer geraOP( BigDecimal qtd ) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		Integer novaop = null;
+		
+		try {
+
+			sql.append( "insert into ppop (" );
+
+			sql.append( "	codemp, codfilial, codop, seqop, dtemitop, " );
+			sql.append( "	codemppd, codfilialpd, codprod, seqest, refprod, " );
+			sql.append( "	dtfabrop, qtdsugprodop, qtdprevprodop, " );
+			sql.append( "	codemptm, codfilialtm, codtipomov, codempax, codfilialax, codalmox, " );
+			sql.append( "	sitop, obsop ) " );
+			
+			sql.append( "values ( " );
+
+			sql.append( "?, ?, ?, ?, ?, ");
+			sql.append( "?, ?, ?, ?, ?, ");
+			sql.append( "?, ?, ?, ");
+			sql.append( "?, ?, ?, ?, ?, ?, ");
+			sql.append( "?, ? ");
+			
+			sql.append( ")" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			int param = 1;
+
+			novaop = geraCodOp();
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( param++, novaop );
+			ps.setInt( param++, 0 );
+
+			ps.setDate( param++, Funcoes.dateToSQLDate( new Date()) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( param++, txtCodProd.getVlrInteger() );
+			ps.setInt( param++, 1 );
+			ps.setString( param++, txtRefProd.getVlrString() );
+			ps.setDate( param++, Funcoes.dateToSQLDate( new Date()) );
+			ps.setBigDecimal( param++, qtd );
+			ps.setBigDecimal( param++, qtd );
+//			ps.setDate( param++, Funcoes.dateToSQLDate( dtvalid.getTime() ) );
+
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );			
+			ps.setInt( param++, txtCodTipoMov.getVlrInteger() );
+
+			ps.setInt( param++, Aplicativo.iCodEmp  );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			ps.setInt( param++, txtCodAlmox.getVlrInteger() );
+
+			ps.setString( param++, "PE" );
+			ps.setString( param++, "ORDEM DE PRODUÇÃO COMPLEMENTAR PARA ATENDIMENTO A ORÇAMENTOS" );
+
+			ps.execute();			
+			con.commit();
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return novaop;
+	}
+
+	private BigDecimal getQtdOrc() {
+
+		BigDecimal ret = new BigDecimal(0);
+		StringBuilder sql = new StringBuilder();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+
+		try {
+
+			sql.append( "select sum(io.qtdprod) from ppopitorc io " );
+			sql.append( "where io.codemp=? and io.codfilial=? and io.codop=? and io.seqop=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				ret = rs.getBigDecimal( 1 );
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
