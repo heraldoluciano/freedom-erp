@@ -647,7 +647,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Status" );
 		tabatd.adicColuna( "Data" );
 		tabatd.adicColuna( "Data fim" );
-		tabatd.adicColuna( "Ocorrencia" );
+		tabatd.adicColuna( "Ocorrência" );
 		tabatd.adicColuna( "" );
 		tabatd.adicColuna( "Atendente" );
 		tabatd.adicColuna( "Hora inicial" );
