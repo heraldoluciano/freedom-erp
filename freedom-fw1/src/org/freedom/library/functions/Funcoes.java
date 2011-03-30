@@ -130,6 +130,10 @@ public class Funcoes {
 	public static StringDireita bdToStr(BigDecimal vlr) {
 		return bdToStr(vlr, Aplicativo.casasDecFin);
 	}
+	
+	public static StringDireita bdToStrd(BigDecimal vlr) {
+		return bdToStrd(vlr, Aplicativo.casasDecFin);
+	}
 
 	public static StringDireita bdToStr(BigDecimal vlr, int casasdec) {
 		StringDireita retorno = null;
@@ -142,6 +146,18 @@ public class Funcoes {
 		return retorno;
 	}
 
+	public static StringDireita bdToStrd(BigDecimal vlr, int casasdec) {
+		StringDireita retorno = null;
+		if (vlr == null) {
+			retorno = Funcoes.strDecimalToStrCurrencyd(casasdec, "0");
+		}
+		else {
+			retorno = Funcoes.strDecimalToStrCurrencyd(casasdec, String.valueOf(vlr));
+		}
+		return retorno;
+	}
+
+	
 	public static String getTimeString(Date data) {
 		String bRetorno = "";
 		if (data != null) {
