@@ -211,7 +211,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-1" x="677" y="0" width="73" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -219,7 +219,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALCOBCLI}]]></textFieldExpression>
@@ -238,14 +238,14 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEATEND}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="372" y="1" width="59" height="13"/>
+				<reportElement key="textField-5" x="372" y="1" width="67" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALGERAL}]]></textFieldExpression>
@@ -258,7 +258,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALMETA}]]></textFieldExpression>
@@ -281,7 +281,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 			<line>
 				<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Transparent" x="676" y="0" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
 			</line>
-			<textField pattern="" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-11" x="569" y="1" width="72" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -289,7 +289,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTALCOMIS}]]></textFieldExpression>
