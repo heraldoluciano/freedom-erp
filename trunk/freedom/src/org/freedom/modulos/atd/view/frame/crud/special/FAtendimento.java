@@ -181,7 +181,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		tabConv.adicColuna( "Doc." );
 		tabConv.adicColuna( "Status" );
 		tabConv.adicColuna( "Data" );
-		tabConv.adicColuna( "Ocorrencia" );
+		tabConv.adicColuna( "Ocorrência" );
 		tabConv.adicColuna( "Atendente" );
 		tabConv.adicColuna( "Horário" );
 
