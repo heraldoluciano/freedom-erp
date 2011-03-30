@@ -1663,13 +1663,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		else {
 			if ( fPrim.temTela( "Fases da OP" ) == false ) {
+				
 				int codop = txtCodOP.getVlrInteger().intValue();
 				int	seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
 				FOPFase tela = new FOPFase( codop, seqop, seqest, this );
+				
 				fPrim.criatela( "Fases da OP", tela, con );
+				
 				tela.setConexao( con );
+				
 			}
 		}
 
