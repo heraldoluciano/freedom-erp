@@ -274,26 +274,26 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		tab.adicColuna( "Data" );
 		tab.adicColuna( "Validade" );
 		tab.adicColuna( "Autoriz." );
-		tab.adicColuna( "Vlr.It.Orc." );
+		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Cidade" );
 		tab.adicColuna( "Fone" );
-		tab.adicColuna( "Vlr.it.Fat." );
+		tab.adicColuna( "Valor Fat." );
 
-		tab.setTamColuna( 30, 0 );
-		tab.setTamColuna( 40, 1 );
-		tab.setTamColuna( 40, 2 );
-		tab.setTamColuna( 40, 3 );
+		tab.setTamColuna( 30, 0 ); // Status
+		tab.setTamColuna( 40, 1 ); // Cod.Orc
+		tab.setTamColuna( 40, 2 ); // Pedido
+		tab.setTamColuna( 40, 3 ); // NF
 
-		tab.setTamColuna( 50, 4 );
-		tab.setTamColuna( 180, 5 );
+		tab.setTamColuna( 55, 4 ); // Cod.Cli 
+		tab.setTamColuna( 150, 5 ); // Raz.Cli
 
-		tab.setTamColuna( 90, 6 );
-		tab.setTamColuna( 90, 7 );
-		tab.setTamColuna( 90, 8 );
-		tab.setTamColuna( 90, 9 );
-		tab.setTamColuna( 100, 10 );
-		tab.setTamColuna( 100, 11 );
-		tab.setTamColuna( 100, 12 );
+		tab.setTamColuna( 75, 6 ); // Data orc.
+		tab.setTamColuna( 75, 7 ); // Validade 
+		tab.setTamColuna( 80, 8 ); // Autoriz
+		tab.setTamColuna( 80, 9 ); // Vlr.It.
+		tab.setTamColuna( 100, 10 ); // Cidade
+		tab.setTamColuna( 75, 11 ); // Fone
+		tab.setTamColuna( 80, 12 ); // Valor Faturado
 		
 		tab.setRowHeight( 21 );
 		
@@ -502,13 +502,13 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 				
 				tab.setValor( rs.getString( enum_QUERY_ORC.NUMAUTORIZORC.name() ) != null ? rs.getString( enum_QUERY_ORC.NUMAUTORIZORC.name() ) : "", iLin, enum_GRID_ORC.AUTORIZ.ordinal() ); 
 				
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) : "" ), iLin, enum_GRID_ORC.VALOR.ordinal() );
+				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITORC.name() ) : "" ), iLin, enum_GRID_ORC.VALOR.ordinal() );
 				
 				tab.setValor( rs.getString( enum_QUERY_ORC.CIDCLI.name() ) != null ? rs.getString( enum_QUERY_ORC.CIDCLI.name() ).trim() : "", iLin, enum_GRID_ORC.CIDADE.ordinal() );
 				
 				tab.setValor( rs.getString( enum_QUERY_ORC.FONECLI.name() ) != null ? rs.getString( enum_QUERY_ORC.FONECLI.name() ) : "", iLin, enum_GRID_ORC.FONE.ordinal() );
 				
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 2, rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) : "" ), iLin, enum_GRID_ORC.VALORFATURADO.ordinal() );
+				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) != null ? rs.getString( enum_QUERY_ORC.VLRLIQITVENDA.name() ) : "" ), iLin, enum_GRID_ORC.VALORFATURADO.ordinal() );
 				
 				iLin++;
 			}
