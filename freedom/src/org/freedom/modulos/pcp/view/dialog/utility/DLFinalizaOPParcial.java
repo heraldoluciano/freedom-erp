@@ -26,7 +26,6 @@ import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.util.Date;
 
 import javax.swing.JScrollPane;

@@ -51,7 +51,6 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
-import org.freedom.modulos.fnc.view.frame.utility.FConsultaCheque;
 
 /**
  * Cadastro cheques.
