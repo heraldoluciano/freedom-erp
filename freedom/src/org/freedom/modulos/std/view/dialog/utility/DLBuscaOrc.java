@@ -63,31 +63,11 @@ import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
-	private final int POS_CODPROD = 2;
-
-	private final int POS_QTD = 4;
-
-	private final int POS_PRECO = 5;
-
-	private final int POS_DESC = 6;
-
-	private final int POS_VLRLIQ = 7;
-
-	private final int POS_TPAGR = 8;
-
-	private final int POS_PAI = 9;
-
-	private final int POS_VLRAGRP = 10;
-
-	private final int POS_CODORC = 11;
-
-	private final int POS_CODITORC = 1;
-
 	private static final long serialVersionUID = 1L;
 
-	private JTablePad tab = new JTablePad();
+	private JTablePad tabitorc = new JTablePad();
 
-	private JScrollPane spnTab = new JScrollPane( tab );
+	private JScrollPane spnTab = new JScrollPane( tabitorc );
 
 	private JTablePad tabOrc = new JTablePad();
 
@@ -181,14 +161,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean[] prefs;
 
+	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };
+
 	public DLBuscaOrc( Object vd, String tipo ) {
 
 		super();
 
 		sTipoVenda = tipo;
 
-		
-		
 		if ( sTipoVenda.equals( "V" ) && vd instanceof org.freedom.modulos.std.view.frame.crud.detail.FVenda ) {
 			vendaSTD = (org.freedom.modulos.std.view.frame.crud.detail.FVenda) vd;
 		}
@@ -200,11 +180,12 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 
 		setTitulo( "Nova venda de orçamento", this.getClass().getName() );
-		setAtribos( 750, 480 );
+		setAtribos( 870, 480 );
 
 		ocultaConveniado();
 
 		c.setLayout( new BorderLayout() );
+		
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pnCli, BorderLayout.CENTER );
 		c.add( pinCab, BorderLayout.NORTH );
@@ -338,44 +319,46 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		tabOrc.setColunaEditavel( 0, true );
 
-		tab.adicColuna( "S/N" );
-		tab.adicColuna( "Ítem" );
-		tab.adicColuna( "Cód.Pd." );
-		tab.adicColuna( "Descrição" );
-		tab.adicColuna( "Qtd." );
-		tab.adicColuna( "Preço" );
-		tab.adicColuna( "Vlr.desc." );
-		tab.adicColuna( "Vlr.liq." );
-		tab.adicColuna( "Tp.Agr." );
-		tab.adicColuna( "Agr." );
-		tab.adicColuna( "Vlr.Agr." );
-		tab.adicColuna( "Orc." );
-		tab.adicColuna( "Usa Lote" );
-		tab.adicColuna( "Lote" );
+		tabitorc.adicColuna( "" );
+		tabitorc.adicColuna( "It." );
+		tabitorc.adicColuna( "Cód.Pd." );
+		tabitorc.adicColuna( "Descrição" );
+		tabitorc.adicColuna( "Qtd." );
+		tabitorc.adicColuna( "Qtd.OP" );
+		tabitorc.adicColuna( "Preço" );
+		tabitorc.adicColuna( "Vlr.desc." );
+		tabitorc.adicColuna( "Vlr.liq." );
+		tabitorc.adicColuna( "Tp.Agr." );
+		tabitorc.adicColuna( "Agr." );
+		tabitorc.adicColuna( "Vlr.Agr." );
+		tabitorc.adicColuna( "Orc." );
+		tabitorc.adicColuna( "Usa Lote" );
+		tabitorc.adicColuna( "Lote" );
 
-		tab.setTamColuna( 25, 0 );
-		tab.setTamColuna( 30, 1 );
-		tab.setTamColuna( 50, 2 );
-		tab.setTamColuna( 190, 3 );
-		tab.setTamColuna( 40, 4 );
-		tab.setTamColuna( 60, 5 );
-		tab.setTamColuna( 60, 6 );
-		tab.setTamColuna( 60, 7 );
+		tabitorc.setTamColuna( 20, 0 );
+		tabitorc.setTamColuna( 25, 1 );
+		tabitorc.setTamColuna( 45, 2 );
+		tabitorc.setTamColuna( 170, 3 );
+		tabitorc.setTamColuna( 75, 4 );
+		tabitorc.setTamColuna( 75, 5 );
+		tabitorc.setTamColuna( 60, 6 );
+		tabitorc.setTamColuna( 75, 7 );
+		tabitorc.setTamColuna( 75, 8 );
 
-		tab.setColunaInvisivel( 8 );
-		tab.setColunaInvisivel( 9 );
+		tabitorc.setColunaInvisivel( 9 );
+		tabitorc.setColunaInvisivel( 10 );
 
-		tab.setTamColuna( 60, 10 );
-		tab.setTamColuna( 40, 11 );
+		tabitorc.setTamColuna( 75, 11 );
+		tabitorc.setTamColuna( 35, 12 );
 
-		tab.setColunaInvisivel( 12 );
+		tabitorc.setColunaInvisivel( 13 );
 
-		tab.setTamColuna( 80, 13 );
+		tabitorc.setTamColuna( 80, 14 );
 
-		tab.setColunaEditavel( 0, true );
+		tabitorc.setColunaEditavel( 0, true );
 
-		tab.addKeyListener( this );
-		tab.addMouseListener( this );
+		tabitorc.addKeyListener( this );
+		tabitorc.addMouseListener( this );
 		tabOrc.addKeyListener( this );
 		btBusca.addKeyListener( this );
 		btGerar.addKeyListener( this );
@@ -409,7 +392,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		float fValLiq = 0;
 
 		try {
-			tab.limpa();
+			tabitorc.limpa();
 			vValidos.clear();
 
 			Vector<Vector<String>> vorcs = new Vector<Vector<String>>();
@@ -448,9 +431,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					}
 
 					StringBuilder sql = new StringBuilder();
+
 					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
 					sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE FROM VDITORCAMENTO IT, EQPRODUTO P " );
+					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc ");
+
+					sql.append( "FROM EQPRODUTO P, VDITORCAMENTO IT  " );
+					sql.append( "LEFT OUTER JOIN PPOPITORC IP ON IP.CODEMPOC=IT.CODEMP AND IP.CODFILIALOC=IT.CODFILIAL AND IP.TIPOORC=IT.TIPOORC AND IP.CODORC=IT.CODORC AND IP.CODITORC=IT.CODITORC ");
+
 					sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
 					sql.append( "AND P.CODEMP=IT.CODEMPPD AND ");
 					sql.append( "((IT.ACEITEITORC='S' AND IT.EMITITORC='N' AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR (IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.EMITITORC='N')) ");
@@ -469,34 +457,35 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					int icol = 0;
 
 					while ( rs.next() ) {
-						tab.adicLinha();
+						tabitorc.adicLinha();
 
 						// vVals = new Vector<Object>();
-						tab.setValor( new Boolean( true ), irow, icol++ );
-						tab.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, icol++ );
-						tab.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, icol++ );
-						tab.setValor( rs.getString( "DescProd" ).trim(), irow, icol++ );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, icol++ );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, icol++ );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, icol++ );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, icol++ );
-						tab.setValor( "", irow, icol++ );
-						tab.setValor( "", irow, icol++ );
-						tab.setValor( "0,00", irow, icol++ );
-						tab.setValor( rs.getInt( "CodOrc" ), irow, icol++ );
+						tabitorc.setValor( new Boolean( true ), irow, icol++ );
+						tabitorc.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, icol++ );
+						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, icol++ );
+						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdFinalProdItOrc" ) ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, icol++ );
+						tabitorc.setValor( "", irow, icol++ );
+						tabitorc.setValor( "", irow, icol++ );
+						tabitorc.setValor( "0,00", irow, icol++ );
+						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, icol++ );
 
-						tab.setValor( rs.getString( "CLOTEPROD" ), irow, icol++ );
-						tab.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, icol++ );
+						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, icol++ );
+						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, icol++ );
 
 						fValProd += rs.getFloat( "VlrProdItOrc" );
 						fValDesc += rs.getFloat( "VlrDescItOrc" );
 						fValLiq += rs.getFloat( "VlrLiqItOrc" );
 
 						if ( "S".equals( rs.getString( "CLOTEPROD" ) ) && ( rs.getString( "CODLOTE" ) == null ) ) {
-							tab.setColColor( irow, 13, Color.RED, Color.WHITE );
+							tabitorc.setColColor( irow, 13, Color.RED, Color.WHITE );
 						}
 						else {
-							tab.setColColor( irow, 13, Color.WHITE, Color.BLACK );
+							tabitorc.setColColor( irow, 13, Color.WHITE, Color.BLACK );
 						}
 
 						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
@@ -545,14 +534,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	}
 
 	public void CarregaOrcamento(Integer codorc) {
-		
+
 		txtCodOrc.setVlrInteger( codorc );
 		lcOrc.carregaDados();
 		btBusca.doClick();
 		btExec.doClick();
-		
+
 	}
-	
+
 	private boolean gerar() {
 
 		PreparedStatement ps = null;
@@ -569,9 +558,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 		try {
 
-			if ( tab.getNumLinhas() > 0 ) {
+			if ( tabitorc.getNumLinhas() > 0 ) {
 
 				boolean usaPedSeq = prefs[ 0 ];
+				
 				diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda );
 
 				if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
@@ -584,8 +574,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				diag.setVisible( true );
 
 				if ( diag.OK ) {
-					if ( !usaPedSeq && sTipoVenda.equals( "V" ) )
+					if ( !usaPedSeq && sTipoVenda.equals( "V" ) ) {
 						iCodVenda = diag.getNewCodigo();
+					}
+					
+					diag.setVisible( false );
+					diag.dispose();
+					
+					
 				}
 				else
 					return false;
@@ -594,9 +590,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 				if ( sTipoVenda.equals( "V" ) ) {
 
-					for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-						if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+					for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+						
+						if ( ! ( (Boolean) tabitorc.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) {
 							continue;
+						}
 
 						iValsVec = (int[]) vValidos.elementAt( i );
 
@@ -626,7 +624,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							try {
 								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
 								ps = con.prepareStatement( sSQL );
-								ps.setInt( 1, new Integer( tab.getValor( i, 11 ).toString() ) );
+								ps.setInt( 1, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
 								ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 								ps.setInt( 3, Aplicativo.iCodEmp );
 								ps.setString( 4, sTipoVenda );
@@ -655,27 +653,61 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							bPrim = false;
 						}
 						try {
+							
 							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
+							
 							ps2 = con.prepareStatement( sSQL );
+							
+							BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD_PROD.ordinal() ).toString() ) ) ;
+							BigDecimal qtditorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD.ordinal() ).toString() ) ) ;
+							
 							ps2.setInt( 1, Aplicativo.iCodFilial );
 							ps2.setInt( 2, iCodVenda );
-							ps2.setInt( 3, new Integer( tab.getValor( i, 11 ).toString() ) );
-							ps2.setInt( 4, new Integer( tab.getValor( i, 1 ).toString() ) );
+							ps2.setInt( 3, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
+							ps2.setInt( 4, new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ) );
 							ps2.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 							ps2.setInt( 6, Aplicativo.iCodEmp );
+							
 							ps2.setString( 7, sTipoVenda );
-							ps2.setString( 8, tab.getValor( i, POS_TPAGR ).toString() );
-							ps2.setFloat( 9, new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString() ) ) );
-							ps2.setFloat( 10, new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_DESC ).toString() ) ) );
+							ps2.setString( 8, tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString() );
+							
+							// Verificação dos excessos de produção
+							
+							if( qtdprod.compareTo( qtditorc ) > 0 
+								&& 
+							  ( Funcoes.mensagemConfirma( null,  
+								
+								"A quantidade produzida do ítem \n" + tabitorc.getValor( i, GRID_ITENS.DESCPROD.ordinal() ).toString().trim() + " \n" +
+								"excede a quantidade solicitada pelo cliente.\n" +
+								"Deseja faturar a quantidade produzida?\n\n" +
+								"Quantidade solicitada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
+								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
+								
+							  ) == JOptionPane.YES_OPTION ) ) {
+									
+								ps2.setBigDecimal( 9, qtdprod );
+								
+							}
+							else {
+								ps2.setBigDecimal( 9, qtditorc );	
+							}
+							
+							
+							ps2.setBigDecimal( 10, new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) ) );
 
 							ps2.execute();
 							ps2.close();
 
-						} catch ( SQLException err ) {
+						} 
+						catch ( SQLException err ) {
 							Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 							try {
 								con.rollback();
-							} catch ( SQLException err1 ) {
+							} 
+							catch ( SQLException err1 ) {
+
+								err1.printStackTrace();
+
 							}
 							return false;
 						}
@@ -713,7 +745,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 							vendaSTD.exec( iCodVenda );
 							dispose();
 						}
-						
+
 					}
 				}
 				// PDV
@@ -797,16 +829,16 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				sSQL = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) 
 				+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
 				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-						+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " 
-						+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"
-						+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-						+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-						+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
-						+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " 
-						+ "FROM VDORCAMENTO O" 
-						+ sWhere + " ORDER BY O.CODORC";
+				+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
+				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " 
+				+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"
+				+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
+				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
+				+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
+				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
+				+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " 
+				+ "FROM VDORCAMENTO O" 
+				+ sWhere + " ORDER BY O.CODORC";
 
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, iCod );
@@ -895,7 +927,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		int pos = 0;
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { // xxx
+				if ( ! ( (Boolean) ltab.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) { // xxx
 					ltab.tiraLinha( i );
 					vValidos.remove( i );
 					i--;
@@ -912,7 +944,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		int pos = 0;
 		try {
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ltab.getValor( i, POS_TPAGR ).toString().equals( "F" ) ) {
+				if ( ltab.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString().equals( "F" ) ) {
 					ltab.tiraLinha( i );
 					i--;
 				}
@@ -925,30 +957,40 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private Float marcaFilhos( final int iLinha, final Integer codprodpai, final Float precopai ) {
 
 		Integer codprodfilho = null;
+		
 		Float precofilho = null;
 		Float vlrliqfilho = null;
 		Float qtdfilho = null;
 		Float ret = new Float( 0 );
+		
 		String tpagrup = null;
+		
 		int i = iLinha;
 		int iPai = iLinha - 1;
 
 		try {
-			while ( i < tab.getNumLinhas() ) {
-				codprodfilho = new Integer( tab.getValor( i, POS_CODPROD ).toString() );
-				qtdfilho = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString() ) );
-				vlrliqfilho = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_VLRLIQ ).toString() ) );
-				tpagrup = tab.getValor( i, POS_TPAGR ).toString();
-				precofilho = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_PRECO ).toString() ) );
-				// if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
+			
+			while ( i < tabitorc.getNumLinhas() ) {
+				
+				codprodfilho	= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
+				qtdfilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD.ordinal() ).toString() ) );
+				vlrliqfilho 	= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.VLRLIQ.ordinal() ).toString() ) );
+				tpagrup 		= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
+				precofilho 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
+				
 				if ( ( codprodfilho.compareTo( codprodpai ) == 0 ) && ( precopai.compareTo( precofilho ) == 0 ) ) {
-					tab.setValor( "F", i, POS_TPAGR );
-					tab.setValor( String.valueOf( iPai ), i, POS_PAI );
+					
+					tabitorc.setValor( "F", i, GRID_ITENS.TPAGR.ordinal() );
+					tabitorc.setValor( String.valueOf( iPai ), i, GRID_ITENS.PAI.ordinal() );
+					
 					ret += qtdfilho;
+					
 				}
+				
 				i++;
 			}
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -964,37 +1006,42 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		String tpagr = "";
 
 		try {
-			limpaNaoSelecionados( tab );
+			limpaNaoSelecionados( tabitorc );
 
 			int linhaPai = -1;
 
-			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-				codprodpai = new Integer( tab.getValor( i, POS_CODPROD ).toString() );
-				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString() ) );
-				precopai = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_PRECO ).toString() ) );
-				tpagr = tab.getValor( i, POS_TPAGR ).toString();
-				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_DESC ).toString() ) );
+			for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
+				
+				codprodpai 		= new Integer( tabitorc.getValor( i, GRID_ITENS.CODPROD.ordinal() ).toString() );
+				qtdatupai 		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTD.ordinal() ).toString() ) );
+				precopai		= new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.PRECO.ordinal() ).toString() ) );
+				tpagr 			= tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString();
+				vlrdescnovopai += new Float( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
 
 				if ( tpagr.equals( "" ) ) {
+					
 					qtdnovopai = qtdatupai;
 					qtdnovopai += marcaFilhos( i + 1, codprodpai, precopai );
 
 					if ( qtdatupai.compareTo( qtdnovopai ) != 0 ) {
-						tab.setValor( "P", i, POS_TPAGR );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, POS_QTD );
+					
+						tabitorc.setValor( "P", i, GRID_ITENS.TPAGR.ordinal() );
+						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( qtdnovopai ) ), i, GRID_ITENS.QTD.ordinal() );
 						linhaPai = i;
+						
 					}
 					else {
-						tab.setValor( "N", i, POS_TPAGR );
+						tabitorc.setValor( "N", i, GRID_ITENS.TPAGR.ordinal() );
 					}
 				}
 			}
 
 			if ( linhaPai > -1 ) {
-				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, POS_DESC );
+				tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf( vlrdescnovopai ) ), linhaPai, GRID_ITENS.DESC.ordinal() );
 			}
-			// limpaFilhos( tab );
-		} catch ( Exception e ) {
+ 
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -1022,7 +1069,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			}
 			else if ( kevt.getSource() == tabOrc ) {
 				btExec.doClick();
-				tab.requestFocus();
+				tabitorc.requestFocus();
 			}
 			else if ( kevt.getSource() == btGerar ) {
 				if ( !gerar() ) {
@@ -1033,7 +1080,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 					}
 				}
 			}
-			else if ( kevt.getSource() == tab )
+			else if ( kevt.getSource() == tabitorc )
 				btGerar.requestFocus();
 		}
 		// super.keyPressed(kevt);
@@ -1075,10 +1122,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			carregaNada( tabOrc );
 		}
 		else if ( evt.getSource() == btTudoIt ) {
-			carregaTudo( tab );
+			carregaTudo( tabitorc );
 		}
 		else if ( evt.getSource() == btNadaIt ) {
-			carregaNada( tab );
+			carregaNada( tabitorc );
 		}
 		else if ( evt.getSource() == txtCodOrc ) {
 			if ( txtCodOrc.getVlrInteger().intValue() > 0 )
@@ -1086,10 +1133,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		}
 		else if ( evt.getSource() == btResetOrc ) {
 			tabOrc.limpa();
-			tab.limpa();
+			tabitorc.limpa();
 		}
 		else if ( evt.getSource() == btResetItOrc ) {
-			tab.limpa();
+			tabitorc.limpa();
 		}
 
 	}
@@ -1180,12 +1227,12 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			ps.setString( 3, codlote );
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			ps.setInt( 6, (Integer) tab.getValor( irow, POS_CODORC ) );
-			ps.setInt( 7, (Integer) tab.getValor( irow, POS_CODITORC ) );
+			ps.setInt( 6, (Integer) tabitorc.getValor( irow, GRID_ITENS.CODORC.ordinal() ) );
+			ps.setInt( 7, (Integer) tabitorc.getValor( irow, GRID_ITENS.CODITORC.ordinal() ) );
 
 			ps.execute();
 
-			tab.setValor( codlote, tab.getLinhaSel(), 13 );
+			tabitorc.setValor( codlote, tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
 
 			con.commit();
 
@@ -1196,19 +1243,25 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	public void mouseClicked( MouseEvent e ) {
 
-		if ( e.getSource() == tab ) {
-			if ( tab.getLinhaSel() > -1 ) {
+		if ( e.getSource() == tabitorc ) {
+			if ( tabitorc.getLinhaSel() > -1 ) {
 				if ( e.getClickCount() == 2 ) {
-					String cloteprod = (String) tab.getValor( tab.getLinhaSel(), 12 );
-					String codlote = (String) tab.getValor( tab.getLinhaSel(), 13 );
-					Integer codprod = (Integer) tab.getValor( tab.getLinhaSel(), 2 );
-					String descprod = (String) tab.getValor( tab.getLinhaSel(), 3 );
+					
+					String cloteprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.USALOTE.ordinal() );
+					String codlote 		= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
+					Integer codprod 	= (Integer) tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODPROD.ordinal() );
+					String descprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.DESCPROD.ordinal() );
+					
 					if ( "S".equals( cloteprod ) ) {
+						
 						DLSelecionaLote dl = new DLSelecionaLote( this, codprod.toString(), descprod, con );
 						dl.setVisible( true );
+						
 						if ( dl.OK ) {
-							atualizaLoteItVenda( dl.getValor(), tab.getLinhaSel() );
+							
+							atualizaLoteItVenda( dl.getValor(), tabitorc.getLinhaSel() );
 							dl.dispose();
+							
 						}
 						else {
 							dl.dispose();
