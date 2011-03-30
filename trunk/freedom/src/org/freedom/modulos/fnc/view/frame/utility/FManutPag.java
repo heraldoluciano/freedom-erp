@@ -467,6 +467,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabConsulta.setTamColuna( 100, 10 );
 			tabConsulta.setTamColuna( 80, 11 );
 			tabConsulta.setTamColuna( 90, 12 );
+			
+			tabConsulta.setRowHeight( 20 );
 			// Baixa:
 
 			lcCompraBaixa.add( new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_PK, false ) );
@@ -600,6 +602,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabBaixa.setTamColuna( 100, 13 );
 			tabBaixa.setTamColuna( 120, 14 );
 			tabBaixa.setTamColuna( 100, 15 );
+			
+			tabBaixa.setRowHeight( 20 );
 
 			// Manutenção
 
@@ -785,6 +789,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tabManut.setTamColuna( 150, enum_tab_manut.CODPLAN.ordinal() );
 			tabManut.setTamColuna( 150, enum_tab_manut.CODCC.ordinal() );
 			tabManut.setTamColuna( 60, enum_tab_manut.DTITPAG.ordinal() );
+			
+			tabManut.setRowHeight( 20 );
 
 			lcFor.addCarregaListener( this );
 			lcPagManut.addCarregaListener( this );
