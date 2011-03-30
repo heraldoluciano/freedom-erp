@@ -380,6 +380,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcAtendimento.add( new GuardaCampo( txtitContr, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
+		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, true ) );
+		
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
 
@@ -681,7 +683,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
 		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
-		sql.append( "a.codempea=?, a.codfilialea=?, a.codespecatend=? ");
+		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=? ");
 
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 
