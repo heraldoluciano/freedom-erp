@@ -566,6 +566,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabConsulta.setTamColuna( 200, EColTabConsulta.NOMEBANCO.ordinal() );// nome banco
 		tabConsulta.setTamColuna( 200, EColTabConsulta.OBS.ordinal() );// observ
 		tabConsulta.setTamColuna( 20, EColTabConsulta.TV.ordinal() );// Tipo venda
+		
+		tabConsulta.setRowHeight(20);
 
 		// Baixa:
 
@@ -713,6 +715,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.setTamColuna( 80, EColTabBaixa.CODCC.ordinal() );
 		tabBaixa.setTamColuna( 180, EColTabBaixa.DESCCC.ordinal() );
 		tabBaixa.setTamColuna( 200, EColTabBaixa.OBS.ordinal() );
+		
+		tabBaixa.setRowHeight(20);
 
 		// Manutenção
 
@@ -912,6 +916,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 240, EColTabManut.OBS.ordinal() );
 		tabManut.setTamColuna( 20, EColTabManut.DESCPONT.ordinal() );
 		tabManut.setTamColuna( 20, EColTabManut.SEQNOSSONUMERO.ordinal() ); 
+		
+		tabManut.setRowHeight(20);
 
 		lcCli.addCarregaListener( this );
 		lcRecBaixa.addCarregaListener( this );
