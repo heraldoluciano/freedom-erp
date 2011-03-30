@@ -77,6 +77,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private JTextFieldFK txtDescChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+	
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -130,7 +134,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
-
+	
+	private ListaCampos lcEspec = new ListaCampos( this, "EA" );
+	
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
@@ -287,8 +293,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		adic( txtDataAtendimentoFin, 433, 150, 70, 20 );
 		adic( txtHorafim, 506, 150, 53, 20 );
 		adic( btRun, 559, 150, 19, 19 );
-
-		adic( cbConcluiChamado, 7, 180, 200, 20 );
+		
+		adic( txtCodEspec, 7, 190, 80, 20, "Cód.Espec." );
+		adic( txtDescEspec, 90, 190, 283, 20, "Descrição da especificação do atendimento");
+		
+		adic( cbConcluiChamado, 376, 190, 200, 20 );
 
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
@@ -383,6 +392,17 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcChamado.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
+		
+		
+		txtCodEspec.setTabelaExterna( lcEspec, null );
+		txtCodEspec.setFK( true );
+		txtCodEspec.setNomeCampo( "CodEspec" );
+		lcEspec.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, true ) );
+		lcEspec.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
+		lcEspec.montaSql( false, "ESPECATEND", "AT" );
+		lcEspec.setReadOnly( true );
+		
+		
 
 	}
 
@@ -578,7 +598,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -637,6 +657,10 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setString( 24, txaObsInterno.getVlrString() );
 
 		ps.setString( 25, cbConcluiChamado.getVlrString() );
+		
+		ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
+		ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
+		ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
 
 		ps.execute();
 		ps.close();
@@ -656,7 +680,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "a.codempsa=?, a.codfilialsa=?, a.codsetat=?, " );
 		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
-		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=? " );
+		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
+		sql.append( "a.codempea=?, a.codfilialea=?, a.codespecatend=? ");
 
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 
@@ -710,10 +735,14 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setString( 21, txaObsInterno.getVlrString() );
 
 		ps.setString( 22, cbConcluiChamado.getVlrString() );
-
+		
 		ps.setInt( 23, Aplicativo.iCodEmp );
-		ps.setInt( 24, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-		ps.setInt( 25, txtCodAtendo.getVlrInteger() );
+		ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
+		ps.setInt( 25, txtCodEspec.getVlrInteger() );
+		
+		ps.setInt( 26, Aplicativo.iCodEmp );
+		ps.setInt( 27, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+		ps.setInt( 28, txtCodAtendo.getVlrInteger() );
 
 		ps.executeUpdate();
 
@@ -888,20 +917,24 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		montaComboTipo();
 		montaComboSetor();
 		montaComboStatus();
-
-	
 
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
 
 		lcCli.setConexao( cn );
 		lcCli.carregaDados();
+		
+		lcEspec.setConexao( cn );
+		lcEspec.carregaDados();
 
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
+		
+		
 
 		sPrefs = getPref();
 	}
@@ -922,6 +955,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sVal[ 9 ] = cbContr.getVlrInteger();
 		sVal[ 10 ] = cbitContr.getVlrInteger();
 		sVal[ 11 ] = txtCodChamado.getVlrInteger();
+		sVal[ 12 ] = txtCodEspec.getVlrInteger();
 
 		return sVal;
 
