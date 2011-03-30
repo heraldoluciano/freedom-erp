@@ -654,6 +654,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Hora final" );
 		tabatd.adicColuna( "chamado" );
 		tabatd.adicColuna( "codcli" );
+		tabatd.adicColuna( "Espec." );
 
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
@@ -665,6 +666,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setTamColuna( 140, 7 ); // Atendente
 		tabatd.setTamColuna( 70, 8 );
 		tabatd.setTamColuna( 70, 9 );
+		tabatd.setTamColuna( 50, 12 ); //Especificacao
+		
 
 		tabatd.setColunaInvisivel( 0 );
 		tabatd.setColunaInvisivel( 1 );
@@ -1020,7 +1023,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
+			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC ");
+			sql.append( "FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
@@ -1127,6 +1131,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getTime( "HoraAtendoFin" ).toString(), i, 9 );
 					tabatd.setValor( rs.getInt( "CODCHAMADO" ), i, 10 );
 					tabatd.setValor( rs.getInt( "CODCLI" ), i, 11 );
+					
+					tabatd.setValor( rs.getInt( "CODESPEC" ), i, 12 );
 					
 					horasatend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
 					
