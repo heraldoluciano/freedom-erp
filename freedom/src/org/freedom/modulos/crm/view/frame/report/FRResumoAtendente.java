@@ -1,10 +1,10 @@
 /**
- * @version 23/01/2009 <BR>
+ * @version 30/03/2011 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.tmk <BR>
+ *         Pacote: org.freedom.modulos.crm <BR>
  *         Classe: @(#)FRDiario.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
@@ -17,7 +17,7 @@
  *         de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *         Relatório diário de ligações.
+ *         Relatório resumido de atendimentos por atendente
  * 
  */
 
