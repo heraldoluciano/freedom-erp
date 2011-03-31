@@ -864,7 +864,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			else {
 				try {
 					insertAtend();
-				} catch ( Exception e ) {
+				} 
+				catch ( Exception e ) {
 					e.printStackTrace();
 					Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
 					return;
