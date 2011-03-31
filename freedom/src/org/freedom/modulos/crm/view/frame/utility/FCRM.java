@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
@@ -74,6 +75,7 @@ import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.crm.view.dialog.utility.DLAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
+import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
 import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -99,9 +101,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JPanelPad pinCli = new JPanelPad();
 
-	private JPanelPad pinFiltrosAtend = new JPanelPad( 510, 150 );
+	private JPanelPad pinFiltrosAtend = new JPanelPad( 510, 120 );
 
-	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 150 );
+	private JPanelPad pinFiltrosChamado = new JPanelPad( 510, 120 );
 
 	private JPanelPad pinFiltrosTitulo = new JPanelPad( 510, 200 );
 
@@ -138,7 +140,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
+	
+	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+	
 	private JTextFieldFK txtDescChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -256,6 +262,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private ListaCampos lcAtendenteChamado = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
+	
+	private ListaCampos lcEspecAltend = new ListaCampos( this, "EA" );
 
 	private ListaCampos lcItRec = new ListaCampos( this );
 
@@ -279,15 +287,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private boolean financeiro = false;
 	
-	private JTextFieldPad txtTotAtendimentos = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JScrollPane scpChm = new JScrollPane( tabchm );
 	
-	private JTextFieldPad txtTotHoraAtendimentos = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
+	private BigDecimal total_horas_chamados = new BigDecimal(0);
 	
-	private JTextFieldPad txtTotChamados = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
-	private JTextFieldPad txtTotHoraChamados = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 7, 0 );
-	
-	final JDialog dlMensagem = new JDialog();
+	private final JDialog dlMensagem = new JDialog();
 
 	public enum GridChamado {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, DESCCHAMADO, SOLICITANTE, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, CODCLI, DETCHAMADO
@@ -298,17 +302,21 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private HashMap<String, Object> prefere = null;
 	
 	private JTextAreaPad txtDialog = new JTextAreaPad();
+	
+	private JScrollPane scpAtd = new JScrollPane( tabatd );
+	
+	private Long total_horas_atend = new Long(0);
 
 	public FCRM() {
 
 		super( false );
 
 		setTitulo( "Gestão de relacionamento com clientes" );
-		setAtribos( 20, 20, 780, 650 );
+		setAtribos( 20, 20, 850, 650 );
 
 		tipoatendo = "A"; // Setando o tipo de atendimento para "A" de atendimento;
 
-		pnCabCli.setPreferredSize( new Dimension( 500, 175 ) );
+		pnCabCli.setPreferredSize( new Dimension( 500, 80 ) );
 
 		prefere = getPrefere();
 		
@@ -326,47 +334,29 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosAtend.setBorder( SwingParams.getPanelLabel( "Filtros de atendimentos", Color.BLUE ) );
 
-		pinFiltrosAtend.adic( new JLabelPad(  ), 7, 0, 70, 20 );
 		pinFiltrosAtend.adic( txtDatainiAtend, 7, 20, 70, 20, "Data Inicial" );
+		pinFiltrosAtend.adic( txtDatafimAtend, 80, 20, 70, 20, "Data Final" );
 
-		pinFiltrosAtend.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
-		pinFiltrosAtend.adic( txtDatafimAtend, 80, 20, 70, 20 );
+		pinFiltrosAtend.adic( txtCodAtendenteAtendimento, 153, 20, 50, 20, "Cd.Atd." );
+		pinFiltrosAtend.adic( txtNomeAtendenteAtendimento, 206, 20, 120, 20, "Nome do Atendente" );
 
-		pinFiltrosAtend.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
-		pinFiltrosAtend.adic( txtCodAtendenteAtendimento, 153, 20, 70, 20 );
-
-		pinFiltrosAtend.adic( new JLabelPad( "Nome do Atendente" ), 226, 0, 180, 20 );
-		pinFiltrosAtend.adic( txtNomeAtendenteAtendimento, 226, 20, 180, 20 );
-
-		pinFiltrosAtend.adic( new JLabelPad( "Cód.Cham." ), 409, 0, 70, 20 );
-		pinFiltrosAtend.adic( txtCodChamado, 409, 20, 70, 20 );
+		pinFiltrosAtend.adic( txtCodChamado, 329, 20, 40, 20, "Cd.Ch." );		
+		pinFiltrosAtend.adic( txtDescChamado, 370, 20, 150, 20, "Descrição do chamado" );
 		
-		pinFiltrosAtend.adic( new JLabelPad( "Descrição do chamado" ), 481, 0, 230, 20 );
-		pinFiltrosAtend.adic( txtDescChamado, 481, 20, 230, 20 );
-
-		pinFiltrosAtend.adic( new JLabelPad( "Tipo" ), 7, 40, 215, 20 );
-		pinFiltrosAtend.adic( cbTipoAtend, 7, 60, 215, 20 );
-
-		pinFiltrosAtend.adic( new JLabelPad( "Contrato/Projeto" ), 226, 40, 252, 20 );
-		pinFiltrosAtend.adic( cbContr, 226, 60, 252, 20 );
-
-		pinFiltrosAtend.adic( new JLabelPad( "Item" ), 481, 40, 230, 20 );
-		pinFiltrosAtend.adic( cbitContr, 481, 60, 230, 20 );
-
-		// pinFiltrosAtend.adic( btAtualizaAtendimentos, 715, 15, 30, 30 );
-		pinFiltrosAtend.adic( btAtualizaAtendimentos, 722, 7, 30, 76 );
-
-		txtTotAtendimentos.setAtivo( false );
-		txtTotHoraAtendimentos.setAtivo( false );
+		pinFiltrosAtend.adic( txtCodEspec, 523, 20, 45, 20, "Cd.Esp." );		
+		pinFiltrosAtend.adic( txtDescEspec, 571, 20, 200, 20, "Descrição da especificação" );
 		
-		pinFiltrosAtend.adic( txtTotAtendimentos, 7, 100, 90, 20, "Atendimentos" );
-		pinFiltrosAtend.adic( txtTotHoraAtendimentos, 107, 100, 90, 20, "Horas" );
-		
+		pinFiltrosAtend.adic( cbTipoAtend, 7, 60, 195, 20, "Tipo" );
+
+		pinFiltrosAtend.adic( cbContr, 206, 60, 314, 20, "Contrato/Projeto" );
+
+		pinFiltrosAtend.adic( cbitContr, 523, 60, 247, 20, "Item" );
+
+		pinFiltrosAtend.adic( btAtualizaAtendimentos, 782, 7, 30, 76 );
+
 		pnAtd.add( pinFiltrosAtend, BorderLayout.NORTH );
 
 		JPanelPad pnGridAtd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-		JScrollPane scpAtd = new JScrollPane( tabatd );
 
 		pnGridAtd.add( scpAtd, BorderLayout.CENTER );
 
@@ -378,40 +368,25 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosChamado.setBorder( SwingParams.getPanelLabel( "Filtros de chamados", Color.BLUE ) );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Data Inicial" ), 7, 0, 70, 20 );
-		pinFiltrosChamado.adic( txtDatainiCham, 7, 20, 70, 20 );
-
-		pinFiltrosChamado.adic( new JLabelPad( "Data Final" ), 80, 0, 70, 20 );
-		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20 );
+		pinFiltrosChamado.adic( txtDatainiCham, 7, 20, 70, 20, "Data Inicial" );
+		pinFiltrosChamado.adic( txtDatafimCham, 80, 20, 70, 20, "Data Final" );
 
 		pinFiltrosChamado.adic( cbEmAtendimento, 7, 50, 200, 20 );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Cód.Atend." ), 153, 0, 70, 20 );
-		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20 );
+		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20, "Cód.Atend." );
+		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 226, 20, 280, 20, "Nome do Atendente designado" );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Nome do Atendente designado" ), 226, 0, 230, 20 );
-		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 226, 20, 230, 20 );
+		pinFiltrosChamado.adic( cbTpChamado, 226, 60, 280, 20, "Tipo" );
 
-		pinFiltrosChamado.adic( new JLabelPad( "Tipo" ), 226, 40, 215, 20 );
-		pinFiltrosChamado.adic( cbTpChamado, 226, 60, 215, 20 );
-
-		pinFiltrosChamado.adic( btAtualizaChamados, 722, 7, 30, 76 );
-
-		pinFiltrosChamado.adic( scpStatus, 459, 7, 130, 77 );
-
-		pinFiltrosChamado.adic( scpPrioridade, 591, 7, 130, 77 );
+		pinFiltrosChamado.adic( scpStatus, 519, 7, 130, 77 );
+		pinFiltrosChamado.adic( scpPrioridade, 651, 7, 130, 77 );
 		
-		txtTotChamados.setAtivo( false );
-		txtTotHoraChamados.setAtivo( false );
+		pinFiltrosChamado.adic( btAtualizaChamados, 782, 7, 30, 76 );
 		
-		pinFiltrosChamado.adic( txtTotChamados, 7, 100, 90, 20, "Chamados" );
-		pinFiltrosChamado.adic( txtTotHoraChamados, 107, 100, 90, 20, "Horas" );
 
 		pnChm.add( pinFiltrosChamado, BorderLayout.NORTH );
 
 		JPanelPad pnGridChm = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-		JScrollPane scpChm = new JScrollPane( tabchm );
 
 		pnGridChm.add( scpChm, BorderLayout.CENTER );
 
@@ -426,7 +401,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		super( false );
 
 		setTitulo( "Atendimento" );
-		setAtribos( 20, 20, 780, 500 );
+		setAtribos( 20, 20, 850, 500 );
 
 		tipoatendo = "C"; // Setando o tipo de atendimento para "C" de Contato;
 
@@ -469,28 +444,17 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosTitulo.setBorder( SwingParams.getPanelLabel( "Título", Color.BLUE ) );
 
-		pinFiltrosTitulo.adic( new JLabelPad( "Cód.rec" ), 7, 0, 70, 20 );
-		pinFiltrosTitulo.adic( txtCodRec, 7, 20, 70, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Parc." ), 80, 0, 40, 20 );
-		pinFiltrosTitulo.adic( txtNParcItRec, 80, 20, 40, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Venda" ), 123, 0, 50, 20 );
-		pinFiltrosTitulo.adic( txtCodVenda, 123, 20, 50, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Doc." ), 176, 0, 50, 20 );
-		pinFiltrosTitulo.adic( txtDoc, 176, 20, 50, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Emissão" ), 229, 0, 70, 20 );
-		pinFiltrosTitulo.adic( txtDtEmis, 229, 20, 70, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Vencimento" ), 302, 0, 70, 20 );
-		pinFiltrosTitulo.adic( txtDtVencItRec, 302, 20, 70, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Atrazo" ), 375, 0, 40, 20 );
-		pinFiltrosTitulo.adic( txtDiasAtrazo, 375, 20, 40, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Obs." ), 421, 0, 150, 20 );
-		pinFiltrosTitulo.adic( txaObsItRec, 421, 20, 303, 60 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Valor do título" ), 7, 40, 113, 20 );
-		pinFiltrosTitulo.adic( txtVlrParcItRec, 7, 60, 113, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Total pago" ), 123, 40, 104, 20 );
-		pinFiltrosTitulo.adic( txtVlrPagoItRec, 123, 60, 104, 20 );
-		pinFiltrosTitulo.adic( new JLabelPad( "Total em aberto" ), 229, 40, 110, 20 );
-		pinFiltrosTitulo.adic( txtVlrApagItRec, 229, 60, 110, 20 );
+		pinFiltrosTitulo.adic( txtCodRec, 7, 20, 70, 20, "Cód.rec" );
+		pinFiltrosTitulo.adic( txtNParcItRec, 80, 20, 40, 20, "Parc." );
+		pinFiltrosTitulo.adic( txtCodVenda, 123, 20, 50, 20, "Venda" );
+		pinFiltrosTitulo.adic( txtDoc, 176, 20, 50, 20, "Doc." );
+		pinFiltrosTitulo.adic( txtDtEmis, 229, 20, 70, 20, "Emissão" );
+		pinFiltrosTitulo.adic( txtDtVencItRec, 302, 20, 70, 20, "Vencimento" );
+		pinFiltrosTitulo.adic( txtDiasAtrazo, 375, 20, 40, 20, "Atrazo" );
+		pinFiltrosTitulo.adic( txaObsItRec, 421, 20, 303, 60, "Obs." );
+		pinFiltrosTitulo.adic( txtVlrParcItRec, 7, 60, 113, 20, "Valor do título" );
+		pinFiltrosTitulo.adic( txtVlrPagoItRec, 123, 60, 104, 20, "Total pago" );
+		pinFiltrosTitulo.adic( txtVlrApagItRec, 229, 60, 110, 20, "Total em aberto" );
 
 		pnAtd.add( pinFiltrosTitulo, BorderLayout.NORTH );
 
@@ -584,20 +548,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtDDDFax, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtFaxCli, "FaxCli", "Fax", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtDDDCel, "DDDCelCli", "DDD", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtCelCli, "CelCli", "Fax", ListaCampos.DB_SI, false ) );
 		lcCli.add( new GuardaCampo( txtEmailCli, "EmailCli", "Email", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtContatoCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtEndCli, "EndCli", "Endereço", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtCidCli, "CidCli", "Cidade", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtUfCli, "UFCli", "UF", ListaCampos.DB_SI, false ) );
-		lcCli.add( new GuardaCampo( txtNumCli, "NumCli", "Número", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtContatoCli, "ContCli", "Contato", ListaCampos.DB_SI, false));
+		
 		lcCli.setWhereAdic( "ATIVOCLI='S'" );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
@@ -637,6 +594,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		// lcChamado.setDinWhereAdic( "CODCLI = #N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
+		
+		txtCodEspec.setTabelaExterna( lcEspecAltend, FEspecAtend.class.getCanonicalName() );
+		txtCodEspec.setFK( true );
+		txtCodEspec.setNomeCampo( "CodEspec" );
+		lcEspecAltend.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, false ) );
+		lcEspecAltend.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
+		// lcChamado.setDinWhereAdic( "CODCLI = #N", txtCodCli );
+		lcEspecAltend.montaSql( false, "ESPECATEND", "AT" );
+		lcEspecAltend.setReadOnly( true );
+
 
 	}
 
@@ -650,23 +617,25 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Ocorrência" );
 		tabatd.adicColuna( "" );
 		tabatd.adicColuna( "Atendente" );
-		tabatd.adicColuna( "Hora inicial" );
-		tabatd.adicColuna( "Hora final" );
+		tabatd.adicColuna( "Hora ini." );
+		tabatd.adicColuna( "Hora fim" );
 		tabatd.adicColuna( "chamado" );
 		tabatd.adicColuna( "codcli" );
-		tabatd.adicColuna( "Espec." );
-
+		tabatd.adicColuna( "" );
+		tabatd.adicColuna( "Descrição da especificação" );
+		
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
 		tabatd.setTamColuna( 0, 2 );
-		tabatd.setTamColuna( 67, 3 ); // Data de início
+		tabatd.setTamColuna( 60, 3 ); // Data de início
 		tabatd.setTamColuna( 0, 4 ); // Data de fim
-		tabatd.setTamColuna( 400, 5 ); // Ocorrência
+		tabatd.setTamColuna( 395, 5 ); // Ocorrência
 		tabatd.setTamColuna( 0, 6 );
-		tabatd.setTamColuna( 140, 7 ); // Atendente
-		tabatd.setTamColuna( 70, 8 );
-		tabatd.setTamColuna( 70, 9 );
-		tabatd.setTamColuna( 50, 12 ); //Especificacao
+		tabatd.setTamColuna( 70, 7 ); // Atendente
+		tabatd.setTamColuna( 50, 8 );
+		tabatd.setTamColuna( 50, 9 );
+		tabatd.setTamColuna( 15, 12 ); //Código da especificacao
+		tabatd.setTamColuna( 160, 13 ); //Descrição da especificacao
 		
 
 		tabatd.setColunaInvisivel( 0 );
@@ -795,7 +764,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.setTamColuna( 20, GridChamado.PRIORIDADE.ordinal() );
 		tabchm.setTamColuna( 82, GridChamado.DESCTPCHAMADO.ordinal() );
 		tabchm.setTamColuna( 30, GridChamado.CODCHAMADO.ordinal() );
-		tabchm.setTamColuna( 190, GridChamado.DESCCHAMADO.ordinal() );
+		tabchm.setTamColuna( 250, GridChamado.DESCCHAMADO.ordinal() );
 		tabchm.setTamColuna( 75, GridChamado.SOLICITANTE.ordinal() );
 		tabchm.setTamColuna( 25, GridChamado.STATUS.ordinal() );
 		tabchm.setTamColuna( 40, GridChamado.QTDHORASPREVISAO.ordinal() );
@@ -837,22 +806,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinCli.setBorder( SwingParams.getPanelLabel( "Filtro de cliente", Color.blue ) );
 
 		pinCli.adic( txtCodCli, 	10, 	20, 	50, 	20, "Cód.Cli." 					);
-		pinCli.adic( txtRazCli, 	63, 	20, 	312, 	20, "Razão social do cliente" 	);
-		
-		pinCli.adic( lbStatus, 		378, 	20, 	97, 	20, "Situação"					);
-		
-		pinCli.adic( txtContatoCli, 478, 	20, 	237, 	20, "Contato" 					);
-		pinCli.adic( txtDDDCli, 	10, 	60, 	50, 	20, "DDD" 						);	
-		pinCli.adic( txtFoneCli, 	63, 	60, 	100, 	20, "Telefone" 					);
-		pinCli.adic( txtDDDFax, 	166, 	60, 	50, 	20, "DDD" 						);
-		pinCli.adic( txtFaxCli, 	219, 	60, 	100, 	20, "Fax" 						);
-		pinCli.adic( txtDDDCel, 	322, 	60, 	50, 	20, "DDD" 						);
-		pinCli.adic( txtCelCli, 	375, 	60, 	100, 	20, "Celular"					);
-		pinCli.adic( txtEmailCli, 	478, 	60, 	237, 	20, "Email" 					);
-		pinCli.adic( txtEndCli, 	10, 	100, 	362, 	20, "Endereço"  				);
-		pinCli.adic( txtNumCli, 	375, 	100, 	100, 	20, "Número" 					);
-		pinCli.adic( txtCidCli, 	478, 	100, 	169, 	20, "Cidade"					);
-		pinCli.adic( txtUfCli, 		650, 	100, 	65, 	20, "UF" 						);
+		pinCli.adic( txtRazCli, 	63, 	20, 	200, 	20, "Razão social do cliente" 	);
+		pinCli.adic( txtContatoCli, 266, 	20, 	130, 	20, "Contato" 					);
+		pinCli.adic( txtDDDCli, 	399, 	20, 	25, 	20, "DDD" 						);	
+		pinCli.adic( txtFoneCli, 	427, 	20, 	70, 	20, "Telefone" 					);	
+		pinCli.adic( txtCelCli, 	500, 	20, 	70, 	20, "Celular"					);		
+		pinCli.adic( txtEmailCli, 	573, 	20, 	150, 	20, "Email" 					);
+		pinCli.adic( lbStatus, 		726, 	20, 	90, 	20, "Situação"					);
 		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( SwingParams.getFontboldmed() );
@@ -1023,8 +983,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC ");
-			sql.append( "FROM ATATENDIMENTO ATEND, ATTIPOATENDO TA, ATATENDENTE A WHERE " );
+			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC, ea.descespec ");
+			sql.append( "FROM ATTIPOATENDO TA, ATATENDENTE A, ATATENDIMENTO ATEND ");
+			sql.append( "left outer join atespecatend ea on ea.codemp=atend.codempea and ea.codfilial=atend.codfilialea and ea.codespec=atend.codespec " );
+			sql.append( "WHERE " );
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
 			sql.append( "AND TA.TIPOATENDO=? " );
@@ -1050,6 +1012,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 			if ( txtCodChamado.getVlrInteger() > 0 ) {
 				sql.append( " AND ATEND.CODEMPCH=? AND ATEND.CODFILIALCH=? AND ATEND.CODCHAMADO=? " );
+			}
+			if ( txtCodEspec.getVlrInteger() > 0 ) {
+				sql.append( " AND ATEND.CODEMPEA=? AND ATEND.CODFILIALEA=? AND ATEND.CODESPEC=? " );
 			}
 
 			if ( txtCodRec.getVlrInteger() > 0 ) {
@@ -1107,13 +1072,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "CHCHAMADO" ) );
 					ps.setInt( iparam++, txtCodChamado.getVlrInteger() );
 				}
+				if ( txtCodEspec.getVlrInteger() > 0 ) {
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
+					ps.setInt( iparam++, txtCodEspec.getVlrInteger() );
+				}
+				
 
 				ResultSet rs = ps.executeQuery();
 
 				tabatd.limpa();
 				vCodAtends.clear();
 						
-				Long horasatend = new Long(0);
+				total_horas_atend = new Long(0);
 				
 				for ( int i = 0; rs.next(); i++ ) {
 					tabatd.adicLinha();
@@ -1133,19 +1104,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getInt( "CODCLI" ), i, 11 );
 					
 					tabatd.setValor( rs.getInt( "CODESPEC" ), i, 12 );
+					tabatd.setValor( rs.getString( "DESCESPEC" ), i, 13 );
 					
-					horasatend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
+					total_horas_atend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
 					
 				}
 				
-				
-				txtTotHoraAtendimentos.setVlrString( Funcoes.longTostrTimeHoras( horasatend ));
-				txtTotAtendimentos.setVlrInteger( tabatd.getNumLinhas() );
+				atualizaTituloGridAtendimentos();
 				
 				rs.close();
 				ps.close();
 
-			} catch ( SQLException err ) {
+			} 
+			catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar tabela de atendimento!\n" + err.getMessage(), true, con, err );
 			}
 		}
@@ -1300,7 +1271,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		StringBuilder sql = new StringBuilder();
 		
-		BigDecimal totalizacaoCham = new BigDecimal(0);
+		total_horas_chamados = new BigDecimal(0);
 
 		if ( carregagrid ) {
 
@@ -1344,13 +1315,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					
 					tabchm.setValor( rs.getString( GridChamado.DETCHAMADO.name() ), i, GridChamado.DETCHAMADO.ordinal() );
 					
-					totalizacaoCham = totalizacaoCham.add(rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ) );
+					total_horas_chamados = total_horas_chamados.add(rs.getBigDecimal( GridChamado.QTDHORASPREVISAO.name() ) );
 					
 					row++;
 
 				}
-				txtTotHoraChamados.setVlrBigDecimal( totalizacaoCham );
-				txtTotChamados.setVlrInteger( tabchm.getNumLinhas() );
+				
+				atualizaTituloGridChamados();
+				
 
 				rs.close();
 
@@ -1369,6 +1341,22 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				err.printStackTrace();
 			}
 		}
+	}
+	
+	private void atualizaTituloGridChamados() {
+		
+		String titulo = tabchm.getNumLinhas() + " Chamados - " + Funcoes.bdToStr( total_horas_chamados ) + " horas previstas ";
+		
+		scpChm.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
+		
+
+	}
+	
+	private void atualizaTituloGridAtendimentos() {
+		
+		String titulo = tabatd.getNumLinhas() + " Atendimentos - " + Funcoes.longTostrTimeHoras( total_horas_atend ) + " horas ";
+		scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
+
 	}
 
 	private void excluiAtend() {
@@ -1469,7 +1457,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			e.printStackTrace();
 		}
 	}
-
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -1658,15 +1645,22 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcRec.setConexao( cn );
 		lcItRec.setConexao( cn );
 		lcChamado.setConexao( cn );
-
+		lcEspecAltend.setConexao( cn );
+		
 		montaComboTipoAtend();
 		montaComboTipoChamado();
 
-		txtCodAtendenteAtendimento.setVlrInteger( Atendimento.buscaAtendente() );
-		txtCodAtendenteChamado.setVlrInteger( Atendimento.buscaAtendente() );
+		Integer codatend_atual = Atendimento.buscaAtendente();
+		
+		if ( codatend_atual != null ) {
+			
+			txtCodAtendenteAtendimento.setVlrInteger( codatend_atual );
+			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+			lcAtendenteAtendimento.carregaDados();
+			lcAtendenteChamado.carregaDados();
+			
+		}
 
-		// lcAtendenteAtendimento.carregaDados();
-		// lcAtendenteChamado.carregaDados();
 
 	}
 
