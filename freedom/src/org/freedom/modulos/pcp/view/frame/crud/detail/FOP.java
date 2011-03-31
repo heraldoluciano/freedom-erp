@@ -878,7 +878,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	
 		tab.setColunaInvisivel( 13 );
 		
-		tab.setColunaInvisivel( 14 );
+		if(tab.getNumColunas()>14) {
+			tab.setColunaInvisivel( 14 );
+		}
 
 	}
 
@@ -888,13 +890,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
 
 			//	if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
-				if ( tab.getValor( i, 10 ) != null && ( !"".equals( tab.getValor( i, 10 ) ) ) && ( (Integer) ( tab.getValor( i, 10 ) ) ) > 0 ) {	
+				
+				int colunaseqac = 9;
+
+				if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+					colunaseqac = 10;
+				}
+
+
+				if ( tab.getValor( i, colunaseqac ) != null && ( !"".equals( tab.getValor( i, colunaseqac ) ) ) && ( (Integer) ( tab.getValor( i, colunaseqac ) ) ) > 0 ) {	
 					tab.setValor( imgItemCorrecao, i, 11 );
 				}
 				else {
 					tab.setValor( imgItemComum, i, 11 );
 				}
-				if ( "S".equals( tab.getValor( i, 10 ) ) ) {
+				if ( "S".equals( tab.getValor( i, colunaseqac + 1 ) ) ) {
 					tab.setValor( imgItemBloqueado, i, 12 );
 				}
 				else {
@@ -3279,6 +3289,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 				
 				processaTab();
+				if(tab.getNumColunas()>14) {
+					tab.setColunaInvisivel( 14 );
+				}
 			}
 
 			if ( cevt.getListaCampos() == lcModLote ) {
