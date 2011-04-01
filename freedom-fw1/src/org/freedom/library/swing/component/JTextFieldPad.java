@@ -429,7 +429,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		else if (tipoCampo == TP_BOOLEAN)
 			setVlrBoolean(new Boolean(sVal));
 		else if (tipoCampo == TP_BYTES)
-			super.setText("<BINÀRIO>");
+			super.setText("<BINÁRIO>");
 		else if (tipoCampo == TP_DATE) {
 			try {
 				setVlrDate(( new SimpleDateFormat() ).parse(sVal));
