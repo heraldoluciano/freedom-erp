@@ -50,9 +50,13 @@ public class FEspecAtend extends FDados {
 	public FEspecAtend() {
 
 		super();
+		
 		setTitulo( "Especificação de Atendimentos" );
+		
 		setAtribos( 15, 30, 500, 300 );
-		montaTela();
+		
+		montaTela(); 
+		
 	}
 
 	private void montaTela() {
@@ -60,7 +64,7 @@ public class FEspecAtend extends FDados {
 		nav.setNavigation( true );
 
 		adicCampo( 	txtCodEspec, 			 7, 	 20, 	100, 	20, "CodEspec", 		"Cód.Espec.", 					ListaCampos.DB_PK, true );
-		adicCampo( 	txtDescSpec, 		   110, 	 20, 	290, 	20, "DescEspec", 		"Descrição da especificação", 	ListaCampos.DB_SI, true );
+		adicCampo( 	txtDescSpec, 		   110, 	 20, 	360, 	20, "DescEspec", 		"Descrição da especificação", 	ListaCampos.DB_SI, true );
 		
 		adicCampo( 	txtTempoMinCobEspec, 	 7, 	 60, 	100, 	20, "TempoMinCobEspec", "Tempo Min.(m)", 				ListaCampos.DB_SI, true );
 		adicCampo( 	txtTempoMaxCobEspec,   110, 	 60, 	100, 	20, "TempoMaxCobEspec", "Tempo Max.(m)", 				ListaCampos.DB_SI, true );
