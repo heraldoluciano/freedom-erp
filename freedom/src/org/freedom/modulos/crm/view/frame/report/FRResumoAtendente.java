@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -37,12 +38,16 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
 
 public class FRResumoAtendente extends FRelatorio {
 
@@ -54,13 +59,36 @@ public class FRResumoAtendente extends FRelatorio {
 
 	private ListaCampos lcCli = new ListaCampos( this );
 
+	private JRadioGroup<?, ?> rgTipo = null;
+	
 	private ListaCampos lcAtendente = new ListaCampos( this, "AE" );
+	
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	public FRResumoAtendente() {
 
 		setTitulo( "Resumo de por atendente" );
-		setAtribos( 80, 80, 350	, 160 );
+		
+		setAtribos( 80, 80, 350	, 280 );
 
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
+		
+		vLabs1.addElement( "Detalhado" );
+		vLabs1.addElement( "Resumido" );
+		
+		vVals1.addElement( "D" );
+		vVals1.addElement( "R" );
+		
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "R" );
+		
 		montaListaCampos();
 		montaTela();
 
@@ -82,10 +110,18 @@ public class FRResumoAtendente extends FRelatorio {
 		lbPeriodo.setOpaque( true );
 
 		adic( lbPeriodo, 7, 1, 80, 20 );
-		adic( lbLinha, 5, 10, 310, 45 );
+		adic( lbLinha, 5, 10, 300, 45 );
 		
-		adic( txtDataini, 38, 25, 95, 20, "De:" );		
-		adic( txtDatafim, 178, 25, 95, 20, "Até:" );		
+		adic( txtDataini, 38, 25, 95, 20 );		
+		adic( txtDatafim, 178, 25, 95, 20 );	
+		
+		adic (txtCodCli, 7, 85, 80, 20, "Cód.Cli.");
+		adic (txtNomeCli, 90, 85, 215, 20, "Nome do cliente");
+		
+		adic (txtCodAtend, 7, 125, 80, 20, "Cód.Atend.");
+		adic (txtNomeAtend, 90, 125, 215, 20, "Nome do atendente");
+		
+		adic( rgTipo, 7, 160, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -96,6 +132,23 @@ public class FRResumoAtendente extends FRelatorio {
 	}
 
 	private void montaListaCampos() {
+		
+		txtCodAtend.setTabelaExterna( lcAtendente, FAtendente.class.getCanonicalName() );
+		txtCodAtend.setFK( true );
+		txtCodAtend.setNomeCampo( "CodAtend" );
+		lcAtendente.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendente.add( new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		lcAtendente.montaSql( false, "ATENDENTE", "AT" );
+		lcAtendente.setReadOnly( true );
+		
+		txtCodCli.setTabelaExterna( lcCli, FAtendente.class.getCanonicalName() );
+		txtCodCli.setFK( true );
+		txtCodCli.setNomeCampo( "CodCli" );
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
+		lcCli.setReadOnly( true );
+
 
 	}
 
@@ -110,29 +163,106 @@ public class FRResumoAtendente extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		if("R".equals( rgTipo.getVlrString() )) {
+		
+			sql.append( "select a.nomeatend, ( sum(a.totalmin) / 60 ) totalgeral, ");
+			sql.append( "(sum( (case when a.contmetaespec='S' then (case when ");
+			sql.append( "a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalmeta, ");
+			sql.append( "(sum( (case when a.pgcomiespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalcomis, ");
+			sql.append( "(sum( (case when a.cobcliespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalcobcli ");
+			sql.append( "from atatendimentovw01 a, atatendimento atd, vdcliente cl ");
+			
+			sql.append( "where ");
+			
+			sql.append( "atd.codemp=a.codemp and atd.codfilial=a.codfilial and atd.codatendo=a.codatendo and ");
+			sql.append( "cl.codemp=atd.codempcl and cl.codfilial=atd.codfilialcl and cl.codcli=atd.codcli and ");
 
-		sql.append( "select a.nomeatend, ( sum(a.totalmin) / 60 ) totalgeral, ");
-		sql.append( "(sum( (case when a.contmetaespec='S' then (case when ");
-		sql.append( "a.totalmin<a.tempomincobespec ");
-		sql.append( "then a.tempomincobespec else ");
-		sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-		sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-		sql.append( ")/60 ) totalmeta, ");
-		sql.append( "(sum( (case when a.pgcomiespec='S' then (case when a.totalmin<a.tempomincobespec ");
-		sql.append( "then a.tempomincobespec else ");
-		sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-		sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-		sql.append( ")/60 ) totalcomis, ");
-		sql.append( "(sum( (case when a.cobcliespec='S' then (case when a.totalmin<a.tempomincobespec ");
-		sql.append( "then a.tempomincobespec else ");
-		sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-		sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-		sql.append( ")/60 ) totalcobcli ");
-		sql.append( "from atatendimentovw01 a ");
-		sql.append( "where a.codemp=? and a.codfilial=? and ");
-		sql.append( "a.dataatendo between ? and ? ");
-		sql.append( "group by a.nomeatend;" );
+			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
 
+			if(txtCodCli.getVlrInteger()>0) {
+			
+				sql.append( "and atd.codempcl=? and atd.codfilialcl=? and atd.codcli=? " );
+				
+			}
+			
+			if(txtCodAtend.getVlrInteger()>0) {
+				
+				sql.append( "and atd.codempae=? and atd.codfilialae=? and atd.codatend=? " );
+				
+			}
+						
+			sql.append( "group by a.nomeatend;" );
+			
+		}
+		else {
+			
+			if( ! (txtCodAtend.getVlrInteger() > 0) ) {
+				
+				Funcoes.mensagemInforma( this, "Informe um atendente!" );
+				txtCodAtend.requestFocus();
+				return;
+				
+			}
+			
+			sql.append( "select atd.dataatendo, atd.horaatendo, atd.horaatendofin, a.nomeatend, atd.obsatendo, atd.codcli, cl.nomecli, (a.totalmin) / 60  totalgeral, ");
+			sql.append( "(( (case when a.contmetaespec='S' then (case when ");
+			sql.append( "a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalmeta, ");
+			sql.append( "(( (case when a.pgcomiespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalcomis, ");
+			sql.append( "(( (case when a.cobcliespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "then a.tempomincobespec else ");
+			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
+			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
+			sql.append( ")/60 ) totalcobcli, ");
+			sql.append( "ea.codespec, ea.descespec " );
+			sql.append( "from atatendimentovw01 a, vdcliente cl, atatendimento atd ");
+			sql.append( "left outer join atespecatend ea on ea.codemp=atd.codempea and ea.codfilial=atd.codfilialea and ea.codespec=atd.codespec ");
+			
+			sql.append( "where ");
+			
+			sql.append( "atd.codemp=a.codemp and atd.codfilial=a.codfilial and atd.codatendo=a.codatendo and ");
+			sql.append( "cl.codemp=atd.codempcl and cl.codfilial=atd.codfilialcl and cl.codcli=atd.codcli and ");
+			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
+			 
+			if(txtCodCli.getVlrInteger()>0) {
+				
+				sql.append( "and atd.codempcl=? and atd.codfilialcl=? and atd.codcli=? " );
+				
+			}
+			
+			if(txtCodAtend.getVlrInteger()>0) {
+				
+				sql.append( "and atd.codempae=? and atd.codfilialae=? and atd.codatend=? " );
+				
+			}
+			
+			
+			
+			sql.append( "order by atd.dataatendo, atd.horaatendo ");
+			
+		}
+		
+		
 		System.out.println( "SQL:" + sql.toString() );
 
 		try {
@@ -142,13 +272,31 @@ public class FRResumoAtendente extends FRelatorio {
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-
+			
+			if(txtCodCli.getVlrInteger()>0) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
+				
+			}
+			
+			if(txtCodAtend.getVlrInteger()>0) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+				ps.setInt( iparam++, txtCodAtend.getVlrInteger() );
+				
+			}
+			
 			rs = ps.executeQuery();
-
-		} catch ( SQLException err ) {
+		
+		} 
+		catch ( SQLException err ) {
 
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, " Erro na consulta da view de resumo de atendimentos" );
+			
 		}
 
 		imprimiGrafico( rs, bVisualizar );
@@ -168,7 +316,12 @@ public class FRResumoAtendente extends FRelatorio {
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CONEXAO", con.getConnection() );
 
-		dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente", "", rs, hParam, this );
+		if("R".equals( rgTipo.getVlrString() )) {
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_RESUMO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Resumido)", "", rs, hParam, this );
+		}
+		else {
+			dlGr = new FPrinterJob( "layout/rel/REL_CRM_DETALHAMENTO_ATENDENTE_01.jasper", "Resumo de atendimentos por atendente (Detalhado)", "", rs, hParam, this );
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -185,8 +338,10 @@ public class FRResumoAtendente extends FRelatorio {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		
 		lcCli.setConexao( cn );
 		lcAtendente.setConexao( cn );
+		
 	}
 
 }
