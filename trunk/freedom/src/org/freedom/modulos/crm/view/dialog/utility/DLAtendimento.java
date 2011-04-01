@@ -683,7 +683,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "a.codempch=?, a.codfilialch=?, a.codchamado=?, " );
 		sql.append( "a.codempct=?, a.codfilialct=?, a.codcontr=?, a.coditcontr=?, " );
 		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
-		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=? ");
+		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=?, ");
+		sql.append( "a.codempcl=?, a.codfilialcl=?, a.codcli=? ");
 
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 
@@ -743,8 +744,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setInt( 25, txtCodEspec.getVlrInteger() );
 		
 		ps.setInt( 26, Aplicativo.iCodEmp );
-		ps.setInt( 27, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
-		ps.setInt( 28, txtCodAtendo.getVlrInteger() );
+		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+		ps.setInt( 28, txtCodCli.getVlrInteger() );
+		
+		ps.setInt( 29, Aplicativo.iCodEmp );
+		ps.setInt( 30, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+		ps.setInt( 31, txtCodAtendo.getVlrInteger() );
 
 		ps.executeUpdate();
 
