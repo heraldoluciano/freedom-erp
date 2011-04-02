@@ -120,7 +120,7 @@ public class FRBoleto extends FRelatorio {
 
 	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -726,9 +726,9 @@ public class FRBoleto extends FRelatorio {
 			err.printStackTrace();
 		}
 
-		if ( sRet == null ) {
-			Funcoes.mensagemErro( null, "A moeda padrão pode não estar ajustada no preferências!" );
-		}
+//		if ( sRet == null ) {
+//			Funcoes.mensagemErro( null, "A moeda padrão pode não estar ajustada no preferências!" );
+//		}
 
 		return sRet;
 	}
@@ -1097,7 +1097,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND " );
 		sSQL.append( "IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND " );
 		sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
-		sSQL.append( "ITR.STATUSITREC IN ('R1','RL') " );
+		sSQL.append( "ITR.STATUSITREC IN ('R1','RL', 'RR') " );
 		sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
 		sSQL.append( "CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA AND " );
 		sSQL.append( "TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB and tco.codempbo = b.codemp and tco.codfilialbo=b.codfilial and tco.codbanco=b.codbanco AND ");

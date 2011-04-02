@@ -134,7 +134,7 @@ public class FRemCnab extends FRemFBN {
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT CB.CARTCOBCNAB, CB.VARIACAOCARTCOB, CB.CODCARTCOB, CB.CODCARTEIRACNAB " );
+			sql.append( "SELECT CB.CARTCOBCNAB, CB.VARIACAOCARTCOB, CB.CODCARTCOB, CB.CODCARTCOBCNAB " );
 			sql.append( "FROM FNCARTCOB CB, FNITRECEBER IR " );
 			sql.append( "WHERE CB.CODEMPBO=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODBANCO=IR.CODBANCO AND " );
 			sql.append( "CB.CODEMP=IR.CODEMPCB AND CB.CODFILIAL=IR.CODFILIALCB AND CB.CODCARTCOB=IR.CODCARTCOB AND " );
@@ -152,7 +152,7 @@ public class FRemCnab extends FRemFBN {
 
 				carteira = rs.getInt( "CARTCOBCNAB" );
 				variacao = rs.getString( "VARIACAOCARTCOB" ) != null ? rs.getString( "VARIACAOCARTCOB" ).trim() : "";
-				codCarteiraCnab = rs.getString( "CODCARTCOB" ) !=null ? rs.getString( "CODCARTCOB" ).trim() : "";
+				codCarteiraCnab = rs.getString( "CODCARTCOBCNAB" ) !=null ? rs.getString( "CODCARTCOBCNAB" ).trim() : "";
 
 			} 
 
