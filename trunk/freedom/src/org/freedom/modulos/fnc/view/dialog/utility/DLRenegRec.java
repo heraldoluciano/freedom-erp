@@ -50,7 +50,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.std.view.dialog.utility.DLFechaParcela;
 
 /**
  * Wizard para renegociação de títulos.
@@ -64,6 +63,10 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	private enum RECEBER {
 		SEL, STATUS, DTVENC, CODREC, NPARCITREC, DOCLANCA, CODCLI, RAZCLI, OBS, DOCVENDA, VLRPARC, 
 		DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODBANCO, NOMEBANCO;
+	}
+	
+	public enum EFields {
+		VALOR, DATA, DESCONTO, TIPOCOB, BANCO, CARTCOB, DESCPONT, DATAPREV, OBSITREC
 	}
 	
 	private static final Integer SELECIONA = 0;
@@ -121,7 +124,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	private JTextFieldPad txtObrigCart = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3	, 0 );
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	private JTextFieldPad txtCodTipoCobItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtDescTipoCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -295,14 +298,14 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		pnGeraRecDados.adic( txtDescPlanoPag, 90, 20, 197, 20 );
 
 		pnGeraRecDados.adic( new JLabelPad( "Cod.Tip.Cob." ), 290, 0, 250, 20 );
-		pnGeraRecDados.adic( txtCodTipoCob, 7, 60, 80, 20 );
+		pnGeraRecDados.adic( txtCodTipoCob, 290, 20, 80, 20 );
 		pnGeraRecDados.adic( new JLabelPad( "Descrição Tipo Cobrança" ), 373, 0, 250, 20 );
-		pnGeraRecDados.adic( txtDescTipoCob, 90, 60, 197, 20 );
+		pnGeraRecDados.adic( txtDescTipoCob, 373, 20, 200, 20 );
 
 		pnGeraRecDados.adic( new JLabelPad( "Cod.Cart.Cob." ), 7, 40, 250, 20 );
-		pnGeraRecDados.adic( txtCodCartCob, 290, 20, 80, 20 );
+		pnGeraRecDados.adic( txtCodCartCob, 7, 60, 80, 20 );
 		pnGeraRecDados.adic( new JLabelPad( "Descrição da Carteira de Cob." ), 90, 40, 200, 20 );
-		pnGeraRecDados.adic( txtDescCartCob, 373, 20, 200, 20 );
+		pnGeraRecDados.adic( txtDescCartCob, 90, 60, 197, 20 );
 
 		pnGeraRecDados.adic( new JLabelPad( "Cód.catg." ), 290, 40, 250, 20 );
 		pnGeraRecDados.adic( txtCodPlan, 290, 60, 80, 20 );
@@ -717,51 +720,51 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		}
 	}
 
-	private void alteraRec() {
-		lcItReceber.edit();
-		DLFechaParcela dl = new DLFechaParcela( this, con );
-		Object[] valores = new Object[] { txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), "N", txtDtPrevItRec.getVlrDate() };
-
-		try {
-
-			dl.setValores( valores );
-			dl.setVisible( true );
-
-			if ( dl.OK ) {
-
-				valores = dl.getValores();
-
-				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.VALOR.ordinal() ] );
-				txtDtVencItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATA.ordinal() ] );
-				txtDtPrevItRec.setVlrDate( (Date) valores[ DLFechaParcela.EFields.DATAPREV.ordinal() ] );
-				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ DLFechaParcela.EFields.DESCONTO.ordinal() ] );
-				txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
-				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ DLFechaParcela.EFields.BANCO.ordinal() ] );
-				txtCodCartCobItRec.setVlrString( (String) dl.getValores()[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );
-
-				if ( lcItReceber.post() ) {
-					// Atualiza lcReceber
-					if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
-						lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
-					}
-					else {
-						lcReceber.carregaDados(); // Caso não, atualiza
-					}
-				}
-				dl.dispose();
-			}
-			else {
-				dl.dispose();
-				lcItReceber.cancel( true );
-				lcReceber.carregaDados();
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao atualizar parcelas.\n" + e.getMessage() );
-			lcItReceber.cancel( true );
-			lcReceber.cancel( true );
-		}
-	}
+//	private void alteraRec() {
+//		lcItReceber.edit();
+//		DLFechaParcela dl = new DLFechaParcela( this, con );
+//		Object[] valores = new Object[] { txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), "N", txtDtPrevItRec.getVlrDate() };
+//
+//		try {
+//
+//			dl.setValores( valores );
+//			dl.setVisible( true );
+//
+//			if ( dl.OK ) {
+//
+//				valores = dl.getValores();
+//
+//				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ EFields.VALOR.ordinal() ] );
+//				txtDtVencItRec.setVlrDate( (Date) valores[ EFields.DATA.ordinal() ] );
+//				txtDtPrevItRec.setVlrDate( (Date) valores[ EFields.DATAPREV.ordinal() ] );
+//				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ EFields.DESCONTO.ordinal() ] );
+//				txtCodTipoCobItRec.setVlrString( (String) valores[ EFields.TIPOCOB.ordinal() ] );
+//				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ EFields.BANCO.ordinal() ] );
+//				txtCodCartCobItRec.setVlrString( (String) dl.getValores()[ EFields.CARTCOB.ordinal() ] );
+//
+//				if ( lcItReceber.post() ) {
+//					// Atualiza lcReceber
+//					if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
+//						lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
+//					}
+//					else {
+//						lcReceber.carregaDados(); // Caso não, atualiza
+//					}
+//				}
+//				dl.dispose();
+//			}
+//			else {
+//				dl.dispose();
+//				lcItReceber.cancel( true );
+//				lcReceber.carregaDados();
+//			}
+//		} catch ( Exception e ) {
+//			e.printStackTrace();
+//			Funcoes.mensagemErro( this, "Erro ao atualizar parcelas.\n" + e.getMessage() );
+//			lcItReceber.cancel( true );
+//			lcReceber.cancel( true );
+//		}
+//	}
 	
 	private void gerarRenegociacao(){
 		if(lcReceber.getStatus() != ListaCampos.LCS_INSERT ){
