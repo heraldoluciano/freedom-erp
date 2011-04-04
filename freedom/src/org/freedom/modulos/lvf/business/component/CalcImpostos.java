@@ -180,7 +180,7 @@ public class CalcImpostos {
 						 * **/
 
 						if ( TIPO_RED_ICMS_BASE.equals( getTpredicmsfisc() ) && ( getRedfisc().floatValue() > 0 ) ) {
-							BigDecimal vlrreducao = vlrprod.multiply( getRedfisc() ).divide( cem );
+							BigDecimal vlrreducao = vlrprod_calc.multiply( getRedfisc() ).divide( cem );
 							setVlrbaseicmsit( vlrprod_calc.subtract( vlrreducao ) );
 						}
 						else {
