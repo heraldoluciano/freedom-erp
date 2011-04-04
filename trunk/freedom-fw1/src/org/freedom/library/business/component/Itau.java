@@ -235,14 +235,17 @@ public class Itau extends Banco {
 		StringBuilder campo1 = new StringBuilder();
 		campo1.append(ITAU);
 		campo1.append("9");
-		campo1.append(getCarteira());
+		campo1.append(getCarteira().trim());
 		//campo1.append("109");
-		campo1.append(getNossoNumero().substring(0, 2));
+		
+		String nossonumero = getNossoNumero();
+		
+		campo1.append(nossonumero.substring(0, 2));
 		//campo1.append(digVerif(campo1.toString(), 10));
 		
 		StringBuilder campo2 = new StringBuilder();
-		campo2.append(getNossoNumero().substring(2, getNossoNumero().length()));
-		campo2.append(digVerif( agencia[0]  + conta[0] + getCarteira() + getNossoNumero(), 10));
+		campo2.append(nossonumero.substring(2, nossonumero.length()));
+		campo2.append(digVerif( agencia[0].trim()  + conta[0].trim() + getCarteira().trim() + nossonumero, 10));
 		campo2.append(agencia[0].substring(0,3));
 		//campo2.append(digVerif(campo2.toString(), 10));
 		
