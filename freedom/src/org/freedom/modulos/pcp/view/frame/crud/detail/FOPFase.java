@@ -615,7 +615,7 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 		try {
 
-			sql.append( "select sum(io.qtdprod) from ppopitorc io " );
+			sql.append( "select coalesce(sum(io.qtdprod),0) from ppopitorc io " );
 			sql.append( "where io.codemp=? and io.codfilial=? and io.codop=? and io.seqop=? " );
 
 			ps = con.prepareStatement( sql.toString() );
