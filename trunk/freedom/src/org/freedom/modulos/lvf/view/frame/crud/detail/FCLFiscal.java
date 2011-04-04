@@ -1101,10 +1101,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		}
 		else if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
-			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) || "00".equals( txtCodTratTrib.getVlrString() ) ) {
+			if ( "90".equals( txtCodTratTrib.getVlrString() ) || "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) || "00".equals( txtCodTratTrib.getVlrString() ) ) {
+				
 				rgTpRedIcmsFisc.setAtivo( true );
 				cbRedBaseST.setEnabled( true );
 				txtRedFisc.setAtivo( true );
+				
 				if ( "70".equals( txtCodTratTrib.getVlrString() ) ) {
 					rgTipoFisc.setVlrString( "FF" );
 				}
@@ -1114,6 +1116,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				else {
 					rgTipoFisc.setVlrString( "TT" );
 				}
+				
 			}
 			else {
 
