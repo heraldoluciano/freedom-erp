@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="74"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="24"/>
+	<property name="ireport.y" value="703"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -978,7 +978,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="7" y="533" width="319" height="52"/>
+				<reportElement x="7" y="534" width="319" height="52"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Int2of5" drawText="false" checksumRequired="false" barWidth="1" barHeight="43">
 					<jr:codeExpression><![CDATA[$V{CODBAR}]]></jr:codeExpression>
 				</jr:barbecue>
