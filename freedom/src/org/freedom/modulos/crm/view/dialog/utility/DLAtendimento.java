@@ -685,7 +685,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
 		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=?, ");
 		sql.append( "a.codempcl=?, a.codfilialcl=?, a.codcli=? ");
-
+		
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -742,7 +742,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setInt( 23, Aplicativo.iCodEmp );
 		ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
 		ps.setInt( 25, txtCodEspec.getVlrInteger() );
-		
+
 		ps.setInt( 26, Aplicativo.iCodEmp );
 		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		ps.setInt( 28, txtCodCli.getVlrInteger() );
