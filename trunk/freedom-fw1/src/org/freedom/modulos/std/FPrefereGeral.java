@@ -152,6 +152,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático", "S", "N");
 	
+	private JCheckBoxPad cbEncOrcProd = new JCheckBoxPad("Sinaliza orçamentos para produção (Sistema Pull)", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1345,6 +1347,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbAdicObsOrcPed, 10, 80, 370, 20, "ADICOBSORCPED", "", false);
 		adicDB(cbMostraTransp, 10, 100, 370, 20, "TabTranspOrc", "", true);
 		adicDB(cbHabVlrTotItOrc, 10, 120, 370, 20, "HabVlrTotItOrc", "", true);
+		adicDB(cbEncOrcProd, 10, 140, 370, 20, "EncOrcProd", "", true);
+		
 		
 		adicDB(imgAssOrc, 405, 60, 300, 95, "ImgAssOrc", "Assinatura", false);
 		
@@ -1738,7 +1742,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
 
-		adic(pnOpcoesOrc, 7, 265, 720, 190);
+		adic(pnOpcoesOrc, 7, 265, 720, 210);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);
 		adicDescFK(txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV");
