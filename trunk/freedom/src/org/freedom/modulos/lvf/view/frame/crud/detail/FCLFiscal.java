@@ -940,7 +940,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		if(Aplicativo.simples) {
 		
-			tpnGeral.addTab( "Simples Nascional", panelSimples );
+			tpnGeral.addTab( "Simples Nacional", panelSimples );
 			setPainel( panelCSOSNCampos );
 
 			adicCampo( txtCSOSN, 7, 20, 80, 20, "CSOSN", "CSOSN", ListaCampos.DB_FK, txtDescCSOSN, true );
