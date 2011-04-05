@@ -37,4 +37,3 @@ VALUES(#CODEMP#,1,'500','ICMS cobrado anteriormente por substituição tributária 
 INSERT INTO LFCSOSN(CODEMP, CODFILIAL, CSOSN, DESCCSOSN)
 
 VALUES(#CODEMP#,1,'900','Outros - Classificam-se neste código as demais operações que não se enquadrem nos códigos 101, 102, 103, 201, 202, 203, 300, 400 e 500.');
-
