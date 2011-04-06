@@ -48,6 +48,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.modulos.atd.view.frame.crud.plain.FAtendente;
+import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 
 public class FRResumoAtendente extends FRelatorio {
 
@@ -63,6 +64,8 @@ public class FRResumoAtendente extends FRelatorio {
 	
 	private ListaCampos lcAtendente = new ListaCampos( this, "AE" );
 	
+	private ListaCampos lcEspecAtend = new ListaCampos( this, "EA" );
+	
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -70,12 +73,17 @@ public class FRResumoAtendente extends FRelatorio {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 1000, 0 );
+
 	
 	public FRResumoAtendente() {
 
-		setTitulo( "Resumo de por atendente" );
+		setTitulo( "Resumo por atendente" );
 		
-		setAtribos( 80, 80, 350	, 280 );
+		setAtribos( 80, 80, 350	, 310 );
 
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
@@ -121,7 +129,10 @@ public class FRResumoAtendente extends FRelatorio {
 		adic (txtCodAtend, 7, 125, 80, 20, "Cód.Atend.");
 		adic (txtNomeAtend, 90, 125, 215, 20, "Nome do atendente");
 		
-		adic( rgTipo, 7, 160, 300, 30 );
+		adic (txtCodEspec, 7, 165, 80, 20, "Cód.Espec.");
+		adic (txtDescEspec, 90, 165, 215, 20, "Descrição da especificação");
+		
+		adic( rgTipo, 7, 200, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -148,6 +159,14 @@ public class FRResumoAtendente extends FRelatorio {
 		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setReadOnly( true );
+		
+		txtCodEspec.setTabelaExterna( lcEspecAtend, FEspecAtend.class.getCanonicalName() );
+		txtCodEspec.setFK( true );
+		txtCodEspec.setNomeCampo( "CodEspec" );
+		lcEspecAtend.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, false ) );
+		lcEspecAtend.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
+		lcEspecAtend.montaSql( false, "ESPECATEND", "AT" );
+		lcEspecAtend.setReadOnly( true );
 
 
 	}
@@ -203,6 +222,12 @@ public class FRResumoAtendente extends FRelatorio {
 				sql.append( "and atd.codempae=? and atd.codfilialae=? and atd.codatend=? " );
 				
 			}
+			
+			if(txtCodEspec.getVlrInteger()>0) {
+				
+				sql.append( "and atd.codempea=? and atd.codfilialea=? and atd.codespec=? " );
+				
+			}
 						
 			sql.append( "group by a.nomeatend;" );
 			
@@ -256,6 +281,14 @@ public class FRResumoAtendente extends FRelatorio {
 				
 			}
 			
+			if(txtCodEspec.getVlrInteger()>0) {
+				
+				sql.append( "and atd.codempea=? and atd.codfilialea=? and atd.codespec=? " );
+				
+			}
+			
+			
+			
 			
 			
 			sql.append( "order by atd.dataatendo, atd.horaatendo ");
@@ -286,6 +319,14 @@ public class FRResumoAtendente extends FRelatorio {
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
 				ps.setInt( iparam++, txtCodAtend.getVlrInteger() );
+				
+			}
+			
+			if(txtCodEspec.getVlrInteger()>0) {
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
+				ps.setInt( iparam++, txtCodEspec.getVlrInteger() );
 				
 			}
 			
@@ -341,6 +382,7 @@ public class FRResumoAtendente extends FRelatorio {
 		
 		lcCli.setConexao( cn );
 		lcAtendente.setConexao( cn );
+		lcEspecAtend.setConexao( cn );
 		
 	}
 
