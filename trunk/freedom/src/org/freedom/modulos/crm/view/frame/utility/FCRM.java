@@ -635,7 +635,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setTamColuna( 70, 7 ); // Atendente
 		tabatd.setTamColuna( 50, 8 );
 		tabatd.setTamColuna( 50, 9 );
-		tabatd.setTamColuna( 15, 12 ); //Código da especificacao
+		tabatd.setTamColuna( 25, 12 ); //Código da especificacao
 		tabatd.setTamColuna( 160, 13 ); //Descrição da especificacao
 		tabatd.setTamColuna( 120, 14 ); //Nome do cliente		
 
