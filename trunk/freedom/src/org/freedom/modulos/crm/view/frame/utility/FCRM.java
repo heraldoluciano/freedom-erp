@@ -623,6 +623,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "codcli" );
 		tabatd.adicColuna( "" );
 		tabatd.adicColuna( "Descrição da especificação" );
+		tabatd.adicColuna( "Cliente" );
 		
 		tabatd.setTamColuna( 0, 0 );
 		tabatd.setTamColuna( 0, 1 );
@@ -636,7 +637,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setTamColuna( 50, 9 );
 		tabatd.setTamColuna( 15, 12 ); //Código da especificacao
 		tabatd.setTamColuna( 160, 13 ); //Descrição da especificacao
-		
+		tabatd.setTamColuna( 120, 14 ); //Nome do cliente		
 
 		tabatd.setColunaInvisivel( 0 );
 		tabatd.setColunaInvisivel( 1 );
@@ -983,12 +984,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			sql.append( "SELECT ATEND.CODATENDO,ATEND.DOCATENDO,ATEND.STATUSATENDO,ATEND.DATAATENDO,TA.DESCTPATENDO, " );
 			sql.append( "ATEND.DATAATENDOFIN, ATEND.HORAATENDOFIN,ATEND.OBSATENDO, ATEND.CODATEND, " );
-			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC, ea.descespec ");
-			sql.append( "FROM ATTIPOATENDO TA, ATATENDENTE A, ATATENDIMENTO ATEND ");
+			sql.append( "A.NOMEATEND,ATEND.HORAATENDO, ATEND.CODCHAMADO, ATEND.CODCLI, ATEND.CODESPEC, ea.descespec, cl.nomecli ");
+			sql.append( "FROM ATTIPOATENDO TA, ATATENDENTE A, VDCLIENTE CL, ATATENDIMENTO ATEND ");
 			sql.append( "left outer join atespecatend ea on ea.codemp=atend.codempea and ea.codfilial=atend.codfilialea and ea.codespec=atend.codespec " );
 			sql.append( "WHERE " );
 			sql.append( "TA.CODTPATENDO=ATEND.CODTPATENDO AND TA.CODEMP=ATEND.CODEMPTO AND TA.CODFILIAL=ATEND.CODFILIALTO " );
 			sql.append( "AND A.CODATEND=ATEND.CODATEND AND A.CODEMP=ATEND.CODEMPAE AND A.CODFILIAL=ATEND.CODFILIALAE " );
+			sql.append( "and cl.codemp=atend.codempcl and cl.codfilial=atend.codfilialcl and cl.codcli=atend.codcli " );
 			sql.append( "AND TA.TIPOATENDO=? " );
 
 			if ( ! ( txtCodRec.getVlrInteger() > 0 ) && ( txtDatainiAtend.getVlrDate() != null && txtDatafimAtend.getVlrDate() != null ) ) {
@@ -1105,6 +1107,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					
 					tabatd.setValor( rs.getInt( "CODESPEC" ), i, 12 );
 					tabatd.setValor( rs.getString( "DESCESPEC" ), i, 13 );
+					tabatd.setValor( rs.getString( "nomecli"), i, 14 );
 					
 					total_horas_atend += Funcoes.subtraiTime( rs.getTime( "HoraAtendo" ),rs.getTime( "HoraAtendoFin" ) );
 					
