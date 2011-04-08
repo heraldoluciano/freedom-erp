@@ -41,6 +41,8 @@ public class FEspecAtend extends FDados {
 	
 	private final JCheckBoxPad cbContMetaEspec = new JCheckBoxPad( "Conta para meta do atendente ?", "S", "N" );
 	
+	private final JCheckBoxPad cbMrelCobEspec = new JCheckBoxPad( "Mostra no relatório de cobrança ?", "S", "N" );
+	
 	private final JTextFieldPad txtTempoMinCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private final JTextFieldPad txtTempoMaxCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -53,7 +55,7 @@ public class FEspecAtend extends FDados {
 		
 		setTitulo( "Especificação de Atendimentos" );
 		
-		setAtribos( 15, 30, 500, 300 );
+		setAtribos( 15, 30, 550, 400 );
 		
 		montaTela(); 
 		
@@ -73,6 +75,7 @@ public class FEspecAtend extends FDados {
 		adicDB( 	cbCobCliEspec, 			 7, 	100, 	300, 	20, "CobCliEspec", 		"", 												true );
 		adicDB( 	cbContMetaEspec, 		 7, 	140, 	300, 	20, "ContMetaEspec", 	"", 												true );
 		adicDB( 	cbPgComiEspec, 			 7, 	180, 	300, 	20, "PgComiEspec", 		"", 												true );
+		adicDB( 	cbMrelCobEspec, 		 7, 	220, 	300, 	20, "MrelCobEspec", 	"", 												true );
 		
 		
 
