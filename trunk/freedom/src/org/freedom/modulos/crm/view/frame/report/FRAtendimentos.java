@@ -220,7 +220,11 @@ public class FRAtendimentos extends FRelatorio {
 		}
 
 		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
-		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo " );
+		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
+		sql.append( "(a.totalmin/60) totalhoras, (( (case when a.cobcliespec='S' and a.statusatendo<>'NC' ");
+		sql.append( "then (case when a.totalmin<a.tempomincobespec then a.tempomincobespec else ");
+		sql.append( " (case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 then a.tempomaxcobespec ");
+		sql.append( "else a.totalmin end) end)  else 0 end) )/60 ) totalcobcli " );
 		sql.append( "from atatendimentovw01 a " );
 
 		sql.append( "left outer join crchamado ch on " );
