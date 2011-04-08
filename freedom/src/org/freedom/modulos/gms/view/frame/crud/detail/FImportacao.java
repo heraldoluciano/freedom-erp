@@ -23,7 +23,6 @@
 
 package org.freedom.modulos.gms.view.frame.crud.detail;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,18 +43,19 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.library.swing.util.SwingParams;
@@ -180,6 +180,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMSDevido 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSCredPresum	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlrTXSisComex	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldFK 	txtAliqIPIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -198,7 +199,11 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrTXSisComexAdic= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 
 	private JButtonPad btRateioFrete = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
-
+	
+	private JButtonPad btGerarAdicoes = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	
+	private JButtonPad btRateioSiscomex = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	
 	private ListaCampos lcForneced = new ListaCampos( this, "FR" );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
@@ -223,7 +228,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	
 	private JScrollPane spnAdicao = new JScrollPane( tabAdicao );
 	
-	private enum GRID_ADICAO { CODNCM, CODADICAO, VLRTXSISCOMEXADIC };
+	public Navegador navAdic = new Navegador(true);
+	
+	private enum GRID_ADICAO { CODNCM, CODADIC, VLRTXSISCOMEXADIC, VLRADUANEIRO };
 
 	public FImportacao() {
 
@@ -248,6 +255,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private void adicToolTips() {
 
 		btRateioFrete.setToolTipText( "Rateia o valor total do frete entre os ítens" );
+		btGerarAdicoes.setToolTipText( "Gerar tabela de adições" );
+		btRateioSiscomex.setToolTipText( "Rateia o valor total da taxa siscomex entre os ítens" );
 
 	}
 
@@ -256,7 +265,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btRateioFrete.addActionListener( this );
-		
+		btGerarAdicoes.addActionListener( this );
+		btRateioSiscomex.addActionListener( this );
 		
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
@@ -268,6 +278,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcForneced.addCarregaListener( this );
 		lcClFiscal.addCarregaListener( this );
 		lcItClFiscal.addCarregaListener( this );
+		lcAdicao.addCarregaListener( this );
 
 		tpnGrid.addChangeListener( this );
 
@@ -460,7 +471,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtPesoBrutoTot.setSoLeitura( true );
 		txtPesoLiquidoTot.setSoLeitura( true );
 		
-		adic( btRateioFrete, 213, 140, 50, 30 );
+		adic( btRateioFrete			, 213	, 140	, 50	, 30 );
+		adic( btGerarAdicoes		, 264	, 140	, 50	, 30 );
+		adic( btRateioSiscomex		, 315	, 140	, 50	, 30 );
 		
 		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 185 );
 		pnCliCabPrincipal.adic( pnValoresTotais		, 649	, 0	, 250	, 185 );
@@ -546,6 +559,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 				
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
+		
 		setNavegador( navRod );
 		
 		lcDet.setMaster( lcCampos );
@@ -583,24 +597,25 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampoInvisivel( txtCodFisc,		 "CodFisc"				, "CodFisc"				, ListaCampos.DB_FK			, false	);
 		adicCampoInvisivel( txtCodItFisc,	 "CodItFisc"			, "CodItFisc"			, ListaCampos.DB_SI			, false	);
 		
-		adicCampo( txtAliqII		, 100	, 100	, 90	, 20	, "AliqII"				, "% II"					, ListaCampos.DB_SI	, false	);
-		adicCampo( txtAliqIPI		, 193	, 100	, 90	, 20	, "AliqIPI"				, "% IPI"					, ListaCampos.DB_SI	, false	);
-		adicCampo( txtAliqPIS		, 286	, 100	, 90	, 20	, "AliqPIS"				, "% PIS"					, ListaCampos.DB_SI	, false	);
-		adicCampo( txtAliqCOFINS	, 382	, 100	, 90	, 20	, "AliqCOFINS"			, "% COFINS"				, ListaCampos.DB_SI	, false	);
-		adicCampo( txtAliqICMSImp	, 475	, 100	, 90	, 20	, "AliqICMSImp"			, "% ICMS Imp."				, ListaCampos.DB_SI	, false	);
-		adicCampo( txtAliqICMSUF	, 568	, 100	, 90	, 20	, "AliqICMSUF"			, "% ICMS"					, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqII				, 100	, 100	, 90	, 20	, "AliqII"				, "% II"					, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqIPI				, 193	, 100	, 90	, 20	, "AliqIPI"				, "% IPI"					, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqPIS				, 286	, 100	, 90	, 20	, "AliqPIS"				, "% PIS"					, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqCOFINS			, 382	, 100	, 90	, 20	, "AliqCOFINS"			, "% COFINS"				, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqICMSImp			, 475	, 100	, 90	, 20	, "AliqICMSImp"			, "% ICMS Imp."				, ListaCampos.DB_SI	, false	);
+		adicCampo( txtAliqICMSUF			, 568	, 100	, 90	, 20	, "AliqICMSUF"			, "% ICMS"					, ListaCampos.DB_SI	, false	);
 
-		adicCampo( txtVlrAD			, 7		, 140	, 90	, 20	, "VlrAD"				, "Vlr.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrII			, 100	, 140	, 90	, 20	, "VlrII"				, "Vlr.II"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrIPI		, 193	, 140	, 90	, 20	, "VlrIPI"				, "Vlr.IPI"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrPIS		, 286	, 140	, 90	, 20	, "VlrPIS"				, "Vlr.PIS"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrCOFINS		, 379	, 140	, 90	, 20	, "VlrCOFINS"			, "Vlr.COFINS"				, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrBaseICMS   , 472	, 140	, 90	, 20	, "VlrBaseICMS"			, "Vlr.Base ICMS"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMS   	, 565	, 140	, 90	, 20	, "VlrICMS"				, "Vlr.ICMS"				, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSDiferido  	, 658	, 140	, 90	, 20	, "VlrICMSDiferido"	, "Vlr.ICMS Dif."			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSDevido  	, 761	, 140	, 90	, 20	, "VlrICMSDevido"	, "Vlr.ICMS Dev."			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSCredPresum , 864	, 140	, 90	, 20	, "VlrICMSCredPresum"	, "Vlr.ICMS Pres."		, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSRecolhimento , 957	, 140	, 90	, 20	, "VlrICMSRECOLHIMENTO"	, "Vlr.Recolhimento"	, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrAD					, 7		, 140	, 90	, 20	, "VlrAD"				, "Vlr.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrII					, 100	, 140	, 90	, 20	, "VlrII"				, "Vlr.II"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrIPI				, 193	, 140	, 90	, 20	, "VlrIPI"				, "Vlr.IPI"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrPIS				, 286	, 140	, 90	, 20	, "VlrPIS"				, "Vlr.PIS"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrCOFINS				, 379	, 140	, 90	, 20	, "VlrCOFINS"			, "Vlr.COFINS"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrBaseICMS   		, 472	, 140	, 90	, 20	, "VlrBaseICMS"			, "Vlr.Base ICMS"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMS   			, 565	, 140	, 80	, 20	, "VlrICMS"				, "Vlr.ICMS"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDiferido  		, 648	, 140	, 80	, 20	, "VlrICMSDiferido"		, "Vlr.ICMS Dif."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDevido  		, 731	, 140	, 80	, 20	, "VlrICMSDevido"		, "Vlr.ICMS Dev."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSCredPresum 	, 814	, 140	, 80	, 20	, "VlrICMSCredPresum"	, "Vlr.ICMS Pres."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSRecolhimento 	, 897	, 140	, 80	, 20	, "VlrICMSRECOLHIMENTO"	, "Vlr.Recolhimento"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrTXSisComex	 		, 7		, 180	, 90	, 20	, "VlrTxSisComex"		, "Tx.Siscomex"				, ListaCampos.DB_SI	, false );
 		
 		txtVlrFreteMI.setSoLeitura( true );
 		txtVlrFrete.setSoLeitura( true );
@@ -626,6 +641,15 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtVlrPIS.setEditable( false );
 		txtVlrCOFINS.setEditable( false );
 		
+		txtVlrBaseICMS.setSoLeitura( true );
+		txtVlrICMS.setSoLeitura( true );
+		txtVlrICMSDiferido.setSoLeitura( true );
+		txtVlrICMSDevido.setSoLeitura( true );
+		txtVlrICMSCredPresum.setSoLeitura( true );
+		txtVlrICMSRecolhimento.setSoLeitura( true );
+		
+		txtVlrTXSisComex.setSoLeitura( true );
+		
 		// Definindo a tabela do banco de dados
 		 
 		setListaCampos( true, "ITIMPORTACAO", "CP" );
@@ -640,6 +664,9 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		
 		setListaCampos( lcAdicao );
+		
+		setNavegador( navAdic );
+		
 
 		adicCampoInvisivel( txtCodNCMAdic		, "CodNCM"			, "NCM"				, ListaCampos.DB_PK, true );
 		adicCampoInvisivel( txtCodAdic			, "CodAdic"			, "Adição"			, ListaCampos.DB_SI, false );
@@ -652,13 +679,20 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		lcAdicao.montaTab();
 		
-		tabAdicao.setTamColuna( 100	, GRID_ADICAO.CODNCM.ordinal()				);
-		tabAdicao.setTamColuna( 40	, GRID_ADICAO.CODADICAO.ordinal()			);
-		tabAdicao.setTamColuna( 120	, GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal()	);
+		tabAdicao.adicColuna( "Vlr.Aduaneiro" );
 		
 		tabAdicao.setColunaEditavel( GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal(), true );
-		tabAdicao.setColunaEditavel( GRID_ADICAO.CODADICAO.ordinal(), true );
-				
+		tabAdicao.setColunaEditavel( GRID_ADICAO.CODADIC.ordinal(), true );
+		
+		tabAdicao.setTamColuna( 100	, GRID_ADICAO.CODNCM.ordinal()				);
+		tabAdicao.setTamColuna( 40	, GRID_ADICAO.CODADIC.ordinal()				);
+		tabAdicao.setTamColuna( 120	, GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal()	);
+		
+		tabAdicao.setTamColuna( 120	, GRID_ADICAO.VLRADUANEIRO.ordinal()		);
+		
+		
+		
+	
 		
 	}
 	
@@ -683,9 +717,52 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 			
 		}
 		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao excluir adições!", false, e );
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void completaGridNCM() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			sql.append("select coalesce(sum(vlrad),0) vlrad from cpitimportacao where codemp=? and codfilial=? and codimp=? and codncm=? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			String ncm = null;
+			
+			for(int i = 0; tabAdicao.getNumLinhas()> i; i++) {
+			
+				ncm = tabAdicao.getValor( i, GRID_ADICAO.CODNCM.ordinal() ).toString();
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "CPITIMPORTACAO" ) );
+				ps.setInt( 3, txtCodImp.getVlrInteger() );
+				ps.setString( 4, ncm );
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					
+					tabAdicao.setValor( Funcoes.bdToStrd( rs.getBigDecimal( "vlrad" )), i, GRID_ADICAO.VLRADUANEIRO.ordinal() );
+					
+				}
+				
+			}
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao completar grid de adicoes!", false, e );
+			e.printStackTrace();
+		}
 	}
 	
 	private void geraAdicoes() {
@@ -693,7 +770,6 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
 		
 		try {
 			
@@ -708,21 +784,94 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 				
 			}
 			
-			sql.append( "select codncm from cpitimportacao where codemp=?, codfilial=?, codimp=? group by codncm " );
+			sql.append( "select codncm, sum(vlrad) vlrad from cpitimportacao where codemp=? and codfilial=? and codimp=? group by codncm " );
 				
-			sql.append( "where codemp=? and codfilial=? and codimp=?" );
-
 			ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
 			ps.setInt( 3, txtCodImp.getVlrInteger() );
 			
-			ps.execute();
+			rs = ps.executeQuery();
+			
+			sql = new StringBuilder();
+			
+			int codadic = 1;
+			
+			while (rs.next()) {
+				
+				String ncm = rs.getString( "codncm" );
+				BigDecimal vlradadic = rs.getBigDecimal( "vlrad" );
+				
+				sql.append( "insert into cpimportacaoadic (codemp, codfilial, codimp, codncm, codadic, vlrtxsiscomex) values (?, ?, ?, ?, ?, ?) " );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+				ps.setInt( 3, txtCodImp.getVlrInteger() );
+				ps.setString( 4, ncm );
+				ps.setInt( 5, codadic );
+				ps.setBigDecimal( 6, new BigDecimal(0) );
+				
+				ps.execute();
+
+//				tabAdicao.setValor( Funcoes.bdToStrd( rs.getBigDecimal( "vlrad" )), i, GRID_ADICAO.VLRADUANEIRO.ordinal() );
+				
+				codadic ++;
+				
+			}
+			
+			lcCampos.carregaDados();
 			
 			con.commit();
 			
-			lcDet.carregaItens();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao gerar adições!", false, e );
+			e.printStackTrace();
+		}
+	}
+	
+	private void rateioSiscomex() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+
+			sql.append( "update cpitimportacao set ");
+
+			// Rateando o Frete pelo valor aduaneiro
+			sql.append( "vlrtxsiscomex=( ( ? * (vlrad) ) / ? )" );				
+			sql.append( "where codemp=? and codfilial=? and codimp=?" );
+
+			ps = con.prepareStatement( sql.toString() );
+			
+			for(int i = 0; tabAdicao.getNumLinhas()>i; i++) {
+			
+				BigDecimal siscomex = ConversionFunctions.stringCurrencyToBigDecimal( tabAdicao.getValor( i, GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal()).toString() );
+				BigDecimal vlradadic = ConversionFunctions.stringCurrencyToBigDecimal( tabAdicao.getValor( i, GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal()).toString() );
+				
+				ps.setBigDecimal( 1, siscomex );
+				ps.setBigDecimal( 2, vlradadic );
+	
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+				ps.setInt( 5, txtCodImp.getVlrInteger() );
+				
+				ps.execute();
+			
+			}
+			
+			con.commit();
+			
+			Funcoes.mensagemInforma( this, "Valores rateados entre os ítens!" );
+			lcCampos.carregaDados();
+			
 			
 		}
 		catch (Exception e) {
@@ -899,9 +1048,13 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		if ( e.getListaCampos() == lcClFiscal && ( lcDet.getStatus() == ListaCampos.LCS_EDIT || lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 			buscaClassificacaoFiscal();
 		}
-		if ( e.getListaCampos() == lcItClFiscal ) {
+		else if ( e.getListaCampos() == lcItClFiscal ) {
 			carregaAliquotas();
 		}
+		else if ( e.getListaCampos() == lcAdicao ) {
+			completaGridNCM();
+		}
+		
 	}
 	
 	private void carregaAliquotas() {
@@ -919,9 +1072,13 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btRateioFrete ) {
-
 			execRateio();
-			
+		}
+		else if ( e.getSource() == btGerarAdicoes ) {
+			geraAdicoes();
+		} 
+		else if ( e.getSource() == btRateioSiscomex ) {
+			rateioSiscomex();
 		}
 
 		super.actionPerformed( e );
