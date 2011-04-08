@@ -77,6 +77,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static int casasDecFin = 2;
 	
+	public static String codmoeda = "";
+	
 	public static Boolean simples = false;
 	
 	public static int casasDecPre = 2;
