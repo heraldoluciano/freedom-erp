@@ -220,20 +220,14 @@ public class FRAtendimentos extends FRelatorio {
 		}
 
 		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
-		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, cl.razcli, a.statusatendo " );
-		sql.append( "from  atatendente atd , attipoatendo t, vdcliente cl, atatendimento a " );
+		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo " );
+		sql.append( "from atatendimentovw01 a " );
 
 		sql.append( "left outer join crchamado ch on " );
 
 		sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
 
-		sql.append( "where " );
-
-		sql.append( "atd.codemp=a.codempae and atd.codfilial=a.codfilialae " );
-		sql.append( "and t.codemp=a.codempto and t.codfilial=a.codfilial and t.codtpatendo=a.codtpatendo " );
-		sql.append( "and cl.codemp=a.codempcl and cl.codfilial=a.codfilialcl and cl.codcli=a.codcli " );
-		sql.append( "and atd.codatend=a.codatend and a.codemp=? and a.codfilial=? " );
-		sql.append( "and a.dataatendo between ? and ?  " );
+		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  " );
 
 		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
 			sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
