@@ -42,7 +42,7 @@ WHERE IC.CODEMP = CT.CODEMP AND IC.CODFILIAL = CT.CODFILIAL AND IC.codcontr=CT.c
 AND A.codemp=$P{CODEMP} AND A.CODFILIAL=$P{CODFILIAL} AND A.codcli=$P{CODCLI} and A.codcontr=$P{CODCONTR}
 AND CT.codempcl=A.codempcl AND CT.codfilialcl=A.codfilialcl AND CT.codcli=A.CODCLI
 AND CT.codemp=A.codempct AND CT.CODFILIAL=A.CODFILIALCT AND CT.codcontr=A.codcontr
-AND IC.coditcontr=A.coditcontr
+AND IC.coditcontr=A.coditcontr AND A.MRELCOBESPEC='S'
 and A.dataatendo between $P{DTINI} and $P{DTFIM}
 and A.coditcontr=$P{CODITCONTR}
 group by 1,2,4,5]]>
