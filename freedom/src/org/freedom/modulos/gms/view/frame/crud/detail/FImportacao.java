@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.gms.view.frame.crud.detail;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -47,6 +49,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
@@ -106,6 +109,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVMLDMITOT		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVMLETOT	 		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVMLDTOT			= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVLRADTOT			= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVLRADMITOT		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrSeguroMITOT	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrSeguroTOT		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrIITOT	 		= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -173,7 +178,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldPad 	txtVlrICMS		  	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSDiferido 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSDevido 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
-	private JTextFieldPad 	txtVlrICMSRedPresum	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
+	private JTextFieldPad 	txtVlrICMSCredPresum	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 	private JTextFieldPad 	txtVlrICMSRecolhimento 	= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL, 15	, Aplicativo.casasDecFin );
 	
 	private JTextFieldFK 	txtAliqIIFisc 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
@@ -187,6 +192,10 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	
 	private JTextFieldFK 	txtPesoLiqProd 		= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 10	, Aplicativo.casasDec );
 	private JTextFieldFK 	txtPesoBrutProd 	= 	new JTextFieldFK( 	JTextFieldPad.TP_DECIMAL	, 10	, Aplicativo.casasDec );
+	
+	private JTextFieldFK 	txtCodAdic	 		= 	new JTextFieldFK( 	JTextFieldPad.TP_INTEGER	, 5		, 0 );
+	private JTextFieldFK 	txtCodNCMAdic 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 10	, 0 );
+	private JTextFieldPad 	txtVlrTXSisComexAdic= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 
 	private JButtonPad btRateioFrete = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 
@@ -203,14 +212,18 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private ListaCampos lcClFiscal = new ListaCampos( this, "CF" );
 	
 	private ListaCampos lcItClFiscal = new ListaCampos( this );
-
+	
+	private ListaCampos lcAdicao = new ListaCampos( this );
+	
 	private JPanelPad pinDet = new JPanelPad();
 
-	public JTablePad tabNCM = new JTablePad();
-	
-	public JScrollPane spTabNCM = new JScrollPane( tabNCM );
-	
 	private String codmoeda = Aplicativo.codmoeda.trim();
+	
+	private JTablePad tabAdicao = new JTablePad();
+	
+	private JScrollPane spnAdicao = new JScrollPane( tabAdicao );
+	
+	private enum GRID_ADICAO { CODNCM, CODADICAO, VLRTXSISCOMEXADIC };
 
 	public FImportacao() {
 
@@ -381,6 +394,11 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcItClFiscal.setQueryCommit( false );
 		txtCodItFisc.setTabelaExterna( lcItClFiscal, FCLFiscal.class.getCanonicalName() );
 
+		lcAdicao.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcAdicao );
+		lcAdicao.setTabela( tabAdicao );
+		
+		
 	}
 
 	private void montaTela() {
@@ -408,7 +426,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		pnMaster.add( tpnGrid );
 		
 		tpnGrid.add( "Itens", spTab );
-		tpnGrid.add( "Agrupamento (NCM)", spTabNCM );
+		tpnGrid.add( "Agrupamento (NCM)", spnAdicao );
 	
 		
 		JPanelPad pnValoresTotaisMI = new JPanelPad();
@@ -449,21 +467,25 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		setPainel( pnValoresTotaisMI );
 				
-		adicCampo( txtVlrFreteMITOT	, 7		, 20	, 100	, 20	, "VlrFreteMI"	, "Frete"		, ListaCampos.DB_SI	, true 	);
-		adicCampo( txtVlrSeguroMITOT, 110	, 20	, 100	, 20	, "VlrSeguroMI"	, "Seguro"		, ListaCampos.DB_SI	, true 	);
-		adicCampo( txtVlrTHCMITOT	, 7		, 60	, 100	, 20	, "VlrTHCMI"	, "THC"			, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrFreteMITOT	, 7		, 20	, 100	, 20	, "VlrFreteMI"	, "Frete"						, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVlrSeguroMITOT, 110	, 20	, 100	, 20	, "VlrSeguroMI"	, "Seguro"						, ListaCampos.DB_SI	, true 	);
 		
-		adicCampo( txtVMLEMITOT		, 7		, 100	, 100	, 20	, "VMLEMI"		, "VMLE"		, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVMLDMITOT		, 110	, 100	, 100	, 20	, "VMLDMI"		, "VMLD"		, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLEMITOT		, 7		, 60	, 100	, 20	, "VMLEMI"		, "VMLE"						, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLDMITOT		, 110	, 60	, 100	, 20	, "VMLDMI"		, "VMLD"						, ListaCampos.DB_SI	, false	);
+		
+		adicCampo( txtVlrTHCMITOT	, 7		, 100	, 100	, 20	, "VlrTHCMI"	, "THC"							, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVLRADMITOT	, 110	, 100	, 100	, 20	, "VLRADMI"		, "Vlr.Aduaneiro"				, ListaCampos.DB_SI	, false	);
 		
 		setPainel( pnValoresTotais );
 		
-		adicCampo( txtVlrFreteTOT	, 7		, 20	, 100	, 20	, "VlrFrete"	, "Frete "	+ codmoeda	, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVlrSeguroTOT	, 110	, 20	, 100	, 20	, "VlrSeguro"	, "Seguro "	+ codmoeda	, ListaCampos.DB_SI	, false	);		
-		adicCampo( txtVlrTHCTOT		, 7		, 60	, 100	, 20	, "VlrTHC"		, "THC "	+ codmoeda	, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVlrFreteTOT	, 7		, 20	, 100	, 20	, "VlrFrete"	, "Frete "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrSeguroTOT	, 110	, 20	, 100	, 20	, "VlrSeguro"	, "Seguro "			+ codmoeda	, ListaCampos.DB_SI	, false	);		
 		
-		adicCampo( txtVMLETOT		, 7		, 100	, 100	, 20	, "VMLE"		, "VMLE "	+ codmoeda	, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVMLDTOT		, 110	, 100	, 100	, 20	, "VMLD"		, "VMLD "	+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLETOT		, 7		, 60	, 100	, 20	, "VMLE"		, "VMLE "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLDTOT		, 110	, 60	, 100	, 20	, "VMLD"		, "VMLD "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		
+		adicCampo( txtVlrTHCTOT		, 7		, 100	, 100	, 20	, "VlrTHC"		, "THC "			+ codmoeda	, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVLRADTOT		, 110	, 100	, 100	, 20	, "VLRAD"		, "Vlr.Aduaneiro" 	+ codmoeda	, ListaCampos.DB_SI	, false	);
 		
 		txtVlrFreteTOT.setSoLeitura( true );
 		txtVlrSeguroTOT.setSoLeitura( true );
@@ -472,7 +494,8 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtVMLEMITOT.setSoLeitura( true );
 		txtVMLDTOT.setSoLeitura( true );
 		txtVMLDMITOT.setSoLeitura( true );
-		
+		txtVLRADMITOT.setSoLeitura( true );
+		txtVLRADTOT.setSoLeitura( true );
 		
 		setPainel( pnCliCabPrincipal );
 		
@@ -566,6 +589,18 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtAliqCOFINS	, 382	, 100	, 90	, 20	, "AliqCOFINS"			, "% COFINS"				, ListaCampos.DB_SI	, false	);
 		adicCampo( txtAliqICMSImp	, 475	, 100	, 90	, 20	, "AliqICMSImp"			, "% ICMS Imp."				, ListaCampos.DB_SI	, false	);
 		adicCampo( txtAliqICMSUF	, 568	, 100	, 90	, 20	, "AliqICMSUF"			, "% ICMS"					, ListaCampos.DB_SI	, false	);
+
+		adicCampo( txtVlrAD			, 7		, 140	, 90	, 20	, "VlrAD"				, "Vlr.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrII			, 100	, 140	, 90	, 20	, "VlrII"				, "Vlr.II"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrIPI		, 193	, 140	, 90	, 20	, "VlrIPI"				, "Vlr.IPI"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrPIS		, 286	, 140	, 90	, 20	, "VlrPIS"				, "Vlr.PIS"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrCOFINS		, 379	, 140	, 90	, 20	, "VlrCOFINS"			, "Vlr.COFINS"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrBaseICMS   , 472	, 140	, 90	, 20	, "VlrBaseICMS"			, "Vlr.Base ICMS"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMS   	, 565	, 140	, 90	, 20	, "VlrICMS"				, "Vlr.ICMS"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDiferido  	, 658	, 140	, 90	, 20	, "VlrICMSDiferido"	, "Vlr.ICMS Dif."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDevido  	, 761	, 140	, 90	, 20	, "VlrICMSDevido"	, "Vlr.ICMS Dev."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSCredPresum , 864	, 140	, 90	, 20	, "VlrICMSCredPresum"	, "Vlr.ICMS Pres."		, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSRecolhimento , 957	, 140	, 90	, 20	, "VlrICMSRECOLHIMENTO"	, "Vlr.Recolhimento"	, ListaCampos.DB_SI	, false );
 		
 		txtVlrFreteMI.setSoLeitura( true );
 		txtVlrFrete.setSoLeitura( true );
@@ -585,13 +620,115 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtAliqICMSImp.setEditable( false );
 		txtAliqICMSUF.setEditable( false );
 		
+		txtVlrAD.setSoLeitura( true );
+		txtVlrII.setSoLeitura( true );
+		txtVlrIPI.setSoLeitura( true );
+		txtVlrPIS.setEditable( false );
+		txtVlrCOFINS.setEditable( false );
+		
 		// Definindo a tabela do banco de dados
 		 
 		setListaCampos( true, "ITIMPORTACAO", "CP" );
 		lcDet.setQueryInsert( true );
 		montaTab();
+
+		/*************************************************
+		* 
+		* ABA DE AGRUPAMENTO POR NCM (TABELA DE ADIÇÕES)
+		* 
+		*************************************************/
 		
 		
+		setListaCampos( lcAdicao );
+
+		adicCampoInvisivel( txtCodNCMAdic		, "CodNCM"			, "NCM"				, ListaCampos.DB_PK, true );
+		adicCampoInvisivel( txtCodAdic			, "CodAdic"			, "Adição"			, ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrTXSisComexAdic, "VlrTxSisComex"	, "Taxa Siscomex"	, ListaCampos.DB_SI, false );
+
+		setListaCampos( false, "IMPORTACAOADIC", "CP" );
+
+		lcAdicao.setQueryInsert( false );
+		lcAdicao.setQueryCommit( false );
+		
+		lcAdicao.montaTab();
+		
+		tabAdicao.setTamColuna( 100	, GRID_ADICAO.CODNCM.ordinal()				);
+		tabAdicao.setTamColuna( 40	, GRID_ADICAO.CODADICAO.ordinal()			);
+		tabAdicao.setTamColuna( 120	, GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal()	);
+		
+		tabAdicao.setColunaEditavel( GRID_ADICAO.VLRTXSISCOMEXADIC.ordinal(), true );
+		tabAdicao.setColunaEditavel( GRID_ADICAO.CODADICAO.ordinal(), true );
+				
+		
+	}
+	
+	private void excluiAdicoes() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sql.append("delete from cpimportacaoadic where codemp=? and codfilial=? and codimp=? ");
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( 3, txtCodImp.getVlrInteger() );
+			
+			ps.execute();
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void geraAdicoes() {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		
+		try {
+			
+			if(tabAdicao.getNumLinhas()>0) {
+			
+				if(Funcoes.mensagemConfirma( this, "Já existem adições geradas para esse processo.\nGostaria e excluí-las e gerar novamente?" )==JOptionPane.YES_OPTION) {
+					excluiAdicoes();
+				}
+				else {
+					return;
+				}
+				
+			}
+			
+			sql.append( "select codncm from cpitimportacao where codemp=?, codfilial=?, codimp=? group by codncm " );
+				
+			sql.append( "where codemp=? and codfilial=? and codimp=?" );
+
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps.setInt( 3, txtCodImp.getVlrInteger() );
+			
+			ps.execute();
+			
+			con.commit();
+			
+			lcDet.carregaItens();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao realizar o rateio do frete.", false, e );
+			e.printStackTrace();
+		}
 	}
 	
 	private void execRateio() {
@@ -693,9 +830,42 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 
 		if ( e.getListaCampos() == lcDet ) {
 			
-//			buscaClassificacaoFiscal();
+			calcPISCOFINS();
 
 		}
+	}
+	
+	private void calcPISCOFINS() {
+		
+		try {
+			//(1+(I16*(M16+(J16*(1+M16)))))/((1-K16-L16)*(1-I16))
+			
+			BigDecimal um 			= 	new BigDecimal(1);
+			BigDecimal cem			=	new BigDecimal(100);
+			BigDecimal aliqicmsimp 	= 	txtAliqICMSImp.getVlrBigDecimal().divide( cem, BigDecimal.ROUND_CEILING ); //I16
+			BigDecimal aliqii 		= 	txtAliqII.getVlrBigDecimal().divide( cem, BigDecimal.ROUND_CEILING );//M16;
+			BigDecimal aliqpis 		= 	txtAliqPIS.getVlrBigDecimal().divide( cem, BigDecimal.ROUND_CEILING ); //K16
+			BigDecimal aliqcofins 	= 	txtAliqCOFINS.getVlrBigDecimal().divide( cem, BigDecimal.ROUND_CEILING ); //L16
+			BigDecimal aliqipi 		= 	txtAliqIPI.getVlrBigDecimal().divide( cem, BigDecimal.ROUND_CEILING ); //J16
+			BigDecimal vlrad		=	txtVlrAD.getVlrBigDecimal();
+			
+			BigDecimal fator1		=	um .add ( (aliqicmsimp.multiply( (aliqii .add( (aliqipi .multiply( ( um.add( aliqii) ) ) ) ) )  )   )  )    ;
+			BigDecimal fator2		=	(um.add(aliqpis).subtract( aliqcofins) ).multiply( (um.subtract( aliqicmsimp) )) ;
+			
+			BigDecimal fator 		=	fator1.divide( fator2, BigDecimal.ROUND_CEILING );
+			
+			BigDecimal pis			=	vlrad.multiply( fator.multiply( aliqpis ));
+			BigDecimal cofins		=	vlrad.multiply( fator.multiply( aliqcofins ));
+
+			txtVlrPIS.setVlrBigDecimal( pis );
+			txtVlrCOFINS.setVlrBigDecimal( cofins );
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void afterPost( PostEvent e ) {
@@ -774,6 +944,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		lcMoeda.setConexao( con );
 		lcClFiscal.setConexao( con );
 		lcItClFiscal.setConexao( con );
+		lcAdicao.setConexao( con );
 		
 	}
 }
