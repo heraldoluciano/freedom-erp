@@ -207,6 +207,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JTextFieldPad txtAliqFiscIntra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+	
+	private JTextFieldPad txtAliqICMSImp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtCodSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -857,6 +859,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqICMSImp, 394, 150, 108, 20, "AliqICMSImp", "% ICMS Import.", ListaCampos.DB_SI, false );
 
 		// ********** ABA IPI **/
 
