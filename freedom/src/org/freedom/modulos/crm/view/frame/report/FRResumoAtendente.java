@@ -197,7 +197,7 @@ public class FRResumoAtendente extends FRelatorio {
 			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
 			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
 			sql.append( ")/60 ) totalcomis, ");
-			sql.append( "(sum( (case when a.cobcliespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "(sum( (case when a.cobcliespec='S' and a.statusatendo<>'NC' then (case when a.totalmin<a.tempomincobespec ");
 			sql.append( "then a.tempomincobespec else ");
 			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
 			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
@@ -254,7 +254,7 @@ public class FRResumoAtendente extends FRelatorio {
 			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
 			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
 			sql.append( ")/60 ) totalcomis, ");
-			sql.append( "(( (case when a.cobcliespec='S' then (case when a.totalmin<a.tempomincobespec ");
+			sql.append( "(( (case when a.cobcliespec='S' and a.statusatendo<>'NC' then (case when a.totalmin<a.tempomincobespec ");
 			sql.append( "then a.tempomincobespec else ");
 			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
 			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
