@@ -227,7 +227,7 @@ public class FRAtendimentos extends FRelatorio {
 
 		sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
 
-		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  " );
+		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
 
 		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
 			sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
