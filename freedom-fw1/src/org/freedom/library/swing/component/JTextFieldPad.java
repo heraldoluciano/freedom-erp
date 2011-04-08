@@ -20,6 +20,7 @@
 
 package org.freedom.library.swing.component;
 
+import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputMethodEvent;
@@ -78,7 +79,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int MC_INSS = 119;
 	public static final String mascplaca = "###-####";
 	public static final String mascinss = "#.###.###.###-#";
-
+	public static Color BACKGROUND_COLOR = Color.WHITE;
+	public static Color FOREGROUND_COLOR = Color.BLACK;
 	public static final String PR_TEXTO = "texto";
 	private EditListener editLis = this;
 	private GregorianCalendar data = new GregorianCalendar();
@@ -161,10 +163,20 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public void setSoLeitura(boolean b) {
 		bSoLeitura = b;
 		if (b) {
+
+			setBackground(Color.lightGray);
+			setForeground(new Color(111, 106, 177)); // RGB do Java
+
 			setEditable(false);
 			bAtivo = false;
+			
+			
 		}
 		else {
+			
+			setBackground(BACKGROUND_COLOR);
+			setForeground(FOREGROUND_COLOR);
+			
 			setEditable(true);
 			bAtivo = true;
 		}
