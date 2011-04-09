@@ -42,6 +42,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoItens;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCotacaoPrecos;
+import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
@@ -226,6 +227,7 @@ public class FreedomGMS extends AplicativoPD {
 		addSeparador( 200000000 );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compra", 'C', 200600000, 1, true, FCompra.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'F', 200800000, 1, true, FConhecFrete.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra (Importação)", "Compra (Importação)", 'F', 200900000, 1, true, FImportacao.class );
 
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200700000, 1, false, null );
 		addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por fornecedor", "Compras por Fornecedor", 'F', 200701000, 2, true, FRComprasFor.class );
