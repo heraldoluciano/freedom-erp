@@ -205,11 +205,11 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldFK 	txtCodNCMAdic 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 10	, 0 );
 	private JTextFieldPad 	txtVlrTXSisComexAdic= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 
-	private JButtonPad btRateioFrete = new JButtonPad( Icone.novo( "btRateio.png" ) );
+	private JButtonPad btRateioFrete = new JButtonPad( "Rateiro Frete/THC", Icone.novo( "btRateio.png" ));
 	
-	private JButtonPad btGerarAdicoes = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btGerarAdicoes = new JButtonPad( "Gerar adições", Icone.novo( "btGerar.gif" ) );
 	
-	private JButtonPad btRateioSiscomex = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btRateioSiscomex = new JButtonPad( "Rateio Tx. Siscomex", Icone.novo( "btRateio.png" ) );
 	
 	private ListaCampos lcForneced = new ListaCampos( this, "FR" );
 
@@ -261,7 +261,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 
 	private void adicToolTips() {
 
-		btRateioFrete.setToolTipText( "Rateia o valor total do frete entre os ítens" );
+		btRateioFrete.setToolTipText( "Rateia o valor total do frete e THC entre os ítens" );
 		btGerarAdicoes.setToolTipText( "Gerar tabela de adições" );
 		btRateioSiscomex.setToolTipText( "Rateia o valor total da taxa siscomex entre os ítens" );
 
@@ -463,53 +463,55 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		
 		adicCampo( txtCodImp		, 7		, 20	, 70	, 20	, "CodImp"		, "Cód. Imp."	, ListaCampos.DB_PK	, true 	);
 		adicCampo( txtCodFor		, 80	, 20	, 60	, 20	, "CodFor"		, "Cód. For."	, ListaCampos.DB_FK	, true 	);		
-		adicDescFK( txtRazFor		, 143	, 20	, 250	, 20	, "RazFor"		, "Razão Social do Fornecedor" );
+		adicDescFK( txtRazFor		, 143	, 20	, 243	, 20	, "RazFor"		, "Razão Social do Fornecedor" );
 
 		adicCampo( txtDtImp			, 7		, 60	, 70	, 20	, "DtImp"		, "Data"		, ListaCampos.DB_SI	, true 	);
 		
 		adicCampo( txtCodPlanoPag	, 80	, 60	, 60	, 20	, "CodPlanoPag"	, "Cód. Pag."	, ListaCampos.DB_FK	, true 	);		
-		adicDescFK( txtDescPlanoPag	, 143	, 60	, 250	, 20	, "DescPlanoPag", "Descrição do plano de pagamento" );
+		adicDescFK( txtDescPlanoPag	, 143	, 60	, 243	, 20	, "DescPlanoPag", "Descrição do plano de pagamento" );
 
 		adicCampo( txtCotacaoMoeda	, 7		, 100	, 70	, 20	, "CotacaoMoeda", "Cotação"		, ListaCampos.DB_SI	, true 	);	
 		
 		adicCampo( txtCodMoeda		, 80	, 100	, 60	, 20	, "CodMoeda"	, "Moeda"		, ListaCampos.DB_FK	, true 	);		
-		adicDescFK( txtSingMoeda	, 143	, 100	, 250	, 20	, "SingMoeda"	, "" );
+		adicDescFK( txtSingMoeda	, 143	, 100	, 243	, 20	, "SingMoeda"	, "" );
 		
-		adicCampo( txtPesoBrutoTot	, 7		, 140	, 100	, 20	, "PesoBruto"	, "Peso Bruto"	, ListaCampos.DB_SI	, false	);
-		adicCampo( txtPesoLiquidoTot, 110	, 140	, 100	, 20	, "PesoLiquido"	, "Peso Liquido", ListaCampos.DB_SI	, false	);
+		adicCampo( txtInvoice		, 7		, 140	, 70	, 20	, "Invoice"			, "Invoice"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtDI			, 80	, 140	, 60	, 20	, "DI"				, "D.I."			, ListaCampos.DB_SI	, false );
+
+		adicCampo( txtPesoBrutoTot	, 143	, 140	, 120	, 20	, "PesoBruto"	, "Peso Bruto"	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtPesoLiquidoTot, 266	, 140	, 120	, 20	, "PesoLiquido"	, "Peso Liquido", ListaCampos.DB_SI	, false	);
 		
 		txtPesoBrutoTot.setSoLeitura( true );
 		txtPesoLiquidoTot.setSoLeitura( true );
 		
-		adic( btGerarAdicoes		, 264	, 140	, 50	, 30 );
-		adic( btRateioSiscomex		, 315	, 140	, 50	, 30 );
+		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 155 );
+		pnCliCabPrincipal.adic( pnValoresTotais		, 649	, 0	, 250	, 155 );
 		
-		pnCliCabPrincipal.adic( pnValoresTotaisMI	, 396	, 0	, 250	, 185 );
-		pnCliCabPrincipal.adic( pnValoresTotais		, 649	, 0	, 250	, 185 );
+		adic( btRateioFrete			, 398	, 158	, 158	, 22 );
+		adic( btGerarAdicoes		, 558	, 158	, 160	, 22 );
+		adic( btRateioSiscomex		, 720	, 158	, 176	, 22 );
 		
 		setPainel( pnValoresTotaisMI );
 				
-		adicCampo( txtVlrFreteMITOT	, 7		, 20	, 90	, 20	, "VlrFreteMI"	, "Frete"						, ListaCampos.DB_SI	, true 	);
-		adicCampo( txtVlrSeguroMITOT, 100	, 20	, 90	, 20	, "VlrSeguroMI"	, "Seguro"						, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVlrFreteMITOT	, 7		, 20	, 110	, 20	, "VlrFreteMI"	, "Frete"						, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVlrSeguroMITOT, 120	, 20	, 110	, 20	, "VlrSeguroMI"	, "Seguro"						, ListaCampos.DB_SI	, true 	);
 		
-		adic( btRateioFrete			, 193	, 20	, 30	, 20 );
+		adicCampo( txtVMLEMITOT		, 7		, 60	, 110	, 20	, "VMLEMI"		, "VMLE"						, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLDMITOT		, 120	, 60	, 110	, 20	, "VMLDMI"		, "VMLD"						, ListaCampos.DB_SI	, false	);
 		
-		adicCampo( txtVMLEMITOT		, 7		, 60	, 100	, 20	, "VMLEMI"		, "VMLE"						, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVMLDMITOT		, 110	, 60	, 100	, 20	, "VMLDMI"		, "VMLD"						, ListaCampos.DB_SI	, false	);
-		
-		adicCampo( txtVlrTHCMITOT	, 7		, 100	, 100	, 20	, "VlrTHCMI"	, "THC"							, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVLRADMITOT	, 110	, 100	, 100	, 20	, "VLRADMI"		, "Vlr.Aduaneiro"				, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrTHCMITOT	, 7		, 100	, 110	, 20	, "VlrTHCMI"	, "THC"							, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVLRADMITOT	, 120	, 100	, 110	, 20	, "VLRADMI"		, "Vlr.Aduaneiro"				, ListaCampos.DB_SI	, false	);
 		
 		setPainel( pnValoresTotais );
 		
-		adicCampo( txtVlrFreteTOT	, 7		, 20	, 100	, 20	, "VlrFrete"	, "Frete "			+ codmoeda	, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVlrSeguroTOT	, 110	, 20	, 100	, 20	, "VlrSeguro"	, "Seguro "			+ codmoeda	, ListaCampos.DB_SI	, false	);		
+		adicCampo( txtVlrFreteTOT	, 7		, 20	, 110	, 20	, "VlrFrete"	, "Frete "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrSeguroTOT	, 120	, 20	, 110	, 20	, "VlrSeguro"	, "Seguro "			+ codmoeda	, ListaCampos.DB_SI	, false	);		
 		
-		adicCampo( txtVMLETOT		, 7		, 60	, 100	, 20	, "VMLE"		, "VMLE "			+ codmoeda	, ListaCampos.DB_SI	, false	);
-		adicCampo( txtVMLDTOT		, 110	, 60	, 100	, 20	, "VMLD"		, "VMLD "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLETOT		, 7		, 60	, 110	, 20	, "VMLE"		, "VMLE "			+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVMLDTOT		, 120	, 60	, 110	, 20	, "VMLD"		, "VMLD "			+ codmoeda	, ListaCampos.DB_SI	, false	);
 		
-		adicCampo( txtVlrTHCTOT		, 7		, 100	, 100	, 20	, "VlrTHC"		, "THC "			+ codmoeda	, ListaCampos.DB_SI	, true 	);
-		adicCampo( txtVLRADTOT		, 110	, 100	, 100	, 20	, "VLRAD"		, "Vlr.Aduaneiro" 	+ codmoeda	, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrTHCTOT		, 7		, 100	, 110	, 20	, "VlrTHC"		, "THC "			+ codmoeda	, ListaCampos.DB_SI	, true 	);
+		adicCampo( txtVLRADTOT		, 120	, 100	, 110	, 20	, "VLRAD"		, "Vlr.Aduaneiro" 	+ codmoeda	, ListaCampos.DB_SI	, false	);
 		
 		txtVlrFreteTOT.setSoLeitura( true );
 		txtVlrSeguroTOT.setSoLeitura( true );
@@ -529,18 +531,36 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		// Adicionando campos na aba complementar
 		
 		setPainel( pnCliCabComplementar );
+
+		adicCampo( txtDtEmb						, 7		, 20	, 100	, 20	, "DtEmb"			, "Dt.Embarque"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtManifesto					, 110	, 20	, 100	, 20	, "Manifesto"		, "Manifesto"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtTipoManifesto				, 213	, 20	, 100	, 20	, "TipoManifesto"	, "Tipo de manifesto"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtLocalEmb					, 316	, 20	, 200	, 20	, "LocalEmb"		, "Local Embarque"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVeiculo					, 519	, 20	, 180	, 20	, "Veiculo"			, "Veículo"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtCertOrigem				, 702	, 20	, 100	, 20	, "CertOrigem"		, "Cert.Origem"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtLacre						, 805	, 20	, 90	, 20	, "Lacre"			, "Lacre"					, ListaCampos.DB_SI	, false );
+
+		adicCampo( txtDtChegada					, 7		, 60	, 100	, 20	, "DtChegada"		, "Dt.Chegada"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtPresCarga					, 110	, 60	, 100	, 20	, "PresCarga"		, "Presença de carga"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtIdentHouse				, 213	, 60	, 100	, 20	, "IdentHouse"		, "Ident.House"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtIdentContainer			, 316	, 60	, 200	, 20	, "IdentContainer"	, "Ident.Container"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtDta						, 519	, 60	, 180	, 20	, "DTA"				, "DTA"						, ListaCampos.DB_SI	, false );
+		adicCampo( txtConhecCarga				, 702	, 60	, 192	, 20	, "ConhecCarga"		, "Conhecimento de carga"	, ListaCampos.DB_SI	, false );
+
+		adicCampo( txtDtDesembDI				, 7		, 100	, 100	, 20	, "DtDesembDI"		, "Dt.Desemb."				, ListaCampos.DB_SI	, false );
+		adicCampo( txtLocalDesembDI				, 110	, 100	, 100	, 20	, "LocDesembDI"		, "Local Desemb.DI"			, ListaCampos.DB_SI	, false );
+
+		adicCampo( txtDtRegDI					, 213	, 100	, 100	, 20	, "DtRegDI"			, "Dt.Reg.DI"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtRecintoAduaneiro			, 316	, 100	, 200	, 20	, "RecintoAduaneiro", "Recinto aduaneiro"		, ListaCampos.DB_SI	, false );
 		
-		adicCampo( txtInvoice			, 7		, 20	, 100	, 20	, "Invoice"			, "Invoice"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtDI				, 110	, 20	, 100	, 20	, "DI"				, "D.I."			, ListaCampos.DB_SI	, false );
-
-		adicCampo( txtVlrTXSisComexTOT	, 7		, 60	, 100	, 20	, "VlrTXSisComex"	, "Tx.SisComex"		, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrIITOT			, 110	, 60	, 100	, 20	, "VlrII"			, "Vlr.II"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrIPITOT			, 213	, 60	, 100	, 20	, "VlrIPI"			, "Vlr.IPI"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrPISTOT			, 316	, 60	, 100	, 20	, "VlrPIS"			, "Vlr.PIS"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrCOFINSTOT		, 419	, 60	, 100	, 20	, "VlrCOFINS"		, "Vlr.COFINS"		, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrBaseICMSTOT	, 522	, 60	, 100	, 20	, "VlrBaseICMS"		, "Vlr.Base ICMS"	, ListaCampos.DB_SI	, false );		
-		adicCampo( txtVlrICMSRecolhimentoTOT	, 625	, 60	, 100	, 20	, "VlrICMSRecolhimento"	, "Vlr.ICMS"	, ListaCampos.DB_SI	, false );		
-
+		adicCampo( txtVlrTXSisComexTOT			, 7		, 140	, 100	, 20	, "VlrTXSisComex"	, "Tx.SisComex"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrIITOT					, 110	, 140	, 100	, 20	, "VlrII"			, "Vlr.II"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrIPITOT					, 213	, 140	, 100	, 20	, "VlrIPI"			, "Vlr.IPI"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrPISTOT					, 316	, 140	, 100	, 20	, "VlrPIS"			, "Vlr.PIS"			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrCOFINSTOT				, 419	, 140	, 100	, 20	, "VlrCOFINS"		, "Vlr.COFINS"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrBaseICMSTOT			, 522	, 140	, 100	, 20	, "VlrBaseICMS"		, "Vlr.Base ICMS"	, ListaCampos.DB_SI	, false );		
+		adicCampo( txtVlrICMSRecolhimentoTOT	, 625	, 140	, 100	, 20	, "VlrICMSRecolhimento"	, "Vlr.ICMS"	, ListaCampos.DB_SI	, false );		
+		
 		
 		txtVlrIITOT.setSoLeitura( true );
 		txtVlrIPITOT.setSoLeitura( true );
@@ -551,6 +571,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		txtVMLEMITOT.setSoLeitura( true );
 		txtVMLDTOT.setSoLeitura( true );
 		txtVMLETOT.setSoLeitura( true );
+		txtVlrCOFINSTOT.setSoLeitura( true );
 		
 		
 //		JPanelPad pnValoresTotaisTributos = new JPanelPad();
@@ -621,18 +642,18 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 		adicCampo( txtAliqICMSImp			, 472	, 100	, 90	, 20	, "AliqICMSImp"			, "% ICMS Imp."				, ListaCampos.DB_SI	, false	);
 		adicCampo( txtAliqICMSUF			, 565	, 100	, 80	, 20	, "AliqICMSUF"			, "% ICMS"					, ListaCampos.DB_SI	, false	);
 		adicCampo( txtPercDiferICMS			, 648	, 100	, 80	, 20	, "PercDiferICMS"		, "% Difer."				, ListaCampos.DB_SI	, false	);
+		adicCampo( txtVlrBaseICMS   		, 730	, 100	, 80	, 20	, "VlrBaseICMS"			, "Vl.Base ICMS"			, ListaCampos.DB_SI	, false );
 
-		adicCampo( txtVlrAD					, 7		, 140	, 90	, 20	, "VlrAD"				, "Vlr.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrII					, 100	, 140	, 90	, 20	, "VlrII"				, "Vlr.II"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrIPI				, 193	, 140	, 90	, 20	, "VlrIPI"				, "Vlr.IPI"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrPIS				, 286	, 140	, 90	, 20	, "VlrPIS"				, "Vlr.PIS"					, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrCOFINS				, 379	, 140	, 90	, 20	, "VlrCOFINS"			, "Vlr.COFINS"				, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrBaseICMS   		, 472	, 140	, 90	, 20	, "VlrBaseICMS"			, "Vlr.Base ICMS"			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMS   			, 565	, 140	, 80	, 20	, "VlrICMS"				, "Vlr.ICMS"				, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSDiferido  		, 648	, 140	, 80	, 20	, "VlrICMSDiferido"		, "Vlr.ICMS Dif."			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSDevido  		, 731	, 140	, 80	, 20	, "VlrICMSDevido"		, "Vlr.ICMS Dev."			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSCredPresum 	, 814	, 140	, 80	, 20	, "VlrICMSCredPresum"	, "Vlr.ICMS Pres."			, ListaCampos.DB_SI	, false );
-		adicCampo( txtVlrICMSRecolhimento 	, 897	, 140	, 80	, 20	, "VlrICMSRECOLHIMENTO"	, "Vlr.Recolhimento"		, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrAD					, 7		, 140	, 90	, 20	, "VlrAD"				, "Vl.Aduan. "	+ codmoeda	, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrII					, 100	, 140	, 90	, 20	, "VlrII"				, "Vl.II"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrIPI				, 193	, 140	, 90	, 20	, "VlrIPI"				, "Vl.IPI"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrPIS				, 286	, 140	, 90	, 20	, "VlrPIS"				, "Vl.PIS"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrCOFINS				, 379	, 140	, 90	, 20	, "VlrCOFINS"			, "Vl.COFINS"				, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMS   			, 472	, 140	, 90	, 20	, "VlrICMS"				, "Vl.ICMS"					, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDiferido  		, 565	, 140	, 80	, 20	, "VlrICMSDiferido"		, "Vl.ICMS Dife."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSDevido  		, 648	, 140	, 80	, 20	, "VlrICMSDevido"		, "Vl.ICMS Dev."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSCredPresum 	, 731	, 140	, 80	, 20	, "VlrICMSCredPresum"	, "Vl.ICMS Pres."			, ListaCampos.DB_SI	, false );
+		adicCampo( txtVlrICMSRecolhimento 	, 814	, 140	, 80	, 20	, "VlrICMSRECOLHIMENTO"	, "Vl.ICMS Reco."				, ListaCampos.DB_SI	, false );
 		
 		
 		txtVlrFreteMI.setSoLeitura( true );
