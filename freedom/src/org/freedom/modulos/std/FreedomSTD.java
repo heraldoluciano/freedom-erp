@@ -63,6 +63,7 @@ import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 import org.freedom.modulos.fnc.view.frame.utility.FPagCheque;
 import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FConhecFrete;
+import org.freedom.modulos.gms.view.frame.crud.detail.FImportacao;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
@@ -319,6 +320,7 @@ public class FreedomSTD extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
+		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra (Importação)", "Compra (Importação)", 'F', 200900000, 1, true, FImportacao.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cancela Compra", "Cancela Compra", 'C', 200200000, 1, true, FCancCompra.class );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Conhecimento de Frete", "Conhecimento de Frete", 'F', 200300000, 1, true, FConhecFrete.class );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200400000, 1, false, null );
