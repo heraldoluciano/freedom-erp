@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -276,11 +275,11 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 	private void habFiltros( String sTipo ) {
 
 		if ( sTipo.equals( "B" ) ) {
-			Funcoes.setBordReq( txtCodPlanoPag, false );
+//			Funcoes.setBordReq( txtCodPlanoPag, false );
 			Funcoes.setBordReq( txtCodTab, false );
 		}
 		else {
-			Funcoes.setBordReq( txtCodPlanoPag, true );
+//			Funcoes.setBordReq( txtCodPlanoPag, true );
 			Funcoes.setBordReq( txtCodTab, true );
 		}
 	}
@@ -378,9 +377,10 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		PreparedStatement psPreco = null;
 		PreparedStatement psInclusao = null;
 		PreparedStatement psAtualizar = null;
-		boolean bTemPreco = false;
+		boolean bInsert = true;
 
 		try {
+			
 			deMultiplic = txtMultiplic.getVlrDouble().doubleValue();
 			sCodProd = txtCodProduto.getVlrString().trim();
 			sCodMarca = txtCodMarca.getVlrString().trim();
@@ -406,42 +406,68 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 				txtCodTab.requestFocus();
 				return;
 			}
-			if ( iCodPlanoPag == 0 ) {
-				Funcoes.mensagemInforma( this, "Plano de pagamento obrigatório!" );
-				txtCodPlanoPag.requestFocus();
-				return;
-			}
-
+			
 			if ( sOrigem.equals( "B" ) || sOrigem.equals( "I" ) ) {
-				sWhereConsultaProd = " WHERE CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
+				sWhereConsultaProd = " AND PD.ATIVOPROD='S' AND PD.CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
 
 				if ( !sCodProd.equals( "" ) ) {
-					sWhereConsultaProd += " AND CODPROD = '" + sCodProd + "'";
+					sWhereConsultaProd += " AND PD.CODPROD = '" + sCodProd + "'";
 				}
 
 				if ( !sCodGrup.equals( "" ) ) {
-					sWhereConsultaProd += " AND CODGRUP LIKE '" + sCodGrup + "%'";
+					sWhereConsultaProd += " AND PD.CODGRUP LIKE '" + sCodGrup + "%'";
 				}
 
 				if ( !sCodMarca.equals( "" ) ) {
-					sWhereConsultaProd += " AND CODMARCA='" + sCodMarca + "'";
+					sWhereConsultaProd += " AND PD.CODMARCA='" + sCodMarca + "'";
 				}
 
-				sSqlConsultaProd = "SELECT CODEMP, CODFILIAL, CODPROD, PRECOBASEPROD, CUSTOINFOPROD FROM EQPRODUTO " + sWhereConsultaProd;
-
-				sWhereConsultaPreco = " WHERE CODEMPTB=" + Aplicativo.iCodEmp + " AND CODFILIALTB=" + ListaCampos.getMasterFilial( "VDTABPRECO" ) + " AND CODTAB=" + iCodTab + " AND CODEMPPG=" + Aplicativo.iCodEmp + " AND CODFILIALPG=" + ListaCampos.getMasterFilial( "FNPLANOPAG" )
-						+ " AND CODPLANOPAG=" + iCodPlanoPag + " AND CODEMP=? AND CODFILIAL=? AND CODPROD=?";
-
-				if ( iCodClasCli != 0 ) {
-					sWhereConsultaPreco += " AND CODEMPCC=" + Aplicativo.iCodEmp + " AND CODFILIALCC=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) + " AND CODCLASCLI=" + iCodClasCli;
+				sSqlConsultaProd  = "SELECT PD.CODEMP, PD.CODFILIAL, PD.CODPROD, ";
+				
+				sSqlConsultaProd += "PD.PRECOBASEPROD, ";
+				
+				sSqlConsultaProd += "PD.CUSTOINFOPROD, CL.CODCLASCLI, PG.CODPLANOPAG FROM EQPRODUTO PD ";
+				
+				sSqlConsultaProd += ", VDCLASCLI CL, FNPLANOPAG PG ";
+				sSqlConsultaProd += " WHERE ";
+				sSqlConsultaProd += "CL.CODEMP=" + Aplicativo.iCodEmp + " AND CL.CODFILIAL=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) ;
+				
+				if ( sOrigem.equals( "B" ) ) {
+					sSqlConsultaProd += " AND EXISTS (SELECT PRECOPROC FROM EQPRODUTOLOG WHERE CODEMP=PD.CODEMP AND CODFILIAL=PD.CODFILIAL AND CODPROD=PD.CODPROD AND PRECOPROC='N') ";
 				}
+				
+				
+				if(iCodClasCli>0) {
+					sSqlConsultaProd += " AND CL.CODCLASCLI=" + iCodClasCli; 	
+				}
+						
+				sSqlConsultaProd += " AND PG.ATIVOPLANOPAG='S' AND PG.CVPLANOPAG IN ('V','A') AND PG.CODEMP=" + Aplicativo.iCodEmp + " AND PG.CODFILIAL=" + ListaCampos.getMasterFilial( "FNPLANOPAG" ) ;
+				
+				if(iCodPlanoPag>0) {
+					sSqlConsultaProd += " AND PG.CODPLANOPAG=" + iCodPlanoPag; 	
+				}
+				
+				sSqlConsultaProd += sWhereConsultaProd;
 
-				sSqlConsultaPreco = "SELECT CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," + "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD " + "FROM VDPRECOPROD " + sWhereConsultaPreco;
+				sWhereConsultaPreco = " CODEMPTB=" + Aplicativo.iCodEmp + " AND CODFILIALTB=" + ListaCampos.getMasterFilial( "VDTABPRECO" ) + " AND CODTAB=" + iCodTab + " AND CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+				
+				sWhereConsultaPreco += " AND CODEMPPG=" + Aplicativo.iCodEmp + " AND CODFILIALPG=" + ListaCampos.getMasterFilial( "FNPLANOPAG" )	+ " AND CODPLANOPAG=?"; 
+				
+				sWhereConsultaPreco += " AND CODEMPCC=" + Aplicativo.iCodEmp + " AND CODFILIALCC=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) + " AND CODCLASCLI=?"; 
+				
+				sSqlConsultaPreco = "SELECT CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
+					+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD " 
+					+ "FROM VDPRECOPROD WHERE " + sWhereConsultaPreco;
 
-				sSqlInclusao = "INSERT INTO VDPRECOPROD " + "(CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," + "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD) " + "VALUES (?,?,?,("
-						+ " COALESCE( (SELECT MAX(CODPRECOPROD)+1 FROM VDPRECOPROD WHERE CODEMP=? AND " + "CODFILIAL=? AND CODPROD=?) , 1)" + "),?,?,?,?,?,?,?,?,?,?)";
+				sSqlInclusao = "INSERT INTO VDPRECOPROD " 
+					+ "(CODEMP,CODFILIAL,CODPROD,CODPRECOPROD,CODEMPTB,CODFILIALTB,CODTAB," 
+					+ "CODEMPCC,CODFILIALCC,CODCLASCLI,CODEMPPG,CODFILIALPG,CODPLANOPAG,PRECOPROD,TIPOPRECOPROD) " 
+					+ "VALUES (?,?,?,("
+					+ " COALESCE( (SELECT MAX(CODPRECOPROD)+1 FROM VDPRECOPROD WHERE CODEMP=? AND " 
+					+ "CODFILIAL=? AND CODPROD=?) , 1)" 
+					+ "),?,?,?,?,?,?,?,?,?,?,?)";
 
-				sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=? " + sWhereConsultaPreco + " AND CODPRECOPROD=? AND PRECOPROD!=? ";
+				sSqlAtualizar = "UPDATE VDPRECOPROD SET PRECOPROD=?, TIPOPRECOPROD='"+sOrigem+"' WHERE " + sWhereConsultaPreco + " AND CODPRECOPROD=? ";//AND PRECOPROD!=? ";
 
 			}
 			else {
@@ -454,17 +480,27 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 			}
 
 			try {
+				
 				setCursor( new Cursor( Cursor.WAIT_CURSOR ) );
+				
 				try {
+					
 					psProd = con.prepareStatement( sSqlConsultaProd );
 					rsProd = psProd.executeQuery();
+					
 					while ( rsProd.next() ) {
+						
+						bInsert = true;
+						
 						psPreco = con.prepareStatement( sSqlConsultaPreco );
+						
 						psPreco.setInt( 1, rsProd.getInt( "CODEMP" ) );
 						psPreco.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
 						psPreco.setInt( 3, rsProd.getInt( "CODPROD" ) );
+						psPreco.setInt( 4, rsProd.getInt( "CODPLANOPAG" ) );
+						psPreco.setInt( 5, rsProd.getInt( "CODCLASCLI" ) );
+						
 						rsPreco = psPreco.executeQuery();
-						bTemPreco = rsPreco.next();
 
 						if ( sOrigem.equals( "B" ) ) {
 							dePrecoProd = rsProd.getDouble( "PRECOBASEPROD" );
@@ -487,25 +523,30 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 							else
 								dePrecoProd = Funcoes.arredDouble( dePrecoProd * deMultiplic, iCasasDec );
 
-							if ( bTemPreco ) {
-								if ( rsProd.getInt( "CODPROD" ) != rsPreco.getInt( "CODPROD" ) ) {
-									bTemPreco = false;
-								}
-							}
-							if ( bTemPreco ) {
+							while (rsPreco.next()) {
+								bInsert = false;
+							
 								psAtualizar = con.prepareStatement( sSqlAtualizar );
 								psAtualizar.setDouble( 1, dePrecoProd );
 								psAtualizar.setInt( 2, rsProd.getInt( "CODEMP" ) );
 								psAtualizar.setInt( 3, rsProd.getInt( "CODFILIAL" ) );
 								psAtualizar.setInt( 4, rsProd.getInt( "CODPROD" ) );
-								psAtualizar.setInt( 5, rsPreco.getInt( "CODPRECOPROD" ) );
-								psAtualizar.setDouble( 6, dePrecoProd );
-
+								psAtualizar.setInt( 5, rsProd.getInt( "CODPLANOPAG" ) );
+								psAtualizar.setInt( 6, rsProd.getInt( "CODCLASCLI" ) );
+								psAtualizar.setInt( 7, rsPreco.getInt( "CODPRECOPROD" ) );
+	
 								iRegsAtu = iRegsAtu + psAtualizar.executeUpdate();
 								psAtualizar.close();
-
+								
+								System.out.println("ATUALIZADO PRODUTO: " + rsProd.getInt( "CODPROD" ));
+								System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
+								System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
+								
+								
 							}
-							else {
+							
+							if(bInsert)  {
+								
 								psInclusao = con.prepareStatement( sSqlInclusao );
 								psInclusao.setInt( 1, rsProd.getInt( "CODEMP" ) );
 								psInclusao.setInt( 2, rsProd.getInt( "CODFILIAL" ) );
@@ -516,31 +557,36 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 								psInclusao.setInt( 7, Aplicativo.iCodEmp );
 								psInclusao.setInt( 8, ListaCampos.getMasterFilial( "VDTABPRECO" ) );
 								psInclusao.setInt( 9, iCodTab );
-
-								if ( iCodClasCli == 0 ) {
-									psInclusao.setNull( 10, Types.INTEGER );
-									psInclusao.setNull( 11, Types.INTEGER );
-									psInclusao.setNull( 12, Types.INTEGER );
-								}
-								else {
-									psInclusao.setInt( 10, Aplicativo.iCodEmp );
-									psInclusao.setInt( 11, ListaCampos.getMasterFilial( "VDCLASCLI" ) );
-									psInclusao.setInt( 12, iCodClasCli );
-								}
+							
+								psInclusao.setInt( 10, Aplicativo.iCodEmp );
+								psInclusao.setInt( 11, ListaCampos.getMasterFilial( "VDCLASCLI" ) );
+								psInclusao.setInt( 12, rsProd.getInt( "CODCLASCLI" ) );
 
 								psInclusao.setInt( 13, Aplicativo.iCodEmp );
 								psInclusao.setInt( 14, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
-								psInclusao.setInt( 15, iCodPlanoPag );
+								psInclusao.setInt( 15, rsProd.getInt( "CODPLANOPAG" ) );
 								psInclusao.setDouble( 16, dePrecoProd );
+								
+								psInclusao.setString( 17, sOrigem );
+								
 								psInclusao.execute();
 								psInclusao.close();
 								iRegsInc++;
+								
+								System.out.println("INSERIDO PRODUTO: " + rsProd.getInt( "CODPROD" ));
+								System.out.print(" PLANO: " + rsProd.getInt( "CODPLANOPAG" ));
+								System.out.print(" CLASSECLI: " + rsProd.getInt( "CODCLASCLI" ));
+								
+								
 							}
 
 						}
 
 						rsPreco.close();
 						psPreco.close();
+						
+						
+						
 					}
 
 					rsProd.close();
@@ -551,6 +597,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 					Funcoes.mensagemInforma( this, "Registros incluídos: " + iRegsInc + "\n" + "Registros atualizados: " + iRegsAtu + "\n" + "Registros com erro: " + iRegsErr + "\n" + "Total processados: " + ( iRegsAtu + iRegsInc ) );
 
 				} catch ( SQLException err ) {
+					err.printStackTrace();
 					Funcoes.mensagemErro( this, "Erro atualizando tabela!\n" + err.getMessage(), true, con, err );
 				}
 			} finally {
@@ -579,7 +626,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 			psPreco = null;
 			psInclusao = null;
 			psAtualizar = null;
-			bTemPreco = false;
+			bInsert = false;
 			dePrecoProd = 0;
 		}
 
@@ -634,7 +681,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 				return;
 			}
 
-			sWhereConsultaProd = " WHERE CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
+			sWhereConsultaProd = " AND CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
 
 			if ( !sCodProd.equals( "" ) ) {
 				sWhereConsultaProd += " AND CODPROD='" + sCodProd + "'";
