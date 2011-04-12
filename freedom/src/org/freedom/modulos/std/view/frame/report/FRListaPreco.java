@@ -495,9 +495,19 @@ public class FRListaPreco extends FRelatorio {
 
 		try {
 
-			sSQL = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD, P.REFPROD,P.DESCPROD,P.CODUNID," + "PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD,PP.DTALT " + "FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G " + "WHERE P.CODPROD=PP.CODPROD " + "AND P.CODEMP=PP.CODEMP "
-					+ "AND P.CODFILIAL=PP.CODFILIAL " + "AND G.CODGRUP = P.CODGRUP " + "AND G.CODEMP=P.CODEMPGP " + "AND G.CODFILIAL=P.CODFILIALGP " + "AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' " + "AND PG.CODEMP=PP.CODEMPPG " + "AND PG.CODFILIAL=PP.CODFILIALPG "
-					+ "AND PG.CODPLANOPAG = PP.CODPLANOPAG " + "AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)" + sWhere + " ORDER BY " + sOrdem;
+			sSQL = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD, P.REFPROD,P.DESCPROD,P.CODUNID," 
+				+ "PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD,PP.DTALT " 
+				+ "FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G " 
+				+ "WHERE P.CODPROD=PP.CODPROD " 
+				+ "AND P.CODEMP=PP.CODEMP "
+				+ "AND P.CODFILIAL=PP.CODFILIAL " 
+				+ "AND G.CODGRUP = P.CODGRUP " 
+				+ "AND G.CODEMP=P.CODEMPGP " 
+				+ "AND G.CODFILIAL=P.CODFILIALGP " 
+				+ "AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' " 
+				+ "AND PG.CODEMP=PP.CODEMPPG " + "AND PG.CODFILIAL=PP.CODFILIALPG "
+				+ "AND PG.CODPLANOPAG = PP.CODPLANOPAG " 
+				+ "AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)" + sWhere + " ORDER BY " + sOrdem;
 
 			ps = con.prepareStatement( sSQL );
 			ps.setString( 1, txtCodGrup.getVlrString().trim().length() < 14 ? txtCodGrup.getVlrString().trim() + "%" : txtCodGrup.getVlrString().trim() );
@@ -710,7 +720,7 @@ public class FRListaPreco extends FRelatorio {
 			else {
 				sql.append( " ,PP.PRECOPROD, " );
 			}
-			sql.append( " (case when (cast('today' as date) - (PP.DTALT))<? then 'S' else 'N' end) as alterado" );
+			sql.append( " (case when (cast('today' as date) - (PP.DTALTPRECO))<? then 'S' else 'N' end) as alterado" );
 			sql.append( " FROM SGPREFERE1 P1, EQPRODUTO P, VDPRECOPROD PP " );
 
 			sql.append( " WHERE P.CODEMP=PP.CODEMP AND P.CODFILIAL=PP.CODFILIAL AND P.CODPROD=PP.CODPROD " );
