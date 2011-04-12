@@ -598,7 +598,7 @@ ORDER BY PP.CODPROD]]>
 				<reportElement key="line-10" x="181" y="0" width="1" height="17"/>
 			</line>
 			<textField pattern="###0.0000" isBlankWhenNull="false">
-				<reportElement key="textField-30" mode="Transparent" x="464" y="3" width="68" height="11" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-30" mode="Transparent" x="464" y="3" width="68" height="11" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -613,7 +613,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOPROD}!=null?$F{PRECOPROD}:new BigDecimal(0)]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement key="textField-31" mode="Transparent" x="429" y="2" width="30" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-31" mode="Transparent" x="429" y="2" width="30" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -628,7 +628,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ALIQIPI}.toString() + "%"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-32" mode="Transparent" x="395" y="2" width="30" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-32" mode="Transparent" x="395" y="2" width="30" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean(
 	("S".equals($P{IMPQTDEMB})) &&
 	("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())
@@ -646,7 +646,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDEMBALAGEM}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-33" mode="Transparent" x="354" y="2" width="36" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-33" mode="Transparent" x="354" y="2" width="36" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean(
 	("S".equals($P{IMPSALDO})) &&
 	("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())
@@ -664,7 +664,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SLDPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-34" mode="Transparent" x="183" y="2" width="167" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-34" mode="Transparent" x="183" y="2" width="167" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -679,7 +679,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-35" mode="Transparent" x="100" y="2" width="79" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-35" mode="Transparent" x="100" y="2" width="79" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -694,7 +694,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODBARPROD} != null ? $F{CODBARPROD} : new String("")]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-36" mode="Transparent" x="43" y="2" width="54" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-36" mode="Transparent" x="43" y="2" width="54" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -709,7 +709,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODFABPROD} != null ? $F{CODFABPROD} : new String("")]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-37" mode="Transparent" x="3" y="2" width="36" height="12" forecolor="#FF0000" backcolor="#FFFFFF">
+				<reportElement key="textField-37" mode="Transparent" x="3" y="2" width="36" height="12" forecolor="#0000FF" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean("S".equals($F{ALTERADO}) && $P{DESTAQUE}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
