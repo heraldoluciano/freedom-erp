@@ -79,6 +79,8 @@ public class FContrato extends FDetalhe implements ActionListener {
 	private JTextFieldPad txtVlrProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private JTextFieldPad txtVlrExcedProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
+	
+	private JTextFieldPad txtAcumuloItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -179,10 +181,11 @@ public class FContrato extends FDetalhe implements ActionListener {
 		adicCampo( txtCodProdPE, 343, 65, 60, 20, "CodProdPE", "Cód.prod.", ListaCampos.DB_FK, txtDescProdPE, true );
 		adicDescFK( txtDescProdPE, 406, 65, 277, 20, "DescProdPE", "Descrição do produto/serviço excedente" );
 
-		adicCampo( txtQtdProd, 7, 105, 110, 20, "QtdItContr", "Quantidade", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrProd, 120, 105, 110, 20, "VlrItContr", "Valor normal", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrExcedProd, 233, 105, 107, 20, "VlrItContrExced", "Valor excedente", ListaCampos.DB_SI, true );		
-		adicCampo( txtKeyLic, 343, 105, 340, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
+		adicCampo( txtQtdProd, 7, 105, 100, 20, "QtdItContr", "Quantidade", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrProd, 110, 105, 100, 20, "VlrItContr", "Valor normal", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrExcedProd, 213, 105, 100, 20, "VlrItContrExced", "Valor excedente", ListaCampos.DB_SI, true );	
+		adicCampo( txtAcumuloItContr, 316, 105, 100, 20, "AcumuloItContr", "Meses/Acumulo", ListaCampos.DB_SI, true );
+		adicCampo( txtKeyLic, 420, 105, 260, 20, "KeyLic", "Chave de licenciamento do produto", ListaCampos.DB_SI, false);
 
 		setListaCampos( true, "ITCONTRATO", "VD" );
 		lcDet.setQueryInsert( false );
