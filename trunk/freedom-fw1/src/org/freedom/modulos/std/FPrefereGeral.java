@@ -139,6 +139,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinCompras = new JPanelPad();
 	
 	private JPanelPad pinComprasCotacao = new JPanelPad();
+	
+	private JPanelPad pinComprasImportacao = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 
@@ -198,6 +200,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtCodTipoMovImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
@@ -270,6 +274,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldFK txtDescMensGeral = new JTextFieldFK(JTextFieldPad.TP_STRING, 1000, 0);
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldFK txtDescTipoMovImp = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescTipoMov2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	
@@ -648,6 +654,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcTipoMov8 = new ListaCampos(this, "T8");
 
 	private ListaCampos lcTipoMov9 = new ListaCampos(this, "T9");
+	
+	private ListaCampos lcTipoMovImp = new ListaCampos(this, "IM");
 
 	private ListaCampos lcTransp = new ListaCampos(this, "TN");
 
@@ -894,7 +902,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoMov9.setReadOnly(true);
 		txtCodTipoMov9.setTabelaExterna(lcTipoMov9, null);
 		txtCodTipoMov9.setFK(true);
-
+		
+		lcTipoMovImp.add(new GuardaCampo(txtCodTipoMovImp, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMovImp.add(new GuardaCampo(txtDescTipoMovImp, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMovImp.montaSql(false, "TIPOMOV", "EQ");
+		lcTipoMovImp.setWhereAdic(" TIPOMOV='DI' ");
+		lcTipoMovImp.setQueryCommit(false);
+		lcTipoMovImp.setReadOnly(true);
+		txtCodTipoMovImp.setTabelaExterna(lcTipoMovImp, null);
+		txtCodTipoMovImp.setFK(true);
+		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
+		
 		txtCodTransp.setNomeCampo("CodTran");
 		lcTransp.add(new GuardaCampo(txtCodTransp, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
 		lcTransp.add(new GuardaCampo(txtDescTransp, "RazTran", "Nome do transportador", ListaCampos.DB_SI, false));
@@ -1269,10 +1287,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicTab("Compras", pinCompra);
 
 		adic(pinCompras, 7, 5, 285, 420);
-		adic(pinComprasCotacao, 300, 5, 285, 210);
+		adic(pinComprasCotacao, 300, 5, 350, 210);
+		adic(pinComprasImportacao, 300, 225, 350, 210);
 		
 		pinCompras.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));		
 		pinComprasCotacao.setBorder(SwingParams.getPanelLabel("Cotações", Color.BLUE));
+		pinComprasImportacao.setBorder(SwingParams.getPanelLabel("Importação", Color.BLUE));
 		
 		setPainel(pinCompras);
 
@@ -1290,11 +1310,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo(txtObs02, 11, 280, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs03, 11, 320, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false);
 		adicCampo(txtObs04, 11, 360, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false);
-
+		
 		setPainel(pinComprasCotacao);
 		
 		adicDB(cbPrecoCotacao, 7, 15, 200, 20, "UsaPrecoCot", "", false);
 		adicDB(cbBloqPrecoAprov, 7, 35, 200, 20, "BloqPrecoAprov", "", false);
+		
+		setPainel(pinComprasImportacao);
+		
+		adicCampo(txtCodTipoMovImp	, 7		, 20	, 80	, 20	, "CodTipoMovIm", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMovImp, false);
+		adicDescFK(txtDescTipoMovImp, 90	, 20	, 240	, 20	, "DescTipoMovIm", "Tipo de movimento para importação");
+		txtCodTipoMovImp.setNomeCampo("CodTipoMov");
+		
 		
 		// Preço
 
@@ -1916,6 +1943,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcTipoFor.setConexao(cn);
 		lcFor.setConexao(cn);
 		lcTipoMov.setConexao(cn);
+		lcTipoMovImp.setConexao(cn);
 		lcTipoMov2.setConexao(cn);
 		lcTipoMovS.setConexao(cn);
 		lcTipoMov3.setConexao(cn);
