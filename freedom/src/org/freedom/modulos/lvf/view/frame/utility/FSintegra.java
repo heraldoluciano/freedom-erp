@@ -1079,6 +1079,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				
 				sSql.append( "IC.PERCICMSITCOMPRA,IC.VLRBASEICMSITCOMPRA,IC.VLRIPIITCOMPRA," );
 				sSql.append( "CF.ORIGFISC, CF.CODTRATTRIB, C.CODCOMPRA, F.CPFFOR, F.PESSOAFOR " );
+				
 				sSql.append( "FROM CPCOMPRA C,CPFORNECED F,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P, LFITCLFISCAL CF " );
 				sSql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " );
 				sSql.append( "IC.CODCOMPRA=C.CODCOMPRA AND  IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " );
@@ -1087,6 +1088,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " );
 				sSql.append( "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND " );
 				sSql.append( "TM.FISCALTIPOMOV='S' "); // COMPRAS DE PESSOA FISICA DEVEM ENTRAR... F.PESSOAFOR='J' " +
+				sSql.append( " and p.tipoprod<>'O' "); 
 				sSql.append( "ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA" );
 
 				ps = con.prepareStatement( sSql.toString() );
@@ -1160,6 +1162,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "IV.VLRLIQITVENDA,IV.VLRBASEICMSITVENDA," );
 				sSql.append( "IV.PERCICMSITVENDA,IV.VLRBASEICMSITVENDA,IV.VLRIPIITVENDA," );
 				sSql.append( "CF.ORIGFISC,CF.CODTRATTRIB " );
+				
 				sSql.append( "FROM VDVENDA V,VDCLIENTE C,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF " );
 				sSql.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? " );
 				sSql.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' " );
@@ -1170,6 +1173,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD ");
 				
 				sSql.append( "AND CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC " );
+				sSql.append( " and p.tipoprod<>'O' ");
 
 				sSql.append( "ORDER BY V.DTEMITVENDA,V.DOCVENDA,IV.CODITVENDA" );
 
@@ -1541,7 +1545,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sql.append( "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, SGFILIAL F, EQPRODUTO PD " );
 				sql.append( "WHERE P.SALDO > 0 " );
 				sql.append( "AND F.CODEMP=? AND F.CODFILIAL=? " );
-				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' " ); 
+				sql.append( "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=P.CODPROD AND PD.ATIVOPROD='S' and pd.tipoprod<>'O' " ); 
 			
 				// Filtro para não incluir produtos do patrimônio. 
 				sql.append( "and pd.tipoprod<>'O' " ); 
