@@ -125,8 +125,6 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
-import com.setpoint.sped.modules.efd.bean.documento.Fatura;
-
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
