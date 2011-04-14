@@ -29,6 +29,7 @@
 	<parameter name="CODITCONTR" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DTINIAC" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[select extract(year from a.dataatendo) ano,
 extract( month from a.dataatendo) mes , ct.codcontr, ic.qtditcontr,
@@ -42,7 +43,7 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 from vditcontrato ic, vdcontrato ct, atatendimentovw01 a
 where ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
 ct.codemp=$P{CODEMP} and ct.codfilial=$P{CODFILIAL} and ct.codcli=$P{CODCLI} and ct.codcontr=$P{CODCONTR} and ic.coditcontr=$P{CODITCONTR} and
-a.dataatendo between $P{DTINI} and
+a.dataatendo between $P{DTINIAC} and
 $P{DTFIM} and
 a.mrelcobespec='S' and a.codempct=ct.codemp and a.codfilialct=ct.codfilial and
 a.codcontr=ct.codcontr and a.coditcontr=ic.coditcontr and
@@ -287,19 +288,6 @@ order by 1 desc, 2 desc]]>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDHORAS}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="false">
-					<reportElement key="textField-1" x="12" y="-139" width="220" height="13"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement>
-						<font fontName="SansSerif" size="9"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL EM HORAS MÊS ATUAL:"]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement key="rectangle-2" x="10" y="102" width="352" height="15" forecolor="#2F2F7D" backcolor="#2F2F7D"/>

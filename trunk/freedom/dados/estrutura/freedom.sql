@@ -1,4 +1,3 @@
-Database:  localhost:/opt/firebird/dados/desenv/freedom.fdb, User: sysdba
  
 SET SQL DIALECT 3; 
  

@@ -41,6 +41,7 @@
 	<parameter name="CLIENTE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CODITCONTR" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="DESCITCONTR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DTINIAC" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado,
 ch.descchamado, a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend,
@@ -54,9 +55,9 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 from atatendimentovw01 a
 left outer join crchamado ch on
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado
-where a.codemp=3 and a.codfilial=1 and a.dataatendo between '01.03.2011' and '31.03.2011' and
-a.codempct=3 and a.codfilialct=1 and a.codcontr=34  and a.coditcontr=1 and a.codempcl=3 and
-a.codfilialcl=1 and a.codcli=180  and a.codempae=3 and a.codfilialae=1 and a.codatend=2
+where a.codemp=3 and a.codfilial=1 and a.dataatendo between '01.12.2010' and '31.03.2011' and
+a.codempct=3 and a.codfilialct=1 and a.codcontr=4  and a.coditcontr=1 and a.codempcl=3 and
+a.codfilialcl=1 and a.codcli=8  and a.codempae=3 and a.codfilialae=1
 order by a.dataatendo, a.horaatendo]]>
 	</queryString>
 	<field name="CODTPATENDO" class="java.lang.Integer"/>
@@ -283,26 +284,29 @@ order by a.dataatendo, a.horaatendo]]>
 			<band height="153" splitType="Stretch">
 				<subreport isUsingCache="true">
 					<reportElement key="subreport-1" stretchType="RelativeToTallestObject" x="0" y="6" width="786" height="143" isPrintWhenDetailOverflows="true"/>
-					<subreportParameter name="CODEMP">
-						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					<subreportParameter name="CODITCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODITCONTR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="CODFILIAL">
 						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="CODCLI">
-						<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
+					<subreportParameter name="DTFIM">
+						<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="CODCONTR">
-						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+					<subreportParameter name="DTINIAC">
+						<subreportParameterExpression><![CDATA[$P{DTINIAC}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="DTINI">
 						<subreportParameterExpression><![CDATA[$P{DTINI}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="DTFIM">
-						<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
+					<subreportParameter name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="CODITCONTR">
-						<subreportParameterExpression><![CDATA[$P{CODITCONTR}]]></subreportParameterExpression>
+					<subreportParameter name="CODCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODCLI">
+						<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_contrato.jasper"]]></subreportExpression>
