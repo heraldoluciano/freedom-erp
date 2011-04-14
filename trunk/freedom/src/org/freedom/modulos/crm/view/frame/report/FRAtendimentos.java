@@ -215,10 +215,12 @@ public class FRAtendimentos extends FRelatorio {
 		ResultSet rs = null;
 		int iparam = 1;
 		int acumuloitcontr = 0;
+		Date dtinicontr = new Date();
 		try {
 			if (txtCodItContr.getVlrInteger().intValue()!=0) {
-				sqlcontrato.append("select acumuloitcontr from vditcontrato i ");
-				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=?");
+				sqlcontrato.append("select i.acumuloitcontr, c.dtinicontr from vditcontrato i, vdcontrato c ");
+				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=? and ");
+				sqlcontrato.append("c.codemp=i.codcemp and c.codfilial==i.codfilial and c.codcontr=i.codcontr ");
 				ps = con.prepareStatement( sqlcontrato.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
@@ -227,6 +229,7 @@ public class FRAtendimentos extends FRelatorio {
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					acumuloitcontr = rs.getInt( "acumuloitcontr" );
+					dtinicontr = rs.getDate( "dtinicontr" );
 				}
 				rs.close();
 				ps.close();
@@ -309,17 +312,22 @@ public class FRAtendimentos extends FRelatorio {
 			Funcoes.mensagemErro( this, " Erro na consulta da tabela de atendimentos" );
 		}
 
-		imprimiGrafico( rs, bVisualizar, acumuloitcontr );
+		imprimiGrafico( rs, bVisualizar, acumuloitcontr, dtinicontr );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr, Date dtinicontr ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		Date dtiniac = txtDataini.getVlrDate();
 		if (acumuloitcontr!=0) {
 			dtiniac = Funcoes.somaMes( dtiniac, -1*acumuloitcontr ); 
+			// Verificar se o contrato é novo para não calcular acumulo.
+			if (dtinicontr.compareTo( dtiniac )>0) {
+				dtiniac = dtinicontr;
+				acumuloitcontr = Funcoes.contaMeses( dtiniac, txtDataini.getVlrDate() );
+			}
 		}
 		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
@@ -330,6 +338,7 @@ public class FRAtendimentos extends FRelatorio {
 		hParam.put( "DTINI", txtDataini.getVlrDate() );
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 		hParam.put( "DTINIAC", dtiniac );
+		hParam.put( "ACUMULOITCONTR", new Integer(acumuloitcontr) );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "CODITCONTR", txtCodItContr.getVlrInteger() );
 		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
