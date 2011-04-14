@@ -42,7 +42,7 @@
 	<parameter name="CODITCONTR" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="DESCITCONTR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="DTINIAC" class="java.util.Date"/>
-	<parameter name="ACUMULOITCONTR" class="java.lang.String"/>
+	<parameter name="ACUMULOITCONTR" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado,
 ch.descchamado, a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend,
