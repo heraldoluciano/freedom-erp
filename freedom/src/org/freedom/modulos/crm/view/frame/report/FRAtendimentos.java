@@ -218,9 +218,9 @@ public class FRAtendimentos extends FRelatorio {
 		Date dtinicontr = new Date();
 		try {
 			if (txtCodItContr.getVlrInteger().intValue()!=0) {
-				sqlcontrato.append("select i.acumuloitcontr, c.dtinicontr from vditcontrato i, vdcontrato c ");
+				sqlcontrato.append("select i.acumuloitcontr, c.dtinicio from vditcontrato i, vdcontrato c ");
 				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=? and ");
-				sqlcontrato.append("c.codemp=i.codcemp and c.codfilial==i.codfilial and c.codcontr=i.codcontr ");
+				sqlcontrato.append("c.codemp=i.codemp and c.codfilial=i.codfilial and c.codcontr=i.codcontr ");
 				ps = con.prepareStatement( sqlcontrato.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
@@ -229,7 +229,7 @@ public class FRAtendimentos extends FRelatorio {
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					acumuloitcontr = rs.getInt( "acumuloitcontr" );
-					dtinicontr = rs.getDate( "dtinicontr" );
+					dtinicontr = rs.getDate( "dtinicio" );
 				}
 				rs.close();
 				ps.close();
