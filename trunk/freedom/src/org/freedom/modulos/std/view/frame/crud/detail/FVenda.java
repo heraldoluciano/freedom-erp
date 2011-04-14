@@ -125,6 +125,8 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
+import com.setpoint.sped.modules.efd.bean.documento.Fatura;
+
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
@@ -2216,7 +2218,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean testaLucro() {
 
-		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItVenda.getVlrInteger(), txtPrecoItVenda.getVlrBigDecimal(), } );
+		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItVenda.getVlrInteger(), txtPrecoItVenda.getVlrBigDecimal(), }, fatLucro );
 	}
 
 	public boolean testaCodLote() {
@@ -3308,6 +3310,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			txtDtSaidaVenda.setVlrDate( new Date() );
 			txtDtEmitVenda.setVlrDate( new Date() );
+			
+			fatLucro = new BigDecimal(1);
+			
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
 			focusCodprod();

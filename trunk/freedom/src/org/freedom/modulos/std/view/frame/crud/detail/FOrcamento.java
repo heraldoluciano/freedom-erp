@@ -1151,7 +1151,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private boolean testaLucro() {
 
-		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItOrc.getVlrInteger(), txtPrecoItOrc.getVlrBigDecimal(), } );
+		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItOrc.getVlrInteger(), txtPrecoItOrc.getVlrBigDecimal(), }, fatluc );
 	}
 
 	private boolean testaCodLote() {
@@ -2308,6 +2308,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( e.getListaCampos() == lcCampos ) {
 			iniOrc();
+			fatluc = new BigDecimal(1);
 		}
 		else if ( e.getListaCampos() == lcDet ) {
 			focusCodprod();
