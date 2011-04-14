@@ -319,6 +319,7 @@ public class FRAtendimentos extends FRelatorio {
 	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr, Date dtinicontr ) {
 
 		FPrinterJob dlGr = null;
+		int mescob = 0;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		Date dtiniac = txtDataini.getVlrDate();
 		if (acumuloitcontr!=0) {
@@ -330,6 +331,8 @@ public class FRAtendimentos extends FRelatorio {
 			}
 		}
 		
+		mescob = Funcoes.getMes( txtDataini.getVlrDate() ); 
+			
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
@@ -339,6 +342,7 @@ public class FRAtendimentos extends FRelatorio {
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 		hParam.put( "DTINIAC", dtiniac );
 		hParam.put( "ACUMULOITCONTR", new Integer(acumuloitcontr) );
+		hParam.put( "MESCOB", new Integer(mescob) );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "CODITCONTR", txtCodItContr.getVlrInteger() );
 		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
