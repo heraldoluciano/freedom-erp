@@ -42,6 +42,7 @@
 	<parameter name="CODITCONTR" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="DESCITCONTR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="DTINIAC" class="java.util.Date"/>
+	<parameter name="ACUMULOITCONTR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado,
 ch.descchamado, a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend,
@@ -293,20 +294,23 @@ order by a.dataatendo, a.horaatendo]]>
 					<subreportParameter name="DTFIM">
 						<subreportParameterExpression><![CDATA[$P{DTFIM}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="DTINIAC">
-						<subreportParameterExpression><![CDATA[$P{DTINIAC}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="DTINI">
 						<subreportParameterExpression><![CDATA[$P{DTINI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DTINIAC">
+						<subreportParameterExpression><![CDATA[$P{DTINIAC}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="CODCONTR">
-						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+					<subreportParameter name="ACUMULOITCONTR">
+						<subreportParameterExpression><![CDATA[$P{ACUMULOITCONTR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="CODCLI">
 						<subreportParameterExpression><![CDATA[$P{CODCLI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODCONTR">
+						<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "resumo_contrato.jasper"]]></subreportExpression>
