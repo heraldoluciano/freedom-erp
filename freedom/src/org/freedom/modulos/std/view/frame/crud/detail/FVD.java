@@ -319,21 +319,24 @@ public abstract class FVD extends FDetalhe {
 	 *            parametros
 	 * @return se a lucro verdadeiro, se não falso.
 	 */
-	protected boolean testaLucro( Object[] args ) {
+	protected boolean testaLucro( Object[] args, BigDecimal fator ) {
 
 		boolean bRet = false;
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		String sCampoCusto = null;
 		String sVerifProd = null;
 		String sSQL = null;
 
 		try {
 
-			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD FROM SGPREFERE1 P1, EQPRODUTO PD " + 
-			    "WHERE P1.CODEMP=? AND P1.CODFILIAL=? AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
+			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD FROM SGPREFERE1 P1, EQPRODUTO PD " 
+				+  "WHERE P1.CODEMP=? AND P1.CODFILIAL=? AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
 
 			ps = con.prepareStatement( sSQL );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
@@ -341,6 +344,7 @@ public abstract class FVD extends FDetalhe {
 			ps.setInt( 5, ( (Integer) args[ 0 ] ).intValue() );
 
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				if ( rs.getString( "USALIQREL" ) == null ) {
 					Funcoes.mensagemInforma( this, "Preencha opção de desconto em preferências!" );
@@ -360,22 +364,30 @@ public abstract class FVD extends FDetalhe {
 
 			sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " + 
 			   "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " +
-			   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? "
+			   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? * ? "
 					+ "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			
 			ps.setInt( 3, ( (Integer) args[ 0 ] ).intValue() );
 			ps.setInt( 4, Aplicativo.iCodEmp );
+			
 			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
 			ps.setInt( 6, ( (Integer) args[ 1 ] ).intValue() );
+			
 			ps.setInt( 7, Aplicativo.iCodEmp );
 			ps.setInt( 8, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
 			ps.setInt( 9, Aplicativo.iCodEmp );
 			ps.setInt( 10, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			
 			ps.setInt( 11, ( (Integer) args[ 0 ] ).intValue() );
+			
 			ps.setBigDecimal( 12, (BigDecimal) args[ 2 ] );
+			ps.setBigDecimal( 13, fator );
+			
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
