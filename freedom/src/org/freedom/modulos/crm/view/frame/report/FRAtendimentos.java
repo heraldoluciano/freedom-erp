@@ -210,52 +210,69 @@ public class FRAtendimentos extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlcontrato = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iparam = 1;
-
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( tela, "Data final maior que a data inicial!" );
-			return;
-		}
-
-		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
-		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
-		sql.append( "(a.totalmin/60) totalhoras, (( (case when a.cobcliespec='S' and a.statusatendo<>'NC' ");
-		sql.append( "then (case when a.totalmin<a.tempomincobespec then a.tempomincobespec else ");
-		sql.append( " (case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 then a.tempomaxcobespec ");
-		sql.append( "else a.totalmin end) end)  else 0 end) )/60 ) totalcobcli " );
-		sql.append( "from atatendimentovw01 a " );
-
-		sql.append( "left outer join crchamado ch on " );
-
-		sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
-
-		sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
-
-		if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
-		}
-		
-		if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and a.coditcontr=? " );
-		}
-		
-		else if ( "N".equals( cbTodos.getVlrString() ) ) {
-			sql.append( " and a.codcontr is null " );
-		}
-		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
-		}
-		if ( txtCodAtend.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and a.codempae=? and a.codfilialae=? and a.codatend=? " );
-		}
-
-		sql.append( " order by a.dataatendo, a.horaatendo " );
-
-		System.out.println( "SQL:" + sql.toString() );
-
+		int acumuloitcontr = 0;
 		try {
+			if (txtCodItContr.getVlrInteger().intValue()!=0) {
+				sqlcontrato.append("select acumuloitcontr from vditcontrato i ");
+				sqlcontrato.append("where i.codemp=? and i.codfilial=? and i.codcontr=? and i.coditcontr=?");
+				ps = con.prepareStatement( sqlcontrato.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
+				ps.setInt( 3, txtCodContr.getVlrInteger().intValue() );
+				ps.setInt( 4, txtCodItContr.getVlrInteger().intValue() );
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					acumuloitcontr = rs.getInt( "acumuloitcontr" );
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+			}
+			
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( tela, "Data final maior que a data inicial!" );
+				return;
+			}
+		
+			sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
+			sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
+			sql.append( "(a.totalmin/60) totalhoras, (( (case when a.cobcliespec='S' and a.statusatendo<>'NC' ");
+			sql.append( "then (case when a.totalmin<a.tempomincobespec then a.tempomincobespec else ");
+			sql.append( " (case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 then a.tempomaxcobespec ");
+			sql.append( "else a.totalmin end) end)  else 0 end) )/60 ) totalcobcli " );
+			sql.append( "from atatendimentovw01 a " );
+	
+			sql.append( "left outer join crchamado ch on " );
+	
+			sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
+	
+			sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
+	
+			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
+				sql.append( " and a.codempct=? and a.codfilialct=? and a.codcontr=? " );
+			}
+			
+			if ( txtCodItContr.getVlrInteger().intValue() > 0 ) {
+				sql.append( " and a.coditcontr=? " );
+			}
+			
+			else if ( "N".equals( cbTodos.getVlrString() ) ) {
+				sql.append( " and a.codcontr is null " );
+			}
+			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
+				sql.append( " and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
+			}
+			if ( txtCodAtend.getVlrInteger().intValue() > 0 ) {
+				sql.append( " and a.codempae=? and a.codfilialae=? and a.codatend=? " );
+			}
+	
+			sql.append( " order by a.dataatendo, a.horaatendo " );
+	
+			System.out.println( "SQL:" + sql.toString() );
 
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -292,15 +309,19 @@ public class FRAtendimentos extends FRelatorio {
 			Funcoes.mensagemErro( this, " Erro na consulta da tabela de atendimentos" );
 		}
 
-		imprimiGrafico( rs, bVisualizar );
+		imprimiGrafico( rs, bVisualizar, acumuloitcontr );
 
 	}
 
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, int acumuloitcontr ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
+		Date dtiniac = txtDataini.getVlrDate();
+		if (acumuloitcontr!=0) {
+			dtiniac = Funcoes.somaMes( dtiniac, -1*acumuloitcontr ); 
+		}
+		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
@@ -308,6 +329,7 @@ public class FRAtendimentos extends FRelatorio {
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
 		hParam.put( "DTINI", txtDataini.getVlrDate() );
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
+		hParam.put( "DTINIAC", dtiniac );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "CODITCONTR", txtCodItContr.getVlrInteger() );
 		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
