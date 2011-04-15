@@ -73,7 +73,7 @@ public class FRProducaoGrupo extends FRelatorio {
 
 	public FRProducaoGrupo() {
 
-	setTitulo( "Relatório de produção (FSC)" );
+	setTitulo( "Produção por grupo (FSC)" );
 		
 		setAtribos( 80, 80, 370, 250 );
 
@@ -138,14 +138,15 @@ public class FRProducaoGrupo extends FRelatorio {
 				sql.append( "coalesce(sum( ( ");
 				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
 				sql.append( "op.dtfabrop between ? and ? ");
-				sql.append( ")),0) / (pd.nroplanos*pd.qtdporplano) produzidas, ");
+				sql.append( ")),0)  / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) produzidas, "); 
+//				sql.append( ")),0)  produzidas, ");
 								
 				sql.append( "coalesce(sum ( ( ");
 				sql.append( "select sum(iv.qtditvenda) from vdvenda vd, vditvenda iv where ");
 				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
 				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
 				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
-				sql.append( ")),0) / (pd.nroplanos*pd.qtdporplano) vendidas,"); 
+				sql.append( ")),0) / (pd.nroplanos*pd.qtdporplano)  * coalesce(pd.fatorfsc,1.00) vendidas,"); 
 				
 				sql.append( "sum( ( select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S') )  / (pd.nroplanos*pd.qtdporplano) ) saldoanterior ");
 			
@@ -180,7 +181,7 @@ public class FRProducaoGrupo extends FRelatorio {
 			sql.append( "group by 1,2" ); 
 
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( ",pd.nroplanos, pd.qtdporplano" );
+				sql.append( ",pd.nroplanos, pd.qtdporplano,pd.fatorfsc" );
 			}
 			
 			
@@ -242,7 +243,7 @@ public class FRProducaoGrupo extends FRelatorio {
 		FPrinterJob dlGr = null;
 
 	
-		dlGr = new FPrinterJob( rel, "Relatório de consumo de matéria prima ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório de produção por grupo ", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {

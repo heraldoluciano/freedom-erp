@@ -151,7 +151,7 @@ public class FRBalancoProd extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 
-				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) ) ");
+				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00)  ) ");
 				sql.append( "from ppop op ");
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
 				sql.append( "and ope.seqop=op.seqop ");
@@ -187,7 +187,7 @@ public class FRBalancoProd extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 			
-				sql.append( "sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano ) from vditvenda iv, vdvenda v ");
+				sql.append( "sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano) * coalesce(pe.fatorfsc,1.00) from vditvenda iv, vdvenda v ");
 			
 			}
 			else {
@@ -217,7 +217,7 @@ public class FRBalancoProd extends FRelatorio {
 			sql.append( "group by pe.codsecao, sc.descsecao ");
 					
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pe.nroplanos, pe.qtdporplano");
+				sql.append(",pe.nroplanos, pe.qtdporplano, pe.fatorfsc ");
 			}						
 						
 			
