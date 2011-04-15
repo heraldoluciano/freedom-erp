@@ -79,12 +79,6 @@ order by 1 desc, 2 desc]]>
 		<variableExpression><![CDATA[$V{EXCEDENTECOB}.multiply( $V{VALOREXCEDENTE} )]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="EXCEDENTECOB" class="java.math.BigDecimal" resetType="Group" resetGroup="group_resumo">
-		<variableExpression><![CDATA[$V{EXCEDENTEPERIODOCOB}.compareTo($V{SALDOPERIODO})>0
-? $V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO})
-: new BigDecimal(0)]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
 	<variable name="VALOREXCEDENTE" class="java.math.BigDecimal" resetType="Group" resetGroup="group_resumo">
 		<variableExpression><![CDATA[$F{VALOREXCEDENTE}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
@@ -101,6 +95,12 @@ order by 1 desc, 2 desc]]>
 	</variable>
 	<variable name="EXCEDENTEPERIODOCOB" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$V{EXCEDENTEMESCOB}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="EXCEDENTECOB" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{EXCEDENTEPERIODOCOB}.compareTo($V{SALDOPERIODO})>0
+? $V{EXCEDENTEPERIODOCOB}.subtract($V{SALDOPERIODO})
+: new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="group_resumo">
