@@ -76,7 +76,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 
 	public FRBalancoProdGrupo() {
 
-	setTitulo( "Relatório de Balançao de produção por Grupo FSC" );
+	setTitulo( "Relatório de Balanço de produção por Grupo FSC" );
 		
 		setAtribos( 80, 80, 370, 250 );
 
@@ -151,7 +151,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 
-				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) ) ");
+				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) ) ");
 				sql.append( "from ppop op ");
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
 				sql.append( "and ope.seqop=op.seqop ");
@@ -187,7 +187,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 			
-				sql.append( "sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano ) from vditvenda iv, vdvenda v ");
+				sql.append( "sum( ( select sum(iv.qtditvenda) / (pe.nroplanos*pe.qtdporplano ) * coalesce(pe.fatorfsc,1.00)  from vditvenda iv, vdvenda v ");
 			
 			}
 			else {
@@ -215,7 +215,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			sql.append( "group by sc.codgrup, sc.descgrup ");
 					
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pe.nroplanos, pe.qtdporplano");
+				sql.append(",pe.nroplanos, pe.qtdporplano, pe.fatorfsc ");
 			}						
 			
 			System.out.println("SQL:" + sql.toString());
@@ -275,7 +275,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 
 		FPrinterJob dlGr = null;
 	
-		dlGr = new FPrinterJob( rel, "Relatório Balanço de Produção (FSC) ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório Balanço de Produção por grupo (FSC) ", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {

@@ -144,10 +144,10 @@ public class FREncomendasProducao extends FRelatorio {
 			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
 			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
 			sql.append( ")) consumidas, ");
-			
+			 
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) ) produzidas ");
+				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00) ) produzidas ");
 			}
 			else {
 				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) ) produzidas ");
@@ -164,13 +164,13 @@ public class FREncomendasProducao extends FRelatorio {
 			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( " and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? " );
+				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 			
 			sql.append( "group by 1,2,3,4 ");
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pd.nroplanos, pd.qtdporplano");
+				sql.append(",pd.nroplanos, pd.qtdporplano, pd.fatorfsc ");
 			}
 			
 			System.out.println("SQL:" + sql.toString());
