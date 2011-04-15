@@ -137,7 +137,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			
 			sql.append( "select ");
 			sql.append( "sc.codgrup, sc.descgrup, ");
-			
+			/*
 			sql.append( "sum(( ");
 			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
 			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
@@ -148,6 +148,18 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
 			sql.append( "and op.dtfabrop between ? and ? ");
 			sql.append( ")) consumidas, ");
+			*/
+			
+			sql.append( " sum(( select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir, eqproduto pd ");
+			sql.append( "where ");
+			sql.append( "rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop and ");
+			sql.append( "ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma and ");
+			sql.append( "pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and ");
+			sql.append( "pd.codempsc=pe.codempsc and pd.codfilialsc=pe.codfilialsc and pd.codsecao=pe.codsecao and ");
+			sql.append( "pd.nroplanos is not null and pd.qtdporplano is not null and ");
+			sql.append( "op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and ");
+			sql.append( "op.dtfabrop between ? and ? )) consumidas, ");
+			
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
 
@@ -206,7 +218,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 			
 			
 			sql.append( "from eqgrupo sc, eqproduto pe ");
-			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup ");
+			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup and pe.tipoprod='F' ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
 				sql.append( "and pe.codempgp=? and pe.codfilialgp=? and pe.codgrup=? " );

@@ -108,8 +108,8 @@ public class FRBalancoProd extends FRelatorio {
 
 		adic( pnFiltros, 4, 70, 335, 85 );
 
-		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Grupo" );
-		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição do grupo" );
+		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Seção" );
+		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
 
 		adic(cbPorFolha, 7, 165, 200, 20);
 		
@@ -138,8 +138,10 @@ public class FRBalancoProd extends FRelatorio {
 			sql.append( "select ");
 			sql.append( "pe.codsecao, sc.descsecao, ");
 			
+			/*
 			sql.append( "sum(( ");
 			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
+			
 			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
 			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
 			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
@@ -148,7 +150,20 @@ public class FRBalancoProd extends FRelatorio {
 			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
 			sql.append( "and op.dtfabrop between ? and ? ");
 			sql.append( ")) consumidas, ");
-			
+			*/
+			 
+			 
+			sql.append( " sum(( select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir, eqproduto pd ");
+			sql.append( "where ");
+			sql.append( "rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop and ");
+			sql.append( "ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma and ");
+			sql.append( "pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and ");
+			sql.append( "pd.codempsc=pe.codempsc and pd.codfilialsc=pe.codfilialsc and pd.codsecao=pe.codsecao and ");
+			sql.append( "pd.nroplanos is not null and pd.qtdporplano is not null and ");
+			sql.append( "op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and ");
+			sql.append( "op.dtfabrop between ? and ? )) consumidas, ");
+			 
+			 
 			if("S".equals( cbPorFolha.getVlrString())) {
 
 				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00)  ) ");
@@ -208,10 +223,10 @@ public class FRBalancoProd extends FRelatorio {
 			sql.append( "from eqsecao sc, eqproduto pe ");
 			sql.append( "where pe.codsecao is not null and ");
 			sql.append( "sc.codemp=pe.codempsc and sc.codfilial=pe.codfilialsc and ");
-			sql.append( "sc.codsecao=pe.codsecao ");
+			sql.append( "sc.codsecao=pe.codsecao and pe.tipoprod='F' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( "and pe.codsecao=? and pe.codfilialsc=? and pe.codsecao=? " );
+				sql.append( "and pe.codempsc=? and pe.codfilialsc=? and pe.codsecao=? " );
 			}
 
 			sql.append( "group by pe.codsecao, sc.descsecao ");
@@ -247,10 +262,11 @@ public class FRBalancoProd extends FRelatorio {
 			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
+				
 				ps.setInt( param++, lcSecao.getCodEmp() );
 				ps.setInt( param++, lcSecao.getCodFilial() );
 				ps.setString( param++, txtCodSecao.getVlrString() );
-
+				
 				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
 			}
 			

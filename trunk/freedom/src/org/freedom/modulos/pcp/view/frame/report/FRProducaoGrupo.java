@@ -175,7 +175,7 @@ public class FRProducaoGrupo extends FRelatorio {
 			sql.append( "and pd.codemp=? and pd.codfilial=? ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
-				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? " );
+				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? and pd.tipoprod='F'" );
 			}
 			
 			sql.append( "group by 1,2" ); 
@@ -253,7 +253,7 @@ public class FRProducaoGrupo extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de consumo!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de produção por grupo!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
