@@ -197,6 +197,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtNroPlanos = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JTextFieldPad txtQtdPorPlano = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtFatorFSC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, casasDec );
 
 	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
@@ -1055,6 +1057,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCubagem, 			120, 	100, 	110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );		
 		adicCampo( txtNroPlanos, 		233, 	100, 	110, 20, "NroPlanos", "Nro. Planos", ListaCampos.DB_SI, false );
 		adicCampo( txtQtdPorPlano, 		346, 	100, 	110, 20, "QtdPorPlano", "Qtd.por plano", ListaCampos.DB_SI, false );
+		adicCampo( txtFatorFSC, 		459, 	100, 	150, 20, "FatorFSC", "Fator conv. folhas(FSC)", ListaCampos.DB_SI, false );
 
 		
 		JPanelPad pnOutros = new JPanelPad();
