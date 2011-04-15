@@ -46,6 +46,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -122,14 +123,18 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 	private Vector<String> vDescOperador = new Vector<String>();
 
 	private Vector<String> vSelOperador = new Vector<String>();
+	
+	private JCheckBoxPad cbTodos = new JCheckBoxPad( "Processar todos os produtos.", "S", "N" );
 
 	private int iCasasDec = 0;
 	
 	public FManutPreco() {
 
 		super( false );
+		
 		setTitulo( "Manutenção de Preços" );
-		setAtribos( 10, 10, 480, 470 );
+		
+		setAtribos( 10, 10, 430, 470 );
 
 		Container c = getContentPane();
 
@@ -225,48 +230,40 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 300, 30 ) );
 		pnRod.setLayout( new BorderLayout() );
+		
 		pnRod.add( btSair, BorderLayout.EAST );
 
-		pinCli.adic( rgTipoOper, 7, 3, 380, 30 );
+		pinCli.adic( rgTipoOper, 7, 3, 395, 30 );
 		pinCli.adic( new JLabelPad( " Preço origem: " ), 7, 35, 300, 20 );
-		pinCli.adic( rgOrigem, 7, 55, 300, 60 );
-		pinCli.adic( new JLabelPad( "Preço" ), 310, 35, 80, 20 );
-		pinCli.adic( cbOperador, 310, 55, 120, 20 );
-		pinCli.adic( txtMultiplic, 310, 75, 80, 20 );
+		
+		pinCli.adic( rgOrigem, 7, 55, 180, 60 );
+		
+		
+		pinCli.adic( cbOperador			, 190	, 55	, 110	, 20, "Operador" );
+		pinCli.adic( txtMultiplic		, 303	, 55	, 97	, 20, "Fator" );
+		
+		cbTodos.setVisible( false );
+		pinCli.adic( cbTodos			, 190	, 85	, 200	, 20 );
 
-		pinCli.adic( new JLabelPad( "Cód.produto" ), 7, 115, 300, 20 );
-		pinCli.adic( txtCodProduto, 7, 135, 90, 20 );
-		pinCli.adic( new JLabelPad( "Descrição do produto" ), 100, 115, 300, 20 );
-		pinCli.adic( txtDescProduto, 100, 135, 300, 20 );
-
-		pinCli.adic( new JLabelPad( "Cód.marca" ), 7, 155, 300, 20 );
-		pinCli.adic( txtCodMarca, 7, 175, 90, 20 );
-		pinCli.adic( new JLabelPad( "Descrição da marca" ), 100, 155, 300, 20 );
-		pinCli.adic( txtDescMarca, 100, 175, 300, 20 );
-
-		pinCli.adic( new JLabelPad( "Cód.grupo" ), 7, 195, 300, 20 );
-		pinCli.adic( txtCodGrup, 7, 215, 90, 20 );
-		pinCli.adic( new JLabelPad( "Descrição do grupo" ), 100, 195, 300, 20 );
-		pinCli.adic( txtDescGrup, 100, 215, 300, 20 );
-
-		pinCli.adic( new JLabelPad( "Cód.tab.preço" ), 7, 235, 300, 20 );
-		pinCli.adic( txtCodTab, 7, 255, 90, 20 );
-		pinCli.adic( new JLabelPad( "Descrição da tabela de preços" ), 100, 235, 300, 20 );
-		pinCli.adic( txtDescTab, 100, 255, 300, 20 );
-
-		pinCli.adic( new JLabelPad( "Cód.p.pag." ), 7, 275, 300, 20 );
-		pinCli.adic( txtCodPlanoPag, 7, 295, 90, 20 );
-		pinCli.adic( new JLabelPad( "Descrição do plano de pagamento" ), 100, 275, 300, 20 );
-		pinCli.adic( txtDescPlanoPag, 100, 295, 300, 20 );
-
-		pinCli.adic( new JLabelPad( "Cód.c.cli." ), 7, 315, 300, 20 );
-		pinCli.adic( txtCodClasCli, 7, 335, 90, 20 );
+		pinCli.adic( txtCodProduto		, 7		, 135	, 90	, 20, "Cód.produto" );
+		pinCli.adic( txtDescProduto		, 100	, 135	, 300	, 20, "Descrição do produto" );
+		pinCli.adic( txtCodMarca		, 7		, 175	, 90	, 20, "Cód.marca" );
+		pinCli.adic( txtDescMarca		, 100	, 175	, 300	, 20, "Descrição da marca" );
+		pinCli.adic( txtCodGrup			, 7		, 215	, 90	, 20, "Cód.grupo" );
+		pinCli.adic( txtDescGrup		, 100	, 215	, 300	, 20, "Descrição do grupo" );
+		pinCli.adic( txtCodTab			, 7		, 255	, 90	, 20, "Cód.tab.preço" );
+		pinCli.adic( txtDescTab			, 100	, 255	, 300	, 20, "Descrição da tabela de preços" );
+		pinCli.adic( txtCodPlanoPag		, 7		, 295	, 90	, 20, "Cód.p.pag." );
+		pinCli.adic( txtDescPlanoPag	, 100	, 295	, 300	, 20, "Descrição do plano de pagamento" );
+		pinCli.adic( txtCodClasCli		, 7		, 335	, 90	, 20, "Cód.c.cli." );
+		
 		pinCli.adic( new JLabelPad( "Descrição da classificação do cliente" ), 100, 315, 300, 20 );
 		pinCli.adic( txtDescClasCli, 100, 335, 300, 20 );
 
-		pinCli.adic( btGerar, 7, 360, 100, 30 );
+		pinCli.adic( btGerar, 7, 365, 90, 30 );
 
 		rgTipoOper.addRadioGroupListener( this );
+		rgOrigem.addRadioGroupListener( this );
 
 		btSair.addActionListener( this );
 		btGerar.addActionListener( this );
@@ -302,6 +299,16 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
 		habFiltros( rgTipoOper.getVlrString() );
+		
+		if(rgevt.getSource() == rgOrigem) {
+			
+			
+			cbTodos.setVisible( "B".equals( rgOrigem.getVlrString() ) );
+			
+			
+		}
+		
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -408,6 +415,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 			}
 			
 			if ( sOrigem.equals( "B" ) || sOrigem.equals( "I" ) ) {
+				
 				sWhereConsultaProd = " AND PD.ATIVOPROD='S' AND PD.CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
 
 				if ( !sCodProd.equals( "" ) ) {
@@ -422,17 +430,15 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 					sWhereConsultaProd += " AND PD.CODMARCA='" + sCodMarca + "'";
 				}
 
-				sSqlConsultaProd  = "SELECT PD.CODEMP, PD.CODFILIAL, PD.CODPROD, ";
-				
-				sSqlConsultaProd += "PD.PRECOBASEPROD, ";
-				
-				sSqlConsultaProd += "PD.CUSTOINFOPROD, CL.CODCLASCLI, PG.CODPLANOPAG FROM EQPRODUTO PD ";
+				sSqlConsultaProd  = "SELECT PD.CODEMP, PD.CODFILIAL, PD.CODPROD, PD.PRECOBASEPROD, PD.CUSTOINFOPROD, CL.CODCLASCLI, PG.CODPLANOPAG FROM EQPRODUTO PD ";
 				
 				sSqlConsultaProd += ", VDCLASCLI CL, FNPLANOPAG PG ";
+				
 				sSqlConsultaProd += " WHERE ";
+				
 				sSqlConsultaProd += "CL.CODEMP=" + Aplicativo.iCodEmp + " AND CL.CODFILIAL=" + ListaCampos.getMasterFilial( "VDCLASCLI" ) ;
 				
-				if ( sOrigem.equals( "B" ) ) {
+				if ( sOrigem.equals( "B" ) && "N".equals( cbTodos.getVlrString() ) ) {
 					sSqlConsultaProd += " AND EXISTS (SELECT PRECOPROC FROM EQPRODUTOLOG WHERE CODEMP=PD.CODEMP AND CODFILIAL=PD.CODFILIAL AND CODPROD=PD.CODPROD AND PRECOPROC='N') ";
 				}
 				
