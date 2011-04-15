@@ -268,7 +268,8 @@
 			<textField pattern="#,##0.00 %" isBlankWhenNull="true">
 				<reportElement x="670" y="1" width="64" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(1).subtract($F{PRODUZIDAS}.divide($F{CONSUMIDAS},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{CONSUMIDAS}.compareTo(new BigDecimal(0)) == 0 ) ? null :
+new BigDecimal(1).subtract($F{PRODUZIDAS}.divide($F{CONSUMIDAS},BigDecimal.ROUND_CEILING))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
