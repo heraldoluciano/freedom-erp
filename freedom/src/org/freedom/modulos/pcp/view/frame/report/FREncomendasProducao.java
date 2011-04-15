@@ -108,8 +108,8 @@ public class FREncomendasProducao extends FRelatorio {
 
 		adic( pnFiltros, 4, 70, 335, 85 );
 
-		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Grupo" );
-		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição do grupo" );
+		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Seção" );
+		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
 
 		adic(cbPorFolha, 7, 165, 200, 20);
 		
@@ -164,7 +164,7 @@ public class FREncomendasProducao extends FRelatorio {
 			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
+				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? and pd.tipoprod='F'" );
 			}
 			
 			sql.append( "group by 1,2,3,4 ");

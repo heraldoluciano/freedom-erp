@@ -159,10 +159,27 @@ public class FRConsumoMat extends FRelatorio {
 			sql.append( "select ");
 			sql.append( "sum(ir.qtdexpitrma) ");
 			sql.append( "from ");
-			sql.append( "eqitrma ir, eqproduto pd ");
+			sql.append( "eqitrma ir, eqproduto pe ");
 			sql.append( "where ");
 			sql.append( "ir.codemp=? and ir.codfilial=? and ir.dtaexpitrma between ? and ? ");
-			sql.append( "and pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod ");
+			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
+			sql.append( "and pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod ");
+			
+			/*
+			
+			sql.append( "sum(( ");
+			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
+			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
+			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
+			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
+			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and ");
+			sql.append( "pe.codprod=ir.codprod ");
+			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
+			sql.append( "and op.dtfabrop between ? and ? ");
+			sql.append( ")) consumidas, ");
+			
+			*/
+			
 			
 			if( ! "".equals( txtCodSecao.getVlrString()) ) {
 			//	sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
