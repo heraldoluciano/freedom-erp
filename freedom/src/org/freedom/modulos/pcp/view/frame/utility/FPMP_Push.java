@@ -438,12 +438,16 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 			sql.append( "select pd.codemp codemppd, pd.codfilial codfilialpd, pd.codprod, pd.refprod, es.seqest, pd.descprod, pd.qtdminprod, pd.sldprod qtdestoque, ");
 			
 			// RMA não atendidas
-			sql.append( "coalesce( ");			
-			sql.append( "(select sum(ir.qtdaprovitrma - ir.qtdexpitrma) from eqitrma ir ");
-			sql.append( "where ir.codemppd=pd.codemp and ir.codfilial=pd.codfilial and ir.codprod=pd.codprod ");
-			sql.append( "and ir.qtdaprovitrma > 0 and ir.sitaprovitrma in ('AP','AT') ");
-			sql.append( "and ir.qtdexpitrma < ir.qtdaprovitrma) ");
-			sql.append( ",0) qtdreq, ");
+			StringBuilder qtdrma = new StringBuilder();
+			qtdrma.append( "coalesce( ");			
+			qtdrma.append( "(select sum(ir.qtdaprovitrma - ir.qtdexpitrma) from eqitrma ir ");
+			qtdrma.append( "where ir.codemppd=pd.codemp and ir.codfilial=pd.codfilial and ir.codprod=pd.codprod ");
+			qtdrma.append( "and ir.qtdaprovitrma > 0 and ir.sitaprovitrma in ('AP','AT') ");
+			qtdrma.append( "and ir.qtdexpitrma < ir.qtdaprovitrma) ");
+			qtdrma.append( ",0)") ;
+			
+			sql.append( qtdrma );
+			sql.append( " qtdreq, ");
 			
 			// Ops não finalizadas
 			sql.append( "coalesce( ");
@@ -453,7 +457,9 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 			
 			sql.append( "from eqproduto pd, ppestrutura es ");
 			sql.append( "where ");
-			sql.append( "pd.ativoprod='S' and pd.sldprod < pd.qtdminprod and pd.tipoprod in ('F','06') and pd.codemp=? and pd.codfilial=? and ");
+			sql.append( "pd.ativoprod='S' and ((pd.sldprod < pd.qtdminprod) or (pd.sldprod < ");
+			sql.append( qtdrma );
+			sql.append( ")) and pd.tipoprod in ('F','06') and pd.codemp=? and pd.codfilial=? and ");
 
 			sql.append( "es.codemp=pd.codemp and es.codfilial=pd.codfilial and es.codprod = pd.codprod ");
 			
