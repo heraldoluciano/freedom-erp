@@ -63,7 +63,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{CONSUMIDAS})]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{CONSUMIDAS}).multiply(new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00 %" isBlankWhenNull="true">
 					<reportElement x="370" y="23" width="45" height="20"/>
@@ -263,7 +263,7 @@
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="585" y="1" width="64" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{CONSUMIDAS})]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRODUZIDAS}.subtract($F{CONSUMIDAS}).multiply(new BigDecimal(-1))]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00 %" isBlankWhenNull="true">
 				<reportElement x="670" y="1" width="64" height="20"/>
