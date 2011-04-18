@@ -16,7 +16,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select rtrim(coalesce(ip.obsitpag,'PAGAMENTO REF. AO PED.: '||pa.codcompra )) pagar,
+		<![CDATA[select coalesce(ip.obsitpag,'PAGAMENTO REF. AO PED.: '||pa.codcompra ) pagar,
 ip.vlrapagitpag valor, cast('today' as date)-ip.dtvencitpag diasatraso
 from fnitpagar ip, fnpagar pa
 where ip.codemp=$P{CODEMP} and ip.codfilial=$P{CODFILIAL} and ip.dtvencitpag<=$P{DATA}
