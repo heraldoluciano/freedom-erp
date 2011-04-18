@@ -42,6 +42,8 @@ public class Itau extends Banco {
 		setNparc(nparc);
 		setModalidade(modalidade);
 		setConta(contap);
+		setSeq(seq);
+		setDoc(doc);
 	}
 
 	public BigDecimal getValorTitulo() {
