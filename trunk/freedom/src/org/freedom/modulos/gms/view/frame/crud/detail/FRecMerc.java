@@ -391,8 +391,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		
 		adicDBLiv( txaObs, "ObsRecMerc", "Observações" , false );
 
-		pinCab.adic( lbBairro, 500, 120, 100, 20 );
-		pinCab.adic( cbBairro, 500, 140, 100, 20 );
+		adic( lbBairro, 500, 120, 100, 20 );
+		adic( cbBairro, 500, 140, 100, 20 );
 
 		adic( btAdicBairro, 603, 140, 20, 20 );
 
