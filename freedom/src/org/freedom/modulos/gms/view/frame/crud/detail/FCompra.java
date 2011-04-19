@@ -2383,7 +2383,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
 
-			txtCalcTrib.setVlrString( txtEmitCompra.getVlrString() );
+			// Verifica se possui código de importação, se tiver, não deve calcular os tributos pela tela de compra. (Já foram calculados na tela de importação. 
+			if(txtCodImp.getVlrInteger()>0) {
+				txtCalcTrib.setVlrString( "N" ); 
+			}
+			else {
+				txtCalcTrib.setVlrString( txtEmitCompra.getVlrString() );
+			}
+			
+			
 
 			if ( "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				txtDocCompra.setAtivo( false );
@@ -2509,133 +2517,289 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void afterInsert( InsertEvent e ) {
 
 		if ( e.getListaCampos() == lcCampos ) {
+
 			txtDtEntCompra.setVlrDate( new Date() );
 			txtDtEmitCompra.setVlrDate( new Date() );
-			
-			if( txtCodImp.getVlrInteger()!=null && txtCodImp.getVlrInteger()>0 ) {
-				
-				
-				geraItensImportacao();
-				
-			}
 			
 		}
 	}
 	
-	private void geraItensImportacao() {
+	private PreparedStatement getStatementItensImportacao() {
 		
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		StringBuilder sql		= new StringBuilder();
+		PreparedStatement ps 	= null;
 		
 		try {
-			
+		
 			sql.append( "select " );
-			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codamox, " );
-			sql.append( "(ii.vlrad + ii.vlrii) vlrliqitcompra, (ii.vlrad + ii.vlrii) vlrproditcompra,   (ii.vlrad + ii.vlrii / qtd) precoitcompra, " );
 			
-			sql.append( "ii.vlrbaseicms, ii.aliqicmsuf, (ii.vlricms - vlricmsdiferido) vlricmsitcompra, " );
-			
-			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, " );
-			
-			
-			sql.append( "from cpitimportacao ii, eqproduto pd " );
+			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
+			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi) vlrliqitcompra	, (ii.vlrad + ii.vlrii ) vlrproditcompra,   (ii.vlrad + ii.vlrii / qtd) precoitcompra, " );
+			sql.append( "ii.vlrbaseicms, ii.aliqicmsuf, ii.vlricms vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
+			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, ii.codfisc, ii.coditfisc, " );
+			sql.append( "( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao, ii.seqadic, " );
+			sql.append( "(ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex) vlradicitcompra, " );
+			sql.append( "ii.aliqpis		, ii.vlrpis/(ii.aliqpis/100.00) vlrbasepis			, ii.vlrpis, " );
+			sql.append( "lf.codempsp	, lf.codfilialsp	, lf.codsittribpis	, lf.impsittribpis, " );
+			sql.append( "ii.aliqcofins	, ii.vlrcofins/(ii.aliqcofins/100.00) vlrbasecofins	, ii.vlrcofins, " );
+			sql.append( "lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof, " );
+			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
+			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii " );
+			sql.append( "from eqproduto pd, cpitimportacao ii " );
+			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );
-			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd, and pd.codprod=ii.codprod and " );
+			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod and " );
 			
-			sql.append( "ii.codemp=? and ii.cofilial=? and ii.codimp=? " );
+			sql.append( "ii.codemp=? and ii.codfilial=? and ii.codimp=? " );
 			
 			ps = con.prepareStatement( sql.toString() );
 			
-			rs = ps.executeQuery();
 			
-			// Gerando a query do insert;
-			
-			sql = new StringBuilder();
-			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Query de itens de importação:" + sql.toString());
+		
+		return ps;
+		
+	}
+	
+	private PreparedStatement getStatementInsertCPItCompra() {
+		
+		StringBuilder sql		= new StringBuilder();
+		PreparedStatement ps 	= null;
+		
+		try {
+		
 			sql.append( "insert into cpitcompra (" );
-			
 			sql.append( "emmanut				, " );
-			
 			sql.append( "codemp					, codfilial			, codcompra			, coditcompra		, " );
 			sql.append( "codemppd				, codfilialpd		, codprod			, refprod			, " );
 			sql.append( "codempnt				, codfilialnt		, codnat			, " );
 			sql.append( "codempax				, codfilialax		, codalmox			, " );
 			sql.append( "qtditcompra			, precoitcompra		, vlrliqitcompra	, vlrproditcompra	, " );
-			
-			sql.append( "vlrbaseicmsitcompra	, percicmsitcompra	, vlricmsitcompra	, " );
+			sql.append( "vlrbaseicmsitcompra	, percicmsitcompra	, vlricmsitcompra	, vlrfreteitcompra	, " );
 			sql.append( "vlrbaseipiitcompra		, percipiitcompra	, vlripiitcompra	, " );
-			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			 " );
-			
+			sql.append( "codempif				, codfilialif		, codfisc			, coditfisc			, " );
+			sql.append( "nadicao				, seqadic			, vlradicitcompra						  " );
+			sql.append( ")" );
+			sql.append( "values (" );
+			sql.append( " ?						, ");
+			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?										, " );
+			sql.append( " ?						, ?					, ?										, " );
+			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?										, " );
+			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?									      " );
 			sql.append( ")" );
 			
+			ps = con.prepareStatement( sql.toString() );
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Query de inserção itcompra:" + sql.toString());
+		
+		return ps;
+		
+	}
+	
+	private PreparedStatement getStatementInsertLFItCompra() {
+		
+		StringBuilder sql		= new StringBuilder();
+		PreparedStatement ps 	= null;
+		
+		try {
+		
+			sql.append( "insert into lfitcompra (" );
+			sql.append( "codemp					, codfilial			, codcompra			, coditcompra		, " );
+			sql.append( "codempsp				, codfilialsp		, codsittribpis		, impsittribpis		, vlrbasepis	, aliqpis		, vlrpis	, " );
+			sql.append( "codempsc				, codfilialsc		, codsittribcof		, impsittribcof		, vlrbasecofins	, aliqcofins	, vlrcofins , " );
+			sql.append( "codempsi				, codfilialsi		, codsittribipi		, impsittribipi		, " );
+			sql.append( "modbcicms				, aliqredbcicms		, origfisc			, codtrattrib		, vlrbaseii		, aliqii		, vlrii		  " );			
+			sql.append( ")" );
 			sql.append( "values (" );
-			
-			sql.append( " ?						, ");
-			
 			sql.append( " ?						, ?					, ?					, ?					, " );
+			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ? 		, " );
+			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?			, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
-			sql.append( " ?						, ?					, ?										, " );
-			sql.append( " ?						, ?					, ?										, " );
-			sql.append( " ?						, ?					, ?					, ?					, " );
-			sql.append( " ?						, ?					, ?										, " );
-			sql.append( " ?						, ?					, ?										, " );
-			sql.append( " ?						, ?					, ?					, ?					, " );
-			
+			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?  " );
 			sql.append( ")" );
 			
 			ps = con.prepareStatement( sql.toString() );
 			
-			Integer iparam = 1;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Query de inserção de itens de tributação:" + sql.toString());
+		
+		return ps;
+		
+	}
+	
+	private void geraItensImportacao() {
+		
+		PreparedStatement ps_imp	= null;
+		PreparedStatement ps_trib	= null;
+		PreparedStatement ps_comp 	= null;
+		
+		ResultSet rs1 				= null;
+		ResultSet rs2 				= null;
+		
+		Integer iparam = null;
+		
+		try {
 			
-			while (rs.next()) {
+			// Query para percorrer os itens de importação e inserir na tabela de itens de compra
+			
+			ps_imp = getStatementItensImportacao();
+			
+			ps_imp.setInt( 1, Aplicativo.iCodEmp );
+			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps_imp.setInt( 3, txtCodImp.getVlrInteger() );
+			
+			rs1 = ps_imp.executeQuery();
+			
+			// Gerando statement para inserção na CPITCOMPRA;
+				
+			ps_comp  =  getStatementInsertCPItCompra();
+
+			while (rs1.next()) {
 			
 				// Inserindo os ítens de importação
 				
-				ps.setString( iparam++, "S" );
+				iparam = 1;
 				
-				ps.setInt( iparam++, Aplicativo.iCodEmp );
-				ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
-				ps.setInt( iparam++, txtCodCompra.getVlrInteger() );
-				ps.setInt( iparam++, rs.getInt( "CODITIMP" ) );
+				ps_comp.setString( iparam++, "S" );
 				
-				ps.setInt( iparam++, rs.getInt( "codemppd" ) );
-				ps.setInt( iparam++, rs.getInt( "codfilialpd" ) );
-				ps.setInt( iparam++, rs.getInt( "codprod" ) );
-				ps.setString( iparam++, rs.getString( "refprod" ) );
+				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+				ps_comp.setInt( iparam++, txtCodCompra.getVlrInteger() );
+				ps_comp.setInt( iparam++, rs1.getInt( "CODITIMP" ) );
+				
+				ps_comp.setInt( iparam++, rs1.getInt( "codemppd" ) );
+				ps_comp.setInt( iparam++, rs1.getInt( "codfilialpd" ) );
+				ps_comp.setInt( iparam++, rs1.getInt( "codprod" ) );
+				ps_comp.setString( iparam++, rs1.getString( "refprod" ) );
 
-				ps.setInt( iparam++, Aplicativo.iCodEmp );
-				ps.setInt( iparam++, ListaCampos.getMasterFilial( "LFNATOPER" ) );
-				String codnat = buscaCFOP( rs.getInt( "codprod" ), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), rs.getInt( "coditfisc" ), con );
+				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFNATOPER" ) );
 				
-				ps.setInt( iparam++, Aplicativo.iCodEmp );
-				ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQALMOX" ) );
-				ps.setInt( iparam++, rs.getInt( "codalmox" ) );
+				String codnat = buscaCFOP( rs1.getInt( "codprod" ), txtCodFor.getVlrInteger(), txtCodTipoMov.getVlrInteger(), rs1.getInt( "coditfisc" ), con );
 				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "qtd" ) );
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "precoitcompra" ) );
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlrliqitcompra" ) );
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlrproditcompra" ) );
+				ps_comp.setString( iparam++, codnat );
 				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlrbaseicms" ) );				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "aliqicmsuf" ) );				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlricmsitcompra" ) );
+				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+				ps_comp.setInt( iparam++, rs1.getInt( "codalmox" ) );
 				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlrbaseipiitcompra" ) );				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "aliqipi" ) );				
-				ps.setBigDecimal( iparam++, rs.getBigDecimal( "vlripi" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "qtd" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "precoitcompra" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrliqitcompra" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrproditcompra" ) );
 				
-				ps.setInt( iparam++, Aplicativo.iCodEmp );
-				ps.setInt( iparam++, ListaCampos.getMasterFilial( "LFCLFISCAL" ) );
-				ps.setInt( iparam++, rs.getInt( "codfisc" ) );
-				ps.setInt( iparam++, rs.getInt( "coditfisc" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseicms" ) );				
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqicmsuf" ) );				
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlricmsitcompra" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrfreteitcompra" ) );
+				
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlrbaseipiitcompra" ) );				
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "aliqipi" ) );				
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlripi" ) );
+				
+				ps_comp.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_comp.setInt( iparam++, ListaCampos.getMasterFilial( "LFCLFISCAL" ) );
+				ps_comp.setString( iparam++, rs1.getString( "codfisc" ) );
+				ps_comp.setInt( iparam++, rs1.getInt( "coditfisc" ) );
+				
+				ps_comp.setInt( iparam++, rs1.getInt( "nadicao" ) );
+				ps_comp.setInt( iparam++, rs1.getInt( "seqadic" ) );
+				ps_comp.setBigDecimal( iparam++, rs1.getBigDecimal( "vlradicitcompra" ) );
+								
+				ps_comp.execute();
 				
 			}
 			
 			con.commit();
 			
-			ps.close();
-			rs.close();
+			// Query para percorrer os itens de importação e inserir na tabela LFITCOMPRA
+			
+			ps_imp = getStatementItensImportacao();
+			
+			ps_imp.setInt( 1, Aplicativo.iCodEmp );
+			ps_imp.setInt( 2, ListaCampos.getMasterFilial( "CPIMPORTACAO" ) );
+			ps_imp.setInt( 3, txtCodImp.getVlrInteger() );
+			
+			rs2 = ps_imp.executeQuery();
+			
+			// Gerando statement para inserção na CPITCOMPRA;
+				
+			ps_trib  =  getStatementInsertLFItCompra();
+			
+			while (rs2.next()) {
+			
+				// Inserção da LFITCOMPRA
+				
+				iparam = 1;
+				
+				ps_trib.setInt( iparam++, Aplicativo.iCodEmp );
+				ps_trib.setInt( iparam++, ListaCampos.getMasterFilial( "LFITCOMPRA" ) );
+				ps_trib.setInt( iparam++, txtCodCompra.getVlrInteger() );
+				ps_trib.setInt( iparam++, rs2.getInt( "CODITIMP" ) );
+				
+				ps_trib.setInt( iparam++, rs2.getInt( "codempsp" ) );
+				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsp" ) );
+				ps_trib.setString( iparam++, rs2.getString( "codsittribpis" ) );
+				ps_trib.setString( iparam++, rs2.getString( "impsittribpis" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasepis" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqpis" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrpis" ) );
+				
+				ps_trib.setInt( iparam++, rs2.getInt( "codempsc" ) );
+				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsc" ) );
+				ps_trib.setString( iparam++, rs2.getString( "codsittribcof" ) );
+				ps_trib.setString( iparam++, rs2.getString( "impsittribcof" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbasecofins" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqcofins" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrcofins" ) );
+				
+				ps_trib.setInt( iparam++, rs2.getInt( "codempsi" ) );
+				ps_trib.setInt( iparam++, rs2.getInt( "codfilialsi" ) );
+				ps_trib.setString( iparam++, rs2.getString( "codsittribipi" ) );
+				ps_trib.setString( iparam++, rs2.getString( "impsittribipi" ) );
+				
+				ps_trib.setInt( iparam++, rs2.getInt( "modbcicms" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "redfisc" ) );
+				ps_trib.setString( iparam++, rs2.getString( "origfisc" ) );
+				ps_trib.setString( iparam++, rs2.getString( "codtrattrib" ) );
+				
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbaseii" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqii" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrii" ) );
+				
+				ps_trib.execute();
+			
+			}
+			
+			con.commit();
+			
+			ps_comp.close();
+			ps_trib.close();
+			ps_imp.close();
+			
+			rs1.close();
+			rs2.close();
+			
+			lcCampos.carregaDados();
 			
 			
 		}
@@ -2663,6 +2827,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				testaNumSerie();
 			}
 		}
+		
+		if(pevt.getListaCampos() == lcCampos && novo ) {
+			if( txtCodImp.getVlrInteger()!=null && txtCodImp.getVlrInteger()>0 ) {
+			
+				geraItensImportacao();
+			
+			}
+		}
+		
+		
+		
+		
+		
 		novo = false;
 	}
 
@@ -2753,6 +2930,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
+
+			if(txtCodImp.getVlrInteger()>0) {
+				txtCalcTrib.setVlrString( "N" ); 
+			}
+
 			// txtStatusCompra.setVlrString( "*" );
 		}
 
