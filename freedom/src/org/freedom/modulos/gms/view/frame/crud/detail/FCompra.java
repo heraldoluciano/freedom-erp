@@ -168,7 +168,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButtonPad btBuscarRemessa = new JButtonPad( "Buscar remessa", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.gif" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -840,12 +840,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
-		btBuscarRemessa.setVisible( false );
-		pnAdicionalCab.add( btBuscarRemessa );
-
-		btBuscaCompra.setPreferredSize( new Dimension( 80, 0 ) );
-		btBuscaImportacao.setPreferredSize( new Dimension( 80, 0 ) );
-
+		btBuscaRemessa.setVisible( false );
+		
+		
+		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
+		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
+		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
+		
+		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
+		btBuscaCompra.setFont( SwingParams.getFontpadmed() );
+		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
+		
+		pnAdicionalCab.add( btBuscaRemessa );
 		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCompra );
 
@@ -857,10 +863,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lbStatus.setText( "NÃO SALVO" );
 
 		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 150, 30 ) );
-		navEast.adic( lbStatus, 26, 3, 110, 20 );
+		navEast.setPreferredSize( new Dimension( 118, 30 ) );
+		navEast.adic( lbStatus, 3, 3, 116, 20 );
 		navEast.tiraBorda();
 		pnAdicionalCab.add( navEast );
+//		pnAdicionalCab.add( lbStatus );
 
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
@@ -931,7 +938,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btObs.addActionListener( this );
-		btBuscarRemessa.addActionListener( this );
+		btBuscaRemessa.addActionListener( this );
 		btBuscaCompra.addActionListener( this );
 		btBuscaImportacao.addActionListener( this );
 
@@ -2036,7 +2043,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "CPCOMPRA", txtCodCompra.getVlrInteger().intValue() );
 		}
-		else if ( evt.getSource() == btBuscarRemessa ) {
+		else if ( evt.getSource() == btBuscaRemessa ) {
 			buscaRetornoRemessa();
 		}
 		else if ( evt.getSource() == btBuscaCompra ) {
@@ -2400,7 +2407,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				txtDocCompra.setAtivo( true );
 			}
 
-			btBuscarRemessa.setVisible( "DR".equals( txtTipoMov.getVlrString() ) );
+			btBuscaRemessa.setVisible( "DR".equals( txtTipoMov.getVlrString() ) );
 
 			if ( TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() ) ) {
 
