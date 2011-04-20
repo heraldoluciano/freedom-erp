@@ -46,6 +46,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 
 public class FRContaEstoque extends FRelatorio {
 
@@ -97,11 +98,18 @@ public class FRContaEstoque extends FRelatorio {
 
 	private HashMap<String, Object> prefere = null;
 	
+	private ListaCampos lcClas = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodClas = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescClas = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	
 	public FRContaEstoque() {
 
 		setTitulo( "Relatório de Giro de estoque" );
 
-		setAtribos( 140, 40, 350, 390 );
+		setAtribos( 140, 40, 350, 430 );
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 
@@ -142,6 +150,14 @@ public class FRContaEstoque extends FRelatorio {
 		txtCodPlanoPag1.setTabelaExterna( lcPlanoPag1, null );
 		txtCodPlanoPag1.setFK( true );
 		txtCodPlanoPag1.setNomeCampo( "CodPlanoPag" );
+		
+		lcClas.add( new GuardaCampo( txtCodClas, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false ) );
+		lcClas.add( new GuardaCampo( txtDescClas, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
+		lcClas.montaSql( false, "CLASCLI", "VD" );
+		lcClas.setReadOnly( true );
+		txtCodClas.setTabelaExterna( lcClas, FClasCli.class.getCanonicalName() );
+		txtCodClas.setFK( true );
+		txtCodClas.setNomeCampo( "CodClasCli" );
 
 		adic( lbCodGrup, 7, 70, 250, 20 );
 		adic( txtCodGrup, 7, 90, 80, 20 );
@@ -160,19 +176,23 @@ public class FRContaEstoque extends FRelatorio {
 
 		adic( lbDescPlanoPag1, 90, 150, 250, 20 );
 		adic( txtDescPlanoPag1, 90, 170, 216, 20 );
+		
+		adic( txtCodClas, 7, 210, 80, 20, "Cod.Cl." );
+		adic( txtDescClas, 90, 210, 216, 20, "Descrição da class. do cliente" );
 
-		adic( rgOrdem, 7, 210, 300, 30 );
+		adic( rgOrdem, 7, 250, 300, 30 );
 
-		adic( cbSemEstoq, 7, 250, 250, 20 );
-		adic( cbComSaldo, 7, 270, 250, 20 );
-		adic( cbPrecoFracionado, 7, 290, 250, 20 );
+		adic( cbSemEstoq, 7, 290, 250, 20 );
+		adic( cbComSaldo, 7, 310, 250, 20 );
+		adic( cbPrecoFracionado, 7, 330, 250, 20 );
 
 		cbSemEstoq.setVlrString( "N" );
 		cbComSaldo.setVlrString( "S" );
 		cbPrecoFracionado.setVlrString( "S" );
 
-		txtCodTabPreco.setVlrInteger( 1 );
+		txtCodTabPreco.setVlrInteger( 1 ); 
 		txtCodPlanoPag1.setVlrInteger( 1 );
+		txtCodClas.setVlrInteger( 1 );
 
 	}
 
@@ -204,6 +224,9 @@ public class FRContaEstoque extends FRelatorio {
 
 				if ( txtCodPlanoPag1.getVlrInteger() > 0 ) {
 					sql.append( "pp.codemppg=? and pp.codfilialpg=? and pp.codplanopag=? and " );
+				}
+				if ( txtCodClas.getVlrInteger() > 0 ) {
+					sql.append( "pp.codempcc=? and pp.codfilialcc=? and pp.codclascli=? and " );
 				}
 
 				sql.append( "p.codemp=pp.codemp and p.codfilial=pp.codfilial and p.codprod=pp.codprod " );
@@ -262,6 +285,13 @@ public class FRContaEstoque extends FRelatorio {
 					ps.setInt( iparam++, lcPlanoPag1.getCodFilial() );
 					ps.setInt( iparam++, txtCodPlanoPag1.getVlrInteger() );
 				}
+				
+				if ( txtCodClas.getVlrInteger() > 0 ) {
+					ps.setInt( iparam++, lcClas.getCodEmp() );
+					ps.setInt( iparam++, lcClas.getCodFilial() );
+					ps.setInt( iparam++, txtCodClas.getVlrInteger() );
+				}
+				
 			}
 
 			ResultSet rs = ps.executeQuery();
@@ -343,9 +373,11 @@ public class FRContaEstoque extends FRelatorio {
 		lcGrup.setConexao( cn );
 		lcTabPreco.setConexao( cn );
 		lcPlanoPag1.setConexao( cn );
-
+		lcClas.setConexao( cn );
+		
 		lcPlanoPag1.carregaDados();
 		lcTabPreco.carregaDados();
+		lcClas.carregaDados();
 		
 		getPreferencias();
 
