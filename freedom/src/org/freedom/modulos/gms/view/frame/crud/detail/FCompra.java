@@ -2541,8 +2541,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "select " );
 			
 			sql.append( "ii.coditimp, ii.codemppd, ii.codfilialpd, ii.codprod, ii.refprod, ii.qtd, pd.codalmox, " );
-			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi) vlrliqitcompra	, (ii.vlrad + ii.vlrii ) vlrproditcompra,   (ii.vlrad + ii.vlrii / qtd) precoitcompra, " );
-			sql.append( "ii.vlrbaseicms, ii.aliqicmsuf, ii.vlricms vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
+			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) vlrliqitcompra, (ii.vlrad + ii.vlrii ) vlrproditcompra,   (ii.vlrad + ii.vlrii / qtd) precoitcompra, " );
+			
+//			sql.append( "(ii.vlrad + ii.vlrii + ii.vlripi + ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex ) / ( 1.00 - (ii.aliqicmsuf/100.00) ) vlrbaseicms,");
+			
+			sql.append( "vlrbaseicms,");
+			
+			sql.append( "ii.aliqicmsuf, ii.vlricms vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
 			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, ii.codfisc, ii.coditfisc, " );
 			sql.append( "( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao, ii.seqadic, " );
 			sql.append( "(ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex) vlradicitcompra, " );
@@ -2551,8 +2556,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "ii.aliqcofins	, ii.vlrcofins/(ii.aliqcofins/100.00) vlrbasecofins	, ii.vlrcofins, " );
 			sql.append( "lf.codempsc	, lf.codfilialsc	, lf.codsittribcof	, lf.impsittribcof, " );
 			sql.append( "lf.modbcicms	, lf.redfisc		, lf.origfisc	, lf.codtrattrib, lf.codempsi, lf.codfilialsi, lf.codsittribipi, lf.impsittribipi, " );
-			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii " );
+			sql.append( "ii.vlrad vlrbaseii	, ii.aliqii		, ii.vlrii, " );
+			sql.append( "ii.vlricmsdiferido	, ii.vlricmsrecolhimento , ii.vlricmscredpresum " );
+			
 			sql.append( "from eqproduto pd, cpitimportacao ii " );
+			
 			sql.append( "left outer join lfitclfiscal lf on lf.codemp=ii.codempcf and lf.codfilial=ii.codfilialcf and lf.codfisc=ii.codfisc and lf.coditfisc=ii.coditfisc " );
 			sql.append( "where " );
 			sql.append( "pd.codemp=ii.codemppd and pd.codfilial=ii.codfilialpd and pd.codprod=ii.codprod and " );
@@ -2630,14 +2638,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			sql.append( "codempsp				, codfilialsp		, codsittribpis		, impsittribpis		, vlrbasepis	, aliqpis		, vlrpis	, " );
 			sql.append( "codempsc				, codfilialsc		, codsittribcof		, impsittribcof		, vlrbasecofins	, aliqcofins	, vlrcofins , " );
 			sql.append( "codempsi				, codfilialsi		, codsittribipi		, impsittribipi		, " );
-			sql.append( "modbcicms				, aliqredbcicms		, origfisc			, codtrattrib		, vlrbaseii		, aliqii		, vlrii		  " );			
+			sql.append( "modbcicms				, aliqredbcicms		, origfisc			, codtrattrib		, vlrbaseii		, aliqii		, vlrii,	  " );	
+			sql.append( "vlricmsdiferido		, vlricmsdevido		, vlricmscredpresum																	  " );
+			
 			sql.append( ")" );
 			sql.append( "values (" );
 			sql.append( " ?						, ?					, ?					, ?					, " );
 			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ? 		, " );
 			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?			, " );
 			sql.append( " ?						, ?					, ?					, ?					, " );
-			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?  " );
+			sql.append( " ?						, ?					, ?					, ?					, ?				, ?				, ?  		, " );
+			sql.append( " ?						, ?					, ?																					  " );
 			sql.append( ")" );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -2792,6 +2803,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrbaseii" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "aliqii" ) );
 				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlrii" ) );
+				
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsdiferido" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmsrecolhimento" ) );
+				ps_trib.setBigDecimal( iparam++, rs2.getBigDecimal( "vlricmscredpresum" ) ); 
 				
 				ps_trib.execute();
 			
