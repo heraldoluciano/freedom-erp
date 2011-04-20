@@ -48,6 +48,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FConfEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEmail;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FOrigContato;
+import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoCont;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoImp;
@@ -150,6 +151,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'A', 300100000, 1, true, FCRM.class );
 		addSeparador( 300000000 );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Qualificações", "Qualificações", 'Q', 300400000, 1, true, FQualificacao.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Chamados", "Chamados", 'A', 300200000, 1, true, FChamado.class );
 
 		addSeparador( 300000000 );
