@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Classe para filtros e carregamento de relatório de contagem de estoque.
+ *         Classe para filtros e carregamento de relatório de valores em estoque.
  * 
  */
 
