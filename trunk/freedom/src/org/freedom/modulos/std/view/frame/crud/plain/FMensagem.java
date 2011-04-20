@@ -28,13 +28,17 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.FDados;
@@ -49,20 +53,65 @@ public class FMensagem extends FDados implements ActionListener {
 	private JTextAreaPad txaMens = new JTextAreaPad( 10000 );
 
 	private JScrollPane spnMen = new JScrollPane( txaMens );
+	
+	private JComboBoxPad cbCamposEspec = null;
+	
+	private final JButtonPad btAdic = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
 	public FMensagem() {
 
 		super();
+		
 		setTitulo( "Cadastro de mensagens" );
-		setAtribos( 50, 50, 350, 225 );
+		setAtribos( 50, 50, 450, 300 );
+		
+		Vector<String> vLabs2 = new Vector<String>();
+
+		vLabs2.addElement( "<--Selecione-->" );
+		vLabs2.addElement( "Base do ICMS" );
+		
+		vLabs2.addElement( "Valor ICMS" );
+		vLabs2.addElement( "Valor ICMS Diferido" );
+		vLabs2.addElement( "Valor ICMS Devido" );
+		vLabs2.addElement( "Valor ICMS Créd. Presumido" );
+		
+		vLabs2.addElement( "Valor ICMS Simples" );
+		vLabs2.addElement( "Aliq. ICMS Simples" );
+		
+		Vector<String> vVals2 = new Vector<String>();
+		
+		vVals2.addElement( "" );
+		vVals2.addElement( "#BICMS#" );
+		
+		vVals2.addElement( "#VLRICMS#" );
+		vVals2.addElement( "#VLRICMSDIF#" );
+		vVals2.addElement( "#VLRICMSDEV#" );
+		vVals2.addElement( "#VLRICMSCPRES#" );
+		
+		vVals2.addElement( "#VLRICMSSIMPLES#" );
+		vVals2.addElement( "#ALIQICMSSIMPLES#" );
+
+		cbCamposEspec = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_STRING, 20, 0 );
+		
 		adicCampo( txtCod, 7, 20, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_PK, true );
+		
+		adic( cbCamposEspec, 90, 20, 305, 20, "Campos especiais" );
+		adic( btAdic, 398, 20, 22, 20 );
+		
+		
 		adicDBLiv( txaMens, "Mens", "Mensagem", true );
-		adic( spnMen, 7, 50, 315, 100 );
+		adic( spnMen, 7, 50, 414, 175 );
 		setListaCampos( true, "MENSAGEM", "LF" );
+		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btAdic.addActionListener( this );
 		lcCampos.setQueryInsert( false );
+		
+		nav.setNavigation( true );
+				
 		setImprimir( true );
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -70,8 +119,15 @@ public class FMensagem extends FDados implements ActionListener {
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
-		else if ( evt.getSource() == btImp )
+		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
+		}
+		else if ( evt.getSource() == btAdic ) {
+			
+			txaMens.insert( cbCamposEspec.getVlrString(), txaMens.getCaretPosition() );
+			
+		}
+			
 		super.actionPerformed( evt );
 	}
 
