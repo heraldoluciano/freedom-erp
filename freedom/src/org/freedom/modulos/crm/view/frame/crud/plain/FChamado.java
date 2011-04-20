@@ -106,6 +106,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldPad txtCodQualific = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldFK txtDescQualific = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -142,6 +146,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private JLabelPad lbBanner = new JLabelPad( Icone.novo( "bannerChamado.png" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
+	private ListaCampos lcQualificacao = new ListaCampos( this, "QL" );
 
 	private ListaCampos lcTipoChamado = new ListaCampos( this, "TC" );
 
@@ -201,9 +207,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicDB( cbStatus, 433, 100, 180, 20, "Status", "Status", false );
 
 		adicCampo( txtCodAtend, 7, 140, 80, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
-		adicDescFK( txtNomeAtend, 90, 140, 250, 20, "NomeAtend", "Nome do atendente designado" );
+		adicDescFK( txtNomeAtend, 90, 140, 256, 20, "NomeAtend", "Nome do atendente designado" );
 
-
+		adicCampo( txtCodQualific, 349, 140, 80, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
+		adicDescFK( txtDescQualific, 432, 140, 180, 20, "DescQualific", "Descrição da qualificação" );
+		
 		txtDtConclusao.setEditable( false );
 
 		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", false );
@@ -278,7 +286,15 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcItRecMercItOS.add( new GuardaCampo( txtCodItOS, "CodItOS", "Cod.it.OS", ListaCampos.DB_PK, false ) );
 		lcItRecMercItOS.montaSql( false, "ITRECMERCITOS", "EQ" );
 		lcItRecMercItOS.setReadOnly( true );
+		
+		// FK Qualificação
+		lcQualificacao.add( new GuardaCampo( txtCodQualific, "CodQualific", "Cód.Qualific.", ListaCampos.DB_PK, false ) );
+		lcQualificacao.add( new GuardaCampo( txtDescQualific, "DescQualific", "Descrição da qualificação", ListaCampos.DB_SI, false ) );
 
+		lcQualificacao.montaSql( false, "QUALIFICACAO", "CR" );
+		lcQualificacao.setQueryCommit( false );
+		lcQualificacao.setReadOnly( true );
+		txtCodQualific.setTabelaExterna( lcQualificacao, FQualificacao.class.getCanonicalName() );
 
 	}
 
@@ -312,6 +328,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcTipoChamado.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcItRecMercItOS.setConexao( cn );
+		lcQualificacao.setConexao( cn );
 
 	}
 
