@@ -31,7 +31,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -142,10 +141,10 @@ public class FKardex extends FRelatorio implements ActionListener {
 		cTela.add( pnCli, BorderLayout.CENTER );
 		pnCli.add( pinCab, BorderLayout.NORTH );
 		pnCli.add( spnTab, BorderLayout.CENTER );
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbLinha2 = new JLabelPad();
-		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
+//		JLabelPad lbLinha = new JLabelPad();
+//		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+//		JLabelPad lbLinha2 = new JLabelPad();
+//		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
 
 		setPainel( pinCab );
 		adic( new JLabelPad( "Período" ), 7, 5, 100, 20 );
