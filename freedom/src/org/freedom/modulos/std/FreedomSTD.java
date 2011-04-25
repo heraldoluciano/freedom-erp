@@ -112,6 +112,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FModNota;
 import org.freedom.modulos.std.view.frame.crud.plain.FNatoPer;
 import org.freedom.modulos.std.view.frame.crud.plain.FPapel;
 import org.freedom.modulos.std.view.frame.crud.plain.FPrazoEnt;
+import org.freedom.modulos.std.view.frame.crud.plain.FRegraComissaoDesconto;
 import org.freedom.modulos.std.view.frame.crud.plain.FSerie;
 import org.freedom.modulos.std.view.frame.crud.plain.FSetor;
 import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
@@ -249,6 +250,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Funções", "Funções", 'F', 100102040, 3, true, FFuncao.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Tipo de Comissionado", "Tipo de Comissionado", 'F', 100102050, 3, true, FTipoVend.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Regras de Comissionamento", "Regras de Comissionamento", 'R', 100102060, 3, true, FRegraComiss.class );
+		addOpcao( 100102000, TP_OPCAO_ITEM, "Regras de Desconto/Comissão", "Regras de Desconto/Comissão", 'R', 100102070, 3, true, FRegraComissaoDesconto.class );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Atendente", "", 'A', 100103000, 2, false, null );
 		addOpcao( 100103000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'e', 100103010, 3, true, FAtendente.class );
 		addOpcao( 100103000, TP_OPCAO_ITEM, "Tipo de Atendente", "Tipo de Atendente", 'i', 100103020, 4, true, FTipoAtend.class );
