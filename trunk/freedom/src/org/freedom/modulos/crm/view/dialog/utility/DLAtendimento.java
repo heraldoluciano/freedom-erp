@@ -669,10 +669,14 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
 			ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
 		}
-		else {
+		else if (financeiro){
 			ps.setNull( 26, Types.INTEGER );
 			ps.setNull( 27, Types.INTEGER );
 			ps.setNull( 28, Types.INTEGER );
+		}
+		else {
+			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+			txtCodEspec.requestFocus();
 		}
 		
 		
@@ -763,6 +767,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			ps.setNull( 24, Types.INTEGER );
 			ps.setNull( 25, Types.INTEGER );
 		}
+	
 		
 		ps.setInt( 26, Aplicativo.iCodEmp );
 		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
@@ -874,6 +879,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			else if ( txtCodAtend.getVlrInteger() <= 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione o atendente!" );
 				txtCodAtend.requestFocus();
+				return;
+			}
+			else if(txtCodEspec.getVlrInteger()<=0 && !financeiro) {
+				Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
+				txtCodEspec.requestFocus();
 				return;
 			}
 
