@@ -664,10 +664,20 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		ps.setString( 25, cbConcluiChamado.getVlrString() );
 		
-		ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
-		ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
-		ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
-
+		if ( txtCodEspec.getVlrInteger() > 0 ) {
+			ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
+			ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
+			ps.setInt( 28, txtCodEspec.getVlrInteger() ); // Código da especificação
+		}
+		else {
+			ps.setNull( 26, Types.INTEGER );
+			ps.setNull( 27, Types.INTEGER );
+			ps.setNull( 28, Types.INTEGER );
+		}
+		
+		
+		
+		
 		ps.execute();
 		ps.close();
 
@@ -743,10 +753,17 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		ps.setString( 22, cbConcluiChamado.getVlrString() );
 		
-		ps.setInt( 23, Aplicativo.iCodEmp );
-		ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
-		ps.setInt( 25, txtCodEspec.getVlrInteger() );
-
+		if ( txtCodChamado.getVlrInteger() > 0 ) {
+			ps.setInt( 23, Aplicativo.iCodEmp );
+			ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
+			ps.setInt( 25, txtCodEspec.getVlrInteger() );
+			}
+		else {
+			ps.setNull( 23, Types.INTEGER );
+			ps.setNull( 24, Types.INTEGER );
+			ps.setNull( 25, Types.INTEGER );
+		}
+		
 		ps.setInt( 26, Aplicativo.iCodEmp );
 		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		ps.setInt( 28, txtCodCli.getVlrInteger() );
