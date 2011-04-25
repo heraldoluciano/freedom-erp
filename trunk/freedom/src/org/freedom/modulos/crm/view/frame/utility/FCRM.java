@@ -963,7 +963,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		Integer codchamado = (Integer) tabatd.getValor( tabatd.getLinhaSel(), 10 );
 
 		try {
-			dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro );
 			dl.setVisible( true );
 			dl.dispose();
 
@@ -1393,7 +1393,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		DLAtendimento dl = null;
 
 		if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger() );
+			dl = new DLAtendimento( txtCodCli.getVlrInteger().intValue(), null, this, con, false, tipoatendo, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(), financeiro );
 		}
 		else {
 
@@ -1405,7 +1405,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				codcli = new Integer( 0 );
 			}
 
-			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, false, tipoatendo );
+			dl = new DLAtendimento( codcli.intValue(), codchamado, this, con, false, tipoatendo, financeiro );
 		}
 
 		dl.setVisible( true );

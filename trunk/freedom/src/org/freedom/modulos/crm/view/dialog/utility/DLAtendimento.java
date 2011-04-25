@@ -176,12 +176,14 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private Integer nparcitrec = null;
 
 	private Integer codchamado_ant = null;
+	
+	private boolean financeiro = false;
 
 	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad( "Conclui chamado?", "S", "N" );
 
-	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
+	public DLAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop ) {
 
-		this( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo );
+		this( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
 		update = isUpdate;
 
@@ -207,19 +209,21 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		}
 	}
 
-	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
-
-		this( codcli, codchamado, cOrig, conn, isUpdate, tipoatendo );
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec, boolean financeirop ) {
+		
+		this( codcli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
 		this.codrec = codrec;
 		this.nparcitrec = nparcitrec;
 
 	}
 
-	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
+	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, boolean financeirop ) {
 
 		super( cOrig );
 
+		this.financeiro = financeirop;
+		
 		update = isUpdate;
 		this.tipoatendo = tipoatendo;
 
@@ -380,7 +384,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcAtendimento.add( new GuardaCampo( txtitContr, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
-		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, true ) );
+		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, !financeiro ) );
 		
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
@@ -399,7 +403,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		txtCodEspec.setTabelaExterna( lcEspec, null );
 		txtCodEspec.setFK( true );
 		txtCodEspec.setNomeCampo( "CodEspec" );
-		lcEspec.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, true ) );
+		lcEspec.add( new GuardaCampo( txtCodEspec, "CodEspec", "Cód.Espec.", ListaCampos.DB_PK, !financeiro ) );
 		lcEspec.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
 		lcEspec.montaSql( false, "ESPECATEND", "AT" );
 		lcEspec.setReadOnly( true );
