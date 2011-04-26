@@ -129,12 +129,13 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 200900400, 1, true, FRProducao.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'z', 200900500, 1, true, FREstruturaItem.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'C', 200900600, 1, true, FRComisProd.class );
-		addSeparador( 200900000 );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Consumo de matéria prima (FSC)", "Consumo de matéria prima (FSC)", 'C', 200900700, 1, true, FRConsumoMatFSC.class );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção por grupo (FSC)", "Produção por grupo (FSC)", 'g', 200900800, 1, true, FRProducaoGrupoFSC.class );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Balanço de produção (FSC)", "Balanço de produção (FSC)", 'g', 200900900, 1, true, FRBalancoProdFSC.class );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Balanço de produção por grupo (FSC)", "Balanço de produção por grupo (FSC)", 'p', 200901000, 1, true, FRBalancoProdGrupoFSC.class );
-		addOpcao( 200900000, TP_OPCAO_ITEM, "Ordens de produção (FSC)", "Ordens de produção (FSC)", 's', 200901100, 1, true, FREncomendasProducaoFSC.class );
+		
+		addOpcao( 200900000, TP_OPCAO_MENU, "Listagens FSC", "", 'F', 201000000, 1, false, null );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Consumo de matéria prima", "Consumo de matéria prima", 'C', 201000100, 1, true, FRConsumoMatFSC.class );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'g', 201000200, 1, true, FRProducaoGrupoFSC.class );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção", "Balanço de produção", 'g', 201000300, 1, true, FRBalancoProdFSC.class );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção por grupo", "Balanço de produção por grupo", 'p', 201000400, 1, true, FRBalancoProdGrupoFSC.class );
+		addOpcao( 201000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 's', 201000500, 1, true, FREncomendasProducaoFSC.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000, 1, true, FKardex.class );
