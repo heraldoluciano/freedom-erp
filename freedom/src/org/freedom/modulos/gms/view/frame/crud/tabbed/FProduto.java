@@ -122,6 +122,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pnOutros = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
+	private JPanelPad pnFSC = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
 	private JPanelPad pnServico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnLote = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -446,6 +448,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JPanelPad pinOutros = new JPanelPad( 650, 120 );
 	
+	private JPanelPad pinFSC = new JPanelPad( 650, 120 );
+	
 	private JPanelPad pinServico = new JPanelPad( 650, 120 );
 
 	private JPanelPad pinRodLote = new JPanelPad( 650, 120 );
@@ -547,6 +551,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private String[] sPrefs = null;
 
 	private JCheckBoxPad cbCpFatConv = new JCheckBoxPad( "", "S", "N" );
+	
+	private JCheckBoxPad cbCertFSC = new JCheckBoxPad( "Certificado FSC", "S", "N" );
 
 	private enum eprefs {
 		CODMOEDA, PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP, TAMDESCPROD
@@ -1055,9 +1061,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtQtdEmbalagem, 	7, 		100, 	110, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );
 		adicCampo( txtCubagem, 			120, 	100, 	110, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );		
-		adicCampo( txtNroPlanos, 		233, 	100, 	110, 20, "NroPlanos", "Nro. Planos", ListaCampos.DB_SI, false );
-		adicCampo( txtQtdPorPlano, 		346, 	100, 	110, 20, "QtdPorPlano", "Qtd.por plano", ListaCampos.DB_SI, false );
-		adicCampo( txtFatorFSC, 		459, 	100, 	150, 20, "FatorFSC", "Fator conv. folhas(FSC)", ListaCampos.DB_SI, false );
 
 		
 		JPanelPad pnOutros = new JPanelPad();
@@ -1077,6 +1080,20 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtLocalProd, 5, 100, 165, 20, "LocalProd", "Local de armazenamento", ListaCampos.DB_SI, false );
 		adicDB( cbDescCli, 5, 140, 200, 20, "desccli", "", false );
 		
+		// Certificação FSC
+		
+		
+		JPanelPad pnFSC = new JPanelPad();
+		pnFSC.setBorder( SwingParams.getPanelLabel( "Certificação FSC (Forest Stewardship Council)", Color.BLUE ) );
+
+		pinOutros.adic( pnFSC, 5, 390, 650, 150 );
+		setPainel( pnFSC );
+
+		adicDB( 	cbCertFSC		, 5		, 20	, 150	, 20	, "certfsc"		, ""						, false );
+		adicCampo( 	txtNroPlanos	, 158	, 20	, 110	, 20	, "NroPlanos"	, "Nro. Planos"				, ListaCampos.DB_SI, false );
+		adicCampo( 	txtQtdPorPlano	, 271	, 20	, 110	, 20	, "QtdPorPlano"	, "Qtd.por plano"			, ListaCampos.DB_SI, false );
+		adicCampo( 	txtFatorFSC		, 384	, 20	, 150	, 20	, "FatorFSC"	, "Fator conv. folhas(FSC)"	, ListaCampos.DB_SI, false );
+
 		setListaCampos( true, "PRODUTO", "EQ" );
 
 		// Serviçox
