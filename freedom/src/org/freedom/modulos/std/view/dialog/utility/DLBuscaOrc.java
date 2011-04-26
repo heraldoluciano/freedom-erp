@@ -334,6 +334,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Orc." );
 		tabitorc.adicColuna( "Usa Lote" );
 		tabitorc.adicColuna( "Lote" );
+		tabitorc.adicColuna( "Cod.Almx." );
+		tabitorc.adicColuna( "Cod.OP." );
+		
+		
 
 		tabitorc.setTamColuna( 20, 0 );
 		tabitorc.setTamColuna( 25, 1 );
@@ -434,7 +438,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
 					sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc ");
+					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
 
 					sql.append( "FROM EQPRODUTO P, VDITORCAMENTO IT  " );
 					sql.append( "LEFT OUTER JOIN PPOPITORC IP ON IP.CODEMPOC=IT.CODEMP AND IP.CODFILIALOC=IT.CODFILIAL AND IP.TIPOORC=IT.TIPOORC AND IP.CODORC=IT.CODORC AND IP.CODITORC=IT.CODITORC ");
@@ -473,10 +477,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						tabitorc.setValor( "", irow, icol++ );
 						tabitorc.setValor( "0,00", irow, icol++ );
 						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, icol++ );
-
+						
+						
 						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, icol++ );
 						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, icol++ );
+						tabitorc.setValor( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ) , irow, icol++ );
 
+						
+						
+						
 						fValProd += rs.getFloat( "VlrProdItOrc" );
 						fValDesc += rs.getFloat( "VlrDescItOrc" );
 						fValLiq += rs.getFloat( "VlrLiqItOrc" );
@@ -489,6 +498,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 						}
 
 						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
+						
+						
 
 						// tab.adicLinha( vVals );
 						irow++;
