@@ -52,7 +52,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
 
 
-public class FRBalancoProdGrupo extends FRelatorio {
+public class FRBalancoProdGrupoFSC extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public class FRBalancoProdGrupo extends FRelatorio {
 	
 	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por folhas (FSC)", "S", "N" );
 
-	public FRBalancoProdGrupo() {
+	public FRBalancoProdGrupoFSC() {
 
 	setTitulo( "Relatório de Balanço de produção por Grupo FSC" );
 		

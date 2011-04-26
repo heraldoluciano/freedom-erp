@@ -32,11 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-
 import javax.swing.border.TitledBorder;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -52,7 +49,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.swing.util.SwingParams;
 
 
-public class FREncomendasProducao extends FRelatorio {
+public class FRProducaoGrupoFSC extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
@@ -66,27 +63,27 @@ public class FREncomendasProducao extends FRelatorio {
 
 	boolean diario = false;
 	
-	private ListaCampos lcSecao = new ListaCampos( this );
+	private ListaCampos lcGrup = new ListaCampos( this );
 	
-	private JTextFieldPad txtCodSecao = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtDescSecao = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JCheckBoxPad cbPorFolha = new JCheckBoxPad( "Por Folhas (FSC)", "S", "N" );
 
-	public FREncomendasProducao() {
+	public FRProducaoGrupoFSC() {
 
-	setTitulo( "Relatório de encomendas de produção FSC" );
+	setTitulo( "Produção por grupo (FSC)" );
 		
 		setAtribos( 80, 80, 370, 250 );
 
-		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
-		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
-		lcSecao.montaSql( false, "SECAO", "EQ" );
-		lcSecao.setReadOnly( true );
-		txtCodSecao.setTabelaExterna( lcSecao, null );
-		txtCodSecao.setFK( true );
-		txtCodSecao.setNomeCampo( "CodSecao" );
+		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
+		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		lcGrup.montaSql( false, "GRUPO", "EQ" );
+		lcGrup.setReadOnly( true );
+		txtCodGrup.setTabelaExterna( lcGrup, null );
+		txtCodGrup.setFK( true );
+		txtCodGrup.setNomeCampo( "CodGrup" );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -108,8 +105,8 @@ public class FREncomendasProducao extends FRelatorio {
 
 		adic( pnFiltros, 4, 70, 335, 85 );
 
-		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Seção" );
-		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
+		pnFiltros.adic( txtCodGrup, 4, 25, 120, 20, "Cód.Grupo" );
+		pnFiltros.adic( txtDescGrup, 127, 25, 185, 20, "Descrição do grupo" );
 
 		adic(cbPorFolha, 7, 165, 200, 20);
 		
@@ -128,50 +125,66 @@ public class FREncomendasProducao extends FRelatorio {
 
 		try {
 
-
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
 			}
 			
 			sql.append( "select ");
-			sql.append( "op.codop, op.refprod, pd.descprod, pd.codgrup, " );
-			
-			sql.append( "sum(( ");
-			sql.append( "select sum(ir.qtdexpitrma) from eqrma rm, eqitrma ir, eqproduto pe ");
-			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop ");
-			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
-			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
-			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
-			sql.append( ")) consumidas, ");
-			 
+			sql.append( "gp.codgrup, gp.descgrup, ");
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00) ) produzidas ");
+				
+				sql.append( "coalesce(sum( ( ");
+				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
+				sql.append( "op.dtfabrop between ? and ? ");
+				sql.append( ")),0)  / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) produzidas, "); 
+//				sql.append( ")),0)  produzidas, ");
+								
+				sql.append( "coalesce(sum ( ( ");
+				sql.append( "select sum(iv.qtditvenda) from vdvenda vd, vditvenda iv where ");
+				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
+				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
+				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
+				sql.append( ")),0) / (pd.nroplanos*pd.qtdporplano)  * coalesce(pd.fatorfsc,1.00) vendidas,"); 
+				
+				sql.append( "sum( ( select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S') )  / (pd.nroplanos*pd.qtdporplano) ) saldoanterior ");
+			
 			}
 			else {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) ) produzidas ");
-			}
-			
-			sql.append( "from ");
-			sql.append( "ppop op ");
-			sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop and ope.seqop=op.seqop ");
-			sql.append( "left outer join eqproduto pd on pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod ");
-			sql.append( "left outer join eqsecao sc on sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao ");
 
-			sql.append( "where ");
-			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' ");
-			
-			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? and pd.tipoprod='F'" );
+				sql.append( "coalesce(sum( ( ");
+				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
+				sql.append( "op.dtfabrop between ? and ? ");
+				sql.append( ")),0) produzidas, ");
+	
+				sql.append( "coalesce(sum ( ( ");
+				sql.append( "select sum(iv.qtditvenda) from vdvenda vd, vditvenda iv where ");
+				sql.append( "vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.codvenda=iv.codvenda and vd.tipovenda=iv.tipovenda ");
+				sql.append( "and vd.statusvenda in ('P3', 'V2', 'V3') and vd.dtsaidavenda between ? and ? ");
+				sql.append( "and iv.codemppd=pd.codemp and iv.codfilialpd=pd.codfilial and iv.codprod=pd.codprod ");
+				sql.append( ")),0) vendidas,");
+	
+				sql.append( "sum((select sldprod from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod, ?, 'P', null, null, null, 'S')) ) saldoanterior ");
+
 			}
 			
-			sql.append( "group by 1,2,3,4 ");
+			sql.append( "from eqproduto pd, eqgrupo gp ");
 			
+			sql.append( "where pd.codempgp=gp.codemp and pd.codfilialgp=gp.codfilial and pd.codgrup=gp.codgrup and pd.tipoprod='F' ");
+			sql.append( "and pd.codemp=? and pd.codfilial=? ");
+			
+			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
+				sql.append( "and pd.codempgp=? and pd.codfilialgp=? and pd.codgrup=? and pd.tipoprod='F'" );
+			}
+			
+			sql.append( "group by 1,2" ); 
+
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append(",pd.nroplanos, pd.qtdporplano, pd.fatorfsc ");
+				sql.append( ",pd.nroplanos, pd.qtdporplano,pd.fatorfsc" );
 			}
+			
+			
 			
 			System.out.println("SQL:" + sql.toString());
 
@@ -181,30 +194,33 @@ public class FREncomendasProducao extends FRelatorio {
 			Calendar cant = new GregorianCalendar();
 			cant.setTime( dtant );
 			cant.add( Calendar.DAY_OF_YEAR, -1 ); 
-				
+			
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			
-
-
+			ps.setDate( param++, Funcoes.dateToSQLDate( cant.getTime()) );
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, Aplicativo.iCodFilial );
+			
 			sCab.append( "Período de " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
-			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				ps.setInt( param++, lcSecao.getCodEmp() );
-				ps.setInt( param++, lcSecao.getCodFilial() );
-				ps.setString( param++, txtCodSecao.getVlrString() );
+			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
+				ps.setInt( param++, lcGrup.getCodEmp() );
+				ps.setInt( param++, lcGrup.getCodFilial() );
+				ps.setString( param++, txtCodGrup.getVlrString() );
 
-				sCab2.append( "Grupo: " + txtDescSecao.getVlrString() );
+				sCab2.append( "Grupo: " + txtDescGrup.getVlrString() );
 			}
 			
 			
 
 			rs = ps.executeQuery();
 
-			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_ENCOMENDAS_PRODUCAO_01.jasper" );
+			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_PRODUCAO_GRUPO_01.jasper" );
 
 			rs.close();
 			ps.close();
@@ -227,7 +243,7 @@ public class FREncomendasProducao extends FRelatorio {
 		FPrinterJob dlGr = null;
 
 	
-		dlGr = new FPrinterJob( rel, "Relatório de Ordens de Produção ", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( rel, "Relatório de produção por grupo ", sCab, rs, hParam, this );
 		
 
 		if ( bVisualizar ) {
@@ -237,7 +253,7 @@ public class FREncomendasProducao extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de ordens de produção!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de produção por grupo!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
@@ -273,7 +289,7 @@ public class FREncomendasProducao extends FRelatorio {
 
 		super.setConexao( cn );
 
-		lcSecao.setConexao( cn );
+		lcGrup.setConexao( cn );
 
 		comref = comRef();
 	}
