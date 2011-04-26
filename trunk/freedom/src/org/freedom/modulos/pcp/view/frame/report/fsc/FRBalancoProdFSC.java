@@ -133,28 +133,13 @@ public class FRBalancoProdFSC extends FRelatorio {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
 			}
-
 			
 			sql.append( "select ");
 			sql.append( "pe.codsecao, sc.descsecao, ");
 			
-			/*
-			sql.append( "sum(( ");
-			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
-			
-			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
-			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
-			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
-			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and ");
-			sql.append( "pe.codprod=ir.codprod ");
-			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
-			sql.append( "and op.dtfabrop between ? and ? ");
-			sql.append( ")) consumidas, ");
-			*/
-			 
-			 
 			sql.append( " sum(( select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir, eqproduto pd ");
 			sql.append( "where ");
+			
 			sql.append( "rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop and ");
 			sql.append( "ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma and ");
 			sql.append( "pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and ");
@@ -168,8 +153,10 @@ public class FRBalancoProdFSC extends FRelatorio {
 
 				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00)  ) ");
 				sql.append( "from ppop op ");
+				
 				sql.append( "left outer join ppopentrada ope on ope.codemp=op.codemp and ope.codfilial=op.codfilial and ope.codop=op.codop ");
 				sql.append( "and ope.seqop=op.seqop ");
+				
 				sql.append( "left outer join eqproduto pd on pd.codprod=pe.codprod and pd.codfilial=pe.codfilial and pd.codprod=pe.codprod ");
 				sql.append( "where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and op.dtfabrop between ? and ? ) ) produzidas,"); 
 
@@ -189,7 +176,9 @@ public class FRBalancoProdFSC extends FRelatorio {
 			
 			sql.append( "coalesce(sum( ");
 			sql.append( "(select first 1 m.sldmovprod ");
+			
 			sql.append( "from eqmovprod m, eqproduto ps ");
+			
 			sql.append( "where m.codemppd=ps.codemp and ");
 			sql.append( "m.codfilial=ps.codfilial and ");
 			sql.append( "m.codprod=ps.codprod and ");
@@ -219,9 +208,9 @@ public class FRBalancoProdFSC extends FRelatorio {
 			sql.append( "iv.codprod=pe.codprod ");
 			sql.append( ")) vendidas ");
 			
-			
 			sql.append( "from eqsecao sc, eqproduto pe ");
-			sql.append( "where pe.codsecao is not null and ");
+			
+			sql.append( "where pe.codsecao is not null and pe.certfsc='S' and ");
 			sql.append( "sc.codemp=pe.codempsc and sc.codfilial=pe.codfilialsc and ");
 			sql.append( "sc.codsecao=pe.codsecao and pe.tipoprod='F' ");
 			

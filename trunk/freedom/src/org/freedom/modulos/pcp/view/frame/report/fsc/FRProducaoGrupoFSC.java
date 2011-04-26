@@ -139,7 +139,6 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 				sql.append( "select sum(op.qtdfinalprodop ) from ppop op where op.codemppd=pd.codemp and op.codfilialpd=pd.codfilial and op.codprod=pd.codprod and ");
 				sql.append( "op.dtfabrop between ? and ? ");
 				sql.append( ")),0)  / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) produzidas, "); 
-//				sql.append( ")),0)  produzidas, ");
 								
 				sql.append( "coalesce(sum ( ( ");
 				sql.append( "select sum(iv.qtditvenda) from vdvenda vd, vditvenda iv where ");
@@ -171,7 +170,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 			
 			sql.append( "from eqproduto pd, eqgrupo gp ");
 			
-			sql.append( "where pd.codempgp=gp.codemp and pd.codfilialgp=gp.codfilial and pd.codgrup=gp.codgrup and pd.tipoprod='F' ");
+			sql.append( "where pd.codempgp=gp.codemp and pd.codfilialgp=gp.codfilial and pd.codgrup=gp.codgrup and pd.tipoprod='F' and pd.certfsc='S' ");
 			sql.append( "and pd.codemp=? and pd.codfilial=? ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {

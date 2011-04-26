@@ -161,10 +161,10 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 			sql.append( "where ");
 			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' ");
+			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod='F' and pd.certfsc='S' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
-				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? and pd.tipoprod='F'" );
+				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
 			}
 			
 			sql.append( "group by 1,2,3,4 ");
