@@ -205,7 +205,7 @@ public class FImportacao extends FDetalhe implements ActionListener, ChangeListe
 	private JTextFieldFK 	txtCodNCMAdic 		= 	new JTextFieldFK( 	JTextFieldPad.TP_STRING		, 10	, 0 );
 	private JTextFieldPad 	txtVlrTXSisComexAdic= 	new JTextFieldPad( 	JTextFieldPad.TP_DECIMAL	, 15	, Aplicativo.casasDecFin );
 
-	private JButtonPad btRateioFrete = new JButtonPad( "Rateiro Frete/THC", Icone.novo( "btRateio.png" ));
+	private JButtonPad btRateioFrete = new JButtonPad( "Rateio Frete/THC", Icone.novo( "btRateio.png" ));
 	
 	private JButtonPad btGerarAdicoes = new JButtonPad( "Gerar adições", Icone.novo( "btGerar.gif" ) );
 	
