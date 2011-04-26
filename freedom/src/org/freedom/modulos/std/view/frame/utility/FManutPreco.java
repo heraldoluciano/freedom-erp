@@ -88,7 +88,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
 	private JTextFieldFK txtDescClasCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtMultiplic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 2 );
+	private JTextFieldPad txtMultiplic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 3 );
 
 	private JRadioGroup<?, ?> rgTipoOper = null;
 
