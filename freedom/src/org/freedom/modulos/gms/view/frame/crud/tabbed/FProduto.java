@@ -1114,6 +1114,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicTab( "Preços", pnPreco );
 		setListaCampos( lcPreco );
 		setNavegador( navPreco );
+		
 		pnPreco.add( pinRodPreco, BorderLayout.SOUTH );
 		pnPreco.add( spnPreco, BorderLayout.CENTER );
 
