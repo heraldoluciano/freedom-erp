@@ -128,30 +128,17 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 
 		try {
 
-
 			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 				return;
 			}
-
-			
+		
 			sql.append( "select ");
 			sql.append( "sc.codgrup, sc.descgrup, ");
-			/*
-			sql.append( "sum(( ");
-			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
-			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
-			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
-			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
-			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and ");
-			sql.append( "pe.codprod=ir.codprod ");
-			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
-			sql.append( "and op.dtfabrop between ? and ? ");
-			sql.append( ")) consumidas, ");
-			*/
-			
+						
 			sql.append( " sum(( select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir, eqproduto pd ");
 			sql.append( "where ");
+		
 			sql.append( "rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop and ");
 			sql.append( "ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma and ");
 			sql.append( "pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and ");
@@ -159,8 +146,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			sql.append( "pd.nroplanos is not null and pd.qtdporplano is not null and ");
 			sql.append( "op.codemppd=pe.codemp and op.codfilialpd=pe.codfilial and op.codprod=pe.codprod and ");
 			sql.append( "op.dtfabrop between ? and ? )) consumidas, ");
-			
-			
+						
 			if("S".equals( cbPorFolha.getVlrString())) {
 
 				sql.append( "sum(( select sum( coalesce(ope.qtdent, op.qtdfinalprodop) / (pd.nroplanos*pd.qtdporplano) * coalesce(pd.fatorfsc,1.00) ) ");
@@ -218,7 +204,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 			
 			
 			sql.append( "from eqgrupo sc, eqproduto pe ");
-			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup and pe.tipoprod='F' ");
+			sql.append( "where sc.codemp=pe.codempgp and sc.codfilial=pe.codfilialgp and sc.codgrup=pe.codgrup and pe.tipoprod='F' and pe.certfsc='S' ");
 			
 			if ( !"".equals( txtCodGrup.getVlrString() ) ) {
 				sql.append( "and pe.codempgp=? and pe.codfilialgp=? and pe.codgrup=? " );

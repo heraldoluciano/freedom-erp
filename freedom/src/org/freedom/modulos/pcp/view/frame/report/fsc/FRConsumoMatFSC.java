@@ -139,14 +139,11 @@ public class FRConsumoMatFSC extends FRelatorio {
 			sql.append( "select ");
 			sql.append( "sum(ic.qtditcompra) from cpitcompra ic, cpcompra cp, eqtipomov tm ");
 			sql.append( "where ");
+			
 			sql.append( "cp.codemp=ic.codemp and cp.codfilial=ic.codfilial and cp.codcompra=ic.codcompra and cp.dtentcompra between ? and ? ");
 			sql.append( "and ic.codemppd=pd.codemp and ic.codfilialpd=pd.codfilial and ic.codprod=pd.codprod ");
 			sql.append( "and cp.codemptm=tm.codemp and cp.codfilialtm=tm.codfilial and cp.codtipomov=tm.codtipomov and tm.estoqtipomov='S' ");
 			sql.append( "and cp.codemp=? and cp.codfilial=? and cp.statuscompra in ('P2','P3','C2','C3','EP','ET') ");
-			
-			if( ! "".equals( txtCodSecao.getVlrString()) ) {
-			//	sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
-			}
 			
 			sql.append( ")),0) recepcionadas ");
 			// FIM DAS COMPRAS
@@ -165,26 +162,6 @@ public class FRConsumoMatFSC extends FRelatorio {
 			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
 			sql.append( "and pe.codemp=pd.codemp and pe.codfilial=pd.codfilial and pe.codprod=pd.codprod ");
 			
-			/*
-			
-			sql.append( "sum(( ");
-			sql.append( "select sum(ir.qtdexpitrma) from ppop op, eqrma rm, eqitrma ir ");
-			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and ");
-			sql.append( "rm.codop=op.codop and rm.seqop=op.seqop ");
-			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
-			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and ");
-			sql.append( "pe.codprod=ir.codprod ");
-			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
-			sql.append( "and op.dtfabrop between ? and ? ");
-			sql.append( ")) consumidas, ");
-			
-			*/
-			
-			
-			if( ! "".equals( txtCodSecao.getVlrString()) ) {
-			//	sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
-			}
-			
 			sql.append( ")),0) consumidas ");
 
 			// FIM DO CONSUMO
@@ -201,7 +178,7 @@ public class FRConsumoMatFSC extends FRelatorio {
 			
 			sql.append( "from eqproduto pd ");
 			sql.append( "inner join eqsecao sc on sc.codemp=pd.codempsc and sc.codfilial=pd.codfilialsc and sc.codsecao=pd.codsecao ");
-			sql.append( "and pd.tipoprod='M' ");
+			sql.append( "and pd.tipoprod='M' and pd.certfsc='S' ");
 
 			if( ! "".equals( txtCodSecao.getVlrString()) ) {
 				sql.append( "and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
@@ -241,8 +218,6 @@ public class FRConsumoMatFSC extends FRelatorio {
 				sCab2.append( "Seção: " + txtDescSecao.getVlrString() );
 			}
 			
-			
-
 			rs = ps.executeQuery();
 
 			imprimirGrafico( visualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref, "layout/rel/REL_FSC_CONSUMO_MATERIAL_01.jasper" );
@@ -252,10 +227,12 @@ public class FRConsumoMatFSC extends FRelatorio {
 
 			con.commit();
 
-		} catch ( Exception err ) {
+		} 
+		catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			System.gc();
 		}
 	}
