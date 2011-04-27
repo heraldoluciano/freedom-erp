@@ -125,6 +125,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FTipoRestr;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoVend;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
 import org.freedom.modulos.std.view.frame.crud.plain.FVariantes;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.frame.crud.special.FCentroCusto;
 import org.freedom.modulos.std.view.frame.crud.special.FGrade;
 import org.freedom.modulos.std.view.frame.crud.special.FLanca;
@@ -447,6 +448,9 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 601504000, 1, true, FCheque.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Consulta cheques", "Consulta cheques", 's', 601505000, 1, true, FConsultaCheque.class );
+		addSeparador( 600000000 );
+		addOpcao( 600000000, TP_OPCAO_ITEM, "Sinalizadores", "Sinalizadores", 'S', 601506000, 1, true, FSinalizadores.class );
+		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
