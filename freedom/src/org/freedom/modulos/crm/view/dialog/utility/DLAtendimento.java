@@ -757,11 +757,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		ps.setString( 22, cbConcluiChamado.getVlrString() );
 		
-		if ( txtCodChamado.getVlrInteger() > 0 ) {
+		if ( txtCodEspec.getVlrInteger() > 0 ) {
 			ps.setInt( 23, Aplicativo.iCodEmp );
 			ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
 			ps.setInt( 25, txtCodEspec.getVlrInteger() );
-			}
+		}
 		else {
 			ps.setNull( 23, Types.INTEGER );
 			ps.setNull( 24, Types.INTEGER );
