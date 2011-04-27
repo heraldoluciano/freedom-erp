@@ -484,6 +484,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbIcmsFrete = new JCheckBoxPad("Habilitar campos de ICMS para Frete.", "S", "N");
 
 	private final JCheckBoxPad cbComisPDupl = new JCheckBoxPad("Calcula comissão com base nas duplicatas.", "S", "N", true);
+	
+	private final JCheckBoxPad cbHabilitaLimiteDesconto = new JCheckBoxPad("Habilita Limite Desconto.", "S", "N", true);
 
 	private final JCheckBoxPad cbCustosSICMS = new JCheckBoxPad("Preço de custo sem ICMS.", "S", "N", true);
 
@@ -1500,8 +1502,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinComissionamento);
 		adicTab("Comissionamento", pinComissionamento);
 		
-		adic(pinOpcoesComissionamento, 7, 10, 430, 170);
-		adic(pinRegrasComissionamento, 440, 10, 430, 170);
+		adic(pinOpcoesComissionamento, 7, 10, 430, 195);
+		adic(pinRegrasComissionamento, 440, 10, 430, 195);
 		
 		pinOpcoesComissionamento.setBorder(SwingParams.getPanelLabel("Opções", Color.BLUE));
 		pinRegrasComissionamento.setBorder(SwingParams.getPanelLabel("Regras", Color.BLUE));
@@ -1515,6 +1517,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbComissManut, 5, 85, 350, 20, "VDManutComObrig", "", false);
 		adicDB(cbUsaPrecoComis, 5, 105, 410, 20, "UsaPrecoComis", "", false);
 		adicDB(cbEspecialComis, 5, 125, 410, 20, "EspecialComis", "", false);
+		adicDB(cbHabilitaLimiteDesconto, 5, 145, 410, 20, "ComissaoDesconto", "", true);
 		
 		setPainel(pinRegrasComissionamento);
 		

@@ -544,7 +544,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private boolean descontado = false;
 
 	private enum POS_PREFS {
-		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS
+		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
+		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
+		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
 	}
 
 	public FVenda() {
@@ -564,6 +566,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		if ( (Boolean) oPrefs[ POS_PREFS.MULTICOMIS.ordinal() ] ) {
 			numComissionados = getNumComissionados();
+		}
+		
+		if ( (Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal() ] ) {
+			txtVlrComisItVenda.setAtivo( false );
+			txtPercComItVenda.setAtivo( false );
 		}
 
 		txtTipoVenda.setVlrString( "V" );
@@ -2086,10 +2093,77 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void calcComisIt() {
-
+		
 		if ( txtPercComItVenda.floatValue() >= 0 ) {
-			txtVlrComisItVenda.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( ( txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue() ) * txtPercComItVenda.floatValue() / 100 * txtPercComisVenda.floatValue() / 100, casasDecFin ) ) );
+			if( !(Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal()] ){
+				txtVlrComisItVenda.setVlrBigDecimal( new BigDecimal( 
+						Funcoes.arredFloat( 
+								( txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue() ) * 
+								txtPercComItVenda.floatValue() / 100 * 
+								txtPercComisVenda.floatValue() / 100, 
+							casasDecFin ) ) );
+			}else{
+				txtVlrComisItVenda.setVlrBigDecimal( new BigDecimal( 
+						Funcoes.arredFloat( 
+								( txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue() ) * 
+								txtPercComItVenda.floatValue() / 100 , 
+							casasDecFin ) ) );
+			}
 		}
+	}
+	
+	private void carregaComisIt(){
+		if ( !(Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal() ] )
+			return;
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select first 1 desconto, comissao from vdregcomisdesc " );
+		sql.append( "where codemp = ? and codfilial = ? and desconto ");// = ? " );
+		
+		/**
+		 * A ideia inicial era um sql unico com union e unico resultado porém não consegui aplicar um order by
+		 * que trabalha-se da forma a qual seria necessária
+		 */
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Double vlrComissao = new Double(0);
+		
+		try {
+			
+			StringBuilder sqlExecute = new StringBuilder(sql.toString());
+			sqlExecute.append( " = ? " );
+			
+			ps = con.prepareStatement( sqlExecute.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setDouble( 3, txtPercDescItVenda.getVlrDouble() );
+			
+			rs = ps.executeQuery();
+			if( rs.next() ){
+				vlrComissao = rs.getDouble( "comissao" );
+			} else {
+				sqlExecute = new StringBuilder(sql.toString());
+				sqlExecute.append( " < ? " );
+				sqlExecute.append( "order by desconto desc " );
+				
+				ps = con.prepareStatement( sqlExecute.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setDouble( 3, txtPercDescItVenda.getVlrDouble() );
+				
+				rs = ps.executeQuery();
+				if(rs.next()){
+					vlrComissao =  rs.getDouble( "comissao" );
+				}
+			}
+				
+			txtPercComItVenda.setVlrDouble( vlrComissao );
+			calcComisIt();
+		} catch ( SQLException e ) {
+			
+		}
+			
 	}
 
 	private void calcVlrProd() {
@@ -3173,7 +3247,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED, " );
 			sSQL.append( "P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR, " );
 			sSQL.append( "P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV, " );
-			sSQL.append( "P8.CODTIPOMOVDS " );
+			sSQL.append( "P1.COMISSAODESCONTO, P8.CODTIPOMOVDS " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3225,6 +3299,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				retorno[ POS_PREFS.CODPLANOPAGSV.ordinal() ] = rs.getInt( "CODPLANOPAGSV" );
 				retorno[ POS_PREFS.CODTIPOMOVDS.ordinal() ] = rs.getInt( "CODTIPOMOVDS" );
+				retorno[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
 
 			}
 			rs.close();
@@ -3992,10 +4067,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void focusLost( FocusEvent fevt ) {
-
+		Boolean comissaoDesconto = (Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal() ];
 		if ( fevt.getSource() == txtPercDescItVenda || fevt.getSource() == txtVlrDescItVenda ) {
 
-			if ( txtPercDescItVenda.getText().trim().length() < 1 ) {
+			if ( txtPercDescItVenda.getText().trim().length() < 1 && !comissaoDesconto) {
 				txtVlrDescItVenda.setAtivo( true );
 			}
 			// impostos.setVlrdescit( txtVlrDescItVenda.getVlrBigDecimal() );
@@ -4007,32 +4082,39 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			calcImpostos( true );
 			getCalcImpostos();
 
+			carregaComisIt();
 			// txtVlrDescItVenda.setAtivo( false );
 
 		}
 		else if ( fevt.getSource() == txtPercComItVenda ) {
-			if ( txtPercComItVenda.getText().trim().length() < 1 ) {
-				txtVlrComisItVenda.setAtivo( true );
-			}
-			else {
-				calcComisIt();
-				calcVlrProd();
-				calcImpostos( true );
-				txtVlrComisItVenda.setAtivo( false );
+			if ( !comissaoDesconto ) {
+				if ( txtPercComItVenda.getText().trim().length() < 1 ) {
+					txtVlrComisItVenda.setAtivo( true );
+				}
+				else {
+					calcComisIt();
+					calcVlrProd();
+					calcImpostos( true );
+					txtVlrComisItVenda.setAtivo( false );
 
+				}
 			}
 		}
 		else if ( fevt.getSource() == txtVlrDescItVenda ) {
-			if ( txtVlrDescItVenda.getText().trim().length() < 1 ) {
-				txtPercDescItVenda.setAtivo( true );
+			if ( !comissaoDesconto ) {
+				if ( txtVlrDescItVenda.getText().trim().length() < 1 ) {
+					txtPercDescItVenda.setAtivo( true );
+				}
+				else if ( txtVlrDescItVenda.getAtivo() ) {
+					txtPercDescItVenda.setAtivo( false );
+				}
 			}
-			else if ( txtVlrDescItVenda.getAtivo() ) {
-				txtPercDescItVenda.setAtivo( false );
-			}
+			
 			calcDescIt();
 			calcVlrProd();
 			calcImpostos( true );
-
+			
+//			carregaComisIt();
 		}
 		else if ( fevt.getSource() == txtVlrComisItVenda ) {
 			if ( txtVlrComisItVenda.getText().trim().length() < 1 ) {
