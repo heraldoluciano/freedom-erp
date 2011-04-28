@@ -29,6 +29,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -38,10 +42,12 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 
 public class FRBalancete extends FRelatorio {
@@ -62,6 +68,12 @@ public class FRBalancete extends FRelatorio {
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private Vector<String> descOpcao = new Vector<String>();
+	
+	private Vector<String> valOpcao = new Vector<String>();
+	
+	private JRadioGroup<String, String> rgOpcao = null;
+	
 	private JCheckBoxPad cbDataCompetencia = new JCheckBoxPad( "Por data de competência", "S", "N" );
 
 	private ListaCampos lcCC = new ListaCampos( this );
@@ -71,8 +83,16 @@ public class FRBalancete extends FRelatorio {
 	public FRBalancete() {
 
 		setTitulo( "Balancete" );
-		setAtribos( 80, 80, 350, 240 );
+		setAtribos( 80, 80, 400, 360 );
 
+		descOpcao.addElement( "Gráfico" );
+		descOpcao.addElement( "Texto ");
+		
+		valOpcao.addElement( "G" );
+		valOpcao.addElement( "T" );
+		
+		rgOpcao = new JRadioGroup<String, String>( 1, 2, descOpcao, valOpcao );
+		
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
@@ -103,6 +123,8 @@ public class FRBalancete extends FRelatorio {
 		adic( txtDescCC, 90, 110, 200, 20, "Descrição do centro de custo" );
 
 		adic( cbDataCompetencia, 7, 140, 200, 20 );
+		
+		adic( rgOpcao, 7, 170, 200, 30 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -138,32 +160,19 @@ public class FRBalancete extends FRelatorio {
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+		String sCodConta = txtCodConta.getVlrString();
+		String sCodCC = txtCodCC.getVlrString().trim();
+		String sDataini = txtDataini.getVlrString();
+		String sDatafim = txtDatafim.getVlrString();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int iParam = 1;
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		String sCodConta = txtCodConta.getVlrString();
-		String sCodCC = txtCodCC.getVlrString().trim();
-		String sCC = "";
-		String sConta = "";
-		
-		StringBuilder sql = new StringBuilder();
-
-		BigDecimal bTotal = new BigDecimal( "0" );
-
-		imp.montaCab();
-		String sDataini = "";
-		String sDatafim = "";
-		String sDescplan = "";
-
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
-
-		imp.setTitulo( "Balancete" );
-
 		String sSQL = "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," 
 			+ "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " 
 			+ AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp )
@@ -180,11 +189,7 @@ public class FRBalancete extends FRelatorio {
 			+ " FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" 
 			+ " AND P.CODEMP=? AND P.CODFILIAL=?" 
 			+ " ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN ";
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
-			int iParam = 1;
 			ps = con.prepareStatement( sSQL );
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
@@ -200,6 +205,60 @@ public class FRBalancete extends FRelatorio {
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
 			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			rs = ps.executeQuery();
+		} catch ( SQLException e) {
+			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		if ("G".equals( rgOpcao.getVlrString()) ) {
+			
+		} else {
+			imprimirTexto(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC );
+		}
+	}
+
+	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sDataini, 
+			final String sDatafim, final String sCodConta, final String sCodCC ) {
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+//		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/balancete.jasper", "Balancete", "sCab", rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão do balancete!\n" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sDataini, 
+			final String sDatafim, final String sCodConta, final String sCodCC ) {
+
+		String sConta = "";
+		String sCC = "";
+		String sDescplan = "";
+		
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		
+		StringBuilder sql = new StringBuilder();
+
+		BigDecimal bTotal = new BigDecimal( "0" );
+
+		imp.montaCab();
+
+		imp.setTitulo( "Balancete" );
+
+		try {
 			imp.limpaPags();
 			BigDecimal bigValMaster = null;
 
