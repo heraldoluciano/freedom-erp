@@ -28,7 +28,6 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-import org.freedom.library.type.StringDireita;
 
 /**
  * Acompanhamento de Numero de Series.
@@ -54,6 +53,8 @@ public class FMovSerie extends FRelatorio{
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	private JTextFieldPad txtNumSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 	
@@ -107,13 +108,14 @@ public class FMovSerie extends FRelatorio{
 		tab.setTamColuna( 90, 1 );
 		tab.setTamColuna( 90, 2 );
 		tab.setTamColuna( 90, 3 );
-		tab.setTamColuna( 90, 4 );
+//		tab.setTamColuna( 90, 4 );
 		
 		this.montaListaCampos();
 	}
 	
 	private void montaListaCampos(){
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProd, null );
 		txtCodProd.setNomeCampo( "CodProd" );
@@ -136,7 +138,6 @@ public class FMovSerie extends FRelatorio{
 				tab.setValor( rs.getString( "TIPOMOV" ), iLinha, 1 );
 				tab.setValor( rs.getString( "TIPOMOVSERIE" ), iLinha, 2 );
 				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, 3 );
-				tab.setValor( new StringDireita( rs.getFloat( "QTDMOVSERIE" ) + "" ), iLinha, 4 );
 				
 				iLinha++;
 			}
@@ -144,7 +145,9 @@ public class FMovSerie extends FRelatorio{
 			rs.close();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carrregar a tabela MOVSERIE !\n" + err.getMessage(), true, con, err );
 		}
 	}
@@ -197,7 +200,7 @@ public class FMovSerie extends FRelatorio{
 		String numSerie = txtNumSerie.getVlrString();
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, ms.qtdmovserie, ");
+		sql.append( "select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, ");
 		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov ");
 		sql.append( "from eqmovserie ms ");
 		sql.append( "inner join eqproduto p on ");
