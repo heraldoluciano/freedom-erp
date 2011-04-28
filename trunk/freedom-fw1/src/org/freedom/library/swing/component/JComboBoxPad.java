@@ -22,7 +22,11 @@
 
 package org.freedom.library.swing.component;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.PreparedStatement;
@@ -31,7 +35,14 @@ import java.sql.ResultSetMetaData;
 import java.sql.Types;
 import java.util.Vector;
 
+import javax.swing.ComboBoxEditor;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.event.EventListenerList;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
@@ -50,6 +61,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	public static final int TP_STRING = 0;
 
 	public static final int TP_INTEGER = 4;
+
+	public static final int TP_COR = 5;
 
 	private Vector<?> valores = new Vector<Object>();
 
@@ -77,26 +90,55 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 	private String orderby;
 
+	private ComboBoxEditor editor;
+
 	public void setZeroNulo() {
 
 		bZeroNull = true;
 	}
 
-	public JComboBoxPad(Vector<String> label, Vector<?> val, int tipo, int tam, int dec) {
+	public JComboBoxPad(Vector<?> label, Vector<?> val, int tipo, int tam, int dec) {
 
 		criando = true;
+		
+		if(tipo == TP_COR) {
+			
+			setEditable(true);
+			
+			Color cor = (Color) getSelectedItem();
+			
+			editor = new ColorComboBoxEditor(cor);
+
+			setEditor(editor);
+			
+			setRenderer(new ColorCellRenderer());
+			
+		}
+		
 		if (val != null && label != null) {
 			valores = val;
+		
 			for (int i = 0; i < label.size(); i++) {
-				addItem(label.elementAt(i));
+					
+					addItem(label.elementAt(i));
+					
 			}
 		}
+		
+		
 		addItemListener(this);
+	
 		this.tipo = tipo;
+		
 		this.tam = tam;
+		
 		this.dec = dec;
+		
 		criando = false;
+		
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		
 
 	}
 
@@ -111,6 +153,96 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		}
 		criando = false;
 	}
+
+	static class ColorCellRenderer implements ListCellRenderer {
+		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,	isSelected, cellHasFocus);
+
+			if (value instanceof Color) {
+				renderer.setBackground((Color) value);
+				renderer.setText(" ");
+			}
+
+			return renderer;
+		}
+	}
+	
+
+	class ColorComboBoxEditor implements ComboBoxEditor {
+		  final protected JButton editor;
+
+		  protected EventListenerList listenerList = new EventListenerList();
+
+		  public ColorComboBoxEditor(Color initialColor) {
+		    editor = new JButton("");
+		    editor.setBackground(initialColor);
+		    /*
+		    ActionListener actionListener = new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		        Color currentBackground = editor.getBackground();
+
+		        Color color = JColorChooser.showDialog(editor, "Color Chooser", currentBackground);
+		        if ((color != null) && (currentBackground != color)) {
+		          editor.setBackground(color);
+		          fireActionEvent(color);
+		        }
+		        
+		        
+		      }
+		    };
+		    
+		    editor.addActionListener(actionListener);
+		    
+		    */
+		    
+		  }
+
+		  public void addActionListener(ActionListener l) {
+		    listenerList.add(ActionListener.class, l);
+		  }
+
+		  public Component getEditorComponent() {
+		    return editor;
+		  }
+
+		  public Object getItem() {
+		    return editor.getBackground();
+		  }
+
+		  public void removeActionListener(ActionListener l) {
+		    listenerList.remove(ActionListener.class, l);
+		  }
+
+		  public void selectAll() {
+		    // Ignore
+		  }
+
+		  public void setItem(Object newValue) {
+		    if (newValue instanceof Color) {
+		      Color color = (Color) newValue;
+		      editor.setBackground(color);
+		    } else {
+		      try {
+		     //   Color color = Color.decode(newValue.toString());
+		     //   editor.setBackground(color);
+		      } catch (NumberFormatException e) {
+		      }
+		    }
+		  }
+
+		  protected void fireActionEvent(Color color) {
+		    Object listeners[] = listenerList.getListenerList();
+		    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+		      if (listeners[i] == ActionListener.class) {
+		        ActionEvent actionEvent = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, color
+		            .toString());
+		        ((ActionListener) listeners[i + 1]).actionPerformed(actionEvent);
+		      }
+		    }
+		  }
+		}
 
 	public void setItensGeneric(Vector<?> label, Vector<?> val) {
 
