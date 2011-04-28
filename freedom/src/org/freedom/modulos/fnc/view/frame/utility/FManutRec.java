@@ -2216,8 +2216,25 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
 
 						try {
-
-							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='R1', DTPAGOITREC=null, DTLIQITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+							
+							String statusItRec = "R1";
+							
+							StringBuilder sql = new StringBuilder();
+							sql.append( " select codrenegrec from fnreceber where codemp = ? and codfilial = ? and codrec = ? " );
+							ps = con.prepareStatement( sql.toString() );
+							ps.setInt( 1, Aplicativo.iCodEmp );
+							ps.setInt( 2, Aplicativo.iCodFilial );
+							ps.setInt( 3, iCodRec );
+							
+							ResultSet rs = ps.executeQuery();
+							if( rs.next() ){
+								Integer codRenegRec = rs.getInt( 1 );
+								if(codRenegRec != null && codRenegRec > 0){
+									statusItRec = "RR";
+								}
+							}
+							
+							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='"+statusItRec+"', DTPAGOITREC=null, DTLIQITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 							ps.setInt( 1, iCodRec );
 							ps.setInt( 2, iNParcItRec );
 							ps.setInt( 3, Aplicativo.iCodEmp );
