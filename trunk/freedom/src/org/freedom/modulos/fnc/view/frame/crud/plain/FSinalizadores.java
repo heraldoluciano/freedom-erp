@@ -70,23 +70,20 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 
 		setTitulo( "Sinalizadores" );
 		
-		setAtribos( 50, 50, 530, 490 );
+		setAtribos( 50, 50, 530, 480 );
 		
-		adicCampo( txtCodSinal, 7, 20, 100, 20, "CODSINAL", "Sinalizadores", ListaCampos.DB_PK, true );		
-		adicCampo( txtDescSinal, 110, 20, 270, 20, "DescSinal", "Descrição do sinalizador", ListaCampos.DB_SI, true );
+		adicCampo( txtCodSinal, 7, 20, 100, 20, "CODSINAL", "Cod.Sinal.", ListaCampos.DB_PK, true );		
+		adicCampo( txtDescSinal, 110, 20, 395, 20, "DESCSINAL", "Descrição do sinalizador", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtCorSinal, "CORSINAL", "", ListaCampos.DB_SI, false );
-		
+		adic( pinCor, 7 , 50, 500, 350 );
+	
 		
 		setListaCampos( true, "SINAL", "FN" );
 		
-		adic( pinCor, 7 , 50, 500, 350 );
-		
-		
-		
+
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		 	
 			
 		pinCor.add( tcc, BorderLayout.CENTER );
 		tcc.getSelectionModel().addChangeListener( this );
@@ -181,7 +178,6 @@ public class FSinalizadores extends FDados implements ActionListener, ChangeList
 	}
 
 	public void afterCarrega( CarregaEvent pevt ) {
-
 		
 		Color cor = new Color( txtCorSinal.getVlrInteger() );
 
