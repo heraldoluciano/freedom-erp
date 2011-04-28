@@ -552,12 +552,16 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sCab = "";
+		String sTipo = "S";
 		DLTranspFor dl = new DLTranspFor();
 
-		sSQL.append( "SELECT T.CODTRAN, T.NOMETRAN, T.ENDTRAN, T.CIDTRAN, T.NUMTRAN, " );
-		sSQL.append( "T.BAIRTRAN, T.DDDFONETRAN, T.FONETRAN, T.FAXTRAN, T.CEPTRAN, " );
-		sSQL.append( "T.CONTTRAN,  T.CNPJTRAN, T.UFTRAN, T.CPFTRAN, T.TIPOTRAN FROM VDTRANSP T ORDER BY " + dl.getValor() );
+		sSQL.append( "SELECT T.CODTRAN, T.RAZTRAN, T.NOMETRAN, T.CNPJTRAN, T.CPFTRAN, " );
+		sSQL.append( "T.INSCTRAN, T.ENDTRAN, T.NUMTRAN, T.COMPLTRAN, T.BAIRTRAN, T.CIDTRAN, " );
+		sSQL.append( "T.CEPTRAN, T.FONETRAN, T.FAXTRAN, T.UFTRAN, T.TIPOTRAN, T.CELTRAN, T.CONTTRAN, " );
+		sSQL.append( "T.DDDFONETRAN, T.DDDFAXTRAN, T.DDDCELTRAN, T.CODMUNIC, T.SIGLAUF, T.CODPAIS, " );
+		sSQL.append( "T.CONJUGETRAN, T.NRODEPENDTRAN, T.RGTRAN, T.SSPTRAN, T.CODGPS, T.NROPISTRAN, " );
+		sSQL.append( "T.EMAILTRAN, T.PLACATRAN, T.CELTRAN " );
+		sSQL.append( "FROM VDTRANSP T ORDER BY " );
 
 		try {
 
@@ -566,43 +570,41 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 				dl.dispose();
 				return;
 			}
-
+			sTipo = dl.getTipo();
+			sSQL.append( dl.getValor() );
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			rs = ps.executeQuery();
 
 			dl.dispose();
 
-			imprimeGrafico( rs, bVisualizar, sCab );
+			imprimeGrafico( rs, bVisualizar, sTipo );
 
 		} catch ( SQLException e ) {
-
 			Funcoes.mensagemErro( this, "Erro ao buscar dados !\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
 
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ) {
+	private void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sTipo ) {
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		// hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
-		hParam.put( "FILTROS", sCab );
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/FRTrans.jasper", "Transportadoras", null, rs, hParam, this );
+		FPrinterJob dlGr = null;
+		
+		if("S".equals( sTipo)){
+			dlGr = new FPrinterJob( "relatorios/FRTrans.jasper", "Transportadoras", null, rs, hParam, this );
+		}else{
+			dlGr = new FPrinterJob( "relatorios/FRTransDetalhado.jasper", "Transportadoras", null, rs, hParam, this );
+		}
 
 		if ( bVisualizar ) {
-
 			dlGr.setVisible( true );
-
-		}
-		else {
+		}else {
 			try {
-
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-
 			} catch ( Exception err ) {
-
 				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Transportadoras!\n" + err.getMessage(), true, con, err );
 			}
 		}
