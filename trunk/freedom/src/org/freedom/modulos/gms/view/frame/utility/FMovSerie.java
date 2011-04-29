@@ -103,12 +103,11 @@ public class FMovSerie extends FRelatorio{
 		tab.adicColuna( "Tipo" );
 		tab.adicColuna( "Tipo Mov. Série" );
 		tab.adicColuna( "Num Série." );
-		tab.adicColuna( "Quantidade." );
+//		tab.adicColuna( "Quantidade." );
 		tab.setTamColuna( 90, 0 );		
 		tab.setTamColuna( 90, 1 );
 		tab.setTamColuna( 90, 2 );
 		tab.setTamColuna( 90, 3 );
-//		tab.setTamColuna( 90, 4 );
 		
 		this.montaListaCampos();
 	}
@@ -134,9 +133,18 @@ public class FMovSerie extends FRelatorio{
 			while ( rs.next() ) {
 				tab.adicLinha();
 				
+				String tipoMovSerie = rs.getString( "TIPOMOVSERIE" ).trim();
+				if("1".equals( tipoMovSerie )){
+					tipoMovSerie = "Entrada";
+				}else if("0".equals( tipoMovSerie )){
+					tipoMovSerie = "Sem Movimento";
+				}else if("-1".equals( tipoMovSerie )){
+					tipoMovSerie = "Saida";
+				}
+				
 				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTMOVSERIE" ) ), iLinha, 0 );
 				tab.setValor( rs.getString( "TIPOMOV" ), iLinha, 1 );
-				tab.setValor( rs.getString( "TIPOMOVSERIE" ), iLinha, 2 );
+				tab.setValor( tipoMovSerie, iLinha, 2 );
 				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, 3 );
 				
 				iLinha++;
