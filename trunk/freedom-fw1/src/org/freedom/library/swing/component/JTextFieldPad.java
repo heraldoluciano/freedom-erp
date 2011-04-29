@@ -46,6 +46,7 @@ import org.freedom.library.swing.dialog.DLF2;
 import org.freedom.library.swing.dialog.DLF3;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FAtalhos;
+import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.IFilho;
 import org.freedom.modulos.gms.DLBuscaSerie;
 import org.freedom.modulos.std.DLBuscaEstoq;
@@ -1117,7 +1118,21 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			if (telaexterna != null) {
 
 				if (Funcoes.verificaAcessoClasse(telaexterna.getCanonicalName())) {
-					Aplicativo.getInstace().abreTela("", telaexterna);
+					
+					String titulo = "";
+					
+					try {
+						
+						titulo = ((FFilho) telaexterna.newInstance()).getTitle() ;
+							
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}						
+						
+					Aplicativo.getInstace().abreTela( titulo, telaexterna);
+					
+
 				}
 				else {
 					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + telaexterna.getName()
