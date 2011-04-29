@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -38,16 +39,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.table.TableColumn;
 
+import org.freedom.acao.TabelaEditEvent;
+import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
@@ -69,7 +76,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
-public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener {
+public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -154,11 +161,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private Date dIniLanca = null;
 
 	private Date dFimLanca = null;
+	
+	private JPopupMenu menuCores = new JPopupMenu();
 
 	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) ); 
 
 	private enum enum_tab_lanca {  
-		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
+		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ, COR  };
 
 		public FLanca() {
 
@@ -238,18 +247,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			btCalcSaldo.setContentAreaFilled(false);
 			btCalcSaldo.setBorderPainted(false);
 
-
-			/*
-
-		pinSaldo.adic( lbAtualSaldo, 290, 6, 50, 15 );
-		pinSaldo.adic( lbAtualSaldoVal, 290, 21, 57, 15 );
-			 */
-
-			//pinData.adic( btCalcSaldo, 360, 5, 30, 30 );
-
-
-
-
 			btSair.setPreferredSize( new Dimension( 100, 31 ) );
 
 			pnNav.setPreferredSize( new Dimension( 240, 30 ) );
@@ -283,6 +280,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			tab.adicColuna( "Cod.Pag." );
 			tab.adicColuna( "N.Parc.Pag." );
 			tab.adicColuna( "Seq.Cheque" );
+			tab.adicColuna( "Cor" );
 
 			tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
 			tab.setTamColuna( 80, enum_tab_lanca.DATASUBLANCA.ordinal() );
@@ -300,7 +298,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			tab.setColunaInvisivel( enum_tab_lanca.NPARCPAG.ordinal() );
 			tab.setColunaInvisivel( enum_tab_lanca.SEQCHEQ.ordinal() );
 
+			tab.setTamColuna( 65, enum_tab_lanca.COR.ordinal() );
+			tab.setColunaInvisivel( enum_tab_lanca.COR.ordinal() );
+
 			tab.addMouseListener( this );
+			tab.addTabelaEditListener( this );
 
 			tab.setRowHeight( 22 );
 			tab.setFont( SwingParams.getFontboldmedmax() );
@@ -324,6 +326,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			txtDatafim.setVlrDate( cPeriodo.getTime() );
 			cPeriodo.set( Calendar.DAY_OF_YEAR, cPeriodo.get( Calendar.DAY_OF_YEAR ) - 7 );
 			txtDataini.setVlrDate( cPeriodo.getTime() );
+			
+
 
 		}
 
@@ -335,6 +339,14 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		}
 
 		private void montaTabela( Date dini, Date dfim ) {
+		
+			TableColumn col = tab.getColumnModel().getColumn(enum_tab_lanca.COR.ordinal());
+			
+//			HashMap<String, Vector<?>> cores = montaComboCores();
+			
+//			Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
+//			Vector<Integer> valores = (Vector<Integer>) cores.get("VAL");
+
 
 			tab.limpa();
 
@@ -344,8 +356,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				+ "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
 				+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " 
 				+ "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " 
-				+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG "
-				+ " FROM FNSUBLANCA S, FNLANCA L " 
+				+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG, SN.CORSINAL, L.CODSINAL "
+				
+				+ " FROM FNSUBLANCA S, FNLANCA L "
+				+ " LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=L.CODEMPSN AND SN.CODFILIAL=L.CODFILIALSN AND SN.CODSINAL=L.CODSINAL "
 				+ " WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
 				+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" 
 				+ " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" 
@@ -366,30 +380,31 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 				for ( int i = 0; rs.next(); i++ ) {
 
-
 					tab.adicLinha();
+					
+					Color corsinal = rs.getString( "corsinal" ) == null ? null : new Color(rs.getInt( "corsinal" ));
+					
+					tab.setValor( rs.getString( enum_tab_lanca.CODLANCA.name() ), i, enum_tab_lanca.CODLANCA.ordinal(), corsinal );
 
-					tab.setValor( rs.getString( enum_tab_lanca.CODLANCA.name() ), i, enum_tab_lanca.CODLANCA.ordinal() );
+					tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_lanca.DATASUBLANCA.name() ) ), i, enum_tab_lanca.DATASUBLANCA.ordinal(), corsinal );
 
-					tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_lanca.DATASUBLANCA.name() ) ), i, enum_tab_lanca.DATASUBLANCA.ordinal() );
-
-					tab.setValor( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ), i, enum_tab_lanca.TRANSFLANCA.ordinal() );
+					tab.setValor( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ), i, enum_tab_lanca.TRANSFLANCA.ordinal(), corsinal );
 
 					if ( "S".equals( rs.getString( enum_tab_lanca.TRANSFLANCA.name() ) ) ) {
-						tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal() );
+						tab.setValor( rs.getString(enum_tab_lanca.NUMCONTA.name()), i, enum_tab_lanca.NUMCONTA.ordinal(), corsinal );
 					}
 
-					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal(), corsinal );
 
-					tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal() );
+					tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal(), corsinal );
 
-					tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+					tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
 					//tab.setValor( "x", i, enum_tab_lanca.VLRSUBLANCA.ordinal() );
 
-					tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal() );				
+					tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal(), corsinal );				
 
-					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal() );
-					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal() );
+					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal(), corsinal );
+					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal(), corsinal );
 
 					Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_lanca.CODPAG.name()), rs.getInt( enum_tab_lanca.NPARCPAG.name() ));
 
@@ -406,11 +421,19 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 						}
 
-						tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal() );
-						tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal() );
-
+						tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
+						tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
+						
 					}
-
+					else {
+					
+						tab.setValor( null, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
+						tab.setValor( null, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
+						
+					}
+					
+					tab.setValor( rs.getString( "codsinal" ) == null ? 0 : rs.getInt( "codsinal" ), i, enum_tab_lanca.COR.ordinal(), corsinal );
+					
 				}
 
 				rs.close();
@@ -424,6 +447,133 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
 			}
 		}
+		
+		
+		public void valorAlterado( TabelaEditEvent evt ) {
+/*
+			if(evt.getTabela() == tab 
+					&& tab.getSelectedRow() > -1
+					&&
+					( tab.getColunaEditada()==enum_tab_lanca.COR.ordinal()  )
+					&& tab.isCellEditable( tab.getLinhaEditada(), tab.getColunaEditada() )
+					
+			){
+
+				Integer codlanca = Integer.parseInt( tab.getValor( tab.getLinhaEditada(), enum_tab_lanca.CODLANCA.ordinal() ).toString() );
+				Integer codsinal = (Integer) tab.getValor( tab.getLinhaEditada(), enum_tab_lanca.COR.ordinal() );
+
+				
+				atualizaCor( codsinal,  codlanca );
+		*/
+				//Funcoes.espera( 1 );
+				
+				//montaTabela( dIniLanca, dFimLanca );
+//				btExec.doClick();
+			
+			//}
+			
+		}
+		
+		private void montaMenuCores() {
+
+			try {
+				
+				HashMap<String, Vector<?>> cores = montaListaCores();
+				
+				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
+				Vector<HashMap<String, Object>> valores = (Vector<HashMap<String, Object>>) cores.get("VAL");
+		
+				for( int i =0; i < valores.size(); i++ ) {
+					
+					JMenuItem menucor = new JMenuItem();
+					
+					menucor.addActionListener(this);
+					
+					menucor.setBackground( labels.elementAt( i ) );
+					
+					HashMap<String, Object> hvalores = valores.elementAt( i );
+					
+					menucor.setText( (Integer) hvalores.get( "CODSINAL" ) + "-" + (String) hvalores.get( "DESCSINAL" ) );
+					
+					menuCores.add(menucor);
+					
+				}
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+		private void atualizaCor(Integer codsinal, Integer codlanca ) {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			
+			try {
+				
+				sql.append( "update fnlanca set codempsn=?, codfilialsn=?, codsinal=? " );
+				sql.append( "where codemp=? and codfilial=? and codlanca=? " );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+				ps.setInt( 3, codsinal );
+				
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNSINAL" ) );
+				ps.setInt( 6, codlanca );
+				
+				ps.execute();
+				
+				con.commit();
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		/*
+
+		class ComboBoxRenderer extends JComboBoxPad implements TableCellRenderer {
+
+			private static final long serialVersionUID = 1L;
+
+			public ComboBoxRenderer(Vector<?> labels, Vector<?> valores, int tipo, int tamanho, int dec) {
+				super(labels, valores, tipo, tamanho, dec);
+			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				if (isSelected) {
+					setForeground(table.getSelectionForeground());
+					super.setBackground(table.getSelectionBackground());
+				} 
+				else {
+					setForeground(table.getForeground());
+					setBackground(table.getBackground());
+				}
+				setSelectedItem(value);
+				return this;
+			}
+		}
+		
+
+
+		class ComboBoxEditor extends DefaultCellEditor {
+			private static final long serialVersionUID = 1L;
+
+			public ComboBoxEditor(Vector<?> labels, Vector<?> valores, int tipo, int tamanho, int dec) {
+				super(new JComboBoxPad(labels, valores, tipo, tamanho, dec));
+			}
+		}
+		
+		*/
 
 		@ SuppressWarnings ( "unchecked" )
 		private void abreCheque() {
@@ -852,6 +1002,21 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			else if(evt.getSource() == btAbreCheque ) {
 				abreCheque( );
 			}
+			
+			else if(evt.getSource() instanceof JMenuItem) {
+				
+				JMenuItem menu = (JMenuItem) evt.getSource();
+				
+				String opcao  = menu.getText();
+				
+				Integer codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+				
+				atualizaCor( codsinal, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ) );
+				
+				montaTabela( dIniLanca, dFimLanca );
+								
+			}
+			
 
 		}
 
@@ -868,6 +1033,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 			super.setConexao( cn );
 			montaTabs();
+			montaMenuCores();
 		}
 
 		@ SuppressWarnings ( "unchecked" )
@@ -884,7 +1050,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 					Vector<String> seqcheq = (Vector<String>) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.SEQCHEQ.ordinal()); 
 
-					if(seqcheq!=null) {
+					if(seqcheq!=null && seqcheq.size()>0) {
 						Integer seqcheque = Integer.parseInt( (String) seqcheq.elementAt( 0 ) );
 
 						if(seqcheque>0) {
@@ -909,10 +1075,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 		}
 
-		public void mousePressed( MouseEvent arg0 ) {
-
-			// TODO Auto-generated method stub
-
+		public void mousePressed( MouseEvent mevt ) {
+			if (mevt.getModifiers() == InputEvent.BUTTON3_MASK && mevt.getSource()==tab) {
+				menuCores.show(this, mevt.getX(), mevt.getY());
+			}
 		}
 
 		public void mouseReleased( MouseEvent arg0 ) {
@@ -920,4 +1086,56 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			// TODO Auto-generated method stub
 
 		}
+		
+		public HashMap<String, Vector<?>> montaListaCores() {
+
+			Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
+			Vector<Color> vLabs = new Vector<Color>();
+		
+			HashMap<String, Vector<?>> ret = new HashMap<String, Vector<?>>();
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			StringBuffer sql = new StringBuffer();
+
+			sql.append("select s.codsinal, s.descsinal, s.corsinal ");
+			sql.append("from fnsinal s ");
+			sql.append("where s.codemp=? and s.codfilial=? ");
+
+			try {
+				
+				ps = con.prepareStatement(sql.toString());
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("FNSINAL"));
+				
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					
+					HashMap<String, Object> hvalores = new HashMap<String, Object>();
+					
+					hvalores.put( "CODSINAL", rs.getInt( "CODSINAL" ) );
+					hvalores.put( "DESCSINAL", rs.getString( "DESCSINAL" ) );
+					
+					vVals.addElement( hvalores );
+					
+					Color cor = new Color(rs.getInt( "corsinal" ));
+					
+					vLabs.addElement( cor );
+					
+				}
+
+				ret.put("VAL",  vVals);
+				ret.put("LAB",  vLabs);
+
+
+			}
+			catch (SQLException err) {
+				err.printStackTrace();
+				Funcoes.mensagemErro(null, "Erro ao buscar sinais");
+			}
+			return ret;
+		}
+		
+		
 }
