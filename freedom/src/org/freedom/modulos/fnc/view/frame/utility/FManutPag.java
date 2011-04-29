@@ -25,12 +25,14 @@
 package org.freedom.modulos.fnc.view.frame.utility;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,13 +42,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
@@ -75,7 +81,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 
-public class FManutPag extends FFilho implements ActionListener, CarregaListener, ChangeListener {
+public class FManutPag extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -318,6 +324,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	private int iNParcPag = 0;
 
 	private int iAnoCC = 0;
+	
+	private JPopupMenu menuCores = new JPopupMenu();
 
 	private Map<String, Integer> prefere = null;
 
@@ -806,15 +814,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			btCancItem.addActionListener( this );
 			tpn.addChangeListener( this );
 
-			tabManut.addMouseListener( new MouseAdapter() {
-
-				public void mouseClicked( MouseEvent mevt ) {
-
-					if ( mevt.getSource() == tabManut && mevt.getClickCount() == 2 )
-						editar();
-				}
-			} );
-
+			tabManut.addMouseListener( this );
+			
 		}
 
 		private void limpaConsulta() {
@@ -1289,14 +1290,17 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sql.append( "where co.codcompra=p.codcompra and co.codemp=p.codempcp and co.codfilial=p.codfilialcp),'') doccompra," );
 
 					sql.append( "coalesce((SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
-					sql.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB),'') DESCTIPOCOB " );
+					sql.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB),'') DESCTIPOCOB, sn.corsinal " );
 
-					sql.append( "from fnitpagar it, fnpagar p, cpforneced f " );
+					sql.append( "from fnpagar p, cpforneced f, fnitpagar it  " );
+					
+					sql.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=It.CODEMPSN AND SN.CODFILIAL=It.CODFILIALSN AND SN.CODSINAL=It.CODSINAL ");
 
 					sql.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR " );
 					sql.append( sWhereManut );
 					sql.append( " AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
-					sql.append( "ORDER BY IT.DTVENCITPAG, IT.STATUSITPAG" );
+					sql.append( "ORDER BY IT.DTVENCITPAG, IT.CODPAG, IT.NPARCPAG, IT.STATUSITPAG " );
+					//sql.append( "ORDER BY IT.DTVENCITPAG " );
 
 					try {
 
@@ -1354,16 +1358,17 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								bdTotVencer += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrApagItPag" ) ).floatValue();
 							}
 
+							Color corsinal = rs.getString( "corsinal" ) == null ? null : new Color(rs.getInt( "corsinal" ));
 
-							tabManut.setValor( imgColuna, i, enum_tab_manut.IMGSTATUS.ordinal() );
+							tabManut.setValor( imgColuna, i, enum_tab_manut.IMGSTATUS.ordinal(), corsinal );
 
-							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTVENCITPAG.name() ) ), i, enum_tab_manut.DTVENCITPAG.ordinal() );
+							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTVENCITPAG.name() ) ), i, enum_tab_manut.DTVENCITPAG.ordinal(), corsinal );
 
-							tabManut.setValor( rs.getString( enum_tab_manut.STATUSITPAG.name() ),	i, enum_tab_manut.STATUSITPAG.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODFOR.name() ),	 	i, enum_tab_manut.CODFOR.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.RAZFOR.name() ), 		i, enum_tab_manut.RAZFOR.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODPAG.name() ), 		i, enum_tab_manut.CODPAG.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.NPARCPAG.name() ), 		i, enum_tab_manut.NPARCPAG.ordinal() );
+							tabManut.setValor( rs.getString( enum_tab_manut.STATUSITPAG.name() ),	i, enum_tab_manut.STATUSITPAG.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODFOR.name() ),	 	i, enum_tab_manut.CODFOR.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.RAZFOR.name() ), 		i, enum_tab_manut.RAZFOR.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODPAG.name() ), 		i, enum_tab_manut.CODPAG.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.NPARCPAG.name() ), 		i, enum_tab_manut.NPARCPAG.ordinal(), corsinal );
 
 							String doclanca = rs.getString( "DocLancaItPag" );
 							String docpag = rs.getString( "DocPag" );
@@ -1380,32 +1385,32 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 								doc = doclanca;
 							}
 
-							tabManut.setValor( doc, i, enum_tab_manut.DOC.ordinal() );
+							tabManut.setValor( doc, i, enum_tab_manut.DOC.ordinal(), corsinal );
 
-							tabManut.setValor( rs.getString( enum_tab_manut.DOCCOMPRA.name() ), i, enum_tab_manut.DOCCOMPRA.ordinal() );
+							tabManut.setValor( rs.getString( enum_tab_manut.DOCCOMPRA.name() ), i, enum_tab_manut.DOCCOMPRA.ordinal(), corsinal );
 
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrParcItPag" ) ) ), i, enum_tab_manut.VLRPARCITPAG.ordinal() );
-							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTPAGOITPAG.name() ) ), i, enum_tab_manut.DTPAGOITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRPAGOITPAG.name()  ) )), i, 	enum_tab_manut.VLRPAGOITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRDESCITPAG.name() ) )), i, 	enum_tab_manut.VLRDESCITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRJUROSITPAG.name() ) )), i, 	enum_tab_manut.VLRJUROSITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRDEVITPAG.name() ) )), i, 	enum_tab_manut.VLRDEVITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRADICITPAG.name() ) )), i, 	enum_tab_manut.VLRADICITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRAPAGITPAG.name() ) )), i, 	enum_tab_manut.VLRAPAGITPAG.ordinal() );
-							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRCANCITPAG.name() ) )), i, 	enum_tab_manut.VLRCANCITPAG.ordinal() );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "VlrParcItPag" ) ) ), i, enum_tab_manut.VLRPARCITPAG.ordinal(), corsinal );
+							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTPAGOITPAG.name() ) ), i, enum_tab_manut.DTPAGOITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRPAGOITPAG.name()  ) )), i, 	enum_tab_manut.VLRPAGOITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRDESCITPAG.name() ) )), i, 	enum_tab_manut.VLRDESCITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRJUROSITPAG.name() ) )), i, 	enum_tab_manut.VLRJUROSITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRDEVITPAG.name() ) )), i, 	enum_tab_manut.VLRDEVITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRADICITPAG.name() ) )), i, 	enum_tab_manut.VLRADICITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRAPAGITPAG.name() ) )), i, 	enum_tab_manut.VLRAPAGITPAG.ordinal(), corsinal );
+							tabManut.setValor( new StringDireita( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( enum_tab_manut.VLRCANCITPAG.name() ) )), i, 	enum_tab_manut.VLRCANCITPAG.ordinal(), corsinal );
 
-							tabManut.setValor( rs.getString( enum_tab_manut.NUMCONTA.name() 	) 	, i, enum_tab_manut.NUMCONTA.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.DESCPLAN.name() 	) 	, i, enum_tab_manut.DESCPLAN.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.DESCCC.name() 		) 	, i, enum_tab_manut.DESCCC.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODTIPOCOB.name()	) 	, i, enum_tab_manut.CODTIPOCOB.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.DESCTIPOCOB.name() 	) 	, i, enum_tab_manut.DESCTIPOCOB.ordinal() );						
-							tabManut.setValor( rs.getString( enum_tab_manut.OBSITPAG.name() 	) 	, i, enum_tab_manut.OBSITPAG.ordinal() );
+							tabManut.setValor( rs.getString( enum_tab_manut.NUMCONTA.name() 	) 	, i, enum_tab_manut.NUMCONTA.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.DESCPLAN.name() 	) 	, i, enum_tab_manut.DESCPLAN.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.DESCCC.name() 		) 	, i, enum_tab_manut.DESCCC.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODTIPOCOB.name()	) 	, i, enum_tab_manut.CODTIPOCOB.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.DESCTIPOCOB.name() 	) 	, i, enum_tab_manut.DESCTIPOCOB.ordinal(), corsinal );						
+							tabManut.setValor( rs.getString( enum_tab_manut.OBSITPAG.name() 	) 	, i, enum_tab_manut.OBSITPAG.ordinal(), corsinal );
 
-							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTITPAG.name()) ) 	, i, enum_tab_manut.DTITPAG.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODCC.name() 		) 	, i, enum_tab_manut.CODCC.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODPLAN.name() 		) 	, i, enum_tab_manut.CODPLAN.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.CODCOMPRA.name() 	) 	, i, enum_tab_manut.CODCOMPRA.ordinal() );
-							tabManut.setValor( rs.getString( enum_tab_manut.NUMCONTA.name() 	) 	, i, enum_tab_manut.NUMCONTA.ordinal() );
+							tabManut.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( enum_tab_manut.DTITPAG.name()) ) 	, i, enum_tab_manut.DTITPAG.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODCC.name() 		) 	, i, enum_tab_manut.CODCC.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODPLAN.name() 		) 	, i, enum_tab_manut.CODPLAN.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.CODCOMPRA.name() 	) 	, i, enum_tab_manut.CODCOMPRA.ordinal(), corsinal );
+							tabManut.setValor( rs.getString( enum_tab_manut.NUMCONTA.name() 	) 	, i, enum_tab_manut.NUMCONTA.ordinal(), corsinal );
 
 							vCodPed.addElement( rs.getString( enum_tab_manut.CODCOMPRA.name()  ) );
 							vNumContas.addElement( rs.getString( enum_tab_manut.NUMCONTA.name() ) );
@@ -1426,9 +1431,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 								}
 								
-								tabManut.setValor( numcheques, i, enum_tab_manut.CHEQUES.ordinal() );
+								tabManut.setValor( numcheques, i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
 								
 							}
+							else {
+								tabManut.setValor( null, i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
+							}
+							
 							
 
 						}
@@ -2117,6 +2126,22 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			else if ( evt.getSource() == btImpRec ) {
 				impRecibo();
 			}
+			else if(evt.getSource() instanceof JMenuItem) {
+				
+				JMenuItem menu = (JMenuItem) evt.getSource();
+				
+				String opcao  = menu.getText();
+				
+				Integer codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+				
+				atualizaCor( codsinal, 
+						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ).toString() ), 
+						Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ).toString()) );
+	 			
+				carregaGridManut();
+								
+			}
+			
 
 		}
 
@@ -2218,7 +2243,159 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			prefere = getPrefere();
 
 			iAnoCC = (Integer) prefere.get( "anocc" );
+			
+			montaMenuCores();
+			
 
+		}
+
+		public void mouseClicked( MouseEvent mevt ) {
+
+			if ( mevt.getSource() == tabManut && mevt.getClickCount() == 2 ) {
+				editar();
+			}
+
+			
+		}
+
+		public void mouseEntered( MouseEvent e ) {
+
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mouseExited( MouseEvent e ) {
+
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mousePressed( MouseEvent e ) {
+
+			if (e.getModifiers() == InputEvent.BUTTON3_MASK && e.getSource()==tabManut) {
+				menuCores.show(this, e.getX(), e.getY());
+			}
+			
+		}
+
+		public void mouseReleased( MouseEvent e ) {
+
+			// TODO Auto-generated method stub
+			
+		}
+		
+		private void montaMenuCores() {
+
+			try {
+				
+				HashMap<String, Vector<?>> cores = montaListaCores();
+				
+				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
+				Vector<HashMap<String, Object>> valores = (Vector<HashMap<String, Object>>) cores.get("VAL");
+		
+				for( int i =0; i < valores.size(); i++ ) {
+					
+					JMenuItem menucor = new JMenuItem();
+					
+					menucor.addActionListener(this);
+					
+					menucor.setBackground( labels.elementAt( i ) );
+					
+					HashMap<String, Object> hvalores = valores.elementAt( i );
+					
+					menucor.setText( (Integer) hvalores.get( "CODSINAL" ) + "-" + (String) hvalores.get( "DESCSINAL" ) );
+					
+					menuCores.add(menucor);
+					
+				}
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		private void atualizaCor(Integer codsinal, Integer codrec, Integer coditpagar ) {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			
+			try {
+				
+				sql.append( "update fnitpagar set codempsn=?, codfilialsn=?, codsinal=? " );
+				sql.append( "where codemp=? and codfilial=? and codpag=? and nparcpag=? " );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+				ps.setInt( 3, codsinal );
+				
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITPAGAR" ) );
+				ps.setInt( 6, codrec );
+				ps.setInt( 7, coditpagar );
+				
+				ps.execute();
+				
+				con.commit();
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public HashMap<String, Vector<?>> montaListaCores() {
+
+			Vector<HashMap<String, Object>> vVals = new Vector<HashMap<String, Object>>();
+			Vector<Color> vLabs = new Vector<Color>();
+		
+			HashMap<String, Vector<?>> ret = new HashMap<String, Vector<?>>();
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			StringBuffer sql = new StringBuffer();
+
+			sql.append("select s.codsinal, s.descsinal, s.corsinal ");
+			sql.append("from fnsinal s ");
+			sql.append("where s.codemp=? and s.codfilial=? ");
+
+			try {
+				
+				ps = con.prepareStatement(sql.toString());
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("FNSINAL"));
+				
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					
+					HashMap<String, Object> hvalores = new HashMap<String, Object>();
+					
+					hvalores.put( "CODSINAL", rs.getInt( "CODSINAL" ) );
+					hvalores.put( "DESCSINAL", rs.getString( "DESCSINAL" ) );
+					
+					vVals.addElement( hvalores );
+					
+					Color cor = new Color(rs.getInt( "corsinal" ));
+					
+					vLabs.addElement( cor );
+					
+				}
+
+				ret.put("VAL",  vVals);
+				ret.put("LAB",  vLabs);
+
+
+			}
+			catch (SQLException err) {
+				err.printStackTrace();
+				Funcoes.mensagemErro(null, "Erro ao buscar sinais");
+			}
+			return ret;
 		}
 
 }
