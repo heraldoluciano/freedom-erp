@@ -87,6 +87,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLNovoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLRenegRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 
@@ -383,6 +384,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private int iAnoCC = 0;
 
 	private Map<String, Integer> prefere = null;
+	
+	private JMenuItem menucancelacor = new JMenuItem();
+	
+	private JMenuItem menucadastracor = new JMenuItem();
 
 	public FManutRec() {
 
@@ -1710,6 +1715,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				
 			}
 			
+			
+			menuCores.addSeparator();
+			
+			menucancelacor.setText( "Limpa cor" );
+			menucadastracor.setText( "Cadastro nova cor" );
+			
+			menucancelacor.addActionListener( this );
+			menucadastracor.addActionListener( this );
+			
+			menuCores.add( menucancelacor );
+			menuCores.add( menucadastracor );
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1729,9 +1746,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 			ps = con.prepareStatement( sql.toString() );
 			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
-			ps.setInt( 3, codsinal );
+			if(codsinal!=null) {
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+				ps.setInt( 3, codsinal );
+		
+			}
+			else {
+
+				ps.setNull( 1, Types.INTEGER );
+				ps.setNull( 2, Types.INTEGER );
+				ps.setNull( 3, Types.INTEGER );
+				
+			}
 			
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
@@ -2933,7 +2961,26 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			
 			String opcao  = menu.getText();
 			
-			Integer codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+			Integer codsinal = null;
+			
+			if(menu != menucancelacor && menu != menucadastracor ) {
+			
+				codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+				
+			}
+			else if (evt.getSource() == menucadastracor){
+				
+				if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
+					Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
+				}
+				else {
+					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
+							+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
+				}
+				
+				return;
+			}
+			
 			
 			atualizaCor( codsinal, 
 					Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString() ), 
