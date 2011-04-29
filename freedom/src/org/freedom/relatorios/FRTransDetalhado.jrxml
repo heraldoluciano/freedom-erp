@@ -585,18 +585,18 @@ FROM VDTRANSP T]]>
 				<text><![CDATA[CONJUGÊ:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="171" y="36" width="103" height="13"/>
+				<reportElement x="171" y="36" width="169" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONJUGETRAN}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="282" y="36" width="101" height="13"/>
+				<reportElement x="342" y="36" width="41" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NRO DE DEPENDENTES:]]></text>
+				<text><![CDATA[NRO DEP:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="385" y="36" width="19" height="13"/>
