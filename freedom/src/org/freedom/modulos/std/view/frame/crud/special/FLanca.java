@@ -74,6 +74,8 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
+import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
+import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
 public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener {
@@ -340,14 +342,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 		private void montaTabela( Date dini, Date dfim ) {
 		
-			TableColumn col = tab.getColumnModel().getColumn(enum_tab_lanca.COR.ordinal());
-			
-//			HashMap<String, Vector<?>> cores = montaComboCores();
-			
-//			Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
-//			Vector<Integer> valores = (Vector<Integer>) cores.get("VAL");
-
-
 			tab.limpa();
 
 			String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," 
@@ -366,7 +360,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				+ " ORDER BY S.DATASUBLANCA,S.CODLANCA";
 
 			try {
-
 
 				PreparedStatement ps = con.prepareStatement( sSQL );
 
