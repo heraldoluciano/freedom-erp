@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Comentários sobre a classe...
+ *         Tela de visualização de lançamentos financeiros.
  * 
  */
 
@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,7 +52,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.table.TableColumn;
 
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
@@ -74,8 +74,7 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
-import org.freedom.modulos.fnc.view.frame.utility.FManutPag;
-import org.freedom.modulos.fnc.view.frame.utility.FManutRec;
+import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
 public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener {
@@ -166,8 +165,12 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	
 	private JPopupMenu menuCores = new JPopupMenu();
 
-	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) ); 
-
+	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) );
+	
+	private JMenuItem menucancelacor = new JMenuItem();
+	
+	private JMenuItem menucadastracor = new JMenuItem();
+	
 	private enum enum_tab_lanca {  
 		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ, COR  };
 
@@ -443,94 +446,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		
 		
 		public void valorAlterado( TabelaEditEvent evt ) {
-/*
-			if(evt.getTabela() == tab 
-					&& tab.getSelectedRow() > -1
-					&&
-					( tab.getColunaEditada()==enum_tab_lanca.COR.ordinal()  )
-					&& tab.isCellEditable( tab.getLinhaEditada(), tab.getColunaEditada() )
-					
-			){
 
-				Integer codlanca = Integer.parseInt( tab.getValor( tab.getLinhaEditada(), enum_tab_lanca.CODLANCA.ordinal() ).toString() );
-				Integer codsinal = (Integer) tab.getValor( tab.getLinhaEditada(), enum_tab_lanca.COR.ordinal() );
-
-				
-				atualizaCor( codsinal,  codlanca );
-		*/
-				//Funcoes.espera( 1 );
-				
-				//montaTabela( dIniLanca, dFimLanca );
-//				btExec.doClick();
-			
-			//}
 			
 		}
-		
-		private void montaMenuCores() {
-
-			try {
-				
-				HashMap<String, Vector<?>> cores = montaListaCores();
-				
-				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
-				Vector<HashMap<String, Object>> valores = (Vector<HashMap<String, Object>>) cores.get("VAL");
-		
-				for( int i =0; i < valores.size(); i++ ) {
-					
-					JMenuItem menucor = new JMenuItem();
-					
-					menucor.addActionListener(this);
-					
-					menucor.setBackground( labels.elementAt( i ) );
-					
-					HashMap<String, Object> hvalores = valores.elementAt( i );
-					
-					menucor.setText( (Integer) hvalores.get( "CODSINAL" ) + "-" + (String) hvalores.get( "DESCSINAL" ) );
-					
-					menuCores.add(menucor);
-					
-				}
-				
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		
-		
-		private void atualizaCor(Integer codsinal, Integer codlanca ) {
-			
-			StringBuilder sql = new StringBuilder();
-			PreparedStatement ps = null;
-			
-			try {
-				
-				sql.append( "update fnlanca set codempsn=?, codfilialsn=?, codsinal=? " );
-				sql.append( "where codemp=? and codfilial=? and codlanca=? " );
-				
-				ps = con.prepareStatement( sql.toString() );
-				
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
-				ps.setInt( 3, codsinal );
-				
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "FNSINAL" ) );
-				ps.setInt( 6, codlanca );
-				
-				ps.execute();
-				
-				con.commit();
-				
-				
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
 		
 		/*
 
@@ -1002,7 +920,25 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				
 				String opcao  = menu.getText();
 				
-				Integer codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+				Integer codsinal = null;
+				
+				if(menu != menucancelacor && menu != menucadastracor ) {
+				
+					codsinal = Integer.parseInt( opcao.substring( 0, opcao.indexOf( "-" ) ));
+					
+				}
+				else if (evt.getSource() == menucadastracor){
+					
+					if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
+						Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
+					}
+					else {
+						Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.strUsuario + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()
+								+ ").\nSolicite a liberação do acesso ao administrador do sistema.");
+					}
+					
+					return;
+				}
 				
 				atualizaCor( codsinal, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ) );
 				
@@ -1128,6 +1064,91 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				Funcoes.mensagemErro(null, "Erro ao buscar sinais");
 			}
 			return ret;
+		}
+		
+		private void atualizaCor(Integer codsinal, Integer codlanca ) {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			
+			try {
+				
+				sql.append( "update fnlanca set codempsn=?, codfilialsn=?, codsinal=? " );
+				sql.append( "where codemp=? and codfilial=? and codlanca=? " );
+				
+				ps = con.prepareStatement( sql.toString() );
+
+				if(codsinal!=null) {
+				
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "FNSINAL" ) );
+					ps.setInt( 3, codsinal );
+			
+				}
+				else {
+
+					ps.setNull( 1, Types.INTEGER );
+					ps.setNull( 2, Types.INTEGER );
+					ps.setNull( 3, Types.INTEGER );
+					
+				}
+					
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				ps.setInt( 6, codlanca );
+				
+				ps.execute();
+				
+				con.commit();
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void montaMenuCores() {
+
+			try {
+				
+				HashMap<String, Vector<?>> cores = montaListaCores();
+				
+				Vector<Color> labels = (Vector<Color>) cores.get( "LAB" );
+				Vector<HashMap<String, Object>> valores = (Vector<HashMap<String, Object>>) cores.get("VAL");
+		
+				for( int i =0; i < valores.size(); i++ ) {
+					
+					JMenuItem menucor = new JMenuItem();
+					
+					menucor.addActionListener(this);
+					
+					menucor.setBackground( labels.elementAt( i ) );
+					
+					HashMap<String, Object> hvalores = valores.elementAt( i );
+					
+					menucor.setText( (Integer) hvalores.get( "CODSINAL" ) + "-" + (String) hvalores.get( "DESCSINAL" ) );
+					
+					menuCores.add(menucor);
+					
+				}
+				
+				menuCores.addSeparator();
+				
+				menucancelacor.setText( "Limpa cor" );
+				menucadastracor.setText( "Cadastro nova cor" );
+				
+				menucancelacor.addActionListener( this );
+				menucadastracor.addActionListener( this );
+				
+				menuCores.add( menucancelacor );
+				menuCores.add( menucadastracor );
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 		
