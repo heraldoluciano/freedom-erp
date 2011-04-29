@@ -105,7 +105,11 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 			
 			setEditable(true);
 			
-			Color cor = (Color) getSelectedItem();
+			Color cor = Color.WHITE;
+			
+			if( (Integer) getSelectedItem() != null) {
+				cor = new Color( (Integer) val.get( (Integer) getSelectedItem()) );
+			}
 			
 			editor = new ColorComboBoxEditor(cor);
 
@@ -113,9 +117,17 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 			
 			setRenderer(new ColorCellRenderer());
 			
+			valores = val;
+			
+			for (int i = 0; i < label.size(); i++) {
+				
+				addItem(label.elementAt(i));
+				
+			}	
+			
 		}
 		
-		if (val != null && label != null) {
+		else if (val != null && label != null) {
 			valores = val;
 		
 			for (int i = 0; i < label.size(); i++) {
@@ -154,15 +166,20 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		criando = false;
 	}
 
-	static class ColorCellRenderer implements ListCellRenderer {
+	class ColorCellRenderer implements ListCellRenderer {
 		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,	isSelected, cellHasFocus);
 
-			if (value instanceof Color) {
-				renderer.setBackground((Color) value);
-				renderer.setText(" ");
+			if (value instanceof Color && tipo==TP_COR ) {
+				
+				if( value!=null ) {
+					renderer.setBackground((Color) value );
+				}
+				
+				renderer.setText(" "); 
+				
 			}
 
 			return renderer;
@@ -176,8 +193,10 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		  protected EventListenerList listenerList = new EventListenerList();
 
 		  public ColorComboBoxEditor(Color initialColor) {
+			  
 		    editor = new JButton("");
 		    editor.setBackground(initialColor);
+		    
 		    /*
 		    ActionListener actionListener = new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
@@ -221,17 +240,30 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 		  public void setItem(Object newValue) {
 		    if (newValue instanceof Color) {
+		    	
 		      Color color = (Color) newValue;
 		      editor.setBackground(color);
-		    } else {
+		      
+		    } 
+		    else {
+		    	
+		    	//setVlrString("teste");
+		    	
 		      try {
 		     //   Color color = Color.decode(newValue.toString());
 		     //   editor.setBackground(color);
-		      } catch (NumberFormatException e) {
+		      } 
+		      catch (NumberFormatException e) {
+		    	  e.printStackTrace();
 		      }
 		    }
 		  }
-
+ 
+		  
+		//  public void setItem(Object newvalue) {
+//			  super.
+		//  }
+		  
 		  protected void fireActionEvent(Color color) {
 		    Object listeners[] = listenerList.getListenerList();
 		    for (int i = listeners.length - 2; i >= 0; i -= 2) {
