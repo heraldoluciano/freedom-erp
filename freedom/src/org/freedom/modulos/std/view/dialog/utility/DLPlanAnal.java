@@ -28,19 +28,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.util.Vector;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
-
-import java.util.Vector;
 
 public class DLPlanAnal extends FFDialogo {
 
@@ -61,6 +60,8 @@ public class DLPlanAnal extends FFDialogo {
 	private final JTextFieldPad txtCodAnal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescAnal = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodRedAnal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -98,11 +99,12 @@ public class DLPlanAnal extends FFDialogo {
 
 	private ListaCampos lcHist = new ListaCampos( this, "HP" );
 
-	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String sFin, String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade, String sESFin, String sClasFin ) {
+	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String sFin, String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade, String sESFin, String sClasFin, Integer codredplan ) {
 
 		super( cOrig );
+		
 		setTitulo( "Planejamento financeiro (Conta Analítica)" );
-		setAtribos( 430, 550 );
+		setAtribos( 430, 570 );
 
 		montaListaCampos();
 		montaRadioGroup();
@@ -121,6 +123,11 @@ public class DLPlanAnal extends FFDialogo {
 		txtCodHistPad.setVlrInteger( iCodHist );
 		rgFinPlan.setVlrString( sFinalidade );
 		rgTipoPlan.setVlrString( sTipo );
+		
+		if(codredplan!=null && codredplan > 0) {
+			txtCodRedAnal.setVlrInteger( codredplan );
+		}
+		
 		if ( "".equals( sFin.trim() ) ) {
 			rgFinPlan.setVlrString( sFin );
 		}
@@ -171,6 +178,7 @@ public class DLPlanAnal extends FFDialogo {
 		vLabsTipoPlan.addElement( "Caixa" );
 		vLabsTipoPlan.addElement( "Despesas" );
 		vLabsTipoPlan.addElement( "Receitas" );
+		
 		rgTipoPlan = new JRadioGroup<String, String>( 2, 2, vLabsTipoPlan, vValsTipoPlan );
 		rgTipoPlan.setAtivo( 0, false );
 		rgTipoPlan.setAtivo( 1, false );
@@ -199,54 +207,51 @@ public class DLPlanAnal extends FFDialogo {
 		vLabsFinPlan.addElement( "CS - Contribuição social" );
 		vLabsFinPlan.addElement( "IR - Imposto de renda" );
 		vLabsFinPlan.addElement( "OO - Outros" );
+		
 		rgFinPlan = new JRadioGroup<String, String>( 6, 2, vLabsFinPlan, vValsFinPlan );
 
 		vValsEsFinPlan.addElement( "E" );
 		vValsEsFinPlan.addElement( "S" );
 		vLabsEsFinPlan.addElement( "Entrada" );
 		vLabsEsFinPlan.addElement( "Saída" );
+		
 		rgEsFinPlan = new JRadioGroup<String, String>( 1, 2, vLabsEsFinPlan, vValsEsFinPlan );
 
 		vValsClasFinPlan.addElement( "O" );
 		vValsClasFinPlan.addElement( "N" );
 		vLabsClasFinPlan.addElement( "Operacional" );
 		vLabsClasFinPlan.addElement( "Não Operacional" );
+		
 		rgClasFinPlan = new JRadioGroup<String, String>( 1, 2, vLabsClasFinPlan, vValsClasFinPlan );
 
 	}
 
 	private void montaTela() {
 
-		panelfields.adic( new JLabelPad( "Cód.origem" ), 7, 0, 80, 20 );
-		panelfields.adic( txtCodPai, 7, 20, 80, 20 );
-		panelfields.adic( new JLabelPad( "Descrição da origem" ), 90, 0, 300, 20 );
-		panelfields.adic( txtDescPai, 90, 20, 300, 20 );
-		panelfields.adic( new JLabelPad( "Código" ), 7, 40, 110, 20 );
-		panelfields.adic( txtCodAnal, 7, 60, 110, 20 );
-		panelfields.adic( new JLabelPad( "Descrição" ), 120, 40, 270, 20 );
-		panelfields.adic( txtDescAnal, 120, 60, 270, 20 );
-		panelfields.adic( rgTipoPlan, 7, 90, 383, 60 );
-		panelfields.adic( new JLabelPad( "Finalidade" ), 7, 155, 270, 20 );
-		panelfields.adic( rgFinPlan, 7, 175, 383, 130 );
-		panelfields.adic( new JLabelPad( "Origem" ), 7, 310, 270, 20 );
-		panelfields.adic( rgEsFinPlan, 7, 330, 383, 30 );
-		panelfields.adic( new JLabelPad( "Classificação" ), 7, 360, 270, 20 );
-		panelfields.adic( rgClasFinPlan, 7, 380, 383, 30 );
+		panelfields.adic( txtCodPai			, 7		, 20	, 80	, 20	, "Cód.origem"			 			);
+		panelfields.adic( txtDescPai		, 90	, 20	, 300	, 20	, "Descrição da origem" 			);
+		panelfields.adic( txtCodAnal		, 7		, 60	, 110	, 20	, "Código" 							);
+		panelfields.adic( txtDescAnal		, 120	, 60	, 270	, 20	, "Descrição" 						);
 
-		panelcontabil.adic( new JLabelPad( "Cód.cont.débito" ), 7, 0, 150, 20 );
-		panelcontabil.adic( txtCodContDeb, 7, 20, 150, 20 );
-		panelcontabil.adic( new JLabelPad( "Cód.cont.crédito" ), 160, 0, 150, 20 );
-		panelcontabil.adic( txtCodContCred, 160, 20, 150, 20 );
-		panelcontabil.adic( new JLabelPad( "Cód.hist." ), 7, 40, 80, 20 );
-		panelcontabil.adic( txtCodHistPad, 7, 60, 80, 20 );
-		panelcontabil.adic( new JLabelPad( "Descrição do historico padrão" ), 90, 40, 300, 20 );
-		panelcontabil.adic( txtDescHistPad, 90, 60, 300, 20 );
+		panelfields.adic( txtCodRedAnal 	, 7		, 100	, 110	, 20	, "Código resumido" 				);
+		
+		panelfields.adic( rgTipoPlan		, 7		, 130	, 383	, 60 										);
+		panelfields.adic( rgFinPlan			, 7		, 215	, 383	, 130	, "Finalidade" 						);
+		panelfields.adic( rgEsFinPlan		, 7		, 370	, 383	, 30	, "Origem" 							);
+		panelfields.adic( rgClasFinPlan		, 7		, 420	, 383	, 30	, "Classificação" 					);
 
-		tabbedpanel.add( "Geral", panelfields );
-		tabbedpanel.add( "Contábil", panelcontabil );
+		panelcontabil.adic( txtCodContDeb	, 7		, 20	, 150	, 20	, "Cód.cont.débito" 				);
+		panelcontabil.adic( txtCodContCred	, 160	, 20	, 150	, 20	, "Cód.cont.crédito" 				);
+		panelcontabil.adic( txtCodHistPad	, 7		, 60	, 80	, 20	, "Cód.hist." 						);
+		panelcontabil.adic( txtDescHistPad	, 90	, 60	, 300	, 20	, "Descrição do historico padrão" 	);
+
+		tabbedpanel.add( "Geral"			, panelfields 	);
+		tabbedpanel.add( "Contábil"			, panelcontabil );
 
 		panelgeral.add( tabbedpanel, BorderLayout.CENTER );
+		
 		setPanel( panelgeral );
+		
 	}
 
 	private void cancText( JTextFieldPad txt ) {
@@ -255,6 +260,7 @@ public class DLPlanAnal extends FFDialogo {
 		txt.setFont( new Font( "Dialog", Font.BOLD, 12 ) );
 		txt.setEditable( false );
 		txt.setForeground( new Color( 118, 89, 170 ) );
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -271,7 +277,8 @@ public class DLPlanAnal extends FFDialogo {
 
 	public Object[] getValores() {
 
-		Object[] ret = new Object[ 7 ];
+		Object[] ret = new Object[ 8 ];
+		
 		ret[ 0 ] = txtDescAnal.getVlrString();
 		ret[ 1 ] = rgFinPlan.getVlrString();
 		ret[ 2 ] = txtCodContCred.getVlrString();
@@ -279,6 +286,7 @@ public class DLPlanAnal extends FFDialogo {
 		ret[ 4 ] = txtCodHistPad.getVlrInteger();
 		ret[ 5 ] = rgEsFinPlan.getVlrString();
 		ret[ 6 ] = rgClasFinPlan.getVlrString();
+		ret[ 7 ] = txtCodRedAnal.getVlrInteger();
 
 		return ret;
 	}
