@@ -34,6 +34,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +56,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private final JTextFieldPad txtCodRedPlan = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -130,10 +133,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód. Plan.", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI, false ) );
+		lcPlan.add( new GuardaCampo( txtCodRedPlan, "CodRedPlan", "Cód.Reduz.", ListaCampos.DB_SI, false ) );
+		
 		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
-		txtCodPlan.setTabelaExterna( lcPlan, null );
+		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
