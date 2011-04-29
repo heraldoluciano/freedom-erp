@@ -29,22 +29,21 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Date;
+import java.util.Vector;
+
+import javax.swing.JTextField;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
-
-import java.util.Date;
-import java.util.Vector;
-
-import javax.swing.JTextField;
 
 public class DLAnalBanc extends FFDialogo implements FocusListener {
 
@@ -74,36 +73,11 @@ public class DLAnalBanc extends FFDialogo implements FocusListener {
 
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
-	// private JCheckBoxPad cbCompSldCx = new JCheckBoxPad("Compõe saldo de caixa","S","N");
 	private JTabbedPanePad tbp = new JTabbedPanePad();
 
 	private JPanelPad pinGeral = new JPanelPad( 370, 240 );
 
 	private JPanelPad pinDet = new JPanelPad( 370, 240 );
-
-	private JLabelPad lbCodPai = new JLabelPad( "Código" );
-
-	private JLabelPad lbDescPai = new JLabelPad( "e descrição da origem" );
-
-	private JLabelPad lbCodAnal = new JLabelPad( "Códiogo" );
-
-	private JLabelPad lbDescAnal = new JLabelPad( "Descrição" );
-
-	private JLabelPad lbAgCont = new JLabelPad( "Agência" );
-
-	private JLabelPad lbNumCont = new JLabelPad( "Número" );
-
-	private JLabelPad lbDescCont = new JLabelPad( "Descrição" );
-
-	private JLabelPad lbCodBanc = new JLabelPad( "Código" );
-
-	private JLabelPad lbDescBanc = new JLabelPad( "e nome do banco" );
-
-	private JLabelPad lbDataCont = new JLabelPad( "Data Inicial" );
-
-	private JLabelPad lbCodMoeda = new JLabelPad( "Código" );
-
-	private JLabelPad lbDescMoeda = new JLabelPad( "e descrição da moeda" );
 
 	private Vector<String> vVals = new Vector<String>();
 
@@ -124,73 +98,75 @@ public class DLAnalBanc extends FFDialogo implements FocusListener {
 	public DLAnalBanc( Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String[] ContVals ) {
 
 		super( cOrig );
+		
 		setTitulo( "Nova Conta Analítica" );
-		setAtribos( 380, 305 );
+		setAtribos( 380, 330 );
+		
 		// Monta a tab Geral:
+		
 		cancText( txtCodPai ); // Por ser análitica são desabilitados estes campos:
 		cancText( txtDescPai );
 		cancText( txtCodAnal );
+		
 		txtCodPai.setVlrString( sCodPai ); // Eles Receber valor padrão:
 		txtDescPai.setVlrString( sDescPai );
 		txtCodAnal.setVlrString( sCod );
+		
 		vVals.addElement( "B" ); // Aqui é montado o JRadioGroup<?, ?> do tipo de conta:
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
 		vVals.addElement( "R" );
+		
 		vLabs.addElement( "Bancos" );
 		vLabs.addElement( "Caixa" );
 		vLabs.addElement( "Despesas" );
 		vLabs.addElement( "Receitas" );
+		
 		rgTipo = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
 		rgTipo.setVlrString( sTipo );
 		rgTipo.setAtivo( 0, false );
 		rgTipo.setAtivo( 1, false );
 		rgTipo.setAtivo( 2, false );
 		rgTipo.setAtivo( 3, false );
+		
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Código", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição", ListaCampos.DB_SI, false ) );
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
 		lcMoeda.setReadOnly( true );
+		
 		txtCodMoeda.setTabelaExterna( lcMoeda, null ); // Tabela da Foreign Key
 		txtCodMoeda.setFK( true );
 		txtCodMoeda.setNomeCampo( "CodMoeda" );
+		
 		vValsCont.addElement( "B" ); // Aqui é montado o JRadioGroup<?, ?> do tipo de entrada:
 		vValsCont.addElement( "C" );
 		vLabsCont.addElement( "Bancos" );
 		vLabsCont.addElement( "Caixa" );
+		
 		rgTipoCont = new JRadioGroup<String, String>( 1, 2, vLabsCont, vValsCont );
+	
 		Funcoes.setBordReq( txtDescAnal );
 		Funcoes.setBordReq( txtNumCont );
 		Funcoes.setBordReq( txtDescCont );
 		Funcoes.setBordReq( txtDataCont );
 		Funcoes.setBordReq( txtCodMoeda );
-		pinGeral.adic( lbCodPai, 7, 0, 80, 20 );// São adicionados os componentes:
-		pinGeral.adic( txtCodPai, 7, 20, 80, 20 );
-		pinGeral.adic( lbDescPai, 90, 0, 200, 20 );
-		pinGeral.adic( txtDescPai, 90, 20, 240, 20 );
-		pinGeral.adic( lbCodAnal, 7, 40, 100, 20 );
-		pinGeral.adic( txtCodAnal, 7, 60, 110, 20 );
-		pinGeral.adic( lbDescAnal, 120, 40, 110, 20 );
-		pinGeral.adic( txtDescAnal, 120, 60, 210, 20 );
+
+		pinGeral.adic( txtCodPai, 7, 20, 80, 20, "Código" );
+		pinGeral.adic( txtDescPai, 90, 20, 240, 20, "e descrição da origem" );
+		pinGeral.adic( txtCodAnal, 7, 60, 110, 20, "Código" );
+		pinGeral.adic( txtDescAnal, 120, 60, 210, 20, "Descrição" );
 		pinGeral.adic( rgTipo, 7, 90, 323, 60 );
-		// pinGeral.adic( cbCompSldCx, 7, 120, 210, 20 );
-		pinDet.adic( lbAgCont, 7, 0, 80, 20 );
-		pinDet.adic( txtAgCont, 7, 20, 80, 20 );
-		pinDet.adic( lbNumCont, 90, 0, 240, 20 );
-		pinDet.adic( txtNumCont, 90, 20, 240, 20 );
-		pinDet.adic( lbDescCont, 7, 40, 323, 20 );
-		pinDet.adic( txtDescCont, 7, 60, 323, 20 );
-		pinDet.adic( lbCodBanc, 7, 80, 80, 20 );
-		pinDet.adic( txtCodBanco, 7, 100, 80, 20 );
-		pinDet.adic( lbDescBanc, 90, 80, 240, 20 );
-		pinDet.adic( txtDescBanco, 90, 100, 240, 20 );
-		pinDet.adic( lbDataCont, 7, 120, 90, 20 );
-		pinDet.adic( txtDataCont, 7, 140, 90, 20 );
+
+		pinDet.adic( txtAgCont, 7, 20, 80, 20, "Agência" );
+		pinDet.adic( txtNumCont, 90, 20, 240, 20, "Número" );
+		pinDet.adic( txtDescCont, 7, 60, 323, 20, "Descrição" );
+		pinDet.adic( txtCodBanco, 7, 100, 80, 20, "Código" );
+		pinDet.adic( txtDescBanco, 90, 100, 240, 20, "e nome do banco" );
+		pinDet.adic( txtDataCont, 7, 140, 90, 20, "Data Inicial" );
 		pinDet.adic( rgTipoCont, 100, 130, 223, 30 );
-		pinDet.adic( lbCodMoeda, 7, 160, 80, 20 );
-		pinDet.adic( txtCodMoeda, 7, 180, 80, 20 );
-		pinDet.adic( lbDescMoeda, 90, 160, 240, 20 );
-		pinDet.adic( txtDescMoeda, 90, 180, 240, 20 );
+		pinDet.adic( txtCodMoeda, 7, 180, 80, 20, "Código" );
+		pinDet.adic( txtDescMoeda, 90, 180, 240, 20, "e descrição da moeda" );
+
 		// Monta a tab Detalhe:
 		lcBanc.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanc.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Descrição do banco", ListaCampos.DB_SI, false ) );
@@ -199,12 +175,12 @@ public class DLAnalBanc extends FFDialogo implements FocusListener {
 		txtCodBanco.setTabelaExterna( lcBanc, null );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
+		
 		// Se for Novo:
 		if ( sTipo.compareTo( "B" ) == 0 ) {// Para cada entrada muda-se os Valores e Campos abilitados:
 			rgTipoCont.setVlrString( sTipo );
 			rgTipoCont.setAtivo( 0, false );
 			rgTipoCont.setAtivo( 1, false );
-			// cbCompSldCx.setEnabled( true );
 		}
 		else if ( sTipo.compareTo( "C" ) == 0 ) {
 			cancText( txtAgCont );
@@ -212,11 +188,8 @@ public class DLAnalBanc extends FFDialogo implements FocusListener {
 			rgTipoCont.setVlrString( sTipo );
 			rgTipoCont.setAtivo( 0, false );
 			rgTipoCont.setAtivo( 1, false );
-			// cbCompSldCx.setEnabled( true );
 		}
-		// else {
-		// cbCompSldCx.setEnabled( false );
-		// }
+
 		// Se for Editar:
 		if ( sDesc != null ) {
 			setTitulo( "Edição de Conta Analítica" );
@@ -230,10 +203,13 @@ public class DLAnalBanc extends FFDialogo implements FocusListener {
 			txtDataCont.setVlrString( ContVals[ 4 ] );
 			txtCodMoeda.setVlrString( ContVals[ 5 ] );
 		}
+		
 		txtDescAnal.addFocusListener( this );
 		txtDescAnal.requestFocus();
+		
 		tbp.add( "Geral", pinGeral );
 		tbp.add( "Detalhe", pinDet );
+		
 		c.add( tbp, BorderLayout.CENTER );
 	}
 

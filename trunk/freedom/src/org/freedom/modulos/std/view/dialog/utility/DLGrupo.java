@@ -116,7 +116,7 @@ public class DLGrupo extends FFDialogo {
 
 		if ( evt.getSource() == btOK ) {
 			if ( txtCodGrupo.getText().trim().length() == 0 ) {
-				Funcoes.mensagemInforma( this, "Códiogo em branco! ! ! " );
+				Funcoes.mensagemInforma( this, "Código em branco! ! ! " );
 				txtCodGrupo.requestFocus();
 				return;
 			}
