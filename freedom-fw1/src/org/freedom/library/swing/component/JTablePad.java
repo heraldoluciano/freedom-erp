@@ -101,17 +101,31 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if(isSelected) {
+					
 					setBackground(new Color(160,170,210));
+					
 				}
 				else {
 
-
 					if(row % 2 == 0) {
-						setBackground(new Color(210,215,220));
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {						
+							setBackground(new Color(210,215,220));
+						}
 					} 
 					else {
-						setBackground(null);
+						
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+							setBackground(null);
+						}
+						
 					}
+					
 				}
 
 				return this;
@@ -142,15 +156,29 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if(isSelected) {
+
 					setBackground(new Color(160,170,210));
+
 				}
 				else {
 
 					if(row % 2 == 0) {
-						setBackground(new Color(210,215,220));
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column) );
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
 					} 
 					else {
-						setBackground(null);
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
 					}
 				}
 				return this;
@@ -182,14 +210,28 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if(isSelected) {
+					
 					setBackground(new Color(160,170,210));
+					
 				}
 				else {
 					if(row % 2 == 0) {
-						setBackground(new Color(210,215,220));
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
 					} 
 					else {
-						setBackground(null);
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
 					}
 				}
 
@@ -227,10 +269,22 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				}
 				else {
 					if(row % 2 == 0) {
-						setBackground(new Color(210,215,220));
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
 					} 
 					else {
-						setBackground(null);
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
 					}
 				}
 
@@ -241,6 +295,43 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		
 		imageIconRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		setDefaultRenderer(ImageIcon.class, imageIconRenderer);
+		
+		
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo Color
+		 * 
+		 *******************************************************/
+		
+		DefaultTableCellRenderer ColorRenderer = new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void setValue(Object value)	{ 
+			
+				if (value != null)	{
+//					Icon((ImageIcon)value);
+					setBackground((Color) value);
+//					setText(( value == null ) ? "" : "Cor" );
+					
+					
+				}
+			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				
+				setBackground((Color) value);
+
+				return this;
+			}
+
+		};
+		
+		ColorRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		setDefaultRenderer(Color.class, ColorRenderer);
+		
 		
 		/*******************************************************
 		 * 
@@ -262,10 +353,22 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				else {
 
 					if(row % 2 == 0) {
-						setBackground(new Color(210,215,220));
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
 					} 
 					else {
-						setBackground(null);
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
 					}
 				}
 
@@ -274,8 +377,6 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 		});
 
-
-	
 		setDefaultEditor(Date.class, new DateEditor());
 
 	}
@@ -328,10 +429,14 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 	public void adicLinha() {
 
 		Vector<Object> vVals = new Vector<Object>();
+		
 		for (int i = 0; i < ContaColunas; i++) {
 			vVals.addElement("");
 		}
+		
 		modelo.addRow(vVals);
+		
+		
 		if (bAutoRol) {
 			setLinhaSel(ContaLinhas);
 		}
@@ -438,7 +543,19 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			obj = "";
 		if (( lin < ContaLinhas ) & ( col < ContaColunas )) {
 			modelo.setValueAt(obj, lin, col);
+			modelo.setColorAt(null, lin, col);
 		}
+	}
+	
+	public void setValor(Object obj, int lin, int col, Color back) {
+
+		if (obj == null)
+			obj = "";
+		if (( lin < ContaLinhas ) & ( col < ContaColunas )) {
+			modelo.setValueAt(obj, lin, col);
+			modelo.setColorAt(back, lin, col);
+		}
+		
 	}
 
 
@@ -450,6 +567,16 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		}
 		return ret;
 	}
+	
+	public Color getColor(int lin, int col) {
+
+		Color ret = null;
+		if (( lin < ContaLinhas ) & ( col < ContaColunas )) {
+			ret = (Color) modelo.getColorAt(lin, col);
+		}
+		return ret;
+	}
+
 
 	public int getLinhaSel() {
 		if (getSelectedRow() > -1) {
@@ -600,6 +727,8 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		private static final long serialVersionUID = 1L;
 
 		protected Vector<Vector<Object>> dataVector;
+		
+		protected Vector<Vector<Object>> colorVector;
 
 		protected Vector<Object> columnIdentifiers;
 
@@ -608,7 +737,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		boolean[] bColsEdit = null;
 
 		JTablePad tabEdLis = null;
-
+		
 		public Modelo() {
 
 			this(( Vector<Object> ) null, 0);
@@ -620,6 +749,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			names.setSize(numColumns);
 			setColumnIdentifiers(names);
 			dataVector = new Vector<Vector<Object>>();
+			colorVector = new Vector<Vector<Object>>();
 			setNumRows(numRows);
 		}
 
@@ -627,6 +757,7 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 			setColumnIdentifiers(columnNames);
 			dataVector = new Vector<Vector<Object>>();
+			colorVector = new Vector<Vector<Object>>();
 			setNumRows(numRows);
 		}
 
@@ -711,14 +842,19 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 			int oldNumRows = getRowCount();
 			if (newSize <= getRowCount()) {
 				dataVector.setSize(newSize);
+				colorVector.setSize(newSize);
 				fireTableRowsDeleted(getRowCount(), oldNumRows - 1);
 			}
 			else {
 				int columnCount = getColumnCount();
 				while (getRowCount() < newSize) {
 					Vector<Object> newRow = new Vector<Object>(columnCount);
+					Vector<Object> newRow2 = new Vector<Object>(columnCount);
+					
 					newRow.setSize(columnCount);
+					newRow2.setSize(columnCount);
 					dataVector.addElement(newRow);
+					colorVector.addElement(newRow2);
 				}
 				fireTableRowsInserted(oldNumRows, getRowCount() - 1);
 			}
@@ -745,6 +881,19 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 				enumeration.nextElement().addElement(value);
 				index++;
 			}
+			
+			Enumeration<Vector<Object>> enumeration2 = colorVector.elements();
+			index = 0;
+			while (enumeration2.hasMoreElements()) {
+				Object value;
+				if (( columnData != null ) && ( index < columnData.size() ))
+					value = columnData.elementAt(index);
+				else
+					value = null;
+				enumeration2.nextElement().addElement(value);
+				index++;
+			}
+			
 			fireTableStructureChanged();
 		}
 
@@ -754,14 +903,20 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		}
 
 		public void addRow(Vector<Object> rowData) {
-
+			
 			if (rowData == null) {
 				rowData = new Vector<Object>(getColumnCount());
+				
 			}
 			else {
 				rowData.setSize(getColumnCount());
 			}
-			dataVector.addElement(rowData);
+			
+			Vector<Object> rowData2 = (Vector<Object>) rowData.clone();
+			
+			dataVector.addElement( rowData );
+			colorVector.addElement( rowData2 );
+			
 			newRowsAdded(new TableModelEvent(this, getRowCount() - 1, getRowCount() - 1, TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
 		}
 
@@ -875,16 +1030,51 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		}
 
 		public Object getValueAt(int row, int column) {
-
-			Vector<?> rowVector = dataVector.elementAt(row);
-			return rowVector.elementAt(column);
+			
+			Object ret = null;
+			Vector<?> rowVector = null;
+			
+			try {
+				rowVector = dataVector.elementAt(row);
+				ret = rowVector.elementAt(column);
+			}
+			catch (Exception e) {
+				System.out.println("Data vector: " + dataVector);
+				System.out.println("Linha:" + row + " Coluna:" + column);
+				System.out.println("Dados: " + rowVector);
+				//e.printStackTrace();
+				
+			}
+	
+			return ret;
+			
 		}
 
+		public Color getColorAt(int row, int column) {
+
+			Vector<?> rowVector = colorVector.elementAt(row);
+			
+			if(rowVector.elementAt(column) instanceof Color) {			
+				return (Color) rowVector.elementAt(column);
+			}
+			
+			return null;
+			
+		}
+
+		
 		public void setValueAt(Object aValue, int row, int column) {
 
 			Vector<Object> rowVector = dataVector.elementAt(row);
 			rowVector.setElementAt(aValue, column);
 			fireTableChanged(new TableModelEvent(this, row, row, column));
+		}
+		
+		public void setColorAt(Color cor, int row, int column) {
+
+			Vector<Object> rowVector = colorVector.elementAt(row);
+			rowVector.setElementAt(cor, column);
+//			fireTableChanged(new TableModelEvent(this, row, row, column));
 		}
 
 		public Class<? extends Object> getColumnClass(int c) {
