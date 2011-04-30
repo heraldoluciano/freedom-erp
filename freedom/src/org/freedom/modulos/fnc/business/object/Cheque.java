@@ -99,7 +99,7 @@ public class Cheque {
 	private String decpmoeda;
 
 	public static enum COLS_CHEQ {
-		SEL, SEQ, DTEMIT, DTVENCTO, NUMCHEQ, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA, HISTCHEQ
+		SEL, SEQ, DTEMIT, DTVENCTO, NUMCHEQ, CODFOR, NOMEFAVCHEQ, SITCHEQ, VLRCHEQ, NUMCONTA, HISTCHEQ
 	};
 
 	public Cheque( Integer seqcheq ) {
