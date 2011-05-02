@@ -43,11 +43,11 @@ public class DLFechaQual extends FFDialogo {
 
 	private JTextFieldPad txtDescAfer = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtVlrAfer = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldPad txtVlrAfer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private Vector<String> vLabs1 = new Vector<String>();
 
