@@ -142,15 +142,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtCodProdDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private JTextFieldPad txtEspecificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItEst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
-	private JTextFieldPad txtQtdItEstSP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItEstSP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtRMA = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
