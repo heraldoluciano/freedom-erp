@@ -121,15 +121,15 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 	// *** Vendas
 
-	private JTextFieldFK txtVlrTotalChequesGeral = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrTotalChequesGeral = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
-	private JTextFieldFK txtVlrTotalChequesCadastrados = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrTotalChequesCadastrados = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
-	private JTextFieldFK txtVlrTotalChequesEmitidos = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrTotalChequesEmitidos = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
-	private JTextFieldFK txtVlrTotalChequesCompensados = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrTotalChequesCompensados = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
-	private JTextFieldFK txtVlrTotalChequesDevolvidos = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrTotalChequesDevolvidos = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTablePad tabCheques = new JTablePad();
 

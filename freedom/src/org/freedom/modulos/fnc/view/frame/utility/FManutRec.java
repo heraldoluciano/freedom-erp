@@ -1217,11 +1217,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			rs.close();
 			ps.close();
 
-			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalVencer.setVlrDouble( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalCancelado.setVlrDouble( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalVencido.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalParcial.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalRecebido.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalVencer.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalCancelado.setVlrBigDecimal( new BigDecimal(Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin )) );
 
 			con.commit();
 		} catch ( SQLException err ) {
@@ -1352,11 +1352,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			txtCodBancoBaixa.setVlrString( sCodBanco );
 			lcBancoBaixa.carregaDados();
 
-			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalVencer.setVlrDouble( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalCancelado.setVlrDouble( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalVencido.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalParcial.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalRecebido.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalVencer.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin )) );
+			txtTotalCancelado.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin )) );
 
 			con.commit();
 		} catch ( SQLException err ) {
