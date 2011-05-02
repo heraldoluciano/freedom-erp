@@ -114,7 +114,7 @@ public class FEmpresa extends FDetalhe {
 
 	private JTextFieldPad txtPercCSocial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtPercSimples = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 5, 2 );
+	private JTextFieldPad txtPercSimples = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
 	private JCheckBoxPad cbMultiAlmox = new JCheckBoxPad( "Sim", "S", "N" );
 
