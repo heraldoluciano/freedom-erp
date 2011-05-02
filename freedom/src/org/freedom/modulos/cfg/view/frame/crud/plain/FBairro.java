@@ -69,9 +69,9 @@ public class FBairro extends FDados implements ActionListener {
 
 	private JTextFieldFK txtDescMunic = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextFieldPad txtVlrFrete = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecPre );
+	private JTextFieldPad txtVlrFrete = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecPre );
 	
-	private JTextFieldPad txtQtdFrete = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldPad txtQtdFrete = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
 	public FBairro() {
 
