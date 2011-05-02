@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FRRazaoFin extends FRelatorio {
 
@@ -53,7 +54,7 @@ public class FRRazaoFin extends FRelatorio {
 
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private ListaCampos lcPlan = new ListaCampos( this );
 
