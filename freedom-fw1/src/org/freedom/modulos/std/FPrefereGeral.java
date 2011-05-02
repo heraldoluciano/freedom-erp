@@ -231,7 +231,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldPad txtCasasDecPre = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 1, 0);
 	
-	private JTextFieldPad txtPercPrecoCusto = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+	private JTextFieldPad txtPercPrecoCusto = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 
