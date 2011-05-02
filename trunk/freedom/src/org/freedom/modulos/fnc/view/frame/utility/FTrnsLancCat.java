@@ -51,6 +51,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListener {
 
@@ -66,13 +67,13 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 	private final JLabel status = new JLabel( "Aguardando verificação.", SwingConstants.CENTER );
 
-	private final JTextFieldPad txtCodPlanOrig = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPlan txtCodPlanOrig = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldPad txtDescPlanOrgi = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtTipoPlanOrgi = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private final JTextFieldPad txtCodPlanDest = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPlan txtCodPlanDest = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldPad txtDescPlanDest = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
