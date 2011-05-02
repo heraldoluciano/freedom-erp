@@ -47,6 +47,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.business.component.Juros;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListener, EditListener {
 
@@ -60,7 +61,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 

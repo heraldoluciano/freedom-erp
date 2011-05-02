@@ -34,12 +34,13 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class DLInfoPlanoPag extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPlan txtCodPlanoPag = new JTextFieldPlan( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
