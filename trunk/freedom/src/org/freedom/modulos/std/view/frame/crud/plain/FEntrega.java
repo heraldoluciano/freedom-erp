@@ -70,7 +70,7 @@ public class FEntrega extends FDados {
 	
 	private final JTextFieldFK txtDtSaiVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldFK txtSeries = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 

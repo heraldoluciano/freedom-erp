@@ -65,13 +65,13 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 
 	private final JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtVlrLiqVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtVlrLiqVenda = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtSeries = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private final JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtPercVendaFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, Aplicativo.casasDec );
+	private final JTextFieldPad txtPercVendaFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, Aplicativo.casasDec );
 
 	private final JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -95,9 +95,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
 
 	private final JTextFieldPad txtMarcaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private final JTextFieldFK txtVlrIcmsFreteVD = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldFK txtVlrIcmsFreteVD = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private final JCheckBoxPad cbAdicICMSFrete = new JCheckBoxPad( "adiciona valor do frete na base de ICMS?", "S", "N" );
 
