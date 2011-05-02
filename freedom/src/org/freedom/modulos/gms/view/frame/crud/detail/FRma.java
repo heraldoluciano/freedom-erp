@@ -211,7 +211,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtSldLiqProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldLiqProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -1086,7 +1086,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					}
 					else {
 						txtSitExpItRma.setVlrString( "CA" );
-						txtQtdExpRma.setVlrDouble( new Double( 0 ) );
+						txtQtdExpRma.setVlrBigDecimal( new BigDecimal( 0 ) );
 					}
 					lcDet.post();
 				}
@@ -1494,10 +1494,10 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				txtSitExpItRma.setVlrString( "PE" );
 			}
 			if ( txtQtdAprovRma.getVlrString().equals( "" ) ) {
-				txtQtdAprovRma.setVlrDouble( new Double( 0 ) );
+				txtQtdAprovRma.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 			if ( txtQtdExpRma.getVlrString().equals( "" ) ) {
-				txtQtdExpRma.setVlrDouble( new Double( 0 ) );
+				txtQtdExpRma.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 			if ( sMotvProir.equals( "A" ) ) {
 				dialogObsPrior();

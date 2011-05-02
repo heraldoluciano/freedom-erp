@@ -166,15 +166,15 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtQtdItOS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItOS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
 	private JTextFieldPad txtNroDiasValid = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtQtdItOSItOS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItOSItOS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtCodTpChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
 	// *** Tabelas
 

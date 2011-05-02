@@ -882,8 +882,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 
 		if ( cevt.getListaCampos() == lcDet ) {
 			if ( txtQtdItAprovado.isEditable() ) {
-				if ( txtQtdAprovCot.getVlrDouble().compareTo( new Double( 0 ) ) <= 0 )
-					txtQtdAprovCot.setVlrDouble( txtQtdItAprovado.getVlrDouble() );
+				if ( txtQtdAprovCot.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) <= 0 )
+					txtQtdAprovCot.setVlrBigDecimal( txtQtdItAprovado.getVlrBigDecimal() );
 			}
 		}
 	}
@@ -1125,7 +1125,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 					imp.say( imp.pRow() + 0, 2, rs.getString( "CODITSOL" ) );
 					imp.say( imp.pRow() + 0, 8, rs.getString( "REFPROD" ) );
 					imp.say( imp.pRow() + 0, 22, rs.getString( "DESCPROD" ).substring( 0, 37 ) );
-					imp.say( imp.pRow() + 0, 60, "" + rs.getDouble( "QTDAPROVITSOL" ) );
+					imp.say( imp.pRow() + 0, 60, "" + rs.getBigDecimal( "QTDAPROVITSOL" ) );
 					imp.say( imp.pRow() + 0, 105, "" + rs.getString( "SITITSOL" ) );
 					imp.say( imp.pRow() + 0, 115, "" + rs.getString( "SITAPROVITSOL" ) );
 					imp.say( imp.pRow() + 0, 136, "|" );
@@ -1171,7 +1171,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				imp.say( imp.pRow() + 0, 12, rs.getString( "FONEFOR" ) );
 				imp.say( imp.pRow() + 0, 28, rs.getString( "FAXFOR" ) );
 				imp.say( imp.pRow() + 0, 36, rs.getString( "CELFOR" ) );
-				imp.say( imp.pRow() + 0, 64, "" + rs.getDouble( "PRECOCOT" ) );
+				imp.say( imp.pRow() + 0, 64, "" + rs.getBigDecimal( "PRECOCOT" ) );
 				imp.say( imp.pRow() + 0, 78, "|" );
 
 			}
@@ -1277,7 +1277,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				txtSituacaoItComp.setVlrString( "PE" );
 			}
 			if ( txtQtdItAprovado.getVlrString().equals( "" ) ) {
-				txtQtdItAprovado.setVlrDouble( new Double( 0 ) );
+				txtQtdItAprovado.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 		}
 		else if ( pevt.getListaCampos() == lcCampos ) {
@@ -1310,7 +1310,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 			txtDtCot.setVlrDate( dtatu.getTime() );
 			txtDtValidCot.setVlrDate( dtvencto.getTime() );
 			
-			txtQtdCot.setVlrDouble( txtQtdItAprovado.getVlrDouble() );
+			txtQtdCot.setVlrBigDecimal( txtQtdItAprovado.getVlrBigDecimal() );
 			txtIdUsuCot.setVlrString( Aplicativo.strUsuario );
 			if ( comRef() ) {
 				txtRefProd2.setVlrString( txtRefProd.getVlrString() );
@@ -1321,7 +1321,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 				lcProd3.carregaDados();
 			}
 
-			txtQtdAprovCot.setVlrDouble( new Double( 0.0 ) );
+			txtQtdAprovCot.setVlrBigDecimal( new BigDecimal( 0.0 ) );
 		}
 	}
 
