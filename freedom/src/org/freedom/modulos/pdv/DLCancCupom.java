@@ -84,7 +84,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 	private final JTextFieldFK txtData = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldFK txtValor = new JTextFieldFK( JTextFieldPad.TP_DOUBLE, 10, 2 );
+	private final JTextFieldFK txtValor = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 10, 2 );
 
 	private final JTablePad tab = new JTablePad();
 

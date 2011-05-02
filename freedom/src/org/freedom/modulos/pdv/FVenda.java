@@ -169,7 +169,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtQtdade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
+	private final JTextFieldPad txtQtdade = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC );
 
 	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_PRE );
 
@@ -203,9 +203,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, CASAS_DEC_PRE );
+	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, CASAS_DEC_PRE );
 
-	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_PRE );
+	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_PRE );
 
 	private final JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -221,7 +221,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
+	private final JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC );
 
 	private final JLabelPad lValorTotalItem = new JLabelPad( "Valor total do item" );
 
