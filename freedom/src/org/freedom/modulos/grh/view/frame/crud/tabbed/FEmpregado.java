@@ -154,9 +154,9 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
-	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtCustoHoraTrab = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private final JTextFieldPad txtCustoHoraTrab = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
