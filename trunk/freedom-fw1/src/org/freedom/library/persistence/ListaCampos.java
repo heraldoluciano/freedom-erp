@@ -1078,9 +1078,9 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 						else if (iTipos[iCol] == JTextFieldPad.TP_DECIMAL) {
 							tab.setValor(Funcoes.setPontoDec(rsItens.getString(iCol + 1)), iLin, iCol);
 						}
-						else if (iTipos[iCol] == JTextFieldPad.TP_NUMERIC) {
+/*						else if (iTipos[iCol] == JTextFieldPad.TP_NUMERIC) {
 							tab.setValor(Funcoes.setPontoDec(rsItens.getString(iCol + 1)), iLin, iCol);
-						}
+						}*/
 						else if (iTipos[iCol] == JTextFieldPad.TP_BYTES) {
 							tab.setValor("# BINÁRIO #", iLin, iCol);
 						}
@@ -1934,12 +1934,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 								else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
 									comp.setVlrBigDecimal(new java.math.BigDecimal(rsLC.getString(comp.getNomeCampo())));
 								}
-								else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
+/*								else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
 									comp.setVlrBigDecimal(new java.math.BigDecimal(rsLC.getString(comp.getNomeCampo())));
-								}
-								else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
+								}*/
+/*								else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
 									comp.setVlrDouble(new Double(rsLC.getDouble(comp.getNomeCampo())));
-								}
+								}*/
 								else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
 									comp.setVlrString(StringFunctions.sqlDateToStrDate(rsLC.getDate(comp.getNomeCampo())));
 								}
@@ -2268,12 +2268,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 							else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
 								sqlLC.setNull(iParamPost, Types.DECIMAL);
 							}
-							else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
+/*							else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
 								sqlLC.setNull(iParamPost, Types.NUMERIC);
 							}
 							else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
 								sqlLC.setNull(iParamPost, Types.DOUBLE);
-							}
+							}*/
 							else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
 								sqlLC.setNull(iParamPost, Types.DATE);
 							}
@@ -2299,12 +2299,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 							else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
 								sqlLC.setBigDecimal(iParamPost, comp.getVlrBigDecimal());
 							}
-							else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
+/*							else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
 								sqlLC.setBigDecimal(iParamPost, comp.getVlrBigDecimal());
 							}
 							else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
 								sqlLC.setDouble(iParamPost, ( comp.getVlrDouble() ).doubleValue());
-							}
+							}*/
 							else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
 								sqlLC.setDate(iParamPost, Funcoes.dateToSQLDate(comp.getVlrDate()));
 							}
@@ -2432,12 +2432,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 									else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
 										sqlLC.setNull(iParamPost, Types.DECIMAL);
 									}
-									else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
+/*									else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
 										sqlLC.setNull(iParamPost, Types.NUMERIC);
 									}
 									else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
 										sqlLC.setNull(iParamPost, Types.DOUBLE);
-									}
+									}*/
 									else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
 										sqlLC.setNull(iParamPost, Types.DATE);
 									}
@@ -2469,12 +2469,12 @@ public class ListaCampos extends Container implements PostListener, InsertListen
 									else if (comp.getTipo() == JTextFieldPad.TP_DECIMAL) {
 										sqlLC.setBigDecimal(iParamPost, comp.getVlrBigDecimal());
 									}
-									else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
+/*									else if (comp.getTipo() == JTextFieldPad.TP_NUMERIC) {
 										sqlLC.setBigDecimal(iParamPost, comp.getVlrBigDecimal());
 									}
 									else if (comp.getTipo() == JTextFieldPad.TP_DOUBLE) {
 										sqlLC.setDouble(iParamPost, ( comp.getVlrDouble() ).doubleValue());
-									}
+									}*/
 									else if (comp.getTipo() == JTextFieldPad.TP_DATE) {
 										sqlLC.setDate(iParamPost, Funcoes.dateToSQLDate(comp.getVlrDate()));
 									}
