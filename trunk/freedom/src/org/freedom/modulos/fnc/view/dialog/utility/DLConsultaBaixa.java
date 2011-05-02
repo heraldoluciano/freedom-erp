@@ -50,15 +50,15 @@ public class DLConsultaBaixa extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
+	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
-	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
+	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
-	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
+	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
-	private JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
+	private JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
-	private JTextFieldPad txtVlrAberto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 2 );
+	private JTextFieldPad txtVlrAberto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTablePad tabConsulta = new JTablePad();
 

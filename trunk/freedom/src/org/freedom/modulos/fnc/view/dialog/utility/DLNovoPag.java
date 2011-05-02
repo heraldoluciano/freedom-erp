@@ -112,15 +112,15 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private JTextFieldPad txtNParcPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrParcItPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrParcItPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtDtVencItPag = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrDescPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrDescPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrAPagPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrAPagPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDtEmisPag = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -176,13 +176,13 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private Component owner = null;
 	
-	private JTextFieldPad txtVlrBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrBaseIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrBaseINSS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrBaseINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrRetIRRF = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrRetIRRF = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
-	private JTextFieldPad txtVlrRetINSS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldPad txtVlrRetINSS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
 	private JPanelPad pnRetencoes = new JPanelPad(580, 75);
 	

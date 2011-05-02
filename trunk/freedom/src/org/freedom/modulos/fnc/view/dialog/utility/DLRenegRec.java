@@ -136,8 +136,8 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	private JTextFieldPad txtDtPrevItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldPad txtNParcRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	private JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
-	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	private JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	//private JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
@@ -161,7 +161,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	private JTextFieldPad txtValorDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	private JTextFieldPad txtValorAdicional = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	private JTextFieldPad txtValorJuros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	private JTextFieldPad txtValorTotalRenegociado = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtValorTotalRenegociado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	
 	//ListaCampos
 	private ListaCampos lcReceber = new ListaCampos( this );
