@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="24"/>
-	<property name="ireport.y" value="352"/>
+	<property name="ireport.y" value="144"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,12 +30,12 @@
 	<queryString>
 		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
+B.IMGBOLBANCO LOGOBANCO01,  B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
 MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA,
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, ITR.SEQNOSSONUMERO, ITR.CODREC
+CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT,  ITR.SEQNOSSONUMERO, ITR.DOCLANCAITREC, ITR.CODREC
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
 FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
 WHERE
@@ -62,9 +62,9 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="CODBANCO" class="java.lang.String"/>
 	<field name="DVBANCO" class="java.lang.String"/>
-	<field name="LOGOBANCO01" class="java.io.InputStream"/>
-	<field name="LOGOBANCO02" class="java.io.InputStream"/>
-	<field name="LOGOBANCO03" class="java.io.InputStream"/>
+	<field name="LOGOBANCO01" class="java.lang.Object"/>
+	<field name="LOGOBANCO02" class="java.lang.Object"/>
+	<field name="LOGOBANCO03" class="java.lang.Object"/>
 	<field name="CODCARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
@@ -98,6 +98,7 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="CONVCOB" class="java.lang.String"/>
 	<field name="DESCPONT" class="java.lang.String"/>
 	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
+	<field name="DOCLANCAITREC" class="java.lang.String"/>
 	<field name="CODREC" class="java.lang.Integer"/>
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -680,7 +681,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{DOCUMENTO}.toString() + "/" + $F{NPARCITREC}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{DOCLANCAITREC}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-7" x="159" y="376" width="51" height="9"/>
@@ -1181,7 +1182,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODREC}.toString() + "/" + $F{NPARCITREC}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{DOCLANCAITREC}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-12" x="159" y="90" width="66" height="8"/>
