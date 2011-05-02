@@ -27,6 +27,7 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,10 +62,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int TP_TIME = 2;
 	public static final int TP_TIMESTAMP = 3;
 	public static final int TP_INTEGER = 4;
-	public static final int TP_DOUBLE = 5;
-	public static final int TP_FLOAT = 6;
+//	public static final int TP_DOUBLE = 5;
+//	public static final int TP_FLOAT = 6;
 	public static final int TP_DECIMAL = 7;
-	public static final int TP_NUMERIC = 8;
+//	public static final int TP_NUMERIC = 8;
 	public static final int TP_BOOLEAN = 10;
 	public static final int TP_BYTES = 11;
 	public static final int MC_NADA = -111;
@@ -119,7 +120,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		addKeyListener(this);
 
 		// setPonto();
-		if (( tipo >= TP_INTEGER ) && ( tipo <= TP_NUMERIC ))
+		if (( tipo >= TP_INTEGER ) && ( tipo <= TP_DECIMAL ))
 			setHorizontalAlignment(RIGHT);
 		else
 			setHorizontalAlignment(LEFT);
@@ -213,7 +214,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void setTipo(int tipo, int tam, int dec) {
-		if (( tipo >= TP_INTEGER ) & ( tipo <= TP_NUMERIC ))
+		if (( tipo >= TP_INTEGER ) & ( tipo <= TP_DECIMAL ))
 			setHorizontalAlignment(RIGHT);
 		else
 			setHorizontalAlignment(LEFT);
@@ -401,17 +402,25 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void setVlrBigDecimal(BigDecimal bigVal) {
-		String texto = "";
+		
 		bigVal = bigVal.setScale(iDecimal, BigDecimal.ROUND_HALF_UP);
-		String sVal = bigVal.toString();
-		char[] val = sVal.toCharArray();
-		if (sVal.indexOf('.') >= 0)
-			val[sVal.indexOf('.')] = pontoDecMask;
-		texto = new String(val);
-		super.setText(texto);
+		
+		String formato = "#,";
+		String valores = "0.";
+		
+		for (int i = 0; i < iDecimal; i++) { 
+			formato += "#";
+			valores += "0";
+	    }  
+		
+		DecimalFormat df = new DecimalFormat(formato + valores );
+		String dx = df.format(bigVal);
+		
+		super.setText(dx);
+		
 	}
 
-	public void setVlrDouble(Double dVal) {
+	public void setVlrDoublex(Double dVal) {
 		String texto = "";
 		BigDecimal bigVal = new BigDecimal(dVal.toString());
 		bigVal = bigVal.setScale(iDecimal, BigDecimal.ROUND_HALF_UP);
@@ -459,18 +468,18 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				super.setText("");
 			}
 		}
-		else if (tipoCampo == TP_NUMERIC)
-			setVlrBigDecimal(new BigDecimal(sVal));
+//		else if (tipoCampo == TP_NUMERIC)
+//			setVlrBigDecimal(new BigDecimal(sVal));
 		else if (tipoCampo == TP_DECIMAL)
 			setVlrBigDecimal(new BigDecimal(sVal));
-		else if (tipoCampo == TP_DOUBLE)
-			setVlrDouble(new Double(sVal));
-		else if (tipoCampo == TP_FLOAT)
-			setVlrDouble(new Double(sVal));
+//		else if (tipoCampo == TP_DOUBLE)
+//			setVlrDouble(new Double(sVal));
+//		else if (tipoCampo == TP_FLOAT)
+//			setVlrDouble(new Double(sVal));
 		else if (tipoCampo == TP_INTEGER)
 			setVlrInteger(new Integer(sVal));
-		else if (tipoCampo == TP_NUMERIC)
-			setVlrBigDecimal(new BigDecimal(sVal));
+//		else if (tipoCampo == TP_NUMERIC)
+//			setVlrBigDecimal(new BigDecimal(sVal));
 		else if (tipoCampo == TP_STRING)
 			super.setText(sVal);
 		/*
@@ -486,6 +495,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				super.setText("");
 			}
 		}
+	}
+	
+	public void setTexto(String texto) {
+		super.setText(texto);
 	}
 
 	public boolean getAtivo() {
@@ -689,7 +702,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			if (( Character.isDigit(caract) == false ) && ( caract != '-' ))
 				retorno = false;
 		}
-		else if (( tipoCampo == TP_DECIMAL ) || ( tipoCampo == TP_NUMERIC ) || ( tipoCampo == TP_DOUBLE )) {
+		else if (( tipoCampo == TP_DECIMAL ) /* || ( tipoCampo == TP_NUMERIC ) || ( tipoCampo == TP_DOUBLE )*/ ) {
 			retorno = false;
 			if (( Character.isDigit(caract) ))
 				retorno = true;
@@ -779,7 +792,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void focusLost(FocusEvent e) {
-		if (( tipoCampo >= TP_DOUBLE ) & ( tipoCampo <= TP_NUMERIC ))
+//		if (( tipoCampo >= TP_DOUBLE ) & ( tipoCampo <= TP_NUMERIC ))
+//			super.setText(transValorNum(getText()));
+		if (( tipoCampo >= TP_DECIMAL ) )
 			super.setText(transValorNum(getText()));
 		else if (tipoCampo == TP_DATE)
 			super.setText(Funcoes.verData(transData(getText())));
@@ -909,7 +924,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			else {
 				if (caracValido(cVal) == false)
 					cRet = ( char ) 0;
-				else if (( ( tipoCampo == TP_DECIMAL ) || ( tipoCampo == TP_DOUBLE ) || ( tipoCampo == TP_NUMERIC ) ) && ( ( cVal == ',' ) || ( cVal == '.' ) ))
+				else if (( ( tipoCampo == TP_DECIMAL ) /*|| ( tipoCampo == TP_DOUBLE ) || ( tipoCampo == TP_NUMERIC )*/ ) && ( ( cVal == ',' ) || ( cVal == '.' ) ))
 					cRet = pontoDecMask;
 			}
 		}
