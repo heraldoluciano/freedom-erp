@@ -115,15 +115,15 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final JTextFieldPad txtUFFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtVlrFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private final JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
+	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
+	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
+	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC );
 
 	private final JTextFieldPad txtEspFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -145,15 +145,15 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
+	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
+	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
+	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
