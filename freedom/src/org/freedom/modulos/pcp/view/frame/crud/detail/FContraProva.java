@@ -40,7 +40,7 @@ public class FContraProva extends FDetalhe {
 
 	private JPanelPad pinDet = new JPanelPad();
 
-	private JTextFieldPad txtQtdItRet = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 5 );
+	private JTextFieldPad txtQtdItRet = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
 
 	private JTextFieldPad txtCodOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 

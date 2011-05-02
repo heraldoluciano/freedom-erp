@@ -128,7 +128,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtQtdEst = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldFK txtQtdEst = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -142,23 +142,23 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtDtFabProd = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdDistOp = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdDistOp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldFK txtVlrDensidade = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldFK txtVlrDensidade = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdFinalProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdFinalProdOP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtDtValidOP = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtSeqItOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtQtdItOp = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItOp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdCopiaItOp = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdCopiaItOp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtCodLoteProdRat = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -178,7 +178,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldFK txtUsaLoteDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -210,7 +210,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldFK txtVencLoteRat = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtSldLoteRat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldLoteRat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private ListaCampos lcEstruturaCod = new ListaCampos( this, "PD" );
 
@@ -3239,7 +3239,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				carregaProduto();
 
 				if ( txtQtdPrevProdOP.getVlrString().equals( "" ) ) {
-					txtQtdSugProdOP.setVlrDouble( txtQtdEst.getVlrDouble() );
+					txtQtdSugProdOP.setVlrBigDecimal( txtQtdEst.getVlrBigDecimal() );
 				}
 
 				if ( ( txtCodLoteProdEst.getVlrString().equals( "" ) ) && ( txtUsaLoteEst.getVlrString().equals( "S" ) ) ) {
