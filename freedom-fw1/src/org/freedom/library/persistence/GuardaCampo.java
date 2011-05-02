@@ -416,14 +416,14 @@ public class GuardaCampo extends Component {
 		else if (comp instanceof JTextFieldPad)
 			( ( JTextFieldPad ) comp ).setVlrBigDecimal(val);
 	}
-
+/*
 	public void setVlrDouble(Double val) {
 		if (val == null)
 			( ( JTextFieldPad ) comp ).setText("");
 		else if (comp instanceof JTextFieldPad)
 			( ( JTextFieldPad ) comp ).setVlrDouble(val);
 	}
-
+*/
 	public void setVlrBytes(byte[] bVals) {
 		if (bVals == null)
 			( ( PainelImagem ) comp ).setVlrBytes(new byte[1]);
