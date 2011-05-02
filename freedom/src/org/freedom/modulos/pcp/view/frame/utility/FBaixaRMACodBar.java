@@ -296,7 +296,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 						}
 						else if ( new Double( rs.getDouble( "QTDAPROVITRMA" ) ).compareTo( new Double( Funcoes.strCurrencyToDouble( txtQtdOP.getVlrString() ) ) ) < 0 ) {
 							if ( Funcoes.mensagemConfirma( this, "Quantidade aprovada (" + rs.getString( "QTDAPROVITRMA" ).trim() + ") é inferior à quantidade à expedir (" + txtQtdOP.getVlrString().trim() + ") !\nDeseja expedir a quantidade aprovada?" ) == JOptionPane.YES_OPTION ) {
-								txtQtdOP.setVlrDouble( new Double( rs.getDouble( "QTDAPROVITRMA" ) ) );
+								txtQtdOP.setVlrBigDecimal( rs.getBigDecimal( "QTDAPROVITRMA" ) );
 								adicionaItem( rs, txtQtdOP.getVlrBigDecimal() );
 							}
 						}
@@ -462,7 +462,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener, CarregaLi
 						}
 						else if ( new Double( rs.getDouble( "QTDAPROVITRMA" ) ).compareTo( new Double( Funcoes.strCurrencyToDouble( txtQtdOP.getVlrString() ) ) ) < 0 ) {
 							if ( Funcoes.mensagemConfirma( this, "Quantidade aprovada (" + rs.getString( "QTDAPROVITRMA" ).trim() + ") é inferior à quantidade à expedir (" + txtQtdOP.getVlrString().trim() + ") !\nDeseja expedir a quantidade aprovada?" ) == JOptionPane.YES_OPTION ) {
-								txtQtdOP.setVlrDouble( new Double( rs.getDouble( "QTDAPROVITRMA" ) ) );
+								txtQtdOP.setVlrBigDecimal( rs.getBigDecimal( "QTDAPROVITRMA" ) );
 								adicionaItem( rs, txtQtdOP.getVlrBigDecimal() );
 							}
 						}
