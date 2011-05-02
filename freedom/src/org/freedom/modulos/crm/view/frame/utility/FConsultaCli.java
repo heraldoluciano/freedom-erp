@@ -113,11 +113,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JTextFieldFK txtUltimaCompra = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtVlrUltimaCompra = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrUltimaCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldFK txtTotalCompras = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtTotalCompras = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
