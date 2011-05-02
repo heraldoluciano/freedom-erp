@@ -69,7 +69,7 @@ public class DLLote extends FFDialogo {
 
 	private JLabelPad lbDiasAvisoLote = new JLabelPad( "Dias para aviso" );
 
-	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 );
+	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 11, 3 );
 	
 	private Boolean revalidarLote = false;
 
