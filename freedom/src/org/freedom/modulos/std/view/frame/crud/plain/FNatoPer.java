@@ -52,9 +52,9 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 
 	private JTextFieldPad txtDescNat = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldPad txtAliqeNat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private JTextFieldPad txtAliqeNat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
-	private JTextFieldPad txtAliqfNat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private JTextFieldPad txtAliqfNat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JTextAreaPad txaTxtNat = new JTextAreaPad( 500 );
 

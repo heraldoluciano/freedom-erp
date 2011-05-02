@@ -454,8 +454,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		try {
 			double deSaldo[] = { 0, 0 };
 			deSaldo = buscaSaldo( txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate() );
-			txtSldAtualInvP.setVlrDouble( new Double( deSaldo[ 0 ] ) );
-			txtPrecoInvP.setVlrDouble( new Double( deSaldo[ 1 ] ) );
+			txtSldAtualInvP.setVlrBigDecimal( new BigDecimal( deSaldo[ 0 ] ) );
+			txtPrecoInvP.setVlrBigDecimal( new BigDecimal( deSaldo[ 1 ] ) );
 		}
 		catch (Exception e) {
 			e.printStackTrace();
