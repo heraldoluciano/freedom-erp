@@ -134,7 +134,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 	private JTextFieldPad txtSerieProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtQtdItColeta = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdItColeta = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	// *** Campos (Detalhe)
 

@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -974,7 +975,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 				txtSituacaoItComp.setVlrString( "PE" );
 			}
 			if ( txtQtdAprovItSol.getVlrString().equals( "" ) ) {
-				txtQtdAprovItSol.setVlrDouble( new Double( 0 ) );
+				txtQtdAprovItSol.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 		}
 		else if ( pevt.getListaCampos() == lcCampos ) {
@@ -998,7 +999,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener, CarregaList
 
 		if ( ievt.getListaCampos() == lcDet ) {
 			txtDtCot.setVlrDate( new Date() );
-			txtQtdCot.setVlrDouble( txtQtdAprovItSol.getVlrDouble() );
+			txtQtdCot.setVlrBigDecimal( txtQtdAprovItSol.getVlrBigDecimal() );
 			txtIdUsuCot.setVlrString( Aplicativo.strUsuario );
 			if ( comRef() ) {
 				txtRefProd2.setVlrString( txtRefProd.getVlrString() );

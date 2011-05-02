@@ -29,6 +29,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -616,12 +617,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		if ( cevt.getListaCampos() == lcDet ) {
 			txtCodUnid.atualizaFK();
 			if ( txtQtdItAprovado.isEditable() ) {
-				if ( txtQtdItAprovado.getVlrDouble().compareTo( new Double( 0 ) ) <= 0 )
-					txtQtdItAprovado.setVlrDouble( txtQtdItAprovado.getVlrDouble() );
+				if ( txtQtdItAprovado.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) <= 0 )
+					txtQtdItAprovado.setVlrBigDecimal( txtQtdItAprovado.getVlrBigDecimal() );
 			}
 			if ( txtQtdItSolicitado.isEditable() ) {
-				if ( txtQtdItSolicitado.getVlrDouble().compareTo( new Double( 0 ) ) <= 0 )
-					txtQtdItSolicitado.setVlrDouble( txtQtdItAprovado.getVlrDouble() );
+				if ( txtQtdItSolicitado.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) <= 0 )
+					txtQtdItSolicitado.setVlrBigDecimal( txtQtdItAprovado.getVlrBigDecimal() );
 			}
 		}
 	}
@@ -966,10 +967,10 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 				txtSituacaoItComp.setVlrString( "PE" );
 			}
 			if ( txtQtdItAprovado.getVlrString().equals( "" ) ) {
-				txtQtdItAprovado.setVlrDouble( new Double( 0 ) );
+				txtQtdItAprovado.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 			if ( txtQtdItSolicitado.getVlrString().equals( "" ) ) {
-				txtQtdItSolicitado.setVlrDouble( new Double( 0 ) );
+				txtQtdItSolicitado.setVlrBigDecimal( new BigDecimal( 0 ) );
 			}
 			if ( sMotvProir.equals( "A" ) ) {
 				dialogObsPrior();
