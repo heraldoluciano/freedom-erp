@@ -76,7 +76,7 @@ public class FRGerContas extends FRelatorio {
 
 	private JTextFieldPad txtSiglaTpCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private JTextFieldPad txtPercFat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDecFin );
+	private JTextFieldPad txtPercFat = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 8, Aplicativo.casasDecFin );
 
 	private JLabelPad lbAno = new JLabelPad( "Ano" );
 

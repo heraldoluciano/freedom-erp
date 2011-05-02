@@ -63,7 +63,7 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 
 	private JTextFieldFK txtDtEmitVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
