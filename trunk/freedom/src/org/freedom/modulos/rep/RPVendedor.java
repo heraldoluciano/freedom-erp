@@ -59,7 +59,7 @@ public class RPVendedor extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtEmailVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtComisVend = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 5 );
+	private final JTextFieldPad txtComisVend = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
 
 	public RPVendedor() {
 

@@ -135,7 +135,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 
-	private final JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 4, 2 );
+	private final JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
 	private final JTextFieldPad txtContatoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	

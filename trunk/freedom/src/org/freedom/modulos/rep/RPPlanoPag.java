@@ -57,9 +57,9 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 
 	private final JTextFieldPad txtDiasItemPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, AplicativoRep.casasDec );
+	private final JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, AplicativoRep.casasDec );
 
-	private final JTextFieldPad txtJurosParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, AplicativoRep.casasDec );
+	private final JTextFieldPad txtJurosParcPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, AplicativoRep.casasDec );
 
 	private final JTextFieldPad txtDescItemPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
