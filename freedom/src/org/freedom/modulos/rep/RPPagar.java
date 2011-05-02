@@ -57,11 +57,11 @@ public class RPPagar extends FDados implements ActionListener {
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtVlrPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrPag = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private final JTextFieldPad txtVlrComiss = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrComiss = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private final JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private final JTextFieldPad txtDtEmiss = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 

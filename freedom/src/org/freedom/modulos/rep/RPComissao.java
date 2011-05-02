@@ -496,7 +496,7 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 
 		private static final long serialVersionUID = 1L;
 
-		private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, AplicativoRep.casasDecFin );
+		private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, AplicativoRep.casasDecFin );
 
 		private final JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 

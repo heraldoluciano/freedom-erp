@@ -60,19 +60,19 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 
 	private final JTextFieldPad txtRefProdFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtPesoLiq = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
+	private final JTextFieldPad txtPesoLiq = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtSaldoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
+	private final JTextFieldPad txtSaldoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtPesoBruto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
+	private final JTextFieldPad txtPesoBruto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtEmbalagem = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private final JTextFieldPad txtPercIPI = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
+	private final JTextFieldPad txtPercIPI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtComiss = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
+	private final JTextFieldPad txtComiss = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, 5 );
+	private final JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 5 );
 
 	private final JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -82,13 +82,13 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtPreco1 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPreco1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPreco2 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPreco2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPreco3 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPreco3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPreco4 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPreco4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private final ListaCampos lcGrupo = new ListaCampos( this, "GP" );
 
