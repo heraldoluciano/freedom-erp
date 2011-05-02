@@ -181,7 +181,7 @@ public class CtrlMultiComis implements CarregaListener {
 			txtCodvend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 			txtCodregrcomis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 			txtNomevend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-			txtPerccomis = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, Aplicativo.casasDecFin );
+			txtPerccomis = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, Aplicativo.casasDecFin );
 			txtCodvend.setNomeCampo( "codvend" );
 			txtTipovenda.setNomeCampo( cpTipovenda );
 			txtCodvenda.setNomeCampo( cpCodvenda );

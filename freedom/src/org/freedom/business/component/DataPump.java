@@ -7,9 +7,11 @@ package org.freedom.business.component;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -128,7 +130,7 @@ public class DataPump {
 
 					if ( attr.getNamedItem( "numeric" ) != null && attr.getNamedItem( "numeric" ).getNodeValue().equalsIgnoreCase( "true" ) ) {
 						sql += "NUMERIC(" + length + "," + decimal + ")";
-						field = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, length.intValue(), decimal.intValue() );
+						field = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, length.intValue(), decimal.intValue() );
 					}
 					else {
 						sql += "CHAR(" + length + ")";
@@ -165,7 +167,7 @@ public class DataPump {
 
 				if ( attr.getNamedItem( "numeric" ) != null && attr.getNamedItem( "numeric" ).getNodeValue().equalsIgnoreCase( "true" ) ) {
 					sql += "NUMERIC(" + length + ",0)";
-					field = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, length.intValue(), 0 );
+					field = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, length.intValue(), 0 );
 				}
 				else {
 					sql += "CHAR(" + length + ")";
@@ -233,10 +235,10 @@ public class DataPump {
 						field.setVlrString( buf );
 						values += "'" + field.getVlrString() + "'";
 						break;
-					case JTextFieldPad.TP_NUMERIC :
+					case JTextFieldPad.TP_DECIMAL :
 						if ( field.iDecimal > 0 ) {
 							String number = buf.substring( 0, buf.length() - field.iDecimal ) + "." + buf.substring( buf.length() - field.iDecimal, buf.length() );
-							field.setVlrDouble( new Double( Double.parseDouble( number ) ) );
+							field.setVlrBigDecimal( new BigDecimal( Double.parseDouble( number ) ) );
 						}
 						else
 							field.setVlrString( buf );
