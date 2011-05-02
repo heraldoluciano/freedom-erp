@@ -66,9 +66,9 @@ public class FTransfEstoque extends FFilho implements ActionListener, CarregaLis
 
 	private JTextFieldFK txtDescAlmoxDest = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtSaldoProdOrig = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 5 );
+	private JTextFieldFK txtSaldoProdOrig = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
 
-	private JTextFieldFK txtSaldoProdDest = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 5 );
+	private JTextFieldFK txtSaldoProdDest = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
 
 	private JTextFieldPad txtQtdTrans = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
