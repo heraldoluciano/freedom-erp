@@ -42,7 +42,7 @@ public class DLAltComisVend extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtPercComis = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtPercComis = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 

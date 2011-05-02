@@ -82,7 +82,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 
 	private JTextFieldPad txtCodClComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtPercComisVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, Aplicativo.casasDecFin );
+	private JTextFieldPad txtPercComisVenda = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, Aplicativo.casasDecFin );
 
 	private JPanelPad pnBot = new JPanelPad( new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
 

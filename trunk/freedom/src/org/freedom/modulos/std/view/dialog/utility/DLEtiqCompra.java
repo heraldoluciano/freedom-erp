@@ -40,7 +40,7 @@ public class DLEtiqCompra extends FFDialogo {
 
 	private JTextFieldFK txtDataCompra = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtValorCompra = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldFK txtValorCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
 	private JTextFieldFK txtStatusCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 

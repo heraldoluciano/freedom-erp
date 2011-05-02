@@ -33,7 +33,7 @@ public class DLAltFatLucro extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private int iCodVenda = 0;
 
