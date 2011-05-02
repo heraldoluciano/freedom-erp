@@ -181,19 +181,19 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
-	private JTextFieldPad txtVlrDens = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtVlrDens = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtVlrConcent = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtVlrConcent = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtVlrCompri = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtVlrCompri = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtVlrLarg = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtVlrLarg = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
 	private JTextFieldPad txtNroDiasValid = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
@@ -203,55 +203,57 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtFatorFSC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, casasDec );
 
-	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdHorasServ = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 	
-	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
+	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, casasDecFin );
 
-	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtPesoBrutProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtPesoBrutProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdMinProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdMinProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdMaxProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdMaxProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtLocalProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
-	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtSldProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
-	private JTextFieldPad txtSldAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtDtUltEntrada = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, casasDec );
-
-	//private JTextFieldPad txtSldConsigProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	//private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	//private JTextFieldPad txtSldResProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	//private JTextFieldPad txtSldResAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	//private JTextFieldPad txtSldLiqProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	//private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
-
-	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
 	
-	private JTextFieldPad txtPrecoComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+//	private JTextFieldDec txtTeste = new JTextFieldDec( JTextFieldPad.TP_DECIMAL, 10, casasDec );
+
+	//private JTextFieldPad txtSldConsigProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	//private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	//private JTextFieldPad txtSldResProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	//private JTextFieldPad txtSldResAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	//private JTextFieldPad txtSldLiqProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	//private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
+
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+	
+	private JTextFieldPad txtPrecoComisProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
 	private JTextFieldPad txtUnidFat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldPad txtFatConv = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtFatConv = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -265,15 +267,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtDtValidSerie = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtSldLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtSldResLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldResLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtSldConsigLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtSldConsigLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
-	private JTextFieldPad txtSldLiqLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtSldLiqLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
-	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtDiasAvisoLote = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -293,7 +295,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecPre );
+	private JTextFieldPad txtPrecoProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre ); 
 
 	private JTextFieldPad txtSeqPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -901,6 +903,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodFabProd, 466, 100, 182, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
 
 		adicCampo( txtPrecoBaseProd, 7, 140, 75, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
+		
+//		adic( txtTeste, 7,140, 75, 20, "Teste");
 
 		adicCampo( txtCustoInfoProd, 85, 140, 70, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, false );
 		
@@ -1532,13 +1536,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				txtSldAlmox.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDPRODAX" : "SLDPROD" ) + "" ) );
+				txtSldAlmox.setVlrBigDecimal( new BigDecimal( rs.getBigDecimal( iCodAlmox != 0 ? "SLDPRODAX" : "SLDPROD" ) + "" ) );
 				//txtSldResAlmox.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDRESPRODAX" : "SLDRESPROD" ) + "" ) );
 				//txtSldConsigAlmox.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDCONSIGPRODAX" : "SLDCONSIGPROD" ) + "" ) );
 				//txtSldLiqAlmox.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDLIQPRODAX" : "SLDLIQPROD" ) + "" ) );
 			}
 			else {
-				txtSldAlmox.setVlrDouble( new Double( 0 ) );
+				txtSldAlmox.setVlrBigDecimal( new BigDecimal( 0 ) );
 				//txtSldResAlmox.setVlrDouble( new Double( 0 ) );
 				//txtSldConsigAlmox.setVlrDouble( new Double( 0 ) );
 				//txtSldLiqAlmox.setVlrDouble( new Double( 0 ) );
@@ -2204,8 +2208,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			txtRefProd.setVlrString( txtCodProd.getVlrString() );
 			txtCodBarProd.setVlrString( txtCodProd.getVlrString() );
 			txtCodFabProd.setVlrString( txtCodProd.getVlrString() );
-			txtPesoBrutProd.setVlrDouble( new Double( 0.0 ) );
-			txtPesoLiqProd.setVlrDouble( new Double( 0.0 ) );
+			txtPesoBrutProd.setVlrBigDecimal( new BigDecimal(0) );
+			txtPesoLiqProd.setVlrBigDecimal( new BigDecimal(0) );
 		}
 		else if ( ievt.getListaCampos() == lcProdAcesso ) {
 			habAcesso( true, 0 );
