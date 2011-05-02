@@ -136,15 +136,15 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 
 	// *** Campos
 
-	private JTextFieldFK txtQtdVendida = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldFK txtQtdVendida = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
-	private JTextFieldFK txtQtdEstoque = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldFK txtQtdEstoque = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
-	private JTextFieldFK txtQtdReservado = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldFK txtQtdReservado = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
-	private JTextFieldFK txtQtdProducao = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldFK txtQtdProducao = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
-	private JTextFieldFK txtQtdProduzir = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDec );
+	private JTextFieldFK txtQtdProduzir = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDec );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
