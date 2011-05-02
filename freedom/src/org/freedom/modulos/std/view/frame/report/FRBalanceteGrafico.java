@@ -23,6 +23,15 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.graphics.BalanceteBarras;
 import org.freedom.layout.graphics.BalancetePizza;
@@ -37,23 +46,14 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Vector;
-
-import javax.swing.BorderFactory;
-
-import org.freedom.bmps.Icone;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FRBalanceteGrafico extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 10, 0 );
+	
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
