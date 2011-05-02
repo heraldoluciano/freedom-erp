@@ -159,11 +159,11 @@ public class FPrefereFBB extends FTabDados implements CarregaListener, JComboBox
 
 	private JComboBoxPad cbJurosMora;
 
-	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JComboBoxPad cbDesconto;
 
-	private final JTextFieldPad txtVlrDesconto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtVlrDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JComboBoxPad cbProtesto;
 
