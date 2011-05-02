@@ -40,6 +40,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,13 +62,13 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldFK txtSld = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldFK txtSld = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
-	private JTextFieldFK txtSldR = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldFK txtSldR = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
-	private JTextFieldFK txtSldC = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldFK txtSldC = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
-	private JTextFieldFK txtSldL = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldFK txtSldL = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -372,16 +373,16 @@ public class FConsEstoque extends FFilho implements CarregaListener {
 			}
 			else {
 				if ( rs.next() ) {
-					txtSld.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDPRODAX" : "SLDPROD" ) + "" ) );
-					txtSldR.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDRESPRODAX" : "SLDRESPROD" ) + "" ) );
-					txtSldC.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDCONSIGPRODAX" : "SLDCONSIGPROD" ) + "" ) );
-					txtSldL.setVlrDouble( new Double( rs.getDouble( iCodAlmox != 0 ? "SLDLIQPRODAX" : "SLDLIQPROD" ) + "" ) );
+					txtSld.setVlrBigDecimal( new BigDecimal( rs.getDouble( iCodAlmox != 0 ? "SLDPRODAX" : "SLDPROD" ) + "" ) );
+					txtSldR.setVlrBigDecimal( new BigDecimal( rs.getDouble( iCodAlmox != 0 ? "SLDRESPRODAX" : "SLDRESPROD" ) + "" ) );
+					txtSldC.setVlrBigDecimal( new BigDecimal( rs.getDouble( iCodAlmox != 0 ? "SLDCONSIGPRODAX" : "SLDCONSIGPROD" ) + "" ) );
+					txtSldL.setVlrBigDecimal( new BigDecimal( rs.getDouble( iCodAlmox != 0 ? "SLDLIQPRODAX" : "SLDLIQPROD" ) + "" ) );
 				}
 				else {
-					txtSld.setVlrDouble( new Double( 0 ) );
-					txtSldR.setVlrDouble( new Double( 0 ) );
-					txtSldC.setVlrDouble( new Double( 0 ) );
-					txtSldL.setVlrDouble( new Double( 0 ) );
+					txtSld.setVlrBigDecimal( new BigDecimal( 0 ) );
+					txtSldR.setVlrBigDecimal( new BigDecimal( 0 ) );
+					txtSldC.setVlrBigDecimal( new BigDecimal( 0 ) );
+					txtSldL.setVlrBigDecimal( new BigDecimal( 0 ) );
 				}
 			}
 			rs.close();
