@@ -233,7 +233,7 @@ public class DLPlanAnal extends FFDialogo {
 		panelfields.adic( txtCodAnal		, 7		, 60	, 110	, 20	, "Código" 							);
 		panelfields.adic( txtDescAnal		, 120	, 60	, 270	, 20	, "Descrição" 						);
 
-		panelfields.adic( txtCodRedAnal 	, 7		, 100	, 110	, 20	, "Código resumido" 				);
+		panelfields.adic( txtCodRedAnal 	, 7		, 100	, 110	, 20	, "Código reduzido" 				);
 		
 		panelfields.adic( rgTipoPlan		, 7		, 130	, 383	, 60 										);
 		panelfields.adic( rgFinPlan			, 7		, 215	, 383	, 130	, "Finalidade" 						);
