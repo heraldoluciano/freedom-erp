@@ -61,6 +61,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.cfg.view.frame.crud.tabbed.FUsuario;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FMoeda;
@@ -91,7 +92,7 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 	
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
