@@ -32,8 +32,8 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -63,6 +63,8 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 
@@ -333,23 +335,23 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JPasswordFieldPad txtSenhaSMTP = new JPasswordFieldPad(30);
 
-	private JTextFieldPad txtCodPlanJR = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPlan txtCodPlanJR = new JTextFieldPlan(JTextFieldPad.TP_STRING, 13, 0);
 
 	private JTextFieldFK txtDescPlanJR = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
-	private JTextFieldPad txtCodPlanJP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPlan txtCodPlanJP = new JTextFieldPlan(JTextFieldPad.TP_STRING, 13, 0);
 
 	private JTextFieldFK txtDescPlanJP = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
-	private JTextFieldPad txtCodPlanDC = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPlan txtCodPlanDC = new JTextFieldPlan(JTextFieldPad.TP_STRING, 13, 0);
 
 	private JTextFieldFK txtDescPlanDC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
-	private JTextFieldPad txtCodPlanDR = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPlan txtCodPlanDR = new JTextFieldPlan(JTextFieldPad.TP_STRING, 13, 0);
 
 	private JTextFieldFK txtDescPlanDR = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
-	private JTextFieldPad txtCodPlanPC = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPlan txtCodPlanPC = new JTextFieldPlan(JTextFieldPad.TP_STRING, 13, 0);
 
 	private JTextFieldFK txtDescPlanPC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
