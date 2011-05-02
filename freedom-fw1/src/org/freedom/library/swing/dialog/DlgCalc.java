@@ -47,7 +47,7 @@ public class DlgCalc extends FFDialogo implements KeyListener, ActionListener {
 
 	GridBagConstraints gbConst = new GridBagConstraints();
 	GridBagLayout gbCalc = new GridBagLayout();
-	JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DOUBLE, 13, 0);
+	JTextFieldPad txtRes = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 13, 0);
 	JTextArea txaCalc = new JTextArea();
 	JButtonPad btPerc = new JButtonPad("%");
 	JButtonPad btRaiz = new JButtonPad("Raiz");
