@@ -273,7 +273,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 	private JTextFieldPad txtDtAdmTrabCli = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtRendaTrabCli = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtRendaTrabCli = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtDDDTrabCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -295,7 +295,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 	private JTextFieldPad txtCepTrabCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JTextFieldPad txtOutRendaCli = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtOutRendaCli = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtFontRendaCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
