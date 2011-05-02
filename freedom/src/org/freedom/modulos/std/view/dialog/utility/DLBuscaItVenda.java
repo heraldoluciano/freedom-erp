@@ -79,7 +79,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 18, 2 );
+	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 18, 2 );
 
 	private JTextFieldFK txtStatusVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -351,9 +351,9 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
 		else if ( evt.getSource() == btLimpa ) {
 			tab.limpa();
 			vTipo.clear();
-			txtVlrDesc.setVlrDouble( new Double( 0 ) );
-			txtVlrLiq.setVlrDouble( new Double( 0 ) );
-			txtVlrProd.setVlrDouble( new Double( 0 ) );
+			txtVlrDesc.setVlrBigDecimal( new BigDecimal( 0 ) );
+			txtVlrLiq.setVlrBigDecimal( new BigDecimal( 0 ) );
+			txtVlrProd.setVlrBigDecimal( new BigDecimal( 0 ) );
 		}
 		super.actionPerformed( evt );
 	}

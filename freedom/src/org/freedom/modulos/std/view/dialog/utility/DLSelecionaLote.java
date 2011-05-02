@@ -63,7 +63,7 @@ public class DLSelecionaLote extends FFDialogo {
 
 	private ListaCampos lcLote = new ListaCampos( this, "LE" );
 
-	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
 	private JTextFieldPad txtDtSaidaVenda = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
