@@ -35,7 +35,7 @@ public class FBeneficio extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDescBenef = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private final JTextFieldPad txtVlrBenef = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrBenef = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	public FBeneficio() {
 
