@@ -69,7 +69,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 3 );
 
 	private JTextFieldPad txtCodFbnMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
