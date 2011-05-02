@@ -59,6 +59,7 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
 public class DLNovoPag extends FFDialogo implements PostListener, MouseListener, CarregaListener, FocusListener {
@@ -127,10 +128,12 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 	
-	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
+	private final JTextFieldPad txtCodRedPlan = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private final JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
 	private final JTextFieldPad txtCodTipoCobItPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtDescTipoCobItPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -674,6 +677,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		 ******************/
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
+		lcPlan.add( new GuardaCampo( txtCodRedPlan, "CodRedPlan", "Cód.Red.", ListaCampos.DB_SI, false ) );
 		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
