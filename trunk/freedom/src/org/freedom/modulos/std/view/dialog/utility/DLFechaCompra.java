@@ -64,6 +64,7 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener {
 
@@ -207,7 +208,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	
 	private final ListaCampos lcCC = new ListaCampos( this, "CC" );
 	
-	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
