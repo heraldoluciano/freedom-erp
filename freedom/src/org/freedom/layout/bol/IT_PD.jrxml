@@ -62,9 +62,9 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="CODBANCO" class="java.lang.String"/>
 	<field name="DVBANCO" class="java.lang.String"/>
-	<field name="LOGOBANCO01" class="java.lang.Object"/>
-	<field name="LOGOBANCO02" class="java.lang.Object"/>
-	<field name="LOGOBANCO03" class="java.lang.Object"/>
+	<field name="LOGOBANCO01" class="java.io.InputStream"/>
+	<field name="LOGOBANCO02" class="java.io.InputStream"/>
+	<field name="LOGOBANCO03" class="java.io.InputStream"/>
 	<field name="CODCARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
