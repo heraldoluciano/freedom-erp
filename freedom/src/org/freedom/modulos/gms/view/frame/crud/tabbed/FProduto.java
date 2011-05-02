@@ -79,6 +79,7 @@ import org.freedom.library.swing.frame.FAndamento;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.gms.business.object.TipoProd;
 import org.freedom.modulos.gms.view.dialog.report.DLRProduto;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
@@ -296,7 +297,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldPad txtSeqPP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 

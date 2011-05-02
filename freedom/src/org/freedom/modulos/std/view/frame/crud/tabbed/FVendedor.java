@@ -57,6 +57,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FTabDados;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.fnc.view.frame.crud.tabbed.FConta;
 import org.freedom.modulos.gms.view.frame.crud.plain.FSecaoProd;
 import org.freedom.modulos.grh.view.frame.crud.plain.FFuncao;
@@ -123,7 +124,7 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	private JTextFieldPad txtCodFornVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 

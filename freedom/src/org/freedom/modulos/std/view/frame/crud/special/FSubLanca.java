@@ -30,26 +30,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
-import org.freedom.library.functions.FuncoesCRM;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JCheckBoxPad;
-import org.freedom.library.swing.component.JComboBoxPad;
-import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JPanelPad;
-import org.freedom.library.swing.component.JRadioGroup;
-import org.freedom.library.swing.component.JTextAreaPad;
-import org.freedom.library.swing.component.JTextFieldFK;
-import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.library.swing.frame.FDetalhe;
-import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
-import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
-import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,6 +54,26 @@ import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.functions.FuncoesCRM;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
+import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextAreaPad;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
 public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
 
@@ -89,7 +89,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JTextFieldPad txtDocLanca = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCodEmpPlan = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -99,7 +99,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JTextFieldPad txtHistSubLanca = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private JTextFieldPad txtCodPlanSub = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPlan txtCodPlanSub = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
