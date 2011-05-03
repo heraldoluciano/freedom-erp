@@ -77,6 +77,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
 import org.freedom.modulos.fnc.view.dialog.report.DLImpBoletoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
@@ -195,7 +196,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private JTextFieldPad txtTotRecBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtTotRecBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
@@ -468,6 +469,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalRenegociado.setSoLeitura( true );
 		txtTotalEmRenegociacao.setSoLeitura( true );
 
+		txtTotalVencido.setFont( SwingParams.getFontbold() );
+		txtTotalParcial.setFont( SwingParams.getFontbold() );
+		txtTotalRecebido.setFont( SwingParams.getFontbold() );
+		txtTotalCancelado.setFont( SwingParams.getFontbold() );
+		txtTotalVencer.setFont( SwingParams.getFontbold() );
+		txtTotalEmBordero.setFont( SwingParams.getFontbold() );
+		txtTotalRenegociado.setFont( SwingParams.getFontbold() );
+		txtTotalEmRenegociacao.setFont( SwingParams.getFontbold() );
+		
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 500, 42 ) );
 		pnRod.add( btSair, BorderLayout.EAST );

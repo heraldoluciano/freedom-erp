@@ -74,6 +74,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.fnc.business.object.Cheque;
 import org.freedom.modulos.fnc.view.dialog.report.DLImpReciboPag;
@@ -225,15 +226,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtTotalVencido = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	private JTextFieldPad txtTotalVencido = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotalParcial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	private JTextFieldPad txtTotalParcial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotalPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	private JTextFieldPad txtTotalPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotalVencer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	private JTextFieldPad txtTotalVencer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotalCancelado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 0 );
+	private JTextFieldPad txtTotalCancelado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, Aplicativo.casasDecFin );
 
 	private JLabelPad lbFiltroStatus = new JLabelPad( "Filtrar por:" );
 
@@ -386,7 +387,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtTotalPago.setSoLeitura( true );
 			txtTotalVencer.setSoLeitura( true );
 			txtTotalCancelado.setSoLeitura( true );
-
+			
+			txtTotalVencido.setFont( SwingParams.getFontbold() );
+			txtTotalParcial.setFont( SwingParams.getFontbold() );
+			txtTotalPago.setFont( SwingParams.getFontbold() );
+			txtTotalVencer.setFont( SwingParams.getFontbold() );
+			txtTotalCancelado.setFont( SwingParams.getFontbold() );
+			
 			pnRod.setBorder( BorderFactory.createEtchedBorder() );
 			pnRod.setPreferredSize( new Dimension( 600, 42 ) );
 
