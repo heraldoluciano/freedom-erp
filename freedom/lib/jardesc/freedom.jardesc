@@ -33,6 +33,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.etiquetas.clientes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.scriptlet"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rec"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.os"/>
