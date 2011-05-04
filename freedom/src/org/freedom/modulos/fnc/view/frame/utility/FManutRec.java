@@ -2619,6 +2619,36 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				iCodRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.CODREC.ordinal() );
 				iNParcItRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.NPARCITREC.ordinal() );
+				
+				String[] sPlanoConta = getPlanejamentoConta( iCodRec );
+
+				String numconta = (String) tabManut.getValor( iLin, EColTabManut.NUMCONTA.ordinal() );
+				String codplan = (String) tabManut.getValor( iLin, EColTabManut.CODPLAN.ordinal() );
+				String codcc = (String) tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() );
+
+				if ( "".equals( numconta ) || numconta == null ) {
+					numconta = sPlanoConta[ 2 ];
+				}
+
+				if ( numconta == null ) {
+					numconta = "";
+				}
+
+				if ( "".equals( codplan ) || codplan == null ) {
+					codplan = sPlanoConta[ 1 ];
+				}
+
+				if ( codplan == null ) {
+					codplan = "";
+				}
+
+				if ( "".equals( codcc ) || codcc == null ) {
+					codcc = sPlanoConta[ 3 ];
+				}
+
+				if ( codcc == null ) {
+					codcc = "";
+				}
 
 				dl = new DLBaixaRec( this );
 
@@ -2628,8 +2658,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setParcela( (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() ) );
 				baixaRecBean.setCliente( txtCodCliBaixa.getVlrInteger() );
 				baixaRecBean.setRazaoSocialCliente( txtRazCliBaixa.getVlrString() );
-				baixaRecBean.setConta( (String) tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
-				baixaRecBean.setPlanejamento( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
+				baixaRecBean.setConta( (String) numconta );
+				baixaRecBean.setPlanejamento( (String) codplan );
 				baixaRecBean.setDocumento( (String) tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
 				baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
 				baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
@@ -2637,7 +2667,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
 				baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
 				baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
-				baixaRecBean.setCentroCusto( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
+				baixaRecBean.setCentroCusto( (String) codcc );
 
 				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) {
 					baixaRecBean.setDataPagamento( new Date() );
