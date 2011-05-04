@@ -132,7 +132,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Transf. lançtos. entre categorias", "Transf. lançtos. entre categorias", 'F', 100200010, 1, true, FTrnsLancCat.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferência Gerais", 'G', 100310000, 2, true, FPrefereFNC.class );
+		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências financeiras", "Preferências financeiras", 'P', 100310000, 2, true, FPrefereFNC.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências febraban", "Preferências Febraban", 'F', 100310000, 2, true, FPrefereFBB.class );
 		// addSeparador( 100100000 );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100400000, 1, false, null );
