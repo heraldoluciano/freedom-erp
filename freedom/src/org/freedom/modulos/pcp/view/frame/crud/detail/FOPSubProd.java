@@ -66,6 +66,8 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 	
 	private JTextFieldPad txtRefProdSubProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
+	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
 	private JTextFieldFK txtDescProdSubProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
 	
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -93,6 +95,8 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 	private JTextFieldFK txtTpFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
+	
+	private ListaCampos lcProd2 = new ListaCampos( this, "PD" );
 	
 	private ListaCampos lcProdSubProd = new ListaCampos( this, "PD" );
 	
@@ -124,6 +128,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 
 		txtCodOP.setAtivo( false );
 		txtCodProd.setAtivo( false );
+		txtRefProd.setAtivo( false );
 		txtDtEmit.setAtivo( false );
 		txtDtValid.setAtivo( false );
 		txtQtdPrevOP.setAtivo( false );
@@ -138,17 +143,28 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
 
-		lcProd.setUsaME( false );
+//		lcProd.setUsaME( false );
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "TIPOPROD='F'" );
+		//lcProd.setWhereAdic( "TIPOPROD='F'" );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
 		txtDescProd.setListaCampos( lcProd );
 		
-		lcProdSubProd.setUsaME( false );
+//		lcProd2.setUsaME( false );
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.Prod.", ListaCampos.DB_PK, true ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		//lcProd2.setWhereAdic( "TIPOPROD='F'" );
+		lcProd2.montaSql( false, "PRODUTO", "EQ" );
+		lcProd2.setQueryCommit( false );
+		lcProd2.setReadOnly( true );
+		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
+		txtDescProd.setListaCampos( lcProd2 );
+		
+//		lcProdSubProd.setUsaME( false );
 		lcProdSubProd.add( new GuardaCampo( txtCodProdSubProd, "CodProd", "Cód.Prod.", ListaCampos.DB_PK, true ) );
 		lcProdSubProd.add( new GuardaCampo( txtRefProdSubProd, "RefProd", "Ref.Prod.", ListaCampos.DB_SI, false ) );
 		lcProdSubProd.add( new GuardaCampo( txtDescProdSubProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -159,7 +175,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		txtCodProdSubProd.setTabelaExterna( lcProdSubProd, FProduto.class.getCanonicalName() );
 		txtDescProdSubProd.setListaCampos( lcProdSubProd );
 		
-		lcProdSubProd2.setUsaME( false );
+//		lcProdSubProd2.setUsaME( false );
 		lcProdSubProd2.add( new GuardaCampo( txtRefProdSubProd, "RefProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdSubProd2.add( new GuardaCampo( txtCodProdSubProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, true ) );
 		lcProdSubProd2.add( new GuardaCampo( txtDescProdSubProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -172,8 +188,19 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 
 		adicCampo( txtCodOP, 7, 20, 80, 20, "CodOP", "Nº.OP", ListaCampos.DB_PK, true );
 		adicCampo( txtSeqOP, 90, 20, 60, 20, "SeqOP", "Seq.OP", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProd, 153, 20, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
-		adicDescFK( txtDescProd, 233, 20, 410, 20, "DescProd", "Descrição do produto" );
+		
+		if ( usarefprod ) {
+			adicCampo( txtRefProd, 153, 20, 120, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
+			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, txtDescProd, false );
+			txtRefProdSubProd.setFK( true );
+		}
+		else {
+			adicCampo( txtCodProd, 153, 20, 120, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false );
+		}
+		
+		adicDescFK( txtDescProd, 276, 20, 350, 20, "DescProd", "Descrição do produto" );
+		
 		adicCampo( txtDtEmit, 7, 60, 110, 20, "DtEmitOP", "Emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtValid, 120, 60, 110, 20, "DtValidPDOP", "Valid.prod.", ListaCampos.DB_SI, true );
 		adicCampo( txtQtdPrevOP, 233, 60, 87, 20, "QtdPrevProdOP", "Qtd.prevista", ListaCampos.DB_SI, true );
@@ -204,13 +231,13 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		adicDescFKInvisivel( txtTpFase, "DescFase", "Descrição da fase" );
 		
 		if ( usarefprod ) {
-			adicCampo( txtRefProdSubProd, 358, 20, 133, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
-			adicCampoInvisivel( txtCodProdSubProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProdSubProd, true );
+			adicCampo( txtRefProdSubProd, 358, 20, 133, 20, "refprod", "Referência", ListaCampos.DB_FK, txtDescProd,  true );
+			adicCampoInvisivel( txtCodProdSubProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,  true );
 			txtCodProdSubProd.setFK( true );
 		}
 		else {
 			adicCampo( txtCodProdSubProd, 358, 20, 133, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescProdSubProd, true );
-			adicCampoInvisivel( txtRefProdSubProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, null, true );
+			adicCampoInvisivel( txtRefProdSubProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI,  true );
 			txtRefProdSubProd.setFK( true );
 		}
 		adicCampo( txtQtdItSp, 494, 20, 60, 20, "QtdItSp", "Qtd.", ListaCampos.DB_SI, true );
@@ -293,6 +320,7 @@ public class FOPSubProd extends FDetalhe implements PostListener, CancelListener
 		super.setConexao( cn );
 		
 		lcProd.setConexao( cn );
+		lcProd2.setConexao( cn );
 		lcProdSubProd.setConexao( cn );
 		lcProdSubProd2.setConexao( cn );
 		lcFase.setConexao( cn );
