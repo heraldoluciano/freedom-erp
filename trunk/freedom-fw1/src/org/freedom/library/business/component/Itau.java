@@ -348,9 +348,9 @@ public class Itau extends Banco {
 		
 		StringBuffer retorno = new StringBuffer();
 
-		if (!"21".equals(modalidade)) {
-			retorno.append(convenio);
-		}
+//		if (!"21".equals(modalidade)) {
+//			retorno.append(convenio);
+//		}
 
 		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
