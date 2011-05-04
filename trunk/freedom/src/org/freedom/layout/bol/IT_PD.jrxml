@@ -109,7 +109,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Page">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraCodBar()]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long($F{FATVENC}.longValue()), $F{VLRPARCITREC},  $F{CONVCOB}, $P{TPNOSSONUMERO} , new Long($F{DOCREC}.longValue()) , new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Page">
@@ -119,7 +119,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Page">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Itau) $V{BOLETO}).getNossoNumero()]]></variableExpression>
+		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), true, true )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Itau) $V{BOLETO} ).geraLinhaDig( $V{CODBAR},  new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC} )]]></variableExpression>
@@ -129,8 +129,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).getNumCli($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})) )]]></variableExpression>
 	</variable>
 	<variable name="BOLETO" class="java.lang.Object" resetType="Page">
-		<variableExpression><![CDATA[new org.freedom.library.business.component.Itau( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC},  $F{CONVCOB}, $P{TPNOSSONUMERO}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
-		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Itau( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, new Long(String.valueOf($F{FATVENC})), $F{DESCPONT}.equals("S")?$F{VLRPARCITREC}:$F{VLRAPAGITREC},  $F{CONVCOB}, $P{TPNOSSONUMERO}, new Long(String.valueOf($F{DOCREC})), new Long(String.valueOf($F{SEQNOSSONUMERO})), new Long(String.valueOf($F{CODREC})), new Long(String.valueOf($F{NPARCITREC})), $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></initialValueExpression>
+		<variableExpression><![CDATA[new org.freedom.library.business.component.Itau()]]></variableExpression>
+		<initialValueExpression><![CDATA[new org.freedom.library.business.component.Itau()]]></initialValueExpression>
 	</variable>
 	<variable name="LINHADIGEXT" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[$V{LINHADIG}]]></variableExpression>
