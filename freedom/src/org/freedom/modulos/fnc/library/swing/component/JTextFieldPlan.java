@@ -38,7 +38,7 @@ public class JTextFieldPlan extends JTextFieldPad {
 	}
 	
 	public void keyPressed(KeyEvent kevt) {
-
+		
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			
 			String codred = this.getVlrString();
@@ -64,6 +64,9 @@ public class JTextFieldPlan extends JTextFieldPad {
 			}
 			transferFocus();
 		}
+		
+		super.keyPressed(kevt);
+
 	}
 	
 	private String getCodPlan(Integer codredplan) {
