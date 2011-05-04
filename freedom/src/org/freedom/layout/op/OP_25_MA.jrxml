@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OP_25_MA" pageWidth="595" pageHeight="842" columnWidth="557" leftMargin="19" rightMargin="19" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="7.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="770"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -56,7 +56,7 @@ AND E.CODPROD=P.CODPROD]]>
 	<group name="FASE1">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
-			<band height="30" splitType="Stretch">
+			<band height="129" splitType="Stretch">
 				<line>
 					<reportElement key="line-9" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="29"/>
 				</line>
@@ -64,7 +64,7 @@ AND E.CODPROD=P.CODPROD]]>
 					<reportElement key="line-13" stretchType="RelativeToBandHeight" x="557" y="0" width="1" height="29"/>
 				</line>
 				<subreport isUsingCache="true">
-					<reportElement key="subreport-3" stretchType="RelativeToBandHeight" x="4" y="0" width="547" height="29"/>
+					<reportElement key="subreport-3" stretchType="RelativeToBandHeight" x="4" y="0" width="547" height="107"/>
 					<subreportParameter name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -328,7 +328,7 @@ AND E.CODPROD=P.CODPROD]]>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="3" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<line>
 				<reportElement key="line-18" x="0" y="1" width="557" height="1"/>
 			</line>
