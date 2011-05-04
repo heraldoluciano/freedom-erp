@@ -2,8 +2,6 @@ package org.freedom.library.business.component;
 
 import java.math.BigDecimal;
 
-import org.freedom.library.functions.Funcoes;
-
 public class Itau extends Banco {
 	
 	private String agencia = "";
@@ -329,24 +327,42 @@ public class Itau extends Banco {
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
 			String convenio, Long doc, Long seq, Long rec, Long nparc,
 			boolean comdigito, boolean comtraco) {
+//		StringBuffer retorno = new StringBuffer();
+//
+//		retorno.append(seq);
+//		retorno.append(rec);
+//		retorno.append(nparc);
+//		
+//		StringBuilder nossoNumero =  new StringBuilder();
+//		nossoNumero.append( Funcoes.completaTexto(retorno.toString(), 7, "0") );
+//		
+//		if(comdigito){
+//			String dig = digVerif(nossoNumero.toString(), 10);
+//			if(comtraco)
+//				nossoNumero.append("-");
+//				
+//			nossoNumero.append( dig );
+//		}
+//		
+//		return nossoNumero.toString();
+		
 		StringBuffer retorno = new StringBuffer();
 
-		retorno.append(seq);
-		retorno.append(rec);
-		retorno.append(nparc);
-		
-		StringBuilder nossoNumero =  new StringBuilder();
-		nossoNumero.append( Funcoes.completaTexto(retorno.toString(), 7, "0") );
-		
-		if(comdigito){
-			String dig = digVerif(nossoNumero.toString(), 10);
-			if(comtraco)
-				nossoNumero.append("-");
-				
-			nossoNumero.append( dig );
+		if (!"21".equals(modalidade)) {
+			retorno.append(convenio);
 		}
-		
-		return nossoNumero.toString();
+
+		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
+
+		if (comdigito) {
+			if (comtraco) {
+				retorno.append("-" + digVerif(retorno.toString(), 10, true));
+			} else {
+				retorno.append(digVerif(retorno.toString(), 10, true));
+			}
+		}
+
+		return retorno.toString();
 	}
 	
 	public String getNossoNumero() {
@@ -384,11 +400,12 @@ public class Itau extends Banco {
 
 		return retorno;
 	}
+	
 
 	@Override
-	public String getNumCli(String tpnossonumero, String modalidade,
-			String convenio, Long doc, Long seq, Long rec, Long nparc) {
-		StringBuffer retorno = new StringBuffer();
+	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
+
+		final StringBuffer retorno = new StringBuffer();
 
 		if ("21".equals(modalidade)) {
 			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 17));
