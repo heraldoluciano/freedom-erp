@@ -4073,8 +4073,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( txtPercDescItVenda.getText().trim().length() < 1 && !comissaoDesconto) {
 				txtVlrDescItVenda.setAtivo( true );
 			}
-			// impostos.setVlrdescit( txtVlrDescItVenda.getVlrBigDecimal() );
-			// impostos.calcVlrLiqIt();
 
 			calcDescIt();
 			calcVlrProd();
@@ -4085,13 +4083,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			carregaComisIt();
 			// txtVlrDescItVenda.setAtivo( false );
 
-		}
-		else if ( fevt.getSource() == txtPercComItVenda ) {
+		} else if ( fevt.getSource() == txtPercComItVenda ) {
 			if ( !comissaoDesconto ) {
 				if ( txtPercComItVenda.getText().trim().length() < 1 ) {
 					txtVlrComisItVenda.setAtivo( true );
-				}
-				else {
+				} else {
 					calcComisIt();
 					calcVlrProd();
 					calcImpostos( true );
@@ -4099,13 +4095,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				}
 			}
-		}
-		else if ( fevt.getSource() == txtVlrDescItVenda ) {
+		} else if ( fevt.getSource() == txtVlrDescItVenda ) {
 			if ( !comissaoDesconto ) {
 				if ( txtVlrDescItVenda.getText().trim().length() < 1 ) {
 					txtPercDescItVenda.setAtivo( true );
-				}
-				else if ( txtVlrDescItVenda.getAtivo() ) {
+				} else if ( txtVlrDescItVenda.getAtivo() ) {
 					txtPercDescItVenda.setAtivo( false );
 				}
 			}
@@ -4113,26 +4107,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			calcDescIt();
 			calcVlrProd();
 			calcImpostos( true );
-			
-//			carregaComisIt();
-		}
-		else if ( fevt.getSource() == txtVlrComisItVenda ) {
+		} else if ( fevt.getSource() == txtVlrComisItVenda ) {
 			if ( txtVlrComisItVenda.getText().trim().length() < 1 ) {
 				txtPercComItVenda.setAtivo( true );
-			}
-			else if ( txtVlrComisItVenda.getAtivo() ) {
+			} else if ( txtVlrComisItVenda.getAtivo() ) {
 				txtPercComItVenda.setAtivo( false );
 			}
 			calcComisIt();
 			calcVlrProd();
 			calcImpostos( true );
-		}
-		else if ( ( fevt.getSource() == txtQtdItVenda ) | ( fevt.getSource() == txtPrecoItVenda ) | ( fevt.getSource() == txtCodNat ) ) {
+		} else if ( ( fevt.getSource() == txtQtdItVenda ) | ( fevt.getSource() == txtPrecoItVenda ) | ( fevt.getSource() == txtCodNat ) ) {
 			calcVlrProd();
 			calcImpostos( true );
 			habilitaSerie();
-		}
-		else if ( ( fevt.getSource() == txtPercICMSItVenda ) | ( fevt.getSource() == txtPercIPIItVenda ) ) {
+		} else if ( ( fevt.getSource() == txtPercICMSItVenda ) | ( fevt.getSource() == txtPercIPIItVenda ) ) {
 			calcImpostos( false );
 		}
 	}
