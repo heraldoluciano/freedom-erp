@@ -8,7 +8,7 @@
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="FILTROS" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, ms.qtdmovserie,
+		<![CDATA[select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie,
 ms.dtmovserie, ms.docmovserie, tm.tipomov
 from eqmovserie ms
 inner join eqproduto p on
@@ -22,7 +22,6 @@ and dtmovserie between '01.01.2011' and '01.05.2011']]>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="NUMSERIE" class="java.lang.String"/>
 	<field name="TIPOMOVSERIE" class="java.lang.String"/>
-	<field name="QTDMOVSERIE" class="java.math.BigDecimal"/>
 	<field name="DTMOVSERIE" class="java.sql.Date"/>
 	<field name="DOCMOVSERIE" class="java.lang.Integer"/>
 	<field name="TIPOMOV" class="java.lang.String"/>
@@ -142,13 +141,6 @@ and dtmovserie between '01.01.2011' and '01.05.2011']]>
 				</textElement>
 				<text><![CDATA[Num. Série]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="452" y="22" width="100" height="12"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Quantidade]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="78" y="5" width="408" height="12"/>
 				<textElement/>
@@ -165,7 +157,7 @@ and dtmovserie between '01.01.2011' and '01.05.2011']]>
 		<band height="17" splitType="Stretch">
 			<rectangle>
 				<reportElement x="0" y="0" width="555" height="17" forecolor="#000000" backcolor="#DCDCDC">
-					<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue() % 2 == 0 )  ]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue() % 2 == 0 )]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
@@ -184,17 +176,14 @@ and dtmovserie between '01.01.2011' and '01.05.2011']]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="174" y="2" width="100" height="12"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPOMOVSERIE}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["1".equals($F{TIPOMOVSERIE}.trim())?"Entrada":
+"-1".equals($F{TIPOMOVSERIE}.trim())?"Saida":
+"0".equals($F{TIPOMOVSERIE}.trim())?"Sem Movimento": null]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="299" y="2" width="132" height="12"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUMSERIE}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="452" y="2" width="100" height="12"/>
-				<textElement/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMOVSERIE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
