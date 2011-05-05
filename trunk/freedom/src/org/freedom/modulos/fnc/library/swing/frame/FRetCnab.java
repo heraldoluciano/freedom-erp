@@ -43,6 +43,7 @@ import javax.swing.ImageIcon;
 import org.freedom.bmps.Icone;
 import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
+import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
@@ -293,7 +294,13 @@ public class FRetCnab extends FRetFBN {
 				Date dataPagamento;
 				BigDecimal valorDesconto;
 				BigDecimal valorJuros;
-
+				
+				String shistorico = "BAIXA AUTOMÁTICA CNAB";
+							
+				
+				Integer codhisthc = (Integer) prefs.get( "CODHISTCNAB" );
+				Historico hist = null;
+				
 				for ( Reg reg : registros ) {
 
 					if ( reg instanceof RegHeader ) {
@@ -317,10 +324,22 @@ public class FRetCnab extends FRetFBN {
 					else if ( reg instanceof Reg3U ) {
 
 						if ( rec != null ) {
-
+							
 							Reg3U reg3U = (Reg3U) reg;
-							// String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
-
+										
+							if( codhisthc > 0 ) {
+								
+								hist = new Historico( codhisthc, con );
+							
+								hist.setData( reg3U.getDataEfetvCred() );
+								hist.setDocumento( rec.getDocrec() );
+								hist.setPortador( rec.getRazcliente() );
+								hist.setValor( reg3U.getVlrPago() );
+							
+								shistorico = hist.getHistoricodecodificado();
+								
+							}
+							
 							tab.adicLinha();
 
 							// Deve ser corrigido para atualizar a imagem de acordo com o tipo de retorno
@@ -350,7 +369,9 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( Funcoes.bdToStr( reg3U.getVlrJurosMulta() ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO
+							
+							tab.setValor( shistorico, row, EColTab.OBS.ordinal() ); // HISTÓRICO
+														
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							// tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
@@ -368,7 +389,20 @@ public class FRetCnab extends FRetFBN {
 						rec = findReceber( chaveRec[ 0 ], chaveRec[ 1 ], false );
 
 						if ( rec != null ) {
-
+							
+							
+							if( codhisthc > 0 ) {
+								
+								hist = new Historico( codhisthc, con );
+								
+								hist.setData( regT400.getDataCred() );
+								hist.setDocumento( rec.getDocrec() );
+								hist.setPortador( rec.getRazcliente() );
+								hist.setValor( regT400.getVlrPago() );
+								
+								shistorico = hist.getHistoricodecodificado();
+							}
+							
 							tab.adicLinha();
 
 							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), regT400.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
@@ -416,7 +450,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( regT400.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( Funcoes.bdToStr( regT400.getVlrJurosMulta() ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO
+							tab.setValor( shistorico, row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( regT400.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro

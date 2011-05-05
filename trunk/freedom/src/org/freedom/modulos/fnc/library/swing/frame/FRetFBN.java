@@ -619,7 +619,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 			StringBuilder sSQL = new StringBuilder();
 
-			sSQL.append( "select coalesce(numdigidenttit,0) numdigidenttit " );
+			sSQL.append( "select coalesce(numdigidenttit,0) numdigidenttit, coalesce(codhistcnab,0) codhistcnab " );
 			sSQL.append( "from sgprefere1 p1 " );
 			sSQL.append( "where p1.codemp=? and p1.codfilial=? " );
 
@@ -632,6 +632,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 			if ( rs.next() ) {
 				ret.put( "NUMDIGITENTTIT", rs.getInt( "numdigidenttit" ));
+				ret.put( "CODHISTCNAB", rs.getInt( "codhistcnab" ));
 
 			}
 
