@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Vector;
@@ -104,10 +106,12 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JTextAreaPad txaHistCheq = new JTextAreaPad( 500 );
 
 	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
-
+	
 	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+//	private JTextFieldPad txtRazaoFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private JTextFieldFK txtDocPag = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -148,7 +152,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private JComboBoxPad cbTipoCheq = null;
 
 	private JComboBoxPad cbSitCheq = null;
-
+	
 	private JLabelPad lbStatus = new JLabelPad( "", SwingConstants.CENTER );
 
 	private ListaCampos lcConta = new ListaCampos( this, "" );
@@ -158,6 +162,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private ListaCampos lcItPagar = new ListaCampos( this, "" );
 
 	private ListaCampos lcPagar = new ListaCampos( this, "" );
+	
+//	private ListaCampos lcFornecedor = new ListaCampos( this, "" );
 	
 	protected final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
@@ -186,46 +192,29 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		cbTipoCheq.addComboBoxListener( this );
-
 	}
 
 	public void exec( int seqcheq ) {
-
 		txtSeqCheq.setVlrInteger( seqcheq );
-		
 		lcCampos.carregaDados();
-		
 	}
 	
 	private void montaCombos() {
-
 		montaCbTipoCheque();
 		montaCbSitCheque();
 	}
 
 	private void montaCbTipoCheque() {
-
 		cbTipoCheq.limpa();
-
 		cbTipoCheq.setItens( Cheque.getLabelsTipoCheq(), Cheque.getValoresTipoCheq() );
-
 	}
 
 	private void montaCbSitCheque() {
-
 		cbSitCheq.limpa();
-
 		cbSitCheq.setItens( Cheque.getLabelsSitCheq(), Cheque.getValoresSitCheq() );
-
 	}
 
 	private void montaListaCampos() {
-
-//		lcDet.setMaster( lcCampos );
-
-//		lcCampos.adicDetalhe( lcDet ); 
-		
-
 		lcConta.setUsaME( false );
 		lcConta.add( new GuardaCampo( txtContaCheq, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -248,11 +237,18 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		txtCodBanc.setTabelaExterna( lcBanco, FBanco.class.getCanonicalName() );
 		txtCodBanc.setListaCampos( lcBanco );
 		txtCodBanc.setFK( true );
-//		txtNomeBanco.setListaCampos( lcBanco );
 
-
+		//Fornecedor
+//		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cod. For.", ListaCampos.DB_PK, false ) );
+//		lcFornecedor.add( new GuardaCampo( txtRazaoFor, "RazFor", "Razão For.", ListaCampos.DB_SI, false ) );
+//		lcFornecedor.montaSql( false, "FORNECED", "CP" );
+//		lcFornecedor.setQueryCommit( false );
+//		lcFornecedor.setReadOnly( true );
+//		txtCodFor.setTabelaExterna( lcFornecedor, null );
+//		txtCodFor.setFK( true );
+//		txtCodFor.setNomeCampo( "CodFor" );
+		
 		// Itens de contas a pagar
-
 		lcItPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_PK, false ) );
 		lcItPagar.add( new GuardaCampo( txtNParcPag, "NParcPag", "Cód.It.pag.", ListaCampos.DB_PK, false ) );
 		lcItPagar.add( new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Vencimento", ListaCampos.DB_SI, false ) );
@@ -273,9 +269,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		txtNParcPag.setTabelaExterna( lcItPagar, null );
 		txtNParcPag.setFK( true );
 		txtNParcPag.setNomeCampo( "NParcPag" );
-
+		
 		// Contas a pagar
-
 		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_PK, txtDocPag, false ) );
 		lcPagar.add( new GuardaCampo( txtDocPag, "DocPag", "Documento", ListaCampos.DB_SI, false ) );
 		lcPagar.add( new GuardaCampo( txtCodFor, "CodFor", "Cod.For.", ListaCampos.DB_SI, false ) );
@@ -286,7 +281,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		txtCodPag.setTabelaExterna( lcPagar, null );
 		txtCodPag.setFK( true );
 		txtCodPag.setNomeCampo( "CodPag" );
-
+		
 	}
 
 	private void montaTela() {
@@ -327,34 +322,26 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		/** INFORMACOES DO CHEQUE **/
 		setPainel( pnInfoCheque );
-
 		adicCampo( txtSeqCheq, 7, 15, 40, 20, "seqcheq", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtNumCheq, 219, 15, 60, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
 		adicCampo( txtCodBanc, 50, 15, 40, 20, "codbanc", "Banco", ListaCampos.DB_FK, true );
 		adicCampo( txtContaCheq, 93, 15, 70, 20, "Contacheq", "Nº Conta", ListaCampos.DB_FK, txtDescConta, true );
-		
 		adicCampo( txtAgenciaCheq, 166, 15, 50, 20, "AgenciaCheq", "Agencia", ListaCampos.DB_SI, true );
-	
-		
-		adicCampo( txtNumCheq, 219, 15, 60, 20, "Numcheq", "Nro.Cheq.", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrCheq, 282, 15, 75, 20, "VlrCheq", "Valor", ListaCampos.DB_SI, true );
 		adicDB( cbTipoCheq, 360, 15, 145, 20, "tipocheq", "Tipo", false );
 		adicDB( cbSitCheq, 508, 15, 137, 20, "sitcheq", "Status", false );
 		
 		txtCodBanc.setNomeCampo( "codbanco" );
 		txtContaCheq.setNomeCampo( "numconta" );
-
-//		adicDB( cbPreDatCheq, 558, 15, 86, 20, "predatcheq", "", true );
-
+		
 		/** INFORMACOES DE DATAS **/
 		setPainel( pnDatas );
-
 		adicCampo( txtDtEmitCheq, 4, 15, 85, 20, "DtEmitCheq", "Emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtVenctoCheq, 4, 55, 85, 20, "DtVenctoCheq", "Vencimento", ListaCampos.DB_SI, true );
 		adicCampo( txtDtCompCheq, 4, 95, 85, 20, "DtCompCheq", "Compensação", ListaCampos.DB_SI, false );
 
 		/** INFORMACOES DO EMITENTE **/
 		setPainel( pnEmitente );
-
 		adicCampo( txtNomeEmitCheq, 7, 15, 200, 20, "nomeemitcheq", "Nome", ListaCampos.DB_SI, true );
 		adicCampo( txtCnpjEmitCheq, 210, 15, 120, 20, "cnpjemitcheq", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtCpfEmitCheq, 333, 15, 100, 20, "cpfemitcheq", "CPF", ListaCampos.DB_SI, false );
@@ -363,7 +350,6 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		/** INFORMACOES DO FAVORECIDO **/
 		setPainel( pnFavorecido );
-
 		adicCampo( txtNomeFavCheq, 7, 15, 200, 20, "nomeFavcheq", "Nome", ListaCampos.DB_SI, true );
 		adicCampo( txtCnpjFavCheq, 210, 15, 120, 20, "cnpjFavcheq", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtCpfFavCheq, 333, 15, 100, 20, "cpfFavcheq", "CPF", ListaCampos.DB_SI, false );
@@ -371,7 +357,6 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		adicCampo( txtFoneFavCheq, 469, 15, 68, 20, "foneFavcheq", "Fone", ListaCampos.DB_SI, false );
 
 		setPainel( panelMaster, pnCliCab );
-		
 		adicDB( txaHistCheq, 7, 238, 660, 40, "histcheq", "Histórico", true );
 
 		setListaCampos( true, "CHEQUE", "FN" );
@@ -405,7 +390,14 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		lcDet.setQueryInsert( false );
 
 		montaTab();
-
+		tab.adicColuna( "Cod For." );//4
+		tab.adicColuna( "Nome Fornecedor" );//5
+		tab.setColunaInvisivel( 2 );//codempch
+		tab.setColunaInvisivel( 3 );//codfilialch
+		
+		tab.setTamColuna( 300, 5 );
+		
+		
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 3 ) );
 		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
@@ -422,9 +414,6 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
-		
-		tab.setColunaInvisivel( 2 );//codempch
-		tab.setColunaInvisivel( 3 );//codfilialch
 	}
 
 	private void showStatus() {
@@ -433,37 +422,31 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		if ( "RB".equals( txtStatusItPag.getVlrString() ) ) {
 			lbStatus.setVisible( false );
-		}
-		else if ( "CR".equals( txtStatusItPag.getVlrString() ) ) {
+		} else if ( "CR".equals( txtStatusItPag.getVlrString() ) ) {
 			lbStatus.setText( "Cancelada" );
 			lbStatus.setBackground( Color.DARK_GRAY );
-		}
-		else if ( "RP".equals( txtStatusItPag.getVlrString() ) && txtVlrApagItRec.getVlrBigDecimal().doubleValue() == 0 ) {
+		} else if ( "RP".equals( txtStatusItPag.getVlrString() ) && txtVlrApagItRec.getVlrBigDecimal().doubleValue() == 0 ) {
 			lbStatus.setText( "Recebida" );
 			lbStatus.setBackground( GREEN );
-		}
-		else if ( txtVlrPagoItRec.getVlrBigDecimal().doubleValue() > 0 ) {
+		} else if ( txtVlrPagoItRec.getVlrBigDecimal().doubleValue() > 0 ) {
 			lbStatus.setText( "Rec. parcial" );
 			lbStatus.setBackground( Color.BLUE );
 		}
+		
 		if ( txtDtVencItPag.getVlrDate() != null ) {
 			if ( txtDtVencItPag.getVlrDate().before( Calendar.getInstance().getTime() ) ) {
 				lbStatus.setText( "Vencida" );
 				lbStatus.setBackground( Color.RED );
-			}
-			else if ( txtDtVencItPag.getVlrDate().after( Calendar.getInstance().getTime() ) ) {
+			} else if ( txtDtVencItPag.getVlrDate().after( Calendar.getInstance().getTime() ) ) {
 				lbStatus.setText( "À vencer" );
 				lbStatus.setBackground( YELLOW );
 			}
-		}
-		else {
+		} else {
 			lbStatus.setVisible( false );
 		}
-
 	}
 
 	private synchronized void imprimir( boolean visualizar ) {
-
 		PreparedStatement ps = null;
 
 		ImprimeOS imp = new ImprimeOS( "", Aplicativo.getInstace().getConexao(), "CH", true );
@@ -488,95 +471,99 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
-
 		if ( e.getSource() == btImp ) {
 			imprimir( false );
-		}
-		else if ( e.getSource() == btPrevimp ) {
+		} else if ( e.getSource() == btPrevimp ) {
 			imprimir( true );
-		}
-		else {
+		} else {
 			super.actionPerformed( e );
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent e ) {
-
-	}
+	public void beforeCarrega( CarregaEvent e ) { }
 
 	public void afterCarrega( CarregaEvent e ) {
-
 		showStatus();
 		
 		if ( e.getListaCampos() == lcDet ) {
 			lcPagar.carregaDados();
+		}else if(e.getListaCampos() == lcCampos){
+			carregaFornecedor();
 		}
-
+	}
+	
+	private void carregaFornecedor(){
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select f.codfor, f.razfor from cpforneced f ");
+		sql.append( "inner join fnpagar p on p.codemp = f.codemp and p.codfilial = f.codfilial and p.codfor = f.codfor ");
+		sql.append( "where f.codemp = ? and f.codfilial = ? and p.codpag = ? " );
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			for(int i = 0; i < tab.getNumLinhas(); i++){
+				Integer codPag = (Integer) tab.getValor( i, 0 );
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setInt( 3, codPag );
+				
+				rs = ps.executeQuery();
+				if(rs.next()){
+					tab.setValor( rs.getString( "codfor" ), i, 4 );
+					tab.setValor( rs.getString( "razfor" ), i, 5 );
+				}
+			}
+		} catch ( SQLException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void beforeInsert( InsertEvent e ) {
-
 		lbStatus.setVisible( false );
 	}
 
-	public void afterInsert( InsertEvent e ) {
+	public void afterInsert( InsertEvent e ) { }
 
-		
-	}
-
-	public void beforeDelete( DeleteEvent e ) {
-
-	}
+	public void beforeDelete( DeleteEvent e ) { }
 
 	public void afterDelete( DeleteEvent e ) {
-
 		lbStatus.setVisible( false );
 	}
 
 	@ Override
-	
 	public void beforePost( PostEvent e ) {
-
 		super.beforePost( e );
 
 		if(e.getListaCampos() == lcCampos ) {
-			
 			if(Cheque.SIT_CHEQUE_CANCELADO.getValue().equals( cbSitCheq.getVlrString() )) {
-				
 				if( ( Funcoes.mensagemConfirma( this, "O cancelamento do cheque implica em desvinculá-lo às contas pagas!\nConfirma o cancelamento?" ) == JOptionPane.NO_OPTION) ) {
 					e.cancela();
 				}
-				
 			}
-			
-		}
-		else if(e.getListaCampos() == lcDet ) {
+		} else if(e.getListaCampos() == lcDet ) {
 			txtCodEmpCH.setVlrInteger( lcCampos.getCodEmp() );
 			txtCodFilialCH.setVlrInteger( lcCampos.getCodFilial() );
 		}
-
 	}
 
 	public void afterPost( PostEvent e ) {
-
 		super.afterPost( e );
 		showStatus();
 	}
 
 	public void setConexao( DbConnection con ) {
-
 		super.setConexao( con );
 
 		lcConta.setConexao( con );
 		lcItPagar.setConexao( con );
 		lcPagar.setConexao( con );
 		lcBanco.setConexao( con );
-
+//		lcFornecedor.setConexao( con );
 	}
 
-	public void valorAlterado( JComboBoxEvent evt ) {
-
-		// TODO Auto-generated method stub
-
-	}
+	public void valorAlterado( JComboBoxEvent evt ) { }
 }
