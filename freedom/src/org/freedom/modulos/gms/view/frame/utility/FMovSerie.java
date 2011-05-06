@@ -28,6 +28,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
+import org.freedom.modulos.gms.business.object.TipoMov;
 
 /**
  * Acompanhamento de Numero de Series.
@@ -67,6 +68,7 @@ public class FMovSerie extends FRelatorio{
 	public FMovSerie() {
 		
 		setTitulo( "Mov. Numero de Série" );
+		
 		setAtribos( 10, 10, 750, 400 );
 		
 		txtCodProd.setRequerido( true );
@@ -101,13 +103,15 @@ public class FMovSerie extends FRelatorio{
 		
 		tab.adicColuna( "Data" );
 		tab.adicColuna( "Tipo" );
-		tab.adicColuna( "Tipo Mov. Série" );
-		tab.adicColuna( "Num Série." );
-//		tab.adicColuna( "Quantidade." );
+		tab.adicColuna( "Doc" );		
+		tab.adicColuna( "E/S" );
+		tab.adicColuna( "Num Série" );
+
 		tab.setTamColuna( 90, 0 );		
 		tab.setTamColuna( 90, 1 );
 		tab.setTamColuna( 90, 2 );
 		tab.setTamColuna( 90, 3 );
+		tab.setTamColuna( 90, 4 );
 		
 		this.montaListaCampos();
 	}
@@ -131,21 +135,40 @@ public class FMovSerie extends FRelatorio{
 			int iLinha = 0;
 
 			while ( rs.next() ) {
+				
 				tab.adicLinha();
 				
 				String tipoMovSerie = rs.getString( "TIPOMOVSERIE" ).trim();
+				
 				if("1".equals( tipoMovSerie )){
 					tipoMovSerie = "Entrada";
-				}else if("0".equals( tipoMovSerie )){
+				}
+				else if("0".equals( tipoMovSerie )){
 					tipoMovSerie = "Sem Movimento";
-				}else if("-1".equals( tipoMovSerie )){
+				}
+				else if("-1".equals( tipoMovSerie )){
 					tipoMovSerie = "Saida";
 				}
 				
 				tab.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( "DTMOVSERIE" ) ), iLinha, 0 );
-				tab.setValor( rs.getString( "TIPOMOV" ), iLinha, 1 );
-				tab.setValor( tipoMovSerie, iLinha, 2 );
-				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, 3 );
+				
+				String tipomov = rs.getString("tipomov");
+				
+				if(rs.getInt( "ticket" )>0) {
+					tipomov = "Coleta";
+				}
+				else {
+					
+					tipomov = TipoMov.getDescTipo( tipomov );
+					
+				}
+				
+				tab.setValor( tipomov, iLinha, 1 );
+				
+				tab.setValor( rs.getInt( "docmovserie" ), iLinha, 2 );
+				
+				tab.setValor( tipoMovSerie, iLinha, 3 );
+				tab.setValor( rs.getString( "NUMSERIE" ), iLinha, 4 );
 				
 				iLinha++;
 			}
@@ -208,8 +231,10 @@ public class FMovSerie extends FRelatorio{
 		String numSerie = txtNumSerie.getVlrString();
 		
 		StringBuilder sql = new StringBuilder();
+		
 		sql.append( "select p.descprod, ms.codprod, ms.numserie, ms.tipomovserie, ");
-		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov ");
+		sql.append( "ms.dtmovserie, ms.docmovserie, tm.tipomov, ms.ticket ");
+		
 		sql.append( "from eqmovserie ms ");
 		sql.append( "inner join eqproduto p on ");
 		sql.append( "(p.codemp = ms.codemp and p.codfilial = ms.codfilial and p.codprod = ms.codprod) ");
@@ -221,6 +246,8 @@ public class FMovSerie extends FRelatorio{
 		if(numSerie != null && !"".equals(numSerie.trim())){
 			sql.append( "and ms.numserie = ?" );
 		}
+		
+		sql.append( "order by ms.dtmovserie " );
 		
 		ps = con.prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
