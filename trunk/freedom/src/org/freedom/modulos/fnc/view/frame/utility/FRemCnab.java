@@ -183,8 +183,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
-		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMPCNAB ) );
-		reg.setNomeBanco( txtNomeBanco.getVlrString() );
+		reg.setRazEmp( ((String) prefs.get( FbnUtil.EPrefs.NOMEEMPCNAB )).toUpperCase() );
+		reg.setNomeBanco( txtNomeBanco.getVlrString().toUpperCase() );
 
 		Calendar cal = Calendar.getInstance();
 
@@ -338,8 +338,9 @@ public class FRemCnab extends FRemFBN {
 			String logradouro = dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim();
 			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ] ;
 			String bairro = dadosCliente[ DadosCliente.BAIRCLI.ordinal() ];
+			reg.setBairCli( bairro );
 
-			String endereco_completo = logradouro + ( numero!=null ? ", " + numero : "" ) + ( bairro!=null ? " - " + bairro : "" ); 
+			String endereco_completo = logradouro + ( numero!=null ? ", " + numero : "" ) ; 
 
 			reg.setEndCli( StringFunctions.clearAccents( endereco_completo ).toUpperCase()); 
 
