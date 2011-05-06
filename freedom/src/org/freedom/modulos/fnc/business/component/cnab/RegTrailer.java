@@ -113,8 +113,6 @@ public class RegTrailer extends Reg {
 				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
 				line.append( format( getQtdConsilacoes(), ETipo.$9, 6, 0 ) );
 				line.append( StringFunctions.replicate( " ", 205 ) );
-				line.append( (char) 13 );
-				line.append( (char) 10 );
 			}
 			else if ( padraocnab.equals( CNAB_400 ) ) {
 				line.append( StringFunctions.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
@@ -126,6 +124,8 @@ public class RegTrailer extends Reg {
 			throw new ExceptionCnab( "CNAB registro trailer.\nErro ao escrever registro.\n" + e.getMessage() );
 		}
 
+		line.append( (char) 13 );
+		line.append( (char) 10 );
 		return line.toString();
 	}
 

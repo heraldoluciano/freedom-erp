@@ -1178,7 +1178,8 @@ public class RegT400 extends Reg {
 			line.append( format( getVlrAbatimento(), ETipo.$9, 13, 2 ) ); // Posição 206 a 218 - Valor do Abatimento a ser concedido ou cancelado (no caso de transação de abatimento)
 			line.append( StringFunctions.strZero( getTipoInscCli() + "", 2 ) );// Posição 219 a 220 - Identificação do tipo de inscrição do sacado -- 01:CPF, 02:CNPJ
 			line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) );// Posição 221 a 234 - CNPJ/CPF
-			line.append( format( getRazCli(), ETipo.X, 40, 0 ) );// Posição 235 a 274 - Nome do Sacado
+			line.append( format( getRazCli(), ETipo.X, 30, 0 ) );// Posição 235 a 264 - Nome do Sacado
+			line.append( format( "", ETipo.X, 10, 0) );//Posiçãp 265 a 274
 			line.append( format( getEndCli(), ETipo.X, 40, 0 ) );// Posição 275 a 314
 			line.append( format( getBairCli(), ETipo.X, 12, 0 ) );// Posição 315 a 326
 			line.append( format( getCepCli(), ETipo.$9, 8, 0 ) );// Posição 327 a 334
