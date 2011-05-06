@@ -3,6 +3,7 @@ package org.freedom.modulos.gms.business.object;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.freedom.infra.pojos.Constant;
@@ -66,7 +67,7 @@ public class TipoMov implements java.io.Serializable {
 	public static final Constant TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA = new Constant( "Nota fiscal complementar", "CO" );
 
 	public static final Constant TM_REMESSA_SAIDA = new Constant( "Remessa", "VR" );
-
+	
 	// Tipo de movimento de inventário
 
 	public static final Constant TM_INVENTARIO = new Constant( "Inventário de estoque", "IV" );
@@ -125,6 +126,28 @@ public class TipoMov implements java.io.Serializable {
 
 	}
 
+	public static String getDescTipo(String tipo) {
+		
+		String ret = "";
+		
+		try {
+		
+			HashMap<String, Constant> constantes = getConstants();
+
+			ret = constantes.get( tipo ).getName();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+	
+	
+	
 	public static Vector<Object> getValores( String tipo ) {
 
 		Vector<Object> ret = new Vector<Object>();
@@ -166,6 +189,40 @@ public class TipoMov implements java.io.Serializable {
 		else if ( INVENTARIO.getValue().equals( tipo ) ) {
 			ret.add( TM_INVENTARIO.getValue() );
 		}
+
+		return ret;
+
+	}
+	
+	public static HashMap<String,Constant> getConstants( ) {
+
+		HashMap<String, Constant> ret = new HashMap<String,Constant>();
+
+		ret.put( TM_ORCAMENTO_COMPRA.getValue().toString(), TM_ORCAMENTO_COMPRA );
+		ret.put( TM_PEDIDO_COMPRA.getValue().toString(), TM_PEDIDO_COMPRA );
+		ret.put( TM_COMPRA.getValue().toString(), TM_COMPRA );
+		ret.put( TM_ORDEM_DE_PRODUCAO.getValue().toString(), TM_ORDEM_DE_PRODUCAO );
+		ret.put( TM_DEVOLUCAO_VENDA.getValue().toString(), TM_DEVOLUCAO_VENDA );
+		ret.put( TM_DEVOLUCAO_REMESSA.getValue().toString(), TM_DEVOLUCAO_REMESSA );
+		ret.put( TM_CONHECIMENTO_FRETE_COMPRA.getValue().toString(), TM_CONHECIMENTO_FRETE_COMPRA );
+		ret.put( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getValue().toString(), TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA );
+		ret.put( TM_NOTA_FISCAL_IMPORTACAO.getValue().toString(), TM_NOTA_FISCAL_IMPORTACAO );
+		ret.put( TM_ORCAMENTO_VENDA.getValue().toString(), TM_ORCAMENTO_VENDA );
+		ret.put( TM_PEDIDO_VENDA.getValue().toString(), TM_PEDIDO_VENDA );
+		ret.put( TM_VENDA.getValue().toString(), TM_VENDA );
+		ret.put( TM_VENDA_ECF.getValue().toString(), TM_VENDA_ECF );
+		ret.put( TM_VENDA_TELEVENDAS.getValue().toString(), TM_VENDA_TELEVENDAS );
+		ret.put( TM_VENDA_SERVICO.getValue().toString(), TM_VENDA_SERVICO );
+		ret.put( TM_BONIFICACAO_SAIDA.getValue().toString(), TM_BONIFICACAO_SAIDA );
+		ret.put( TM_DEVOLUCAO_COMPRA.getValue().toString(), TM_DEVOLUCAO_COMPRA );
+		ret.put( TM_TRANSFERENCIA_SAIDA.getValue().toString(), TM_TRANSFERENCIA_SAIDA );
+		ret.put( TM_PERDA_SAIDA.getValue().toString(), TM_PERDA_SAIDA );
+		ret.put( TM_CONSIGNACAO_SAIDA.getValue().toString(), TM_CONSIGNACAO_SAIDA );
+		ret.put( TM_DEVOLUCAO_CONSIGNACAO.getValue().toString(), TM_DEVOLUCAO_CONSIGNACAO );
+		ret.put( TM_REQUISICAO_DE_MATERIAL.getValue().toString(), TM_REQUISICAO_DE_MATERIAL );
+		ret.put( TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA.getValue().toString(), TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA );
+		ret.put( TM_REMESSA_SAIDA.getValue().toString(), TM_REMESSA_SAIDA );
+		ret.put( TM_INVENTARIO.getValue().toString(), TM_INVENTARIO );
 
 		return ret;
 
