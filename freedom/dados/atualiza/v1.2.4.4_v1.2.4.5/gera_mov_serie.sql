@@ -1,3 +1,5 @@
+-- Limpando movimentação anterior
+delete from eqmovserie;
 -- Inserindo movimentações de venda
 insert into eqmovserie
 (
