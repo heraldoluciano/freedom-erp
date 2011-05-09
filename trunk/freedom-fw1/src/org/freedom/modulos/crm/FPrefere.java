@@ -59,6 +59,14 @@ public class FPrefere extends FTabDados {
 	private JTextFieldPad txtCodEmailNC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 
 	private JTextFieldFK txtDescEmailNC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+
+	private JTextFieldPad txtCodEmailEA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldFK txtDescEmailEA = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+
+	private JTextFieldPad txtCodEmailEC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldFK txtDescEmailEC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
@@ -73,6 +81,10 @@ public class FPrefere extends FTabDados {
 	private ListaCampos lcAtivCE = new ListaCampos(this, "CE");
 	
 	private ListaCampos lcEmailNC = new ListaCampos( this, "NC" );
+	
+	private ListaCampos lcEmailEA = new ListaCampos( this, "EA" );
+	
+	private ListaCampos lcEmailEC = new ListaCampos( this, "EC" );
 
 	public FPrefere() {
 
@@ -125,7 +137,14 @@ public class FPrefere extends FTabDados {
 		adicDB(cbBloqueiaCliAtraso, 10, 50, 405, 20, "BLOQATENDCLIATRASO", "", false);
 		
 		adicCampo(txtCodEmailNC, 7, 100, 80, 20, "CodEmailNC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailNC, false);
-		adicDescFK(txtDescEmailNC, 90, 100, 320, 20, "DescEmail", "Email para notificação de chamados");
+		adicDescFK(txtDescEmailNC, 90, 100, 320, 20, "DescEmail", "Email para notificação de chamados ao técnico");
+
+		adicCampo(txtCodEmailEA, 7, 140, 80, 20, "CodEmailEA", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEA, false);
+		adicDescFK(txtDescEmailEA, 90, 140, 320, 20, "DescEmail", "Email para notificação de chamados ao atendente");
+
+		adicCampo(txtCodEmailEC, 7, 180, 80, 20, "CodEmailEC", "Cód.Email", ListaCampos.DB_FK, txtDescEmailEC, false);
+		adicDescFK(txtDescEmailEC, 90, 180, 320, 20, "DescEmail", "Email para notificação de chamados ao cliente");
+		
 		
 		setListaCampos(false, "PREFERE3", "SG");
 
@@ -149,18 +168,40 @@ public class FPrefere extends FTabDados {
 		lcAtivTE.setQueryCommit(false);
 		txtCodAtivTE.setTabelaExterna(lcAtivTE, null);
 		
-		// Email Campanha
+		// Email Notificação de Técnico
 		lcEmailNC.add( new GuardaCampo( txtCodEmailNC, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
 		lcEmailNC.add( new GuardaCampo( txtDescEmailNC, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
 		lcEmailNC.montaSql( false, "EMAIL", "TK" );
 		lcEmailNC.setQueryCommit( false );
 		lcEmailNC.setReadOnly( true );
 		txtCodEmailNC.setTabelaExterna(lcEmailNC, null);
-		
-		
 		txtCodEmailNC.setNomeCampo( "CodEmail" );
 		txtCodEmailNC.setPK( true );
 		txtCodEmailNC.setListaCampos( lcEmailNC );
+		
+		
+		// Email Notificação de Atendente
+		lcEmailEA.add( new GuardaCampo( txtCodEmailEA, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
+		lcEmailEA.add( new GuardaCampo( txtDescEmailEA, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
+		lcEmailEA.montaSql( false, "EMAIL", "TK" );
+		lcEmailEA.setQueryCommit( false );
+		lcEmailEA.setReadOnly( true );
+		txtCodEmailEA.setTabelaExterna(lcEmailEA, null);
+		txtCodEmailEA.setNomeCampo( "CodEmail" );
+		txtCodEmailEA.setPK( true );
+		txtCodEmailEA.setListaCampos( lcEmailEA );
+		
+		// Email Notificação de Cliente
+		lcEmailEC.add( new GuardaCampo( txtCodEmailEC, "CodEmail", "Cód.Email", ListaCampos.DB_PK, false ) );
+		lcEmailEC.add( new GuardaCampo( txtDescEmailEC, "DescEmail", "Descrição do Email", ListaCampos.DB_SI,  false ) );
+		lcEmailEC.montaSql( false, "EMAIL", "TK" );
+		lcEmailEC.setQueryCommit( false );
+		lcEmailEC.setReadOnly( true );
+		txtCodEmailEC.setTabelaExterna(lcEmailEC, null);
+		txtCodEmailEC.setNomeCampo( "CodEmail" );
+		txtCodEmailEC.setPK( true );
+		txtCodEmailEC.setListaCampos( lcEmailEC );
+		
 		
 	}
 
@@ -171,6 +212,8 @@ public class FPrefere extends FTabDados {
 		lcAtivCE.setConexao(cn);
 		lcAtivTE.setConexao(cn);
 		lcEmailNC.setConexao(cn);
+		lcEmailEA.setConexao(cn);
+		lcEmailEC.setConexao(cn);
 		
 		lcCampos.carregaDados();
 	
