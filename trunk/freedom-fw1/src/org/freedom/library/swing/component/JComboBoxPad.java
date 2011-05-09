@@ -65,6 +65,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 	public static final int TP_COR = 5;
 
 	private Vector<?> valores = new Vector<Object>();
+	
+	private Vector<?> labels = new Vector<Object>();
 
 	private JComboBoxListener cbLis = this;
 
@@ -136,6 +138,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 					
 			}
 		}
+
+		labels = label;
 		
 		
 		addItemListener(this);
@@ -159,11 +163,13 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		criando = true;
 		removeAllItems();
 		valores = val;
-
+		labels = label;
+		
 		for (int i = 0; i < label.size(); i++) {
 			addItem(label.elementAt(i));
 		}
 		criando = false;
+			
 	}
 
 	class ColorCellRenderer implements ListCellRenderer {
@@ -323,6 +329,17 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		}
 		return "";
 	}
+	
+	public String getLabel() {
+
+		int iInd = getSelectedIndex();
+		if (labels != null && iInd >= 0 && iInd < labels.size()) {
+			return labels.elementAt(getSelectedIndex()).toString();
+		}
+		return "";
+	}
+
+
 
 	public String getText() {
 
