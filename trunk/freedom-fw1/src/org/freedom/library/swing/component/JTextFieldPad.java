@@ -407,11 +407,36 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		
 		DecimalFormat df = null;
 		
-		String formato = "#,###,";
+		String formato = "###";
 		String valores = ".";
 		
-		if(bigVal!=null && bigVal.floatValue()>=1) {
+		BigDecimal bigValAbs = bigVal.abs(); 
 		
+		if(bigValAbs!=null && bigValAbs.floatValue()>=1) {
+		
+			if(bigValAbs.intValue()>1000) {
+				formato = "#,###,";
+				valores = "0,000.";
+			}
+			else if(bigValAbs.intValue()>10000) {
+				formato = "##,###,";
+			}
+			else if(bigValAbs.intValue()>100000) {
+				formato = "###,###,";	
+			}
+			else if(bigValAbs.intValue()>1000000) {
+				formato = "#,###,###,";
+			}
+			else if(bigValAbs.intValue()>10000000) {
+				formato = "##,###,###,";
+			}
+			else if(bigValAbs.intValue()>100000000) {
+				formato = "###,###,###,";
+			}
+			else if(bigValAbs.intValue()>1000000000) {
+				formato = "#,###,###,###,";
+			}
+			
 			for (int i = 0; i < iDecimal; i++) { 
 				formato += "#";
 				valores += "0";
