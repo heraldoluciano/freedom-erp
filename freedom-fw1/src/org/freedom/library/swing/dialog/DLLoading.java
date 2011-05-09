@@ -43,6 +43,7 @@ import javax.swing.Timer;
 import org.freedom.bmps.Icone;
 
 public class DLLoading extends JWindow implements ActionListener {
+//public class DLLoading extends FFDialogo implements ActionListener {	
 
 	private static final long serialVersionUID = 1;
 
@@ -65,12 +66,12 @@ public class DLLoading extends JWindow implements ActionListener {
 	private Timer timer = new Timer(50, this);
 
 	private int index = 0;
-
+	
 	public DLLoading() {
 
 		setSize(200, 100);
 		setLocationRelativeTo(null);
-		setBackground(azul_claro);
+		setBackground(azul_claro); 
 
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
@@ -95,6 +96,10 @@ public class DLLoading extends JWindow implements ActionListener {
 
 		mensagens.add(aguarde, BorderLayout.CENTER);
 		panel.add(mensagens, BorderLayout.SOUTH);
+		
+	 
+		
+		
 	}
 
 	private void loadImages() {
@@ -117,7 +122,7 @@ public class DLLoading extends JWindow implements ActionListener {
 		if (timer.isRunning()) {
 			timer.stop();
 		}
-		dispose();
+		dispose(); 
 	}
 
 	public void actionPerformed(ActionEvent e) {
