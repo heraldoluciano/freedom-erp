@@ -861,25 +861,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tab.setTamColuna( 145, 2 ); // Descrição do produto
 		
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
-			tab.setColunaInvisivel( 3 ); // Código do produto
+//			tab.setColunaInvisivel( 3 ); // Código do produto
 		}
 		
 		tab.setTamColuna( 65, 4 ); // Lote
-		tab.setColunaInvisivel( 5 ); // Não identificado
+//		tab.setColunaInvisivel( 5 ); // Não identificado
 		tab.setTamColuna( 65, 6 ); // Qtd.
 		tab.setTamColuna( 65, 7 ); // Qtd.rat.
 		tab.setTamColuna( 65, 8 ); // Lote.rat.
 		tab.setTamColuna( 50, 9 ); // RMA
 		
-		tab.setColunaInvisivel( 10 );		
+//		tab.setColunaInvisivel( 10 );		
 		
 		tab.setTamColuna( 13, 11 ); // Acao corretiva imagem
 		tab.setTamColuna( 13, 12 ); // Bloqueio de OP imagem
 	
-		tab.setColunaInvisivel( 13 );
+//		tab.setColunaInvisivel( 13 );
 		
 		if(tab.getNumColunas()>14) {
-			tab.setColunaInvisivel( 14 );
+//			tab.setColunaInvisivel( 14 );
 		}
 
 	}
@@ -1724,9 +1724,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					fSldLote = rs.getFloat( "SLDLOTE" );
 				}
 
-				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 5 ) ).subtract( ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 6 ) ) ).floatValue() && !"".equals( (String) tab.getValor( i, 3 ) ) ) {
+				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 6 ) ).subtract( ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 7 ) ) ).floatValue() && !"".equals( (String) tab.getValor( i, 4 ) ) ) {
 					iSldNeg++;
-					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + StringFunctions.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
+					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + StringFunctions.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 4 );
 				}
 
 				rs.close();
@@ -2010,6 +2010,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs.close();
 
 			con.commit();
+			
+			lcCampos.carregaDados();
+			
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
 			err.printStackTrace();
@@ -3231,6 +3234,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 				btRemessa.setEnabled( temRemessa( ) );
 				btRetorno.setEnabled( temRetorno( ) );
+				
+				btPrevimp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
+				btImp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
 				
 			}
 
