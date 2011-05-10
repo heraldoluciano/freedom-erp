@@ -38,8 +38,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -196,6 +194,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			c.add( pnCentro, BorderLayout.CENTER );
 			c.add( pinCab, BorderLayout.NORTH );
 
+			tab.setiDecimal( Aplicativo.casasDecFin );
+			
 			tpn.setTabLayoutPolicy( JTabbedPanePad.SCROLL_TAB_LAYOUT );
 			tpn.setPreferredSize( new Dimension( 600, 30 ) );
 
@@ -607,7 +607,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 				if ( rs.next() ) {
 
-					BigDecimal SaldoComposto = ConversionFunctions.stringCurrencyToBigDecimal( txtVlrSaldo.getVlrString() );
+					BigDecimal SaldoComposto = txtVlrSaldo.getVlrBigDecimal();
 
 					SaldoComposto = SaldoComposto.add( rs.getBigDecimal( "SaldoVinculado" ) );
 
@@ -838,7 +838,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				else
 					tab.setValor( "", iLin, 4 );
 				tab.setValor( sVals[ 3 ], iLin, 5 );
-				tab.setValor( sVals[ 4 ], iLin, 6 );
+				
+				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );
+				
 				tab.setValor( sVals[ 5 ], iLin, 7 );
 			}
 			lbAtualSaldoVal.setText( "NÃO" );
@@ -858,11 +860,14 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				tab.setValor( sVals[ 1 ], iLin, 1 );
 				tab.setValor( sVals[ 2 ], iLin, 2 );
 				tab.setValor( "S", iLin, 3 );
-				if ( sVals[ 2 ].equals( "S" ) )
+				if ( sVals[ 2 ].equals( "S" ) ) 
 					tab.setValor( sConta, iLin, 4 );
 				tab.setValor( sVals[ 3 ], iLin, 5 );
-				tab.setValor( sVals[ 4 ], iLin, 6 );
+//				tab.setValor( sVals[ 4 ], iLin, 6 );
+				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );				
 				tab.setValor( sVals[ 5 ], iLin, 7 );
+				
+				
 			}
 			lbAtualSaldoVal.setText( "NÃO" );
 		}
