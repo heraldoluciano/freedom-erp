@@ -46,6 +46,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -127,6 +128,58 @@ public class Funcoes {
 		return retorno;
 	}
 
+	public static String getStringFormatedBigDecimal(BigDecimal bigVal, int iDecimal) {
+		
+		DecimalFormat df = null;
+		
+		String formato = "###";
+		String valores = ".";
+		
+		BigDecimal bigValAbs = bigVal.abs(); 
+		
+		if(bigValAbs!=null && bigValAbs.floatValue()>=1) {
+		
+			if(bigValAbs.intValue()>1000) {
+				formato = "#,###,";
+				valores = "0,000.";
+			}
+			else if(bigValAbs.intValue()>10000) {
+				formato = "##,###,";
+			}
+			else if(bigValAbs.intValue()>100000) {
+				formato = "###,###,";	
+			}
+			else if(bigValAbs.intValue()>1000000) {
+				formato = "#,###,###,";
+			}
+			else if(bigValAbs.intValue()>10000000) {
+				formato = "##,###,###,";
+			}
+			else if(bigValAbs.intValue()>100000000) {
+				formato = "###,###,###,";
+			}
+			else if(bigValAbs.intValue()>1000000000) {
+				formato = "#,###,###,###,";
+			}
+			
+			for (int i = 0; i < iDecimal; i++) { 
+				formato += "#";
+				valores += "0";
+	    	}
+		
+			df = new DecimalFormat(formato + valores );
+			
+		}
+		else {
+			df = new DecimalFormat("#,###0."+ StringFunctions.replicate("0", iDecimal));
+		}
+		
+		return df.format(bigVal);
+		
+		
+	}
+	
+	
 	public static StringDireita bdToStr(BigDecimal vlr) {
 		return bdToStr(vlr, Aplicativo.casasDecFin);
 	}
