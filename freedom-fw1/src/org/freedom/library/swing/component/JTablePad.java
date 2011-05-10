@@ -47,6 +47,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.type.StringDireita;
 
 public class JTablePad extends JTable implements TabelaEditListener, TabelaSelListener {
@@ -60,6 +61,16 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 	private static final long serialVersionUID = 1L;
 
 	private Modelo modelo = new Modelo();
+	
+	private int iDecimal = 2;
+
+	public int getiDecimal() {
+		return iDecimal;
+	}
+
+	public void setiDecimal(int iDecimal) {
+		this.iDecimal = iDecimal;
+	}
 
 	int ContaColunas = 0;
 
@@ -127,7 +138,9 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 					}
 					
 				}
-
+				
+				setText( Funcoes.getStringFormatedBigDecimal( (BigDecimal) value , iDecimal));
+				
 				return this;
 			}
 

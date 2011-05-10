@@ -114,6 +114,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private DLCodProd dlCodProd = null;
 	private boolean uppercase = false;
 	private Class<? extends IFilho> telaexterna = null;
+	
+	boolean isbigdecimal = false;
 
 	public JTextFieldPad(int tipo, int tam, int dec) {
 		addFocusListener(this);
@@ -405,51 +407,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		
 		bigVal = bigVal.setScale(iDecimal, BigDecimal.ROUND_HALF_UP);
 		
-		DecimalFormat df = null;
+		String dx = Funcoes.getStringFormatedBigDecimal(bigVal, iDecimal);
 		
-		String formato = "###";
-		String valores = ".";
-		
-		BigDecimal bigValAbs = bigVal.abs(); 
-		
-		if(bigValAbs!=null && bigValAbs.floatValue()>=1) {
-		
-			if(bigValAbs.intValue()>1000) {
-				formato = "#,###,";
-				valores = "0,000.";
-			}
-			else if(bigValAbs.intValue()>10000) {
-				formato = "##,###,";
-			}
-			else if(bigValAbs.intValue()>100000) {
-				formato = "###,###,";	
-			}
-			else if(bigValAbs.intValue()>1000000) {
-				formato = "#,###,###,";
-			}
-			else if(bigValAbs.intValue()>10000000) {
-				formato = "##,###,###,";
-			}
-			else if(bigValAbs.intValue()>100000000) {
-				formato = "###,###,###,";
-			}
-			else if(bigValAbs.intValue()>1000000000) {
-				formato = "#,###,###,###,";
-			}
-			
-			for (int i = 0; i < iDecimal; i++) { 
-				formato += "#";
-				valores += "0";
-	    	}
-		
-			df = new DecimalFormat(formato + valores );
-			
-		}
-		else {
-			df = new DecimalFormat("#,###0."+ StringFunctions.replicate("0", iDecimal));
-		}
-		
-		String dx = df.format(bigVal);
+		isbigdecimal = true;
 		
 		super.setText(dx);
 		
@@ -594,6 +554,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			sRetorno = getText();
 		if (sRetorno.length() > iTamanho)
 			sRetorno = sRetorno.substring(0, iTamanho);
+		
+		if(isbigdecimal) {
+			sRetorno = Funcoes.tiraChar(sRetorno, "."); 
+		}
+		
 		return sRetorno;
 	}
 
