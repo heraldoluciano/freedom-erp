@@ -137,20 +137,20 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 			sql.append( "select ");
 			sql.append( "op.codop, op.refprod, pd.descprod, pd.codgrup, " );
 			
-			sql.append( "sum(( ");
+			sql.append( "coalesce(sum(( ");
 			sql.append( "select sum(ir.qtdexpitrma) from eqrma rm, eqitrma ir, eqproduto pe ");
 			sql.append( "where rm.codempof=op.codemp and rm.codfilialof=op.codfilial and rm.codop=op.codop and rm.seqop=op.seqop ");
 			sql.append( "and ir.codemp=rm.codemp and ir.codfilial=rm.codfilial and ir.codrma=rm.codrma ");
 			sql.append( "and pe.codemp=ir.codemppd and pe.codfilial=ir.codfilialpd and pe.codprod=ir.codprod ");
-			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null ");
-			sql.append( ")) consumidas, ");
+			sql.append( "and pe.nroplanos is not null and pe.qtdporplano is not null and pe.certfsc='S' ");
+			sql.append( ")),0) consumidas, ");
 			 
 			
 			if("S".equals( cbPorFolha.getVlrString())) {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00) ) produzidas ");
+				sql.append( "coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) / ( pd.nroplanos * pd.qtdporplano ) * coalesce(pd.fatorfsc,1.00)) else 0 end ),0) produzidas ");
 			}
 			else {
-				sql.append( "sum( coalesce( ope.qtdent, op.qtdfinalprodop ) ) produzidas ");
+				sql.append( "coalesce(sum( case when pd.certfsc='S' then (coalesce( ope.qtdent, op.qtdfinalprodop ) ) else 0 end  ),0) produzidas ");
 			}
 			
 			sql.append( "from ");
@@ -161,7 +161,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 			sql.append( "where ");
 			
-			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod='F' and pd.certfsc='S' ");
+			sql.append( "op.dtfabrop between ? and ? and op.codemp=? and op.codfilial=? and op.sitop='FN' and pd.tipoprod='F' ");
 			
 			if ( !"".equals( txtCodSecao.getVlrString() ) ) {
 				sql.append( " and pd.codempsc=? and pd.codfilialsc=? and pd.codsecao=? " );
