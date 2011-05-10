@@ -508,7 +508,9 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		sRetorno[ 1 ] = txtDataLanca.getVlrString().trim();
 		sRetorno[ 2 ] = cbTransf.getVlrString().trim();
 		sRetorno[ 3 ] = txtDocLanca.getVlrString().trim();
+		
 		sRetorno[ 4 ] = txtVlrAtualLanca.getVlrString().trim();
+		
 		sRetorno[ 5 ] = txtHistLanca.getVlrString().trim();
 		sRetorno[ 6 ] = txtCodPlan.getVlrString().trim();
 		return sRetorno;
