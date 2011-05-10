@@ -85,12 +85,11 @@ public class FRBalancoProdFSC extends FRelatorio {
 	
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-
 	public FRBalancoProdFSC() {
 
 	setTitulo( "Relatório de Balançao de produção FSC" );
 		
-		setAtribos( 80, 80, 370, 310 );
+		setAtribos( 80, 80, 370, 290 );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
@@ -123,12 +122,12 @@ public class FRBalancoProdFSC extends FRelatorio {
 		pnPeriodo.adic( new JLabelPad( "De:" ), 5, 05, 30, 20 );
 		pnPeriodo.adic( txtDataini, 35, 05, 90, 20 );
 		pnPeriodo.adic( new JLabelPad( "Até:" ), 135, 05, 30, 20 );
-		pnPeriodo.adic( txtDatafim, 170, 05, 90, 20 );
+		pnPeriodo.adic( txtDatafim, 170, 5, 90, 20 );
 
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, TitledBorder.LEFT ) );
 
-		adic( pnFiltros, 4, 70, 335, 145 );
+		adic( pnFiltros, 4, 70, 335, 120 );
 
 		pnFiltros.adic( txtCodSecao, 4, 25, 120, 20, "Cód.Seção" );
 		pnFiltros.adic( txtDescSecao, 127, 25, 185, 20, "Descrição da seção" );
@@ -136,7 +135,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 		pnFiltros.adic( txtRefProd, 4, 65, 120, 20, "Ref.Prod." );
 		pnFiltros.adic( txtDescProd, 127, 65, 185, 20, "Descrição do Produto" );
 
-		adic(cbPorFolha, 7, 185, 200, 20);
+		adic(cbPorFolha, 7, 200, 200, 20);
 		
 
 	}
