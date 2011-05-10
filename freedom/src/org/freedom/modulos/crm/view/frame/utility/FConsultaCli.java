@@ -341,7 +341,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		tabItensVendas.setTamColuna( 30, ITEMVENDAS.ITEM.ordinal() );
 		tabItensVendas.setTamColuna( 50, ITEMVENDAS.CODPROD.ordinal() );
-		tabItensVendas.setTamColuna( 200, ITEMVENDAS.DESCPROD.ordinal() );
+		tabItensVendas.setTamColuna( 300, ITEMVENDAS.DESCPROD.ordinal() );
 		tabItensVendas.setTamColuna( 70, ITEMVENDAS.LOTE.ordinal() );
 		tabItensVendas.setTamColuna( 50, ITEMVENDAS.QUANTIDADE.ordinal() );
 		tabItensVendas.setTamColuna( 70, ITEMVENDAS.PRECO.ordinal() );
@@ -540,7 +540,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') codlote, " );
+			sql.append( "SELECT I.CODITVENDA, I.CODPROD, coalesce(obsitvenda, P.DESCPROD) DESCPROD, coalesce(I.CODLOTE,'') codlote, " );
 			sql.append( "coalesce(I.QTDITVENDA,0) qtditvenda, coalesce(I.PRECOITVENDA,0) precoitvenda, coalesce(I.VLRDESCITVENDA,0) vlrdescitvenda, coalesce(I.VLRFRETEITVENDA,0) vlrfreteitvenda, coalesce(I.VLRLIQITVENDA,0) vlrliqitvenda " );
 			sql.append( "FROM VDITVENDA I, EQPRODUTO P " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODVENDA=? AND I.TIPOVENDA=? AND " );
