@@ -283,7 +283,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	public FEstrutura() {
 
 		setTitulo( "Estrutura de produtos" );
-		setAtribos( 50, 20, 670, 650 );
+		setAtribos( 380, 20, 670, 650 );
 		setAltCab( 250 );
 
 	}
