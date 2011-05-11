@@ -26,7 +26,7 @@ public final class Bci10000 extends AbstractScale {
 
 	private static final int TAMANHO_STR_PESO = 10;
 
-	private static final int TAMANHO_STR_TOTAL = 18;
+	private static final int TAMANHO_STR_TOTAL = 17;
 
 	public static final String NOME_BAL = "Rodoviária BCI 10000";
 
@@ -232,7 +232,7 @@ public final class Bci10000 extends AbstractScale {
 							ConversionFunctions.strTimetoTime(ConversionFunctions.dateToStrTime(datahora))  );
 				}
 				else {
-					System.out.println("***Buffer menor que o esperado (18)!");
+					System.out.println("***Buffer menor que o esperado ("+TAMANHO_STR_TOTAL+") !");
 				}
 	
 			}
