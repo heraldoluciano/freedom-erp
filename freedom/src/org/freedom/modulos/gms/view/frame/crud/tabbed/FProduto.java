@@ -1094,10 +1094,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		pinOutros.adic( pnFSC, 5, 390, 650, 150 );
 		setPainel( pnFSC );
 
-		adicDB( 	cbCertFSC		, 5		, 20	, 150	, 20	, "certfsc"		, ""						, false );
-		adicCampo( 	txtNroPlanos	, 158	, 20	, 110	, 20	, "NroPlanos"	, "Nro. Planos"				, ListaCampos.DB_SI, false );
-		adicCampo( 	txtQtdPorPlano	, 271	, 20	, 110	, 20	, "QtdPorPlano"	, "Qtd.por plano"			, ListaCampos.DB_SI, false );
-		adicCampo( 	txtFatorFSC		, 384	, 20	, 150	, 20	, "FatorFSC"	, "Fator conv. folhas(FSC)"	, ListaCampos.DB_SI, false );
+		adicDB( 	cbCertFSC		, 5		, 20	, 150	, 20	, "certfsc"		, ""						 , false );
+		adicCampo( 	txtNroPlanos	, 158	, 20	, 110	, 20	, "NroPlanos"	, "Nro. de Planos"				 , ListaCampos.DB_SI, false );
+		adicCampo( 	txtQtdPorPlano	, 271	, 20	, 110	, 20	, "QtdPorPlano"	, "Qtd. por Plano"			 , ListaCampos.DB_SI, false );
+		adicCampo( 	txtFatorFSC		, 384	, 20	, 150	, 20	, "FatorFSC"	, "Equivalência de Unidades" , ListaCampos.DB_SI, false );
 
 		setListaCampos( true, "PRODUTO", "EQ" );
 
