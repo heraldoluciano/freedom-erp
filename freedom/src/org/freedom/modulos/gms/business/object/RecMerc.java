@@ -121,6 +121,8 @@ public class RecMerc implements java.io.Serializable {
 	private Integer codop = null;
 
 	private Integer codtipomovpcp = null;
+	
+	private BigDecimal desconto = null;
 
 	public Integer getCodtipomovpcp() {
 
@@ -873,7 +875,7 @@ public class RecMerc implements java.io.Serializable {
 
 			sql.append( "select rm.tipofrete ,rm.codfor, tm.codtipomov, tm.serie, coalesce(ss.docserie,0) docserie " );
 			sql.append( ", rm.codcli, fr.codunifcod codremet, fi.codunifcod coddestinat, rm.codtran, rm.dtent, coalesce((br.vlrfrete/coalesce(br.qtdfrete,1)),0) vlrfrete, " );
-			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret, rm.status " );
+			sql.append( "rm.solicitante, coalesce(rm.dtprevret,rm.dtent) dtprevret, rm.status, rm.desconto " );
 
 			sql.append( "from eqrecmerc rm left outer join eqtiporecmerc tr on " );
 			sql.append( "tr.codemp=rm.codemp and tr.codfilial=rm.codfilial and tr.codtiporecmerc=rm.codtiporecmerc " );
@@ -922,6 +924,7 @@ public class RecMerc implements java.io.Serializable {
 				setPrecopeso( rs.getBigDecimal( "vlrfrete" ) );
 				setSolicitante( rs.getString( "solicitante" ) );
 				setStatus( rs.getString( "status" ) );
+				setDesconto( rs.getBigDecimal("desconto") );
 			}
 
 			// con.commit();
@@ -1355,6 +1358,7 @@ public class RecMerc implements java.io.Serializable {
 		BigDecimal pesoliq = null;
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
+		BigDecimal desconto = null;
 		String unid = null;
 		PreparedStatement ps = null;
 		Integer codplanopag = null;
@@ -1371,6 +1375,15 @@ public class RecMerc implements java.io.Serializable {
 			unid = (String) p2.get( "unid" );
 
 			pesoliq = peso1.subtract( peso2 );
+			
+			desconto = getDesconto();
+			 
+			if(desconto!=null && desconto.floatValue()>0) {
+				BigDecimal pesodesc = pesoliq.multiply( desconto.divide( new BigDecimal(100) ) );
+				pesoliq = pesoliq.subtract( pesodesc );
+				
+				System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
+			}
 
 			sql.append( "execute procedure cpadicitcomprarecmercsp(?,?,?,?,?,?,?)" );
 
@@ -2214,5 +2227,19 @@ public class RecMerc implements java.io.Serializable {
 
 		this.status = status;
 	}
+
+	
+	public BigDecimal getDesconto() {
+	
+		return desconto;
+	}
+
+	
+	public void setDesconto( BigDecimal desconto ) {
+	
+		this.desconto = desconto;
+	}
+	
+	
 
 }

@@ -121,6 +121,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	private JTextFieldFK txtNomeBairro = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 	
 	private JTextFieldFK txtVlrFrete = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtDesconto = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 2, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtCodPais = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -373,8 +375,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		adicDescFK( txtDescAlmox, 336, 60, 160, 20, "DescAlmox", "Descrição do almoxarifado" );
 
 		adicCampo( txtCodTran, 7, 100, 70, 20, "CodTran", "Cod.Tran.", ListaCampos.DB_FK, txtNomeTran, true );
-		adicDescFK( txtNomeTran, 80, 100, 417, 20, "NomeTran", "Nome da transportadora" );
+		adicDescFK( txtNomeTran, 80, 100, 345, 20, "NomeTran", "Nome da transportadora" );
 
+		adicCampo( txtDesconto, 428, 100, 70, 20, "Desconto", "%Desc.Peso", ListaCampos.DB_SI, false );
+		
 		adicDB( rgFrete, 500, 100, 123, 20, "TipoFrete", "Tipo de frete", false );
 
 		adicCampo( txtCodFor, 7, 140, 70, 20, "CodFor", "Cod.For.", ListaCampos.DB_FK, txtRazFor, true );
@@ -816,7 +820,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		BigDecimal PesoP2 = null;
 		BigDecimal PesoLiq = null;
+		BigDecimal PesoTotal = null;
 		BigDecimal media = null;
+		BigDecimal desconto = null;
 
 		String renda = null;
 
@@ -842,11 +848,32 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				UnidP2 = (String) p2.get( "unid" );
 
 				PesoLiq = PesoP1.subtract( PesoP2 );
-
+				
 				HashMap<String, Object> p3 = recmerc.getRendapesagem();
 
 				media = (BigDecimal) p3.get( "media" );
 				renda = (String) p3.get( "renda" );
+				
+				desconto = recmerc.getDesconto();
+				
+				if(desconto==null) {
+					desconto = new BigDecimal(0);
+				}
+				
+				if(desconto.floatValue()>0) {
+					
+					BigDecimal pesodesc = PesoLiq.multiply( desconto.divide( new BigDecimal(100) ) );
+					PesoTotal = PesoLiq.subtract( pesodesc );
+					
+					System.out.println("Aplicado desconto no peso de :" + pesodesc.toString());
+					
+					
+				}
+				else {
+					PesoTotal = PesoLiq;
+				}
+				
+				
 
 			} catch ( Exception e ) {
 				System.out.println( "Erro ao buscar pesagens!" );
@@ -913,17 +940,28 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			imp.say( imp.pRow(), 30, DataP2 );
 			imp.say( imp.pRow(), 46, HoraP2 );
 
-			imp.pulaLinha( 2, imp.comprimido() );
+			imp.pulaLinha( 1, imp.comprimido() );
 
 			imp.say( imp.pRow(), 3, "LIQUIDO...........:" );
-
+			
 			imp.say( imp.pRow(), 0, " " + imp.normal() );
 
 			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoLiq ) ) );
 			imp.say( imp.pRow(), 23, UnidP1 );
 
-			imp.pulaLinha( 2, imp.comprimido() );
-
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( imp.pRow(), 3, "DESCONTO..........:" );
+			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 2, 2, String.valueOf( desconto ) ) + " %");
+			
+			imp.say( imp.pRow(), 30, "OBS.:" + Funcoes.copy( txaObs.getVlrString(), 0, 30 ));
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( imp.pRow(), 3, "TOTAL.............:" );
+			
+			imp.say( imp.pRow(), 15, Funcoes.strDecimalToStrCurrency( 7, 0, String.valueOf( PesoTotal ) ) );
+			imp.say( imp.pRow(), 23, UnidP1 );
+			
+			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( imp.pRow(), 3, "Renda.............:" );
 			imp.say( imp.pRow(), 24, String.valueOf( media.intValue() ) );
 
