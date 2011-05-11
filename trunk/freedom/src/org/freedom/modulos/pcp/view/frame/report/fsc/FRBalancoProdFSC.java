@@ -89,7 +89,7 @@ public class FRBalancoProdFSC extends FRelatorio {
 
 	setTitulo( "Relatório de Balançao de produção FSC" );
 		
-		setAtribos( 80, 80, 370, 290 );
+		setAtribos( 160, 160, 370, 290 );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
