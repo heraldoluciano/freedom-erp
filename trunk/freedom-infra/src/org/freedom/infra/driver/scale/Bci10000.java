@@ -181,7 +181,7 @@ public final class Bci10000 extends AbstractScale {
 	
 				// str = str.trim();
 	
-				// pega os ultimos 18 caracteres do buffer
+				// pega os ultimos 17 caracteres do buffer
 				if (str.length() > TAMANHO_STR_TOTAL) {
 	
 					System.out.println("***Entrou no parse!");
