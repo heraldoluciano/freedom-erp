@@ -27,7 +27,6 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -703,15 +702,53 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				retorno = false;
 		}
 		else if (( tipoCampo == TP_DECIMAL ) /* || ( tipoCampo == TP_NUMERIC ) || ( tipoCampo == TP_DOUBLE )*/ ) {
+			
 			retorno = false;
-			if (( Character.isDigit(caract) ))
+						
+			if (( Character.isDigit(caract) )) {
 				retorno = true;
+			}
 			else if (( caract == '.' ) | ( caract == ',' )) {
 				if (getText().indexOf(pontoDecMask) != -1)
 					retorno = false;
 				else
 					retorno = true;
 			}
+							
+			/*Implementação para permitir a digitação de ponto para separação de milhar (desabilitada)}
+			else if (( caract == '.' ) || ( caract == ',' )) {
+				
+				System.out.println("entrou 1");
+				
+				if( caract==pontoDecMask) {
+					
+					System.out.println("entrou 2");
+					
+					if (getText().indexOf(pontoDecMask) > -1 ) {
+						retorno = false;
+						System.out.println("entrou 3");
+					}
+					else {
+						System.out.println("entrou 4");
+						retorno = true;
+					}
+					
+				}
+				else {				 
+					System.out.println("entrou 5");
+				/*	if (getText().indexOf(pontoDecMask) > -1 ) {
+						System.out.println("entrou 6");
+						retorno = true;
+					}
+					else {
+						System.out.println("entrou 7");
+						retorno = true;
+					}
+				}
+				
+			}
+			*/
+			
 			else if (caract == '-') {
 				if (getText().trim().length() > 0)
 					retorno = false;
