@@ -116,7 +116,7 @@ public final class Bci10000 extends AbstractScale {
 								}
 							}
 						}
-						if (bufferTmp.length == 18) {
+						if ( bufferTmp.length > 16 && bufferTmp.length < 20 ) {
 							System.out.println("incluindo buffer:" + new String(bufferTmp));
 
 							if (AbstractScale.scalebuffer.length() > 180) {
