@@ -89,7 +89,7 @@ public class FRBalancoProdGrupoFSC extends FRelatorio {
 
 	setTitulo( "Relatório de Balanço de produção por Grupo FSC" );
 		
-		setAtribos( 80, 80, 370, 290 );
+		setAtribos( 200, 200, 370, 290 );
 
 		lcGrupo.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.Grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescSecao, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );

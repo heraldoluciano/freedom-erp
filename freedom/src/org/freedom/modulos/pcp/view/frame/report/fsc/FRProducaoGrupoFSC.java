@@ -75,7 +75,7 @@ public class FRProducaoGrupoFSC extends FRelatorio {
 
 	setTitulo( "Produção por grupo (FSC)" );
 		
-		setAtribos( 80, 80, 370, 250 );
+		setAtribos( 120, 120, 370, 250 );
 
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );

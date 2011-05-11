@@ -78,7 +78,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 
 	setTitulo( "Relatório de encomendas de produção FSC" );
 		
-		setAtribos( 80, 80, 370, 250 );
+		setAtribos( 240, 270, 370, 260 );
 
 		lcSecao.add( new GuardaCampo( txtCodSecao, "CodSecao", "Cód.Seção", ListaCampos.DB_PK, false ) );
 		lcSecao.add( new GuardaCampo( txtDescSecao, "DescSecao", "Descrição da seção", ListaCampos.DB_SI, false ) );
