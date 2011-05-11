@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -92,7 +94,7 @@ import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 import org.freedom.modulos.std.view.dialog.utility.DLConsultaVenda;
 
-public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener {
+public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -224,9 +226,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 	private JTextFieldPad txtTotalEmRenegociacao = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldFK txtDocManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtPedidoManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtPedidoManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCodCliManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -962,6 +964,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tpn.addChangeListener( this );
 		
 	
+		txtDocManut.addKeyListener( this );
+		txtPedidoManut.addKeyListener( this );
 
 	}
 
@@ -2619,36 +2623,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				iCodRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.CODREC.ordinal() );
 				iNParcItRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.NPARCITREC.ordinal() );
-				
-				String[] sPlanoConta = getPlanejamentoConta( iCodRec );
-
-				String numconta = (String) tabManut.getValor( iLin, EColTabManut.NUMCONTA.ordinal() );
-				String codplan = (String) tabManut.getValor( iLin, EColTabManut.CODPLAN.ordinal() );
-				String codcc = (String) tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() );
-
-				if ( "".equals( numconta ) || numconta == null ) {
-					numconta = sPlanoConta[ 2 ];
-				}
-
-				if ( numconta == null ) {
-					numconta = "";
-				}
-
-				if ( "".equals( codplan ) || codplan == null ) {
-					codplan = sPlanoConta[ 1 ];
-				}
-
-				if ( codplan == null ) {
-					codplan = "";
-				}
-
-				if ( "".equals( codcc ) || codcc == null ) {
-					codcc = sPlanoConta[ 3 ];
-				}
-
-				if ( codcc == null ) {
-					codcc = "";
-				}
 
 				dl = new DLBaixaRec( this );
 
@@ -2658,8 +2632,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setParcela( (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() ) );
 				baixaRecBean.setCliente( txtCodCliBaixa.getVlrInteger() );
 				baixaRecBean.setRazaoSocialCliente( txtRazCliBaixa.getVlrString() );
-				baixaRecBean.setConta( (String) numconta );
-				baixaRecBean.setPlanejamento( (String) codplan );
+				baixaRecBean.setConta( (String) tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
+				baixaRecBean.setPlanejamento( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
 				baixaRecBean.setDocumento( (String) tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
 				baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
 				baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
@@ -2667,7 +2641,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				baixaRecBean.setValorAPagar( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
 				baixaRecBean.setValorDesconto( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
 				baixaRecBean.setValorJuros( ConversionFunctions.stringToBigDecimal( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
-				baixaRecBean.setCentroCusto( (String) codcc );
+				baixaRecBean.setCentroCusto( (String) tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
 
 				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) {
 					baixaRecBean.setDataPagamento( new Date() );
@@ -3111,7 +3085,76 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 				
+	private Integer pesquisaDoc(Integer docrec) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer ret = null;
+		
+		try {
+			
+			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and docrec=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( 3, docrec );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				ret = rs.getInt( "codrec" );
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
 	
+	private Integer pesquisaPedido(Integer codvenda) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer ret = null;
+		
+		try {
+			
+			sql.append( "select codrec from fnreceber where codemp=? and codfilial=? and codvenda=? and tipovenda='V'" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( 3, codvenda );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				ret = rs.getInt( "codrec" );
+				
+			}
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
+		
+	}
+
 
 	public void mouseEntered( MouseEvent e ) {
 
@@ -3137,5 +3180,59 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void keyPressed( KeyEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyReleased( KeyEvent arg0 ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyTyped( KeyEvent kevt ) {
+		
+		if(kevt.getSource() == txtDocManut ) {
+
+			Integer docrec = txtDocManut.getVlrInteger();
+			
+			if(docrec !=null && docrec >0) {
+			
+				if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+			
+					Integer codrec = pesquisaDoc( docrec );
+					if(codrec!=null && codrec>0) {
+						txtCodRecManut.setVlrInteger( codrec );
+						lcRecManut.carregaDados();
+					}
+			
+				}
+			}
+
+		}
+		else if(kevt.getSource() == txtPedidoManut ) {
+
+			Integer codvenda = txtPedidoManut.getVlrInteger();
+			
+			if(codvenda !=null && codvenda >0) {
+			
+				if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+				
+					Integer codrec = pesquisaPedido( codvenda );
+						
+					if(codrec!=null && codrec>0) {
+						txtCodRecManut.setVlrInteger( codrec );
+						lcRecManut.carregaDados();
+					}
+				
+				}
+			}
+
+		}	
+
 	}
 }
