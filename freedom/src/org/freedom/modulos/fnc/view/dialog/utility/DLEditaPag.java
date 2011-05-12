@@ -474,15 +474,13 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		return iRet;
 	}
 
-	public static Vector<Cheque> buscaCheques(Integer codpag, Integer nparcpag) {
+	public static Vector<Cheque> buscaCheques(Integer codpag, Integer nparcpag, DbConnection conn) {
 
 		Vector<Cheque> ret = new Vector<Cheque>();
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sql = new StringBuilder();
-
-		DbConnection conn = Aplicativo.getInstace().getConexao();
 
 		try {
 
@@ -514,13 +512,18 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 				ret.add( cheque );
 
 			}
-
-		} 
-		catch ( SQLException err ) {
+			
+			rs.close();
+			ps.close();
+			
+			} 
+		catch ( Exception err ) {		
 			err.printStackTrace();
 			Funcoes.mensagemErro( null, "Erro ao buscar cheques para o pagmento.\n" + err.getMessage(), true, conn, err );
 		}
 
+		
+		
 		return ret;
 
 	}
@@ -533,7 +536,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		try {
 
 
-			Vector<Cheque> cheques = buscaCheques( txtCodPag.getVlrInteger(),  txtNParcPag.getVlrInteger() );
+			Vector<Cheque> cheques = buscaCheques( txtCodPag.getVlrInteger(),  txtNParcPag.getVlrInteger(), con );
 
 			tabCheques.limpa();
 
