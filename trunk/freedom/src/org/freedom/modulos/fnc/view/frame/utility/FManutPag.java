@@ -272,7 +272,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JCheckBoxPad cbAPagar = new JCheckBoxPad( "À Pagar", "S", "N" );
 
-	private JCheckBoxPad cbPagParcial = new JCheckBoxPad( "Pag. Parcial", "S", "N" );
+	private JCheckBoxPad cbPagParcial = new JCheckBoxPad( "Pagamento parcial", "S", "N" );
 
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad( "Canceladas", "S", "N" );
 
@@ -646,7 +646,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			txtCodPagManut.setFK( true );
 			txtCodPagManut.setNomeCampo( "CodPag" );
 
-
 			btBaixaManut.setToolTipText( "Baixa" );
 			btEditManut.setToolTipText( "Editar" );
 			btNovoManut.setToolTipText( "Novo" );
@@ -666,16 +665,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pinManut.adic( txtDatainiManut, 7, 20, 100, 20 );
 			pinManut.adic( new JLabelPad( "até" ), 113, 20, 27, 20 );
 			pinManut.adic( txtDatafimManut, 140, 20, 100, 20 );
-			pinManut.adic( btExecManut, 690, 55, 30, 30 );
+			pinManut.adic( btExecManut, 776, 20, 30, 64 );
 
-			pinManut.adic( new JLabelPad( "Cód.for." ), 7, 45, 250, 20 );
-			pinManut.adic( txtCodForManut, 7, 65, 50, 20 );
-			pinManut.adic( new JLabelPad( "Descrição do fornecedor" ), 60, 45, 250, 20 );
-			pinManut.adic( txtRazForManut, 60, 65, 180, 20 );
+			pinManut.adic( txtCodForManut, 7, 65, 50, 20, "Cód.for." );
+			pinManut.adic( txtRazForManut, 60, 65, 180, 20, "Descrição do fornecedor" );
 
 			JLabelPad separacao = new JLabelPad();
 			separacao.setBorder( BorderFactory.createEtchedBorder() );
-			pinManut.adic( separacao, 7, 95, 726, 2 );
+			pinManut.adic( separacao, 7, 95, 800, 2 );
 
 			pinManut.adic( txtCodPagManut		, 7		, 120	, 80	, 20, "Cod.pag." );
 			pinManut.adic( txtDocManut			, 90	, 120	, 77	, 20, "Documento" );
@@ -683,7 +680,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pinManut.adic( txtCodForManut2		, 250	, 120	, 77	, 20, "Cód.for." );
 			pinManut.adic( txtRazForManut2		, 330	, 120	, 300	, 20, "Razão social do fornecedor" );
 			pinManut.adic( txtDtEmisManut		, 633	, 120	, 90	, 20, "Data emissão" );
-			pinManut.adic (txtNumCheque			, 726	, 120	, 100	, 20, "Nro.Cheque" );
+			pinManut.adic( txtNumCheque			, 726	, 120	, 80	, 20, "Nro.Cheque" );
 
 			vValsData.addElement( "V" );
 			vValsData.addElement( "E" );
@@ -706,12 +703,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			pinLbFiltroStatus.tiraBorda();
 
 			pinManut.adic( pinLbFiltroStatus, 488, 3, 80, 15 );
-			pinManut.adic( pinFiltroStatus, 488, 20, 190, 65 );
+			pinManut.adic( pinFiltroStatus, 488, 20, 280, 65 );
 
-			pinFiltroStatus.adic( cbAPagar, 5, 5, 80, 20 );
-			pinFiltroStatus.adic( cbPagas, 5, 30, 80, 20 );
-			pinFiltroStatus.adic( cbPagParcial, 87, 5, 120, 20 );
-			pinFiltroStatus.adic( cbCanceladas, 87, 30, 120, 20 );
+			pinFiltroStatus.adic( cbAPagar		, 5		, 5		, 80	, 20 );
+			pinFiltroStatus.adic( cbPagas		, 5		, 30	, 80	, 20 );
+			pinFiltroStatus.adic( cbPagParcial	, 120	, 5		, 150	, 20 );
+			pinFiltroStatus.adic( cbCanceladas	, 120	, 30	, 150	, 20 );
 
 			rgVenc = new JRadioGroup<String, String>( 3, 2, vLabsVenc, vValsVenc );
 			rgVenc.setVlrString( "TT" );
@@ -1351,6 +1348,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 						System.out.println( sql.toString() );
 
+						Vector<Cheque> cheques = null;
+						
 						for ( int i = 0; rs.next(); i++ ) {
 
 							tabManut.adicLinha();
@@ -1447,24 +1446,27 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							vCodCCs.addElement( rs.getString( enum_tab_manut.CODCC.name() ) );
 							vDtEmiss.addElement( Funcoes.dateToStrDate( rs.getDate( enum_tab_manut.DTITPAG.name() ) ) );
 							
-							Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_manut.CODPAG.name()), rs.getInt( enum_tab_manut.NPARCPAG.name() ));
+							cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_manut.CODPAG.name()), rs.getInt( enum_tab_manut.NPARCPAG.name() ), con);
 							
-							if(cheques.size()>0) {
+							if(cheques !=null && cheques.size()>0) {
 								
 								Vector<String> numcheques = new Vector<String>();
 								
 								for ( int ic = 0; cheques.size() > ic; ic++ ) {
 
 									Cheque cheque = (Cheque) cheques.get( ic );
+
 									numcheques.add( cheque.getNumcheq().toString() );
 
 								}
 								
 								tabManut.setValor( numcheques, i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
 								
+								//tabManut.setValor( "", i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
+								
 							}
 							else {
-								tabManut.setValor( null, i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
+								tabManut.setValor( "", i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
 							}
 							
 							
