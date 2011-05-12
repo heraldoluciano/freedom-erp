@@ -590,7 +590,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 		}
 
 		if ( sSitItSol.equals( "CA" ) ) {
-			SitSol = "Cancelado";
+			SitSol = "Cancelada";
 			lSitItSol.setText( SitSol );
 			pinLb.setBackground( cor( 250, 50, 50 ) );
 		}
@@ -600,12 +600,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 			pinLb.setBackground( cor( 255, 204, 51 ) );
 		}
 		else if ( sSitItExp.equals( "ET" ) || sSitItExp.equals( "EP" ) ) {
-			SitSol = "Expedido";
+			SitSol = "Expedida";
 			lSitItSol.setText( SitSol );
 			pinLb.setBackground( cor( 0, 170, 30 ) );
 		}
 		else if ( sSitItAprov.equals( "AT" ) || sSitItAprov.equals( "AP" ) ) {
-			SitSol = "Aprovado";
+			SitSol = "Aprovada";
 			lSitItSol.setText( SitSol );
 			pinLb.setBackground( cor( 26, 140, 255 ) );
 		}
