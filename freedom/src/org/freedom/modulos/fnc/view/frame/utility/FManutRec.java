@@ -1,24 +1,26 @@
 /**
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 11/05/2012 
+ * @author Anderson Sancez
  * 
- *         Projeto: Freedom <BR>
+ * Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
- *         Classe:
+ * Pacote: org.freedom.modulos.fnc.view.frame.utility <BR>
+ * Classe:
  * @(#)FManutRec.java <BR>
  * 
- *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
- *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
- *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
- *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
- *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
- *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *                    de acordo com os termos da LPG-PC <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- *                    Comentários sobre a classe...
+ * Tela de manutenção de contas a receber.
  * 
  */
 
@@ -156,6 +158,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtSeqNossoNumero = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtCnpjCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtCodCliFiltro = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -803,18 +807,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 415, 0, 100, 20 );
 		pinManut.adic( rgVenc, 415, 20, 100, 65 );
 
-		pinFiltroStatus.adic( cbAReceber, 5, 0, 90, 20 );
-		pinFiltroStatus.adic( cbRecebidas, 5, 20, 90, 20 );
-		pinFiltroStatus.adic( cbEmBordero, 5, 40, 100, 20 );
-		pinFiltroStatus.adic( cbEmRenegociacao, 220, 0, 120, 20 );
-		pinFiltroStatus.adic( cbRecParcial, 107, 0, 120, 20 );
-		pinFiltroStatus.adic( cbCanceladas, 107, 20, 120, 20 );
-		pinFiltroStatus.adic( cbRenegociado, 107, 40, 120, 20 );
+		pinFiltroStatus.adic( cbAReceber		, 5		, 0		, 90	, 20 );
+		pinFiltroStatus.adic( cbRecebidas		, 5		, 20	, 90	, 20 );
+		pinFiltroStatus.adic( cbEmBordero		, 5		, 40	, 100	, 20 );
 
+		pinFiltroStatus.adic( cbRecParcial		, 117	, 0		, 120	, 20 );
+		pinFiltroStatus.adic( cbCanceladas		, 117	, 20	, 120	, 20 );
+		pinFiltroStatus.adic( cbRenegociado		, 117	, 40	, 120	, 20 );
+
+		pinFiltroStatus.adic( cbEmRenegociacao	, 240	, 0		, 120	, 20 );
+		
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 520, 0, 100, 20 );
-		pinManut.adic( pinFiltroStatus, 520, 20, 330, 65 );
+		pinManut.adic( pinFiltroStatus, 520, 20, 360, 65 );
 
-		pinManut.adic( btCarregaGridManut, 855, 55, 30, 30 );
+		pinManut.adic( btCarregaGridManut, 885, 20, 30, 64 );
 
 		lcCliFiltro.add( new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliFiltro.add( new GuardaCampo( txtRazCliFiltro, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -839,20 +845,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		JLabelPad separacao = new JLabelPad();
 		separacao.setBorder( BorderFactory.createEtchedBorder() );
-		pinManut.adic( separacao, 7, 95, 726, 2 );
+		pinManut.adic( separacao, 7, 95, 908, 2 );
 
-		pinManut.adic( new JLabelPad( "Cod.rec." ), 7, 100, 80, 20 );
-		pinManut.adic( txtCodRecManut, 7, 120, 80, 20 );
-		pinManut.adic( new JLabelPad( "Doc." ), 90, 100, 77, 20 );
-		pinManut.adic( txtDocManut, 90, 120, 77, 20 );
-		pinManut.adic( new JLabelPad( "Pedido" ), 170, 100, 77, 20 );
-		pinManut.adic( txtPedidoManut, 170, 120, 77, 20 );
-		pinManut.adic( new JLabelPad( "Cód.cli." ), 250, 100, 300, 20 );
-		pinManut.adic( txtCodCliManut, 250, 120, 77, 20 );
-		pinManut.adic( new JLabelPad( "Razão social do cliente" ), 330, 100, 300, 20 );
-		pinManut.adic( txtRazCliManut, 330, 120, 300, 20 );
-		pinManut.adic( new JLabelPad( "Data emissão " ), 633, 100, 100, 20 );
-		pinManut.adic( txtDtEmitManut, 633, 120, 100, 20 );
+		pinManut.adic( txtCodRecManut		, 7		, 120	, 80	, 20	, "Cod.rec." 				);
+		pinManut.adic( txtDocManut			, 90	, 120	, 77	, 20	, "Documento" 				);
+		pinManut.adic( txtPedidoManut		, 170	, 120	, 77	, 20	, "Pedido" 					);
+		pinManut.adic( txtCodCliManut		, 250	, 120	, 77	, 20	, "Cód.cli." 				);
+		pinManut.adic( txtRazCliManut		, 330	, 120	, 300	, 20	, "Razão social do cliente" );
+		pinManut.adic( txtDtEmitManut		, 633	, 120	, 90	, 20	, "Data emissão" 			);
+		pinManut.adic( txtSeqNossoNumero	, 726	, 120	, 90	, 20	, "Seq.Noso Nro." 			);
 
 		pinBotoesManut.adic( btCarregaBaixasMan, 3,   3, 30, 30 );
 		pinBotoesManut.adic( btBaixaManut, 		 3,  34, 30, 30 );
@@ -867,7 +868,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btCancItem,		34,  96, 30, 30 );
 		pinBotoesManut.adic( btImpBol, 			34, 127, 30, 30 );
 		
-
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "St." ); // 1
 		tabManut.adicColuna( "Vencto." ); // 2
@@ -938,8 +938,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 50, EColTabManut.CODCARTCOB.ordinal() );
 		tabManut.setTamColuna( 240, EColTabManut.DESCCARTCOB.ordinal() );
 		tabManut.setTamColuna( 240, EColTabManut.OBS.ordinal() );
-		tabManut.setTamColuna( 20, EColTabManut.DESCPONT.ordinal() );
-		tabManut.setTamColuna( 20, EColTabManut.SEQNOSSONUMERO.ordinal() ); 
+		tabManut.setTamColuna( 30, EColTabManut.DESCPONT.ordinal() );
+		tabManut.setTamColuna( 80, EColTabManut.SEQNOSSONUMERO.ordinal() ); 
 		
 		tabManut.setRowHeight(20);
 
@@ -966,7 +966,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 		txtDocManut.addKeyListener( this );
 		txtPedidoManut.addKeyListener( this );
-
+		txtSeqNossoNumero.addKeyListener( this );
+		
 	}
 
 	private void visualizaRec() {
@@ -1494,7 +1495,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 		}
 		else {
-			sWhereManut.append( " AND R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? " );
+			if(txtCodRecManut.getVlrInteger()>0) {
+				sWhereManut.append( " AND R.CODREC=? ");
+			}
+			sWhereManut.append( " AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
 
 		sSQL.append( "SELECT IR.DTVENCITREC,IR.DTPREVITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
@@ -1536,6 +1540,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		sSQL.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sSQL.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
 		sSQL.append( sWhereManut );
+		
+		if(txtSeqNossoNumero.getVlrInteger()>0){
+			sSQL.append( "and ir.seqnossonumero="  + txtSeqNossoNumero.getVlrString() );
+		}
+		
 		sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
 
 		PreparedStatement ps = con.prepareStatement( sSQL.toString() );
@@ -1547,9 +1556,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		}
 		else {
-			ps.setInt( 1, txtCodRecManut.getVlrInteger().intValue() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			int iparam = 1;
+			if(txtCodRecManut.getVlrInteger()>0) {
+				ps.setInt( iparam++, txtCodRecManut.getVlrInteger().intValue() );
+			}
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		}
 
 		rs = ps.executeQuery();
@@ -1697,6 +1709,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			txtTotalEmRenegociacao.setVlrBigDecimal( bdTotEmRenegociacao );
 
 			con.commit();
+			
+			if(txtSeqNossoNumero.getVlrInteger()>0) {
+				txtSeqNossoNumero.setVlrString( "" );
+			}
 
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela de baixa!\n" + err.getMessage(), true, con, err );
@@ -3233,6 +3249,19 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 
 		}	
+		else if(kevt.getSource() == txtSeqNossoNumero ) {
 
+			Integer seqnossonumero = txtSeqNossoNumero.getVlrInteger();
+			
+			if(seqnossonumero !=null && seqnossonumero >0) {
+			
+				if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+				
+					carregaGridManut( false );
+				
+				}
+			}
+
+		}
 	}
 }
