@@ -860,7 +860,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( sSitItRma.equals( "CA" ) || sSitItExp.equals( "CA" ) ) {
-			SitRma = "Cancelado";
+			SitRma = "Cancelada";
 			lSitItRma.setText( SitRma );
 			pinLb.setBackground( cor( 250, 50, 50 ) );
 		}
@@ -870,12 +870,12 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			pinLb.setBackground( cor( 255, 204, 51 ) );
 		}
 		else if ( sSitItExp.equals( "ET" ) || sSitItExp.equals( "EP" ) ) {
-			SitRma = "Expedido";
+			SitRma = "Expedida";
 			lSitItRma.setText( SitRma );
 			pinLb.setBackground( cor( 0, 170, 30 ) );
 		}
 		else if ( siStItAprov.equals( "AT" ) || siStItAprov.equals( "AP" ) ) {
-			SitRma = "Aprovado";
+			SitRma = "Aprovada";
 			lSitItRma.setText( SitRma );
 			pinLb.setBackground( cor( 26, 140, 255 ) );
 		}
