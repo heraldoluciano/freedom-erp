@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -84,7 +86,7 @@ import org.freedom.modulos.fnc.view.dialog.utility.DLNovoPag;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
 import org.freedom.modulos.std.view.dialog.utility.DLCancItem;
 
-public class FManutPag extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener {
+public class FManutPag extends FFilho implements ActionListener, CarregaListener, ChangeListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -188,13 +190,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDocManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtDocManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtCodCompraBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtCodCompraManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodCompraManut = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtNumCheque = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodForBaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -673,18 +677,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			separacao.setBorder( BorderFactory.createEtchedBorder() );
 			pinManut.adic( separacao, 7, 95, 726, 2 );
 
-			pinManut.adic( new JLabelPad( "Cod.pag." ), 7, 100, 80, 20 );
-			pinManut.adic( txtCodPagManut, 7, 120, 80, 20 );
-			pinManut.adic( new JLabelPad( "Doc." ), 90, 100, 77, 20 );
-			pinManut.adic( txtDocManut, 90, 120, 77, 20 );
-			pinManut.adic( new JLabelPad( "Pedido" ), 170, 100, 77, 20 );
-			pinManut.adic( txtCodCompraManut, 170, 120, 77, 20 );
-			pinManut.adic( new JLabelPad( "Cód.for." ), 250, 100, 300, 20 );
-			pinManut.adic( txtCodForManut2, 250, 120, 77, 20 );
-			pinManut.adic( new JLabelPad( "Razão social do fornecedor" ), 330, 100, 300, 20 );
-			pinManut.adic( txtRazForManut2, 330, 120, 300, 20 );
-			pinManut.adic( new JLabelPad( "Data emissão " ), 633, 100, 100, 20 );
-			pinManut.adic( txtDtEmisManut, 633, 120, 100, 20 );
+			pinManut.adic( txtCodPagManut		, 7		, 120	, 80	, 20, "Cod.pag." );
+			pinManut.adic( txtDocManut			, 90	, 120	, 77	, 20, "Documento" );
+			pinManut.adic( txtCodCompraManut	, 170	, 120	, 77	, 20, "Pedido" );
+			pinManut.adic( txtCodForManut2		, 250	, 120	, 77	, 20, "Cód.for." );
+			pinManut.adic( txtRazForManut2		, 330	, 120	, 300	, 20, "Razão social do fornecedor" );
+			pinManut.adic( txtDtEmisManut		, 633	, 120	, 90	, 20, "Data emissão" );
+			pinManut.adic (txtNumCheque			, 726	, 120	, 100	, 20, "Nro.Cheque" );
 
 			vValsData.addElement( "V" );
 			vValsData.addElement( "E" );
@@ -828,6 +827,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			tpn.addChangeListener( this );
 
 			tabManut.addMouseListener( this );
+			txtDocManut.addKeyListener( this );
+			txtCodCompraManut.addKeyListener( this );
+			txtNumCheque.addKeyListener( this );
 			
 		}
 
@@ -1217,7 +1219,18 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					if(txtCodPagManut.getVlrInteger()>0){
 						sWhereManut.append( " and IT.CODEMP="+Aplicativo.iCodEmp+ " AND IT.CODFILIAL=" + lcPagManut.getCodFilial()+ " AND IT.CODPAG= " + txtCodPagManut.getVlrInteger()+ " " );
+					
 					}	
+					else if(txtNumCheque.getVlrInteger()>0) {
+						
+						sWhereManut.append( " and exists ( " );
+						sWhereManut.append( "select ch.numcheq from fnpagcheq pc, fncheque ch " );
+						sWhereManut.append( "where ch.codemp=pc.codempch and ch.codfilial=pc.codfilialch and ch.seqcheq=pc.seqcheq " );
+						sWhereManut.append( "and pc.codemp=it.codemp and pc.codfilial=it.codfilial and pc.codpag=it.codpag and pc.nparcpag=it.nparcpag " );
+						sWhereManut.append( "and ch.numcheq="+txtNumCheque.getVlrString());
+						sWhereManut.append( " ) " );
+						
+					}
 					else {
 
 						sWhereManut.append( " AND " );
@@ -1277,6 +1290,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							sWhereManut.append( " AND P.CODFOR=" );
 							sWhereManut.append( txtCodForManut.getText().trim() );
 						}
+						
+						
+						
 
 					}
 
@@ -1319,7 +1335,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 						ps = con.prepareStatement( sql.toString() );
 
-						if(! (txtCodPagManut.getVlrInteger()>0) ){
+						if(! (txtCodPagManut.getVlrInteger()>0) && !(txtNumCheque.getVlrInteger()>0)){
 
 							ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
 							ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
@@ -2101,6 +2117,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 			if ( cevt.getListaCampos() == lcPagManut ) {
 				carregaGridManut();
+				txtNumCheque.setVlrString( "" );
 			}
 		}
 
@@ -2452,5 +2469,151 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 			return ret;
 		}
+
+		public void keyPressed( KeyEvent arg0 ) {
+
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void keyReleased( KeyEvent arg0 ) {
+
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void keyTyped( KeyEvent kevt ) {
+			
+			if(kevt.getSource() == txtDocManut ) {
+
+				Integer docrec = txtDocManut.getVlrInteger();
+				
+				if(docrec !=null && docrec >0) {
+				
+					if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+				
+						Integer codpag = pesquisaDoc( docrec );
+						if(codpag!=null && codpag>0) {
+							txtCodPagManut.setVlrInteger( codpag );
+							lcPagManut.carregaDados();
+						}
+				
+					}
+				}
+
+			} 
+			else if(kevt.getSource() == txtCodCompraManut ) {
+
+				Integer codcompra = txtCodCompraManut.getVlrInteger();
+				
+				if(codcompra !=null && codcompra >0) {
+				
+					if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+					
+						Integer codpag = pesquisaPedido( codcompra );
+							
+						if(codpag!=null && codpag>0) {
+							txtCodPagManut.setVlrInteger( codpag );
+							lcPagManut.carregaDados();
+						}
+					
+					}
+				}
+
+			}	
+			else if(kevt.getSource() == txtNumCheque ) {
+
+				Integer nrocheque = txtNumCheque.getVlrInteger();
+				
+				if(nrocheque !=null && nrocheque >0) {
+
+					txtCodPagManut.setVlrString( "" );
+					txtDocManut.setVlrString( "" );
+					txtCodForManut2.setVlrString( "" );
+					txtRazForManut2.setVlrString( "" );
+					txtDtEmisManut.setVlrString( "" );
+					lcPagManut.carregaDados();
+					lcForManut2.carregaDados();
+					
+					if ( (kevt.getKeyChar() == KeyEvent.VK_ENTER ) || ( kevt.getKeyChar() == KeyEvent.VK_TAB )) {
+					
+						carregaGridManut();
+					
+					}
+				}
+
+			}
+		}
+		
+		private Integer pesquisaDoc(Integer docpag) {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Integer ret = null;
+			
+			try {
+				
+				sql.append( "select codpag from fnpagar where codemp=? and codfilial=? and docpag=?" );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+				ps.setInt( 3, docpag );
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					
+					ret = rs.getInt( "codpag" );
+					
+				}
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return ret;
+			
+		}
+		
+		private Integer pesquisaPedido(Integer codcompra) {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Integer ret = null;
+			
+			try {
+				
+				sql.append( "select codpag from fnpagar where codemp=? and codfilial=? and codcompra=? " );
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+				ps.setInt( 3, codcompra );
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					
+					ret = rs.getInt( "codpag" );
+					
+				}
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return ret;
+			
+		}
+
 
 }
