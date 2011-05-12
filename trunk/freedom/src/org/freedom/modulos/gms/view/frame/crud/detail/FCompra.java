@@ -2543,7 +2543,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			sql.append( "vlrbaseicms,");
 			
-			sql.append( "ii.aliqicmsuf, ii.vlricms vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
+			sql.append( "ii.aliqicmsuf, ii.vlricms - coalesce(ii.vlricmsdiferido,0) vlricmsitcompra, ii.vlrfrete vlrfreteitcompra, " );
 			sql.append( "(ii.vlrad + ii.vlrii) vlrbaseipiitcompra, ii.aliqipi, ii.vlripi, ii.codfisc, ii.coditfisc, " );
 			sql.append( "( select first 1 codadic from cpimportacaoadic where codemp=ii.codemp and codfilial=ii.codfilial and codimp=ii.codimp and codncm=ii.codncm ) nadicao, ii.seqadic, " );
 			sql.append( "(ii.vlrpis + ii.vlrcofins + ii.vlrtxsiscomex) vlradicitcompra, " );
