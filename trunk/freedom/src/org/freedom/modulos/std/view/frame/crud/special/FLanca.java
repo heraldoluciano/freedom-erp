@@ -352,6 +352,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			c.addKeyListener( this );
 			txtDataini.addKeyListener( this );
 			txtDatafim.addKeyListener( this );
+			
+			btBuscaLancaValor.setToolTipText( "Localiza valor - (Ctrl + N)" );
 
 		}
 
