@@ -484,7 +484,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 		try {
 
-			sql.append( "select ch.vlrcheq, ch.numcheq, ch.sitcheq, ch.seqcheq, pc.codpag, ch.dtemitcheq, ch.dtvenctocheq from fnpagcheq pc, fncheque ch " );
+			sql.append( "select ch.vlrcheq, ch.numcheq, ch.sitcheq, ch.seqcheq, pc.codpag, ch.dtemitcheq, ch.dtvenctocheq ");
+			sql.append( "from fnpagcheq pc, fncheque ch " );
 			sql.append( "where ch.codemp=pc.codempch and ch.codfilial=pc.codfilialch and ch.seqcheq=pc.seqcheq " );
 			sql.append( "and pc.codemp=? and pc.codfilial=? and pc.codpag=? and pc.nparcpag=?" );
 
