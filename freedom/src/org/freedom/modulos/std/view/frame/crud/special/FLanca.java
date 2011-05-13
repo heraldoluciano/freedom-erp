@@ -31,6 +31,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -75,12 +77,14 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.frame.FPrincipal;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.business.object.Cheque;
+import org.freedom.modulos.fnc.view.dialog.utility.DLBuscaLancaValor;
 import org.freedom.modulos.fnc.view.dialog.utility.DLEditaPag;
 import org.freedom.modulos.fnc.view.frame.crud.detail.FCheque;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FSinalizadores;
+import org.freedom.modulos.fnc.view.frame.utility.FManutPag.enum_tab_manut;
 import org.freedom.modulos.std.view.dialog.utility.DLDataTransf;
 
-public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener {
+public class FLanca extends FFilho implements ActionListener, ChangeListener, MouseListener, TabelaEditListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -169,10 +173,14 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private JPopupMenu menuCores = new JPopupMenu();
 
 	private JButtonPad btAbreCheque = new JButtonPad( Icone.novo( "btCheque.png" ) );
+
+	private JButtonPad btBuscaLancaValor = new JButtonPad( Icone.novo( "btPdvGravaMoeda.gif" ) );
 	
 	private JMenuItem menucancelacor = new JMenuItem();
 	
 	private JMenuItem menucadastracor = new JMenuItem();
+	
+	boolean Ctrl = false;
 	
 	private enum enum_tab_lanca {  
 		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ, COR  };
@@ -273,7 +281,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			pnNav.add( btExcluir );
 			pnNav.add( btEditar );
 			pnNav.add( btAbreCheque );
-
+			pnNav.add( btBuscaLancaValor );
+			
 			btAbreCheque.setEnabled( false );
 			//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
 			tab.adicColuna( "NºLanç." );
@@ -328,7 +337,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			btExec.addActionListener( this );
 			btCalcSaldo.addActionListener( this );
 			btAbreCheque.addActionListener( this );
-
+			btBuscaLancaValor.addActionListener( this );
+			
 			tpn.addChangeListener( this );
 
 			Calendar cPeriodo = Calendar.getInstance();
@@ -337,7 +347,11 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			cPeriodo.set( Calendar.DAY_OF_YEAR, cPeriodo.get( Calendar.DAY_OF_YEAR ) - 7 );
 			txtDataini.setVlrDate( cPeriodo.getTime() );
 			
-
+			addKeyListener(this);
+			addInternalFrameListener(this);
+			c.addKeyListener( this );
+			txtDataini.addKeyListener( this );
+			txtDatafim.addKeyListener( this );
 
 		}
 
@@ -348,39 +362,91 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 		}
 
-		private void montaTabela( Date dini, Date dfim ) {
+		private void montaTabela( Date dini, Date dfim, BigDecimal valor1, BigDecimal valor2, boolean filtraperiodo ) {
 		
 			tab.setRowSorter( null );
 			tab.limpa();
 
-			String sSQL = "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," 
-				+ "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," 
-				+ "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " 
-				+ "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND "
-				+ "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " 
-				+ "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " 
-				+ "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, L.CODPAG, L.NPARCPAG, SN.CORSINAL, L.CODSINAL "
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT S.CODLANCA, S.DATASUBLANCA, COALESCE(L.TRANSFLANCA,'') TRANSFLANCA, COALESCE(S.ORIGSUBLANCA,'') ORIGSUBLANCA," ); 
+			sql.append( "COALESCE(L.DOCLANCA,'') DOCLANCA,S.VLRSUBLANCA,COALESCE(L.HISTBLANCA,'') HISTBLANCA," );
+			
+			sql.append( "COALESCE((SELECT C.NUMCONTA FROM FNSUBLANCA S1,FNCONTA C " );				
+			sql.append( "WHERE S1.CODSUBLANCA=0 AND S1.CODLANCA=S.CODLANCA AND ");
+			sql.append( "S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL AND " );
+			sql.append( "C.CODPLAN=S1.CODPLAN AND C.CODEMP=S1.CODEMPPN AND " );
+			sql.append( "C.CODFILIAL=S1.CODFILIALPN ),'') NUMCONTA, ");
+			
+			sql.append( "L.CODPAG, L.NPARCPAG, SN.CORSINAL, L.CODSINAL, ");
 				
-				+ " FROM FNSUBLANCA S, FNLANCA L "
-				+ " LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=L.CODEMPSN AND SN.CODFILIAL=L.CODFILIALSN AND SN.CODSINAL=L.CODSINAL "
-				+ " WHERE S.DATASUBLANCA BETWEEN ? AND ? AND"
-				+ " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL" 
-				+ " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=?" 
-				+ " ORDER BY S.DATASUBLANCA,S.CODLANCA";
+			// Verifica se existe cheque para buscar...
+			sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=l.codemp and pc.codfilial=l.codfilial and pc.codpag=l.codpag and pc.nparcpag=l.nparcpag),0) temcheque " );
+			
+			sql.append( " FROM FNSUBLANCA S, FNLANCA L ");
+			sql.append( " LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=L.CODEMPSN AND SN.CODFILIAL=L.CODFILIALSN AND SN.CODSINAL=L.CODSINAL ");
+				
+			sql.append( " WHERE ");
+
+			sql.append( " S.CODLANCA = L.CODLANCA AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL"); 
+			sql.append( " AND S.CODPLAN = ? AND L.CODEMP=? AND L.CODFILIAL=? " );
+			
+			if(filtraperiodo) {
+				
+				sql.append( " AND S.DATASUBLANCA BETWEEN ? AND ? ");
+			
+			}
+			
+			if( (valor1!=null && valor2==null) || (valor1==null && valor2!=null) ) {
+				
+				sql.append( " AND ABS(L.VLRLANCA) = ? ");
+			
+			}
+			else if( valor1!=null && valor2!=null ) {
+				
+				sql.append( " AND ABS(L.VLRLANCA) BETWEEN ? AND ? ");
+			
+			}
+			
+			sql.append( " ORDER BY S.DATASUBLANCA,S.CODLANCA ");
 
 			try {
 
-				PreparedStatement ps = con.prepareStatement( sSQL );
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
 
-				ps.setDate( 1, Funcoes.dateToSQLDate( dini ) );
-				ps.setDate( 2, Funcoes.dateToSQLDate( dfim ) );
-				ps.setString( 3, sCodPlan );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				int iparam = 1;
+				
+				ps.setString( iparam++, sCodPlan );
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				
+				if(filtraperiodo) {
+				
+					ps.setDate( iparam++, Funcoes.dateToSQLDate( dini ) );
+					ps.setDate( iparam++, Funcoes.dateToSQLDate( dfim ) );
+					
+				}
+				
+				if( (valor1!=null && valor2==null) || (valor1==null && valor2!=null) ) {
+					
+					ps.setBigDecimal( iparam++, valor1==null ? valor2 : valor1 );
+				
+				}
+				else if( valor1!=null && valor2!=null ) {
+					
+					ps.setBigDecimal( iparam++, valor1 );
+					ps.setBigDecimal( iparam++, valor2 );
+				
+				}
+
+
 
 				ResultSet rs = ps.executeQuery();
 
 				int row = 0;
+				
+				Vector<Cheque> cheques = null;
+				
 				for ( int i = 0; rs.next(); i++ ) {
 
 					tab.adicLinha();
@@ -406,22 +472,26 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal(), corsinal );
 					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal(), corsinal );
 
-					Vector<Cheque> cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_lanca.CODPAG.name()), rs.getInt( enum_tab_lanca.NPARCPAG.name() ));
-					if( cheques.size()>0 ) {
-
+					if( rs.getInt( "temcheque" )>0) {
+						
+						cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_manut.CODPAG.name()), rs.getInt( enum_tab_manut.NPARCPAG.name() ), con);
+						
 						Vector<String> numcheques = new Vector<String>();
 						Vector<String> seqcheques = new Vector<String>();
-
+							
 						for ( int ic = 0; cheques.size() > ic; ic++ ) {
 							Cheque cheque = (Cheque) cheques.get( ic );
 							numcheques.add( cheque.getNumcheq().toString() );
 							seqcheques.add( cheque.getSeqcheq().toString() );
 						}
-
+							
 						tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
 						tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
 						
-					} else {
+						System.out.println("tem cheque");
+						
+					}
+					else {
 						tab.setValor( null, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
 						tab.setValor( null, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
 					}
@@ -448,9 +518,26 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			} 
 			catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao montar a tabela!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
 			}
 		}
 		
+		private void buscaValorLanca() {
+		
+			DLBuscaLancaValor dl = new DLBuscaLancaValor( this );
+			
+			dl.setVisible( true );
+	
+			if ( dl.OK ) {
+				
+				montaTabela( txtDataini.getVlrDate(), txtDatafim.getVlrDate(), dl.getValor1(), dl.getValor2(), dl.getFiltroData() );
+				
+				dl.dispose();
+			}
+			else {
+				dl.dispose();
+			}
+		}
 		
 		public void valorAlterado( TabelaEditEvent evt ) {}
 		
@@ -731,7 +818,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					ps.executeUpdate();
 					ps.close();
 					con.commit();
-					montaTabela( dIniLanca, dFimLanca );
+					montaTabela( dIniLanca, dFimLanca, null, null, true );
 				} catch ( SQLException err ) {
 					Funcoes.mensagemErro( this, "Erro ao excluir o lançamento!\n" + err.getMessage(), true, con, err );
 				}
@@ -910,7 +997,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				excluir();
 			else if ( evt.getSource() == btExec ) {
 				if ( validaPeriodo() ) {
-					montaTabela( dIniLanca, dFimLanca );
+					montaTabela( dIniLanca, dFimLanca, null, null, true );
 				}
 			}
 			else if ( evt.getSource() == btCalcSaldo ) {
@@ -922,7 +1009,9 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			else if(evt.getSource() == btAbreCheque ) {
 				abreCheque( );
 			}
-			
+			else if(evt.getSource() == btBuscaLancaValor ) {
+				buscaValorLanca();
+			}
 			else if(evt.getSource() instanceof JMenuItem) {
 				
 				JMenuItem menu = (JMenuItem) evt.getSource();
@@ -947,7 +1036,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 				}
 				
 				atualizaCor( codsinal, Integer.parseInt( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ).toString() ) );
-				montaTabela( dIniLanca, dFimLanca );
+				montaTabela( dIniLanca, dFimLanca, null, null, true );
 								
 			}
 		}
@@ -956,7 +1045,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			sCodPlan = sPlanos[ tpn.getSelectedIndex() ];
 			sConta = sContas[ tpn.getSelectedIndex() ];
 			if ( validaPeriodo() ) {
-				montaTabela( dIniLanca, dFimLanca );
+				montaTabela( dIniLanca, dFimLanca, null, null, true );
 			}
 		}
 
@@ -1000,7 +1089,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 		public void mousePressed( MouseEvent mevt ) {
 			if (mevt.getModifiers() == InputEvent.BUTTON3_MASK && mevt.getSource()==tab) {
-				menuCores.show(this, mevt.getX(), mevt.getY());
+				menuCores.show(this, mevt.getXOnScreen(), mevt.getYOnScreen());
 			}
 		}
 
@@ -1137,6 +1226,32 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		public void keyPressed(KeyEvent kevt) {
+			
+			if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+				Ctrl = true;
+			
+			if (Ctrl) {
+				if (kevt.getKeyCode() == KeyEvent.VK_F) {
+					btBuscaLancaValor.doClick();
+				}
+			}
+		}
+
+		public void keyReleased(KeyEvent kevt) {
+			
+			if ( kevt.getKeyCode() == KeyEvent.VK_CONTROL ) {
+				Ctrl = false;
+			}
+			
+		}
+
+		public void keyTyped( KeyEvent arg0 ) {
+
+			// TODO Auto-generated method stub
+			
 		}
 		
 }
