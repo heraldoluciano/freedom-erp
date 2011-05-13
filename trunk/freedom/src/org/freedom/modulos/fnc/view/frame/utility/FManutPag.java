@@ -1316,8 +1316,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sql.append( "where co.codcompra=p.codcompra and co.codemp=p.codempcp and co.codfilial=p.codfilialcp),'') doccompra," );
 
 					sql.append( "coalesce((SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
-					sql.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB),'') DESCTIPOCOB, sn.corsinal " );
+					sql.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB),'') DESCTIPOCOB, sn.corsinal, " );
 
+					// Verifica se existe cheque para buscar...
+					sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=it.codemp and pc.codfilial=it.codfilial and pc.codpag=it.codpag and pc.nparcpag=it.nparcpag),0) temcheque " );
+									
 					sql.append( "from fnpagar p, cpforneced f, fnitpagar it  " );
 					
 					sql.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=It.CODEMPSN AND SN.CODFILIAL=It.CODFILIALSN AND SN.CODSINAL=It.CODSINAL ");
@@ -1446,33 +1449,26 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							vCodCCs.addElement( rs.getString( enum_tab_manut.CODCC.name() ) );
 							vDtEmiss.addElement( Funcoes.dateToStrDate( rs.getDate( enum_tab_manut.DTITPAG.name() ) ) );
 							
-							cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_manut.CODPAG.name()), rs.getInt( enum_tab_manut.NPARCPAG.name() ), con);
+							if( rs.getInt( "temcheque" )>0) {
 							
-							if(cheques !=null && cheques.size()>0) {
+								cheques = DLEditaPag.buscaCheques( rs.getInt( enum_tab_manut.CODPAG.name()), rs.getInt( enum_tab_manut.NPARCPAG.name() ), con);
 								
 								Vector<String> numcheques = new Vector<String>();
-								
+									
 								for ( int ic = 0; cheques.size() > ic; ic++ ) {
-
 									Cheque cheque = (Cheque) cheques.get( ic );
-
 									numcheques.add( cheque.getNumcheq().toString() );
-
 								}
-								
+									
 								tabManut.setValor( numcheques, i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
-								
-								//tabManut.setValor( "", i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
-								
+									
 							}
 							else {
 								tabManut.setValor( "", i, enum_tab_manut.CHEQUES.ordinal(), corsinal );
 							}
+						
+						}	
 							
-							
-
-						}
-
 						rs.close();
 						ps.close();
 
