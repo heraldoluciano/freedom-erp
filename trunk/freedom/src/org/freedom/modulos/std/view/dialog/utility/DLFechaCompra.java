@@ -46,6 +46,8 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -66,7 +68,7 @@ import org.freedom.library.swing.frame.FPassword;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 
-public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener {
+public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -147,6 +149,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JCheckBoxPad cbAdicFreteBase = new JCheckBoxPad( "Soma Frete à base de cálculo do ICMS.", "S", "N" );
 
 	private JCheckBoxPad cbAdicAdicBase = new JCheckBoxPad( "Soma Vlr. Adicionais à base de cálculo do ICMS.", "S", "N" );
+	
+	private JTextFieldPad txtCodImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JRadioGroup<?, ?> rgFreteVD = null;
 
@@ -361,7 +365,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.Plan.", ListaCampos.DB_FK, txtDescPlan, false ) ); 
 		lcCompra.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, txtDescCC, false ) );
 		lcCompra.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.C.C.", ListaCampos.DB_FK, txtDescCC, false ) );
-
+		lcCompra.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp", ListaCampos.DB_SI, null, false ) );
+ 
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
 		txtVlrLiqCompra.setListaCampos( lcCompra );
@@ -524,6 +529,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtQtdFreteCompra.setVlrBigDecimal( volumes );
 
 		lcCompra.edit();
+		
+		lcCompra.addCarregaListener( this );
 		
 	}
 
@@ -814,5 +821,24 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	public void mouseReleased( MouseEvent e ) {
 
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if(cevt.getListaCampos() == lcCompra ) {
+			if(txtCodImp.getVlrInteger() > 0 ) {
+				txtVlrFreteCompra.setAtivo( false );				
+			}
+			else {
+				txtVlrFreteCompra.setAtivo( true );				
+			}
+		}
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
