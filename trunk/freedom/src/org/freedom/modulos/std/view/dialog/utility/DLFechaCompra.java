@@ -416,6 +416,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		tabPag.addMouseListener( this );
 
 		txtCodCompra.setVlrInteger( iCodCompra );
+		
+		lcCompra.addCarregaListener( this );
+		
 		lcCompra.carregaDados();
 
 		setPainel( pinFecha );
@@ -529,8 +532,6 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtQtdFreteCompra.setVlrBigDecimal( volumes );
 
 		lcCompra.edit();
-		
-		lcCompra.addCarregaListener( this );
 		
 	}
 
