@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -68,7 +69,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 
 	private JPanelPad pnPag = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); 
 	
 	private JPanelPad pinCampos = new JPanelPad( 580, 220 );
 
@@ -753,13 +754,67 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao confirmar código da venda!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao confirmar código do contas a pagar!\n" + err.getMessage(), true, con, err );
 		}
+	}
+	
+	private boolean validaDocumento() {
+		boolean ret = true;
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select pg.codpag, pg.datapag, pg.codpag from fnpagar pg where pg.codemp=? and pg.codfilial=? and pg.docpag=? ");
+			sql.append( "and pg.codempfr=? and pg.codfilialfr=? and pg.codfor=?");
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			ps.setInt( 3, txtDocPag.getVlrInteger() );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "CPFORNECED" ));
+			ps.setInt( 6, txtCodFor.getVlrInteger() );
+			
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				if ( Funcoes.mensagemConfirma( null, 
+						"Já existe um título lançado para o documento (" 
+						+ txtDocPag.getVlrString() + " - Cod.Pag.: " + rs.getString( "codpag" ) + " de " + Funcoes.dateToStrDate( rs.getDate( "datapag" ) ) + ")"
+						+ " !\n" 
+						+ "Confirma a gravação deste novo título?"
+				
+				) == JOptionPane.YES_OPTION ) {
+					
+					ret = true;
+					
+				}
+				else {
+					ret = false;
+				}
+				
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} 
+		catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao validar documento!\n" + err.getMessage(), true, con, err );
+		}
+		return ret;
 	}
 
 	public void beforePost( PostEvent e ) {
 
 		if ( e.getListaCampos().equals( lcPagar ) && lcPagar.getStatus() == ListaCampos.LCS_INSERT ) {
+			
+			if(!validaDocumento()) {
+				e.cancela();
+			}
+			
 			testaCodPag();
 
 			// Gerando histórico dinâmico
