@@ -687,7 +687,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 				return;
 			}
 
-			sWhereConsultaProd = " AND CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
+			sWhereConsultaProd = " WHERE CVPROD IN ('V','A') AND TIPOPROD IN ('P','S','F') ";
 
 			if ( !sCodProd.equals( "" ) ) {
 				sWhereConsultaProd += " AND CODPROD='" + sCodProd + "'";
