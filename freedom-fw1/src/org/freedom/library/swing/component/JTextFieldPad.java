@@ -1196,6 +1196,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		if (( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( bEnterSai )) {
 			transferFocus();
 		}
+		if (( kevt.getKeyCode() == KeyEvent.VK_ENTER ) && ( tipoCampo == TP_DECIMAL )) {
+			this.setVlrBigDecimal(this.getVlrBigDecimal());
+		}
 
 	}
 
