@@ -139,26 +139,26 @@ public class Funcoes {
 		
 		if(bigValAbs!=null && bigValAbs.floatValue()>=1) {
 		
-			if(bigValAbs.intValue()>1000) {
+			if(bigValAbs.intValue()>=1000) {
 				formato = "#,###,";
 				valores = "0,000.";
 			}
-			else if(bigValAbs.intValue()>10000) {
+			else if(bigValAbs.intValue()>=10000) {
 				formato = "##,###,";
 			}
-			else if(bigValAbs.intValue()>100000) {
+			else if(bigValAbs.intValue()>=100000) {
 				formato = "###,###,";	
 			}
-			else if(bigValAbs.intValue()>1000000) {
+			else if(bigValAbs.intValue()>=1000000) {
 				formato = "#,###,###,";
 			}
-			else if(bigValAbs.intValue()>10000000) {
+			else if(bigValAbs.intValue()>=10000000) {
 				formato = "##,###,###,";
 			}
-			else if(bigValAbs.intValue()>100000000) {
+			else if(bigValAbs.intValue()>=100000000) {
 				formato = "###,###,###,";
 			}
-			else if(bigValAbs.intValue()>1000000000) {
+			else if(bigValAbs.intValue()>=1000000000) {
 				formato = "#,###,###,###,";
 			}
 			
