@@ -173,25 +173,21 @@ public class Itau extends Banco {
 	}
 
 	@Override
-	public String geraCodBar(String codbanco, String codmoeda, String dvbanco,
-			Long fatvenc, BigDecimal vlrtitulo, String convenio,
-			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc,
-			String agencia, String conta, String carteira, String modalidade) {
-		
-		final StringBuffer barcode = new StringBuffer();
-		final StringBuffer parte1 = new StringBuffer();
-		final StringBuffer parte2 = new StringBuffer();
+	public String geraCodBar() {
+		StringBuffer barcode = new StringBuffer();
+		StringBuffer parte1 = new StringBuffer();
+		StringBuffer parte2 = new StringBuffer();
 
-		final String bufCodbanco = strZero(codbanco, 3);
-		final String bufCodmoeda = strZero(codmoeda, 1);
-		final String bufFatvenc = strZero(fatvenc.toString(), 4);
-		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
-		final String bufConvenio = geraConvenio(convenio);
-		final String bufModalidade = strZero(modalidade, 2);
-		final String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
-		final String bufAgencia = strZero(getCodSig(agencia)[0], 4);
-		final String bufConta = strZero(getCodSig(conta)[0], 8);
-		final String bufCarteira = strZero(carteira, 2);
+		String bufCodbanco = strZero(ITAU, 3);
+		String bufCodmoeda = strZero(String.valueOf(moeda), 1);
+		String bufFatvenc = strZero(fatvenc.toString(), 4);
+		String bufVlrtitulo = geraVlrtitulo(valorTitulo);
+		String bufConvenio = geraConvenio(convenio);
+		String bufModalidade = strZero(modalidade, 2);
+		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
+		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
+		String bufConta = strZero(getCodSig(conta)[0], 8);
+		String bufCarteira = strZero(carteira, 2);
 
 		parte1.append(bufCodbanco);
 		parte1.append(bufCodmoeda);
@@ -205,73 +201,85 @@ public class Itau extends Banco {
 			parte2.append(bufConvenio);
 			parte2.append(bufNossoNumero);
 			parte2.append(bufModalidade);
-		}
-		else if (bufConvenio.length() >= 7) {
+		} else if (bufConvenio.length() >= 7) {
 			// Código de barras bara convêncios acima de 1.000.000
 			parte2.append("000000");
 			parte2.append(bufNossoNumero);
 			parte2.append(bufCarteira);
-		}
-		else {
+		} else {
 			// Formato do código de barras para convênios com 4 ou 6 posições
-			parte2.append(bufNossoNumero);
+			parte2.append( strZero(bufNossoNumero, 8) );
+			parte2.append(digVerif(bufNossoNumero, 11));
+			
 			parte2.append(bufAgencia);
 			parte2.append(bufConta);
-			parte2.append(bufCarteira);
+			parte2.append(digVerif(bufAgencia + bufConta, 11));
+//			parte2.append(bufCarteira);
 		}
 
 		barcode.append(parte1);
 		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
 		barcode.append(parte2);
+		barcode.append(strZero("", 3));
 
 		return barcode.toString();
 	}
-
+	
 	@Override
-	public String geraCodBar() {
-		String[] agencia = getCodSig(getAgencia());
-		String[] conta = getCodSig(getConta());
+	public String geraCodBar(String codbanco, String codmoeda, String dvbanco,
+			Long fatvenc, BigDecimal vlrtitulo, String convenio,
+			String tpnossonumero, Long doc, Long seq, Long rec, Long nparc,
+			String agencia, String conta, String carteira, String modalidade) {
 		
-		StringBuilder campo1 = new StringBuilder();
-		campo1.append(ITAU);
-		campo1.append("9");
-		campo1.append(getCarteira().trim());
-		//campo1.append("109");
-		
-		String nossonumero = getNossoNumero();
-		
-		campo1.append(nossonumero.substring(0, 2));
-		//campo1.append(digVerif(campo1.toString(), 10));
-		
-		StringBuilder campo2 = new StringBuilder();
-		campo2.append(nossonumero.substring(2, nossonumero.length()));
-		campo2.append(digVerif( agencia[0].trim()  + conta[0].trim() + getCarteira().trim() + nossonumero, 10));
-		campo2.append(agencia[0].substring(0,3));
-		//campo2.append(digVerif(campo2.toString(), 10));
-		
-		StringBuilder campo3 = new StringBuilder();
-		campo3.append(agencia[0].substring(3,4));
-		campo3.append(conta[0] + conta[1]);
-		campo3.append("000");
-		//campo3.append(digVerif(campo3.toString(), 10));
-		
-		StringBuilder codBarr = new StringBuilder();
-		codBarr.append(campo1.toString());
-		codBarr.append(campo2.toString());
-		codBarr.append(campo3.toString());
-		
-		StringBuilder campo4 = new StringBuilder();
-		campo4.append(digVerif(codBarr.toString(), 10));
-		
-		codBarr.append(campo4.toString());
-		
-		StringBuilder campo5 = new StringBuilder();
-		campo5.append( strZero(getFatvenc().toString(), 4) );
-		campo5.append( geraVlrtitulo(getValorTitulo()) );
-		
-		codBarr.append(campo5.toString());
-		
-		return codBarr.toString();
+		StringBuffer barcode = new StringBuffer();
+		StringBuffer parte1 = new StringBuffer();
+		StringBuffer parte2 = new StringBuffer();
+
+		String bufCodbanco = strZero(codbanco, 3);
+		String bufCodmoeda = strZero(codmoeda, 1);
+		String bufFatvenc = strZero(fatvenc.toString(), 4);
+		String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
+		String bufConvenio = geraConvenio(convenio);
+		String bufModalidade = strZero(modalidade, 2);
+		String bufNossoNumero = geraNossoNumero(tpnossonumero, bufModalidade, bufConvenio, doc, seq, rec, nparc, false);
+		String bufAgencia = strZero(getCodSig(agencia)[0], 4);
+		String bufConta = strZero(getCodSig(conta)[0], 8);
+		String bufCarteira = strZero(carteira, 2);
+
+		parte1.append(bufCodbanco);
+		parte1.append(bufCodmoeda);
+		parte2.append(bufFatvenc);
+		parte2.append(bufVlrtitulo);
+
+		if ("21".equals(bufModalidade)) {
+			// Formato do código de barras para convênios da carteira sem
+			// registro
+			// 16 e 18 - com nossó número livre de 17 posições
+			parte2.append(bufConvenio);
+			parte2.append(bufNossoNumero);
+			parte2.append(bufModalidade);
+		} else if (bufConvenio.length() >= 7) {
+			// Código de barras bara convêncios acima de 1.000.000
+			parte2.append("000000");
+			parte2.append(bufNossoNumero);
+			parte2.append(bufCarteira);
+		} else {
+			// Formato do código de barras para convênios com 4 ou 6 posições
+			parte2.append( strZero(bufNossoNumero, 8) );
+			parte2.append(digVerif(bufNossoNumero, 11));
+			
+			parte2.append(bufAgencia);
+			parte2.append(bufConta);
+			parte2.append(digVerif(bufAgencia + bufConta, 11));
+//			parte2.append(bufCarteira);
+		}
+
+		barcode.append(parte1);
+		barcode.append(digVerif(parte1.toString() + parte2.toString(), 11));
+		barcode.append(parte2);
+		barcode.append(strZero("", 3));
+
+		return barcode.toString();
 	}
 	
 	@Override
@@ -327,31 +335,8 @@ public class Itau extends Banco {
 	public String geraNossoNumero(String tpnossonumero, String modalidade,
 			String convenio, Long doc, Long seq, Long rec, Long nparc,
 			boolean comdigito, boolean comtraco) {
-//		StringBuffer retorno = new StringBuffer();
-//
-//		retorno.append(seq);
-//		retorno.append(rec);
-//		retorno.append(nparc);
-//		
-//		StringBuilder nossoNumero =  new StringBuilder();
-//		nossoNumero.append( Funcoes.completaTexto(retorno.toString(), 7, "0") );
-//		
-//		if(comdigito){
-//			String dig = digVerif(nossoNumero.toString(), 10);
-//			if(comtraco)
-//				nossoNumero.append("-");
-//				
-//			nossoNumero.append( dig );
-//		}
-//		
-//		return nossoNumero.toString();
 		
 		StringBuffer retorno = new StringBuffer();
-
-//		if (!"21".equals(modalidade)) {
-//			retorno.append(convenio);
-//		}
-
 		retorno.append(getNumCli(tpnossonumero, modalidade, convenio, doc, seq, rec, nparc));
 
 		if (comdigito) {
@@ -405,18 +390,15 @@ public class Itau extends Banco {
 	@Override
 	public String getNumCli(String tpnossonumero, String modalidade, String convenio, Long doc, Long seq, Long rec, Long nparc) {
 
-		final StringBuffer retorno = new StringBuffer();
+		StringBuffer retorno = new StringBuffer();
 
 		if ("21".equals(modalidade)) {
 			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 17));
-		}
-		else if (convenio.length() <= 4) {
+		} else if (convenio.length() <= 4) {
 			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 6));
-		}
-		else if (convenio.length() == 6) {
+		} else if (convenio.length() == 6) {
 			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 5));
-		}
-		else {
+		} else {
 			retorno.append(getNumCli(tpnossonumero, doc, seq, rec, nparc, 10));
 		}
 
