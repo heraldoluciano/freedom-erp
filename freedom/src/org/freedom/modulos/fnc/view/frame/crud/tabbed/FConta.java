@@ -622,7 +622,9 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 				sql.append( ">=? ");
 			}
 			
-			sql.append( "and fechado<>? ");
+			sql.append( "and coalesce(fechado,'N')!=? ");
+			
+			System.out.println("sql:" + sql.toString());
 			
 			ps = con.prepareStatement( sql.toString() ); 
 			
@@ -637,6 +639,8 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 			ps.setString( 8, cbFechado.getVlrString() );
 			
 			ps.executeUpdate();
+			
+			con.commit();
 			
 		}
 		catch (Exception e) {
