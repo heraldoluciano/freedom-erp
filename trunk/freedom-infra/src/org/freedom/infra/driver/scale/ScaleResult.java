@@ -46,4 +46,16 @@ public class ScaleResult {
 	public Time getTime() {
 		return time;
 	}
+	
+	public boolean equals(Object scaleres) {
+		boolean result = false;
+		if ( ( scaleres !=null) && ( scaleres instanceof ScaleResult) ) {
+	        if ( (this.weight == null) && ( ( (ScaleResult) scaleres).getWeight()==null) ) {
+	        	result = true;
+	        } else {
+	        	result = ((ScaleResult) scaleres).getWeight().equals(this.weight);
+	        }
+		} 
+		return result;
+	}
 }
