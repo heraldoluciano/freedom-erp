@@ -56,7 +56,7 @@ public class DLBuscaLancaValor extends FFDialogo implements KeyListener {
 
 		adic( txtValor1		, 7		, 20, 90, 20, "Valor inicial" );
 		adic( txtValor2		, 100	, 20, 90, 20, "Valor final" );
-		adic( cbFiltraData	, 193	, 20, 90, 20, "Valor final" );
+		adic( cbFiltraData	, 193	, 20, 150, 20, "" );
 
 		
 		txtValor1.requestFocus();
