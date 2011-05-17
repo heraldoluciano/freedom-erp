@@ -25,6 +25,11 @@ package org.freedom.library.swing.component;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,9 +38,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
@@ -47,6 +57,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.type.StringDireita;
 
@@ -91,8 +102,34 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		setAutoResizeMode(AUTO_RESIZE_OFF);
 
 		setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		
+		//addKeyListener(this);
 
+		// Evitando que o ENTER no grid mude para a linha abaixo
+		InputMap im =  getInputMap();
+		ActionMap am =  getActionMap();
+	
+		im.clear();
+		am.clear();
+		
+		Action enterKey = new AbstractAction() {
 
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				try	{					
+					simulaDuploClique();
+				}
+				catch (Exception ex){
+					ex.printStackTrace();
+				}					
+			}
+		};
+		
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "SimulaDuploClick");
+		am.put("SimulaDuploClick", enterKey);
+	
+		
 		/*******************************************************
 		 * 
 		 * Configuração visual para valores do tipo BigDecimal
@@ -344,6 +381,62 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		
 		ColorRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		setDefaultRenderer(Color.class, ColorRenderer);
+		
+		
+		
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo Data
+		 * 
+		 *******************************************************/
+		
+		DefaultTableCellRenderer dateRenderer = new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void setValue(Object value) {
+
+				setText(( value == null ) ? "" : "" + ConversionFunctions.dateToStrDate((Date)value));
+			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+
+					setBackground(new Color(160,170,210));
+
+				}
+				else {
+
+					if(row % 2 == 0) {
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column) );
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
+					} 
+					else {
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
+					}
+				}
+				return this;
+			}
+
+		};
+
+		dateRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+		setDefaultRenderer(Date.class, dateRenderer);
 		
 		
 		/*******************************************************
@@ -1126,6 +1219,63 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 
 		}
 	}
+
+	
+	public void simulaDuploClique() {
+		try {
+			
+			Robot robo = new Robot();
+			
+			Rectangle retcel = getCellRect(getLinhaSel(), getNumColunas()-1, false);
+	
+			Component pai = getParent();
+			
+			int y = retcel.y;
+			int x = pai.getWidth()/2;
+			
+			if(x>retcel.x) {
+				x = retcel.x;
+			}
+			
+			y += getRowHeight( ( getLinhaSel()-1 )) / 2;
+			
+			
+			boolean tempai = pai == null ? false : true;
+			
+			pai = this;
+			
+			while(tempai) {
+				
+				Component filho = pai.getParent();
+				
+				if (filho==null) {
+					tempai = false;
+				}
+				else {
+				
+					y += filho.getY();
+					pai = filho;
+				}
+			}
+			
+			robo.mouseMove(x, y);
+			
+			robo.mousePress(MouseEvent.BUTTON1_MASK);
+			robo.mouseRelease(MouseEvent.BUTTON1_MASK);
+			
+			robo.mousePress(MouseEvent.BUTTON1_MASK);
+			robo.mouseRelease(MouseEvent.BUTTON1_MASK);
+		
+			System.out.println("Click simulado!");
+			
+			
+		}
+		catch (Exception err) {
+			err.printStackTrace();
+		}
+	}
+	
+
 }
 
 class DateEditor extends DefaultCellEditor {
