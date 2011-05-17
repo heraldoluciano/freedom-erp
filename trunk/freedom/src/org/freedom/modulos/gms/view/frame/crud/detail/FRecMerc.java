@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -1371,6 +1372,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 		}
 		else if ( cevt.getListaCampos() == lcCampos ) {
 			atualizaStatus();
+			// Se náo foi realizada nenhuma pesagem deve carregar a sequencia 1 para facilitar a utilizacao
+			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PENDENTE.getValue() ) ) {
+				carregaSequencia( 0 );
+			}
 			// Se ja tiver sido realizada a pesagem 1 deve carregar a sequencia 2 para facilitar a utilizacao
 			if ( txtStatus.getVlrString().equals( RecMerc.STATUS_PESAGEM_1.getValue() ) ) {
 				carregaSequencia( 1 );
@@ -1412,6 +1417,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		try {
 
+			if(proximos == 0){ 
+				lcDet.carregaItem( 0 );
+			}
+			
 			for ( int i = 0; i < proximos; i++ ) {
 				lcDet.next();
 			}
@@ -1470,6 +1479,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			lcCampos.carregaDados();
 			liberaRenda( false );
 		}
+		else if (pevt.getListaCampos() == lcCampos) {
+			lcDet.carregaDados();
+			carregaSequencia( 0 );
+		}
+	
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -1482,6 +1496,9 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			carregaTipoRec();
+			
+			txtDtEnt.setVlrDate( new Date() );
+			
 		}
 
 	}
