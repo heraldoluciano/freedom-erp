@@ -63,6 +63,8 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 public class DLNovoPag extends FFDialogo implements PostListener, MouseListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
@@ -535,7 +537,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 				
 				// Valor colocado de forma fixa... deve ser substituido urgentemente!
 				
-				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, new BigDecimal(150.69), nrodepend );
+				vlrirrf = getVlrIRRF( vlroriginal, vlrbaseirrf, vlrbaseinss, vlrinss, getReducaoDependente(), nrodepend );
 				
 				txtPercBaseIRRF.setVlrBigDecimal( percbaseirrf );
 				txtVlrBaseIRRF.setVlrBigDecimal( vlrbaseirrf );
@@ -548,6 +550,27 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	private BigDecimal getReducaoDependente() {
+		BigDecimal ret = new BigDecimal(0);
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT FIRST 1 REDUCAODEPENDENTE FROM RHTABELAIRRF" );
+			
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				ret = rs.getBigDecimal( "REDUCAODEPENDENTE" );
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret;
 		
 	}
 	
