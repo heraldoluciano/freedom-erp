@@ -50,9 +50,11 @@ import org.freedom.acao.EditEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.comm.CtrlPort;
 import org.freedom.infra.driver.scale.AbstractScale;
+import org.freedom.infra.driver.scale.ScaleResult;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -235,9 +237,9 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 					balanca.initialize( portabal, AbstractScale.TIMEOUT_ACK, baundrate, databits, stopbits, parity );
 					// Usar thred apenas para balanca bci.
-
+					Thread t = null;
 					if ( balanca.isBufferized() ) {
-						Thread t = new Thread( balanca );
+						t = new Thread( balanca );
 						t.start();
 
 						Thread.sleep( 1000 );
@@ -245,12 +247,34 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 					setMensagem( "Recuperando dados da balança...", Color.BLUE, null, false, null );
 
-					balanca.parseString();
+					balanca.readstring = false;
 
-					data = balanca.getDate();
+					//Thread.sleep( 500 );
+					
+					ScaleResult scaleresult = balanca.parseString();
+					
+					for (int i=0; i<10; i++) {
+						if ( scaleresult!=null) {
+							break;
+						}
+						Thread.sleep( 1000 );
+						scaleresult = balanca.parseString();
+						if (scaleresult!=null) {
+							System.out.println("Peso no loop: "+i+" = "+scaleresult.getWeight());
+						}
+					}
+
+					if (scaleresult==null) {
+						Funcoes.mensagemInforma( this, "Não foi possível obter pesso da balança após 10 tentativas!" );
+					} else {
+						data = scaleresult.getDate();
+						hora = scaleresult.getTime();
+						peso = scaleresult.getWeight();
+					}
+/*					data = balanca.getDate();
 					hora = balanca.getTime();
 					peso = balanca.getWeight();
-
+*/
 				}
 				// Modo de contingencia ativado
 				else {
