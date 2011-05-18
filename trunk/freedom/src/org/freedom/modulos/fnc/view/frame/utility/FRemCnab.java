@@ -40,6 +40,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javax.swing.JOptionPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
@@ -66,6 +68,7 @@ import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.StuffRec;
+import org.freedom.modulos.fnc.view.dialog.report.DLRRemessa;
 
 public class FRemCnab extends FRemFBN {
 
@@ -73,7 +76,7 @@ public class FRemCnab extends FRemFBN {
 
 	private final CnabUtil cnabutil = new CnabUtil();
 
-	private int loteServico = 0;
+	public static int loteServico = 0;
 
 	private int seqLoteServico = 1;
 
@@ -235,7 +238,7 @@ public class FRemCnab extends FRemFBN {
 
 		try {
 
-			Banco banco = this.getBanco();
+			Banco banco = FbnUtil.getBanco( txtCodBanco.getVlrString() );
 
 			reg.setCodBanco( txtCodBanco.getVlrString() );
 			reg.setLoteServico( loteServico );
@@ -368,7 +371,7 @@ public class FRemCnab extends FRemFBN {
 
 	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
 
-		Banco banco = this.getBanco();
+		Banco banco = FbnUtil.getBanco( txtCodBanco.getVlrString() );
 
 		Reg3P reg = new Reg3P();
 
@@ -602,36 +605,51 @@ public class FRemCnab extends FRemFBN {
 		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 
-		if ( consisteExporta( hsCli, hsRec, false ) ) {
+		lbStatus.setText( "     Gerando nosso número ..." );
+		
+		ajustaNossoNumero();
+		
+		retorno = setPrefs();
+
+		if ( retorno ) {
+		
+			if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+				Calendar clhoje = new GregorianCalendar();
+				clhoje = Calendar.getInstance();
+				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
+				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
+				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
+				sFileName = "CB" + dia + mes + seq + ".REM";
+			} else {
+				sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
+			}
+		}
+		else {
+			return retorno;
+		}
+		
+		FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+		
+		fileDialogCnab.setFile( sFileName );
+		fileDialogCnab.setVisible( true );
+		
+		sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
+		
+		if ( fileDialogCnab.getFile() == null ) {
+			lbStatus.setText( "" );
+			return retorno;
+		}
+
+		
+		
+		if ( consisteExporta( hsCli, hsRec, false, sFileName ) ) {
 
 			retorno = setPrefs();
 
 			if ( retorno ) {
 
 				lbStatus.setText( "     criando arquivo ..." );
-				FileDialog fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-
-				if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
-					Calendar clhoje = new GregorianCalendar();
-					clhoje = Calendar.getInstance();
-					String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
-					String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
-					String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
-					sFileName = "CB" + dia + mes + seq + ".REM";
-				} else {
-					sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
-				}
-
-				fileDialogCnab.setFile( sFileName );
-				fileDialogCnab.setVisible( true );
-
-				if ( fileDialogCnab.getFile() == null ) {
-					lbStatus.setText( "" );
-					return retorno;
-				}
-
-				sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
-
+			
 				try {
 
 					File fileCnab = new File( sFileName );
@@ -657,18 +675,72 @@ public class FRemCnab extends FRemFBN {
 
 				prefs.put( EPrefs.NROSEQ, ( (Integer) prefs.get( EPrefs.NROSEQ ) ).intValue() + 1 );
 				updatePrefere();
-				atualizaSitremessaExp( hsCli, hsRec );
+				atualizaSitremessaExp( hsCli, hsRec, sFileName );
 			}
 
 		}
+		
+		if( Funcoes.mensagemConfirma( this, "Deseja imprimir relação de títulos exportados?" )== JOptionPane.YES_OPTION ) {
+			imprimir( true, true, sFileName  );
+		}
+		
 		return retorno;
 	}
 
-	private void atualizaSitremessaExp( HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec ) {
+	private void atualizaSitremessaExp( HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec, String filename ) {
 
 		setSitremessa( hsRec, "01" );
-		persisteDados( hsCli, hsRec );
+		persisteDados( hsCli, hsRec, filename );
 		updatePrefere();
+		atualizaNossoNumero( hsRec );
+		
+	}
+	 
+	 boolean atualizaNossoNumero( HashSet<SiaccUtil.StuffRec> hsRec ) {
+
+		boolean retorno = false;
+
+		try {
+			
+			PreparedStatement ps = null;
+			
+			Integer codrec;
+			Integer nparcitrec;
+			String nossonumero;
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "update fnitreceber set nossonumero=? where codemp=? and codfilial=? and codrec=? and nparcitrec=? " );
+
+			for ( FbnUtil.StuffRec stfRec : hsRec ) {
+				
+				codrec = stfRec.getCodrec();
+				nparcitrec = stfRec.getNParcitrec();
+				nossonumero = stfRec.getNossonumero();
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setString( 1, nossonumero );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				ps.setInt( 4, codrec );
+				ps.setInt( 5, nparcitrec );
+				
+				ps.executeUpdate();
+				
+				
+			}
+			
+			ps.close();
+			con.commit();
+		
+			retorno = true;
+
+		} 
+		catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
+		}
+
+		return retorno;
 	}
 
 	private void setSitremessa( HashSet<SiaccUtil.StuffRec> hsRec, final String sit ) {
@@ -747,7 +819,13 @@ public class FRemCnab extends FRemFBN {
 		return retorno;
 	}
 
-	public void imprimir( boolean visualizar ) {
+	public void imprimir(boolean visualizar) {
+		
+		imprimir( visualizar, false, null );
+		
+	}
+	
+	public void imprimir( boolean visualizar, boolean exportados, String filename ) {
 
 		if ( txtCodBanco.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Código do banco é requerido!" );
@@ -755,17 +833,47 @@ public class FRemCnab extends FRemFBN {
 		}
 
 		try {
+			
+			
+			DLRRemessa dl = new DLRRemessa( this );
+			String formato = null;
+			
+			dl.setVisible( true );
 
-			ResultSet rs = executeQuery();
+			if ( dl.OK == true ) {
+				
+				formato = dl.getFormato();
+				dl.dispose();
+				
+			}
+			else {
+				dl.dispose();
+				return;
+			}
+
+			ResultSet rs = executeQuery(exportados, filename);
 
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+			
+			if(filename != null) {
+			
+				hParam.put( "FILTROS", "Títulos registrados no arquivo: " + filename );
+				
+			}
 
-
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
+			FPrinterJob dlGr = null;
+			
+			if("R".equals( formato )) {
+				dlGr = new FPrinterJob( "relatorios/RemCNAB.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
+			}
+			else {
+				dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );	
+			}
+			
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
@@ -798,6 +906,29 @@ public class FRemCnab extends FRemFBN {
 			calcSelecionado();
 		}
 
+	}
+	
+	protected void ajustaNossoNumero( ) {
+
+		String nossonumero = "";
+		Integer codrec = null;
+		Integer nparcitrec = null;
+		
+		Integer setregistro = 1;
+		
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+			codrec = Integer.parseInt( tab.getValor( i, EColTab.COL_CODREC.ordinal() ).toString());
+			nparcitrec = Integer.parseInt( tab.getValor( i, EColTab.COL_NRPARC.ordinal()).toString() );
+			
+			nossonumero = FbnUtil.getNossoNumero( con, codrec, nparcitrec, TIPO_FEBRABAN_CNAB, seqregistro );
+			
+			
+			tab.setValor( nossonumero, i, EColTab.NOSSO_NUMERO.ordinal() );
+			
+			setregistro ++;
+			
+		}
 	}
 
 	enum DadosCliente {
