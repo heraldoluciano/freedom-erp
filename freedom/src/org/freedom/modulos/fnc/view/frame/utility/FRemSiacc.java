@@ -64,7 +64,7 @@ public class FRemSiacc extends FRemFBN {
 		HashSet<SiaccUtil.StuffCli> hsCli = new HashSet<SiaccUtil.StuffCli>();
 		HashSet<SiaccUtil.StuffRec> hsRec = new HashSet<SiaccUtil.StuffRec>();
 
-		if ( consisteExporta( hsCli, hsRec, true ) ) {
+		if ( consisteExporta( hsCli, hsRec, true, null ) ) {
 
 			retorno = setPrefs();
 
@@ -111,7 +111,7 @@ public class FRemSiacc extends FRemFBN {
 	private void atualizaSitremessaExp( HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		setSitremessa( hsRec, "01" );
-		persisteDados( hsCli, hsRec );
+		persisteDados( hsCli, hsRec, null );
 		updatePrefere();
 	}
 
@@ -248,5 +248,12 @@ public class FRemSiacc extends FRemFBN {
 			completaTabela( tab.getLinhaSel(), (Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), (String) tab.getValor(
 					tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
 		}
+	}
+
+	@ Override
+	protected void ajustaNossoNumero() {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
