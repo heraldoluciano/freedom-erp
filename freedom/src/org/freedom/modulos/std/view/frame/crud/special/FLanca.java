@@ -180,18 +180,25 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	
 	private JMenuItem menucadastracor = new JMenuItem();
 	
+	private static int X = 20;
+	
+	private static int Y = 25;
+	
+	private static int L = 920;
+	
+	private static int A = 750;
+	
 	boolean Ctrl = false;
 	
 	private enum enum_tab_lanca {  
-		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ, COR  };
+		CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, VLRSUBLANCA, HISTBLANCA, CHEQUES, DOCLANCA, CODPAG, NPARCPAG, SEQCHEQ, COR  };
 
 		public FLanca() {
 
 			super( false );
 
 			setTitulo( "Lançamentos Financeiros" );
-			setAtribos( 50, 25, 920, 750 );
-
+			
 			Container c = getContentPane();
 
 			c.setLayout( new BorderLayout() );
@@ -223,17 +230,17 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			btExec.setContentAreaFilled(false);
 			btExec.setBorderPainted(false);
 
-			pinCab.adic( pinData, 280, 0, 110, 54 );
+			pinCab.adic( pinData, 280, 0, 125, 54 );
 			pinData.setBorder( SwingParams.getPanelLabel( "Data", Color.BLACK ) );
 
 			lbDataSaldoVal.setForeground( new Color( 0, 140, 0 ) );
 			lbDataSaldoVal.setFont( SwingParams.getFontboldmax() );
 			pinData.adic( lbDataSaldoVal, 7, 3, 110, 15 );
 
-			pinCab.adic( pinSaldo, 390, 0, 120, 54 );
+			pinCab.adic( pinSaldo, 405, 0, 135, 54 );
 			pinSaldo.setBorder( SwingParams.getPanelLabel( "Saldo", Color.BLACK ) );
 
-			pinSaldo.adic( txtVlrSaldo, 10, 3, 100, 20 );
+			pinSaldo.adic( txtVlrSaldo, 10, 3, 120, 20 );
 			txtVlrSaldo.setForeground( new Color( 0, 140, 0 ) );
 
 			txtVlrSaldo.setBorder( null );
@@ -241,10 +248,10 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 			txtVlrSaldo.setFont( SwingParams.getFontboldmax() );
 
-			pinCab.adic( pinSaldoComposto, 510, 0, 120, 54 );
+			pinCab.adic( pinSaldoComposto, 540, 0, 135, 54 );
 			pinSaldoComposto.setBorder( SwingParams.getPanelLabel( "Saldo composto", Color.BLACK ) );
 
-			pinSaldoComposto.adic( txtVlrSaldoComposto, 10, 3, 100, 20 );
+			pinSaldoComposto.adic( txtVlrSaldoComposto, 10, 3, 120, 20 );
 			txtVlrSaldoComposto.setForeground( new Color( 0, 140, 0 ) );
 
 			txtVlrSaldoComposto.setBorder( null );
@@ -255,7 +262,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			txtVlrSaldo.setEditable( false );
 			txtVlrSaldoComposto.setEditable( false );
 
-			pinCab.adic( pinAtualiza, 630, 0, 120, 54 );
+			pinCab.adic( pinAtualiza, 675, 0, 120, 54 );
 			pinAtualiza.setBorder( SwingParams.getPanelLabel( "Atualizado", Color.BLACK ) );
 			pinAtualiza.adic( lbAtualSaldoVal, 10, 2, 57, 15 );
 			lbAtualSaldoVal.setFont( SwingParams.getFontboldmax() );
@@ -284,30 +291,31 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			pnNav.add( btBuscaLancaValor );
 			
 			btAbreCheque.setEnabled( false );
-			//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, DOCLANCA, VLRSUBLANCA, HISTBLANCA, CHEQUES, CODPAG, NPARCPAG, SEQCHEQ  };
+			//CODLANCA, DATASUBLANCA, TRANSFLANCA, ORIGSUBLANCA, NUMCONTA, VLRSUBLANCA, CHEQUES, DOCLANCA, HISTBLANCA, CODPAG, NPARCPAG, SEQCHEQ, COR  };
 			tab.adicColuna( "NºLanç." );
 			tab.adicColuna( "Data" );
 			tab.adicColuna( "Tsf." );
 			tab.adicColuna( "Orig." );
 			tab.adicColuna( "Conta tsf." );
 
-			tab.adicColuna( "Nº doc." );
 			tab.adicColuna( "Valor" );
 			tab.adicColuna( "Histórico" );
 
 			tab.adicColuna( "Cheques" );
+			tab.adicColuna( "Nº doc." );
+			
 			tab.adicColuna( "Cod.Pag." );
 			tab.adicColuna( "N.Parc.Pag." );
 			tab.adicColuna( "Seq.Cheque" );
 			tab.adicColuna( "Cor" );
 
 			tab.setTamColuna( 60, enum_tab_lanca.CODLANCA.ordinal() );
-			tab.setTamColuna( 80, enum_tab_lanca.DATASUBLANCA.ordinal() );
-			tab.setTamColuna( 85, enum_tab_lanca.DOCLANCA.ordinal() );
+			tab.setTamColuna( 90, enum_tab_lanca.DATASUBLANCA.ordinal() );
+			tab.setTamColuna( 90, enum_tab_lanca.DOCLANCA.ordinal() );
 			tab.setTamColuna( 100, enum_tab_lanca.VLRSUBLANCA.ordinal() );
 			tab.setTamColuna( 400, enum_tab_lanca.HISTBLANCA.ordinal() );		
 			tab.setTamColuna( 72, enum_tab_lanca.NUMCONTA.ordinal() );
-			tab.setTamColuna( 65, enum_tab_lanca.CHEQUES.ordinal() );
+			tab.setTamColuna( 80, enum_tab_lanca.CHEQUES.ordinal() );
 
 			tab.setColunaInvisivel( enum_tab_lanca.TRANSFLANCA.ordinal() );
 			tab.setColunaInvisivel( enum_tab_lanca.ORIGSUBLANCA.ordinal() );
@@ -464,13 +472,13 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					}
 
 					tab.setValor( rs.getString( enum_tab_lanca.ORIGSUBLANCA.name()) , i, enum_tab_lanca.ORIGSUBLANCA.ordinal(), corsinal );
-					tab.setValor( rs.getString( enum_tab_lanca.DOCLANCA.name()), i, enum_tab_lanca.DOCLANCA.ordinal(), corsinal );
+					tab.setValor( " " + rs.getString( enum_tab_lanca.DOCLANCA.name()).trim(), i, enum_tab_lanca.DOCLANCA.ordinal(), corsinal );
 					
 					BigDecimal valor = rs.getBigDecimal(enum_tab_lanca.VLRSUBLANCA.name() ).setScale( 2 );
 					tab.setValor( valor, i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
 					
 //					tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( enum_tab_lanca.VLRSUBLANCA.name() ) ), i, enum_tab_lanca.VLRSUBLANCA.ordinal(), corsinal );
-					tab.setValor( rs.getString( enum_tab_lanca.HISTBLANCA.name()), i, enum_tab_lanca.HISTBLANCA.ordinal(), corsinal );				
+					tab.setValor( " " + rs.getString( enum_tab_lanca.HISTBLANCA.name()).trim(), i, enum_tab_lanca.HISTBLANCA.ordinal(), corsinal );				
 					tab.setValor( rs.getString( enum_tab_lanca.CODPAG.name()), i, enum_tab_lanca.CODPAG.ordinal(), corsinal );
 					tab.setValor( rs.getString( enum_tab_lanca.NPARCPAG.name()), i, enum_tab_lanca.NPARCPAG.ordinal(), corsinal );
 
@@ -487,10 +495,8 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 							seqcheques.add( cheque.getSeqcheq().toString() );
 						}
 							
-						tab.setValor( numcheques, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
+						tab.setValor( " " + numcheques, i, enum_tab_lanca.CHEQUES.ordinal(), corsinal );
 						tab.setValor( seqcheques, i, enum_tab_lanca.SEQCHEQ.ordinal(), corsinal );
-						
-						System.out.println("tem cheque");
 						
 					}
 					else {
@@ -814,7 +820,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			if ( ( tab.getLinhaSel() >= 0 ) & ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir este lancamento?" ) == 0 ) ) {
 				try {
 					PreparedStatement ps = con.prepareStatement( "DELETE FROM FNLANCA WHERE CODLANCA=? AND CODEMP=? AND CODFILIAL=?" );
-					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), 0 ) );
+					ps.setString( 1, (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) );
 					ps.setInt( 2, Aplicativo.iCodEmp );
 					ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
 					ps.executeUpdate();
@@ -856,23 +862,28 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		private void editar() {
 
 			if ( ( tab.getLinhaSel() >= 0 ) & ( validaPeriodo() ) ) {
-				if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "N" ) ) ) {
-					Funcoes.mensagemInforma( this, "Este lançamento não pode ser editato nesta conta!" );
+				if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "N" ) ) && ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
+					Funcoes.mensagemInforma( this, "Este lançamento não pode ser editado nesta conta!" );
 				}
-				else if ( ( tab.getValor( tab.getLinhaSel(), 3 ).equals( "N" ) ) & ( tab.getValor( tab.getLinhaSel(), 2 ).equals( "S" ) ) ) {
+				else if ( ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.ORIGSUBLANCA.ordinal() ).equals( "S" ) ) & ( tab.getValor( tab.getLinhaSel(), enum_tab_lanca.TRANSFLANCA.ordinal() ).equals( "S" ) ) ) {
+					
 					DLDataTransf dl = new DLDataTransf( this );
+					
 					dl.setVisible( true );
+					
 					if ( !dl.OK ) {
 						dl.dispose();
 						return;
 					}
+					
 					Date dDtNova = dl.getValor();
 					dl.dispose();
 					String sSQL = "UPDATE FNSUBLANCA SET DATASUBLANCA=? WHERE CODLANCA = ? AND CODEMP=? AND CODFILIAL=? AND CODSUBLANCA > 0";
+					
 					try {
 						PreparedStatement ps = con.prepareStatement( sSQL );
 						ps.setDate( 1, Funcoes.dateToSQLDate( dDtNova ) );
-						ps.setInt( 2, Integer.parseInt( (String) tab.getValor( tab.getLinhaSel(), 0 ) ) );
+						ps.setInt( 2, Integer.parseInt( (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ) ) );
 						ps.setInt( 3, Aplicativo.iCodEmp );
 						ps.setInt( 4, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 						ps.executeUpdate();
@@ -881,7 +892,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao atualizar a data da transferência!\n" + err.getMessage(), true, con, err );
 					}
-					tab.setValor( Funcoes.dateToStrDate( dDtNova ), tab.getLinhaSel(), 1 );
+					tab.setValor( Funcoes.dateToStrDate( dDtNova ), tab.getLinhaSel(), enum_tab_lanca.DATASUBLANCA.ordinal() );
 
 				}
 				else {
@@ -892,7 +903,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 						cont = cont.getParent();
 					}
 					if ( ! ( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
-						FSubLanca form = new FSubLanca( (String) tab.getValor( tab.getLinhaSel(), 0 ), sCodPlan, dIniLanca, dFimLanca );
+						FSubLanca form = new FSubLanca( (String) tab.getValor( tab.getLinhaSel(), enum_tab_lanca.CODLANCA.ordinal() ), sCodPlan, dIniLanca, dFimLanca );
 						( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
 						form.addInternalFrameListener( new InternalFrameAdapter() {
 
@@ -911,26 +922,31 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			int iLin = -1;
 			if ( ( sVals[ 0 ].length() > 0 ) && ( testaCodLanca( Integer.parseInt( sVals[ 0 ] ) ) ) && ( sCodPlan.equals( sVals[ 6 ] ) ) && ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) && ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
 				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-					if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
+					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( sVals[ 0 ] ) ) {
 						tab.tiraLinha( i );
 						break;
 					}
 				}
 				tab.adicLinha();
 				iLin = tab.getNumLinhas() - 1;
-				tab.setValor( sVals[ 0 ], iLin, 0 );
-				tab.setValor( sVals[ 1 ], iLin, 1 );
-				tab.setValor( sVals[ 2 ], iLin, 2 );
-				tab.setValor( "S", iLin, 3 );
-				if ( sVals[ 2 ].equals( "S" ) )
+				
+				tab.setValor( sVals[ 0 ], iLin, enum_tab_lanca.CODLANCA.ordinal() );
+				tab.setValor( sVals[ 1 ], iLin, enum_tab_lanca.DATASUBLANCA.ordinal() );
+				tab.setValor( sVals[ 2 ], iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				tab.setValor( "S", iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				
+				if ( sVals[ 2 ].equals( "S" ) ) {
 					tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
-				else
-					tab.setValor( "", iLin, 4 );
-				tab.setValor( sVals[ 3 ], iLin, 5 );
+				}
+				else {
+					tab.setValor( "", iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+				}
+				
+				tab.setValor( " " + sVals[ 3 ], iLin, enum_tab_lanca.DOCLANCA.ordinal() );
 				
 				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );
 				
-				tab.setValor( sVals[ 5 ], iLin, 7 );
+				tab.setValor( " " + sVals[ 5 ], iLin, enum_tab_lanca.HISTBLANCA.ordinal() );
 			}
 			lbAtualSaldoVal.setText( "NÃO" );
 		}
@@ -940,21 +956,27 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			int iLin = -1;
 			if ( ( sCodPlan.equals( sVals[ 6 ] ) ) & ( !dIniLanca.after( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) & ( !dFimLanca.before( Funcoes.strDateToDate( sVals[ 1 ] ) ) ) ) {
 				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-					if ( ( (String) tab.getValor( i, 0 ) ).trim().equals( sVals[ 0 ] ) ) {
+					if ( ( (String) tab.getValor( i, enum_tab_lanca.CODLANCA.ordinal() ) ).trim().equals( sVals[ 0 ] ) ) {
 						iLin = i;
 						break;
 					}
 				}
-				tab.setValor( sVals[ 0 ], iLin, 0 );
-				tab.setValor( sVals[ 1 ], iLin, 1 );
-				tab.setValor( sVals[ 2 ], iLin, 2 );
-				tab.setValor( "S", iLin, 3 );
-				if ( sVals[ 2 ].equals( "S" ) ) 
-					tab.setValor( sConta, iLin, 4 );
-				tab.setValor( sVals[ 3 ], iLin, 5 );
-//				tab.setValor( sVals[ 4 ], iLin, 6 );
+				
+				tab.setValor( sVals[ 0 ], iLin, enum_tab_lanca.CODLANCA.ordinal() );
+				tab.setValor( sVals[ 1 ], iLin, enum_tab_lanca.DATASUBLANCA.ordinal() );
+				tab.setValor( sVals[ 2 ], iLin, enum_tab_lanca.TRANSFLANCA.ordinal() );
+				tab.setValor( "S", iLin, enum_tab_lanca.ORIGSUBLANCA.ordinal() );
+			
+				if ( sVals[ 2 ].equals( "S" ) ) { 
+					tab.setValor( sConta, iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+				}
+				else {
+					tab.setValor( "", iLin, enum_tab_lanca.NUMCONTA.ordinal() );
+				}
+				
+				tab.setValor( " " + sVals[ 3 ], iLin, enum_tab_lanca.DOCLANCA.ordinal() );
 				tab.setValor( ConversionFunctions.stringCurrencyToBigDecimal( sVals[ 4 ]), iLin, enum_tab_lanca.VLRSUBLANCA.ordinal() );				
-				tab.setValor( sVals[ 5 ], iLin, 7 );
+				tab.setValor( " " + sVals[ 5 ], iLin, enum_tab_lanca.HISTBLANCA.ordinal() );
 				
 				
 			}
@@ -1054,8 +1076,57 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		public void setConexao( DbConnection cn ) {
 
 			super.setConexao( cn );
+			
 			montaTabs();
+			
 			montaMenuCores();
+			
+			alinha_tela();
+			
+		}
+		
+		private void alinha_tela() {
+			
+			StringBuilder sql = new StringBuilder();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
+			boolean reposiciona = false;
+			
+			try {
+			
+				sql.append("select coalesce(alinhatelalanca,'N') alinha from sgprefere1 p1 where p1.codemp=? and p1.codfilial=? ");
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+				
+				rs = ps.executeQuery();
+				
+				if (rs.next()) {
+					reposiciona = "S".equals( rs.getString( "alinha" ) );
+				}
+				
+				if(reposiciona) {
+					
+					int largPrinc = ( int ) Aplicativo.telaPrincipal.dpArea.getSize().getWidth();
+					
+					int posicao = largPrinc - L;
+					
+					setAtribos( posicao, Y, L, A );
+					
+				}
+				else {
+					setAtribos( X, Y, L, A );
+				}
+				
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 
 		@ SuppressWarnings ( "unchecked" )
