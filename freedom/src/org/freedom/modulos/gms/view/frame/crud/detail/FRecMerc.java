@@ -891,7 +891,11 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 				imp.say( imp.pRow(), 77, cbBairro.getSelectedItem().toString() );
 			}
 
-			imp.pulaLinha( 3, imp.comprimido() );
+			imp.pulaLinha( 1, imp.comprimido() );
+			
+			imp.say( imp.pRow(), 77, txtDescAlmox.getVlrString() );
+			
+			imp.pulaLinha( 2, imp.comprimido() );
 
 			imp.say( imp.pRow(), 3, "PLACA:............:" );
 			imp.say( imp.pRow(), 24, Funcoes.setMascara( txtPlacaTran.getVlrString(), JTextFieldPad.mascplaca ) );
