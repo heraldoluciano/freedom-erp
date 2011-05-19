@@ -59,6 +59,7 @@ import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.type.StringCentro;
 import org.freedom.library.type.StringDireita;
 
 public class JTablePad extends JTable implements TabelaEditListener, TabelaSelListener {
@@ -292,6 +293,63 @@ public class JTablePad extends JTable implements TabelaEditListener, TabelaSelLi
 		
 		stringDireitaRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		setDefaultRenderer(StringDireita.class, stringDireitaRenderer);
+		
+		/*******************************************************
+		 * 
+		 * Configuração visual para valores do tipo StringCentro
+		 * 
+		 *******************************************************/
+		
+		DefaultTableCellRenderer stringCentroRenderer = new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void setValue(Object value) {
+
+				setText(( value == null ) ? "" : "" + value.toString()); 
+				
+				
+			}
+
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				if(isSelected) {
+					
+					setBackground(new Color(160,170,210));
+					
+				}
+				else {
+					if(row % 2 == 0) {
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(new Color(210,215,220));
+						}
+					} 
+					else {
+						if(modelo.getColorAt(row, column)!=null) {
+							setBackground(modelo.getColorAt(row, column));
+						}
+						else {
+
+							setBackground(null);
+						}
+					}
+				}
+
+				setText( value.toString() );
+				
+				return this;
+			}
+
+		};
+		
+		stringCentroRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		setDefaultRenderer(StringCentro.class, stringCentroRenderer);
 
 		/*******************************************************
 		 * 
