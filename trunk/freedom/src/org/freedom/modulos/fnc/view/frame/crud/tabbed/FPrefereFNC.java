@@ -134,6 +134,8 @@ public class FPrefereFNC extends FTabDados {
 	
 	private final JCheckBoxPad cbLiberacaoCreGlobal = new JCheckBoxPad("Liberação de crédito globalizado.", "S", "N");
 	
+	private final JCheckBoxPad cbAlinhaTelaLanca = new JCheckBoxPad("Alinha tela de lançamentos", "S", "N");
+	
 	private JCheckBoxPad cbGeraPagEmis = new JCheckBoxPad("Gera contas a pagar a partir da data de emissão.", "S", "N");
 
 	private JCheckBoxPad cbGeraRecEmis = new JCheckBoxPad("Gera contas a receber a partir da data de emissão.", "S", "N");
@@ -325,7 +327,7 @@ public class FPrefereFNC extends FTabDados {
 		// Painel de opções 
 		
 		pnOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(pnOpcoes				, 530	, 10	, 370	, 215);
+		adic(pnOpcoes				, 530	, 10	, 370	, 235);
 
 		setPainel( pnOpcoes );
 		
@@ -333,12 +335,13 @@ public class FPrefereFNC extends FTabDados {
 		adicDB(cbJurosPosCalc		, 7		, 20	, 310	, 20, "JurosPosCalc"		, ""	, false);
 		adicDB(cbEstItRecAltDtVenc	, 7		, 40	, 350	, 20, "EstItRecAltDtVenc"	, ""	, false);
 		adicDB(cbLiberacaoCreGlobal	, 7		, 60	, 350	, 20, "LcRedGlobal"			, ""	, false);
-
+		
 		adicDB(cbGeraPagEmis		, 7		, 80	, 350	, 20, "GeraPagEmis"			, ""	, true);
 		adicDB(cbGeraRecEmis		, 7		, 100	, 350	, 20, "GeraRecEmis"			, ""	, true);
 		adicDB(cbImpDocBol			, 7		, 120	, 350	, 20, "ImpDocBol"			, ""	, true);
 		adicDB(cbFechaCaixa			, 7		, 140	, 350	, 20, "FechaCaixa"			, ""	, true);
 		adicDB(cbFechaCaixaAuto		, 7		, 160	, 350	, 20, "FechaCaixaAuto"		, ""	, true);
+		adicDB(cbAlinhaTelaLanca	, 7		, 180	, 350	, 20, "AlinhaTelaLanca"		, ""	, true);
 
 		setPainel( pinGeral );
 
