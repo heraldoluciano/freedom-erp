@@ -540,7 +540,14 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 
 		if(e.getListaCampos() == lcCampos ) {
 			if(Cheque.SIT_CHEQUE_CANCELADO.getValue().equals( cbSitCheq.getVlrString() )) {
-				if( ( Funcoes.mensagemConfirma( this, "O cancelamento do cheque implica em desvinculá-lo às contas pagas!\nConfirma o cancelamento?" ) == JOptionPane.NO_OPTION) ) {
+				
+				StringBuilder mensagem = new StringBuilder();
+				
+				mensagem.append( "O cancelamento do cheque implica no estorno do pagamento da conta \n");
+				mensagem.append( "bem como a exclusão dos vínculos entre o cheque e a conta!\n");
+				mensagem.append( "Confirma o cancelamento?" );
+				
+				if( ( Funcoes.mensagemConfirma( this, mensagem.toString() ) == JOptionPane.NO_OPTION) ) {
 					e.cancela();
 				}
 			}
