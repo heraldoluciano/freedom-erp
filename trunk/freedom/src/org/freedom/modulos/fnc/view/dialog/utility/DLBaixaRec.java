@@ -92,6 +92,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtPagto = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtLiqItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
@@ -113,12 +115,13 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		super( cOrig );
 		setTitulo( "Baixa" );
-		setAtribos( 380, 450 );
+		setAtribos( 380, 460 );
 
 		txtCodPlan.setRequerido( true );
 		txtCodConta.setRequerido( true );
 		txtDoc.setRequerido( true );
 		txtDtPagto.setRequerido( true );
+		txtDtLiqItRec.setRequerido( true );
 		txtVlr.setRequerido( true );
 		txtObs.setRequerido( true );
 
@@ -163,55 +166,40 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrAberto.setAtivo( false );
 		txtVlrParc.setAtivo( false );
 
-		adic( new JLabelPad( "Cód.cli." ), 7, 0, 80, 20 );
-		adic( txtCodCli, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 0, 200, 20 );
-		adic( txtRazCli, 90, 20, 250, 20 );
-		adic( new JLabelPad( "Número" ), 7, 40, 80, 20 );
-		adic( txtCodConta, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 40, 200, 20 );
-		adic( txtDescConta, 90, 60, 250, 20 );
-		adic( new JLabelPad( "Cód.ctg." ), 7, 80, 80, 20 );
-		adic( txtCodPlan, 7, 100, 100, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 110, 80, 200, 20 );
-		adic( txtDescPlan, 110, 100, 230, 20 );
-		adic( new JLabelPad( "Cód.c.c." ), 7, 120, 100, 20 );
-		adic( txtCodCC, 7, 140, 100, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 200, 20 );
-		adic( txtDescCC, 110, 140, 230, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 160, 110, 20 );
-		adic( txtDoc, 7, 180, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 160, 107, 20 );
-		adic( txtDtEmis, 120, 180, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 160, 110, 20 );
-		adic( txtDtVenc, 230, 180, 110, 20 );
 
-		adic( new JLabelPad( "% Desc." ), 7, 200, 80, 20 );
-		adic( txtPercDesc, 7, 220, 80, 20 );
+		adic( txtCodCli		, 7		, 20, 100, 20, "Cód.cli."  );
+		adic( txtRazCli		, 110	, 20, 230, 20, "Razão social do cliente" );
+		
+		adic( txtCodConta	, 7		, 60, 100, 20, "Número" );
+		adic( txtDescConta	, 110	, 60, 230, 20, "Descrição da conta" );
+		
+		adic( txtCodPlan	, 7		, 100, 100, 20, "Cód.ctg." );
+		adic( txtDescPlan	, 110	, 100, 230, 20, "Descrição da categoria" );
 
-		adic( new JLabelPad( "Vlr.Desconto" ), 90, 200, 80, 20 );
-		adic( txtVlrDesc, 90, 220, 80, 20 );
+		adic( txtCodCC		, 7		, 140, 100, 20, "Cód.c.c." );
+		adic( txtDescCC		, 110	, 140, 230, 20, "Descrição do centro de custo"  );
 
-		adic( txtPercJuros, 173, 220, 75, 20 );
+		adic( txtDoc		, 7		, 180, 100, 20, "Doc." );
 
-		adic( new JLabelPad( "Vlr. Juros" ), 251, 200, 88, 20 );
-		adic( txtVlrJuros, 251, 220, 88, 20 );
+		adic( txtPercDesc	, 7		, 220, 80, 20, "% Desc." );
 
-		adic( new JLabelPad( "Vlr.Original" ), 7, 240, 80, 20 );
-		adic( txtVlrParc, 7, 260, 80, 20 );
+		adic( txtVlrDesc	, 90	, 220, 80, 20, "Vlr.Desconto" );
 
-		adic( new JLabelPad( "Vlr.Aberto" ), 90, 240, 80, 20 );
-		adic( txtVlrAberto, 90, 260, 80, 20 );
+		adic( txtPercJuros	, 173	, 220, 75, 20 );
 
-		adic( new JLabelPad( "Dt.Pagto." ), 173, 240, 75, 20 );
-		adic( txtDtPagto, 173, 260, 75, 20 );
+		adic( txtVlrJuros	, 251	, 220, 88, 20, "Vlr. Juros" );
 
-		adic( new JLabelPad( "Vlr.Pago" ), 251, 240, 88, 20 );
-		adic( txtVlr, 251, 260, 88, 20 );
+		adic( txtDtEmis		, 7		, 260, 80, 20, "Emissão" );
+		adic( txtDtVenc		, 90	, 260, 80, 20, "Vencimento" );
+		adic( txtDtPagto	, 173	, 260, 75, 20, "Pagamento" );
+		adic( txtDtLiqItRec	, 251	, 260, 88, 20, "Liquidação" );
 
-		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
-		adic( txtObs, 7, 300, 333, 20 );
+		adic( txtVlrParc	, 7		, 300, 80, 20, "Vlr.Original" );
+		adic( txtVlrAberto	, 90	, 300, 80, 20, "Vlr.Aberto" );
+		adic( txtVlr		, 173	, 300, 167, 20, "Valor do pagamento" );
 
+		adic( txtObs		, 7		, 340, 333, 20, "Observações" );
+		
 		lcCC.addCarregaListener( this );
 		txtVlr.addFocusListener( this );
 		txtPercDesc.addFocusListener( this );
@@ -358,6 +346,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDtEmis.setVlrDate( baixa.getDataEmissao() );
 		txtDtVenc.setVlrDate( baixa.getDataVencimento() );
 		txtDtPagto.setVlrDate( baixa.getDataPagamento() );
+		txtDtLiqItRec.setVlrDate( baixa.getDataLiquidacao() );
 
 		txtVlrParc.setVlrBigDecimal( baixa.getValorParcela() );
 
@@ -410,6 +399,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		baixaRecBean.setDataEmissao( txtDtEmis.getVlrDate() );
 		baixaRecBean.setDataVencimento( txtDtVenc.getVlrDate() );
 		baixaRecBean.setDataPagamento( txtDtPagto.getVlrDate() );
+		baixaRecBean.setDataLiquidacao( txtDtLiqItRec.getVlrDate() );
 		baixaRecBean.setValorParcela( txtVlrParc.getVlrBigDecimal() );
 		baixaRecBean.setValorAPagar( txtVlrAberto.getVlrBigDecimal() );
 		baixaRecBean.setValorDesconto( txtVlrDesc.getVlrBigDecimal() );
@@ -424,13 +414,16 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		if ( evt.getSource() == btOK ) {
 			if ( txtCodConta.getVlrString().length() < 1 ) {
-				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
+				Funcoes.mensagemInforma( this, "Número da conta é requerida!" );
 			}
 			else if ( txtCodPlan.getVlrString().length() < 13 ) {
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
 			}
 			else if ( txtDtPagto.getVlrString().length() < 10 ) {
-				Funcoes.mensagemInforma( this, "Data do pagamento é requerido!" );
+				Funcoes.mensagemInforma( this, "Data do pagamento é requerida!" );
+			}
+			else if ( txtDtLiqItRec.getVlrString().length() < 10 ) {
+				Funcoes.mensagemInforma( this, "Data da liquidação é requerida!" );
 			}
 			else if ( txtVlr.getVlrString().length() < 4 ) {
 				Funcoes.mensagemInforma( this, "Valor pago é requerido!" );
@@ -530,6 +523,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		private Date dataVencimento;
 
 		private Date dataPagamento;
+		
+		private Date dataLiquidacao;
 
 		private BigDecimal valorParcela;
 
@@ -550,6 +545,18 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		public Integer getRecebimento() {
 
 			return recebimento;
+		}
+
+		
+		public Date getDataLiquidacao() {
+		
+			return dataLiquidacao;
+		}
+
+		
+		public void setDataLiquidacao( Date dataLiquidacao ) {
+		
+			this.dataLiquidacao = dataLiquidacao;
 		}
 
 		public void setRecebimento( Integer recebimento ) {

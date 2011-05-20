@@ -95,6 +95,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtLiqItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -141,11 +143,11 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 	
 	public enum EColEdit {
-		CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, CORREC, NPARCITREC
+		CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, CORREC, NPARCITREC, DTLIQITREC 
 	};
 
 	public enum EColRet {
-		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC, VLRPARC
+		NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO, DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT, DTPREV, CODBOR, CODREC, NPARCITREC, VLRPARC, DTLIQITREC
 	};
 	
 
@@ -299,17 +301,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		adic( new JLabelPad( "Descrição do centro de custo" ), 120, 240, 220, 20 );
 		adic( txtDescCC, 120, 260, 220, 20 );
 
-		adic( new JLabelPad( "Doc." ), 7, 280, 110, 20 );
-		adic( txtDoc, 7, 300, 110, 20 );
-
-		adic( new JLabelPad( "Emissão" ), 120, 280, 72, 20 );
-		adic( txtDtEmis, 120, 300, 72, 20 );
-
-		adic( new JLabelPad( "Vencimento" ), 195, 280, 71, 20 );
-		adic( txtDtVenc, 195, 300, 71, 20 );
-
-		adic( new JLabelPad( "Previsão" ), 269, 280, 71, 20 );
-		adic( txtDtPrev, 269, 300, 71, 20 );
+		adic( txtDtEmis, 7, 300, 80, 20, "Emissão" );
+		adic( txtDtVenc, 90, 300, 80, 20, "Vencimento"  );
+		adic( txtDtPrev, 173, 300, 80, 20, "Previsão" );
+		adic( txtDtLiqItRec, 256, 300, 84, 20, "Liquidação" );
 
 		adic( new JLabelPad( "Vlr.juros." ), 7, 320, 81, 20 );
 		adic( txtVlrJuros, 7, 340, 81, 20 );
@@ -320,11 +315,9 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		adic( cbDescPont, 185, 340, 200, 20 );
 		cbDescPont.setVlrString( "S" );
 
-		adic( new JLabelPad( "Vlr.devolução" ), 7, 360, 81, 20 );
-		adic( txtVlrDev, 7, 380, 81, 20 );
-
-		adic( new JLabelPad( "Vlr.parcela" ), 91, 360, 81, 20 );
-		adic( txtVlrParc, 91, 380, 81, 20 );
+		adic( txtDoc, 7, 380, 110, 20, "Doc." );
+		adic( txtVlrDev, 120, 380, 90, 20, "Vlr.devolução" );
+		adic( txtVlrParc, 213, 380, 127, 20, "Vlr.parcela" );
 
 		adic( new JLabelPad( "Observações" ), 7, 400, 240, 20 );
 		adic( txtObs, 7, 420, 333, 20 );
@@ -394,6 +387,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDtEmis.setVlrDate( (Date) sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtDtPrev.setVlrDate( (Date) sVals[ EColEdit.DTPREV.ordinal() ] );
+		
+		txtDtLiqItRec.setVlrDate( (Date) sVals[ EColEdit.DTLIQITREC.ordinal() ] );
 
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
@@ -441,7 +436,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 		oRetorno[ EColRet.CODREC.ordinal() ] = txtCodRec.getVlrInteger();
 		oRetorno[ EColRet.NPARCITREC.ordinal() ] = txtnParcitrec.getVlrInteger();
 		oRetorno[ EColRet.VLRPARC.ordinal() ] = txtVlrParc.getVlrBigDecimal();
-
+		oRetorno[ EColRet.DTLIQITREC.ordinal() ] = txtDtLiqItRec.getVlrDate();
 		return oRetorno;
 	}
 
