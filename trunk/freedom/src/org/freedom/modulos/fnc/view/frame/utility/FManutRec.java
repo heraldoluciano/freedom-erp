@@ -1953,6 +1953,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sRet[ EColEdit.DESCCARTCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCCARTCOB.ordinal() ) );
 			sRet[ EColEdit.DESCPONT.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCPONT.ordinal() ) );
 			sRet[ EColEdit.DTPREV.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTPREV.ordinal() ).toString() );
+			
+			sRet[ EColEdit.DTLIQITREC.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTLIQ.ordinal() ).toString() );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -2103,7 +2105,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
-		Object[] sVals = new Object[ 18 ];
+		Object[] sVals = new Object[ 19 ];
 		Object[] oRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
@@ -2141,7 +2143,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?,VLRDEVITREC=?," );
 						sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
 						sSQL.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
-						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=? " );
+						sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=?, " );
+						sSQL.append( "DTLIQITREC=? " );
 						sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
@@ -2270,11 +2273,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							}
 							
 							ps.setBigDecimal( 28, (BigDecimal) ( oRets[ EColRet.VLRPARC.ordinal() ] ) );
+							
+							if ( oRets[ EColRet.DTLIQITREC.ordinal() ] == null || "".equals( oRets[ EColRet.DTLIQITREC.ordinal() ] ) ) {
+								ps.setNull( 29, Types.DECIMAL );
+							}
+							else {
+								ps.setDate( 29, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTLIQITREC.ordinal() ] ) );
+							}
 
-							ps.setInt( 29, iCodRec );
-							ps.setInt( 30, iNParcItRec );
-							ps.setInt( 31, Aplicativo.iCodEmp );
-							ps.setInt( 32, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setInt( 30, iCodRec );
+							ps.setInt( 31, iNParcItRec );
+							ps.setInt( 32, Aplicativo.iCodEmp );
+							ps.setInt( 33, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 							ps.executeUpdate();
 
@@ -2559,6 +2569,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					baixaRecBean.setValorPago( new BigDecimal( 0 ) );
 					// baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}
+				
+				baixaRecBean.setDataLiquidacao( new Date() );
+				
 				/*
 				 * if ( "".equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) { historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() ) ); historico.setDocumento( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal()
 				 * ).toString().trim() ); historico.setPortador( tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() ).toString().trim() ); historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ).toString() ) ); historico.setHistoricoant( (String)
@@ -2579,7 +2592,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
-					sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP' " );
+					sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP', " );
+					sSQL.append( "DTLIQITREC=?");
 					sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 					try {
@@ -2610,15 +2624,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 
 						ps.setString( 16, baixaRecBean.getObservacao() );
-						ps.setInt( 17, iCodRec );
-						ps.setInt( 18, iNParcItRec );
-						ps.setInt( 19, Aplicativo.iCodEmp );
-						ps.setInt( 20, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+						
+						ps.setDate( 17, Funcoes.dateToSQLDate( baixaRecBean.getDataLiquidacao() ) );
+						
+						ps.setInt( 18, iCodRec );
+						ps.setInt( 19, iNParcItRec );
+						ps.setInt( 20, Aplicativo.iCodEmp );
+						ps.setInt( 21, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 						ps.executeUpdate();
 
 						con.commit();
-					} catch ( SQLException err ) {
+						
+					} 
+					catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
 					}
 				}
