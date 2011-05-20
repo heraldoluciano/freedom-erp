@@ -2266,7 +2266,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 			dl = new DLImpReciboPag( this, con, Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CODPAG.ordinal() ).toString()), 
 												Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.NPARCPAG.ordinal() ).toString()),
-												(Vector<String>) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()));
+												tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()).equals("") ? null : (Vector<String>) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.CHEQUES.ordinal()));
 
 			dl.setVisible( true );
 
