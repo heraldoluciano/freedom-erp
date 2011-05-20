@@ -564,6 +564,57 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 					sTxa = sTxa.replaceAll( "\\[VALOR_EXTENSO_DESC]", Extenso.extenso( rs.getDouble( "VlrDescItRec" ), sInfoMoeda[ 0 ], sInfoMoeda[ 1 ], sInfoMoeda[ 2 ], sInfoMoeda[ 3 ] ) ).toUpperCase();
 				}
+				
+				try {
+					
+					if ( rs.getString( "baseinss") !=null )  {
+						
+						if(rs.getBigDecimal( "retinss").floatValue()>0) {
+							sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "baseinss"), 2 ).toString();
+						}
+						else {
+							sCampo = "0";
+						}
+						
+						sTxa = sTxa.replaceAll( "\\[BASE_INSS]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					}
+					if ( rs.getString( "baseirrf") !=null )  {
+						if(rs.getBigDecimal( "retirrf").floatValue()>0) {
+							sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "baseirrf"), 2 ).toString();
+						}
+						else {
+							sCampo = "0";
+						}
+						sTxa = sTxa.replaceAll( "\\[BASE_IRRF]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					}
+					if ( rs.getString( "retirrf") !=null )  {
+						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "retirrf"), 2 ).toString();
+						sTxa = sTxa.replaceAll( "\\[VALOR_IRRF]", sCampo );
+					}
+					if ( rs.getString( "retinss") !=null )  {
+						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "retinss"), 2 ).toString();
+						sTxa = sTxa.replaceAll( "\\[VALOR_INSS]", sCampo );
+					}
+					if ( rs.getString( "aliqinss") !=null )  {
+						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "aliqinss"), 2 ).toString();
+						sTxa = sTxa.replaceAll( "\\[ALIQ_INSS]", sCampo );
+					}
+					if ( rs.getString( "aliqirrf") !=null )  {
+						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "aliqirrf"), 2 ).toString();
+						sTxa = sTxa.replaceAll( "\\[ALIQ_IRRF]", sCampo );
+					}
+					if ( rs.getString( "vlrbruto") !=null )  {
+						sCampo = Funcoes.bdToStrd( rs.getBigDecimal( "vlrbruto"), 2 ).toString();
+						sTxa = sTxa.replaceAll( "\\[VALOR_BRUTO]", sCampo ) ;
+					}
+					
+					
+				}
+				catch (Exception e) {
+					System.out.print( "Não possui os campos relativos a retenção de inss e irrf..." );
+				}
+				
+				
 				if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODCLI]", Funcoes.copy( sCampo, 0, 8 ) );
 				if ( ( sCampo = rs.getString( "RazCli" ) ) != null )
