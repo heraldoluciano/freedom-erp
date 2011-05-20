@@ -217,9 +217,9 @@ public class FRFreteRecMerc extends FRelatorio {
 			if ( txtCodTran.getVlrInteger() > 0 ) {
 				sql.append( "and rm.codemptn=? and rm.codfilialtn=? and rm.codtran=? " );
 			}
-			if ( "S".equals( cbPendentes.getVlrString() ) ) {
-				sql.append( " and fr.codpag is null" );
-			}
+		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
+		//		sql.append( " and fr.codpag is null" );
+		//	}
 			
 			sql.append( " group by 2,3,4,5,6,7,8 " );
 			
@@ -325,14 +325,14 @@ public class FRFreteRecMerc extends FRelatorio {
 		
 			/*********CALCULO DE RETENCOES**********/
 				
-			if ( "S".equals( cbPendentes.getVlrString() ) ) {
+		//	if ( "S".equals( cbPendentes.getVlrString() ) ) {
 		
 				HashMap<String, BigDecimal> retensoes = getCalculaRetencoes();
 				
 				vlrinss = retensoes.get( "VLRINSS" );
 				vlrirrf = retensoes.get( "VLRIRRF" );
 				
-			}
+		//	}
 			
 			/***********FIM**********************/
 		
