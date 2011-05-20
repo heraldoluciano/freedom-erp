@@ -294,6 +294,16 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "Valor Pago" );		
 		vLabs.addElement( "Extenso desconto" ); 
 		vLabs.addElement( "Nro.Cheque" );
+		
+		vLabs.addElement( "Valor Bruto" );
+		
+		vLabs.addElement( "Base do INSS Retido" );
+		vLabs.addElement( "Valor do INNS Retido" );
+		vLabs.addElement( "Aliq do INSS Retido" );
+		
+		vLabs.addElement( "Base do IRRF Retido" );
+		vLabs.addElement( "Valor do IRRF Retido" );
+		vLabs.addElement( "Aliquota do IRRF Retido" );
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "" ); // larg: 10
@@ -340,7 +350,17 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[VPAGO_DOCUMENT]" ); // larg: 15
 		vVals.addElement( "[VALOR_EXTENSO_DESC]" ); 
 		vVals.addElement( "[NUM_CHEQ]" ); 
+		
+		vVals.addElement( "[VALOR_BRUTO]" );
+		
+		vVals.addElement( "[BASE_INSS]" );
+		vVals.addElement( "[VALOR_INSS]" );
+		vVals.addElement( "[ALIQ_INSS]" );
 
+		vVals.addElement( "[BASE_IRRF]" );
+		vVals.addElement( "[VALOR_IRRF]" );
+		vVals.addElement( "[ALIQ_IRRF]" );
+		
 		cbCamposDin = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
 
 		Vector<String> vLabs2 = new Vector<String>();
