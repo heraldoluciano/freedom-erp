@@ -154,12 +154,19 @@ public class DLImpReciboPag extends FDialogo {
 		
 		if(txtNumCheque.getVlrInteger()>0) {
 			sSQL.append( "(select first 1 ch.vlrcheq from fncheque ch where ch.contacheq=(select cv.numconta from fncontavinculada cv where cv.codempcv=ip.codempca and cv.codfilialcv=ip.codfilialca and cv.numcontacv=ip.numconta) and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") vlrpagoitrec, ");	
-			sSQL.append( "(select first 1 ch.numcheq from fncheque ch where ch.contacheq=(select cv.numconta from fncontavinculada cv where cv.codempcv=ip.codempca and cv.codfilialcv=ip.codfilialca and cv.numcontacv=ip.numconta) and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") numcheq ");
+			sSQL.append( "(select first 1 ch.numcheq from fncheque ch where ch.contacheq=(select cv.numconta from fncontavinculada cv where cv.codempcv=ip.codempca and cv.codfilialcv=ip.codfilialca and cv.numcontacv=ip.numconta) and ch.numcheq=" + txtNumCheque.getVlrInteger() + ") numcheq, ");
 		}
 		else {
 		
-			sSQL.append( "ip.vlrpagoitpag vlrpagoitrec " );
+			sSQL.append( "ip.vlrpagoitpag vlrpagoitrec, " );
 		}
+		
+		sSQL.append( "coalesce(p.vlrbaseinss,0) baseinss, coalesce(p.vlrbaseirrf,0) baseirrf , coalesce(p.vlrretirrf,0) retirrf, coalesce(p.vlrretinss,0) retinss,");
+		sSQL.append( "(((coalesce(p.vlrretinss,0)) * (100.00)) / (coalesce(p.vlrbaseinss,1))) aliqinss,");
+		sSQL.append( "cast((((coalesce(p.vlrretirrf,0)) * (100.00)) / (coalesce(p.vlrbaseirrf,1))) as decimal(15,2)) aliqirrf, ");
+		
+		sSQL.append( "(ip.vlrparcitpag + coalesce(p.vlrretirrf,0) + coalesce(p.vlrretinss,0)) vlrbruto ");
+		
 		
 		sSQL.append( "FROM CPFORNECED F, SGPREFERE1 PF, FNMOEDA M, FNMODBOLETO MB, FNITPAGAR IP, SGFILIAL FI, FNPAGAR P ");
 
@@ -176,8 +183,8 @@ public class DLImpReciboPag extends FDialogo {
 		sSQL.append( "AND IP.CODEMP=P.CODEMP AND IP.CODFILIAL=P.CODFILIAL AND IP.codpag=P.codpag ");
 		sSQL.append( "AND MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? ");
 		sSQL.append( "AND P.CODEMP=? AND P.CODFILIAL=? AND P.codpag=? AND IP.nparcpag=? ");
-
-
+		
+		
 		try {
 
 			System.out.println( "QUERY DUPLICATA:" + sSQL.toString() );
