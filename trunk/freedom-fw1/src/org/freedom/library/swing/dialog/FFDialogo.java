@@ -47,6 +47,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
@@ -114,30 +116,30 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 	public FFDialogo(Component cOrig) {
 
 
-		
-			this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
-	
-			cPai = cOrig;
-	
-			// Gambs para tornar o form uma modal:
-	
-			if (cOrig instanceof JFrame)
-				pnPai = ( ( JFrame ) cOrig ).getRootPane();
-			else if (cOrig instanceof JDialog)
-				pnPai = ( ( JDialog ) cOrig ).getRootPane();
-			else if (cOrig instanceof JInternalFrame)
-				pnPai = ( ( JInternalFrame ) cOrig ).getDesktopPane();
-			else {
-				pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
-				if (pnPai == null) {
-					Window win = SwingUtilities.getWindowAncestor(cOrig);
-					if (win instanceof JDialog)
-						pnPai = ( ( JDialog ) win ).getRootPane();
-					else if (win instanceof JFrame)
-						pnPai = ( ( JFrame ) win ).getRootPane();
-				}
+
+		this(cOrig instanceof JFrame ? ( JFrame ) cOrig : Aplicativo.telaPrincipal, true);
+
+		cPai = cOrig;
+
+		// Gambs para tornar o form uma modal:
+
+		if (cOrig instanceof JFrame)
+			pnPai = ( ( JFrame ) cOrig ).getRootPane();
+		else if (cOrig instanceof JDialog)
+			pnPai = ( ( JDialog ) cOrig ).getRootPane();
+		else if (cOrig instanceof JInternalFrame)
+			pnPai = ( ( JInternalFrame ) cOrig ).getDesktopPane();
+		else {
+			pnPai = JOptionPane.getDesktopPaneForComponent(cOrig);
+			if (pnPai == null) {
+				Window win = SwingUtilities.getWindowAncestor(cOrig);
+				if (win instanceof JDialog)
+					pnPai = ( ( JDialog ) win ).getRootPane();
+				else if (win instanceof JFrame)
+					pnPai = ( ( JFrame ) win ).getRootPane();
 			}
-	 
+		}
+
 
 	}
 
@@ -269,7 +271,7 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 		comp.addKeyListener(this);
 		pin.adic(comp, X, Y, Larg, Alt);
 	}
-	
+
 	public JLabelPad adic(Component comp, int X, int Y, int Larg, int Alt, String label) {
 		JLabelPad lbTmp = new JLabelPad(label);
 		adic(lbTmp, X, Y - 20, Larg, 20);
@@ -361,4 +363,38 @@ public class FFDialogo extends JDialog implements ActionListener, KeyListener, I
 		System.gc();
 		super.dispose();
 	}
+
+	protected JRootPane createRootPane() {
+
+		// Definindo o ActionListener
+
+		ActionListener actionListener = new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				setVisible(false);
+
+			}
+
+		};
+
+		// Definindo o KeyStroke
+
+		KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+
+		// Criando uma instancia de JRootPane
+
+		JRootPane rootPane = new JRootPane();
+
+		// Registrando o KeyStroke enquanto o JDialog estiver em foco
+
+		rootPane.registerKeyboardAction( actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW );
+
+		// Retornando o novo e modificado JRootPane
+
+		return rootPane;
+
+	}
+
+
 }
