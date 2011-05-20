@@ -63,8 +63,6 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaPag;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 public class DLNovoPag extends FFDialogo implements PostListener, MouseListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
