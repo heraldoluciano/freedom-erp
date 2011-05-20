@@ -14,10 +14,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +53,8 @@ import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColEdit;
+import org.freedom.modulos.fnc.view.dialog.utility.DLEditaRec.EColRet;
 
 /**
  * Wizard para renegociação de títulos.
@@ -58,7 +62,7 @@ import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
  * @author Fabiano Frizzo
  * @version 20/12/2010
  */
-public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListener, PostListener, ChangeListener{
+public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListener, PostListener, ChangeListener, MouseListener{
 	private static final long serialVersionUID = 1L;
 	
 	private enum RECEBER {
@@ -208,6 +212,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		btSelecionarNenhum.addActionListener( this );
 		btSelecionarTodos.addActionListener( this );
 		btGerarRenegociaco.addActionListener( this );
+		tabGera.addMouseListener( this );
 	}
 	
 	private void montaTabSeleciona(){
@@ -368,6 +373,7 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		tabGera.setTamColuna( 100, 10 ); // Descrição da carteira de cobranaça.
 		
 		lcReceber.addPostListener( this );
+		lcItReceber.addCarregaListener( this );
 		lcTipoCob.addCarregaListener( this );
 		txtCodTipoCob.addFocusListener( this );
 	}
@@ -721,52 +727,6 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		}
 	}
 
-//	private void alteraRec() {
-//		lcItReceber.edit();
-//		DLFechaParcela dl = new DLFechaParcela( this, con );
-//		Object[] valores = new Object[] { txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString(), txtCodCartCobItRec.getVlrString(), "N", txtDtPrevItRec.getVlrDate() };
-//
-//		try {
-//
-//			dl.setValores( valores );
-//			dl.setVisible( true );
-//
-//			if ( dl.OK ) {
-//
-//				valores = dl.getValores();
-//
-//				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ EFields.VALOR.ordinal() ] );
-//				txtDtVencItRec.setVlrDate( (Date) valores[ EFields.DATA.ordinal() ] );
-//				txtDtPrevItRec.setVlrDate( (Date) valores[ EFields.DATAPREV.ordinal() ] );
-//				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ EFields.DESCONTO.ordinal() ] );
-//				txtCodTipoCobItRec.setVlrString( (String) valores[ EFields.TIPOCOB.ordinal() ] );
-//				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ EFields.BANCO.ordinal() ] );
-//				txtCodCartCobItRec.setVlrString( (String) dl.getValores()[ EFields.CARTCOB.ordinal() ] );
-//
-//				if ( lcItReceber.post() ) {
-//					// Atualiza lcReceber
-//					if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
-//						lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
-//					}
-//					else {
-//						lcReceber.carregaDados(); // Caso não, atualiza
-//					}
-//				}
-//				dl.dispose();
-//			}
-//			else {
-//				dl.dispose();
-//				lcItReceber.cancel( true );
-//				lcReceber.carregaDados();
-//			}
-//		} catch ( Exception e ) {
-//			e.printStackTrace();
-//			Funcoes.mensagemErro( this, "Erro ao atualizar parcelas.\n" + e.getMessage() );
-//			lcItReceber.cancel( true );
-//			lcReceber.cancel( true );
-//		}
-//	}
-	
 	private void gerarRenegociacao(){
 		if(lcReceber.getStatus() != ListaCampos.LCS_INSERT ){
 			dispose();
@@ -926,6 +886,231 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 		return retorno;
 	}
 	
+	private void editar() {
+
+		PreparedStatement ps = null;
+		StringBuffer sSQL = new StringBuffer();
+		Object[] sVals = new Object[ 18 ];
+		Object[] oRets = null;
+		DLEditaRec dl = null;
+		int iCodRec = 0;
+		int iNParcItRec = 0;
+
+		try {
+			int iLin = tabGera.getLinhaSel();
+
+			if ( tabGera.getLinhaSel() > -1 ) {
+				iCodRec = txtCodRec.getVlrInteger();
+				iNParcItRec = (Integer) tabGera.getValor( iLin, 0 );
+
+				dl = new DLEditaRec( this, true );
+
+				sVals = getTabManutValores();
+
+				dl.setConexao( con );
+				dl.setValores( sVals );
+				dl.setVisible( true );
+
+				if ( dl.OK ) {
+
+					oRets = dl.getValores();
+
+					sSQL.append( "UPDATE FNITRECEBER SET " );
+					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+					sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?,VLRDEVITREC=?," );
+					sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?," );
+					sSQL.append( "CODEMPTC=?,CODFILIALTC=?,CODTIPOCOB=?," );
+					sSQL.append( "CODEMPCB=?,CODFILIALCB=?,CODCARTCOB=?, DESCPONT=?, DTPREVITREC=?, VLRPARCITREC=? " );
+					sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+
+					try {
+						ps = con.prepareStatement( sSQL.toString() );
+
+						if ( "".equals( oRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
+							ps.setNull( 1, Types.CHAR );
+							ps.setNull( 2, Types.INTEGER );
+							ps.setNull( 3, Types.INTEGER );
+						} else {
+							ps.setString( 1, (String) oRets[ EColRet.NUMCONTA.ordinal() ] );
+							ps.setInt( 2, Aplicativo.iCodEmp );
+							ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+						}
+
+						if ( "".equals( String.valueOf( oRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
+							ps.setNull( 4, Types.CHAR );
+							ps.setNull( 5, Types.INTEGER );
+							ps.setNull( 6, Types.INTEGER );
+						} else {
+							ps.setString( 4, (String) oRets[ EColRet.CODPLAN.ordinal() ] );
+							ps.setInt( 5, Aplicativo.iCodEmp );
+							ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+						}
+
+						if ( "".equals( String.valueOf( oRets[ EColRet.CODCC.ordinal() ] ).trim() ) ) {
+							ps.setNull( 7, Types.INTEGER );
+							ps.setNull( 8, Types.CHAR );
+							ps.setNull( 9, Types.INTEGER );
+							ps.setNull( 10, Types.INTEGER );
+						} else {
+							ps.setInt( 7, 0 );
+							ps.setString( 8, (String) oRets[ EColRet.CODCC.ordinal() ] );
+							ps.setInt( 9, Aplicativo.iCodEmp );
+							ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
+						}
+
+						if ( "".equals( String.valueOf( oRets[ EColRet.DOC.ordinal() ] ).trim() ) ) {
+							ps.setNull( 11, Types.CHAR );
+						} else {
+							ps.setString( 11, (String) oRets[ EColRet.DOC.ordinal() ] );
+						}
+
+						if ( "".equals( oRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
+							ps.setNull( 12, Types.DECIMAL );
+						} else {
+							ps.setBigDecimal( 12, (BigDecimal) oRets[ EColRet.VLRJUROS.ordinal() ] );
+						}
+
+						if ( "".equals( oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] ) ) {
+							ps.setNull( 13, Types.DECIMAL );
+						} else {
+							ps.setBigDecimal( 13, (BigDecimal) oRets[ EColRet.VLRDEVOLUCAO.ordinal() ] );
+						}
+
+						if ( "".equals( oRets[ EColRet.VLRDESC.ordinal() ] ) ) {
+							ps.setNull( 14, Types.DECIMAL );
+						} else {
+							ps.setBigDecimal( 14, (BigDecimal) ( oRets[ EColRet.VLRDESC.ordinal() ] ) );
+						}
+
+						if ( "".equals( oRets[ EColRet.DTVENC.ordinal() ] ) ) {
+							ps.setNull( 15, Types.DECIMAL );
+						} else {
+							ps.setDate( 15, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTVENC.ordinal() ] ) );
+						}
+
+						if ( "".equals( oRets[ EColRet.OBS.ordinal() ] ) ) {
+							ps.setNull( 16, Types.CHAR );
+						} else {
+							ps.setString( 16, (String) oRets[ EColRet.OBS.ordinal() ] );
+						}
+
+						if ( "".equals( oRets[ EColRet.CODBANCO.ordinal() ] ) ) {
+							ps.setNull( 17, Types.INTEGER );
+							ps.setNull( 18, Types.INTEGER );
+							ps.setNull( 19, Types.CHAR );
+						} else {
+							ps.setInt( 17, Aplicativo.iCodEmp );
+							ps.setInt( 18, ListaCampos.getMasterFilial( "FNBANCO" ) );
+							ps.setString( 19, (String) oRets[ EColRet.CODBANCO.ordinal() ] );
+						}
+
+						if ( "".equals( oRets[ EColRet.CODTPCOB.ordinal() ] ) ) {
+							ps.setNull( 20, Types.INTEGER );
+							ps.setNull( 21, Types.INTEGER );
+							ps.setNull( 22, Types.INTEGER );
+						} else {
+							ps.setInt( 20, Aplicativo.iCodEmp );
+							ps.setInt( 21, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+							ps.setInt( 22, Integer.parseInt( (String) oRets[ EColRet.CODTPCOB.ordinal() ] ) );
+						}
+
+						if ( "".equals( oRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
+							ps.setNull( 23, Types.INTEGER );
+							ps.setNull( 24, Types.INTEGER );
+							ps.setNull( 25, Types.CHAR );
+						} else {
+							ps.setInt( 23, Aplicativo.iCodEmp );
+							ps.setInt( 24, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+							ps.setString( 25, ( (String) oRets[ EColRet.CODCARTCOB.ordinal() ] ) );
+						}
+						if ( "".equals( oRets[ EColRet.DESCPONT.ordinal() ] ) ) {
+							ps.setNull( 26, Types.CHAR );
+						} else {
+							ps.setString( 26, ( (String) oRets[ EColRet.DESCPONT.ordinal() ] ) );
+						}
+						if ( oRets[ EColRet.DTPREV.ordinal() ] == null || "".equals( oRets[ EColRet.DTPREV.ordinal() ] ) ) {
+							ps.setNull( 27, Types.DECIMAL );
+						} else {
+							ps.setDate( 27, Funcoes.dateToSQLDate( (java.util.Date) oRets[ EColRet.DTPREV.ordinal() ] ) );
+						}
+						
+						ps.setBigDecimal( 28, (BigDecimal) ( oRets[ EColRet.VLRPARC.ordinal() ] ) );
+						ps.setInt( 29, iCodRec );
+						ps.setInt( 30, iNParcItRec );
+						ps.setInt( 31, Aplicativo.iCodEmp );
+						ps.setInt( 32, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+						ps.executeUpdate();
+						con.commit();
+
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao editar parcela!\n" + err.getMessage(), true, con, err );
+						err.printStackTrace();
+					}
+				}
+
+				dl.dispose();	
+				lcReceber.carregaDados();
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			sSQL = null;
+			sVals = new String[ 13 ];
+			oRets = null;
+			dl = null;
+		}
+	}
+	
+	private Object[] getTabManutValores() {
+
+		Object[] sRet = new Object[ EColEdit.values().length ];
+		Integer iCodRec;
+		Integer iNParcItRec;
+		Integer codhistrec = null;
+
+		try {
+			int iLin = tabGera.getLinhaSel();
+
+			sRet[ EColEdit.CODCLI.ordinal() ] = txtCodCli.getVlrInteger();
+			sRet[ EColEdit.RAZCLI.ordinal() ] = txtDescCli.getVlrString();
+			sRet[ EColEdit.NUMCONTA.ordinal() ] = txtCodConta.getVlrString();
+			sRet[ EColEdit.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
+			sRet[ EColEdit.CODCC.ordinal() ] = txtCodCC.getVlrString();
+			
+//			if ( "".equals( tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) ) ) {
+//				sRet[ EColEdit.DOC.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ) );
+//			} else {
+//				sRet[ EColEdit.DOC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() );
+//			}
+			
+			sRet[ EColEdit.DOC.ordinal() ] = txtDocRec.getVlrString();
+			sRet[ EColEdit.DTEMIS.ordinal() ] = txtDtReneg.getVlrDate();// Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() );
+			sRet[ EColEdit.DTVENC.ordinal() ] = Funcoes.strDateToDate( tabGera.getValor( iLin, 3 ).toString() );
+			sRet[ EColEdit.VLRJUROS.ordinal() ] = txtValorJuros.getVlrBigDecimal();
+			sRet[ EColEdit.VLRDEVOLUCAO.ordinal() ] = new BigDecimal(0);
+			sRet[ EColEdit.VLRDESC.ordinal() ] = txtValorDesconto.getVlrBigDecimal();
+			sRet[ EColEdit.VLRPARC.ordinal() ] = txtVlrParcItRec.getVlrBigDecimal();
+			sRet[ EColEdit.NPARCITREC.ordinal() ] = tabGera.getValor( iLin, 0 );
+
+			sRet[ EColEdit.CODREC.ordinal() ] = txtCodRec.getVlrInteger();
+
+			sRet[ EColEdit.OBS.ordinal() ] = txtObs.getVlrString();
+
+			sRet[ EColEdit.CODBANCO.ordinal() ] = tabGera.getValor( iLin, 8 );
+			sRet[ EColEdit.CODTPCOB.ordinal() ] = String.valueOf( tabGera.getValor( iLin, 6 ) );
+			sRet[ EColEdit.DESCTPCOB.ordinal() ] = String.valueOf( tabGera.getValor( iLin, 7 ) );
+			sRet[ EColEdit.CODCARTCOB.ordinal() ] = String.valueOf( tabGera.getValor( iLin, 10 ) );
+			sRet[ EColEdit.DESCCARTCOB.ordinal() ] = String.valueOf( tabGera.getValor( iLin, 11 ) );
+			sRet[ EColEdit.DESCPONT.ordinal() ] = "";
+//			sRet[ EColEdit.DTPREV.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTPREV.ordinal() ).toString() );
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		return sRet;
+	}
+	
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
@@ -1050,6 +1235,20 @@ public class DLRenegRec extends FFDialogo implements FocusListener, CarregaListe
 	}
 	
 	public void stateChanged( ChangeEvent evt ) { }
+	
+	public void mouseClicked( MouseEvent mevt ) {
+		if ( mevt.getSource() == tabGera && mevt.getClickCount() == 2 ) {
+			editar();
+		}
+	}
+	
+	public void mouseEntered( MouseEvent arg0 ) { }
+
+	public void mouseExited( MouseEvent arg0 ) { }
+
+	public void mousePressed( MouseEvent arg0 ) { }
+
+	public void mouseReleased( MouseEvent arg0 ) { }
 	
 	public class GridRenegRec {
 
