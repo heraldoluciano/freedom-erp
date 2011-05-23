@@ -87,9 +87,9 @@ public class ExtractDescription {
 	private String clearDescription(final String description) {
 	   String result = description;
 	   if (description.indexOf("'")>-1) {
-		   System.out.println(description);
+//		   System.out.println(description);
 		   result = description.replaceAll("'", "\"");
-		   System.out.println(result);
+//		   System.out.println(result);
 	   }
 	   return result;
 	}
