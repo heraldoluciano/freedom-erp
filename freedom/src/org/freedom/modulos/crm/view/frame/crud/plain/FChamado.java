@@ -704,12 +704,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	public void afterPost( PostEvent pevt ) {
 
-		if(txtCodAtend.getVlrInteger()>0 
-				&& ! Chamado.CHAMADO_CANCELADO.getValue().equals( cbStatus.getVlrString()) 
-				&& ! Chamado.CHAMADO_CONCLUIDO.getValue().equals( cbStatus.getVlrString()) )
-
-		{
-
+		if(cbNotificaTecnico.getVlrString().equals( "S" ) || cbNotificaAtendente.getVlrString().equals( "S" ) || cbNotificaCliente.getVlrString().equals( "S" )) {
+			notificar( notifica_cliente );
+		
 			ProcessoSec pSec = new ProcessoSec(500, new Processo() {
 
 			public void run() {	}
@@ -733,9 +730,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 			pSec.iniciar();
 
-
-		}	
-
+		}
 
 	}
 
