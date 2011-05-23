@@ -78,10 +78,20 @@ public class ExtractDescription {
 			sourcefields[i] = rs.getString(relationfields[i]);
 			}
 			entities.add(new Entitie(tablerelation, relationfields, 
-					sourcefields, "RDB$DESCRIPTION", rs.getString("RDB$DESCRIPTION")));
+					sourcefields, "RDB$DESCRIPTION", clearDescription( rs.getString("RDB$DESCRIPTION") )));
     	}
     	rs.close();
     	ps.close();
+	}
+	
+	private String clearDescription(final String description) {
+	   String result = description;
+	   if (description.indexOf("'")>-1) {
+		   System.out.println(description);
+		   result = description.replaceAll("'", "\"");
+		   System.out.println(result);
+	   }
+	   return result;
 	}
 	
 	public void export() {
