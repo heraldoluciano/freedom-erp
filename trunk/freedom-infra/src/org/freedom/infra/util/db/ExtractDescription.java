@@ -78,7 +78,7 @@ public class ExtractDescription {
 			sourcefields[i] = rs.getString(relationfields[i]);
 			}
 			entities.add(new Entitie(tablerelation, relationfields, 
-					sourcefields, "RDB$DESRIPTION", rs.getString("RDB$DESCRIPTION")));
+					sourcefields, "RDB$DESCRIPTION", rs.getString("RDB$DESCRIPTION")));
     	}
     	rs.close();
     	ps.close();
