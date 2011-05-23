@@ -1,9 +1,25 @@
 #!/bin/sh
 
-
 ISC_USER="SYSDBA"
 ISC_PASSWORD="masterkey"
-CMD_GBAK="/opt/firebird/bin/gbak"
+#CMD_GBAK="/opt/firebird/bin/gbak"
+CMD_ISQL="/opt/firebird/bin/isql"
+WORKSPACE="$HOME/workspace"
+DIR_INFRA="$WORKSPACE/freedom-infra"
+CPATH="$DIR_INFRA/bin/:$DIR_INFRA/lib/jaybird-full.jar"
+DRIVER_FB="org.firebirdsql.jdbc.FBDriver"
+URL_EXTDESCRIPTION="org.freedom.infra.util.db.ExtractDescription"
+URL_FREEDOM_JAVA="jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/desenv/freedom.fdb?lc_ctype=ISO8859_1"
+DIR_FREEDOM="$WORKSPACE/freedom"
+URL_FREEDOM_FB="localhost:/opt/firebird/dados/desenv/freedom.fdb"
+DIR_DDL="$DIR_FREEDOM/dados/estrutura"
+FILE_DESCRIPTION="$DIR_DDL/description.sql"
+FILE_DDL="$DIR_DDL/freedom.sql"
+CMD_DESCRIPTION="java -cp $CPATH $URL_EXTDESCRIPTION $DRIVER_FB $URL_FREEDOM_JAVA $FILE_DESCRIPTION"
+CMD_DDL="$CMD_ISQL -a $URL_FREEDOM_FB -o $FILE_DDL"
+#echo $CMD_DESCRIPTION
+echo $CMD_ISQL
+
 RESULT=0
 
 fn_senha_firebird()
@@ -24,9 +40,6 @@ fn_senha_firebird()
       fi
    done
    ISC_PASSWORD="$SENHA_FIREBIRD_TMP"
-   
-   #export ISC_USER
-   #export ISC_PASSWORD
 }
 
 fn_fim_script() 
@@ -48,12 +61,30 @@ fn_executa()
     fn_fim_script
   fi
 
-  #export $ISC_USER
-  #export $ISC_PASSWORD   
-  $CMD_GBAK -B localhost:/opt/firebird/dados/desenv/freedom.fdb /tmp/freedom.fbk -user "$ISC_USER" -pass "$ISC_PASSWORD"
-  rm ./freedom.zip
-  zip ./freedom.zip /tmp/freedom.fbk
+# $CMD_GBAK -B localhost:/opt/firebird/dados/desenv/freedom.fdb /tmp/freedom.fbk -user "$ISC_USER" -pass "$ISC_PASSWORD"
+#  rm ./freedom.zip
+#  zip ./freedom.zip /tmp/freedom.fbk
+
+  fn_exporta_ddl
+  fn_exporta_description
    
+}
+
+fn_exporta_ddl()
+{
+   echo "Exportando DDL"
+   if [ -f "$FILE_DDL" ]; then
+      rm $FILE_DDL
+   fi
+   $CMD_DDL -user "$ISC_USER" -pass "$ISC_PASSWORD"
+   RESULT=$?
+}
+
+fn_exporta_description()
+{
+    echo "Exportando Description DDL"
+	$CMD_DESCRIPTION $ISC_USER $ISC_PASSWORD
+	RESULT=$?
 }
 
 fn_executa
