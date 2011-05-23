@@ -151,6 +151,7 @@ public class ExtractDescription {
 				bwfile.write("COMMIT WORK;\n");
 				bwfile.flush();
 				bwfile.close();
+				System.out.println("Fim da exportação");
 			} catch (IOException e) {
                 System.out.println("Erro criando arquivo.\n" + e.getMessage());
                 return;
