@@ -489,7 +489,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcDet.addCarregaListener( this );
-		lcDet.addPostListener( this );
+//		lcDet.addPostListener( this );
 		lcCampos.addPostListener( this );
 
 		lcDet.addDeleteListener( this );
@@ -1910,7 +1910,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void focusLost( FocusEvent fevt ) {
 		Boolean comissaoDesconto = (Boolean) oPrefs[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal() ];
 		
-		if ( fevt.getSource() == txtVlrDescItOrc || fevt.getSource() == txtPercDescItOrc) {
+		if ( (fevt.getSource() == txtVlrDescItOrc || fevt.getSource() == txtPercDescItOrc ) && txtCodProd.getVlrInteger()>0 ) {
 			
 			if(txtPercDescItOrc.getText().trim().length() < 1 && !comissaoDesconto){
 				txtVlrDescItOrc.setAtivo( true );
@@ -1927,13 +1927,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcDet.setState( ListaCampos.LCS_NONE );
 				lcDet.edit();
 				focusCodprod();
-			} else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+			} 
+			else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 				lcDet.post();
 				txtCodItOrc.requestFocus();
 			}
 			
-		} else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || 
-				( fevt.getSource() == txtVlrDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc ) ) {
+		} else if ( (( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) || 
+				( fevt.getSource() == txtVlrDescItOrc ) || ( fevt.getSource() == txtPercComisItOrc )) && txtCodProd.getVlrInteger()>0 ) {
 			calcDescIt();
 			calcVlrProd();
 			calcTot();
@@ -1941,7 +1942,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			
 			carregaComisIt();
 			
-		} else if ( ( fevt.getSource() == txtVlrLiqItOrc ) ) {
+		} else if ( ( fevt.getSource() == txtVlrLiqItOrc ) && txtCodProd.getVlrInteger()>0 ) {
 
 			if ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) && 
 					( (Boolean) oPrefs[ Orcamento.PrefOrc.HABVLRTOTITORC.ordinal() ] ) ) {
