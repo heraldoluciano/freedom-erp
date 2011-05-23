@@ -1,10 +1,16 @@
 package org.freedom.infra.util.db;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExtractDescription {
 
@@ -16,7 +22,7 @@ public class ExtractDescription {
     private static int ARG_EXPORT_FILE = 2;
     private static int ARG_USER = 3;
     private static int ARG_PASSWD = 4;
-    private String export_file = null;
+    private String exportfile = null;
     private Connection connection = null;
     public static void main(String[] args) {
 
@@ -31,8 +37,8 @@ public class ExtractDescription {
 		}
 	}
 
-	public ExtractDescription(String jdbc_driver, String url_database, String export_file, String user_database, String passwd_database) {
-        setExport_file(export_file);
+	public ExtractDescription(String jdbc_driver, String url_database, String exportfile, String user_database, String passwd_database) {
+        setExportfile(exportfile);
 		try {
 			Class.forName(jdbc_driver);
 			setConnection(DriverManager.getConnection(url_database, user_database, passwd_database));
@@ -44,26 +50,120 @@ public class ExtractDescription {
 	    
 	}
 	
-	public void export() {
-		try {
-			PreparedStatement ps = 
-				connection.prepareStatement( "SELECT RDB$RELATION_NAME, RDB$DESCRIPTION FROM RDB$RELATIONS WHERE RDB$DESCRIPTION IS NOT NULL");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				
+	private void execQuery(final List<Entitie> entities, final String tablerelation, final String[] relationfields ) throws SQLException {
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String[] sourcefields = null;
+		System.out.println("Pesquisando na tablea " + tablerelation );
+        sql.append("SELECT ");
+        for (int i=0; i<relationfields.length; i++) {
+        	sql.append(relationfields[i]);
+    		sql.append(", ");
+        }
+        sql.append("RDB$DESCRIPTION FROM ");
+        sql.append(tablerelation);
+        sql.append(" WHERE RDB$DESCRIPTION IS NOT NULL ORDER BY ");
+        for (int i=0; i<relationfields.length; i++) {
+            if (i>0) {
+          		sql.append(", ");
+            }
+        	sql.append(relationfields[i]);
+        }
+    	ps = connection.prepareStatement(sql.toString());
+    	rs = ps.executeQuery();
+    	while (rs.next()) {
+			sourcefields = new String[relationfields.length];
+			for (int i=0; i<relationfields.length; i++) {
+			sourcefields[i] = rs.getString(relationfields[i]);
 			}
+			entities.add(new Entitie(tablerelation, relationfields, 
+					sourcefields, "RDB$DESRIPTION", rs.getString("RDB$DESCRIPTION")));
+    	}
+    	rs.close();
+    	ps.close();
+	}
+	
+	public void export() {
+		final List<Entitie> entities = new ArrayList<Entitie>();
+		File file = null;
+		FileWriter wfile = null;
+		BufferedWriter bwfile = null;
+        StringBuffer buffer = new StringBuffer();			
+        String[] relationfields = null;
+		try {
+			relationfields = new String[1];
+			relationfields[0] = "RDB$RELATION_NAME";
+			execQuery(entities, "RDB$RELATIONS", relationfields);
+			
+			relationfields = new String[2];
+			relationfields[0] = "RDB$RELATION_NAME";
+			relationfields[1] = "RDB$FIELD_NAME";
+			execQuery(entities, "RDB$RELATION_FIELDS", relationfields);
+
+			relationfields = new String[1];
+			relationfields[0] = "RDB$PROCEDURE_NAME";
+			execQuery(entities, "RDB$PROCEDURES", relationfields);
+			
+			relationfields = new String[2];
+			relationfields[0] = "RDB$PROCEDURE_NAME";
+			relationfields[1] = "RDB$PARAMETER_NAME";
+			execQuery(entities, "RDB$PROCEDURE_PARAMETERS", relationfields); 
+			
 		} catch (SQLException e) {
 			System.out.println("Erro executando consulta.\n" + e.getMessage());
+			return;
 		}
-		
+		if ( entities.size() >0 ) {
+			try {
+				file = new File(getExportfile());
+				if (file.exists()) {
+					file.delete();
+				}
+				wfile = new FileWriter(file);
+				bwfile = new BufferedWriter(wfile);
+				for (Entitie entitie:entities) {
+					if (buffer.length()>0) {
+						buffer.delete(0, buffer.length());
+					}
+					buffer.append("UPDATE ");
+					buffer.append(entitie.getTablerelation());
+					buffer.append(" SET ");
+					buffer.append(entitie.getFielddescription());
+					buffer.append("='");
+					buffer.append(entitie.getDescription());
+					buffer.append("' WHERE ");
+					for (int i=0; i<entitie.getFieldrelation().length; i++) {
+						if (i>0) {
+							buffer.append(" AND ");
+						}
+						buffer.append(entitie.getFieldrelation()[i]);
+						buffer.append("='");
+						buffer.append(entitie.getFieldsource()[i].trim());
+						buffer.append("'");
+					}
+					buffer.append(";");
+					//System.out.println(buffer.toString());
+					bwfile.write(buffer.toString());
+					bwfile.write("\n");
+					//break;
+				}
+				bwfile.write("COMMIT WORK;\n");
+				bwfile.flush();
+				bwfile.close();
+			} catch (IOException e) {
+                System.out.println("Erro criando arquivo.\n" + e.getMessage());
+                return;
+			}
+		}
 	}
 
-	public void setExport_file(String export_file) {
-		this.export_file = export_file;
+	public void setExportfile(String exportfile) {
+		this.exportfile = exportfile;
 	}
 
-	public String getExport_file() {
-		return export_file;
+	public String getExportfile() {
+		return exportfile;
 	}
 
 	public void setConnection(Connection connection) {
@@ -77,5 +177,54 @@ public class ExtractDescription {
 
 	public Connection getConnection() {
 		return connection;
+	}
+	
+	class Entitie {
+		private String tablerelation;
+		private String[] fieldrelation;
+		private String[] fieldsource;
+		private String fielddescription;
+		private String description;		
+		
+		public Entitie( String tablerelation, String[] fieldrelation, String[] fieldsource, String fielddescription, String description) {
+			setTablerelation(tablerelation);
+			setFieldrelation(fieldrelation);
+			setFieldsource(fieldsource);
+			setFielddescription(fielddescription);
+			setDescription(description);
+		}
+		
+		public void setFieldrelation(String[] fieldrelation) {
+			this.fieldrelation = fieldrelation;
+		}
+		public String[] getFieldrelation() {
+			return fieldrelation;
+		}
+		public void setTablerelation(String tablerelation) {
+			this.tablerelation = tablerelation;
+		}
+		public String getTablerelation() {
+			return tablerelation;
+		}
+		public void setFieldsource(String[] fieldsource) {
+			this.fieldsource = fieldsource;
+		}
+		public String[] getFieldsource() {
+			return this.fieldsource;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		public String getDescription() {
+			return description;
+		}
+
+		public void setFielddescription(String fielddescription) {
+			this.fielddescription = fielddescription;
+		}
+
+		public String getFielddescription() {
+			return fielddescription;
+		}
 	}
 }
