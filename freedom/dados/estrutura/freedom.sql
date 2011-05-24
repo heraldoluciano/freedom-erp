@@ -10775,16 +10775,6 @@ ir.sitexpitrma='ET'
 
 ;
 
-/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
-CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
-
-select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
-(case
-when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
-then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
-else pd.custoinfoprod end) custo
-from eqproduto pd
-;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
@@ -13225,6 +13215,7 @@ declare variable codemppp integer;
 declare variable codfilialpp smallint;
 declare variable codplanopag integer;
 declare variable vlrproditcompra numeric(15,5);
+
 begin
     
     -- Carregamdo variaveis
@@ -14624,6 +14615,7 @@ begin
          if ( (DDTMOVPROD>=DDTMPMPROD OR DDTMPMPROD IS NULL) AND
               (NCUSTOMPMMOVPROD>0)  ) then
          begin
+
             DDTMPMPROD = DDTMOVPROD;
             NCUSTOMPMPROD = NCUSTOMPMMOVPROD;
          end
@@ -27885,6 +27877,7 @@ BEGIN
               WHERE CODPLAN=old.CODPLAN AND DATASL>=old.DATASUBLANCA
               AND CODEMP=old.CODEMP AND CODFILIAL=:IFILIALSALDO;
    END
+
 END ^
  
 CREATE TRIGGER FNSUBLANCATGAU FOR FNSUBLANCA 
@@ -28292,6 +28285,7 @@ as
     update vdvenda vd set
         vd.vlrbasepisvenda = vd.vlrbasepisvenda + :vlrbasepis ,
         vd.vlrpisvenda =  vd.vlrpisvenda + :vlrpis ,
+
         vd.vlrbasecofinsvenda = vd.vlrbasecofinsvenda + :vlrbasecofins ,
         vd.vlrcofinsvenda =  vd.vlrcofinsvenda + :vlrcofins
     where codvenda=new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilial=new.codfilial;
@@ -29413,6 +29407,7 @@ begin
                     update ppop set sitop = 'FN'
                         where codemp = new.codemp and codfilial = new.codfilial
                             and codop = new.codop and seqop = new.seqop;
+
                 end
             end
         end
@@ -33821,6 +33816,17 @@ end ^
  
 COMMIT WORK ^
 SET TERM ; ^
+
+/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
+CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
+
+select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
+(case
+when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
+then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
+else pd.custoinfoprod end) custo
+from eqproduto pd
+;
 
 /* Grant role for this database */
 
