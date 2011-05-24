@@ -183,6 +183,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtDtEntCompra = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodForImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodPlanoPagImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCNPJFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -642,8 +646,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtSerieCompra.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
 
 		lcImportacao.add( new GuardaCampo( txtCodImp			, "CodImp"			, "Cód.Imp."		, ListaCampos.DB_PK, false ) );
-		lcImportacao.add( new GuardaCampo( txtCodFor			, "CodFor"			, "Cód.For."		, ListaCampos.DB_SI, false ) );
-		lcImportacao.add( new GuardaCampo( txtCodPlanoPag		, "CodPlanoPag"		, "Cód.P.Pag."		, ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtCodForImp			, "CodFor"			, "Cód.For."		, ListaCampos.DB_SI, false ) );
+		lcImportacao.add( new GuardaCampo( txtCodPlanoPagImp	, "CodPlanoPag"		, "Cód.P.Pag."		, ListaCampos.DB_SI, false ) );
 		lcImportacao.add( new GuardaCampo( txtDI				, "DI"				, "DI"				, ListaCampos.DB_SI, false ) );
 		lcImportacao.add( new GuardaCampo( txtDtRegDI			, "DtRegDI"			, "Dt.Reg.DI"		, ListaCampos.DB_SI, false ) );
 		lcImportacao.add( new GuardaCampo( txtDtDesembDI		, "DtDesembDI"		, "Dt.Desemb.DI"	, ListaCampos.DB_SI, false ) );
@@ -2092,6 +2096,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 							txtCodImp.setVlrInteger( codimp );
 
 							lcImportacao.carregaDados();
+
+							txtCodFor.setVlrInteger( txtCodForImp.getVlrInteger() );
+							txtCodPlanoPag.setVlrInteger( txtCodPlanoPagImp.getVlrInteger() );
+							
 							lcFor.carregaDados();
 							lcPlanoPag.carregaDados();
 						
