@@ -33825,8 +33825,7 @@ select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
 when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
 then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
 else pd.custoinfoprod end) custo
-from eqproduto pd
-;
+from eqproduto pd ;
 
 /* Grant role for this database */
 
