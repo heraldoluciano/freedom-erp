@@ -2088,10 +2088,10 @@ CONSTRAINT EQMOVPRODPK PRIMARY KEY (CODMOVPROD, CODFILIAL, CODEMP));
 CREATE TABLE EQMOVSERIE (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
         CODMOVSERIE INTEGER NOT NULL,
-        CODEMPPD INTEGER,
-        CODFILIALPD SMALLINT,
-        CODPROD INTEGER,
-        NUMSERIE VARCHAR(30),
+        CODEMPPD INTEGER NOT NULL,
+        CODFILIALPD SMALLINT NOT NULL,
+        CODPROD INTEGER NOT NULL,
+        NUMSERIE VARCHAR(30) NOT NULL,
         CODEMPVD INTEGER,
         CODFILIALVD SMALLINT,
         TIPOVENDA CHAR(1),
@@ -2107,8 +2107,8 @@ CREATE TABLE EQMOVSERIE (CODEMP INTEGER NOT NULL,
         CODEMPIV INTEGER,
         CODFILIALIV SMALLINT,
         CODINVPROD INTEGER,
-        DTMOVSERIE DATE,
-        TIPOMOVSERIE SMALLINT,
+        DTMOVSERIE DATE NOT NULL,
+        TIPOMOVSERIE SMALLINT NOT NULL,
         CODEMPRM INTEGER,
         CODFILIALRM SMALLINT,
         DOCMOVSERIE INTEGER,
@@ -2128,12 +2128,12 @@ CREATE TABLE EQMOVSERIE (CODEMP INTEGER NOT NULL,
         CODFILIALRC SMALLINT,
         TICKET SMALLINT,
         CODITRECMERC SMALLINT,
-        IDUSUALT CHAR(8) DEFAULT USER NOT NULL,
-        HALT TIME DEFAULT 'now' NOT NULL,
-        DTALT DATE DEFAULT 'now' NOT NULL ,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
-        HINS TIME DEFAULT 'now' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUALT CHAR(8) DEFAULT USER,
+        HALT TIME DEFAULT 'now',
+        DTALT DATE DEFAULT 'now',
 CONSTRAINT EQMOVSERIEPK PRIMARY KEY (CODMOVSERIE, CODFILIAL, CODEMP));
 
 /* Table: EQPROCRECMERC, Owner: SYSDBA */
@@ -10773,6 +10773,17 @@ and ir.codemp=rma.codemp and ir.codfilial=rma.codfilial and ir.codrma=rma.codrma
 pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and
 ir.sitexpitrma='ET'
 
+;
+
+/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
+CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
+
+select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
+(case
+when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
+then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
+else pd.custoinfoprod end) custo
+from eqproduto pd
 ;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
@@ -19792,7 +19803,7 @@ ALTER PROCEDURE SGRETVERSAO RETURNS (VERSAO VARCHAR(30) CHARACTER SET NONE)
 AS 
 
 begin
-    versao = '1.2.4.4 (20/01/2011)';
+    versao = '1.2.4.5 (20/05/2011)';
     suspend;
 end ^
 
@@ -33810,17 +33821,6 @@ end ^
  
 COMMIT WORK ^
 SET TERM ; ^
-
-/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
-CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
-
-select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
-(case
-when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
-then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
-else pd.custoinfoprod end) custo
-from eqproduto pd
-;
 
 /* Grant role for this database */
 
