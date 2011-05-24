@@ -3,12 +3,29 @@
 # Script de descompactação e instalação do banco de dados de desenvolvimento
 # Autor: Robson Sanchez/Setpoint Informática
 # Data: 09/12/2009
+# Atualizado para DDL em 23/05/2011
 
+OPCAO=$1
 ISC_USER="SYSDBA"
 ISC_PASSWORD="masterkey"
-CMD_GBAK="/opt/firebird/bin/gbak"
+#CMD_GBAK="/opt/firebird/bin/gbak"
+CMD_ISQL="/opt/firebird/bin/isql"
+WORKSPACE="$HOME/workspace"
+DRIVER_FB="org.firebirdsql.jdbc.FBDriver"
+DIR_FREEDOM="$WORKSPACE/freedom"
+FILE_FB="/opt/firebird/dados/desenv/freedom.fdb"
+URL_FREEDOM_FB="localhost:$FILE_FB"
+DIR_DDL="$DIR_FREEDOM/dados/estrutura"
+FILE_DDL="$DIR_DDL/freedom.sql"
+FILE_DROP="$DIR_DDL/drop.sql"
+FILE_CREATE="$DIR_DDL/create.sql"
+FILE_DESCRIPTION="$DIR_DDL/description.sql"
+CMD_DROP_DB="$CMD_ISQL -i $FILE_DROP $URL_FREEDOM_FB"
+CMD_CREATE_DB="$CMD_ISQL -i $FILE_CREATE"
+CMD_DDL="$CMD_ISQL -i $FILE_DDL $URL_FREEDOM_FB"
+CMD_DESCRIPTION="$CMD_ISQL -i $FILE_DESCRIPTION $URL_FREEDOM_FB"
 RESULT=0
-OPCAO=$1
+#echo $CMD_CREATE_DB
 
 fn_senha_firebird()
 {
@@ -54,16 +71,39 @@ fn_executa()
     fn_fim_script
   fi
 
-  export ISC_USER
-  export ISC_PASSWORD
+#  export ISC_USER
+#  export ISC_PASSWORD
 
+   if [ -f "$FILE_FB" ]; then
+      echo "Eliminando banco de dados anterior"
+#      echo $CMD_DROP_DB
+      $CMD_DROP_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DROP.log
+      RESULT=$?
+   fi
+    
+   if [ $RESULT -eq 0 ]; then 
+      echo "Criando novo banco de dados"
+#      echo "$CMD_CREATE_DB -user $ISC_USER -pass $ISC_PASSWORD"
+      $CMD_CREATE_DB -user $ISC_USER -pass $ISC_PASSWORD > $FILE_CREATE.log
+      RESULT=$?
+      if [ $RESULT -eq 0 ]; then
+         echo "Aplicando DDL"
+         echo $CMD_DDL
+         $CMD_DDL -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DDL.log
+         RESULT=$?
+         if [ $RESULT -eq 0 ]; then
+            echo "Aplicando descriptions DDL"
+            #echo $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD
+            $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DESCRIPTION.log
+            RESULT=$?
+         fi
+      fi
+   fi
+    
 #   rm /tmp/freedom.fbk
-
-  unzip -o ./freedom.zip -d /
-
-  mkdir -p /opt/firebird/dados/desenv/
-
-  $CMD_GBAK -C -R -P 4096 /tmp/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb
+#  unzip -o ./freedom.zip -d /
+#  mkdir -p /opt/firebird/dados/desenv/
+#  $CMD_GBAK -C -R -P 4096 /tmp/freedom.fbk localhost:/opt/firebird/dados/desenv/freedom.fdb
 
 }
 
