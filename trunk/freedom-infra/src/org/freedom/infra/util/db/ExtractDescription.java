@@ -24,6 +24,7 @@ public class ExtractDescription {
     private static int ARG_PASSWD = 4;
     private String exportfile = null;
     private Connection connection = null;
+    private int result_java = 0;
     public static void main(String[] args) {
 
 		if (args==null || args.length<=ARG_PASSWD) {
@@ -43,8 +44,10 @@ public class ExtractDescription {
 			Class.forName(jdbc_driver);
 			setConnection(DriverManager.getConnection(url_database, user_database, passwd_database));
 		} catch (ClassNotFoundException e) {
+			result_java = 1;
 			System.out.println("Erro carregando driver JDBC.\n" + e.getMessage());
 		} catch (SQLException e) {
+			result_java = 1;
 			System.out.println("Erro conectando ao banco de dados.\n" + e.getMessage());
 		}
 	    
@@ -121,6 +124,7 @@ public class ExtractDescription {
 			execQuery(entities, "RDB$PROCEDURE_PARAMETERS", relationfields); 
 			
 		} catch (SQLException e) {
+			result_java = 1;
 			System.out.println("Erro executando consulta.\n" + e.getMessage());
 			return;
 		}
@@ -161,12 +165,18 @@ public class ExtractDescription {
 				bwfile.write("COMMIT WORK;\n");
 				bwfile.flush();
 				bwfile.close();
-				System.out.println("Fim da exportação");
 			} catch (IOException e) {
+				result_java = 0;
                 System.out.println("Erro criando arquivo.\n" + e.getMessage());
                 return;
 			}
 		}
+		if (result_java==0) {
+			System.out.println("Fim da exportação");
+		} else {
+			System.out.println("Fim da exportação com erros");
+		}
+		System.exit(result_java); // Saída para o OS
 	}
 
 	public void setExportfile(String exportfile) {
