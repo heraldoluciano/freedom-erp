@@ -144,9 +144,9 @@ public class FCancCompra extends FFilho implements ActionListener {
 			txtCodCompra.requestFocus();
 		}
 
-		else if ( sStatus.substring( 0, 1 ).equals( "C" ) ) {
+		else if ( sStatus.substring( 0, 1 ).equals( "X" ) ) {
 
-			Funcoes.mensagemInforma( null, "Compra ja foi cancelada!" );
+			Funcoes.mensagemInforma( null, "Compra já foi cancelada!" );
 			txtCodCompra.requestFocus();
 		}
 
