@@ -9397,21 +9397,25 @@ ALTER TABLE EQMOVPROD ADD CONSTRAINT EQMOVPRODFKSGFILIA FOREIGN KEY (CODFILIAL, 
  
 ALTER TABLE EQMOVPROD ADD CONSTRAINT EQMOVPRODFKVDITVEN FOREIGN KEY (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIALVD, CODEMPVD) REFERENCES VDITVENDA (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIAL, CODEMP);
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKCPITCOM FOREIGN KEY (CODITCOMPRA, CODCOMPRA, CODFILIALCP, CODEMPCP) REFERENCES CPITCOMPRA (CODITCOMPRA, CODCOMPRA, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKCPITCOM FOREIGN KEY (CODITCOMPRA, CODCOMPRA, CODFILIALCP, CODEMPCP) REFERENCES CPITCOMPRA (CODITCOMPRA, CODCOMPRA, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQINVPR FOREIGN KEY (CODINVPROD, CODFILIALIV, CODEMPIV) REFERENCES EQINVPROD (CODINVPROD, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQINVPR FOREIGN KEY (CODINVPROD, CODFILIALIV, CODEMPIV) REFERENCES EQINVPROD (CODINVPROD, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQITRMA FOREIGN KEY (CODRMA, CODITRMA, CODFILIALRM, CODEMPRM) REFERENCES EQITRMA (CODRMA, CODITRMA, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQITRMA FOREIGN KEY (CODRMA, CODITRMA, CODFILIALRM, CODEMPRM) REFERENCES EQITRMA (CODRMA, CODITRMA, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQOP FOREIGN KEY (CODOP, SEQOP, CODFILIALOP, CODEMPOP) REFERENCES PPOP (CODOP, SEQOP, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQOP FOREIGN KEY (CODOP, SEQOP, CODFILIALOP, CODEMPOP) REFERENCES PPOP (CODOP, SEQOP, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQSERIE FOREIGN KEY (NUMSERIE, CODPROD, CODFILIALPD, CODEMPPD) REFERENCES EQSERIE (NUMSERIE, CODPROD, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQRECMERC FOREIGN KEY (TICKET, CODITRECMERC, CODFILIALRC, CODEMPRC) REFERENCES EQITRECMERC (TICKET, CODITRECMERC, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQTIPOM FOREIGN KEY (CODTIPOMOV, CODFILIALTM, CODEMPTM) REFERENCES EQTIPOMOV (CODTIPOMOV, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQSERIE FOREIGN KEY (NUMSERIE, CODPROD, CODFILIALPD, CODEMPPD) REFERENCES EQSERIE (NUMSERIE, CODPROD, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKSGFILIA FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKEQTIPOM FOREIGN KEY (CODTIPOMOV, CODFILIALTM, CODEMPTM) REFERENCES EQTIPOMOV (CODTIPOMOV, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
-ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKVDITVEN FOREIGN KEY (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIALVD, CODEMPVD) REFERENCES VDITVENDA (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIAL, CODEMP);
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKRECMERC FOREIGN KEY (TICKET, CODFILIALRC, CODEMPRC) REFERENCES EQRECMERC (TICKET, CODFILIAL, CODEMP) ON DELETE CASCADE;
+ 
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKSGFILIA FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP) ON DELETE CASCADE;
+ 
+ALTER TABLE EQMOVSERIE ADD CONSTRAINT EQMOVSERIEFKVDITVEN FOREIGN KEY (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIALVD, CODEMPVD) REFERENCES VDITVENDA (CODVENDA, CODITVENDA, TIPOVENDA, CODFILIAL, CODEMP) ON DELETE CASCADE;
  
 ALTER TABLE EQPROCRECMERC ADD CONSTRAINT EQPROCRECMERCFKEQRECMERC FOREIGN KEY (CODTIPORECMERC, CODFILIAL, CODEMP) REFERENCES EQTIPORECMERC (CODTIPORECMERC, CODFILIAL, CODEMP);
  
@@ -10774,7 +10778,6 @@ pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod 
 ir.sitexpitrma='ET'
 
 ;
-
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
@@ -13215,7 +13218,6 @@ declare variable codemppp integer;
 declare variable codfilialpp smallint;
 declare variable codplanopag integer;
 declare variable vlrproditcompra numeric(15,5);
-
 begin
     
     -- Carregamdo variaveis
@@ -14615,7 +14617,6 @@ begin
          if ( (DDTMOVPROD>=DDTMPMPROD OR DDTMPMPROD IS NULL) AND
               (NCUSTOMPMMOVPROD>0)  ) then
          begin
-
             DDTMPMPROD = DDTMOVPROD;
             NCUSTOMPMPROD = NCUSTOMPMMOVPROD;
          end
@@ -27877,7 +27878,6 @@ BEGIN
               WHERE CODPLAN=old.CODPLAN AND DATASL>=old.DATASUBLANCA
               AND CODEMP=old.CODEMP AND CODFILIAL=:IFILIALSALDO;
    END
-
 END ^
  
 CREATE TRIGGER FNSUBLANCATGAU FOR FNSUBLANCA 
@@ -28285,7 +28285,6 @@ as
     update vdvenda vd set
         vd.vlrbasepisvenda = vd.vlrbasepisvenda + :vlrbasepis ,
         vd.vlrpisvenda =  vd.vlrpisvenda + :vlrpis ,
-
         vd.vlrbasecofinsvenda = vd.vlrbasecofinsvenda + :vlrbasecofins ,
         vd.vlrcofinsvenda =  vd.vlrcofinsvenda + :vlrcofins
     where codvenda=new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilial=new.codfilial;
@@ -29407,7 +29406,6 @@ begin
                     update ppop set sitop = 'FN'
                         where codemp = new.codemp and codfilial = new.codfilial
                             and codop = new.codop and seqop = new.seqop;
-
                 end
             end
         end
@@ -33784,6 +33782,34 @@ begin
   new.HALT = cast('now' AS TIME);
 end ^
  
+CREATE TRIGGER VDVENDAORCTGAI FOR VDVENDAORC 
+ACTIVE AFTER INSERT POSITION 0 
+AS
+
+begin
+    -- Inserção de registro de movimentação de numero de série,
+    -- para faturamento de seviços de conserto (recmerc/Ordens de serviço)
+
+    insert into eqmovserie (
+        codemp      , codfilial     , codmovserie   , codemppd      , codfilialpd   , codprod    ,
+        numserie    , codempvd      , codfilialvd   , codvenda      , coditvenda    , tipovenda  ,
+        dtmovserie  , tipomovserie  , docmovserie
+    )
+    select
+        ir.codemp, ir.codfilial, coalesce((select max(codmovserie) + 1 from eqmovserie where codemp=vd.codemp and codfilial=vd.codfilial),1), ir.codemppd, ir.codfilialpd, ir.codprod,
+        ir.numserie, new.codemp, new.codfilial, new.codvenda, new.coditvenda, new.tipovenda, vd.dtsaidavenda, -1, vd.docvenda
+    from eqitrecmercitositorc ro, eqitrecmerc ir, vdvenda vd, vditvenda iv
+    where
+        ro.codemp=new.codempor and ro.codfilial=new.codfilialor and ro.codorc=new.codorc and ro.tipoorc=new.tipoorc and ro.coditorc=new.coditorc and
+        ir.codemp=ro.codemp and ir.codfilial=ro.codfilial and ir.ticket=ro.ticket and ir.coditrecmerc=ro.coditrecmerc and
+        iv.codemp=new.codemp and iv.codfilial=new.codfilial and iv.codvenda=new.codvenda and iv.tipovenda=new.tipovenda and iv.coditvenda=new.coditvenda and
+        vd.codemp=iv.codemp and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda and vd.codvenda=iv.codvenda and
+        ir.numserie is not null;
+
+
+
+end ^
+ 
 CREATE TRIGGER VDVENDAORCTGBU FOR VDVENDAORC 
 ACTIVE BEFORE UPDATE POSITION 0 
 as
@@ -33825,7 +33851,8 @@ select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
 when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
 then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
 else pd.custoinfoprod end) custo
-from eqproduto pd ;
+from eqproduto pd
+;
 
 /* Grant role for this database */
 
