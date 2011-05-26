@@ -210,7 +210,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 		}
 	}
 
-	public void keyPressed(KeyEvent kevt) {
+	public void keyPressed(KeyEvent kevt) {/*
 		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (tab.getNumLinhas() > 0 && btOK.isEnabled())
 				btOK.doClick();
@@ -223,6 +223,12 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 		}
 		else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
 			btCancel.doClick();
+			*/
+		
+		if (kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			btOK.doClick();
+		}
+		
 	}
 
 	public void ok() {
