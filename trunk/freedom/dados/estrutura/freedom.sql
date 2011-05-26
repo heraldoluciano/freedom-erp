@@ -3045,6 +3045,7 @@ DEFAULT 0 NOT NULL,
         CODEMPSN INTEGER,
         CODFILIALSN SMALLINT,
         CODSINAL SMALLINT,
+        MULTIBAIXA CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
         DTALT DATE DEFAULT 'now',
@@ -10777,6 +10778,17 @@ and ir.codemp=rma.codemp and ir.codfilial=rma.codfilial and ir.codrma=rma.codrma
 pd.codemp=ir.codemppd and pd.codfilial=ir.codfilialpd and pd.codprod=ir.codprod and
 ir.sitexpitrma='ET'
 
+;
+
+/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
+CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
+
+select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
+(case
+when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
+then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
+else pd.custoinfoprod end) custo
+from eqproduto pd
 ;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
@@ -26309,34 +26321,36 @@ BEGIN
      new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
   
      if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-       new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
+       new.VLRAPAGITPAG = 0;  /* entÃ£o valor a pagar serÃ¡ zero */
      if ( (new.VLRAPAGITPAG=0) AND (new.VLRITPAG>0) ) then /* se o valor a pagar for igual a zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-     else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contrário e o valor pago maior que zero e existir valor na parcela*/
-       new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+       new.STATUSITPAG = 'PP';  /* entÃ£o o status serÃ¡ PP(pagamento completo) */
+     else if ( (new.VLRPAGOITPAG>0) AND (new.VLRITPAG>0) ) then /* caso contrÃ¡rio e o valor pago maior que zero e existir valor na parcela*/
+       new.STATUSITPAG = 'PL'; /*  entÃ£o o status serÃ¡ PL(pagamento parcial) */
 
-     /* faz o lançamento */
+     /* faz o lanÃ§amento */
      SELECT CODFOR,CODEMPFR,CODFILIALFR FROM FNPAGAR WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND CODPAG=new.CODPAG
         INTO ICODFOR,ICODEMPFR,ICODFILIALFR;
 
      IF ((old.STATUSITPAG='P1' AND new.STATUSITPAG in ('PP','PL')) OR (old.STATUSITPAG in ('PP','PL') AND new.STATUSITPAG in ('PP','PL') AND new.VLRPAGOITPAG > 0)) THEN
      BEGIN
-
-       EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
+       IF(new.multibaixa is null or new.multibaixa = 'N')THEN
+       BEGIN
+           EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.AnoCC,new.CodCC,new.CODEMPCC,new.CODFILIALCC, new.DTCOMPITPAG,
                               new.DtPagoItPag,new.DocLancaItPag,new.ObsItPag,new.VlrPagoItPag,new.CODEMP,new.CODFILIAL,new.vlrjurositpag,new.vlrdescitpag);
+       END
 
        /* Altera o valor pago e o valor a pagar */
        new.VLRPAGOITPAG = new.VLRPAGOITPAG + old.VLRPAGOITPAG;
        new.VLRAPAGITPAG = new.VLRITPAG - new.VLRPAGOITPAG;
 
        if (new.VLRAPAGITPAG < 0) then /* se o valor a pagar for menor que zero */
-         new.VLRAPAGITPAG = 0;  /* então valor a pagar será zero */
+         new.VLRAPAGITPAG = 0;  /* entÃ£o valor a pagar serÃ¡ zero */
 
        if (new.VLRAPAGITPAG=0) then /* se o valor a pagar for igual a zero */
-         new.STATUSITPAG = 'PP';  /* então o status será PP(pagamento completo) */
-       else if (new.VLRPAGOITPAG>0) then /* caso contrário e o valor pago maior que zero */
-         new.STATUSITPAG = 'PL'; /*  então o status será PL(pagamento parcial) */
+         new.STATUSITPAG = 'PP';  /* entÃ£o o status serÃ¡ PP(pagamento completo) */
+       else if (new.VLRPAGOITPAG>0) then /* caso contrÃ¡rio e o valor pago maior que zero */
+         new.STATUSITPAG = 'PL'; /*  entÃ£o o status serÃ¡ PL(pagamento parcial) */
 
      END
      ELSE IF ((old.STATUSITPAG='PP') AND (new.STATUSITPAG='PP')) THEN
@@ -33842,17 +33856,6 @@ end ^
  
 COMMIT WORK ^
 SET TERM ; ^
-
-/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
-CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
-
-select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
-(case
-when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
-then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
-else pd.custoinfoprod end) custo
-from eqproduto pd
-;
 
 /* Grant role for this database */
 
