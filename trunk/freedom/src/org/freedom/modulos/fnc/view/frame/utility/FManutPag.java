@@ -1663,9 +1663,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			BigDecimal valorTotalParc = new BigDecimal( 0 );
 			BigDecimal valorTotalPag = new BigDecimal( 0 );
 			List<Integer> selecionados = new ArrayList<Integer>();
+			
 			for ( int row = 0; row < tabManut.getNumLinhas(); row++ ) {
+				
 				Boolean selecionado = (Boolean)tabManut.getValor( row, enum_tab_manut.SEL.ordinal() ) ;
+				
 				if (selecionado){
+					
 					if( (ImageIcon) tabManut.getValor( row, enum_tab_manut.IMGSTATUS.ordinal() ) == imgPago){
 						imgStatusAt = (ImageIcon) tabManut.getValor( row, enum_tab_manut.IMGSTATUS.ordinal() );
 						break;
@@ -1683,8 +1687,31 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				}
 			}
 			
-			if(selecionados.size() == 0){
-				return;
+			
+			
+			
+			if(selecionados.size() == 0 ){
+				
+				if( tabManut.getSelectedRow() < 0 ) {
+					Funcoes.mensagemInforma( this, "Selecione um título!" );
+					return;
+				}
+				else {
+					int row = tabManut.getLinhaSel();
+					
+					valorTotalParc = valorTotalParc.add( 
+							ConversionFunctions.stringCurrencyToBigDecimal( 
+									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRPARCITPAG.ordinal()) ).toString() ) );
+					
+					valorTotalPag = valorTotalPag.add( 
+							ConversionFunctions.stringCurrencyToBigDecimal( 
+									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
+					
+					selecionados.add(row);
+					
+				}
+				
+				
 			}
 			
 			if ( imgStatusAt == imgPago ) {
@@ -1789,7 +1816,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							}
 		
 							ps.setString( 17, sRets[ 7 ] );
-							ps.setString( 18, (selecionados.size() > 1 ? "1" : "0") );
+							ps.setString( 18, (selecionados.size() > 1 ? "S" : "N") );
 							
 							ps.setInt( 19, iCodPag );
 							ps.setInt( 20, iNParcPag );
