@@ -95,17 +95,21 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcCC = new ListaCampos( this );
 
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
+	
+	private boolean multiBaixa;
 
-	public DLBaixaPag( Component cOrig ) {
+	public DLBaixaPag( Component cOrig, boolean multiBaixa ) {
 
 		super( cOrig );
 		setTitulo( "Baixa" );
 		setAtribos( 360, 420 );
+		
+		this.multiBaixa = multiBaixa;
 
 		montaListaCampos();
 		montaTela();
-
 	}
+	
 
 	private void montaListaCampos() {
 
@@ -215,20 +219,26 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public void setValores( String[] sVals ) {
 
-		txtCodFor.setVlrString( sVals[ 0 ] );
-		txtRazFor.setVlrString( sVals[ 1 ] );
-		txtCodConta.setVlrString( sVals[ 2 ] );
-		txtCodPlan.setVlrString( sVals[ 3 ] );
-		txtDoc.setVlrString( sVals[ 4 ] );
-		txtDtEmis.setVlrString( sVals[ 5 ] );
-		txtDtVenc.setVlrString( sVals[ 6 ] );
+		if(multiBaixa){
+			txtVlrPago.setAtivo( false );
+			
+			txtRazFor.setVlrString( "PGTOS MULTIPLOS" );
+		}else{
+			txtCodFor.setVlrString( sVals[ 0 ] );
+			txtRazFor.setVlrString( sVals[ 1 ] );
+			txtCodConta.setVlrString( sVals[ 2 ] );
+			txtCodPlan.setVlrString( sVals[ 3 ] );
+			txtDoc.setVlrString( sVals[ 4 ] );
+			txtDtEmis.setVlrString( sVals[ 5 ] );
+			txtDtVenc.setVlrString( sVals[ 6 ] );
+			txtObs.setVlrString( sVals[ 12 ] );
+			txtCodCC.setVlrString( sVals[ 10 ] );
+			txtCodTipoCob.setVlrString( sVals[ 11 ] );
+		}
+		
 		txtVlrParc.setVlrString( sVals[ 7 ] );
 		txtDtPagto.setVlrString( sVals[ 8 ] );
 		txtVlrPago.setVlrString( sVals[ 9 ] );
-		txtCodCC.setVlrString( sVals[ 10 ] );
-		txtCodTipoCob.setVlrString( sVals[ 11 ] );
-		txtObs.setVlrString( sVals[ 12 ] );
-
 	}
 
 	public String[] getValores() {
