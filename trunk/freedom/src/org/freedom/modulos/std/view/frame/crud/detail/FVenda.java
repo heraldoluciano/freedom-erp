@@ -973,16 +973,46 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=4 AND TU.CODFILIALUS=1 AND TU.IDUSU='sysdba') ) ORDER
 		 * BY 1
 		 */
-		lcTipoMov.setWhereAdic( "( (ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
-				+ Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 
-		if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
-			txtFiscalTipoMov1.setText( "S" );
-			txtFiscalTipoMov2.setText( "N" );
-			lcTipoMov.setDinWhereAdic( "FISCALTIPOMOV IN(#S,#S)", txtFiscalTipoMov1 );
-			lcTipoMov.setDinWhereAdic( "", txtFiscalTipoMov2 );
-		}
+		StringBuilder whereusu = new StringBuilder();
+		
+		whereusu.append(" (SELECT * FROM EQTIPOMOVUSU TU " ); 
+		whereusu.append( " WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " ); 
+		whereusu.append( " TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp  );
+		whereusu.append( " AND TU.CODFILIALUS="  );
+		whereusu.append( ListaCampos.getMasterFilial( "SGUSUARIO" ) ); 
+		whereusu.append( " AND TU.IDUSU='"  );
+		whereusu.append( Aplicativo.strUsuario );
+		whereusu.append("')");
 
+		StringBuilder wtipomov = new StringBuilder();
+		
+		wtipomov.append( "( " );
+		
+		wtipomov.append( "( ESTIPOMOV='S' OR TIPOMOV IN ('" ); 
+		
+		wtipomov.append( TipoMov.TM_DEVOLUCAO_COMPRA.getValue() 				+ "','" );  
+		wtipomov.append( TipoMov.TM_BONIFICACAO_SAIDA.getValue() 				+ "','" ); 
+		wtipomov.append( TipoMov.TM_NOTA_FISCAL_COMPLEMENTAR_SAIDA.getValue()	+ "','" ); 
+		wtipomov.append( TipoMov.TM_PEDIDO_VENDA.getValue() 					+ "','" ); 
+		wtipomov.append( TipoMov.TM_REMESSA_SAIDA.getValue()				 	+ "','"	); 		
+		wtipomov.append( TipoMov.TM_TRANSFERENCIA_SAIDA.getValue()		 		+ "','" ); 
+		wtipomov.append( TipoMov.TM_VENDA.getValue()						 	+ "','" ); 
+		wtipomov.append( TipoMov.TM_VENDA_SERVICO.getValue()				 	+ "','" ); 
+		wtipomov.append( TipoMov.TM_VENDA_TELEVENDAS.getValue()			 		+ "'" ); 				
+		
+		wtipomov.append( ") )" );
+		
+		wtipomov.append( " AND " );
+		
+		wtipomov.append( " ( TUSUTIPOMOV='S' OR EXISTS "); 
+
+		wtipomov.append( whereusu );
+		
+		wtipomov.append( ") ) " );
+		
+		lcTipoMov.setWhereAdic(wtipomov.toString());
+		
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
