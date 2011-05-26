@@ -2320,6 +2320,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean testaLucro() {
 
+		if (fatLucro == null) {
+			fatLucro = new BigDecimal(1);
+		}
 		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItVenda.getVlrInteger(), txtPrecoItVenda.getVlrBigDecimal(), }, fatLucro );
 	}
 
