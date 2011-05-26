@@ -2131,11 +2131,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void focusLost( FocusEvent fevt ) {
 
 		if ( fevt.getSource() == txtPercDescItCompra ) {
-			if ( txtPercDescItCompra.getText().trim().length() < 1 ) {
+			if ( txtPercDescItCompra.getVlrBigDecimal().floatValue() <= 0 ) {
 				txtVlrDescItCompra.setAtivo( true );
 			}
 			else {
-				txtVlrDescItCompra.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( txtVlrProdItCompra.doubleValue() * txtPercDescItCompra.doubleValue() / 100, casasDecFin ) ) );
+				
+				BigDecimal vlrdesconto = txtVlrProdItCompra.getVlrBigDecimal().multiply( txtPercDescItCompra.getVlrBigDecimal().divide( new BigDecimal(100) , BigDecimal.ROUND_CEILING ) );
+				
+				txtVlrDescItCompra.setVlrBigDecimal( vlrdesconto );
+				
+//				txtVlrDescItCompra.setVlrBigDecimal( new BigDecimal( Funcoes.arredDouble( txtVlrProdItCompra.doubleValue() * txtPercDescItCompra.doubleValue() / 100, casasDecFin ) ) );
 				calcVlrProd();
 				calcImpostos( true );
 				txtVlrDescItCompra.setAtivo( false );
@@ -2145,11 +2150,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicIPI();
 		}
 		else if ( fevt.getSource() == txtVlrDescItCompra ) {
-			if ( txtVlrDescItCompra.getText().trim().length() < 1 ) {
+			if ( txtVlrDescItCompra.getVlrBigDecimal().floatValue() <=0 ) {
 				txtPercDescItCompra.setAtivo( true );
 			}
 			else if ( txtVlrDescItCompra.getAtivo() ) {
+				
+				BigDecimal percdesconto = (txtVlrDescItCompra.getVlrBigDecimal().multiply( new  BigDecimal(100) )).divide( txtVlrProdItCompra.getVlrBigDecimal(), BigDecimal.ROUND_CEILING )   ;
+				
+				txtPercDescItCompra.setVlrBigDecimal( percdesconto );
+				
+				calcVlrProd();
+				calcImpostos( true );
+				
 				txtPercDescItCompra.setAtivo( false );
+									
 			}
 		}
 		else if ( ( fevt.getSource() == txtQtdItCompra ) || ( fevt.getSource() == txtPrecoItCompra ) || ( fevt.getSource() == txtCodNat ) ) {
@@ -3443,7 +3457,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 			impostos.setBuscabase( buscabase );
 			impostos.setVlrprod( txtVlrProdItCompra.getVlrBigDecimal() );
-			impostos.setVlrdescit( txtPercDescItCompra.getVlrBigDecimal() );
+			impostos.setVlrdescit( txtVlrDescItCompra.getVlrBigDecimal() );
 
 			getTratTrib();
 			getICMS();
