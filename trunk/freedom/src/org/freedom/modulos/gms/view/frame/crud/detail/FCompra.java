@@ -2159,7 +2159,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		else if ( fevt.getSource() == txtPercICMSItCompra ) {
 			calcVlrProd();
-			calcImpostos( false );
+			calcImpostos( true );
 		}
 	}
 
@@ -3387,7 +3387,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtTipoFisc.setVlrString( impostos.getTipofisc() );
 			// txtTipoST.setVlrString( impostos.getTipost() );
 			// txtCodMens.setVlrInteger( impostos.getCodmens() );
-			txtPercIPIItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
+			txtPercICMSItCompra.setVlrBigDecimal( impostos.getAliqfisc() );
+			txtAliqFisc.setVlrBigDecimal( impostos.getAliqfisc() );
+			
 			txtAliqIPIFisc.setVlrBigDecimal( impostos.getAliqipifisc() );
 			txtTpRedIcmsFisc.setVlrString( impostos.getTpredicmsfisc() );
 			// txtMargemVlAgr.setVlrBigDecimal( impostos.getMargemvlragr() );
