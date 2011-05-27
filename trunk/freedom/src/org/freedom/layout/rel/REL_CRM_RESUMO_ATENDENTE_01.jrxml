@@ -57,6 +57,22 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 	<field name="TOTALMETA" class="java.math.BigDecimal"/>
 	<field name="TOTALCOMIS" class="java.math.BigDecimal"/>
 	<field name="TOTALCOBCLI" class="java.math.BigDecimal"/>
+	<variable name="TOTALGERAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALGERAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTALMETA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALMETA}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTALCOMIS" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOMIS}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOTALCOBCLI" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOBCLI}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
@@ -154,6 +170,58 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]>
 				<line>
 					<reportElement key="line-18" mode="Transparent" x="786" y="2" width="1" height="17" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
 				</line>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="374" y="3" width="67" height="13" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALGERAL}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="470" y="3" width="67" height="13" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMETA}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="574" y="3" width="67" height="13" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALCOMIS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="true">
+					<reportElement key="textField-5" x="683" y="3" width="67" height="13" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALCOBCLI}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
