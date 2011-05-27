@@ -70,7 +70,7 @@ public class FPrefere extends FTabDados {
 	
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 
-	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horario automático no atendimento?", "S", "N");
+	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad("Data/Horário automático no atendimento?", "S", "N");
 	
 	private JCheckBoxPad cbMostraCliAtraso = new JCheckBoxPad("Mostra clientes em atraso no painel de controle ?", "S", "N");
 	
