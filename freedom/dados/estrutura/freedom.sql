@@ -10780,16 +10780,6 @@ ir.sitexpitrma='ET'
 
 ;
 
-/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
-CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
-
-select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
-(case
-when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
-then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
-else pd.custoinfoprod end) custo
-from eqproduto pd
-;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
@@ -19375,6 +19365,7 @@ begin
               end
               else
               begin
+
                  DTVENCRET = DTVENCRET + 1;
                  CURLOOP = CURLOOP + 1;
               end
@@ -22476,6 +22467,7 @@ BEGIN
            new.vlrliqcompra = 0;
            new.vlripicompra = 0;
       END
+
   END
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
   IF (new.statuscompra = 'X' and new.sitdoc!='02') THEN
@@ -28105,6 +28097,7 @@ begin
        update lfitclfiscal set geralfisc='N'
        where codemp=new.codemp and codfilial=new.codfilial and codfisc=new.codfisc and
              coditfisc!=new.coditfisc and geralfisc='S';
+
     end
 end ^
  
@@ -32865,6 +32858,7 @@ CREATE TRIGGER VDROMANEIOTGBU FOR VDROMANEIO
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
@@ -33856,6 +33850,20 @@ end ^
  
 COMMIT WORK ^
 SET TERM ; ^
+
+
+/* View: VWPROD_PRECO_CUSTO, Owner: SYSDBA */
+CREATE VIEW VWPROD_PRECO_CUSTO (REFPROD, CODSECAO, DESCPROD, PRECOBASEPROD, CUSTO) AS
+
+select pd.refprod, pd.codsecao, pd.descprod, pd.precobaseprod,
+(case
+when (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null)) > 0
+then (select custounit from eqcustoprodsp(pd.codemp, pd.codfilial, pd.codprod,cast('today' as date),'M',pd.codempax, pd.codfilialax,pd.codalmox, null))
+
+else pd.custoinfoprod end) custo
+from eqproduto pd
+;
+
 
 /* Grant role for this database */
 
