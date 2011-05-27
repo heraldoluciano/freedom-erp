@@ -725,7 +725,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
 		adicCampo( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
-		if ( Aplicativo.nomemodulo.equals( "Atendimento" ) ) {
+		
+		
+		if ( Aplicativo.nomemodulo.equals( "Atendimento" )) {
 			setAltCab( 190 );
 			adicCampoInvisivel( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false );
 			adicDescFK( txtRazCli, 7, 100, 345, 20, "RazCli", "Razão social do cliente" );
@@ -735,16 +737,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			adicDescFK( txtDescTipoConv, 456, 60, 283, 20, "DescTpConv", "Tipo de conveniado" );
 			adicDescFK( txtNomeEnc, 355, 100, 383, 20, "NomeEnc", "Org.Encaminhador" );
+		
 			if ( !oPrefs[ Orcamento.PrefOrc.TITORCTXT01.ordinal() ].equals( "" ) ) {
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ Orcamento.PrefOrc.TITORCTXT01.ordinal() ].toString().trim(), ListaCampos.DB_SI, false );
-			}
+			}		
+			
 			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
 			adicCampoInvisivel( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 			adicCampoInvisivel( txtCodAtend, "CodAtend", "Plano atendente.", ListaCampos.DB_FK, txtDescAtend, false );
 
 		}
 		else {
+			
 			setAltCab( 160 );
+			
 			adicCampo( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
 			adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
 			adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
@@ -753,6 +759,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 			adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );
 			adicCampoInvisivel( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, txtDescClComiss, false );
+			
+			if(Aplicativo.nomemodulo.equals( "CRM" )) {
+				
+				adicCampoInvisivel( txtCodAtend, "CodAtend", "Plano atendente.", ListaCampos.DB_FK, txtDescAtend, false );
+				
+			}
+			
 		}
 
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
@@ -1366,10 +1379,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			// Verifica se o orçamento foi gerado por um atendimento e adiciona a PK para ser preenchida na tela de complemento.
 			if ( txtStatusOrc.getVlrString().equals( "OA" ) || txtCodAtend.getVlrInteger().intValue() > 0 ) {
 				dl.setFKAtend( txtCodAtend.getVlrInteger().intValue() );
+				
 			}
 			
 			dl.setConexao( con );
 			dl.setVisible( true );
+			
 			if ( dl.OK ) {
 				oValores = dl.getValores();
 				dl.dispose();
@@ -1378,7 +1393,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			}
 			
 			if ( oValores != null ) {
-				lcCampos.edit();
+				
+			//	lcCampos.carregaDados();
+				
+				lcCampos.edit( );
 
 				txtPercDescOrc.setVlrBigDecimal( (BigDecimal) oValores[ 0 ] );
 				txtVlrDescOrc.setVlrBigDecimal( (BigDecimal) oValores[ 1 ] );
@@ -1398,14 +1416,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ( ( oValores[ 7 ] != null ) && ( ( (Integer) oValores[ 7 ] ) ).intValue() > 0 ) {
 					txtCodAtend.setVlrInteger( (Integer) oValores[ 7 ] );
 				}
+				
 				lcCampos.post();
+				
 				lcCampos.carregaDados();
+				
 				if ( oValores[ 5 ].equals( "S" ) ) {
 					aprovar();
 				}
 				if ( oValores[ 6 ].equals( "S" ) ) {
 					imprimir( true );
 				}
+				
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
