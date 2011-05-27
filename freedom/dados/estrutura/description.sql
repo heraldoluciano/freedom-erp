@@ -1,6 +1,6 @@
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Atendentes.' WHERE RDB$RELATION_NAME='ATATENDENTE';
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Tabela para vinculo entre item de contas a receber e atendimentos, a fim de registrar contatos e atendimentos,
-referentes a cobranÃ§as e negociaÃ§Ãµes de tÃ­tulos.' WHERE RDB$RELATION_NAME='ATATENDIMENTOITREC';
+referentes a cobranças e negociações de títulos.' WHERE RDB$RELATION_NAME='ATATENDIMENTOITREC';
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Tabela para classificar um atendimento.
 ex.: bug, cortesia, garantia, etc.' WHERE RDB$RELATION_NAME='ATCLASATENDO';
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Tabela de empresas encaminhadoras de conveniados' WHERE RDB$RELATION_NAME='ATENCAMINHADOR';
