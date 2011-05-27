@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -158,6 +159,8 @@ public class ExtractDescription {
 					}
 					buffer.append(";");
 					//System.out.println(buffer.toString());
+					//new String(description.getBytes(), Charset.forName("ISO-8859-1"));
+					//bwfile.write(new String(buffer.toString().getBytes(), Charset.forName("ISO-8859-1") ) );
 					bwfile.write(buffer.toString());
 					bwfile.write("\n");
 					//break;
