@@ -1687,16 +1687,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				}
 			}
 			
-			
-			
-			
 			if(selecionados.size() == 0 ){
 				
 				if( tabManut.getSelectedRow() < 0 ) {
 					Funcoes.mensagemInforma( this, "Selecione um título!" );
 					return;
-				}
-				else {
+				} else {
 					int row = tabManut.getLinhaSel();
 					
 					valorTotalParc = valorTotalParc.add( 
@@ -1708,10 +1704,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 									((StringDireita) tabManut.getValor( row, enum_tab_manut.VLRAPAGITPAG.ordinal()) ).toString() ) );
 					
 					selecionados.add(row);
-					
 				}
-				
-				
 			}
 			
 			if ( imgStatusAt == imgPago ) {
@@ -1859,6 +1852,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 			
+			boolean manterDados = false;
+			for(Integer row : selecionados){
+				String codPag = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
+				if(codPag != null && codPag.trim().length() > 0){
+					if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+						manterDados = true;
+					break;
+				}
+			}
+			
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sqlLanca = new StringBuilder();
@@ -1941,8 +1944,13 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				ps.setString(7, (String) tabManut.getValor( row , enum_tab_manut.CODFOR.ordinal()) );
 				
 				ps.setInt( 8, Aplicativo.iCodEmp );
-				ps.setInt( 9, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( 10, sRets[1] );
+				ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				if(manterDados && 
+						((String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal())).trim().length() > 0){
+					ps.setString( 10, (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal()) );
+				}else{
+					ps.setString( 10, sRets[1] );
+				}
 				
 				
 				if ( "".equals( sRets[ 5 ].trim() ) ) {
@@ -1954,8 +1962,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					ps.setInt( 11, Aplicativo.iCodEmp );
 					ps.setInt( 12, ListaCampos.getMasterFilial( "FNCC" ) );
 					ps.setInt( 13, iAnoCC );
-					ps.setString( 14, sRets[ 5 ] );
-					
+					if(manterDados && 
+							((String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal())).length() > 0){
+						ps.setString( 14, (String) tabManut.getValor( row , enum_tab_manut.CODCC.ordinal()) );
+					}else{
+						ps.setString( 14, sRets[ 5 ] );
+					}
 				}
 				
 				ps.setDate( 15, Funcoes.dateToSQLDate( 
