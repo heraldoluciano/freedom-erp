@@ -95,7 +95,6 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	private boolean multiBaixa;
-	private boolean contaRequerida = true;
 	private boolean categoriaRequerida = true;
 
 	public DLBaixaPag( Component cOrig ) {
@@ -108,13 +107,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		montaTela();
 	}
 	
-	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean  contaRequerida, boolean categoriaRequerida){
+	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean categoriaRequerida){
 		super( cOrig );
 		setTitulo( "Baixa" );
 		setAtribos( 360, 420 );
 		
 		this.multiBaixa = multibaixa;
-		this.contaRequerida = contaRequerida;
 		this.categoriaRequerida = categoriaRequerida;
 		
 		montaListaCampos();
@@ -131,7 +129,6 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
-		txtCodConta.setRequerido( contaRequerida );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Código", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
@@ -178,10 +175,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			Funcoes.setBordReq( txtCodPlan );
 		}
 		
-		if(contaRequerida) { 		
-			Funcoes.setBordReq( txtCodConta );
-		}
-		
+		Funcoes.setBordReq( txtCodConta );
 		Funcoes.setBordReq( txtDoc );
 		Funcoes.setBordReq( txtDtPagto );
 		Funcoes.setBordReq( txtVlrPago );
@@ -264,7 +258,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		if ( evt.getSource() == btOK ) {
 
-			if ( txtCodConta.getVlrString().length() < 1 && txtCodConta.isRequerido() ) {
+			if ( txtCodConta.getVlrString().length() < 1  ) {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 			}
 			else if ( txtCodPlan.getVlrString().length() < 13 && txtCodPlan.isRequerido() ) {

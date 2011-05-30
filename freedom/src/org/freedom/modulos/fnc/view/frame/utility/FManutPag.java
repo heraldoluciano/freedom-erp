@@ -1722,21 +1722,21 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() ) ) );
 				sRets = null;
 				
-				boolean contaRequerida = false;
+//				boolean contaRequerida = false;
 				boolean categoriaRequeirda = false;
 				for(Integer row : selecionados){
-					String codConta = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
+//					String codConta = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
 					String codPlan = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 					
-					if(codConta == null || codConta.trim().length() == 0 ){
-						contaRequerida = true;
-					}
+//					if(codConta == null || codConta.trim().length() == 0 ){
+//						contaRequerida = true;
+//					}
 					if(codPlan == null || codPlan.trim().length() == 0){
 						categoriaRequeirda = true;
 					}
 				}
 	
-				dl = new DLBaixaPag( this, selecionados.size() > 1, contaRequerida, categoriaRequeirda );
+				dl = new DLBaixaPag( this, selecionados.size() > 1, categoriaRequeirda );
 	
 				sVals[ 0 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODFOR.ordinal() ) ;
 				sVals[ 1 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.RAZFOR.ordinal() );
@@ -1767,6 +1767,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	
 				if ( dl.OK ) {
 					
+					boolean manterDados = false;
+					for(Integer row : selecionados){
+						String codCategoria = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
+						if( codCategoria != null && codCategoria.trim().length() > 0 ){
+							if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
+								manterDados = true;
+							break;
+						}
+					}
+					
 					sRets = dl.getValores();
 	
 					sSQL.append( "UPDATE FNITPAGAR SET " );
@@ -1785,7 +1795,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							ps.setString( 1, sRets[ 0 ] );
 							ps.setInt( 2, Aplicativo.iCodEmp );
 							ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-							ps.setString( 4, sRets[ 1 ] );
+							
+							if(manterDados && categoriaRequeirda && 
+									( ((String) tabManut.getValor(row, enum_tab_manut.CODPLAN.ordinal()) ).trim().length() > 0 ) ){
+								ps.setString( 4, (String) tabManut.getValor( row, enum_tab_manut.CODPLAN.ordinal() ) );
+							}else{
+								ps.setString( 4, sRets[ 1 ] );
+							}
+							
 							ps.setInt( 5, Aplicativo.iCodEmp );
 							ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 							
@@ -1833,7 +1850,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							ps.executeUpdate();
 						}
 						
-						this.geraLancamentosFinanceiros(selecionados, sRets);
+						this.geraLancamentosFinanceiros(selecionados, sRets, manterDados);
 	
 						con.commit();
 					} catch ( SQLException err ) {
@@ -1861,19 +1878,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			}
 		}
 		
-		private void geraLancamentosFinanceiros(List<Integer> selecionados, String[] sRets) throws SQLException{
+		private void geraLancamentosFinanceiros(List<Integer> selecionados, String[] sRets, boolean manterDados) throws SQLException{
 			if(selecionados.size() == 1){
 				return;
-			}
-			
-			boolean manterDados = false;
-			for(Integer row : selecionados){
-				String codPag = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
-				if(codPag != null && codPag.trim().length() > 0){
-					if(Funcoes.mensagemConfirma( this, "A contas ja categorizadas deseja manter as informações?") == JOptionPane.YES_OPTION)
-						manterDados = true;
-					break;
-				}
 			}
 			
 			PreparedStatement ps = null;
@@ -1960,7 +1967,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				ps.setInt( 8, Aplicativo.iCodEmp );
 				ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				if(manterDados && 
-						((String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal())).trim().length() > 0){
+						((String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal())).trim().length() > 0){
 					ps.setString( 10, (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal()) );
 				}else{
 					ps.setString( 10, sRets[1] );
@@ -1976,12 +1983,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					ps.setInt( 11, Aplicativo.iCodEmp );
 					ps.setInt( 12, ListaCampos.getMasterFilial( "FNCC" ) );
 					ps.setInt( 13, iAnoCC );
-					if(manterDados && 
-							((String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal())).length() > 0){
-						ps.setString( 14, (String) tabManut.getValor( row , enum_tab_manut.CODCC.ordinal()) );
-					}else{
-						ps.setString( 14, sRets[ 5 ] );
-					}
+					ps.setString( 14, sRets[ 5 ] );
 				}
 				
 				ps.setDate( 15, Funcoes.dateToSQLDate( 
