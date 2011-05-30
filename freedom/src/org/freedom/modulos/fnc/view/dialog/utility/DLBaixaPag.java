@@ -25,24 +25,22 @@ package org.freedom.modulos.fnc.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JTextFieldFK;
-import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.dialog.FFDialogo;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
-import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.library.functions.Funcoes;
+import org.freedom.library.persistence.GuardaCampo;
+import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JTextFieldFK;
+import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 
 public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
@@ -175,9 +173,15 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	}
 
 	private void montaTela() {
-
-		Funcoes.setBordReq( txtCodPlan );
-		Funcoes.setBordReq( txtCodConta );
+		
+		if(categoriaRequerida) {
+			Funcoes.setBordReq( txtCodPlan );
+		}
+		
+		if(contaRequerida) { 		
+			Funcoes.setBordReq( txtCodConta );
+		}
+		
 		Funcoes.setBordReq( txtDoc );
 		Funcoes.setBordReq( txtDtPagto );
 		Funcoes.setBordReq( txtVlrPago );
@@ -191,42 +195,25 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtDtVenc.setAtivo( false );
 		txtVlrParc.setAtivo( false );
 
-		adic( new JLabelPad( "Cód.for." ), 7, 0, 80, 20 );
-		adic( txtCodFor, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Razão do fornecedor" ), 90, 0, 250, 20 );
-		adic( txtRazFor, 90, 20, 250, 20 );
-		adic( new JLabelPad( "Cód.conta" ), 7, 40, 80, 20 );
-		adic( txtCodConta, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 40, 250, 20 );
-		adic( txtDescConta, 90, 60, 250, 20 );
-		adic( new JLabelPad( "Cód.ctg." ), 7, 80, 100, 20 );
-		adic( txtCodPlan, 7, 100, 100, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 110, 80, 230, 20 );
-		adic( txtDescPlan, 110, 100, 230, 20 );
-		adic( new JLabelPad( "Cód.c.c." ), 7, 120, 100, 20 );
-		adic( txtCodCC, 7, 140, 100, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 230, 20 );
-		adic( txtDescCC, 110, 140, 230, 20 );
+		adic( txtCodFor			, 7		, 20	, 80	, 20, "Cód.for." );
+		adic( txtRazFor			, 90	, 20	, 250	, 20, "Razão do fornecedor" );
+		adic( txtCodConta		, 7		, 60	, 80	, 20, "Cód.conta" );
+		adic( txtDescConta		, 90	, 60	, 250	, 20, "Descrição da conta" );
+		adic( txtCodPlan		, 7		, 100	, 100	, 20, "Cód.categoria" );
+		adic( txtDescPlan		, 110	, 100	, 230	, 20, "Descrição da categoria" );
+		adic( txtCodCC			, 7		, 140	, 100	, 20, "Cód.C.C." );
+		adic( txtDescCC			, 110	, 140	, 230	, 20, "Descrição do centro de custo" );
 
-		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20 );
-		adic( txtCodTipoCob, 7, 180, 80, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 250, 20 );
-		adic( txtDescTipoCob, 90, 180, 250, 20 );
+		adic( txtCodTipoCob		, 7		, 180	, 80	, 20, "Cod.Tp.Cob" );
+		adic( txtDescTipoCob	, 90	, 180	, 250	, 20, "Descrição do tipo de cobrança" );
 
-		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
-		adic( txtDoc, 7, 220, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
-		adic( txtDtEmis, 120, 220, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 200, 110, 20 );
-		adic( txtDtVenc, 230, 220, 110, 20 );
-		adic( new JLabelPad( "Vlr. Parc." ), 7, 240, 110, 20 );
-		adic( txtVlrParc, 7, 260, 110, 20 );
-		adic( new JLabelPad( "Dt. Pagto." ), 120, 240, 107, 20 );
-		adic( txtDtPagto, 120, 260, 107, 20 );
-		adic( new JLabelPad( "Vlr. Pago" ), 230, 240, 110, 20 );
-		adic( txtVlrPago, 230, 260, 110, 20 );
-		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
-		adic( txtObs, 7, 300, 333, 20 );
+		adic( txtDoc			, 7		, 220	, 110	, 20, "Doc." );
+		adic( txtDtEmis			, 120	, 220	, 107	, 20, "Emissão" );
+		adic( txtDtVenc			, 230	, 220	, 110	, 20, "Vencimento" );
+		adic( txtVlrParc		, 7		, 260	, 110	, 20, "Vlr. Parc." );
+		adic( txtDtPagto		, 120	, 260	, 107	, 20, "Dt. Pagto." );
+		adic( txtVlrPago		, 230	, 260	, 110	, 20, "Vlr. Pago" );
+		adic( txtObs			, 7		, 300	, 333	, 20, "Observações"  );
 
 		lcCC.addCarregaListener( this );
 
@@ -237,7 +224,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		if(multiBaixa){
 			txtVlrPago.setAtivo( false );
 			txtRazFor.setVlrString( "PGTOS MULTIPLOS" );
-		}else{
+		}
+		else{
 			txtCodFor.setVlrString( sVals[ 0 ] );
 			txtRazFor.setVlrString( sVals[ 1 ] );
 			txtCodConta.setVlrString( sVals[ 2 ] );
@@ -276,10 +264,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		if ( evt.getSource() == btOK ) {
 
-			if ( txtCodConta.getVlrString().length() < 1 ) {
+			if ( txtCodConta.getVlrString().length() < 1 && txtCodConta.isRequerido() ) {
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 			}
-			else if ( txtCodPlan.getVlrString().length() < 13 ) {
+			else if ( txtCodPlan.getVlrString().length() < 13 && txtCodPlan.isRequerido() ) {
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
 			}
 			else if ( txtDtPagto.getVlrString().length() < 10 ) {
