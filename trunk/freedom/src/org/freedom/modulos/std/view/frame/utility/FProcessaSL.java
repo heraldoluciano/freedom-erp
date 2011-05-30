@@ -122,7 +122,9 @@ public class FProcessaSL extends FFilho implements ActionListener {
 				double dSaldo = 0;
 				bOK = true;
 				int iFilialPlan = ListaCampos.getMasterFilial( "FNPLANEJAMENTO" );
-				int iFilialSaldo = ListaCampos.getMasterFilial( "FNSALDOSL" );
+				int iFilialSaldo = ListaCampos.getMasterFilial( "FNSALDOLANCA" );
+				//int iFilialSaldo = ListaCampos.getMasterFilial( "FNSALDOSL" );
+				
 				while ( rs.next() && bOK ) {
 					if ( "1010100000004".equals( rs.getString( "CodPlan" ) ) ) {
 						System.out.println( "Debug" );
