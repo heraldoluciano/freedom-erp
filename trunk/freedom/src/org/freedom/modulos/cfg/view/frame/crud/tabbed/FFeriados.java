@@ -76,6 +76,8 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 
 	private JCheckBoxPad cbTrabFer = new JCheckBoxPad( "Feriado Trabalista?", "S", "N" );
 
+	private JCheckBoxPad cbOptFer = new JCheckBoxPad( "Feriado Optativo?", "S", "N" );
+
 	public FFeriados() {
 
 		setTitulo( "Cadastro de Feriados" );
@@ -109,6 +111,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		adicCampo( txaDescFer, 100, 20, 300, 20, "DescFer", "Descrição do feriado", ListaCampos.DB_SI, false );
 		adicDB( cbBanc, 410, 15, 200, 20, "BancFer", "", false );
 		adicDB( cbTrabFer, 410, 35, 200, 20, "TrabFer", "", false );
+		adicDB( cbOptFer, 410, 55, 200, 20, "OptFer", "", false );
 		setListaCampos( false, "FERIADO", "SG" );
 
 	}
@@ -226,6 +229,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		if ( ievt.getListaCampos() == lcCampos ) {
 			cbBanc.setVlrString( "S" );
 			cbTrabFer.setVlrString( "S" );
+			cbOptFer.setVlrString( "N" );
 		}
 	}
 
