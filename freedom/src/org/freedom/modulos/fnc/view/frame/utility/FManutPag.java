@@ -1555,7 +1555,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sVals = new String[ 13 ];
 					sRelPlanPag = buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
 
-					dl = new DLBaixaPag( this, false );
+					dl = new DLBaixaPag( this );
 
 					sVals[ 0 ] = txtCodForBaixa.getVlrString();
 					sVals[ 1 ] = txtRazForBaixa.getVlrString();
@@ -1721,8 +1721,22 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 	
 				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() ) ) );
 				sRets = null;
+				
+				boolean contaRequerida = false;
+				boolean categoriaRequeirda = false;
+				for(Integer row : selecionados){
+					String codConta = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
+					String codPlan = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
+					
+					if(codConta == null || codConta.trim().length() == 0 ){
+						contaRequerida = true;
+					}
+					if(codPlan == null || codPlan.trim().length() == 0){
+						categoriaRequeirda = true;
+					}
+				}
 	
-				dl = new DLBaixaPag( this, selecionados.size() > 1 );
+				dl = new DLBaixaPag( this, selecionados.size() > 1, contaRequerida, categoriaRequeirda );
 	
 				sVals[ 0 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODFOR.ordinal() ) ;
 				sVals[ 1 ] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.RAZFOR.ordinal() );
@@ -1947,7 +1961,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				ps.setInt( 9, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				if(manterDados && 
 						((String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal())).trim().length() > 0){
-					ps.setString( 10, (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal()) );
+					ps.setString( 10, (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal()) );
 				}else{
 					ps.setString( 10, sRets[1] );
 				}

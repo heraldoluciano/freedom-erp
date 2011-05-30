@@ -97,15 +97,28 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	private boolean multiBaixa;
+	private boolean contaRequerida = true;
+	private boolean categoriaRequerida = true;
 
-	public DLBaixaPag( Component cOrig, boolean multiBaixa ) {
+	public DLBaixaPag( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Baixa" );
 		setAtribos( 360, 420 );
 		
-		this.multiBaixa = multiBaixa;
-
+		montaListaCampos();
+		montaTela();
+	}
+	
+	public DLBaixaPag(Component cOrig, boolean multibaixa, boolean  contaRequerida, boolean categoriaRequerida){
+		super( cOrig );
+		setTitulo( "Baixa" );
+		setAtribos( 360, 420 );
+		
+		this.multiBaixa = multibaixa;
+		this.contaRequerida = contaRequerida;
+		this.categoriaRequerida = categoriaRequerida;
+		
 		montaListaCampos();
 		montaTela();
 	}
@@ -120,6 +133,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodConta.setTabelaExterna( lcConta, null );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
+		txtCodConta.setRequerido( contaRequerida );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Código", ListaCampos.DB_PK, false ) );
 		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
@@ -146,6 +160,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
+		txtCodPlan.setRequerido( categoriaRequerida );
 
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
@@ -221,7 +236,6 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		if(multiBaixa){
 			txtVlrPago.setAtivo( false );
-			
 			txtRazFor.setVlrString( "PGTOS MULTIPLOS" );
 		}else{
 			txtCodFor.setVlrString( sVals[ 0 ] );
@@ -321,15 +335,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
-	public void afterCarrega( CarregaEvent cevt ) {
-
-	}
+	public void afterCarrega( CarregaEvent cevt ) { }
 
 	public void setConexao( DbConnection cn ) {
 
