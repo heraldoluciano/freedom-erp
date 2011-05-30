@@ -30,6 +30,7 @@ import org.freedom.library.swing.frame.AplicativoPD;
 import org.freedom.library.swing.frame.FPrincipalPD;
 import org.freedom.library.swing.frame.LoginPD;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FEstadoCivil;
+import org.freedom.modulos.cfg.view.frame.crud.tabbed.FFeriados;
 import org.freedom.modulos.grh.view.frame.crud.plain.FArea;
 import org.freedom.modulos.grh.view.frame.crud.plain.FBeneficio;
 import org.freedom.modulos.grh.view.frame.crud.plain.FCaracteristica;
@@ -71,7 +72,6 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Empregadores", "Empregadores", 'p', 100100600, 2, true, FEmpregadores.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Benefícios", "Cadastro de Benefícios", 'b', 100100700, 2, true, FBeneficio.class );
 
-
 		addSeparador( 100100000 );
 
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Areas", "Areas", 'A', 100100700, 2, true, FArea.class );
@@ -85,6 +85,7 @@ public class FreedomGRH extends AplicativoPD {
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 100101300, 1, true, FTabelaIRRF.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 100101400, 1, true, FTabelaINSS.class );
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Cadastro de Feriados", 'r', 100101500, 2, true, FFeriados.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de vagas", "Cadastro de vagas", 'V', 200100000, 1, true, FVaga.class );
@@ -95,7 +96,7 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividade por vaga", "Relatório de atividade por vaga", 'a', 200301000, 1, true, FRRelAtiv.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Vagas", "Relatório de Vagas", 'a', 200302000, 1, true, FRVagas.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividade", "Relatório de atividade", 'e', 200303000, 1, true, FRAtividade.class );
-
+		
 		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "btMedida.gif", "Características", "Características", 100101000, FCaracteristica.class );
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
