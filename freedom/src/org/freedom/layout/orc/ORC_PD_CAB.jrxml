@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="71"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -21,9 +21,7 @@
 	<parameter name="LOGOEMP" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="CODFILIAL" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT EM.RAZEMP,FI.FONEFILIAL FONEEMP,FI.FAXFILIAL FAXEMP,EM.FOTOEMP, FI.CNPJFILIAL CNPJEMP
-FROM SGFILIAL FI, SGEMPRESA EM
-WHERE EM.CODEMP=$P{CODEMP} AND FI.CODEMP=EM.CODEMP AND $P{CODFILIAL}]]>
+		<![CDATA[SELECT EM.RAZEMP,FI.FONEFILIAL FONEEMP,FI.FAXFILIAL FAXEMP,EM.FOTOEMP, FI.CNPJFILIAL CNPJEMP FROM SGFILIAL FI, SGEMPRESA EM WHERE EM.CODEMP=$P{CODEMP} AND FI.CODFILIAL=$P{CODFILIAL} AND FI.CODEMP=EM.CODEMP]]>
 	</queryString>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="FONEEMP" class="java.lang.String"/>
