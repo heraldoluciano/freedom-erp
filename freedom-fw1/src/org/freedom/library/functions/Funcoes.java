@@ -69,9 +69,6 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
-//import org.brazilutils.br.uf.UF;
-//import org.brazilutils.br.uf.ie.InscricaoEstadual;
-
 import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -1974,7 +1971,7 @@ public class Funcoes {
 			if (stime == null)
 				return ttime;
 
-			System.out.println("Time: " + stime);
+//			System.out.println("Time: " + stime);
 			GregorianCalendar cal = new GregorianCalendar();
 			cal.setTime(new Date());
 
@@ -1998,17 +1995,17 @@ public class Funcoes {
 				cal.set(Calendar.SECOND, new Integer(sstime[2]).intValue());
 			}
 			catch (Exception e) {
-				System.out.println("Tempo sem contagem de segundos.");
+//				System.out.println("Tempo sem contagem de segundos.");
 				cal.set(Calendar.SECOND, 0);
 			}
 
-			int iHora = cal.get(Calendar.HOUR_OF_DAY);
-			int iMinuto = cal.get(Calendar.MINUTE);
-			int iSegundo = cal.get(Calendar.SECOND);
+			//int iHora = cal.get(Calendar.HOUR_OF_DAY);
+			//int iMinuto = cal.get(Calendar.MINUTE);
+			//int iSegundo = cal.get(Calendar.SECOND);
 
 			ttime = Funcoes.dateToSQLTime(cal.getTime());
 
-			System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
+	//		System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
