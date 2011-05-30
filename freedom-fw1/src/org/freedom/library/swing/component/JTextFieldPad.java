@@ -278,6 +278,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		else
 			setBorder(( new JTextField() ).getBorder());
 	}
+	
+	public boolean isRequerido() {
+		return bRequerido;
+	}
 
 	public void tiraBorda() {
 		setBorder(null);
