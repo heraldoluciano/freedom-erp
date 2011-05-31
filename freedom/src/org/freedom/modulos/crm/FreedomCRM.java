@@ -52,6 +52,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FQualificacao;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoCont;
 import org.freedom.modulos.crm.view.frame.crud.plain.FTipoImp;
+import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.crm.view.frame.crud.special.FHistorico;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FCampanha;
 import org.freedom.modulos.crm.view.frame.crud.tabbed.FContato;
@@ -204,6 +205,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 400000000, TP_OPCAO_MENU, "Consultas", "", 'n', 401200000, 1, false, null );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 401200100, 2, true, FConsPreco.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Clientes", "Consulta de clientes", 'C', 301200200, 2, true, FConsultaCli.class );
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Venda/Contrato", "Venda/Contrato", 'V', 401300000, 1, true, FVendaContrato.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Projetos", "", 'S', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 500100000, 1, true, FContrato.class );
