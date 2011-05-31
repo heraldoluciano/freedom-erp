@@ -1722,15 +1722,10 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODPAG.ordinal() ) ) );
 				sRets = null;
 				
-//				boolean contaRequerida = false;
 				boolean categoriaRequeirda = false;
 				for(Integer row : selecionados){
-//					String codConta = (String) tabManut.getValor( row , enum_tab_manut.NUMCONTA.ordinal() );
 					String codPlan = (String) tabManut.getValor( row , enum_tab_manut.CODPLAN.ordinal() );
 					
-//					if(codConta == null || codConta.trim().length() == 0 ){
-//						contaRequerida = true;
-//					}
 					if(codPlan == null || codPlan.trim().length() == 0){
 						categoriaRequeirda = true;
 					}
@@ -1796,7 +1791,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( 2, Aplicativo.iCodEmp );
 							ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
 							
-							if(manterDados && categoriaRequeirda && 
+							if(manterDados &&  
 									( ((String) tabManut.getValor(row, enum_tab_manut.CODPLAN.ordinal()) ).trim().length() > 0 ) ){
 								ps.setString( 4, (String) tabManut.getValor( row, enum_tab_manut.CODPLAN.ordinal() ) );
 							}else{
