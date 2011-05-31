@@ -1,4 +1,4 @@
-/**
+ /**
  * @version 30/05/2011 <BR>
  * @author Setpoint Informática Ltda./Filipe Chagas <BR>
  * 
@@ -83,12 +83,18 @@ public class FVendaContrato extends FDados {
 	private ListaCampos lcItContrato = new ListaCampos( this, "IC" );
 
 	private ListaCampos lcVendaContrato = new ListaCampos( this, "VC" );
+	
+	private boolean autoPreencher = false;
+	
+	private String codVenda, codItem;
 
 	public FVendaContrato() {
+
 		super();
-		setTitulo( "Cadastro de Atendentes" );
+		setTitulo( "Associar Venda/Contrato" );
+		this.setName( "AssocVendaContrato" );
 		setAtribos( 50, 20, 400, 350 );
-		
+
 		lcVenda.add( new GuardaCampo( txtVdCodigo, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtVdTipo, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVdSerie, "Serie", "Série", ListaCampos.DB_SI, false ) );
@@ -106,6 +112,7 @@ public class FVendaContrato extends FDados {
 		lcItVenda.add( new GuardaCampo( txtVdQtd, "QtdItVenda", "Qtd.It.Venda", ListaCampos.DB_SI, false ) );
 		lcItVenda.add( new GuardaCampo( txtVdPrecoItem, "PrecoItVenda", "Preço.Item", ListaCampos.DB_SI, false ) );
 		lcItVenda.add( new GuardaCampo( txtVdVlrLiqItem, "VlrLiqItVenda", "V.Liq.Item", ListaCampos.DB_SI, false ) );
+		lcItVenda.setDinWhereAdic( "CODVENDA=#N", txtVdCodigo );
 		txtVdCodItem.setPK( true );
 		lcItVenda.montaSql( false, "ITVENDA", "VD" );
 		lcItVenda.setQueryCommit( false );
@@ -122,10 +129,18 @@ public class FVendaContrato extends FDados {
 		lcItContrato.add( new GuardaCampo( txtCtCodItem, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, true ) );
 		lcItContrato.add( new GuardaCampo( txtCtCodigo, "CodContr", "Cód.Contrato", ListaCampos.DB_PK, true ) );
 		lcItContrato.add( new GuardaCampo( txtCtDescItem, "DescItContr", "Desc.It.Contr.", ListaCampos.DB_SI, false ) );
+		lcItContrato.setDinWhereAdic( "CodContr=#N", txtCtCodigo );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.setReadOnly( true );
 		txtCtCodItem.setTabelaExterna( lcItContrato, FContrato.class.getCanonicalName() );
+	}
+	
+	public void setVendaItem(String codVenda, String codItem){
+		//Funcoes.mensagem( codVenda + "/" + codItem, "", 1 );
+		this.autoPreencher = true;
+		this.codVenda = codVenda;
+		this.codItem = codItem;
 	}
 	
 	private void montaTela() {
@@ -135,9 +150,12 @@ public class FVendaContrato extends FDados {
 		adicDescFK( txtVdDoc, 160, 20, 67, 20, "DocVenda", "Nota" );
 		adicDescFK( txtVdSerie, 230, 20, 67, 20, "Serie", "Série" );
 
+		txtVdCodItem.setPKFK( true, true );
+		txtVdCodigo.setPKFK( true, true );
+
 		adicDescFK( txtVdEmissao, 7, 60, 80, 20, "DtEmitVenda", "Emissão" );
 		adicDescFK( txtVdQtd, 90, 60, 67, 20, "QtdItVenda", "Qtd.It.Venda" );
-		adicDescFK( txtVdPrecoItem, 160, 60, 67, 20, "PrecoItVenda", "Preçoo.Item" );
+		adicDescFK( txtVdPrecoItem, 160, 60, 67, 20, "PrecoItVenda", "Preço.Item" );
 
 		adicDescFK( txtVdVlrLiqItem, 7, 100, 80, 20, "VlrLiqItVenda", "V.Liq.Item" );
 
@@ -145,6 +163,8 @@ public class FVendaContrato extends FDados {
 		adicCampo( txtCtCodItem, 90, 140, 67, 20, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_SI, true );
 		adicDescFK( txtCtDescricao, 160, 140, 200, 20, "DescContr", "Desc.Contr." );
 		adicDescFK( txtCtDescItem, 7, 180, 200, 20, "DescItContr", "Desc.It.Contr." );
+		
+		txtCtCodItem.setFK( true );
 
 		adicCampo( txtDtIniApuracao, 7, 220, 80, 20, "DtIniApura", "Dt.Ini.Apuração", ListaCampos.DB_SI, true );
 		adicCampo( txtDtFimApuracao, 90, 220, 80, 20, "DtFinApura", "Dt.Fim.Apuração", ListaCampos.DB_SI, true );
@@ -154,18 +174,35 @@ public class FVendaContrato extends FDados {
 
 		setListaCampos( true, "ITVENDAVDITCONTR", "VD" );
 		lcCampos.setQueryInsert( false );
+		
+		this.autoCarregamento();
+	}
+	
+	public void autoCarregamento(){
+		if (this.autoPreencher){
+			this.txtVdCodigo.setVlrString( codVenda );
+			this.txtVdCodItem.setVlrString( codItem );
+			
+			this.txtVdCodigo.setAtivo( false );
+			this.txtVdCodItem.setAtivo( false );
+			
+			lcItVenda.carregaDados();
+			lcVenda.carregaDados();
+			
+			this.lcCampos.carregaDados();
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
 
-		super.setConexao( cn );
-
-		montaTela();
+		super.setConexao( cn );		
 
 		lcVenda.setConexao( cn );
 		lcContrato.setConexao( cn );
 		lcItVenda.setConexao( cn );
 		lcItContrato.setConexao( cn );
+		
+		montaTela();
 	}
 }
 
