@@ -43,6 +43,8 @@ public class FEspecAtend extends FDados {
 	
 	private final JCheckBoxPad cbMrelCobEspec = new JCheckBoxPad( "Mostra no relatório de cobrança ?", "S", "N" );
 	
+	private final JCheckBoxPad cbBhEspec = new JCheckBoxPad( "Conta para banco de horas ?", "S", "N" );
+	
 	private final JTextFieldPad txtTempoMinCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private final JTextFieldPad txtTempoMaxCobEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -76,8 +78,7 @@ public class FEspecAtend extends FDados {
 		adicDB( 	cbContMetaEspec, 		 7, 	140, 	300, 	20, "ContMetaEspec", 	"", 												true );
 		adicDB( 	cbPgComiEspec, 			 7, 	180, 	300, 	20, "PgComiEspec", 		"", 												true );
 		adicDB( 	cbMrelCobEspec, 		 7, 	220, 	300, 	20, "MrelCobEspec", 	"", 												true );
-		
-		
+		adicDB( 	cbBhEspec, 				 7, 	240, 	300, 	20, "BhEspec", 			"", 												true );
 
 		setListaCampos( true, "ESPECATEND", "AT" );
 	}
