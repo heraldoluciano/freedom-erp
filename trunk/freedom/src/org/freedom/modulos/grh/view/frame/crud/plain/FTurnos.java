@@ -33,6 +33,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -56,7 +57,11 @@ public class FTurnos extends FDados implements ActionListener {
 	private final JTextFieldPad txtHFimIntTurno = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
 
 	private final JTextFieldPad txtHFimTurno = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0 );
+	
+	private final JCheckBoxPad cbTrabSabTurno = new JCheckBoxPad( "Trabalha nos sábados", "S", "N" );
 
+	private final JCheckBoxPad cbTrabDomTurno = new JCheckBoxPad( "Trabalha nos domingos", "S", "N" );
+	
 	private final Vector<String> vTipoTurnoLab = new Vector<String>();
 
 	private final Vector<String> vTipoTurnoVal = new Vector<String>();
@@ -102,7 +107,8 @@ public class FTurnos extends FDados implements ActionListener {
 		adicCampo( txtHFimIntTurno, 213, 60, 100, 20, "HFimIntTurno", "Fim do intervalo", ListaCampos.DB_SI, true );
 		adicCampo( txtHFimTurno, 316, 60, 100, 20, "HFimTurno", "fim do turno", ListaCampos.DB_SI, true );
 		adicDB( rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:", true );
-
+		adicDB( cbTrabSabTurno, 7, 200, 409, 20,"TrabSabTurn", "", false );
+		adicDB( cbTrabDomTurno, 7, 230, 409, 20,"TrabDomTurn", "", false );
 		setListaCampos( true, "TURNO", "RH" );
 		lcCampos.setQueryInsert( false );
 	}
