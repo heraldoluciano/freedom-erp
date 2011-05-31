@@ -34,22 +34,14 @@
 	<parameter name="MESCOB" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select extract(year from a.dataatendo) ano,
-extract( month from a.dataatendo) mes , ct.codcontr, ic.qtditcontr,
-ic.vlritcontr valor, ic.vlritcontrexced valorexcedente, ct.dtinicio,
-sum( (case when a.cobcliespec='S' and a.statusatendo<>'NC'
-then (case when a.totalmin<a.tempomincobespec
-then a.tempomincobespec else
-(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0
-then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
-/60 ) qtdhoras
-from vditcontrato ic, vdcontrato ct, atatendimentovw01 a
-where ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr and
-ct.codemp=$P{CODEMP} and ct.codfilial=$P{CODFILIAL} and ct.codcli=$P{CODCLI} and ct.codcontr=$P{CODCONTR} and ic.coditcontr=$P{CODITCONTR} and
+extract( month from a.dataatendo) mes , a.codcontr, a.qtditcontr,
+a.vlritcontr valor, a.vlritcontrexced valorexcedente, a.dtinicio,
+sum(a.totalcobcli) qtdhoras
+from atatendimentovw02 a
+where a.codempct=$P{CODEMP} and a.codfilialct=$P{CODFILIAL} and a.codcli=$P{CODCLI} and a.codcontr=$P{CODCONTR} and a.coditcontr=$P{CODITCONTR} and
 a.dataatendo between $P{DTINIAC} and
 $P{DTFIM} and
-a.mrelcobespec='S' and a.codempct=ct.codemp and a.codfilialct=ct.codfilial and
-a.codcontr=ct.codcontr and a.coditcontr=ic.coditcontr and
-a.codempcl=ct.codempcl and a.codfilialcl=ct.codfilialcl and a.codcli=ct.codcli
+a.mrelcobespec='S'
 group by 1, 2, 3, 4, 5, 6, 7
 order by 1 desc, 2 desc]]>
 	</queryString>
