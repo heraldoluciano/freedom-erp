@@ -57,7 +57,7 @@ public class FEspecAtend extends FDados {
 		
 		setTitulo( "Especificação de Atendimentos" );
 		
-		setAtribos( 15, 30, 550, 400 );
+		setAtribos( 15, 30, 580,400 );
 		
 		montaTela(); 
 		
@@ -78,7 +78,7 @@ public class FEspecAtend extends FDados {
 		adicDB( 	cbContMetaEspec, 		 7, 	140, 	300, 	20, "ContMetaEspec", 	"", 												true );
 		adicDB( 	cbPgComiEspec, 			 7, 	180, 	300, 	20, "PgComiEspec", 		"", 												true );
 		adicDB( 	cbMrelCobEspec, 		 7, 	220, 	300, 	20, "MrelCobEspec", 	"", 												true );
-		adicDB( 	cbBhEspec, 				 7, 	240, 	300, 	20, "BhEspec", 			"", 												true );
+		adicDB( 	cbBhEspec, 				 7, 	260, 	300, 	20, "BhEspec", 			"", 												true );
 
 		setListaCampos( true, "ESPECATEND", "AT" );
 	}
