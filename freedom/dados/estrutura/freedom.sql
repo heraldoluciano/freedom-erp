@@ -10820,20 +10820,24 @@ ir.sitexpitrma='ET'
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
  COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
- CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
-
+ CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, 
+ CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, 
+ DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, 
+ TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
      
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, 
   a.codempea, a.codfilialea, a.codespec, e.descespec, 
   a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.statusatendo,
   c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
-  a.codempch, a.codfilialch, a.codchamado,
+  a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
   a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo,
   a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
-  e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec,
+  e.pgcomiespec, e.cobcliespec, e.contmetaespec, e.mrelcobespec, e.bhespec,
   e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN
-from atatendimento a, atatendente ate, atespecatend e, vdcliente c, attipoatendo ta
+from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
+left outer join crchamado ch on 
+ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
 where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
 e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
 c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
@@ -10844,18 +10848,18 @@ CREATE VIEW ATATENDIMENTOVW02
  ( CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
  CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
  CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, NOMECLI, CODCLI,
-  CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO,
+  CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO,
    DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN,
-    PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC,
-     PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI) AS
+    PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC,
+     PERCCOMIESPEC, TOTALMIN, TOTALGERAL, TOTALMETA, TOTALCOMIS, TOTALCOBCLI, TOTALBH) AS
 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, A.CODEMPAE, A.CODFILIALAE, A.CODATEND, 
 A.NOMEATEND, A.COEMPEA, A.CODFILIALEA, A.CODESPEC, A.DESCESPEC, 
  A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, A.STATUSATENDO, A.RAZCLI, A.NOMECLI, A.CODCLI,
-  A.CODEMPCL, A.CODFILIALCL, A.CODEMPCH, A.CODFILIALCH, A.CODCHAMADO, A.CODEMPTO, 
-  A.CODFILIALTO, A.CODTPATENDO,
+  A.CODEMPCL, A.CODFILIALCL, A.CODEMPCH, A.CODFILIALCH, A.CODCHAMADO, A.DESCCHAMADO,
+  A.CODEMPTO, A.CODFILIALTO, A.CODTPATENDO,
    A.DESCTPATENDO, A.OBSATENDO, A.DATAATENDO, A.DATAATENDOFIN, A.HORAATENDO, A.HORAATENDOFIN,
-    A.PGCOMIESPEC, A.COBCLIESPEC, A.CONTMETAESPEC, A.MRELCOBESPEC, A.TEMPOMINCOBESPEC, A.TEMPOMAXCOBESPEC,
+    A.PGCOMIESPEC, A.COBCLIESPEC, A.CONTMETAESPEC, A.MRELCOBESPEC, A.BHESPEC, A.TEMPOMINCOBESPEC, A.TEMPOMAXCOBESPEC,
      A.PERCCOMIESPEC, A.TOTALMIN, 
   (a.totalmin) / 60  totalgeral, 
 (( (case when a.contmetaespec='S' then (case when 
@@ -10873,7 +10877,8 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 then a.tempomincobespec else 
 (case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 
 then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) 
-)/60 ) totalcobcli
+)/60 ) totalcobcli,
+( (case when a.bhespec='S' then a.totalmin else 0 end)/60 ) totalbh
 from atatendimentovw01 a;
  
  ALTER TABLE ATCONVENIADO ADD 
