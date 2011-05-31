@@ -10818,9 +10818,12 @@ ir.sitexpitrma='ET'
 ;
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
+
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
  COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
- CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, 
+ CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, 
+ QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO,
+ STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, 
  CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, 
  DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, 
  TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN) AS
@@ -10828,8 +10831,9 @@ CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIAL
 select a.codemp, a.codfilial, a.codatendo, 
   a.codempae, a.codfilialae, a.codatend, ate.nomeatend, 
   a.codempea, a.codfilialea, a.codespec, e.descespec, 
-  a.codempct, a.codfilialct, a.codcontr, a.coditcontr, a.statusatendo,
-  c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
+  a.codempct, a.codfilialct, a.codcontr, a.coditcontr,
+  ict.qtditcontr, ict.vlritcontr, ict.vlritcontrexced, ct.dtinicio,
+  a.statusatendo, c.razcli, c.nomecli, c.codcli, c.codemp, c.codfilial,
   a.codempch, a.codfilialch, a.codchamado, ch.descchamado,
   a.codempto, a.codfilialto, a.codtpatendo, ta.desctpatendo,
   a.obsatendo, a.dataatendo, a.dataatendofin, a.horaatendo, a.horaatendofin,
@@ -10838,6 +10842,10 @@ select a.codemp, a.codfilial, a.codatendo,
 from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
 left outer join crchamado ch on 
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
+left outer join vdcontrato ct on
+ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr
+left outer join vditcontrato ict on
+ict.codemp=a.codempct and ict.codfilial=a.codfilialct and ict.codcontr=a.codcontr and ict.coditcontr=a.coditcontr
 where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
 e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
 c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
@@ -10847,7 +10855,9 @@ ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpat
 CREATE VIEW ATATENDIMENTOVW02
  ( CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND,
  CODEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, 
- CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, STATUSATENDO, RAZCLI, NOMECLI, CODCLI,
+ CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, 
+ QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO,
+ STATUSATENDO, RAZCLI, NOMECLI, CODCLI,
   CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO,
    DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN,
     PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC,
@@ -10855,7 +10865,9 @@ CREATE VIEW ATATENDIMENTOVW02
 
 select A.CODEMP, A.CODFILIAL, A.CODATENDO, A.CODEMPAE, A.CODFILIALAE, A.CODATEND, 
 A.NOMEATEND, A.COEMPEA, A.CODFILIALEA, A.CODESPEC, A.DESCESPEC, 
- A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, A.STATUSATENDO, A.RAZCLI, A.NOMECLI, A.CODCLI,
+ A.CODEMPCT, A.CODFILIALCT, A.CODCONTR, A.CODITCONTR, 
+ A.QTDITCONTR, A.VLRITCONTR, A.VLRITCONTREXCED, A.DTINICIO,
+ A.STATUSATENDO, A.RAZCLI, A.NOMECLI, A.CODCLI,
   A.CODEMPCL, A.CODFILIALCL, A.CODEMPCH, A.CODFILIALCH, A.CODCHAMADO, A.DESCCHAMADO,
   A.CODEMPTO, A.CODFILIALTO, A.CODTPATENDO,
    A.DESCTPATENDO, A.OBSATENDO, A.DATAATENDO, A.DATAATENDOFIN, A.HORAATENDO, A.HORAATENDOFIN,
@@ -10880,6 +10892,7 @@ then a.tempomaxcobespec else a.totalmin end) end)  else 0 end)
 )/60 ) totalcobcli,
 ( (case when a.bhespec='S' then a.totalmin else 0 end)/60 ) totalbh
 from atatendimentovw01 a;
+
  
  ALTER TABLE ATCONVENIADO ADD 
         CHECK (SEXOCONV IN ('M','F'));
