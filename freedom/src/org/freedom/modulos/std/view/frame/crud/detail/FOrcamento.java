@@ -243,6 +243,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescAlmoxItOrc = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JTextFieldFK txtCodUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtDescClComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -912,7 +914,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampo( txtVlrLiqItOrc, 109, 60, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );
 
 		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
-		adicDescFK( txtDescAlmoxItOrc, 454, 60, 249, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtDescAlmoxItOrc, 454, 60, 180, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtCodUnid, 640, 60, 60, 20, "CodUnid", "Unid" );
 		adicDescFK( txtSldLiqProd, 706, 60, 57, 20, "SldLiqProd", "Saldo" );
 
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
