@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JSpinner.DateEditor;
@@ -80,7 +81,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescEspec = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
-	
+
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -134,9 +135,9 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
-	
+
 	private ListaCampos lcEspec = new ListaCampos( this, "EA" );
-	
+
 	private ListaCampos lcChamado = new ListaCampos( this, "CH" );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
@@ -176,7 +177,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	private Integer nparcitrec = null;
 
 	private Integer codchamado_ant = null;
-	
+
 	private boolean financeiro = false;
 
 	private JCheckBoxPad cbConcluiChamado = new JCheckBoxPad( "Conclui chamado?", "S", "N" );
@@ -210,7 +211,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	}
 
 	public DLAtendimento( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec, boolean financeirop ) {
-		
+
 		this( codcli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
 		this.codrec = codrec;
@@ -223,7 +224,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		super( cOrig );
 
 		this.financeiro = financeirop;
-		
+
 		update = isUpdate;
 		this.tipoatendo = tipoatendo;
 
@@ -259,48 +260,29 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		setPainel( pnCampos );
 
-		adic( new JLabelPad( "Cód.Cliente" ), 7, 10, 80, 20 );
-		adic( txtCodCli, 7, 30, 80, 20 );
+		adic( txtCodCli, 7, 30, 80, 20, "Cód.Cliente" );
+		adic( txtRazCli, 90, 30, 524, 20, "Razão Social do Cliente" );
 
-		adic( new JLabelPad( "Razão Social do Cliente" ), 90, 10, 480, 20 );
-		adic( txtRazCli, 90, 30, 524, 20 );
+		adic( txtCodAtend, 7, 70, 80, 20, "Cód.Atend." );
+		adic( txtNomeAtend, 90, 70, 200, 20, "Nome do Atendente" );
+		adic( cbTipo, 293, 70, 198, 20, "Tipo de Atendimento" );
+		adic( cbSetor, 494, 70, 120, 20, "Setor" );
 
-		adic( new JLabelPad( "Cód.Atend." ), 7, 50, 80, 20 );
-		adic( txtCodAtend, 7, 70, 80, 20 );
+		adic( cbContr, 7, 110, 284, 20, "Contrato/Projeto" );
+		adic( cbitContr, 294, 110, 320, 20, "Item" );
+		adic( txtCodChamado, 7, 150, 80, 20, "Cód.Chamado" );
+		adic( txtDescChamado, 90, 150, 200, 20, "Descrição do chamado" );
 
-		adic( new JLabelPad( "Nome do Atendente" ), 90, 50, 200, 20 );
-		adic( txtNomeAtend, 90, 70, 200, 20 );
-
-		adic( new JLabelPad( "Tipo de Atendimento" ), 293, 50, 198, 20 );
-		adic( cbTipo, 293, 70, 198, 20 );
-
-		adic( new JLabelPad( "Setor" ), 494, 50, 120, 20 );
-		adic( cbSetor, 494, 70, 120, 20 );
-
-		adic( new JLabelPad( "Contrato/Projeto" ), 7, 90, 284, 20 );
-		adic( cbContr, 7, 110, 284, 20 );
-
-		adic( new JLabelPad( "Item" ), 294, 90, 320, 20 );
-		adic( cbitContr, 294, 110, 320, 20 );
-
-		adic( new JLabelPad( "Cód.Chamado" ), 7, 130, 80, 20 );
-		adic( txtCodChamado, 7, 150, 80, 20 );
-
-		adic( new JLabelPad( "Descrição do chamado" ), 90, 130, 200, 20 );
-		adic( txtDescChamado, 90, 150, 200, 20 );
-
-		adic( new JLabelPad( "Início" ), 294, 130, 80, 20 );
-		adic( txtDataAtendimento, 294, 150, 80, 20 );
+		adic( txtDataAtendimento, 294, 150, 80, 20, "Início" );
 		adic( txtHoraini, 377, 150, 53, 20 );
 
-		adic( new JLabelPad( "Final" ), 433, 130, 70, 20 );
-		adic( txtDataAtendimentoFin, 433, 150, 70, 20 );
+		adic( txtDataAtendimentoFin, 433, 150, 70, 20, "Final" );
 		adic( txtHorafim, 506, 150, 53, 20 );
 		adic( btRun, 559, 150, 19, 19 );
-		
+
 		adic( txtCodEspec, 7, 190, 80, 20, "Cód.Espec." );
 		adic( txtDescEspec, 90, 190, 283, 20, "Descrição da especificação do atendimento");
-		
+
 		adic( cbConcluiChamado, 376, 190, 200, 20 );
 
 		txtDataAtendimento.setRequerido( true );
@@ -318,16 +300,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		txtCodChamado.setVlrInteger( codchamado );
 
-		//if ( codcli > 0 ) {
-		//	txtCodCli.setAtivo( false );
-		//}
-		//else {
-			txtCodCli.setRequerido( true );
-		//}
-
-		//if ( codchamado != null ) {
-			//txtCodChamado.setAtivo( false );
-		//}
+		txtCodCli.setRequerido( true );
 
 		btRun.addActionListener( this );
 
@@ -385,7 +358,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txaObsInterno, "obsinterno", "Observação interna", ListaCampos.DB_SI, false ) );
 		lcAtendimento.add( new GuardaCampo( txtCodEspec, "codespec", "Cód.Espec.", ListaCampos.DB_FK, !financeiro ) );
-		
+
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
 
@@ -394,12 +367,16 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		txtCodChamado.setNomeCampo( "CodChamado" );
 		lcChamado.add( new GuardaCampo( txtCodChamado, "CodChamado", "Cód.Chamado", ListaCampos.DB_PK, false ) );
 		lcChamado.add( new GuardaCampo( txtDescChamado, "DescChamado", "Descrição do chamado", ListaCampos.DB_SI, false ) );
-		// lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
+
+		if(!update) {
+			lcChamado.setDinWhereAdic( " STATUS NOT IN('CO','CA') AND CODCLI=#N", txtCodCli );
+		}
+
 		lcChamado.setDinWhereAdic( " CODCLI=#N", txtCodCli );
 		lcChamado.montaSql( false, "CHAMADO", "CR" );
 		lcChamado.setReadOnly( true );
-		
-		
+
+
 		txtCodEspec.setTabelaExterna( lcEspec, null );
 		txtCodEspec.setFK( true );
 		txtCodEspec.setNomeCampo( "CodEspec" );
@@ -407,8 +384,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		lcEspec.add( new GuardaCampo( txtDescEspec, "DescEspec", "Descrição da especificação", ListaCampos.DB_SI, false ) );
 		lcEspec.montaSql( false, "ESPECATEND", "AT" );
 		lcEspec.setReadOnly( true );
-		
-		
+
+
 
 	}
 
@@ -600,6 +577,256 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		return iRet;
 	}
 
+	private void insertIntervalo(String horaini, String horafim) {
+		
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+		
+			sql.append( "insert into atatendimento ( " );
+			
+			sql.append( "CODEMP, CODFILIAL, CODATENDO, CODCONV, CODEMPCV, CODFILIALCV, CODEMPTO, CODFILIALTO, CODTPATENDO, CODEMPAE, CODFILIALAE, CODATEND," );
+			sql.append( "CODEMPSA, CODFILIALSA, CODSETAT, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, OBSATENDO, OBSINTERNO, STATUSATENDO," );
+			sql.append( "CODEMPCL, CODFILIALCL, CODCLI, IDUSU, CODEMPUS, CODFILIALUS, DOCATENDO, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR," );
+			sql.append( "CODEMPCA, CODFILIALCA, CODCLASATENDO, CODEMPCH, CODFILIALCH, CODCHAMADO, CONCLUICHAMADO, CODEMPEA, CODFILIALEA, CODESPEC ) " );
+			
+			sql.append( " select " );
+			
+			sql.append( "atd.codemp, atd.codfilial, (select iseq from spgeranum(?, ?, 'AT' )), atd.codconv, atd.codempcv, atd.codfilialcv, " );
+			sql.append( "atd.codempto, atd.codfilialto, atd.codtpatendo, atd.codempae, atd.codfilialae, ?, " );
+			sql.append( "atd.codempsa, atd.codfilialsa, atd.codsetat, ?, ?, ?, ?, atd.obsatendo, atd.obsinterno, atd.statusatendo, " );
+			sql.append( "atd.codempcl, atd.codfilialcl, atd.codcli, atd.idusu, atd.codempus, atd.codfilialus, atd.docatendo, atd.codempct, atd.codfilialct, atd.codcontr, atd.coditcontr, " );
+			sql.append( "atd.codempca, atd.codfilialca, atd.codclasatendo, atd.codempch, atd.codfilialch, atd.codchamado, atd.concluichamado, atd.codempea, atd.codfilialea, atd.codespec " );
+			sql.append( "from sgprefere3 p3, atatendimento atd " );
+			sql.append( "where " );
+			sql.append( "p3.codemp=? and p3.codfilial=? and atd.codemp=p3.codempao and atd.codfilial=p3.codfilialao and atd.codatendo=p3.codatendo " );
+			
+			System.out.println("QUERY INSERT:" + sql.toString() );
+			
+			ps = con.prepareStatement( sql.toString() );
+			 
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+			
+			ps.setInt( 3, txtCodAtend.getVlrInteger() );
+		
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data de inicio do atendimento
+			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataAtendimento.getVlrDate()) ); // Data final do atendimento
+			ps.setTime( 6, Funcoes.strTimeTosqlTime( horaini )); // Hora inicial do atendimento
+			ps.setTime( 7, Funcoes.strTimeTosqlTime( horafim )); // Hora final do atendimento
+			
+			ps.setInt( 8, Aplicativo.iCodEmp );
+			ps.setInt( 9, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			
+			ps.execute(); 
+			
+			con.commit();
+						
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void verificaAtendimentoAnterior(Integer codatend, Date data, String hora) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		String hora_ini_intervalo = null;
+
+		Long diferenca_lanca = 0L;
+		Long diferenca_turno = 0L;
+		Long diferenca = 0L;
+		
+		String ini_turno = null;
+		String fim_turno = null;
+
+		String ini_inter = null;
+		String fim_inter = null;
+		
+		boolean turno = false;
+		
+		boolean tem_lancamento = false;
+
+		boolean teste = false;
+		
+		try {
+
+			sql.append( "select first 1 ");
+			sql.append( "atd.dataatendofin, atd.horaatendofin ");
+			sql.append( "from atatendimento atd ");
+			sql.append( "where ");
+			sql.append( "atd.codemp=? and atd.codfilial=? and atd.codempae=? and atd.codfilialae=? and atd.codatend=? and ");
+			sql.append( "atd.dataatendofin = ? and atd.horaatendofin <= ? ");
+			sql.append( "order by dataatendofin desc, horaatendofin desc " );
+
+			System.out.println("QUERY ULTIMO ATENDIMENTO:" + sql.toString());
+			
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			ps.setInt( 5, codatend );
+
+			ps.setDate( 6, Funcoes.dateToSQLDate( data ) );
+			ps.setTime( 7, Funcoes.strTimeTosqlTime( hora )  );
+
+			hora = hora.substring( 0,5 );
+			
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+
+				String horafinant = rs.getString( "horaatendofin" );
+
+				System.out.println( "Hora do último lançamento:" + horafinant.toString() );
+
+				diferenca_lanca = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( horafinant), Funcoes.strTimeTosqlTime( hora ) );
+
+				System.out.println( "Diferença:" + Funcoes.longTostrTime( diferenca_lanca ) );
+
+				hora_ini_intervalo = horafinant;
+				
+				tem_lancamento = true;
+
+			}
+
+			con.commit();
+			rs.close();
+
+
+			// Verificação do enquadramento no turno
+
+			sql = new StringBuilder();
+
+			sql.append( "select ");
+			sql.append( "tu.hiniturno, tu.hfimturno, tu.hiniintturno, tu.hfimintturno ");
+
+			sql.append( "from ");
+			sql.append( "atatendente ate ");
+			sql.append( "left outer join rhempregado em on em.codemp=ate.codempep and em.codfilial=ate.codfilialep and em.matempr=ate.matempr ");
+			sql.append( "left outer join rhturno tu on tu.codemp=em.codempto and tu.codfilial=em.codfilialto and tu.codturno=em.codturno ");
+			sql.append( "where ate.codemp=? and ate.codfilial=? and ate.codatend=? " );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
+			ps.setInt( 3, codatend );
+
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+
+				ini_turno = rs.getString( "hiniturno" );
+				fim_turno = rs.getString( "hfimturno" );
+
+				ini_inter = rs.getString( "hiniintturno" );
+				fim_inter = rs.getString( "hfimintturno" );
+
+				// Verifica se o lançamento é após o fim do intervalo...
+				diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( fim_inter ), Funcoes.strTimeTosqlTime( hora ) );
+
+				//hora_ini_intervalo =  fim_inter;
+
+				if(diferenca_turno < 0 ) {
+
+					// Se o lançamento é anterior ao fim do intervalor deve verificar se é anterior ao início do intervalor...
+					diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_inter ), Funcoes.strTimeTosqlTime( hora ) );
+
+					if(diferenca_turno <0) {
+
+						// Indica que o lançamento é anterior ao inicio do intervalo, ou seja deve obedecer o inicio do turno...							
+						diferenca_turno = Funcoes.subtraiTime( Funcoes.strTimeTosqlTime( ini_turno ), Funcoes.strTimeTosqlTime( hora ) );
+
+						//hora_ini_intervalo =  ini_turno;
+					}						
+				}	
+
+			}
+			
+			con.commit();
+			rs.close();
+
+			String texto_dif = "";
+
+			if(tem_lancamento) {
+			
+				//sobrepondo a diferença do turno
+				if( diferenca_lanca > 0 ) {
+					
+					diferenca = diferenca_lanca;
+					
+					texto_dif = "seu último lançamento";
+					
+					turno = false;
+					
+				}
+				
+			}
+			else {
+				if( diferenca_turno >0 ) {
+					
+					diferenca = diferenca_turno;
+					
+					texto_dif = "o início do seu turno";
+					
+					turno = true;
+					
+				}
+			}
+			
+			
+			if(diferenca > 0) {
+
+				StringBuilder mensagem = new StringBuilder();
+
+				mensagem.append( "Existe um intervalor de " );
+				mensagem.append( Funcoes.longTostrTime( diferenca ) );
+				mensagem.append( " entre " );
+				
+				mensagem.append( texto_dif );
+				
+				mensagem.append( " e o lançamento atual.\n ");
+				
+				mensagem.append( "Gostaria de inserir o intervalo automáticamente?" );
+
+				if( Funcoes.mensagemConfirma( null, mensagem.toString() ) == JOptionPane.YES_OPTION ) {
+					
+					// Inserir atendimento padrão para intervalos
+					teste = true;
+					//insertIntervalo( turno ? ini_turno : hora_ini_intervalo , txtHoraini.getVlrString() );
+					
+
+				}
+				else {
+
+					return;
+
+				}
+
+			}
+
+			
+			if(teste) {
+				insertIntervalo( turno ? ini_turno : hora_ini_intervalo , txtHoraini.getVlrString() );
+			}
+
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private void insertAtend() throws Exception {
 
 		Object ORets[] = getValores();
@@ -665,7 +892,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setString( 24, txaObsInterno.getVlrString() );
 
 		ps.setString( 25, cbConcluiChamado.getVlrString() );
-		
+
 		if ( txtCodEspec.getVlrInteger() > 0 ) {
 			ps.setInt( 26, lcEspec.getCodEmp() ); // Código da empresa do especificação
 			ps.setInt( 27, lcEspec.getCodFilial() ); // Código da filial da especificação
@@ -680,10 +907,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			Funcoes.mensagemInforma(null,"Informe a especificação do atendimento!");
 			txtCodEspec.requestFocus();
 		}
-		
-		
-		
-		
+
+
 		ps.execute();
 		ps.close();
 
@@ -705,7 +930,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		sql.append( "a.statusatendo=?, a.obsinterno=?, a.concluichamado=?, " );
 		sql.append( "a.codempea=?, a.codfilialea=?, a.codespec=?, ");
 		sql.append( "a.codempcl=?, a.codfilialcl=?, a.codcli=? ");
-		
+
 		sql.append( "where a.codemp=? and a.codfilial=? and a.codatendo=? " );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -758,7 +983,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.setString( 21, txaObsInterno.getVlrString() );
 
 		ps.setString( 22, cbConcluiChamado.getVlrString() );
-		
+
 		if ( txtCodEspec.getVlrInteger() > 0 ) {
 			ps.setInt( 23, Aplicativo.iCodEmp );
 			ps.setInt( 24, ListaCampos.getMasterFilial( "ATESPECATEND" ) );
@@ -769,12 +994,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			ps.setNull( 24, Types.INTEGER );
 			ps.setNull( 25, Types.INTEGER );
 		}
-	
-		
+
+
 		ps.setInt( 26, Aplicativo.iCodEmp );
 		ps.setInt( 27, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		ps.setInt( 28, txtCodCli.getVlrInteger() );
-		
+
 		ps.setInt( 29, Aplicativo.iCodEmp );
 		ps.setInt( 30, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 		ps.setInt( 31, txtCodAtendo.getVlrInteger() );
@@ -782,6 +1007,8 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 		ps.executeUpdate();
 
 		con.commit();
+		
+		ps.close();
 
 	}
 
@@ -891,8 +1118,13 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 			if ( update ) {
 				try {
+
 					updateAtend();
-				} catch ( Exception e ) {
+
+					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01" );
+
+				} 
+				catch ( Exception e ) {
 					Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
 					e.printStackTrace();
 					return;
@@ -901,7 +1133,11 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 			}
 			else {
 				try {
+
 					insertAtend();
+
+					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString() );
+
 				} 
 				catch ( Exception e ) {
 					e.printStackTrace();
@@ -958,7 +1194,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		
+
 		montaComboTipo();
 		montaComboSetor();
 		montaComboStatus();
@@ -968,14 +1204,12 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 		lcCli.setConexao( cn );
 		lcCli.carregaDados();
-		
+
 		lcEspec.setConexao( cn );
 		lcEspec.carregaDados();
 
 		lcChamado.setConexao( cn );
 		lcChamado.carregaDados();
-		
-		
 
 		sPrefs = getPref();
 	}
@@ -1004,7 +1238,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 	private void sinalizaChamado( boolean em_atendimento, Integer codchamado ) {
 
-		StringBuilder sql = new StringBuilder();
+		StringBuilder sql = new StringBuilder(); 
 
 		try {
 
