@@ -241,18 +241,10 @@ public class FRAtendimentos extends FRelatorio {
 				return;
 			}
 		
-			sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, ch.codchamado, ch.descchamado, " );
+			sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, a.codchamado, a.descchamado, " );
 			sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
-			sql.append( "(a.totalmin/60) totalhoras, (( (case when a.cobcliespec='S' and a.statusatendo<>'NC' ");
-			sql.append( "then (case when a.totalmin<a.tempomincobespec then a.tempomincobespec else ");
-			sql.append( " (case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 then a.tempomaxcobespec ");
-			sql.append( "else a.totalmin end) end)  else 0 end) )/60 ) totalcobcli " );
-			sql.append( "from atatendimentovw01 a " );
-	
-			sql.append( "left outer join crchamado ch on " );
-	
-			sql.append( "ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado " );
-	
+			sql.append( "(a.totalmin/60) totalhoras, a.totalcobcli " );
+			sql.append( "from atatendimentovw02 a " );
 			sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
 	
 			if ( txtCodContr.getVlrInteger().intValue() > 0 ) {
