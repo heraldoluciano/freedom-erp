@@ -243,7 +243,7 @@ public class FRAtendimentos extends FRelatorio {
 		
 			sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, a.codchamado, a.descchamado, " );
 			sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, a.nomeatend, a.desctpatendo, a.razcli, a.statusatendo, " );
-			sql.append( "(a.totalmin/60) totalhoras, a.totalcobcli " );
+			sql.append( "a.totalgeral totalhoras, a.totalcobcli " );
 			sql.append( "from atatendimentovw02 a " );
 			sql.append( "where a.codemp=? and a.codfilial=? and a.dataatendo between ? and ?  and a.mrelcobespec='S' " );
 	
