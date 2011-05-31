@@ -1136,7 +1136,7 @@ public class DLAtendimento extends FFDialogo implements JComboBoxListener, KeyLi
 
 					insertAtend();
 
-					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString() );
+					verificaAtendimentoAnterior( txtCodAtend.getVlrInteger(), txtDataAtendimento.getVlrDate(), txtHoraini.getVlrString()+":01"  );
 
 				} 
 				catch ( Exception e ) {
