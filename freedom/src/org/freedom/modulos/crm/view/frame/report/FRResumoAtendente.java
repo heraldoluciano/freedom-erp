@@ -185,47 +185,30 @@ public class FRResumoAtendente extends FRelatorio {
 		
 		if("R".equals( rgTipo.getVlrString() )) {
 		
-			sql.append( "select a.nomeatend, ( sum(a.totalmin) / 60 ) totalgeral, ");
-			sql.append( "(sum( (case when a.contmetaespec='S' then (case when ");
-			sql.append( "a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalmeta, ");
-			sql.append( "(sum( (case when a.pgcomiespec='S' then (case when a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalcomis, ");
-			sql.append( "(sum( (case when a.cobcliespec='S' and a.statusatendo<>'NC' then (case when a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalcobcli ");
-			sql.append( "from atatendimentovw01 a, atatendimento atd, vdcliente cl ");
+			sql.append( "select a.nomeatend, sum(a.totalgeral) totalgeral, ");
+			sql.append( "sum(a.totalmeta) totalmeta, sum(a.totalcomis) totalcomis, ");
+			sql.append( "sum(a.totalcobcli) totalcobcli ");
+			sql.append( "from atatendimentovw02 a ");
 			
 			sql.append( "where ");
 			
-			sql.append( "atd.codemp=a.codemp and atd.codfilial=a.codfilial and atd.codatendo=a.codatendo and ");
-			sql.append( "cl.codemp=atd.codempcl and cl.codfilial=atd.codfilialcl and cl.codcli=atd.codcli and ");
-
 			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
 
 			if(txtCodCli.getVlrInteger()>0) {
 			
-				sql.append( "and atd.codempcl=? and atd.codfilialcl=? and atd.codcli=? " );
+				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
 				
 			}
 			
 			if(txtCodAtend.getVlrInteger()>0) {
 				
-				sql.append( "and atd.codempae=? and atd.codfilialae=? and atd.codatend=? " );
+				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
 				
 			}
 			
 			if(txtCodEspec.getVlrInteger()>0) {
 				
-				sql.append( "and atd.codempea=? and atd.codfilialea=? and atd.codespec=? " );
+				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
 				
 			}
 						
@@ -242,56 +225,32 @@ public class FRResumoAtendente extends FRelatorio {
 				
 			}
 			
-			sql.append( "select atd.dataatendo, atd.horaatendo, atd.horaatendofin, a.nomeatend, atd.obsatendo, atd.codcli, cl.nomecli, (a.totalmin) / 60  totalgeral, ");
-			sql.append( "(( (case when a.contmetaespec='S' then (case when ");
-			sql.append( "a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalmeta, ");
-			sql.append( "(( (case when a.pgcomiespec='S' then (case when a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalcomis, ");
-			sql.append( "(( (case when a.cobcliespec='S' and a.statusatendo<>'NC' then (case when a.totalmin<a.tempomincobespec ");
-			sql.append( "then a.tempomincobespec else ");
-			sql.append( "(case when a.totalmin>a.tempomaxcobespec and a.tempomaxcobespec<>0 ");
-			sql.append( "then a.tempomaxcobespec else a.totalmin end) end)  else 0 end) ");
-			sql.append( ")/60 ) totalcobcli, ");
-			sql.append( "ea.codespec, ea.descespec " );
-			sql.append( "from atatendimentovw01 a, vdcliente cl, atatendimento atd ");
-			sql.append( "left outer join atespecatend ea on ea.codemp=atd.codempea and ea.codfilial=atd.codfilialea and ea.codespec=atd.codespec ");
-			
+			sql.append( "select a.dataatendo, a.horaatendo, a.horaatendofin, a.nomeatend, a.obsatendo, a.codcli, a.nomecli, a.totalgeral, ");
+			sql.append( "a.totalmeta, a.totalcomis, a.totalcobcli, ");
+			sql.append( "a.codespec, a.descespec " );
+			sql.append( "from atatendimentovw02 a ");
 			sql.append( "where ");
-			
-			sql.append( "atd.codemp=a.codemp and atd.codfilial=a.codfilial and atd.codatendo=a.codatendo and ");
-			sql.append( "cl.codemp=atd.codempcl and cl.codfilial=atd.codfilialcl and cl.codcli=atd.codcli and ");
 			sql.append( "a.codemp=? and a.codfilial=? and a.dataatendo between ? and ? ");
 			 
 			if(txtCodCli.getVlrInteger()>0) {
 				
-				sql.append( "and atd.codempcl=? and atd.codfilialcl=? and atd.codcli=? " );
+				sql.append( "and a.codempcl=? and a.codfilialcl=? and a.codcli=? " );
 				
 			}
 			
 			if(txtCodAtend.getVlrInteger()>0) {
 				
-				sql.append( "and atd.codempae=? and atd.codfilialae=? and atd.codatend=? " );
+				sql.append( "and a.codempae=? and a.codfilialae=? and a.codatend=? " );
 				
 			}
 			
 			if(txtCodEspec.getVlrInteger()>0) {
 				
-				sql.append( "and atd.codempea=? and atd.codfilialea=? and atd.codespec=? " );
+				sql.append( "and a.codempea=? and a.codfilialea=? and a.codespec=? " );
 				
 			}
 			
-			
-			
-			
-			
-			sql.append( "order by atd.dataatendo, atd.horaatendo ");
+			sql.append( "order by a.dataatendo, a.horaatendo ");
 			
 		}
 		
